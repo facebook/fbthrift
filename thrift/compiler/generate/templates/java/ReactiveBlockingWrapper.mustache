@@ -17,23 +17,24 @@
 }}
 {{#import "common/common" as common}}
 {{#import "common/types" as types}}
+{{#let service = self}}
 {{#partial common.auto_generated}}
 
-package {{service:program.javaPackage}};
+package {{service.program.javaPackage}};
 
 import java.util.*;
 
-public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#if (object.notnull? service:extends)}} extends {{#service:extends}}{{service:java_qualified_name}}ReactiveBlockingWrapper{{/service:extends}}{{/if}}
-  implements {{service:javaCapitalName}} {
-  private final {{service:javaCapitalName}}.Reactive _delegate;
+public class {{service.javaCapitalName}}ReactiveBlockingWrapper {{#if (object.notnull? service.extends)}} extends {{service.extends.java_qualified_name}}ReactiveBlockingWrapper{{/if}}
+  implements {{service.javaCapitalName}} {
+  private final {{service.javaCapitalName}}.Reactive _delegate;
 
-  public {{service:javaCapitalName}}ReactiveBlockingWrapper({{service:javaCapitalName}}.Reactive _delegate) {
-    {{#if (object.notnull? service:extends)}}super(_delegate);{{/if}}
+  public {{service.javaCapitalName}}ReactiveBlockingWrapper({{service.javaCapitalName}}.Reactive _delegate) {
+    {{#if (object.notnull? service.extends)}}super(_delegate);{{/if}}
     this._delegate = _delegate;
   }
 
-  public {{service:javaCapitalName}}ReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
-    this(new {{service:javaCapitalName}}ReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
+  public {{service.javaCapitalName}}ReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(new {{service.javaCapitalName}}ReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
   @java.lang.Override
@@ -41,7 +42,7 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#if (object.no
     _delegate.dispose();
   }
 
-  {{#each service:self.single_request_functions as |func|}}
+  {{#each service.single_request_functions as |func|}}
   @java.lang.Override
   public {{#partial types.java_type type=func.return_type has_adapter_override=false}} {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}} final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}}){{!
           Exceptions
@@ -85,12 +86,10 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#if (object.no
   }
   {{/each}}
 
-  {{#service:interactions}}
-  public {{service:name}} create{{service:name}}() {
+  {{#each service.interactions as |interaction|}}
+  public {{interaction.name}} create{{interaction.name}}() {
       throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveBlockingWrapper Interfaces!");
   }
-  {{^last?}}
 
-  {{/last?}}
-  {{/service:interactions}}
+  {{/each}}
 }

@@ -69,4 +69,5 @@ public class BadServiceReactiveAsyncWrapper
   public BadInteraction createBadInteraction() {
       return new BadInteractionImpl();
   }
+
 }

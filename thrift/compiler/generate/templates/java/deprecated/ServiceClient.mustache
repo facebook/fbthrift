@@ -17,9 +17,10 @@
 }}
 {{#import "common/common" as common}}
 {{#import "common/types" as types}}
+{{#let service = self}}
 {{#partial common.auto_generated}}
 
-package {{service:program.javaPackage}};
+package {{service.program.javaPackage}};
 
 import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
@@ -35,36 +36,36 @@ import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 @Deprecated
-public class {{service:javaCapitalName}}ClientImpl extends {{#if (object.notnull? service:extends)}}{{#service:extends}}{{service:java_qualified_name}}ClientImpl{{/service:extends}}{{#else}}AbstractThriftClient{{/if}} implements {{service:javaCapitalName}} {
+public class {{service.javaCapitalName}}ClientImpl extends {{#if (object.notnull? service.extends)}}{{service.extends.java_qualified_name}}ClientImpl{{#else}}AbstractThriftClient{{/if}} implements {{service.javaCapitalName}} {
 
     // Method Handlers
-    {{#each service:self.single_request_functions as |func|}}
+    {{#each service.single_request_functions as |func|}}
     private ThriftMethodHandler {{func.java_name}}MethodHandler;
     {{/each}}
 
     // Method Exceptions
-    {{#each service:self.single_request_functions as |func|}}
+    {{#each service.single_request_functions as |func|}}
     private static final Class[] {{func.java_name}}Exceptions = new Class[] {
         {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.class, {{/each}}org.apache.thrift.TException.class};
     {{/each}}
 
-    public {{service:javaCapitalName}}ClientImpl(
+    public {{service.javaCapitalName}}ClientImpl(
         RequestChannel channel,
         Map<Method, ThriftMethodHandler> methods,
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
-      this("{{service:name}}", channel, methods, headers, persistentHeaders, eventHandlers);
+      this("{{service.name}}", channel, methods, headers, persistentHeaders, eventHandlers);
     }
 
-    protected {{service:javaCapitalName}}ClientImpl(
+    protected {{service.javaCapitalName}}ClientImpl(
         String serviceName,
         RequestChannel channel,
         Map<Method, ThriftMethodHandler> methods,
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
-      {{#if (object.notnull? service:extends)}}super(serviceName, channel, methods, headers, persistentHeaders, eventHandlers);{{#else}}super(serviceName, channel, headers, persistentHeaders, eventHandlers);{{/if}}
+      {{#if (object.notnull? service.extends)}}super(serviceName, channel, methods, headers, persistentHeaders, eventHandlers);{{#else}}super(serviceName, channel, headers, persistentHeaders, eventHandlers);{{/if}}
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(
@@ -73,7 +74,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{#if (object.notnull
           });
 
       // Set method handlers
-      {{#each service:self.single_request_functions as |func|}}
+      {{#each service.single_request_functions as |func|}}
       {{func.java_name}}MethodHandler = methodHandlerMap.get("{{func.java_name}}");
       {{/each}}
     }
@@ -83,7 +84,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{#if (object.notnull
         super.close();
     }
 
-    {{#each service:self.single_request_functions as |func|}}
+    {{#each service.single_request_functions as |func|}}
 
     @java.lang.Override
     public {{#partial types.java_type type=func.return_type has_adapter_override=false}} {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}
@@ -123,11 +124,11 @@ public class {{service:javaCapitalName}}ClientImpl extends {{#if (object.notnull
       }
     }
     {{/each}}
-    {{#service:interactions}}
+    {{#each service.interactions as |interaction|}}
 
-    public {{service:name}} create{{service:name}}() {
+    public {{interaction.name}} create{{interaction.name}}() {
         throw new RuntimeException("create interaction is not supported");
     }
 
-    {{/service:interactions}}
+    {{/each}}
 }

@@ -191,4 +191,5 @@ public class MyServiceReactiveAsyncWrapper
   public SerialInteraction createSerialInteraction() {
       return new SerialInteractionImpl();
   }
+
 }

@@ -146,4 +146,5 @@ public class InteractWithSharedReactiveAsyncWrapper
   public SharedInteraction createSharedInteraction() {
       return new SharedInteractionImpl();
   }
+
 }

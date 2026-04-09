@@ -50,7 +50,6 @@ public class MyServiceReactiveClient
   }
 
   public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient) {
-    
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headersMono = reactor.core.publisher.Mono.empty();
@@ -71,7 +70,6 @@ public class MyServiceReactiveClient
   }
 
   public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, reactor.core.publisher.Mono<Map<String, String>> _headersMono, reactor.core.publisher.Mono<Map<String, String>> _persistentHeadersMono, AtomicLong interactionCounter, Set<Long> activeInteractions) {
-    
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headersMono = _headersMono;

@@ -18,25 +18,26 @@
 {{#import "common/common" as common}}
 {{#import "common/types" as types}}
 {{#import "codec/codec" as codec}}
+{{#let service = self}}
 {{#partial common.auto_generated}}
 
-package {{service:program.javaPackage}};
+package {{service.program.javaPackage}};
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
 import com.facebook.thrift.util.Readers;
 
-public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? service:extends)}} extends {{#service:extends}}{{service:java_qualified_name}}RpcServerHandler{{/service:extends}}{{/if}}
+public class {{service.javaCapitalName}}RpcServerHandler {{#if (object.notnull? service.extends)}} extends {{service.extends.java_qualified_name}}RpcServerHandler{{/if (object.notnull? service.extends)}}
   implements com.facebook.thrift.server.RpcServerHandler {
 
   private final java.util.Map<String, com.facebook.thrift.server.RpcServerHandler> _methodMap;
 
-  private final {{service:javaCapitalName}}.Reactive _delegate;
+  private final {{service.javaCapitalName}}.Reactive _delegate;
 
-  {{#each service:self.single_request_functions as |func|}}
+  {{#each service.single_request_functions as |func|}}
   private final java.util.List<com.facebook.thrift.payload.Reader> _{{func.java_name}}Readers;
   {{/each}}
-  {{#each service:self.streaming_functions as |func|}}
+  {{#each service.streaming_functions as |func|}}
   private final java.util.List<com.facebook.thrift.payload.Reader> _{{func.java_name}}Readers;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<{{#partial types.stream_return_type function=func}}> _delegate_{{func.java_name}};
   {{#if (not func.stream_has_first_response?)}}
@@ -49,29 +50,29 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
-  public {{service:javaCapitalName}}RpcServerHandler({{service:javaCapitalName}} _delegate,
+  public {{service.javaCapitalName}}RpcServerHandler({{service.javaCapitalName}} _delegate,
                                     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-    this(new {{service:javaCapitalName}}BlockingReactiveWrapper(_delegate), _eventHandlers);
+    this(new {{service.javaCapitalName}}BlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
-  public {{service:javaCapitalName}}RpcServerHandler({{service:javaCapitalName}}.Async _delegate,
+  public {{service.javaCapitalName}}RpcServerHandler({{service.javaCapitalName}}.Async _delegate,
                                     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-    this(new {{service:javaCapitalName}}AsyncReactiveWrapper(_delegate), _eventHandlers);
+    this(new {{service.javaCapitalName}}AsyncReactiveWrapper(_delegate), _eventHandlers);
   }
 
-  public {{service:javaCapitalName}}RpcServerHandler({{service:javaCapitalName}}.Reactive _delegate,
+  public {{service.javaCapitalName}}RpcServerHandler({{service.javaCapitalName}}.Reactive _delegate,
                                     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-    {{#service:extends}}super(_delegate, _eventHandlers);{{/service:extends}}
+    {{#if (object.notnull? service.extends)}}super(_delegate, _eventHandlers);{{/if (object.notnull? service.extends)}}
     this._methodMap = new java.util.HashMap<>();
     this._delegate = _delegate;
     this._eventHandlers = _eventHandlers;
 
-    {{#each service:self.single_request_functions as |func|}}
+    {{#each service.single_request_functions as |func|}}
     _methodMap.put("{{func.name}}", this);
     _{{func.java_name}}Readers = _create_{{func.java_name}}_request_readers();
     {{/each}}
 
-    {{#each service:self.streaming_functions as |func|}}
+    {{#each service.streaming_functions as |func|}}
     _methodMap.put("{{func.java_name}}", this);
     _{{func.java_name}}Readers = _create_{{func.java_name}}_request_readers();
     _delegate_{{func.java_name}} = (java.util.List<Object> _list) -> {
@@ -114,7 +115,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
 
   }
 
-  {{#each service:self.streaming_functions as |func|}}
+  {{#each service.streaming_functions as |func|}}
   private final static java.util.List<com.facebook.thrift.payload.Reader> _create_{{func.java_name}}_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
@@ -176,7 +177,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
 
   {{/each}}
 
-  {{#each service:self.request_response_functions as |func|}}
+  {{#each service.request_response_functions as |func|}}
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_{{func.java_name}}_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
@@ -244,7 +245,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
 
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _do{{func.java_name}}(
-    {{service:javaCapitalName}}.Reactive _delegate,
+    {{service.javaCapitalName}}.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
     java.util.List<com.facebook.thrift.payload.Reader> _readers,
     com.facebook.swift.service.ContextChain _chain) {
@@ -327,7 +328,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
   }
   {{/each}}
 
-  {{#each service:self.oneway_functions as |func|}}
+  {{#each service.oneway_functions as |func|}}
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_{{func.java_name}}_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
@@ -340,7 +341,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
 
   private static reactor.core.publisher.Mono<Void>
     _do{{func.java_name}}(
-    {{service:javaCapitalName}}.Reactive _delegate,
+    {{service.javaCapitalName}}.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
     java.util.List<com.facebook.thrift.payload.Reader> _readers,
     com.facebook.swift.service.ContextChain _chain) {
@@ -368,7 +369,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     com.facebook.nifty.core.RequestContexts.setCurrentContext(_payload.getRequestContext());
     com.facebook.swift.service.ContextChain _chain;
     try {
-      String qualifiedMethodName = "{{service:javaCapitalName}}." + _name;
+      String qualifiedMethodName = "{{service.javaCapitalName}}." + _name;
       _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, qualifiedMethodName, _payload.getRequestContext());
     } catch (Throwable _t) {
       org.apache.thrift.TApplicationException _tApplicationException = new org.apache.thrift.TApplicationException(_t.getMessage());
@@ -379,21 +380,20 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     reactor.core.publisher.Flux<com.facebook.thrift.payload.ServerResponsePayload> _result;
     try {
       switch(_name) {
-        {{#each service:self.streaming_functions as |func|}}
+        {{#each service.streaming_functions as |func|}}
         case "{{func.name}}":
           _result = _handler_{{func.java_name}}.handleStream(_payload, _chain);
           break;
         {{/each}}
         default: {
-          {{#service:extends}}
+          {{#if (object.notnull? service.extends)}}
           _result =  super.singleRequestStreamingResponse(_payload);
-          {{/service:extends}}
-          {{^service:extends}}
+          {{#else}}
             _chain.preRead();
             org.apache.thrift.TApplicationException _tApplicationException = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name);
             com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
             return reactor.core.publisher.Flux.just(_serverResponsePayload).doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
-          {{/service:extends}}
+          {{/if (object.notnull? service.extends)}}
         }
       }
     } catch (org.apache.thrift.TApplicationException _tApplicationException) {
@@ -418,7 +418,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     com.facebook.nifty.core.RequestContexts.setCurrentContext(_payload.getRequestContext());
     com.facebook.swift.service.ContextChain _chain;
     try {
-      String qualifiedMethodName = "{{service:javaCapitalName}}." + _name;
+      String qualifiedMethodName = "{{service.javaCapitalName}}." + _name;
       _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, qualifiedMethodName, _payload.getRequestContext());
     } catch (Throwable _t) {
       org.apache.thrift.TApplicationException _tApplicationException = new org.apache.thrift.TApplicationException(_t.getMessage());
@@ -429,21 +429,20 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _result;
     try {
       switch (_name) {
-        {{#each service:self.request_response_functions as |func|}}
+        {{#each service.request_response_functions as |func|}}
         case "{{func.name}}":
           _result = _do{{func.java_name}}(_delegate, _payload, _{{func.java_name}}Readers, _chain);
         break;
         {{/each}}
         default: {
-          {{#service:extends}}
+          {{#if (object.notnull? service.extends)}}
           _result =  super.singleRequestSingleResponse(_payload);
-          {{/service:extends}}
-          {{^service:extends}}
+          {{#else}}
             _chain.preRead();
             org.apache.thrift.TApplicationException _tApplicationException = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name);
             com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
             return reactor.core.publisher.Mono.just(_serverResponsePayload).doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
-          {{/service:extends}}
+          {{/if (object.notnull? service.extends)}}
         }
       }
     } catch (org.apache.thrift.TApplicationException _tApplicationException) {
@@ -471,7 +470,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     com.facebook.nifty.core.RequestContexts.setCurrentContext(_payload.getRequestContext());
     com.facebook.swift.service.ContextChain _chain;
     try {
-      String qualifiedMethodName = "{{service:javaCapitalName}}." + _name;
+      String qualifiedMethodName = "{{service.javaCapitalName}}." + _name;
       _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, qualifiedMethodName, _payload.getRequestContext());
     } catch (Throwable _t) {
       return reactor.core.publisher.Mono.<Void>error(_t).doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
@@ -480,18 +479,17 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     reactor.core.publisher.Mono<Void> _result;
     try {
       switch (_name) {
-        {{#each service:self.oneway_functions as |func|}}
+        {{#each service.oneway_functions as |func|}}
         case "{{func.name}}":
           _result = _do{{func.java_name}}(_delegate, _payload, _{{func.java_name}}Readers, _chain);
         break;
         {{/each}}
         default: {
-          {{#service:extends}}
+          {{#if (object.notnull? service.extends)}}
           _result =  super.singleRequestNoResponse(_payload);
-          {{/service:extends}}
-          {{^service:extends}}
+          {{#else}}
           _result = reactor.core.publisher.Mono.error(new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name));
-          {{/service:extends}}
+          {{/if (object.notnull? service.extends)}}
         }
       }
     } catch (Throwable _t) {
@@ -508,14 +506,13 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
   }
 
   public java.util.Map<String, com.facebook.thrift.server.RpcServerHandler> getMethodMap() {
-    {{#service:extends}}
+    {{#if (object.notnull? service.extends)}}
       java.util.Map<String, com.facebook.thrift.server.RpcServerHandler> _combined = new java.util.HashMap();
       _combined.putAll(_methodMap);
       return _combined;
-    {{/service:extends}}
-    {{^service:extends}}
+    {{#else}}
       return _methodMap;
-    {{/service:extends}}
+    {{/if (object.notnull? service.extends)}}
   }
 
 }

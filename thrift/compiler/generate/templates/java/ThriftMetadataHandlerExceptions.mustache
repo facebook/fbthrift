@@ -18,9 +18,10 @@
 {{#import "common/common" as common}}
 {{#import "common/types" as types}}
 {{#import "common/metadata" as metadata}}
+{{#let service = self}}
 {{#partial common.auto_generated}}
 
-package {{service:program.javaPackage}};
+package {{service.program.javaPackage}};
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,8 +36,8 @@ import com.facebook.thrift.metadata.ThriftSetType;
 import com.facebook.thrift.metadata.ThriftStructType;
 import com.facebook.thrift.metadata.ThriftType;
 
-{{#each (array.enumerate service:referenced_exception_batches) as |batch_index exceptions|}}
-class {{service:javaCapitalName}}ThriftMetadataHandlerExceptions_{{batch_index}} {
+{{#each (array.enumerate service.referenced_exception_batches) as |batch_index exceptions|}}
+class {{service.javaCapitalName}}ThriftMetadataHandlerExceptions_{{batch_index}} {
   static void addExceptions(Map<String, ThriftException> exceptions) {
     {{#each exceptions as |exception|}}
     exceptions.put("{{exception.java_qualified_name}}", new ThriftException.Builder()
@@ -57,11 +58,11 @@ class {{service:javaCapitalName}}ThriftMetadataHandlerExceptions_{{batch_index}}
 }
 {{/each}}
 
-class {{service:javaCapitalName}}ThriftMetadataHandlerExceptions {
+class {{service.javaCapitalName}}ThriftMetadataHandlerExceptions {
   static Map<String, ThriftException> getExceptions() {
     Map<String, ThriftException> exceptions = new HashMap<>();
-    {{#each (array.enumerate service:referenced_exception_batches) as |batch_index exceptions|}}
-    {{service:javaCapitalName}}ThriftMetadataHandlerExceptions_{{batch_index}}.addExceptions(exceptions);
+    {{#each (array.enumerate service.referenced_exception_batches) as |batch_index exceptions|}}
+    {{service.javaCapitalName}}ThriftMetadataHandlerExceptions_{{batch_index}}.addExceptions(exceptions);
     {{/each}}
     return exceptions;
   }

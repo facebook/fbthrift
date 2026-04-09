@@ -17,19 +17,20 @@
 }}
 {{#import "common/common" as common}}
 {{#import "common/types" as types}}
+{{#let service = self}}
 {{#partial common.auto_generated}}
 
-package {{service:program.javaPackage}};
+package {{service.program.javaPackage}};
 
 import java.util.HashMap;
 import java.util.Map;
 import com.facebook.thrift.metadata.ThriftEnum;
 
-{{#each (array.enumerate service:referenced_enum_batches) as |batch_index enums|}}
+{{#each (array.enumerate service.referenced_enum_batches) as |batch_index enums|}}
 {{#each enums as |enum|}}
 {{#if enum.has_multiple_value_batches?}}
 {{#each (array.enumerate enum.value_batches) as |vb_index vals|}}
-class {{service:javaCapitalName}}ThriftMetadataHandlerEnums_{{batch_index}}_{{vb_index}} {
+class {{service.javaCapitalName}}ThriftMetadataHandlerEnums_{{batch_index}}_{{vb_index}} {
   static void addElements(Map<Integer, String> elements) {
     {{#each vals as |val|}}
     elements.put({{val.value}}, "{{val.name}}");
@@ -40,14 +41,14 @@ class {{service:javaCapitalName}}ThriftMetadataHandlerEnums_{{batch_index}}_{{vb
 {{/if enum.has_multiple_value_batches?}}
 {{/each}}
 
-class {{service:javaCapitalName}}ThriftMetadataHandlerEnums_{{batch_index}} {
+class {{service.javaCapitalName}}ThriftMetadataHandlerEnums_{{batch_index}} {
   static void addEnums(Map<String, ThriftEnum> enums) {
     {{#each enums as |enum|}}
     {
       Map<Integer, String> elements = new HashMap<>();
       {{#if enum.has_multiple_value_batches?}}
       {{#each (array.enumerate enum.value_batches) as |vb_index vals|}}
-      {{service:javaCapitalName}}ThriftMetadataHandlerEnums_{{batch_index}}_{{vb_index}}.addElements(elements);
+      {{service.javaCapitalName}}ThriftMetadataHandlerEnums_{{batch_index}}_{{vb_index}}.addElements(elements);
       {{/each}}
       {{#else}}
       {{#each enum.values as |val|}}
@@ -64,11 +65,11 @@ class {{service:javaCapitalName}}ThriftMetadataHandlerEnums_{{batch_index}} {
 }
 {{/each}}
 
-class {{service:javaCapitalName}}ThriftMetadataHandlerEnums {
+class {{service.javaCapitalName}}ThriftMetadataHandlerEnums {
   static Map<String, ThriftEnum> getEnums() {
     Map<String, ThriftEnum> enums = new HashMap<>();
-    {{#each (array.enumerate service:referenced_enum_batches) as |batch_index enums|}}
-    {{service:javaCapitalName}}ThriftMetadataHandlerEnums_{{batch_index}}.addEnums(enums);
+    {{#each (array.enumerate service.referenced_enum_batches) as |batch_index enums|}}
+    {{service.javaCapitalName}}ThriftMetadataHandlerEnums_{{batch_index}}.addEnums(enums);
     {{/each}}
     return enums;
   }

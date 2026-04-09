@@ -18,9 +18,10 @@
 {{#import "common/common" as common}}
 {{#import "common/types" as types}}
 {{#import "common/metadata" as metadata}}
+{{#let service = self}}
 {{#partial common.auto_generated}}
 
-package {{service:program.javaPackage}};
+package {{service.program.javaPackage}};
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,8 +36,8 @@ import com.facebook.thrift.metadata.ThriftStruct;
 import com.facebook.thrift.metadata.ThriftStructType;
 import com.facebook.thrift.metadata.ThriftType;
 
-{{#each (array.enumerate service:referenced_struct_batches) as |batch_index definitions|}}
-class {{service:javaCapitalName}}ThriftMetadataHandlerStructs_{{batch_index}} {
+{{#each (array.enumerate service.referenced_struct_batches) as |batch_index definitions|}}
+class {{service.javaCapitalName}}ThriftMetadataHandlerStructs_{{batch_index}} {
   static void addStructs(Map<String, ThriftStruct> structs) {
     {{#each definitions as |struct|}}
     structs.put("{{struct.java_qualified_name}}", new ThriftStruct.Builder()
@@ -66,11 +67,11 @@ class {{service:javaCapitalName}}ThriftMetadataHandlerStructs_{{batch_index}} {
 }
 {{/each}}
 
-class {{service:javaCapitalName}}ThriftMetadataHandlerStructs {
+class {{service.javaCapitalName}}ThriftMetadataHandlerStructs {
   static Map<String, ThriftStruct> getStructs() {
     Map<String, ThriftStruct> structs = new HashMap<>();
-    {{#each (array.enumerate service:referenced_struct_batches) as |batch_index _definitions|}}
-    {{service:javaCapitalName}}ThriftMetadataHandlerStructs_{{batch_index}}.addStructs(structs);
+    {{#each (array.enumerate service.referenced_struct_batches) as |batch_index _definitions|}}
+    {{service.javaCapitalName}}ThriftMetadataHandlerStructs_{{batch_index}}.addStructs(structs);
     {{/each}}
     return structs;
   }

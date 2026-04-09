@@ -55,4 +55,5 @@ public class InteractWithSharedReactiveBlockingWrapper
   public SharedInteraction createSharedInteraction() {
       throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveBlockingWrapper Interfaces!");
   }
+
 }

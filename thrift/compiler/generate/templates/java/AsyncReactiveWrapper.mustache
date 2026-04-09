@@ -17,19 +17,20 @@
 }}
 {{#import "common/common" as common}}
 {{#import "common/types" as types}}
+{{#let service = self}}
 {{#partial common.auto_generated}}
 
-package {{service:program.javaPackage}};
+package {{service.program.javaPackage}};
 
 import com.facebook.thrift.client.*;
 import java.util.*;
 
-public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#if (object.notnull? service:extends)}} extends {{#service:extends}}{{service:java_qualified_name}}AsyncReactiveWrapper{{/service:extends}}{{/if}}
-    implements {{service:javaCapitalName}}.Reactive {
-    private final {{service:javaCapitalName}}.Async _delegate;
+public class {{service.javaCapitalName}}AsyncReactiveWrapper {{#if (object.notnull? service.extends)}} extends {{service.extends.java_qualified_name}}AsyncReactiveWrapper{{/if}}
+    implements {{service.javaCapitalName}}.Reactive {
+    private final {{service.javaCapitalName}}.Async _delegate;
 
-    public {{service:javaCapitalName}}AsyncReactiveWrapper({{service:javaCapitalName}}.Async _delegate) {
-        {{#if (object.notnull? service:extends)}}super(_delegate);{{/if}}
+    public {{service.javaCapitalName}}AsyncReactiveWrapper({{service.javaCapitalName}}.Async _delegate) {
+        {{#if (object.notnull? service.extends)}}super(_delegate);{{/if}}
         this._delegate = _delegate;
     }
 
@@ -38,32 +39,32 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#if (object.notnu
         _delegate.close();
     }
 
-    {{#each service:self.single_request_functions as |func|}}
+    {{#each service.single_request_functions as |func|}}
     @java.lang.Override
     public reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
         return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.{{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}));
     }
 
     {{/each}}
-    {{#each service:self.streaming_functions as |func|}}
+    {{#each service.streaming_functions as |func|}}
     @java.lang.Override
     public reactor.core.publisher.Flux<{{#partial types.stream_return_type function=func}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
         throw new UnsupportedOperationException();
     }
 
     {{/each}}
-    {{#each service:self.sink_functions as |func|}}
+    {{#each service.sink_functions as |func|}}
     @java.lang.Override
     public {{#partial types.sink_return_type function=func}} {{func.java_name}}({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}} org.reactivestreams.Publisher<{{#partial types.boxed_type type=func.sink.elem_type field_hasAdapter=false}}> payloads) {
         throw new UnsupportedOperationException();
     }
 
     {{/each}}
-    {{#each service:self.interactions as |interaction|}}
+    {{#each service.interactions as |interaction|}}
     public class {{interaction.name}}Impl implements {{interaction.name}} {
-        private {{service:javaCapitalName}}.Async.{{interaction.name}} _delegateInteraction;
+        private {{service.javaCapitalName}}.Async.{{interaction.name}} _delegateInteraction;
 
-        {{interaction.name}}Impl({{service:javaCapitalName}}.Async.{{interaction.name}} delegateInteraction) {
+        {{interaction.name}}Impl({{service.javaCapitalName}}.Async.{{interaction.name}} delegateInteraction) {
             this._delegateInteraction = delegateInteraction;
         }
 

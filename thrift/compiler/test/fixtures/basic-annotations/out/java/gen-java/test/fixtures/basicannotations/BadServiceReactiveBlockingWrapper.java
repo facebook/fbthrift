@@ -51,4 +51,5 @@ public class BadServiceReactiveBlockingWrapper
   public BadInteraction createBadInteraction() {
       throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveBlockingWrapper Interfaces!");
   }
+
 }

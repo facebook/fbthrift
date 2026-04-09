@@ -18,9 +18,10 @@
 {{#import "common/common" as common}}
 {{#import "common/types" as types}}
 {{#import "codec/codec" as codec}}
+{{#let service = self}}
 {{#partial common.auto_generated}}
 
-package {{service:program.javaPackage}};
+package {{service.program.javaPackage}};
 
 import static com.facebook.swift.service.SwiftConstants.STICKY_HASH_KEY;
 
@@ -35,19 +36,19 @@ import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
 import com.facebook.thrift.util.Readers;
 
-public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? service:extends)}}extends {{#service:extends}}{{service:java_qualified_name}}ReactiveClient{{/service:extends}}{{/if}}
-  implements {{service:javaCapitalName}}.Reactive {
+public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? service.extends)}}extends {{service.extends.java_qualified_name}}ReactiveClient{{/if}}
+  implements {{service.javaCapitalName}}.Reactive {
   private static final AtomicLong _interactionCounter = new AtomicLong(0);
-  {{^service:extends}}
+  {{#if (not (object.notnull? service.extends))}}
 
   protected final org.apache.thrift.ProtocolId _protocolId;
   protected final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
   protected final reactor.core.publisher.Mono<Map<String, String>> _headersMono;
   protected final reactor.core.publisher.Mono<Map<String, String>> _persistentHeadersMono;
   protected final Set<Long> _activeInteractions;
-  {{/service:extends}}
+  {{/if (not (object.notnull? service.extends))}}
 
-  {{#each service:self.single_request_functions as |func|}}
+  {{#each service.single_request_functions as |func|}}
   {{#each func.params.fields as |field|}}
   private static final TField _{{func.java_name}}_{{field.javaTFieldName}} = new TField("{{field.name}}", TType.{{#partial types.ttype type=field.type}}, (short){{field.id}});
   {{/each}}
@@ -56,7 +57,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   private static final com.facebook.thrift.payload.Reader _{{func.java_name}}_EXCEPTION_READER{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
   {{/each}}
   {{/each}}
-  {{#each service:self.streaming_functions as |func|}}
+  {{#each service.streaming_functions as |func|}}
   {{#each func.params.fields as |field|}}
   private static final TField _{{func.java_name}}_{{field.javaTFieldName}} = new TField("{{field.name}}", TType.{{#partial types.ttype type=field.type}}, (short){{field.id}});
   {{/each}}
@@ -69,7 +70,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   private static final com.facebook.thrift.payload.Reader _{{func.java_name}}_STREAM_EXCEPTION_READER{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
   {{/each}}
   {{/each}}
-  {{#each service:self.sink_functions as |func|}}
+  {{#each service.sink_functions as |func|}}
   {{#each func.params.fields as |field|}}
   private static final TField _{{func.java_name}}_{{field.javaTFieldName}} = new TField("{{field.name}}", TType.{{#partial types.ttype type=field.type}}, (short){{field.id}});
   {{/each}}
@@ -83,8 +84,8 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   private static final com.facebook.thrift.payload.Reader _{{func.java_name}}_STREAM_EXCEPTION_READER{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
   {{/each}}
   {{/each}}
-  {{#service:interactions}}
-  {{#each service:self.single_request_functions as |func|}}
+  {{#each service.interactions as |interaction|}}
+  {{#each interaction.single_request_functions as |func|}}
   {{#each func.params.fields as |field|}}
   private static final TField _{{func.java_name}}_{{field.javaTFieldName}}_INT = new TField("{{field.name}}", TType.{{#partial types.ttype type=field.type}}, (short){{field.id}});
   {{/each}}
@@ -93,7 +94,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   private static final com.facebook.thrift.payload.Reader _{{func.java_name}}_EXCEPTION_READER_INT{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
   {{/each}}
   {{/each}}
-  {{#each service:self.streaming_functions as |func|}}
+  {{#each interaction.streaming_functions as |func|}}
   {{#each func.params.fields as |field|}}
   private static final TField _{{func.java_name}}_{{field.javaTFieldName}}_INT = new TField("{{field.name}}", TType.{{#partial types.ttype type=field.type}}, (short){{field.id}});
   {{/each}}
@@ -106,62 +107,64 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   private static final com.facebook.thrift.payload.Reader _{{func.java_name}}_STREAM_EXCEPTION_READER_INT{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
   {{/each}}
   {{/each}}
-  {{/service:interactions}}
+  {{/each}}
 
   static {
-    {{#each service:self.single_request_functions as |func|}}{{#each (array.enumerate func.exceptions) as |i field|}}
+    {{#each service.single_request_functions as |func|}}{{#each (array.enumerate func.exceptions) as |i field|}}
     _{{func.java_name}}_EXCEPTION_READERS.put((short){{field.id}}, _{{func.java_name}}_EXCEPTION_READER{{i}});
     {{/each}}{{/each}}
-    {{#each service:self.streaming_functions as |func|}}{{#each (array.enumerate func.exceptions) as |i field|}}
+    {{#each service.streaming_functions as |func|}}{{#each (array.enumerate func.exceptions) as |i field|}}
     _{{func.java_name}}_EXCEPTION_READERS.put((short){{field.id}}, _{{func.java_name}}_EXCEPTION_READER{{i}});
     {{/each}}{{#each (array.enumerate func.stream.exceptions) as |i field|}}
     _{{func.java_name}}_STREAM_EXCEPTION_READERS.put((short){{field.id}}, _{{func.java_name}}_STREAM_EXCEPTION_READER{{i}});
     {{/each}}{{/each}}
-    {{#each service:self.sink_functions as |func|}}{{#each (array.enumerate func.exceptions) as |i field|}}
+    {{#each service.sink_functions as |func|}}{{#each (array.enumerate func.exceptions) as |i field|}}
     _{{func.java_name}}_EXCEPTION_READERS.put((short){{field.id}}, _{{func.java_name}}_EXCEPTION_READER{{i}});
     {{/each}}{{#each (array.enumerate func.sink.final_response_exceptions) as |i field|}}
     _{{func.java_name}}_STREAM_EXCEPTION_READERS.put((short){{field.id}}, _{{func.java_name}}_STREAM_EXCEPTION_READER{{i}});
     {{/each}}{{/each}}
   }
 
-  public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient) {
-    {{#service:extends}}super(_protocolId, _rpcClient);{{/service:extends}}
-    {{^service:extends}}
+  public {{service.javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient) {
+    {{#if (object.notnull? service.extends)}}
+    super(_protocolId, _rpcClient);
+    {{#else}}
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headersMono = reactor.core.publisher.Mono.empty();
     this._persistentHeadersMono = reactor.core.publisher.Mono.empty();
     this._activeInteractions = ConcurrentHashMap.newKeySet();
-    {{/service:extends}}
+    {{/if (object.notnull? service.extends)}}
   }
 
-  public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public {{service.javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(_protocolId, _rpcClient, reactor.core.publisher.Mono.just(_headers != null ? _headers : java.util.Collections.emptyMap()), reactor.core.publisher.Mono.just(_persistentHeaders != null ? _persistentHeaders : java.util.Collections.emptyMap()), new AtomicLong(), ConcurrentHashMap.newKeySet());
   }
 
-  public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, reactor.core.publisher.Mono<Map<String, String>> _headersMono, reactor.core.publisher.Mono<Map<String, String>> _persistentHeadersMono) {
+  public {{service.javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, reactor.core.publisher.Mono<Map<String, String>> _headersMono, reactor.core.publisher.Mono<Map<String, String>> _persistentHeadersMono) {
     this(_protocolId, _rpcClient, _headersMono, _persistentHeadersMono, new AtomicLong(), ConcurrentHashMap.newKeySet());
   }
 
-  public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders, AtomicLong interactionCounter, Set<Long> activeInteractions) {
+  public {{service.javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders, AtomicLong interactionCounter, Set<Long> activeInteractions) {
     this(_protocolId,_rpcClient, reactor.core.publisher.Mono.just(_headers != null ? _headers : java.util.Collections.emptyMap()), reactor.core.publisher.Mono.just(_persistentHeaders != null ? _persistentHeaders : java.util.Collections.emptyMap()), interactionCounter, activeInteractions);
   }
 
-  public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, reactor.core.publisher.Mono<Map<String, String>> _headersMono, reactor.core.publisher.Mono<Map<String, String>> _persistentHeadersMono, AtomicLong interactionCounter, Set<Long> activeInteractions) {
-    {{#service:extends}}super(_protocolId, _rpcClient, _headersMono, _persistentHeadersMono, interactionCounter, activeInteractions);{{/service:extends}}
-    {{^service:extends}}
+  public {{service.javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, reactor.core.publisher.Mono<Map<String, String>> _headersMono, reactor.core.publisher.Mono<Map<String, String>> _persistentHeadersMono, AtomicLong interactionCounter, Set<Long> activeInteractions) {
+    {{#if (object.notnull? service.extends)}}
+    super(_protocolId, _rpcClient, _headersMono, _persistentHeadersMono, interactionCounter, activeInteractions);
+    {{#else}}
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headersMono = _headersMono;
     this._persistentHeadersMono = _persistentHeadersMono;
     this._activeInteractions = activeInteractions;
-    {{/service:extends}}
+    {{/if (object.notnull? service.extends)}}
   }
 
   @java.lang.Override
   public void dispose() {}
 
-  {{#each service:self.single_request_functions as |func|}}
+  {{#each service.single_request_functions as |func|}}
   private com.facebook.thrift.payload.Writer _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
     return oprot -> {
       try {
@@ -201,7 +204,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
             com.facebook.thrift.payload.ClientRequestPayload<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
-                    "{{service:name}}",
+                    "{{service.name}}",
                     _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}),
                     _{{func.java_name}}_READER,
                     _{{func.java_name}}_EXCEPTION_READERS,
@@ -227,7 +230,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   }
 
   {{/each}}
-  {{#each service:self.streaming_functions as |func|}}
+  {{#each service.streaming_functions as |func|}}
   private com.facebook.thrift.payload.Writer _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
     return oprot -> {
       try {
@@ -271,7 +274,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
             com.facebook.thrift.payload.ClientRequestPayload<{{#partial types.boxed_type type=func.stream.elem_type field_hasAdapter=false}}> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
-                    "{{service:name}}",
+                    "{{service.name}}",
                     _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}),
                     _{{func.java_name}}_READER,{{#if func.stream_has_first_response?}}
                     _{{func.java_name}}_FIRST_READER,{{/if func.stream_has_first_response?}}
@@ -300,7 +303,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
   {{/each}}
 
-  {{#each service:self.sink_functions as |func|}}
+  {{#each service.sink_functions as |func|}}
   private com.facebook.thrift.payload.Writer _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
     return oprot -> {
       try {
@@ -359,7 +362,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
             com.facebook.thrift.payload.ClientRequestPayload<{{#partial types.boxed_type type=func.sink.final_response_type field_hasAdapter=false}}> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
-                    "{{service:name}}",
+                    "{{service.name}}",
                     _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}),
                     _{{func.java_name}}_READER,{{#if func.sink_has_first_response?}}
                     _{{func.java_name}}_FIRST_READER,{{/if func.sink_has_first_response?}}
@@ -371,7 +374,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
             reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<{{#partial types.boxed_type type=func.sink.final_response_type field_hasAdapter=false}}>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
                 .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
-                    "{{service:name}}",
+                    "{{service.name}}",
                     _create{{func.java_name}}SinkWriter(_p),
                     _{{func.java_name}}_READER,{{#if func.sink_has_first_response?}}
                     _{{func.java_name}}_FIRST_READER,{{/if func.sink_has_first_response?}}
@@ -399,16 +402,16 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   }
 
   {{/each}}
-  {{#service:interactions}}
-  public class {{service:name}}Impl implements {{service:name}} {
+  {{#each service.interactions as |interaction|}}
+  public class {{interaction.name}}Impl implements {{interaction.name}} {
     private final long interactionId;
 
-    {{service:name}}Impl(long interactionId) {
+    {{interaction.name}}Impl(long interactionId) {
       this.interactionId = interactionId;
-      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionCreated("{{service:name}}");
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionCreated("{{interaction.name}}");
     }
 
-    {{#each service:self.single_request_functions as |func|}}
+    {{#each interaction.single_request_functions as |func|}}
     private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{func.java_name}}_EXCEPTION_READERS = {{#if func.exceptions?}}new HashMap<>();{{#else}}java.util.Collections.emptyMap();{{/if func.exceptions?}}
     {{#each (array.enumerate func.exceptions) as |i field|}}
     private final com.facebook.thrift.payload.Reader _{{func.java_name}}_EXCEPTION_READER_INT{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
@@ -416,7 +419,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     {{/each}}
     {{/each}}
 
-    {{#each service:self.single_request_functions as |func|}}
+    {{#each interaction.single_request_functions as |func|}}
     private com.facebook.thrift.payload.Writer _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
       return oprot -> {
         try {
@@ -462,7 +465,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
       return _rpcClient
         .contextWrite(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMap(_rpc -> getHeaders(rpcOptions).flatMap(headers -> {
-          String interactionName = "{{service:name}}.{{func.name}}";
+          String interactionName = "{{interaction.name}}.{{func.name}}";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
                   .setName(interactionName)
                   .setKind(org.apache.thrift.RpcKind.{{#if func.oneway?}}SINGLE_REQUEST_NO_RESPONSE{{/if func.oneway?}}{{#if (not func.oneway?)}}SINGLE_REQUEST_SINGLE_RESPONSE{{/if (not func.oneway?)}})
@@ -475,7 +478,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
             _metadataBuilder.setInteractionCreate(
               new InteractionCreate.Builder()
                   .setInteractionId(interactionId)
-                  .setInteractionName("{{service:name}}")
+                  .setInteractionName("{{interaction.name}}")
                   .build());
             _metadataBuilder.setInteractionId(0L);
             _activeInteractions.add(interactionId);
@@ -485,7 +488,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
           com.facebook.thrift.payload.ClientRequestPayload<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
-                  "{{service:name}}",
+                  "{{interaction.name}}",
                   _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}),
                   _{{func.java_name}}_READER,
                   _{{func.java_name}}_EXCEPTION_READERS_INT,
@@ -499,7 +502,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     }
 
     {{/each}}
-    {{#each service:self.streaming_functions as |func|}}
+    {{#each interaction.streaming_functions as |func|}}
     private com.facebook.thrift.payload.Writer _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
       return oprot -> {
         try {
@@ -535,7 +538,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
       return _rpcClient
         .contextWrite(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMapMany(_rpc -> getHeaders(rpcOptions).flatMapMany(headers -> {
-          String interactionName = "{{service:name}}.{{func.name}}";
+          String interactionName = "{{interaction.name}}.{{func.name}}";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
                   .setName(interactionName)
                   .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
@@ -548,7 +551,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
             _metadataBuilder.setInteractionCreate(
               new InteractionCreate.Builder()
                   .setInteractionId(interactionId)
-                  .setInteractionName("{{service:name}}")
+                  .setInteractionName("{{interaction.name}}")
                   .build());
             _metadataBuilder.setInteractionId(0L);
             _activeInteractions.add(interactionId);
@@ -557,7 +560,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
           com.facebook.thrift.payload.ClientRequestPayload<{{#partial types.boxed_type type=func.stream.elem_type field_hasAdapter=false}}> _crp =
               com.facebook.thrift.payload.ClientRequestPayload.create(
-                  "{{service:name}}",
+                  "{{interaction.name}}",
                   _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}),
                   _{{func.java_name}}_READER,{{#if func.stream_has_first_response?}}
                   _{{func.java_name}}_FIRST_READER,{{/if func.stream_has_first_response?}}
@@ -588,7 +591,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     {{/each}}
     @java.lang.Override
     public void dispose() {
-      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionDisposed("{{service:name}}");
+      com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionDisposed("{{interaction.name}}");
       _activeInteractions.remove(interactionId);
       _rpcClient
         .contextWrite(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
@@ -600,13 +603,11 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     }
   }
 
-  public {{service:name}} create{{service:name}}() {
-      return new {{service:name}}Impl(_interactionCounter.incrementAndGet());
+  public {{interaction.name}} create{{interaction.name}}() {
+      return new {{interaction.name}}Impl(_interactionCounter.incrementAndGet());
   }
-  {{^last?}}
 
-  {{/last?}}
-  {{/service:interactions}}
+  {{/each}}
 
   private reactor.core.publisher.Mono<Map<String, String>> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {
       Map<String, String> requestHeaders = new HashMap<>();

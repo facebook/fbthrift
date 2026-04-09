@@ -38,7 +38,6 @@ public class BoxServiceReactiveClient
   }
 
   public BoxServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient) {
-    
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headersMono = reactor.core.publisher.Mono.empty();
@@ -59,7 +58,6 @@ public class BoxServiceReactiveClient
   }
 
   public BoxServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, reactor.core.publisher.Mono<Map<String, String>> _headersMono, reactor.core.publisher.Mono<Map<String, String>> _persistentHeadersMono, AtomicLong interactionCounter, Set<Long> activeInteractions) {
-    
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headersMono = _headersMono;
@@ -217,6 +215,7 @@ public class BoxServiceReactiveClient
   public BoxedInteraction createBoxedInteraction() {
       return new BoxedInteractionImpl(_interactionCounter.incrementAndGet());
   }
+
 
   private reactor.core.publisher.Mono<Map<String, String>> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {
       Map<String, String> requestHeaders = new HashMap<>();

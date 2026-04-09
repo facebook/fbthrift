@@ -18,13 +18,13 @@
 {{#import "common/common" as common}}
 {{#partial common.auto_generated}}
 
-package {{program:javaPackage}};
+package {{root_program.javaPackage}};
 
 import com.facebook.thrift.type.TypeList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class __fbthrift_TypeList_{{program:type_list_hash}} implements TypeList {
+public class __fbthrift_TypeList_{{root_program.type_list_hash}} implements TypeList {
 
   private static List<TypeMapping> list = new ArrayList<>();
 
@@ -32,15 +32,15 @@ public class __fbthrift_TypeList_{{program:type_list_hash}} implements TypeList 
     list.add(new TypeList.TypeMapping(uri, className));
   }
 
-  {{#each (array.enumerate program:type_list_batches) as |batch_index types|}}
+  {{#each (array.enumerate root_program.type_list_batches) as |batch_index types|}}
   private static void addToList{{batch_index}}() {
     {{#each types as |type|}}
-    add("{{type.uri}}", "{{program:javaPackage}}.{{type.javaCapitalName}}");
+    add("{{type.uri}}", "{{root_program.javaPackage}}.{{type.javaCapitalName}}");
     {{/each}}
   }
   {{/each}}
 
-  {{#each (array.enumerate program:type_list_batches) as |batch_index types|}}
+  {{#each (array.enumerate root_program.type_list_batches) as |batch_index types|}}
   static {
     addToList{{batch_index}}();
   }
