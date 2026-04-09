@@ -19,8 +19,9 @@
 {{#import "common/const_value" as const_value}}
 {{#import "common/types" as types}}
 {{#import "codec/codec" as codec}}
-{{#import "struct/field" as field}}
-{{#import "struct/struct" as struct}}
+{{#import "types/field" as field}}
+{{#import "types/struct" as struct}}
+{{#import "types/union" as union}}
 {{#if struct:union?}}{{> Union}}
 {{#else if struct:exception?}}{{> Exception}}
 {{#else}}{{> Struct}}

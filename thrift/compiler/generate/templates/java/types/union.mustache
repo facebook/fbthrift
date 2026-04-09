@@ -1,0 +1,152 @@
+{{!
+
+  Copyright (c) Meta Platforms, Inc. and affiliates.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}
+{{#import "common/types" as types}}
+{{#import "types/field" as field_helpers}}
+
+{{#let export partial union_write |struct| captures |types field_helpers|}}
+public void write0(TProtocol oprot) throws TException {
+    if (this.id != 0 && this.value == null ){
+        if(allowNullFieldValues) {
+            // Warning: this path will generate corrupt serialized data!
+            return;
+        } else {
+            throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        }
+    }
+    oprot.writeStructBegin(STRUCT_DESC);
+    switch (this.id) {
+    {{#each struct.fields as |field|}}
+    case _{{field.javaAllCapsName}}: {
+        {{#if field.hasAdapter?}}
+        {{#partial types.adapted_field_boxed_type type=field.type field_hasAdapter=field.hasAdapter?}} _fbthriftVar0 = {{#partial field_helpers.to_thrift_start field=field}}({{#partial types.field_type field=field}})this.value{{#partial field_helpers.to_thrift_end field=field}};
+        if (_fbthriftVar0 != null) {
+            oprot.writeFieldBegin({{field.javaTFieldName}});
+            {{#partial types.write_type field=field type=field.type depth=0}}
+            oprot.writeFieldEnd();
+        }
+        {{#else}}
+        oprot.writeFieldBegin({{field.javaTFieldName}});
+        {{#partial types.field_type field=field}} _fbthriftVar0 = ({{#partial types.field_type field=field}})this.value;
+
+        {{#partial types.write_type field=field type=field.type depth=0}}
+        oprot.writeFieldEnd();
+        {{/if field.hasAdapter?}}
+        break;
+    }
+    {{/each}}
+    default:
+        // ignore unknown field
+    }
+    oprot.writeFieldStop();
+    oprot.writeStructEnd();
+}
+{{/let partial}}
+
+{{#let export partial union_read |struct| captures |types field_helpers|}}
+public static com.facebook.thrift.payload.Reader<{{struct.javaCapitalName}}> asReader() {
+    return {{struct.javaCapitalName}}::read0;
+}
+
+public static {{struct.javaCapitalName}} read0(TProtocol oprot) throws TException {
+    {{struct.javaCapitalName}} res = new {{struct.javaCapitalName}}();
+    res.value = null;
+    res.id = (short) 0;
+    oprot.readStructBegin({{struct.javaCapitalName}}.NAMES_TO_IDS, {{struct.javaCapitalName}}.THRIFT_NAMES_TO_IDS, {{struct.javaCapitalName}}.FIELD_METADATA);
+    TField __field = oprot.readFieldBegin();
+    if (__field.type != TType.STOP) {
+        switch (__field.id) {
+        {{#each struct.fields as |field|}}
+        case _{{field.javaAllCapsName}}:
+            if (__field.type == {{field.javaTFieldName}}.type) {
+                {{#if field.type.container?}}
+                {{#partial types.resolved_boxed_type type=field.type field_hasAdapter=field.hasAdapter?}} _fbthriftVar0;
+                {{#else}}
+                {{#partial types.thrift_field_type field=field}} _fbthriftVar0;
+                {{/if field.type.container?}}
+                {{#partial types.read_type field=field type=field.type depth=0}}
+                {{#if field.hasAdapter?}}
+                res.value = {{#partial field_helpers.from_thrift_start field=field}}_fbthriftVar0{{#partial field_helpers.from_thrift_end field=field}};
+                {{#else}}
+                res.value = _fbthriftVar0;
+                {{/if field.hasAdapter?}}
+            }
+            break;
+        {{/each}}
+        default:
+            TProtocolUtil.skip(oprot, __field.type);
+        }
+        if (res.value != null) {
+            res.id = __field.id;
+        }
+        oprot.readFieldEnd();
+        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+        if (__stopField.type != TType.STOP) {
+            throw new TProtocolException(TProtocolException.INVALID_DATA, "Union '{{struct.javaCapitalName}}' is missing a STOP byte");
+        }
+    }
+    oprot.readStructEnd();
+    return res;
+}
+{{/let partial}}
+
+{{#let export partial union_builder |struct| captures |types|}}
+@ThriftConstructor
+public {{struct.javaCapitalName}}() {
+}
+{{#if struct.unionFieldTypeUnique?}}
+{{#each struct.fields as |field|}}
+
+@ThriftConstructor
+@Deprecated
+public {{struct.javaCapitalName}}(final {{#partial types.field_type field=field}} {{field.javaName}}) {
+    {{#if (not (or field.optional? field.required? field.isNumericOrVoid?))}}
+    if (!{{struct.javaCapitalName}}.allowNullFieldValues && {{field.javaName}} == null) {
+        throw new TProtocolException("Cannot initialize Union field '{{struct.javaCapitalName}}.{{field.javaName}}' with null value!");
+    }
+    {{/if (not (or field.optional? field.required? field.isNumericOrVoid?))}}
+    this.value = {{field.javaName}};
+    this.id = {{field.id}};
+}
+{{/each}}
+{{/if struct.unionFieldTypeUnique?}}
+{{#each struct.fields as |field|}}
+
+public static {{struct.javaCapitalName}} from{{field.javaCapitalName}}(final {{#partial types.field_type field=field}} {{field.javaName}}) {
+    {{struct.javaCapitalName}} res = new {{struct.javaCapitalName}}();
+    {{#if (not (or field.optional? field.required? field.isNumericOrVoid?))}}
+    if (!{{struct.javaCapitalName}}.allowNullFieldValues && {{field.javaName}} == null) {
+        throw new TProtocolException("Cannot initialize Union field '{{struct.javaCapitalName}}.{{field.javaName}}' with null value!");
+    }
+    {{/if (not (or field.optional? field.required? field.isNumericOrVoid?))}}
+    res.value = {{field.javaName}};
+    res.id = {{field.id}};
+    return res;
+}
+{{/each}}
+{{/let partial}}
+
+{{#let export partial union_setter |struct| captures |types|}}
+{{#each struct.fields as |field|}}
+@com.facebook.swift.codec.ThriftField
+@Deprecated
+public void set{{field.javaCapitalName}}(final {{#partial types.field_type field=field}} {{field.javaName}}) {
+    this.value = {{field.javaName}};
+    this.id = {{field.id}};
+}
+{{/each}}
+{{/let partial}}

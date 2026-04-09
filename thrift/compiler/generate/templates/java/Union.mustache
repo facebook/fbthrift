@@ -99,14 +99,14 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
         }
     }
 
-    {{#partial struct.union_builder struct=struct:self}}
+    {{#partial union.union_builder struct=struct:self}}
 
     {{^struct:unionFieldTypeUnique?}}{{!
       TODO: remove unionFieldTypeUnique related check and use builder pattern
       If union fields are not unique, we cannot generate thrift constructors,
       therefore setters are needed.
       }}
-    {{#partial struct.union_setter struct=struct:self}}
+    {{#partial union.union_setter struct=struct:self}}
     {{/struct:unionFieldTypeUnique?}}
     {{#struct:fields}}
 {{#field:deprecated?}}
@@ -206,9 +206,9 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
     {{/struct:fields}}
     }
 
-    {{#partial struct.union_write struct=struct:self}}
+    {{#partial union.union_write struct=struct:self}}
 
-    {{#partial struct.union_read struct=struct:self}}
+    {{#partial union.union_read struct=struct:self}}
 
     public static {{struct:javaCapitalName}} defaultInstance() {
         return _DEFAULT;
