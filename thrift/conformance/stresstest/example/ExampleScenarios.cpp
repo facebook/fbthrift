@@ -245,3 +245,159 @@ THRIFT_STRESS_TEST(Stream5M_20kChunks) {
   req.processInfo()->numChunks() = 250;
   co_await client->co_streamTm(std::move(req));
 }
+
+THRIFT_STRESS_TEST(StorageRead_4k) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 12;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageRead_8k) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 13;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageRead_16k) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 14;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageRead_32k) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 15;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageRead_64k) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 16;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageRead_128k) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 17;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageRead_256k) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 18;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageRead_512k) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 19;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageRead_1M) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 20;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageRead_2M) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 21;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageRead_4M) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 22;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageRead_8M) {
+  StorageReadRequest req;
+  req.responseBytes() = 1 << 23;
+  co_await client->co_storageReadEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_4k) {
+  static std::string const s(1 << 12, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_8k) {
+  static std::string const s(1 << 13, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_16k) {
+  static std::string const s(1 << 14, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_32k) {
+  static std::string const s(1 << 15, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_64k) {
+  static std::string const s(1 << 16, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_128k) {
+  static std::string const s(1 << 17, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_256k) {
+  static std::string const s(1 << 18, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_512k) {
+  static std::string const s(1 << 19, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_1M) {
+  static std::string const s(1 << 20, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_2M) {
+  static std::string const s(1 << 21, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_4M) {
+  static std::string const s(1 << 22, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
+
+THRIFT_STRESS_TEST(StorageWrite_8M) {
+  static std::string const s(1 << 23, '?');
+  StorageWriteRequest req;
+  req.payload() = s;
+  co_await client->co_storageWriteEb(req);
+}
