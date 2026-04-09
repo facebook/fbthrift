@@ -275,20 +275,16 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
           switch (__field.id) {
           case _INTVALUE:
             if (__field.type == INT_VALUE_FIELD_DESC.type) {
-              
-              long _fbthriftVar1;
-              _fbthriftVar1 = oprot.readI64();
-              res.value = _fbthriftVar1;
-              
+              long _fbthriftVar0;
+              _fbthriftVar0 = oprot.readI64();
+              res.value = _fbthriftVar0;
             }
             break;
           case _STRINGVALUE:
             if (__field.type == STRING_VALUE_FIELD_DESC.type) {
-              
-              String _fbthriftVar1;
-              _fbthriftVar1 = oprot.readString();
-              res.value = _fbthriftVar1;
-              
+              String _fbthriftVar0;
+              _fbthriftVar0 = oprot.readString();
+              res.value = _fbthriftVar0;
             }
             break;
           default:

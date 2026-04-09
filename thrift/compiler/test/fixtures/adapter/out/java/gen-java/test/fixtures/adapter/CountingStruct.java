@@ -184,33 +184,27 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
         switch (__field.id) {
         case _REGULARINT:
           if (__field.type == TType.I64) {
-            
-            Long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setRegularInt(_fbthriftVar1);
-            
+            Long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setRegularInt(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _COUNTINGINT:
           if (__field.type == TType.I64) {
-            
-            Long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setCountingInt(_fbthriftVar1);
-            
+            Long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setCountingInt(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _REGULARSTRING:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setRegularString(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setRegularString(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

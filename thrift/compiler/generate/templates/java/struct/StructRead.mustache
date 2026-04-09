@@ -43,23 +43,18 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
     {{#struct:fields}}
     case _{{field:javaAllCapsName}}:
       if (__field.type == TType.{{#field:type}}{{#partial types.ttype type=type:self}}{{/field:type}}) {
-        {{#field:type}}{{!
-        }}{{field:nestedDepth++}}
-        {{#type:container?}}{{!
-        }}{{#partial types.resolved_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};{{!
-        }}{{/type:container?}}{{!
-        }}{{^type:container?}}{{!
-        }}{{#partial types.thrift_field_type field=field:self}} _fbthriftVar{{field:nestedDepth}};{{!
-        }}{{/type:container?}}
-        {{#partial types.read_type field=field:self type=type:self depth=field:nestedDepth}}
-        {{/field:type}}
+        {{#if field:self.type.container?}}{{!
+        }}{{#partial types.resolved_boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}} _fbthriftVar0;{{!
+        }}{{#else}}{{!
+        }}{{#partial types.thrift_field_type field=field:self}} _fbthriftVar0;{{!
+        }}{{/if field:self.type.container?}}
+        {{#partial types.read_type field=field:self type=field:self.type depth=0}}
         {{#field:hasAdapter?}}
-        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}({{#partial field.from_thrift_start field=field:self}}_fbthriftVar{{field:nestedDepth}}{{#partial field.from_thrift_end field=field:self}});
+        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}({{#partial field.from_thrift_start field=field:self}}_fbthriftVar0{{#partial field.from_thrift_end field=field:self}});
         {{/field:hasAdapter?}}
         {{^field:hasAdapter?}}
-        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}(_fbthriftVar{{field:nestedDepth}});
-        {{/field:hasAdapter?}}{{!
-        }}{{field:nestedDepth--}}
+        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}(_fbthriftVar0);
+        {{/field:hasAdapter?}}
       } else {
         TProtocolUtil.skip(oprot, __field.type);
       }

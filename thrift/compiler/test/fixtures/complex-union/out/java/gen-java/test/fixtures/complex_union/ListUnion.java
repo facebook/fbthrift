@@ -281,38 +281,34 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
           switch (__field.id) {
           case _INTLISTVALUE:
             if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
-              
-              List<Long> _fbthriftVar1;
+              List<Long> _fbthriftVar0;
               {
-                  TList _list1 = oprot.readListBegin();
-                  _fbthriftVar1 = new ArrayList<Long>(Math.max(0, _list1.size));
-                  for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                      long _fbthriftVar2;
-                      _fbthriftVar2 = oprot.readI64();
-                      _fbthriftVar1.add(_fbthriftVar2);
+                  TList _list0 = oprot.readListBegin();
+                  _fbthriftVar0 = new ArrayList<Long>(Math.max(0, _list0.size));
+                  for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                      long _fbthriftVar1;
+                      _fbthriftVar1 = oprot.readI64();
+                      _fbthriftVar0.add(_fbthriftVar1);
                   }
                   oprot.readListEnd();
               }
-              res.value = _fbthriftVar1;
-              
+              res.value = _fbthriftVar0;
             }
             break;
           case _STRINGLISTVALUE:
             if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
-              
-              List<String> _fbthriftVar1;
+              List<String> _fbthriftVar0;
               {
-                  TList _list1 = oprot.readListBegin();
-                  _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
-                  for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                      String _fbthriftVar2;
-                      _fbthriftVar2 = oprot.readString();
-                      _fbthriftVar1.add(_fbthriftVar2);
+                  TList _list0 = oprot.readListBegin();
+                  _fbthriftVar0 = new ArrayList<String>(Math.max(0, _list0.size));
+                  for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                      String _fbthriftVar1;
+                      _fbthriftVar1 = oprot.readString();
+                      _fbthriftVar0.add(_fbthriftVar1);
                   }
                   oprot.readListEnd();
               }
-              res.value = _fbthriftVar1;
-              
+              res.value = _fbthriftVar0;
             }
             break;
           default:

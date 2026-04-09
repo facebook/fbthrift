@@ -93,11 +93,9 @@ public final class BiDiStreamException extends org.apache.thrift.TBaseException 
         switch (__field.id) {
         case _MESSAGE:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setMessage(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setMessage(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

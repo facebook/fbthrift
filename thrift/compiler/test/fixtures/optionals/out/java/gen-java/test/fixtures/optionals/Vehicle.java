@@ -233,55 +233,45 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
         switch (__field.id) {
         case _COLOR:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.optionals.Color _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.optionals.Color.read0(oprot);
-            builder.setColor(_fbthriftVar1);
-            
+            test.fixtures.optionals.Color _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.optionals.Color.read0(oprot);
+            builder.setColor(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LICENSEPLATE:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setLicensePlate(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setLicensePlate(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _DESCRIPTION:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setDescription(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setDescription(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _NAME:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setName(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setName(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _HASAC:
           if (__field.type == TType.BOOL) {
-            
-            Boolean _fbthriftVar1;
-            _fbthriftVar1 = oprot.readBool();
-            builder.setHasAC(_fbthriftVar1);
-            
+            Boolean _fbthriftVar0;
+            _fbthriftVar0 = oprot.readBool();
+            builder.setHasAC(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

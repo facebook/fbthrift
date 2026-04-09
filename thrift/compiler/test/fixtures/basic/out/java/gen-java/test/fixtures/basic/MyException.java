@@ -162,44 +162,36 @@ public final class MyException extends org.apache.thrift.TBaseException implemen
         switch (__field.id) {
         case _MYINTFIELD:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setMyIntField(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setMyIntField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYSTRINGFIELD:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setMyStringField(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setMyStringField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYSTRUCT:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.basic.MyStruct _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.basic.MyStruct.read0(oprot);
-            builder.setMyStruct(_fbthriftVar1);
-            
+            test.fixtures.basic.MyStruct _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.basic.MyStruct.read0(oprot);
+            builder.setMyStruct(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYUNION:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.basic.MyUnion _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.basic.MyUnion.read0(oprot);
-            builder.setMyUnion(_fbthriftVar1);
-            
+            test.fixtures.basic.MyUnion _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.basic.MyUnion.read0(oprot);
+            builder.setMyUnion(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

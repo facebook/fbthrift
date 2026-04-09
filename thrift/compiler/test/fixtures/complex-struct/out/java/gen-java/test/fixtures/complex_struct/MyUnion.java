@@ -493,56 +493,44 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
           switch (__field.id) {
           case _MYENUM:
             if (__field.type == MY_ENUM_FIELD_DESC.type) {
-              
-              test.fixtures.complex_struct.MyEnum _fbthriftVar1;
-              _fbthriftVar1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-              res.value = _fbthriftVar1;
-              
+              test.fixtures.complex_struct.MyEnum _fbthriftVar0;
+              _fbthriftVar0 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+              res.value = _fbthriftVar0;
             }
             break;
           case _MYSTRUCT:
             if (__field.type == MY_STRUCT_FIELD_DESC.type) {
-              
-              test.fixtures.complex_struct.MyStruct _fbthriftVar1;
-              _fbthriftVar1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-              res.value = _fbthriftVar1;
-              
+              test.fixtures.complex_struct.MyStruct _fbthriftVar0;
+              _fbthriftVar0 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+              res.value = _fbthriftVar0;
             }
             break;
           case _MYDATAITEM:
             if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
-              
-              test.fixtures.complex_struct.MyDataItem _fbthriftVar1;
-              _fbthriftVar1 = test.fixtures.complex_struct.MyDataItem.read0(oprot);
-              res.value = _fbthriftVar1;
-              
+              test.fixtures.complex_struct.MyDataItem _fbthriftVar0;
+              _fbthriftVar0 = test.fixtures.complex_struct.MyDataItem.read0(oprot);
+              res.value = _fbthriftVar0;
             }
             break;
           case _COMPLEXNESTEDSTRUCT:
             if (__field.type == COMPLEX_NESTED_STRUCT_FIELD_DESC.type) {
-              
-              test.fixtures.complex_struct.ComplexNestedStruct _fbthriftVar1;
-              _fbthriftVar1 = test.fixtures.complex_struct.ComplexNestedStruct.read0(oprot);
-              res.value = _fbthriftVar1;
-              
+              test.fixtures.complex_struct.ComplexNestedStruct _fbthriftVar0;
+              _fbthriftVar0 = test.fixtures.complex_struct.ComplexNestedStruct.read0(oprot);
+              res.value = _fbthriftVar0;
             }
             break;
           case _LONGVALUE:
             if (__field.type == LONG_VALUE_FIELD_DESC.type) {
-              
-              long _fbthriftVar1;
-              _fbthriftVar1 = oprot.readI64();
-              res.value = _fbthriftVar1;
-              
+              long _fbthriftVar0;
+              _fbthriftVar0 = oprot.readI64();
+              res.value = _fbthriftVar0;
             }
             break;
           case _INTVALUE:
             if (__field.type == INT_VALUE_FIELD_DESC.type) {
-              
-              int _fbthriftVar1;
-              _fbthriftVar1 = oprot.readI32();
-              res.value = _fbthriftVar1;
-              
+              int _fbthriftVar0;
+              _fbthriftVar0 = oprot.readI32();
+              res.value = _fbthriftVar0;
             }
             break;
           default:

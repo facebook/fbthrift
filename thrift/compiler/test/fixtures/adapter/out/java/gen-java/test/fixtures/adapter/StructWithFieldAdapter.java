@@ -212,44 +212,36 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
         switch (__field.id) {
         case _FIELD:
           if (__field.type == TType.I32) {
-            
-            int _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI32();
-            builder.setField(_field_Adapter.fromThrift(_fbthriftVar1));
-
+            int _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI32();
+            builder.setField(_field_Adapter.fromThrift(_fbthriftVar0));
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SHARED_FIELD:
           if (__field.type == TType.I32) {
-            
-            int _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI32();
-            builder.setSharedField(_fbthriftVar1);
-            
+            int _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI32();
+            builder.setSharedField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _OPT_SHARED_FIELD:
           if (__field.type == TType.I32) {
-            
-            Integer _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI32();
-            builder.setOptSharedField(_optSharedField_Adapter.fromThrift(_fbthriftVar1));
-
+            Integer _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI32();
+            builder.setOptSharedField(_optSharedField_Adapter.fromThrift(_fbthriftVar0));
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _OPT_BOXED_FIELD:
           if (__field.type == TType.I32) {
-            
-            Integer _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI32();
-            builder.setOptBoxedField(_fbthriftVar1);
-            
+            Integer _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI32();
+            builder.setOptBoxedField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

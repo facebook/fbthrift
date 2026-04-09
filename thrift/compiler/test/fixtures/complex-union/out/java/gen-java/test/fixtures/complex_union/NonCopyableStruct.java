@@ -129,11 +129,9 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
         switch (__field.id) {
         case _NUM:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setNum(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setNum(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

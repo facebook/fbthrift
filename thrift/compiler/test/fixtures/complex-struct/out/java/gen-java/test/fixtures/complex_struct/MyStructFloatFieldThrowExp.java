@@ -207,44 +207,36 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
         switch (__field.id) {
         case _MYLONGFIELD:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setMyLongField(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setMyLongField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYBYTEFIELD:
           if (__field.type == TType.BYTE) {
-            
-            byte _fbthriftVar1;
-            _fbthriftVar1 = oprot.readByte();
-            builder.setMyByteField(_fbthriftVar1);
-            
+            byte _fbthriftVar0;
+            _fbthriftVar0 = oprot.readByte();
+            builder.setMyByteField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYSTRINGFIELD:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setMyStringField(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setMyStringField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYFLOATFIELD:
           if (__field.type == TType.FLOAT) {
-            
-            float _fbthriftVar1;
-            _fbthriftVar1 = oprot.readFloat();
-            builder.setMyFloatField(_fbthriftVar1);
-            
+            float _fbthriftVar0;
+            _fbthriftVar0 = oprot.readFloat();
+            builder.setMyFloatField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

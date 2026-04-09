@@ -129,11 +129,9 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
         switch (__field.id) {
         case _CONTENT:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setContent(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setContent(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

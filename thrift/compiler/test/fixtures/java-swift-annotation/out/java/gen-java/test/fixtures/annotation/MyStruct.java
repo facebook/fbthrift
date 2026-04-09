@@ -261,86 +261,74 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         switch (__field.id) {
         case _INTFIELD:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setIntField(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setIntField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STRINGFIELD:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setStringField(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setStringField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _DETAILFIELD:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setDetailField(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setDetailField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _DETAILMAP:
           if (__field.type == TType.MAP) {
-            
-            com.foo.FastIntLongMap _fbthriftVar1;
+            com.foo.FastIntLongMap _fbthriftVar0;
             {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new com.foo.FastIntLongMap();
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    int _fbthriftKey2;
-                    long _fbthriftValue2;
+                TMap _map0 = oprot.readMapBegin();
+                _fbthriftVar0 = new com.foo.FastIntLongMap();
+                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                    int _fbthriftKey1;
+                    long _fbthriftValue1;
 
                     {
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        _fbthriftKey2 = _fbthriftVar2;
+                        int _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readI32();
+                        _fbthriftKey1 = _fbthriftVar1;
                     }
                     {
-                        long _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI64();
-                        _fbthriftValue2 = _fbthriftVar2;
+                        long _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readI64();
+                        _fbthriftValue1 = _fbthriftVar1;
                     }
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 oprot.readMapEnd();
             }
-            builder.setDetailMap(_fbthriftVar1);
-            
+            builder.setDetailMap(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _TITI:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setToto(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setToto(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _PASSWORD:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setPassword(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setPassword(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

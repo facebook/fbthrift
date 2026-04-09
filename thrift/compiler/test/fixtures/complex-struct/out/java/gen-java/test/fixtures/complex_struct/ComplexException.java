@@ -203,95 +203,83 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
         switch (__field.id) {
         case _MESSAGE:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setMessage(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setMessage(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LISTSTRINGS:
           if (__field.type == TType.LIST) {
-            
-            List<String> _fbthriftVar1;
+            List<String> _fbthriftVar0;
             {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    String _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readString();
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TList _list0 = oprot.readListBegin();
+                _fbthriftVar0 = new ArrayList<String>(Math.max(0, _list0.size));
+                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                    String _fbthriftVar1;
+                    _fbthriftVar1 = oprot.readString();
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readListEnd();
             }
-            builder.setListStrings(_fbthriftVar1);
-            
+            builder.setListStrings(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ERRORENUM:
           if (__field.type == TType.I32) {
-            
-            test.fixtures.complex_struct.MyEnum _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-            builder.setErrorEnum(_fbthriftVar1);
-            
+            test.fixtures.complex_struct.MyEnum _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+            builder.setErrorEnum(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _UNIONERROR:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.complex_struct.MyUnion _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.complex_struct.MyUnion.read0(oprot);
-            builder.setUnionError(_fbthriftVar1);
-            
+            test.fixtures.complex_struct.MyUnion _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+            builder.setUnionError(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STRUCTERROR:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.complex_struct.MyStruct _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-            builder.setStructError(_fbthriftVar1);
-            
+            test.fixtures.complex_struct.MyStruct _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+            builder.setStructError(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LSMAP:
           if (__field.type == TType.MAP) {
-            
-            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar1;
+            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar0;
             {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    long _fbthriftKey2;
-                    String _fbthriftValue2;
+                TMap _map0 = oprot.readMapBegin();
+                _fbthriftVar0 = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
+                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                    long _fbthriftKey1;
+                    String _fbthriftValue1;
 
                     {
-                        long _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI64();
-                        _fbthriftKey2 = _fbthriftVar2;
+                        long _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readI64();
+                        _fbthriftKey1 = _fbthriftVar1;
                     }
                     {
-                        String _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readString();
-                        _fbthriftValue2 = _fbthriftVar2;
+                        String _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readString();
+                        _fbthriftValue1 = _fbthriftVar1;
                     }
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 oprot.readMapEnd();
             }
-            builder.setLsMap(_fbthriftVar1);
-            
+            builder.setLsMap(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

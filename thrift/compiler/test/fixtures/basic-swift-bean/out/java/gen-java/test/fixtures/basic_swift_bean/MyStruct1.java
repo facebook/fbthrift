@@ -207,44 +207,36 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
         switch (__field.id) {
         case _MYINTFIELD:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setMyIntField(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setMyIntField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYSTRINGFIELD:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setMyStringField(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setMyStringField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDATAFIELD:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-            builder.setMyDataField(_fbthriftVar1);
-            
+            test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+            builder.setMyDataField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAJOR:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setMajor(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setMajor(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

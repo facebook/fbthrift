@@ -181,42 +181,36 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
         switch (__field.id) {
         case _A:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setA(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setA(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _B:
           if (__field.type == TType.LIST) {
-            
-            List<Long> _fbthriftVar1;
+            List<Long> _fbthriftVar0;
             {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Long>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    long _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI64();
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TList _list0 = oprot.readListBegin();
+                _fbthriftVar0 = new ArrayList<Long>(Math.max(0, _list0.size));
+                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                    long _fbthriftVar1;
+                    _fbthriftVar1 = oprot.readI64();
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readListEnd();
             }
-            builder.setB(_fbthriftVar1);
-            
+            builder.setB(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _C:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.refs.StructWithRef _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.refs.StructWithRef.read0(oprot);
-            builder.setC(_fbthriftVar1);
-            
+            test.fixtures.refs.StructWithRef _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.refs.StructWithRef.read0(oprot);
+            builder.setC(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

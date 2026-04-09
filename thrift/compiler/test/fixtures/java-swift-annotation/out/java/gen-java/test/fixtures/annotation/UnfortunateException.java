@@ -115,22 +115,18 @@ public final class UnfortunateException extends org.apache.thrift.TBaseException
         switch (__field.id) {
         case _AN_SNAKE_STRING:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setAnSnakeString(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setAnSnakeString(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ACAMELI32:
           if (__field.type == TType.I32) {
-            
-            int _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI32();
-            builder.setACamelI32(_fbthriftVar1);
-            
+            int _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI32();
+            builder.setACamelI32(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

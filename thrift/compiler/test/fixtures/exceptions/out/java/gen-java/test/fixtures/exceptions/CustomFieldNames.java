@@ -120,22 +120,18 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
         switch (__field.id) {
         case _ERROR_MESSAGE:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setErrorMessage(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setErrorMessage(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _INTERNAL_ERROR_MESSAGE:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setInternalGreatMessage(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setInternalGreatMessage(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

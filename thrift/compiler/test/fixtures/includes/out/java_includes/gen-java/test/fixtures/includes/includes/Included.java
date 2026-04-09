@@ -155,22 +155,18 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
         switch (__field.id) {
         case _MYINTFIELD:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setMyIntField(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setMyIntField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYTRANSITIVEFIELD:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.includes.transitive.Foo _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.includes.transitive.Foo.read0(oprot);
-            builder.setMyTransitiveField(_fbthriftVar1);
-            
+            test.fixtures.includes.transitive.Foo _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.includes.transitive.Foo.read0(oprot);
+            builder.setMyTransitiveField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

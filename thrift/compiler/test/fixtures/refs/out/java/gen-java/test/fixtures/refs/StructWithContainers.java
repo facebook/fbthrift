@@ -259,131 +259,119 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
         switch (__field.id) {
         case _LIST_REF:
           if (__field.type == TType.LIST) {
-            
-            List<Integer> _fbthriftVar1;
+            List<Integer> _fbthriftVar0;
             {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    int _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI32();
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TList _list0 = oprot.readListBegin();
+                _fbthriftVar0 = new ArrayList<Integer>(Math.max(0, _list0.size));
+                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                    int _fbthriftVar1;
+                    _fbthriftVar1 = oprot.readI32();
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readListEnd();
             }
-            builder.setListRef(_fbthriftVar1);
-            
+            builder.setListRef(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_REF:
           if (__field.type == TType.SET) {
-            
-            Set<Integer> _fbthriftVar1;
+            Set<Integer> _fbthriftVar0;
             {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    int _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI32();
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TSet _set0 = oprot.readSetBegin();
+                _fbthriftVar0 = new HashSet<Integer>(Math.max(0, _set0.size));
+                for (int _i0 = 0; (_set0.size < 0) ? oprot.peekSet() : (_i0 < _set0.size); _i0++) {
+                    int _fbthriftVar1;
+                    _fbthriftVar1 = oprot.readI32();
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readSetEnd();
             }
-            builder.setSetRef(_fbthriftVar1);
-            
+            builder.setSetRef(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAP_REF:
           if (__field.type == TType.MAP) {
-            
-            Map<Integer, Integer> _fbthriftVar1;
+            Map<Integer, Integer> _fbthriftVar0;
             {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    int _fbthriftKey2;
-                    int _fbthriftValue2;
+                TMap _map0 = oprot.readMapBegin();
+                _fbthriftVar0 = new HashMap<Integer, Integer>(Math.max(0, _map0.size));
+                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                    int _fbthriftKey1;
+                    int _fbthriftValue1;
 
                     {
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        _fbthriftKey2 = _fbthriftVar2;
+                        int _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readI32();
+                        _fbthriftKey1 = _fbthriftVar1;
                     }
                     {
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        _fbthriftValue2 = _fbthriftVar2;
+                        int _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readI32();
+                        _fbthriftValue1 = _fbthriftVar1;
                     }
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 oprot.readMapEnd();
             }
-            builder.setMapRef(_fbthriftVar1);
-            
+            builder.setMapRef(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_REF_UNIQUE:
           if (__field.type == TType.LIST) {
-            
-            List<Integer> _fbthriftVar1;
+            List<Integer> _fbthriftVar0;
             {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    int _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI32();
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TList _list0 = oprot.readListBegin();
+                _fbthriftVar0 = new ArrayList<Integer>(Math.max(0, _list0.size));
+                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                    int _fbthriftVar1;
+                    _fbthriftVar1 = oprot.readI32();
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readListEnd();
             }
-            builder.setListRefUnique(_fbthriftVar1);
-            
+            builder.setListRefUnique(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_REF_SHARED:
           if (__field.type == TType.SET) {
-            
-            Set<Integer> _fbthriftVar1;
+            Set<Integer> _fbthriftVar0;
             {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    int _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI32();
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TSet _set0 = oprot.readSetBegin();
+                _fbthriftVar0 = new HashSet<Integer>(Math.max(0, _set0.size));
+                for (int _i0 = 0; (_set0.size < 0) ? oprot.peekSet() : (_i0 < _set0.size); _i0++) {
+                    int _fbthriftVar1;
+                    _fbthriftVar1 = oprot.readI32();
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readSetEnd();
             }
-            builder.setSetRefShared(_fbthriftVar1);
-            
+            builder.setSetRefShared(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_REF_SHARED_CONST:
           if (__field.type == TType.LIST) {
-            
-            List<Integer> _fbthriftVar1;
+            List<Integer> _fbthriftVar0;
             {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    int _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI32();
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TList _list0 = oprot.readListBegin();
+                _fbthriftVar0 = new ArrayList<Integer>(Math.max(0, _list0.size));
+                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                    int _fbthriftVar1;
+                    _fbthriftVar1 = oprot.readI32();
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readListEnd();
             }
-            builder.setListRefSharedConst(_fbthriftVar1);
-            
+            builder.setListRefSharedConst(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

@@ -340,108 +340,90 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         switch (__field.id) {
         case _MYINTFIELD:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setMyIntField(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setMyIntField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYSTRINGFIELD:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setMyStringField(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setMyStringField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDATAFIELD:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.basic.MyDataItem _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.basic.MyDataItem.read0(oprot);
-            builder.setMyDataField(_fbthriftVar1);
-            
+            test.fixtures.basic.MyDataItem _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.basic.MyDataItem.read0(oprot);
+            builder.setMyDataField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYENUM:
           if (__field.type == TType.I32) {
-            
-            test.fixtures.basic.MyEnum _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.basic.MyEnum.fromInteger(oprot.readI32());
-            builder.setMyEnum(_fbthriftVar1);
-            
+            test.fixtures.basic.MyEnum _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.basic.MyEnum.fromInteger(oprot.readI32());
+            builder.setMyEnum(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ONEWAY:
           if (__field.type == TType.BOOL) {
-            
-            boolean _fbthriftVar1;
-            _fbthriftVar1 = oprot.readBool();
-            builder.setOneway(_fbthriftVar1);
-            
+            boolean _fbthriftVar0;
+            _fbthriftVar0 = oprot.readBool();
+            builder.setOneway(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _READONLY:
           if (__field.type == TType.BOOL) {
-            
-            boolean _fbthriftVar1;
-            _fbthriftVar1 = oprot.readBool();
-            builder.setReadonly(_fbthriftVar1);
-            
+            boolean _fbthriftVar0;
+            _fbthriftVar0 = oprot.readBool();
+            builder.setReadonly(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _IDEMPOTENT:
           if (__field.type == TType.BOOL) {
-            
-            boolean _fbthriftVar1;
-            _fbthriftVar1 = oprot.readBool();
-            builder.setIdempotent(_fbthriftVar1);
-            
+            boolean _fbthriftVar0;
+            _fbthriftVar0 = oprot.readBool();
+            builder.setIdempotent(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FLOATSET:
           if (__field.type == TType.SET) {
-            
-            Set<Float> _fbthriftVar1;
+            Set<Float> _fbthriftVar0;
             {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Float>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    float _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readFloat();
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TSet _set0 = oprot.readSetBegin();
+                _fbthriftVar0 = new HashSet<Float>(Math.max(0, _set0.size));
+                for (int _i0 = 0; (_set0.size < 0) ? oprot.peekSet() : (_i0 < _set0.size); _i0++) {
+                    float _fbthriftVar1;
+                    _fbthriftVar1 = oprot.readFloat();
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readSetEnd();
             }
-            builder.setFloatSet(_fbthriftVar1);
-            
+            builder.setFloatSet(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _NO_HACK_CODEGEN_FIELD:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setNoHackCodegenField(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setNoHackCodegenField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

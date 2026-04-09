@@ -129,11 +129,9 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
         switch (__field.id) {
         case _INJECTED_FIELD:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setInjectedField(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setInjectedField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

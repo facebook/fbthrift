@@ -129,20 +129,18 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
         switch (__field.id) {
         case _MES:
           if (__field.type == TType.LIST) {
-            
-            List<test.fixtures.refs.RecursiveStruct> _fbthriftVar1;
+            List<test.fixtures.refs.RecursiveStruct> _fbthriftVar0;
             {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<test.fixtures.refs.RecursiveStruct>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    test.fixtures.refs.RecursiveStruct _fbthriftVar2;
-                    _fbthriftVar2 = test.fixtures.refs.RecursiveStruct.read0(oprot);
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TList _list0 = oprot.readListBegin();
+                _fbthriftVar0 = new ArrayList<test.fixtures.refs.RecursiveStruct>(Math.max(0, _list0.size));
+                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                    test.fixtures.refs.RecursiveStruct _fbthriftVar1;
+                    _fbthriftVar1 = test.fixtures.refs.RecursiveStruct.read0(oprot);
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readListEnd();
             }
-            builder.setMes(_fbthriftVar1);
-            
+            builder.setMes(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

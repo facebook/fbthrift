@@ -273,20 +273,16 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
           switch (__field.id) {
           case _V1:
             if (__field.type == V1_FIELD_DESC.type) {
-              
-              test.fixtures.complex_union.Val _fbthriftVar1;
-              _fbthriftVar1 = test.fixtures.complex_union.Val.read0(oprot);
-              res.value = _fbthriftVar1;
-              
+              test.fixtures.complex_union.Val _fbthriftVar0;
+              _fbthriftVar0 = test.fixtures.complex_union.Val.read0(oprot);
+              res.value = _fbthriftVar0;
             }
             break;
           case _V2:
             if (__field.type == V2_FIELD_DESC.type) {
-              
-              test.fixtures.complex_union.Val _fbthriftVar1;
-              _fbthriftVar1 = test.fixtures.complex_union.Val.read0(oprot);
-              res.value = _fbthriftVar1;
-              
+              test.fixtures.complex_union.Val _fbthriftVar0;
+              _fbthriftVar0 = test.fixtures.complex_union.Val.read0(oprot);
+              res.value = _fbthriftVar0;
             }
             break;
           default:

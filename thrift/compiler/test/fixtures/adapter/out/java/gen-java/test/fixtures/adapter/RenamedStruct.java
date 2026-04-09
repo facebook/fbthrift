@@ -132,11 +132,9 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
         switch (__field.id) {
         case _DATA:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setData(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setData(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

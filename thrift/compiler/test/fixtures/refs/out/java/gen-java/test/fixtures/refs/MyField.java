@@ -337,99 +337,81 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
         switch (__field.id) {
         case _OPT_VALUE:
           if (__field.type == TType.I64) {
-            
-            Long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setOptValue(_fbthriftVar1);
-            
+            Long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setOptValue(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _VALUE:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setValue(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setValue(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _REQ_VALUE:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setReqValue(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setReqValue(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _OPT_ENUM_VALUE:
           if (__field.type == TType.I32) {
-            
-            test.fixtures.refs.MyEnum _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.refs.MyEnum.fromInteger(oprot.readI32());
-            builder.setOptEnumValue(_fbthriftVar1);
-            
+            test.fixtures.refs.MyEnum _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.refs.MyEnum.fromInteger(oprot.readI32());
+            builder.setOptEnumValue(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ENUM_VALUE:
           if (__field.type == TType.I32) {
-            
-            test.fixtures.refs.MyEnum _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.refs.MyEnum.fromInteger(oprot.readI32());
-            builder.setEnumValue(_fbthriftVar1);
-            
+            test.fixtures.refs.MyEnum _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.refs.MyEnum.fromInteger(oprot.readI32());
+            builder.setEnumValue(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _REQ_ENUM_VALUE:
           if (__field.type == TType.I32) {
-            
-            test.fixtures.refs.MyEnum _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.refs.MyEnum.fromInteger(oprot.readI32());
-            builder.setReqEnumValue(_fbthriftVar1);
-            
+            test.fixtures.refs.MyEnum _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.refs.MyEnum.fromInteger(oprot.readI32());
+            builder.setReqEnumValue(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _OPT_STR_VALUE:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setOptStrValue(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setOptStrValue(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STR_VALUE:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setStrValue(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setStrValue(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _REQ_STR_VALUE:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setReqStrValue(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setReqStrValue(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

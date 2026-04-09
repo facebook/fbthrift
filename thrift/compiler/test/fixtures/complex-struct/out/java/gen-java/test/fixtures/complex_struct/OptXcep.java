@@ -115,22 +115,18 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
         switch (__field.id) {
         case _MESSAGE:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setMessage(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setMessage(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ERRORCODE:
           if (__field.type == TType.I32) {
-            
-            Integer _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI32();
-            builder.setErrorCode(_fbthriftVar1);
-            
+            Integer _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI32();
+            builder.setErrorCode(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

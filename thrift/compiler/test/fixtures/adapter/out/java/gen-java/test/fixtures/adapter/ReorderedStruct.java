@@ -132,11 +132,9 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
         switch (__field.id) {
         case _REORDERED_DEPENDENT_ADAPTED:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.adapter.DeclaredAfterStruct _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.adapter.DeclaredAfterStruct.read0(oprot);
-            builder.setReorderedDependentAdapted(_fbthriftVar1);
-            
+            test.fixtures.adapter.DeclaredAfterStruct _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.adapter.DeclaredAfterStruct.read0(oprot);
+            builder.setReorderedDependentAdapted(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

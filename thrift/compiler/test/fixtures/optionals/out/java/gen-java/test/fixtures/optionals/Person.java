@@ -363,148 +363,128 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
         switch (__field.id) {
         case _ID:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setId(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setId(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _NAME:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setName(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setName(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _AGE:
           if (__field.type == TType.I16) {
-            
-            Short _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI16();
-            builder.setAge(_fbthriftVar1);
-            
+            Short _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI16();
+            builder.setAge(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ADDRESS:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setAddress(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setAddress(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FAVORITECOLOR:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.optionals.Color _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.optionals.Color.read0(oprot);
-            builder.setFavoriteColor(_fbthriftVar1);
-            
+            test.fixtures.optionals.Color _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.optionals.Color.read0(oprot);
+            builder.setFavoriteColor(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FRIENDS:
           if (__field.type == TType.SET) {
-            
-            Set<Long> _fbthriftVar1;
+            Set<Long> _fbthriftVar0;
             {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Long>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    long _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI64();
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TSet _set0 = oprot.readSetBegin();
+                _fbthriftVar0 = new HashSet<Long>(Math.max(0, _set0.size));
+                for (int _i0 = 0; (_set0.size < 0) ? oprot.peekSet() : (_i0 < _set0.size); _i0++) {
+                    long _fbthriftVar1;
+                    _fbthriftVar1 = oprot.readI64();
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readSetEnd();
             }
-            builder.setFriends(_fbthriftVar1);
-            
+            builder.setFriends(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BESTFRIEND:
           if (__field.type == TType.I64) {
-            
-            Long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setBestFriend(_fbthriftVar1);
-            
+            Long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setBestFriend(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _PETNAMES:
           if (__field.type == TType.MAP) {
-            
-            Map<test.fixtures.optionals.Animal, String> _fbthriftVar1;
+            Map<test.fixtures.optionals.Animal, String> _fbthriftVar0;
             {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    test.fixtures.optionals.Animal _fbthriftKey2;
-                    String _fbthriftValue2;
+                TMap _map0 = oprot.readMapBegin();
+                _fbthriftVar0 = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, _map0.size));
+                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                    test.fixtures.optionals.Animal _fbthriftKey1;
+                    String _fbthriftValue1;
 
                     {
-                        test.fixtures.optionals.Animal _fbthriftVar2;
-                        _fbthriftVar2 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
-                        _fbthriftKey2 = _fbthriftVar2;
+                        test.fixtures.optionals.Animal _fbthriftVar1;
+                        _fbthriftVar1 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
+                        _fbthriftKey1 = _fbthriftVar1;
                     }
                     {
-                        String _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readString();
-                        _fbthriftValue2 = _fbthriftVar2;
+                        String _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readString();
+                        _fbthriftValue1 = _fbthriftVar1;
                     }
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 oprot.readMapEnd();
             }
-            builder.setPetNames(_fbthriftVar1);
-            
+            builder.setPetNames(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _AFRAIDOFANIMAL:
           if (__field.type == TType.I32) {
-            
-            test.fixtures.optionals.Animal _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
-            builder.setAfraidOfAnimal(_fbthriftVar1);
-            
+            test.fixtures.optionals.Animal _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
+            builder.setAfraidOfAnimal(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _VEHICLES:
           if (__field.type == TType.LIST) {
-            
-            List<test.fixtures.optionals.Vehicle> _fbthriftVar1;
+            List<test.fixtures.optionals.Vehicle> _fbthriftVar0;
             {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    test.fixtures.optionals.Vehicle _fbthriftVar2;
-                    _fbthriftVar2 = test.fixtures.optionals.Vehicle.read0(oprot);
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TList _list0 = oprot.readListBegin();
+                _fbthriftVar0 = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, _list0.size));
+                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                    test.fixtures.optionals.Vehicle _fbthriftVar1;
+                    _fbthriftVar1 = test.fixtures.optionals.Vehicle.read0(oprot);
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readListEnd();
             }
-            builder.setVehicles(_fbthriftVar1);
-            
+            builder.setVehicles(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

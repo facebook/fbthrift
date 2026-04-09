@@ -222,11 +222,9 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
           switch (__field.id) {
           case _RESERVED_FIELD:
             if (__field.type == RESERVED_FIELD_FIELD_DESC.type) {
-              
-              int _fbthriftVar1;
-              _fbthriftVar1 = oprot.readI32();
-              res.value = _fbthriftVar1;
-              
+              int _fbthriftVar0;
+              _fbthriftVar0 = oprot.readI32();
+              res.value = _fbthriftVar0;
             }
             break;
           default:

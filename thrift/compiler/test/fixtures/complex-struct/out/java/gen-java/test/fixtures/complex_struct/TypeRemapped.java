@@ -207,104 +207,96 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
         switch (__field.id) {
         case _LSMAP:
           if (__field.type == TType.MAP) {
-            
-            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar1;
+            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar0;
             {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    long _fbthriftKey2;
-                    String _fbthriftValue2;
+                TMap _map0 = oprot.readMapBegin();
+                _fbthriftVar0 = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
+                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                    long _fbthriftKey1;
+                    String _fbthriftValue1;
 
                     {
-                        long _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI64();
-                        _fbthriftKey2 = _fbthriftVar2;
+                        long _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readI64();
+                        _fbthriftKey1 = _fbthriftVar1;
                     }
                     {
-                        String _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readString();
-                        _fbthriftValue2 = _fbthriftVar2;
+                        String _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readString();
+                        _fbthriftValue1 = _fbthriftVar1;
                     }
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 oprot.readMapEnd();
             }
-            builder.setLsMap(_fbthriftVar1);
-            
+            builder.setLsMap(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _IOMAP:
           if (__field.type == TType.MAP) {
-            
-            it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> _fbthriftVar1;
+            it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> _fbthriftVar0;
             {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap>();
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    int _fbthriftKey2;
-                    it.unimi.dsi.fastutil.ints.Int2LongArrayMap _fbthriftValue2;
+                TMap _map0 = oprot.readMapBegin();
+                _fbthriftVar0 = new it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap>();
+                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                    int _fbthriftKey1;
+                    it.unimi.dsi.fastutil.ints.Int2LongArrayMap _fbthriftValue1;
 
                     {
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        _fbthriftKey2 = _fbthriftVar2;
+                        int _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readI32();
+                        _fbthriftKey1 = _fbthriftVar1;
                     }
                     {
-                        it.unimi.dsi.fastutil.ints.Int2LongArrayMap _fbthriftVar2;
+                        it.unimi.dsi.fastutil.ints.Int2LongArrayMap _fbthriftVar1;
                         {
-                            TMap _map2 = oprot.readMapBegin();
-                            _fbthriftVar2 = new it.unimi.dsi.fastutil.ints.Int2LongArrayMap();
-                            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                int _fbthriftKey3;
-                                long _fbthriftValue3;
+                            TMap _map1 = oprot.readMapBegin();
+                            _fbthriftVar1 = new it.unimi.dsi.fastutil.ints.Int2LongArrayMap();
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                int _fbthriftKey2;
+                                long _fbthriftValue2;
 
                                 {
-                                    int _fbthriftVar3;
-                                    _fbthriftVar3 = oprot.readI32();
-                                    _fbthriftKey3 = _fbthriftVar3;
+                                    int _fbthriftVar2;
+                                    _fbthriftVar2 = oprot.readI32();
+                                    _fbthriftKey2 = _fbthriftVar2;
                                 }
                                 {
-                                    long _fbthriftVar3;
-                                    _fbthriftVar3 = oprot.readI64();
-                                    _fbthriftValue3 = _fbthriftVar3;
+                                    long _fbthriftVar2;
+                                    _fbthriftVar2 = oprot.readI64();
+                                    _fbthriftValue2 = _fbthriftVar2;
                                 }
-                                _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             }
                             oprot.readMapEnd();
                         }
-                        _fbthriftValue2 = _fbthriftVar2;
+                        _fbthriftValue1 = _fbthriftVar1;
                     }
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 oprot.readMapEnd();
             }
-            builder.setIoMap(_fbthriftVar1);
-            
+            builder.setIoMap(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BIGINTEGER:
           if (__field.type == TType.I32) {
-            
-            java.math.BigInteger _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI32();
-            builder.setBigInteger(_fbthriftVar1);
-            
+            java.math.BigInteger _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI32();
+            builder.setBigInteger(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BINARYTESTBUFFER:
           if (__field.type == TType.STRING) {
-            
-            java.nio.ByteBuffer _fbthriftVar1;
-            _fbthriftVar1 = oprot.readBinary();
-            builder.setBinaryTestBuffer(_fbthriftVar1);
-            
+            java.nio.ByteBuffer _fbthriftVar0;
+            _fbthriftVar0 = oprot.readBinary();
+            builder.setBinaryTestBuffer(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

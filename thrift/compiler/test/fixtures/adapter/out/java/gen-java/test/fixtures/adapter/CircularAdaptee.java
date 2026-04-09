@@ -132,11 +132,9 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
         switch (__field.id) {
         case _FIELD:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.adapter.CircularStruct _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.adapter.CircularStruct.read0(oprot);
-            builder.setField(_fbthriftVar1);
-            
+            test.fixtures.adapter.CircularStruct _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.adapter.CircularStruct.read0(oprot);
+            builder.setField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

@@ -181,33 +181,27 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         switch (__field.id) {
         case _OPT_REF:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.refs.MyField _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
-            builder.setOptRef(_fbthriftVar1);
-            
+            test.fixtures.refs.MyField _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setOptRef(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _REF:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.refs.MyField _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
-            builder.setRef(_fbthriftVar1);
-            
+            test.fixtures.refs.MyField _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setRef(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _REQ_REF:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.refs.MyField _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
-            builder.setReqRef(_fbthriftVar1);
-            
+            test.fixtures.refs.MyField _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setReqRef(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

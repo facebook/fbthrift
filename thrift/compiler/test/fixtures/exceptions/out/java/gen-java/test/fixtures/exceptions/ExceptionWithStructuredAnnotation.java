@@ -120,22 +120,18 @@ public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.T
         switch (__field.id) {
         case _MESSAGE_FIELD:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setMessageField(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setMessageField(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ERROR_CODE:
           if (__field.type == TType.I32) {
-            
-            int _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI32();
-            builder.setErrorCode(_fbthriftVar1);
-            
+            int _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI32();
+            builder.setErrorCode(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

@@ -401,56 +401,48 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
           switch (__field.id) {
           case _MYENUM:
             if (__field.type == MY_ENUM_FIELD_DESC.type) {
-              
-              test.fixtures.complex_struct.MyEnum _fbthriftVar1;
-              _fbthriftVar1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-              res.value = _fbthriftVar1;
-              
+              test.fixtures.complex_struct.MyEnum _fbthriftVar0;
+              _fbthriftVar0 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+              res.value = _fbthriftVar0;
             }
             break;
           case _SETFLOAT:
             if (__field.type == SET_FLOAT_FIELD_DESC.type) {
-              
-              List<List<Float>> _fbthriftVar1;
+              List<List<Float>> _fbthriftVar0;
               {
-                  TList _list1 = oprot.readListBegin();
-                  _fbthriftVar1 = new ArrayList<List<Float>>(Math.max(0, _list1.size));
-                  for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                      List<Float> _fbthriftVar2;
+                  TList _list0 = oprot.readListBegin();
+                  _fbthriftVar0 = new ArrayList<List<Float>>(Math.max(0, _list0.size));
+                  for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                      List<Float> _fbthriftVar1;
                       {
-                          TList _list2 = oprot.readListBegin();
-                          _fbthriftVar2 = new ArrayList<Float>(Math.max(0, _list2.size));
-                          for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                              float _fbthriftVar3;
-                              _fbthriftVar3 = oprot.readFloat();
-                              _fbthriftVar2.add(_fbthriftVar3);
+                          TList _list1 = oprot.readListBegin();
+                          _fbthriftVar1 = new ArrayList<Float>(Math.max(0, _list1.size));
+                          for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                              float _fbthriftVar2;
+                              _fbthriftVar2 = oprot.readFloat();
+                              _fbthriftVar1.add(_fbthriftVar2);
                           }
                           oprot.readListEnd();
                       }
-                      _fbthriftVar1.add(_fbthriftVar2);
+                      _fbthriftVar0.add(_fbthriftVar1);
                   }
                   oprot.readListEnd();
               }
-              res.value = _fbthriftVar1;
-              
+              res.value = _fbthriftVar0;
             }
             break;
           case _MYDATAITEM:
             if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
-              
-              test.fixtures.complex_struct.MyDataItem _fbthriftVar1;
-              _fbthriftVar1 = test.fixtures.complex_struct.MyDataItem.read0(oprot);
-              res.value = _fbthriftVar1;
-              
+              test.fixtures.complex_struct.MyDataItem _fbthriftVar0;
+              _fbthriftVar0 = test.fixtures.complex_struct.MyDataItem.read0(oprot);
+              res.value = _fbthriftVar0;
             }
             break;
           case _COMPLEXNESTEDSTRUCT:
             if (__field.type == COMPLEX_NESTED_STRUCT_FIELD_DESC.type) {
-              
-              test.fixtures.complex_struct.ComplexNestedStruct _fbthriftVar1;
-              _fbthriftVar1 = test.fixtures.complex_struct.ComplexNestedStruct.read0(oprot);
-              res.value = _fbthriftVar1;
-              
+              test.fixtures.complex_struct.ComplexNestedStruct _fbthriftVar0;
+              _fbthriftVar0 = test.fixtures.complex_struct.ComplexNestedStruct.read0(oprot);
+              res.value = _fbthriftVar0;
             }
             break;
           default:

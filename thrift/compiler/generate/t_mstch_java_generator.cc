@@ -1394,39 +1394,6 @@ class mstch_java_interaction : public mstch_java_service {
   }
 };
 
-class mstch_java_field : public mstch_field {
- public:
-  mstch_java_field(
-      const t_field* f, mstch_context& ctx, mstch_element_position pos)
-      : mstch_field(f, ctx, pos) {
-    register_methods(
-        this,
-        {
-            {"field:nestedDepth",
-             {with_no_caching, &mstch_java_field::get_nested_depth}},
-            {"field:nestedDepth++",
-             {with_no_caching, &mstch_java_field::increment_nested_depth}},
-            {"field:nestedDepth--",
-             {with_no_caching, &mstch_java_field::decrement_nested_depth}},
-            {"field:prevNestedDepth",
-             {with_no_caching, &mstch_java_field::preceding_nested_depth}},
-        });
-  }
-
-  int32_t nestedDepth = 0;
-
-  mstch::node get_nested_depth() { return nestedDepth; }
-  mstch::node preceding_nested_depth() { return (nestedDepth - 1); }
-  mstch::node increment_nested_depth() {
-    nestedDepth++;
-    return mstch::node();
-  }
-  mstch::node decrement_nested_depth() {
-    nestedDepth--;
-    return mstch::node();
-  }
-};
-
 void t_mstch_java_generator::generate_program() {
   out_dir_base_ = "gen-java";
   set_mstch_factories();
@@ -1461,7 +1428,6 @@ void t_mstch_java_generator::generate_program() {
 void t_mstch_java_generator::set_mstch_factories() {
   mstch_context_.add<mstch_java_service>();
   mstch_context_.add<mstch_java_interaction>();
-  mstch_context_.add<mstch_java_field>();
 }
 
 } // namespace

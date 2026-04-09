@@ -181,33 +181,27 @@ public final class Struct4 implements com.facebook.thrift.payload.ThriftSerializ
         switch (__field.id) {
         case _A:
           if (__field.type == TType.I32) {
-            
-            int _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI32();
-            builder.setA(_fbthriftVar1);
-            
+            int _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI32();
+            builder.setA(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _B:
           if (__field.type == TType.DOUBLE) {
-            
-            Double _fbthriftVar1;
-            _fbthriftVar1 = oprot.readDouble();
-            builder.setB(_fbthriftVar1);
-            
+            Double _fbthriftVar0;
+            _fbthriftVar0 = oprot.readDouble();
+            builder.setB(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _C:
           if (__field.type == TType.BYTE) {
-            
-            Byte _fbthriftVar1;
-            _fbthriftVar1 = oprot.readByte();
-            builder.setC(_fbthriftVar1);
-            
+            Byte _fbthriftVar0;
+            _fbthriftVar0 = oprot.readByte();
+            builder.setC(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

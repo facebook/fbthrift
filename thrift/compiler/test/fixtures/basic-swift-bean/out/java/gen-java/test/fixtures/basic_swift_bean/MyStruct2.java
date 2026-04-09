@@ -157,22 +157,18 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
         switch (__field.id) {
         case _MYSTRUCT1:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.basic_swift_bean.MyStruct1 _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.basic_swift_bean.MyStruct1.read0(oprot);
-            builder.setMyStruct1(_fbthriftVar1);
-            
+            test.fixtures.basic_swift_bean.MyStruct1 _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.basic_swift_bean.MyStruct1.read0(oprot);
+            builder.setMyStruct1(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYSTRING:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setMyString(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setMyString(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

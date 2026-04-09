@@ -129,11 +129,9 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
         switch (__field.id) {
         case _A:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setA(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setA(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

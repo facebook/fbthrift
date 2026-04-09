@@ -329,29 +329,23 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
           switch (__field.id) {
           case _STRINGVALUE:
             if (__field.type == STRING_VALUE_FIELD_DESC.type) {
-              
-              String _fbthriftVar1;
-              _fbthriftVar1 = oprot.readString();
-              res.value = _fbthriftVar1;
-              
+              String _fbthriftVar0;
+              _fbthriftVar0 = oprot.readString();
+              res.value = _fbthriftVar0;
             }
             break;
           case _INTVALUE:
             if (__field.type == INT_VALUE_FIELD_DESC.type) {
-              
-              int _fbthriftVar1;
-              _fbthriftVar1 = oprot.readI32();
-              res.value = _fbthriftVar1;
-              
+              int _fbthriftVar0;
+              _fbthriftVar0 = oprot.readI32();
+              res.value = _fbthriftVar0;
             }
             break;
           case _DOUBLEVALUE:
             if (__field.type == DOUBLE_VALUE_FIELD_DESC.type) {
-              
-              double _fbthriftVar1;
-              _fbthriftVar1 = oprot.readDouble();
-              res.value = _fbthriftVar1;
-              
+              double _fbthriftVar0;
+              _fbthriftVar0 = oprot.readDouble();
+              res.value = _fbthriftVar0;
             }
             break;
           default:

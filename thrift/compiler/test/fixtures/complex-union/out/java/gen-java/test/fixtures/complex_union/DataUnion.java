@@ -281,20 +281,16 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
           switch (__field.id) {
           case _BINARYDATA:
             if (__field.type == BINARY_DATA_FIELD_DESC.type) {
-              
-              byte[] _fbthriftVar1;
-              _fbthriftVar1 = oprot.readBinary().array();
-              res.value = _fbthriftVar1;
-              
+              byte[] _fbthriftVar0;
+              _fbthriftVar0 = oprot.readBinary().array();
+              res.value = _fbthriftVar0;
             }
             break;
           case _STRINGDATA:
             if (__field.type == STRING_DATA_FIELD_DESC.type) {
-              
-              String _fbthriftVar1;
-              _fbthriftVar1 = oprot.readString();
-              res.value = _fbthriftVar1;
-              
+              String _fbthriftVar0;
+              _fbthriftVar0 = oprot.readString();
+              res.value = _fbthriftVar0;
             }
             break;
           default:

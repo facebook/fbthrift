@@ -278,20 +278,16 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
           switch (__field.id) {
           case _DELAY:
             if (__field.type == DELAY_FIELD_DESC.type) {
-              
-              long _fbthriftVar1;
-              _fbthriftVar1 = oprot.readI64();
-              res.value = _fbthriftVar1;
-              
+              long _fbthriftVar0;
+              _fbthriftVar0 = oprot.readI64();
+              res.value = _fbthriftVar0;
             }
             break;
           case _CUSTOM:
             if (__field.type == CUSTOM_FIELD_DESC.type) {
-              
-              byte[] _fbthriftVar1;
-              _fbthriftVar1 = oprot.readBinary().array();
-              res.value = _fbthriftVar1;
-              
+              byte[] _fbthriftVar0;
+              _fbthriftVar0 = oprot.readBinary().array();
+              res.value = _fbthriftVar0;
             }
             break;
           default:

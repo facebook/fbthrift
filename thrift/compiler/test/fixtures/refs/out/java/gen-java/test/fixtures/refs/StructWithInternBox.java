@@ -155,22 +155,18 @@ public final class StructWithInternBox implements com.facebook.thrift.payload.Th
         switch (__field.id) {
         case _FIELD1:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.refs.Empty _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.refs.Empty.read0(oprot);
-            builder.setField1(_fbthriftVar1);
-            
+            test.fixtures.refs.Empty _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.refs.Empty.read0(oprot);
+            builder.setField1(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FIELD2:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.refs.MyField _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
-            builder.setField2(_fbthriftVar1);
-            
+            test.fixtures.refs.MyField _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setField2(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

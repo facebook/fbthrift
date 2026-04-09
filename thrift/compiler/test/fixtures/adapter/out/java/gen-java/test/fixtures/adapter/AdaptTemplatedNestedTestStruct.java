@@ -132,11 +132,9 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
         switch (__field.id) {
         case _ADAPTEDSTRUCT:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.adapter.AdaptTemplatedTestStruct _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.adapter.AdaptTemplatedTestStruct.read0(oprot);
-            builder.setAdaptedStruct(_fbthriftVar1);
-            
+            test.fixtures.adapter.AdaptTemplatedTestStruct _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.adapter.AdaptTemplatedTestStruct.read0(oprot);
+            builder.setAdaptedStruct(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

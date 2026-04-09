@@ -493,217 +493,193 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         switch (__field.id) {
         case _MYINT16:
           if (__field.type == TType.I16) {
-            
-            short _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI16();
-            builder.setMyInt16(_fbthriftVar1);
-            
+            short _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI16();
+            builder.setMyInt16(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINT32:
           if (__field.type == TType.I32) {
-            
-            int _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI32();
-            builder.setMyInt32(_fbthriftVar1);
-            
+            int _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI32();
+            builder.setMyInt32(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINT64:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setMyInt64(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setMyInt64(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYSTRING:
           if (__field.type == TType.STRING) {
-            
-            String _fbthriftVar1;
-            _fbthriftVar1 = oprot.readString();
-            builder.setMyString(_fbthriftVar1);
-            
+            String _fbthriftVar0;
+            _fbthriftVar0 = oprot.readString();
+            builder.setMyString(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYBOOL:
           if (__field.type == TType.BOOL) {
-            
-            boolean _fbthriftVar1;
-            _fbthriftVar1 = oprot.readBool();
-            builder.setMyBool(_fbthriftVar1);
-            
+            boolean _fbthriftVar0;
+            _fbthriftVar0 = oprot.readBool();
+            builder.setMyBool(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDOUBLE:
           if (__field.type == TType.DOUBLE) {
-            
-            double _fbthriftVar1;
-            _fbthriftVar1 = oprot.readDouble();
-            builder.setMyDouble(_fbthriftVar1);
-            
+            double _fbthriftVar0;
+            _fbthriftVar0 = oprot.readDouble();
+            builder.setMyDouble(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYSET:
           if (__field.type == TType.SET) {
-            
-            Set<String> _fbthriftVar1;
+            Set<String> _fbthriftVar0;
             {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    String _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readString();
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TSet _set0 = oprot.readSetBegin();
+                _fbthriftVar0 = new HashSet<String>(Math.max(0, _set0.size));
+                for (int _i0 = 0; (_set0.size < 0) ? oprot.peekSet() : (_i0 < _set0.size); _i0++) {
+                    String _fbthriftVar1;
+                    _fbthriftVar1 = oprot.readString();
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readSetEnd();
             }
-            builder.setMySet(_fbthriftVar1);
-            
+            builder.setMySet(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDATAITEM:
           if (__field.type == TType.STRUCT) {
-            
-            test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar1;
-            _fbthriftVar1 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-            builder.setMyDataItem(_fbthriftVar1);
-            
+            test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar0;
+            _fbthriftVar0 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+            builder.setMyDataItem(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYLIST:
           if (__field.type == TType.LIST) {
-            
-            List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar1;
+            List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar0;
             {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2;
-                    _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TList _list0 = oprot.readListBegin();
+                _fbthriftVar0 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list0.size));
+                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                    test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar1;
+                    _fbthriftVar1 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readListEnd();
             }
-            builder.setMyList(_fbthriftVar1);
-            
+            builder.setMyList(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYMAPLIST:
           if (__field.type == TType.MAP) {
-            
-            Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1;
+            Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar0;
             {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    int _fbthriftKey2;
-                    List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftValue2;
+                TMap _map0 = oprot.readMapBegin();
+                _fbthriftVar0 = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map0.size));
+                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                    int _fbthriftKey1;
+                    List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftValue1;
 
                     {
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        _fbthriftKey2 = _fbthriftVar2;
+                        int _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readI32();
+                        _fbthriftKey1 = _fbthriftVar1;
                     }
                     {
-                        List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2;
+                        List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar1;
                         {
-                            TList _list2 = oprot.readListBegin();
-                            _fbthriftVar2 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list2.size));
-                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3;
-                                _fbthriftVar3 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-                                _fbthriftVar2.add(_fbthriftVar3);
+                            TList _list1 = oprot.readListBegin();
+                            _fbthriftVar1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2;
+                                _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                                _fbthriftVar1.add(_fbthriftVar2);
                             }
                             oprot.readListEnd();
                         }
-                        _fbthriftValue2 = _fbthriftVar2;
+                        _fbthriftValue1 = _fbthriftVar1;
                     }
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 oprot.readMapEnd();
             }
-            builder.setMyMapList(_fbthriftVar1);
-            
+            builder.setMyMapList(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYEMPTYLIST:
           if (__field.type == TType.LIST) {
-            
-            List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar1;
+            List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar0;
             {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2;
-                    _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-                    _fbthriftVar1.add(_fbthriftVar2);
+                TList _list0 = oprot.readListBegin();
+                _fbthriftVar0 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list0.size));
+                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                    test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar1;
+                    _fbthriftVar1 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                    _fbthriftVar0.add(_fbthriftVar1);
                 }
                 oprot.readListEnd();
             }
-            builder.setMyEmptyList(_fbthriftVar1);
-            
+            builder.setMyEmptyList(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYEMPTYMAPLIST:
           if (__field.type == TType.MAP) {
-            
-            Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1;
+            Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar0;
             {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    int _fbthriftKey2;
-                    List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftValue2;
+                TMap _map0 = oprot.readMapBegin();
+                _fbthriftVar0 = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map0.size));
+                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                    int _fbthriftKey1;
+                    List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftValue1;
 
                     {
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        _fbthriftKey2 = _fbthriftVar2;
+                        int _fbthriftVar1;
+                        _fbthriftVar1 = oprot.readI32();
+                        _fbthriftKey1 = _fbthriftVar1;
                     }
                     {
-                        List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2;
+                        List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar1;
                         {
-                            TList _list2 = oprot.readListBegin();
-                            _fbthriftVar2 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list2.size));
-                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3;
-                                _fbthriftVar3 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-                                _fbthriftVar2.add(_fbthriftVar3);
+                            TList _list1 = oprot.readListBegin();
+                            _fbthriftVar1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2;
+                                _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                                _fbthriftVar1.add(_fbthriftVar2);
                             }
                             oprot.readListEnd();
                         }
-                        _fbthriftValue2 = _fbthriftVar2;
+                        _fbthriftValue1 = _fbthriftVar1;
                     }
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 oprot.readMapEnd();
             }
-            builder.setMyEmptyMapList(_fbthriftVar1);
-            
+            builder.setMyEmptyMapList(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

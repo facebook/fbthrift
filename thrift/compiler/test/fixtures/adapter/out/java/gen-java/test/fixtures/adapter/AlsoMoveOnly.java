@@ -132,11 +132,9 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
         switch (__field.id) {
         case _PTR:
           if (__field.type == TType.I64) {
-            
-            long _fbthriftVar1;
-            _fbthriftVar1 = oprot.readI64();
-            builder.setPtr(_fbthriftVar1);
-            
+            long _fbthriftVar0;
+            _fbthriftVar0 = oprot.readI64();
+            builder.setPtr(_fbthriftVar0);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
