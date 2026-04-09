@@ -447,8 +447,12 @@ TEST_F(ThriftClientChannelTest, SendRequestWithPipelineCallsHandler) {
   auto pipeline = buildPipelineWithHandler(
       channel.get(),
       [&](apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl&,
-          TypeErasedBox&&) {
+          TypeErasedBox&& msg) {
         handlerCalled = true;
+        auto& request = msg.get<ThriftRequestMessage>();
+        EXPECT_EQ(
+            request.payload.rpcKind,
+            apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
         return Result::Success;
       });
   channel->setPipeline(pipeline.get());
@@ -496,10 +500,19 @@ TEST_F(ThriftClientChannelTest, SendRequestWithPipelineErrorInvokesCallback) {
 TEST_F(ThriftClientChannelTest, SendRequestWithPipelineBackpressureProceeds) {
   auto channel = createChannel();
 
+  bool handlerCalled = false;
+
   auto pipeline = buildPipelineWithHandler(
       channel.get(),
-      [](apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl&,
-         TypeErasedBox&&) { return Result::Backpressure; });
+      [&](apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl&,
+          TypeErasedBox&& msg) {
+        handlerCalled = true;
+        auto& request = msg.get<ThriftRequestMessage>();
+        EXPECT_EQ(
+            request.payload.rpcKind,
+            apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+        return Result::Backpressure;
+      });
   channel->setPipeline(pipeline.get());
 
   auto [cb, state] = makeCallback();
@@ -512,7 +525,7 @@ TEST_F(ThriftClientChannelTest, SendRequestWithPipelineBackpressureProceeds) {
       std::move(cb),
       nullptr);
 
-  // Backpressure is a soft signal, not an error - request proceeds
+  EXPECT_TRUE(handlerCalled);
   EXPECT_FALSE(state->errorReceived);
   EXPECT_FALSE(state->responseReceived);
 }
