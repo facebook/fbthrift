@@ -37,11 +37,11 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(FieldsInjectedToEmptyStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,9 +77,9 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
     public static final int _INJECTED_FIELD = -1100;
     private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)-1100);
     static {
-      NAMES_TO_IDS.put("injectedField", -1100);
-      THRIFT_NAMES_TO_IDS.put("injected_field", -1100);
-      FIELD_METADATA.put(-1100, INJECTED_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("injectedField", -1100);
+        THRIFT_NAMES_TO_IDS.put("injected_field", -1100);
+        FIELD_METADATA.put(-1100, INJECTED_FIELD_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)
@@ -167,5 +167,4 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
     public static FieldsInjectedToEmptyStruct defaultInstance() {
         return  _FieldsInjectedToEmptyStructLazy._DEFAULT;
     }
-
 }

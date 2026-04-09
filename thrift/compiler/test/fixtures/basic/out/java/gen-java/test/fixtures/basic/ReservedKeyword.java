@@ -37,11 +37,11 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(ReservedKeyword other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,12 +77,12 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
     public static final int _RESERVED_FIELD = 1;
     private static final TField RESERVED_FIELD_FIELD_DESC = new TField("reserved_field", TType.I32, (short)1);
     static {
-      NAMES_TO_IDS.put("reservedField", 1);
-      THRIFT_NAMES_TO_IDS.put("reserved_field", 1);
-      FIELD_METADATA.put(1, RESERVED_FIELD_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/basic/ReservedKeyword"),
-        ReservedKeyword.class, ReservedKeyword::read0));
+        NAMES_TO_IDS.put("reservedField", 1);
+        THRIFT_NAMES_TO_IDS.put("reserved_field", 1);
+        FIELD_METADATA.put(1, RESERVED_FIELD_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("test.dev/fixtures/basic/ReservedKeyword"),
+            ReservedKeyword.class, ReservedKeyword::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="reserved_field", requiredness=Requiredness.NONE)
@@ -168,5 +168,4 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
     public static ReservedKeyword defaultInstance() {
         return  _ReservedKeywordLazy._DEFAULT;
     }
-
 }

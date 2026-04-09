@@ -46,11 +46,11 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStructFloatFieldThrowExp other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -115,41 +115,38 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
     private final long myLongField;
     public static final int _MYLONGFIELD = 1;
     private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)1);
-        private final byte myByteField;
+    private final byte myByteField;
     public static final int _MYBYTEFIELD = 2;
     private static final TField MY_BYTE_FIELD_FIELD_DESC = new TField("MyByteField", TType.BYTE, (short)2);
-        private final String myStringField;
+    private final String myStringField;
     public static final int _MYSTRINGFIELD = 3;
     private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("myStringField", TType.STRING, (short)3);
-        private final float myFloatField;
+    private final float myFloatField;
     public static final int _MYFLOATFIELD = 4;
     private static final TField MY_FLOAT_FIELD_FIELD_DESC = new TField("myFloatField", TType.FLOAT, (short)4);
     static {
-      NAMES_TO_IDS.put("myLongField", 1);
-      THRIFT_NAMES_TO_IDS.put("myLongField", 1);
-      FIELD_METADATA.put(1, MY_LONG_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("myByteField", 2);
-      THRIFT_NAMES_TO_IDS.put("MyByteField", 2);
-      FIELD_METADATA.put(2, MY_BYTE_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("myStringField", 3);
-      THRIFT_NAMES_TO_IDS.put("myStringField", 3);
-      FIELD_METADATA.put(3, MY_STRING_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("myFloatField", 4);
-      THRIFT_NAMES_TO_IDS.put("myFloatField", 4);
-      FIELD_METADATA.put(4, MY_FLOAT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("myLongField", 1);
+        THRIFT_NAMES_TO_IDS.put("myLongField", 1);
+        FIELD_METADATA.put(1, MY_LONG_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("myByteField", 2);
+        THRIFT_NAMES_TO_IDS.put("MyByteField", 2);
+        FIELD_METADATA.put(2, MY_BYTE_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("myStringField", 3);
+        THRIFT_NAMES_TO_IDS.put("myStringField", 3);
+        FIELD_METADATA.put(3, MY_STRING_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("myFloatField", 4);
+        THRIFT_NAMES_TO_IDS.put("myFloatField", 4);
+        FIELD_METADATA.put(4, MY_FLOAT_FIELD_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)
     public byte getMyByteField() { return myByteField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)
     public float getMyFloatField() { return myFloatField; }
@@ -290,5 +287,4 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
     public static MyStructFloatFieldThrowExp defaultInstance() {
         return  _MyStructFloatFieldThrowExpLazy._DEFAULT;
     }
-
 }

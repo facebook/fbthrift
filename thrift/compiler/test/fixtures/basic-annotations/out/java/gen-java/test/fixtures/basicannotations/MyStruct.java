@@ -61,11 +61,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -180,94 +180,86 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private final long major;
     public static final int _MAJOR = 2;
     private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)2);
-        private final String _abstract;
+    private final String _abstract;
     public static final int _ABSTRACT = 1;
     private static final TField _ABSTRACT_FIELD_DESC = new TField("abstract", TType.STRING, (short)1);
-        private final String annotationWithQuote;
+    private final String annotationWithQuote;
     public static final int _ANNOTATION_WITH_QUOTE = 3;
     private static final TField ANNOTATION_WITH_QUOTE_FIELD_DESC = new TField("annotation_with_quote", TType.STRING, (short)3);
-        private final String class_;
+    private final String class_;
     public static final int _CLASS_ = 4;
     private static final TField CLASS__FIELD_DESC = new TField("class_", TType.STRING, (short)4);
-        private final String annotationWithTrailingComma;
+    private final String annotationWithTrailingComma;
     public static final int _ANNOTATION_WITH_TRAILING_COMMA = 5;
     private static final TField ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC = new TField("annotation_with_trailing_comma", TType.STRING, (short)5);
-        private final String emptyAnnotations;
+    private final String emptyAnnotations;
     public static final int _EMPTY_ANNOTATIONS = 6;
     private static final TField EMPTY_ANNOTATIONS_FIELD_DESC = new TField("empty_annotations", TType.STRING, (short)6);
-        private final test.fixtures.basicannotations.MyEnum myEnum;
+    private final test.fixtures.basicannotations.MyEnum myEnum;
     public static final int _MY_ENUM = 7;
     private static final TField MY_ENUM_FIELD_DESC = new TField("my_enum", TType.I32, (short)7);
-        private final List<String> cppTypeAnnotation;
+    private final List<String> cppTypeAnnotation;
     public static final int _CPP_TYPE_ANNOTATION = 8;
     private static final TField CPP_TYPE_ANNOTATION_FIELD_DESC = new TField("cpp_type_annotation", TType.LIST, (short)8);
-        private final test.fixtures.basicannotations.MyUnion myUnion;
+    private final test.fixtures.basicannotations.MyUnion myUnion;
     public static final int _MY_UNION = 9;
     private static final TField MY_UNION_FIELD_DESC = new TField("my_union", TType.STRUCT, (short)9);
     static {
-      NAMES_TO_IDS.put("major", 2);
-      THRIFT_NAMES_TO_IDS.put("major", 2);
-      FIELD_METADATA.put(2, MAJOR_FIELD_DESC);
-      NAMES_TO_IDS.put("_abstract", 1);
-      THRIFT_NAMES_TO_IDS.put("abstract", 1);
-      FIELD_METADATA.put(1, _ABSTRACT_FIELD_DESC);
-      NAMES_TO_IDS.put("annotationWithQuote", 3);
-      THRIFT_NAMES_TO_IDS.put("annotation_with_quote", 3);
-      FIELD_METADATA.put(3, ANNOTATION_WITH_QUOTE_FIELD_DESC);
-      NAMES_TO_IDS.put("class_", 4);
-      THRIFT_NAMES_TO_IDS.put("class_", 4);
-      FIELD_METADATA.put(4, CLASS__FIELD_DESC);
-      NAMES_TO_IDS.put("annotationWithTrailingComma", 5);
-      THRIFT_NAMES_TO_IDS.put("annotation_with_trailing_comma", 5);
-      FIELD_METADATA.put(5, ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC);
-      NAMES_TO_IDS.put("emptyAnnotations", 6);
-      THRIFT_NAMES_TO_IDS.put("empty_annotations", 6);
-      FIELD_METADATA.put(6, EMPTY_ANNOTATIONS_FIELD_DESC);
-      NAMES_TO_IDS.put("myEnum", 7);
-      THRIFT_NAMES_TO_IDS.put("my_enum", 7);
-      FIELD_METADATA.put(7, MY_ENUM_FIELD_DESC);
-      NAMES_TO_IDS.put("cppTypeAnnotation", 8);
-      THRIFT_NAMES_TO_IDS.put("cpp_type_annotation", 8);
-      FIELD_METADATA.put(8, CPP_TYPE_ANNOTATION_FIELD_DESC);
-      NAMES_TO_IDS.put("myUnion", 9);
-      THRIFT_NAMES_TO_IDS.put("my_union", 9);
-      FIELD_METADATA.put(9, MY_UNION_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/basic_annotations/src/module/MyStruct"),
-        MyStruct.class, MyStruct::read0));
+        NAMES_TO_IDS.put("major", 2);
+        THRIFT_NAMES_TO_IDS.put("major", 2);
+        FIELD_METADATA.put(2, MAJOR_FIELD_DESC);
+        NAMES_TO_IDS.put("_abstract", 1);
+        THRIFT_NAMES_TO_IDS.put("abstract", 1);
+        FIELD_METADATA.put(1, _ABSTRACT_FIELD_DESC);
+        NAMES_TO_IDS.put("annotationWithQuote", 3);
+        THRIFT_NAMES_TO_IDS.put("annotation_with_quote", 3);
+        FIELD_METADATA.put(3, ANNOTATION_WITH_QUOTE_FIELD_DESC);
+        NAMES_TO_IDS.put("class_", 4);
+        THRIFT_NAMES_TO_IDS.put("class_", 4);
+        FIELD_METADATA.put(4, CLASS__FIELD_DESC);
+        NAMES_TO_IDS.put("annotationWithTrailingComma", 5);
+        THRIFT_NAMES_TO_IDS.put("annotation_with_trailing_comma", 5);
+        FIELD_METADATA.put(5, ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC);
+        NAMES_TO_IDS.put("emptyAnnotations", 6);
+        THRIFT_NAMES_TO_IDS.put("empty_annotations", 6);
+        FIELD_METADATA.put(6, EMPTY_ANNOTATIONS_FIELD_DESC);
+        NAMES_TO_IDS.put("myEnum", 7);
+        THRIFT_NAMES_TO_IDS.put("my_enum", 7);
+        FIELD_METADATA.put(7, MY_ENUM_FIELD_DESC);
+        NAMES_TO_IDS.put("cppTypeAnnotation", 8);
+        THRIFT_NAMES_TO_IDS.put("cpp_type_annotation", 8);
+        FIELD_METADATA.put(8, CPP_TYPE_ANNOTATION_FIELD_DESC);
+        NAMES_TO_IDS.put("myUnion", 9);
+        THRIFT_NAMES_TO_IDS.put("my_union", 9);
+        FIELD_METADATA.put(9, MY_UNION_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/basic_annotations/src/module/MyStruct"),
+            MyStruct.class, MyStruct::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=2, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="abstract", requiredness=Requiredness.NONE)
     public String getAbstract() { return _abstract; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
     public String getAnnotationWithQuote() { return annotationWithQuote; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
     public String getClass_() { return class_; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
     public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
     public String getEmptyAnnotations() { return emptyAnnotations; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE)
     public test.fixtures.basicannotations.MyEnum getMyEnum() { return myEnum; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="cpp_type_annotation", requiredness=Requiredness.NONE)
     public List<String> getCppTypeAnnotation() { return cppTypeAnnotation; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="my_union", requiredness=Requiredness.NONE)
     public test.fixtures.basicannotations.MyUnion getMyUnion() { return myUnion; }
@@ -523,5 +515,4 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }
-
 }

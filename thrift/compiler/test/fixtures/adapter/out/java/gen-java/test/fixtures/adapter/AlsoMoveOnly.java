@@ -37,11 +37,11 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(AlsoMoveOnly other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,12 +77,12 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
     public static final int _PTR = 1;
     private static final TField PTR_FIELD_DESC = new TField("ptr", TType.I64, (short)1);
     static {
-      NAMES_TO_IDS.put("ptr", 1);
-      THRIFT_NAMES_TO_IDS.put("ptr", 1);
-      FIELD_METADATA.put(1, PTR_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AlsoMoveOnly"),
-        AlsoMoveOnly.class, AlsoMoveOnly::read0));
+        NAMES_TO_IDS.put("ptr", 1);
+        THRIFT_NAMES_TO_IDS.put("ptr", 1);
+        FIELD_METADATA.put(1, PTR_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AlsoMoveOnly"),
+            AlsoMoveOnly.class, AlsoMoveOnly::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="ptr", requiredness=Requiredness.NONE)
@@ -168,5 +168,4 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
     public static AlsoMoveOnly defaultInstance() {
         return  _AlsoMoveOnlyLazy._DEFAULT;
     }
-
 }

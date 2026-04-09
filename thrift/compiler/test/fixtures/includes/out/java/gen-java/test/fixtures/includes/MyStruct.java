@@ -43,11 +43,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -102,31 +102,29 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private final test.fixtures.includes.includes.Included myIncludedField;
     public static final int _MYINCLUDEDFIELD = 1;
     private static final TField MY_INCLUDED_FIELD_FIELD_DESC = new TField("MyIncludedField", TType.STRUCT, (short)1);
-        private final test.fixtures.includes.includes.Included myOtherIncludedField;
+    private final test.fixtures.includes.includes.Included myOtherIncludedField;
     public static final int _MYOTHERINCLUDEDFIELD = 2;
     private static final TField MY_OTHER_INCLUDED_FIELD_FIELD_DESC = new TField("MyOtherIncludedField", TType.STRUCT, (short)2);
-        private final long myIncludedInt;
+    private final long myIncludedInt;
     public static final int _MYINCLUDEDINT = 3;
     private static final TField MY_INCLUDED_INT_FIELD_DESC = new TField("MyIncludedInt", TType.I64, (short)3);
     static {
-      NAMES_TO_IDS.put("myIncludedField", 1);
-      THRIFT_NAMES_TO_IDS.put("MyIncludedField", 1);
-      FIELD_METADATA.put(1, MY_INCLUDED_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("myOtherIncludedField", 2);
-      THRIFT_NAMES_TO_IDS.put("MyOtherIncludedField", 2);
-      FIELD_METADATA.put(2, MY_OTHER_INCLUDED_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("myIncludedInt", 3);
-      THRIFT_NAMES_TO_IDS.put("MyIncludedInt", 3);
-      FIELD_METADATA.put(3, MY_INCLUDED_INT_FIELD_DESC);
+        NAMES_TO_IDS.put("myIncludedField", 1);
+        THRIFT_NAMES_TO_IDS.put("MyIncludedField", 1);
+        FIELD_METADATA.put(1, MY_INCLUDED_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("myOtherIncludedField", 2);
+        THRIFT_NAMES_TO_IDS.put("MyOtherIncludedField", 2);
+        FIELD_METADATA.put(2, MY_OTHER_INCLUDED_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("myIncludedInt", 3);
+        THRIFT_NAMES_TO_IDS.put("MyIncludedInt", 3);
+        FIELD_METADATA.put(3, MY_INCLUDED_INT_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.includes.Included getMyIncludedField() { return myIncludedField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.includes.Included getMyOtherIncludedField() { return myOtherIncludedField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
     public long getMyIncludedInt() { return myIncludedInt; }
@@ -251,5 +249,4 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }
-
 }

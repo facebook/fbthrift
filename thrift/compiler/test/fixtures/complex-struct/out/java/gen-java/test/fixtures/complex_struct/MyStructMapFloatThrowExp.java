@@ -40,11 +40,11 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStructMapFloatThrowExp other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,21 +89,20 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
     private final long myLongField;
     public static final int _MYLONGFIELD = 1;
     private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)1);
-        private final Map<Integer, List<List<Float>>> mapListOfFloats;
+    private final Map<Integer, List<List<Float>>> mapListOfFloats;
     public static final int _MAPLISTOFFLOATS = 2;
     private static final TField MAP_LIST_OF_FLOATS_FIELD_DESC = new TField("mapListOfFloats", TType.MAP, (short)2);
     static {
-      NAMES_TO_IDS.put("myLongField", 1);
-      THRIFT_NAMES_TO_IDS.put("myLongField", 1);
-      FIELD_METADATA.put(1, MY_LONG_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("mapListOfFloats", 2);
-      THRIFT_NAMES_TO_IDS.put("mapListOfFloats", 2);
-      FIELD_METADATA.put(2, MAP_LIST_OF_FLOATS_FIELD_DESC);
+        NAMES_TO_IDS.put("myLongField", 1);
+        THRIFT_NAMES_TO_IDS.put("myLongField", 1);
+        FIELD_METADATA.put(1, MY_LONG_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("mapListOfFloats", 2);
+        THRIFT_NAMES_TO_IDS.put("mapListOfFloats", 2);
+        FIELD_METADATA.put(2, MAP_LIST_OF_FLOATS_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
     public Map<Integer, List<List<Float>>> getMapListOfFloats() { return mapListOfFloats; }
@@ -265,5 +264,4 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
     public static MyStructMapFloatThrowExp defaultInstance() {
         return  _MyStructMapFloatThrowExpLazy._DEFAULT;
     }
-
 }

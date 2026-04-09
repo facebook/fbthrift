@@ -40,11 +40,11 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(BigStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,21 +89,20 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
     private final test.fixtures.module2.Struct s;
     public static final int _S = 1;
     private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
-        private final int id;
+    private final int id;
     public static final int _ID = 2;
     private static final TField ID_FIELD_DESC = new TField("id", TType.I32, (short)2);
     static {
-      NAMES_TO_IDS.put("s", 1);
-      THRIFT_NAMES_TO_IDS.put("s", 1);
-      FIELD_METADATA.put(1, S_FIELD_DESC);
-      NAMES_TO_IDS.put("id", 2);
-      THRIFT_NAMES_TO_IDS.put("id", 2);
-      FIELD_METADATA.put(2, ID_FIELD_DESC);
+        NAMES_TO_IDS.put("s", 1);
+        THRIFT_NAMES_TO_IDS.put("s", 1);
+        FIELD_METADATA.put(1, S_FIELD_DESC);
+        NAMES_TO_IDS.put("id", 2);
+        THRIFT_NAMES_TO_IDS.put("id", 2);
+        FIELD_METADATA.put(2, ID_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
     public test.fixtures.module2.Struct getS() { return s; }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
     public int getId() { return id; }
@@ -208,5 +207,4 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
     public static BigStruct defaultInstance() {
         return  _BigStructLazy._DEFAULT;
     }
-
 }

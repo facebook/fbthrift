@@ -36,24 +36,24 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
     private static final TField CUSTOM_FIELD_DESC = new TField("custom", TType.STRING, (short)2);
 
     static {
-      NAMES_TO_IDS.put("delay", 1);
-      THRIFT_NAMES_TO_IDS.put("delay", 1);
-      FIELD_METADATA.put(1, DELAY_FIELD_DESC);
-      NAMES_TO_IDS.put("custom", 2);
-      THRIFT_NAMES_TO_IDS.put("custom", 2);
-      FIELD_METADATA.put(2, CUSTOM_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptTestUnion"),
-        AdaptTestUnion.class, AdaptTestUnion::read0));
+        NAMES_TO_IDS.put("delay", 1);
+        THRIFT_NAMES_TO_IDS.put("delay", 1);
+        FIELD_METADATA.put(1, DELAY_FIELD_DESC);
+        NAMES_TO_IDS.put("custom", 2);
+        THRIFT_NAMES_TO_IDS.put("custom", 2);
+        FIELD_METADATA.put(2, CUSTOM_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptTestUnion"),
+            AdaptTestUnion.class, AdaptTestUnion::read0));
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      DELAY,
-      CUSTOM,
+        __FBTHRIFT_EMPTY_UNION__,
+        DELAY,
+        CUSTOM,
     }
 
     public static AdaptTestUnion from(int _id, java.lang.Object _field) {
@@ -66,7 +66,7 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        AdaptTestUnion _u = new  AdaptTestUnion();
+        AdaptTestUnion _u = new AdaptTestUnion();
 
         try {
             switch(_id) {
@@ -79,7 +79,7 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
                     _u.value = (byte[]) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -155,16 +155,16 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 1:
-          return TypeEnum.DELAY;
-        case 2:
-          return TypeEnum.CUSTOM;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 1:
+                return TypeEnum.DELAY;
+            case 2:
+                return TypeEnum.CUSTOM;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -222,7 +222,7 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
 
     public interface Visitor<T> {
         default T visit(AdaptTestUnion acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitDelay(long delay);
@@ -308,5 +308,4 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
     public static AdaptTestUnion defaultInstance() {
         return _DEFAULT;
     }
-
 }

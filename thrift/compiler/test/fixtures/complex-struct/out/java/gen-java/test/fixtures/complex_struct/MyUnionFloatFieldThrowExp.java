@@ -40,29 +40,29 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
     private static final TField COMPLEX_NESTED_STRUCT_FIELD_DESC = new TField("complexNestedStruct", TType.STRUCT, (short)4);
 
     static {
-      NAMES_TO_IDS.put("myEnum", 1);
-      THRIFT_NAMES_TO_IDS.put("myEnum", 1);
-      FIELD_METADATA.put(1, MY_ENUM_FIELD_DESC);
-      NAMES_TO_IDS.put("setFloat", 2);
-      THRIFT_NAMES_TO_IDS.put("setFloat", 2);
-      FIELD_METADATA.put(2, SET_FLOAT_FIELD_DESC);
-      NAMES_TO_IDS.put("myDataItem", 3);
-      THRIFT_NAMES_TO_IDS.put("myDataItem", 3);
-      FIELD_METADATA.put(3, MY_DATA_ITEM_FIELD_DESC);
-      NAMES_TO_IDS.put("complexNestedStruct", 4);
-      THRIFT_NAMES_TO_IDS.put("complexNestedStruct", 4);
-      FIELD_METADATA.put(4, COMPLEX_NESTED_STRUCT_FIELD_DESC);
+        NAMES_TO_IDS.put("myEnum", 1);
+        THRIFT_NAMES_TO_IDS.put("myEnum", 1);
+        FIELD_METADATA.put(1, MY_ENUM_FIELD_DESC);
+        NAMES_TO_IDS.put("setFloat", 2);
+        THRIFT_NAMES_TO_IDS.put("setFloat", 2);
+        FIELD_METADATA.put(2, SET_FLOAT_FIELD_DESC);
+        NAMES_TO_IDS.put("myDataItem", 3);
+        THRIFT_NAMES_TO_IDS.put("myDataItem", 3);
+        FIELD_METADATA.put(3, MY_DATA_ITEM_FIELD_DESC);
+        NAMES_TO_IDS.put("complexNestedStruct", 4);
+        THRIFT_NAMES_TO_IDS.put("complexNestedStruct", 4);
+        FIELD_METADATA.put(4, COMPLEX_NESTED_STRUCT_FIELD_DESC);
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      MY_ENUM,
-      SET_FLOAT,
-      MY_DATA_ITEM,
-      COMPLEX_NESTED_STRUCT,
+        __FBTHRIFT_EMPTY_UNION__,
+        MY_ENUM,
+        SET_FLOAT,
+        MY_DATA_ITEM,
+        COMPLEX_NESTED_STRUCT,
     }
 
     public static MyUnionFloatFieldThrowExp from(int _id, java.lang.Object _field) {
@@ -75,7 +75,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        MyUnionFloatFieldThrowExp _u = new  MyUnionFloatFieldThrowExp();
+        MyUnionFloatFieldThrowExp _u = new MyUnionFloatFieldThrowExp();
 
         try {
             switch(_id) {
@@ -96,7 +96,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
                     _u.value = (test.fixtures.complex_struct.ComplexNestedStruct) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -242,20 +242,20 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 1:
-          return TypeEnum.MY_ENUM;
-        case 2:
-          return TypeEnum.SET_FLOAT;
-        case 3:
-          return TypeEnum.MY_DATA_ITEM;
-        case 4:
-          return TypeEnum.COMPLEX_NESTED_STRUCT;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 1:
+                return TypeEnum.MY_ENUM;
+            case 2:
+                return TypeEnum.SET_FLOAT;
+            case 3:
+                return TypeEnum.MY_DATA_ITEM;
+            case 4:
+                return TypeEnum.COMPLEX_NESTED_STRUCT;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -319,7 +319,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
 
     public interface Visitor<T> {
         default T visit(MyUnionFloatFieldThrowExp acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitMyEnum(test.fixtures.complex_struct.MyEnum myEnum);
@@ -463,5 +463,4 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
     public static MyUnionFloatFieldThrowExp defaultInstance() {
         return _DEFAULT;
     }
-
 }

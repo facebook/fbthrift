@@ -40,11 +40,11 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(NoEffect other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,21 +89,20 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
     private final String anSnakeString;
     public static final int _AN_SNAKE_STRING = 1;
     private static final TField AN_SNAKE_STRING_FIELD_DESC = new TField("an_snake_string", TType.STRING, (short)1);
-        private final int aCamelI32;
+    private final int aCamelI32;
     public static final int _ACAMELI32 = 2;
     private static final TField A_CAMEL_I32_FIELD_DESC = new TField("aCamelI32", TType.I32, (short)2);
     static {
-      NAMES_TO_IDS.put("anSnakeString", 1);
-      THRIFT_NAMES_TO_IDS.put("an_snake_string", 1);
-      FIELD_METADATA.put(1, AN_SNAKE_STRING_FIELD_DESC);
-      NAMES_TO_IDS.put("aCamelI32", 2);
-      THRIFT_NAMES_TO_IDS.put("aCamelI32", 2);
-      FIELD_METADATA.put(2, A_CAMEL_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("anSnakeString", 1);
+        THRIFT_NAMES_TO_IDS.put("an_snake_string", 1);
+        FIELD_METADATA.put(1, AN_SNAKE_STRING_FIELD_DESC);
+        NAMES_TO_IDS.put("aCamelI32", 2);
+        THRIFT_NAMES_TO_IDS.put("aCamelI32", 2);
+        FIELD_METADATA.put(2, A_CAMEL_I32_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="an_snake_string", requiredness=Requiredness.NONE)
     public String getAnSnakeString() { return anSnakeString; }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="aCamelI32", requiredness=Requiredness.NONE)
     public int getACamelI32() { return aCamelI32; }
@@ -208,5 +207,4 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
     public static NoEffect defaultInstance() {
         return  _NoEffectLazy._DEFAULT;
     }
-
 }

@@ -43,11 +43,11 @@ public final class StructWithRef implements com.facebook.thrift.payload.ThriftSe
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(StructWithRef other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -102,31 +102,29 @@ public final class StructWithRef implements com.facebook.thrift.payload.ThriftSe
     private final test.fixtures.refs.Empty defField;
     public static final int _DEF_FIELD = 1;
     private static final TField DEF_FIELD_FIELD_DESC = new TField("def_field", TType.STRUCT, (short)1);
-        private final test.fixtures.refs.Empty optField;
+    private final test.fixtures.refs.Empty optField;
     public static final int _OPT_FIELD = 2;
     private static final TField OPT_FIELD_FIELD_DESC = new TField("opt_field", TType.STRUCT, (short)2);
-        private final test.fixtures.refs.Empty reqField;
+    private final test.fixtures.refs.Empty reqField;
     public static final int _REQ_FIELD = 3;
     private static final TField REQ_FIELD_FIELD_DESC = new TField("req_field", TType.STRUCT, (short)3);
     static {
-      NAMES_TO_IDS.put("defField", 1);
-      THRIFT_NAMES_TO_IDS.put("def_field", 1);
-      FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("optField", 2);
-      THRIFT_NAMES_TO_IDS.put("opt_field", 2);
-      FIELD_METADATA.put(2, OPT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("reqField", 3);
-      THRIFT_NAMES_TO_IDS.put("req_field", 3);
-      FIELD_METADATA.put(3, REQ_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("defField", 1);
+        THRIFT_NAMES_TO_IDS.put("def_field", 1);
+        FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("optField", 2);
+        THRIFT_NAMES_TO_IDS.put("opt_field", 2);
+        FIELD_METADATA.put(2, OPT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("reqField", 3);
+        THRIFT_NAMES_TO_IDS.put("req_field", 3);
+        FIELD_METADATA.put(3, REQ_FIELD_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.Empty getOptField() { return optField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.Empty getReqField() { return reqField; }
@@ -253,5 +251,4 @@ public final class StructWithRef implements com.facebook.thrift.payload.ThriftSe
     public static StructWithRef defaultInstance() {
         return  _StructWithRefLazy._DEFAULT;
     }
-
 }

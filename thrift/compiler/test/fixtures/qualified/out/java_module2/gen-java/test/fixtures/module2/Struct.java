@@ -40,11 +40,11 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Struct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,21 +89,20 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
     private final test.fixtures.module0.Struct first;
     public static final int _FIRST = 1;
     private static final TField FIRST_FIELD_DESC = new TField("first", TType.STRUCT, (short)1);
-        private final test.fixtures.module1.Struct second;
+    private final test.fixtures.module1.Struct second;
     public static final int _SECOND = 2;
     private static final TField SECOND_FIELD_DESC = new TField("second", TType.STRUCT, (short)2);
     static {
-      NAMES_TO_IDS.put("first", 1);
-      THRIFT_NAMES_TO_IDS.put("first", 1);
-      FIELD_METADATA.put(1, FIRST_FIELD_DESC);
-      NAMES_TO_IDS.put("second", 2);
-      THRIFT_NAMES_TO_IDS.put("second", 2);
-      FIELD_METADATA.put(2, SECOND_FIELD_DESC);
+        NAMES_TO_IDS.put("first", 1);
+        THRIFT_NAMES_TO_IDS.put("first", 1);
+        FIELD_METADATA.put(1, FIRST_FIELD_DESC);
+        NAMES_TO_IDS.put("second", 2);
+        THRIFT_NAMES_TO_IDS.put("second", 2);
+        FIELD_METADATA.put(2, SECOND_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="first", requiredness=Requiredness.NONE)
     public test.fixtures.module0.Struct getFirst() { return first; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="second", requiredness=Requiredness.NONE)
     public test.fixtures.module1.Struct getSecond() { return second; }
@@ -210,5 +209,4 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
     public static Struct defaultInstance() {
         return  _StructLazy._DEFAULT;
     }
-
 }

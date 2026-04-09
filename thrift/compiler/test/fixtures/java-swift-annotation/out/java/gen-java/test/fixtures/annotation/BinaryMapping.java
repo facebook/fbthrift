@@ -40,11 +40,11 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(BinaryMapping other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,21 +89,20 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
     private final Map<String, byte[]> binaryMap;
     public static final int _BINARYMAP = 3;
     private static final TField BINARY_MAP_FIELD_DESC = new TField("binaryMap", TType.MAP, (short)3);
-        private final Map<String, byte[]> regularBinary;
+    private final Map<String, byte[]> regularBinary;
     public static final int _REGULARBINARY = 4;
     private static final TField REGULAR_BINARY_FIELD_DESC = new TField("regularBinary", TType.MAP, (short)4);
     static {
-      NAMES_TO_IDS.put("binaryMap", 3);
-      THRIFT_NAMES_TO_IDS.put("binaryMap", 3);
-      FIELD_METADATA.put(3, BINARY_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("regularBinary", 4);
-      THRIFT_NAMES_TO_IDS.put("regularBinary", 4);
-      FIELD_METADATA.put(4, REGULAR_BINARY_FIELD_DESC);
+        NAMES_TO_IDS.put("binaryMap", 3);
+        THRIFT_NAMES_TO_IDS.put("binaryMap", 3);
+        FIELD_METADATA.put(3, BINARY_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("regularBinary", 4);
+        THRIFT_NAMES_TO_IDS.put("regularBinary", 4);
+        FIELD_METADATA.put(4, REGULAR_BINARY_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="binaryMap", requiredness=Requiredness.NONE)
     public Map<String, byte[]> getBinaryMap() { return binaryMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)
     public Map<String, byte[]> getRegularBinary() { return regularBinary; }
@@ -272,5 +271,4 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
     public static BinaryMapping defaultInstance() {
         return  _BinaryMappingLazy._DEFAULT;
     }
-
 }

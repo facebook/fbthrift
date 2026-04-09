@@ -40,11 +40,11 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(SecretStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -90,22 +90,21 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
     private final long id;
     public static final int _ID = 1;
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
-        @org.apache.thrift.annotations.Sensitive
+    @org.apache.thrift.annotations.Sensitive
     private final String password;
     public static final int _PASSWORD = 2;
     private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)2);
     static {
-      NAMES_TO_IDS.put("id", 1);
-      THRIFT_NAMES_TO_IDS.put("id", 1);
-      FIELD_METADATA.put(1, ID_FIELD_DESC);
-      NAMES_TO_IDS.put("password", 2);
-      THRIFT_NAMES_TO_IDS.put("password", 2);
-      FIELD_METADATA.put(2, PASSWORD_FIELD_DESC);
+        NAMES_TO_IDS.put("id", 1);
+        THRIFT_NAMES_TO_IDS.put("id", 1);
+        FIELD_METADATA.put(1, ID_FIELD_DESC);
+        NAMES_TO_IDS.put("password", 2);
+        THRIFT_NAMES_TO_IDS.put("password", 2);
+        FIELD_METADATA.put(2, PASSWORD_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
     public String getPassword() { return password; }
@@ -210,5 +209,4 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
     public static SecretStruct defaultInstance() {
         return  _SecretStructLazy._DEFAULT;
     }
-
 }

@@ -31,11 +31,11 @@ public final class Empty implements com.facebook.thrift.payload.ThriftSerializab
 
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Empty other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -57,8 +57,9 @@ public final class Empty implements com.facebook.thrift.payload.ThriftSerializab
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Empty");
-static {
+    static {
     }
+
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -121,5 +122,4 @@ static {
     public static Empty defaultInstance() {
         return  _EmptyLazy._DEFAULT;
     }
-
 }

@@ -50,36 +50,36 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
     private static final TField LONG_FIELD_FIELD_DESC = new TField("longField", TType.I64, (short)9);
 
     static {
-      NAMES_TO_IDS.put("intField", 1);
-      THRIFT_NAMES_TO_IDS.put("intField", 1);
-      FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("setField", 4);
-      THRIFT_NAMES_TO_IDS.put("setField", 4);
-      FIELD_METADATA.put(4, SET_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("mapField", 6);
-      THRIFT_NAMES_TO_IDS.put("mapField", 6);
-      FIELD_METADATA.put(6, MAP_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("binaryField", 8);
-      THRIFT_NAMES_TO_IDS.put("binaryField", 8);
-      FIELD_METADATA.put(8, BINARY_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("longField", 9);
-      THRIFT_NAMES_TO_IDS.put("longField", 9);
-      FIELD_METADATA.put(9, LONG_FIELD_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/Baz"),
-        Baz.class, Baz::read0));
+        NAMES_TO_IDS.put("intField", 1);
+        THRIFT_NAMES_TO_IDS.put("intField", 1);
+        FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("setField", 4);
+        THRIFT_NAMES_TO_IDS.put("setField", 4);
+        FIELD_METADATA.put(4, SET_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("mapField", 6);
+        THRIFT_NAMES_TO_IDS.put("mapField", 6);
+        FIELD_METADATA.put(6, MAP_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("binaryField", 8);
+        THRIFT_NAMES_TO_IDS.put("binaryField", 8);
+        FIELD_METADATA.put(8, BINARY_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("longField", 9);
+        THRIFT_NAMES_TO_IDS.put("longField", 9);
+        FIELD_METADATA.put(9, LONG_FIELD_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/Baz"),
+            Baz.class, Baz::read0));
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      INT_FIELD,
-      SET_FIELD,
-      MAP_FIELD,
-      BINARY_FIELD,
-      LONG_FIELD,
+        __FBTHRIFT_EMPTY_UNION__,
+        INT_FIELD,
+        SET_FIELD,
+        MAP_FIELD,
+        BINARY_FIELD,
+        LONG_FIELD,
     }
 
     public static Baz from(int _id, java.lang.Object _field) {
@@ -92,7 +92,7 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        Baz _u = new  Baz();
+        Baz _u = new Baz();
 
         try {
             switch(_id) {
@@ -117,7 +117,7 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
                     _u.value = (com.facebook.thrift.my.AdaptedI64_1) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -283,22 +283,22 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 1:
-          return TypeEnum.INT_FIELD;
-        case 4:
-          return TypeEnum.SET_FIELD;
-        case 6:
-          return TypeEnum.MAP_FIELD;
-        case 8:
-          return TypeEnum.BINARY_FIELD;
-        case 9:
-          return TypeEnum.LONG_FIELD;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 1:
+                return TypeEnum.INT_FIELD;
+            case 4:
+                return TypeEnum.SET_FIELD;
+            case 6:
+                return TypeEnum.MAP_FIELD;
+            case 8:
+                return TypeEnum.BINARY_FIELD;
+            case 9:
+                return TypeEnum.LONG_FIELD;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -365,7 +365,7 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
 
     public interface Visitor<T> {
         default T visit(Baz acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitIntField(com.facebook.thrift.my.AdaptedI32_5137_1 intField);
@@ -563,5 +563,4 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
     public static Baz defaultInstance() {
         return _DEFAULT;
     }
-
 }

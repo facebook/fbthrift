@@ -37,11 +37,11 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(A other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,9 +77,9 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
     public static final int _A = 1;
     private static final TField A_FIELD_DESC = new TField("a", TType.STRING, (short)1);
     static {
-      NAMES_TO_IDS.put("a", 1);
-      THRIFT_NAMES_TO_IDS.put("a", 1);
-      FIELD_METADATA.put(1, A_FIELD_DESC);
+        NAMES_TO_IDS.put("a", 1);
+        THRIFT_NAMES_TO_IDS.put("a", 1);
+        FIELD_METADATA.put(1, A_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
@@ -167,5 +167,4 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
     public static A defaultInstance() {
         return  _ALazy._DEFAULT;
     }
-
 }

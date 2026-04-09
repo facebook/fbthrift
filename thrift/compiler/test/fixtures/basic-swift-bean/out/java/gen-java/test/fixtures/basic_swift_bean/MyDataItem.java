@@ -31,11 +31,11 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyDataItem other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -79,16 +79,16 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     private int field1;
     public static final int _FIELD1 = 1;
     private static final TField FIELD1_FIELD_DESC = new TField("field1", TType.I32, (short)1);
-        private int field2;
+    private int field2;
     public static final int _FIELD2 = 2;
     private static final TField FIELD2_FIELD_DESC = new TField("field2", TType.I32, (short)2);
     static {
-      NAMES_TO_IDS.put("field1", 1);
-      THRIFT_NAMES_TO_IDS.put("field1", 1);
-      FIELD_METADATA.put(1, FIELD1_FIELD_DESC);
-      NAMES_TO_IDS.put("field2", 2);
-      THRIFT_NAMES_TO_IDS.put("field2", 2);
-      FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
+        NAMES_TO_IDS.put("field1", 1);
+        THRIFT_NAMES_TO_IDS.put("field1", 1);
+        FIELD_METADATA.put(1, FIELD1_FIELD_DESC);
+        NAMES_TO_IDS.put("field2", 2);
+        THRIFT_NAMES_TO_IDS.put("field2", 2);
+        FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
@@ -99,7 +99,6 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
         this.field1 = field1;
         return this;
     }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
@@ -200,6 +199,5 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
         oprot.writeFieldStop();
         oprot.writeStructEnd();
     }
-
 
 }

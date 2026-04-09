@@ -40,11 +40,11 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(SimpleStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,21 +89,20 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     private final long age;
     public static final int _AGE = 1;
     private static final TField AGE_FIELD_DESC = new TField("age", TType.I64, (short)1);
-        private final String name;
+    private final String name;
     public static final int _NAME = 2;
     private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)2);
     static {
-      NAMES_TO_IDS.put("age", 1);
-      THRIFT_NAMES_TO_IDS.put("age", 1);
-      FIELD_METADATA.put(1, AGE_FIELD_DESC);
-      NAMES_TO_IDS.put("name", 2);
-      THRIFT_NAMES_TO_IDS.put("name", 2);
-      FIELD_METADATA.put(2, NAME_FIELD_DESC);
+        NAMES_TO_IDS.put("age", 1);
+        THRIFT_NAMES_TO_IDS.put("age", 1);
+        FIELD_METADATA.put(1, AGE_FIELD_DESC);
+        NAMES_TO_IDS.put("name", 2);
+        THRIFT_NAMES_TO_IDS.put("name", 2);
+        FIELD_METADATA.put(2, NAME_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
     public long getAge() { return age; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
@@ -208,5 +207,4 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     public static SimpleStruct defaultInstance() {
         return  _SimpleStructLazy._DEFAULT;
     }
-
 }

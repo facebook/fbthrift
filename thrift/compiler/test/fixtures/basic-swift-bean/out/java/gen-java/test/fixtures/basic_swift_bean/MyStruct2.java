@@ -31,11 +31,11 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStruct2 other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -79,16 +79,16 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
     private test.fixtures.basic_swift_bean.MyStruct1 myStruct1;
     public static final int _MYSTRUCT1 = 1;
     private static final TField MY_STRUCT1_FIELD_DESC = new TField("myStruct1", TType.STRUCT, (short)1);
-        private String myString;
+    private String myString;
     public static final int _MYSTRING = 2;
     private static final TField MY_STRING_FIELD_DESC = new TField("myString", TType.STRING, (short)2);
     static {
-      NAMES_TO_IDS.put("myStruct1", 1);
-      THRIFT_NAMES_TO_IDS.put("myStruct1", 1);
-      FIELD_METADATA.put(1, MY_STRUCT1_FIELD_DESC);
-      NAMES_TO_IDS.put("myString", 2);
-      THRIFT_NAMES_TO_IDS.put("myString", 2);
-      FIELD_METADATA.put(2, MY_STRING_FIELD_DESC);
+        NAMES_TO_IDS.put("myStruct1", 1);
+        THRIFT_NAMES_TO_IDS.put("myStruct1", 1);
+        FIELD_METADATA.put(1, MY_STRUCT1_FIELD_DESC);
+        NAMES_TO_IDS.put("myString", 2);
+        THRIFT_NAMES_TO_IDS.put("myString", 2);
+        FIELD_METADATA.put(2, MY_STRING_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
@@ -99,7 +99,6 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
         this.myStruct1 = myStruct1;
         return this;
     }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }
@@ -204,6 +203,5 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
         oprot.writeFieldStop();
         oprot.writeStructEnd();
     }
-
 
 }

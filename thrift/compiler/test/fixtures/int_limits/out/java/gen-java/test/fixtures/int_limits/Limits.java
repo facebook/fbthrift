@@ -58,11 +58,11 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Limits other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -167,81 +167,74 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
     private final long maxI64Field;
     public static final int _MAX_I64_FIELD = 1;
     private static final TField MAX_I64_FIELD_FIELD_DESC = new TField("max_i64_field", TType.I64, (short)1);
-        private final long minI64Field;
+    private final long minI64Field;
     public static final int _MIN_I64_FIELD = 2;
     private static final TField MIN_I64_FIELD_FIELD_DESC = new TField("min_i64_field", TType.I64, (short)2);
-        private final int maxI32Field;
+    private final int maxI32Field;
     public static final int _MAX_I32_FIELD = 3;
     private static final TField MAX_I32_FIELD_FIELD_DESC = new TField("max_i32_field", TType.I32, (short)3);
-        private final int minI32Field;
+    private final int minI32Field;
     public static final int _MIN_I32_FIELD = 4;
     private static final TField MIN_I32_FIELD_FIELD_DESC = new TField("min_i32_field", TType.I32, (short)4);
-        private final short maxI16Field;
+    private final short maxI16Field;
     public static final int _MAX_I16_FIELD = 5;
     private static final TField MAX_I16_FIELD_FIELD_DESC = new TField("max_i16_field", TType.I16, (short)5);
-        private final short minI16Field;
+    private final short minI16Field;
     public static final int _MIN_I16_FIELD = 6;
     private static final TField MIN_I16_FIELD_FIELD_DESC = new TField("min_i16_field", TType.I16, (short)6);
-        private final byte maxByteField;
+    private final byte maxByteField;
     public static final int _MAX_BYTE_FIELD = 7;
     private static final TField MAX_BYTE_FIELD_FIELD_DESC = new TField("max_byte_field", TType.BYTE, (short)7);
-        private final byte minByteField;
+    private final byte minByteField;
     public static final int _MIN_BYTE_FIELD = 8;
     private static final TField MIN_BYTE_FIELD_FIELD_DESC = new TField("min_byte_field", TType.BYTE, (short)8);
     static {
-      NAMES_TO_IDS.put("maxI64Field", 1);
-      THRIFT_NAMES_TO_IDS.put("max_i64_field", 1);
-      FIELD_METADATA.put(1, MAX_I64_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("minI64Field", 2);
-      THRIFT_NAMES_TO_IDS.put("min_i64_field", 2);
-      FIELD_METADATA.put(2, MIN_I64_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("maxI32Field", 3);
-      THRIFT_NAMES_TO_IDS.put("max_i32_field", 3);
-      FIELD_METADATA.put(3, MAX_I32_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("minI32Field", 4);
-      THRIFT_NAMES_TO_IDS.put("min_i32_field", 4);
-      FIELD_METADATA.put(4, MIN_I32_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("maxI16Field", 5);
-      THRIFT_NAMES_TO_IDS.put("max_i16_field", 5);
-      FIELD_METADATA.put(5, MAX_I16_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("minI16Field", 6);
-      THRIFT_NAMES_TO_IDS.put("min_i16_field", 6);
-      FIELD_METADATA.put(6, MIN_I16_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("maxByteField", 7);
-      THRIFT_NAMES_TO_IDS.put("max_byte_field", 7);
-      FIELD_METADATA.put(7, MAX_BYTE_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("minByteField", 8);
-      THRIFT_NAMES_TO_IDS.put("min_byte_field", 8);
-      FIELD_METADATA.put(8, MIN_BYTE_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("maxI64Field", 1);
+        THRIFT_NAMES_TO_IDS.put("max_i64_field", 1);
+        FIELD_METADATA.put(1, MAX_I64_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("minI64Field", 2);
+        THRIFT_NAMES_TO_IDS.put("min_i64_field", 2);
+        FIELD_METADATA.put(2, MIN_I64_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("maxI32Field", 3);
+        THRIFT_NAMES_TO_IDS.put("max_i32_field", 3);
+        FIELD_METADATA.put(3, MAX_I32_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("minI32Field", 4);
+        THRIFT_NAMES_TO_IDS.put("min_i32_field", 4);
+        FIELD_METADATA.put(4, MIN_I32_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("maxI16Field", 5);
+        THRIFT_NAMES_TO_IDS.put("max_i16_field", 5);
+        FIELD_METADATA.put(5, MAX_I16_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("minI16Field", 6);
+        THRIFT_NAMES_TO_IDS.put("min_i16_field", 6);
+        FIELD_METADATA.put(6, MIN_I16_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("maxByteField", 7);
+        THRIFT_NAMES_TO_IDS.put("max_byte_field", 7);
+        FIELD_METADATA.put(7, MAX_BYTE_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("minByteField", 8);
+        THRIFT_NAMES_TO_IDS.put("min_byte_field", 8);
+        FIELD_METADATA.put(8, MIN_BYTE_FIELD_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="max_i64_field", requiredness=Requiredness.NONE)
     public long getMaxI64Field() { return maxI64Field; }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="min_i64_field", requiredness=Requiredness.NONE)
     public long getMinI64Field() { return minI64Field; }
-
     
     @com.facebook.swift.codec.ThriftField(value=3, name="max_i32_field", requiredness=Requiredness.NONE)
     public int getMaxI32Field() { return maxI32Field; }
-
     
     @com.facebook.swift.codec.ThriftField(value=4, name="min_i32_field", requiredness=Requiredness.NONE)
     public int getMinI32Field() { return minI32Field; }
-
     
     @com.facebook.swift.codec.ThriftField(value=5, name="max_i16_field", requiredness=Requiredness.NONE)
     public short getMaxI16Field() { return maxI16Field; }
-
     
     @com.facebook.swift.codec.ThriftField(value=6, name="min_i16_field", requiredness=Requiredness.NONE)
     public short getMinI16Field() { return minI16Field; }
-
     
     @com.facebook.swift.codec.ThriftField(value=7, name="max_byte_field", requiredness=Requiredness.NONE)
     public byte getMaxByteField() { return maxByteField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=8, name="min_byte_field", requiredness=Requiredness.NONE)
     public byte getMinByteField() { return minByteField; }
@@ -452,5 +445,4 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
     public static Limits defaultInstance() {
         return  _LimitsLazy._DEFAULT;
     }
-
 }

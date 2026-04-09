@@ -37,11 +37,11 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(SinkPayload other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,9 +77,9 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
     public static final int _CONTENT = 1;
     private static final TField CONTENT_FIELD_DESC = new TField("content", TType.STRING, (short)1);
     static {
-      NAMES_TO_IDS.put("content", 1);
-      THRIFT_NAMES_TO_IDS.put("content", 1);
-      FIELD_METADATA.put(1, CONTENT_FIELD_DESC);
+        NAMES_TO_IDS.put("content", 1);
+        THRIFT_NAMES_TO_IDS.put("content", 1);
+        FIELD_METADATA.put(1, CONTENT_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
@@ -167,5 +167,4 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
     public static SinkPayload defaultInstance() {
         return  _SinkPayloadLazy._DEFAULT;
     }
-
 }

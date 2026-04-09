@@ -43,11 +43,11 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Containers other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -102,34 +102,32 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     private final List<Integer> i32List;
     public static final int _I32LIST = 1;
     private static final TField I32_LIST_FIELD_DESC = new TField("I32List", TType.LIST, (short)1);
-        private final Set<String> stringSet;
+    private final Set<String> stringSet;
     public static final int _STRINGSET = 2;
     private static final TField STRING_SET_FIELD_DESC = new TField("StringSet", TType.SET, (short)2);
-        private final Map<String, Long> stringToI64Map;
+    private final Map<String, Long> stringToI64Map;
     public static final int _STRINGTOI64MAP = 3;
     private static final TField STRING_TO_I64_MAP_FIELD_DESC = new TField("StringToI64Map", TType.MAP, (short)3);
     static {
-      NAMES_TO_IDS.put("i32List", 1);
-      THRIFT_NAMES_TO_IDS.put("I32List", 1);
-      FIELD_METADATA.put(1, I32_LIST_FIELD_DESC);
-      NAMES_TO_IDS.put("stringSet", 2);
-      THRIFT_NAMES_TO_IDS.put("StringSet", 2);
-      FIELD_METADATA.put(2, STRING_SET_FIELD_DESC);
-      NAMES_TO_IDS.put("stringToI64Map", 3);
-      THRIFT_NAMES_TO_IDS.put("StringToI64Map", 3);
-      FIELD_METADATA.put(3, STRING_TO_I64_MAP_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/basic/Containers"),
-        Containers.class, Containers::read0));
+        NAMES_TO_IDS.put("i32List", 1);
+        THRIFT_NAMES_TO_IDS.put("I32List", 1);
+        FIELD_METADATA.put(1, I32_LIST_FIELD_DESC);
+        NAMES_TO_IDS.put("stringSet", 2);
+        THRIFT_NAMES_TO_IDS.put("StringSet", 2);
+        FIELD_METADATA.put(2, STRING_SET_FIELD_DESC);
+        NAMES_TO_IDS.put("stringToI64Map", 3);
+        THRIFT_NAMES_TO_IDS.put("StringToI64Map", 3);
+        FIELD_METADATA.put(3, STRING_TO_I64_MAP_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("test.dev/fixtures/basic/Containers"),
+            Containers.class, Containers::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="I32List", requiredness=Requiredness.NONE)
     public List<Integer> getI32List() { return i32List; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="StringSet", requiredness=Requiredness.NONE)
     public Set<String> getStringSet() { return stringSet; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="StringToI64Map", requiredness=Requiredness.NONE)
     public Map<String, Long> getStringToI64Map() { return stringToI64Map; }
@@ -313,5 +311,4 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     public static Containers defaultInstance() {
         return  _ContainersLazy._DEFAULT;
     }
-
 }

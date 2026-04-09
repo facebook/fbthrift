@@ -163,11 +163,11 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(B other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -573,361 +573,326 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
     private final test.fixtures.shapes.A justAnA;
     public static final int _JUST_AN_A = 1;
     private static final TField JUST_AN_A_FIELD_DESC = new TField("just_an_A", TType.STRUCT, (short)1);
-        private final Set<Integer> setOfI32;
+    private final Set<Integer> setOfI32;
     public static final int _SET_OF_I32 = 2;
     private static final TField SET_OF_I32_FIELD_DESC = new TField("set_of_i32", TType.SET, (short)2);
-        private final List<Integer> listOfI32;
+    private final List<Integer> listOfI32;
     public static final int _LIST_OF_I32 = 3;
     private static final TField LIST_OF_I32_FIELD_DESC = new TField("list_of_i32", TType.LIST, (short)3);
-        private final List<String> listOfString;
+    private final List<String> listOfString;
     public static final int _LIST_OF_STRING = 4;
     private static final TField LIST_OF_STRING_FIELD_DESC = new TField("list_of_string", TType.LIST, (short)4);
-        private final Map<String, Integer> mapOfStringToI32;
+    private final Map<String, Integer> mapOfStringToI32;
     public static final int _MAP_OF_STRING_TO_I32 = 5;
     private static final TField MAP_OF_STRING_TO_I32_FIELD_DESC = new TField("map_of_string_to_i32", TType.MAP, (short)5);
-        private final Map<String, test.fixtures.shapes.A> mapOfStringToA;
+    private final Map<String, test.fixtures.shapes.A> mapOfStringToA;
     public static final int _MAP_OF_STRING_TO_A = 6;
     private static final TField MAP_OF_STRING_TO_A_FIELD_DESC = new TField("map_of_string_to_A", TType.MAP, (short)6);
-        private final Map<String, List<Integer>> mapOfStringToListOfI32;
+    private final Map<String, List<Integer>> mapOfStringToListOfI32;
     public static final int _MAP_OF_STRING_TO_LIST_OF_I32 = 7;
     private static final TField MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC = new TField("map_of_string_to_list_of_i32", TType.MAP, (short)7);
-        private final Map<String, List<test.fixtures.shapes.A>> mapOfStringToListOfA;
+    private final Map<String, List<test.fixtures.shapes.A>> mapOfStringToListOfA;
     public static final int _MAP_OF_STRING_TO_LIST_OF_A = 8;
     private static final TField MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC = new TField("map_of_string_to_list_of_A", TType.MAP, (short)8);
-        private final Map<String, Set<Integer>> mapOfStringToSetOfI32;
+    private final Map<String, Set<Integer>> mapOfStringToSetOfI32;
     public static final int _MAP_OF_STRING_TO_SET_OF_I32 = 9;
     private static final TField MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC = new TField("map_of_string_to_set_of_i32", TType.MAP, (short)9);
-        private final Map<String, Map<String, Integer>> mapOfStringToMapOfStringToI32;
+    private final Map<String, Map<String, Integer>> mapOfStringToMapOfStringToI32;
     public static final int _MAP_OF_STRING_TO_MAP_OF_STRING_TO_I32 = 10;
     private static final TField MAP_OF_STRING_TO_MAP_OF_STRING_TO_I32_FIELD_DESC = new TField("map_of_string_to_map_of_string_to_i32", TType.MAP, (short)10);
-        private final Map<String, Map<String, test.fixtures.shapes.A>> mapOfStringToMapOfStringToA;
+    private final Map<String, Map<String, test.fixtures.shapes.A>> mapOfStringToMapOfStringToA;
     public static final int _MAP_OF_STRING_TO_MAP_OF_STRING_TO_A = 11;
     private static final TField MAP_OF_STRING_TO_MAP_OF_STRING_TO_A_FIELD_DESC = new TField("map_of_string_to_map_of_string_to_A", TType.MAP, (short)11);
-        private final List<Set<Integer>> listOfSetOfI32;
+    private final List<Set<Integer>> listOfSetOfI32;
     public static final int _LIST_OF_SET_OF_I32 = 12;
     private static final TField LIST_OF_SET_OF_I32_FIELD_DESC = new TField("list_of_set_of_i32", TType.LIST, (short)12);
-        private final List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA;
+    private final List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA;
     public static final int _LIST_OF_MAP_OF_STRING_TO_LIST_OF_A = 13;
     private static final TField LIST_OF_MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC = new TField("list_of_map_of_string_to_list_of_A", TType.LIST, (short)13);
-        private final List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA;
+    private final List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA;
     public static final int _LIST_OF_MAP_OF_STRING_TO_A = 14;
     private static final TField LIST_OF_MAP_OF_STRING_TO_A_FIELD_DESC = new TField("list_of_map_of_string_to_A", TType.LIST, (short)14);
-        private final test.fixtures.shapes.Enum justAnEnum;
+    private final test.fixtures.shapes.Enum justAnEnum;
     public static final int _JUST_AN_ENUM = 17;
     private static final TField JUST_AN_ENUM_FIELD_DESC = new TField("just_an_enum", TType.I32, (short)17);
-        private final test.fixtures.shapes.Union justAUnion;
+    private final test.fixtures.shapes.Union justAUnion;
     public static final int _JUST_A_UNION = 18;
     private static final TField JUST_AUNION_FIELD_DESC = new TField("just_a_union", TType.STRUCT, (short)18);
-        private final test.fixtures.shapes.A optionalJustAnA;
+    private final test.fixtures.shapes.A optionalJustAnA;
     public static final int _OPTIONAL_JUST_AN_A = 51;
     private static final TField OPTIONAL_JUST_AN_A_FIELD_DESC = new TField("optional_just_an_A", TType.STRUCT, (short)51);
-        private final Set<Integer> optionalSetOfI32;
+    private final Set<Integer> optionalSetOfI32;
     public static final int _OPTIONAL_SET_OF_I32 = 52;
     private static final TField OPTIONAL_SET_OF_I32_FIELD_DESC = new TField("optional_set_of_i32", TType.SET, (short)52);
-        private final List<Integer> optionalListOfI32;
+    private final List<Integer> optionalListOfI32;
     public static final int _OPTIONAL_LIST_OF_I32 = 53;
     private static final TField OPTIONAL_LIST_OF_I32_FIELD_DESC = new TField("optional_list_of_i32", TType.LIST, (short)53);
-        private final List<String> optionalListOfString;
+    private final List<String> optionalListOfString;
     public static final int _OPTIONAL_LIST_OF_STRING = 54;
     private static final TField OPTIONAL_LIST_OF_STRING_FIELD_DESC = new TField("optional_list_of_string", TType.LIST, (short)54);
-        private final Map<String, Integer> optionalMapOfStringToI32;
+    private final Map<String, Integer> optionalMapOfStringToI32;
     public static final int _OPTIONAL_MAP_OF_STRING_TO_I32 = 55;
     private static final TField OPTIONAL_MAP_OF_STRING_TO_I32_FIELD_DESC = new TField("optional_map_of_string_to_i32", TType.MAP, (short)55);
-        private final Map<String, test.fixtures.shapes.A> optionalMapOfStringToA;
+    private final Map<String, test.fixtures.shapes.A> optionalMapOfStringToA;
     public static final int _OPTIONAL_MAP_OF_STRING_TO_A = 56;
     private static final TField OPTIONAL_MAP_OF_STRING_TO_A_FIELD_DESC = new TField("optional_map_of_string_to_A", TType.MAP, (short)56);
-        private final Map<String, List<Integer>> optionalMapOfStringToListOfI32;
+    private final Map<String, List<Integer>> optionalMapOfStringToListOfI32;
     public static final int _OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32 = 57;
     private static final TField OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC = new TField("optional_map_of_string_to_list_of_i32", TType.MAP, (short)57);
-        private final Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA;
+    private final Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA;
     public static final int _OPTIONAL_MAP_OF_STRING_TO_LIST_OF_A = 58;
     private static final TField OPTIONAL_MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC = new TField("optional_map_of_string_to_list_of_A", TType.MAP, (short)58);
-        private final Map<String, Set<Integer>> optionalMapOfStringToSetOfI32;
+    private final Map<String, Set<Integer>> optionalMapOfStringToSetOfI32;
     public static final int _OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32 = 59;
     private static final TField OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC = new TField("optional_map_of_string_to_set_of_i32", TType.MAP, (short)59);
-        private final test.fixtures.shapes.Enum optionalEnum;
+    private final test.fixtures.shapes.Enum optionalEnum;
     public static final int _OPTIONAL_ENUM = 60;
     private static final TField OPTIONAL_ENUM_FIELD_DESC = new TField("optional_enum", TType.I32, (short)60);
-        private final test.fixtures.shapes.Enum requiredEnumWithDefault;
+    private final test.fixtures.shapes.Enum requiredEnumWithDefault;
     public static final int _REQUIRED_ENUM_WITH_DEFAULT = 70;
     private static final TField REQUIRED_ENUM_WITH_DEFAULT_FIELD_DESC = new TField("required_enum_with_default", TType.I32, (short)70);
-        private final String stringWithDefaultValue;
+    private final String stringWithDefaultValue;
     public static final int _STRING_WITH_DEFAULT_VALUE = 80;
     private static final TField STRING_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("string_with_default_value", TType.STRING, (short)80);
-        private final int i32WithDefaultValue;
+    private final int i32WithDefaultValue;
     public static final int _I32_WITH_DEFAULT_VALUE = 81;
     private static final TField I32_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("i32_with_default_value", TType.I32, (short)81);
-        private final double doubleWithDefaultValue;
+    private final double doubleWithDefaultValue;
     public static final int _DOUBLE_WITH_DEFAULT_VALUE = 82;
     private static final TField DOUBLE_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("double_with_default_value", TType.DOUBLE, (short)82);
-        private final test.fixtures.shapes.Enum enumWithDefaultValue;
+    private final test.fixtures.shapes.Enum enumWithDefaultValue;
     public static final int _ENUM_WITH_DEFAULT_VALUE = 83;
     private static final TField ENUM_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("enum_with_default_value", TType.I32, (short)83);
-        private final test.fixtures.shapes.A aWithDefaultValue;
+    private final test.fixtures.shapes.A aWithDefaultValue;
     public static final int _A_WITH_DEFAULT_VALUE = 84;
     private static final TField A_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("A_with_default_value", TType.STRUCT, (short)84);
-        private final Set<Integer> setOfI32WithDefaultValue;
+    private final Set<Integer> setOfI32WithDefaultValue;
     public static final int _SET_OF_I32_WITH_DEFAULT_VALUE = 85;
     private static final TField SET_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("set_of_i32_with_default_value", TType.SET, (short)85);
-        private final Map<Integer, String> mapOfI32ToStringWithDefaultValue;
+    private final Map<Integer, String> mapOfI32ToStringWithDefaultValue;
     public static final int _MAP_OF_I32_TO_STRING_WITH_DEFAULT_VALUE = 86;
     private static final TField MAP_OF_I32_TO_STRING_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("map_of_i32_to_string_with_default_value", TType.MAP, (short)86);
-        private final List<String> listOfStringWithDefaultValue;
+    private final List<String> listOfStringWithDefaultValue;
     public static final int _LIST_OF_STRING_WITH_DEFAULT_VALUE = 87;
     private static final TField LIST_OF_STRING_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("list_of_string_with_default_value", TType.LIST, (short)87);
-        private final Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue;
+    private final Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue;
     public static final int _MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE = 88;
     private static final TField MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("map_of_string_to_list_of_i32_with_default_value", TType.MAP, (short)88);
     static {
-      NAMES_TO_IDS.put("justAnA", 1);
-      THRIFT_NAMES_TO_IDS.put("just_an_A", 1);
-      FIELD_METADATA.put(1, JUST_AN_A_FIELD_DESC);
-      NAMES_TO_IDS.put("setOfI32", 2);
-      THRIFT_NAMES_TO_IDS.put("set_of_i32", 2);
-      FIELD_METADATA.put(2, SET_OF_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("listOfI32", 3);
-      THRIFT_NAMES_TO_IDS.put("list_of_i32", 3);
-      FIELD_METADATA.put(3, LIST_OF_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("listOfString", 4);
-      THRIFT_NAMES_TO_IDS.put("list_of_string", 4);
-      FIELD_METADATA.put(4, LIST_OF_STRING_FIELD_DESC);
-      NAMES_TO_IDS.put("mapOfStringToI32", 5);
-      THRIFT_NAMES_TO_IDS.put("map_of_string_to_i32", 5);
-      FIELD_METADATA.put(5, MAP_OF_STRING_TO_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("mapOfStringToA", 6);
-      THRIFT_NAMES_TO_IDS.put("map_of_string_to_A", 6);
-      FIELD_METADATA.put(6, MAP_OF_STRING_TO_A_FIELD_DESC);
-      NAMES_TO_IDS.put("mapOfStringToListOfI32", 7);
-      THRIFT_NAMES_TO_IDS.put("map_of_string_to_list_of_i32", 7);
-      FIELD_METADATA.put(7, MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("mapOfStringToListOfA", 8);
-      THRIFT_NAMES_TO_IDS.put("map_of_string_to_list_of_A", 8);
-      FIELD_METADATA.put(8, MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
-      NAMES_TO_IDS.put("mapOfStringToSetOfI32", 9);
-      THRIFT_NAMES_TO_IDS.put("map_of_string_to_set_of_i32", 9);
-      FIELD_METADATA.put(9, MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("mapOfStringToMapOfStringToI32", 10);
-      THRIFT_NAMES_TO_IDS.put("map_of_string_to_map_of_string_to_i32", 10);
-      FIELD_METADATA.put(10, MAP_OF_STRING_TO_MAP_OF_STRING_TO_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("mapOfStringToMapOfStringToA", 11);
-      THRIFT_NAMES_TO_IDS.put("map_of_string_to_map_of_string_to_A", 11);
-      FIELD_METADATA.put(11, MAP_OF_STRING_TO_MAP_OF_STRING_TO_A_FIELD_DESC);
-      NAMES_TO_IDS.put("listOfSetOfI32", 12);
-      THRIFT_NAMES_TO_IDS.put("list_of_set_of_i32", 12);
-      FIELD_METADATA.put(12, LIST_OF_SET_OF_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("listOfMapOfStringToListOfA", 13);
-      THRIFT_NAMES_TO_IDS.put("list_of_map_of_string_to_list_of_A", 13);
-      FIELD_METADATA.put(13, LIST_OF_MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
-      NAMES_TO_IDS.put("listOfMapOfStringToA", 14);
-      THRIFT_NAMES_TO_IDS.put("list_of_map_of_string_to_A", 14);
-      FIELD_METADATA.put(14, LIST_OF_MAP_OF_STRING_TO_A_FIELD_DESC);
-      NAMES_TO_IDS.put("justAnEnum", 17);
-      THRIFT_NAMES_TO_IDS.put("just_an_enum", 17);
-      FIELD_METADATA.put(17, JUST_AN_ENUM_FIELD_DESC);
-      NAMES_TO_IDS.put("justAUnion", 18);
-      THRIFT_NAMES_TO_IDS.put("just_a_union", 18);
-      FIELD_METADATA.put(18, JUST_AUNION_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalJustAnA", 51);
-      THRIFT_NAMES_TO_IDS.put("optional_just_an_A", 51);
-      FIELD_METADATA.put(51, OPTIONAL_JUST_AN_A_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalSetOfI32", 52);
-      THRIFT_NAMES_TO_IDS.put("optional_set_of_i32", 52);
-      FIELD_METADATA.put(52, OPTIONAL_SET_OF_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalListOfI32", 53);
-      THRIFT_NAMES_TO_IDS.put("optional_list_of_i32", 53);
-      FIELD_METADATA.put(53, OPTIONAL_LIST_OF_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalListOfString", 54);
-      THRIFT_NAMES_TO_IDS.put("optional_list_of_string", 54);
-      FIELD_METADATA.put(54, OPTIONAL_LIST_OF_STRING_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalMapOfStringToI32", 55);
-      THRIFT_NAMES_TO_IDS.put("optional_map_of_string_to_i32", 55);
-      FIELD_METADATA.put(55, OPTIONAL_MAP_OF_STRING_TO_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalMapOfStringToA", 56);
-      THRIFT_NAMES_TO_IDS.put("optional_map_of_string_to_A", 56);
-      FIELD_METADATA.put(56, OPTIONAL_MAP_OF_STRING_TO_A_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalMapOfStringToListOfI32", 57);
-      THRIFT_NAMES_TO_IDS.put("optional_map_of_string_to_list_of_i32", 57);
-      FIELD_METADATA.put(57, OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalMapOfStringToListOfA", 58);
-      THRIFT_NAMES_TO_IDS.put("optional_map_of_string_to_list_of_A", 58);
-      FIELD_METADATA.put(58, OPTIONAL_MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalMapOfStringToSetOfI32", 59);
-      THRIFT_NAMES_TO_IDS.put("optional_map_of_string_to_set_of_i32", 59);
-      FIELD_METADATA.put(59, OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalEnum", 60);
-      THRIFT_NAMES_TO_IDS.put("optional_enum", 60);
-      FIELD_METADATA.put(60, OPTIONAL_ENUM_FIELD_DESC);
-      NAMES_TO_IDS.put("requiredEnumWithDefault", 70);
-      THRIFT_NAMES_TO_IDS.put("required_enum_with_default", 70);
-      FIELD_METADATA.put(70, REQUIRED_ENUM_WITH_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("stringWithDefaultValue", 80);
-      THRIFT_NAMES_TO_IDS.put("string_with_default_value", 80);
-      FIELD_METADATA.put(80, STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("i32WithDefaultValue", 81);
-      THRIFT_NAMES_TO_IDS.put("i32_with_default_value", 81);
-      FIELD_METADATA.put(81, I32_WITH_DEFAULT_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("doubleWithDefaultValue", 82);
-      THRIFT_NAMES_TO_IDS.put("double_with_default_value", 82);
-      FIELD_METADATA.put(82, DOUBLE_WITH_DEFAULT_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("enumWithDefaultValue", 83);
-      THRIFT_NAMES_TO_IDS.put("enum_with_default_value", 83);
-      FIELD_METADATA.put(83, ENUM_WITH_DEFAULT_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("aWithDefaultValue", 84);
-      THRIFT_NAMES_TO_IDS.put("A_with_default_value", 84);
-      FIELD_METADATA.put(84, A_WITH_DEFAULT_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("setOfI32WithDefaultValue", 85);
-      THRIFT_NAMES_TO_IDS.put("set_of_i32_with_default_value", 85);
-      FIELD_METADATA.put(85, SET_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("mapOfI32ToStringWithDefaultValue", 86);
-      THRIFT_NAMES_TO_IDS.put("map_of_i32_to_string_with_default_value", 86);
-      FIELD_METADATA.put(86, MAP_OF_I32_TO_STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("listOfStringWithDefaultValue", 87);
-      THRIFT_NAMES_TO_IDS.put("list_of_string_with_default_value", 87);
-      FIELD_METADATA.put(87, LIST_OF_STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("mapOfStringToListOfI32WithDefaultValue", 88);
-      THRIFT_NAMES_TO_IDS.put("map_of_string_to_list_of_i32_with_default_value", 88);
-      FIELD_METADATA.put(88, MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("justAnA", 1);
+        THRIFT_NAMES_TO_IDS.put("just_an_A", 1);
+        FIELD_METADATA.put(1, JUST_AN_A_FIELD_DESC);
+        NAMES_TO_IDS.put("setOfI32", 2);
+        THRIFT_NAMES_TO_IDS.put("set_of_i32", 2);
+        FIELD_METADATA.put(2, SET_OF_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("listOfI32", 3);
+        THRIFT_NAMES_TO_IDS.put("list_of_i32", 3);
+        FIELD_METADATA.put(3, LIST_OF_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("listOfString", 4);
+        THRIFT_NAMES_TO_IDS.put("list_of_string", 4);
+        FIELD_METADATA.put(4, LIST_OF_STRING_FIELD_DESC);
+        NAMES_TO_IDS.put("mapOfStringToI32", 5);
+        THRIFT_NAMES_TO_IDS.put("map_of_string_to_i32", 5);
+        FIELD_METADATA.put(5, MAP_OF_STRING_TO_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("mapOfStringToA", 6);
+        THRIFT_NAMES_TO_IDS.put("map_of_string_to_A", 6);
+        FIELD_METADATA.put(6, MAP_OF_STRING_TO_A_FIELD_DESC);
+        NAMES_TO_IDS.put("mapOfStringToListOfI32", 7);
+        THRIFT_NAMES_TO_IDS.put("map_of_string_to_list_of_i32", 7);
+        FIELD_METADATA.put(7, MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("mapOfStringToListOfA", 8);
+        THRIFT_NAMES_TO_IDS.put("map_of_string_to_list_of_A", 8);
+        FIELD_METADATA.put(8, MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
+        NAMES_TO_IDS.put("mapOfStringToSetOfI32", 9);
+        THRIFT_NAMES_TO_IDS.put("map_of_string_to_set_of_i32", 9);
+        FIELD_METADATA.put(9, MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("mapOfStringToMapOfStringToI32", 10);
+        THRIFT_NAMES_TO_IDS.put("map_of_string_to_map_of_string_to_i32", 10);
+        FIELD_METADATA.put(10, MAP_OF_STRING_TO_MAP_OF_STRING_TO_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("mapOfStringToMapOfStringToA", 11);
+        THRIFT_NAMES_TO_IDS.put("map_of_string_to_map_of_string_to_A", 11);
+        FIELD_METADATA.put(11, MAP_OF_STRING_TO_MAP_OF_STRING_TO_A_FIELD_DESC);
+        NAMES_TO_IDS.put("listOfSetOfI32", 12);
+        THRIFT_NAMES_TO_IDS.put("list_of_set_of_i32", 12);
+        FIELD_METADATA.put(12, LIST_OF_SET_OF_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("listOfMapOfStringToListOfA", 13);
+        THRIFT_NAMES_TO_IDS.put("list_of_map_of_string_to_list_of_A", 13);
+        FIELD_METADATA.put(13, LIST_OF_MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
+        NAMES_TO_IDS.put("listOfMapOfStringToA", 14);
+        THRIFT_NAMES_TO_IDS.put("list_of_map_of_string_to_A", 14);
+        FIELD_METADATA.put(14, LIST_OF_MAP_OF_STRING_TO_A_FIELD_DESC);
+        NAMES_TO_IDS.put("justAnEnum", 17);
+        THRIFT_NAMES_TO_IDS.put("just_an_enum", 17);
+        FIELD_METADATA.put(17, JUST_AN_ENUM_FIELD_DESC);
+        NAMES_TO_IDS.put("justAUnion", 18);
+        THRIFT_NAMES_TO_IDS.put("just_a_union", 18);
+        FIELD_METADATA.put(18, JUST_AUNION_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalJustAnA", 51);
+        THRIFT_NAMES_TO_IDS.put("optional_just_an_A", 51);
+        FIELD_METADATA.put(51, OPTIONAL_JUST_AN_A_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalSetOfI32", 52);
+        THRIFT_NAMES_TO_IDS.put("optional_set_of_i32", 52);
+        FIELD_METADATA.put(52, OPTIONAL_SET_OF_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalListOfI32", 53);
+        THRIFT_NAMES_TO_IDS.put("optional_list_of_i32", 53);
+        FIELD_METADATA.put(53, OPTIONAL_LIST_OF_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalListOfString", 54);
+        THRIFT_NAMES_TO_IDS.put("optional_list_of_string", 54);
+        FIELD_METADATA.put(54, OPTIONAL_LIST_OF_STRING_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalMapOfStringToI32", 55);
+        THRIFT_NAMES_TO_IDS.put("optional_map_of_string_to_i32", 55);
+        FIELD_METADATA.put(55, OPTIONAL_MAP_OF_STRING_TO_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalMapOfStringToA", 56);
+        THRIFT_NAMES_TO_IDS.put("optional_map_of_string_to_A", 56);
+        FIELD_METADATA.put(56, OPTIONAL_MAP_OF_STRING_TO_A_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalMapOfStringToListOfI32", 57);
+        THRIFT_NAMES_TO_IDS.put("optional_map_of_string_to_list_of_i32", 57);
+        FIELD_METADATA.put(57, OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalMapOfStringToListOfA", 58);
+        THRIFT_NAMES_TO_IDS.put("optional_map_of_string_to_list_of_A", 58);
+        FIELD_METADATA.put(58, OPTIONAL_MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalMapOfStringToSetOfI32", 59);
+        THRIFT_NAMES_TO_IDS.put("optional_map_of_string_to_set_of_i32", 59);
+        FIELD_METADATA.put(59, OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalEnum", 60);
+        THRIFT_NAMES_TO_IDS.put("optional_enum", 60);
+        FIELD_METADATA.put(60, OPTIONAL_ENUM_FIELD_DESC);
+        NAMES_TO_IDS.put("requiredEnumWithDefault", 70);
+        THRIFT_NAMES_TO_IDS.put("required_enum_with_default", 70);
+        FIELD_METADATA.put(70, REQUIRED_ENUM_WITH_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("stringWithDefaultValue", 80);
+        THRIFT_NAMES_TO_IDS.put("string_with_default_value", 80);
+        FIELD_METADATA.put(80, STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("i32WithDefaultValue", 81);
+        THRIFT_NAMES_TO_IDS.put("i32_with_default_value", 81);
+        FIELD_METADATA.put(81, I32_WITH_DEFAULT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("doubleWithDefaultValue", 82);
+        THRIFT_NAMES_TO_IDS.put("double_with_default_value", 82);
+        FIELD_METADATA.put(82, DOUBLE_WITH_DEFAULT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("enumWithDefaultValue", 83);
+        THRIFT_NAMES_TO_IDS.put("enum_with_default_value", 83);
+        FIELD_METADATA.put(83, ENUM_WITH_DEFAULT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("aWithDefaultValue", 84);
+        THRIFT_NAMES_TO_IDS.put("A_with_default_value", 84);
+        FIELD_METADATA.put(84, A_WITH_DEFAULT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("setOfI32WithDefaultValue", 85);
+        THRIFT_NAMES_TO_IDS.put("set_of_i32_with_default_value", 85);
+        FIELD_METADATA.put(85, SET_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("mapOfI32ToStringWithDefaultValue", 86);
+        THRIFT_NAMES_TO_IDS.put("map_of_i32_to_string_with_default_value", 86);
+        FIELD_METADATA.put(86, MAP_OF_I32_TO_STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("listOfStringWithDefaultValue", 87);
+        THRIFT_NAMES_TO_IDS.put("list_of_string_with_default_value", 87);
+        FIELD_METADATA.put(87, LIST_OF_STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("mapOfStringToListOfI32WithDefaultValue", 88);
+        THRIFT_NAMES_TO_IDS.put("map_of_string_to_list_of_i32_with_default_value", 88);
+        FIELD_METADATA.put(88, MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="just_an_A", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.A getJustAnA() { return justAnA; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="set_of_i32", requiredness=Requiredness.NONE)
     public Set<Integer> getSetOfI32() { return setOfI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="list_of_i32", requiredness=Requiredness.NONE)
     public List<Integer> getListOfI32() { return listOfI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="list_of_string", requiredness=Requiredness.NONE)
     public List<String> getListOfString() { return listOfString; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="map_of_string_to_i32", requiredness=Requiredness.NONE)
     public Map<String, Integer> getMapOfStringToI32() { return mapOfStringToI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="map_of_string_to_A", requiredness=Requiredness.NONE)
     public Map<String, test.fixtures.shapes.A> getMapOfStringToA() { return mapOfStringToA; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="map_of_string_to_list_of_i32", requiredness=Requiredness.NONE)
     public Map<String, List<Integer>> getMapOfStringToListOfI32() { return mapOfStringToListOfI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
     public Map<String, List<test.fixtures.shapes.A>> getMapOfStringToListOfA() { return mapOfStringToListOfA; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="map_of_string_to_set_of_i32", requiredness=Requiredness.NONE)
     public Map<String, Set<Integer>> getMapOfStringToSetOfI32() { return mapOfStringToSetOfI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="map_of_string_to_map_of_string_to_i32", requiredness=Requiredness.NONE)
     public Map<String, Map<String, Integer>> getMapOfStringToMapOfStringToI32() { return mapOfStringToMapOfStringToI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=11, name="map_of_string_to_map_of_string_to_A", requiredness=Requiredness.NONE)
     public Map<String, Map<String, test.fixtures.shapes.A>> getMapOfStringToMapOfStringToA() { return mapOfStringToMapOfStringToA; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=12, name="list_of_set_of_i32", requiredness=Requiredness.NONE)
     public List<Set<Integer>> getListOfSetOfI32() { return listOfSetOfI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=13, name="list_of_map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
     public List<Map<String, List<test.fixtures.shapes.A>>> getListOfMapOfStringToListOfA() { return listOfMapOfStringToListOfA; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=14, name="list_of_map_of_string_to_A", requiredness=Requiredness.NONE)
     public List<Map<String, test.fixtures.shapes.A>> getListOfMapOfStringToA() { return listOfMapOfStringToA; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.Enum getJustAnEnum() { return justAnEnum; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=18, name="just_a_union", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.Union getJustAUnion() { return justAUnion; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=51, name="optional_just_an_A", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.shapes.A getOptionalJustAnA() { return optionalJustAnA; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=52, name="optional_set_of_i32", requiredness=Requiredness.OPTIONAL)
     public Set<Integer> getOptionalSetOfI32() { return optionalSetOfI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=53, name="optional_list_of_i32", requiredness=Requiredness.OPTIONAL)
     public List<Integer> getOptionalListOfI32() { return optionalListOfI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=54, name="optional_list_of_string", requiredness=Requiredness.OPTIONAL)
     public List<String> getOptionalListOfString() { return optionalListOfString; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=55, name="optional_map_of_string_to_i32", requiredness=Requiredness.OPTIONAL)
     public Map<String, Integer> getOptionalMapOfStringToI32() { return optionalMapOfStringToI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=56, name="optional_map_of_string_to_A", requiredness=Requiredness.OPTIONAL)
     public Map<String, test.fixtures.shapes.A> getOptionalMapOfStringToA() { return optionalMapOfStringToA; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=57, name="optional_map_of_string_to_list_of_i32", requiredness=Requiredness.OPTIONAL)
     public Map<String, List<Integer>> getOptionalMapOfStringToListOfI32() { return optionalMapOfStringToListOfI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=58, name="optional_map_of_string_to_list_of_A", requiredness=Requiredness.OPTIONAL)
     public Map<String, List<test.fixtures.shapes.A>> getOptionalMapOfStringToListOfA() { return optionalMapOfStringToListOfA; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=59, name="optional_map_of_string_to_set_of_i32", requiredness=Requiredness.OPTIONAL)
     public Map<String, Set<Integer>> getOptionalMapOfStringToSetOfI32() { return optionalMapOfStringToSetOfI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.shapes.Enum getOptionalEnum() { return optionalEnum; }
-
     
     @com.facebook.swift.codec.ThriftField(value=70, name="required_enum_with_default", requiredness=Requiredness.REQUIRED)
     public test.fixtures.shapes.Enum getRequiredEnumWithDefault() { return requiredEnumWithDefault; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=80, name="string_with_default_value", requiredness=Requiredness.NONE)
     public String getStringWithDefaultValue() { return stringWithDefaultValue; }
-
     
     @com.facebook.swift.codec.ThriftField(value=81, name="i32_with_default_value", requiredness=Requiredness.NONE)
     public int getI32WithDefaultValue() { return i32WithDefaultValue; }
-
     
     @com.facebook.swift.codec.ThriftField(value=82, name="double_with_default_value", requiredness=Requiredness.NONE)
     public double getDoubleWithDefaultValue() { return doubleWithDefaultValue; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=83, name="enum_with_default_value", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.Enum getEnumWithDefaultValue() { return enumWithDefaultValue; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=84, name="A_with_default_value", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.A getAWithDefaultValue() { return aWithDefaultValue; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=85, name="set_of_i32_with_default_value", requiredness=Requiredness.NONE)
     public Set<Integer> getSetOfI32WithDefaultValue() { return setOfI32WithDefaultValue; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=86, name="map_of_i32_to_string_with_default_value", requiredness=Requiredness.NONE)
     public Map<Integer, String> getMapOfI32ToStringWithDefaultValue() { return mapOfI32ToStringWithDefaultValue; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=87, name="list_of_string_with_default_value", requiredness=Requiredness.NONE)
     public List<String> getListOfStringWithDefaultValue() { return listOfStringWithDefaultValue; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=88, name="map_of_string_to_list_of_i32_with_default_value", requiredness=Requiredness.NONE)
     public Map<String, List<Integer>> getMapOfStringToListOfI32WithDefaultValue() { return mapOfStringToListOfI32WithDefaultValue; }
@@ -2522,5 +2487,4 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
     public static B defaultInstance() {
         return  _BLazy._DEFAULT;
     }
-
 }

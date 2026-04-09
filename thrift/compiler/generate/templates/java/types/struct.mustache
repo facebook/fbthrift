@@ -15,6 +15,7 @@
   limitations under the License.
 
 }}
+{{#import "common/common" as common}}
 {{#import "common/types" as types}}
 {{#import "types/field" as field_helpers}}
 
@@ -387,5 +388,102 @@ public void write0(TProtocol oprot) throws TException {
 @java.lang.Override
 public String getMessage() {
   return {{struct.exceptionMessage}};
+}
+{{/let partial}}
+
+{{#let export partial struct_class |struct| captures |common types field_helpers thrift_constructor struct_builder adapter_definition struct_to_string struct_equals struct_hash_code struct_read struct_write default_instance|}}
+{{#partial common.auto_generated}}
+
+package {{struct.program.javaPackage}};
+
+import com.facebook.swift.codec.*;
+import com.facebook.swift.codec.ThriftField.Requiredness;
+import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
+import java.util.*;
+import javax.annotation.Nullable;
+import org.apache.thrift.*;
+import org.apache.thrift.TException;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
+import org.apache.thrift.protocol.TProtocol;
+import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
+
+@SwiftGenerated
+{{#if struct.asBean?}}
+@com.facebook.swift.codec.ThriftStruct("{{struct.name}}"){{#if struct.javaAnnotations?}} {{struct.javaAnnotations}} {{/if struct.javaAnnotations?}}
+{{#else}}
+@com.facebook.swift.codec.ThriftStruct(value="{{struct.name}}", builder={{struct.javaCapitalName}}.Builder.class){{#if struct.javaAnnotations?}} {{struct.javaAnnotations}} {{/if struct.javaAnnotations?}}
+{{/if struct.asBean?}}
+public final class {{struct.javaCapitalName}} implements com.facebook.thrift.payload.ThriftSerializable {
+    {{#partial thrift_constructor struct=struct}}
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static Builder builder({{struct.javaCapitalName}} other) {
+        return new Builder(other);
+    }
+
+    {{#partial struct_builder struct=struct}}
+
+    {{#partial adapter_definition struct=struct}}
+
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
+    public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
+    private static final TStruct STRUCT_DESC = new TStruct("{{struct.name}}");
+    {{#each struct.fields as |field|}}
+    {{#if struct.asBean?}}
+    {{#if field.isSensitive?}}
+    @org.apache.thrift.annotations.Sensitive
+    {{/if field.isSensitive?}}
+    private {{#partial types.field_type field=field}} {{field.javaName}};
+    public static final int _{{field.javaAllCapsName}} = {{field.id}};
+    private static final TField {{field.javaTFieldName}} = new TField("{{field.name}}", TType.{{#partial types.ttype type=field.type}}, (short){{field.id}});
+    {{#else}}
+    {{#if field.isSensitive?}}
+    @org.apache.thrift.annotations.Sensitive
+    {{/if field.isSensitive?}}
+    {{#if field.javaAnnotations?}}{{field.javaAnnotations}} {{/if field.javaAnnotations?}}private {{#if (and (not struct.isBigStruct?) (not struct.hasWrapper?))}}final {{/if (and (not struct.isBigStruct?) (not struct.hasWrapper?))}}{{#partial types.field_type field=field}} {{field.javaName}};
+    public static final int _{{field.javaAllCapsName}} = {{field.id}};
+    private static final TField {{field.javaTFieldName}} = new TField("{{field.name}}", TType.{{#partial types.ttype type=field.type}}, (short){{field.id}});
+    {{/if struct.asBean?}}
+    {{/each}}
+    static {
+        {{#each struct.fields as |field|}}
+        NAMES_TO_IDS.put("{{field.javaName}}", {{field.id}});
+        THRIFT_NAMES_TO_IDS.put("{{field.name}}", {{field.id}});
+        FIELD_METADATA.put({{field.id}}, {{field.javaTFieldName}});
+        {{/each}}
+        {{#if struct.uri}}
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("{{struct.uri}}"),
+            {{struct.javaCapitalName}}.class, {{struct.javaCapitalName}}::read0));
+        {{/if struct.uri}}
+    }
+    {{#each struct.fields as |field|}}
+    {{#partial field_helpers.field_getter field=field}}
+    {{#if struct.asBean?}}
+
+    {{#partial field_helpers.field_setter field=field struct=struct}}
+    {{/if struct.asBean?}}
+    {{/each}}
+
+    {{#partial struct_to_string struct=struct}}
+
+    {{#partial struct_equals struct=struct}}
+
+    {{#partial struct_hash_code struct=struct}}
+
+    {{#partial struct_read struct=struct}}
+
+    {{#partial struct_write struct=struct}}
+
+    {{#if (not struct.asBean?)}}
+    {{#partial default_instance struct=struct}}
+    {{/if (not struct.asBean?)}}
 }
 {{/let partial}}

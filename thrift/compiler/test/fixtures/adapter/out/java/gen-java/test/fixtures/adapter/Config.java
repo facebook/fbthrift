@@ -37,11 +37,11 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Config other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,12 +77,12 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
     public static final int _PATH = 1;
     private static final TField PATH_FIELD_DESC = new TField("path", TType.STRING, (short)1);
     static {
-      NAMES_TO_IDS.put("path", 1);
-      THRIFT_NAMES_TO_IDS.put("path", 1);
-      FIELD_METADATA.put(1, PATH_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/Config"),
-        Config.class, Config::read0));
+        NAMES_TO_IDS.put("path", 1);
+        THRIFT_NAMES_TO_IDS.put("path", 1);
+        FIELD_METADATA.put(1, PATH_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/Config"),
+            Config.class, Config::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="path", requiredness=Requiredness.NONE)
@@ -170,5 +170,4 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
     public static Config defaultInstance() {
         return  _ConfigLazy._DEFAULT;
     }
-
 }

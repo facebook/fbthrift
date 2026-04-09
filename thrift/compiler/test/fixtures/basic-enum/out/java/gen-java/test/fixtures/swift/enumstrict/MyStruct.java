@@ -40,11 +40,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,24 +89,23 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private final test.fixtures.swift.enumstrict.MyEnum myEnum;
     public static final int _MYENUM = 1;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);
-        private final test.fixtures.swift.enumstrict.MyBigEnum myBigEnum;
+    private final test.fixtures.swift.enumstrict.MyBigEnum myBigEnum;
     public static final int _MYBIGENUM = 2;
     private static final TField MY_BIG_ENUM_FIELD_DESC = new TField("myBigEnum", TType.I32, (short)2);
     static {
-      NAMES_TO_IDS.put("myEnum", 1);
-      THRIFT_NAMES_TO_IDS.put("myEnum", 1);
-      FIELD_METADATA.put(1, MY_ENUM_FIELD_DESC);
-      NAMES_TO_IDS.put("myBigEnum", 2);
-      THRIFT_NAMES_TO_IDS.put("myBigEnum", 2);
-      FIELD_METADATA.put(2, MY_BIG_ENUM_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/basic_enum/MyStruct"),
-        MyStruct.class, MyStruct::read0));
+        NAMES_TO_IDS.put("myEnum", 1);
+        THRIFT_NAMES_TO_IDS.put("myEnum", 1);
+        FIELD_METADATA.put(1, MY_ENUM_FIELD_DESC);
+        NAMES_TO_IDS.put("myBigEnum", 2);
+        THRIFT_NAMES_TO_IDS.put("myBigEnum", 2);
+        FIELD_METADATA.put(2, MY_BIG_ENUM_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/basic_enum/MyStruct"),
+            MyStruct.class, MyStruct::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.swift.enumstrict.MyEnum getMyEnum() { return myEnum; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
     public test.fixtures.swift.enumstrict.MyBigEnum getMyBigEnum() { return myBigEnum; }
@@ -209,5 +208,4 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }
-
 }

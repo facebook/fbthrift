@@ -59,11 +59,11 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStruct3 other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -225,76 +225,76 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     private short myInt16;
     public static final int _MYINT16 = 1;
     private static final TField MY_INT16_FIELD_DESC = new TField("myInt16", TType.I16, (short)1);
-        private int myInt32;
+    private int myInt32;
     public static final int _MYINT32 = 2;
     private static final TField MY_INT32_FIELD_DESC = new TField("myInt32", TType.I32, (short)2);
-        private long myInt64;
+    private long myInt64;
     public static final int _MYINT64 = 3;
     private static final TField MY_INT64_FIELD_DESC = new TField("myInt64", TType.I64, (short)3);
-        private String myString;
+    private String myString;
     public static final int _MYSTRING = 4;
     private static final TField MY_STRING_FIELD_DESC = new TField("myString", TType.STRING, (short)4);
-        private boolean myBool;
+    private boolean myBool;
     public static final int _MYBOOL = 5;
     private static final TField MY_BOOL_FIELD_DESC = new TField("myBool", TType.BOOL, (short)5);
-        private double myDouble;
+    private double myDouble;
     public static final int _MYDOUBLE = 6;
     private static final TField MY_DOUBLE_FIELD_DESC = new TField("myDouble", TType.DOUBLE, (short)6);
-        private Set<String> mySet;
+    private Set<String> mySet;
     public static final int _MYSET = 7;
     private static final TField MY_SET_FIELD_DESC = new TField("mySet", TType.SET, (short)7);
-        private test.fixtures.basic_swift_bean.MyDataItem myDataItem;
+    private test.fixtures.basic_swift_bean.MyDataItem myDataItem;
     public static final int _MYDATAITEM = 8;
     private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("MyDataItem", TType.STRUCT, (short)8);
-        private List<test.fixtures.basic_swift_bean.MyDataItem> myList;
+    private List<test.fixtures.basic_swift_bean.MyDataItem> myList;
     public static final int _MYLIST = 9;
     private static final TField MY_LIST_FIELD_DESC = new TField("myList", TType.LIST, (short)9);
-        private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList;
+    private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList;
     public static final int _MYMAPLIST = 10;
     private static final TField MY_MAP_LIST_FIELD_DESC = new TField("myMapList", TType.MAP, (short)10);
-        private List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList;
+    private List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList;
     public static final int _MYEMPTYLIST = 11;
     private static final TField MY_EMPTY_LIST_FIELD_DESC = new TField("myEmptyList", TType.LIST, (short)11);
-        private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList;
+    private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList;
     public static final int _MYEMPTYMAPLIST = 12;
     private static final TField MY_EMPTY_MAP_LIST_FIELD_DESC = new TField("myEmptyMapList", TType.MAP, (short)12);
     static {
-      NAMES_TO_IDS.put("myInt16", 1);
-      THRIFT_NAMES_TO_IDS.put("myInt16", 1);
-      FIELD_METADATA.put(1, MY_INT16_FIELD_DESC);
-      NAMES_TO_IDS.put("myInt32", 2);
-      THRIFT_NAMES_TO_IDS.put("myInt32", 2);
-      FIELD_METADATA.put(2, MY_INT32_FIELD_DESC);
-      NAMES_TO_IDS.put("myInt64", 3);
-      THRIFT_NAMES_TO_IDS.put("myInt64", 3);
-      FIELD_METADATA.put(3, MY_INT64_FIELD_DESC);
-      NAMES_TO_IDS.put("myString", 4);
-      THRIFT_NAMES_TO_IDS.put("myString", 4);
-      FIELD_METADATA.put(4, MY_STRING_FIELD_DESC);
-      NAMES_TO_IDS.put("myBool", 5);
-      THRIFT_NAMES_TO_IDS.put("myBool", 5);
-      FIELD_METADATA.put(5, MY_BOOL_FIELD_DESC);
-      NAMES_TO_IDS.put("myDouble", 6);
-      THRIFT_NAMES_TO_IDS.put("myDouble", 6);
-      FIELD_METADATA.put(6, MY_DOUBLE_FIELD_DESC);
-      NAMES_TO_IDS.put("mySet", 7);
-      THRIFT_NAMES_TO_IDS.put("mySet", 7);
-      FIELD_METADATA.put(7, MY_SET_FIELD_DESC);
-      NAMES_TO_IDS.put("myDataItem", 8);
-      THRIFT_NAMES_TO_IDS.put("MyDataItem", 8);
-      FIELD_METADATA.put(8, MY_DATA_ITEM_FIELD_DESC);
-      NAMES_TO_IDS.put("myList", 9);
-      THRIFT_NAMES_TO_IDS.put("myList", 9);
-      FIELD_METADATA.put(9, MY_LIST_FIELD_DESC);
-      NAMES_TO_IDS.put("myMapList", 10);
-      THRIFT_NAMES_TO_IDS.put("myMapList", 10);
-      FIELD_METADATA.put(10, MY_MAP_LIST_FIELD_DESC);
-      NAMES_TO_IDS.put("myEmptyList", 11);
-      THRIFT_NAMES_TO_IDS.put("myEmptyList", 11);
-      FIELD_METADATA.put(11, MY_EMPTY_LIST_FIELD_DESC);
-      NAMES_TO_IDS.put("myEmptyMapList", 12);
-      THRIFT_NAMES_TO_IDS.put("myEmptyMapList", 12);
-      FIELD_METADATA.put(12, MY_EMPTY_MAP_LIST_FIELD_DESC);
+        NAMES_TO_IDS.put("myInt16", 1);
+        THRIFT_NAMES_TO_IDS.put("myInt16", 1);
+        FIELD_METADATA.put(1, MY_INT16_FIELD_DESC);
+        NAMES_TO_IDS.put("myInt32", 2);
+        THRIFT_NAMES_TO_IDS.put("myInt32", 2);
+        FIELD_METADATA.put(2, MY_INT32_FIELD_DESC);
+        NAMES_TO_IDS.put("myInt64", 3);
+        THRIFT_NAMES_TO_IDS.put("myInt64", 3);
+        FIELD_METADATA.put(3, MY_INT64_FIELD_DESC);
+        NAMES_TO_IDS.put("myString", 4);
+        THRIFT_NAMES_TO_IDS.put("myString", 4);
+        FIELD_METADATA.put(4, MY_STRING_FIELD_DESC);
+        NAMES_TO_IDS.put("myBool", 5);
+        THRIFT_NAMES_TO_IDS.put("myBool", 5);
+        FIELD_METADATA.put(5, MY_BOOL_FIELD_DESC);
+        NAMES_TO_IDS.put("myDouble", 6);
+        THRIFT_NAMES_TO_IDS.put("myDouble", 6);
+        FIELD_METADATA.put(6, MY_DOUBLE_FIELD_DESC);
+        NAMES_TO_IDS.put("mySet", 7);
+        THRIFT_NAMES_TO_IDS.put("mySet", 7);
+        FIELD_METADATA.put(7, MY_SET_FIELD_DESC);
+        NAMES_TO_IDS.put("myDataItem", 8);
+        THRIFT_NAMES_TO_IDS.put("MyDataItem", 8);
+        FIELD_METADATA.put(8, MY_DATA_ITEM_FIELD_DESC);
+        NAMES_TO_IDS.put("myList", 9);
+        THRIFT_NAMES_TO_IDS.put("myList", 9);
+        FIELD_METADATA.put(9, MY_LIST_FIELD_DESC);
+        NAMES_TO_IDS.put("myMapList", 10);
+        THRIFT_NAMES_TO_IDS.put("myMapList", 10);
+        FIELD_METADATA.put(10, MY_MAP_LIST_FIELD_DESC);
+        NAMES_TO_IDS.put("myEmptyList", 11);
+        THRIFT_NAMES_TO_IDS.put("myEmptyList", 11);
+        FIELD_METADATA.put(11, MY_EMPTY_LIST_FIELD_DESC);
+        NAMES_TO_IDS.put("myEmptyMapList", 12);
+        THRIFT_NAMES_TO_IDS.put("myEmptyMapList", 12);
+        FIELD_METADATA.put(12, MY_EMPTY_MAP_LIST_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)
@@ -305,7 +305,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myInt16 = myInt16;
         return this;
     }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)
     public int getMyInt32() { return myInt32; }
@@ -315,7 +314,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myInt32 = myInt32;
         return this;
     }
-
     
     @com.facebook.swift.codec.ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)
     public long getMyInt64() { return myInt64; }
@@ -325,7 +323,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myInt64 = myInt64;
         return this;
     }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }
@@ -335,7 +332,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myString = myString;
         return this;
     }
-
     
     @com.facebook.swift.codec.ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)
     public boolean isMyBool() { return myBool; }
@@ -345,7 +341,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myBool = myBool;
         return this;
     }
-
     
     @com.facebook.swift.codec.ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)
     public double getMyDouble() { return myDouble; }
@@ -355,7 +350,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myDouble = myDouble;
         return this;
     }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="mySet", requiredness=Requiredness.NONE)
     public Set<String> getMySet() { return mySet; }
@@ -365,7 +359,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.mySet = mySet;
         return this;
     }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="MyDataItem", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataItem() { return myDataItem; }
@@ -375,7 +368,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myDataItem = myDataItem;
         return this;
     }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="myList", requiredness=Requiredness.NONE)
     public List<test.fixtures.basic_swift_bean.MyDataItem> getMyList() { return myList; }
@@ -385,7 +377,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myList = myList;
         return this;
     }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="myMapList", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyMapList() { return myMapList; }
@@ -395,7 +386,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myMapList = myMapList;
         return this;
     }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=11, name="myEmptyList", requiredness=Requiredness.NONE)
     public List<test.fixtures.basic_swift_bean.MyDataItem> getMyEmptyList() { return myEmptyList; }
@@ -405,7 +395,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myEmptyList = myEmptyList;
         return this;
     }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=12, name="myEmptyMapList", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyEmptyMapList() { return myEmptyMapList; }
@@ -827,6 +816,5 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         oprot.writeFieldStop();
         oprot.writeStructEnd();
     }
-
 
 }

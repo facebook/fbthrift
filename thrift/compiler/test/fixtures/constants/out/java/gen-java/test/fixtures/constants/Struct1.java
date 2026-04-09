@@ -40,11 +40,11 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Struct1 other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,21 +89,20 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
     private final int a;
     public static final int _A = 1;
     private static final TField A_FIELD_DESC = new TField("a", TType.I32, (short)1);
-        private final String b;
+    private final String b;
     public static final int _B = 2;
     private static final TField B_FIELD_DESC = new TField("b", TType.STRING, (short)2);
     static {
-      NAMES_TO_IDS.put("a", 1);
-      THRIFT_NAMES_TO_IDS.put("a", 1);
-      FIELD_METADATA.put(1, A_FIELD_DESC);
-      NAMES_TO_IDS.put("b", 2);
-      THRIFT_NAMES_TO_IDS.put("b", 2);
-      FIELD_METADATA.put(2, B_FIELD_DESC);
+        NAMES_TO_IDS.put("a", 1);
+        THRIFT_NAMES_TO_IDS.put("a", 1);
+        FIELD_METADATA.put(1, A_FIELD_DESC);
+        NAMES_TO_IDS.put("b", 2);
+        THRIFT_NAMES_TO_IDS.put("b", 2);
+        FIELD_METADATA.put(2, B_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public int getA() { return a; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
     public String getB() { return b; }
@@ -208,5 +207,4 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
     public static Struct1 defaultInstance() {
         return  _Struct1Lazy._DEFAULT;
     }
-
 }

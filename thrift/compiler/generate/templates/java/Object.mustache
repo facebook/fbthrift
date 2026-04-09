@@ -22,7 +22,8 @@
 {{#import "types/field" as field}}
 {{#import "types/struct" as struct}}
 {{#import "types/union" as union}}
-{{#if struct:union?}}{{> Union}}
-{{#else if struct:exception?}}{{> Exception}}
-{{#else}}{{> Struct}}
+{{#import "types/exception" as exception}}
+{{#if struct:union?}}{{#partial union.union_class struct=struct:self}}
+{{#else if struct:exception?}}{{#partial exception.exception_class struct=struct:self}}
+{{#else}}{{#partial struct.struct_class struct=struct:self}}
 {{/if struct:union?}}

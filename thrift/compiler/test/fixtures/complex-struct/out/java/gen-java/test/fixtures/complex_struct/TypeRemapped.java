@@ -46,11 +46,11 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(TypeRemapped other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -115,41 +115,38 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     private final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
     public static final int _LSMAP = 1;
     private static final TField LS_MAP_FIELD_DESC = new TField("lsMap", TType.MAP, (short)1);
-        private final it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap;
+    private final it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap;
     public static final int _IOMAP = 2;
     private static final TField IO_MAP_FIELD_DESC = new TField("ioMap", TType.MAP, (short)2);
-        private final java.math.BigInteger bigInteger;
+    private final java.math.BigInteger bigInteger;
     public static final int _BIGINTEGER = 3;
     private static final TField BIG_INTEGER_FIELD_DESC = new TField("BigInteger", TType.I32, (short)3);
-        private final java.nio.ByteBuffer binaryTestBuffer;
+    private final java.nio.ByteBuffer binaryTestBuffer;
     public static final int _BINARYTESTBUFFER = 4;
     private static final TField BINARY_TEST_BUFFER_FIELD_DESC = new TField("binaryTestBuffer", TType.STRING, (short)4);
     static {
-      NAMES_TO_IDS.put("lsMap", 1);
-      THRIFT_NAMES_TO_IDS.put("lsMap", 1);
-      FIELD_METADATA.put(1, LS_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("ioMap", 2);
-      THRIFT_NAMES_TO_IDS.put("ioMap", 2);
-      FIELD_METADATA.put(2, IO_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("bigInteger", 3);
-      THRIFT_NAMES_TO_IDS.put("BigInteger", 3);
-      FIELD_METADATA.put(3, BIG_INTEGER_FIELD_DESC);
-      NAMES_TO_IDS.put("binaryTestBuffer", 4);
-      THRIFT_NAMES_TO_IDS.put("binaryTestBuffer", 4);
-      FIELD_METADATA.put(4, BINARY_TEST_BUFFER_FIELD_DESC);
+        NAMES_TO_IDS.put("lsMap", 1);
+        THRIFT_NAMES_TO_IDS.put("lsMap", 1);
+        FIELD_METADATA.put(1, LS_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("ioMap", 2);
+        THRIFT_NAMES_TO_IDS.put("ioMap", 2);
+        FIELD_METADATA.put(2, IO_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("bigInteger", 3);
+        THRIFT_NAMES_TO_IDS.put("BigInteger", 3);
+        FIELD_METADATA.put(3, BIG_INTEGER_FIELD_DESC);
+        NAMES_TO_IDS.put("binaryTestBuffer", 4);
+        THRIFT_NAMES_TO_IDS.put("binaryTestBuffer", 4);
+        FIELD_METADATA.put(4, BINARY_TEST_BUFFER_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> getIoMap() { return ioMap; }
-
     
     @com.facebook.swift.codec.ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
     public java.math.BigInteger getBigInteger() { return bigInteger; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
     public java.nio.ByteBuffer getBinaryTestBuffer() { return binaryTestBuffer; }
@@ -387,5 +384,4 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     public static TypeRemapped defaultInstance() {
         return  _TypeRemappedLazy._DEFAULT;
     }
-
 }

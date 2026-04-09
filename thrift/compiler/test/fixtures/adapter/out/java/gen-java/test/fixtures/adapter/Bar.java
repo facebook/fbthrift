@@ -58,11 +58,11 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Bar other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -169,84 +169,77 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     private final test.fixtures.adapter.Foo structField;
     public static final int _STRUCTFIELD = 1;
     private static final TField STRUCT_FIELD_FIELD_DESC = new TField("structField", TType.STRUCT, (short)1);
-        private final test.fixtures.adapter.Foo optionalStructField;
+    private final test.fixtures.adapter.Foo optionalStructField;
     public static final int _OPTIONALSTRUCTFIELD = 2;
     private static final TField OPTIONAL_STRUCT_FIELD_FIELD_DESC = new TField("optionalStructField", TType.STRUCT, (short)2);
-        private final List<com.facebook.thrift.my.AdaptedFoo_1> structListField;
+    private final List<com.facebook.thrift.my.AdaptedFoo_1> structListField;
     public static final int _STRUCTLISTFIELD = 3;
     private static final TField STRUCT_LIST_FIELD_FIELD_DESC = new TField("structListField", TType.LIST, (short)3);
-        private final List<com.facebook.thrift.my.AdaptedFoo_1> optionalStructListField;
+    private final List<com.facebook.thrift.my.AdaptedFoo_1> optionalStructListField;
     public static final int _OPTIONALSTRUCTLISTFIELD = 4;
     private static final TField OPTIONAL_STRUCT_LIST_FIELD_FIELD_DESC = new TField("optionalStructListField", TType.LIST, (short)4);
-        private final test.fixtures.adapter.Baz unionField;
+    private final test.fixtures.adapter.Baz unionField;
     public static final int _UNIONFIELD = 5;
     private static final TField UNION_FIELD_FIELD_DESC = new TField("unionField", TType.STRUCT, (short)5);
-        private final test.fixtures.adapter.Baz optionalUnionField;
+    private final test.fixtures.adapter.Baz optionalUnionField;
     public static final int _OPTIONALUNIONFIELD = 6;
     private static final TField OPTIONAL_UNION_FIELD_FIELD_DESC = new TField("optionalUnionField", TType.STRUCT, (short)6);
-        private final test.fixtures.adapter.DirectlyAdapted adaptedStructField;
+    private final test.fixtures.adapter.DirectlyAdapted adaptedStructField;
     public static final int _ADAPTEDSTRUCTFIELD = 7;
     private static final TField ADAPTED_STRUCT_FIELD_FIELD_DESC = new TField("adaptedStructField", TType.STRUCT, (short)7);
-        private final List<test.fixtures.adapter.Foo> structListFieldWithTypedef;
+    private final List<test.fixtures.adapter.Foo> structListFieldWithTypedef;
     public static final int _STRUCTLISTFIELDWITHTYPEDEF = 8;
     private static final TField STRUCT_LIST_FIELD_WITH_TYPEDEF_FIELD_DESC = new TField("structListFieldWithTypedef", TType.LIST, (short)8);
     static {
-      NAMES_TO_IDS.put("structField", 1);
-      THRIFT_NAMES_TO_IDS.put("structField", 1);
-      FIELD_METADATA.put(1, STRUCT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalStructField", 2);
-      THRIFT_NAMES_TO_IDS.put("optionalStructField", 2);
-      FIELD_METADATA.put(2, OPTIONAL_STRUCT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("structListField", 3);
-      THRIFT_NAMES_TO_IDS.put("structListField", 3);
-      FIELD_METADATA.put(3, STRUCT_LIST_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalStructListField", 4);
-      THRIFT_NAMES_TO_IDS.put("optionalStructListField", 4);
-      FIELD_METADATA.put(4, OPTIONAL_STRUCT_LIST_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("unionField", 5);
-      THRIFT_NAMES_TO_IDS.put("unionField", 5);
-      FIELD_METADATA.put(5, UNION_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalUnionField", 6);
-      THRIFT_NAMES_TO_IDS.put("optionalUnionField", 6);
-      FIELD_METADATA.put(6, OPTIONAL_UNION_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedStructField", 7);
-      THRIFT_NAMES_TO_IDS.put("adaptedStructField", 7);
-      FIELD_METADATA.put(7, ADAPTED_STRUCT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("structListFieldWithTypedef", 8);
-      THRIFT_NAMES_TO_IDS.put("structListFieldWithTypedef", 8);
-      FIELD_METADATA.put(8, STRUCT_LIST_FIELD_WITH_TYPEDEF_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/Bar"),
-        Bar.class, Bar::read0));
+        NAMES_TO_IDS.put("structField", 1);
+        THRIFT_NAMES_TO_IDS.put("structField", 1);
+        FIELD_METADATA.put(1, STRUCT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalStructField", 2);
+        THRIFT_NAMES_TO_IDS.put("optionalStructField", 2);
+        FIELD_METADATA.put(2, OPTIONAL_STRUCT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("structListField", 3);
+        THRIFT_NAMES_TO_IDS.put("structListField", 3);
+        FIELD_METADATA.put(3, STRUCT_LIST_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalStructListField", 4);
+        THRIFT_NAMES_TO_IDS.put("optionalStructListField", 4);
+        FIELD_METADATA.put(4, OPTIONAL_STRUCT_LIST_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("unionField", 5);
+        THRIFT_NAMES_TO_IDS.put("unionField", 5);
+        FIELD_METADATA.put(5, UNION_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalUnionField", 6);
+        THRIFT_NAMES_TO_IDS.put("optionalUnionField", 6);
+        FIELD_METADATA.put(6, OPTIONAL_UNION_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedStructField", 7);
+        THRIFT_NAMES_TO_IDS.put("adaptedStructField", 7);
+        FIELD_METADATA.put(7, ADAPTED_STRUCT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("structListFieldWithTypedef", 8);
+        THRIFT_NAMES_TO_IDS.put("structListFieldWithTypedef", 8);
+        FIELD_METADATA.put(8, STRUCT_LIST_FIELD_WITH_TYPEDEF_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/Bar"),
+            Bar.class, Bar::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="structField", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.Foo getStructField() { return structField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="optionalStructField", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.adapter.Foo getOptionalStructField() { return optionalStructField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="structListField", requiredness=Requiredness.NONE)
     public List<com.facebook.thrift.my.AdaptedFoo_1> getStructListField() { return structListField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="optionalStructListField", requiredness=Requiredness.OPTIONAL)
     public List<com.facebook.thrift.my.AdaptedFoo_1> getOptionalStructListField() { return optionalStructListField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="unionField", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.Baz getUnionField() { return unionField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="optionalUnionField", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.adapter.Baz getOptionalUnionField() { return optionalUnionField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="adaptedStructField", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.DirectlyAdapted getAdaptedStructField() { return adaptedStructField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="structListFieldWithTypedef", requiredness=Requiredness.NONE)
     public List<test.fixtures.adapter.Foo> getStructListFieldWithTypedef() { return structListFieldWithTypedef; }
@@ -514,5 +507,4 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     public static Bar defaultInstance() {
         return  _BarLazy._DEFAULT;
     }
-
 }

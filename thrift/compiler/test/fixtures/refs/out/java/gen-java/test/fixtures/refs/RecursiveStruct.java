@@ -37,11 +37,11 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(RecursiveStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,9 +77,9 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
     public static final int _MES = 1;
     private static final TField MES_FIELD_DESC = new TField("mes", TType.LIST, (short)1);
     static {
-      NAMES_TO_IDS.put("mes", 1);
-      THRIFT_NAMES_TO_IDS.put("mes", 1);
-      FIELD_METADATA.put(1, MES_FIELD_DESC);
+        NAMES_TO_IDS.put("mes", 1);
+        THRIFT_NAMES_TO_IDS.put("mes", 1);
+        FIELD_METADATA.put(1, MES_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
@@ -180,5 +180,4 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
     public static RecursiveStruct defaultInstance() {
         return  _RecursiveStructLazy._DEFAULT;
     }
-
 }

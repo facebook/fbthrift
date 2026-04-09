@@ -37,11 +37,11 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStructNestedAnnotation other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,9 +77,9 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     public static final int _NAME = 1;
     private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)1);
     static {
-      NAMES_TO_IDS.put("name", 1);
-      THRIFT_NAMES_TO_IDS.put("name", 1);
-      FIELD_METADATA.put(1, NAME_FIELD_DESC);
+        NAMES_TO_IDS.put("name", 1);
+        THRIFT_NAMES_TO_IDS.put("name", 1);
+        FIELD_METADATA.put(1, NAME_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
@@ -167,5 +167,4 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     public static MyStructNestedAnnotation defaultInstance() {
         return  _MyStructNestedAnnotationLazy._DEFAULT;
     }
-
 }

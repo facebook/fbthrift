@@ -49,11 +49,11 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(User other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -128,56 +128,52 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
     private final long id;
     public static final int _ID = 1;
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
-        private final String name;
+    private final String name;
     public static final int _NAME = 2;
     private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)2);
-        private final String fullName;
+    private final String fullName;
     public static final int _FULL_NAME = 3;
     private static final TField FULL_NAME_FIELD_DESC = new TField("full_name", TType.STRING, (short)3);
-        private final String email;
+    private final String email;
     public static final int _EMAIL = 4;
     private static final TField EMAIL_FIELD_DESC = new TField("email", TType.STRING, (short)4);
-        private final String emailAddress;
+    private final String emailAddress;
     public static final int _EMAIL_ADDRESS = 5;
     private static final TField EMAIL_ADDRESS_FIELD_DESC = new TField("email_address", TType.STRING, (short)5);
     static {
-      NAMES_TO_IDS.put("id", 1);
-      THRIFT_NAMES_TO_IDS.put("id", 1);
-      FIELD_METADATA.put(1, ID_FIELD_DESC);
-      NAMES_TO_IDS.put("name", 2);
-      THRIFT_NAMES_TO_IDS.put("name", 2);
-      FIELD_METADATA.put(2, NAME_FIELD_DESC);
-      NAMES_TO_IDS.put("fullName", 3);
-      THRIFT_NAMES_TO_IDS.put("full_name", 3);
-      FIELD_METADATA.put(3, FULL_NAME_FIELD_DESC);
-      NAMES_TO_IDS.put("email", 4);
-      THRIFT_NAMES_TO_IDS.put("email", 4);
-      FIELD_METADATA.put(4, EMAIL_FIELD_DESC);
-      NAMES_TO_IDS.put("emailAddress", 5);
-      THRIFT_NAMES_TO_IDS.put("email_address", 5);
-      FIELD_METADATA.put(5, EMAIL_ADDRESS_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/User"),
-        User.class, User::read0));
+        NAMES_TO_IDS.put("id", 1);
+        THRIFT_NAMES_TO_IDS.put("id", 1);
+        FIELD_METADATA.put(1, ID_FIELD_DESC);
+        NAMES_TO_IDS.put("name", 2);
+        THRIFT_NAMES_TO_IDS.put("name", 2);
+        FIELD_METADATA.put(2, NAME_FIELD_DESC);
+        NAMES_TO_IDS.put("fullName", 3);
+        THRIFT_NAMES_TO_IDS.put("full_name", 3);
+        FIELD_METADATA.put(3, FULL_NAME_FIELD_DESC);
+        NAMES_TO_IDS.put("email", 4);
+        THRIFT_NAMES_TO_IDS.put("email", 4);
+        FIELD_METADATA.put(4, EMAIL_FIELD_DESC);
+        NAMES_TO_IDS.put("emailAddress", 5);
+        THRIFT_NAMES_TO_IDS.put("email_address", 5);
+        FIELD_METADATA.put(5, EMAIL_ADDRESS_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/User"),
+            User.class, User::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
-
     @Deprecated
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="full_name", requiredness=Requiredness.NONE)
     public String getFullName() { return fullName; }
-
     @Deprecated
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="email", requiredness=Requiredness.OPTIONAL)
     public String getEmail() { return email; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="email_address", requiredness=Requiredness.OPTIONAL)
     public String getEmailAddress() { return emailAddress; }
@@ -342,5 +338,4 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
     public static User defaultInstance() {
         return  _UserLazy._DEFAULT;
     }
-
 }

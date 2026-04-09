@@ -37,11 +37,11 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(CircularAdaptee other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,12 +77,12 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
     public static final int _FIELD = 1;
     private static final TField FIELD_FIELD_DESC = new TField("field", TType.STRUCT, (short)1);
     static {
-      NAMES_TO_IDS.put("field", 1);
-      THRIFT_NAMES_TO_IDS.put("field", 1);
-      FIELD_METADATA.put(1, FIELD_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/CircularAdaptee"),
-        CircularAdaptee.class, CircularAdaptee::read0));
+        NAMES_TO_IDS.put("field", 1);
+        THRIFT_NAMES_TO_IDS.put("field", 1);
+        FIELD_METADATA.put(1, FIELD_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/CircularAdaptee"),
+            CircularAdaptee.class, CircularAdaptee::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
@@ -170,5 +170,4 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
     public static CircularAdaptee defaultInstance() {
         return  _CircularAdapteeLazy._DEFAULT;
     }
-
 }

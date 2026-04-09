@@ -36,21 +36,21 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
     private static final TField STRING_LIST_VALUE_FIELD_DESC = new TField("stringListValue", TType.LIST, (short)3);
 
     static {
-      NAMES_TO_IDS.put("intListValue", 2);
-      THRIFT_NAMES_TO_IDS.put("intListValue", 2);
-      FIELD_METADATA.put(2, INT_LIST_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("stringListValue", 3);
-      THRIFT_NAMES_TO_IDS.put("stringListValue", 3);
-      FIELD_METADATA.put(3, STRING_LIST_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("intListValue", 2);
+        THRIFT_NAMES_TO_IDS.put("intListValue", 2);
+        FIELD_METADATA.put(2, INT_LIST_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("stringListValue", 3);
+        THRIFT_NAMES_TO_IDS.put("stringListValue", 3);
+        FIELD_METADATA.put(3, STRING_LIST_VALUE_FIELD_DESC);
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      INT_LIST_VALUE,
-      STRING_LIST_VALUE,
+        __FBTHRIFT_EMPTY_UNION__,
+        INT_LIST_VALUE,
+        STRING_LIST_VALUE,
     }
 
     public static ListUnion from(int _id, java.lang.Object _field) {
@@ -63,7 +63,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        ListUnion _u = new  ListUnion();
+        ListUnion _u = new ListUnion();
 
         try {
             switch(_id) {
@@ -76,7 +76,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
                     _u.value = (List<String>) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -150,16 +150,16 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 2:
-          return TypeEnum.INT_LIST_VALUE;
-        case 3:
-          return TypeEnum.STRING_LIST_VALUE;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 2:
+                return TypeEnum.INT_LIST_VALUE;
+            case 3:
+                return TypeEnum.STRING_LIST_VALUE;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -217,7 +217,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
 
     public interface Visitor<T> {
         default T visit(ListUnion acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitIntListValue(List<Long> intListValue);
@@ -329,5 +329,4 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
     public static ListUnion defaultInstance() {
         return _DEFAULT;
     }
-
 }

@@ -43,11 +43,11 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(CountingStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -102,34 +102,32 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
     private final Long regularInt;
     public static final int _REGULARINT = 1;
     private static final TField REGULAR_INT_FIELD_DESC = new TField("regularInt", TType.I64, (short)1);
-        private final Long countingInt;
+    private final Long countingInt;
     public static final int _COUNTINGINT = 2;
     private static final TField COUNTING_INT_FIELD_DESC = new TField("countingInt", TType.I64, (short)2);
-        private final String regularString;
+    private final String regularString;
     public static final int _REGULARSTRING = 3;
     private static final TField REGULAR_STRING_FIELD_DESC = new TField("regularString", TType.STRING, (short)3);
     static {
-      NAMES_TO_IDS.put("regularInt", 1);
-      THRIFT_NAMES_TO_IDS.put("regularInt", 1);
-      FIELD_METADATA.put(1, REGULAR_INT_FIELD_DESC);
-      NAMES_TO_IDS.put("countingInt", 2);
-      THRIFT_NAMES_TO_IDS.put("countingInt", 2);
-      FIELD_METADATA.put(2, COUNTING_INT_FIELD_DESC);
-      NAMES_TO_IDS.put("regularString", 3);
-      THRIFT_NAMES_TO_IDS.put("regularString", 3);
-      FIELD_METADATA.put(3, REGULAR_STRING_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/CountingStruct"),
-        CountingStruct.class, CountingStruct::read0));
+        NAMES_TO_IDS.put("regularInt", 1);
+        THRIFT_NAMES_TO_IDS.put("regularInt", 1);
+        FIELD_METADATA.put(1, REGULAR_INT_FIELD_DESC);
+        NAMES_TO_IDS.put("countingInt", 2);
+        THRIFT_NAMES_TO_IDS.put("countingInt", 2);
+        FIELD_METADATA.put(2, COUNTING_INT_FIELD_DESC);
+        NAMES_TO_IDS.put("regularString", 3);
+        THRIFT_NAMES_TO_IDS.put("regularString", 3);
+        FIELD_METADATA.put(3, REGULAR_STRING_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/CountingStruct"),
+            CountingStruct.class, CountingStruct::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="regularInt", requiredness=Requiredness.OPTIONAL)
     public Long getRegularInt() { return regularInt; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="countingInt", requiredness=Requiredness.OPTIONAL)
     public Long getCountingInt() { return countingInt; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="regularString", requiredness=Requiredness.OPTIONAL)
     public String getRegularString() { return regularString; }
@@ -256,5 +254,4 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
     public static CountingStruct defaultInstance() {
         return  _CountingStructLazy._DEFAULT;
     }
-
 }

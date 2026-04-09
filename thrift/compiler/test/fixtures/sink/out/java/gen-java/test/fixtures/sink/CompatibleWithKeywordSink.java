@@ -37,11 +37,11 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(CompatibleWithKeywordSink other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,9 +77,9 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
     public static final int _SINK = 1;
     private static final TField SINK_FIELD_DESC = new TField("sink", TType.STRING, (short)1);
     static {
-      NAMES_TO_IDS.put("sink", 1);
-      THRIFT_NAMES_TO_IDS.put("sink", 1);
-      FIELD_METADATA.put(1, SINK_FIELD_DESC);
+        NAMES_TO_IDS.put("sink", 1);
+        THRIFT_NAMES_TO_IDS.put("sink", 1);
+        FIELD_METADATA.put(1, SINK_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
@@ -167,5 +167,4 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
     public static CompatibleWithKeywordSink defaultInstance() {
         return  _CompatibleWithKeywordSinkLazy._DEFAULT;
     }
-
 }

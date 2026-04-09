@@ -46,11 +46,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -115,44 +115,41 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private final test.fixtures.enums.MyEnum2 me23;
     public static final int _ME2_3 = 1;
     private static final TField ME23_FIELD_DESC = new TField("me2_3", TType.I32, (short)1);
-        private final test.fixtures.enums.MyEnum3 me3N3;
+    private final test.fixtures.enums.MyEnum3 me3N3;
     public static final int _ME3_N3 = 2;
     private static final TField ME3_N3_FIELD_DESC = new TField("me3_n3", TType.I32, (short)2);
-        private final test.fixtures.enums.MyEnum1 me1T1;
+    private final test.fixtures.enums.MyEnum1 me1T1;
     public static final int _ME1_T1 = 4;
     private static final TField ME1_T1_FIELD_DESC = new TField("me1_t1", TType.I32, (short)4);
-        private final test.fixtures.enums.MyEnum1 me1T2;
+    private final test.fixtures.enums.MyEnum1 me1T2;
     public static final int _ME1_T2 = 6;
     private static final TField ME1_T2_FIELD_DESC = new TField("me1_t2", TType.I32, (short)6);
     static {
-      NAMES_TO_IDS.put("me23", 1);
-      THRIFT_NAMES_TO_IDS.put("me2_3", 1);
-      FIELD_METADATA.put(1, ME23_FIELD_DESC);
-      NAMES_TO_IDS.put("me3N3", 2);
-      THRIFT_NAMES_TO_IDS.put("me3_n3", 2);
-      FIELD_METADATA.put(2, ME3_N3_FIELD_DESC);
-      NAMES_TO_IDS.put("me1T1", 4);
-      THRIFT_NAMES_TO_IDS.put("me1_t1", 4);
-      FIELD_METADATA.put(4, ME1_T1_FIELD_DESC);
-      NAMES_TO_IDS.put("me1T2", 6);
-      THRIFT_NAMES_TO_IDS.put("me1_t2", 6);
-      FIELD_METADATA.put(6, ME1_T2_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/enums/MyStruct"),
-        MyStruct.class, MyStruct::read0));
+        NAMES_TO_IDS.put("me23", 1);
+        THRIFT_NAMES_TO_IDS.put("me2_3", 1);
+        FIELD_METADATA.put(1, ME23_FIELD_DESC);
+        NAMES_TO_IDS.put("me3N3", 2);
+        THRIFT_NAMES_TO_IDS.put("me3_n3", 2);
+        FIELD_METADATA.put(2, ME3_N3_FIELD_DESC);
+        NAMES_TO_IDS.put("me1T1", 4);
+        THRIFT_NAMES_TO_IDS.put("me1_t1", 4);
+        FIELD_METADATA.put(4, ME1_T1_FIELD_DESC);
+        NAMES_TO_IDS.put("me1T2", 6);
+        THRIFT_NAMES_TO_IDS.put("me1_t2", 6);
+        FIELD_METADATA.put(6, ME1_T2_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("test.dev/fixtures/enums/MyStruct"),
+            MyStruct.class, MyStruct::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="me2_3", requiredness=Requiredness.NONE)
     public test.fixtures.enums.MyEnum2 getMe23() { return me23; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="me3_n3", requiredness=Requiredness.NONE)
     public test.fixtures.enums.MyEnum3 getMe3N3() { return me3N3; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="me1_t1", requiredness=Requiredness.NONE)
     public test.fixtures.enums.MyEnum1 getMe1T1() { return me1T1; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="me1_t2", requiredness=Requiredness.NONE)
     public test.fixtures.enums.MyEnum1 getMe1T2() { return me1T2; }
@@ -291,5 +288,4 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }
-
 }

@@ -43,11 +43,11 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(StructWithBox other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -102,31 +102,29 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
     private final String a;
     public static final int _A = 1;
     private static final TField A_FIELD_DESC = new TField("a", TType.STRING, (short)1);
-        private final List<Long> b;
+    private final List<Long> b;
     public static final int _B = 2;
     private static final TField B_FIELD_DESC = new TField("b", TType.LIST, (short)2);
-        private final test.fixtures.refs.StructWithRef c;
+    private final test.fixtures.refs.StructWithRef c;
     public static final int _C = 3;
     private static final TField C_FIELD_DESC = new TField("c", TType.STRUCT, (short)3);
     static {
-      NAMES_TO_IDS.put("a", 1);
-      THRIFT_NAMES_TO_IDS.put("a", 1);
-      FIELD_METADATA.put(1, A_FIELD_DESC);
-      NAMES_TO_IDS.put("b", 2);
-      THRIFT_NAMES_TO_IDS.put("b", 2);
-      FIELD_METADATA.put(2, B_FIELD_DESC);
-      NAMES_TO_IDS.put("c", 3);
-      THRIFT_NAMES_TO_IDS.put("c", 3);
-      FIELD_METADATA.put(3, C_FIELD_DESC);
+        NAMES_TO_IDS.put("a", 1);
+        THRIFT_NAMES_TO_IDS.put("a", 1);
+        FIELD_METADATA.put(1, A_FIELD_DESC);
+        NAMES_TO_IDS.put("b", 2);
+        THRIFT_NAMES_TO_IDS.put("b", 2);
+        FIELD_METADATA.put(2, B_FIELD_DESC);
+        NAMES_TO_IDS.put("c", 3);
+        THRIFT_NAMES_TO_IDS.put("c", 3);
+        FIELD_METADATA.put(3, C_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.OPTIONAL)
     public String getA() { return a; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)
     public List<Long> getB() { return b; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.StructWithRef getC() { return c; }
@@ -266,5 +264,4 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
     public static StructWithBox defaultInstance() {
         return  _StructWithBoxLazy._DEFAULT;
     }
-
 }

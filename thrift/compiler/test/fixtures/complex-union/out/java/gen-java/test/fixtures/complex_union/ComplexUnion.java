@@ -44,37 +44,37 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
     private static final TField STRING_REF_FIELD_DESC = new TField("stringRef", TType.STRING, (short)14);
 
     static {
-      NAMES_TO_IDS.put("intValue", 1);
-      THRIFT_NAMES_TO_IDS.put("intValue", 1);
-      FIELD_METADATA.put(1, INT_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("stringValue", 5);
-      THRIFT_NAMES_TO_IDS.put("stringValue", 5);
-      FIELD_METADATA.put(5, STRING_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("intListValue", 2);
-      THRIFT_NAMES_TO_IDS.put("intListValue", 2);
-      FIELD_METADATA.put(2, INT_LIST_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("stringListValue", 3);
-      THRIFT_NAMES_TO_IDS.put("stringListValue", 3);
-      FIELD_METADATA.put(3, STRING_LIST_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("typedefValue", 9);
-      THRIFT_NAMES_TO_IDS.put("typedefValue", 9);
-      FIELD_METADATA.put(9, TYPEDEF_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("stringRef", 14);
-      THRIFT_NAMES_TO_IDS.put("stringRef", 14);
-      FIELD_METADATA.put(14, STRING_REF_FIELD_DESC);
+        NAMES_TO_IDS.put("intValue", 1);
+        THRIFT_NAMES_TO_IDS.put("intValue", 1);
+        FIELD_METADATA.put(1, INT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("stringValue", 5);
+        THRIFT_NAMES_TO_IDS.put("stringValue", 5);
+        FIELD_METADATA.put(5, STRING_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("intListValue", 2);
+        THRIFT_NAMES_TO_IDS.put("intListValue", 2);
+        FIELD_METADATA.put(2, INT_LIST_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("stringListValue", 3);
+        THRIFT_NAMES_TO_IDS.put("stringListValue", 3);
+        FIELD_METADATA.put(3, STRING_LIST_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("typedefValue", 9);
+        THRIFT_NAMES_TO_IDS.put("typedefValue", 9);
+        FIELD_METADATA.put(9, TYPEDEF_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("stringRef", 14);
+        THRIFT_NAMES_TO_IDS.put("stringRef", 14);
+        FIELD_METADATA.put(14, STRING_REF_FIELD_DESC);
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      INT_VALUE,
-      STRING_VALUE,
-      INT_LIST_VALUE,
-      STRING_LIST_VALUE,
-      TYPEDEF_VALUE,
-      STRING_REF,
+        __FBTHRIFT_EMPTY_UNION__,
+        INT_VALUE,
+        STRING_VALUE,
+        INT_LIST_VALUE,
+        STRING_LIST_VALUE,
+        TYPEDEF_VALUE,
+        STRING_REF,
     }
 
     public static ComplexUnion from(int _id, java.lang.Object _field) {
@@ -87,7 +87,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        ComplexUnion _u = new  ComplexUnion();
+        ComplexUnion _u = new ComplexUnion();
 
         try {
             switch(_id) {
@@ -116,7 +116,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
                     _u.value = (String) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -299,24 +299,24 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 1:
-          return TypeEnum.INT_VALUE;
-        case 5:
-          return TypeEnum.STRING_VALUE;
-        case 2:
-          return TypeEnum.INT_LIST_VALUE;
-        case 3:
-          return TypeEnum.STRING_LIST_VALUE;
-        case 9:
-          return TypeEnum.TYPEDEF_VALUE;
-        case 14:
-          return TypeEnum.STRING_REF;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 1:
+                return TypeEnum.INT_VALUE;
+            case 5:
+                return TypeEnum.STRING_VALUE;
+            case 2:
+                return TypeEnum.INT_LIST_VALUE;
+            case 3:
+                return TypeEnum.STRING_LIST_VALUE;
+            case 9:
+                return TypeEnum.TYPEDEF_VALUE;
+            case 14:
+                return TypeEnum.STRING_REF;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -386,7 +386,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
 
     public interface Visitor<T> {
         default T visit(ComplexUnion acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitIntValue(long intValue);
@@ -593,5 +593,4 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
     public static ComplexUnion defaultInstance() {
         return _DEFAULT;
     }
-
 }

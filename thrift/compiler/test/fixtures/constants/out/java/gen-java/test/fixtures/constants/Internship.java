@@ -49,11 +49,11 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Internship other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -128,51 +128,47 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     private final int weeks;
     public static final int _WEEKS = 1;
     private static final TField WEEKS_FIELD_DESC = new TField("weeks", TType.I32, (short)1);
-        private final String title;
+    private final String title;
     public static final int _TITLE = 2;
     private static final TField TITLE_FIELD_DESC = new TField("title", TType.STRING, (short)2);
-        private final test.fixtures.constants.Company employer;
+    private final test.fixtures.constants.Company employer;
     public static final int _EMPLOYER = 3;
     private static final TField EMPLOYER_FIELD_DESC = new TField("employer", TType.I32, (short)3);
-        private final Double compensation;
+    private final Double compensation;
     public static final int _COMPENSATION = 4;
     private static final TField COMPENSATION_FIELD_DESC = new TField("compensation", TType.DOUBLE, (short)4);
-        private final String school;
+    private final String school;
     public static final int _SCHOOL = 5;
     private static final TField SCHOOL_FIELD_DESC = new TField("school", TType.STRING, (short)5);
     static {
-      NAMES_TO_IDS.put("weeks", 1);
-      THRIFT_NAMES_TO_IDS.put("weeks", 1);
-      FIELD_METADATA.put(1, WEEKS_FIELD_DESC);
-      NAMES_TO_IDS.put("title", 2);
-      THRIFT_NAMES_TO_IDS.put("title", 2);
-      FIELD_METADATA.put(2, TITLE_FIELD_DESC);
-      NAMES_TO_IDS.put("employer", 3);
-      THRIFT_NAMES_TO_IDS.put("employer", 3);
-      FIELD_METADATA.put(3, EMPLOYER_FIELD_DESC);
-      NAMES_TO_IDS.put("compensation", 4);
-      THRIFT_NAMES_TO_IDS.put("compensation", 4);
-      FIELD_METADATA.put(4, COMPENSATION_FIELD_DESC);
-      NAMES_TO_IDS.put("school", 5);
-      THRIFT_NAMES_TO_IDS.put("school", 5);
-      FIELD_METADATA.put(5, SCHOOL_FIELD_DESC);
+        NAMES_TO_IDS.put("weeks", 1);
+        THRIFT_NAMES_TO_IDS.put("weeks", 1);
+        FIELD_METADATA.put(1, WEEKS_FIELD_DESC);
+        NAMES_TO_IDS.put("title", 2);
+        THRIFT_NAMES_TO_IDS.put("title", 2);
+        FIELD_METADATA.put(2, TITLE_FIELD_DESC);
+        NAMES_TO_IDS.put("employer", 3);
+        THRIFT_NAMES_TO_IDS.put("employer", 3);
+        FIELD_METADATA.put(3, EMPLOYER_FIELD_DESC);
+        NAMES_TO_IDS.put("compensation", 4);
+        THRIFT_NAMES_TO_IDS.put("compensation", 4);
+        FIELD_METADATA.put(4, COMPENSATION_FIELD_DESC);
+        NAMES_TO_IDS.put("school", 5);
+        THRIFT_NAMES_TO_IDS.put("school", 5);
+        FIELD_METADATA.put(5, SCHOOL_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
     public int getWeeks() { return weeks; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
     public String getTitle() { return title; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.constants.Company getEmployer() { return employer; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="compensation", requiredness=Requiredness.OPTIONAL)
     public Double getCompensation() { return compensation; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="school", requiredness=Requiredness.OPTIONAL)
     public String getSchool() { return school; }
@@ -337,5 +333,4 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     public static Internship defaultInstance() {
         return  _InternshipLazy._DEFAULT;
     }
-
 }

@@ -34,17 +34,17 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
     private static final TField INT_FIELD_FIELD_DESC = new TField("intField", TType.I32, (short)1);
 
     static {
-      NAMES_TO_IDS.put("intField", 1);
-      THRIFT_NAMES_TO_IDS.put("int_field", 1);
-      FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("intField", 1);
+        THRIFT_NAMES_TO_IDS.put("int_field", 1);
+        FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      INT_FIELD,
+        __FBTHRIFT_EMPTY_UNION__,
+        INT_FIELD,
     }
 
     public static NonTriviallyDestructibleUnion from(int _id, java.lang.Object _field) {
@@ -57,7 +57,7 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        NonTriviallyDestructibleUnion _u = new  NonTriviallyDestructibleUnion();
+        NonTriviallyDestructibleUnion _u = new NonTriviallyDestructibleUnion();
 
         try {
             switch(_id) {
@@ -66,7 +66,7 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
                     _u.value = (int) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -110,14 +110,14 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 1:
-          return TypeEnum.INT_FIELD;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 1:
+                return TypeEnum.INT_FIELD;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -172,7 +172,7 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
 
     public interface Visitor<T> {
         default T visit(NonTriviallyDestructibleUnion acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitIntField(int intField);
@@ -242,5 +242,4 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
     public static NonTriviallyDestructibleUnion defaultInstance() {
         return _DEFAULT;
     }
-
 }

@@ -37,11 +37,11 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Foo other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,12 +77,12 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public static final int _MYINT = 1;
     private static final TField MY_INT_FIELD_DESC = new TField("MyInt", TType.I64, (short)1);
     static {
-      NAMES_TO_IDS.put("myInt", 1);
-      THRIFT_NAMES_TO_IDS.put("MyInt", 1);
-      FIELD_METADATA.put(1, MY_INT_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("test.dev/namespace_from_package_without_module_name/Foo"),
-        Foo.class, Foo::read0));
+        NAMES_TO_IDS.put("myInt", 1);
+        THRIFT_NAMES_TO_IDS.put("MyInt", 1);
+        FIELD_METADATA.put(1, MY_INT_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("test.dev/namespace_from_package_without_module_name/Foo"),
+            Foo.class, Foo::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="MyInt", requiredness=Requiredness.NONE)
@@ -168,5 +168,4 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public static Foo defaultInstance() {
         return  _FooLazy._DEFAULT;
     }
-
 }

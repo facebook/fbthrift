@@ -40,11 +40,11 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(FieldsInjectedToStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,21 +89,20 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
     private final String stringField;
     public static final int _STRING_FIELD = 1;
     private static final TField STRING_FIELD_FIELD_DESC = new TField("string_field", TType.STRING, (short)1);
-        private final String injectedField;
+    private final String injectedField;
     public static final int _INJECTED_FIELD = -1100;
     private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)-1100);
     static {
-      NAMES_TO_IDS.put("stringField", 1);
-      THRIFT_NAMES_TO_IDS.put("string_field", 1);
-      FIELD_METADATA.put(1, STRING_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("injectedField", -1100);
-      THRIFT_NAMES_TO_IDS.put("injected_field", -1100);
-      FIELD_METADATA.put(-1100, INJECTED_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("stringField", 1);
+        THRIFT_NAMES_TO_IDS.put("string_field", 1);
+        FIELD_METADATA.put(1, STRING_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("injectedField", -1100);
+        THRIFT_NAMES_TO_IDS.put("injected_field", -1100);
+        FIELD_METADATA.put(-1100, INJECTED_FIELD_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)
     public String getInjectedField() { return injectedField; }
@@ -210,5 +209,4 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
     public static FieldsInjectedToStruct defaultInstance() {
         return  _FieldsInjectedToStructLazy._DEFAULT;
     }
-
 }

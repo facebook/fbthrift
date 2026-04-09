@@ -36,21 +36,21 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
     private static final TField THING_TWO_FIELD_DESC = new TField("thingTwo", TType.STRING, (short)2);
 
     static {
-      NAMES_TO_IDS.put("thingOne", 1);
-      THRIFT_NAMES_TO_IDS.put("thingOne", 1);
-      FIELD_METADATA.put(1, THING_ONE_FIELD_DESC);
-      NAMES_TO_IDS.put("thingTwo", 2);
-      THRIFT_NAMES_TO_IDS.put("thingTwo", 2);
-      FIELD_METADATA.put(2, THING_TWO_FIELD_DESC);
+        NAMES_TO_IDS.put("thingOne", 1);
+        THRIFT_NAMES_TO_IDS.put("thingOne", 1);
+        FIELD_METADATA.put(1, THING_ONE_FIELD_DESC);
+        NAMES_TO_IDS.put("thingTwo", 2);
+        THRIFT_NAMES_TO_IDS.put("thingTwo", 2);
+        FIELD_METADATA.put(2, THING_TWO_FIELD_DESC);
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      THING_ONE,
-      THING_TWO,
+        __FBTHRIFT_EMPTY_UNION__,
+        THING_ONE,
+        THING_TWO,
     }
 
     public static VirtualComplexUnion from(int _id, java.lang.Object _field) {
@@ -63,7 +63,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        VirtualComplexUnion _u = new  VirtualComplexUnion();
+        VirtualComplexUnion _u = new VirtualComplexUnion();
 
         try {
             switch(_id) {
@@ -76,7 +76,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
                     _u.value = (String) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -150,16 +150,16 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 1:
-          return TypeEnum.THING_ONE;
-        case 2:
-          return TypeEnum.THING_TWO;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 1:
+                return TypeEnum.THING_ONE;
+            case 2:
+                return TypeEnum.THING_TWO;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -217,7 +217,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
 
     public interface Visitor<T> {
         default T visit(VirtualComplexUnion acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitThingOne(String thingOne);
@@ -303,5 +303,4 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
     public static VirtualComplexUnion defaultInstance() {
         return _DEFAULT;
     }
-
 }

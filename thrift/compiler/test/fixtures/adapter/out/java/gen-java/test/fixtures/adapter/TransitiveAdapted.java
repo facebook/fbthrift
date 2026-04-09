@@ -31,11 +31,11 @@ public final class TransitiveAdapted implements com.facebook.thrift.payload.Thri
 
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(TransitiveAdapted other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -57,11 +57,12 @@ public final class TransitiveAdapted implements com.facebook.thrift.payload.Thri
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("TransitiveAdapted");
-static {
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/TransitiveAdapted"),
-        TransitiveAdapted.class, TransitiveAdapted::read0));
+    static {
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/TransitiveAdapted"),
+            TransitiveAdapted.class, TransitiveAdapted::read0));
     }
+
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -124,5 +125,4 @@ static {
     public static TransitiveAdapted defaultInstance() {
         return  _TransitiveAdaptedLazy._DEFAULT;
     }
-
 }

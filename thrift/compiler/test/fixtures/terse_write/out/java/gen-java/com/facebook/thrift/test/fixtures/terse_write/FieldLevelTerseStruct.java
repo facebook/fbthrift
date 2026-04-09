@@ -124,11 +124,11 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(FieldLevelTerseStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -453,304 +453,275 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     private final boolean terseBoolField;
     public static final int _TERSE_BOOL_FIELD = 1;
     private static final TField TERSE_BOOL_FIELD_FIELD_DESC = new TField("terse_bool_field", TType.BOOL, (short)1);
-        private final byte terseByteField;
+    private final byte terseByteField;
     public static final int _TERSE_BYTE_FIELD = 2;
     private static final TField TERSE_BYTE_FIELD_FIELD_DESC = new TField("terse_byte_field", TType.BYTE, (short)2);
-        private final short terseShortField;
+    private final short terseShortField;
     public static final int _TERSE_SHORT_FIELD = 3;
     private static final TField TERSE_SHORT_FIELD_FIELD_DESC = new TField("terse_short_field", TType.I16, (short)3);
-        private final int terseIntField;
+    private final int terseIntField;
     public static final int _TERSE_INT_FIELD = 4;
     private static final TField TERSE_INT_FIELD_FIELD_DESC = new TField("terse_int_field", TType.I32, (short)4);
-        private final long terseLongField;
+    private final long terseLongField;
     public static final int _TERSE_LONG_FIELD = 5;
     private static final TField TERSE_LONG_FIELD_FIELD_DESC = new TField("terse_long_field", TType.I64, (short)5);
-        private final float terseFloatField;
+    private final float terseFloatField;
     public static final int _TERSE_FLOAT_FIELD = 6;
     private static final TField TERSE_FLOAT_FIELD_FIELD_DESC = new TField("terse_float_field", TType.FLOAT, (short)6);
-        private final double terseDoubleField;
+    private final double terseDoubleField;
     public static final int _TERSE_DOUBLE_FIELD = 7;
     private static final TField TERSE_DOUBLE_FIELD_FIELD_DESC = new TField("terse_double_field", TType.DOUBLE, (short)7);
-        private final String terseStringField;
+    private final String terseStringField;
     public static final int _TERSE_STRING_FIELD = 8;
     private static final TField TERSE_STRING_FIELD_FIELD_DESC = new TField("terse_string_field", TType.STRING, (short)8);
-        private final byte[] terseBinaryField;
+    private final byte[] terseBinaryField;
     public static final int _TERSE_BINARY_FIELD = 9;
     private static final TField TERSE_BINARY_FIELD_FIELD_DESC = new TField("terse_binary_field", TType.STRING, (short)9);
-        private final com.facebook.thrift.test.fixtures.terse_write.MyEnum terseEnumField;
+    private final com.facebook.thrift.test.fixtures.terse_write.MyEnum terseEnumField;
     public static final int _TERSE_ENUM_FIELD = 10;
     private static final TField TERSE_ENUM_FIELD_FIELD_DESC = new TField("terse_enum_field", TType.I32, (short)10);
-        private final List<Short> terseListField;
+    private final List<Short> terseListField;
     public static final int _TERSE_LIST_FIELD = 11;
     private static final TField TERSE_LIST_FIELD_FIELD_DESC = new TField("terse_list_field", TType.LIST, (short)11);
-        private final Set<Short> terseSetField;
+    private final Set<Short> terseSetField;
     public static final int _TERSE_SET_FIELD = 12;
     private static final TField TERSE_SET_FIELD_FIELD_DESC = new TField("terse_set_field", TType.SET, (short)12);
-        private final Map<Short, Short> terseMapField;
+    private final Map<Short, Short> terseMapField;
     public static final int _TERSE_MAP_FIELD = 13;
     private static final TField TERSE_MAP_FIELD_FIELD_DESC = new TField("terse_map_field", TType.MAP, (short)13);
-        private final com.facebook.thrift.test.fixtures.terse_write.MyStruct terseStructField;
+    private final com.facebook.thrift.test.fixtures.terse_write.MyStruct terseStructField;
     public static final int _TERSE_STRUCT_FIELD = 14;
     private static final TField TERSE_STRUCT_FIELD_FIELD_DESC = new TField("terse_struct_field", TType.STRUCT, (short)14);
-        private final com.facebook.thrift.test.fixtures.terse_write.MyUnion terseUnionField;
+    private final com.facebook.thrift.test.fixtures.terse_write.MyUnion terseUnionField;
     public static final int _TERSE_UNION_FIELD = 29;
     private static final TField TERSE_UNION_FIELD_FIELD_DESC = new TField("terse_union_field", TType.STRUCT, (short)29);
-        private final boolean boolField;
+    private final boolean boolField;
     public static final int _BOOL_FIELD = 15;
     private static final TField BOOL_FIELD_FIELD_DESC = new TField("bool_field", TType.BOOL, (short)15);
-        private final byte byteField;
+    private final byte byteField;
     public static final int _BYTE_FIELD = 16;
     private static final TField BYTE_FIELD_FIELD_DESC = new TField("byte_field", TType.BYTE, (short)16);
-        private final short shortField;
+    private final short shortField;
     public static final int _SHORT_FIELD = 17;
     private static final TField SHORT_FIELD_FIELD_DESC = new TField("short_field", TType.I16, (short)17);
-        private final int intField;
+    private final int intField;
     public static final int _INT_FIELD = 18;
     private static final TField INT_FIELD_FIELD_DESC = new TField("int_field", TType.I32, (short)18);
-        private final long longField;
+    private final long longField;
     public static final int _LONG_FIELD = 19;
     private static final TField LONG_FIELD_FIELD_DESC = new TField("long_field", TType.I64, (short)19);
-        private final float floatField;
+    private final float floatField;
     public static final int _FLOAT_FIELD = 20;
     private static final TField FLOAT_FIELD_FIELD_DESC = new TField("float_field", TType.FLOAT, (short)20);
-        private final double doubleField;
+    private final double doubleField;
     public static final int _DOUBLE_FIELD = 21;
     private static final TField DOUBLE_FIELD_FIELD_DESC = new TField("double_field", TType.DOUBLE, (short)21);
-        private final String stringField;
+    private final String stringField;
     public static final int _STRING_FIELD = 22;
     private static final TField STRING_FIELD_FIELD_DESC = new TField("string_field", TType.STRING, (short)22);
-        private final byte[] binaryField;
+    private final byte[] binaryField;
     public static final int _BINARY_FIELD = 23;
     private static final TField BINARY_FIELD_FIELD_DESC = new TField("binary_field", TType.STRING, (short)23);
-        private final com.facebook.thrift.test.fixtures.terse_write.MyEnum enumField;
+    private final com.facebook.thrift.test.fixtures.terse_write.MyEnum enumField;
     public static final int _ENUM_FIELD = 24;
     private static final TField ENUM_FIELD_FIELD_DESC = new TField("enum_field", TType.I32, (short)24);
-        private final List<Short> listField;
+    private final List<Short> listField;
     public static final int _LIST_FIELD = 25;
     private static final TField LIST_FIELD_FIELD_DESC = new TField("list_field", TType.LIST, (short)25);
-        private final Set<Short> setField;
+    private final Set<Short> setField;
     public static final int _SET_FIELD = 26;
     private static final TField SET_FIELD_FIELD_DESC = new TField("set_field", TType.SET, (short)26);
-        private final Map<Short, Short> mapField;
+    private final Map<Short, Short> mapField;
     public static final int _MAP_FIELD = 27;
     private static final TField MAP_FIELD_FIELD_DESC = new TField("map_field", TType.MAP, (short)27);
-        private final com.facebook.thrift.test.fixtures.terse_write.MyStruct structField;
+    private final com.facebook.thrift.test.fixtures.terse_write.MyStruct structField;
     public static final int _STRUCT_FIELD = 28;
     private static final TField STRUCT_FIELD_FIELD_DESC = new TField("struct_field", TType.STRUCT, (short)28);
-        private final com.facebook.thrift.test.fixtures.terse_write.MyUnion unionField;
+    private final com.facebook.thrift.test.fixtures.terse_write.MyUnion unionField;
     public static final int _UNION_FIELD = 30;
     private static final TField UNION_FIELD_FIELD_DESC = new TField("union_field", TType.STRUCT, (short)30);
     static {
-      NAMES_TO_IDS.put("terseBoolField", 1);
-      THRIFT_NAMES_TO_IDS.put("terse_bool_field", 1);
-      FIELD_METADATA.put(1, TERSE_BOOL_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseByteField", 2);
-      THRIFT_NAMES_TO_IDS.put("terse_byte_field", 2);
-      FIELD_METADATA.put(2, TERSE_BYTE_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseShortField", 3);
-      THRIFT_NAMES_TO_IDS.put("terse_short_field", 3);
-      FIELD_METADATA.put(3, TERSE_SHORT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseIntField", 4);
-      THRIFT_NAMES_TO_IDS.put("terse_int_field", 4);
-      FIELD_METADATA.put(4, TERSE_INT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseLongField", 5);
-      THRIFT_NAMES_TO_IDS.put("terse_long_field", 5);
-      FIELD_METADATA.put(5, TERSE_LONG_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseFloatField", 6);
-      THRIFT_NAMES_TO_IDS.put("terse_float_field", 6);
-      FIELD_METADATA.put(6, TERSE_FLOAT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseDoubleField", 7);
-      THRIFT_NAMES_TO_IDS.put("terse_double_field", 7);
-      FIELD_METADATA.put(7, TERSE_DOUBLE_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseStringField", 8);
-      THRIFT_NAMES_TO_IDS.put("terse_string_field", 8);
-      FIELD_METADATA.put(8, TERSE_STRING_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseBinaryField", 9);
-      THRIFT_NAMES_TO_IDS.put("terse_binary_field", 9);
-      FIELD_METADATA.put(9, TERSE_BINARY_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseEnumField", 10);
-      THRIFT_NAMES_TO_IDS.put("terse_enum_field", 10);
-      FIELD_METADATA.put(10, TERSE_ENUM_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseListField", 11);
-      THRIFT_NAMES_TO_IDS.put("terse_list_field", 11);
-      FIELD_METADATA.put(11, TERSE_LIST_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseSetField", 12);
-      THRIFT_NAMES_TO_IDS.put("terse_set_field", 12);
-      FIELD_METADATA.put(12, TERSE_SET_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseMapField", 13);
-      THRIFT_NAMES_TO_IDS.put("terse_map_field", 13);
-      FIELD_METADATA.put(13, TERSE_MAP_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseStructField", 14);
-      THRIFT_NAMES_TO_IDS.put("terse_struct_field", 14);
-      FIELD_METADATA.put(14, TERSE_STRUCT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("terseUnionField", 29);
-      THRIFT_NAMES_TO_IDS.put("terse_union_field", 29);
-      FIELD_METADATA.put(29, TERSE_UNION_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("boolField", 15);
-      THRIFT_NAMES_TO_IDS.put("bool_field", 15);
-      FIELD_METADATA.put(15, BOOL_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("byteField", 16);
-      THRIFT_NAMES_TO_IDS.put("byte_field", 16);
-      FIELD_METADATA.put(16, BYTE_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("shortField", 17);
-      THRIFT_NAMES_TO_IDS.put("short_field", 17);
-      FIELD_METADATA.put(17, SHORT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("intField", 18);
-      THRIFT_NAMES_TO_IDS.put("int_field", 18);
-      FIELD_METADATA.put(18, INT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("longField", 19);
-      THRIFT_NAMES_TO_IDS.put("long_field", 19);
-      FIELD_METADATA.put(19, LONG_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("floatField", 20);
-      THRIFT_NAMES_TO_IDS.put("float_field", 20);
-      FIELD_METADATA.put(20, FLOAT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("doubleField", 21);
-      THRIFT_NAMES_TO_IDS.put("double_field", 21);
-      FIELD_METADATA.put(21, DOUBLE_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("stringField", 22);
-      THRIFT_NAMES_TO_IDS.put("string_field", 22);
-      FIELD_METADATA.put(22, STRING_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("binaryField", 23);
-      THRIFT_NAMES_TO_IDS.put("binary_field", 23);
-      FIELD_METADATA.put(23, BINARY_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("enumField", 24);
-      THRIFT_NAMES_TO_IDS.put("enum_field", 24);
-      FIELD_METADATA.put(24, ENUM_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("listField", 25);
-      THRIFT_NAMES_TO_IDS.put("list_field", 25);
-      FIELD_METADATA.put(25, LIST_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("setField", 26);
-      THRIFT_NAMES_TO_IDS.put("set_field", 26);
-      FIELD_METADATA.put(26, SET_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("mapField", 27);
-      THRIFT_NAMES_TO_IDS.put("map_field", 27);
-      FIELD_METADATA.put(27, MAP_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("structField", 28);
-      THRIFT_NAMES_TO_IDS.put("struct_field", 28);
-      FIELD_METADATA.put(28, STRUCT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("unionField", 30);
-      THRIFT_NAMES_TO_IDS.put("union_field", 30);
-      FIELD_METADATA.put(30, UNION_FIELD_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/terse_write/FieldLevelTerseStruct"),
-        FieldLevelTerseStruct.class, FieldLevelTerseStruct::read0));
+        NAMES_TO_IDS.put("terseBoolField", 1);
+        THRIFT_NAMES_TO_IDS.put("terse_bool_field", 1);
+        FIELD_METADATA.put(1, TERSE_BOOL_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseByteField", 2);
+        THRIFT_NAMES_TO_IDS.put("terse_byte_field", 2);
+        FIELD_METADATA.put(2, TERSE_BYTE_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseShortField", 3);
+        THRIFT_NAMES_TO_IDS.put("terse_short_field", 3);
+        FIELD_METADATA.put(3, TERSE_SHORT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseIntField", 4);
+        THRIFT_NAMES_TO_IDS.put("terse_int_field", 4);
+        FIELD_METADATA.put(4, TERSE_INT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseLongField", 5);
+        THRIFT_NAMES_TO_IDS.put("terse_long_field", 5);
+        FIELD_METADATA.put(5, TERSE_LONG_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseFloatField", 6);
+        THRIFT_NAMES_TO_IDS.put("terse_float_field", 6);
+        FIELD_METADATA.put(6, TERSE_FLOAT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseDoubleField", 7);
+        THRIFT_NAMES_TO_IDS.put("terse_double_field", 7);
+        FIELD_METADATA.put(7, TERSE_DOUBLE_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseStringField", 8);
+        THRIFT_NAMES_TO_IDS.put("terse_string_field", 8);
+        FIELD_METADATA.put(8, TERSE_STRING_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseBinaryField", 9);
+        THRIFT_NAMES_TO_IDS.put("terse_binary_field", 9);
+        FIELD_METADATA.put(9, TERSE_BINARY_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseEnumField", 10);
+        THRIFT_NAMES_TO_IDS.put("terse_enum_field", 10);
+        FIELD_METADATA.put(10, TERSE_ENUM_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseListField", 11);
+        THRIFT_NAMES_TO_IDS.put("terse_list_field", 11);
+        FIELD_METADATA.put(11, TERSE_LIST_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseSetField", 12);
+        THRIFT_NAMES_TO_IDS.put("terse_set_field", 12);
+        FIELD_METADATA.put(12, TERSE_SET_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseMapField", 13);
+        THRIFT_NAMES_TO_IDS.put("terse_map_field", 13);
+        FIELD_METADATA.put(13, TERSE_MAP_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseStructField", 14);
+        THRIFT_NAMES_TO_IDS.put("terse_struct_field", 14);
+        FIELD_METADATA.put(14, TERSE_STRUCT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("terseUnionField", 29);
+        THRIFT_NAMES_TO_IDS.put("terse_union_field", 29);
+        FIELD_METADATA.put(29, TERSE_UNION_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("boolField", 15);
+        THRIFT_NAMES_TO_IDS.put("bool_field", 15);
+        FIELD_METADATA.put(15, BOOL_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("byteField", 16);
+        THRIFT_NAMES_TO_IDS.put("byte_field", 16);
+        FIELD_METADATA.put(16, BYTE_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("shortField", 17);
+        THRIFT_NAMES_TO_IDS.put("short_field", 17);
+        FIELD_METADATA.put(17, SHORT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("intField", 18);
+        THRIFT_NAMES_TO_IDS.put("int_field", 18);
+        FIELD_METADATA.put(18, INT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("longField", 19);
+        THRIFT_NAMES_TO_IDS.put("long_field", 19);
+        FIELD_METADATA.put(19, LONG_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("floatField", 20);
+        THRIFT_NAMES_TO_IDS.put("float_field", 20);
+        FIELD_METADATA.put(20, FLOAT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("doubleField", 21);
+        THRIFT_NAMES_TO_IDS.put("double_field", 21);
+        FIELD_METADATA.put(21, DOUBLE_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("stringField", 22);
+        THRIFT_NAMES_TO_IDS.put("string_field", 22);
+        FIELD_METADATA.put(22, STRING_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("binaryField", 23);
+        THRIFT_NAMES_TO_IDS.put("binary_field", 23);
+        FIELD_METADATA.put(23, BINARY_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("enumField", 24);
+        THRIFT_NAMES_TO_IDS.put("enum_field", 24);
+        FIELD_METADATA.put(24, ENUM_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("listField", 25);
+        THRIFT_NAMES_TO_IDS.put("list_field", 25);
+        FIELD_METADATA.put(25, LIST_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("setField", 26);
+        THRIFT_NAMES_TO_IDS.put("set_field", 26);
+        FIELD_METADATA.put(26, SET_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("mapField", 27);
+        THRIFT_NAMES_TO_IDS.put("map_field", 27);
+        FIELD_METADATA.put(27, MAP_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("structField", 28);
+        THRIFT_NAMES_TO_IDS.put("struct_field", 28);
+        FIELD_METADATA.put(28, STRUCT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("unionField", 30);
+        THRIFT_NAMES_TO_IDS.put("union_field", 30);
+        FIELD_METADATA.put(30, UNION_FIELD_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/terse_write/FieldLevelTerseStruct"),
+            FieldLevelTerseStruct.class, FieldLevelTerseStruct::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="terse_bool_field", requiredness=Requiredness.TERSE)
     public boolean isTerseBoolField() { return terseBoolField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="terse_byte_field", requiredness=Requiredness.TERSE)
     public byte getTerseByteField() { return terseByteField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=3, name="terse_short_field", requiredness=Requiredness.TERSE)
     public short getTerseShortField() { return terseShortField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=4, name="terse_int_field", requiredness=Requiredness.TERSE)
     public int getTerseIntField() { return terseIntField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=5, name="terse_long_field", requiredness=Requiredness.TERSE)
     public long getTerseLongField() { return terseLongField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=6, name="terse_float_field", requiredness=Requiredness.TERSE)
     public float getTerseFloatField() { return terseFloatField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=7, name="terse_double_field", requiredness=Requiredness.TERSE)
     public double getTerseDoubleField() { return terseDoubleField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="terse_string_field", requiredness=Requiredness.TERSE)
     public String getTerseStringField() { return terseStringField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="terse_binary_field", requiredness=Requiredness.TERSE)
     public byte[] getTerseBinaryField() { return terseBinaryField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="terse_enum_field", requiredness=Requiredness.TERSE)
     public com.facebook.thrift.test.fixtures.terse_write.MyEnum getTerseEnumField() { return terseEnumField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=11, name="terse_list_field", requiredness=Requiredness.TERSE)
     public List<Short> getTerseListField() { return terseListField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=12, name="terse_set_field", requiredness=Requiredness.TERSE)
     public Set<Short> getTerseSetField() { return terseSetField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=13, name="terse_map_field", requiredness=Requiredness.TERSE)
     public Map<Short, Short> getTerseMapField() { return terseMapField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=14, name="terse_struct_field", requiredness=Requiredness.TERSE)
     public com.facebook.thrift.test.fixtures.terse_write.MyStruct getTerseStructField() { return terseStructField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=29, name="terse_union_field", requiredness=Requiredness.TERSE)
     public com.facebook.thrift.test.fixtures.terse_write.MyUnion getTerseUnionField() { return terseUnionField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=15, name="bool_field", requiredness=Requiredness.NONE)
     public boolean isBoolField() { return boolField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=16, name="byte_field", requiredness=Requiredness.NONE)
     public byte getByteField() { return byteField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=17, name="short_field", requiredness=Requiredness.NONE)
     public short getShortField() { return shortField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=18, name="int_field", requiredness=Requiredness.NONE)
     public int getIntField() { return intField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=19, name="long_field", requiredness=Requiredness.NONE)
     public long getLongField() { return longField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=20, name="float_field", requiredness=Requiredness.NONE)
     public float getFloatField() { return floatField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=21, name="double_field", requiredness=Requiredness.NONE)
     public double getDoubleField() { return doubleField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=22, name="string_field", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=23, name="binary_field", requiredness=Requiredness.NONE)
     public byte[] getBinaryField() { return binaryField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=24, name="enum_field", requiredness=Requiredness.NONE)
     public com.facebook.thrift.test.fixtures.terse_write.MyEnum getEnumField() { return enumField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=25, name="list_field", requiredness=Requiredness.NONE)
     public List<Short> getListField() { return listField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=26, name="set_field", requiredness=Requiredness.NONE)
     public Set<Short> getSetField() { return setField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=27, name="map_field", requiredness=Requiredness.NONE)
     public Map<Short, Short> getMapField() { return mapField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=28, name="struct_field", requiredness=Requiredness.NONE)
     public com.facebook.thrift.test.fixtures.terse_write.MyStruct getStructField() { return structField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=30, name="union_field", requiredness=Requiredness.NONE)
     public com.facebook.thrift.test.fixtures.terse_write.MyUnion getUnionField() { return unionField; }
@@ -1539,5 +1510,4 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     public static FieldLevelTerseStruct defaultInstance() {
         return  _FieldLevelTerseStructLazy._DEFAULT;
     }
-
 }

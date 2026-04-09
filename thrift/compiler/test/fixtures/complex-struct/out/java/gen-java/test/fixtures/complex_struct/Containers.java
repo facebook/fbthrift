@@ -145,11 +145,11 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Containers other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -544,371 +544,335 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     private final List<test.fixtures.complex_struct.MyStruct> structList;
     public static final int _STRUCT_LIST = 1;
     private static final TField STRUCT_LIST_FIELD_DESC = new TField("struct_list", TType.LIST, (short)1);
-        private final List<test.fixtures.complex_struct.MyUnion> unionList;
+    private final List<test.fixtures.complex_struct.MyUnion> unionList;
     public static final int _UNION_LIST = 2;
     private static final TField UNION_LIST_FIELD_DESC = new TField("union_list", TType.LIST, (short)2);
-        private final List<test.fixtures.complex_struct.MyEnum> enumList;
+    private final List<test.fixtures.complex_struct.MyEnum> enumList;
     public static final int _ENUM_LIST = 3;
     private static final TField ENUM_LIST_FIELD_DESC = new TField("enum_list", TType.LIST, (short)3);
-        private final Set<test.fixtures.complex_struct.MyStruct> structSet;
+    private final Set<test.fixtures.complex_struct.MyStruct> structSet;
     public static final int _STRUCT_SET = 4;
     private static final TField STRUCT_SET_FIELD_DESC = new TField("struct_set", TType.SET, (short)4);
-        private final Set<test.fixtures.complex_struct.MyUnion> unionSet;
+    private final Set<test.fixtures.complex_struct.MyUnion> unionSet;
     public static final int _UNION_SET = 5;
     private static final TField UNION_SET_FIELD_DESC = new TField("union_set", TType.SET, (short)5);
-        private final Set<test.fixtures.complex_struct.MyEnum> enumSet;
+    private final Set<test.fixtures.complex_struct.MyEnum> enumSet;
     public static final int _ENUM_SET = 6;
     private static final TField ENUM_SET_FIELD_DESC = new TField("enum_set", TType.SET, (short)6);
-        private final Map<test.fixtures.complex_struct.MyStruct, Long> structMap;
+    private final Map<test.fixtures.complex_struct.MyStruct, Long> structMap;
     public static final int _STRUCT_MAP = 7;
     private static final TField STRUCT_MAP_FIELD_DESC = new TField("struct_map", TType.MAP, (short)7);
-        private final Map<test.fixtures.complex_struct.MyUnion, Long> unionMap;
+    private final Map<test.fixtures.complex_struct.MyUnion, Long> unionMap;
     public static final int _UNION_MAP = 8;
     private static final TField UNION_MAP_FIELD_DESC = new TField("union_map", TType.MAP, (short)8);
-        private final Map<test.fixtures.complex_struct.MyEnum, Long> enumMap;
+    private final Map<test.fixtures.complex_struct.MyEnum, Long> enumMap;
     public static final int _ENUM_MAP = 9;
     private static final TField ENUM_MAP_FIELD_DESC = new TField("enum_map", TType.MAP, (short)9);
-        private final Map<Integer, test.fixtures.complex_struct.MyStruct> structMap2;
+    private final Map<Integer, test.fixtures.complex_struct.MyStruct> structMap2;
     public static final int _STRUCT_MAP_2 = 10;
     private static final TField STRUCT_MAP2_FIELD_DESC = new TField("struct_map_2", TType.MAP, (short)10);
-        private final Map<Integer, test.fixtures.complex_struct.MyUnion> unionMap2;
+    private final Map<Integer, test.fixtures.complex_struct.MyUnion> unionMap2;
     public static final int _UNION_MAP_2 = 11;
     private static final TField UNION_MAP2_FIELD_DESC = new TField("union_map_2", TType.MAP, (short)11);
-        private final Map<Integer, test.fixtures.complex_struct.MyEnum> enumMap2;
+    private final Map<Integer, test.fixtures.complex_struct.MyEnum> enumMap2;
     public static final int _ENUM_MAP_2 = 12;
     private static final TField ENUM_MAP2_FIELD_DESC = new TField("enum_map_2", TType.MAP, (short)12);
-        private final Map<List<Integer>, Integer> listMap;
+    private final Map<List<Integer>, Integer> listMap;
     public static final int _LIST_MAP = 13;
     private static final TField LIST_MAP_FIELD_DESC = new TField("list_map", TType.MAP, (short)13);
-        private final Map<Integer, List<Integer>> listMap2;
+    private final Map<Integer, List<Integer>> listMap2;
     public static final int _LIST_MAP_2 = 14;
     private static final TField LIST_MAP2_FIELD_DESC = new TField("list_map_2", TType.MAP, (short)14);
-        private final Map<Set<Integer>, Integer> setMap;
+    private final Map<Set<Integer>, Integer> setMap;
     public static final int _SET_MAP = 15;
     private static final TField SET_MAP_FIELD_DESC = new TField("set_map", TType.MAP, (short)15);
-        private final Map<Integer, Set<Integer>> setMap2;
+    private final Map<Integer, Set<Integer>> setMap2;
     public static final int _SET_MAP_2 = 16;
     private static final TField SET_MAP2_FIELD_DESC = new TField("set_map_2", TType.MAP, (short)16);
-        private final Map<Map<Integer, Integer>, Integer> mapMap;
+    private final Map<Map<Integer, Integer>, Integer> mapMap;
     public static final int _MAP_MAP = 17;
     private static final TField MAP_MAP_FIELD_DESC = new TField("map_map", TType.MAP, (short)17);
-        private final Map<Integer, Map<Integer, Integer>> mapMap2;
+    private final Map<Integer, Map<Integer, Integer>> mapMap2;
     public static final int _MAP_MAP_2 = 18;
     private static final TField MAP_MAP2_FIELD_DESC = new TField("map_map_2", TType.MAP, (short)18);
-        private final List<List<Integer>> listListI32;
+    private final List<List<Integer>> listListI32;
     public static final int _LIST_LIST_I32 = 19;
     private static final TField LIST_LIST_I32_FIELD_DESC = new TField("list_list_i32", TType.LIST, (short)19);
-        private final List<List<test.fixtures.complex_struct.MyStruct>> listListStruct;
+    private final List<List<test.fixtures.complex_struct.MyStruct>> listListStruct;
     public static final int _LIST_LIST_STRUCT = 20;
     private static final TField LIST_LIST_STRUCT_FIELD_DESC = new TField("list_list_struct", TType.LIST, (short)20);
-        private final List<Set<Integer>> listSetI32;
+    private final List<Set<Integer>> listSetI32;
     public static final int _LIST_SET_I32 = 21;
     private static final TField LIST_SET_I32_FIELD_DESC = new TField("list_set_i32", TType.LIST, (short)21);
-        private final List<Set<test.fixtures.complex_struct.MyStruct>> listSetStruct;
+    private final List<Set<test.fixtures.complex_struct.MyStruct>> listSetStruct;
     public static final int _LIST_SET_STRUCT = 22;
     private static final TField LIST_SET_STRUCT_FIELD_DESC = new TField("list_set_struct", TType.LIST, (short)22);
-        private final List<Map<Integer, Integer>> listMapI32I32;
+    private final List<Map<Integer, Integer>> listMapI32I32;
     public static final int _LIST_MAP_I32_I32 = 23;
     private static final TField LIST_MAP_I32_I32_FIELD_DESC = new TField("list_map_i32_i32", TType.LIST, (short)23);
-        private final List<Map<Integer, test.fixtures.complex_struct.MyStruct>> listMapI32Struct;
+    private final List<Map<Integer, test.fixtures.complex_struct.MyStruct>> listMapI32Struct;
     public static final int _LIST_MAP_I32_STRUCT = 24;
     private static final TField LIST_MAP_I32_STRUCT_FIELD_DESC = new TField("list_map_i32_struct", TType.LIST, (short)24);
-        private final List<Map<test.fixtures.complex_struct.MyStruct, Integer>> listMapStructI32;
+    private final List<Map<test.fixtures.complex_struct.MyStruct, Integer>> listMapStructI32;
     public static final int _LIST_MAP_STRUCT_I32 = 25;
     private static final TField LIST_MAP_STRUCT_I32_FIELD_DESC = new TField("list_map_struct_i32", TType.LIST, (short)25);
-        private final Set<List<Integer>> setListI32;
+    private final Set<List<Integer>> setListI32;
     public static final int _SET_LIST_I32 = 26;
     private static final TField SET_LIST_I32_FIELD_DESC = new TField("set_list_i32", TType.SET, (short)26);
-        private final Set<List<test.fixtures.complex_struct.MyStruct>> setListStruct;
+    private final Set<List<test.fixtures.complex_struct.MyStruct>> setListStruct;
     public static final int _SET_LIST_STRUCT = 27;
     private static final TField SET_LIST_STRUCT_FIELD_DESC = new TField("set_list_struct", TType.SET, (short)27);
-        private final Set<Set<Integer>> setSetI32;
+    private final Set<Set<Integer>> setSetI32;
     public static final int _SET_SET_I32 = 28;
     private static final TField SET_SET_I32_FIELD_DESC = new TField("set_set_i32", TType.SET, (short)28);
-        private final Set<Set<test.fixtures.complex_struct.MyStruct>> setSetStruct;
+    private final Set<Set<test.fixtures.complex_struct.MyStruct>> setSetStruct;
     public static final int _SET_SET_STRUCT = 29;
     private static final TField SET_SET_STRUCT_FIELD_DESC = new TField("set_set_struct", TType.SET, (short)29);
-        private final Set<Map<Integer, Integer>> setMapI32I32;
+    private final Set<Map<Integer, Integer>> setMapI32I32;
     public static final int _SET_MAP_I32_I32 = 30;
     private static final TField SET_MAP_I32_I32_FIELD_DESC = new TField("set_map_i32_i32", TType.SET, (short)30);
-        private final Set<Map<Integer, test.fixtures.complex_struct.MyStruct>> setMapI32Struct;
+    private final Set<Map<Integer, test.fixtures.complex_struct.MyStruct>> setMapI32Struct;
     public static final int _SET_MAP_I32_STRUCT = 31;
     private static final TField SET_MAP_I32_STRUCT_FIELD_DESC = new TField("set_map_i32_struct", TType.SET, (short)31);
-        private final Set<Map<test.fixtures.complex_struct.MyStruct, Integer>> setMapStructI32;
+    private final Set<Map<test.fixtures.complex_struct.MyStruct, Integer>> setMapStructI32;
     public static final int _SET_MAP_STRUCT_I32 = 32;
     private static final TField SET_MAP_STRUCT_I32_FIELD_DESC = new TField("set_map_struct_i32", TType.SET, (short)32);
-        private final Map<Integer, Map<Integer, Integer>> mapI32MapI32I32;
+    private final Map<Integer, Map<Integer, Integer>> mapI32MapI32I32;
     public static final int _MAP_I32_MAP_I32_I32 = 33;
     private static final TField MAP_I32_MAP_I32_I32_FIELD_DESC = new TField("map_i32_map_i32_i32", TType.MAP, (short)33);
-        private final Map<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> mapI32MapStructI32;
+    private final Map<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> mapI32MapStructI32;
     public static final int _MAP_I32_MAP_STRUCT_I32 = 34;
     private static final TField MAP_I32_MAP_STRUCT_I32_FIELD_DESC = new TField("map_i32_map_struct_i32", TType.MAP, (short)34);
-        private final Map<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> mapI32MapI32Struct;
+    private final Map<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> mapI32MapI32Struct;
     public static final int _MAP_I32_MAP_I32_STRUCT = 35;
     private static final TField MAP_I32_MAP_I32_STRUCT_FIELD_DESC = new TField("map_i32_map_i32_struct", TType.MAP, (short)35);
-        private final Map<Integer, List<Map<Integer, Integer>>> mapI32MapListI32I32;
+    private final Map<Integer, List<Map<Integer, Integer>>> mapI32MapListI32I32;
     public static final int _MAP_I32_MAP_LIST_I32_I32 = 36;
     private static final TField MAP_I32_MAP_LIST_I32_I32_FIELD_DESC = new TField("map_i32_map_list_i32_i32", TType.MAP, (short)36);
-        private final Map<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> mapI32MapListStructI32;
+    private final Map<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> mapI32MapListStructI32;
     public static final int _MAP_I32_MAP_LIST_STRUCT_I32 = 37;
     private static final TField MAP_I32_MAP_LIST_STRUCT_I32_FIELD_DESC = new TField("map_i32_map_list_struct_i32", TType.MAP, (short)37);
     static {
-      NAMES_TO_IDS.put("structList", 1);
-      THRIFT_NAMES_TO_IDS.put("struct_list", 1);
-      FIELD_METADATA.put(1, STRUCT_LIST_FIELD_DESC);
-      NAMES_TO_IDS.put("unionList", 2);
-      THRIFT_NAMES_TO_IDS.put("union_list", 2);
-      FIELD_METADATA.put(2, UNION_LIST_FIELD_DESC);
-      NAMES_TO_IDS.put("enumList", 3);
-      THRIFT_NAMES_TO_IDS.put("enum_list", 3);
-      FIELD_METADATA.put(3, ENUM_LIST_FIELD_DESC);
-      NAMES_TO_IDS.put("structSet", 4);
-      THRIFT_NAMES_TO_IDS.put("struct_set", 4);
-      FIELD_METADATA.put(4, STRUCT_SET_FIELD_DESC);
-      NAMES_TO_IDS.put("unionSet", 5);
-      THRIFT_NAMES_TO_IDS.put("union_set", 5);
-      FIELD_METADATA.put(5, UNION_SET_FIELD_DESC);
-      NAMES_TO_IDS.put("enumSet", 6);
-      THRIFT_NAMES_TO_IDS.put("enum_set", 6);
-      FIELD_METADATA.put(6, ENUM_SET_FIELD_DESC);
-      NAMES_TO_IDS.put("structMap", 7);
-      THRIFT_NAMES_TO_IDS.put("struct_map", 7);
-      FIELD_METADATA.put(7, STRUCT_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("unionMap", 8);
-      THRIFT_NAMES_TO_IDS.put("union_map", 8);
-      FIELD_METADATA.put(8, UNION_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("enumMap", 9);
-      THRIFT_NAMES_TO_IDS.put("enum_map", 9);
-      FIELD_METADATA.put(9, ENUM_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("structMap2", 10);
-      THRIFT_NAMES_TO_IDS.put("struct_map_2", 10);
-      FIELD_METADATA.put(10, STRUCT_MAP2_FIELD_DESC);
-      NAMES_TO_IDS.put("unionMap2", 11);
-      THRIFT_NAMES_TO_IDS.put("union_map_2", 11);
-      FIELD_METADATA.put(11, UNION_MAP2_FIELD_DESC);
-      NAMES_TO_IDS.put("enumMap2", 12);
-      THRIFT_NAMES_TO_IDS.put("enum_map_2", 12);
-      FIELD_METADATA.put(12, ENUM_MAP2_FIELD_DESC);
-      NAMES_TO_IDS.put("listMap", 13);
-      THRIFT_NAMES_TO_IDS.put("list_map", 13);
-      FIELD_METADATA.put(13, LIST_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("listMap2", 14);
-      THRIFT_NAMES_TO_IDS.put("list_map_2", 14);
-      FIELD_METADATA.put(14, LIST_MAP2_FIELD_DESC);
-      NAMES_TO_IDS.put("setMap", 15);
-      THRIFT_NAMES_TO_IDS.put("set_map", 15);
-      FIELD_METADATA.put(15, SET_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("setMap2", 16);
-      THRIFT_NAMES_TO_IDS.put("set_map_2", 16);
-      FIELD_METADATA.put(16, SET_MAP2_FIELD_DESC);
-      NAMES_TO_IDS.put("mapMap", 17);
-      THRIFT_NAMES_TO_IDS.put("map_map", 17);
-      FIELD_METADATA.put(17, MAP_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("mapMap2", 18);
-      THRIFT_NAMES_TO_IDS.put("map_map_2", 18);
-      FIELD_METADATA.put(18, MAP_MAP2_FIELD_DESC);
-      NAMES_TO_IDS.put("listListI32", 19);
-      THRIFT_NAMES_TO_IDS.put("list_list_i32", 19);
-      FIELD_METADATA.put(19, LIST_LIST_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("listListStruct", 20);
-      THRIFT_NAMES_TO_IDS.put("list_list_struct", 20);
-      FIELD_METADATA.put(20, LIST_LIST_STRUCT_FIELD_DESC);
-      NAMES_TO_IDS.put("listSetI32", 21);
-      THRIFT_NAMES_TO_IDS.put("list_set_i32", 21);
-      FIELD_METADATA.put(21, LIST_SET_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("listSetStruct", 22);
-      THRIFT_NAMES_TO_IDS.put("list_set_struct", 22);
-      FIELD_METADATA.put(22, LIST_SET_STRUCT_FIELD_DESC);
-      NAMES_TO_IDS.put("listMapI32I32", 23);
-      THRIFT_NAMES_TO_IDS.put("list_map_i32_i32", 23);
-      FIELD_METADATA.put(23, LIST_MAP_I32_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("listMapI32Struct", 24);
-      THRIFT_NAMES_TO_IDS.put("list_map_i32_struct", 24);
-      FIELD_METADATA.put(24, LIST_MAP_I32_STRUCT_FIELD_DESC);
-      NAMES_TO_IDS.put("listMapStructI32", 25);
-      THRIFT_NAMES_TO_IDS.put("list_map_struct_i32", 25);
-      FIELD_METADATA.put(25, LIST_MAP_STRUCT_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("setListI32", 26);
-      THRIFT_NAMES_TO_IDS.put("set_list_i32", 26);
-      FIELD_METADATA.put(26, SET_LIST_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("setListStruct", 27);
-      THRIFT_NAMES_TO_IDS.put("set_list_struct", 27);
-      FIELD_METADATA.put(27, SET_LIST_STRUCT_FIELD_DESC);
-      NAMES_TO_IDS.put("setSetI32", 28);
-      THRIFT_NAMES_TO_IDS.put("set_set_i32", 28);
-      FIELD_METADATA.put(28, SET_SET_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("setSetStruct", 29);
-      THRIFT_NAMES_TO_IDS.put("set_set_struct", 29);
-      FIELD_METADATA.put(29, SET_SET_STRUCT_FIELD_DESC);
-      NAMES_TO_IDS.put("setMapI32I32", 30);
-      THRIFT_NAMES_TO_IDS.put("set_map_i32_i32", 30);
-      FIELD_METADATA.put(30, SET_MAP_I32_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("setMapI32Struct", 31);
-      THRIFT_NAMES_TO_IDS.put("set_map_i32_struct", 31);
-      FIELD_METADATA.put(31, SET_MAP_I32_STRUCT_FIELD_DESC);
-      NAMES_TO_IDS.put("setMapStructI32", 32);
-      THRIFT_NAMES_TO_IDS.put("set_map_struct_i32", 32);
-      FIELD_METADATA.put(32, SET_MAP_STRUCT_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("mapI32MapI32I32", 33);
-      THRIFT_NAMES_TO_IDS.put("map_i32_map_i32_i32", 33);
-      FIELD_METADATA.put(33, MAP_I32_MAP_I32_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("mapI32MapStructI32", 34);
-      THRIFT_NAMES_TO_IDS.put("map_i32_map_struct_i32", 34);
-      FIELD_METADATA.put(34, MAP_I32_MAP_STRUCT_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("mapI32MapI32Struct", 35);
-      THRIFT_NAMES_TO_IDS.put("map_i32_map_i32_struct", 35);
-      FIELD_METADATA.put(35, MAP_I32_MAP_I32_STRUCT_FIELD_DESC);
-      NAMES_TO_IDS.put("mapI32MapListI32I32", 36);
-      THRIFT_NAMES_TO_IDS.put("map_i32_map_list_i32_i32", 36);
-      FIELD_METADATA.put(36, MAP_I32_MAP_LIST_I32_I32_FIELD_DESC);
-      NAMES_TO_IDS.put("mapI32MapListStructI32", 37);
-      THRIFT_NAMES_TO_IDS.put("map_i32_map_list_struct_i32", 37);
-      FIELD_METADATA.put(37, MAP_I32_MAP_LIST_STRUCT_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("structList", 1);
+        THRIFT_NAMES_TO_IDS.put("struct_list", 1);
+        FIELD_METADATA.put(1, STRUCT_LIST_FIELD_DESC);
+        NAMES_TO_IDS.put("unionList", 2);
+        THRIFT_NAMES_TO_IDS.put("union_list", 2);
+        FIELD_METADATA.put(2, UNION_LIST_FIELD_DESC);
+        NAMES_TO_IDS.put("enumList", 3);
+        THRIFT_NAMES_TO_IDS.put("enum_list", 3);
+        FIELD_METADATA.put(3, ENUM_LIST_FIELD_DESC);
+        NAMES_TO_IDS.put("structSet", 4);
+        THRIFT_NAMES_TO_IDS.put("struct_set", 4);
+        FIELD_METADATA.put(4, STRUCT_SET_FIELD_DESC);
+        NAMES_TO_IDS.put("unionSet", 5);
+        THRIFT_NAMES_TO_IDS.put("union_set", 5);
+        FIELD_METADATA.put(5, UNION_SET_FIELD_DESC);
+        NAMES_TO_IDS.put("enumSet", 6);
+        THRIFT_NAMES_TO_IDS.put("enum_set", 6);
+        FIELD_METADATA.put(6, ENUM_SET_FIELD_DESC);
+        NAMES_TO_IDS.put("structMap", 7);
+        THRIFT_NAMES_TO_IDS.put("struct_map", 7);
+        FIELD_METADATA.put(7, STRUCT_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("unionMap", 8);
+        THRIFT_NAMES_TO_IDS.put("union_map", 8);
+        FIELD_METADATA.put(8, UNION_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("enumMap", 9);
+        THRIFT_NAMES_TO_IDS.put("enum_map", 9);
+        FIELD_METADATA.put(9, ENUM_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("structMap2", 10);
+        THRIFT_NAMES_TO_IDS.put("struct_map_2", 10);
+        FIELD_METADATA.put(10, STRUCT_MAP2_FIELD_DESC);
+        NAMES_TO_IDS.put("unionMap2", 11);
+        THRIFT_NAMES_TO_IDS.put("union_map_2", 11);
+        FIELD_METADATA.put(11, UNION_MAP2_FIELD_DESC);
+        NAMES_TO_IDS.put("enumMap2", 12);
+        THRIFT_NAMES_TO_IDS.put("enum_map_2", 12);
+        FIELD_METADATA.put(12, ENUM_MAP2_FIELD_DESC);
+        NAMES_TO_IDS.put("listMap", 13);
+        THRIFT_NAMES_TO_IDS.put("list_map", 13);
+        FIELD_METADATA.put(13, LIST_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("listMap2", 14);
+        THRIFT_NAMES_TO_IDS.put("list_map_2", 14);
+        FIELD_METADATA.put(14, LIST_MAP2_FIELD_DESC);
+        NAMES_TO_IDS.put("setMap", 15);
+        THRIFT_NAMES_TO_IDS.put("set_map", 15);
+        FIELD_METADATA.put(15, SET_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("setMap2", 16);
+        THRIFT_NAMES_TO_IDS.put("set_map_2", 16);
+        FIELD_METADATA.put(16, SET_MAP2_FIELD_DESC);
+        NAMES_TO_IDS.put("mapMap", 17);
+        THRIFT_NAMES_TO_IDS.put("map_map", 17);
+        FIELD_METADATA.put(17, MAP_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("mapMap2", 18);
+        THRIFT_NAMES_TO_IDS.put("map_map_2", 18);
+        FIELD_METADATA.put(18, MAP_MAP2_FIELD_DESC);
+        NAMES_TO_IDS.put("listListI32", 19);
+        THRIFT_NAMES_TO_IDS.put("list_list_i32", 19);
+        FIELD_METADATA.put(19, LIST_LIST_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("listListStruct", 20);
+        THRIFT_NAMES_TO_IDS.put("list_list_struct", 20);
+        FIELD_METADATA.put(20, LIST_LIST_STRUCT_FIELD_DESC);
+        NAMES_TO_IDS.put("listSetI32", 21);
+        THRIFT_NAMES_TO_IDS.put("list_set_i32", 21);
+        FIELD_METADATA.put(21, LIST_SET_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("listSetStruct", 22);
+        THRIFT_NAMES_TO_IDS.put("list_set_struct", 22);
+        FIELD_METADATA.put(22, LIST_SET_STRUCT_FIELD_DESC);
+        NAMES_TO_IDS.put("listMapI32I32", 23);
+        THRIFT_NAMES_TO_IDS.put("list_map_i32_i32", 23);
+        FIELD_METADATA.put(23, LIST_MAP_I32_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("listMapI32Struct", 24);
+        THRIFT_NAMES_TO_IDS.put("list_map_i32_struct", 24);
+        FIELD_METADATA.put(24, LIST_MAP_I32_STRUCT_FIELD_DESC);
+        NAMES_TO_IDS.put("listMapStructI32", 25);
+        THRIFT_NAMES_TO_IDS.put("list_map_struct_i32", 25);
+        FIELD_METADATA.put(25, LIST_MAP_STRUCT_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("setListI32", 26);
+        THRIFT_NAMES_TO_IDS.put("set_list_i32", 26);
+        FIELD_METADATA.put(26, SET_LIST_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("setListStruct", 27);
+        THRIFT_NAMES_TO_IDS.put("set_list_struct", 27);
+        FIELD_METADATA.put(27, SET_LIST_STRUCT_FIELD_DESC);
+        NAMES_TO_IDS.put("setSetI32", 28);
+        THRIFT_NAMES_TO_IDS.put("set_set_i32", 28);
+        FIELD_METADATA.put(28, SET_SET_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("setSetStruct", 29);
+        THRIFT_NAMES_TO_IDS.put("set_set_struct", 29);
+        FIELD_METADATA.put(29, SET_SET_STRUCT_FIELD_DESC);
+        NAMES_TO_IDS.put("setMapI32I32", 30);
+        THRIFT_NAMES_TO_IDS.put("set_map_i32_i32", 30);
+        FIELD_METADATA.put(30, SET_MAP_I32_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("setMapI32Struct", 31);
+        THRIFT_NAMES_TO_IDS.put("set_map_i32_struct", 31);
+        FIELD_METADATA.put(31, SET_MAP_I32_STRUCT_FIELD_DESC);
+        NAMES_TO_IDS.put("setMapStructI32", 32);
+        THRIFT_NAMES_TO_IDS.put("set_map_struct_i32", 32);
+        FIELD_METADATA.put(32, SET_MAP_STRUCT_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("mapI32MapI32I32", 33);
+        THRIFT_NAMES_TO_IDS.put("map_i32_map_i32_i32", 33);
+        FIELD_METADATA.put(33, MAP_I32_MAP_I32_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("mapI32MapStructI32", 34);
+        THRIFT_NAMES_TO_IDS.put("map_i32_map_struct_i32", 34);
+        FIELD_METADATA.put(34, MAP_I32_MAP_STRUCT_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("mapI32MapI32Struct", 35);
+        THRIFT_NAMES_TO_IDS.put("map_i32_map_i32_struct", 35);
+        FIELD_METADATA.put(35, MAP_I32_MAP_I32_STRUCT_FIELD_DESC);
+        NAMES_TO_IDS.put("mapI32MapListI32I32", 36);
+        THRIFT_NAMES_TO_IDS.put("map_i32_map_list_i32_i32", 36);
+        FIELD_METADATA.put(36, MAP_I32_MAP_LIST_I32_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("mapI32MapListStructI32", 37);
+        THRIFT_NAMES_TO_IDS.put("map_i32_map_list_struct_i32", 37);
+        FIELD_METADATA.put(37, MAP_I32_MAP_LIST_STRUCT_I32_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="struct_list", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyStruct> getStructList() { return structList; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="union_list", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyUnion> getUnionList() { return unionList; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="enum_list", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyEnum> getEnumList() { return enumList; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="struct_set", requiredness=Requiredness.NONE)
     public Set<test.fixtures.complex_struct.MyStruct> getStructSet() { return structSet; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="union_set", requiredness=Requiredness.NONE)
     public Set<test.fixtures.complex_struct.MyUnion> getUnionSet() { return unionSet; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="enum_set", requiredness=Requiredness.NONE)
     public Set<test.fixtures.complex_struct.MyEnum> getEnumSet() { return enumSet; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="struct_map", requiredness=Requiredness.NONE)
     public Map<test.fixtures.complex_struct.MyStruct, Long> getStructMap() { return structMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="union_map", requiredness=Requiredness.NONE)
     public Map<test.fixtures.complex_struct.MyUnion, Long> getUnionMap() { return unionMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="enum_map", requiredness=Requiredness.NONE)
     public Map<test.fixtures.complex_struct.MyEnum, Long> getEnumMap() { return enumMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="struct_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, test.fixtures.complex_struct.MyStruct> getStructMap2() { return structMap2; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=11, name="union_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, test.fixtures.complex_struct.MyUnion> getUnionMap2() { return unionMap2; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=12, name="enum_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, test.fixtures.complex_struct.MyEnum> getEnumMap2() { return enumMap2; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=13, name="list_map", requiredness=Requiredness.NONE)
     public Map<List<Integer>, Integer> getListMap() { return listMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=14, name="list_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, List<Integer>> getListMap2() { return listMap2; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=15, name="set_map", requiredness=Requiredness.NONE)
     public Map<Set<Integer>, Integer> getSetMap() { return setMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=16, name="set_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, Set<Integer>> getSetMap2() { return setMap2; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=17, name="map_map", requiredness=Requiredness.NONE)
     public Map<Map<Integer, Integer>, Integer> getMapMap() { return mapMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=18, name="map_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, Map<Integer, Integer>> getMapMap2() { return mapMap2; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=19, name="list_list_i32", requiredness=Requiredness.NONE)
     public List<List<Integer>> getListListI32() { return listListI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=20, name="list_list_struct", requiredness=Requiredness.NONE)
     public List<List<test.fixtures.complex_struct.MyStruct>> getListListStruct() { return listListStruct; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=21, name="list_set_i32", requiredness=Requiredness.NONE)
     public List<Set<Integer>> getListSetI32() { return listSetI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=22, name="list_set_struct", requiredness=Requiredness.NONE)
     public List<Set<test.fixtures.complex_struct.MyStruct>> getListSetStruct() { return listSetStruct; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=23, name="list_map_i32_i32", requiredness=Requiredness.NONE)
     public List<Map<Integer, Integer>> getListMapI32I32() { return listMapI32I32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=24, name="list_map_i32_struct", requiredness=Requiredness.NONE)
     public List<Map<Integer, test.fixtures.complex_struct.MyStruct>> getListMapI32Struct() { return listMapI32Struct; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=25, name="list_map_struct_i32", requiredness=Requiredness.NONE)
     public List<Map<test.fixtures.complex_struct.MyStruct, Integer>> getListMapStructI32() { return listMapStructI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=26, name="set_list_i32", requiredness=Requiredness.NONE)
     public Set<List<Integer>> getSetListI32() { return setListI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=27, name="set_list_struct", requiredness=Requiredness.NONE)
     public Set<List<test.fixtures.complex_struct.MyStruct>> getSetListStruct() { return setListStruct; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=28, name="set_set_i32", requiredness=Requiredness.NONE)
     public Set<Set<Integer>> getSetSetI32() { return setSetI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=29, name="set_set_struct", requiredness=Requiredness.NONE)
     public Set<Set<test.fixtures.complex_struct.MyStruct>> getSetSetStruct() { return setSetStruct; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=30, name="set_map_i32_i32", requiredness=Requiredness.NONE)
     public Set<Map<Integer, Integer>> getSetMapI32I32() { return setMapI32I32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=31, name="set_map_i32_struct", requiredness=Requiredness.NONE)
     public Set<Map<Integer, test.fixtures.complex_struct.MyStruct>> getSetMapI32Struct() { return setMapI32Struct; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=32, name="set_map_struct_i32", requiredness=Requiredness.NONE)
     public Set<Map<test.fixtures.complex_struct.MyStruct, Integer>> getSetMapStructI32() { return setMapStructI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=33, name="map_i32_map_i32_i32", requiredness=Requiredness.NONE)
     public Map<Integer, Map<Integer, Integer>> getMapI32MapI32I32() { return mapI32MapI32I32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=34, name="map_i32_map_struct_i32", requiredness=Requiredness.NONE)
     public Map<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> getMapI32MapStructI32() { return mapI32MapStructI32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=35, name="map_i32_map_i32_struct", requiredness=Requiredness.NONE)
     public Map<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> getMapI32MapI32Struct() { return mapI32MapI32Struct; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=36, name="map_i32_map_list_i32_i32", requiredness=Requiredness.NONE)
     public Map<Integer, List<Map<Integer, Integer>>> getMapI32MapListI32I32() { return mapI32MapListI32I32; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=37, name="map_i32_map_list_struct_i32", requiredness=Requiredness.NONE)
     public Map<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> getMapI32MapListStructI32() { return mapI32MapListStructI32; }
@@ -3087,5 +3051,4 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     public static Containers defaultInstance() {
         return  _ContainersLazy._DEFAULT;
     }
-
 }

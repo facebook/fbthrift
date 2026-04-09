@@ -31,11 +31,11 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
 
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyDataItem other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -57,8 +57,9 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyDataItem");
-static {
+    static {
     }
+
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -121,5 +122,4 @@ static {
     public static MyDataItem defaultInstance() {
         return  _MyDataItemLazy._DEFAULT;
     }
-
 }

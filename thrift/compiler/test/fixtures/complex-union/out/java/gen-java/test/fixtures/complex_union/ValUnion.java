@@ -36,21 +36,21 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
     private static final TField V2_FIELD_DESC = new TField("v2", TType.STRUCT, (short)2);
 
     static {
-      NAMES_TO_IDS.put("v1", 1);
-      THRIFT_NAMES_TO_IDS.put("v1", 1);
-      FIELD_METADATA.put(1, V1_FIELD_DESC);
-      NAMES_TO_IDS.put("v2", 2);
-      THRIFT_NAMES_TO_IDS.put("v2", 2);
-      FIELD_METADATA.put(2, V2_FIELD_DESC);
+        NAMES_TO_IDS.put("v1", 1);
+        THRIFT_NAMES_TO_IDS.put("v1", 1);
+        FIELD_METADATA.put(1, V1_FIELD_DESC);
+        NAMES_TO_IDS.put("v2", 2);
+        THRIFT_NAMES_TO_IDS.put("v2", 2);
+        FIELD_METADATA.put(2, V2_FIELD_DESC);
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      V1,
-      V2,
+        __FBTHRIFT_EMPTY_UNION__,
+        V1,
+        V2,
     }
 
     public static ValUnion from(int _id, java.lang.Object _field) {
@@ -63,7 +63,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        ValUnion _u = new  ValUnion();
+        ValUnion _u = new ValUnion();
 
         try {
             switch(_id) {
@@ -76,7 +76,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
                     _u.value = (test.fixtures.complex_union.Val) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -150,16 +150,16 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 1:
-          return TypeEnum.V1;
-        case 2:
-          return TypeEnum.V2;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 1:
+                return TypeEnum.V1;
+            case 2:
+                return TypeEnum.V2;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -217,7 +217,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
 
     public interface Visitor<T> {
         default T visit(ValUnion acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitV1(test.fixtures.complex_union.Val v1);
@@ -303,5 +303,4 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
     public static ValUnion defaultInstance() {
         return _DEFAULT;
     }
-
 }

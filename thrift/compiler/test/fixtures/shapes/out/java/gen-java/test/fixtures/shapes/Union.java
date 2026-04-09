@@ -36,21 +36,21 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
     private static final TField STRING_VALUE_FIELD_DESC = new TField("stringValue", TType.STRING, (short)5);
 
     static {
-      NAMES_TO_IDS.put("intValue", 1);
-      THRIFT_NAMES_TO_IDS.put("intValue", 1);
-      FIELD_METADATA.put(1, INT_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("stringValue", 5);
-      THRIFT_NAMES_TO_IDS.put("stringValue", 5);
-      FIELD_METADATA.put(5, STRING_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("intValue", 1);
+        THRIFT_NAMES_TO_IDS.put("intValue", 1);
+        FIELD_METADATA.put(1, INT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("stringValue", 5);
+        THRIFT_NAMES_TO_IDS.put("stringValue", 5);
+        FIELD_METADATA.put(5, STRING_VALUE_FIELD_DESC);
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      INT_VALUE,
-      STRING_VALUE,
+        __FBTHRIFT_EMPTY_UNION__,
+        INT_VALUE,
+        STRING_VALUE,
     }
 
     public static Union from(int _id, java.lang.Object _field) {
@@ -63,7 +63,7 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        Union _u = new  Union();
+        Union _u = new Union();
 
         try {
             switch(_id) {
@@ -76,7 +76,7 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
                     _u.value = (String) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -152,16 +152,16 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 1:
-          return TypeEnum.INT_VALUE;
-        case 5:
-          return TypeEnum.STRING_VALUE;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 1:
+                return TypeEnum.INT_VALUE;
+            case 5:
+                return TypeEnum.STRING_VALUE;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -219,7 +219,7 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
 
     public interface Visitor<T> {
         default T visit(Union acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitIntValue(long intValue);
@@ -305,5 +305,4 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
     public static Union defaultInstance() {
         return _DEFAULT;
     }
-
 }

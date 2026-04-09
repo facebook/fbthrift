@@ -61,11 +61,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -180,94 +180,86 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private final long myIntField;
     public static final int _MYINTFIELD = 1;
     private static final TField MY_INT_FIELD_FIELD_DESC = new TField("MyIntField", TType.I64, (short)1);
-        private final String myStringField;
+    private final String myStringField;
     public static final int _MYSTRINGFIELD = 2;
     private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("MyStringField", TType.STRING, (short)2);
-        private final test.fixtures.basic.MyDataItem myDataField;
+    private final test.fixtures.basic.MyDataItem myDataField;
     public static final int _MYDATAFIELD = 3;
     private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("MyDataField", TType.STRUCT, (short)3);
-        private final test.fixtures.basic.MyEnum myEnum;
+    private final test.fixtures.basic.MyEnum myEnum;
     public static final int _MYENUM = 4;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)4);
-        private final boolean oneway;
+    private final boolean oneway;
     public static final int _ONEWAY = 5;
     private static final TField ONEWAY_FIELD_DESC = new TField("oneway", TType.BOOL, (short)5);
-        private final boolean readonly;
+    private final boolean readonly;
     public static final int _READONLY = 6;
     private static final TField READONLY_FIELD_DESC = new TField("readonly", TType.BOOL, (short)6);
-        private final boolean idempotent;
+    private final boolean idempotent;
     public static final int _IDEMPOTENT = 7;
     private static final TField IDEMPOTENT_FIELD_DESC = new TField("idempotent", TType.BOOL, (short)7);
-        private final Set<Float> floatSet;
+    private final Set<Float> floatSet;
     public static final int _FLOATSET = 8;
     private static final TField FLOAT_SET_FIELD_DESC = new TField("floatSet", TType.SET, (short)8);
-        private final String noHackCodegenField;
+    private final String noHackCodegenField;
     public static final int _NO_HACK_CODEGEN_FIELD = 9;
     private static final TField NO_HACK_CODEGEN_FIELD_FIELD_DESC = new TField("no_hack_codegen_field", TType.STRING, (short)9);
     static {
-      NAMES_TO_IDS.put("myIntField", 1);
-      THRIFT_NAMES_TO_IDS.put("MyIntField", 1);
-      FIELD_METADATA.put(1, MY_INT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("myStringField", 2);
-      THRIFT_NAMES_TO_IDS.put("MyStringField", 2);
-      FIELD_METADATA.put(2, MY_STRING_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("myDataField", 3);
-      THRIFT_NAMES_TO_IDS.put("MyDataField", 3);
-      FIELD_METADATA.put(3, MY_DATA_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("myEnum", 4);
-      THRIFT_NAMES_TO_IDS.put("myEnum", 4);
-      FIELD_METADATA.put(4, MY_ENUM_FIELD_DESC);
-      NAMES_TO_IDS.put("oneway", 5);
-      THRIFT_NAMES_TO_IDS.put("oneway", 5);
-      FIELD_METADATA.put(5, ONEWAY_FIELD_DESC);
-      NAMES_TO_IDS.put("readonly", 6);
-      THRIFT_NAMES_TO_IDS.put("readonly", 6);
-      FIELD_METADATA.put(6, READONLY_FIELD_DESC);
-      NAMES_TO_IDS.put("idempotent", 7);
-      THRIFT_NAMES_TO_IDS.put("idempotent", 7);
-      FIELD_METADATA.put(7, IDEMPOTENT_FIELD_DESC);
-      NAMES_TO_IDS.put("floatSet", 8);
-      THRIFT_NAMES_TO_IDS.put("floatSet", 8);
-      FIELD_METADATA.put(8, FLOAT_SET_FIELD_DESC);
-      NAMES_TO_IDS.put("noHackCodegenField", 9);
-      THRIFT_NAMES_TO_IDS.put("no_hack_codegen_field", 9);
-      FIELD_METADATA.put(9, NO_HACK_CODEGEN_FIELD_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/java_options/MyStruct"),
-        MyStruct.class, MyStruct::read0));
+        NAMES_TO_IDS.put("myIntField", 1);
+        THRIFT_NAMES_TO_IDS.put("MyIntField", 1);
+        FIELD_METADATA.put(1, MY_INT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("myStringField", 2);
+        THRIFT_NAMES_TO_IDS.put("MyStringField", 2);
+        FIELD_METADATA.put(2, MY_STRING_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("myDataField", 3);
+        THRIFT_NAMES_TO_IDS.put("MyDataField", 3);
+        FIELD_METADATA.put(3, MY_DATA_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("myEnum", 4);
+        THRIFT_NAMES_TO_IDS.put("myEnum", 4);
+        FIELD_METADATA.put(4, MY_ENUM_FIELD_DESC);
+        NAMES_TO_IDS.put("oneway", 5);
+        THRIFT_NAMES_TO_IDS.put("oneway", 5);
+        FIELD_METADATA.put(5, ONEWAY_FIELD_DESC);
+        NAMES_TO_IDS.put("readonly", 6);
+        THRIFT_NAMES_TO_IDS.put("readonly", 6);
+        FIELD_METADATA.put(6, READONLY_FIELD_DESC);
+        NAMES_TO_IDS.put("idempotent", 7);
+        THRIFT_NAMES_TO_IDS.put("idempotent", 7);
+        FIELD_METADATA.put(7, IDEMPOTENT_FIELD_DESC);
+        NAMES_TO_IDS.put("floatSet", 8);
+        THRIFT_NAMES_TO_IDS.put("floatSet", 8);
+        FIELD_METADATA.put(8, FLOAT_SET_FIELD_DESC);
+        NAMES_TO_IDS.put("noHackCodegenField", 9);
+        THRIFT_NAMES_TO_IDS.put("no_hack_codegen_field", 9);
+        FIELD_METADATA.put(9, NO_HACK_CODEGEN_FIELD_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("test.dev/fixtures/java_options/MyStruct"),
+            MyStruct.class, MyStruct::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
-
     
     @com.facebook.swift.codec.ThriftField(value=5, name="oneway", requiredness=Requiredness.NONE)
     public boolean isOneway() { return oneway; }
-
     
     @com.facebook.swift.codec.ThriftField(value=6, name="readonly", requiredness=Requiredness.NONE)
     public boolean isReadonly() { return readonly; }
-
     
     @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE)
     public boolean isIdempotent() { return idempotent; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="floatSet", requiredness=Requiredness.NONE)
     public Set<Float> getFloatSet() { return floatSet; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="no_hack_codegen_field", requiredness=Requiredness.NONE)
     public String getNoHackCodegenField() { return noHackCodegenField; }
@@ -517,5 +509,4 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }
-
 }

@@ -37,11 +37,11 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(ReorderedStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,12 +77,12 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
     public static final int _REORDERED_DEPENDENT_ADAPTED = 1;
     private static final TField REORDERED_DEPENDENT_ADAPTED_FIELD_DESC = new TField("reordered_dependent_adapted", TType.STRUCT, (short)1);
     static {
-      NAMES_TO_IDS.put("reorderedDependentAdapted", 1);
-      THRIFT_NAMES_TO_IDS.put("reordered_dependent_adapted", 1);
-      FIELD_METADATA.put(1, REORDERED_DEPENDENT_ADAPTED_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/ReorderedStruct"),
-        ReorderedStruct.class, ReorderedStruct::read0));
+        NAMES_TO_IDS.put("reorderedDependentAdapted", 1);
+        THRIFT_NAMES_TO_IDS.put("reordered_dependent_adapted", 1);
+        FIELD_METADATA.put(1, REORDERED_DEPENDENT_ADAPTED_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/ReorderedStruct"),
+            ReorderedStruct.class, ReorderedStruct::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="reordered_dependent_adapted", requiredness=Requiredness.NONE)
@@ -170,5 +170,4 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
     public static ReorderedStruct defaultInstance() {
         return  _ReorderedStructLazy._DEFAULT;
     }
-
 }

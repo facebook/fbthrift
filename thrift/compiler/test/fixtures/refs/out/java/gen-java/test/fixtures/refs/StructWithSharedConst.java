@@ -43,11 +43,11 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(StructWithSharedConst other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -102,31 +102,29 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
     private final test.fixtures.refs.MyField optSharedConst;
     public static final int _OPT_SHARED_CONST = 1;
     private static final TField OPT_SHARED_CONST_FIELD_DESC = new TField("opt_shared_const", TType.STRUCT, (short)1);
-        private final test.fixtures.refs.MyField sharedConst;
+    private final test.fixtures.refs.MyField sharedConst;
     public static final int _SHARED_CONST = 2;
     private static final TField SHARED_CONST_FIELD_DESC = new TField("shared_const", TType.STRUCT, (short)2);
-        private final test.fixtures.refs.MyField reqSharedConst;
+    private final test.fixtures.refs.MyField reqSharedConst;
     public static final int _REQ_SHARED_CONST = 3;
     private static final TField REQ_SHARED_CONST_FIELD_DESC = new TField("req_shared_const", TType.STRUCT, (short)3);
     static {
-      NAMES_TO_IDS.put("optSharedConst", 1);
-      THRIFT_NAMES_TO_IDS.put("opt_shared_const", 1);
-      FIELD_METADATA.put(1, OPT_SHARED_CONST_FIELD_DESC);
-      NAMES_TO_IDS.put("sharedConst", 2);
-      THRIFT_NAMES_TO_IDS.put("shared_const", 2);
-      FIELD_METADATA.put(2, SHARED_CONST_FIELD_DESC);
-      NAMES_TO_IDS.put("reqSharedConst", 3);
-      THRIFT_NAMES_TO_IDS.put("req_shared_const", 3);
-      FIELD_METADATA.put(3, REQ_SHARED_CONST_FIELD_DESC);
+        NAMES_TO_IDS.put("optSharedConst", 1);
+        THRIFT_NAMES_TO_IDS.put("opt_shared_const", 1);
+        FIELD_METADATA.put(1, OPT_SHARED_CONST_FIELD_DESC);
+        NAMES_TO_IDS.put("sharedConst", 2);
+        THRIFT_NAMES_TO_IDS.put("shared_const", 2);
+        FIELD_METADATA.put(2, SHARED_CONST_FIELD_DESC);
+        NAMES_TO_IDS.put("reqSharedConst", 3);
+        THRIFT_NAMES_TO_IDS.put("req_shared_const", 3);
+        FIELD_METADATA.put(3, REQ_SHARED_CONST_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
-
     
     @com.facebook.swift.codec.ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyField getReqSharedConst() { return reqSharedConst; }
@@ -253,5 +251,4 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
     public static StructWithSharedConst defaultInstance() {
         return  _StructWithSharedConstLazy._DEFAULT;
     }
-
 }

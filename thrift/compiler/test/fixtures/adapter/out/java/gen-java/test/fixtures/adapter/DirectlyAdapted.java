@@ -37,11 +37,11 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(DirectlyAdapted other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,12 +77,12 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
     public static final int _FIELD = 1;
     private static final TField FIELD_FIELD_DESC = new TField("field", TType.I32, (short)1);
     static {
-      NAMES_TO_IDS.put("field", 1);
-      THRIFT_NAMES_TO_IDS.put("field", 1);
-      FIELD_METADATA.put(1, FIELD_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/DirectlyAdapted"),
-        DirectlyAdapted.class, DirectlyAdapted::read0));
+        NAMES_TO_IDS.put("field", 1);
+        THRIFT_NAMES_TO_IDS.put("field", 1);
+        FIELD_METADATA.put(1, FIELD_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/DirectlyAdapted"),
+            DirectlyAdapted.class, DirectlyAdapted::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
@@ -168,5 +168,4 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
     public static DirectlyAdapted defaultInstance() {
         return  _DirectlyAdaptedLazy._DEFAULT;
     }
-
 }

@@ -37,11 +37,11 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(AdaptedStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,12 +77,12 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
     public static final int _DATA = 1;
     private static final TField DATA_FIELD_DESC = new TField("data", TType.I64, (short)1);
     static {
-      NAMES_TO_IDS.put("data", 1);
-      THRIFT_NAMES_TO_IDS.put("data", 1);
-      FIELD_METADATA.put(1, DATA_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptedStruct"),
-        AdaptedStruct.class, AdaptedStruct::read0));
+        NAMES_TO_IDS.put("data", 1);
+        THRIFT_NAMES_TO_IDS.put("data", 1);
+        FIELD_METADATA.put(1, DATA_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptedStruct"),
+            AdaptedStruct.class, AdaptedStruct::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)
@@ -168,5 +168,4 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
     public static AdaptedStruct defaultInstance() {
         return  _AdaptedStructLazy._DEFAULT;
     }
-
 }

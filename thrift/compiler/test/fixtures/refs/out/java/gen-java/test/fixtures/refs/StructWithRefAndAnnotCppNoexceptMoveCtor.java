@@ -37,11 +37,11 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(StructWithRefAndAnnotCppNoexceptMoveCtor other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,9 +77,9 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
     public static final int _DEF_FIELD = 1;
     private static final TField DEF_FIELD_FIELD_DESC = new TField("def_field", TType.STRUCT, (short)1);
     static {
-      NAMES_TO_IDS.put("defField", 1);
-      THRIFT_NAMES_TO_IDS.put("def_field", 1);
-      FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("defField", 1);
+        THRIFT_NAMES_TO_IDS.put("def_field", 1);
+        FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
@@ -167,5 +167,4 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
     public static StructWithRefAndAnnotCppNoexceptMoveCtor defaultInstance() {
         return  _StructWithRefAndAnnotCppNoexceptMoveCtorLazy._DEFAULT;
     }
-
 }

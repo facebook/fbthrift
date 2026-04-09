@@ -36,21 +36,21 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
     private static final TField A_CAMEL_I32_FIELD_DESC = new TField("aCamelI32", TType.I32, (short)2);
 
     static {
-      NAMES_TO_IDS.put("anSnakeString", 1);
-      THRIFT_NAMES_TO_IDS.put("an_snake_string", 1);
-      FIELD_METADATA.put(1, AN_SNAKE_STRING_FIELD_DESC);
-      NAMES_TO_IDS.put("aCamelI32", 2);
-      THRIFT_NAMES_TO_IDS.put("aCamelI32", 2);
-      FIELD_METADATA.put(2, A_CAMEL_I32_FIELD_DESC);
+        NAMES_TO_IDS.put("anSnakeString", 1);
+        THRIFT_NAMES_TO_IDS.put("an_snake_string", 1);
+        FIELD_METADATA.put(1, AN_SNAKE_STRING_FIELD_DESC);
+        NAMES_TO_IDS.put("aCamelI32", 2);
+        THRIFT_NAMES_TO_IDS.put("aCamelI32", 2);
+        FIELD_METADATA.put(2, A_CAMEL_I32_FIELD_DESC);
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      AN_SNAKE_STRING,
-      A_CAMEL_I32,
+        __FBTHRIFT_EMPTY_UNION__,
+        AN_SNAKE_STRING,
+        A_CAMEL_I32,
     }
 
     public static UnfortunateUnion from(int _id, java.lang.Object _field) {
@@ -63,7 +63,7 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        UnfortunateUnion _u = new  UnfortunateUnion();
+        UnfortunateUnion _u = new UnfortunateUnion();
 
         try {
             switch(_id) {
@@ -76,7 +76,7 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
                     _u.value = (int) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -152,16 +152,16 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 1:
-          return TypeEnum.AN_SNAKE_STRING;
-        case 2:
-          return TypeEnum.A_CAMEL_I32;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 1:
+                return TypeEnum.AN_SNAKE_STRING;
+            case 2:
+                return TypeEnum.A_CAMEL_I32;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -219,7 +219,7 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
 
     public interface Visitor<T> {
         default T visit(UnfortunateUnion acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitAnSnakeString(String anSnakeString);
@@ -305,5 +305,4 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
     public static UnfortunateUnion defaultInstance() {
         return _DEFAULT;
     }
-
 }

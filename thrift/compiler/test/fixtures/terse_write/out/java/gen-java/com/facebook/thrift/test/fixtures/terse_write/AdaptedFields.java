@@ -43,11 +43,11 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(AdaptedFields other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -102,34 +102,32 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
     private final int field1;
     public static final int _FIELD1 = 1;
     private static final TField FIELD1_FIELD_DESC = new TField("field1", TType.I32, (short)1);
-        private final int field2;
+    private final int field2;
     public static final int _FIELD2 = 2;
     private static final TField FIELD2_FIELD_DESC = new TField("field2", TType.I32, (short)2);
-        private final int field3;
+    private final int field3;
     public static final int _FIELD3 = 3;
     private static final TField FIELD3_FIELD_DESC = new TField("field3", TType.I32, (short)3);
     static {
-      NAMES_TO_IDS.put("field1", 1);
-      THRIFT_NAMES_TO_IDS.put("field1", 1);
-      FIELD_METADATA.put(1, FIELD1_FIELD_DESC);
-      NAMES_TO_IDS.put("field2", 2);
-      THRIFT_NAMES_TO_IDS.put("field2", 2);
-      FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
-      NAMES_TO_IDS.put("field3", 3);
-      THRIFT_NAMES_TO_IDS.put("field3", 3);
-      FIELD_METADATA.put(3, FIELD3_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/terse_write/AdaptedFields"),
-        AdaptedFields.class, AdaptedFields::read0));
+        NAMES_TO_IDS.put("field1", 1);
+        THRIFT_NAMES_TO_IDS.put("field1", 1);
+        FIELD_METADATA.put(1, FIELD1_FIELD_DESC);
+        NAMES_TO_IDS.put("field2", 2);
+        THRIFT_NAMES_TO_IDS.put("field2", 2);
+        FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
+        NAMES_TO_IDS.put("field3", 3);
+        THRIFT_NAMES_TO_IDS.put("field3", 3);
+        FIELD_METADATA.put(3, FIELD3_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/terse_write/AdaptedFields"),
+            AdaptedFields.class, AdaptedFields::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.TERSE)
     public int getField1() { return field1; }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.TERSE)
     public int getField2() { return field2; }
-
     
     @com.facebook.swift.codec.ThriftField(value=3, name="field3", requiredness=Requiredness.TERSE)
     public int getField3() { return field3; }
@@ -259,5 +257,4 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
     public static AdaptedFields defaultInstance() {
         return  _AdaptedFieldsLazy._DEFAULT;
     }
-
 }

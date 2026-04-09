@@ -40,11 +40,11 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Included other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,21 +89,20 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
     private final long myIntField;
     public static final int _MYINTFIELD = 1;
     private static final TField MY_INT_FIELD_FIELD_DESC = new TField("MyIntField", TType.I64, (short)1);
-        private final test.fixtures.includes.transitive.Foo myTransitiveField;
+    private final test.fixtures.includes.transitive.Foo myTransitiveField;
     public static final int _MYTRANSITIVEFIELD = 2;
     private static final TField MY_TRANSITIVE_FIELD_FIELD_DESC = new TField("MyTransitiveField", TType.STRUCT, (short)2);
     static {
-      NAMES_TO_IDS.put("myIntField", 1);
-      THRIFT_NAMES_TO_IDS.put("MyIntField", 1);
-      FIELD_METADATA.put(1, MY_INT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("myTransitiveField", 2);
-      THRIFT_NAMES_TO_IDS.put("MyTransitiveField", 2);
-      FIELD_METADATA.put(2, MY_TRANSITIVE_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("myIntField", 1);
+        THRIFT_NAMES_TO_IDS.put("MyIntField", 1);
+        FIELD_METADATA.put(1, MY_INT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("myTransitiveField", 2);
+        THRIFT_NAMES_TO_IDS.put("MyTransitiveField", 2);
+        FIELD_METADATA.put(2, MY_TRANSITIVE_FIELD_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.transitive.Foo getMyTransitiveField() { return myTransitiveField; }
@@ -208,5 +207,4 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
     public static Included defaultInstance() {
         return  _IncludedLazy._DEFAULT;
     }
-
 }

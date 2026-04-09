@@ -40,11 +40,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -90,24 +90,23 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private final int field;
     public static final int _FIELD = 1;
     private static final TField FIELD_FIELD_DESC = new TField("field", TType.I32, (short)1);
-        private final com.facebook.thrift.my.AdaptedSet_2 setString;
+    private final com.facebook.thrift.my.AdaptedSet_2 setString;
     public static final int _SET_STRING = 2;
     private static final TField SET_STRING_FIELD_DESC = new TField("set_string", TType.SET, (short)2);
     static {
-      NAMES_TO_IDS.put("field", 1);
-      THRIFT_NAMES_TO_IDS.put("field", 1);
-      FIELD_METADATA.put(1, FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("setString", 2);
-      THRIFT_NAMES_TO_IDS.put("set_string", 2);
-      FIELD_METADATA.put(2, SET_STRING_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/MyStruct"),
-        MyStruct.class, MyStruct::read0));
+        NAMES_TO_IDS.put("field", 1);
+        THRIFT_NAMES_TO_IDS.put("field", 1);
+        FIELD_METADATA.put(1, FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("setString", 2);
+        THRIFT_NAMES_TO_IDS.put("set_string", 2);
+        FIELD_METADATA.put(2, SET_STRING_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/MyStruct"),
+            MyStruct.class, MyStruct::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public int getField() { return field; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="set_string", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedSet_2 getSetString() { return setString; }
@@ -225,5 +224,4 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }
-
 }

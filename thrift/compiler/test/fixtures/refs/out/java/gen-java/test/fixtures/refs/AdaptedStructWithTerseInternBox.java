@@ -40,11 +40,11 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(AdaptedStructWithTerseInternBox other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,21 +89,20 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
     private final test.fixtures.refs.Empty field1;
     public static final int _FIELD1 = 1;
     private static final TField FIELD1_FIELD_DESC = new TField("field1", TType.STRUCT, (short)1);
-        private final test.fixtures.refs.MyField field2;
+    private final test.fixtures.refs.MyField field2;
     public static final int _FIELD2 = 2;
     private static final TField FIELD2_FIELD_DESC = new TField("field2", TType.STRUCT, (short)2);
     static {
-      NAMES_TO_IDS.put("field1", 1);
-      THRIFT_NAMES_TO_IDS.put("field1", 1);
-      FIELD_METADATA.put(1, FIELD1_FIELD_DESC);
-      NAMES_TO_IDS.put("field2", 2);
-      THRIFT_NAMES_TO_IDS.put("field2", 2);
-      FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
+        NAMES_TO_IDS.put("field1", 1);
+        THRIFT_NAMES_TO_IDS.put("field1", 1);
+        FIELD_METADATA.put(1, FIELD1_FIELD_DESC);
+        NAMES_TO_IDS.put("field2", 2);
+        THRIFT_NAMES_TO_IDS.put("field2", 2);
+        FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.TERSE)
     public test.fixtures.refs.Empty getField1() { return field1; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.TERSE)
     public test.fixtures.refs.MyField getField2() { return field2; }
@@ -223,5 +222,4 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
     public static AdaptedStructWithTerseInternBox defaultInstance() {
         return  _AdaptedStructWithTerseInternBoxLazy._DEFAULT;
     }
-
 }

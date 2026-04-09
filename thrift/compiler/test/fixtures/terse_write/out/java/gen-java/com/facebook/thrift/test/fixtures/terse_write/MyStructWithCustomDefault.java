@@ -37,11 +37,11 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStructWithCustomDefault other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,12 +77,12 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
     public static final int _FIELD1 = 1;
     private static final TField FIELD1_FIELD_DESC = new TField("field1", TType.I64, (short)1);
     static {
-      NAMES_TO_IDS.put("field1", 1);
-      THRIFT_NAMES_TO_IDS.put("field1", 1);
-      FIELD_METADATA.put(1, FIELD1_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/terse_write/MyStructWithCustomDefault"),
-        MyStructWithCustomDefault.class, MyStructWithCustomDefault::read0));
+        NAMES_TO_IDS.put("field1", 1);
+        THRIFT_NAMES_TO_IDS.put("field1", 1);
+        FIELD_METADATA.put(1, FIELD1_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/terse_write/MyStructWithCustomDefault"),
+            MyStructWithCustomDefault.class, MyStructWithCustomDefault::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
@@ -168,5 +168,4 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
     public static MyStructWithCustomDefault defaultInstance() {
         return  _MyStructWithCustomDefaultLazy._DEFAULT;
     }
-
 }

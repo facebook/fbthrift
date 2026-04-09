@@ -106,11 +106,11 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(AdaptTemplatedTestStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -361,224 +361,203 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
     private final boolean adaptedBool;
     public static final int _ADAPTEDBOOL = 1;
     private static final TField ADAPTED_BOOL_FIELD_DESC = new TField("adaptedBool", TType.BOOL, (short)1);
-        private final byte adaptedByte;
+    private final byte adaptedByte;
     public static final int _ADAPTEDBYTE = 2;
     private static final TField ADAPTED_BYTE_FIELD_DESC = new TField("adaptedByte", TType.BYTE, (short)2);
-        private final short adaptedShort;
+    private final short adaptedShort;
     public static final int _ADAPTEDSHORT = 3;
     private static final TField ADAPTED_SHORT_FIELD_DESC = new TField("adaptedShort", TType.I16, (short)3);
-        private final int adaptedInteger;
+    private final int adaptedInteger;
     public static final int _ADAPTEDINTEGER = 4;
     private static final TField ADAPTED_INTEGER_FIELD_DESC = new TField("adaptedInteger", TType.I32, (short)4);
-        private final long adaptedLong;
+    private final long adaptedLong;
     public static final int _ADAPTEDLONG = 5;
     private static final TField ADAPTED_LONG_FIELD_DESC = new TField("adaptedLong", TType.I64, (short)5);
-        private final double adaptedDouble;
+    private final double adaptedDouble;
     public static final int _ADAPTEDDOUBLE = 6;
     private static final TField ADAPTED_DOUBLE_FIELD_DESC = new TField("adaptedDouble", TType.DOUBLE, (short)6);
-        private final String adaptedString;
+    private final String adaptedString;
     public static final int _ADAPTEDSTRING = 7;
     private static final TField ADAPTED_STRING_FIELD_DESC = new TField("adaptedString", TType.STRING, (short)7);
-        private final List<Long> adaptedList;
+    private final List<Long> adaptedList;
     public static final int _ADAPTEDLIST = 8;
     private static final TField ADAPTED_LIST_FIELD_DESC = new TField("adaptedList", TType.LIST, (short)8);
-        private final Set<Long> adaptedSet;
+    private final Set<Long> adaptedSet;
     public static final int _ADAPTEDSET = 9;
     private static final TField ADAPTED_SET_FIELD_DESC = new TField("adaptedSet", TType.SET, (short)9);
-        private final Map<Long, Long> adaptedMap;
+    private final Map<Long, Long> adaptedMap;
     public static final int _ADAPTEDMAP = 10;
     private static final TField ADAPTED_MAP_FIELD_DESC = new TField("adaptedMap", TType.MAP, (short)10);
-        private final boolean adaptedBoolDefault;
+    private final boolean adaptedBoolDefault;
     public static final int _ADAPTEDBOOLDEFAULT = 11;
     private static final TField ADAPTED_BOOL_DEFAULT_FIELD_DESC = new TField("adaptedBoolDefault", TType.BOOL, (short)11);
-        private final byte adaptedByteDefault;
+    private final byte adaptedByteDefault;
     public static final int _ADAPTEDBYTEDEFAULT = 12;
     private static final TField ADAPTED_BYTE_DEFAULT_FIELD_DESC = new TField("adaptedByteDefault", TType.BYTE, (short)12);
-        private final short adaptedShortDefault;
+    private final short adaptedShortDefault;
     public static final int _ADAPTEDSHORTDEFAULT = 13;
     private static final TField ADAPTED_SHORT_DEFAULT_FIELD_DESC = new TField("adaptedShortDefault", TType.I16, (short)13);
-        private final int adaptedIntegerDefault;
+    private final int adaptedIntegerDefault;
     public static final int _ADAPTEDINTEGERDEFAULT = 14;
     private static final TField ADAPTED_INTEGER_DEFAULT_FIELD_DESC = new TField("adaptedIntegerDefault", TType.I32, (short)14);
-        private final long adaptedLongDefault;
+    private final long adaptedLongDefault;
     public static final int _ADAPTEDLONGDEFAULT = 15;
     private static final TField ADAPTED_LONG_DEFAULT_FIELD_DESC = new TField("adaptedLongDefault", TType.I64, (short)15);
-        private final double adaptedDoubleDefault;
+    private final double adaptedDoubleDefault;
     public static final int _ADAPTEDDOUBLEDEFAULT = 16;
     private static final TField ADAPTED_DOUBLE_DEFAULT_FIELD_DESC = new TField("adaptedDoubleDefault", TType.DOUBLE, (short)16);
-        private final String adaptedStringDefault;
+    private final String adaptedStringDefault;
     public static final int _ADAPTEDSTRINGDEFAULT = 17;
     private static final TField ADAPTED_STRING_DEFAULT_FIELD_DESC = new TField("adaptedStringDefault", TType.STRING, (short)17);
-        private final test.fixtures.adapter.ThriftAdaptedEnum adaptedEnum;
+    private final test.fixtures.adapter.ThriftAdaptedEnum adaptedEnum;
     public static final int _ADAPTEDENUM = 18;
     private static final TField ADAPTED_ENUM_FIELD_DESC = new TField("adaptedEnum", TType.I32, (short)18);
-        private final List<Long> adaptedListDefault;
+    private final List<Long> adaptedListDefault;
     public static final int _ADAPTEDLISTDEFAULT = 19;
     private static final TField ADAPTED_LIST_DEFAULT_FIELD_DESC = new TField("adaptedListDefault", TType.LIST, (short)19);
-        private final Set<Long> adaptedSetDefault;
+    private final Set<Long> adaptedSetDefault;
     public static final int _ADAPTEDSETDEFAULT = 20;
     private static final TField ADAPTED_SET_DEFAULT_FIELD_DESC = new TField("adaptedSetDefault", TType.SET, (short)20);
-        private final Map<Long, Long> adaptedMapDefault;
+    private final Map<Long, Long> adaptedMapDefault;
     public static final int _ADAPTEDMAPDEFAULT = 21;
     private static final TField ADAPTED_MAP_DEFAULT_FIELD_DESC = new TField("adaptedMapDefault", TType.MAP, (short)21);
-        private final boolean doubleTypedefBool;
+    private final boolean doubleTypedefBool;
     public static final int _DOUBLETYPEDEFBOOL = 22;
     private static final TField DOUBLE_TYPEDEF_BOOL_FIELD_DESC = new TField("doubleTypedefBool", TType.BOOL, (short)22);
     static {
-      NAMES_TO_IDS.put("adaptedBool", 1);
-      THRIFT_NAMES_TO_IDS.put("adaptedBool", 1);
-      FIELD_METADATA.put(1, ADAPTED_BOOL_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedByte", 2);
-      THRIFT_NAMES_TO_IDS.put("adaptedByte", 2);
-      FIELD_METADATA.put(2, ADAPTED_BYTE_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedShort", 3);
-      THRIFT_NAMES_TO_IDS.put("adaptedShort", 3);
-      FIELD_METADATA.put(3, ADAPTED_SHORT_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedInteger", 4);
-      THRIFT_NAMES_TO_IDS.put("adaptedInteger", 4);
-      FIELD_METADATA.put(4, ADAPTED_INTEGER_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedLong", 5);
-      THRIFT_NAMES_TO_IDS.put("adaptedLong", 5);
-      FIELD_METADATA.put(5, ADAPTED_LONG_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedDouble", 6);
-      THRIFT_NAMES_TO_IDS.put("adaptedDouble", 6);
-      FIELD_METADATA.put(6, ADAPTED_DOUBLE_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedString", 7);
-      THRIFT_NAMES_TO_IDS.put("adaptedString", 7);
-      FIELD_METADATA.put(7, ADAPTED_STRING_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedList", 8);
-      THRIFT_NAMES_TO_IDS.put("adaptedList", 8);
-      FIELD_METADATA.put(8, ADAPTED_LIST_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedSet", 9);
-      THRIFT_NAMES_TO_IDS.put("adaptedSet", 9);
-      FIELD_METADATA.put(9, ADAPTED_SET_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedMap", 10);
-      THRIFT_NAMES_TO_IDS.put("adaptedMap", 10);
-      FIELD_METADATA.put(10, ADAPTED_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedBoolDefault", 11);
-      THRIFT_NAMES_TO_IDS.put("adaptedBoolDefault", 11);
-      FIELD_METADATA.put(11, ADAPTED_BOOL_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedByteDefault", 12);
-      THRIFT_NAMES_TO_IDS.put("adaptedByteDefault", 12);
-      FIELD_METADATA.put(12, ADAPTED_BYTE_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedShortDefault", 13);
-      THRIFT_NAMES_TO_IDS.put("adaptedShortDefault", 13);
-      FIELD_METADATA.put(13, ADAPTED_SHORT_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedIntegerDefault", 14);
-      THRIFT_NAMES_TO_IDS.put("adaptedIntegerDefault", 14);
-      FIELD_METADATA.put(14, ADAPTED_INTEGER_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedLongDefault", 15);
-      THRIFT_NAMES_TO_IDS.put("adaptedLongDefault", 15);
-      FIELD_METADATA.put(15, ADAPTED_LONG_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedDoubleDefault", 16);
-      THRIFT_NAMES_TO_IDS.put("adaptedDoubleDefault", 16);
-      FIELD_METADATA.put(16, ADAPTED_DOUBLE_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedStringDefault", 17);
-      THRIFT_NAMES_TO_IDS.put("adaptedStringDefault", 17);
-      FIELD_METADATA.put(17, ADAPTED_STRING_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedEnum", 18);
-      THRIFT_NAMES_TO_IDS.put("adaptedEnum", 18);
-      FIELD_METADATA.put(18, ADAPTED_ENUM_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedListDefault", 19);
-      THRIFT_NAMES_TO_IDS.put("adaptedListDefault", 19);
-      FIELD_METADATA.put(19, ADAPTED_LIST_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedSetDefault", 20);
-      THRIFT_NAMES_TO_IDS.put("adaptedSetDefault", 20);
-      FIELD_METADATA.put(20, ADAPTED_SET_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedMapDefault", 21);
-      THRIFT_NAMES_TO_IDS.put("adaptedMapDefault", 21);
-      FIELD_METADATA.put(21, ADAPTED_MAP_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("doubleTypedefBool", 22);
-      THRIFT_NAMES_TO_IDS.put("doubleTypedefBool", 22);
-      FIELD_METADATA.put(22, DOUBLE_TYPEDEF_BOOL_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptTemplatedTestStruct"),
-        AdaptTemplatedTestStruct.class, AdaptTemplatedTestStruct::read0));
+        NAMES_TO_IDS.put("adaptedBool", 1);
+        THRIFT_NAMES_TO_IDS.put("adaptedBool", 1);
+        FIELD_METADATA.put(1, ADAPTED_BOOL_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedByte", 2);
+        THRIFT_NAMES_TO_IDS.put("adaptedByte", 2);
+        FIELD_METADATA.put(2, ADAPTED_BYTE_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedShort", 3);
+        THRIFT_NAMES_TO_IDS.put("adaptedShort", 3);
+        FIELD_METADATA.put(3, ADAPTED_SHORT_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedInteger", 4);
+        THRIFT_NAMES_TO_IDS.put("adaptedInteger", 4);
+        FIELD_METADATA.put(4, ADAPTED_INTEGER_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedLong", 5);
+        THRIFT_NAMES_TO_IDS.put("adaptedLong", 5);
+        FIELD_METADATA.put(5, ADAPTED_LONG_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedDouble", 6);
+        THRIFT_NAMES_TO_IDS.put("adaptedDouble", 6);
+        FIELD_METADATA.put(6, ADAPTED_DOUBLE_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedString", 7);
+        THRIFT_NAMES_TO_IDS.put("adaptedString", 7);
+        FIELD_METADATA.put(7, ADAPTED_STRING_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedList", 8);
+        THRIFT_NAMES_TO_IDS.put("adaptedList", 8);
+        FIELD_METADATA.put(8, ADAPTED_LIST_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedSet", 9);
+        THRIFT_NAMES_TO_IDS.put("adaptedSet", 9);
+        FIELD_METADATA.put(9, ADAPTED_SET_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedMap", 10);
+        THRIFT_NAMES_TO_IDS.put("adaptedMap", 10);
+        FIELD_METADATA.put(10, ADAPTED_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedBoolDefault", 11);
+        THRIFT_NAMES_TO_IDS.put("adaptedBoolDefault", 11);
+        FIELD_METADATA.put(11, ADAPTED_BOOL_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedByteDefault", 12);
+        THRIFT_NAMES_TO_IDS.put("adaptedByteDefault", 12);
+        FIELD_METADATA.put(12, ADAPTED_BYTE_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedShortDefault", 13);
+        THRIFT_NAMES_TO_IDS.put("adaptedShortDefault", 13);
+        FIELD_METADATA.put(13, ADAPTED_SHORT_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedIntegerDefault", 14);
+        THRIFT_NAMES_TO_IDS.put("adaptedIntegerDefault", 14);
+        FIELD_METADATA.put(14, ADAPTED_INTEGER_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedLongDefault", 15);
+        THRIFT_NAMES_TO_IDS.put("adaptedLongDefault", 15);
+        FIELD_METADATA.put(15, ADAPTED_LONG_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedDoubleDefault", 16);
+        THRIFT_NAMES_TO_IDS.put("adaptedDoubleDefault", 16);
+        FIELD_METADATA.put(16, ADAPTED_DOUBLE_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedStringDefault", 17);
+        THRIFT_NAMES_TO_IDS.put("adaptedStringDefault", 17);
+        FIELD_METADATA.put(17, ADAPTED_STRING_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedEnum", 18);
+        THRIFT_NAMES_TO_IDS.put("adaptedEnum", 18);
+        FIELD_METADATA.put(18, ADAPTED_ENUM_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedListDefault", 19);
+        THRIFT_NAMES_TO_IDS.put("adaptedListDefault", 19);
+        FIELD_METADATA.put(19, ADAPTED_LIST_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedSetDefault", 20);
+        THRIFT_NAMES_TO_IDS.put("adaptedSetDefault", 20);
+        FIELD_METADATA.put(20, ADAPTED_SET_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedMapDefault", 21);
+        THRIFT_NAMES_TO_IDS.put("adaptedMapDefault", 21);
+        FIELD_METADATA.put(21, ADAPTED_MAP_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("doubleTypedefBool", 22);
+        THRIFT_NAMES_TO_IDS.put("doubleTypedefBool", 22);
+        FIELD_METADATA.put(22, DOUBLE_TYPEDEF_BOOL_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptTemplatedTestStruct"),
+            AdaptTemplatedTestStruct.class, AdaptTemplatedTestStruct::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="adaptedBool", requiredness=Requiredness.NONE)
     public boolean isAdaptedBool() { return adaptedBool; }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="adaptedByte", requiredness=Requiredness.NONE)
     public byte getAdaptedByte() { return adaptedByte; }
-
     
     @com.facebook.swift.codec.ThriftField(value=3, name="adaptedShort", requiredness=Requiredness.NONE)
     public short getAdaptedShort() { return adaptedShort; }
-
     
     @com.facebook.swift.codec.ThriftField(value=4, name="adaptedInteger", requiredness=Requiredness.NONE)
     public int getAdaptedInteger() { return adaptedInteger; }
-
     
     @com.facebook.swift.codec.ThriftField(value=5, name="adaptedLong", requiredness=Requiredness.NONE)
     public long getAdaptedLong() { return adaptedLong; }
-
     
     @com.facebook.swift.codec.ThriftField(value=6, name="adaptedDouble", requiredness=Requiredness.NONE)
     public double getAdaptedDouble() { return adaptedDouble; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="adaptedString", requiredness=Requiredness.NONE)
     public String getAdaptedString() { return adaptedString; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="adaptedList", requiredness=Requiredness.NONE)
     public List<Long> getAdaptedList() { return adaptedList; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="adaptedSet", requiredness=Requiredness.NONE)
     public Set<Long> getAdaptedSet() { return adaptedSet; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="adaptedMap", requiredness=Requiredness.NONE)
     public Map<Long, Long> getAdaptedMap() { return adaptedMap; }
-
     
     @com.facebook.swift.codec.ThriftField(value=11, name="adaptedBoolDefault", requiredness=Requiredness.NONE)
     public boolean isAdaptedBoolDefault() { return adaptedBoolDefault; }
-
     
     @com.facebook.swift.codec.ThriftField(value=12, name="adaptedByteDefault", requiredness=Requiredness.NONE)
     public byte getAdaptedByteDefault() { return adaptedByteDefault; }
-
     
     @com.facebook.swift.codec.ThriftField(value=13, name="adaptedShortDefault", requiredness=Requiredness.NONE)
     public short getAdaptedShortDefault() { return adaptedShortDefault; }
-
     
     @com.facebook.swift.codec.ThriftField(value=14, name="adaptedIntegerDefault", requiredness=Requiredness.NONE)
     public int getAdaptedIntegerDefault() { return adaptedIntegerDefault; }
-
     
     @com.facebook.swift.codec.ThriftField(value=15, name="adaptedLongDefault", requiredness=Requiredness.NONE)
     public long getAdaptedLongDefault() { return adaptedLongDefault; }
-
     
     @com.facebook.swift.codec.ThriftField(value=16, name="adaptedDoubleDefault", requiredness=Requiredness.NONE)
     public double getAdaptedDoubleDefault() { return adaptedDoubleDefault; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=17, name="adaptedStringDefault", requiredness=Requiredness.NONE)
     public String getAdaptedStringDefault() { return adaptedStringDefault; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=18, name="adaptedEnum", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.ThriftAdaptedEnum getAdaptedEnum() { return adaptedEnum; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=19, name="adaptedListDefault", requiredness=Requiredness.NONE)
     public List<Long> getAdaptedListDefault() { return adaptedListDefault; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=20, name="adaptedSetDefault", requiredness=Requiredness.NONE)
     public Set<Long> getAdaptedSetDefault() { return adaptedSetDefault; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=21, name="adaptedMapDefault", requiredness=Requiredness.NONE)
     public Map<Long, Long> getAdaptedMapDefault() { return adaptedMapDefault; }
-
     
     @com.facebook.swift.codec.ThriftField(value=22, name="doubleTypedefBool", requiredness=Requiredness.NONE)
     public boolean isDoubleTypedefBool() { return doubleTypedefBool; }
@@ -1171,5 +1150,4 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
     public static AdaptTemplatedTestStruct defaultInstance() {
         return  _AdaptTemplatedTestStructLazy._DEFAULT;
     }
-
 }

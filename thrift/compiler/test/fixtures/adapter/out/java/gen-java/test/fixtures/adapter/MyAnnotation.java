@@ -40,11 +40,11 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyAnnotation other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,24 +89,23 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
     private final String signature;
     public static final int _SIGNATURE = 1;
     private static final TField SIGNATURE_FIELD_DESC = new TField("signature", TType.STRING, (short)1);
-        private final test.fixtures.adapter.Color color;
+    private final test.fixtures.adapter.Color color;
     public static final int _COLOR = 2;
     private static final TField COLOR_FIELD_DESC = new TField("color", TType.I32, (short)2);
     static {
-      NAMES_TO_IDS.put("signature", 1);
-      THRIFT_NAMES_TO_IDS.put("signature", 1);
-      FIELD_METADATA.put(1, SIGNATURE_FIELD_DESC);
-      NAMES_TO_IDS.put("color", 2);
-      THRIFT_NAMES_TO_IDS.put("color", 2);
-      FIELD_METADATA.put(2, COLOR_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/MyAnnotation"),
-        MyAnnotation.class, MyAnnotation::read0));
+        NAMES_TO_IDS.put("signature", 1);
+        THRIFT_NAMES_TO_IDS.put("signature", 1);
+        FIELD_METADATA.put(1, SIGNATURE_FIELD_DESC);
+        NAMES_TO_IDS.put("color", 2);
+        THRIFT_NAMES_TO_IDS.put("color", 2);
+        FIELD_METADATA.put(2, COLOR_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/MyAnnotation"),
+            MyAnnotation.class, MyAnnotation::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="signature", requiredness=Requiredness.NONE)
     public String getSignature() { return signature; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="color", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.Color getColor() { return color; }
@@ -211,5 +210,4 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
     public static MyAnnotation defaultInstance() {
         return  _MyAnnotationLazy._DEFAULT;
     }
-
 }

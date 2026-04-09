@@ -37,11 +37,11 @@ public final class Person2 implements com.facebook.thrift.payload.ThriftSerializ
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Person2 other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,12 +77,12 @@ public final class Person2 implements com.facebook.thrift.payload.ThriftSerializ
     public static final int _NAME = 1;
     private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)1);
     static {
-      NAMES_TO_IDS.put("name", 1);
-      THRIFT_NAMES_TO_IDS.put("name", 1);
-      FIELD_METADATA.put(1, NAME_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/Person2"),
-        Person2.class, Person2::read0));
+        NAMES_TO_IDS.put("name", 1);
+        THRIFT_NAMES_TO_IDS.put("name", 1);
+        FIELD_METADATA.put(1, NAME_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/Person2"),
+            Person2.class, Person2::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
@@ -170,5 +170,4 @@ public final class Person2 implements com.facebook.thrift.payload.ThriftSerializ
     public static Person2 defaultInstance() {
         return  _Person2Lazy._DEFAULT;
     }
-
 }

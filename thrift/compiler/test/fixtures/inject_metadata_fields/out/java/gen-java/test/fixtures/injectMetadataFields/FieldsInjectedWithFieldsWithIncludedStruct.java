@@ -40,11 +40,11 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(FieldsInjectedWithFieldsWithIncludedStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -89,21 +89,20 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
     private final String stringField;
     public static final int _STRING_FIELD = 1;
     private static final TField STRING_FIELD_FIELD_DESC = new TField("string_field", TType.STRING, (short)1);
-        private final test.fixtures.injectMetadataFields.InjectedField injectedField;
+    private final test.fixtures.injectMetadataFields.InjectedField injectedField;
     public static final int _INJECTED_FIELD = -1001;
     private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRUCT, (short)-1001);
     static {
-      NAMES_TO_IDS.put("stringField", 1);
-      THRIFT_NAMES_TO_IDS.put("string_field", 1);
-      FIELD_METADATA.put(1, STRING_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("injectedField", -1001);
-      THRIFT_NAMES_TO_IDS.put("injected_field", -1001);
-      FIELD_METADATA.put(-1001, INJECTED_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("stringField", 1);
+        THRIFT_NAMES_TO_IDS.put("string_field", 1);
+        FIELD_METADATA.put(1, STRING_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("injectedField", -1001);
+        THRIFT_NAMES_TO_IDS.put("injected_field", -1001);
+        FIELD_METADATA.put(-1001, INJECTED_FIELD_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=-1001, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)
     public test.fixtures.injectMetadataFields.InjectedField getInjectedField() { return injectedField; }
@@ -210,5 +209,4 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
     public static FieldsInjectedWithFieldsWithIncludedStruct defaultInstance() {
         return  _FieldsInjectedWithFieldsWithIncludedStructLazy._DEFAULT;
     }
-
 }

@@ -52,11 +52,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -142,62 +142,57 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private final long intField;
     public static final int _INTFIELD = 1;
     private static final TField INT_FIELD_FIELD_DESC = new TField("intField", TType.I64, (short)1);
-        @com.foo.Bar("BAZ") private final String stringField;
+    @com.foo.Bar("BAZ") private final String stringField;
     public static final int _STRINGFIELD = 2;
     private static final TField STRING_FIELD_FIELD_DESC = new TField("stringField", TType.STRING, (short)2);
-        @com.foo.Ignored private final String detailField;
+    @com.foo.Ignored private final String detailField;
     public static final int _DETAILFIELD = 3;
     private static final TField DETAIL_FIELD_FIELD_DESC = new TField("detailField", TType.STRING, (short)3);
-        @com.foo.Ignored private final com.foo.FastIntLongMap detailMap;
+    @com.foo.Ignored private final com.foo.FastIntLongMap detailMap;
     public static final int _DETAILMAP = 4;
     private static final TField DETAIL_MAP_FIELD_DESC = new TField("detailMap", TType.MAP, (short)4);
-        private final String toto;
+    private final String toto;
     public static final int _TITI = 5;
     private static final TField TOTO_FIELD_DESC = new TField("titi", TType.STRING, (short)5);
-        @org.apache.thrift.annotations.Sensitive
+    @org.apache.thrift.annotations.Sensitive
     private final String password;
     public static final int _PASSWORD = 6;
     private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)6);
     static {
-      NAMES_TO_IDS.put("intField", 1);
-      THRIFT_NAMES_TO_IDS.put("intField", 1);
-      FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("stringField", 2);
-      THRIFT_NAMES_TO_IDS.put("stringField", 2);
-      FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("detailField", 3);
-      THRIFT_NAMES_TO_IDS.put("detailField", 3);
-      FIELD_METADATA.put(3, DETAIL_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("detailMap", 4);
-      THRIFT_NAMES_TO_IDS.put("detailMap", 4);
-      FIELD_METADATA.put(4, DETAIL_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("toto", 5);
-      THRIFT_NAMES_TO_IDS.put("titi", 5);
-      FIELD_METADATA.put(5, TOTO_FIELD_DESC);
-      NAMES_TO_IDS.put("password", 6);
-      THRIFT_NAMES_TO_IDS.put("password", 6);
-      FIELD_METADATA.put(6, PASSWORD_FIELD_DESC);
+        NAMES_TO_IDS.put("intField", 1);
+        THRIFT_NAMES_TO_IDS.put("intField", 1);
+        FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("stringField", 2);
+        THRIFT_NAMES_TO_IDS.put("stringField", 2);
+        FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("detailField", 3);
+        THRIFT_NAMES_TO_IDS.put("detailField", 3);
+        FIELD_METADATA.put(3, DETAIL_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("detailMap", 4);
+        THRIFT_NAMES_TO_IDS.put("detailMap", 4);
+        FIELD_METADATA.put(4, DETAIL_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("toto", 5);
+        THRIFT_NAMES_TO_IDS.put("titi", 5);
+        FIELD_METADATA.put(5, TOTO_FIELD_DESC);
+        NAMES_TO_IDS.put("password", 6);
+        THRIFT_NAMES_TO_IDS.put("password", 6);
+        FIELD_METADATA.put(6, PASSWORD_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
     public String getDetailField() { return detailField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
     public String getToto() { return toto; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE)
     public String getPassword() { return password; }
@@ -413,5 +408,4 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }
-
 }

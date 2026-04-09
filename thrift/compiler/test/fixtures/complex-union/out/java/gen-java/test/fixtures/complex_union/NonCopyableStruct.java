@@ -37,11 +37,11 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(NonCopyableStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,9 +77,9 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     public static final int _NUM = 1;
     private static final TField NUM_FIELD_DESC = new TField("num", TType.I64, (short)1);
     static {
-      NAMES_TO_IDS.put("num", 1);
-      THRIFT_NAMES_TO_IDS.put("num", 1);
-      FIELD_METADATA.put(1, NUM_FIELD_DESC);
+        NAMES_TO_IDS.put("num", 1);
+        THRIFT_NAMES_TO_IDS.put("num", 1);
+        FIELD_METADATA.put(1, NUM_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
@@ -165,5 +165,4 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     public static NonCopyableStruct defaultInstance() {
         return  _NonCopyableStructLazy._DEFAULT;
     }
-
 }

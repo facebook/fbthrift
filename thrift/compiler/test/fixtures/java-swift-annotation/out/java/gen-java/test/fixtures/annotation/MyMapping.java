@@ -46,11 +46,11 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyMapping other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -115,41 +115,38 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     private final com.foo.FastLongStringMap lsMap;
     public static final int _LSMAP = 1;
     private static final TField LS_MAP_FIELD_DESC = new TField("lsMap", TType.MAP, (short)1);
-        private final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
+    private final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
     public static final int _IOMAP = 2;
     private static final TField IO_MAP_FIELD_DESC = new TField("ioMap", TType.MAP, (short)2);
-        private final Map<String, byte[]> binaryMap;
+    private final Map<String, byte[]> binaryMap;
     public static final int _BINARYMAP = 3;
     private static final TField BINARY_MAP_FIELD_DESC = new TField("binaryMap", TType.MAP, (short)3);
-        private final Map<String, byte[]> regularBinary;
+    private final Map<String, byte[]> regularBinary;
     public static final int _REGULARBINARY = 4;
     private static final TField REGULAR_BINARY_FIELD_DESC = new TField("regularBinary", TType.MAP, (short)4);
     static {
-      NAMES_TO_IDS.put("lsMap", 1);
-      THRIFT_NAMES_TO_IDS.put("lsMap", 1);
-      FIELD_METADATA.put(1, LS_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("ioMap", 2);
-      THRIFT_NAMES_TO_IDS.put("ioMap", 2);
-      FIELD_METADATA.put(2, IO_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("binaryMap", 3);
-      THRIFT_NAMES_TO_IDS.put("binaryMap", 3);
-      FIELD_METADATA.put(3, BINARY_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("regularBinary", 4);
-      THRIFT_NAMES_TO_IDS.put("regularBinary", 4);
-      FIELD_METADATA.put(4, REGULAR_BINARY_FIELD_DESC);
+        NAMES_TO_IDS.put("lsMap", 1);
+        THRIFT_NAMES_TO_IDS.put("lsMap", 1);
+        FIELD_METADATA.put(1, LS_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("ioMap", 2);
+        THRIFT_NAMES_TO_IDS.put("ioMap", 2);
+        FIELD_METADATA.put(2, IO_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("binaryMap", 3);
+        THRIFT_NAMES_TO_IDS.put("binaryMap", 3);
+        FIELD_METADATA.put(3, BINARY_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("regularBinary", 4);
+        THRIFT_NAMES_TO_IDS.put("regularBinary", 4);
+        FIELD_METADATA.put(4, REGULAR_BINARY_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
     public com.foo.FastLongStringMap getLsMap() { return lsMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="binaryMap", requiredness=Requiredness.NONE)
     public Map<String, byte[]> getBinaryMap() { return binaryMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)
     public Map<String, byte[]> getRegularBinary() { return regularBinary; }
@@ -451,5 +448,4 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     public static MyMapping defaultInstance() {
         return  _MyMappingLazy._DEFAULT;
     }
-
 }

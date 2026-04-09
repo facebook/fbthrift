@@ -43,11 +43,11 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(StructWithUnion other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -102,31 +102,29 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
     private final test.fixtures.refs.MyUnion u;
     public static final int _U = 1;
     private static final TField U_FIELD_DESC = new TField("u", TType.STRUCT, (short)1);
-        private final double aDouble;
+    private final double aDouble;
     public static final int _ADOUBLE = 2;
     private static final TField A_DOUBLE_FIELD_DESC = new TField("aDouble", TType.DOUBLE, (short)2);
-        private final test.fixtures.refs.MyField f;
+    private final test.fixtures.refs.MyField f;
     public static final int _F = 3;
     private static final TField F_FIELD_DESC = new TField("f", TType.STRUCT, (short)3);
     static {
-      NAMES_TO_IDS.put("u", 1);
-      THRIFT_NAMES_TO_IDS.put("u", 1);
-      FIELD_METADATA.put(1, U_FIELD_DESC);
-      NAMES_TO_IDS.put("aDouble", 2);
-      THRIFT_NAMES_TO_IDS.put("aDouble", 2);
-      FIELD_METADATA.put(2, A_DOUBLE_FIELD_DESC);
-      NAMES_TO_IDS.put("f", 3);
-      THRIFT_NAMES_TO_IDS.put("f", 3);
-      FIELD_METADATA.put(3, F_FIELD_DESC);
+        NAMES_TO_IDS.put("u", 1);
+        THRIFT_NAMES_TO_IDS.put("u", 1);
+        FIELD_METADATA.put(1, U_FIELD_DESC);
+        NAMES_TO_IDS.put("aDouble", 2);
+        THRIFT_NAMES_TO_IDS.put("aDouble", 2);
+        FIELD_METADATA.put(2, A_DOUBLE_FIELD_DESC);
+        NAMES_TO_IDS.put("f", 3);
+        THRIFT_NAMES_TO_IDS.put("f", 3);
+        FIELD_METADATA.put(3, F_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyUnion getU() { return u; }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
     public double getADouble() { return aDouble; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getF() { return f; }
@@ -251,5 +249,4 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
     public static StructWithUnion defaultInstance() {
         return  _StructWithUnionLazy._DEFAULT;
     }
-
 }

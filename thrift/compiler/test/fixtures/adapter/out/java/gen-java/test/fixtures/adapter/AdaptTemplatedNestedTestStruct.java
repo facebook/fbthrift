@@ -37,11 +37,11 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(AdaptTemplatedNestedTestStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,12 +77,12 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
     public static final int _ADAPTEDSTRUCT = 1;
     private static final TField ADAPTED_STRUCT_FIELD_DESC = new TField("adaptedStruct", TType.STRUCT, (short)1);
     static {
-      NAMES_TO_IDS.put("adaptedStruct", 1);
-      THRIFT_NAMES_TO_IDS.put("adaptedStruct", 1);
-      FIELD_METADATA.put(1, ADAPTED_STRUCT_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptTemplatedNestedTestStruct"),
-        AdaptTemplatedNestedTestStruct.class, AdaptTemplatedNestedTestStruct::read0));
+        NAMES_TO_IDS.put("adaptedStruct", 1);
+        THRIFT_NAMES_TO_IDS.put("adaptedStruct", 1);
+        FIELD_METADATA.put(1, ADAPTED_STRUCT_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptTemplatedNestedTestStruct"),
+            AdaptTemplatedNestedTestStruct.class, AdaptTemplatedNestedTestStruct::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="adaptedStruct", requiredness=Requiredness.NONE)
@@ -170,5 +170,4 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
     public static AdaptTemplatedNestedTestStruct defaultInstance() {
         return  _AdaptTemplatedNestedTestStructLazy._DEFAULT;
     }
-
 }

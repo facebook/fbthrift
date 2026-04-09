@@ -43,11 +43,11 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Foo other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -102,31 +102,29 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     private final int field1;
     public static final int _FIELD1 = 3;
     private static final TField FIELD1_FIELD_DESC = new TField("field1", TType.I32, (short)3);
-        private final int field2;
+    private final int field2;
     public static final int _FIELD2 = 1;
     private static final TField FIELD2_FIELD_DESC = new TField("field2", TType.I32, (short)1);
-        private final int field3;
+    private final int field3;
     public static final int _FIELD3 = 2;
     private static final TField FIELD3_FIELD_DESC = new TField("field3", TType.I32, (short)2);
     static {
-      NAMES_TO_IDS.put("field1", 3);
-      THRIFT_NAMES_TO_IDS.put("field1", 3);
-      FIELD_METADATA.put(3, FIELD1_FIELD_DESC);
-      NAMES_TO_IDS.put("field2", 1);
-      THRIFT_NAMES_TO_IDS.put("field2", 1);
-      FIELD_METADATA.put(1, FIELD2_FIELD_DESC);
-      NAMES_TO_IDS.put("field3", 2);
-      THRIFT_NAMES_TO_IDS.put("field3", 2);
-      FIELD_METADATA.put(2, FIELD3_FIELD_DESC);
+        NAMES_TO_IDS.put("field1", 3);
+        THRIFT_NAMES_TO_IDS.put("field1", 3);
+        FIELD_METADATA.put(3, FIELD1_FIELD_DESC);
+        NAMES_TO_IDS.put("field2", 1);
+        THRIFT_NAMES_TO_IDS.put("field2", 1);
+        FIELD_METADATA.put(1, FIELD2_FIELD_DESC);
+        NAMES_TO_IDS.put("field3", 2);
+        THRIFT_NAMES_TO_IDS.put("field3", 2);
+        FIELD_METADATA.put(2, FIELD3_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=3, name="field1", requiredness=Requiredness.NONE)
     public int getField1() { return field1; }
-
     
     @com.facebook.swift.codec.ThriftField(value=1, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="field3", requiredness=Requiredness.NONE)
     public int getField3() { return field3; }
@@ -247,5 +245,4 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public static Foo defaultInstance() {
         return  _FooLazy._DEFAULT;
     }
-
 }

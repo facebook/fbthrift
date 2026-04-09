@@ -79,11 +79,11 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Foo other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -271,154 +271,140 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     private final com.facebook.thrift.my.AdaptedI32_5137_1 intField;
     public static final int _INTFIELD = 1;
     private static final TField INT_FIELD_FIELD_DESC = new TField("intField", TType.I32, (short)1);
-        private final com.facebook.thrift.my.AdaptedI32_5137_1 optionalIntField;
+    private final com.facebook.thrift.my.AdaptedI32_5137_1 optionalIntField;
     public static final int _OPTIONALINTFIELD = 2;
     private static final TField OPTIONAL_INT_FIELD_FIELD_DESC = new TField("optionalIntField", TType.I32, (short)2);
-        private final com.facebook.thrift.my.AdaptedI32_5137_1 intFieldWithDefault;
+    private final com.facebook.thrift.my.AdaptedI32_5137_1 intFieldWithDefault;
     public static final int _INTFIELDWITHDEFAULT = 3;
     private static final TField INT_FIELD_WITH_DEFAULT_FIELD_DESC = new TField("intFieldWithDefault", TType.I32, (short)3);
-        private final com.facebook.thrift.my.AdaptedSet_2 setField;
+    private final com.facebook.thrift.my.AdaptedSet_2 setField;
     public static final int _SETFIELD = 4;
     private static final TField SET_FIELD_FIELD_DESC = new TField("setField", TType.SET, (short)4);
-        private final com.facebook.thrift.my.AdaptedSet_2 optionalSetField;
+    private final com.facebook.thrift.my.AdaptedSet_2 optionalSetField;
     public static final int _OPTIONALSETFIELD = 5;
     private static final TField OPTIONAL_SET_FIELD_FIELD_DESC = new TField("optionalSetField", TType.SET, (short)5);
-        private final com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 mapField;
+    private final com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 mapField;
     public static final int _MAPFIELD = 6;
     private static final TField MAP_FIELD_FIELD_DESC = new TField("mapField", TType.MAP, (short)6);
-        private final com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 optionalMapField;
+    private final com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 optionalMapField;
     public static final int _OPTIONALMAPFIELD = 7;
     private static final TField OPTIONAL_MAP_FIELD_FIELD_DESC = new TField("optionalMapField", TType.MAP, (short)7);
-        private final com.facebook.thrift.my.AdaptedBinary_5673_3 binaryField;
+    private final com.facebook.thrift.my.AdaptedBinary_5673_3 binaryField;
     public static final int _BINARYFIELD = 8;
     private static final TField BINARY_FIELD_FIELD_DESC = new TField("binaryField", TType.STRING, (short)8);
-        private final com.facebook.thrift.my.AdaptedI64_1 longField;
+    private final com.facebook.thrift.my.AdaptedI64_1 longField;
     public static final int _LONGFIELD = 9;
     private static final TField LONG_FIELD_FIELD_DESC = new TField("longField", TType.I64, (short)9);
-        private final com.facebook.thrift.my.AdaptedMyI64_2 adaptedLongField;
+    private final com.facebook.thrift.my.AdaptedMyI64_2 adaptedLongField;
     public static final int _ADAPTEDLONGFIELD = 10;
     private static final TField ADAPTED_LONG_FIELD_FIELD_DESC = new TField("adaptedLongField", TType.I64, (short)10);
-        private final com.facebook.thrift.my.AdaptedI64_1 doubleAdaptedField;
+    private final com.facebook.thrift.my.AdaptedI64_1 doubleAdaptedField;
     public static final int _DOUBLEADAPTEDFIELD = 11;
     private static final TField DOUBLE_ADAPTED_FIELD_FIELD_DESC = new TField("doubleAdaptedField", TType.I64, (short)11);
-        private final List<Integer> adaptedList;
+    private final List<Integer> adaptedList;
     public static final int _ADAPTED_LIST = 12;
     private static final TField ADAPTED_LIST_FIELD_DESC = new TField("adapted_list", TType.LIST, (short)12);
-        private final Set<Integer> adaptedSet;
+    private final Set<Integer> adaptedSet;
     public static final int _ADAPTED_SET = 13;
     private static final TField ADAPTED_SET_FIELD_DESC = new TField("adapted_set", TType.SET, (short)13);
-        private final Map<String, Integer> adaptedMap;
+    private final Map<String, Integer> adaptedMap;
     public static final int _ADAPTED_MAP = 14;
     private static final TField ADAPTED_MAP_FIELD_DESC = new TField("adapted_map", TType.MAP, (short)14);
-        private final List<List<Map<Integer, Integer>>> adaptedListNested;
+    private final List<List<Map<Integer, Integer>>> adaptedListNested;
     public static final int _ADAPTED_LIST_NESTED = 15;
     private static final TField ADAPTED_LIST_NESTED_FIELD_DESC = new TField("adapted_list_nested", TType.LIST, (short)15);
     static {
-      NAMES_TO_IDS.put("intField", 1);
-      THRIFT_NAMES_TO_IDS.put("intField", 1);
-      FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalIntField", 2);
-      THRIFT_NAMES_TO_IDS.put("optionalIntField", 2);
-      FIELD_METADATA.put(2, OPTIONAL_INT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("intFieldWithDefault", 3);
-      THRIFT_NAMES_TO_IDS.put("intFieldWithDefault", 3);
-      FIELD_METADATA.put(3, INT_FIELD_WITH_DEFAULT_FIELD_DESC);
-      NAMES_TO_IDS.put("setField", 4);
-      THRIFT_NAMES_TO_IDS.put("setField", 4);
-      FIELD_METADATA.put(4, SET_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalSetField", 5);
-      THRIFT_NAMES_TO_IDS.put("optionalSetField", 5);
-      FIELD_METADATA.put(5, OPTIONAL_SET_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("mapField", 6);
-      THRIFT_NAMES_TO_IDS.put("mapField", 6);
-      FIELD_METADATA.put(6, MAP_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("optionalMapField", 7);
-      THRIFT_NAMES_TO_IDS.put("optionalMapField", 7);
-      FIELD_METADATA.put(7, OPTIONAL_MAP_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("binaryField", 8);
-      THRIFT_NAMES_TO_IDS.put("binaryField", 8);
-      FIELD_METADATA.put(8, BINARY_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("longField", 9);
-      THRIFT_NAMES_TO_IDS.put("longField", 9);
-      FIELD_METADATA.put(9, LONG_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedLongField", 10);
-      THRIFT_NAMES_TO_IDS.put("adaptedLongField", 10);
-      FIELD_METADATA.put(10, ADAPTED_LONG_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("doubleAdaptedField", 11);
-      THRIFT_NAMES_TO_IDS.put("doubleAdaptedField", 11);
-      FIELD_METADATA.put(11, DOUBLE_ADAPTED_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedList", 12);
-      THRIFT_NAMES_TO_IDS.put("adapted_list", 12);
-      FIELD_METADATA.put(12, ADAPTED_LIST_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedSet", 13);
-      THRIFT_NAMES_TO_IDS.put("adapted_set", 13);
-      FIELD_METADATA.put(13, ADAPTED_SET_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedMap", 14);
-      THRIFT_NAMES_TO_IDS.put("adapted_map", 14);
-      FIELD_METADATA.put(14, ADAPTED_MAP_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedListNested", 15);
-      THRIFT_NAMES_TO_IDS.put("adapted_list_nested", 15);
-      FIELD_METADATA.put(15, ADAPTED_LIST_NESTED_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo"),
-        Foo.class, Foo::read0));
+        NAMES_TO_IDS.put("intField", 1);
+        THRIFT_NAMES_TO_IDS.put("intField", 1);
+        FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalIntField", 2);
+        THRIFT_NAMES_TO_IDS.put("optionalIntField", 2);
+        FIELD_METADATA.put(2, OPTIONAL_INT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("intFieldWithDefault", 3);
+        THRIFT_NAMES_TO_IDS.put("intFieldWithDefault", 3);
+        FIELD_METADATA.put(3, INT_FIELD_WITH_DEFAULT_FIELD_DESC);
+        NAMES_TO_IDS.put("setField", 4);
+        THRIFT_NAMES_TO_IDS.put("setField", 4);
+        FIELD_METADATA.put(4, SET_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalSetField", 5);
+        THRIFT_NAMES_TO_IDS.put("optionalSetField", 5);
+        FIELD_METADATA.put(5, OPTIONAL_SET_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("mapField", 6);
+        THRIFT_NAMES_TO_IDS.put("mapField", 6);
+        FIELD_METADATA.put(6, MAP_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("optionalMapField", 7);
+        THRIFT_NAMES_TO_IDS.put("optionalMapField", 7);
+        FIELD_METADATA.put(7, OPTIONAL_MAP_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("binaryField", 8);
+        THRIFT_NAMES_TO_IDS.put("binaryField", 8);
+        FIELD_METADATA.put(8, BINARY_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("longField", 9);
+        THRIFT_NAMES_TO_IDS.put("longField", 9);
+        FIELD_METADATA.put(9, LONG_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedLongField", 10);
+        THRIFT_NAMES_TO_IDS.put("adaptedLongField", 10);
+        FIELD_METADATA.put(10, ADAPTED_LONG_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("doubleAdaptedField", 11);
+        THRIFT_NAMES_TO_IDS.put("doubleAdaptedField", 11);
+        FIELD_METADATA.put(11, DOUBLE_ADAPTED_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedList", 12);
+        THRIFT_NAMES_TO_IDS.put("adapted_list", 12);
+        FIELD_METADATA.put(12, ADAPTED_LIST_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedSet", 13);
+        THRIFT_NAMES_TO_IDS.put("adapted_set", 13);
+        FIELD_METADATA.put(13, ADAPTED_SET_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedMap", 14);
+        THRIFT_NAMES_TO_IDS.put("adapted_map", 14);
+        FIELD_METADATA.put(14, ADAPTED_MAP_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedListNested", 15);
+        THRIFT_NAMES_TO_IDS.put("adapted_list_nested", 15);
+        FIELD_METADATA.put(15, ADAPTED_LIST_NESTED_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo"),
+            Foo.class, Foo::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedI32_5137_1 getIntField() { return intField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="optionalIntField", requiredness=Requiredness.OPTIONAL)
     public com.facebook.thrift.my.AdaptedI32_5137_1 getOptionalIntField() { return optionalIntField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=3, name="intFieldWithDefault", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedI32_5137_1 getIntFieldWithDefault() { return intFieldWithDefault; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="setField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedSet_2 getSetField() { return setField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="optionalSetField", requiredness=Requiredness.OPTIONAL)
     public com.facebook.thrift.my.AdaptedSet_2 getOptionalSetField() { return optionalSetField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="mapField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 getMapField() { return mapField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="optionalMapField", requiredness=Requiredness.OPTIONAL)
     public com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 getOptionalMapField() { return optionalMapField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedBinary_5673_3 getBinaryField() { return binaryField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=9, name="longField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedI64_1 getLongField() { return longField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=10, name="adaptedLongField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedMyI64_2 getAdaptedLongField() { return adaptedLongField; }
-
     
     @com.facebook.swift.codec.ThriftField(value=11, name="doubleAdaptedField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedI64_1 getDoubleAdaptedField() { return doubleAdaptedField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=12, name="adapted_list", requiredness=Requiredness.NONE)
     public List<Integer> getAdaptedList() { return adaptedList; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=13, name="adapted_set", requiredness=Requiredness.NONE)
     public Set<Integer> getAdaptedSet() { return adaptedSet; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=14, name="adapted_map", requiredness=Requiredness.NONE)
     public Map<String, Integer> getAdaptedMap() { return adaptedMap; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=15, name="adapted_list_nested", requiredness=Requiredness.NONE)
     public List<List<Map<Integer, Integer>>> getAdaptedListNested() { return adaptedListNested; }
@@ -1017,5 +1003,4 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public static Foo defaultInstance() {
         return  _FooLazy._DEFAULT;
     }
-
 }

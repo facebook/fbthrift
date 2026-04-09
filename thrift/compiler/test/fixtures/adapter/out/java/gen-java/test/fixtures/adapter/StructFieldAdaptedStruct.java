@@ -46,11 +46,11 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(StructFieldAdaptedStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -115,44 +115,41 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
     private final test.fixtures.adapter.AdaptedStruct adaptedStruct;
     public static final int _ADAPTEDSTRUCT = 1;
     private static final TField ADAPTED_STRUCT_FIELD_DESC = new TField("adaptedStruct", TType.STRUCT, (short)1);
-        private final test.fixtures.adapter.AdaptedStruct adaptedTypedef;
+    private final test.fixtures.adapter.AdaptedStruct adaptedTypedef;
     public static final int _ADAPTEDTYPEDEF = 2;
     private static final TField ADAPTED_TYPEDEF_FIELD_DESC = new TField("adaptedTypedef", TType.STRUCT, (short)2);
-        private final test.fixtures.adapter.DirectlyAdaptedStruct directlyAdapted;
+    private final test.fixtures.adapter.DirectlyAdaptedStruct directlyAdapted;
     public static final int _DIRECTLYADAPTED = 3;
     private static final TField DIRECTLY_ADAPTED_FIELD_DESC = new TField("directlyAdapted", TType.STRUCT, (short)3);
-        private final test.fixtures.adapter.DirectlyAdaptedStruct typedefOfAdapted;
+    private final test.fixtures.adapter.DirectlyAdaptedStruct typedefOfAdapted;
     public static final int _TYPEDEFOFADAPTED = 4;
     private static final TField TYPEDEF_OF_ADAPTED_FIELD_DESC = new TField("typedefOfAdapted", TType.STRUCT, (short)4);
     static {
-      NAMES_TO_IDS.put("adaptedStruct", 1);
-      THRIFT_NAMES_TO_IDS.put("adaptedStruct", 1);
-      FIELD_METADATA.put(1, ADAPTED_STRUCT_FIELD_DESC);
-      NAMES_TO_IDS.put("adaptedTypedef", 2);
-      THRIFT_NAMES_TO_IDS.put("adaptedTypedef", 2);
-      FIELD_METADATA.put(2, ADAPTED_TYPEDEF_FIELD_DESC);
-      NAMES_TO_IDS.put("directlyAdapted", 3);
-      THRIFT_NAMES_TO_IDS.put("directlyAdapted", 3);
-      FIELD_METADATA.put(3, DIRECTLY_ADAPTED_FIELD_DESC);
-      NAMES_TO_IDS.put("typedefOfAdapted", 4);
-      THRIFT_NAMES_TO_IDS.put("typedefOfAdapted", 4);
-      FIELD_METADATA.put(4, TYPEDEF_OF_ADAPTED_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/StructFieldAdaptedStruct"),
-        StructFieldAdaptedStruct.class, StructFieldAdaptedStruct::read0));
+        NAMES_TO_IDS.put("adaptedStruct", 1);
+        THRIFT_NAMES_TO_IDS.put("adaptedStruct", 1);
+        FIELD_METADATA.put(1, ADAPTED_STRUCT_FIELD_DESC);
+        NAMES_TO_IDS.put("adaptedTypedef", 2);
+        THRIFT_NAMES_TO_IDS.put("adaptedTypedef", 2);
+        FIELD_METADATA.put(2, ADAPTED_TYPEDEF_FIELD_DESC);
+        NAMES_TO_IDS.put("directlyAdapted", 3);
+        THRIFT_NAMES_TO_IDS.put("directlyAdapted", 3);
+        FIELD_METADATA.put(3, DIRECTLY_ADAPTED_FIELD_DESC);
+        NAMES_TO_IDS.put("typedefOfAdapted", 4);
+        THRIFT_NAMES_TO_IDS.put("typedefOfAdapted", 4);
+        FIELD_METADATA.put(4, TYPEDEF_OF_ADAPTED_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/StructFieldAdaptedStruct"),
+            StructFieldAdaptedStruct.class, StructFieldAdaptedStruct::read0));
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="adaptedStruct", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.AdaptedStruct getAdaptedStruct() { return adaptedStruct; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="adaptedTypedef", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.AdaptedStruct getAdaptedTypedef() { return adaptedTypedef; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="directlyAdapted", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.DirectlyAdaptedStruct getDirectlyAdapted() { return directlyAdapted; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="typedefOfAdapted", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.DirectlyAdaptedStruct getTypedefOfAdapted() { return typedefOfAdapted; }
@@ -299,5 +296,4 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
     public static StructFieldAdaptedStruct defaultInstance() {
         return  _StructFieldAdaptedStructLazy._DEFAULT;
     }
-
 }

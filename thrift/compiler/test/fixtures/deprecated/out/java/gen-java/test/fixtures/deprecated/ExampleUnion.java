@@ -38,28 +38,28 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
     private static final TField DOUBLE_VALUE_FIELD_DESC = new TField("doubleValue", TType.DOUBLE, (short)3);
 
     static {
-      NAMES_TO_IDS.put("stringValue", 1);
-      THRIFT_NAMES_TO_IDS.put("stringValue", 1);
-      FIELD_METADATA.put(1, STRING_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("intValue", 2);
-      THRIFT_NAMES_TO_IDS.put("intValue", 2);
-      FIELD_METADATA.put(2, INT_VALUE_FIELD_DESC);
-      NAMES_TO_IDS.put("doubleValue", 3);
-      THRIFT_NAMES_TO_IDS.put("doubleValue", 3);
-      FIELD_METADATA.put(3, DOUBLE_VALUE_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/ExampleUnion"),
-        ExampleUnion.class, ExampleUnion::read0));
+        NAMES_TO_IDS.put("stringValue", 1);
+        THRIFT_NAMES_TO_IDS.put("stringValue", 1);
+        FIELD_METADATA.put(1, STRING_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("intValue", 2);
+        THRIFT_NAMES_TO_IDS.put("intValue", 2);
+        FIELD_METADATA.put(2, INT_VALUE_FIELD_DESC);
+        NAMES_TO_IDS.put("doubleValue", 3);
+        THRIFT_NAMES_TO_IDS.put("doubleValue", 3);
+        FIELD_METADATA.put(3, DOUBLE_VALUE_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/ExampleUnion"),
+            ExampleUnion.class, ExampleUnion::read0));
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      STRING_VALUE,
-      INT_VALUE,
-      DOUBLE_VALUE,
+        __FBTHRIFT_EMPTY_UNION__,
+        STRING_VALUE,
+        INT_VALUE,
+        DOUBLE_VALUE,
     }
 
     public static ExampleUnion from(int _id, java.lang.Object _field) {
@@ -72,7 +72,7 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        ExampleUnion _u = new  ExampleUnion();
+        ExampleUnion _u = new ExampleUnion();
 
         try {
             switch(_id) {
@@ -89,7 +89,7 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
                     _u.value = (double) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -192,18 +192,18 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 1:
-          return TypeEnum.STRING_VALUE;
-        case 2:
-          return TypeEnum.INT_VALUE;
-        case 3:
-          return TypeEnum.DOUBLE_VALUE;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 1:
+                return TypeEnum.STRING_VALUE;
+            case 2:
+                return TypeEnum.INT_VALUE;
+            case 3:
+                return TypeEnum.DOUBLE_VALUE;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -264,7 +264,7 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
 
     public interface Visitor<T> {
         default T visit(ExampleUnion acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitStringValue(String stringValue);
@@ -366,5 +366,4 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
     public static ExampleUnion defaultInstance() {
         return _DEFAULT;
     }
-
 }

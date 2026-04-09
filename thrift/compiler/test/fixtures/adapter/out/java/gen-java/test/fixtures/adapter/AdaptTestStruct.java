@@ -64,11 +64,11 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(AdaptTestStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -193,104 +193,95 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
     private final long delay;
     public static final int _DELAY = 1;
     private static final TField DELAY_FIELD_DESC = new TField("delay", TType.I64, (short)1);
-        private final byte[] custom;
+    private final byte[] custom;
     public static final int _CUSTOM = 2;
     private static final TField CUSTOM_FIELD_DESC = new TField("custom", TType.STRING, (short)2);
-        private final long timeout;
+    private final long timeout;
     public static final int _TIMEOUT = 3;
     private static final TField TIMEOUT_FIELD_DESC = new TField("timeout", TType.I64, (short)3);
-        private final long data;
+    private final long data;
     public static final int _DATA = 4;
     private static final TField DATA_FIELD_DESC = new TField("data", TType.I64, (short)4);
-        private final String meta;
+    private final String meta;
     public static final int _META = 5;
     private static final TField META_FIELD_DESC = new TField("meta", TType.STRING, (short)5);
-        private final String indirectionString;
+    private final String indirectionString;
     public static final int _INDIRECTIONSTRING = 6;
     private static final TField INDIRECTION_STRING_FIELD_DESC = new TField("indirectionString", TType.STRING, (short)6);
-        private final String stringData;
+    private final String stringData;
     public static final int _STRING_DATA = 7;
     private static final TField STRING_DATA_FIELD_DESC = new TField("string_data", TType.STRING, (short)7);
-        private final boolean doubleWrappedBool;
+    private final boolean doubleWrappedBool;
     public static final int _DOUBLE_WRAPPED_BOOL = 8;
     private static final TField DOUBLE_WRAPPED_BOOL_FIELD_DESC = new TField("double_wrapped_bool", TType.BOOL, (short)8);
-        private final int doubleWrappedInteger;
+    private final int doubleWrappedInteger;
     public static final int _DOUBLE_WRAPPED_INTEGER = 9;
     private static final TField DOUBLE_WRAPPED_INTEGER_FIELD_DESC = new TField("double_wrapped_integer", TType.I32, (short)9);
-        private final byte[] binaryData;
+    private final byte[] binaryData;
     public static final int _BINARY_DATA = 10;
     private static final TField BINARY_DATA_FIELD_DESC = new TField("binary_data", TType.STRING, (short)10);
     static {
-      NAMES_TO_IDS.put("delay", 1);
-      THRIFT_NAMES_TO_IDS.put("delay", 1);
-      FIELD_METADATA.put(1, DELAY_FIELD_DESC);
-      NAMES_TO_IDS.put("custom", 2);
-      THRIFT_NAMES_TO_IDS.put("custom", 2);
-      FIELD_METADATA.put(2, CUSTOM_FIELD_DESC);
-      NAMES_TO_IDS.put("timeout", 3);
-      THRIFT_NAMES_TO_IDS.put("timeout", 3);
-      FIELD_METADATA.put(3, TIMEOUT_FIELD_DESC);
-      NAMES_TO_IDS.put("data", 4);
-      THRIFT_NAMES_TO_IDS.put("data", 4);
-      FIELD_METADATA.put(4, DATA_FIELD_DESC);
-      NAMES_TO_IDS.put("meta", 5);
-      THRIFT_NAMES_TO_IDS.put("meta", 5);
-      FIELD_METADATA.put(5, META_FIELD_DESC);
-      NAMES_TO_IDS.put("indirectionString", 6);
-      THRIFT_NAMES_TO_IDS.put("indirectionString", 6);
-      FIELD_METADATA.put(6, INDIRECTION_STRING_FIELD_DESC);
-      NAMES_TO_IDS.put("stringData", 7);
-      THRIFT_NAMES_TO_IDS.put("string_data", 7);
-      FIELD_METADATA.put(7, STRING_DATA_FIELD_DESC);
-      NAMES_TO_IDS.put("doubleWrappedBool", 8);
-      THRIFT_NAMES_TO_IDS.put("double_wrapped_bool", 8);
-      FIELD_METADATA.put(8, DOUBLE_WRAPPED_BOOL_FIELD_DESC);
-      NAMES_TO_IDS.put("doubleWrappedInteger", 9);
-      THRIFT_NAMES_TO_IDS.put("double_wrapped_integer", 9);
-      FIELD_METADATA.put(9, DOUBLE_WRAPPED_INTEGER_FIELD_DESC);
-      NAMES_TO_IDS.put("binaryData", 10);
-      THRIFT_NAMES_TO_IDS.put("binary_data", 10);
-      FIELD_METADATA.put(10, BINARY_DATA_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptTestStruct"),
-        AdaptTestStruct.class, AdaptTestStruct::read0));
+        NAMES_TO_IDS.put("delay", 1);
+        THRIFT_NAMES_TO_IDS.put("delay", 1);
+        FIELD_METADATA.put(1, DELAY_FIELD_DESC);
+        NAMES_TO_IDS.put("custom", 2);
+        THRIFT_NAMES_TO_IDS.put("custom", 2);
+        FIELD_METADATA.put(2, CUSTOM_FIELD_DESC);
+        NAMES_TO_IDS.put("timeout", 3);
+        THRIFT_NAMES_TO_IDS.put("timeout", 3);
+        FIELD_METADATA.put(3, TIMEOUT_FIELD_DESC);
+        NAMES_TO_IDS.put("data", 4);
+        THRIFT_NAMES_TO_IDS.put("data", 4);
+        FIELD_METADATA.put(4, DATA_FIELD_DESC);
+        NAMES_TO_IDS.put("meta", 5);
+        THRIFT_NAMES_TO_IDS.put("meta", 5);
+        FIELD_METADATA.put(5, META_FIELD_DESC);
+        NAMES_TO_IDS.put("indirectionString", 6);
+        THRIFT_NAMES_TO_IDS.put("indirectionString", 6);
+        FIELD_METADATA.put(6, INDIRECTION_STRING_FIELD_DESC);
+        NAMES_TO_IDS.put("stringData", 7);
+        THRIFT_NAMES_TO_IDS.put("string_data", 7);
+        FIELD_METADATA.put(7, STRING_DATA_FIELD_DESC);
+        NAMES_TO_IDS.put("doubleWrappedBool", 8);
+        THRIFT_NAMES_TO_IDS.put("double_wrapped_bool", 8);
+        FIELD_METADATA.put(8, DOUBLE_WRAPPED_BOOL_FIELD_DESC);
+        NAMES_TO_IDS.put("doubleWrappedInteger", 9);
+        THRIFT_NAMES_TO_IDS.put("double_wrapped_integer", 9);
+        FIELD_METADATA.put(9, DOUBLE_WRAPPED_INTEGER_FIELD_DESC);
+        NAMES_TO_IDS.put("binaryData", 10);
+        THRIFT_NAMES_TO_IDS.put("binary_data", 10);
+        FIELD_METADATA.put(10, BINARY_DATA_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptTestStruct"),
+            AdaptTestStruct.class, AdaptTestStruct::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="delay", requiredness=Requiredness.NONE)
     public long getDelay() { return delay; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="custom", requiredness=Requiredness.NONE)
     public byte[] getCustom() { return custom; }
-
     
     @com.facebook.swift.codec.ThriftField(value=3, name="timeout", requiredness=Requiredness.NONE)
     public long getTimeout() { return timeout; }
-
     
     @com.facebook.swift.codec.ThriftField(value=4, name="data", requiredness=Requiredness.NONE)
     public long getData() { return data; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="meta", requiredness=Requiredness.NONE)
     public String getMeta() { return meta; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="indirectionString", requiredness=Requiredness.NONE)
     public String getIndirectionString() { return indirectionString; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="string_data", requiredness=Requiredness.NONE)
     public String getStringData() { return stringData; }
-
     
     @com.facebook.swift.codec.ThriftField(value=8, name="double_wrapped_bool", requiredness=Requiredness.NONE)
     public boolean isDoubleWrappedBool() { return doubleWrappedBool; }
-
     
     @com.facebook.swift.codec.ThriftField(value=9, name="double_wrapped_integer", requiredness=Requiredness.NONE)
     public int getDoubleWrappedInteger() { return doubleWrappedInteger; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="binary_data", requiredness=Requiredness.NONE)
     public byte[] getBinaryData() { return binaryData; }
@@ -547,5 +538,4 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
     public static AdaptTestStruct defaultInstance() {
         return  _AdaptTestStructLazy._DEFAULT;
     }
-
 }

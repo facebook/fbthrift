@@ -31,11 +31,11 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(MyMutableStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -79,16 +79,16 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
     private long intField;
     public static final int _INTFIELD = 1;
     private static final TField INT_FIELD_FIELD_DESC = new TField("intField", TType.I64, (short)1);
-        private String stringField;
+    private String stringField;
     public static final int _STRINGFIELD = 2;
     private static final TField STRING_FIELD_FIELD_DESC = new TField("stringField", TType.STRING, (short)2);
     static {
-      NAMES_TO_IDS.put("intField", 1);
-      THRIFT_NAMES_TO_IDS.put("intField", 1);
-      FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("stringField", 2);
-      THRIFT_NAMES_TO_IDS.put("stringField", 2);
-      FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("intField", 1);
+        THRIFT_NAMES_TO_IDS.put("intField", 1);
+        FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("stringField", 2);
+        THRIFT_NAMES_TO_IDS.put("stringField", 2);
+        FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
@@ -99,7 +99,6 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
         this.intField = intField;
         return this;
     }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
@@ -202,6 +201,5 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
         oprot.writeFieldStop();
         oprot.writeStructEnd();
     }
-
 
 }

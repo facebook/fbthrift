@@ -64,11 +64,11 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(Person other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -193,101 +193,92 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     private final long id;
     public static final int _ID = 1;
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
-        private final String name;
+    private final String name;
     public static final int _NAME = 2;
     private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)2);
-        private final Short age;
+    private final Short age;
     public static final int _AGE = 3;
     private static final TField AGE_FIELD_DESC = new TField("age", TType.I16, (short)3);
-        private final String address;
+    private final String address;
     public static final int _ADDRESS = 4;
     private static final TField ADDRESS_FIELD_DESC = new TField("address", TType.STRING, (short)4);
-        private final test.fixtures.optionals.Color favoriteColor;
+    private final test.fixtures.optionals.Color favoriteColor;
     public static final int _FAVORITECOLOR = 5;
     private static final TField FAVORITE_COLOR_FIELD_DESC = new TField("favoriteColor", TType.STRUCT, (short)5);
-        private final Set<Long> friends;
+    private final Set<Long> friends;
     public static final int _FRIENDS = 6;
     private static final TField FRIENDS_FIELD_DESC = new TField("friends", TType.SET, (short)6);
-        private final Long bestFriend;
+    private final Long bestFriend;
     public static final int _BESTFRIEND = 7;
     private static final TField BEST_FRIEND_FIELD_DESC = new TField("bestFriend", TType.I64, (short)7);
-        private final Map<test.fixtures.optionals.Animal, String> petNames;
+    private final Map<test.fixtures.optionals.Animal, String> petNames;
     public static final int _PETNAMES = 8;
     private static final TField PET_NAMES_FIELD_DESC = new TField("petNames", TType.MAP, (short)8);
-        private final test.fixtures.optionals.Animal afraidOfAnimal;
+    private final test.fixtures.optionals.Animal afraidOfAnimal;
     public static final int _AFRAIDOFANIMAL = 9;
     private static final TField AFRAID_OF_ANIMAL_FIELD_DESC = new TField("afraidOfAnimal", TType.I32, (short)9);
-        private final List<test.fixtures.optionals.Vehicle> vehicles;
+    private final List<test.fixtures.optionals.Vehicle> vehicles;
     public static final int _VEHICLES = 10;
     private static final TField VEHICLES_FIELD_DESC = new TField("vehicles", TType.LIST, (short)10);
     static {
-      NAMES_TO_IDS.put("id", 1);
-      THRIFT_NAMES_TO_IDS.put("id", 1);
-      FIELD_METADATA.put(1, ID_FIELD_DESC);
-      NAMES_TO_IDS.put("name", 2);
-      THRIFT_NAMES_TO_IDS.put("name", 2);
-      FIELD_METADATA.put(2, NAME_FIELD_DESC);
-      NAMES_TO_IDS.put("age", 3);
-      THRIFT_NAMES_TO_IDS.put("age", 3);
-      FIELD_METADATA.put(3, AGE_FIELD_DESC);
-      NAMES_TO_IDS.put("address", 4);
-      THRIFT_NAMES_TO_IDS.put("address", 4);
-      FIELD_METADATA.put(4, ADDRESS_FIELD_DESC);
-      NAMES_TO_IDS.put("favoriteColor", 5);
-      THRIFT_NAMES_TO_IDS.put("favoriteColor", 5);
-      FIELD_METADATA.put(5, FAVORITE_COLOR_FIELD_DESC);
-      NAMES_TO_IDS.put("friends", 6);
-      THRIFT_NAMES_TO_IDS.put("friends", 6);
-      FIELD_METADATA.put(6, FRIENDS_FIELD_DESC);
-      NAMES_TO_IDS.put("bestFriend", 7);
-      THRIFT_NAMES_TO_IDS.put("bestFriend", 7);
-      FIELD_METADATA.put(7, BEST_FRIEND_FIELD_DESC);
-      NAMES_TO_IDS.put("petNames", 8);
-      THRIFT_NAMES_TO_IDS.put("petNames", 8);
-      FIELD_METADATA.put(8, PET_NAMES_FIELD_DESC);
-      NAMES_TO_IDS.put("afraidOfAnimal", 9);
-      THRIFT_NAMES_TO_IDS.put("afraidOfAnimal", 9);
-      FIELD_METADATA.put(9, AFRAID_OF_ANIMAL_FIELD_DESC);
-      NAMES_TO_IDS.put("vehicles", 10);
-      THRIFT_NAMES_TO_IDS.put("vehicles", 10);
-      FIELD_METADATA.put(10, VEHICLES_FIELD_DESC);
+        NAMES_TO_IDS.put("id", 1);
+        THRIFT_NAMES_TO_IDS.put("id", 1);
+        FIELD_METADATA.put(1, ID_FIELD_DESC);
+        NAMES_TO_IDS.put("name", 2);
+        THRIFT_NAMES_TO_IDS.put("name", 2);
+        FIELD_METADATA.put(2, NAME_FIELD_DESC);
+        NAMES_TO_IDS.put("age", 3);
+        THRIFT_NAMES_TO_IDS.put("age", 3);
+        FIELD_METADATA.put(3, AGE_FIELD_DESC);
+        NAMES_TO_IDS.put("address", 4);
+        THRIFT_NAMES_TO_IDS.put("address", 4);
+        FIELD_METADATA.put(4, ADDRESS_FIELD_DESC);
+        NAMES_TO_IDS.put("favoriteColor", 5);
+        THRIFT_NAMES_TO_IDS.put("favoriteColor", 5);
+        FIELD_METADATA.put(5, FAVORITE_COLOR_FIELD_DESC);
+        NAMES_TO_IDS.put("friends", 6);
+        THRIFT_NAMES_TO_IDS.put("friends", 6);
+        FIELD_METADATA.put(6, FRIENDS_FIELD_DESC);
+        NAMES_TO_IDS.put("bestFriend", 7);
+        THRIFT_NAMES_TO_IDS.put("bestFriend", 7);
+        FIELD_METADATA.put(7, BEST_FRIEND_FIELD_DESC);
+        NAMES_TO_IDS.put("petNames", 8);
+        THRIFT_NAMES_TO_IDS.put("petNames", 8);
+        FIELD_METADATA.put(8, PET_NAMES_FIELD_DESC);
+        NAMES_TO_IDS.put("afraidOfAnimal", 9);
+        THRIFT_NAMES_TO_IDS.put("afraidOfAnimal", 9);
+        FIELD_METADATA.put(9, AFRAID_OF_ANIMAL_FIELD_DESC);
+        NAMES_TO_IDS.put("vehicles", 10);
+        THRIFT_NAMES_TO_IDS.put("vehicles", 10);
+        FIELD_METADATA.put(10, VEHICLES_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="age", requiredness=Requiredness.OPTIONAL)
     public Short getAge() { return age; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="address", requiredness=Requiredness.OPTIONAL)
     public String getAddress() { return address; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="favoriteColor", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.optionals.Color getFavoriteColor() { return favoriteColor; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="friends", requiredness=Requiredness.OPTIONAL)
     public Set<Long> getFriends() { return friends; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="bestFriend", requiredness=Requiredness.OPTIONAL)
     public Long getBestFriend() { return bestFriend; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="petNames", requiredness=Requiredness.OPTIONAL)
     public Map<test.fixtures.optionals.Animal, String> getPetNames() { return petNames; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="afraidOfAnimal", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.optionals.Animal getAfraidOfAnimal() { return afraidOfAnimal; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="vehicles", requiredness=Requiredness.OPTIONAL)
     public List<test.fixtures.optionals.Vehicle> getVehicles() { return vehicles; }
@@ -609,5 +600,4 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     public static Person defaultInstance() {
         return  _PersonLazy._DEFAULT;
     }
-
 }

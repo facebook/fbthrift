@@ -37,11 +37,11 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(ShouldBeBoxed other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -77,9 +77,9 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
     public static final int _SESSIONID = 1;
     private static final TField SESSION_ID_FIELD_DESC = new TField("sessionId", TType.STRING, (short)1);
     static {
-      NAMES_TO_IDS.put("sessionId", 1);
-      THRIFT_NAMES_TO_IDS.put("sessionId", 1);
-      FIELD_METADATA.put(1, SESSION_ID_FIELD_DESC);
+        NAMES_TO_IDS.put("sessionId", 1);
+        THRIFT_NAMES_TO_IDS.put("sessionId", 1);
+        FIELD_METADATA.put(1, SESSION_ID_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="sessionId", requiredness=Requiredness.NONE)
@@ -167,5 +167,4 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
     public static ShouldBeBoxed defaultInstance() {
         return  _ShouldBeBoxedLazy._DEFAULT;
     }
-
 }

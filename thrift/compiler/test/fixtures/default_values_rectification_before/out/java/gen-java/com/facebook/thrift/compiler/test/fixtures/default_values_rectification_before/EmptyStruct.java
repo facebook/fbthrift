@@ -31,11 +31,11 @@ public final class EmptyStruct implements com.facebook.thrift.payload.ThriftSeri
 
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(EmptyStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -57,11 +57,12 @@ public final class EmptyStruct implements com.facebook.thrift.payload.ThriftSeri
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("EmptyStruct");
-static {
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/default_values_rectification_before/EmptyStruct"),
-        EmptyStruct.class, EmptyStruct::read0));
+    static {
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/default_values_rectification_before/EmptyStruct"),
+            EmptyStruct.class, EmptyStruct::read0));
     }
+
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -124,5 +125,4 @@ static {
     public static EmptyStruct defaultInstance() {
         return  _EmptyStructLazy._DEFAULT;
     }
-
 }

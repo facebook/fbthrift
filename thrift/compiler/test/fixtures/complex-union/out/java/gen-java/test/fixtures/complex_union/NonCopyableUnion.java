@@ -34,17 +34,17 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
     private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
 
     static {
-      NAMES_TO_IDS.put("s", 1);
-      THRIFT_NAMES_TO_IDS.put("s", 1);
-      FIELD_METADATA.put(1, S_FIELD_DESC);
+        NAMES_TO_IDS.put("s", 1);
+        THRIFT_NAMES_TO_IDS.put("s", 1);
+        FIELD_METADATA.put(1, S_FIELD_DESC);
     }
 
     private java.lang.Object value;
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
-      S,
+        __FBTHRIFT_EMPTY_UNION__,
+        S,
     }
 
     public static NonCopyableUnion from(int _id, java.lang.Object _field) {
@@ -57,7 +57,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        NonCopyableUnion _u = new  NonCopyableUnion();
+        NonCopyableUnion _u = new NonCopyableUnion();
 
         try {
             switch(_id) {
@@ -66,7 +66,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
                     _u.value = (test.fixtures.complex_union.NonCopyableStruct) _field;
                     return _u;
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -116,14 +116,14 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        case 1:
-          return TypeEnum.S;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            case 1:
+                return TypeEnum.S;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -178,7 +178,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
 
     public interface Visitor<T> {
         default T visit(NonCopyableUnion acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
         T visitS(test.fixtures.complex_union.NonCopyableStruct s);
@@ -248,5 +248,4 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
     public static NonCopyableUnion defaultInstance() {
         return _DEFAULT;
     }
-
 }

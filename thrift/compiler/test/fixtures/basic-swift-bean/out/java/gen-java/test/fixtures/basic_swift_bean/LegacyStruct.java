@@ -31,11 +31,11 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(LegacyStruct other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -79,16 +79,16 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
     private int normal;
     public static final int _NORMAL = 1;
     private static final TField NORMAL_FIELD_DESC = new TField("normal", TType.I32, (short)1);
-        private int bad;
+    private int bad;
     public static final int _BAD = -1;
     private static final TField BAD_FIELD_DESC = new TField("bad", TType.I32, (short)-1);
     static {
-      NAMES_TO_IDS.put("normal", 1);
-      THRIFT_NAMES_TO_IDS.put("normal", 1);
-      FIELD_METADATA.put(1, NORMAL_FIELD_DESC);
-      NAMES_TO_IDS.put("bad", -1);
-      THRIFT_NAMES_TO_IDS.put("bad", -1);
-      FIELD_METADATA.put(-1, BAD_FIELD_DESC);
+        NAMES_TO_IDS.put("normal", 1);
+        THRIFT_NAMES_TO_IDS.put("normal", 1);
+        FIELD_METADATA.put(1, NORMAL_FIELD_DESC);
+        NAMES_TO_IDS.put("bad", -1);
+        THRIFT_NAMES_TO_IDS.put("bad", -1);
+        FIELD_METADATA.put(-1, BAD_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
@@ -99,7 +99,6 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
         this.normal = normal;
         return this;
     }
-
     
     @com.facebook.swift.codec.ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
     public int getBad() { return bad; }
@@ -200,6 +199,5 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
         oprot.writeFieldStop();
         oprot.writeStructEnd();
     }
-
 
 }

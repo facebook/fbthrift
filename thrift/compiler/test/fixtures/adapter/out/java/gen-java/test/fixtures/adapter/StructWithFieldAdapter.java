@@ -46,11 +46,11 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(StructWithFieldAdapter other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -117,44 +117,41 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
     private final com.facebook.thrift.my.AdaptedI32_1 field;
     public static final int _FIELD = 1;
     private static final TField FIELD_FIELD_DESC = new TField("field", TType.I32, (short)1);
-        private final int sharedField;
+    private final int sharedField;
     public static final int _SHARED_FIELD = 2;
     private static final TField SHARED_FIELD_FIELD_DESC = new TField("shared_field", TType.I32, (short)2);
-        private final com.facebook.thrift.my.AdaptedI32_1 optSharedField;
+    private final com.facebook.thrift.my.AdaptedI32_1 optSharedField;
     public static final int _OPT_SHARED_FIELD = 3;
     private static final TField OPT_SHARED_FIELD_FIELD_DESC = new TField("opt_shared_field", TType.I32, (short)3);
-        private final Integer optBoxedField;
+    private final Integer optBoxedField;
     public static final int _OPT_BOXED_FIELD = 4;
     private static final TField OPT_BOXED_FIELD_FIELD_DESC = new TField("opt_boxed_field", TType.I32, (short)4);
     static {
-      NAMES_TO_IDS.put("field", 1);
-      THRIFT_NAMES_TO_IDS.put("field", 1);
-      FIELD_METADATA.put(1, FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("sharedField", 2);
-      THRIFT_NAMES_TO_IDS.put("shared_field", 2);
-      FIELD_METADATA.put(2, SHARED_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("optSharedField", 3);
-      THRIFT_NAMES_TO_IDS.put("opt_shared_field", 3);
-      FIELD_METADATA.put(3, OPT_SHARED_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("optBoxedField", 4);
-      THRIFT_NAMES_TO_IDS.put("opt_boxed_field", 4);
-      FIELD_METADATA.put(4, OPT_BOXED_FIELD_FIELD_DESC);
-      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/StructWithFieldAdapter"),
-        StructWithFieldAdapter.class, StructWithFieldAdapter::read0));
+        NAMES_TO_IDS.put("field", 1);
+        THRIFT_NAMES_TO_IDS.put("field", 1);
+        FIELD_METADATA.put(1, FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("sharedField", 2);
+        THRIFT_NAMES_TO_IDS.put("shared_field", 2);
+        FIELD_METADATA.put(2, SHARED_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("optSharedField", 3);
+        THRIFT_NAMES_TO_IDS.put("opt_shared_field", 3);
+        FIELD_METADATA.put(3, OPT_SHARED_FIELD_FIELD_DESC);
+        NAMES_TO_IDS.put("optBoxedField", 4);
+        THRIFT_NAMES_TO_IDS.put("opt_boxed_field", 4);
+        FIELD_METADATA.put(4, OPT_BOXED_FIELD_FIELD_DESC);
+        com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+            new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/StructWithFieldAdapter"),
+            StructWithFieldAdapter.class, StructWithFieldAdapter::read0));
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedI32_1 getField() { return field; }
-
     
     @com.facebook.swift.codec.ThriftField(value=2, name="shared_field", requiredness=Requiredness.NONE)
     public int getSharedField() { return sharedField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="opt_shared_field", requiredness=Requiredness.OPTIONAL)
     public com.facebook.thrift.my.AdaptedI32_1 getOptSharedField() { return optSharedField; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="opt_boxed_field", requiredness=Requiredness.OPTIONAL)
     public Integer getOptBoxedField() { return optBoxedField; }
@@ -299,5 +296,4 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
     public static StructWithFieldAdapter defaultInstance() {
         return  _StructWithFieldAdapterLazy._DEFAULT;
     }
-
 }

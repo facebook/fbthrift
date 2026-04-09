@@ -38,7 +38,7 @@ public final class Nada implements com.facebook.thrift.payload.ThriftSerializabl
     private short id;
 
     public enum TypeEnum {
-      __FBTHRIFT_EMPTY_UNION__,
+        __FBTHRIFT_EMPTY_UNION__,
     }
 
     public static Nada from(int _id, java.lang.Object _field) {
@@ -51,12 +51,12 @@ public final class Nada implements com.facebook.thrift.payload.ThriftSerializabl
             throw new java.lang.IllegalArgumentException("unknown field " + _id);
         }
 
-        Nada _u = new  Nada();
+        Nada _u = new Nada();
 
         try {
             switch(_id) {
                 default:
-                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+                    throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
             }
         } catch (java.lang.Exception t) {
             throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
@@ -74,12 +74,12 @@ public final class Nada implements com.facebook.thrift.payload.ThriftSerializabl
     }
 
     public TypeEnum getThriftUnionType() {
-      switch(this.id) {
-        case 0:
-          return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
-        default:
-          throw new IllegalStateException("unreachable");
-      }
+        switch(this.id) {
+            case 0:
+                return TypeEnum.__FBTHRIFT_EMPTY_UNION__;
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     public String getThriftName() {
@@ -131,7 +131,7 @@ public final class Nada implements com.facebook.thrift.payload.ThriftSerializabl
 
     public interface Visitor<T> {
         default T visit(Nada acceptor) {
-        return acceptor.accept(this);
+            return acceptor.accept(this);
         }
 
     }
@@ -185,5 +185,4 @@ public final class Nada implements com.facebook.thrift.payload.ThriftSerializabl
     public static Nada defaultInstance() {
         return _DEFAULT;
     }
-
 }

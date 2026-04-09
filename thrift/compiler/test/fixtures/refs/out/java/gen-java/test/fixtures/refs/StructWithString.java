@@ -49,11 +49,11 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
     }
 
     public static Builder builder() {
-      return new Builder();
+        return new Builder();
     }
 
     public static Builder builder(StructWithString other) {
-      return new Builder(other);
+        return new Builder(other);
     }
 
     public static class Builder {
@@ -128,51 +128,47 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
     private final String defUniqueStringRef;
     public static final int _DEF_UNIQUE_STRING_REF = 1;
     private static final TField DEF_UNIQUE_STRING_REF_FIELD_DESC = new TField("def_unique_string_ref", TType.STRING, (short)1);
-        private final String defSharedStringRef;
+    private final String defSharedStringRef;
     public static final int _DEF_SHARED_STRING_REF = 2;
     private static final TField DEF_SHARED_STRING_REF_FIELD_DESC = new TField("def_shared_string_ref", TType.STRING, (short)2);
-        private final String defSharedStringConstRef;
+    private final String defSharedStringConstRef;
     public static final int _DEF_SHARED_STRING_CONST_REF = 3;
     private static final TField DEF_SHARED_STRING_CONST_REF_FIELD_DESC = new TField("def_shared_string_const_ref", TType.STRING, (short)3);
-        private final String uniqueStringRef;
+    private final String uniqueStringRef;
     public static final int _UNIQUE_STRING_REF = 4;
     private static final TField UNIQUE_STRING_REF_FIELD_DESC = new TField("unique_string_ref", TType.STRING, (short)4);
-        private final String sharedStringRef;
+    private final String sharedStringRef;
     public static final int _SHARED_STRING_REF = 5;
     private static final TField SHARED_STRING_REF_FIELD_DESC = new TField("shared_string_ref", TType.STRING, (short)5);
     static {
-      NAMES_TO_IDS.put("defUniqueStringRef", 1);
-      THRIFT_NAMES_TO_IDS.put("def_unique_string_ref", 1);
-      FIELD_METADATA.put(1, DEF_UNIQUE_STRING_REF_FIELD_DESC);
-      NAMES_TO_IDS.put("defSharedStringRef", 2);
-      THRIFT_NAMES_TO_IDS.put("def_shared_string_ref", 2);
-      FIELD_METADATA.put(2, DEF_SHARED_STRING_REF_FIELD_DESC);
-      NAMES_TO_IDS.put("defSharedStringConstRef", 3);
-      THRIFT_NAMES_TO_IDS.put("def_shared_string_const_ref", 3);
-      FIELD_METADATA.put(3, DEF_SHARED_STRING_CONST_REF_FIELD_DESC);
-      NAMES_TO_IDS.put("uniqueStringRef", 4);
-      THRIFT_NAMES_TO_IDS.put("unique_string_ref", 4);
-      FIELD_METADATA.put(4, UNIQUE_STRING_REF_FIELD_DESC);
-      NAMES_TO_IDS.put("sharedStringRef", 5);
-      THRIFT_NAMES_TO_IDS.put("shared_string_ref", 5);
-      FIELD_METADATA.put(5, SHARED_STRING_REF_FIELD_DESC);
+        NAMES_TO_IDS.put("defUniqueStringRef", 1);
+        THRIFT_NAMES_TO_IDS.put("def_unique_string_ref", 1);
+        FIELD_METADATA.put(1, DEF_UNIQUE_STRING_REF_FIELD_DESC);
+        NAMES_TO_IDS.put("defSharedStringRef", 2);
+        THRIFT_NAMES_TO_IDS.put("def_shared_string_ref", 2);
+        FIELD_METADATA.put(2, DEF_SHARED_STRING_REF_FIELD_DESC);
+        NAMES_TO_IDS.put("defSharedStringConstRef", 3);
+        THRIFT_NAMES_TO_IDS.put("def_shared_string_const_ref", 3);
+        FIELD_METADATA.put(3, DEF_SHARED_STRING_CONST_REF_FIELD_DESC);
+        NAMES_TO_IDS.put("uniqueStringRef", 4);
+        THRIFT_NAMES_TO_IDS.put("unique_string_ref", 4);
+        FIELD_METADATA.put(4, UNIQUE_STRING_REF_FIELD_DESC);
+        NAMES_TO_IDS.put("sharedStringRef", 5);
+        THRIFT_NAMES_TO_IDS.put("shared_string_ref", 5);
+        FIELD_METADATA.put(5, SHARED_STRING_REF_FIELD_DESC);
     }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="def_unique_string_ref", requiredness=Requiredness.NONE)
     public String getDefUniqueStringRef() { return defUniqueStringRef; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="def_shared_string_ref", requiredness=Requiredness.NONE)
     public String getDefSharedStringRef() { return defSharedStringRef; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="def_shared_string_const_ref", requiredness=Requiredness.NONE)
     public String getDefSharedStringConstRef() { return defSharedStringConstRef; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="unique_string_ref", requiredness=Requiredness.NONE)
     public String getUniqueStringRef() { return uniqueStringRef; }
-
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="shared_string_ref", requiredness=Requiredness.NONE)
     public String getSharedStringRef() { return sharedStringRef; }
@@ -339,5 +335,4 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
     public static StructWithString defaultInstance() {
         return  _StructWithStringLazy._DEFAULT;
     }
-
 }
