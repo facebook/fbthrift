@@ -817,6 +817,58 @@ class t_mstch_java_generator : public t_mstch_generator {
           return batch_whisker_array(std::move(items), 50);
         });
 
+    def.property("oneway_functions", [&proto](const t_interface& self) {
+      whisker::array::raw funcs;
+      for (const auto& func : self.functions()) {
+        if (func.qualifier() == t_function_qualifier::oneway) {
+          funcs.emplace_back(proto.create<t_function>(func));
+        }
+      }
+      return whisker::make::array(std::move(funcs));
+    });
+
+    def.property(
+        "request_response_functions", [&proto](const t_interface& self) {
+          whisker::array::raw funcs;
+          for (const auto& func : self.functions()) {
+            if (!func.sink_or_stream() && !func.is_interaction_constructor() &&
+                func.qualifier() != t_function_qualifier::oneway) {
+              funcs.emplace_back(proto.create<t_function>(func));
+            }
+          }
+          return whisker::make::array(std::move(funcs));
+        });
+
+    def.property("single_request_functions", [&proto](const t_interface& self) {
+      whisker::array::raw funcs;
+      for (const auto& func : self.functions()) {
+        if (!func.sink_or_stream() && !func.is_interaction_constructor()) {
+          funcs.emplace_back(proto.create<t_function>(func));
+        }
+      }
+      return whisker::make::array(std::move(funcs));
+    });
+
+    def.property("streaming_functions", [&proto](const t_interface& self) {
+      whisker::array::raw funcs;
+      for (const auto& func : self.functions()) {
+        if (func.stream() && !func.is_bidirectional_stream()) {
+          funcs.emplace_back(proto.create<t_function>(func));
+        }
+      }
+      return whisker::make::array(std::move(funcs));
+    });
+
+    def.property("sink_functions", [&proto](const t_interface& self) {
+      whisker::array::raw funcs;
+      for (const auto& func : self.functions()) {
+        if (func.sink() && !func.is_bidirectional_stream()) {
+          funcs.emplace_back(proto.create<t_function>(func));
+        }
+      }
+      return whisker::make::array(std::move(funcs));
+    });
+
     return std::move(def).make();
   }
 
@@ -1298,79 +1350,7 @@ class t_mstch_java_generator : public t_mstch_generator {
   }
 };
 
-class mstch_java_service : public mstch_service {
- public:
-  mstch_java_service(
-      const t_service* s,
-      mstch_context& ctx,
-      mstch_element_position pos,
-      const t_service* containing_service = nullptr)
-      : mstch_service(s, ctx, pos, containing_service) {
-    register_methods(
-        this,
-        {
-            {"service:onewayFunctions",
-             &mstch_java_service::get_oneway_functions},
-            {"service:requestResponseFunctions",
-             &mstch_java_service::get_request_response_functions},
-            {"service:singleRequestFunctions",
-             &mstch_java_service::get_single_request_functions},
-            {"service:streamingFunctions",
-             &mstch_java_service::get_streaming_functions},
-            {"service:sinkFunctions", &mstch_java_service::get_sink_functions},
-        });
-  }
-  mstch::node get_oneway_functions() {
-    std::vector<const t_function*> funcs;
-    for (auto& func : service_->functions()) {
-      if (func.qualifier() == t_function_qualifier::oneway) {
-        funcs.push_back(&func);
-      }
-    }
-    return make_mstch_functions(funcs);
-  }
-  mstch::node get_request_response_functions() {
-    std::vector<const t_function*> funcs;
-    for (auto& func : service_->functions()) {
-      if (!func.sink_or_stream() && !func.is_interaction_constructor() &&
-          func.qualifier() != t_function_qualifier::oneway) {
-        funcs.push_back(&func);
-      }
-    }
-    return make_mstch_functions(funcs);
-  }
-  mstch::node get_single_request_functions() {
-    std::vector<const t_function*> funcs;
-    for (auto& func : service_->functions()) {
-      if (!func.sink_or_stream() && !func.is_interaction_constructor()) {
-        funcs.push_back(&func);
-      }
-    }
-    return make_mstch_functions(funcs);
-  }
-
-  mstch::node get_streaming_functions() {
-    std::vector<const t_function*> funcs;
-    for (auto& func : service_->functions()) {
-      if (func.stream() && !func.is_bidirectional_stream()) {
-        funcs.push_back(&func);
-      }
-    }
-    return make_mstch_functions(funcs);
-  }
-
-  mstch::node get_sink_functions() {
-    std::vector<const t_function*> funcs;
-    for (auto& func : service_->functions()) {
-      if (func.sink() && !func.is_bidirectional_stream()) {
-        funcs.push_back(&func);
-      }
-    }
-    return make_mstch_functions(funcs);
-  }
-};
-
-class mstch_java_interaction : public mstch_java_service {
+class mstch_java_interaction : public mstch_service {
  public:
   using ast_type = t_interaction;
 
@@ -1379,7 +1359,7 @@ class mstch_java_interaction : public mstch_java_service {
       mstch_context& ctx,
       mstch_element_position pos,
       const t_service* containing_service)
-      : mstch_java_service(interaction, ctx, pos, containing_service) {
+      : mstch_service(interaction, ctx, pos, containing_service) {
     register_methods(
         this,
         {{"interaction:javaParentCapitalName",
@@ -1423,7 +1403,6 @@ void t_mstch_java_generator::generate_program() {
 }
 
 void t_mstch_java_generator::set_mstch_factories() {
-  mstch_context_.add<mstch_java_service>();
   mstch_context_.add<mstch_java_interaction>();
 }
 

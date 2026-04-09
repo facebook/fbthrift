@@ -38,27 +38,27 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#if (object.notnu
         _delegate.close();
     }
 
-    {{#service:singleRequestFunctions}}
+    {{#each service:self.single_request_functions as |func|}}
     @java.lang.Override
-    public reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
-        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.{{function:java_name}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
+    public reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
+        return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.{{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}));
     }
 
-    {{/service:singleRequestFunctions}}
-    {{#service:streamingFunctions}}
+    {{/each}}
+    {{#each service:self.streaming_functions as |func|}}
     @java.lang.Override
-    public reactor.core.publisher.Flux<{{#partial types.stream_return_type function=function:self}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Flux<{{#partial types.stream_return_type function=func}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
         throw new UnsupportedOperationException();
     }
 
-    {{/service:streamingFunctions}}
-    {{#service:sinkFunctions}}
+    {{/each}}
+    {{#each service:self.sink_functions as |func|}}
     @java.lang.Override
-    public {{#partial types.sink_return_type function=function:self}} {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#partial types.boxed_type type=function:self.sink.elem_type field_hasAdapter=false}}> payloads) {
+    public {{#partial types.sink_return_type function=func}} {{func.java_name}}({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}} org.reactivestreams.Publisher<{{#partial types.boxed_type type=func.sink.elem_type field_hasAdapter=false}}> payloads) {
         throw new UnsupportedOperationException();
     }
 
-    {{/service:sinkFunctions}}
+    {{/each}}
     {{#service:interactions}}
     public class {{service:name}}Impl implements {{service:name}} {
         private {{interaction:javaParentCapitalName}}.Async.{{service:name}} _delegateInteraction;
@@ -67,28 +67,28 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#if (object.notnu
             this._delegateInteraction = delegateInteraction;
         }
 
-        {{#service:singleRequestFunctions}}
-        public reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}
-        final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
-            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{function:java_name}}({{#function:args}}{{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}));
+        {{#each service:self.single_request_functions as |func|}}
+        public reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}
+        final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}}) {
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}}));
         }
 
-        public reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{function:java_name}}({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
+        public reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions) {
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{func.java_name}}({{#each func.params.fields as |field|}}{{field.javaName}},{{/each}} rpcOptions));
         }
 
-        public reactor.core.publisher.Mono<ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
-            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{function:java_name}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
+        public reactor.core.publisher.Mono<ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}>> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions) {
+            return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}},{{/each}} rpcOptions));
         }
 
-        {{/service:singleRequestFunctions}}
-        {{#service:streamingFunctions}}
+        {{/each}}
+        {{#each service:self.streaming_functions as |func|}}
         @java.lang.Override
-        public reactor.core.publisher.Flux<{{#partial types.stream_return_type function=function:self}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+        public reactor.core.publisher.Flux<{{#partial types.stream_return_type function=func}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
             throw new UnsupportedOperationException();
         }
 
-        {{/service:streamingFunctions}}
+        {{/each}}
         @java.lang.Override
         public void dispose() {
             _delegateInteraction.close();

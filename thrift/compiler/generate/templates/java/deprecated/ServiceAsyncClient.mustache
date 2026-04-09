@@ -39,15 +39,15 @@ import reactor.core.publisher.Mono;
 public class {{service:javaCapitalName}}AsyncClientImpl extends {{#if (object.notnull? service:extends)}}{{#service:extends}}{{service:java_qualified_name}}AsyncClientImpl{{/service:extends}}{{#else}}AbstractThriftClient{{/if}} implements {{service:javaCapitalName}}.Async {
 
     // Method Handlers
-    {{#service:singleRequestFunctions}}
-    private ThriftMethodHandler {{function:java_name}}MethodHandler;
-    {{/service:singleRequestFunctions}}
+    {{#each service:self.single_request_functions as |func|}}
+    private ThriftMethodHandler {{func.java_name}}MethodHandler;
+    {{/each}}
 
     // Method Exceptions
-    {{#service:singleRequestFunctions}}
-    private static final Class[] {{function:java_name}}Exceptions = new Class[] {
-        {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}.class, {{/function:exceptions}}org.apache.thrift.TException.class};
-    {{/service:singleRequestFunctions}}
+    {{#each service:self.single_request_functions as |func|}}
+    private static final Class[] {{func.java_name}}Exceptions = new Class[] {
+        {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.class, {{/each}}org.apache.thrift.TException.class};
+    {{/each}}
 
     public {{service:javaCapitalName}}AsyncClientImpl(
         RequestChannel channel,
@@ -74,9 +74,9 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{#if (object.no
           });
 
       // Set method handlers
-      {{#service:singleRequestFunctions}}
-      {{function:java_name}}MethodHandler = methodHandlerMap.get("{{function:java_name}}");
-      {{/service:singleRequestFunctions}}
+      {{#each service:self.single_request_functions as |func|}}
+      {{func.java_name}}MethodHandler = methodHandlerMap.get("{{func.java_name}}");
+      {{/each}}
     }
 
     @java.lang.Override
@@ -84,32 +84,32 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{#if (object.no
         super.close();
     }
 
-    {{#service:singleRequestFunctions}}
+    {{#each service:self.single_request_functions as |func|}}
 
     @java.lang.Override
-    public ListenableFuture<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}
-        {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
-        return {{function:java_name}}({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY);
+    public ListenableFuture<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}
+        {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}}) {
+        return {{func.java_name}}({{#each func.params.fields as |field|}}{{field.javaName}}, {{/each}}RpcOptions.EMPTY);
     }
 
     @java.lang.Override
-    public ListenableFuture<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}
-        {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
+    public ListenableFuture<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each func.params.fields as |field|}}
+        {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
         RpcOptions rpcOptions) {
-        return FutureUtil.transform({{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions));
+        return FutureUtil.transform({{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}}, {{/each}}rpcOptions));
     }
 
     @java.lang.Override
-    public ListenableFuture<ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}>> {{function:java_name}}Wrapper({{#function:args}}
-        {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
+    public ListenableFuture<ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}>> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}
+        {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
         RpcOptions rpcOptions) {
         try {
-          return executeWrapperWithOptions({{function:java_name}}MethodHandler, {{function:java_name}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
+          return executeWrapperWithOptions({{func.java_name}}MethodHandler, {{func.java_name}}Exceptions, rpcOptions{{#each func.params.fields as |field|}}, {{field.javaName}}{{/each}});
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
     }
-    {{/service:singleRequestFunctions}}
+    {{/each}}
     {{#service:interactions}}
 
     public {{service:name}} create{{service:name}}() {

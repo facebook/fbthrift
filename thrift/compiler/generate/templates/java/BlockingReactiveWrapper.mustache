@@ -38,17 +38,17 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.no
         _delegate.close();
     }
 
-    {{#service:singleRequestFunctions}}
+    {{#each service:self.single_request_functions as |func|}}
     @java.lang.Override
-    public reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
-        {{#function:voidType}}
+    public reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
+        {{#if func.voidType}}
         reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>create(_sink -> {
             try {
                 reactor.util.context.ContextView _contextView = _sink.contextView();
                 com.facebook.nifty.core.RequestContext
                     .tryContextView(_contextView)
                     .ifPresent(com.facebook.nifty.core.RequestContexts::setCurrentContext);
-                _delegate.{{function:java_name}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+                _delegate.{{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}});
                 _sink.success();
             } catch (Throwable _e) {
                 throw reactor.core.Exceptions.propagate(_e);
@@ -60,15 +60,14 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.no
         }
 
         return _m;
-        {{/function:voidType}}
-        {{^function:voidType}}
-        reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> _m = reactor.core.publisher.Mono.create(_sink -> {
+        {{#else}}
+        reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> _m = reactor.core.publisher.Mono.create(_sink -> {
             try {
                 reactor.util.context.ContextView _contextView = _sink.contextView();
                 com.facebook.nifty.core.RequestContext
                     .tryContextView(_contextView)
                     .ifPresent(com.facebook.nifty.core.RequestContexts::setCurrentContext);
-                _sink.success(_delegate.{{function:java_name}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
+                _sink.success(_delegate.{{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}));
             } catch (Throwable _e) {
                 _sink.error(_e);
             }
@@ -79,24 +78,24 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.no
         }
 
         return _m;
-        {{/function:voidType}}
+        {{/if func.voidType}}
     }
 
-    {{/service:singleRequestFunctions}}
-    {{#service:streamingFunctions}}
+    {{/each}}
+    {{#each service:self.streaming_functions as |func|}}
     @java.lang.Override
-    public reactor.core.publisher.Flux<{{#partial types.stream_return_type function=function:self}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Flux<{{#partial types.stream_return_type function=func}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
         throw new UnsupportedOperationException();
     }
 
-    {{/service:streamingFunctions}}
-    {{#service:sinkFunctions}}
+    {{/each}}
+    {{#each service:self.sink_functions as |func|}}
     @java.lang.Override
-    public {{#partial types.sink_return_type function=function:self}} {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#partial types.boxed_type type=function:self.sink.elem_type field_hasAdapter=false}}> payloads) {
+    public {{#partial types.sink_return_type function=func}} {{func.java_name}}({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}} org.reactivestreams.Publisher<{{#partial types.boxed_type type=func.sink.elem_type field_hasAdapter=false}}> payloads) {
         throw new UnsupportedOperationException();
     }
 
-    {{/service:sinkFunctions}}
+    {{/each}}
     {{#service:interactions}}
     public class {{service:name}}Impl implements {{service:name}} {
         private {{interaction:javaParentCapitalName}}.{{service:name}} _delegateInteraction;
@@ -105,10 +104,10 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.no
             this._delegateInteraction = delegateInteraction;
         }
 
-        {{#service:singleRequestFunctions}}
+        {{#each service:self.single_request_functions as |func|}}
         @java.lang.Override
-        public reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
-            {{#function:voidType}}
+        public reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
+            {{#if func.voidType}}
 
                 reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>create(_sink -> {
                     try {
@@ -116,7 +115,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.no
                         com.facebook.nifty.core.RequestContext
                             .tryContextView(_contextView)
                             .ifPresent(com.facebook.nifty.core.RequestContexts::setCurrentContext);
-                        _delegateInteraction.{{function:java_name}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+                        _delegateInteraction.{{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}});
                         _sink.success();
                     } catch (Throwable _e) {
                         throw reactor.core.Exceptions.propagate(_e);
@@ -128,15 +127,14 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.no
                 }
 
                 return _m;
-            {{/function:voidType}}
-            {{^function:voidType}}
-                reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> _m = reactor.core.publisher.Mono.create(_sink -> {
+            {{#else}}
+                reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> _m = reactor.core.publisher.Mono.create(_sink -> {
                     try {
                         reactor.util.context.ContextView _contextView = _sink.contextView();
                         com.facebook.nifty.core.RequestContext
                             .tryContextView(_contextView)
                             .ifPresent(com.facebook.nifty.core.RequestContexts::setCurrentContext);
-                        _sink.success(_delegateInteraction.{{function:java_name}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
+                        _sink.success(_delegateInteraction.{{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}));
                     } catch (Throwable _e) {
                         _sink.error(_e);
                     }
@@ -147,29 +145,29 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.no
                 }
 
                 return _m;
-            {{/function:voidType}}
+            {{/if func.voidType}}
         }
 
         @java.lang.Override
-        public reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}
-        final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        public reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each func.params.fields as |field|}}
+        final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
-        public reactor.core.publisher.Mono<ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}>> {{function:java_name}}Wrapper({{#function:args}}
-        final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        public reactor.core.publisher.Mono<ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}>> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}
+        final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        {{/service:singleRequestFunctions}}
-        {{#service:streamingFunctions}}
+        {{/each}}
+        {{#each service:self.streaming_functions as |func|}}
         @java.lang.Override
-        public reactor.core.publisher.Flux<{{#partial types.stream_return_type function=function:self}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+        public reactor.core.publisher.Flux<{{#partial types.stream_return_type function=func}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
             throw new UnsupportedOperationException();
         }
 
-        {{/service:streamingFunctions}}
+        {{/each}}
         @java.lang.Override
         public void dispose() {}
     }

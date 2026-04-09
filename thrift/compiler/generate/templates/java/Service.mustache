@@ -83,49 +83,49 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
 
         @java.lang.Override void close();
 
-        {{#service:singleRequestFunctions}}
-        @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
-                      oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
-                      exception = { {{/first?}}
-                          @ThriftException(type={{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}}.class, id={{field:id}}){{^last?}},{{/last?}}{{#last?}}
-                      }{{/last?}}{{/function:exceptions}})
-        ListenableFuture<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}
-            @com.facebook.swift.codec.ThriftField(value={{field:id}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{#partial types.requiredness field=field:self}}) final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}});
+        {{#each (array.enumerate service:self.single_request_functions with_last=true) as |i func last?|}}
+        @ThriftMethod(value = "{{func.name}}"{{#if func.oneway?}},
+                      oneway = true{{/if func.oneway?}}{{#each (array.enumerate func.exceptions with_first=true with_last=true) as |i field first? last?|}}{{#if first?}},
+                      exception = { {{/if first?}}
+                          @ThriftException(type={{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}}.class, id={{field.id}}){{#if (not last?)}},{{/if (not last?)}}{{#if last?}}
+                      }{{/if last?}}{{/each}})
+        ListenableFuture<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}
+            @com.facebook.swift.codec.ThriftField(value={{field.id}}, {{#if field.negativeId?}}isLegacyId=true, {{/if field.negativeId?}}name="{{field.name}}", requiredness={{#partial types.requiredness field=field}}) final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}});
 
-        default ListenableFuture<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}
-            @com.facebook.swift.codec.ThriftField(value={{field:id}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{#partial types.requiredness field=field:self}}) final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
+        default ListenableFuture<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each func.params.fields as |field|}}
+            @com.facebook.swift.codec.ThriftField(value={{field.id}}, {{#if field.negativeId?}}isLegacyId=true, {{/if field.negativeId?}}name="{{field.name}}", requiredness={{#partial types.requiredness field=field}}) final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        default ListenableFuture<ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}>> {{function:java_name}}Wrapper({{#function:args}}
-            @com.facebook.swift.codec.ThriftField(value={{field:id}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{#partial types.requiredness field=field:self}}) final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
+        default ListenableFuture<ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}>> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}
+            @com.facebook.swift.codec.ThriftField(value={{field.id}}, {{#if field.negativeId?}}isLegacyId=true, {{/if field.negativeId?}}name="{{field.name}}", requiredness={{#partial types.requiredness field=field}}) final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
-        {{^last?}}
+        {{#if (not last?)}}
 
-        {{/last?}}
-        {{/service:singleRequestFunctions}}
+        {{/if (not last?)}}
+        {{/each}}
         {{#service:interactions}}
         @com.facebook.swift.service.ThriftInteraction("{{service:name}}")
         public interface {{service:name}} extends java.io.Closeable {
-            {{#service:singleRequestFunctions}}
-            @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
-                oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
-                exception = { {{/first?}}
-                    @ThriftException(type={{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}}.class, id={{field:id}}){{^last?}},{{/last?}}{{#last?}}
-                }{{/last?}}{{/function:exceptions}})
-            ListenableFuture<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}} {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}});
+            {{#each service:self.single_request_functions as |func|}}
+            @ThriftMethod(value = "{{func.name}}"{{#if func.oneway?}},
+                oneway = true{{/if func.oneway?}}{{#each (array.enumerate func.exceptions with_first=true with_last=true) as |i field first? last?|}}{{#if first?}},
+                exception = { {{/if first?}}
+                    @ThriftException(type={{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}}.class, id={{field.id}}){{#if (not last?)}},{{/if (not last?)}}{{#if last?}}
+                }{{/if last?}}{{/each}})
+            ListenableFuture<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}} {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}});
 
-            ListenableFuture<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}
-                @com.facebook.swift.codec.ThriftField(value={{field:id}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{#partial types.requiredness field=field:self}}) final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
+            ListenableFuture<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each func.params.fields as |field|}}
+                @com.facebook.swift.codec.ThriftField(value={{field.id}}, {{#if field.negativeId?}}isLegacyId=true, {{/if field.negativeId?}}name="{{field.name}}", requiredness={{#partial types.requiredness field=field}}) final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
                 RpcOptions rpcOptions);
 
-            ListenableFuture<ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}>> {{function:java_name}}Wrapper({{#function:args}}
-                @com.facebook.swift.codec.ThriftField(value={{field:id}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{#partial types.requiredness field=field:self}}) final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
+            ListenableFuture<ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}>> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}
+                @com.facebook.swift.codec.ThriftField(value={{field.id}}, {{#if field.negativeId?}}isLegacyId=true, {{/if field.negativeId?}}name="{{field.name}}", requiredness={{#partial types.requiredness field=field}}) final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
                 RpcOptions rpcOptions);
-            {{/service:singleRequestFunctions}}
+            {{/each}}
 
             @java.lang.Override
             void close();
@@ -138,34 +138,34 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
         {{/service:interactions}}
     }
     @java.lang.Override void close();
-    {{#service:singleRequestFunctions}}
+    {{#each service:self.single_request_functions as |func|}}
 
-    @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
-                  oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
-                  exception = { {{/first?}}
-                      @ThriftException(type={{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}}.class, id={{field:id}}){{^last?}},{{/last?}}{{#last?}}
-                  }{{/last?}}{{/function:exceptions}})
-    {{#function:return_type}}{{#partial types.java_type type=type:self has_adapter_override=false}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
-        @com.facebook.swift.codec.ThriftField(value={{field:id}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{#partial types.requiredness field=field:self}}) final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
+    @ThriftMethod(value = "{{func.name}}"{{#if func.oneway?}},
+                  oneway = true{{/if func.oneway?}}{{#each (array.enumerate func.exceptions with_first=true with_last=true) as |i field first? last?|}}{{#if first?}},
+                  exception = { {{/if first?}}
+                      @ThriftException(type={{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}}.class, id={{field.id}}){{#if (not last?)}},{{/if (not last?)}}{{#if last?}}
+                  }{{/if last?}}{{/each}})
+    {{#partial types.java_type type=func.return_type has_adapter_override=false}} {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}
+        @com.facebook.swift.codec.ThriftField(value={{field.id}}, {{#if field.negativeId?}}isLegacyId=true, {{/if field.negativeId?}}name="{{field.name}}", requiredness={{#partial types.requiredness field=field}}) final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}}){{!
           Exceptions
-        }} throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException;
+        }} throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException;
 
-    default {{#function:return_type}}{{#partial types.java_type type=type:self has_adapter_override=false}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
-        @com.facebook.swift.codec.ThriftField(value={{field:id}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{#partial types.requiredness field=field:self}}) final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
+    default {{#partial types.java_type type=func.return_type has_adapter_override=false}} {{func.java_name}}({{#each func.params.fields as |field|}}
+        @com.facebook.swift.codec.ThriftField(value={{field.id}}, {{#if field.negativeId?}}isLegacyId=true, {{/if field.negativeId?}}name="{{field.name}}", requiredness={{#partial types.requiredness field=field}}) final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
         RpcOptions rpcOptions){{!
           Exceptions
-        }} throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException {
+        }} throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
-    default ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}Wrapper({{#function:args}}
-        @com.facebook.swift.codec.ThriftField(value={{field:id}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{#partial types.requiredness field=field:self}}) final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
+    default ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}
+        @com.facebook.swift.codec.ThriftField(value={{field.id}}, {{#if field.negativeId?}}isLegacyId=true, {{/if field.negativeId?}}name="{{field.name}}", requiredness={{#partial types.requiredness field=field}}) final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
         RpcOptions rpcOptions){{!
           Exceptions
-        }} throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException {
+        }} throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
-    {{/service:singleRequestFunctions}}
+    {{/each}}
 
     @com.facebook.swift.service.ThriftService("{{service:javaCapitalName}}")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService{{#if (object.notnull? service:extends)}}, {{#service:extends}}{{service:java_qualified_name}}.Reactive{{/service:extends}}{{/if}} {
@@ -187,75 +187,75 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
             };
         }
 
-        {{#service:singleRequestFunctions}}
-        @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
-                  oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
-                  exception = { {{/first?}}
-                      @ThriftException(type={{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}}.class, id={{field:id}}){{^last?}},{{/last?}}{{#last?}}
-                  }{{/last?}}{{/function:exceptions}})
-        reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+        {{#each service:self.single_request_functions as |func|}}
+        @ThriftMethod(value = "{{func.name}}"{{#if func.oneway?}},
+                  oneway = true{{/if func.oneway?}}{{#each (array.enumerate func.exceptions with_first=true with_last=true) as |i field first? last?|}}{{#if first?}},
+                  exception = { {{/if first?}}
+                      @ThriftException(type={{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}}.class, id={{field.id}}){{#if (not last?)}},{{/if (not last?)}}{{#if last?}}
+                  }{{/if last?}}{{/each}})
+        reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}});
 
-        default reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        default reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        default reactor.core.publisher.Mono<ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        default reactor.core.publisher.Mono<ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}>> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        {{/service:singleRequestFunctions}}
-        {{#service:streamingFunctions}}
-        reactor.core.publisher.Flux<{{#partial types.stream_return_type function=function:self}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+        {{/each}}
+        {{#each service:self.streaming_functions as |func|}}
+        reactor.core.publisher.Flux<{{#partial types.stream_return_type function=func}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}});
 
-        default reactor.core.publisher.Flux<{{#partial types.stream_return_type function=function:self}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        default reactor.core.publisher.Flux<{{#partial types.stream_return_type function=func}}> {{func.java_name}}({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        default reactor.core.publisher.Flux<ResponseWrapper<{{#partial types.stream_return_type function=function:self}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        default reactor.core.publisher.Flux<ResponseWrapper<{{#partial types.stream_return_type function=func}}>> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        {{/service:streamingFunctions}}
-        {{#service:sinkFunctions}}
-        {{#partial types.sink_return_type function=function:self}} {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#partial types.boxed_type type=function:self.sink.elem_type field_hasAdapter=false}}> payloads);
+        {{/each}}
+        {{#each service:self.sink_functions as |func|}}
+        {{#partial types.sink_return_type function=func}} {{func.java_name}}({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}} org.reactivestreams.Publisher<{{#partial types.boxed_type type=func.sink.elem_type field_hasAdapter=false}}> payloads);
 
-        default {{#partial types.sink_return_type function=function:self}} {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#partial types.boxed_type type=function:self.sink.elem_type field_hasAdapter=false}}> payloads, RpcOptions rpcOptions) {
+        default {{#partial types.sink_return_type function=func}} {{func.java_name}}({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}} org.reactivestreams.Publisher<{{#partial types.boxed_type type=func.sink.elem_type field_hasAdapter=false}}> payloads, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        default {{#partial types.sink_wrapper_return_type function=function:self}} {{function:java_name}}Wrapper({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#partial types.boxed_type type=function:self.sink.elem_type field_hasAdapter=false}}> payloads, RpcOptions rpcOptions) {
+        default {{#partial types.sink_wrapper_return_type function=func}} {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}} org.reactivestreams.Publisher<{{#partial types.boxed_type type=func.sink.elem_type field_hasAdapter=false}}> payloads, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        {{/service:sinkFunctions}}
+        {{/each}}
         {{#service:interactions}}
         @com.facebook.swift.service.ThriftInteraction("{{service:name}}")
         public interface {{service:name}} extends reactor.core.Disposable {
-            {{#service:singleRequestFunctions}}
-            @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
-                oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
-                exception = { {{/first?}}
-                    @ThriftException(type={{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}}.class, id={{field:id}}){{^last?}},{{/last?}}{{#last?}}
-                }{{/last?}}{{/function:exceptions}})
-            reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}} final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}});
+            {{#each service:self.single_request_functions as |func|}}
+            @ThriftMethod(value = "{{func.name}}"{{#if func.oneway?}},
+                oneway = true{{/if func.oneway?}}{{#each (array.enumerate func.exceptions with_first=true with_last=true) as |i field first? last?|}}{{#if first?}},
+                exception = { {{/if first?}}
+                    @ThriftException(type={{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}}.class, id={{field.id}}){{#if (not last?)}},{{/if (not last?)}}{{#if last?}}
+                }{{/if last?}}{{/each}})
+            reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}} final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}});
 
-            reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions);
+            reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions);
 
-            reactor.core.publisher.Mono<ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions);
+            reactor.core.publisher.Mono<ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}>> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions);
 
-            {{/service:singleRequestFunctions}}
-            {{#service:streamingFunctions}}
-            reactor.core.publisher.Flux<{{#partial types.stream_return_type function=function:self}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+            {{/each}}
+            {{#each service:self.streaming_functions as |func|}}
+            reactor.core.publisher.Flux<{{#partial types.stream_return_type function=func}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}});
 
-            default reactor.core.publisher.Flux<{{#partial types.stream_return_type function=function:self}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+            default reactor.core.publisher.Flux<{{#partial types.stream_return_type function=func}}> {{func.java_name}}({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions) {
                 throw new UnsupportedOperationException();
             }
 
-            default reactor.core.publisher.Flux<ResponseWrapper<{{#partial types.stream_return_type function=function:self}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+            default reactor.core.publisher.Flux<ResponseWrapper<{{#partial types.stream_return_type function=func}}>> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}, {{/each}}RpcOptions rpcOptions) {
                 throw new UnsupportedOperationException();
             }
 
-            {{/service:streamingFunctions}}
+            {{/each}}
             @java.lang.Override
             void dispose();
         }
@@ -269,27 +269,27 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
     {{#service:interactions}}
     @com.facebook.swift.service.ThriftInteraction("{{service:name}}")
     public interface {{service:name}} extends java.io.Closeable {
-        {{#service:singleRequestFunctions}}
-        @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
-                      oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
-                      exception = { {{/first?}}
-                          @ThriftException(type={{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}}.class, id={{field:id}}){{^last?}},{{/last?}}{{#last?}}
-                      }{{/last?}}{{/function:exceptions}})
-        {{#function:return_type}}{{#partial types.java_type type=type:self has_adapter_override=false}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
-        @com.facebook.swift.codec.ThriftField(value={{field:id}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{#partial types.requiredness field=field:self}}) final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException;
+        {{#each service:self.single_request_functions as |func|}}
+        @ThriftMethod(value = "{{func.name}}"{{#if func.oneway?}},
+                      oneway = true{{/if func.oneway?}}{{#each (array.enumerate func.exceptions with_first=true with_last=true) as |i field first? last?|}}{{#if first?}},
+                      exception = { {{/if first?}}
+                          @ThriftException(type={{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}}.class, id={{field.id}}){{#if (not last?)}},{{/if (not last?)}}{{#if last?}}
+                      }{{/if last?}}{{/each}})
+        {{#partial types.java_type type=func.return_type has_adapter_override=false}} {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}
+        @com.facebook.swift.codec.ThriftField(value={{field.id}}, {{#if field.negativeId?}}isLegacyId=true, {{/if field.negativeId?}}name="{{field.name}}", requiredness={{#partial types.requiredness field=field}}) final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}}) throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException;
 
-        {{#function:return_type}}{{#partial types.java_type type=type:self has_adapter_override=false}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
-            @com.facebook.swift.codec.ThriftField(value={{field:id}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{#partial types.requiredness field=field:self}}) final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
+        {{#partial types.java_type type=func.return_type has_adapter_override=false}} {{func.java_name}}({{#each func.params.fields as |field|}}
+            @com.facebook.swift.codec.ThriftField(value={{field.id}}, {{#if field.negativeId?}}isLegacyId=true, {{/if field.negativeId?}}name="{{field.name}}", requiredness={{#partial types.requiredness field=field}}) final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
             RpcOptions rpcOptions){{!
             Exceptions
-            }} throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException;
+            }} throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException;
 
-        ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}Wrapper({{#function:args}}
-            @com.facebook.swift.codec.ThriftField(value={{field:id}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{#partial types.requiredness field=field:self}}) final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
+        ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}
+            @com.facebook.swift.codec.ThriftField(value={{field.id}}, {{#if field.negativeId?}}isLegacyId=true, {{/if field.negativeId?}}name="{{field.name}}", requiredness={{#partial types.requiredness field=field}}) final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
             RpcOptions rpcOptions){{!
             Exceptions
-            }} throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException;
-        {{/service:singleRequestFunctions}}
+            }} throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException;
+        {{/each}}
 
         @java.lang.Override void close();
     }
