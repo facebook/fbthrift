@@ -628,9 +628,17 @@ TEST_F(ClientStreamStateHandlerTest, DuplicateStreamIdCrashes) {
       folly::IOBuf::copyBuffer("request"),
       folly::IOBuf::copyBuffer("metadata"));
 
+#ifndef NDEBUG
+  // DCHECK fires only in debug builds
   EXPECT_DEATH(
       (void)handler_.onWrite(ctx_, erase_and_box(std::move(request2))),
       "Stream ID 1 already exists in active streams");
+#else
+  // In opt builds, DCHECK is a no-op so the write succeeds
+  EXPECT_EQ(
+      handler_.onWrite(ctx_, erase_and_box(std::move(request2))),
+      Result::Success);
+#endif
 }
 
 // =============================================================================
