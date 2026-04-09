@@ -23,7 +23,6 @@
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
-#include <thrift/lib/cpp2/type/Tag.h>
 
 namespace apache::thrift::detail {
 
@@ -194,7 +193,17 @@ void readThriftValue(
     }
     case protocol::TType::T_I32: {
       std::int32_t temp;
-      iprot->readI32(temp);
+      if constexpr (requires(st::enum_find<std::int32_t>& m) {
+                      iprot->readEnum(temp, m);
+                    }) {
+        if (auto* ext = static_cast<const EnumFieldExt*>(typeInfo.typeExt)) {
+          iprot->readEnum(temp, ext->map);
+        } else {
+          iprot->readI32(temp);
+        }
+      } else {
+        iprot->readI32(temp);
+      }
       reinterpret_cast<void* (*)(void*, std::int32_t)>(typeInfo.set)(
           outValuePtr, temp);
       break;
@@ -453,6 +462,14 @@ size_t writeThriftValue(
     case protocol::TType::T_I64:
       return iprot->writeI64(value.int64Value);
     case protocol::TType::T_I32:
+      if constexpr (requires {
+                      iprot->writeEnum(std::string_view{}, std::int32_t{});
+                    }) {
+        if (auto* ext = static_cast<const EnumFieldExt*>(typeInfo.typeExt)) {
+          auto r = ext->map.find_name(value.int32Value, ext->map);
+          return iprot->writeEnum(r.result, value.int32Value);
+        }
+      }
       return iprot->writeI32(value.int32Value);
     case protocol::TType::T_I16:
       return iprot->writeI16(value.int16Value);

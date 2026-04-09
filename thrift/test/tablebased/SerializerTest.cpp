@@ -69,6 +69,13 @@ template <typename Serializer, typename T, typename TB>
     bool shouldSkipEqualityForUnionWithRef) {
   std::string originalBytes;
   if constexpr (std::is_same_v<Serializer, Json5Serializer>) {
+    if (shouldSkipEqualityForUnionWithRef) {
+      // toJsonImpl uses StructEncode which dereferences union cpp.ref pointers
+      // unconditionally. This behavior does not match the generated
+      // serialization code when tests use deprecated union getter to set
+      // cpp.ref to nullptr.
+      return ::testing::AssertionSuccess();
+    }
     // For non-tablebased thrift struct, Json5Serializer support is not
     // implemented yet.
     originalBytes = apache::thrift::json5::detail::toJsonImpl<
@@ -156,6 +163,9 @@ Type makeStructALike() {
   obj.struct_field_ref() = makeStructBLike<Struct>();
   using Enum = std::remove_reference_t<decltype(*obj.enum_field_ref())>;
   obj.enum_field_ref() = Enum::A;
+  using SmallEnum =
+      std::remove_reference_t<decltype(*obj.small_enum_field_ref())>;
+  obj.small_enum_field_ref() = SmallEnum::Z;
   return obj;
 }
 
@@ -186,19 +196,7 @@ using ProtocolsWithoutJson5 =
     ::testing::Types<CompactSerializer, SimpleJSONSerializer, BinarySerializer>;
 
 template <typename Serializer>
-class MultiProtocolTest : public ::testing::Test {
-  void SetUp() override {
-    if constexpr (std::is_same_v<Serializer, Json5Serializer>) {
-      std::string name =
-          ::testing::UnitTest::GetInstance()->current_test_info()->name();
-      if (name == "EmptyStructA" || name == "StructA" || name == "Union" ||
-          name == "UnionWithRef" || name == "DirtyReadIntoContainer" ||
-          name == "ReadingUnqualifiedFieldShouldSetIsset") {
-        GTEST_SKIP() << "Json5Serializer: " << name << " not yet supported";
-      }
-    }
-  }
-};
+class MultiProtocolTest : public ::testing::Test {};
 TYPED_TEST_CASE(MultiProtocolTest, Protocols);
 
 template <typename Serializer>
