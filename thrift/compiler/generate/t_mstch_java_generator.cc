@@ -347,8 +347,6 @@ class t_mstch_java_generator : public t_mstch_generator {
   }
 
  private:
-  void set_mstch_factories();
-
   void initialize_context(context_visitor& visitor) override {
     visitor.add_service_visitor([this](
                                     const whisker_generator_visitor_context&,
@@ -1350,30 +1348,8 @@ class t_mstch_java_generator : public t_mstch_generator {
   }
 };
 
-class mstch_java_interaction : public mstch_service {
- public:
-  using ast_type = t_interaction;
-
-  mstch_java_interaction(
-      const t_interaction* interaction,
-      mstch_context& ctx,
-      mstch_element_position pos,
-      const t_service* containing_service)
-      : mstch_service(interaction, ctx, pos, containing_service) {
-    register_methods(
-        this,
-        {{"interaction:javaParentCapitalName",
-          &mstch_java_interaction::java_parent_capital_name}});
-  }
-
-  mstch::node java_parent_capital_name() {
-    return java::mangle_java_name(containing_service_->name(), true);
-  }
-};
-
 void t_mstch_java_generator::generate_program() {
   out_dir_base_ = "gen-java";
-  set_mstch_factories();
 
   auto name = get_program()->name();
   const auto& id = get_program()->path();
@@ -1400,10 +1376,6 @@ void t_mstch_java_generator::generate_program() {
   generate_constants(get_program());
   generate_placeholder(get_program());
   generate_type_list(get_program());
-}
-
-void t_mstch_java_generator::set_mstch_factories() {
-  mstch_context_.add<mstch_java_interaction>();
 }
 
 } // namespace

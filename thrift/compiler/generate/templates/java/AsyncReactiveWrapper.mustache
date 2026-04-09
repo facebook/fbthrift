@@ -59,15 +59,15 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#if (object.notnu
     }
 
     {{/each}}
-    {{#service:interactions}}
-    public class {{service:name}}Impl implements {{service:name}} {
-        private {{interaction:javaParentCapitalName}}.Async.{{service:name}} _delegateInteraction;
+    {{#each service:self.interactions as |interaction|}}
+    public class {{interaction.name}}Impl implements {{interaction.name}} {
+        private {{service:javaCapitalName}}.Async.{{interaction.name}} _delegateInteraction;
 
-        {{service:name}}Impl({{interaction:javaParentCapitalName}}.Async.{{service:name}} delegateInteraction) {
+        {{interaction.name}}Impl({{service:javaCapitalName}}.Async.{{interaction.name}} delegateInteraction) {
             this._delegateInteraction = delegateInteraction;
         }
 
-        {{#each service:self.single_request_functions as |func|}}
+        {{#each interaction.single_request_functions as |func|}}
         public reactor.core.publisher.Mono<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}
         final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}}) {
             return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}}));
@@ -82,7 +82,7 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#if (object.notnu
         }
 
         {{/each}}
-        {{#each service:self.streaming_functions as |func|}}
+        {{#each interaction.streaming_functions as |func|}}
         @java.lang.Override
         public reactor.core.publisher.Flux<{{#partial types.stream_return_type function=func}}> {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
             throw new UnsupportedOperationException();
@@ -95,11 +95,9 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#if (object.notnu
         }
     }
 
-    public {{service:name}} create{{service:name}}() {
-        return new {{service:name}}Impl(_delegate.create{{service:name}}());
+    public {{interaction.name}} create{{interaction.name}}() {
+        return new {{interaction.name}}Impl(_delegate.create{{interaction.name}}());
     }
-    {{^last?}}
 
-    {{/last?}}
-    {{/service:interactions}}
+    {{/each}}
 }
