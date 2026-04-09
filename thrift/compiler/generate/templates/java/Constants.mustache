@@ -39,7 +39,7 @@ public final class {{root_program.constantClassName}} {
     public static final {{#partial types.java_type type=constant.type has_adapter_override=false}} {{constant.javaCapitalName}} = construct_{{constant.javaCapitalName}}();
 
     private static {{#partial types.java_type type=constant.type has_adapter_override=false}} construct_{{constant.javaCapitalName}}() {
-      return {{#partial const_value.const_value value=constant.value root_const=constant as_bean=false field_hasAdapter=false }};
+        return {{#partial const_value.const_value value=constant.value root_const=constant as_bean=false field_hasAdapter=false }};
     }
     {{/if constant.type.primitive?}}{{!
     }}{{/if (not constant.javaIgnoreConstant?)}}

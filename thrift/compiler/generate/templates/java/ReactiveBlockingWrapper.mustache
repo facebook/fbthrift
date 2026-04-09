@@ -25,64 +25,64 @@ import java.util.*;
 
 public class {{service.javaCapitalName}}ReactiveBlockingWrapper {{#if (object.notnull? service.extends)}} extends {{service.extends.java_qualified_name}}ReactiveBlockingWrapper{{/if}}
   implements {{service.javaCapitalName}} {
-  private final {{service.javaCapitalName}}.Reactive _delegate;
+    private final {{service.javaCapitalName}}.Reactive _delegate;
 
-  public {{service.javaCapitalName}}ReactiveBlockingWrapper({{service.javaCapitalName}}.Reactive _delegate) {
-    {{#if (object.notnull? service.extends)}}super(_delegate);{{/if}}
-    this._delegate = _delegate;
-  }
+    public {{service.javaCapitalName}}ReactiveBlockingWrapper({{service.javaCapitalName}}.Reactive _delegate) {
+        {{#if (object.notnull? service.extends)}}super(_delegate);{{/if}}
+        this._delegate = _delegate;
+    }
 
-  public {{service.javaCapitalName}}ReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
-    this(new {{service.javaCapitalName}}ReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
-  }
+    public {{service.javaCapitalName}}ReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+        this(new {{service.javaCapitalName}}ReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
+    }
 
-  @java.lang.Override
-  public void close() {
-    _delegate.dispose();
-  }
+    @java.lang.Override
+    public void close() {
+        _delegate.dispose();
+    }
 
   {{#each service.single_request_functions as |func|}}
-  @java.lang.Override
-  public {{#partial types.java_type type=func.return_type has_adapter_override=false}} {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}} final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}}){{!
-          Exceptions
-        }} throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException {
-      {{#if func.voidType}}
-      {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}}, {{/each}}com.facebook.thrift.client.RpcOptions.EMPTY);
-      {{#else}}
-      return {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}}, {{/each}}com.facebook.thrift.client.RpcOptions.EMPTY).getData();
-      {{/if func.voidType}}
-  }
+    @java.lang.Override
+    public {{#partial types.java_type type=func.return_type has_adapter_override=false}} {{func.java_name}}({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}} final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}{{/each}}){{!
+            Exceptions
+          }} throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException {
+        {{#if func.voidType}}
+        {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}}, {{/each}}com.facebook.thrift.client.RpcOptions.EMPTY);
+        {{#else}}
+        return {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}}, {{/each}}com.facebook.thrift.client.RpcOptions.EMPTY).getData();
+        {{/if func.voidType}}
+    }
 
-  @java.lang.Override
-  public {{#partial types.java_type type=func.return_type has_adapter_override=false}} {{func.java_name}}({{#each func.params.fields as |field|}}
-        final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
-        com.facebook.thrift.client.RpcOptions rpcOptions){{!
-          Exceptions
-        }} throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException {
-      {{#if func.voidType}}
-      {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}},{{/each}}rpcOptions);
-      {{#else}}
-      return {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}},{{/each}}rpcOptions).getData();
-      {{/if func.voidType}}
-  }
+    @java.lang.Override
+    public {{#partial types.java_type type=func.return_type has_adapter_override=false}} {{func.java_name}}({{#each func.params.fields as |field|}}
+          final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
+          com.facebook.thrift.client.RpcOptions rpcOptions){{!
+            Exceptions
+          }} throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException {
+        {{#if func.voidType}}
+        {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}},{{/each}}rpcOptions);
+        {{#else}}
+        return {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}},{{/each}}rpcOptions).getData();
+        {{/if func.voidType}}
+    }
 
-  @java.lang.Override
-  public com.facebook.thrift.client.ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}
-    final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
-    com.facebook.thrift.client.RpcOptions rpcOptions){{!
-      Exceptions
-    }} throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException {
-      try {
-        return _delegate.{{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}}, {{/each}}rpcOptions).block();
-      } catch (Throwable t) {
-        {{#each func.exceptions as |field|}}
-        if (t instanceof {{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}) {
-          throw ({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}})t;
+    @java.lang.Override
+    public com.facebook.thrift.client.ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}
+      final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
+      com.facebook.thrift.client.RpcOptions rpcOptions){{!
+        Exceptions
+      }} throws {{#each func.exceptions as |field|}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{/each}}org.apache.thrift.TException {
+        try {
+            return _delegate.{{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}}, {{/each}}rpcOptions).block();
+        } catch (Throwable t) {
+            {{#each func.exceptions as |field|}}
+            if (t instanceof {{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}) {
+                throw ({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}})t;
+            }
+            {{/each}}
+            throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
         }
-        {{/each}}
-        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
-      }
-  }
+    }
   {{/each}}
 
   {{#each service.interactions as |interaction|}}

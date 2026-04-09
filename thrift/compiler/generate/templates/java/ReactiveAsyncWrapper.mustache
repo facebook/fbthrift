@@ -28,17 +28,17 @@ public class {{service.javaCapitalName}}ReactiveAsyncWrapper {{#if (object.notnu
   private {{service.javaCapitalName}}.Reactive _delegate;
 
   public {{service.javaCapitalName}}ReactiveAsyncWrapper({{service.javaCapitalName}}.Reactive _delegate) {
-    {{#if (object.notnull? service.extends)}}super(_delegate);{{/if}}
-    this._delegate = _delegate;
+      {{#if (object.notnull? service.extends)}}super(_delegate);{{/if}}
+      this._delegate = _delegate;
   }
 
   public {{service.javaCapitalName}}ReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
-    this(new {{service.javaCapitalName}}ReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
+      this(new {{service.javaCapitalName}}ReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
   @java.lang.Override
   public void close() {
-    _delegate.dispose();
+      _delegate.dispose();
   }
 
   {{#each service.single_request_functions as |func|}}
@@ -58,7 +58,7 @@ public class {{service.javaCapitalName}}ReactiveAsyncWrapper {{#if (object.notnu
   public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}>> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}
     final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
     com.facebook.thrift.client.RpcOptions rpcOptions) {
-    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.{{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}},{{/each}} rpcOptions));
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.{{func.java_name}}Wrapper({{#each func.params.fields as |field|}}{{field.javaName}},{{/each}} rpcOptions));
   }
 
   {{/each}}
@@ -81,7 +81,7 @@ public class {{service.javaCapitalName}}ReactiveAsyncWrapper {{#if (object.notnu
     public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<{{#partial types.boxed_type type=func.return_type field_hasAdapter=false}}>> {{func.java_name}}Wrapper({{#each func.params.fields as |field|}}
       final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}},{{/each}}
       com.facebook.thrift.client.RpcOptions rpcOptions) {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+        throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
     }
 
     {{/each}}
