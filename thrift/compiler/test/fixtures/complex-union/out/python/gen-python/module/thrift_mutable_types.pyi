@@ -55,12 +55,12 @@ class ComplexUnion(_fbthrift_python_mutable_types.MutableUnion, _fbthrift_python
 
     def __init__(
         self, *,
-        intValue: builtins.int=...,
-        intListValue: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper=...,
-        stringListValue: _fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper=...,
-        stringValue: builtins.str=...,
-        typedefValue: _fbthrift_python_mutable_containers.MutableMap[builtins.int, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
-        stringRef: builtins.str=...
+        intValue: _typing.Optional[builtins.int]=...,
+        intListValue: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
+        stringListValue: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
+        stringValue: _typing.Optional[builtins.str]=...,
+        typedefValue: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.int, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
+        stringRef: _typing.Optional[builtins.str]=...
     ) -> None: ...
 
 
@@ -98,8 +98,8 @@ class ListUnion(_fbthrift_python_mutable_types.MutableUnion, _fbthrift_python_ab
 
     def __init__(
         self, *,
-        intListValue: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper=...,
-        stringListValue: _fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper=...
+        intListValue: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
+        stringListValue: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper]=...
     ) -> None: ...
 
 
@@ -133,8 +133,8 @@ class DataUnion(_fbthrift_python_mutable_types.MutableUnion, _fbthrift_python_ab
 
     def __init__(
         self, *,
-        binaryData: builtins.bytes=...,
-        stringData: builtins.str=...
+        binaryData: _typing.Optional[builtins.bytes]=...,
+        stringData: _typing.Optional[builtins.str]=...
     ) -> None: ...
 
 
@@ -173,16 +173,16 @@ class Val(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_abstrac
 
     def __init__(
         self, *,
-        strVal: builtins.str=...,
-        intVal: builtins.int=...,
-        typedefValue: _fbthrift_python_mutable_containers.MutableMap[builtins.int, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...
+        strVal: _typing.Optional[builtins.str]=...,
+        intVal: _typing.Optional[builtins.int]=...,
+        typedefValue: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.int, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        strVal: builtins.str=...,
-        intVal: builtins.int=...,
-        typedefValue: _fbthrift_python_mutable_containers.MutableMap[builtins.int, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...
+        strVal: _typing.Optional[builtins.str]=...,
+        intVal: _typing.Optional[builtins.int]=...,
+        typedefValue: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.int, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str, builtins.int, _fbthrift_python_mutable_containers.MutableMap[builtins.int, builtins.str]]]]: ...
     def _to_python(self) -> "module.thrift_types.Val": ...  # type: ignore
@@ -205,8 +205,8 @@ class ValUnion(_fbthrift_python_mutable_types.MutableUnion, _fbthrift_python_abs
 
     def __init__(
         self, *,
-        v1: _fbthrift_Val=...,
-        v2: _fbthrift_Val=...
+        v1: _typing.Optional[_fbthrift_Val]=...,
+        v2: _typing.Optional[_fbthrift_Val]=...
     ) -> None: ...
 
 
@@ -240,8 +240,8 @@ class VirtualComplexUnion(_fbthrift_python_mutable_types.MutableUnion, _fbthrift
 
     def __init__(
         self, *,
-        thingOne: builtins.str=...,
-        thingTwo: builtins.str=...
+        thingOne: _typing.Optional[builtins.str]=...,
+        thingTwo: _typing.Optional[builtins.str]=...
     ) -> None: ...
 
 
@@ -270,12 +270,12 @@ class NonCopyableStruct(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_
 
     def __init__(
         self, *,
-        num: builtins.int=...
+        num: _typing.Optional[builtins.int]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        num: builtins.int=...
+        num: _typing.Optional[builtins.int]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int]]]: ...
     def _to_python(self) -> "module.thrift_types.NonCopyableStruct": ...  # type: ignore
@@ -293,7 +293,7 @@ class NonCopyableUnion(_fbthrift_python_mutable_types.MutableUnion, _fbthrift_py
 
     def __init__(
         self, *,
-        s: _fbthrift_NonCopyableStruct=...
+        s: _typing.Optional[_fbthrift_NonCopyableStruct]=...
     ) -> None: ...
 
 

@@ -64,18 +64,18 @@ class SomeStruct(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_
 
     def __init__(
         self, *,
-        reasonable: _fbthrift_Metasyntactic=...,
-        fine: _fbthrift_Metasyntactic=...,
-        questionable: _fbthrift_Metasyntactic=...,
-        tags: _fbthrift_python_mutable_containers.MutableSet[builtins.int] | _fbthrift_python_mutable_types._ThriftSetWrapper=...
+        reasonable: _typing.Optional[_fbthrift_Metasyntactic]=...,
+        fine: _typing.Optional[_fbthrift_Metasyntactic]=...,
+        questionable: _typing.Optional[_fbthrift_Metasyntactic]=...,
+        tags: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.int] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        reasonable: _fbthrift_Metasyntactic=...,
-        fine: _fbthrift_Metasyntactic=...,
-        questionable: _fbthrift_Metasyntactic=...,
-        tags: _fbthrift_python_mutable_containers.MutableSet[builtins.int] | _fbthrift_python_mutable_types._ThriftSetWrapper=...
+        reasonable: _typing.Optional[_fbthrift_Metasyntactic]=...,
+        fine: _typing.Optional[_fbthrift_Metasyntactic]=...,
+        questionable: _typing.Optional[_fbthrift_Metasyntactic]=...,
+        tags: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.int] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_Metasyntactic, _fbthrift_Metasyntactic, _fbthrift_Metasyntactic, _fbthrift_python_mutable_containers.MutableSet[builtins.int]]]]: ...
     def _to_python(self) -> "test.fixtures.enums.module.thrift_types.SomeStruct": ...  # type: ignore
@@ -108,18 +108,18 @@ class MyStruct(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_ab
 
     def __init__(
         self, *,
-        me2_3: _fbthrift_MyEnum2=...,
-        me3_n3: _fbthrift_MyEnum3=...,
-        me1_t1: _fbthrift_MyEnum1=...,
-        me1_t2: _fbthrift_MyEnum1=...
+        me2_3: _typing.Optional[_fbthrift_MyEnum2]=...,
+        me3_n3: _typing.Optional[_fbthrift_MyEnum3]=...,
+        me1_t1: _typing.Optional[_fbthrift_MyEnum1]=...,
+        me1_t2: _typing.Optional[_fbthrift_MyEnum1]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        me2_3: _fbthrift_MyEnum2=...,
-        me3_n3: _fbthrift_MyEnum3=...,
-        me1_t1: _fbthrift_MyEnum1=...,
-        me1_t2: _fbthrift_MyEnum1=...
+        me2_3: _typing.Optional[_fbthrift_MyEnum2]=...,
+        me3_n3: _typing.Optional[_fbthrift_MyEnum3]=...,
+        me1_t1: _typing.Optional[_fbthrift_MyEnum1]=...,
+        me1_t2: _typing.Optional[_fbthrift_MyEnum1]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_MyEnum2, _fbthrift_MyEnum3, _fbthrift_MyEnum1, _fbthrift_MyEnum1]]]: ...
     def _to_python(self) -> "test.fixtures.enums.module.thrift_types.MyStruct": ...  # type: ignore

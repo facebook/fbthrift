@@ -32,18 +32,18 @@ class MyStructFloatFieldThrowExp(_fbthrift_python_types.Struct, _fbthrift_python
     myFloatField: _typing.Final[builtins.float] = ...
     def __init__(
         self, *,
-        myLongField: builtins.int=...,
-        MyByteField: builtins.int=...,
-        myStringField: builtins.str=...,
-        myFloatField: builtins.float=...
+        myLongField: _typing.Optional[builtins.int]=...,
+        MyByteField: _typing.Optional[builtins.int]=...,
+        myStringField: _typing.Optional[builtins.str]=...,
+        myFloatField: _typing.Optional[builtins.float]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        myLongField: builtins.int=...,
-        MyByteField: builtins.int=...,
-        myStringField: builtins.str=...,
-        myFloatField: builtins.float=...
+        myLongField: _typing.Optional[builtins.int]=...,
+        MyByteField: _typing.Optional[builtins.int]=...,
+        myStringField: _typing.Optional[builtins.str]=...,
+        myFloatField: _typing.Optional[builtins.float]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, builtins.int, builtins.str, builtins.float]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -58,14 +58,14 @@ class MyStructMapFloatThrowExp(_fbthrift_python_types.Struct, _fbthrift_python_a
     mapListOfFloats: _typing.Final[_typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[builtins.float]]]] = ...
     def __init__(
         self, *,
-        myLongField: builtins.int=...,
-        mapListOfFloats: _typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[builtins.float]]]=...
+        myLongField: _typing.Optional[builtins.int]=...,
+        mapListOfFloats: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[builtins.float]]]]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        myLongField: builtins.int=...,
-        mapListOfFloats: _typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[builtins.float]]]=...
+        myLongField: _typing.Optional[builtins.int]=...,
+        mapListOfFloats: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[builtins.float]]]]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, _typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[builtins.float]]]]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -106,66 +106,66 @@ class MyStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_types.My
     mListList: _typing.Final[_typing.Mapping[_fbthrift_python_types.ImmutableList[builtins.int], _fbthrift_python_types.ImmutableList[builtins.int]]] = ...
     def __init__(
         self, *,
-        MyIntField: builtins.int=...,
-        MyStringField: builtins.str=...,
-        MyDataField: _fbthrift_MyDataItem=...,
-        myEnum: _fbthrift_MyEnum=...,
-        MyBoolField: builtins.bool=...,
-        MyByteField: builtins.int=...,
-        MyShortField: builtins.int=...,
-        MyLongField: builtins.int=...,
-        MyDoubleField: builtins.float=...,
-        lDouble: _typing.Sequence[builtins.float]=...,
-        lShort: _typing.Sequence[builtins.int]=...,
-        lInteger: _typing.Sequence[builtins.int]=...,
-        lLong: _typing.Sequence[builtins.int]=...,
-        lString: _typing.Sequence[builtins.str]=...,
-        lBool: _typing.Sequence[builtins.bool]=...,
-        lByte: _typing.Sequence[builtins.int]=...,
-        mShortString: _typing.Mapping[builtins.int, builtins.str]=...,
-        mIntegerString: _typing.Mapping[builtins.int, builtins.str]=...,
-        mStringMyStruct: _typing.Mapping[builtins.str, _fbthrift_MyStruct]=...,
-        mStringBool: _typing.Mapping[builtins.str, builtins.bool]=...,
-        mIntegerInteger: _typing.Mapping[builtins.int, builtins.int]=...,
-        mIntegerBool: _typing.Mapping[builtins.int, builtins.bool]=...,
-        sShort: _typing.AbstractSet[builtins.int]=...,
-        sMyStruct: _typing.AbstractSet[_fbthrift_MyStruct]=...,
-        sLong: _typing.AbstractSet[builtins.int]=...,
-        sString: _typing.AbstractSet[builtins.str]=...,
-        sByte: _typing.AbstractSet[builtins.int]=...,
-        mListList: _typing.Mapping[_typing.Sequence[builtins.int], _typing.Sequence[builtins.int]]=...
+        MyIntField: _typing.Optional[builtins.int]=...,
+        MyStringField: _typing.Optional[builtins.str]=...,
+        MyDataField: _typing.Optional[_fbthrift_MyDataItem]=...,
+        myEnum: _typing.Optional[_fbthrift_MyEnum]=...,
+        MyBoolField: _typing.Optional[builtins.bool]=...,
+        MyByteField: _typing.Optional[builtins.int]=...,
+        MyShortField: _typing.Optional[builtins.int]=...,
+        MyLongField: _typing.Optional[builtins.int]=...,
+        MyDoubleField: _typing.Optional[builtins.float]=...,
+        lDouble: _typing.Optional[_typing.Sequence[builtins.float]]=...,
+        lShort: _typing.Optional[_typing.Sequence[builtins.int]]=...,
+        lInteger: _typing.Optional[_typing.Sequence[builtins.int]]=...,
+        lLong: _typing.Optional[_typing.Sequence[builtins.int]]=...,
+        lString: _typing.Optional[_typing.Sequence[builtins.str]]=...,
+        lBool: _typing.Optional[_typing.Sequence[builtins.bool]]=...,
+        lByte: _typing.Optional[_typing.Sequence[builtins.int]]=...,
+        mShortString: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        mIntegerString: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        mStringMyStruct: _typing.Optional[_typing.Mapping[builtins.str, _fbthrift_MyStruct]]=...,
+        mStringBool: _typing.Optional[_typing.Mapping[builtins.str, builtins.bool]]=...,
+        mIntegerInteger: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
+        mIntegerBool: _typing.Optional[_typing.Mapping[builtins.int, builtins.bool]]=...,
+        sShort: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
+        sMyStruct: _typing.Optional[_typing.AbstractSet[_fbthrift_MyStruct]]=...,
+        sLong: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
+        sString: _typing.Optional[_typing.AbstractSet[builtins.str]]=...,
+        sByte: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
+        mListList: _typing.Optional[_typing.Mapping[_typing.Sequence[builtins.int], _typing.Sequence[builtins.int]]]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        MyIntField: builtins.int=...,
-        MyStringField: builtins.str=...,
-        MyDataField: _fbthrift_MyDataItem=...,
-        myEnum: _fbthrift_MyEnum=...,
-        MyBoolField: builtins.bool=...,
-        MyByteField: builtins.int=...,
-        MyShortField: builtins.int=...,
-        MyLongField: builtins.int=...,
-        MyDoubleField: builtins.float=...,
-        lDouble: _typing.Sequence[builtins.float]=...,
-        lShort: _typing.Sequence[builtins.int]=...,
-        lInteger: _typing.Sequence[builtins.int]=...,
-        lLong: _typing.Sequence[builtins.int]=...,
-        lString: _typing.Sequence[builtins.str]=...,
-        lBool: _typing.Sequence[builtins.bool]=...,
-        lByte: _typing.Sequence[builtins.int]=...,
-        mShortString: _typing.Mapping[builtins.int, builtins.str]=...,
-        mIntegerString: _typing.Mapping[builtins.int, builtins.str]=...,
-        mStringMyStruct: _typing.Mapping[builtins.str, _fbthrift_MyStruct]=...,
-        mStringBool: _typing.Mapping[builtins.str, builtins.bool]=...,
-        mIntegerInteger: _typing.Mapping[builtins.int, builtins.int]=...,
-        mIntegerBool: _typing.Mapping[builtins.int, builtins.bool]=...,
-        sShort: _typing.AbstractSet[builtins.int]=...,
-        sMyStruct: _typing.AbstractSet[_fbthrift_MyStruct]=...,
-        sLong: _typing.AbstractSet[builtins.int]=...,
-        sString: _typing.AbstractSet[builtins.str]=...,
-        sByte: _typing.AbstractSet[builtins.int]=...,
-        mListList: _typing.Mapping[_typing.Sequence[builtins.int], _typing.Sequence[builtins.int]]=...
+        MyIntField: _typing.Optional[builtins.int]=...,
+        MyStringField: _typing.Optional[builtins.str]=...,
+        MyDataField: _typing.Optional[_fbthrift_MyDataItem]=...,
+        myEnum: _typing.Optional[_fbthrift_MyEnum]=...,
+        MyBoolField: _typing.Optional[builtins.bool]=...,
+        MyByteField: _typing.Optional[builtins.int]=...,
+        MyShortField: _typing.Optional[builtins.int]=...,
+        MyLongField: _typing.Optional[builtins.int]=...,
+        MyDoubleField: _typing.Optional[builtins.float]=...,
+        lDouble: _typing.Optional[_typing.Sequence[builtins.float]]=...,
+        lShort: _typing.Optional[_typing.Sequence[builtins.int]]=...,
+        lInteger: _typing.Optional[_typing.Sequence[builtins.int]]=...,
+        lLong: _typing.Optional[_typing.Sequence[builtins.int]]=...,
+        lString: _typing.Optional[_typing.Sequence[builtins.str]]=...,
+        lBool: _typing.Optional[_typing.Sequence[builtins.bool]]=...,
+        lByte: _typing.Optional[_typing.Sequence[builtins.int]]=...,
+        mShortString: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        mIntegerString: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        mStringMyStruct: _typing.Optional[_typing.Mapping[builtins.str, _fbthrift_MyStruct]]=...,
+        mStringBool: _typing.Optional[_typing.Mapping[builtins.str, builtins.bool]]=...,
+        mIntegerInteger: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
+        mIntegerBool: _typing.Optional[_typing.Mapping[builtins.int, builtins.bool]]=...,
+        sShort: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
+        sMyStruct: _typing.Optional[_typing.AbstractSet[_fbthrift_MyStruct]]=...,
+        sLong: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
+        sString: _typing.Optional[_typing.AbstractSet[builtins.str]]=...,
+        sByte: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
+        mListList: _typing.Optional[_typing.Mapping[_typing.Sequence[builtins.int], _typing.Sequence[builtins.int]]]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, builtins.str, _fbthrift_MyDataItem, _fbthrift_MyEnum, builtins.bool, builtins.int, builtins.int, builtins.int, builtins.float, _fbthrift_python_types.ImmutableList[builtins.float], _fbthrift_python_types.ImmutableList[builtins.int], _fbthrift_python_types.ImmutableList[builtins.int], _fbthrift_python_types.ImmutableList[builtins.int], _fbthrift_python_types.ImmutableList[builtins.str], _fbthrift_python_types.ImmutableList[builtins.bool], _fbthrift_python_types.ImmutableList[builtins.int], _typing.Mapping[builtins.int, builtins.str], _typing.Mapping[builtins.int, builtins.str], _typing.Mapping[builtins.str, _fbthrift_MyStruct], _typing.Mapping[builtins.str, builtins.bool], _typing.Mapping[builtins.int, builtins.int], _typing.Mapping[builtins.int, builtins.bool], _typing.AbstractSet[builtins.int], _typing.AbstractSet[_fbthrift_MyStruct], _typing.AbstractSet[builtins.int], _typing.AbstractSet[builtins.str], _typing.AbstractSet[builtins.int], _typing.Mapping[_fbthrift_python_types.ImmutableList[builtins.int], _fbthrift_python_types.ImmutableList[builtins.int]]]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -180,14 +180,14 @@ class SimpleStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_type
     name: _typing.Final[builtins.str] = ...
     def __init__(
         self, *,
-        age: builtins.int=...,
-        name: builtins.str=...
+        age: _typing.Optional[builtins.int]=...,
+        name: _typing.Optional[builtins.str]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        age: builtins.int=...,
-        name: builtins.str=...
+        age: _typing.Optional[builtins.int]=...,
+        name: _typing.Optional[builtins.str]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, builtins.str]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -222,54 +222,54 @@ class defaultStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_typ
     enumMapDFset: _typing.Final[_typing.Mapping[builtins.str, _typing.Mapping[builtins.int, _fbthrift_MyEnum]]] = ...
     def __init__(
         self, *,
-        myLongDFset: builtins.int=...,
-        myLongDF: builtins.int=...,
-        portDFset: builtins.int=...,
-        portNum: builtins.int=...,
-        myBinaryDFset: builtins.bytes=...,
-        myBinary: builtins.bytes=...,
-        myByteDFSet: builtins.int=...,
-        myByte: builtins.int=...,
-        myDoubleDFset: builtins.float=...,
-        myDoubleDFZero: builtins.float=...,
-        myDouble: builtins.float=...,
-        field3: _typing.Mapping[builtins.int, builtins.str]=...,
-        myList: _typing.Sequence[_fbthrift_MyEnum]=...,
-        mySet: _typing.AbstractSet[builtins.str]=...,
-        simpleStruct: _fbthrift_SimpleStruct=...,
-        listStructDFset: _typing.Sequence[_fbthrift_SimpleStruct]=...,
-        myUnion: _fbthrift_MyUnion=...,
-        listUnionDFset: _typing.Sequence[_fbthrift_MyUnion]=...,
-        mapNestlistStructDfSet: _typing.Mapping[builtins.int, _typing.Sequence[_fbthrift_SimpleStruct]]=...,
-        mapJavaTypeDFset: _typing.Mapping[builtins.int, builtins.str]=...,
-        emptyMap: _typing.Mapping[builtins.int, builtins.int]=...,
-        enumMapDFset: _typing.Mapping[builtins.str, _typing.Mapping[builtins.int, _fbthrift_MyEnum]]=...
+        myLongDFset: _typing.Optional[builtins.int]=...,
+        myLongDF: _typing.Optional[builtins.int]=...,
+        portDFset: _typing.Optional[builtins.int]=...,
+        portNum: _typing.Optional[builtins.int]=...,
+        myBinaryDFset: _typing.Optional[builtins.bytes]=...,
+        myBinary: _typing.Optional[builtins.bytes]=...,
+        myByteDFSet: _typing.Optional[builtins.int]=...,
+        myByte: _typing.Optional[builtins.int]=...,
+        myDoubleDFset: _typing.Optional[builtins.float]=...,
+        myDoubleDFZero: _typing.Optional[builtins.float]=...,
+        myDouble: _typing.Optional[builtins.float]=...,
+        field3: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        myList: _typing.Optional[_typing.Sequence[_fbthrift_MyEnum]]=...,
+        mySet: _typing.Optional[_typing.AbstractSet[builtins.str]]=...,
+        simpleStruct: _typing.Optional[_fbthrift_SimpleStruct]=...,
+        listStructDFset: _typing.Optional[_typing.Sequence[_fbthrift_SimpleStruct]]=...,
+        myUnion: _typing.Optional[_fbthrift_MyUnion]=...,
+        listUnionDFset: _typing.Optional[_typing.Sequence[_fbthrift_MyUnion]]=...,
+        mapNestlistStructDfSet: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_fbthrift_SimpleStruct]]]=...,
+        mapJavaTypeDFset: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        emptyMap: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
+        enumMapDFset: _typing.Optional[_typing.Mapping[builtins.str, _typing.Mapping[builtins.int, _fbthrift_MyEnum]]]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        myLongDFset: builtins.int=...,
-        myLongDF: builtins.int=...,
-        portDFset: builtins.int=...,
-        portNum: builtins.int=...,
-        myBinaryDFset: builtins.bytes=...,
-        myBinary: builtins.bytes=...,
-        myByteDFSet: builtins.int=...,
-        myByte: builtins.int=...,
-        myDoubleDFset: builtins.float=...,
-        myDoubleDFZero: builtins.float=...,
-        myDouble: builtins.float=...,
-        field3: _typing.Mapping[builtins.int, builtins.str]=...,
-        myList: _typing.Sequence[_fbthrift_MyEnum]=...,
-        mySet: _typing.AbstractSet[builtins.str]=...,
-        simpleStruct: _fbthrift_SimpleStruct=...,
-        listStructDFset: _typing.Sequence[_fbthrift_SimpleStruct]=...,
-        myUnion: _fbthrift_MyUnion=...,
-        listUnionDFset: _typing.Sequence[_fbthrift_MyUnion]=...,
-        mapNestlistStructDfSet: _typing.Mapping[builtins.int, _typing.Sequence[_fbthrift_SimpleStruct]]=...,
-        mapJavaTypeDFset: _typing.Mapping[builtins.int, builtins.str]=...,
-        emptyMap: _typing.Mapping[builtins.int, builtins.int]=...,
-        enumMapDFset: _typing.Mapping[builtins.str, _typing.Mapping[builtins.int, _fbthrift_MyEnum]]=...
+        myLongDFset: _typing.Optional[builtins.int]=...,
+        myLongDF: _typing.Optional[builtins.int]=...,
+        portDFset: _typing.Optional[builtins.int]=...,
+        portNum: _typing.Optional[builtins.int]=...,
+        myBinaryDFset: _typing.Optional[builtins.bytes]=...,
+        myBinary: _typing.Optional[builtins.bytes]=...,
+        myByteDFSet: _typing.Optional[builtins.int]=...,
+        myByte: _typing.Optional[builtins.int]=...,
+        myDoubleDFset: _typing.Optional[builtins.float]=...,
+        myDoubleDFZero: _typing.Optional[builtins.float]=...,
+        myDouble: _typing.Optional[builtins.float]=...,
+        field3: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        myList: _typing.Optional[_typing.Sequence[_fbthrift_MyEnum]]=...,
+        mySet: _typing.Optional[_typing.AbstractSet[builtins.str]]=...,
+        simpleStruct: _typing.Optional[_fbthrift_SimpleStruct]=...,
+        listStructDFset: _typing.Optional[_typing.Sequence[_fbthrift_SimpleStruct]]=...,
+        myUnion: _typing.Optional[_fbthrift_MyUnion]=...,
+        listUnionDFset: _typing.Optional[_typing.Sequence[_fbthrift_MyUnion]]=...,
+        mapNestlistStructDfSet: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_fbthrift_SimpleStruct]]]=...,
+        mapJavaTypeDFset: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        emptyMap: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
+        enumMapDFset: _typing.Optional[_typing.Mapping[builtins.str, _typing.Mapping[builtins.int, _fbthrift_MyEnum]]]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, builtins.int, builtins.int, builtins.int, builtins.bytes, builtins.bytes, builtins.int, builtins.int, builtins.float, builtins.float, builtins.float, _typing.Mapping[builtins.int, builtins.str], _fbthrift_python_types.ImmutableList[_fbthrift_MyEnum], _typing.AbstractSet[builtins.str], _fbthrift_SimpleStruct, _fbthrift_python_types.ImmutableList[_fbthrift_SimpleStruct], _fbthrift_MyUnion, _fbthrift_python_types.ImmutableList[_fbthrift_MyUnion], _typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[_fbthrift_SimpleStruct]], _typing.Mapping[builtins.int, builtins.str], _typing.Mapping[builtins.int, builtins.int], _typing.Mapping[builtins.str, _typing.Mapping[builtins.int, _fbthrift_MyEnum]]]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -291,28 +291,28 @@ class MyStructTypeDef(_fbthrift_python_types.Struct, _fbthrift_python_abstract_t
     myMapListOfTypeDef: _typing.Final[_typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[builtins.float]]]] = ...
     def __init__(
         self, *,
-        myLongField: builtins.int=...,
-        myLongTypeDef: builtins.int=...,
-        myStringField: builtins.str=...,
-        myStringTypedef: builtins.str=...,
-        myMapField: _typing.Mapping[builtins.int, builtins.str]=...,
-        myMapTypedef: _typing.Mapping[builtins.int, builtins.str]=...,
-        myListField: _typing.Sequence[builtins.float]=...,
-        myListTypedef: _typing.Sequence[builtins.float]=...,
-        myMapListOfTypeDef: _typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[builtins.float]]]=...
+        myLongField: _typing.Optional[builtins.int]=...,
+        myLongTypeDef: _typing.Optional[builtins.int]=...,
+        myStringField: _typing.Optional[builtins.str]=...,
+        myStringTypedef: _typing.Optional[builtins.str]=...,
+        myMapField: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        myMapTypedef: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        myListField: _typing.Optional[_typing.Sequence[builtins.float]]=...,
+        myListTypedef: _typing.Optional[_typing.Sequence[builtins.float]]=...,
+        myMapListOfTypeDef: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[builtins.float]]]]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        myLongField: builtins.int=...,
-        myLongTypeDef: builtins.int=...,
-        myStringField: builtins.str=...,
-        myStringTypedef: builtins.str=...,
-        myMapField: _typing.Mapping[builtins.int, builtins.str]=...,
-        myMapTypedef: _typing.Mapping[builtins.int, builtins.str]=...,
-        myListField: _typing.Sequence[builtins.float]=...,
-        myListTypedef: _typing.Sequence[builtins.float]=...,
-        myMapListOfTypeDef: _typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[builtins.float]]]=...
+        myLongField: _typing.Optional[builtins.int]=...,
+        myLongTypeDef: _typing.Optional[builtins.int]=...,
+        myStringField: _typing.Optional[builtins.str]=...,
+        myStringTypedef: _typing.Optional[builtins.str]=...,
+        myMapField: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        myMapTypedef: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        myListField: _typing.Optional[_typing.Sequence[builtins.float]]=...,
+        myListTypedef: _typing.Optional[_typing.Sequence[builtins.float]]=...,
+        myMapListOfTypeDef: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[builtins.float]]]]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, builtins.int, builtins.str, builtins.str, _typing.Mapping[builtins.int, builtins.str], _typing.Mapping[builtins.int, builtins.str], _fbthrift_python_types.ImmutableList[builtins.float], _fbthrift_python_types.ImmutableList[builtins.float], _typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[builtins.float]]]]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -347,12 +347,12 @@ class MyUnion(_fbthrift_python_types.Union, _fbthrift_python_abstract_types.MyUn
     intValue: _typing.Final[builtins.int] = ...
     def __init__(
         self, *,
-        myEnum: _fbthrift_MyEnum=...,
-        myStruct: _fbthrift_MyStruct=...,
-        myDataItem: _fbthrift_MyDataItem=...,
-        complexNestedStruct: _fbthrift_ComplexNestedStruct=...,
-        longValue: builtins.int=...,
-        intValue: builtins.int=...
+        myEnum: _typing.Optional[_fbthrift_MyEnum]=...,
+        myStruct: _typing.Optional[_fbthrift_MyStruct]=...,
+        myDataItem: _typing.Optional[_fbthrift_MyDataItem]=...,
+        complexNestedStruct: _typing.Optional[_fbthrift_ComplexNestedStruct]=...,
+        longValue: _typing.Optional[builtins.int]=...,
+        intValue: _typing.Optional[builtins.int]=...
     ) -> None: ...
 
 
@@ -395,10 +395,10 @@ class MyUnionFloatFieldThrowExp(_fbthrift_python_types.Union, _fbthrift_python_a
     complexNestedStruct: _typing.Final[_fbthrift_ComplexNestedStruct] = ...
     def __init__(
         self, *,
-        myEnum: _fbthrift_MyEnum=...,
-        setFloat: _typing.Sequence[_typing.Sequence[builtins.float]]=...,
-        myDataItem: _fbthrift_MyDataItem=...,
-        complexNestedStruct: _fbthrift_ComplexNestedStruct=...
+        myEnum: _typing.Optional[_fbthrift_MyEnum]=...,
+        setFloat: _typing.Optional[_typing.Sequence[_typing.Sequence[builtins.float]]]=...,
+        myDataItem: _typing.Optional[_fbthrift_MyDataItem]=...,
+        complexNestedStruct: _typing.Optional[_fbthrift_ComplexNestedStruct]=...
     ) -> None: ...
 
 
@@ -451,46 +451,46 @@ class ComplexNestedStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstra
     mapKeyListValSet: _typing.Final[_typing.Mapping[_fbthrift_python_types.ImmutableList[builtins.int], _typing.AbstractSet[_typing.Mapping[builtins.float, builtins.str]]]] = ...
     def __init__(
         self, *,
-        setOfSetOfInt: _typing.AbstractSet[_typing.AbstractSet[builtins.int]]=...,
-        listofListOfListOfListOfEnum: _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[_fbthrift_MyEnum]]]]=...,
-        listOfListOfMyStruct: _typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]=...,
-        setOfListOfListOfLong: _typing.AbstractSet[_typing.Sequence[_typing.Sequence[builtins.int]]]=...,
-        setOfSetOfsetOfLong: _typing.AbstractSet[_typing.AbstractSet[_typing.AbstractSet[builtins.int]]]=...,
-        mapStructListOfListOfLong: _typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]]=...,
-        mKeyStructValInt: _typing.Mapping[_fbthrift_MyStruct, builtins.int]=...,
-        listOfMapKeyIntValInt: _typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]=...,
-        listOfMapKeyStrValList: _typing.Sequence[_typing.Mapping[builtins.str, _typing.Sequence[_fbthrift_MyStruct]]]=...,
-        mapKeySetValLong: _typing.Mapping[_typing.AbstractSet[builtins.int], builtins.int]=...,
-        mapKeyListValLong: _typing.Mapping[_typing.Sequence[builtins.str], builtins.int]=...,
-        mapKeyMapValMap: _typing.Mapping[_typing.Mapping[builtins.int, builtins.str], _typing.Mapping[builtins.int, builtins.str]]=...,
-        mapKeySetValMap: _typing.Mapping[_typing.AbstractSet[_typing.Sequence[builtins.int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[builtins.str]], builtins.str]]=...,
-        NestedMaps: _typing.Mapping[_typing.Mapping[_typing.Mapping[builtins.int, builtins.str], builtins.str], _typing.Mapping[builtins.int, builtins.str]]=...,
-        mapKeyIntValList: _typing.Mapping[builtins.int, _typing.Sequence[_fbthrift_MyStruct]]=...,
-        mapKeyIntValSet: _typing.Mapping[builtins.int, _typing.AbstractSet[builtins.bool]]=...,
-        mapKeySetValInt: _typing.Mapping[_typing.AbstractSet[builtins.bool], _fbthrift_MyEnum]=...,
-        mapKeyListValSet: _typing.Mapping[_typing.Sequence[builtins.int], _typing.AbstractSet[_typing.Mapping[builtins.float, builtins.str]]]=...
+        setOfSetOfInt: _typing.Optional[_typing.AbstractSet[_typing.AbstractSet[builtins.int]]]=...,
+        listofListOfListOfListOfEnum: _typing.Optional[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[_fbthrift_MyEnum]]]]]=...,
+        listOfListOfMyStruct: _typing.Optional[_typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]]=...,
+        setOfListOfListOfLong: _typing.Optional[_typing.AbstractSet[_typing.Sequence[_typing.Sequence[builtins.int]]]]=...,
+        setOfSetOfsetOfLong: _typing.Optional[_typing.AbstractSet[_typing.AbstractSet[_typing.AbstractSet[builtins.int]]]]=...,
+        mapStructListOfListOfLong: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]]]=...,
+        mKeyStructValInt: _typing.Optional[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]=...,
+        listOfMapKeyIntValInt: _typing.Optional[_typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]]=...,
+        listOfMapKeyStrValList: _typing.Optional[_typing.Sequence[_typing.Mapping[builtins.str, _typing.Sequence[_fbthrift_MyStruct]]]]=...,
+        mapKeySetValLong: _typing.Optional[_typing.Mapping[_typing.AbstractSet[builtins.int], builtins.int]]=...,
+        mapKeyListValLong: _typing.Optional[_typing.Mapping[_typing.Sequence[builtins.str], builtins.int]]=...,
+        mapKeyMapValMap: _typing.Optional[_typing.Mapping[_typing.Mapping[builtins.int, builtins.str], _typing.Mapping[builtins.int, builtins.str]]]=...,
+        mapKeySetValMap: _typing.Optional[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[builtins.int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[builtins.str]], builtins.str]]]=...,
+        NestedMaps: _typing.Optional[_typing.Mapping[_typing.Mapping[_typing.Mapping[builtins.int, builtins.str], builtins.str], _typing.Mapping[builtins.int, builtins.str]]]=...,
+        mapKeyIntValList: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_fbthrift_MyStruct]]]=...,
+        mapKeyIntValSet: _typing.Optional[_typing.Mapping[builtins.int, _typing.AbstractSet[builtins.bool]]]=...,
+        mapKeySetValInt: _typing.Optional[_typing.Mapping[_typing.AbstractSet[builtins.bool], _fbthrift_MyEnum]]=...,
+        mapKeyListValSet: _typing.Optional[_typing.Mapping[_typing.Sequence[builtins.int], _typing.AbstractSet[_typing.Mapping[builtins.float, builtins.str]]]]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        setOfSetOfInt: _typing.AbstractSet[_typing.AbstractSet[builtins.int]]=...,
-        listofListOfListOfListOfEnum: _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[_fbthrift_MyEnum]]]]=...,
-        listOfListOfMyStruct: _typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]=...,
-        setOfListOfListOfLong: _typing.AbstractSet[_typing.Sequence[_typing.Sequence[builtins.int]]]=...,
-        setOfSetOfsetOfLong: _typing.AbstractSet[_typing.AbstractSet[_typing.AbstractSet[builtins.int]]]=...,
-        mapStructListOfListOfLong: _typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]]=...,
-        mKeyStructValInt: _typing.Mapping[_fbthrift_MyStruct, builtins.int]=...,
-        listOfMapKeyIntValInt: _typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]=...,
-        listOfMapKeyStrValList: _typing.Sequence[_typing.Mapping[builtins.str, _typing.Sequence[_fbthrift_MyStruct]]]=...,
-        mapKeySetValLong: _typing.Mapping[_typing.AbstractSet[builtins.int], builtins.int]=...,
-        mapKeyListValLong: _typing.Mapping[_typing.Sequence[builtins.str], builtins.int]=...,
-        mapKeyMapValMap: _typing.Mapping[_typing.Mapping[builtins.int, builtins.str], _typing.Mapping[builtins.int, builtins.str]]=...,
-        mapKeySetValMap: _typing.Mapping[_typing.AbstractSet[_typing.Sequence[builtins.int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[builtins.str]], builtins.str]]=...,
-        NestedMaps: _typing.Mapping[_typing.Mapping[_typing.Mapping[builtins.int, builtins.str], builtins.str], _typing.Mapping[builtins.int, builtins.str]]=...,
-        mapKeyIntValList: _typing.Mapping[builtins.int, _typing.Sequence[_fbthrift_MyStruct]]=...,
-        mapKeyIntValSet: _typing.Mapping[builtins.int, _typing.AbstractSet[builtins.bool]]=...,
-        mapKeySetValInt: _typing.Mapping[_typing.AbstractSet[builtins.bool], _fbthrift_MyEnum]=...,
-        mapKeyListValSet: _typing.Mapping[_typing.Sequence[builtins.int], _typing.AbstractSet[_typing.Mapping[builtins.float, builtins.str]]]=...
+        setOfSetOfInt: _typing.Optional[_typing.AbstractSet[_typing.AbstractSet[builtins.int]]]=...,
+        listofListOfListOfListOfEnum: _typing.Optional[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[_fbthrift_MyEnum]]]]]=...,
+        listOfListOfMyStruct: _typing.Optional[_typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]]=...,
+        setOfListOfListOfLong: _typing.Optional[_typing.AbstractSet[_typing.Sequence[_typing.Sequence[builtins.int]]]]=...,
+        setOfSetOfsetOfLong: _typing.Optional[_typing.AbstractSet[_typing.AbstractSet[_typing.AbstractSet[builtins.int]]]]=...,
+        mapStructListOfListOfLong: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]]]=...,
+        mKeyStructValInt: _typing.Optional[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]=...,
+        listOfMapKeyIntValInt: _typing.Optional[_typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]]=...,
+        listOfMapKeyStrValList: _typing.Optional[_typing.Sequence[_typing.Mapping[builtins.str, _typing.Sequence[_fbthrift_MyStruct]]]]=...,
+        mapKeySetValLong: _typing.Optional[_typing.Mapping[_typing.AbstractSet[builtins.int], builtins.int]]=...,
+        mapKeyListValLong: _typing.Optional[_typing.Mapping[_typing.Sequence[builtins.str], builtins.int]]=...,
+        mapKeyMapValMap: _typing.Optional[_typing.Mapping[_typing.Mapping[builtins.int, builtins.str], _typing.Mapping[builtins.int, builtins.str]]]=...,
+        mapKeySetValMap: _typing.Optional[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[builtins.int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[builtins.str]], builtins.str]]]=...,
+        NestedMaps: _typing.Optional[_typing.Mapping[_typing.Mapping[_typing.Mapping[builtins.int, builtins.str], builtins.str], _typing.Mapping[builtins.int, builtins.str]]]=...,
+        mapKeyIntValList: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_fbthrift_MyStruct]]]=...,
+        mapKeyIntValSet: _typing.Optional[_typing.Mapping[builtins.int, _typing.AbstractSet[builtins.bool]]]=...,
+        mapKeySetValInt: _typing.Optional[_typing.Mapping[_typing.AbstractSet[builtins.bool], _fbthrift_MyEnum]]=...,
+        mapKeyListValSet: _typing.Optional[_typing.Mapping[_typing.Sequence[builtins.int], _typing.AbstractSet[_typing.Mapping[builtins.float, builtins.str]]]]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_typing.AbstractSet[_typing.AbstractSet[builtins.int]], _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[_fbthrift_MyEnum]]]], _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[_fbthrift_MyStruct]], _typing.AbstractSet[_fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[builtins.int]]], _typing.AbstractSet[_typing.AbstractSet[_typing.AbstractSet[builtins.int]]], _typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[_fbthrift_MyStruct]]], _typing.Mapping[_fbthrift_MyStruct, builtins.int], _fbthrift_python_types.ImmutableList[_typing.Mapping[builtins.int, builtins.int]], _fbthrift_python_types.ImmutableList[_typing.Mapping[builtins.str, _fbthrift_python_types.ImmutableList[_fbthrift_MyStruct]]], _typing.Mapping[_typing.AbstractSet[builtins.int], builtins.int], _typing.Mapping[_fbthrift_python_types.ImmutableList[builtins.str], builtins.int], _typing.Mapping[_typing.Mapping[builtins.int, builtins.str], _typing.Mapping[builtins.int, builtins.str]], _typing.Mapping[_typing.AbstractSet[_fbthrift_python_types.ImmutableList[builtins.int]], _typing.Mapping[_fbthrift_python_types.ImmutableList[_typing.AbstractSet[builtins.str]], builtins.str]], _typing.Mapping[_typing.Mapping[_typing.Mapping[builtins.int, builtins.str], builtins.str], _typing.Mapping[builtins.int, builtins.str]], _typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[_fbthrift_MyStruct]], _typing.Mapping[builtins.int, _typing.AbstractSet[builtins.bool]], _typing.Mapping[_typing.AbstractSet[builtins.bool], _fbthrift_MyEnum], _typing.Mapping[_fbthrift_python_types.ImmutableList[builtins.int], _typing.AbstractSet[_typing.Mapping[builtins.float, builtins.str]]]]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -507,18 +507,18 @@ class TypeRemapped(_fbthrift_python_types.Struct, _fbthrift_python_abstract_type
     binaryTestBuffer: _typing.Final[builtins.bytes] = ...
     def __init__(
         self, *,
-        lsMap: _typing.Mapping[builtins.int, builtins.str]=...,
-        ioMap: _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]=...,
-        BigInteger: builtins.int=...,
-        binaryTestBuffer: builtins.bytes=...
+        lsMap: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        ioMap: _typing.Optional[_typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]]=...,
+        BigInteger: _typing.Optional[builtins.int]=...,
+        binaryTestBuffer: _typing.Optional[builtins.bytes]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        lsMap: _typing.Mapping[builtins.int, builtins.str]=...,
-        ioMap: _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]=...,
-        BigInteger: builtins.int=...,
-        binaryTestBuffer: builtins.bytes=...
+        lsMap: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
+        ioMap: _typing.Optional[_typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]]=...,
+        BigInteger: _typing.Optional[builtins.int]=...,
+        binaryTestBuffer: _typing.Optional[builtins.bytes]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_typing.Mapping[builtins.int, builtins.str], _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]], builtins.int, builtins.bytes]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -546,8 +546,8 @@ class reqXcep(_fbthrift_python_exceptions.GeneratedError, _fbthrift_python_abstr
     errorCode: _typing.Final[builtins.int] = ...
     def __init__(
         self, *,
-        message: builtins.str=...,
-        errorCode: builtins.int=...
+        message: _typing.Optional[builtins.str]=...,
+        errorCode: _typing.Optional[builtins.int]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str, builtins.int]]]: ...
@@ -584,12 +584,12 @@ class complexException(_fbthrift_python_exceptions.GeneratedError, _fbthrift_pyt
     lsMap: _typing.Final[_typing.Mapping[builtins.int, builtins.str]] = ...
     def __init__(
         self, *,
-        message: builtins.str=...,
-        listStrings: _typing.Sequence[builtins.str]=...,
-        errorEnum: _fbthrift_MyEnum=...,
+        message: _typing.Optional[builtins.str]=...,
+        listStrings: _typing.Optional[_typing.Sequence[builtins.str]]=...,
+        errorEnum: _typing.Optional[_fbthrift_MyEnum]=...,
         unionError: _typing.Optional[_fbthrift_MyUnion]=...,
-        structError: _fbthrift_MyStruct=...,
-        lsMap: _typing.Mapping[builtins.int, builtins.str]=...
+        structError: _typing.Optional[_fbthrift_MyStruct]=...,
+        lsMap: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str, _fbthrift_python_types.ImmutableList[builtins.str], _fbthrift_MyEnum, _fbthrift_MyUnion, _fbthrift_MyStruct, _typing.Mapping[builtins.int, builtins.str]]]]: ...
@@ -640,84 +640,84 @@ class Containers(_fbthrift_python_types.Struct, _fbthrift_python_abstract_types.
     map_i32_map_list_struct_i32: _typing.Final[_typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]]] = ...
     def __init__(
         self, *,
-        struct_list: _typing.Sequence[_fbthrift_MyStruct]=...,
-        union_list: _typing.Sequence[_fbthrift_MyUnion]=...,
-        enum_list: _typing.Sequence[_fbthrift_MyEnum]=...,
-        struct_set: _typing.AbstractSet[_fbthrift_MyStruct]=...,
-        union_set: _typing.AbstractSet[_fbthrift_MyUnion]=...,
-        enum_set: _typing.AbstractSet[_fbthrift_MyEnum]=...,
-        struct_map: _typing.Mapping[_fbthrift_MyStruct, builtins.int]=...,
-        union_map: _typing.Mapping[_fbthrift_MyUnion, builtins.int]=...,
-        enum_map: _typing.Mapping[_fbthrift_MyEnum, builtins.int]=...,
-        struct_map_2: _typing.Mapping[builtins.int, _fbthrift_MyStruct]=...,
-        union_map_2: _typing.Mapping[builtins.int, _fbthrift_MyUnion]=...,
-        enum_map_2: _typing.Mapping[builtins.int, _fbthrift_MyEnum]=...,
-        list_map: _typing.Mapping[_typing.Sequence[builtins.int], builtins.int]=...,
-        list_map_2: _typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]=...,
-        set_map: _typing.Mapping[_typing.AbstractSet[builtins.int], builtins.int]=...,
-        set_map_2: _typing.Mapping[builtins.int, _typing.AbstractSet[builtins.int]]=...,
-        map_map: _typing.Mapping[_typing.Mapping[builtins.int, builtins.int], builtins.int]=...,
-        map_map_2: _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]=...,
-        list_list_i32: _typing.Sequence[_typing.Sequence[builtins.int]]=...,
-        list_list_struct: _typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]=...,
-        list_set_i32: _typing.Sequence[_typing.AbstractSet[builtins.int]]=...,
-        list_set_struct: _typing.Sequence[_typing.AbstractSet[_fbthrift_MyStruct]]=...,
-        list_map_i32_i32: _typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]=...,
-        list_map_i32_struct: _typing.Sequence[_typing.Mapping[builtins.int, _fbthrift_MyStruct]]=...,
-        list_map_struct_i32: _typing.Sequence[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]=...,
-        set_list_i32: _typing.AbstractSet[_typing.Sequence[builtins.int]]=...,
-        set_list_struct: _typing.AbstractSet[_typing.Sequence[_fbthrift_MyStruct]]=...,
-        set_set_i32: _typing.AbstractSet[_typing.AbstractSet[builtins.int]]=...,
-        set_set_struct: _typing.AbstractSet[_typing.AbstractSet[_fbthrift_MyStruct]]=...,
-        set_map_i32_i32: _typing.AbstractSet[_typing.Mapping[builtins.int, builtins.int]]=...,
-        set_map_i32_struct: _typing.AbstractSet[_typing.Mapping[builtins.int, _fbthrift_MyStruct]]=...,
-        set_map_struct_i32: _typing.AbstractSet[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]=...,
-        map_i32_map_i32_i32: _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]=...,
-        map_i32_map_struct_i32: _typing.Mapping[builtins.int, _typing.Mapping[_fbthrift_MyStruct, builtins.int]]=...,
-        map_i32_map_i32_struct: _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, _fbthrift_MyStruct]]=...,
-        map_i32_map_list_i32_i32: _typing.Mapping[builtins.int, _typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]]=...,
-        map_i32_map_list_struct_i32: _typing.Mapping[builtins.int, _typing.Sequence[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]]=...
+        struct_list: _typing.Optional[_typing.Sequence[_fbthrift_MyStruct]]=...,
+        union_list: _typing.Optional[_typing.Sequence[_fbthrift_MyUnion]]=...,
+        enum_list: _typing.Optional[_typing.Sequence[_fbthrift_MyEnum]]=...,
+        struct_set: _typing.Optional[_typing.AbstractSet[_fbthrift_MyStruct]]=...,
+        union_set: _typing.Optional[_typing.AbstractSet[_fbthrift_MyUnion]]=...,
+        enum_set: _typing.Optional[_typing.AbstractSet[_fbthrift_MyEnum]]=...,
+        struct_map: _typing.Optional[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]=...,
+        union_map: _typing.Optional[_typing.Mapping[_fbthrift_MyUnion, builtins.int]]=...,
+        enum_map: _typing.Optional[_typing.Mapping[_fbthrift_MyEnum, builtins.int]]=...,
+        struct_map_2: _typing.Optional[_typing.Mapping[builtins.int, _fbthrift_MyStruct]]=...,
+        union_map_2: _typing.Optional[_typing.Mapping[builtins.int, _fbthrift_MyUnion]]=...,
+        enum_map_2: _typing.Optional[_typing.Mapping[builtins.int, _fbthrift_MyEnum]]=...,
+        list_map: _typing.Optional[_typing.Mapping[_typing.Sequence[builtins.int], builtins.int]]=...,
+        list_map_2: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]]=...,
+        set_map: _typing.Optional[_typing.Mapping[_typing.AbstractSet[builtins.int], builtins.int]]=...,
+        set_map_2: _typing.Optional[_typing.Mapping[builtins.int, _typing.AbstractSet[builtins.int]]]=...,
+        map_map: _typing.Optional[_typing.Mapping[_typing.Mapping[builtins.int, builtins.int], builtins.int]]=...,
+        map_map_2: _typing.Optional[_typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]]=...,
+        list_list_i32: _typing.Optional[_typing.Sequence[_typing.Sequence[builtins.int]]]=...,
+        list_list_struct: _typing.Optional[_typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]]=...,
+        list_set_i32: _typing.Optional[_typing.Sequence[_typing.AbstractSet[builtins.int]]]=...,
+        list_set_struct: _typing.Optional[_typing.Sequence[_typing.AbstractSet[_fbthrift_MyStruct]]]=...,
+        list_map_i32_i32: _typing.Optional[_typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]]=...,
+        list_map_i32_struct: _typing.Optional[_typing.Sequence[_typing.Mapping[builtins.int, _fbthrift_MyStruct]]]=...,
+        list_map_struct_i32: _typing.Optional[_typing.Sequence[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]]=...,
+        set_list_i32: _typing.Optional[_typing.AbstractSet[_typing.Sequence[builtins.int]]]=...,
+        set_list_struct: _typing.Optional[_typing.AbstractSet[_typing.Sequence[_fbthrift_MyStruct]]]=...,
+        set_set_i32: _typing.Optional[_typing.AbstractSet[_typing.AbstractSet[builtins.int]]]=...,
+        set_set_struct: _typing.Optional[_typing.AbstractSet[_typing.AbstractSet[_fbthrift_MyStruct]]]=...,
+        set_map_i32_i32: _typing.Optional[_typing.AbstractSet[_typing.Mapping[builtins.int, builtins.int]]]=...,
+        set_map_i32_struct: _typing.Optional[_typing.AbstractSet[_typing.Mapping[builtins.int, _fbthrift_MyStruct]]]=...,
+        set_map_struct_i32: _typing.Optional[_typing.AbstractSet[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]]=...,
+        map_i32_map_i32_i32: _typing.Optional[_typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]]=...,
+        map_i32_map_struct_i32: _typing.Optional[_typing.Mapping[builtins.int, _typing.Mapping[_fbthrift_MyStruct, builtins.int]]]=...,
+        map_i32_map_i32_struct: _typing.Optional[_typing.Mapping[builtins.int, _typing.Mapping[builtins.int, _fbthrift_MyStruct]]]=...,
+        map_i32_map_list_i32_i32: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]]]=...,
+        map_i32_map_list_struct_i32: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]]]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        struct_list: _typing.Sequence[_fbthrift_MyStruct]=...,
-        union_list: _typing.Sequence[_fbthrift_MyUnion]=...,
-        enum_list: _typing.Sequence[_fbthrift_MyEnum]=...,
-        struct_set: _typing.AbstractSet[_fbthrift_MyStruct]=...,
-        union_set: _typing.AbstractSet[_fbthrift_MyUnion]=...,
-        enum_set: _typing.AbstractSet[_fbthrift_MyEnum]=...,
-        struct_map: _typing.Mapping[_fbthrift_MyStruct, builtins.int]=...,
-        union_map: _typing.Mapping[_fbthrift_MyUnion, builtins.int]=...,
-        enum_map: _typing.Mapping[_fbthrift_MyEnum, builtins.int]=...,
-        struct_map_2: _typing.Mapping[builtins.int, _fbthrift_MyStruct]=...,
-        union_map_2: _typing.Mapping[builtins.int, _fbthrift_MyUnion]=...,
-        enum_map_2: _typing.Mapping[builtins.int, _fbthrift_MyEnum]=...,
-        list_map: _typing.Mapping[_typing.Sequence[builtins.int], builtins.int]=...,
-        list_map_2: _typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]=...,
-        set_map: _typing.Mapping[_typing.AbstractSet[builtins.int], builtins.int]=...,
-        set_map_2: _typing.Mapping[builtins.int, _typing.AbstractSet[builtins.int]]=...,
-        map_map: _typing.Mapping[_typing.Mapping[builtins.int, builtins.int], builtins.int]=...,
-        map_map_2: _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]=...,
-        list_list_i32: _typing.Sequence[_typing.Sequence[builtins.int]]=...,
-        list_list_struct: _typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]=...,
-        list_set_i32: _typing.Sequence[_typing.AbstractSet[builtins.int]]=...,
-        list_set_struct: _typing.Sequence[_typing.AbstractSet[_fbthrift_MyStruct]]=...,
-        list_map_i32_i32: _typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]=...,
-        list_map_i32_struct: _typing.Sequence[_typing.Mapping[builtins.int, _fbthrift_MyStruct]]=...,
-        list_map_struct_i32: _typing.Sequence[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]=...,
-        set_list_i32: _typing.AbstractSet[_typing.Sequence[builtins.int]]=...,
-        set_list_struct: _typing.AbstractSet[_typing.Sequence[_fbthrift_MyStruct]]=...,
-        set_set_i32: _typing.AbstractSet[_typing.AbstractSet[builtins.int]]=...,
-        set_set_struct: _typing.AbstractSet[_typing.AbstractSet[_fbthrift_MyStruct]]=...,
-        set_map_i32_i32: _typing.AbstractSet[_typing.Mapping[builtins.int, builtins.int]]=...,
-        set_map_i32_struct: _typing.AbstractSet[_typing.Mapping[builtins.int, _fbthrift_MyStruct]]=...,
-        set_map_struct_i32: _typing.AbstractSet[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]=...,
-        map_i32_map_i32_i32: _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]=...,
-        map_i32_map_struct_i32: _typing.Mapping[builtins.int, _typing.Mapping[_fbthrift_MyStruct, builtins.int]]=...,
-        map_i32_map_i32_struct: _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, _fbthrift_MyStruct]]=...,
-        map_i32_map_list_i32_i32: _typing.Mapping[builtins.int, _typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]]=...,
-        map_i32_map_list_struct_i32: _typing.Mapping[builtins.int, _typing.Sequence[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]]=...
+        struct_list: _typing.Optional[_typing.Sequence[_fbthrift_MyStruct]]=...,
+        union_list: _typing.Optional[_typing.Sequence[_fbthrift_MyUnion]]=...,
+        enum_list: _typing.Optional[_typing.Sequence[_fbthrift_MyEnum]]=...,
+        struct_set: _typing.Optional[_typing.AbstractSet[_fbthrift_MyStruct]]=...,
+        union_set: _typing.Optional[_typing.AbstractSet[_fbthrift_MyUnion]]=...,
+        enum_set: _typing.Optional[_typing.AbstractSet[_fbthrift_MyEnum]]=...,
+        struct_map: _typing.Optional[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]=...,
+        union_map: _typing.Optional[_typing.Mapping[_fbthrift_MyUnion, builtins.int]]=...,
+        enum_map: _typing.Optional[_typing.Mapping[_fbthrift_MyEnum, builtins.int]]=...,
+        struct_map_2: _typing.Optional[_typing.Mapping[builtins.int, _fbthrift_MyStruct]]=...,
+        union_map_2: _typing.Optional[_typing.Mapping[builtins.int, _fbthrift_MyUnion]]=...,
+        enum_map_2: _typing.Optional[_typing.Mapping[builtins.int, _fbthrift_MyEnum]]=...,
+        list_map: _typing.Optional[_typing.Mapping[_typing.Sequence[builtins.int], builtins.int]]=...,
+        list_map_2: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]]=...,
+        set_map: _typing.Optional[_typing.Mapping[_typing.AbstractSet[builtins.int], builtins.int]]=...,
+        set_map_2: _typing.Optional[_typing.Mapping[builtins.int, _typing.AbstractSet[builtins.int]]]=...,
+        map_map: _typing.Optional[_typing.Mapping[_typing.Mapping[builtins.int, builtins.int], builtins.int]]=...,
+        map_map_2: _typing.Optional[_typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]]=...,
+        list_list_i32: _typing.Optional[_typing.Sequence[_typing.Sequence[builtins.int]]]=...,
+        list_list_struct: _typing.Optional[_typing.Sequence[_typing.Sequence[_fbthrift_MyStruct]]]=...,
+        list_set_i32: _typing.Optional[_typing.Sequence[_typing.AbstractSet[builtins.int]]]=...,
+        list_set_struct: _typing.Optional[_typing.Sequence[_typing.AbstractSet[_fbthrift_MyStruct]]]=...,
+        list_map_i32_i32: _typing.Optional[_typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]]=...,
+        list_map_i32_struct: _typing.Optional[_typing.Sequence[_typing.Mapping[builtins.int, _fbthrift_MyStruct]]]=...,
+        list_map_struct_i32: _typing.Optional[_typing.Sequence[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]]=...,
+        set_list_i32: _typing.Optional[_typing.AbstractSet[_typing.Sequence[builtins.int]]]=...,
+        set_list_struct: _typing.Optional[_typing.AbstractSet[_typing.Sequence[_fbthrift_MyStruct]]]=...,
+        set_set_i32: _typing.Optional[_typing.AbstractSet[_typing.AbstractSet[builtins.int]]]=...,
+        set_set_struct: _typing.Optional[_typing.AbstractSet[_typing.AbstractSet[_fbthrift_MyStruct]]]=...,
+        set_map_i32_i32: _typing.Optional[_typing.AbstractSet[_typing.Mapping[builtins.int, builtins.int]]]=...,
+        set_map_i32_struct: _typing.Optional[_typing.AbstractSet[_typing.Mapping[builtins.int, _fbthrift_MyStruct]]]=...,
+        set_map_struct_i32: _typing.Optional[_typing.AbstractSet[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]]=...,
+        map_i32_map_i32_i32: _typing.Optional[_typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]]]=...,
+        map_i32_map_struct_i32: _typing.Optional[_typing.Mapping[builtins.int, _typing.Mapping[_fbthrift_MyStruct, builtins.int]]]=...,
+        map_i32_map_i32_struct: _typing.Optional[_typing.Mapping[builtins.int, _typing.Mapping[builtins.int, _fbthrift_MyStruct]]]=...,
+        map_i32_map_list_i32_i32: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]]]=...,
+        map_i32_map_list_struct_i32: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]]]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_python_types.ImmutableList[_fbthrift_MyStruct], _fbthrift_python_types.ImmutableList[_fbthrift_MyUnion], _fbthrift_python_types.ImmutableList[_fbthrift_MyEnum], _typing.AbstractSet[_fbthrift_MyStruct], _typing.AbstractSet[_fbthrift_MyUnion], _typing.AbstractSet[_fbthrift_MyEnum], _typing.Mapping[_fbthrift_MyStruct, builtins.int], _typing.Mapping[_fbthrift_MyUnion, builtins.int], _typing.Mapping[_fbthrift_MyEnum, builtins.int], _typing.Mapping[builtins.int, _fbthrift_MyStruct], _typing.Mapping[builtins.int, _fbthrift_MyUnion], _typing.Mapping[builtins.int, _fbthrift_MyEnum], _typing.Mapping[_fbthrift_python_types.ImmutableList[builtins.int], builtins.int], _typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[builtins.int]], _typing.Mapping[_typing.AbstractSet[builtins.int], builtins.int], _typing.Mapping[builtins.int, _typing.AbstractSet[builtins.int]], _typing.Mapping[_typing.Mapping[builtins.int, builtins.int], builtins.int], _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]], _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[builtins.int]], _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[_fbthrift_MyStruct]], _fbthrift_python_types.ImmutableList[_typing.AbstractSet[builtins.int]], _fbthrift_python_types.ImmutableList[_typing.AbstractSet[_fbthrift_MyStruct]], _fbthrift_python_types.ImmutableList[_typing.Mapping[builtins.int, builtins.int]], _fbthrift_python_types.ImmutableList[_typing.Mapping[builtins.int, _fbthrift_MyStruct]], _fbthrift_python_types.ImmutableList[_typing.Mapping[_fbthrift_MyStruct, builtins.int]], _typing.AbstractSet[_fbthrift_python_types.ImmutableList[builtins.int]], _typing.AbstractSet[_fbthrift_python_types.ImmutableList[_fbthrift_MyStruct]], _typing.AbstractSet[_typing.AbstractSet[builtins.int]], _typing.AbstractSet[_typing.AbstractSet[_fbthrift_MyStruct]], _typing.AbstractSet[_typing.Mapping[builtins.int, builtins.int]], _typing.AbstractSet[_typing.Mapping[builtins.int, _fbthrift_MyStruct]], _typing.AbstractSet[_typing.Mapping[_fbthrift_MyStruct, builtins.int]], _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, builtins.int]], _typing.Mapping[builtins.int, _typing.Mapping[_fbthrift_MyStruct, builtins.int]], _typing.Mapping[builtins.int, _typing.Mapping[builtins.int, _fbthrift_MyStruct]], _typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[_typing.Mapping[builtins.int, builtins.int]]], _typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[_typing.Mapping[_fbthrift_MyStruct, builtins.int]]]]]]: ...
     def _to_python(self) -> _typing.Self: ...

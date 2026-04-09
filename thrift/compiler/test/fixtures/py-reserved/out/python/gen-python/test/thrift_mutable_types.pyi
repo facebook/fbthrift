@@ -83,32 +83,32 @@ class def_(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_abstra
 
     def __init__(
         self, *,
-        from_: builtins.int=...,
-        in_: builtins.str=...,
-        as_: builtins.int=...,
-        if_: builtins.bool=...,
-        else_: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper=...,
-        try_: builtins.int=...,
-        while_: builtins.int=...,
-        yield_: builtins.bool=...,
-        break_: builtins.bool=...,
-        await_: builtins.bool=...,
-        return_: builtins.bool=...
+        from_: _typing.Optional[builtins.int]=...,
+        in_: _typing.Optional[builtins.str]=...,
+        as_: _typing.Optional[builtins.int]=...,
+        if_: _typing.Optional[builtins.bool]=...,
+        else_: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
+        try_: _typing.Optional[builtins.int]=...,
+        while_: _typing.Optional[builtins.int]=...,
+        yield_: _typing.Optional[builtins.bool]=...,
+        break_: _typing.Optional[builtins.bool]=...,
+        await_: _typing.Optional[builtins.bool]=...,
+        return_: _typing.Optional[builtins.bool]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        from_: builtins.int=...,
-        in_: builtins.str=...,
-        as_: builtins.int=...,
-        if_: builtins.bool=...,
-        else_: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper=...,
-        try_: builtins.int=...,
-        while_: builtins.int=...,
-        yield_: builtins.bool=...,
-        break_: builtins.bool=...,
-        await_: builtins.bool=...,
-        return_: builtins.bool=...
+        from_: _typing.Optional[builtins.int]=...,
+        in_: _typing.Optional[builtins.str]=...,
+        as_: _typing.Optional[builtins.int]=...,
+        if_: _typing.Optional[builtins.bool]=...,
+        else_: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
+        try_: _typing.Optional[builtins.int]=...,
+        while_: _typing.Optional[builtins.int]=...,
+        yield_: _typing.Optional[builtins.bool]=...,
+        break_: _typing.Optional[builtins.bool]=...,
+        await_: _typing.Optional[builtins.bool]=...,
+        return_: _typing.Optional[builtins.bool]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, builtins.str, builtins.int, builtins.bool, _fbthrift_python_mutable_containers.MutableList[builtins.int], builtins.int, builtins.int, builtins.bool, builtins.bool, builtins.bool, builtins.bool]]]: ...
     def _to_python(self) -> "test.thrift_types.def_": ...  # type: ignore
@@ -125,7 +125,7 @@ class _fbthrift_lambda_global_args(_fbthrift_python_mutable_types.MutableStruct)
 
     def __init__(
         self, *,
-        raise_: builtins.int=...
+        raise_: _typing.Optional[builtins.int]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
