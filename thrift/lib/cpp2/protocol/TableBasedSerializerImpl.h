@@ -23,6 +23,7 @@
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
+#include <thrift/lib/cpp2/type/Tag.h>
 
 namespace apache::thrift::detail {
 
@@ -493,8 +494,28 @@ size_t writeThriftValue(
       // as a user error if the value is a nullptr.
     case protocol::TType::T_MAP: {
       const auto& ext = *static_cast<const MapFieldExt*>(typeInfo.typeExt);
+      const auto& keyInfo = *ext.keyInfo;
+
+      // Some protocols (e.g., JSON5) require type tag information richer than
+      // TType to serialize maps correctly. For example, TType alone cannot
+      // distinguish string keys (serialized as {"k": "v"}) from binary keys
+      // (serialized as [{"key": "k", "value": "v"}]). These protocols provide a
+      // writeMapBegin overload with an alternativeKeyForm bool parameter to
+      // disambiguate string/binary and i32/enum key types.
+      const bool isEnum =
+          keyInfo.type == protocol::TType::T_I32 && keyInfo.typeExt != nullptr;
+      const auto* keyTypeExt =
+          static_cast<const StringFieldType*>(keyInfo.typeExt);
+      const bool isString = keyInfo.type == protocol::TType::T_STRING &&
+          (keyTypeExt == nullptr || *keyTypeExt == StringFieldType::String ||
+           *keyTypeExt == StringFieldType::StringView);
+      const bool alternativeKeyForm = isEnum || isString;
+
       size_t written = iprot->writeMapBegin(
-          ext.keyInfo->type, ext.valInfo->type, ext.size(value.object));
+          ext.keyInfo->type,
+          ext.valInfo->type,
+          ext.size(value.object),
+          alternativeKeyForm);
 
       struct Context {
         const TypeInfo* keyInfo;
