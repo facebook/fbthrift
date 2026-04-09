@@ -2553,6 +2553,11 @@ class ReadCallbackTest : public folly::AsyncTransport::ReadCallback {
 } // namespace
 
 TEST(ThriftServer, ShutdownSocketSetTest) {
+  if (folly::kIsSanitizeThread) {
+    GTEST_SUCCEED() << "Disabled in TSAN mode: ShutdownSocketSet deliberately "
+                       "races on file descriptors";
+    return;
+  }
   TestThriftServerFactory<TestHandler> factory;
   auto server = factory.create();
   ScopedServerThread sst(server);
