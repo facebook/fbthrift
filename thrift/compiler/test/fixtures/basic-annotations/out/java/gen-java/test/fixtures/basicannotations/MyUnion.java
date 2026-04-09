@@ -137,51 +137,51 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     }
 
     public void write0(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-        if(allowNullFieldValues) {
-          // Warning: this path will generate corrupt serialized data!
-          return;
-        } else {
-          throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        if (this.id != 0 && this.value == null ){
+            if(allowNullFieldValues) {
+                // Warning: this path will generate corrupt serialized data!
+                return;
+            } else {
+                throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+            }
         }
-      }
-      oprot.writeStructBegin(STRUCT_DESC);
-      switch (this.id) {
-      default:
-          // ignore unknown field
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        switch (this.id) {
+        default:
+            // ignore unknown field
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
-    
     public static com.facebook.thrift.payload.Reader<MyUnion> asReader() {
-      return MyUnion::read0;
+        return MyUnion::read0;
     }
 
     public static MyUnion read0(TProtocol oprot) throws TException {
-      MyUnion res = new MyUnion();
-      res.value = null;
-      res.id = (short) 0;
-      oprot.readStructBegin(MyUnion.NAMES_TO_IDS, MyUnion.THRIFT_NAMES_TO_IDS, MyUnion.FIELD_METADATA);
-      TField __field = oprot.readFieldBegin();
-      if (__field.type != TType.STOP) {
-          switch (__field.id) {
-          default:
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-        if (res.value != null) {
-          res.id = __field.id;
+        MyUnion res = new MyUnion();
+        res.value = null;
+        res.id = (short) 0;
+        oprot.readStructBegin(MyUnion.NAMES_TO_IDS, MyUnion.THRIFT_NAMES_TO_IDS, MyUnion.FIELD_METADATA);
+        TField __field = oprot.readFieldBegin();
+        if (__field.type != TType.STOP) {
+            switch (__field.id) {
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+            }
+            if (res.value != null) {
+                res.id = __field.id;
+            }
+            oprot.readFieldEnd();
+            TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+            if (__stopField.type != TType.STOP) {
+                throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'MyUnion' is missing a STOP byte");
+            }
         }
-        oprot.readFieldEnd();
-        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
-        if (__stopField.type != TType.STOP) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'MyUnion' is missing a STOP byte");
-        }
-      }
-      oprot.readStructEnd();
-      return res;
+        oprot.readStructEnd();
+        return res;
     }
+
     public static MyUnion defaultInstance() {
         return _DEFAULT;
     }

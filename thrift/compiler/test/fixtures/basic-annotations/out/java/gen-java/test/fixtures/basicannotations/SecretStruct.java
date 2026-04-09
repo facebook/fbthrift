@@ -142,67 +142,64 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<SecretStruct> asReader() {
       return SecretStruct::read0;
     }
 
     public static SecretStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(SecretStruct.NAMES_TO_IDS, SecretStruct.THRIFT_NAMES_TO_IDS, SecretStruct.FIELD_METADATA);
-      SecretStruct.Builder builder = new SecretStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _ID:
-          if (__field.type == TType.I64) {
-            long _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI64();
-            builder.setId(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _PASSWORD:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setPassword(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(SecretStruct.NAMES_TO_IDS, SecretStruct.THRIFT_NAMES_TO_IDS, SecretStruct.FIELD_METADATA);
+        SecretStruct.Builder builder = new SecretStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _ID:
+                if (__field.type == TType.I64) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    builder.setId(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _PASSWORD:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setPassword(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      long _fbthriftVar0 = this.id;
-      oprot.writeFieldBegin(ID_FIELD_DESC);
-      oprot.writeI64(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      String _fbthriftVar0 = this.password;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(PASSWORD_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            long _fbthriftVar0 = this.id;
+            oprot.writeFieldBegin(ID_FIELD_DESC);
+            oprot.writeI64(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            String _fbthriftVar0 = this.password;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(PASSWORD_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _SecretStructLazy {

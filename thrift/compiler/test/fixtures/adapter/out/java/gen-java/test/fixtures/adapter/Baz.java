@@ -376,195 +376,190 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
     }
 
     public void write0(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-        if(allowNullFieldValues) {
-          // Warning: this path will generate corrupt serialized data!
-          return;
-        } else {
-          throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        if (this.id != 0 && this.value == null ){
+            if(allowNullFieldValues) {
+                // Warning: this path will generate corrupt serialized data!
+                return;
+            } else {
+                throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+            }
         }
-      }
-      oprot.writeStructBegin(STRUCT_DESC);
-      switch (this.id) {
-      case _INTFIELD: {
-        Integer   _fbthriftVar0 = _intField_Adapter.toThrift((com.facebook.thrift.my.AdaptedI32_5137_1)this.value);
-        if (_fbthriftVar0 != null) {
-          oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
-
-          oprot.writeI32(_fbthriftVar0);
-          oprot.writeFieldEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        switch (this.id) {
+        case _INTFIELD: {
+            Integer   _fbthriftVar0 = _intField_Adapter.toThrift((com.facebook.thrift.my.AdaptedI32_5137_1)this.value);
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
+                oprot.writeI32(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+            break;
         }
-        break;
-      }
-      case _SETFIELD: {
-        Set<String>   _fbthriftVar0 = __SetWithAdapter_Adapter.toThrift((com.facebook.thrift.my.AdaptedSet_2)this.value);
-        if (_fbthriftVar0 != null) {
-          oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
-
-          oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
-          for (String _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeString(_fbthriftVar1);
-          }
-          oprot.writeSetEnd();
-          oprot.writeFieldEnd();
+        case _SETFIELD: {
+            Set<String>   _fbthriftVar0 = __SetWithAdapter_Adapter.toThrift((com.facebook.thrift.my.AdaptedSet_2)this.value);
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
+                oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
+                for (String _fbthriftVar1 : _fbthriftVar0) {
+                    oprot.writeString(_fbthriftVar1);
+                }
+                oprot.writeSetEnd();
+                oprot.writeFieldEnd();
+            }
+            break;
         }
-        break;
-      }
-      case _MAPFIELD: {
-        Map<String, com.facebook.thrift.my.AdaptedList_2>   _fbthriftVar0 = _mapField_Adapter.toThrift((com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3)this.value);
-        if (_fbthriftVar0 != null) {
-          oprot.writeFieldBegin(MAP_FIELD_FIELD_DESC);
-
-          oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _fbthriftVar0.size()));
-          for (Map.Entry<String, com.facebook.thrift.my.AdaptedList_2> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                  String _fbthriftVar2 = _fbthriftVar1.getKey();
-                  oprot.writeString(_fbthriftVar2);
-              }
-              {
-                  com.facebook.thrift.my.AdaptedList_2 _fbthriftVar2 = _fbthriftVar1.getValue();
-                  List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar3 = __ListWithElemAdapter_withAdapter_2312_Adapter.toThrift(_fbthriftVar2);
-                  oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar3.size()));
-                  for (com.facebook.thrift.my.AdaptedString_1 _fbthriftVar4 : _fbthriftVar3) {
-                      String _fbthriftVar5 = __StringWithAdapter_Adapter.toThrift(_fbthriftVar4);
-                      oprot.writeString(_fbthriftVar5);
-                  }
-                  oprot.writeListEnd();
-              }
-          }
-          oprot.writeMapEnd();
-          oprot.writeFieldEnd();
+        case _MAPFIELD: {
+            Map<String, com.facebook.thrift.my.AdaptedList_2>   _fbthriftVar0 = _mapField_Adapter.toThrift((com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3)this.value);
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MAP_FIELD_FIELD_DESC);
+                oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _fbthriftVar0.size()));
+                for (Map.Entry<String, com.facebook.thrift.my.AdaptedList_2> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+                    {
+                        String _fbthriftVar2 = _fbthriftVar1.getKey();
+                        oprot.writeString(_fbthriftVar2);
+                    }
+                    {
+                        com.facebook.thrift.my.AdaptedList_2 _fbthriftVar2 = _fbthriftVar1.getValue();
+                        List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar3 = __ListWithElemAdapter_withAdapter_2312_Adapter.toThrift(_fbthriftVar2);
+                        oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar3.size()));
+                        for (com.facebook.thrift.my.AdaptedString_1 _fbthriftVar4 : _fbthriftVar3) {
+                            String _fbthriftVar5 = __StringWithAdapter_Adapter.toThrift(_fbthriftVar4);
+                            oprot.writeString(_fbthriftVar5);
+                        }
+                        oprot.writeListEnd();
+                    }
+                }
+                oprot.writeMapEnd();
+                oprot.writeFieldEnd();
+            }
+            break;
         }
-        break;
-      }
-      case _BINARYFIELD: {
-        io.netty.buffer.ByteBuf   _fbthriftVar0 = _binaryField_Adapter.toThrift((com.facebook.thrift.my.AdaptedBinary_5673_1)this.value);
-        if (_fbthriftVar0 != null) {
-          oprot.writeFieldBegin(BINARY_FIELD_FIELD_DESC);
-
-          org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
-          oprot.writeFieldEnd();
+        case _BINARYFIELD: {
+            io.netty.buffer.ByteBuf   _fbthriftVar0 = _binaryField_Adapter.toThrift((com.facebook.thrift.my.AdaptedBinary_5673_1)this.value);
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(BINARY_FIELD_FIELD_DESC);
+                org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+            break;
         }
-        break;
-      }
-      case _LONGFIELD: {
-        Long   _fbthriftVar0 = __MyI64_Adapter.toThrift((com.facebook.thrift.my.AdaptedI64_1)this.value);
-        if (_fbthriftVar0 != null) {
-          oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
-
-          oprot.writeI64(_fbthriftVar0);
-          oprot.writeFieldEnd();
+        case _LONGFIELD: {
+            Long   _fbthriftVar0 = __MyI64_Adapter.toThrift((com.facebook.thrift.my.AdaptedI64_1)this.value);
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
+                oprot.writeI64(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+            break;
         }
-        break;
-      }
-      default:
-          // ignore unknown field
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        default:
+            // ignore unknown field
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
-    
     public static com.facebook.thrift.payload.Reader<Baz> asReader() {
-      return Baz::read0;
+        return Baz::read0;
     }
 
     public static Baz read0(TProtocol oprot) throws TException {
-      Baz res = new Baz();
-      res.value = null;
-      res.id = (short) 0;
-      oprot.readStructBegin(Baz.NAMES_TO_IDS, Baz.THRIFT_NAMES_TO_IDS, Baz.FIELD_METADATA);
-      TField __field = oprot.readFieldBegin();
-      if (__field.type != TType.STOP) {
-          switch (__field.id) {
-          case _INTFIELD:
-            if (__field.type == INT_FIELD_FIELD_DESC.type) {
-              int _fbthriftVar0;
-              _fbthriftVar0 = oprot.readI32();
-              res.value = _intField_Adapter.fromThrift(_fbthriftVar0);
-            }
-            break;
-          case _SETFIELD:
-            if (__field.type == SET_FIELD_FIELD_DESC.type) {
-              Set<String> _fbthriftVar0;
-              {
-                  TSet _set0 = oprot.readSetBegin();
-                  _fbthriftVar0 = new HashSet<String>(Math.max(0, _set0.size));
-                  for (int _i0 = 0; (_set0.size < 0) ? oprot.peekSet() : (_i0 < _set0.size); _i0++) {
-                      String _fbthriftVar1;
-                      _fbthriftVar1 = oprot.readString();
-                      _fbthriftVar0.add(_fbthriftVar1);
-                  }
-                  oprot.readSetEnd();
-              }
-              res.value = __SetWithAdapter_Adapter.fromThrift(_fbthriftVar0);
-            }
-            break;
-          case _MAPFIELD:
-            if (__field.type == MAP_FIELD_FIELD_DESC.type) {
-              Map<String, com.facebook.thrift.my.AdaptedList_2> _fbthriftVar0;
-              {
-                  TMap _map0 = oprot.readMapBegin();
-                  _fbthriftVar0 = new HashMap<String, com.facebook.thrift.my.AdaptedList_2>(Math.max(0, _map0.size));
-                  for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
-                      String _fbthriftKey1;
-                      List<com.facebook.thrift.my.AdaptedString_1> _fbthriftValue1;
+        Baz res = new Baz();
+        res.value = null;
+        res.id = (short) 0;
+        oprot.readStructBegin(Baz.NAMES_TO_IDS, Baz.THRIFT_NAMES_TO_IDS, Baz.FIELD_METADATA);
+        TField __field = oprot.readFieldBegin();
+        if (__field.type != TType.STOP) {
+            switch (__field.id) {
+            case _INTFIELD:
+                if (__field.type == INT_FIELD_FIELD_DESC.type) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    res.value = _intField_Adapter.fromThrift(_fbthriftVar0);
+                }
+                break;
+            case _SETFIELD:
+                if (__field.type == SET_FIELD_FIELD_DESC.type) {
+                    Set<String> _fbthriftVar0;
+                    {
+                        TSet _set0 = oprot.readSetBegin();
+                        _fbthriftVar0 = new HashSet<String>(Math.max(0, _set0.size));
+                        for (int _i0 = 0; (_set0.size < 0) ? oprot.peekSet() : (_i0 < _set0.size); _i0++) {
+                            String _fbthriftVar1;
+                            _fbthriftVar1 = oprot.readString();
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readSetEnd();
+                    }
+                    res.value = __SetWithAdapter_Adapter.fromThrift(_fbthriftVar0);
+                }
+                break;
+            case _MAPFIELD:
+                if (__field.type == MAP_FIELD_FIELD_DESC.type) {
+                    Map<String, com.facebook.thrift.my.AdaptedList_2> _fbthriftVar0;
+                    {
+                        TMap _map0 = oprot.readMapBegin();
+                        _fbthriftVar0 = new HashMap<String, com.facebook.thrift.my.AdaptedList_2>(Math.max(0, _map0.size));
+                        for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                            String _fbthriftKey1;
+                            List<com.facebook.thrift.my.AdaptedString_1> _fbthriftValue1;
 
-                      {
-                          String _fbthriftVar1;
-                          _fbthriftVar1 = oprot.readString();
-                          _fbthriftKey1 = _fbthriftVar1;
-                      }
-                      {
-                          List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar1;
-                          {
-                              TList _list1 = oprot.readListBegin();
-                              _fbthriftVar1 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list1.size));
-                              for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                                  String _fbthriftVar2;
-                                  _fbthriftVar2 = oprot.readString();
-                                  _fbthriftVar1.add(__StringWithAdapter_Adapter.fromThrift(_fbthriftVar2));
-                              }
-                              oprot.readListEnd();
-                          }
-                          _fbthriftValue1 = _fbthriftVar1;
-                      }
-                      _fbthriftVar0.put(_fbthriftKey1, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue1));
-                  }
-                  oprot.readMapEnd();
-              }
-              res.value = _mapField_Adapter.fromThrift(_fbthriftVar0);
+                            {
+                                String _fbthriftVar1;
+                                _fbthriftVar1 = oprot.readString();
+                                _fbthriftKey1 = _fbthriftVar1;
+                            }
+                            {
+                                List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar1;
+                                {
+                                    TList _list1 = oprot.readListBegin();
+                                    _fbthriftVar1 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list1.size));
+                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                        String _fbthriftVar2;
+                                        _fbthriftVar2 = oprot.readString();
+                                        _fbthriftVar1.add(__StringWithAdapter_Adapter.fromThrift(_fbthriftVar2));
+                                    }
+                                    oprot.readListEnd();
+                                }
+                                _fbthriftValue1 = _fbthriftVar1;
+                            }
+                            _fbthriftVar0.put(_fbthriftKey1, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue1));
+                        }
+                        oprot.readMapEnd();
+                    }
+                    res.value = _mapField_Adapter.fromThrift(_fbthriftVar0);
+                }
+                break;
+            case _BINARYFIELD:
+                if (__field.type == BINARY_FIELD_FIELD_DESC.type) {
+                    io.netty.buffer.ByteBuf _fbthriftVar0;
+                    _fbthriftVar0 = org.apache.thrift.protocol.TProtocolUtil.readBinaryAsByteBuf(oprot);
+                    res.value = _binaryField_Adapter.fromThrift(_fbthriftVar0);
+                }
+                break;
+            case _LONGFIELD:
+                if (__field.type == LONG_FIELD_FIELD_DESC.type) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    res.value = __MyI64_Adapter.fromThrift(_fbthriftVar0);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
             }
-            break;
-          case _BINARYFIELD:
-            if (__field.type == BINARY_FIELD_FIELD_DESC.type) {
-              io.netty.buffer.ByteBuf _fbthriftVar0;
-              _fbthriftVar0 = org.apache.thrift.protocol.TProtocolUtil.readBinaryAsByteBuf(oprot);
-              res.value = _binaryField_Adapter.fromThrift(_fbthriftVar0);
+            if (res.value != null) {
+                res.id = __field.id;
             }
-            break;
-          case _LONGFIELD:
-            if (__field.type == LONG_FIELD_FIELD_DESC.type) {
-              long _fbthriftVar0;
-              _fbthriftVar0 = oprot.readI64();
-              res.value = __MyI64_Adapter.fromThrift(_fbthriftVar0);
+            oprot.readFieldEnd();
+            TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+            if (__stopField.type != TType.STOP) {
+                throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'Baz' is missing a STOP byte");
             }
-            break;
-          default:
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-        if (res.value != null) {
-          res.id = __field.id;
         }
-        oprot.readFieldEnd();
-        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
-        if (__stopField.type != TType.STOP) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'Baz' is missing a STOP byte");
-        }
-      }
-      oprot.readStructEnd();
-      return res;
+        oprot.readStructEnd();
+        return res;
     }
+
     public static Baz defaultInstance() {
         return _DEFAULT;
     }

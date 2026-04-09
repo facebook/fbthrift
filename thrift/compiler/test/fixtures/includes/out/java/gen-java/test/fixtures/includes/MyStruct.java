@@ -166,85 +166,81 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
       return MyStruct::read0;
     }
 
     public static MyStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
-      MyStruct.Builder builder = new MyStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _MYINCLUDEDFIELD:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.includes.includes.Included _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.includes.includes.Included.read0(oprot);
-            builder.setMyIncludedField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYOTHERINCLUDEDFIELD:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.includes.includes.Included _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.includes.includes.Included.read0(oprot);
-            builder.setMyOtherIncludedField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYINCLUDEDINT:
-          if (__field.type == TType.I64) {
-            long _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI64();
-            builder.setMyIncludedInt(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
+        MyStruct.Builder builder = new MyStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _MYINCLUDEDFIELD:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.includes.includes.Included _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.includes.includes.Included.read0(oprot);
+                    builder.setMyIncludedField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYOTHERINCLUDEDFIELD:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.includes.includes.Included _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.includes.includes.Included.read0(oprot);
+                    builder.setMyOtherIncludedField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYINCLUDEDINT:
+                if (__field.type == TType.I64) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    builder.setMyIncludedInt(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.includes.includes.Included _fbthriftVar0 = this.myIncludedField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_INCLUDED_FIELD_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.includes.includes.Included _fbthriftVar0 = this.myOtherIncludedField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_OTHER_INCLUDED_FIELD_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      long _fbthriftVar0 = this.myIncludedInt;
-      oprot.writeFieldBegin(MY_INCLUDED_INT_FIELD_DESC);
-      oprot.writeI64(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.includes.includes.Included _fbthriftVar0 = this.myIncludedField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_INCLUDED_FIELD_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.includes.includes.Included _fbthriftVar0 = this.myOtherIncludedField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_OTHER_INCLUDED_FIELD_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            long _fbthriftVar0 = this.myIncludedInt;
+            oprot.writeFieldBegin(MY_INCLUDED_INT_FIELD_DESC);
+            oprot.writeI64(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _MyStructLazy {

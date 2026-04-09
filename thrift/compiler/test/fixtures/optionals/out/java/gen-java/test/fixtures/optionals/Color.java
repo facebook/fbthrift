@@ -192,97 +192,92 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<Color> asReader() {
       return Color::read0;
     }
 
     public static Color read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(Color.NAMES_TO_IDS, Color.THRIFT_NAMES_TO_IDS, Color.FIELD_METADATA);
-      Color.Builder builder = new Color.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _RED:
-          if (__field.type == TType.DOUBLE) {
-            double _fbthriftVar0;
-            _fbthriftVar0 = oprot.readDouble();
-            builder.setRed(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _GREEN:
-          if (__field.type == TType.DOUBLE) {
-            double _fbthriftVar0;
-            _fbthriftVar0 = oprot.readDouble();
-            builder.setGreen(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _BLUE:
-          if (__field.type == TType.DOUBLE) {
-            double _fbthriftVar0;
-            _fbthriftVar0 = oprot.readDouble();
-            builder.setBlue(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _ALPHA:
-          if (__field.type == TType.DOUBLE) {
-            double _fbthriftVar0;
-            _fbthriftVar0 = oprot.readDouble();
-            builder.setAlpha(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(Color.NAMES_TO_IDS, Color.THRIFT_NAMES_TO_IDS, Color.FIELD_METADATA);
+        Color.Builder builder = new Color.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _RED:
+                if (__field.type == TType.DOUBLE) {
+                    double _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readDouble();
+                    builder.setRed(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _GREEN:
+                if (__field.type == TType.DOUBLE) {
+                    double _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readDouble();
+                    builder.setGreen(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _BLUE:
+                if (__field.type == TType.DOUBLE) {
+                    double _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readDouble();
+                    builder.setBlue(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _ALPHA:
+                if (__field.type == TType.DOUBLE) {
+                    double _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readDouble();
+                    builder.setAlpha(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      double _fbthriftVar0 = this.red;
-      oprot.writeFieldBegin(RED_FIELD_DESC);
-      oprot.writeDouble(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      double _fbthriftVar0 = this.green;
-      oprot.writeFieldBegin(GREEN_FIELD_DESC);
-      oprot.writeDouble(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      double _fbthriftVar0 = this.blue;
-      oprot.writeFieldBegin(BLUE_FIELD_DESC);
-      oprot.writeDouble(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      double _fbthriftVar0 = this.alpha;
-      oprot.writeFieldBegin(ALPHA_FIELD_DESC);
-      oprot.writeDouble(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            double _fbthriftVar0 = this.red;
+            oprot.writeFieldBegin(RED_FIELD_DESC);
+            oprot.writeDouble(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            double _fbthriftVar0 = this.green;
+            oprot.writeFieldBegin(GREEN_FIELD_DESC);
+            oprot.writeDouble(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            double _fbthriftVar0 = this.blue;
+            oprot.writeFieldBegin(BLUE_FIELD_DESC);
+            oprot.writeDouble(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            double _fbthriftVar0 = this.alpha;
+            oprot.writeFieldBegin(ALPHA_FIELD_DESC);
+            oprot.writeDouble(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _ColorLazy {

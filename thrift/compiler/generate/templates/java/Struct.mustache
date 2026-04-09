@@ -107,9 +107,9 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
 
     {{#partial struct.struct_hash_code struct=struct:self}}
 
-    {{> struct/StructRead}}
+    {{#partial struct.struct_read struct=struct:self}}
 
-    {{> struct/StructWrite}}
+    {{#partial struct.struct_write struct=struct:self}}
 
     {{^struct:asBean?}}
     {{#partial struct.default_instance struct=struct:self}}

@@ -117,51 +117,49 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<ReorderedStruct> asReader() {
       return ReorderedStruct::read0;
     }
 
     public static ReorderedStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(ReorderedStruct.NAMES_TO_IDS, ReorderedStruct.THRIFT_NAMES_TO_IDS, ReorderedStruct.FIELD_METADATA);
-      ReorderedStruct.Builder builder = new ReorderedStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _REORDERED_DEPENDENT_ADAPTED:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.DeclaredAfterStruct _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.DeclaredAfterStruct.read0(oprot);
-            builder.setReorderedDependentAdapted(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(ReorderedStruct.NAMES_TO_IDS, ReorderedStruct.THRIFT_NAMES_TO_IDS, ReorderedStruct.FIELD_METADATA);
+        ReorderedStruct.Builder builder = new ReorderedStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _REORDERED_DEPENDENT_ADAPTED:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.DeclaredAfterStruct _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.DeclaredAfterStruct.read0(oprot);
+                    builder.setReorderedDependentAdapted(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.adapter.DeclaredAfterStruct _fbthriftVar0 = this.reorderedDependentAdapted;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(REORDERED_DEPENDENT_ADAPTED_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.adapter.DeclaredAfterStruct _fbthriftVar0 = this.reorderedDependentAdapted;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(REORDERED_DEPENDENT_ADAPTED_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _ReorderedStructLazy {

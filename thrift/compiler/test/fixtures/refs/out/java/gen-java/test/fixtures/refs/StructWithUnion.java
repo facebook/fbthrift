@@ -166,85 +166,81 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<StructWithUnion> asReader() {
       return StructWithUnion::read0;
     }
 
     public static StructWithUnion read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(StructWithUnion.NAMES_TO_IDS, StructWithUnion.THRIFT_NAMES_TO_IDS, StructWithUnion.FIELD_METADATA);
-      StructWithUnion.Builder builder = new StructWithUnion.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _U:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyUnion _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.refs.MyUnion.read0(oprot);
-            builder.setU(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _ADOUBLE:
-          if (__field.type == TType.DOUBLE) {
-            double _fbthriftVar0;
-            _fbthriftVar0 = oprot.readDouble();
-            builder.setADouble(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _F:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
-            builder.setF(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(StructWithUnion.NAMES_TO_IDS, StructWithUnion.THRIFT_NAMES_TO_IDS, StructWithUnion.FIELD_METADATA);
+        StructWithUnion.Builder builder = new StructWithUnion.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _U:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.refs.MyUnion _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.refs.MyUnion.read0(oprot);
+                    builder.setU(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _ADOUBLE:
+                if (__field.type == TType.DOUBLE) {
+                    double _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readDouble();
+                    builder.setADouble(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _F:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.refs.MyField _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
+                    builder.setF(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.refs.MyUnion _fbthriftVar0 = this.u;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(U_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      double _fbthriftVar0 = this.aDouble;
-      oprot.writeFieldBegin(A_DOUBLE_FIELD_DESC);
-      oprot.writeDouble(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      test.fixtures.refs.MyField _fbthriftVar0 = this.f;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(F_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.refs.MyUnion _fbthriftVar0 = this.u;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(U_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            double _fbthriftVar0 = this.aDouble;
+            oprot.writeFieldBegin(A_DOUBLE_FIELD_DESC);
+            oprot.writeDouble(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            test.fixtures.refs.MyField _fbthriftVar0 = this.f;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(F_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _StructWithUnionLazy {

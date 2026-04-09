@@ -192,99 +192,94 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<MyStructFloatFieldThrowExp> asReader() {
       return MyStructFloatFieldThrowExp::read0;
     }
 
     public static MyStructFloatFieldThrowExp read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(MyStructFloatFieldThrowExp.NAMES_TO_IDS, MyStructFloatFieldThrowExp.THRIFT_NAMES_TO_IDS, MyStructFloatFieldThrowExp.FIELD_METADATA);
-      MyStructFloatFieldThrowExp.Builder builder = new MyStructFloatFieldThrowExp.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _MYLONGFIELD:
-          if (__field.type == TType.I64) {
-            long _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI64();
-            builder.setMyLongField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYBYTEFIELD:
-          if (__field.type == TType.BYTE) {
-            byte _fbthriftVar0;
-            _fbthriftVar0 = oprot.readByte();
-            builder.setMyByteField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYSTRINGFIELD:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setMyStringField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYFLOATFIELD:
-          if (__field.type == TType.FLOAT) {
-            float _fbthriftVar0;
-            _fbthriftVar0 = oprot.readFloat();
-            builder.setMyFloatField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(MyStructFloatFieldThrowExp.NAMES_TO_IDS, MyStructFloatFieldThrowExp.THRIFT_NAMES_TO_IDS, MyStructFloatFieldThrowExp.FIELD_METADATA);
+        MyStructFloatFieldThrowExp.Builder builder = new MyStructFloatFieldThrowExp.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _MYLONGFIELD:
+                if (__field.type == TType.I64) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    builder.setMyLongField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYBYTEFIELD:
+                if (__field.type == TType.BYTE) {
+                    byte _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readByte();
+                    builder.setMyByteField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYSTRINGFIELD:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setMyStringField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYFLOATFIELD:
+                if (__field.type == TType.FLOAT) {
+                    float _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readFloat();
+                    builder.setMyFloatField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      long _fbthriftVar0 = this.myLongField;
-      oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
-      oprot.writeI64(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      byte _fbthriftVar0 = this.myByteField;
-      oprot.writeFieldBegin(MY_BYTE_FIELD_FIELD_DESC);
-      oprot.writeByte(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      String _fbthriftVar0 = this.myStringField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      float _fbthriftVar0 = this.myFloatField;
-      oprot.writeFieldBegin(MY_FLOAT_FIELD_FIELD_DESC);
-      oprot.writeFloat(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            long _fbthriftVar0 = this.myLongField;
+            oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
+            oprot.writeI64(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            byte _fbthriftVar0 = this.myByteField;
+            oprot.writeFieldBegin(MY_BYTE_FIELD_FIELD_DESC);
+            oprot.writeByte(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            String _fbthriftVar0 = this.myStringField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            float _fbthriftVar0 = this.myFloatField;
+            oprot.writeFieldBegin(MY_FLOAT_FIELD_FIELD_DESC);
+            oprot.writeFloat(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _MyStructFloatFieldThrowExpLazy {

@@ -225,81 +225,81 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public void write0(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-        if(allowNullFieldValues) {
-          // Warning: this path will generate corrupt serialized data!
-          return;
-        } else {
-          throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        if (this.id != 0 && this.value == null ){
+            if(allowNullFieldValues) {
+                // Warning: this path will generate corrupt serialized data!
+                return;
+            } else {
+                throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+            }
         }
-      }
-      oprot.writeStructBegin(STRUCT_DESC);
-      switch (this.id) {
-      case _V1: {
-        oprot.writeFieldBegin(V1_FIELD_DESC);
-        test.fixtures.complex_union.Val _fbthriftVar0 = (test.fixtures.complex_union.Val)this.value;
+        oprot.writeStructBegin(STRUCT_DESC);
+        switch (this.id) {
+        case _V1: {
+            oprot.writeFieldBegin(V1_FIELD_DESC);
+            test.fixtures.complex_union.Val _fbthriftVar0 = (test.fixtures.complex_union.Val)this.value;
 
-        _fbthriftVar0.write0(oprot);
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _V2: {
-        oprot.writeFieldBegin(V2_FIELD_DESC);
-        test.fixtures.complex_union.Val _fbthriftVar0 = (test.fixtures.complex_union.Val)this.value;
+            _fbthriftVar0.write0(oprot);
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _V2: {
+            oprot.writeFieldBegin(V2_FIELD_DESC);
+            test.fixtures.complex_union.Val _fbthriftVar0 = (test.fixtures.complex_union.Val)this.value;
 
-        _fbthriftVar0.write0(oprot);
-        oprot.writeFieldEnd();
-        break;
-      }
-      default:
-          // ignore unknown field
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+            _fbthriftVar0.write0(oprot);
+            oprot.writeFieldEnd();
+            break;
+        }
+        default:
+            // ignore unknown field
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
-    
     public static com.facebook.thrift.payload.Reader<ValUnion> asReader() {
-      return ValUnion::read0;
+        return ValUnion::read0;
     }
 
     public static ValUnion read0(TProtocol oprot) throws TException {
-      ValUnion res = new ValUnion();
-      res.value = null;
-      res.id = (short) 0;
-      oprot.readStructBegin(ValUnion.NAMES_TO_IDS, ValUnion.THRIFT_NAMES_TO_IDS, ValUnion.FIELD_METADATA);
-      TField __field = oprot.readFieldBegin();
-      if (__field.type != TType.STOP) {
-          switch (__field.id) {
-          case _V1:
-            if (__field.type == V1_FIELD_DESC.type) {
-              test.fixtures.complex_union.Val _fbthriftVar0;
-              _fbthriftVar0 = test.fixtures.complex_union.Val.read0(oprot);
-              res.value = _fbthriftVar0;
+        ValUnion res = new ValUnion();
+        res.value = null;
+        res.id = (short) 0;
+        oprot.readStructBegin(ValUnion.NAMES_TO_IDS, ValUnion.THRIFT_NAMES_TO_IDS, ValUnion.FIELD_METADATA);
+        TField __field = oprot.readFieldBegin();
+        if (__field.type != TType.STOP) {
+            switch (__field.id) {
+            case _V1:
+                if (__field.type == V1_FIELD_DESC.type) {
+                    test.fixtures.complex_union.Val _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.complex_union.Val.read0(oprot);
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _V2:
+                if (__field.type == V2_FIELD_DESC.type) {
+                    test.fixtures.complex_union.Val _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.complex_union.Val.read0(oprot);
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
             }
-            break;
-          case _V2:
-            if (__field.type == V2_FIELD_DESC.type) {
-              test.fixtures.complex_union.Val _fbthriftVar0;
-              _fbthriftVar0 = test.fixtures.complex_union.Val.read0(oprot);
-              res.value = _fbthriftVar0;
+            if (res.value != null) {
+                res.id = __field.id;
             }
-            break;
-          default:
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-        if (res.value != null) {
-          res.id = __field.id;
+            oprot.readFieldEnd();
+            TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+            if (__stopField.type != TType.STOP) {
+                throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'ValUnion' is missing a STOP byte");
+            }
         }
-        oprot.readFieldEnd();
-        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
-        if (__stopField.type != TType.STOP) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'ValUnion' is missing a STOP byte");
-        }
-      }
-      oprot.readStructEnd();
-      return res;
+        oprot.readStructEnd();
+        return res;
     }
+
     public static ValUnion defaultInstance() {
         return _DEFAULT;
     }

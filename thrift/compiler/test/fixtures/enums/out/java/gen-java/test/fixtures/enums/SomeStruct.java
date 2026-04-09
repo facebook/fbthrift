@@ -197,112 +197,107 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<SomeStruct> asReader() {
       return SomeStruct::read0;
     }
 
     public static SomeStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(SomeStruct.NAMES_TO_IDS, SomeStruct.THRIFT_NAMES_TO_IDS, SomeStruct.FIELD_METADATA);
-      SomeStruct.Builder builder = new SomeStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _REASONABLE:
-          if (__field.type == TType.I32) {
-            test.fixtures.enums.Metasyntactic _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
-            builder.setReasonable(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _FINE:
-          if (__field.type == TType.I32) {
-            test.fixtures.enums.Metasyntactic _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
-            builder.setFine(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _QUESTIONABLE:
-          if (__field.type == TType.I32) {
-            test.fixtures.enums.Metasyntactic _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
-            builder.setQuestionable(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _TAGS:
-          if (__field.type == TType.SET) {
-            Set<Integer> _fbthriftVar0;
-            {
-                TSet _set0 = oprot.readSetBegin();
-                _fbthriftVar0 = new HashSet<Integer>(Math.max(0, _set0.size));
-                for (int _i0 = 0; (_set0.size < 0) ? oprot.peekSet() : (_i0 < _set0.size); _i0++) {
-                    int _fbthriftVar1;
-                    _fbthriftVar1 = oprot.readI32();
-                    _fbthriftVar0.add(_fbthriftVar1);
+        TField __field;
+        oprot.readStructBegin(SomeStruct.NAMES_TO_IDS, SomeStruct.THRIFT_NAMES_TO_IDS, SomeStruct.FIELD_METADATA);
+        SomeStruct.Builder builder = new SomeStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _REASONABLE:
+                if (__field.type == TType.I32) {
+                    test.fixtures.enums.Metasyntactic _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
+                    builder.setReasonable(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readSetEnd();
+                break;
+            case _FINE:
+                if (__field.type == TType.I32) {
+                    test.fixtures.enums.Metasyntactic _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
+                    builder.setFine(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _QUESTIONABLE:
+                if (__field.type == TType.I32) {
+                    test.fixtures.enums.Metasyntactic _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
+                    builder.setQuestionable(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _TAGS:
+                if (__field.type == TType.SET) {
+                    Set<Integer> _fbthriftVar0;
+                    {
+                        TSet _set0 = oprot.readSetBegin();
+                        _fbthriftVar0 = new HashSet<Integer>(Math.max(0, _set0.size));
+                        for (int _i0 = 0; (_set0.size < 0) ? oprot.peekSet() : (_i0 < _set0.size); _i0++) {
+                            int _fbthriftVar1;
+                            _fbthriftVar1 = oprot.readI32();
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readSetEnd();
+                    }
+                    builder.setTags(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
             }
-            builder.setTags(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.enums.Metasyntactic _fbthriftVar0 = this.reasonable;
-      oprot.writeFieldBegin(REASONABLE_FIELD_DESC);
-      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
-
-      oprot.writeFieldEnd();
-      }
-      {
-      test.fixtures.enums.Metasyntactic _fbthriftVar0 = this.fine;
-      oprot.writeFieldBegin(FINE_FIELD_DESC);
-      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
-
-      oprot.writeFieldEnd();
-      }
-      {
-      test.fixtures.enums.Metasyntactic _fbthriftVar0 = this.questionable;
-      oprot.writeFieldBegin(QUESTIONABLE_FIELD_DESC);
-      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
-
-      oprot.writeFieldEnd();
-      }
-      {
-      Set<Integer> _fbthriftVar0 = this.tags;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(TAGS_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
-    for (int _fbthriftVar1 : _fbthriftVar0) {
-        oprot.writeI32(_fbthriftVar1);
-    }
-    oprot.writeSetEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.enums.Metasyntactic _fbthriftVar0 = this.reasonable;
+            oprot.writeFieldBegin(REASONABLE_FIELD_DESC);
+            oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+            oprot.writeFieldEnd();
+        }
+        {
+            test.fixtures.enums.Metasyntactic _fbthriftVar0 = this.fine;
+            oprot.writeFieldBegin(FINE_FIELD_DESC);
+            oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+            oprot.writeFieldEnd();
+        }
+        {
+            test.fixtures.enums.Metasyntactic _fbthriftVar0 = this.questionable;
+            oprot.writeFieldBegin(QUESTIONABLE_FIELD_DESC);
+            oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+            oprot.writeFieldEnd();
+        }
+        {
+            Set<Integer> _fbthriftVar0 = this.tags;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(TAGS_FIELD_DESC);
+                oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
+                for (int _fbthriftVar1 : _fbthriftVar0) {
+                    oprot.writeI32(_fbthriftVar1);
+                }
+                oprot.writeSetEnd();
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _SomeStructLazy {

@@ -225,107 +225,107 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
     }
 
     public void write0(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-        if(allowNullFieldValues) {
-          // Warning: this path will generate corrupt serialized data!
-          return;
-        } else {
-          throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        if (this.id != 0 && this.value == null ){
+            if(allowNullFieldValues) {
+                // Warning: this path will generate corrupt serialized data!
+                return;
+            } else {
+                throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+            }
         }
-      }
-      oprot.writeStructBegin(STRUCT_DESC);
-      switch (this.id) {
-      case _INTLISTVALUE: {
-        oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
-        List<Long> _fbthriftVar0 = (List<Long>)this.value;
+        oprot.writeStructBegin(STRUCT_DESC);
+        switch (this.id) {
+        case _INTLISTVALUE: {
+            oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
+            List<Long> _fbthriftVar0 = (List<Long>)this.value;
 
-        oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
-        for (long _fbthriftVar1 : _fbthriftVar0) {
-            oprot.writeI64(_fbthriftVar1);
+            oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
+            for (long _fbthriftVar1 : _fbthriftVar0) {
+                oprot.writeI64(_fbthriftVar1);
+            }
+            oprot.writeListEnd();
+            oprot.writeFieldEnd();
+            break;
         }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _STRINGLISTVALUE: {
-        oprot.writeFieldBegin(STRING_LIST_VALUE_FIELD_DESC);
-        List<String> _fbthriftVar0 = (List<String>)this.value;
+        case _STRINGLISTVALUE: {
+            oprot.writeFieldBegin(STRING_LIST_VALUE_FIELD_DESC);
+            List<String> _fbthriftVar0 = (List<String>)this.value;
 
-        oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
-        for (String _fbthriftVar1 : _fbthriftVar0) {
-            oprot.writeString(_fbthriftVar1);
+            oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
+            for (String _fbthriftVar1 : _fbthriftVar0) {
+                oprot.writeString(_fbthriftVar1);
+            }
+            oprot.writeListEnd();
+            oprot.writeFieldEnd();
+            break;
         }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-        break;
-      }
-      default:
-          // ignore unknown field
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        default:
+            // ignore unknown field
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
-    
     public static com.facebook.thrift.payload.Reader<ListUnion> asReader() {
-      return ListUnion::read0;
+        return ListUnion::read0;
     }
 
     public static ListUnion read0(TProtocol oprot) throws TException {
-      ListUnion res = new ListUnion();
-      res.value = null;
-      res.id = (short) 0;
-      oprot.readStructBegin(ListUnion.NAMES_TO_IDS, ListUnion.THRIFT_NAMES_TO_IDS, ListUnion.FIELD_METADATA);
-      TField __field = oprot.readFieldBegin();
-      if (__field.type != TType.STOP) {
-          switch (__field.id) {
-          case _INTLISTVALUE:
-            if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
-              List<Long> _fbthriftVar0;
-              {
-                  TList _list0 = oprot.readListBegin();
-                  _fbthriftVar0 = new ArrayList<Long>(Math.max(0, _list0.size));
-                  for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                      long _fbthriftVar1;
-                      _fbthriftVar1 = oprot.readI64();
-                      _fbthriftVar0.add(_fbthriftVar1);
-                  }
-                  oprot.readListEnd();
-              }
-              res.value = _fbthriftVar0;
+        ListUnion res = new ListUnion();
+        res.value = null;
+        res.id = (short) 0;
+        oprot.readStructBegin(ListUnion.NAMES_TO_IDS, ListUnion.THRIFT_NAMES_TO_IDS, ListUnion.FIELD_METADATA);
+        TField __field = oprot.readFieldBegin();
+        if (__field.type != TType.STOP) {
+            switch (__field.id) {
+            case _INTLISTVALUE:
+                if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
+                    List<Long> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<Long>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            long _fbthriftVar1;
+                            _fbthriftVar1 = oprot.readI64();
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readListEnd();
+                    }
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _STRINGLISTVALUE:
+                if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+                    List<String> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<String>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            String _fbthriftVar1;
+                            _fbthriftVar1 = oprot.readString();
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readListEnd();
+                    }
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
             }
-            break;
-          case _STRINGLISTVALUE:
-            if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
-              List<String> _fbthriftVar0;
-              {
-                  TList _list0 = oprot.readListBegin();
-                  _fbthriftVar0 = new ArrayList<String>(Math.max(0, _list0.size));
-                  for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                      String _fbthriftVar1;
-                      _fbthriftVar1 = oprot.readString();
-                      _fbthriftVar0.add(_fbthriftVar1);
-                  }
-                  oprot.readListEnd();
-              }
-              res.value = _fbthriftVar0;
+            if (res.value != null) {
+                res.id = __field.id;
             }
-            break;
-          default:
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-        if (res.value != null) {
-          res.id = __field.id;
+            oprot.readFieldEnd();
+            TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+            if (__stopField.type != TType.STOP) {
+                throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'ListUnion' is missing a STOP byte");
+            }
         }
-        oprot.readFieldEnd();
-        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
-        if (__stopField.type != TType.STOP) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'ListUnion' is missing a STOP byte");
-        }
-      }
-      oprot.readStructEnd();
-      return res;
+        oprot.readStructEnd();
+        return res;
     }
+
     public static ListUnion defaultInstance() {
         return _DEFAULT;
     }

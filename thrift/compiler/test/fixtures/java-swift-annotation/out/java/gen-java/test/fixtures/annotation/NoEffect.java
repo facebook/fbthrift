@@ -140,67 +140,64 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<NoEffect> asReader() {
       return NoEffect::read0;
     }
 
     public static NoEffect read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(NoEffect.NAMES_TO_IDS, NoEffect.THRIFT_NAMES_TO_IDS, NoEffect.FIELD_METADATA);
-      NoEffect.Builder builder = new NoEffect.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _AN_SNAKE_STRING:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setAnSnakeString(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _ACAMELI32:
-          if (__field.type == TType.I32) {
-            int _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI32();
-            builder.setACamelI32(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(NoEffect.NAMES_TO_IDS, NoEffect.THRIFT_NAMES_TO_IDS, NoEffect.FIELD_METADATA);
+        NoEffect.Builder builder = new NoEffect.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _AN_SNAKE_STRING:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setAnSnakeString(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _ACAMELI32:
+                if (__field.type == TType.I32) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    builder.setACamelI32(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      String _fbthriftVar0 = this.anSnakeString;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(AN_SNAKE_STRING_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      int _fbthriftVar0 = this.aCamelI32;
-      oprot.writeFieldBegin(A_CAMEL_I32_FIELD_DESC);
-      oprot.writeI32(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            String _fbthriftVar0 = this.anSnakeString;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(AN_SNAKE_STRING_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            int _fbthriftVar0 = this.aCamelI32;
+            oprot.writeFieldBegin(A_CAMEL_I32_FIELD_DESC);
+            oprot.writeI32(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _NoEffectLazy {

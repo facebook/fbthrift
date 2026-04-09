@@ -230,81 +230,81 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
     }
 
     public void write0(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-        if(allowNullFieldValues) {
-          // Warning: this path will generate corrupt serialized data!
-          return;
-        } else {
-          throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        if (this.id != 0 && this.value == null ){
+            if(allowNullFieldValues) {
+                // Warning: this path will generate corrupt serialized data!
+                return;
+            } else {
+                throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+            }
         }
-      }
-      oprot.writeStructBegin(STRUCT_DESC);
-      switch (this.id) {
-      case _DELAY: {
-        oprot.writeFieldBegin(DELAY_FIELD_DESC);
-        long _fbthriftVar0 = (long)this.value;
+        oprot.writeStructBegin(STRUCT_DESC);
+        switch (this.id) {
+        case _DELAY: {
+            oprot.writeFieldBegin(DELAY_FIELD_DESC);
+            long _fbthriftVar0 = (long)this.value;
 
-        oprot.writeI64(_fbthriftVar0);
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _CUSTOM: {
-        oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
-        byte[] _fbthriftVar0 = (byte[])this.value;
+            oprot.writeI64(_fbthriftVar0);
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _CUSTOM: {
+            oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
+            byte[] _fbthriftVar0 = (byte[])this.value;
 
-        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
-        oprot.writeFieldEnd();
-        break;
-      }
-      default:
-          // ignore unknown field
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+            org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
+            oprot.writeFieldEnd();
+            break;
+        }
+        default:
+            // ignore unknown field
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
-    
     public static com.facebook.thrift.payload.Reader<AdaptTestUnion> asReader() {
-      return AdaptTestUnion::read0;
+        return AdaptTestUnion::read0;
     }
 
     public static AdaptTestUnion read0(TProtocol oprot) throws TException {
-      AdaptTestUnion res = new AdaptTestUnion();
-      res.value = null;
-      res.id = (short) 0;
-      oprot.readStructBegin(AdaptTestUnion.NAMES_TO_IDS, AdaptTestUnion.THRIFT_NAMES_TO_IDS, AdaptTestUnion.FIELD_METADATA);
-      TField __field = oprot.readFieldBegin();
-      if (__field.type != TType.STOP) {
-          switch (__field.id) {
-          case _DELAY:
-            if (__field.type == DELAY_FIELD_DESC.type) {
-              long _fbthriftVar0;
-              _fbthriftVar0 = oprot.readI64();
-              res.value = _fbthriftVar0;
+        AdaptTestUnion res = new AdaptTestUnion();
+        res.value = null;
+        res.id = (short) 0;
+        oprot.readStructBegin(AdaptTestUnion.NAMES_TO_IDS, AdaptTestUnion.THRIFT_NAMES_TO_IDS, AdaptTestUnion.FIELD_METADATA);
+        TField __field = oprot.readFieldBegin();
+        if (__field.type != TType.STOP) {
+            switch (__field.id) {
+            case _DELAY:
+                if (__field.type == DELAY_FIELD_DESC.type) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _CUSTOM:
+                if (__field.type == CUSTOM_FIELD_DESC.type) {
+                    byte[] _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readBinary().array();
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
             }
-            break;
-          case _CUSTOM:
-            if (__field.type == CUSTOM_FIELD_DESC.type) {
-              byte[] _fbthriftVar0;
-              _fbthriftVar0 = oprot.readBinary().array();
-              res.value = _fbthriftVar0;
+            if (res.value != null) {
+                res.id = __field.id;
             }
-            break;
-          default:
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-        if (res.value != null) {
-          res.id = __field.id;
+            oprot.readFieldEnd();
+            TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+            if (__stopField.type != TType.STOP) {
+                throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'AdaptTestUnion' is missing a STOP byte");
+            }
         }
-        oprot.readFieldEnd();
-        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
-        if (__stopField.type != TType.STOP) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'AdaptTestUnion' is missing a STOP byte");
-        }
-      }
-      oprot.readStructEnd();
-      return res;
+        oprot.readStructEnd();
+        return res;
     }
+
     public static AdaptTestUnion defaultInstance() {
         return _DEFAULT;
     }

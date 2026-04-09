@@ -208,7 +208,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
 
     {{#partial struct.union_write struct=struct:self}}
 
-    {{> union/UnionRead}}
+    {{#partial struct.union_read struct=struct:self}}
 
     public static {{struct:javaCapitalName}} defaultInstance() {
         return _DEFAULT;

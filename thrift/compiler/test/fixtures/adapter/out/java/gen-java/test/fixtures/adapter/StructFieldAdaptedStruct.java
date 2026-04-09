@@ -195,105 +195,100 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<StructFieldAdaptedStruct> asReader() {
       return StructFieldAdaptedStruct::read0;
     }
 
     public static StructFieldAdaptedStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(StructFieldAdaptedStruct.NAMES_TO_IDS, StructFieldAdaptedStruct.THRIFT_NAMES_TO_IDS, StructFieldAdaptedStruct.FIELD_METADATA);
-      StructFieldAdaptedStruct.Builder builder = new StructFieldAdaptedStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _ADAPTEDSTRUCT:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.AdaptedStruct _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.AdaptedStruct.read0(oprot);
-            builder.setAdaptedStruct(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _ADAPTEDTYPEDEF:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.AdaptedStruct _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.AdaptedStruct.read0(oprot);
-            builder.setAdaptedTypedef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _DIRECTLYADAPTED:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.DirectlyAdaptedStruct.read0(oprot);
-            builder.setDirectlyAdapted(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _TYPEDEFOFADAPTED:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.DirectlyAdaptedStruct.read0(oprot);
-            builder.setTypedefOfAdapted(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(StructFieldAdaptedStruct.NAMES_TO_IDS, StructFieldAdaptedStruct.THRIFT_NAMES_TO_IDS, StructFieldAdaptedStruct.FIELD_METADATA);
+        StructFieldAdaptedStruct.Builder builder = new StructFieldAdaptedStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _ADAPTEDSTRUCT:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.AdaptedStruct _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.AdaptedStruct.read0(oprot);
+                    builder.setAdaptedStruct(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _ADAPTEDTYPEDEF:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.AdaptedStruct _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.AdaptedStruct.read0(oprot);
+                    builder.setAdaptedTypedef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _DIRECTLYADAPTED:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.DirectlyAdaptedStruct.read0(oprot);
+                    builder.setDirectlyAdapted(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _TYPEDEFOFADAPTED:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.DirectlyAdaptedStruct.read0(oprot);
+                    builder.setTypedefOfAdapted(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.adapter.AdaptedStruct _fbthriftVar0 = this.adaptedStruct;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.adapter.AdaptedStruct _fbthriftVar0 = this.adaptedTypedef;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(ADAPTED_TYPEDEF_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar0 = this.directlyAdapted;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(DIRECTLY_ADAPTED_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar0 = this.typedefOfAdapted;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(TYPEDEF_OF_ADAPTED_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.adapter.AdaptedStruct _fbthriftVar0 = this.adaptedStruct;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.adapter.AdaptedStruct _fbthriftVar0 = this.adaptedTypedef;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(ADAPTED_TYPEDEF_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar0 = this.directlyAdapted;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(DIRECTLY_ADAPTED_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar0 = this.typedefOfAdapted;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(TYPEDEF_OF_ADAPTED_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _StructFieldAdaptedStructLazy {

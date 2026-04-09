@@ -166,87 +166,83 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<StructWithSharedConst> asReader() {
       return StructWithSharedConst::read0;
     }
 
     public static StructWithSharedConst read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(StructWithSharedConst.NAMES_TO_IDS, StructWithSharedConst.THRIFT_NAMES_TO_IDS, StructWithSharedConst.FIELD_METADATA);
-      StructWithSharedConst.Builder builder = new StructWithSharedConst.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _OPT_SHARED_CONST:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
-            builder.setOptSharedConst(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _SHARED_CONST:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
-            builder.setSharedConst(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _REQ_SHARED_CONST:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
-            builder.setReqSharedConst(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(StructWithSharedConst.NAMES_TO_IDS, StructWithSharedConst.THRIFT_NAMES_TO_IDS, StructWithSharedConst.FIELD_METADATA);
+        StructWithSharedConst.Builder builder = new StructWithSharedConst.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _OPT_SHARED_CONST:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.refs.MyField _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
+                    builder.setOptSharedConst(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _SHARED_CONST:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.refs.MyField _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
+                    builder.setSharedConst(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _REQ_SHARED_CONST:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.refs.MyField _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
+                    builder.setReqSharedConst(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.refs.MyField _fbthriftVar0 = this.optSharedConst;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(OPT_SHARED_CONST_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.refs.MyField _fbthriftVar0 = this.sharedConst;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(SHARED_CONST_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.refs.MyField _fbthriftVar0 = this.reqSharedConst;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(REQ_SHARED_CONST_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.refs.MyField _fbthriftVar0 = this.optSharedConst;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(OPT_SHARED_CONST_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.refs.MyField _fbthriftVar0 = this.sharedConst;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(SHARED_CONST_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.refs.MyField _fbthriftVar0 = this.reqSharedConst;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(REQ_SHARED_CONST_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _StructWithSharedConstLazy {

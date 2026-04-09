@@ -88,33 +88,32 @@ static {
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<EmptyStruct> asReader() {
       return EmptyStruct::read0;
     }
 
     public static EmptyStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(EmptyStruct.NAMES_TO_IDS, EmptyStruct.THRIFT_NAMES_TO_IDS, EmptyStruct.FIELD_METADATA);
-      EmptyStruct.Builder builder = new EmptyStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(EmptyStruct.NAMES_TO_IDS, EmptyStruct.THRIFT_NAMES_TO_IDS, EmptyStruct.FIELD_METADATA);
+        EmptyStruct.Builder builder = new EmptyStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _EmptyStructLazy {

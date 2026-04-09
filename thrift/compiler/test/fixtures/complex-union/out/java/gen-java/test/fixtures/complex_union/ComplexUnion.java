@@ -398,198 +398,198 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
     }
 
     public void write0(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-        if(allowNullFieldValues) {
-          // Warning: this path will generate corrupt serialized data!
-          return;
-        } else {
-          throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
-        }
-      }
-      oprot.writeStructBegin(STRUCT_DESC);
-      switch (this.id) {
-      case _INTVALUE: {
-        oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
-        long _fbthriftVar0 = (long)this.value;
-
-        oprot.writeI64(_fbthriftVar0);
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _STRINGVALUE: {
-        oprot.writeFieldBegin(STRING_VALUE_FIELD_DESC);
-        String _fbthriftVar0 = (String)this.value;
-
-        oprot.writeString(_fbthriftVar0);
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _INTLISTVALUE: {
-        oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
-        List<Long> _fbthriftVar0 = (List<Long>)this.value;
-
-        oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
-        for (long _fbthriftVar1 : _fbthriftVar0) {
-            oprot.writeI64(_fbthriftVar1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _STRINGLISTVALUE: {
-        oprot.writeFieldBegin(STRING_LIST_VALUE_FIELD_DESC);
-        List<String> _fbthriftVar0 = (List<String>)this.value;
-
-        oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
-        for (String _fbthriftVar1 : _fbthriftVar0) {
-            oprot.writeString(_fbthriftVar1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _TYPEDEFVALUE: {
-        oprot.writeFieldBegin(TYPEDEF_VALUE_FIELD_DESC);
-        Map<Short, String> _fbthriftVar0 = (Map<Short, String>)this.value;
-
-        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _fbthriftVar0.size()));
-        for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-            {
-                Short _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI16(_fbthriftVar2);
-            }
-            {
-                String _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeString(_fbthriftVar2);
+        if (this.id != 0 && this.value == null ){
+            if(allowNullFieldValues) {
+                // Warning: this path will generate corrupt serialized data!
+                return;
+            } else {
+                throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
             }
         }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _STRINGREF: {
-        oprot.writeFieldBegin(STRING_REF_FIELD_DESC);
-        String _fbthriftVar0 = (String)this.value;
+        oprot.writeStructBegin(STRUCT_DESC);
+        switch (this.id) {
+        case _INTVALUE: {
+            oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
+            long _fbthriftVar0 = (long)this.value;
 
-        oprot.writeString(_fbthriftVar0);
-        oprot.writeFieldEnd();
-        break;
-      }
-      default:
-          // ignore unknown field
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+            oprot.writeI64(_fbthriftVar0);
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _STRINGVALUE: {
+            oprot.writeFieldBegin(STRING_VALUE_FIELD_DESC);
+            String _fbthriftVar0 = (String)this.value;
+
+            oprot.writeString(_fbthriftVar0);
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _INTLISTVALUE: {
+            oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
+            List<Long> _fbthriftVar0 = (List<Long>)this.value;
+
+            oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
+            for (long _fbthriftVar1 : _fbthriftVar0) {
+                oprot.writeI64(_fbthriftVar1);
+            }
+            oprot.writeListEnd();
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _STRINGLISTVALUE: {
+            oprot.writeFieldBegin(STRING_LIST_VALUE_FIELD_DESC);
+            List<String> _fbthriftVar0 = (List<String>)this.value;
+
+            oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
+            for (String _fbthriftVar1 : _fbthriftVar0) {
+                oprot.writeString(_fbthriftVar1);
+            }
+            oprot.writeListEnd();
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _TYPEDEFVALUE: {
+            oprot.writeFieldBegin(TYPEDEF_VALUE_FIELD_DESC);
+            Map<Short, String> _fbthriftVar0 = (Map<Short, String>)this.value;
+
+            oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _fbthriftVar0.size()));
+            for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+                {
+                    Short _fbthriftVar2 = _fbthriftVar1.getKey();
+                    oprot.writeI16(_fbthriftVar2);
+                }
+                {
+                    String _fbthriftVar2 = _fbthriftVar1.getValue();
+                    oprot.writeString(_fbthriftVar2);
+                }
+            }
+            oprot.writeMapEnd();
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _STRINGREF: {
+            oprot.writeFieldBegin(STRING_REF_FIELD_DESC);
+            String _fbthriftVar0 = (String)this.value;
+
+            oprot.writeString(_fbthriftVar0);
+            oprot.writeFieldEnd();
+            break;
+        }
+        default:
+            // ignore unknown field
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
-    
     public static com.facebook.thrift.payload.Reader<ComplexUnion> asReader() {
-      return ComplexUnion::read0;
+        return ComplexUnion::read0;
     }
 
     public static ComplexUnion read0(TProtocol oprot) throws TException {
-      ComplexUnion res = new ComplexUnion();
-      res.value = null;
-      res.id = (short) 0;
-      oprot.readStructBegin(ComplexUnion.NAMES_TO_IDS, ComplexUnion.THRIFT_NAMES_TO_IDS, ComplexUnion.FIELD_METADATA);
-      TField __field = oprot.readFieldBegin();
-      if (__field.type != TType.STOP) {
-          switch (__field.id) {
-          case _INTVALUE:
-            if (__field.type == INT_VALUE_FIELD_DESC.type) {
-              long _fbthriftVar0;
-              _fbthriftVar0 = oprot.readI64();
-              res.value = _fbthriftVar0;
-            }
-            break;
-          case _STRINGVALUE:
-            if (__field.type == STRING_VALUE_FIELD_DESC.type) {
-              String _fbthriftVar0;
-              _fbthriftVar0 = oprot.readString();
-              res.value = _fbthriftVar0;
-            }
-            break;
-          case _INTLISTVALUE:
-            if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
-              List<Long> _fbthriftVar0;
-              {
-                  TList _list0 = oprot.readListBegin();
-                  _fbthriftVar0 = new ArrayList<Long>(Math.max(0, _list0.size));
-                  for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                      long _fbthriftVar1;
-                      _fbthriftVar1 = oprot.readI64();
-                      _fbthriftVar0.add(_fbthriftVar1);
-                  }
-                  oprot.readListEnd();
-              }
-              res.value = _fbthriftVar0;
-            }
-            break;
-          case _STRINGLISTVALUE:
-            if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
-              List<String> _fbthriftVar0;
-              {
-                  TList _list0 = oprot.readListBegin();
-                  _fbthriftVar0 = new ArrayList<String>(Math.max(0, _list0.size));
-                  for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                      String _fbthriftVar1;
-                      _fbthriftVar1 = oprot.readString();
-                      _fbthriftVar0.add(_fbthriftVar1);
-                  }
-                  oprot.readListEnd();
-              }
-              res.value = _fbthriftVar0;
-            }
-            break;
-          case _TYPEDEFVALUE:
-            if (__field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
-              Map<Short, String> _fbthriftVar0;
-              {
-                  TMap _map0 = oprot.readMapBegin();
-                  _fbthriftVar0 = new HashMap<Short, String>(Math.max(0, _map0.size));
-                  for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
-                      short _fbthriftKey1;
-                      String _fbthriftValue1;
+        ComplexUnion res = new ComplexUnion();
+        res.value = null;
+        res.id = (short) 0;
+        oprot.readStructBegin(ComplexUnion.NAMES_TO_IDS, ComplexUnion.THRIFT_NAMES_TO_IDS, ComplexUnion.FIELD_METADATA);
+        TField __field = oprot.readFieldBegin();
+        if (__field.type != TType.STOP) {
+            switch (__field.id) {
+            case _INTVALUE:
+                if (__field.type == INT_VALUE_FIELD_DESC.type) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _STRINGVALUE:
+                if (__field.type == STRING_VALUE_FIELD_DESC.type) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _INTLISTVALUE:
+                if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
+                    List<Long> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<Long>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            long _fbthriftVar1;
+                            _fbthriftVar1 = oprot.readI64();
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readListEnd();
+                    }
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _STRINGLISTVALUE:
+                if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+                    List<String> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<String>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            String _fbthriftVar1;
+                            _fbthriftVar1 = oprot.readString();
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readListEnd();
+                    }
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _TYPEDEFVALUE:
+                if (__field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
+                    Map<Short, String> _fbthriftVar0;
+                    {
+                        TMap _map0 = oprot.readMapBegin();
+                        _fbthriftVar0 = new HashMap<Short, String>(Math.max(0, _map0.size));
+                        for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                            short _fbthriftKey1;
+                            String _fbthriftValue1;
 
-                      {
-                          short _fbthriftVar1;
-                          _fbthriftVar1 = oprot.readI16();
-                          _fbthriftKey1 = _fbthriftVar1;
-                      }
-                      {
-                          String _fbthriftVar1;
-                          _fbthriftVar1 = oprot.readString();
-                          _fbthriftValue1 = _fbthriftVar1;
-                      }
-                      _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
-                  }
-                  oprot.readMapEnd();
-              }
-              res.value = _fbthriftVar0;
+                            {
+                                short _fbthriftVar1;
+                                _fbthriftVar1 = oprot.readI16();
+                                _fbthriftKey1 = _fbthriftVar1;
+                            }
+                            {
+                                String _fbthriftVar1;
+                                _fbthriftVar1 = oprot.readString();
+                                _fbthriftValue1 = _fbthriftVar1;
+                            }
+                            _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
+                        }
+                        oprot.readMapEnd();
+                    }
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _STRINGREF:
+                if (__field.type == STRING_REF_FIELD_DESC.type) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
             }
-            break;
-          case _STRINGREF:
-            if (__field.type == STRING_REF_FIELD_DESC.type) {
-              String _fbthriftVar0;
-              _fbthriftVar0 = oprot.readString();
-              res.value = _fbthriftVar0;
+            if (res.value != null) {
+                res.id = __field.id;
             }
-            break;
-          default:
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-        if (res.value != null) {
-          res.id = __field.id;
+            oprot.readFieldEnd();
+            TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+            if (__stopField.type != TType.STOP) {
+                throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'ComplexUnion' is missing a STOP byte");
+            }
         }
-        oprot.readFieldEnd();
-        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
-        if (__stopField.type != TType.STOP) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'ComplexUnion' is missing a STOP byte");
-        }
-      }
-      oprot.readStructEnd();
-      return res;
+        oprot.readStructEnd();
+        return res;
     }
+
     public static ComplexUnion defaultInstance() {
         return _DEFAULT;
     }

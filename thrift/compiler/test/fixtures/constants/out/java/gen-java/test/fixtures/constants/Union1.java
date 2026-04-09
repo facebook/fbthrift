@@ -221,81 +221,81 @@ public final class Union1 implements com.facebook.thrift.payload.ThriftSerializa
     }
 
     public void write0(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-        if(allowNullFieldValues) {
-          // Warning: this path will generate corrupt serialized data!
-          return;
-        } else {
-          throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        if (this.id != 0 && this.value == null ){
+            if(allowNullFieldValues) {
+                // Warning: this path will generate corrupt serialized data!
+                return;
+            } else {
+                throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+            }
         }
-      }
-      oprot.writeStructBegin(STRUCT_DESC);
-      switch (this.id) {
-      case _I: {
-        oprot.writeFieldBegin(I_FIELD_DESC);
-        int _fbthriftVar0 = (int)this.value;
+        oprot.writeStructBegin(STRUCT_DESC);
+        switch (this.id) {
+        case _I: {
+            oprot.writeFieldBegin(I_FIELD_DESC);
+            int _fbthriftVar0 = (int)this.value;
 
-        oprot.writeI32(_fbthriftVar0);
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _D: {
-        oprot.writeFieldBegin(D_FIELD_DESC);
-        double _fbthriftVar0 = (double)this.value;
+            oprot.writeI32(_fbthriftVar0);
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _D: {
+            oprot.writeFieldBegin(D_FIELD_DESC);
+            double _fbthriftVar0 = (double)this.value;
 
-        oprot.writeDouble(_fbthriftVar0);
-        oprot.writeFieldEnd();
-        break;
-      }
-      default:
-          // ignore unknown field
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+            oprot.writeDouble(_fbthriftVar0);
+            oprot.writeFieldEnd();
+            break;
+        }
+        default:
+            // ignore unknown field
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
-    
     public static com.facebook.thrift.payload.Reader<Union1> asReader() {
-      return Union1::read0;
+        return Union1::read0;
     }
 
     public static Union1 read0(TProtocol oprot) throws TException {
-      Union1 res = new Union1();
-      res.value = null;
-      res.id = (short) 0;
-      oprot.readStructBegin(Union1.NAMES_TO_IDS, Union1.THRIFT_NAMES_TO_IDS, Union1.FIELD_METADATA);
-      TField __field = oprot.readFieldBegin();
-      if (__field.type != TType.STOP) {
-          switch (__field.id) {
-          case _I:
-            if (__field.type == I_FIELD_DESC.type) {
-              int _fbthriftVar0;
-              _fbthriftVar0 = oprot.readI32();
-              res.value = _fbthriftVar0;
+        Union1 res = new Union1();
+        res.value = null;
+        res.id = (short) 0;
+        oprot.readStructBegin(Union1.NAMES_TO_IDS, Union1.THRIFT_NAMES_TO_IDS, Union1.FIELD_METADATA);
+        TField __field = oprot.readFieldBegin();
+        if (__field.type != TType.STOP) {
+            switch (__field.id) {
+            case _I:
+                if (__field.type == I_FIELD_DESC.type) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _D:
+                if (__field.type == D_FIELD_DESC.type) {
+                    double _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readDouble();
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
             }
-            break;
-          case _D:
-            if (__field.type == D_FIELD_DESC.type) {
-              double _fbthriftVar0;
-              _fbthriftVar0 = oprot.readDouble();
-              res.value = _fbthriftVar0;
+            if (res.value != null) {
+                res.id = __field.id;
             }
-            break;
-          default:
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-        if (res.value != null) {
-          res.id = __field.id;
+            oprot.readFieldEnd();
+            TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+            if (__stopField.type != TType.STOP) {
+                throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'Union1' is missing a STOP byte");
+            }
         }
-        oprot.readFieldEnd();
-        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
-        if (__stopField.type != TType.STOP) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'Union1' is missing a STOP byte");
-        }
-      }
-      oprot.readStructEnd();
-      return res;
+        oprot.readStructEnd();
+        return res;
     }
+
     public static Union1 defaultInstance() {
         return _DEFAULT;
     }

@@ -131,41 +131,87 @@ public static class Builder {
 
 {{#let export partial union_write |struct| captures |types field_helpers|}}
 public void write0(TProtocol oprot) throws TException {
-  if (this.id != 0 && this.value == null ){
-    if(allowNullFieldValues) {
-      // Warning: this path will generate corrupt serialized data!
-      return;
-    } else {
-      throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+    if (this.id != 0 && this.value == null ){
+        if(allowNullFieldValues) {
+            // Warning: this path will generate corrupt serialized data!
+            return;
+        } else {
+            throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        }
     }
-  }
-  oprot.writeStructBegin(STRUCT_DESC);
-  switch (this.id) {
-  {{#each struct.fields as |field|}}
-  case _{{field.javaAllCapsName}}: {
-    {{#if field.hasAdapter?}}
-    {{#partial types.adapted_field_boxed_type type=field.type field_hasAdapter=field.hasAdapter?}} _fbthriftVar0 = {{#partial field_helpers.to_thrift_start field=field}}({{#partial types.field_type field=field}})this.value{{#partial field_helpers.to_thrift_end field=field}};
-    if (_fbthriftVar0 != null) {
-      oprot.writeFieldBegin({{field.javaTFieldName}});
+    oprot.writeStructBegin(STRUCT_DESC);
+    switch (this.id) {
+    {{#each struct.fields as |field|}}
+    case _{{field.javaAllCapsName}}: {
+        {{#if field.hasAdapter?}}
+        {{#partial types.adapted_field_boxed_type type=field.type field_hasAdapter=field.hasAdapter?}} _fbthriftVar0 = {{#partial field_helpers.to_thrift_start field=field}}({{#partial types.field_type field=field}})this.value{{#partial field_helpers.to_thrift_end field=field}};
+        if (_fbthriftVar0 != null) {
+            oprot.writeFieldBegin({{field.javaTFieldName}});
+            {{#partial types.write_type field=field type=field.type depth=0}}
+            oprot.writeFieldEnd();
+        }
+        {{#else}}
+        oprot.writeFieldBegin({{field.javaTFieldName}});
+        {{#partial types.field_type field=field}} _fbthriftVar0 = ({{#partial types.field_type field=field}})this.value;
 
-      {{#partial types.write_type field=field type=field.type depth=0}}
-      oprot.writeFieldEnd();
+        {{#partial types.write_type field=field type=field.type depth=0}}
+        oprot.writeFieldEnd();
+        {{/if field.hasAdapter?}}
+        break;
     }
-    {{#else}}
-    oprot.writeFieldBegin({{field.javaTFieldName}});
-    {{#partial types.field_type field=field}} _fbthriftVar0 = ({{#partial types.field_type field=field}})this.value;
+    {{/each}}
+    default:
+        // ignore unknown field
+    }
+    oprot.writeFieldStop();
+    oprot.writeStructEnd();
+}
+{{/let partial}}
 
-    {{#partial types.write_type field=field type=field.type depth=0}}
-    oprot.writeFieldEnd();
-    {{/if field.hasAdapter?}}
-    break;
-  }
-  {{/each}}
-  default:
-      // ignore unknown field
-  }
-  oprot.writeFieldStop();
-  oprot.writeStructEnd();
+{{#let export partial union_read |struct| captures |types field_helpers|}}
+public static com.facebook.thrift.payload.Reader<{{struct.javaCapitalName}}> asReader() {
+    return {{struct.javaCapitalName}}::read0;
+}
+
+public static {{struct.javaCapitalName}} read0(TProtocol oprot) throws TException {
+    {{struct.javaCapitalName}} res = new {{struct.javaCapitalName}}();
+    res.value = null;
+    res.id = (short) 0;
+    oprot.readStructBegin({{struct.javaCapitalName}}.NAMES_TO_IDS, {{struct.javaCapitalName}}.THRIFT_NAMES_TO_IDS, {{struct.javaCapitalName}}.FIELD_METADATA);
+    TField __field = oprot.readFieldBegin();
+    if (__field.type != TType.STOP) {
+        switch (__field.id) {
+        {{#each struct.fields as |field|}}
+        case _{{field.javaAllCapsName}}:
+            if (__field.type == {{field.javaTFieldName}}.type) {
+                {{#if field.type.container?}}
+                {{#partial types.resolved_boxed_type type=field.type field_hasAdapter=field.hasAdapter?}} _fbthriftVar0;
+                {{#else}}
+                {{#partial types.thrift_field_type field=field}} _fbthriftVar0;
+                {{/if field.type.container?}}
+                {{#partial types.read_type field=field type=field.type depth=0}}
+                {{#if field.hasAdapter?}}
+                res.value = {{#partial field_helpers.from_thrift_start field=field}}_fbthriftVar0{{#partial field_helpers.from_thrift_end field=field}};
+                {{#else}}
+                res.value = _fbthriftVar0;
+                {{/if field.hasAdapter?}}
+            }
+            break;
+        {{/each}}
+        default:
+            TProtocolUtil.skip(oprot, __field.type);
+        }
+        if (res.value != null) {
+            res.id = __field.id;
+        }
+        oprot.readFieldEnd();
+        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+        if (__stopField.type != TType.STOP) {
+            throw new TProtocolException(TProtocolException.INVALID_DATA, "Union '{{struct.javaCapitalName}}' is missing a STOP byte");
+        }
+    }
+    oprot.readStructEnd();
+    return res;
 }
 {{/let partial}}
 
@@ -313,6 +359,141 @@ public int hashCode() {
     {{/if field.hasAdapterOrWrapper?}}
     {{/each}}
     return _hashCode;
+}
+{{/let partial}}
+
+{{#let export partial struct_read |struct| captures |types field_helpers|}}
+public static com.facebook.thrift.payload.Reader<{{struct.javaCapitalName}}> asReader() {
+  return {{struct.javaCapitalName}}::read0;
+}
+
+public static {{struct.javaCapitalName}} read0(TProtocol oprot) throws TException {
+    TField __field;
+    oprot.readStructBegin({{struct.javaCapitalName}}.NAMES_TO_IDS, {{struct.javaCapitalName}}.THRIFT_NAMES_TO_IDS, {{struct.javaCapitalName}}.FIELD_METADATA);
+    {{struct.javaCapitalName}}.Builder builder = new {{struct.javaCapitalName}}.Builder();
+    {{#each struct.fields as |field|}}
+    {{#if field.terse?}}
+    {{#if field.default_value}}
+    {{#if field.hasAdapter?}}
+    builder.set{{field.javaCapitalName}}({{#partial field_helpers.from_thrift_start field=field}}{{#partial field_helpers.intrinsic_default field=field}}{{#partial field_helpers.from_thrift_end field=field}});
+    {{#else}}
+    {{#if (not field.type.structured?)}}builder.set{{field.javaCapitalName}}({{#partial field_helpers.intrinsic_default field=field}});{{/if (not field.type.structured?)}}
+    {{/if field.hasAdapter?}}
+    {{/if field.default_value}}
+    {{/if field.terse?}}
+    {{/each}}
+    while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        {{#each struct.fields as |field|}}
+        case _{{field.javaAllCapsName}}:
+            if (__field.type == TType.{{#partial types.ttype type=field.type}}) {
+                {{#if field.type.container?}}
+                {{#partial types.resolved_boxed_type type=field.type field_hasAdapter=field.hasAdapter?}} _fbthriftVar0;
+                {{#else}}
+                {{#partial types.thrift_field_type field=field}} _fbthriftVar0;
+                {{/if field.type.container?}}
+                {{#partial types.read_type field=field type=field.type depth=0}}
+                {{#if field.hasAdapter?}}
+                builder.{{#if field.hasWrapper?}}_{{/if}}set{{field.javaCapitalName}}({{#partial field_helpers.from_thrift_start field=field}}_fbthriftVar0{{#partial field_helpers.from_thrift_end field=field}});
+                {{#else}}
+                builder.{{#if field.hasWrapper?}}_{{/if}}set{{field.javaCapitalName}}(_fbthriftVar0);
+                {{/if field.hasAdapter?}}
+            } else {
+                TProtocolUtil.skip(oprot, __field.type);
+            }
+            break;
+        {{/each}}
+        default:
+            TProtocolUtil.skip(oprot, __field.type);
+            break;
+        }
+        oprot.readFieldEnd();
+    }
+    oprot.readStructEnd();
+    return builder.build();
+}
+{{/let partial}}
+
+{{#let export partial struct_write |struct| captures |types field_helpers|}}
+public void write0(TProtocol oprot) throws TException {
+    oprot.writeStructBegin(STRUCT_DESC);
+    {{#if struct.hasTerseField?}}
+    int structStart = 0;
+    int pos = 0;
+    com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
+    {{/if struct.hasTerseField?}}
+    {{#each struct.fields_in_serialization_order as |field|}}
+    {
+        {{#if field.hasAdapterOrWrapper?}}
+        {{#partial types.adapted_field_boxed_type type=field.type field_hasAdapter=field.hasAdapter?}} _fbthriftVar0 = {{#partial field_helpers.to_thrift_start field=field}}this.{{field.javaName}}{{#partial field_helpers.to_thrift_end field=field}};
+        {{#else}}
+        {{#partial types.thrift_field_type field=field}} _fbthriftVar0 = this.{{field.javaName}};
+        {{/if field.hasAdapterOrWrapper?}}
+        {{#if field.isNullableOrOptionalNotEnum?}}
+        {{#if field.terse?}}
+        java.util.Objects.requireNonNull(_fbthriftVar0, "{{field.javaName}} must not be null");
+        {{#if field.type.structured?}}
+        structStart = p.mark();
+        {{/if field.type.structured?}}
+        {{#if (not field.type.structured?)}}
+        if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
+        {{/if (not field.type.structured?)}}
+          oprot.writeFieldBegin({{field.javaTFieldName}});
+          {{#if field.type.structured?}}
+          pos = p.mark();
+          {{/if field.type.structured?}}
+          {{#partial types.write_type field=field type=field.type depth=0}}
+          {{#if field.type.structured?}}
+          if (p.mark() - pos > p.getEmptyStructSize()) {
+              p.writeFieldEnd();
+          } else {
+              p.rollback(structStart);
+          }
+          {{#else}}
+          oprot.writeFieldEnd();
+          {{/if field.type.structured?}}
+        {{#if (not field.type.structured?)}}
+        }
+        {{/if (not field.type.structured?)}}
+        {{#else}}
+        if (_fbthriftVar0 != null) {
+            oprot.writeFieldBegin({{field.javaTFieldName}});
+            {{#partial types.write_type field=field type=field.type depth=0}}
+            oprot.writeFieldEnd();
+        }
+        {{/if field.terse?}}
+        {{#else}}
+        {{#if field.terse?}}
+        {{#if field.type.enum?}}
+        java.util.Objects.requireNonNull(_fbthriftVar0, "{{field.javaName}} must not be null");
+        if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0))) {
+        {{#else}}
+        if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
+        {{/if field.type.enum?}}
+          oprot.writeFieldBegin({{field.javaTFieldName}});
+          {{#partial types.write_type field=field type=field.type depth=0}}
+          oprot.writeFieldEnd();
+        };
+        {{#else}}
+        {{#if field.hasAdapterOrWrapper?}}
+        if (_fbthriftVar0 != null) {
+            oprot.writeFieldBegin({{field.javaTFieldName}});
+            {{#partial types.write_type field=field type=field.type depth=0}}
+            oprot.writeFieldEnd();
+        }
+        {{#else}}
+        oprot.writeFieldBegin({{field.javaTFieldName}});
+        {{#partial types.write_type field=field type=field.type depth=0}}
+        oprot.writeFieldEnd();
+        {{/if field.hasAdapterOrWrapper?}}
+        {{/if field.terse?}}
+        {{/if field.isNullableOrOptionalNotEnum?}}
+    }
+    {{/each}}
+    oprot.writeFieldStop();
+    oprot.writeStructEnd();
 }
 {{/let partial}}
 

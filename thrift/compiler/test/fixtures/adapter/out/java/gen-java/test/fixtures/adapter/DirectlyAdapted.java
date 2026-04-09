@@ -117,49 +117,47 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<DirectlyAdapted> asReader() {
       return DirectlyAdapted::read0;
     }
 
     public static DirectlyAdapted read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(DirectlyAdapted.NAMES_TO_IDS, DirectlyAdapted.THRIFT_NAMES_TO_IDS, DirectlyAdapted.FIELD_METADATA);
-      DirectlyAdapted.Builder builder = new DirectlyAdapted.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _FIELD:
-          if (__field.type == TType.I32) {
-            int _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI32();
-            builder.setField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(DirectlyAdapted.NAMES_TO_IDS, DirectlyAdapted.THRIFT_NAMES_TO_IDS, DirectlyAdapted.FIELD_METADATA);
+        DirectlyAdapted.Builder builder = new DirectlyAdapted.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _FIELD:
+                if (__field.type == TType.I32) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    builder.setField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      int _fbthriftVar0 = this.field;
-      oprot.writeFieldBegin(FIELD_FIELD_DESC);
-      oprot.writeI32(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            int _fbthriftVar0 = this.field;
+            oprot.writeFieldBegin(FIELD_FIELD_DESC);
+            oprot.writeI32(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _DirectlyAdaptedLazy {

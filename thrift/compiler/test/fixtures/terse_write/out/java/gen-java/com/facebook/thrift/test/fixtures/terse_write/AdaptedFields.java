@@ -169,90 +169,86 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<AdaptedFields> asReader() {
       return AdaptedFields::read0;
     }
 
     public static AdaptedFields read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(AdaptedFields.NAMES_TO_IDS, AdaptedFields.THRIFT_NAMES_TO_IDS, AdaptedFields.FIELD_METADATA);
-      AdaptedFields.Builder builder = new AdaptedFields.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _FIELD1:
-          if (__field.type == TType.I32) {
-            int _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI32();
-            builder.setField1(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _FIELD2:
-          if (__field.type == TType.I32) {
-            int _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI32();
-            builder.setField2(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _FIELD3:
-          if (__field.type == TType.I32) {
-            int _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI32();
-            builder.setField3(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(AdaptedFields.NAMES_TO_IDS, AdaptedFields.THRIFT_NAMES_TO_IDS, AdaptedFields.FIELD_METADATA);
+        AdaptedFields.Builder builder = new AdaptedFields.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _FIELD1:
+                if (__field.type == TType.I32) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    builder.setField1(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _FIELD2:
+                if (__field.type == TType.I32) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    builder.setField2(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _FIELD3:
+                if (__field.type == TType.I32) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    builder.setField3(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      int structStart = 0;
-      int pos = 0;
-      com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
-      {
-      int _fbthriftVar0 = this.field1;
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
-        oprot.writeFieldBegin(FIELD1_FIELD_DESC);
-        oprot.writeI32(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      };
-      }
-      {
-      int _fbthriftVar0 = this.field2;
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
-        oprot.writeFieldBegin(FIELD2_FIELD_DESC);
-        oprot.writeI32(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      };
-      }
-      {
-      int _fbthriftVar0 = this.field3;
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
-        oprot.writeFieldBegin(FIELD3_FIELD_DESC);
-        oprot.writeI32(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      };
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        int structStart = 0;
+        int pos = 0;
+        com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
+        {
+            int _fbthriftVar0 = this.field1;
+            if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
+              oprot.writeFieldBegin(FIELD1_FIELD_DESC);
+              oprot.writeI32(_fbthriftVar0);
+              oprot.writeFieldEnd();
+            };
+        }
+        {
+            int _fbthriftVar0 = this.field2;
+            if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
+              oprot.writeFieldBegin(FIELD2_FIELD_DESC);
+              oprot.writeI32(_fbthriftVar0);
+              oprot.writeFieldEnd();
+            };
+        }
+        {
+            int _fbthriftVar0 = this.field3;
+            if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
+              oprot.writeFieldBegin(FIELD3_FIELD_DESC);
+              oprot.writeI32(_fbthriftVar0);
+              oprot.writeFieldEnd();
+            };
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _AdaptedFieldsLazy {

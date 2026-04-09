@@ -117,51 +117,49 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<MoveOnly> asReader() {
       return MoveOnly::read0;
     }
 
     public static MoveOnly read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(MoveOnly.NAMES_TO_IDS, MoveOnly.THRIFT_NAMES_TO_IDS, MoveOnly.FIELD_METADATA);
-      MoveOnly.Builder builder = new MoveOnly.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _PTR:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.HeapAllocated _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.HeapAllocated.read0(oprot);
-            builder.setPtr(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(MoveOnly.NAMES_TO_IDS, MoveOnly.THRIFT_NAMES_TO_IDS, MoveOnly.FIELD_METADATA);
+        MoveOnly.Builder builder = new MoveOnly.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _PTR:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.HeapAllocated _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.HeapAllocated.read0(oprot);
+                    builder.setPtr(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.adapter.HeapAllocated _fbthriftVar0 = this.ptr;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(PTR_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.adapter.HeapAllocated _fbthriftVar0 = this.ptr;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(PTR_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _MoveOnlyLazy {

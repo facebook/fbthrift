@@ -142,69 +142,66 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<MyStruct2> asReader() {
       return MyStruct2::read0;
     }
 
     public static MyStruct2 read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(MyStruct2.NAMES_TO_IDS, MyStruct2.THRIFT_NAMES_TO_IDS, MyStruct2.FIELD_METADATA);
-      MyStruct2.Builder builder = new MyStruct2.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _MYSTRUCT1:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.basic_swift_bean.MyStruct1 _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.basic_swift_bean.MyStruct1.read0(oprot);
-            builder.setMyStruct1(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYSTRING:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setMyString(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(MyStruct2.NAMES_TO_IDS, MyStruct2.THRIFT_NAMES_TO_IDS, MyStruct2.FIELD_METADATA);
+        MyStruct2.Builder builder = new MyStruct2.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _MYSTRUCT1:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.basic_swift_bean.MyStruct1 _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.basic_swift_bean.MyStruct1.read0(oprot);
+                    builder.setMyStruct1(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYSTRING:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setMyString(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.basic_swift_bean.MyStruct1 _fbthriftVar0 = this.myStruct1;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_STRUCT1_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.myString;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.basic_swift_bean.MyStruct1 _fbthriftVar0 = this.myStruct1;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_STRUCT1_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.myString;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
 

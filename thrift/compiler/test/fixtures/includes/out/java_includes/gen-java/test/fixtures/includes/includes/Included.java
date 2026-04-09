@@ -140,67 +140,64 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<Included> asReader() {
       return Included::read0;
     }
 
     public static Included read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(Included.NAMES_TO_IDS, Included.THRIFT_NAMES_TO_IDS, Included.FIELD_METADATA);
-      Included.Builder builder = new Included.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _MYINTFIELD:
-          if (__field.type == TType.I64) {
-            long _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI64();
-            builder.setMyIntField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYTRANSITIVEFIELD:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.includes.transitive.Foo _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.includes.transitive.Foo.read0(oprot);
-            builder.setMyTransitiveField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(Included.NAMES_TO_IDS, Included.THRIFT_NAMES_TO_IDS, Included.FIELD_METADATA);
+        Included.Builder builder = new Included.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _MYINTFIELD:
+                if (__field.type == TType.I64) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    builder.setMyIntField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYTRANSITIVEFIELD:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.includes.transitive.Foo _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.includes.transitive.Foo.read0(oprot);
+                    builder.setMyTransitiveField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      long _fbthriftVar0 = this.myIntField;
-      oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
-      oprot.writeI64(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      test.fixtures.includes.transitive.Foo _fbthriftVar0 = this.myTransitiveField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_TRANSITIVE_FIELD_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            long _fbthriftVar0 = this.myIntField;
+            oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
+            oprot.writeI64(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            test.fixtures.includes.transitive.Foo _fbthriftVar0 = this.myTransitiveField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_TRANSITIVE_FIELD_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _IncludedLazy {

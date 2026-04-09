@@ -72,9 +72,9 @@ public final class {{struct:javaCapitalName}} extends org.apache.thrift.TBaseExc
     {{#partial struct.exception_message struct=struct:self}}
     {{/struct:needsExceptionMessage?}}
 
-    {{> struct/StructRead}}
+    {{#partial struct.struct_read struct=struct:self}}
 
-    {{> struct/StructWrite}}
+    {{#partial struct.struct_write struct=struct:self}}
 
     {{#partial struct.default_instance struct=struct:self}}
 }

@@ -185,66 +185,66 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
     }
 
     public void write0(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-        if(allowNullFieldValues) {
-          // Warning: this path will generate corrupt serialized data!
-          return;
-        } else {
-          throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        if (this.id != 0 && this.value == null ){
+            if(allowNullFieldValues) {
+                // Warning: this path will generate corrupt serialized data!
+                return;
+            } else {
+                throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+            }
         }
-      }
-      oprot.writeStructBegin(STRUCT_DESC);
-      switch (this.id) {
-      case _S: {
-        oprot.writeFieldBegin(S_FIELD_DESC);
-        test.fixtures.complex_union.NonCopyableStruct _fbthriftVar0 = (test.fixtures.complex_union.NonCopyableStruct)this.value;
+        oprot.writeStructBegin(STRUCT_DESC);
+        switch (this.id) {
+        case _S: {
+            oprot.writeFieldBegin(S_FIELD_DESC);
+            test.fixtures.complex_union.NonCopyableStruct _fbthriftVar0 = (test.fixtures.complex_union.NonCopyableStruct)this.value;
 
-        _fbthriftVar0.write0(oprot);
-        oprot.writeFieldEnd();
-        break;
-      }
-      default:
-          // ignore unknown field
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+            _fbthriftVar0.write0(oprot);
+            oprot.writeFieldEnd();
+            break;
+        }
+        default:
+            // ignore unknown field
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
-    
     public static com.facebook.thrift.payload.Reader<NonCopyableUnion> asReader() {
-      return NonCopyableUnion::read0;
+        return NonCopyableUnion::read0;
     }
 
     public static NonCopyableUnion read0(TProtocol oprot) throws TException {
-      NonCopyableUnion res = new NonCopyableUnion();
-      res.value = null;
-      res.id = (short) 0;
-      oprot.readStructBegin(NonCopyableUnion.NAMES_TO_IDS, NonCopyableUnion.THRIFT_NAMES_TO_IDS, NonCopyableUnion.FIELD_METADATA);
-      TField __field = oprot.readFieldBegin();
-      if (__field.type != TType.STOP) {
-          switch (__field.id) {
-          case _S:
-            if (__field.type == S_FIELD_DESC.type) {
-              test.fixtures.complex_union.NonCopyableStruct _fbthriftVar0;
-              _fbthriftVar0 = test.fixtures.complex_union.NonCopyableStruct.read0(oprot);
-              res.value = _fbthriftVar0;
+        NonCopyableUnion res = new NonCopyableUnion();
+        res.value = null;
+        res.id = (short) 0;
+        oprot.readStructBegin(NonCopyableUnion.NAMES_TO_IDS, NonCopyableUnion.THRIFT_NAMES_TO_IDS, NonCopyableUnion.FIELD_METADATA);
+        TField __field = oprot.readFieldBegin();
+        if (__field.type != TType.STOP) {
+            switch (__field.id) {
+            case _S:
+                if (__field.type == S_FIELD_DESC.type) {
+                    test.fixtures.complex_union.NonCopyableStruct _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.complex_union.NonCopyableStruct.read0(oprot);
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
             }
-            break;
-          default:
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-        if (res.value != null) {
-          res.id = __field.id;
+            if (res.value != null) {
+                res.id = __field.id;
+            }
+            oprot.readFieldEnd();
+            TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+            if (__stopField.type != TType.STOP) {
+                throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'NonCopyableUnion' is missing a STOP byte");
+            }
         }
-        oprot.readFieldEnd();
-        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
-        if (__stopField.type != TType.STOP) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'NonCopyableUnion' is missing a STOP byte");
-        }
-      }
-      oprot.readStructEnd();
-      return res;
+        oprot.readStructEnd();
+        return res;
     }
+
     public static NonCopyableUnion defaultInstance() {
         return _DEFAULT;
     }

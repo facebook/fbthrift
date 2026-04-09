@@ -329,137 +329,137 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
     }
 
     public void write0(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-        if(allowNullFieldValues) {
-          // Warning: this path will generate corrupt serialized data!
-          return;
-        } else {
-          throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        if (this.id != 0 && this.value == null ){
+            if(allowNullFieldValues) {
+                // Warning: this path will generate corrupt serialized data!
+                return;
+            } else {
+                throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+            }
         }
-      }
-      oprot.writeStructBegin(STRUCT_DESC);
-      switch (this.id) {
-      case _MYENUM: {
-        oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-        test.fixtures.complex_struct.MyEnum _fbthriftVar0 = (test.fixtures.complex_struct.MyEnum)this.value;
+        oprot.writeStructBegin(STRUCT_DESC);
+        switch (this.id) {
+        case _MYENUM: {
+            oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
+            test.fixtures.complex_struct.MyEnum _fbthriftVar0 = (test.fixtures.complex_struct.MyEnum)this.value;
 
-        oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _SETFLOAT: {
-        oprot.writeFieldBegin(SET_FLOAT_FIELD_DESC);
-        List<List<Float>> _fbthriftVar0 = (List<List<Float>>)this.value;
+            oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _SETFLOAT: {
+            oprot.writeFieldBegin(SET_FLOAT_FIELD_DESC);
+            List<List<Float>> _fbthriftVar0 = (List<List<Float>>)this.value;
 
-        oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar0.size()));
-        for (List<Float> _fbthriftVar1 : _fbthriftVar0) {
-            oprot.writeListBegin(new TList(TType.FLOAT, _fbthriftVar1.size()));
-            for (float _fbthriftVar2 : _fbthriftVar1) {
-                oprot.writeFloat(_fbthriftVar2);
+            oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar0.size()));
+            for (List<Float> _fbthriftVar1 : _fbthriftVar0) {
+                oprot.writeListBegin(new TList(TType.FLOAT, _fbthriftVar1.size()));
+                for (float _fbthriftVar2 : _fbthriftVar1) {
+                    oprot.writeFloat(_fbthriftVar2);
+                }
+                oprot.writeListEnd();
             }
             oprot.writeListEnd();
+            oprot.writeFieldEnd();
+            break;
         }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _MYDATAITEM: {
-        oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
-        test.fixtures.complex_struct.MyDataItem _fbthriftVar0 = (test.fixtures.complex_struct.MyDataItem)this.value;
+        case _MYDATAITEM: {
+            oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
+            test.fixtures.complex_struct.MyDataItem _fbthriftVar0 = (test.fixtures.complex_struct.MyDataItem)this.value;
 
-        _fbthriftVar0.write0(oprot);
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _COMPLEXNESTEDSTRUCT: {
-        oprot.writeFieldBegin(COMPLEX_NESTED_STRUCT_FIELD_DESC);
-        test.fixtures.complex_struct.ComplexNestedStruct _fbthriftVar0 = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
+            _fbthriftVar0.write0(oprot);
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _COMPLEXNESTEDSTRUCT: {
+            oprot.writeFieldBegin(COMPLEX_NESTED_STRUCT_FIELD_DESC);
+            test.fixtures.complex_struct.ComplexNestedStruct _fbthriftVar0 = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
 
-        _fbthriftVar0.write0(oprot);
-        oprot.writeFieldEnd();
-        break;
-      }
-      default:
-          // ignore unknown field
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+            _fbthriftVar0.write0(oprot);
+            oprot.writeFieldEnd();
+            break;
+        }
+        default:
+            // ignore unknown field
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
-    
     public static com.facebook.thrift.payload.Reader<MyUnionFloatFieldThrowExp> asReader() {
-      return MyUnionFloatFieldThrowExp::read0;
+        return MyUnionFloatFieldThrowExp::read0;
     }
 
     public static MyUnionFloatFieldThrowExp read0(TProtocol oprot) throws TException {
-      MyUnionFloatFieldThrowExp res = new MyUnionFloatFieldThrowExp();
-      res.value = null;
-      res.id = (short) 0;
-      oprot.readStructBegin(MyUnionFloatFieldThrowExp.NAMES_TO_IDS, MyUnionFloatFieldThrowExp.THRIFT_NAMES_TO_IDS, MyUnionFloatFieldThrowExp.FIELD_METADATA);
-      TField __field = oprot.readFieldBegin();
-      if (__field.type != TType.STOP) {
-          switch (__field.id) {
-          case _MYENUM:
-            if (__field.type == MY_ENUM_FIELD_DESC.type) {
-              test.fixtures.complex_struct.MyEnum _fbthriftVar0;
-              _fbthriftVar0 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-              res.value = _fbthriftVar0;
+        MyUnionFloatFieldThrowExp res = new MyUnionFloatFieldThrowExp();
+        res.value = null;
+        res.id = (short) 0;
+        oprot.readStructBegin(MyUnionFloatFieldThrowExp.NAMES_TO_IDS, MyUnionFloatFieldThrowExp.THRIFT_NAMES_TO_IDS, MyUnionFloatFieldThrowExp.FIELD_METADATA);
+        TField __field = oprot.readFieldBegin();
+        if (__field.type != TType.STOP) {
+            switch (__field.id) {
+            case _MYENUM:
+                if (__field.type == MY_ENUM_FIELD_DESC.type) {
+                    test.fixtures.complex_struct.MyEnum _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _SETFLOAT:
+                if (__field.type == SET_FLOAT_FIELD_DESC.type) {
+                    List<List<Float>> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<List<Float>>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            List<Float> _fbthriftVar1;
+                            {
+                                TList _list1 = oprot.readListBegin();
+                                _fbthriftVar1 = new ArrayList<Float>(Math.max(0, _list1.size));
+                                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                    float _fbthriftVar2;
+                                    _fbthriftVar2 = oprot.readFloat();
+                                    _fbthriftVar1.add(_fbthriftVar2);
+                                }
+                                oprot.readListEnd();
+                            }
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readListEnd();
+                    }
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _MYDATAITEM:
+                if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
+                    test.fixtures.complex_struct.MyDataItem _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.complex_struct.MyDataItem.read0(oprot);
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _COMPLEXNESTEDSTRUCT:
+                if (__field.type == COMPLEX_NESTED_STRUCT_FIELD_DESC.type) {
+                    test.fixtures.complex_struct.ComplexNestedStruct _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.complex_struct.ComplexNestedStruct.read0(oprot);
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
             }
-            break;
-          case _SETFLOAT:
-            if (__field.type == SET_FLOAT_FIELD_DESC.type) {
-              List<List<Float>> _fbthriftVar0;
-              {
-                  TList _list0 = oprot.readListBegin();
-                  _fbthriftVar0 = new ArrayList<List<Float>>(Math.max(0, _list0.size));
-                  for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                      List<Float> _fbthriftVar1;
-                      {
-                          TList _list1 = oprot.readListBegin();
-                          _fbthriftVar1 = new ArrayList<Float>(Math.max(0, _list1.size));
-                          for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                              float _fbthriftVar2;
-                              _fbthriftVar2 = oprot.readFloat();
-                              _fbthriftVar1.add(_fbthriftVar2);
-                          }
-                          oprot.readListEnd();
-                      }
-                      _fbthriftVar0.add(_fbthriftVar1);
-                  }
-                  oprot.readListEnd();
-              }
-              res.value = _fbthriftVar0;
+            if (res.value != null) {
+                res.id = __field.id;
             }
-            break;
-          case _MYDATAITEM:
-            if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
-              test.fixtures.complex_struct.MyDataItem _fbthriftVar0;
-              _fbthriftVar0 = test.fixtures.complex_struct.MyDataItem.read0(oprot);
-              res.value = _fbthriftVar0;
+            oprot.readFieldEnd();
+            TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+            if (__stopField.type != TType.STOP) {
+                throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'MyUnionFloatFieldThrowExp' is missing a STOP byte");
             }
-            break;
-          case _COMPLEXNESTEDSTRUCT:
-            if (__field.type == COMPLEX_NESTED_STRUCT_FIELD_DESC.type) {
-              test.fixtures.complex_struct.ComplexNestedStruct _fbthriftVar0;
-              _fbthriftVar0 = test.fixtures.complex_struct.ComplexNestedStruct.read0(oprot);
-              res.value = _fbthriftVar0;
-            }
-            break;
-          default:
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-        if (res.value != null) {
-          res.id = __field.id;
         }
-        oprot.readFieldEnd();
-        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
-        if (__stopField.type != TType.STOP) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'MyUnionFloatFieldThrowExp' is missing a STOP byte");
-        }
-      }
-      oprot.readStructEnd();
-      return res;
+        oprot.readStructEnd();
+        return res;
     }
+
     public static MyUnionFloatFieldThrowExp defaultInstance() {
         return _DEFAULT;
     }

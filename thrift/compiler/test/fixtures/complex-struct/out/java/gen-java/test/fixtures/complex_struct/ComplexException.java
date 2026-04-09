@@ -188,183 +188,176 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
     @com.facebook.swift.codec.ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
 
-    
     public static com.facebook.thrift.payload.Reader<ComplexException> asReader() {
       return ComplexException::read0;
     }
 
     public static ComplexException read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(ComplexException.NAMES_TO_IDS, ComplexException.THRIFT_NAMES_TO_IDS, ComplexException.FIELD_METADATA);
-      ComplexException.Builder builder = new ComplexException.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _MESSAGE:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setMessage(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _LISTSTRINGS:
-          if (__field.type == TType.LIST) {
-            List<String> _fbthriftVar0;
-            {
-                TList _list0 = oprot.readListBegin();
-                _fbthriftVar0 = new ArrayList<String>(Math.max(0, _list0.size));
-                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                    String _fbthriftVar1;
-                    _fbthriftVar1 = oprot.readString();
-                    _fbthriftVar0.add(_fbthriftVar1);
+        TField __field;
+        oprot.readStructBegin(ComplexException.NAMES_TO_IDS, ComplexException.THRIFT_NAMES_TO_IDS, ComplexException.FIELD_METADATA);
+        ComplexException.Builder builder = new ComplexException.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _MESSAGE:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setMessage(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readListEnd();
-            }
-            builder.setListStrings(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _ERRORENUM:
-          if (__field.type == TType.I32) {
-            test.fixtures.complex_struct.MyEnum _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-            builder.setErrorEnum(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _UNIONERROR:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.complex_struct.MyUnion _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.complex_struct.MyUnion.read0(oprot);
-            builder.setUnionError(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _STRUCTERROR:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.complex_struct.MyStruct _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-            builder.setStructError(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _LSMAP:
-          if (__field.type == TType.MAP) {
-            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar0;
-            {
-                TMap _map0 = oprot.readMapBegin();
-                _fbthriftVar0 = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
-                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
-                    long _fbthriftKey1;
-                    String _fbthriftValue1;
+                break;
+            case _LISTSTRINGS:
+                if (__field.type == TType.LIST) {
+                    List<String> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<String>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            String _fbthriftVar1;
+                            _fbthriftVar1 = oprot.readString();
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readListEnd();
+                    }
+                    builder.setListStrings(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _ERRORENUM:
+                if (__field.type == TType.I32) {
+                    test.fixtures.complex_struct.MyEnum _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                    builder.setErrorEnum(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _UNIONERROR:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.complex_struct.MyUnion _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                    builder.setUnionError(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _STRUCTERROR:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.complex_struct.MyStruct _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                    builder.setStructError(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _LSMAP:
+                if (__field.type == TType.MAP) {
+                    it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar0;
+                    {
+                        TMap _map0 = oprot.readMapBegin();
+                        _fbthriftVar0 = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
+                        for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                            long _fbthriftKey1;
+                            String _fbthriftValue1;
 
-                    {
-                        long _fbthriftVar1;
-                        _fbthriftVar1 = oprot.readI64();
-                        _fbthriftKey1 = _fbthriftVar1;
+                            {
+                                long _fbthriftVar1;
+                                _fbthriftVar1 = oprot.readI64();
+                                _fbthriftKey1 = _fbthriftVar1;
+                            }
+                            {
+                                String _fbthriftVar1;
+                                _fbthriftVar1 = oprot.readString();
+                                _fbthriftValue1 = _fbthriftVar1;
+                            }
+                            _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
+                        }
+                        oprot.readMapEnd();
                     }
-                    {
-                        String _fbthriftVar1;
-                        _fbthriftVar1 = oprot.readString();
-                        _fbthriftValue1 = _fbthriftVar1;
-                    }
-                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
+                    builder.setLsMap(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readMapEnd();
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
             }
-            builder.setLsMap(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      String _fbthriftVar0 = this.message;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      List<String> _fbthriftVar0 = this.listStrings;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(LIST_STRINGS_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
-    for (String _fbthriftVar1 : _fbthriftVar0) {
-        oprot.writeString(_fbthriftVar1);
-    }
-    oprot.writeListEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.complex_struct.MyEnum _fbthriftVar0 = this.errorEnum;
-      oprot.writeFieldBegin(ERROR_ENUM_FIELD_DESC);
-      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
-
-      oprot.writeFieldEnd();
-      }
-      {
-      test.fixtures.complex_struct.MyUnion _fbthriftVar0 = this.unionError;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(UNION_ERROR_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.complex_struct.MyStruct _fbthriftVar0 = this.structError;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(STRUCT_ERROR_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar0 = this.lsMap;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _fbthriftVar0.size()));
-    for (Map.Entry<Long, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        oprot.writeStructBegin(STRUCT_DESC);
         {
-            Long _fbthriftVar2 = _fbthriftVar1.getKey();
-            oprot.writeI64(_fbthriftVar2);
+            String _fbthriftVar0 = this.message;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
         }
         {
-            String _fbthriftVar2 = _fbthriftVar1.getValue();
-            oprot.writeString(_fbthriftVar2);
+            List<String> _fbthriftVar0 = this.listStrings;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(LIST_STRINGS_FIELD_DESC);
+                oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
+                for (String _fbthriftVar1 : _fbthriftVar0) {
+                    oprot.writeString(_fbthriftVar1);
+                }
+                oprot.writeListEnd();
+                oprot.writeFieldEnd();
+            }
         }
-    }
-    oprot.writeMapEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        {
+            test.fixtures.complex_struct.MyEnum _fbthriftVar0 = this.errorEnum;
+            oprot.writeFieldBegin(ERROR_ENUM_FIELD_DESC);
+            oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+            oprot.writeFieldEnd();
+        }
+        {
+            test.fixtures.complex_struct.MyUnion _fbthriftVar0 = this.unionError;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(UNION_ERROR_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.complex_struct.MyStruct _fbthriftVar0 = this.structError;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(STRUCT_ERROR_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar0 = this.lsMap;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
+                oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _fbthriftVar0.size()));
+                for (Map.Entry<Long, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+                    {
+                        Long _fbthriftVar2 = _fbthriftVar1.getKey();
+                        oprot.writeI64(_fbthriftVar2);
+                    }
+                    {
+                        String _fbthriftVar2 = _fbthriftVar1.getValue();
+                        oprot.writeString(_fbthriftVar2);
+                    }
+                }
+                oprot.writeMapEnd();
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _ComplexExceptionLazy {

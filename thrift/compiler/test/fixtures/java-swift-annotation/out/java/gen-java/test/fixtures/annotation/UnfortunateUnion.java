@@ -227,81 +227,81 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
     }
 
     public void write0(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-        if(allowNullFieldValues) {
-          // Warning: this path will generate corrupt serialized data!
-          return;
-        } else {
-          throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        if (this.id != 0 && this.value == null ){
+            if(allowNullFieldValues) {
+                // Warning: this path will generate corrupt serialized data!
+                return;
+            } else {
+                throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+            }
         }
-      }
-      oprot.writeStructBegin(STRUCT_DESC);
-      switch (this.id) {
-      case _AN_SNAKE_STRING: {
-        oprot.writeFieldBegin(AN_SNAKE_STRING_FIELD_DESC);
-        String _fbthriftVar0 = (String)this.value;
+        oprot.writeStructBegin(STRUCT_DESC);
+        switch (this.id) {
+        case _AN_SNAKE_STRING: {
+            oprot.writeFieldBegin(AN_SNAKE_STRING_FIELD_DESC);
+            String _fbthriftVar0 = (String)this.value;
 
-        oprot.writeString(_fbthriftVar0);
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _ACAMELI32: {
-        oprot.writeFieldBegin(A_CAMEL_I32_FIELD_DESC);
-        int _fbthriftVar0 = (int)this.value;
+            oprot.writeString(_fbthriftVar0);
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _ACAMELI32: {
+            oprot.writeFieldBegin(A_CAMEL_I32_FIELD_DESC);
+            int _fbthriftVar0 = (int)this.value;
 
-        oprot.writeI32(_fbthriftVar0);
-        oprot.writeFieldEnd();
-        break;
-      }
-      default:
-          // ignore unknown field
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+            oprot.writeI32(_fbthriftVar0);
+            oprot.writeFieldEnd();
+            break;
+        }
+        default:
+            // ignore unknown field
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
-    
     public static com.facebook.thrift.payload.Reader<UnfortunateUnion> asReader() {
-      return UnfortunateUnion::read0;
+        return UnfortunateUnion::read0;
     }
 
     public static UnfortunateUnion read0(TProtocol oprot) throws TException {
-      UnfortunateUnion res = new UnfortunateUnion();
-      res.value = null;
-      res.id = (short) 0;
-      oprot.readStructBegin(UnfortunateUnion.NAMES_TO_IDS, UnfortunateUnion.THRIFT_NAMES_TO_IDS, UnfortunateUnion.FIELD_METADATA);
-      TField __field = oprot.readFieldBegin();
-      if (__field.type != TType.STOP) {
-          switch (__field.id) {
-          case _AN_SNAKE_STRING:
-            if (__field.type == AN_SNAKE_STRING_FIELD_DESC.type) {
-              String _fbthriftVar0;
-              _fbthriftVar0 = oprot.readString();
-              res.value = _fbthriftVar0;
+        UnfortunateUnion res = new UnfortunateUnion();
+        res.value = null;
+        res.id = (short) 0;
+        oprot.readStructBegin(UnfortunateUnion.NAMES_TO_IDS, UnfortunateUnion.THRIFT_NAMES_TO_IDS, UnfortunateUnion.FIELD_METADATA);
+        TField __field = oprot.readFieldBegin();
+        if (__field.type != TType.STOP) {
+            switch (__field.id) {
+            case _AN_SNAKE_STRING:
+                if (__field.type == AN_SNAKE_STRING_FIELD_DESC.type) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _ACAMELI32:
+                if (__field.type == A_CAMEL_I32_FIELD_DESC.type) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
             }
-            break;
-          case _ACAMELI32:
-            if (__field.type == A_CAMEL_I32_FIELD_DESC.type) {
-              int _fbthriftVar0;
-              _fbthriftVar0 = oprot.readI32();
-              res.value = _fbthriftVar0;
+            if (res.value != null) {
+                res.id = __field.id;
             }
-            break;
-          default:
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-        if (res.value != null) {
-          res.id = __field.id;
+            oprot.readFieldEnd();
+            TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+            if (__stopField.type != TType.STOP) {
+                throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'UnfortunateUnion' is missing a STOP byte");
+            }
         }
-        oprot.readFieldEnd();
-        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
-        if (__stopField.type != TType.STOP) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'UnfortunateUnion' is missing a STOP byte");
-        }
-      }
-      oprot.readStructEnd();
-      return res;
+        oprot.readStructEnd();
+        return res;
     }
+
     public static UnfortunateUnion defaultInstance() {
         return _DEFAULT;
     }

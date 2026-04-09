@@ -227,81 +227,81 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     }
 
     public void write0(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-        if(allowNullFieldValues) {
-          // Warning: this path will generate corrupt serialized data!
-          return;
-        } else {
-          throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+        if (this.id != 0 && this.value == null ){
+            if(allowNullFieldValues) {
+                // Warning: this path will generate corrupt serialized data!
+                return;
+            } else {
+                throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+            }
         }
-      }
-      oprot.writeStructBegin(STRUCT_DESC);
-      switch (this.id) {
-      case _ANINTEGER: {
-        oprot.writeFieldBegin(AN_INTEGER_FIELD_DESC);
-        int _fbthriftVar0 = (int)this.value;
+        oprot.writeStructBegin(STRUCT_DESC);
+        switch (this.id) {
+        case _ANINTEGER: {
+            oprot.writeFieldBegin(AN_INTEGER_FIELD_DESC);
+            int _fbthriftVar0 = (int)this.value;
 
-        oprot.writeI32(_fbthriftVar0);
-        oprot.writeFieldEnd();
-        break;
-      }
-      case _ASTRING: {
-        oprot.writeFieldBegin(A_STRING_FIELD_DESC);
-        String _fbthriftVar0 = (String)this.value;
+            oprot.writeI32(_fbthriftVar0);
+            oprot.writeFieldEnd();
+            break;
+        }
+        case _ASTRING: {
+            oprot.writeFieldBegin(A_STRING_FIELD_DESC);
+            String _fbthriftVar0 = (String)this.value;
 
-        oprot.writeString(_fbthriftVar0);
-        oprot.writeFieldEnd();
-        break;
-      }
-      default:
-          // ignore unknown field
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+            oprot.writeString(_fbthriftVar0);
+            oprot.writeFieldEnd();
+            break;
+        }
+        default:
+            // ignore unknown field
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
-    
     public static com.facebook.thrift.payload.Reader<MyUnion> asReader() {
-      return MyUnion::read0;
+        return MyUnion::read0;
     }
 
     public static MyUnion read0(TProtocol oprot) throws TException {
-      MyUnion res = new MyUnion();
-      res.value = null;
-      res.id = (short) 0;
-      oprot.readStructBegin(MyUnion.NAMES_TO_IDS, MyUnion.THRIFT_NAMES_TO_IDS, MyUnion.FIELD_METADATA);
-      TField __field = oprot.readFieldBegin();
-      if (__field.type != TType.STOP) {
-          switch (__field.id) {
-          case _ANINTEGER:
-            if (__field.type == AN_INTEGER_FIELD_DESC.type) {
-              int _fbthriftVar0;
-              _fbthriftVar0 = oprot.readI32();
-              res.value = _fbthriftVar0;
+        MyUnion res = new MyUnion();
+        res.value = null;
+        res.id = (short) 0;
+        oprot.readStructBegin(MyUnion.NAMES_TO_IDS, MyUnion.THRIFT_NAMES_TO_IDS, MyUnion.FIELD_METADATA);
+        TField __field = oprot.readFieldBegin();
+        if (__field.type != TType.STOP) {
+            switch (__field.id) {
+            case _ANINTEGER:
+                if (__field.type == AN_INTEGER_FIELD_DESC.type) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            case _ASTRING:
+                if (__field.type == A_STRING_FIELD_DESC.type) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    res.value = _fbthriftVar0;
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
             }
-            break;
-          case _ASTRING:
-            if (__field.type == A_STRING_FIELD_DESC.type) {
-              String _fbthriftVar0;
-              _fbthriftVar0 = oprot.readString();
-              res.value = _fbthriftVar0;
+            if (res.value != null) {
+                res.id = __field.id;
             }
-            break;
-          default:
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-        if (res.value != null) {
-          res.id = __field.id;
+            oprot.readFieldEnd();
+            TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+            if (__stopField.type != TType.STOP) {
+                throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'MyUnion' is missing a STOP byte");
+            }
         }
-        oprot.readFieldEnd();
-        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
-        if (__stopField.type != TType.STOP) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'MyUnion' is missing a STOP byte");
-        }
-      }
-      oprot.readStructEnd();
-      return res;
+        oprot.readStructEnd();
+        return res;
     }
+
     public static MyUnion defaultInstance() {
         return _DEFAULT;
     }

@@ -143,67 +143,64 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<MyAnnotation> asReader() {
       return MyAnnotation::read0;
     }
 
     public static MyAnnotation read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(MyAnnotation.NAMES_TO_IDS, MyAnnotation.THRIFT_NAMES_TO_IDS, MyAnnotation.FIELD_METADATA);
-      MyAnnotation.Builder builder = new MyAnnotation.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _SIGNATURE:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setSignature(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _COLOR:
-          if (__field.type == TType.I32) {
-            test.fixtures.adapter.Color _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.Color.fromInteger(oprot.readI32());
-            builder.setColor(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(MyAnnotation.NAMES_TO_IDS, MyAnnotation.THRIFT_NAMES_TO_IDS, MyAnnotation.FIELD_METADATA);
+        MyAnnotation.Builder builder = new MyAnnotation.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _SIGNATURE:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setSignature(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _COLOR:
+                if (__field.type == TType.I32) {
+                    test.fixtures.adapter.Color _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.Color.fromInteger(oprot.readI32());
+                    builder.setColor(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      String _fbthriftVar0 = this.signature;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(SIGNATURE_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.adapter.Color _fbthriftVar0 = this.color;
-      oprot.writeFieldBegin(COLOR_FIELD_DESC);
-      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
-
-      oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            String _fbthriftVar0 = this.signature;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(SIGNATURE_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.adapter.Color _fbthriftVar0 = this.color;
+            oprot.writeFieldBegin(COLOR_FIELD_DESC);
+            oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+            oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _MyAnnotationLazy {

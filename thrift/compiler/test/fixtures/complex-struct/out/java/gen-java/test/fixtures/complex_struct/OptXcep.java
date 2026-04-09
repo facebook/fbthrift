@@ -100,69 +100,66 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
     @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.OPTIONAL)
     public Integer getErrorCode() { return errorCode; }
 
-    
     public static com.facebook.thrift.payload.Reader<OptXcep> asReader() {
       return OptXcep::read0;
     }
 
     public static OptXcep read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(OptXcep.NAMES_TO_IDS, OptXcep.THRIFT_NAMES_TO_IDS, OptXcep.FIELD_METADATA);
-      OptXcep.Builder builder = new OptXcep.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _MESSAGE:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setMessage(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _ERRORCODE:
-          if (__field.type == TType.I32) {
-            Integer _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI32();
-            builder.setErrorCode(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(OptXcep.NAMES_TO_IDS, OptXcep.THRIFT_NAMES_TO_IDS, OptXcep.FIELD_METADATA);
+        OptXcep.Builder builder = new OptXcep.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _MESSAGE:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setMessage(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _ERRORCODE:
+                if (__field.type == TType.I32) {
+                    Integer _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    builder.setErrorCode(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      String _fbthriftVar0 = this.message;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      Integer _fbthriftVar0 = this.errorCode;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(ERROR_CODE_FIELD_DESC);
-        oprot.writeI32(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            String _fbthriftVar0 = this.message;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            Integer _fbthriftVar0 = this.errorCode;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(ERROR_CODE_FIELD_DESC);
+                oprot.writeI32(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _OptXcepLazy {

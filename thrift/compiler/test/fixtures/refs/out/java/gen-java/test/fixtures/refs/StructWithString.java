@@ -218,123 +218,117 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<StructWithString> asReader() {
       return StructWithString::read0;
     }
 
     public static StructWithString read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(StructWithString.NAMES_TO_IDS, StructWithString.THRIFT_NAMES_TO_IDS, StructWithString.FIELD_METADATA);
-      StructWithString.Builder builder = new StructWithString.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _DEF_UNIQUE_STRING_REF:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setDefUniqueStringRef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _DEF_SHARED_STRING_REF:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setDefSharedStringRef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _DEF_SHARED_STRING_CONST_REF:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setDefSharedStringConstRef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _UNIQUE_STRING_REF:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setUniqueStringRef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _SHARED_STRING_REF:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setSharedStringRef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(StructWithString.NAMES_TO_IDS, StructWithString.THRIFT_NAMES_TO_IDS, StructWithString.FIELD_METADATA);
+        StructWithString.Builder builder = new StructWithString.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _DEF_UNIQUE_STRING_REF:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setDefUniqueStringRef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _DEF_SHARED_STRING_REF:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setDefSharedStringRef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _DEF_SHARED_STRING_CONST_REF:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setDefSharedStringConstRef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _UNIQUE_STRING_REF:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setUniqueStringRef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _SHARED_STRING_REF:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setSharedStringRef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      String _fbthriftVar0 = this.defUniqueStringRef;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(DEF_UNIQUE_STRING_REF_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.defSharedStringRef;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(DEF_SHARED_STRING_REF_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.defSharedStringConstRef;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(DEF_SHARED_STRING_CONST_REF_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.uniqueStringRef;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(UNIQUE_STRING_REF_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.sharedStringRef;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(SHARED_STRING_REF_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            String _fbthriftVar0 = this.defUniqueStringRef;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(DEF_UNIQUE_STRING_REF_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.defSharedStringRef;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(DEF_SHARED_STRING_REF_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.defSharedStringConstRef;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(DEF_SHARED_STRING_CONST_REF_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.uniqueStringRef;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(UNIQUE_STRING_REF_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.sharedStringRef;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(SHARED_STRING_REF_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _StructWithStringLazy {

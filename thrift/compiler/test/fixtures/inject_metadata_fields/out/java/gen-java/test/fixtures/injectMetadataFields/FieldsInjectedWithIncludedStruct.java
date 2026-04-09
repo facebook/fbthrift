@@ -192,105 +192,100 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<FieldsInjectedWithIncludedStruct> asReader() {
       return FieldsInjectedWithIncludedStruct::read0;
     }
 
     public static FieldsInjectedWithIncludedStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(FieldsInjectedWithIncludedStruct.NAMES_TO_IDS, FieldsInjectedWithIncludedStruct.THRIFT_NAMES_TO_IDS, FieldsInjectedWithIncludedStruct.FIELD_METADATA);
-      FieldsInjectedWithIncludedStruct.Builder builder = new FieldsInjectedWithIncludedStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _STRING_FIELD:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setStringField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _INJECTED_FIELD:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setInjectedField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _INJECTED_STRUCTURED_ANNOTATION_FIELD:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setInjectedStructuredAnnotationField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _INJECTED_UNSTRUCTURED_ANNOTATION_FIELD:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setInjectedUnstructuredAnnotationField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(FieldsInjectedWithIncludedStruct.NAMES_TO_IDS, FieldsInjectedWithIncludedStruct.THRIFT_NAMES_TO_IDS, FieldsInjectedWithIncludedStruct.FIELD_METADATA);
+        FieldsInjectedWithIncludedStruct.Builder builder = new FieldsInjectedWithIncludedStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _STRING_FIELD:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setStringField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _INJECTED_FIELD:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setInjectedField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _INJECTED_STRUCTURED_ANNOTATION_FIELD:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setInjectedStructuredAnnotationField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _INJECTED_UNSTRUCTURED_ANNOTATION_FIELD:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setInjectedUnstructuredAnnotationField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      String _fbthriftVar0 = this.stringField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.injectedField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.injectedStructuredAnnotationField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.injectedUnstructuredAnnotationField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            String _fbthriftVar0 = this.stringField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.injectedField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.injectedStructuredAnnotationField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.injectedUnstructuredAnnotationField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _FieldsInjectedWithIncludedStructLazy {

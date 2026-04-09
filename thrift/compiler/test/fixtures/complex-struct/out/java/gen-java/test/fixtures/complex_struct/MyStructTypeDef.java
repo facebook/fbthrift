@@ -322,336 +322,326 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<MyStructTypeDef> asReader() {
       return MyStructTypeDef::read0;
     }
 
     public static MyStructTypeDef read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(MyStructTypeDef.NAMES_TO_IDS, MyStructTypeDef.THRIFT_NAMES_TO_IDS, MyStructTypeDef.FIELD_METADATA);
-      MyStructTypeDef.Builder builder = new MyStructTypeDef.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _MYLONGFIELD:
-          if (__field.type == TType.I64) {
-            long _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI64();
-            builder.setMyLongField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYLONGTYPEDEF:
-          if (__field.type == TType.I64) {
-            long _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI64();
-            builder.setMyLongTypeDef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYSTRINGFIELD:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setMyStringField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYSTRINGTYPEDEF:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setMyStringTypedef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYMAPFIELD:
-          if (__field.type == TType.MAP) {
-            Map<Short, String> _fbthriftVar0;
-            {
-                TMap _map0 = oprot.readMapBegin();
-                _fbthriftVar0 = new HashMap<Short, String>(Math.max(0, _map0.size));
-                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
-                    short _fbthriftKey1;
-                    String _fbthriftValue1;
+        TField __field;
+        oprot.readStructBegin(MyStructTypeDef.NAMES_TO_IDS, MyStructTypeDef.THRIFT_NAMES_TO_IDS, MyStructTypeDef.FIELD_METADATA);
+        MyStructTypeDef.Builder builder = new MyStructTypeDef.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _MYLONGFIELD:
+                if (__field.type == TType.I64) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    builder.setMyLongField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYLONGTYPEDEF:
+                if (__field.type == TType.I64) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    builder.setMyLongTypeDef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYSTRINGFIELD:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setMyStringField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYSTRINGTYPEDEF:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setMyStringTypedef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYMAPFIELD:
+                if (__field.type == TType.MAP) {
+                    Map<Short, String> _fbthriftVar0;
+                    {
+                        TMap _map0 = oprot.readMapBegin();
+                        _fbthriftVar0 = new HashMap<Short, String>(Math.max(0, _map0.size));
+                        for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                            short _fbthriftKey1;
+                            String _fbthriftValue1;
 
-                    {
-                        short _fbthriftVar1;
-                        _fbthriftVar1 = oprot.readI16();
-                        _fbthriftKey1 = _fbthriftVar1;
+                            {
+                                short _fbthriftVar1;
+                                _fbthriftVar1 = oprot.readI16();
+                                _fbthriftKey1 = _fbthriftVar1;
+                            }
+                            {
+                                String _fbthriftVar1;
+                                _fbthriftVar1 = oprot.readString();
+                                _fbthriftValue1 = _fbthriftVar1;
+                            }
+                            _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
+                        }
+                        oprot.readMapEnd();
                     }
-                    {
-                        String _fbthriftVar1;
-                        _fbthriftVar1 = oprot.readString();
-                        _fbthriftValue1 = _fbthriftVar1;
-                    }
-                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
+                    builder.setMyMapField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readMapEnd();
-            }
-            builder.setMyMapField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYMAPTYPEDEF:
-          if (__field.type == TType.MAP) {
-            Map<Short, String> _fbthriftVar0;
-            {
-                TMap _map0 = oprot.readMapBegin();
-                _fbthriftVar0 = new HashMap<Short, String>(Math.max(0, _map0.size));
-                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
-                    short _fbthriftKey1;
-                    String _fbthriftValue1;
+                break;
+            case _MYMAPTYPEDEF:
+                if (__field.type == TType.MAP) {
+                    Map<Short, String> _fbthriftVar0;
+                    {
+                        TMap _map0 = oprot.readMapBegin();
+                        _fbthriftVar0 = new HashMap<Short, String>(Math.max(0, _map0.size));
+                        for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                            short _fbthriftKey1;
+                            String _fbthriftValue1;
 
-                    {
-                        short _fbthriftVar1;
-                        _fbthriftVar1 = oprot.readI16();
-                        _fbthriftKey1 = _fbthriftVar1;
+                            {
+                                short _fbthriftVar1;
+                                _fbthriftVar1 = oprot.readI16();
+                                _fbthriftKey1 = _fbthriftVar1;
+                            }
+                            {
+                                String _fbthriftVar1;
+                                _fbthriftVar1 = oprot.readString();
+                                _fbthriftValue1 = _fbthriftVar1;
+                            }
+                            _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
+                        }
+                        oprot.readMapEnd();
                     }
+                    builder.setMyMapTypedef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _MYLISTFIELD:
+                if (__field.type == TType.LIST) {
+                    List<Double> _fbthriftVar0;
                     {
-                        String _fbthriftVar1;
-                        _fbthriftVar1 = oprot.readString();
-                        _fbthriftValue1 = _fbthriftVar1;
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<Double>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            double _fbthriftVar1;
+                            _fbthriftVar1 = oprot.readDouble();
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readListEnd();
                     }
-                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
+                    builder.setMyListField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readMapEnd();
-            }
-            builder.setMyMapTypedef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYLISTFIELD:
-          if (__field.type == TType.LIST) {
-            List<Double> _fbthriftVar0;
-            {
-                TList _list0 = oprot.readListBegin();
-                _fbthriftVar0 = new ArrayList<Double>(Math.max(0, _list0.size));
-                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                    double _fbthriftVar1;
-                    _fbthriftVar1 = oprot.readDouble();
-                    _fbthriftVar0.add(_fbthriftVar1);
+                break;
+            case _MYLISTTYPEDEF:
+                if (__field.type == TType.LIST) {
+                    List<Double> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<Double>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            double _fbthriftVar1;
+                            _fbthriftVar1 = oprot.readDouble();
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readListEnd();
+                    }
+                    builder.setMyListTypedef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readListEnd();
-            }
-            builder.setMyListField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYLISTTYPEDEF:
-          if (__field.type == TType.LIST) {
-            List<Double> _fbthriftVar0;
-            {
-                TList _list0 = oprot.readListBegin();
-                _fbthriftVar0 = new ArrayList<Double>(Math.max(0, _list0.size));
-                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                    double _fbthriftVar1;
-                    _fbthriftVar1 = oprot.readDouble();
-                    _fbthriftVar0.add(_fbthriftVar1);
-                }
-                oprot.readListEnd();
-            }
-            builder.setMyListTypedef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MYMAPLISTOFTYPEDEF:
-          if (__field.type == TType.MAP) {
-            Map<Short, List<List<Double>>> _fbthriftVar0;
-            {
-                TMap _map0 = oprot.readMapBegin();
-                _fbthriftVar0 = new HashMap<Short, List<List<Double>>>(Math.max(0, _map0.size));
-                for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
-                    short _fbthriftKey1;
-                    List<List<Double>> _fbthriftValue1;
+                break;
+            case _MYMAPLISTOFTYPEDEF:
+                if (__field.type == TType.MAP) {
+                    Map<Short, List<List<Double>>> _fbthriftVar0;
+                    {
+                        TMap _map0 = oprot.readMapBegin();
+                        _fbthriftVar0 = new HashMap<Short, List<List<Double>>>(Math.max(0, _map0.size));
+                        for (int _i0 = 0; (_map0.size < 0) ? oprot.peekMap() : (_i0 < _map0.size); _i0++) {
+                            short _fbthriftKey1;
+                            List<List<Double>> _fbthriftValue1;
 
-                    {
-                        short _fbthriftVar1;
-                        _fbthriftVar1 = oprot.readI16();
-                        _fbthriftKey1 = _fbthriftVar1;
-                    }
-                    {
-                        List<List<Double>> _fbthriftVar1;
-                        {
-                            TList _list1 = oprot.readListBegin();
-                            _fbthriftVar1 = new ArrayList<List<Double>>(Math.max(0, _list1.size));
-                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                                List<Double> _fbthriftVar2;
+                            {
+                                short _fbthriftVar1;
+                                _fbthriftVar1 = oprot.readI16();
+                                _fbthriftKey1 = _fbthriftVar1;
+                            }
+                            {
+                                List<List<Double>> _fbthriftVar1;
                                 {
-                                    TList _list2 = oprot.readListBegin();
-                                    _fbthriftVar2 = new ArrayList<Double>(Math.max(0, _list2.size));
-                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                        double _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readDouble();
-                                        _fbthriftVar2.add(_fbthriftVar3);
+                                    TList _list1 = oprot.readListBegin();
+                                    _fbthriftVar1 = new ArrayList<List<Double>>(Math.max(0, _list1.size));
+                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                        List<Double> _fbthriftVar2;
+                                        {
+                                            TList _list2 = oprot.readListBegin();
+                                            _fbthriftVar2 = new ArrayList<Double>(Math.max(0, _list2.size));
+                                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                double _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readDouble();
+                                                _fbthriftVar2.add(_fbthriftVar3);
+                                            }
+                                            oprot.readListEnd();
+                                        }
+                                        _fbthriftVar1.add(_fbthriftVar2);
                                     }
                                     oprot.readListEnd();
                                 }
-                                _fbthriftVar1.add(_fbthriftVar2);
+                                _fbthriftValue1 = _fbthriftVar1;
                             }
-                            oprot.readListEnd();
+                            _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
                         }
-                        _fbthriftValue1 = _fbthriftVar1;
+                        oprot.readMapEnd();
                     }
-                    _fbthriftVar0.put(_fbthriftKey1, _fbthriftValue1);
+                    builder.setMyMapListOfTypeDef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readMapEnd();
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
             }
-            builder.setMyMapListOfTypeDef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      long _fbthriftVar0 = this.myLongField;
-      oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
-      oprot.writeI64(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      long _fbthriftVar0 = this.myLongTypeDef;
-      oprot.writeFieldBegin(MY_LONG_TYPE_DEF_FIELD_DESC);
-      oprot.writeI64(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      String _fbthriftVar0 = this.myStringField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.myStringTypedef;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_STRING_TYPEDEF_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      Map<Short, String> _fbthriftVar0 = this.myMapField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_MAP_FIELD_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _fbthriftVar0.size()));
-    for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        oprot.writeStructBegin(STRUCT_DESC);
         {
-            Short _fbthriftVar2 = _fbthriftVar1.getKey();
-            oprot.writeI16(_fbthriftVar2);
+            long _fbthriftVar0 = this.myLongField;
+            oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
+            oprot.writeI64(_fbthriftVar0);
+            oprot.writeFieldEnd();
         }
         {
-            String _fbthriftVar2 = _fbthriftVar1.getValue();
-            oprot.writeString(_fbthriftVar2);
-        }
-    }
-    oprot.writeMapEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      Map<Short, String> _fbthriftVar0 = this.myMapTypedef;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_MAP_TYPEDEF_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _fbthriftVar0.size()));
-    for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-        {
-            Short _fbthriftVar2 = _fbthriftVar1.getKey();
-            oprot.writeI16(_fbthriftVar2);
+            long _fbthriftVar0 = this.myLongTypeDef;
+            oprot.writeFieldBegin(MY_LONG_TYPE_DEF_FIELD_DESC);
+            oprot.writeI64(_fbthriftVar0);
+            oprot.writeFieldEnd();
         }
         {
-            String _fbthriftVar2 = _fbthriftVar1.getValue();
-            oprot.writeString(_fbthriftVar2);
-        }
-    }
-    oprot.writeMapEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      List<Double> _fbthriftVar0 = this.myListField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_LIST_FIELD_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.DOUBLE, _fbthriftVar0.size()));
-    for (double _fbthriftVar1 : _fbthriftVar0) {
-        oprot.writeDouble(_fbthriftVar1);
-    }
-    oprot.writeListEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      List<Double> _fbthriftVar0 = this.myListTypedef;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_LIST_TYPEDEF_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.DOUBLE, _fbthriftVar0.size()));
-    for (double _fbthriftVar1 : _fbthriftVar0) {
-        oprot.writeDouble(_fbthriftVar1);
-    }
-    oprot.writeListEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      Map<Short, List<List<Double>>> _fbthriftVar0 = this.myMapListOfTypeDef;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I16, TType.LIST, _fbthriftVar0.size()));
-    for (Map.Entry<Short, List<List<Double>>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-        {
-            Short _fbthriftVar2 = _fbthriftVar1.getKey();
-            oprot.writeI16(_fbthriftVar2);
+            String _fbthriftVar0 = this.myStringField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
         }
         {
-            List<List<Double>> _fbthriftVar2 = _fbthriftVar1.getValue();
-            oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar2.size()));
-            for (List<Double> _fbthriftVar3 : _fbthriftVar2) {
-                oprot.writeListBegin(new TList(TType.DOUBLE, _fbthriftVar3.size()));
-                for (double _fbthriftVar4 : _fbthriftVar3) {
-                    oprot.writeDouble(_fbthriftVar4);
+            String _fbthriftVar0 = this.myStringTypedef;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_STRING_TYPEDEF_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            Map<Short, String> _fbthriftVar0 = this.myMapField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_MAP_FIELD_FIELD_DESC);
+                oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _fbthriftVar0.size()));
+                for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+                    {
+                        Short _fbthriftVar2 = _fbthriftVar1.getKey();
+                        oprot.writeI16(_fbthriftVar2);
+                    }
+                    {
+                        String _fbthriftVar2 = _fbthriftVar1.getValue();
+                        oprot.writeString(_fbthriftVar2);
+                    }
+                }
+                oprot.writeMapEnd();
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            Map<Short, String> _fbthriftVar0 = this.myMapTypedef;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_MAP_TYPEDEF_FIELD_DESC);
+                oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _fbthriftVar0.size()));
+                for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+                    {
+                        Short _fbthriftVar2 = _fbthriftVar1.getKey();
+                        oprot.writeI16(_fbthriftVar2);
+                    }
+                    {
+                        String _fbthriftVar2 = _fbthriftVar1.getValue();
+                        oprot.writeString(_fbthriftVar2);
+                    }
+                }
+                oprot.writeMapEnd();
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            List<Double> _fbthriftVar0 = this.myListField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_LIST_FIELD_FIELD_DESC);
+                oprot.writeListBegin(new TList(TType.DOUBLE, _fbthriftVar0.size()));
+                for (double _fbthriftVar1 : _fbthriftVar0) {
+                    oprot.writeDouble(_fbthriftVar1);
                 }
                 oprot.writeListEnd();
+                oprot.writeFieldEnd();
             }
-            oprot.writeListEnd();
         }
-    }
-    oprot.writeMapEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        {
+            List<Double> _fbthriftVar0 = this.myListTypedef;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_LIST_TYPEDEF_FIELD_DESC);
+                oprot.writeListBegin(new TList(TType.DOUBLE, _fbthriftVar0.size()));
+                for (double _fbthriftVar1 : _fbthriftVar0) {
+                    oprot.writeDouble(_fbthriftVar1);
+                }
+                oprot.writeListEnd();
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            Map<Short, List<List<Double>>> _fbthriftVar0 = this.myMapListOfTypeDef;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
+                oprot.writeMapBegin(new TMap(TType.I16, TType.LIST, _fbthriftVar0.size()));
+                for (Map.Entry<Short, List<List<Double>>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+                    {
+                        Short _fbthriftVar2 = _fbthriftVar1.getKey();
+                        oprot.writeI16(_fbthriftVar2);
+                    }
+                    {
+                        List<List<Double>> _fbthriftVar2 = _fbthriftVar1.getValue();
+                        oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar2.size()));
+                        for (List<Double> _fbthriftVar3 : _fbthriftVar2) {
+                            oprot.writeListBegin(new TList(TType.DOUBLE, _fbthriftVar3.size()));
+                            for (double _fbthriftVar4 : _fbthriftVar3) {
+                                oprot.writeDouble(_fbthriftVar4);
+                            }
+                            oprot.writeListEnd();
+                        }
+                        oprot.writeListEnd();
+                    }
+                }
+                oprot.writeMapEnd();
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _MyStructTypeDefLazy {

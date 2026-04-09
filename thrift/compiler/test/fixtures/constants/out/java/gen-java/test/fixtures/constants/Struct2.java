@@ -192,116 +192,111 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<Struct2> asReader() {
       return Struct2::read0;
     }
 
     public static Struct2 read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(Struct2.NAMES_TO_IDS, Struct2.THRIFT_NAMES_TO_IDS, Struct2.FIELD_METADATA);
-      Struct2.Builder builder = new Struct2.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _A:
-          if (__field.type == TType.I32) {
-            int _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI32();
-            builder.setA(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _B:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setB(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _C:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.constants.Struct1 _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.constants.Struct1.read0(oprot);
-            builder.setC(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _D:
-          if (__field.type == TType.LIST) {
-            List<Integer> _fbthriftVar0;
-            {
-                TList _list0 = oprot.readListBegin();
-                _fbthriftVar0 = new ArrayList<Integer>(Math.max(0, _list0.size));
-                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                    int _fbthriftVar1;
-                    _fbthriftVar1 = oprot.readI32();
-                    _fbthriftVar0.add(_fbthriftVar1);
+        TField __field;
+        oprot.readStructBegin(Struct2.NAMES_TO_IDS, Struct2.THRIFT_NAMES_TO_IDS, Struct2.FIELD_METADATA);
+        Struct2.Builder builder = new Struct2.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _A:
+                if (__field.type == TType.I32) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    builder.setA(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readListEnd();
+                break;
+            case _B:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setB(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _C:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.constants.Struct1 _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.constants.Struct1.read0(oprot);
+                    builder.setC(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _D:
+                if (__field.type == TType.LIST) {
+                    List<Integer> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<Integer>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            int _fbthriftVar1;
+                            _fbthriftVar1 = oprot.readI32();
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readListEnd();
+                    }
+                    builder.setD(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
             }
-            builder.setD(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      int _fbthriftVar0 = this.a;
-      oprot.writeFieldBegin(A_FIELD_DESC);
-      oprot.writeI32(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      String _fbthriftVar0 = this.b;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(B_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.constants.Struct1 _fbthriftVar0 = this.c;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(C_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      List<Integer> _fbthriftVar0 = this.d;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(D_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
-    for (int _fbthriftVar1 : _fbthriftVar0) {
-        oprot.writeI32(_fbthriftVar1);
-    }
-    oprot.writeListEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            int _fbthriftVar0 = this.a;
+            oprot.writeFieldBegin(A_FIELD_DESC);
+            oprot.writeI32(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            String _fbthriftVar0 = this.b;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(B_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.constants.Struct1 _fbthriftVar0 = this.c;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(C_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            List<Integer> _fbthriftVar0 = this.d;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(D_FIELD_DESC);
+                oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
+                for (int _fbthriftVar1 : _fbthriftVar0) {
+                    oprot.writeI32(_fbthriftVar1);
+                }
+                oprot.writeListEnd();
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _Struct2Lazy {

@@ -117,51 +117,49 @@ public final class CircularStruct implements com.facebook.thrift.payload.ThriftS
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<CircularStruct> asReader() {
       return CircularStruct::read0;
     }
 
     public static CircularStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(CircularStruct.NAMES_TO_IDS, CircularStruct.THRIFT_NAMES_TO_IDS, CircularStruct.FIELD_METADATA);
-      CircularStruct.Builder builder = new CircularStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _FIELD:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.CircularAdaptee _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.CircularAdaptee.read0(oprot);
-            builder.setField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(CircularStruct.NAMES_TO_IDS, CircularStruct.THRIFT_NAMES_TO_IDS, CircularStruct.FIELD_METADATA);
+        CircularStruct.Builder builder = new CircularStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _FIELD:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.CircularAdaptee _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.CircularAdaptee.read0(oprot);
+                    builder.setField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.adapter.CircularAdaptee _fbthriftVar0 = this.field;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(FIELD_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.adapter.CircularAdaptee _fbthriftVar0 = this.field;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(FIELD_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _CircularStructLazy {

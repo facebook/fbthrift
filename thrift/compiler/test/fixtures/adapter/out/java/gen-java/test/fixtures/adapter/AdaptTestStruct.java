@@ -351,203 +351,192 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<AdaptTestStruct> asReader() {
       return AdaptTestStruct::read0;
     }
 
     public static AdaptTestStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(AdaptTestStruct.NAMES_TO_IDS, AdaptTestStruct.THRIFT_NAMES_TO_IDS, AdaptTestStruct.FIELD_METADATA);
-      AdaptTestStruct.Builder builder = new AdaptTestStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _DELAY:
-          if (__field.type == TType.I64) {
-            long _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI64();
-            builder.setDelay(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _CUSTOM:
-          if (__field.type == TType.STRING) {
-            byte[] _fbthriftVar0;
-            _fbthriftVar0 = oprot.readBinary().array();
-            builder.setCustom(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _TIMEOUT:
-          if (__field.type == TType.I64) {
-            long _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI64();
-            builder.setTimeout(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _DATA:
-          if (__field.type == TType.I64) {
-            long _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI64();
-            builder.setData(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _META:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setMeta(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _INDIRECTIONSTRING:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setIndirectionString(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _STRING_DATA:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setStringData(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _DOUBLE_WRAPPED_BOOL:
-          if (__field.type == TType.BOOL) {
-            boolean _fbthriftVar0;
-            _fbthriftVar0 = oprot.readBool();
-            builder.setDoubleWrappedBool(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _DOUBLE_WRAPPED_INTEGER:
-          if (__field.type == TType.I32) {
-            int _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI32();
-            builder.setDoubleWrappedInteger(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _BINARY_DATA:
-          if (__field.type == TType.STRING) {
-            byte[] _fbthriftVar0;
-            _fbthriftVar0 = oprot.readBinary().array();
-            builder.setBinaryData(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(AdaptTestStruct.NAMES_TO_IDS, AdaptTestStruct.THRIFT_NAMES_TO_IDS, AdaptTestStruct.FIELD_METADATA);
+        AdaptTestStruct.Builder builder = new AdaptTestStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _DELAY:
+                if (__field.type == TType.I64) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    builder.setDelay(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _CUSTOM:
+                if (__field.type == TType.STRING) {
+                    byte[] _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readBinary().array();
+                    builder.setCustom(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _TIMEOUT:
+                if (__field.type == TType.I64) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    builder.setTimeout(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _DATA:
+                if (__field.type == TType.I64) {
+                    long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    builder.setData(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _META:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setMeta(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _INDIRECTIONSTRING:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setIndirectionString(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _STRING_DATA:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setStringData(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _DOUBLE_WRAPPED_BOOL:
+                if (__field.type == TType.BOOL) {
+                    boolean _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readBool();
+                    builder.setDoubleWrappedBool(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _DOUBLE_WRAPPED_INTEGER:
+                if (__field.type == TType.I32) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    builder.setDoubleWrappedInteger(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _BINARY_DATA:
+                if (__field.type == TType.STRING) {
+                    byte[] _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readBinary().array();
+                    builder.setBinaryData(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      long _fbthriftVar0 = this.delay;
-      oprot.writeFieldBegin(DELAY_FIELD_DESC);
-      oprot.writeI64(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      byte[] _fbthriftVar0 = this.custom;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
-        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      long _fbthriftVar0 = this.timeout;
-      oprot.writeFieldBegin(TIMEOUT_FIELD_DESC);
-      oprot.writeI64(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      long _fbthriftVar0 = this.data;
-      oprot.writeFieldBegin(DATA_FIELD_DESC);
-      oprot.writeI64(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      String _fbthriftVar0 = this.meta;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(META_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.indirectionString;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(INDIRECTION_STRING_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.stringData;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(STRING_DATA_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      boolean _fbthriftVar0 = this.doubleWrappedBool;
-      oprot.writeFieldBegin(DOUBLE_WRAPPED_BOOL_FIELD_DESC);
-      oprot.writeBool(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      int _fbthriftVar0 = this.doubleWrappedInteger;
-      oprot.writeFieldBegin(DOUBLE_WRAPPED_INTEGER_FIELD_DESC);
-      oprot.writeI32(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      byte[] _fbthriftVar0 = this.binaryData;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(BINARY_DATA_FIELD_DESC);
-        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            long _fbthriftVar0 = this.delay;
+            oprot.writeFieldBegin(DELAY_FIELD_DESC);
+            oprot.writeI64(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            byte[] _fbthriftVar0 = this.custom;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
+                org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            long _fbthriftVar0 = this.timeout;
+            oprot.writeFieldBegin(TIMEOUT_FIELD_DESC);
+            oprot.writeI64(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            long _fbthriftVar0 = this.data;
+            oprot.writeFieldBegin(DATA_FIELD_DESC);
+            oprot.writeI64(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            String _fbthriftVar0 = this.meta;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(META_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.indirectionString;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(INDIRECTION_STRING_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.stringData;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(STRING_DATA_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            boolean _fbthriftVar0 = this.doubleWrappedBool;
+            oprot.writeFieldBegin(DOUBLE_WRAPPED_BOOL_FIELD_DESC);
+            oprot.writeBool(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            int _fbthriftVar0 = this.doubleWrappedInteger;
+            oprot.writeFieldBegin(DOUBLE_WRAPPED_INTEGER_FIELD_DESC);
+            oprot.writeI32(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            byte[] _fbthriftVar0 = this.binaryData;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(BINARY_DATA_FIELD_DESC);
+                org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _AdaptTestStructLazy {

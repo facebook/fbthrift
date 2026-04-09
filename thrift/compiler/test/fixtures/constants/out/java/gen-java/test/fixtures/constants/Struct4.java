@@ -166,85 +166,81 @@ public final class Struct4 implements com.facebook.thrift.payload.ThriftSerializ
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<Struct4> asReader() {
       return Struct4::read0;
     }
 
     public static Struct4 read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(Struct4.NAMES_TO_IDS, Struct4.THRIFT_NAMES_TO_IDS, Struct4.FIELD_METADATA);
-      Struct4.Builder builder = new Struct4.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _A:
-          if (__field.type == TType.I32) {
-            int _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI32();
-            builder.setA(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _B:
-          if (__field.type == TType.DOUBLE) {
-            Double _fbthriftVar0;
-            _fbthriftVar0 = oprot.readDouble();
-            builder.setB(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _C:
-          if (__field.type == TType.BYTE) {
-            Byte _fbthriftVar0;
-            _fbthriftVar0 = oprot.readByte();
-            builder.setC(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(Struct4.NAMES_TO_IDS, Struct4.THRIFT_NAMES_TO_IDS, Struct4.FIELD_METADATA);
+        Struct4.Builder builder = new Struct4.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _A:
+                if (__field.type == TType.I32) {
+                    int _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI32();
+                    builder.setA(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _B:
+                if (__field.type == TType.DOUBLE) {
+                    Double _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readDouble();
+                    builder.setB(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _C:
+                if (__field.type == TType.BYTE) {
+                    Byte _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readByte();
+                    builder.setC(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      int _fbthriftVar0 = this.a;
-      oprot.writeFieldBegin(A_FIELD_DESC);
-      oprot.writeI32(_fbthriftVar0);
-
-      oprot.writeFieldEnd();
-      }
-      {
-      Double _fbthriftVar0 = this.b;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(B_FIELD_DESC);
-        oprot.writeDouble(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      Byte _fbthriftVar0 = this.c;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(C_FIELD_DESC);
-        oprot.writeByte(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            int _fbthriftVar0 = this.a;
+            oprot.writeFieldBegin(A_FIELD_DESC);
+            oprot.writeI32(_fbthriftVar0);
+            oprot.writeFieldEnd();
+        }
+        {
+            Double _fbthriftVar0 = this.b;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(B_FIELD_DESC);
+                oprot.writeDouble(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            Byte _fbthriftVar0 = this.c;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(C_FIELD_DESC);
+                oprot.writeByte(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _Struct4Lazy {

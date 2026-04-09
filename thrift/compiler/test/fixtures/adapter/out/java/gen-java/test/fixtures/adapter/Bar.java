@@ -301,218 +301,209 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<Bar> asReader() {
       return Bar::read0;
     }
 
     public static Bar read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(Bar.NAMES_TO_IDS, Bar.THRIFT_NAMES_TO_IDS, Bar.FIELD_METADATA);
-      Bar.Builder builder = new Bar.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _STRUCTFIELD:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.Foo _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.Foo.read0(oprot);
-            builder.setStructField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _OPTIONALSTRUCTFIELD:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.Foo _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.Foo.read0(oprot);
-            builder.setOptionalStructField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _STRUCTLISTFIELD:
-          if (__field.type == TType.LIST) {
-            List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar0;
-            {
-                TList _list0 = oprot.readListBegin();
-                _fbthriftVar0 = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list0.size));
-                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                    test.fixtures.adapter.Foo _fbthriftVar1;
-                    _fbthriftVar1 = test.fixtures.adapter.Foo.read0(oprot);
-                    _fbthriftVar0.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar1));
+        TField __field;
+        oprot.readStructBegin(Bar.NAMES_TO_IDS, Bar.THRIFT_NAMES_TO_IDS, Bar.FIELD_METADATA);
+        Bar.Builder builder = new Bar.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _STRUCTFIELD:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.Foo _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.Foo.read0(oprot);
+                    builder.setStructField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readListEnd();
-            }
-            builder.setStructListField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _OPTIONALSTRUCTLISTFIELD:
-          if (__field.type == TType.LIST) {
-            List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar0;
-            {
-                TList _list0 = oprot.readListBegin();
-                _fbthriftVar0 = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list0.size));
-                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                    test.fixtures.adapter.Foo _fbthriftVar1;
-                    _fbthriftVar1 = test.fixtures.adapter.Foo.read0(oprot);
-                    _fbthriftVar0.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar1));
+                break;
+            case _OPTIONALSTRUCTFIELD:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.Foo _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.Foo.read0(oprot);
+                    builder.setOptionalStructField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readListEnd();
-            }
-            builder.setOptionalStructListField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _UNIONFIELD:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.Baz _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.Baz.read0(oprot);
-            builder.setUnionField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _OPTIONALUNIONFIELD:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.Baz _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.Baz.read0(oprot);
-            builder.setOptionalUnionField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _ADAPTEDSTRUCTFIELD:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.DirectlyAdapted _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.DirectlyAdapted.read0(oprot);
-            builder.setAdaptedStructField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _STRUCTLISTFIELDWITHTYPEDEF:
-          if (__field.type == TType.LIST) {
-            List<test.fixtures.adapter.Foo> _fbthriftVar0;
-            {
-                TList _list0 = oprot.readListBegin();
-                _fbthriftVar0 = new ArrayList<test.fixtures.adapter.Foo>(Math.max(0, _list0.size));
-                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                    test.fixtures.adapter.Foo _fbthriftVar1;
-                    _fbthriftVar1 = test.fixtures.adapter.Foo.read0(oprot);
-                    _fbthriftVar0.add(_fbthriftVar1);
+                break;
+            case _STRUCTLISTFIELD:
+                if (__field.type == TType.LIST) {
+                    List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            test.fixtures.adapter.Foo _fbthriftVar1;
+                            _fbthriftVar1 = test.fixtures.adapter.Foo.read0(oprot);
+                            _fbthriftVar0.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar1));
+                        }
+                        oprot.readListEnd();
+                    }
+                    builder.setStructListField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readListEnd();
+                break;
+            case _OPTIONALSTRUCTLISTFIELD:
+                if (__field.type == TType.LIST) {
+                    List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            test.fixtures.adapter.Foo _fbthriftVar1;
+                            _fbthriftVar1 = test.fixtures.adapter.Foo.read0(oprot);
+                            _fbthriftVar0.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar1));
+                        }
+                        oprot.readListEnd();
+                    }
+                    builder.setOptionalStructListField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _UNIONFIELD:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.Baz _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.Baz.read0(oprot);
+                    builder.setUnionField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _OPTIONALUNIONFIELD:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.Baz _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.Baz.read0(oprot);
+                    builder.setOptionalUnionField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _ADAPTEDSTRUCTFIELD:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.DirectlyAdapted _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.DirectlyAdapted.read0(oprot);
+                    builder.setAdaptedStructField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _STRUCTLISTFIELDWITHTYPEDEF:
+                if (__field.type == TType.LIST) {
+                    List<test.fixtures.adapter.Foo> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<test.fixtures.adapter.Foo>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            test.fixtures.adapter.Foo _fbthriftVar1;
+                            _fbthriftVar1 = test.fixtures.adapter.Foo.read0(oprot);
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readListEnd();
+                    }
+                    builder.setStructListFieldWithTypedef(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
             }
-            builder.setStructListFieldWithTypedef(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.adapter.Foo _fbthriftVar0 = this.structField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(STRUCT_FIELD_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.adapter.Foo _fbthriftVar0 = this.optionalStructField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(OPTIONAL_STRUCT_FIELD_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar0 = this.structListField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(STRUCT_LIST_FIELD_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-    for (com.facebook.thrift.my.AdaptedFoo_1 _fbthriftVar1 : _fbthriftVar0) {
-        test.fixtures.adapter.Foo _fbthriftVar2 = __FooWithAdapter_9317_Adapter.toThrift(_fbthriftVar1);
-        _fbthriftVar2.write0(oprot);
-    }
-    oprot.writeListEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar0 = this.optionalStructListField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(OPTIONAL_STRUCT_LIST_FIELD_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-    for (com.facebook.thrift.my.AdaptedFoo_1 _fbthriftVar1 : _fbthriftVar0) {
-        test.fixtures.adapter.Foo _fbthriftVar2 = __FooWithAdapter_9317_Adapter.toThrift(_fbthriftVar1);
-        _fbthriftVar2.write0(oprot);
-    }
-    oprot.writeListEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.adapter.Baz _fbthriftVar0 = this.unionField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(UNION_FIELD_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.adapter.Baz _fbthriftVar0 = this.optionalUnionField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(OPTIONAL_UNION_FIELD_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.adapter.DirectlyAdapted _fbthriftVar0 = this.adaptedStructField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      List<test.fixtures.adapter.Foo> _fbthriftVar0 = this.structListFieldWithTypedef;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(STRUCT_LIST_FIELD_WITH_TYPEDEF_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-    for (test.fixtures.adapter.Foo _fbthriftVar1 : _fbthriftVar0) {
-        _fbthriftVar1.write0(oprot);
-    }
-    oprot.writeListEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.adapter.Foo _fbthriftVar0 = this.structField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(STRUCT_FIELD_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.adapter.Foo _fbthriftVar0 = this.optionalStructField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(OPTIONAL_STRUCT_FIELD_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar0 = this.structListField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(STRUCT_LIST_FIELD_FIELD_DESC);
+                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
+                for (com.facebook.thrift.my.AdaptedFoo_1 _fbthriftVar1 : _fbthriftVar0) {
+                    test.fixtures.adapter.Foo _fbthriftVar2 = __FooWithAdapter_9317_Adapter.toThrift(_fbthriftVar1);
+                    _fbthriftVar2.write0(oprot);
+                }
+                oprot.writeListEnd();
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar0 = this.optionalStructListField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(OPTIONAL_STRUCT_LIST_FIELD_FIELD_DESC);
+                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
+                for (com.facebook.thrift.my.AdaptedFoo_1 _fbthriftVar1 : _fbthriftVar0) {
+                    test.fixtures.adapter.Foo _fbthriftVar2 = __FooWithAdapter_9317_Adapter.toThrift(_fbthriftVar1);
+                    _fbthriftVar2.write0(oprot);
+                }
+                oprot.writeListEnd();
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.adapter.Baz _fbthriftVar0 = this.unionField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(UNION_FIELD_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.adapter.Baz _fbthriftVar0 = this.optionalUnionField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(OPTIONAL_UNION_FIELD_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.adapter.DirectlyAdapted _fbthriftVar0 = this.adaptedStructField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            List<test.fixtures.adapter.Foo> _fbthriftVar0 = this.structListFieldWithTypedef;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(STRUCT_LIST_FIELD_WITH_TYPEDEF_FIELD_DESC);
+                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
+                for (test.fixtures.adapter.Foo _fbthriftVar1 : _fbthriftVar0) {
+                    _fbthriftVar1.write0(oprot);
+                }
+                oprot.writeListEnd();
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _BarLazy {

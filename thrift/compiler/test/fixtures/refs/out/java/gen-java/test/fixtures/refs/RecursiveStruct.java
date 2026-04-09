@@ -114,64 +114,62 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<RecursiveStruct> asReader() {
       return RecursiveStruct::read0;
     }
 
     public static RecursiveStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(RecursiveStruct.NAMES_TO_IDS, RecursiveStruct.THRIFT_NAMES_TO_IDS, RecursiveStruct.FIELD_METADATA);
-      RecursiveStruct.Builder builder = new RecursiveStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _MES:
-          if (__field.type == TType.LIST) {
-            List<test.fixtures.refs.RecursiveStruct> _fbthriftVar0;
-            {
-                TList _list0 = oprot.readListBegin();
-                _fbthriftVar0 = new ArrayList<test.fixtures.refs.RecursiveStruct>(Math.max(0, _list0.size));
-                for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
-                    test.fixtures.refs.RecursiveStruct _fbthriftVar1;
-                    _fbthriftVar1 = test.fixtures.refs.RecursiveStruct.read0(oprot);
-                    _fbthriftVar0.add(_fbthriftVar1);
+        TField __field;
+        oprot.readStructBegin(RecursiveStruct.NAMES_TO_IDS, RecursiveStruct.THRIFT_NAMES_TO_IDS, RecursiveStruct.FIELD_METADATA);
+        RecursiveStruct.Builder builder = new RecursiveStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _MES:
+                if (__field.type == TType.LIST) {
+                    List<test.fixtures.refs.RecursiveStruct> _fbthriftVar0;
+                    {
+                        TList _list0 = oprot.readListBegin();
+                        _fbthriftVar0 = new ArrayList<test.fixtures.refs.RecursiveStruct>(Math.max(0, _list0.size));
+                        for (int _i0 = 0; (_list0.size < 0) ? oprot.peekList() : (_i0 < _list0.size); _i0++) {
+                            test.fixtures.refs.RecursiveStruct _fbthriftVar1;
+                            _fbthriftVar1 = test.fixtures.refs.RecursiveStruct.read0(oprot);
+                            _fbthriftVar0.add(_fbthriftVar1);
+                        }
+                        oprot.readListEnd();
+                    }
+                    builder.setMes(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
                 }
-                oprot.readListEnd();
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
             }
-            builder.setMes(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      List<test.fixtures.refs.RecursiveStruct> _fbthriftVar0 = this.mes;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(MES_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-    for (test.fixtures.refs.RecursiveStruct _fbthriftVar1 : _fbthriftVar0) {
-        _fbthriftVar1.write0(oprot);
-    }
-    oprot.writeListEnd();
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            List<test.fixtures.refs.RecursiveStruct> _fbthriftVar0 = this.mes;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(MES_FIELD_DESC);
+                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
+                for (test.fixtures.refs.RecursiveStruct _fbthriftVar1 : _fbthriftVar0) {
+                    _fbthriftVar1.write0(oprot);
+                }
+                oprot.writeListEnd();
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _RecursiveStructLazy {

@@ -140,69 +140,66 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<AdaptedStructWithInternBox> asReader() {
       return AdaptedStructWithInternBox::read0;
     }
 
     public static AdaptedStructWithInternBox read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(AdaptedStructWithInternBox.NAMES_TO_IDS, AdaptedStructWithInternBox.THRIFT_NAMES_TO_IDS, AdaptedStructWithInternBox.FIELD_METADATA);
-      AdaptedStructWithInternBox.Builder builder = new AdaptedStructWithInternBox.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _FIELD1:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.Empty _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.refs.Empty.read0(oprot);
-            builder.setField1(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _FIELD2:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
-            builder.setField2(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(AdaptedStructWithInternBox.NAMES_TO_IDS, AdaptedStructWithInternBox.THRIFT_NAMES_TO_IDS, AdaptedStructWithInternBox.FIELD_METADATA);
+        AdaptedStructWithInternBox.Builder builder = new AdaptedStructWithInternBox.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _FIELD1:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.refs.Empty _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.refs.Empty.read0(oprot);
+                    builder.setField1(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _FIELD2:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.refs.MyField _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.refs.MyField.read0(oprot);
+                    builder.setField2(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.refs.Empty _fbthriftVar0 = this.field1;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(FIELD1_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.refs.MyField _fbthriftVar0 = this.field2;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(FIELD2_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.refs.Empty _fbthriftVar0 = this.field1;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(FIELD1_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.refs.MyField _fbthriftVar0 = this.field2;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(FIELD2_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _AdaptedStructWithInternBoxLazy {

@@ -117,51 +117,49 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<AdaptTemplatedNestedTestStruct> asReader() {
       return AdaptTemplatedNestedTestStruct::read0;
     }
 
     public static AdaptTemplatedNestedTestStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(AdaptTemplatedNestedTestStruct.NAMES_TO_IDS, AdaptTemplatedNestedTestStruct.THRIFT_NAMES_TO_IDS, AdaptTemplatedNestedTestStruct.FIELD_METADATA);
-      AdaptTemplatedNestedTestStruct.Builder builder = new AdaptTemplatedNestedTestStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _ADAPTEDSTRUCT:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.AdaptTemplatedTestStruct _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.adapter.AdaptTemplatedTestStruct.read0(oprot);
-            builder.setAdaptedStruct(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(AdaptTemplatedNestedTestStruct.NAMES_TO_IDS, AdaptTemplatedNestedTestStruct.THRIFT_NAMES_TO_IDS, AdaptTemplatedNestedTestStruct.FIELD_METADATA);
+        AdaptTemplatedNestedTestStruct.Builder builder = new AdaptTemplatedNestedTestStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _ADAPTEDSTRUCT:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.adapter.AdaptTemplatedTestStruct _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.adapter.AdaptTemplatedTestStruct.read0(oprot);
+                    builder.setAdaptedStruct(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.adapter.AdaptTemplatedTestStruct _fbthriftVar0 = this.adaptedStruct;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.adapter.AdaptTemplatedTestStruct _fbthriftVar0 = this.adaptedStruct;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _AdaptTemplatedNestedTestStructLazy {

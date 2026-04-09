@@ -218,123 +218,117 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<Vehicle> asReader() {
       return Vehicle::read0;
     }
 
     public static Vehicle read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(Vehicle.NAMES_TO_IDS, Vehicle.THRIFT_NAMES_TO_IDS, Vehicle.FIELD_METADATA);
-      Vehicle.Builder builder = new Vehicle.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _COLOR:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.optionals.Color _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.optionals.Color.read0(oprot);
-            builder.setColor(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _LICENSEPLATE:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setLicensePlate(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _DESCRIPTION:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setDescription(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _NAME:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setName(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _HASAC:
-          if (__field.type == TType.BOOL) {
-            Boolean _fbthriftVar0;
-            _fbthriftVar0 = oprot.readBool();
-            builder.setHasAC(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(Vehicle.NAMES_TO_IDS, Vehicle.THRIFT_NAMES_TO_IDS, Vehicle.FIELD_METADATA);
+        Vehicle.Builder builder = new Vehicle.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _COLOR:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.optionals.Color _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.optionals.Color.read0(oprot);
+                    builder.setColor(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _LICENSEPLATE:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setLicensePlate(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _DESCRIPTION:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setDescription(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _NAME:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setName(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _HASAC:
+                if (__field.type == TType.BOOL) {
+                    Boolean _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readBool();
+                    builder.setHasAC(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      test.fixtures.optionals.Color _fbthriftVar0 = this.color;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(COLOR_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.licensePlate;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(LICENSE_PLATE_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.description;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(DESCRIPTION_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.name;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(NAME_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      Boolean _fbthriftVar0 = this.hasAC;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(HAS_AC_FIELD_DESC);
-        oprot.writeBool(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            test.fixtures.optionals.Color _fbthriftVar0 = this.color;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(COLOR_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.licensePlate;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(LICENSE_PLATE_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.description;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(DESCRIPTION_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.name;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(NAME_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            Boolean _fbthriftVar0 = this.hasAC;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(HAS_AC_FIELD_DESC);
+                oprot.writeBool(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _VehicleLazy {

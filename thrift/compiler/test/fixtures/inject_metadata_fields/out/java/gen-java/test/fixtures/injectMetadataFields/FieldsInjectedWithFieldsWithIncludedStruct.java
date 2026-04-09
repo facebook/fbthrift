@@ -140,69 +140,66 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<FieldsInjectedWithFieldsWithIncludedStruct> asReader() {
       return FieldsInjectedWithFieldsWithIncludedStruct::read0;
     }
 
     public static FieldsInjectedWithFieldsWithIncludedStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(FieldsInjectedWithFieldsWithIncludedStruct.NAMES_TO_IDS, FieldsInjectedWithFieldsWithIncludedStruct.THRIFT_NAMES_TO_IDS, FieldsInjectedWithFieldsWithIncludedStruct.FIELD_METADATA);
-      FieldsInjectedWithFieldsWithIncludedStruct.Builder builder = new FieldsInjectedWithFieldsWithIncludedStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _STRING_FIELD:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setStringField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _INJECTED_FIELD:
-          if (__field.type == TType.STRUCT) {
-            test.fixtures.injectMetadataFields.InjectedField _fbthriftVar0;
-            _fbthriftVar0 = test.fixtures.injectMetadataFields.InjectedField.read0(oprot);
-            builder.setInjectedField(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(FieldsInjectedWithFieldsWithIncludedStruct.NAMES_TO_IDS, FieldsInjectedWithFieldsWithIncludedStruct.THRIFT_NAMES_TO_IDS, FieldsInjectedWithFieldsWithIncludedStruct.FIELD_METADATA);
+        FieldsInjectedWithFieldsWithIncludedStruct.Builder builder = new FieldsInjectedWithFieldsWithIncludedStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _STRING_FIELD:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setStringField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _INJECTED_FIELD:
+                if (__field.type == TType.STRUCT) {
+                    test.fixtures.injectMetadataFields.InjectedField _fbthriftVar0;
+                    _fbthriftVar0 = test.fixtures.injectMetadataFields.InjectedField.read0(oprot);
+                    builder.setInjectedField(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      String _fbthriftVar0 = this.stringField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      test.fixtures.injectMetadataFields.InjectedField _fbthriftVar0 = this.injectedField;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
-        _fbthriftVar0.write0(oprot);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            String _fbthriftVar0 = this.stringField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            test.fixtures.injectMetadataFields.InjectedField _fbthriftVar0 = this.injectedField;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
+                _fbthriftVar0.write0(oprot);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _FieldsInjectedWithFieldsWithIncludedStructLazy {

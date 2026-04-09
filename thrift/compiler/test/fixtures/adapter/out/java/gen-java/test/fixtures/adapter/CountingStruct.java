@@ -169,87 +169,83 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
         return _hashCode;
     }
 
-    
     public static com.facebook.thrift.payload.Reader<CountingStruct> asReader() {
       return CountingStruct::read0;
     }
 
     public static CountingStruct read0(TProtocol oprot) throws TException {
-      TField __field;
-      oprot.readStructBegin(CountingStruct.NAMES_TO_IDS, CountingStruct.THRIFT_NAMES_TO_IDS, CountingStruct.FIELD_METADATA);
-      CountingStruct.Builder builder = new CountingStruct.Builder();
-      while (true) {
-        __field = oprot.readFieldBegin();
-        if (__field.type == TType.STOP) { break; }
-        switch (__field.id) {
-        case _REGULARINT:
-          if (__field.type == TType.I64) {
-            Long _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI64();
-            builder.setRegularInt(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _COUNTINGINT:
-          if (__field.type == TType.I64) {
-            Long _fbthriftVar0;
-            _fbthriftVar0 = oprot.readI64();
-            builder.setCountingInt(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _REGULARSTRING:
-          if (__field.type == TType.STRING) {
-            String _fbthriftVar0;
-            _fbthriftVar0 = oprot.readString();
-            builder.setRegularString(_fbthriftVar0);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        default:
-          TProtocolUtil.skip(oprot, __field.type);
-          break;
+        TField __field;
+        oprot.readStructBegin(CountingStruct.NAMES_TO_IDS, CountingStruct.THRIFT_NAMES_TO_IDS, CountingStruct.FIELD_METADATA);
+        CountingStruct.Builder builder = new CountingStruct.Builder();
+        while (true) {
+            __field = oprot.readFieldBegin();
+            if (__field.type == TType.STOP) { break; }
+            switch (__field.id) {
+            case _REGULARINT:
+                if (__field.type == TType.I64) {
+                    Long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    builder.setRegularInt(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _COUNTINGINT:
+                if (__field.type == TType.I64) {
+                    Long _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readI64();
+                    builder.setCountingInt(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            case _REGULARSTRING:
+                if (__field.type == TType.STRING) {
+                    String _fbthriftVar0;
+                    _fbthriftVar0 = oprot.readString();
+                    builder.setRegularString(_fbthriftVar0);
+                } else {
+                    TProtocolUtil.skip(oprot, __field.type);
+                }
+                break;
+            default:
+                TProtocolUtil.skip(oprot, __field.type);
+                break;
+            }
+            oprot.readFieldEnd();
         }
-        oprot.readFieldEnd();
-      }
-      oprot.readStructEnd();
-      return builder.build();
+        oprot.readStructEnd();
+        return builder.build();
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      {
-      Long _fbthriftVar0 = this.regularInt;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(REGULAR_INT_FIELD_DESC);
-        oprot.writeI64(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      Long _fbthriftVar0 = this.countingInt;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(COUNTING_INT_FIELD_DESC);
-        oprot.writeI64(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      {
-      String _fbthriftVar0 = this.regularString;
-      if (_fbthriftVar0 != null) {
-        oprot.writeFieldBegin(REGULAR_STRING_FIELD_DESC);
-        oprot.writeString(_fbthriftVar0);
-
-        oprot.writeFieldEnd();
-      }
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
+        oprot.writeStructBegin(STRUCT_DESC);
+        {
+            Long _fbthriftVar0 = this.regularInt;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(REGULAR_INT_FIELD_DESC);
+                oprot.writeI64(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            Long _fbthriftVar0 = this.countingInt;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(COUNTING_INT_FIELD_DESC);
+                oprot.writeI64(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        {
+            String _fbthriftVar0 = this.regularString;
+            if (_fbthriftVar0 != null) {
+                oprot.writeFieldBegin(REGULAR_STRING_FIELD_DESC);
+                oprot.writeString(_fbthriftVar0);
+                oprot.writeFieldEnd();
+            }
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
     }
 
     private static class _CountingStructLazy {
