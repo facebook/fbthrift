@@ -176,14 +176,6 @@ class TokenBucketConcurrencyController : public ConcurrencyControllerBase,
   }
 
  private:
-  // We already acquired a token, so now we should make as much progress as
-  // possible given one token. We will process and require requests from the
-  // pile until we find a request that haven't expired yet. We will then process
-  // that request and return. To make further progress we need to wait for
-  // another token.
-  void makeProgress();
-  void fastPath();
-
   static bool expired(const ServerRequest& request);
   void release(ServerRequest&& request);
   void execute(ServerRequest&& request);
