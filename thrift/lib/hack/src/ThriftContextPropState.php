@@ -743,54 +743,6 @@ final class ThriftContextPropState {
     $this->dirty();
   }
 
-  public function getBreadthBudget()[]: ?int {
-    $estimate = $this->getTraceContext()?->tracing_context?->estimate;
-    if ($estimate is nonnull) {
-      return $estimate->breadth_budget;
-    }
-    return null;
-  }
-
-  public function setBreadthBudget(int $breadth_budget)[write_props]: void {
-    $this->storage->baggage =
-      $this->storage->baggage ?? ContextProp\Baggage::withDefaultValues();
-    $baggage = $this->storage->baggage as nonnull;
-    $baggage->trace_context =
-      $baggage->trace_context ?? ContextProp\TraceContext::withDefaultValues();
-    $trace_context = $baggage->trace_context;
-    $trace_context->tracing_context = $trace_context->tracing_context ??
-      ContextProp\ArtilleryTracingContext::withDefaultValues();
-    $tracing_context = $trace_context->tracing_context;
-    $tracing_context->estimate = $tracing_context->estimate ??
-      ContextProp\TraceSizeEstimation::withDefaultValues();
-    $tracing_context->estimate->breadth_budget = $breadth_budget;
-    $this->dirty();
-  }
-
-  public function getDepthBudget()[]: ?int {
-    $estimate = $this->getTraceContext()?->tracing_context?->estimate;
-    if ($estimate is nonnull) {
-      return $estimate->depth_budget;
-    }
-    return null;
-  }
-
-  public function setDepthBudget(int $depth_budget)[write_props]: void {
-    $this->storage->baggage =
-      $this->storage->baggage ?? ContextProp\Baggage::withDefaultValues();
-    $baggage = $this->storage->baggage as nonnull;
-    $baggage->trace_context =
-      $baggage->trace_context ?? ContextProp\TraceContext::withDefaultValues();
-    $trace_context = $baggage->trace_context;
-    $trace_context->tracing_context = $trace_context->tracing_context ??
-      ContextProp\ArtilleryTracingContext::withDefaultValues();
-    $tracing_context = $trace_context->tracing_context;
-    $tracing_context->estimate = $tracing_context->estimate ??
-      ContextProp\TraceSizeEstimation::withDefaultValues();
-    $tracing_context->estimate->depth_budget = $depth_budget;
-    $this->dirty();
-  }
-
   public function getExperimentIds()[]: vec<int> {
     $ret = $this->storage->experiment_ids;
     if ($ret !== null) {
