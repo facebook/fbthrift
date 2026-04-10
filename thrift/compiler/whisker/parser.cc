@@ -556,64 +556,94 @@ class standalone_lines_scanner {
 };
 
 /**
- * Scans the token stream to identify whitespace and newline tokens that should
- * be removed due to tilde-based whitespace stripping (e.g. `{{~ ...}}` strips
- * whitespace to the LEFT of the tag, `{{... ~}}` strips to the RIGHT).
+ * Scans the token stream to mark whitespace/newline tokens for removal due to
+ * tilde-based whitespace stripping.
  *
- * This scanner runs after the standalone scanner. It operates purely on token
- * kinds and marks whitespace/newline tokens for removal. The parser then skips
- * these marked tokens when building the AST, so the rendered output never sees
- * them.
+ * Standalone-line stripping (see standalone_lines_scanner) automatically
+ * removes entire lines containing only tags. Tildes provide finer per-tag
+ * control for cases where that is insufficient — inline conditionals,
+ * multi-tag lines, or places where template structure and output structure
+ * intentionally diverge.
  *
- * The algorithm:
- *  - For each `tok::open` followed by `tok::tilde` (left tilde): walk BACKWARD
- *    from the `tok::open` and mark `tok::whitespace` / `tok::newline` tokens
- *    for removal until a non-whitespace/newline token is encountered.
- *  - For each `tok::close` preceded by `tok::tilde` (right tilde): walk
- *    FORWARD from the `tok::close` and mark `tok::whitespace` / `tok::newline`
- *    tokens for removal until a non-whitespace/newline token is encountered.
+ *     {{~ expr }}   — left tilde:  strip whitespace BEFORE the tag
+ *     {{ expr ~}}   — right tilde: strip whitespace AFTER the tag
+ *     {{~ expr ~}}  — both: strip on both sides
+ *
+ * Example — given the template "Hello  {{~ name ~}}  World":
+ *
+ *   Left tilde walks BACKWARD from tok::open:
+ *
+ *     [text:Hello] [ws] [open] [tilde] ...
+ *                  ^^^^   │
+ *                  MARK ◄─┘
+ *
+ *   Right tilde walks FORWARD from tok::close:
+ *
+ *     ... [tilde] [close] [ws] [text:World]
+ *                    │    ^^^^
+ *                    └─► MARK
+ *
+ * After skipping marked tokens, and given `name` evaluates to " foo ", the
+ * output is "Hello foo World".
+ *
+ * Adjacent tags (e.g. "{{a ~}}{{~ b}}") may mark the same tokens from both
+ * sides. This is harmless — the result is a set, so duplicates are ignored.
+ *
+ * This scanner and standalone_lines_scanner are independent. A tag with a tilde
+ * is ineligible for standalone stripping, so the two never conflict.
  */
 class tilde_whitespace_scanner {
  public:
   using result = std::set<parser_scan_window::cursor>;
 
   static result mark(const std::vector<token>& tokens) {
+    using cursor = parser_scan_window::cursor;
+
     assert(!tokens.empty());
     if (tokens.back().kind == tok::error) {
       return {};
     }
 
     result marked;
+    const cursor begin = tokens.cbegin();
+    const cursor end = tokens.cend();
 
-    for (auto it = tokens.cbegin(); it != tokens.cend(); ++it) {
-      if (it->kind == tok::open) {
-        // Check for left tilde: tok::open immediately followed by tok::tilde
-        auto next_it = std::next(it);
-        if (next_it != tokens.cend() && next_it->kind == tok::tilde) {
-          // Walk backward from just before tok::open
-          auto walk = it;
-          while (walk != tokens.cbegin()) {
-            --walk;
-            if (walk->kind == tok::whitespace || walk->kind == tok::newline) {
-              marked.insert(walk);
-            } else {
-              break;
-            }
-          }
+    static const auto is_strippable = [](tok kind) {
+      return kind == tok::whitespace || kind == tok::newline;
+    };
+
+    // Walks backward from just before `from`, marking contiguous
+    // whitespace/newline tokens for removal.
+    const auto strip_before = [&](cursor from) {
+      cursor walk = from;
+      while (walk != begin) {
+        --walk;
+        if (is_strippable(walk->kind)) {
+          marked.insert(walk);
+        } else {
+          break;
         }
-      } else if (it->kind == tok::close) {
-        // Check for right tilde: tok::tilde immediately before tok::close
-        if (it != tokens.cbegin() && std::prev(it)->kind == tok::tilde) {
-          // Walk forward from just after tok::close
-          auto walk = std::next(it);
-          while (walk != tokens.cend()) {
-            if (walk->kind == tok::whitespace || walk->kind == tok::newline) {
-              marked.insert(walk);
-              ++walk;
-            } else {
-              break;
-            }
-          }
+      }
+    };
+
+    // Walks forward from `from`, marking contiguous whitespace/newline tokens
+    // for removal.
+    const auto strip_after = [&](cursor from) {
+      for (cursor walk = from; walk != end && is_strippable(walk->kind);
+           ++walk) {
+        marked.insert(walk);
+      }
+    };
+
+    for (cursor tok = begin; tok != end; ++tok) {
+      if (tok->kind == tok::open) {
+        cursor next_tok = std::next(tok);
+        if (next_tok != end && next_tok->kind == tok::tilde) {
+          strip_before(tok);
+        }
+      } else if (tok->kind == tok::close) {
+        if (tok != begin && std::prev(tok)->kind == tok::tilde) {
+          strip_after(std::next(tok));
         }
       }
     }
