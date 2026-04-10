@@ -106,7 +106,7 @@ class TokenBucketConcurrencyController : public ConcurrencyControllerBase,
   }
 
   void slowMode() {
-    while (isSlowModeEnabled()) {
+    while (isSlowModeEnabled() && !stopped_.load(std::memory_order_acquire)) {
       blockingConsumeToken();
       executor_.add([this]() {
         while (auto requestOpt = pile_.dequeue()) {
@@ -141,7 +141,9 @@ class TokenBucketConcurrencyController : public ConcurrencyControllerBase,
   }
 
   void stop() override {
-    // do nothing
+    stopped_.store(true, std::memory_order_release);
+    clearSlowMode();
+    innerExecutor_->join();
   }
 
   uint64_t requestCount() const override {
@@ -245,6 +247,7 @@ class TokenBucketConcurrencyController : public ConcurrencyControllerBase,
   folly::relaxed_atomic<uint64_t> qpsLimit_{
       std::numeric_limits<uint64_t>::max()};
   std::atomic<uint16_t> slowMode_{0};
+  std::atomic<bool> stopped_{false};
   std::unique_ptr<folly::CPUThreadPoolExecutor> innerExecutor_;
 
   std::atomic<uint64_t> pendingDequeueOps_{0};
