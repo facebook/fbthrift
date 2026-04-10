@@ -110,8 +110,10 @@ None
 {{#partial pep484_type_impl type=type unadapted=false}}
 {{/let partial}}
 
-{{! Like pep484_type_impl, but uses sequence_field_return for list types
-    so that struct field declarations use ImmutableList instead of Sequence. }}
+{{! Like pep484_type_impl, but uses sequence_field_return, set_field_return,
+    and mapping_field_return for container types so that struct field
+    declarations use ImmutableList/ImmutableSet/ImmutableMap instead of
+    Sequence/AbstractSet/Mapping. }}
 {{#let partial pep484_field_return_type_impl |type unadapted| captures |m_common m_types unadapted_builtin|}}
 {{#pragma ignore-newlines}}
   {{#if (and (not unadapted) type.has_adapter?)}}
@@ -128,9 +130,9 @@ None
   {{#else if type.list?}}
 {{#partial m_types.sequence_field_return}}[{{#partial pep484_field_return_type_impl type=type.true_type.elem_type unadapted=false}}]
   {{#else if type.set?}}
-{{#partial m_types.set}}[{{#partial pep484_field_return_type_impl type=type.true_type.elem_type unadapted=false}}]
+{{#partial m_types.set_field_return}}[{{#partial pep484_field_return_type_impl type=type.true_type.elem_type unadapted=false}}]
   {{#else if type.map?}}
-{{#partial m_types.mapping}}[
+{{#partial m_types.mapping_field_return}}[
 {{#partial pep484_field_return_type_impl type=type.true_type.key_type unadapted=false}}, {{!}}
 {{#partial pep484_field_return_type_impl type=type.true_type.val_type unadapted=false}}
 ]

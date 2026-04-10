@@ -675,7 +675,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             words: _typing.Sequence[builtins.str],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.AbstractSet[builtins.str]:
+        ) -> _fbthrift_python_types.ImmutableSet[builtins.str]:
             _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "unique_words",
@@ -699,7 +699,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             words: _typing.Sequence[builtins.str],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Mapping[builtins.str, builtins.int]:
+        ) -> _fbthrift_python_types.ImmutableMap[builtins.str, builtins.int]:
             _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "words_count",
@@ -773,7 +773,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             sentence: builtins.str,
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Mapping[builtins.str, _typing.Mapping[builtins.str, builtins.int]]:
+        ) -> _fbthrift_python_types.ImmutableMap[builtins.str, _fbthrift_python_types.ImmutableMap[builtins.str, builtins.int]]:
             _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "word_character_frequency",
@@ -797,7 +797,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             some_words: builtins.str,
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _fbthrift_python_types.ImmutableList[_typing.AbstractSet[builtins.str]]:
+        ) -> _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableSet[builtins.str]]:
             _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "list_of_sets",
@@ -869,7 +869,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             sets: _typing.Sequence[_typing.AbstractSet[builtins.int]],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.AbstractSet[builtins.int]:
+        ) -> _fbthrift_python_types.ImmutableSet[builtins.int]:
             _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "get_union",
@@ -893,7 +893,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             string_map: _typing.Sequence[_typing.Mapping[builtins.str, builtins.str]],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.AbstractSet[builtins.str]:
+        ) -> _fbthrift_python_types.ImmutableSet[builtins.str]:
             _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "get_keys",
@@ -965,7 +965,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             binaries: _typing.Sequence[builtins.bytes],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.AbstractSet[builtins.bytes]:
+        ) -> _fbthrift_python_types.ImmutableSet[builtins.bytes]:
             _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "contain_binary",
@@ -1745,7 +1745,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             words: _typing.Sequence[builtins.str],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.AbstractSet[builtins.str]:
+        ) -> _fbthrift_python_types.ImmutableSet[builtins.str]:
             _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "unique_words",
@@ -1768,7 +1768,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             words: _typing.Sequence[builtins.str],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Mapping[builtins.str, builtins.int]:
+        ) -> _fbthrift_python_types.ImmutableMap[builtins.str, builtins.int]:
             _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "words_count",
@@ -1839,7 +1839,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             sentence: builtins.str,
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Mapping[builtins.str, _typing.Mapping[builtins.str, builtins.int]]:
+        ) -> _fbthrift_python_types.ImmutableMap[builtins.str, _fbthrift_python_types.ImmutableMap[builtins.str, builtins.int]]:
             _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "word_character_frequency",
@@ -1862,7 +1862,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             some_words: builtins.str,
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _fbthrift_python_types.ImmutableList[_typing.AbstractSet[builtins.str]]:
+        ) -> _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableSet[builtins.str]]:
             _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "list_of_sets",
@@ -1931,7 +1931,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             sets: _typing.Sequence[_typing.AbstractSet[builtins.int]],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.AbstractSet[builtins.int]:
+        ) -> _fbthrift_python_types.ImmutableSet[builtins.int]:
             _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "get_union",
@@ -1954,7 +1954,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             string_map: _typing.Sequence[_typing.Mapping[builtins.str, builtins.str]],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.AbstractSet[builtins.str]:
+        ) -> _fbthrift_python_types.ImmutableSet[builtins.str]:
             _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "get_keys",
@@ -2023,7 +2023,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             binaries: _typing.Sequence[builtins.bytes],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.AbstractSet[builtins.bytes]:
+        ) -> _fbthrift_python_types.ImmutableSet[builtins.bytes]:
             _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "contain_binary",
