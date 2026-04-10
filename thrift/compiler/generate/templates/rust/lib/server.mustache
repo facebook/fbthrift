@@ -671,12 +671,12 @@ where
 {
     match proto {
         ::fbthrift::ProtocolID::BinaryProtocol => {
-            ::std::result::Result::Ok(::std::boxed::Box::new({{interface.rust_name}}Processor::<::fbthrift::BinaryProtocol<F>, H, R, RS{{!
-                }}{{#if (object.notnull? service_extends)}}, SS{{/if}}>::new(handler{{#if (object.notnull? service_extends)}}, supa(proto)?{{/if}})))
+            ::std::result::Result::Ok(::std::boxed::Box::new({{interface.rust_name}}Processor::<::fbthrift::BinaryProtocol<F>, H, R, RS
+                {{~ #if (object.notnull? service_extends)}}, SS{{/if}}>::new(handler{{#if (object.notnull? service_extends)}}, supa(proto)?{{/if}})))
         }
         ::fbthrift::ProtocolID::CompactProtocol => {
-            ::std::result::Result::Ok(::std::boxed::Box::new({{interface.rust_name}}Processor::<::fbthrift::CompactProtocol<F>, H, R, RS{{!
-                }}{{#if (object.notnull? service_extends)}}, SS{{/if}}>::new(handler{{#if (object.notnull? service_extends)}}, supa(proto)?{{/if}})))
+            ::std::result::Result::Ok(::std::boxed::Box::new({{interface.rust_name}}Processor::<::fbthrift::CompactProtocol<F>, H, R, RS
+                {{~ #if (object.notnull? service_extends)}}, SS{{/if}}>::new(handler{{#if (object.notnull? service_extends)}}, supa(proto)?{{/if}})))
         }
         bad => {
             ::tracing::error!(method = "{{interface.name}}.", invalid_protocol = ?bad);

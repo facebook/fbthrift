@@ -131,16 +131,16 @@ where
     {{#if field.optional?}}
         if let ::std::option::Option::Some(some) = &self.{{field.rust_name}} {
             p.write_field_begin("{{field.name}}", {{#partial types.protocol_ttype type=field.type}}, {{field.id}});
-            {{#partial fields.write field=field}}({{!
-            }}{{#if field.has_adapter?}}&{{field.adapter_struct_qualified}}::to_thrift_field::<{{structured.rust_name}}>({{/if}}{{!
-            }}some{{#if field.has_adapter?}}, {{field.id}}){{/if}}, p);
+            {{#partial fields.write field=field}}({{!}}
+                {{~ #if field.has_adapter?}}&{{field.adapter_struct_qualified}}::to_thrift_field::<{{structured.rust_name}}>({{/if ~}}
+                some{{#if field.has_adapter?}}, {{field.id}}){{/if}}, p);
             p.write_field_end();
         }
     {{#else}}
         p.write_field_begin("{{field.name}}", {{#partial types.protocol_ttype type=field.type}}, {{field.id}});
-        {{#partial fields.write field=field}}({{!
-          }}{{#if field.has_adapter?}}&{{field.adapter_struct_qualified}}::to_thrift_field::<{{structured.rust_name}}>({{/if}}{{!
-          }}&self.{{field.rust_name}}{{#if field.has_adapter?}}, {{field.id}}){{/if}}, p);
+        {{#partial fields.write field=field}}({{!}}
+            {{~ #if field.has_adapter?}}&{{field.adapter_struct_qualified}}::to_thrift_field::<{{structured.rust_name}}>({{/if ~}}
+            &self.{{field.rust_name}}{{#if field.has_adapter?}}, {{field.id}}){{/if}}, p);
         p.write_field_end();
     {{/if field.optional?}}
   {{/each}}

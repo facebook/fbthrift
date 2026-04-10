@@ -19,8 +19,8 @@
 #[doc = {{interface.docs}}]
   {{/if interface.docs?}}
 pub trait {{interface.rust_name}}: {{!
-    }}{{#if (object.notnull? service_extends)}}{{service_extends.client_package}}::{{service_extends.rust_name}} + {{/if}}{{!
-    }}::std::marker::Send {
+    }}{{#if (object.notnull? service_extends)}}{{service_extends.client_package}}::{{service_extends.rust_name}} + {{/if ~}}
+    ::std::marker::Send {
   {{#each (array.enumerate interface.functions with_first=true) as |i function first?|}}
     {{#if (not first?)}}
 
@@ -43,8 +43,8 @@ pub trait {{interface.rust_name}}: {{!
   {{/each}}
 }
 
-pub trait {{interface.rust_name}}Ext<T>: {{interface.rust_name}}{{!
-    }}{{#if (object.notnull? service_extends)}} + {{service_extends.client_package}}::{{service_extends.rust_name}}Ext<T>{{/if}}
+pub trait {{interface.rust_name}}Ext<T>: {{interface.rust_name}}
+    {{~ #if (object.notnull? service_extends)}} + {{service_extends.client_package}}::{{service_extends.rust_name}}Ext<T>{{/if}}
 where
     T: ::fbthrift::Transport,
 {
