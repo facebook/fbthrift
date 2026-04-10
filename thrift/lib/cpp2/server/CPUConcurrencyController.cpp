@@ -24,7 +24,7 @@
 #include <folly/Overload.h>
 #include <folly/lang/Assume.h>
 
-THRIFT_FLAG_DEFINE_bool(cpucc_enable_ema_load_smoothing, false);
+THRIFT_FLAG_DEFINE_bool(cpucc_enable_ema_load_smoothing, true);
 
 namespace apache::thrift {
 

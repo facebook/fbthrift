@@ -33,8 +33,6 @@
 using namespace std::chrono_literals;
 using apache::thrift::CPUConcurrencyController;
 
-THRIFT_FLAG_DECLARE_bool(cpucc_enable_ema_load_smoothing);
-
 class MockEventHandler : public CPUConcurrencyController::EventHandler {
  public:
   MOCK_METHOD(
@@ -1492,7 +1490,6 @@ TEST_F(CPUConcurrencyControllerTest, emaSmoothingDampensTransientSpikes) {
   // Verifies that with a low cpuLoadSmoothingCoeff, a single CPU spike
   // above cpuTarget does NOT trigger an immediate limit decrease, because
   // the EMA-smoothed load stays below the target.
-  THRIFT_FLAG_SET_MOCK(cpucc_enable_ema_load_smoothing, true);
   using namespace apache::thrift;
   server::test::MockServerConfigs serverConfigs{};
   ThriftServerConfig thriftServerConfig{};
@@ -1575,7 +1572,6 @@ TEST_F(CPUConcurrencyControllerTest, emaSmoothingDefaultPassesThrough) {
   // Verifies that with cpuLoadSmoothingCoeff=1.0 (default), CPU spikes
   // are NOT dampened — the raw load is used directly. A spike above
   // cpuTarget should trigger a limit decrease.
-  THRIFT_FLAG_SET_MOCK(cpucc_enable_ema_load_smoothing, true);
   using namespace apache::thrift;
   server::test::MockServerConfigs serverConfigs{};
   ThriftServerConfig thriftServerConfig{};
