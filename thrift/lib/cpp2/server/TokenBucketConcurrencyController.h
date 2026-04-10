@@ -224,24 +224,18 @@ class TokenBucketConcurrencyController : public ConcurrencyControllerBase,
 
   void returnToken() { returnTokens(1.0); }
 
-  void clearSlowMode() { slowMode_.store(0); }
+  void clearSlowMode() { slowMode_.store(0, std::memory_order_release); }
 
-  bool isSlowModeEnabled() { return slowMode_.load() == 1; }
+  bool isSlowModeEnabled() {
+    return slowMode_.load(std::memory_order_acquire) == 1;
+  }
 
   // If slow mode is disabled this method will thread-safely enable it and
   // return true. If slow mode is already enabled it will return false.
   bool enableSlowModeOnce() {
-    for (;;) {
-      auto old = slowMode_.load();
-      if (old == 1) {
-        return false;
-      }
-      if (old == 0) {
-        if (slowMode_.compare_exchange_weak(old, 1)) {
-          return true;
-        }
-      }
-    }
+    uint16_t expected = 0;
+    return slowMode_.compare_exchange_strong(
+        expected, 1, std::memory_order_acq_rel, std::memory_order_acquire);
   }
 
   RequestPileInterface& pile_;
@@ -250,7 +244,7 @@ class TokenBucketConcurrencyController : public ConcurrencyControllerBase,
   folly::DynamicTokenBucket qpsTokenBucket_;
   folly::relaxed_atomic<uint64_t> qpsLimit_{
       std::numeric_limits<uint64_t>::max()};
-  folly::relaxed_atomic<uint16_t> slowMode_{0};
+  std::atomic<uint16_t> slowMode_{0};
   std::unique_ptr<folly::CPUThreadPoolExecutor> innerExecutor_;
 
   std::atomic<uint64_t> pendingDequeueOps_{0};
