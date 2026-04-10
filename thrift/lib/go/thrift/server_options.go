@@ -52,9 +52,9 @@ type serverConfig struct {
 	loadFn         func() uint32
 }
 
-func defaultServerConfig() *serverConfig {
+func newServerConfig(options ...ServerOption) *serverConfig {
 	logger := log.New(os.Stderr, "", log.LstdFlags)
-	return &serverConfig{
+	config := &serverConfig{
 		numWorkers:     GoroutinePerRequest,
 		log:            logger.Printf,
 		connContext:    withConnInfo,
@@ -63,10 +63,7 @@ func defaultServerConfig() *serverConfig {
 		serverObserver: newNoopServerObserver(),
 		maxRequests:    0, // disable
 	}
-}
 
-func newServerConfig(options ...ServerOption) *serverConfig {
-	config := defaultServerConfig()
 	for _, option := range options {
 		option(config)
 	}
