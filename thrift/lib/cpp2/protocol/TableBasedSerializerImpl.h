@@ -80,6 +80,9 @@ FOLLY_ERASE void* invokeStructSet(const TypeInfo& info, void* outValuePtr) {
       outValuePtr, info);
 }
 
+const FieldInfo* findFieldInfoById(
+    const StructInfo& structInfo, FieldID fieldId);
+
 template <class TProtocol>
 const FieldInfo* findFieldInfo(
     TProtocol* iprot,
@@ -99,13 +102,8 @@ const FieldInfo* findFieldInfo(
       }
     }
   } else {
-    const FieldInfo* found = std::lower_bound(
-        structInfo.fieldInfos,
-        end,
-        readState.fieldId,
-        [](const FieldInfo& lhs, FieldID rhs) { return lhs.id < rhs; });
-    if (found != end && found->id == readState.fieldId &&
-        readState.isCompatibleWithType(iprot, found->typeInfo->type)) {
+    const FieldInfo* found = findFieldInfoById(structInfo, readState.fieldId);
+    if (found && readState.isCompatibleWithType(iprot, found->typeInfo->type)) {
       return found;
     }
   }
@@ -753,17 +751,8 @@ size_t writeUnion(
   size_t written = iprot.writeStructBegin(structInfo.name);
 
   const int activeFieldId = getActiveId(unionObject, structInfo);
-  const FieldInfo* const fieldInfosEnd =
-      structInfo.fieldInfos + structInfo.numFields;
-  const FieldInfo* foundFieldInfo = std::lower_bound(
-      structInfo.fieldInfos,
-      fieldInfosEnd,
-      activeFieldId,
-      [](const FieldInfo& fieldInfo, FieldID fieldId) {
-        return fieldInfo.id < fieldId;
-      });
-
-  if (foundFieldInfo != fieldInfosEnd && foundFieldInfo->id == activeFieldId) {
+  if (const auto* foundFieldInfo =
+          findFieldInfoById(structInfo, activeFieldId)) {
     const void* const fieldValuesBasePtr =
         getFieldValuesBasePtr(structInfo, unionObject);
     const void* const fieldValuePtr =
