@@ -8,12 +8,9 @@ oncalls:
 
 ## Core Concepts
 
-**Pipeline**: A bidirectional chain of handlers processing messages.
-
-```cpp
-// Outbound: App → Transport (onWrite)
-// Inbound:  Transport → App (onRead)
-```
+**Pipeline**: A bidirectional chain of handlers processing messages with fixed direction:
+- Inbound (fireRead): Transport → Handlers → TailEndpointHandler (onRead)
+- Outbound (fireWrite): App → Handlers → HeadEndpointHandler (onWrite)
 
 **Handler**: A unit of processing. Handlers are templates parameterized by Context.
 
@@ -44,6 +41,62 @@ class MyHandler {
 
 ---
 
+## Endpoint Handlers
+
+Endpoints are the head and tail of the pipeline. Each has a specific role:
+
+### HeadEndpointHandler (Transport Side)
+
+Receives outbound messages via `onWrite()` for transmission:
+
+```cpp
+class MyHeadHandler {
+ public:
+  // Required: handle outbound data (writes to transport)
+  Result onWrite(TypeErasedBox&& msg) noexcept;
+
+  // Required: lifecycle methods
+  void handlerAdded() noexcept;
+  void handlerRemoved() noexcept;
+  void onPipelineActive() noexcept;
+  void onPipelineInactive() noexcept;
+};
+```
+
+### TailEndpointHandler (Application Side)
+
+Receives inbound messages via `onRead()` and handles exceptions:
+
+```cpp
+class MyTailHandler {
+ public:
+  // Required: handle inbound data (reads from transport)
+  Result onRead(TypeErasedBox&& msg) noexcept;
+
+  // Required: handle pipeline exceptions
+  void onException(folly::exception_wrapper&& e) noexcept;
+
+  // Required: lifecycle methods
+  void handlerAdded() noexcept;
+  void handlerRemoved() noexcept;
+  void onPipelineActive() noexcept;
+  void onPipelineInactive() noexcept;
+};
+```
+
+### Lifecycle Methods
+
+All endpoint handlers must implement these lifecycle methods:
+
+| Method | When Called |
+|--------|-------------|
+| `handlerAdded()` | Handler added to pipeline (during `build()`) |
+| `handlerRemoved()` | Pipeline is being destroyed |
+| `onPipelineActive()` | Connection established, ready for traffic |
+| `onPipelineInactive()` | Connection closing, no more traffic |
+
+---
+
 ## ⚠️ CRITICAL: Single Message Type Per Layer
 
 **Each layer of handlers should use a single message type. Conversion happens ONLY at layer boundaries via interface handlers.**
@@ -63,15 +116,6 @@ class MyHandler {
 ┌─────────────────────────────────────────────────────────────────┐
 │  Layer B Handlers                                                │
 │  (all use MessageTypeB — can be reordered freely)               │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                    [Interface Handler]
-                    (converts B → C)
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  Layer C Handlers                                                │
-│  (all use MessageTypeC — can be reordered freely)               │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -109,28 +153,6 @@ Result onWrite(Context& ctx, TypeErasedBox&& msg) noexcept {
 }
 ```
 
-### Use CompactVariant for State Transitions
-
-When a message needs to represent different states (e.g., before/after serialization), use `CompactVariant` instead of creating separate message types:
-
-```cpp
-struct LayerMessage {
-  // Single message type with variant for different states
-  CompactVariant<
-      UnseriazliedPayload,          // Before serialization
-      std::unique_ptr<folly::IOBuf> // After serialization
-  > frame;
-
-  uint32_t handle;
-  FrameType frameType;
-};
-```
-
-This allows handlers within the layer to:
-- Work with the same message type throughout
-- Transition state via the variant (no new allocation)
-- Remain loosely coupled and freely reorderable
-
 ---
 
 ## Building Pipelines
@@ -151,6 +173,14 @@ auto pipeline = PipelineBuilder<HeadHandler, TailHandler, Allocator>()
     .addHandler<LayerBHandler2>()
     .build();
 ```
+
+### Pipeline Direction
+
+The pipeline has **fixed direction**:
+- `fireRead()` → propagates through handlers → arrives at TailHandler's `onRead()`
+- `fireWrite()` → propagates through handlers → arrives at HeadHandler's `onWrite()`
+
+This is enforced at compile time via C++20 concepts.
 
 ### Composability
 
