@@ -16,7 +16,7 @@
  *
  */
 
-// @oss-enable: use namespace FlibSL\{C, Math, Str, Vec};
+use namespace FlibSL\{C, Math, Str, Vec}; // @oss-enable
 
 /**
  * Trait for Thrift Structs to call into the Serialization Helper
@@ -45,7 +45,7 @@ interface IThriftDidWriteHook {
   )[$protocol::CReadWriteDefault, write_props]: void;
 }
 
-<<Oncalls('thrift')>> // @oss-disable
+// @oss-disable: <<Oncalls('thrift')>>
 trait ThriftSerializationTrait implements IThriftStruct {
 
   protected function willReadThrift(

@@ -16,7 +16,7 @@
  *
  */
 
-// @oss-enable: use namespace FlibSL\{C, Math, Str, Vec};
+use namespace FlibSL\{C, Math, Str, Vec}; // @oss-enable
 interface IThriftServiceMethodMetadata<TThriftIf as IThriftAsyncIf> {
   public function getArgsClass()[]: class<IThriftStruct>;
   public function genExecute<TArgs as IThriftStruct>(
@@ -295,7 +295,7 @@ final class ThriftServiceBiDiStreamingResponseMethod<
   }
 }
 
-<<Oncalls('thrift')>> // @oss-disable
+// @oss-disable: <<Oncalls('thrift')>>
 abstract class ThriftAsyncProcessor
   extends ThriftProcessorBase
   implements IThriftAsyncProcessor {

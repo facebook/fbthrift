@@ -17,7 +17,7 @@
  *
  */
 
-// @oss-enable: use namespace FlibSL\{C, Math, Str, Vec};
+use namespace FlibSL\{C, Math, Str, Vec}; // @oss-enable
 
 type ThriftClientFactory<T> = (classname<T>, (function(
   TProtocol,
@@ -25,7 +25,7 @@ type ThriftClientFactory<T> = (classname<T>, (function(
   ?IThriftMigrationAsyncChannel,
 ): T));
 
-<<__ConsistentConstruct, Oncalls('thrift')>> // @oss-disable
+// @oss-disable: <<__ConsistentConstruct, Oncalls('thrift')>>
 // @oss-enable <<__ConsistentConstruct>>
 abstract class ThriftClientBase implements IThriftClient {
   protected TProtocol $input_;

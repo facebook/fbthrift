@@ -16,7 +16,7 @@
  *
  */
 
-// @oss-enable: use namespace FlibSL\{C, Math, Str, Vec};
+use namespace FlibSL\{C, Math, Str, Vec}; // @oss-enable
 
 // Result message and read headers
 type TAsyncChannelResponse = (string, darray<string, string>);
@@ -26,7 +26,7 @@ type TAsyncChannelSinkResponse = (string, darray<string, string>, TClientSink);
 type TAsyncChannelBiDiStreamResponse =
   (string, darray<string, string>, TClientSink, TClientBufferedStream);
 
-<<Oncalls('thrift')>> // @oss-disable
+// @oss-disable: <<Oncalls('thrift')>>
 interface IThriftAsyncChannel {
   public function genSendRequestResponse(
     \RpcOptions $options,

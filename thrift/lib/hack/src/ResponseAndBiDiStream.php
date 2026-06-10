@@ -16,7 +16,7 @@
  *
  */
 
-<<Oncalls('thrift')>> // @oss-disable
+// @oss-disable: <<Oncalls('thrift')>>
 interface IResponseAndBidirectionalStream<
   TFirstResponse,
   TSinkRequest,
@@ -24,7 +24,7 @@ interface IResponseAndBidirectionalStream<
 > {
 }
 
-<<Oncalls('thrift')>> // @oss-disable
+// @oss-disable: <<Oncalls('thrift')>>
 final class ResponseAndBidirectionalStream<
   TFirstResponse,
   TSinkRequest,
@@ -44,7 +44,7 @@ final class ResponseAndBidirectionalStream<
   ) {}
 }
 
-<<Oncalls('thrift')>> // @oss-disable
+// @oss-disable: <<Oncalls('thrift')>>
 final class ResponseAndStreamTransformation<
   TFirstResponse,
   TSinkRequest,
