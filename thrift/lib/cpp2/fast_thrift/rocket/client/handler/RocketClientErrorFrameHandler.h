@@ -16,18 +16,15 @@
 
 #pragma once
 
-#include <glog/logging.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/logging/xlog.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/ErrorCode.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameViews.h>
-#include <thrift/lib/cpp2/fast_thrift/rocket/client/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/Messages.h>
 
 namespace apache::thrift::fast_thrift::rocket::client::handler {
@@ -37,23 +34,23 @@ using apache::thrift::fast_thrift::frame::ErrorCode;
 using apache::thrift::fast_thrift::frame::toString;
 
 /**
- * RocketClientConnectionErrorHandler - Pipeline handler for client-side ERROR
- * frame processing.
+ * RocketClientErrorFrameHandler - Pipeline handler for client-side ERROR frame
+ * processing.
  *
- * This handler intercepts fatal connection-level ERROR frames (streamId == 0)
- * from the server — invalid/rejected setup, abrupt connection error, and
- * protocol violations — and converts them to the appropriate exception.
+ * This handler intercepts connection-level ERROR frames (streamId == 0) from
+ * the server and converts them to appropriate exceptions. These errors indicate
+ * fatal connection problems like invalid setup, rejected setup, or connection
+ * close.
  *
- * CONNECTION_CLOSE is the exception: it is a graceful-drain signal, not a
- * fault, so instead of an exception it fires a RocketClientEvent with
- * Kind::ConnectionClose up the pipeline (the app adapter relays it to the
- * thrift drain handler). In-flight
- * work is untouched. Stream-level ERROR frames (streamId > 0) also pass
- * through unchanged.
+ * Similar to how RocketClient::handleError() processes ERROR frames in the
+ * existing Rocket client implementation.
+ *
+ * The handler consumes connection-level ERROR frames and fires exceptions.
+ * Stream-level ERROR frames (streamId > 0) pass through unchanged.
  */
-class RocketClientConnectionErrorHandler {
+class RocketClientErrorFrameHandler {
  public:
-  RocketClientConnectionErrorHandler() = default;
+  RocketClientErrorFrameHandler() = default;
 
   // === HandlerLifecycle ===
 
@@ -72,13 +69,14 @@ class RocketClientConnectionErrorHandler {
   void onReadReady(Context& /*ctx*/) noexcept {}
 
   /**
-   * Process inbound frames, intercepting fatal connection-level ERROR frames
-   * (streamId == 0) and converting them to a TTransportException.
+   * Process inbound frames, intercepting connection-level ERROR frames.
    *
-   * CONNECTION_CLOSE fires a RocketClientEvent (Kind::ConnectionClose) up the
-   * pipeline (graceful drain, not a fault). Stream-level ERROR frames and all
-   * other frames pass
-   * through unchanged.
+   * Connection-level ERROR frames (streamId == 0) are handled here:
+   * - Extract error code from frame
+   * - Convert to appropriate TTransportException
+   * - Fire exception to notify connection failure
+   *
+   * Stream-level ERROR frames and all other frames pass through unchanged.
    */
   template <typename Context>
   apache::thrift::fast_thrift::channel_pipeline::Result onRead(
@@ -103,23 +101,7 @@ class RocketClientConnectionErrorHandler {
       return ctx.fireRead(std::move(msg));
     }
 
-    // CONNECTION_CLOSE is a graceful-drain signal, not a fault. Emit a
-    // connection-close lifecycle event up the pipeline (the app adapter
-    // relays it to the thrift drain handler) and consume the frame — it
-    // carries no per-request payload. Every other connection-level error is
-    // fatal and is converted to an exception.
-    if (extractError(parsed).first == ErrorCode::CONNECTION_CLOSE) {
-      ctx.fireEvent(
-          RocketClientEventId::ConnectionClose,
-          apache::thrift::fast_thrift::channel_pipeline::erase_and_box(
-              RocketClientEvent{
-                  .kind = RocketClientEvent::Kind::ConnectionClose,
-                  .status = {},
-                  .frameCount = 0,
-                  .bytes = 0}));
-      return apache::thrift::fast_thrift::channel_pipeline::Result::Success;
-    }
-
+    // Extract error code and message from ERROR frame
     return handleError(ctx, parsed);
   }
 
@@ -164,6 +146,12 @@ class RocketClientConnectionErrorHandler {
 
     folly::exception_wrapper ew;
     switch (errorCode) {
+      case ErrorCode::CONNECTION_CLOSE:
+        ew = folly::make_exception_wrapper<TTransportException>(
+            TTransportException::NOT_OPEN,
+            makeExceptionMessage("Connection closed by server"));
+        break;
+
       case ErrorCode::INVALID_SETUP:
         ew = folly::make_exception_wrapper<TTransportException>(
             TTransportException::INVALID_SETUP,
@@ -197,45 +185,19 @@ class RocketClientConnectionErrorHandler {
             makeExceptionMessage("Connection error from server"));
         break;
 
-      // Stream-level error codes are illegal on the connection stream
-      // (streamId 0): per the RSocket spec they MUST carry streamId > 0.
-      // Receiving one here is a peer protocol violation.
+      case ErrorCode::RESERVED:
       case ErrorCode::APPLICATION_ERROR:
       case ErrorCode::REJECTED:
       case ErrorCode::CANCELED:
       case ErrorCode::INVALID:
-        ew = folly::make_exception_wrapper<TTransportException>(
-            TTransportException::END_OF_FILE,
-            makeExceptionMessage(
-                fmt::format(
-                    "Protocol violation: stream-level error code {} on connection stream",
-                    toString(errorCode))));
-        break;
-
-      // Reserved codes must never appear on the wire.
-      case ErrorCode::RESERVED:
       case ErrorCode::RESERVED_EXT:
-        ew = folly::make_exception_wrapper<TTransportException>(
-            TTransportException::END_OF_FILE,
-            makeExceptionMessage(
-                fmt::format(
-                    "Protocol violation: reserved error code {} on connection stream",
-                    toString(errorCode))));
-        break;
-
-      // onRead intercepts CONNECTION_CLOSE as a graceful-drain event; reaching
-      // here is a programming error.
-      case ErrorCode::CONNECTION_CLOSE:
-        DCHECK(false) << "CONNECTION_CLOSE reached handleError";
-        [[fallthrough]];
-
       default:
         ew = folly::make_exception_wrapper<TTransportException>(
             TTransportException::END_OF_FILE,
             makeExceptionMessage(
                 fmt::format(
-                    "Unknown error code {} on connection stream",
-                    static_cast<uint32_t>(errorCode))));
+                    "Unhandled error frame on control stream [{}]",
+                    toString(errorCode))));
         break;
     }
 
@@ -246,8 +208,8 @@ class RocketClientConnectionErrorHandler {
 
 static_assert(
     apache::thrift::fast_thrift::channel_pipeline::InboundHandler<
-        RocketClientConnectionErrorHandler,
+        RocketClientErrorFrameHandler,
         apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>,
-    "RocketClientConnectionErrorHandler must satisfy InboundHandler concept");
+    "RocketClientErrorFrameHandler must satisfy InboundHandler concept");
 
 } // namespace apache::thrift::fast_thrift::rocket::client::handler

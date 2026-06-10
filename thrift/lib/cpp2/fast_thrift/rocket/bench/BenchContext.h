@@ -61,11 +61,6 @@ class BenchContext {
     lastException_ = std::move(e);
   }
 
-  template <typename E>
-  void fireEvent(E /*ev*/, TypeErasedBox&& evt) noexcept {
-    lastEvent_ = std::move(evt);
-  }
-
   void deactivate() noexcept {}
 
   void close() noexcept {}
@@ -84,7 +79,6 @@ class BenchContext {
  private:
   TypeErasedBox lastReadMsg_;
   TypeErasedBox lastWriteMsg_;
-  TypeErasedBox lastEvent_;
   folly::exception_wrapper lastException_;
   MockPipeline pipeline_;
 };
