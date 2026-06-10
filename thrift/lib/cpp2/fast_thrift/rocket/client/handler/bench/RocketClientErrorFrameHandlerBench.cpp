@@ -15,7 +15,7 @@
  */
 
 /**
- * RocketClientConnectionErrorHandler Microbenchmarks
+ * RocketClientErrorFrameHandler Microbenchmarks
  *
  * This handler does:
  * - onRead: Checks if frame is connection-level ERROR (streamId == 0)
@@ -41,7 +41,7 @@
 #include <thrift/lib/cpp2/fast_thrift/frame/write/FrameWriter.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/bench/BenchContext.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/Messages.h>
-#include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientConnectionErrorHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientErrorFrameHandler.h>
 
 using namespace folly;
 using namespace apache::thrift::fast_thrift::channel_pipeline;
@@ -80,7 +80,7 @@ RocketResponseMessage createConnectionErrorFrame(ErrorCode errorCode) {
 
 BENCHMARK(Read_ErrorHandler_ConnectionClose, iters) {
   folly::BenchmarkSuspender suspender;
-  RocketClientConnectionErrorHandler handler;
+  RocketClientErrorFrameHandler handler;
   BenchContext ctx;
 
   std::vector<RocketResponseMessage> responses;
@@ -100,7 +100,7 @@ BENCHMARK(Read_ErrorHandler_ConnectionClose, iters) {
 
 BENCHMARK(Read_ErrorHandler_InvalidSetup, iters) {
   folly::BenchmarkSuspender suspender;
-  RocketClientConnectionErrorHandler handler;
+  RocketClientErrorFrameHandler handler;
   BenchContext ctx;
 
   std::vector<RocketResponseMessage> responses;
@@ -119,7 +119,7 @@ BENCHMARK(Read_ErrorHandler_InvalidSetup, iters) {
 
 BENCHMARK(Read_ErrorHandler_RejectedSetup, iters) {
   folly::BenchmarkSuspender suspender;
-  RocketClientConnectionErrorHandler handler;
+  RocketClientErrorFrameHandler handler;
   BenchContext ctx;
 
   std::vector<RocketResponseMessage> responses;

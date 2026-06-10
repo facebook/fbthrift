@@ -48,7 +48,7 @@
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FrameLengthEncoderHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/adapter/RocketClientAppAdapter.h>
-#include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientConnectionErrorHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientErrorFrameHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientFrameCodecHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientRequestResponseHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientSetupFrameHandler.h>
@@ -223,8 +223,7 @@ class RocketE2ETest : public ::testing::Test {
                         folly::IOBuf::copyBuffer("setup"),
                         std::unique_ptr<folly::IOBuf>());
                   })
-              .addNextInbound<
-                  client::handler::RocketClientConnectionErrorHandler>(
+              .addNextInbound<client::handler::RocketClientErrorFrameHandler>(
                   c_error_tag)
               .addNextDuplex<client::handler::RocketClientStreamStateHandler>(
                   c_stream_state_tag)
