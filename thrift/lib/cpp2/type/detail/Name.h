@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/lang/Pretty.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/type/NativeType.h>

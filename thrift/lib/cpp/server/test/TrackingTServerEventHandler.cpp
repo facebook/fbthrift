@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp/server/test/TrackingTServerEventHandler.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/ExceptionString.h>
 
 namespace apache::thrift::server::test {

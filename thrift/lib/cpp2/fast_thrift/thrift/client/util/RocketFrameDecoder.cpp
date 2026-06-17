@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/util/RocketFrameDecoder.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>

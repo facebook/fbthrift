@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/op/Encode.h>
 #include <thrift/lib/cpp2/op/PatchTraits.h>

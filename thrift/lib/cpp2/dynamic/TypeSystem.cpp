@@ -19,7 +19,7 @@
 
 #include <folly/Memory.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <functional>
 #include <memory>

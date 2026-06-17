@@ -27,7 +27,7 @@
 #include <utility>
 #include <vector>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <fmt/ranges.h>
 #include <thrift/compiler/detail/pluggable_functions.h>
 #include <thrift/compiler/metrics/metrics.h>

@@ -16,7 +16,7 @@
 
 #include <thrift/conformance/stresstest/common/StressTestStats.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <glog/logging.h>
 
 namespace apache::thrift::stress {

@@ -21,7 +21,7 @@
 #include <thrift/lib/cpp2/dynamic/TypeSystem.h>
 #include <thrift/lib/cpp2/dynamic/fwd.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <memory_resource>
 #include <string_view>

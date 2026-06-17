@@ -23,7 +23,7 @@
 #include <ostream>
 #include <type_traits>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <fmt/ranges.h>
 
 #include <boost/core/demangle.hpp>

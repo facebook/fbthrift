@@ -20,7 +20,7 @@
 #include <iterator>
 #include <utility>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace w = whisker::make;
 

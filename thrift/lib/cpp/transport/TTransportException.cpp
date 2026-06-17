@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <folly/String.h>
 

@@ -20,7 +20,7 @@
 #include <optional>
 #include <type_traits>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/Function.h>
 #include <folly/io/IOBuf.h>

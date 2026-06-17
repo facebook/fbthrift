@@ -32,7 +32,7 @@
 #include <thrift/lib/cpp2/schema/test/gen-cpp2/syntax_graph_handlers.h>
 #include <thrift/lib/cpp2/schema/test/gen-cpp2/syntax_graph_types.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <algorithm>
 

@@ -24,7 +24,7 @@
 #include <stdexcept>
 #include <type_traits>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <fmt/ranges.h>
 
 // clang-format off

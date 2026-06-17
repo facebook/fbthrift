@@ -23,7 +23,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/CPortability.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>

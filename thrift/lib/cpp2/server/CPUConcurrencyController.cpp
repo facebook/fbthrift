@@ -20,7 +20,7 @@
 
 #include <algorithm>
 #include <chrono>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Overload.h>
 #include <folly/lang/Assume.h>
 

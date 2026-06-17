@@ -25,7 +25,7 @@
 #include <openssl/evp.h>
 #include <openssl/sha.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_list.h>

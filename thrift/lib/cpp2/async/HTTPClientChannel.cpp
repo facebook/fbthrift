@@ -18,7 +18,7 @@
 
 #include <utility>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/base64.h>
 #include <proxygen/lib/http/HTTPCommonHeaders.h>
 #include <proxygen/lib/http/HTTPMethod.h>

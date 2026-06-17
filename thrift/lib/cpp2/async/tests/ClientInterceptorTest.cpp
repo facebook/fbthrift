@@ -23,7 +23,7 @@
 #include <folly/coro/GtestHelpers.h>
 #include <folly/coro/Task.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <thrift/lib/cpp/StreamEventHandler.h>
 #include <thrift/lib/cpp2/async/ClientInterceptor.h>

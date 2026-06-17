@@ -20,7 +20,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <fizz/backend/openssl/certificate/CertUtils.h>
 #include <fizz/fizz-config.h>
 #include <fizz/protocol/DefaultCertificateVerifier.h>

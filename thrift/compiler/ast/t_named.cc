@@ -21,7 +21,7 @@
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/ast/uri.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace apache::thrift::compiler {
 

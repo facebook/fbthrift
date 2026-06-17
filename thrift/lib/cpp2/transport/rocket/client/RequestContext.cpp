@@ -20,7 +20,7 @@
 
 #include <glog/logging.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Likely.h>
 #include <folly/io/IOBuf.h>
 #include <folly/lang/Assume.h>

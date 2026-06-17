@@ -18,7 +18,7 @@
 
 #include <memory>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 

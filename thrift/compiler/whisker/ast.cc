@@ -18,7 +18,7 @@
 #include <thrift/compiler/whisker/detail/overload.h>
 #include <thrift/compiler/whisker/detail/string.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <fmt/ranges.h>
 
 #include <cassert>

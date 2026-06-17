@@ -20,7 +20,7 @@
 
 #include <folly/hash/Hash.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 using apache::thrift::type_system::FieldId;
 using apache::thrift::type_system::FieldIdentity;

@@ -29,7 +29,7 @@
 #include <folly/container/span.h>
 #include <folly/lang/Assume.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <functional>
 #include <memory>

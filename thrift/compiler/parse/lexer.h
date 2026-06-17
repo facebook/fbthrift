@@ -19,7 +19,7 @@
 #include <functional>
 #include <optional>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <thrift/compiler/parse/token.h>
 #include <thrift/compiler/source_location.h>

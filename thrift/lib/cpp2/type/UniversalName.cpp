@@ -21,7 +21,7 @@
 
 #include <openssl/evp.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Range.h>
 #include <folly/lang/Exception.h>
 #include <folly/portability/OpenSSL.h>

@@ -24,7 +24,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <openssl/evp.h>
 #include <thrift/compiler/ast/t_typedef.h>

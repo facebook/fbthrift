@@ -17,7 +17,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

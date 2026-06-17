@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/ThriftClientAppAdapter.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Expected.h>
 #include <folly/logging/xlog.h>
 #include <thrift/lib/cpp/TApplicationException.h>

@@ -18,7 +18,7 @@
 
 #include <string>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <thrift/lib/cpp2/op/Get.h>
 
 namespace thrift::test::lib {

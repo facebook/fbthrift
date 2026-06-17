@@ -16,7 +16,7 @@
 
 #include <thrift/conformance/cpp2/Testing.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <gtest/gtest.h>
 #include <folly/lang/Exception.h>
 #include <thrift/conformance/if/gen-cpp2/any_constants.h>

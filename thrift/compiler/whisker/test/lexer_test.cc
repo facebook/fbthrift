@@ -27,7 +27,7 @@
 #include <string>
 #include <variant>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace whisker {
 

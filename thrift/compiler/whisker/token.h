@@ -26,7 +26,7 @@
 #include <unordered_map>
 #include <variant>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace whisker {
 

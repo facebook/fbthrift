@@ -25,7 +25,7 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace apache::thrift::fast_thrift::thrift {
 

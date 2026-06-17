@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp/transport/THeader.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Conv.h>
 #include <folly/MapUtil.h>
 #include <folly/String.h>

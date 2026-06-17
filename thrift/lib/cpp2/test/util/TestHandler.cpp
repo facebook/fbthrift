@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/test/util/TestHandler.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/io/Cursor.h>
 
 const std::string kEchoSuffix(45, 'c');

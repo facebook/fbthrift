@@ -33,7 +33,7 @@
 #include <folly/lang/SafeAssert.h>
 #include <folly/memory/not_null.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <memory>
 #include <optional>

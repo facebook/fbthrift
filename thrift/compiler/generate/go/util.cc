@@ -17,7 +17,7 @@
 #include <cctype>
 #include <utility>
 #include <boost/algorithm/string.hpp>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/generate/go/util.h>
 

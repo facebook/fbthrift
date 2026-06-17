@@ -22,7 +22,7 @@
 #include <sstream>
 #include <thread>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <folly/ThreadLocal.h>
