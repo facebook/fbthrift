@@ -18,7 +18,7 @@
 
 #include <thrift/compiler/whisker/dsl.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <iterator>
 

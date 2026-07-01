@@ -19,7 +19,7 @@
 #include <chrono>
 #include <memory>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/synchronization/CallOnce.h>

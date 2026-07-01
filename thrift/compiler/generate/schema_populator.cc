@@ -19,7 +19,7 @@
 #include <string>
 #include <type_traits>
 #include <utility>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/io/IOBuf.h>
 
 #include <thrift/compiler/ast/t_const.h>

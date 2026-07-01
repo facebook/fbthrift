@@ -19,7 +19,6 @@
 #include <cctype>
 #include <stdexcept>
 #include <boost/container/small_vector.hpp>
-#include <fmt/core.h>
 #include <fmt/format.h>
 
 namespace apache::thrift {

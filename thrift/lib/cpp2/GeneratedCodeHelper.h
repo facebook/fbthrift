@@ -25,7 +25,7 @@
 #include <folly/Memory.h>
 #include <folly/Portability.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <folly/coro/FutureUtil.h>

@@ -19,7 +19,7 @@
 #include <stdexcept>
 #include <utility>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace apache::thrift::compiler {
 

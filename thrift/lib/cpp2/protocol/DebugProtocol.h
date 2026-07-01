@@ -17,7 +17,7 @@
 #ifndef CPP2_PROTOCOL_DEBUGPROTOCOL_H_
 #define CPP2_PROTOCOL_DEBUGPROTOCOL_H_
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/portability/GFlags.h>

@@ -16,7 +16,7 @@
 
 #include <thrift/compiler/generate/csharp/util.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <thrift/compiler/ast/t_container.h>
 #include <thrift/compiler/ast/t_primitive_type.h>
 #include <thrift/compiler/ast/t_structured.h>

@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/logging/xlog.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>

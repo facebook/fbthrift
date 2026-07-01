@@ -18,7 +18,7 @@
 
 #include <stdexcept>
 #include <type_traits>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/ConstexprMath.h>
 #include <folly/lang/Bits.h>
 #include <folly/lang/Exception.h>

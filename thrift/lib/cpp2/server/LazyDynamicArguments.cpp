@@ -18,7 +18,7 @@
 
 #include <glog/logging.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <folly/container/F14Map.h>
 

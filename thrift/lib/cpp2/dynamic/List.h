@@ -25,7 +25,7 @@
 #include <thrift/lib/cpp2/dynamic/detail/ListIteratorBase.h>
 #include <thrift/lib/cpp2/dynamic/fwd.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <stddef.h>
 #include <compare>

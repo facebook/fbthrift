@@ -21,7 +21,6 @@
 #include <utility>
 
 #include <boost/algorithm/string.hpp>
-#include <fmt/core.h>
 #include <fmt/format.h>
 #include <re2/re2.h>
 #include <thrift/compiler/ast/t_program.h>

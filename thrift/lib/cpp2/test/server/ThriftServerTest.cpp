@@ -22,7 +22,7 @@
 #include <utility>
 
 #include <boost/cast.hpp>
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <common/services/cpp/security/FizzThriftFactory.h>
 #include <gmock/gmock.h>

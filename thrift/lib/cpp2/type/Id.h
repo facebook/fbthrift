@@ -27,7 +27,7 @@
 #include <stdexcept>
 #include <type_traits>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <folly/lang/Exception.h>

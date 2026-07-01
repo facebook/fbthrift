@@ -22,7 +22,7 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/stop_watch.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/ExceptionString.h>
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>

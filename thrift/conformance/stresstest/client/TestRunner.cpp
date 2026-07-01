@@ -16,7 +16,7 @@
 
 #include <thrift/conformance/stresstest/client/TestRunner.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <gflags/gflags.h>
 
 #include <thrift/conformance/stresstest/client/ClientRunner.h>

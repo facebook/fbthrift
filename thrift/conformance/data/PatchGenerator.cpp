@@ -23,7 +23,7 @@
 #include <unordered_map>
 #include <thrift/conformance/data/PatchGenerator.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <thrift/conformance/data/ValueGenerator.h>
 #include <thrift/lib/cpp/util/SaturatingMath.h>

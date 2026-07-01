@@ -31,7 +31,7 @@
 #include <thrift/lib/cpp2/dynamic/Union.h>
 #include <thrift/lib/cpp2/dynamic/fwd.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/CPortability.h>
 #include <folly/Overload.h>
 #include <folly/Traits.h>

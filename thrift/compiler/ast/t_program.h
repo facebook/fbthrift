@@ -26,7 +26,7 @@
 #include <utility>
 #include <vector>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <thrift/compiler/ast/node_list.h>
 #include <thrift/compiler/ast/program_scope.h>

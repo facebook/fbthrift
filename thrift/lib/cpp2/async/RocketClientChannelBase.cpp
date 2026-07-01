@@ -19,7 +19,7 @@
 #include <memory>
 #include <utility>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/ExceptionString.h>
 #include <folly/Memory.h>
 #include <folly/Range.h>

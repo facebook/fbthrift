@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Likely.h>
 #include <folly/Overload.h>
 #include <folly/io/Cursor.h>

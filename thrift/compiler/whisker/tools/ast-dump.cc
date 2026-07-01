@@ -28,7 +28,7 @@
 #include <string>
 #include <string_view>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 using namespace std::literals;
 

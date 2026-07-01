@@ -18,7 +18,7 @@
 
 #include <folly/lang/SafeAssert.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace apache::thrift {
 

@@ -16,7 +16,7 @@
 
 #include <string>
 #include <string_view>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <thrift/compiler/ast/ast_visitor.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/ast/t_struct.h>

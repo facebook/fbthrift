@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/ThriftClientChannel.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>

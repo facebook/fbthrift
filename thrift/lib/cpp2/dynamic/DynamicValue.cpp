@@ -27,7 +27,7 @@
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Overload.h>
 
 #include <iostream>

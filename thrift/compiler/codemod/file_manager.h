@@ -20,7 +20,7 @@
 #include <optional>
 #include <set>
 #include <unordered_set>
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <folly/FileUtil.h>
 

@@ -17,7 +17,7 @@
 #pragma once
 
 #include <iostream>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/String.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>

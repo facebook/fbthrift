@@ -19,7 +19,7 @@
 #include <atomic>
 #include <thread>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/synchronization/Latch.h>
 #include <thrift/lib/cpp2/server/ParallelConcurrencyController.h>

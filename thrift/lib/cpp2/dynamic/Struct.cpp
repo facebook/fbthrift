@@ -19,7 +19,7 @@
 #include <thrift/lib/cpp2/dynamic/DynamicValue.h>
 #include <thrift/lib/cpp2/dynamic/detail/Datum.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace apache::thrift::dynamic {
 

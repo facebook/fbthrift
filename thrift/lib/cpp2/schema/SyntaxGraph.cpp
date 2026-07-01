@@ -24,7 +24,7 @@
 #include <folly/String.h>
 #include <folly/lang/SafeAssert.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <queue>
 #include <stdexcept>

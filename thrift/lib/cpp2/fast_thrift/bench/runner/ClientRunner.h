@@ -23,7 +23,7 @@
 #include <memory>
 #include <vector>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/SocketAddress.h>
 #include <folly/coro/Collect.h>
 #include <folly/coro/Task.h>

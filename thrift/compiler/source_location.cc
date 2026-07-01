@@ -17,7 +17,7 @@
 #include <thrift/compiler/detail/system.h>
 #include <thrift/compiler/source_location.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <fmt/std.h>
 
 #include <algorithm>

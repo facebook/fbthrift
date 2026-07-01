@@ -17,7 +17,7 @@
 #include <thrift/conformance/data/ToleranceGenerator.h>
 
 #include <boost/mp11.hpp>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <glog/logging.h>
 
 #include <thrift/conformance/cpp2/Protocol.h>

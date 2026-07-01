@@ -73,7 +73,7 @@
 #include <string_view>
 #include <vector>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Conv.h>
 #include <folly/Exception.h>
 #include <folly/io/Cursor.h>

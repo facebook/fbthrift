@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/dynamic/TypeId.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <ostream>
 

@@ -19,7 +19,7 @@
 #include <filesystem>
 #include <string>
 #include <string_view>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <openssl/evp.h>
 #include <openssl/md5.h>
 #include <openssl/sha.h>
