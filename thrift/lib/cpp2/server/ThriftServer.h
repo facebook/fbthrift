@@ -53,7 +53,7 @@
 #include <folly/observer/Observer.h>
 #include <folly/synchronization/CallOnce.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>

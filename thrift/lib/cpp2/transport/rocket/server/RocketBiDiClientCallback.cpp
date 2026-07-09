@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/rocket/server/RocketBiDiClientCallback.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>

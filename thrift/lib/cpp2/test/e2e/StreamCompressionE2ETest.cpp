@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/base64.h>
 #include <folly/coro/GtestHelpers.h>
 #include <thrift/lib/cpp2/Flags.h>

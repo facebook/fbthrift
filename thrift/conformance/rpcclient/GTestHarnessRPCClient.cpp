@@ -29,7 +29,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(60);
 constexpr auto kClientTimeout = std::chrono::seconds(30);
 #endif
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Subprocess.h>
 #include <folly/coro/AsyncGenerator.h>
 #include <folly/coro/BlockingWait.h>

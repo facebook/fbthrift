@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <thrift/compiler/ast/t_node.h>
 
 namespace apache::thrift::compiler {

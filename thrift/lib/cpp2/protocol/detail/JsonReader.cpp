@@ -22,7 +22,7 @@
 #include <limits>
 #include <stdexcept>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Conv.h>
 #include <folly/Unicode.h>
 

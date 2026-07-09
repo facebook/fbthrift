@@ -16,7 +16,7 @@
 
 #include <thrift/conformance/data/TestGenerator.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <thrift/conformance/data/TestUtil.h>
 #include <thrift/conformance/data/ValueGenerator.h>

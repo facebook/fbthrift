@@ -42,7 +42,7 @@
 #include <thrift/compiler/whisker/source_location.h>
 #include <thrift/compiler/whisker/tree_printer.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <boost/core/demangle.hpp>
 

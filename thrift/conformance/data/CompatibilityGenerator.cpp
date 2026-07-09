@@ -24,7 +24,7 @@
 #include <vector>
 
 #include <boost/mp11.hpp>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/container/Foreach.h>
 #include <thrift/conformance/cpp2/Protocol.h>
 #include <thrift/conformance/data/ValueGenerator.h>

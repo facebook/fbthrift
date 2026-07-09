@@ -20,7 +20,7 @@
 #include <limits>
 #include <stdexcept>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/MapUtil.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/lang/Exception.h>

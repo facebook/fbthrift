@@ -18,7 +18,7 @@
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Conv.h>
 #include <folly/String.h>
 #include <folly/container/F14Map.h>

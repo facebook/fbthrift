@@ -16,7 +16,7 @@
 
 #include <string>
 #include <string_view>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <range/v3/view.hpp>
 
 #include <thrift/compiler/ast/ast_visitor.h>

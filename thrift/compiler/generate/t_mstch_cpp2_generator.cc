@@ -24,7 +24,7 @@
 #include <vector>
 
 #include <boost/algorithm/string/split.hpp>
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_field.h>

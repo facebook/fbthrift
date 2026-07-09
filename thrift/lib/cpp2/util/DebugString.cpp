@@ -17,7 +17,7 @@
 #include <thrift/lib/cpp2/util/DebugString.h>
 
 #include <unordered_map>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/MapUtil.h>
 #include <folly/String.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>

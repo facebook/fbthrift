@@ -18,7 +18,7 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/Raiser.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <gtest/gtest.h>
 #include <folly/coro/BlockingWait.h>
 

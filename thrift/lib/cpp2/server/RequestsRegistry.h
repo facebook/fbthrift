@@ -18,7 +18,7 @@
 
 #include <array>
 #include <chrono>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/IntrusiveList.h>
 #include <folly/SocketAddress.h>
 #include <folly/executors/QueueObserver.h>

@@ -17,7 +17,7 @@
 #include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/FieldRef.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 [[noreturn]] void apache::thrift::detail::throw_on_bad_optional_field_access() {
   throw bad_optional_field_access();

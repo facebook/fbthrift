@@ -25,7 +25,7 @@
 #include <folly/hash/Hash.h>
 #include <folly/lang/Assume.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <ostream>
 

@@ -23,7 +23,7 @@
 
 #include <gtest/gtest.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Conv.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/Range.h>

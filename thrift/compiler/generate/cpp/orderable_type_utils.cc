@@ -16,7 +16,7 @@
 
 #include <unordered_set>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_structured.h>
 #include <thrift/compiler/ast/uri.h>

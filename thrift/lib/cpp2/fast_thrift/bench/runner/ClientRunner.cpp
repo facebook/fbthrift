@@ -20,7 +20,7 @@
 #include <iomanip>
 #include <iostream>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/logging/xlog.h>
 
 namespace apache::thrift::fast_thrift::bench {

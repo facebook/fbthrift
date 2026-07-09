@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <thrift/compiler/codemod/codemod.h>
 #include <thrift/compiler/compiler.h>
 #include <thrift/compiler/parse/parse_ast.h>

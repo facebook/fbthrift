@@ -22,7 +22,7 @@
 // Ensure RocketServerHandler is fully defined before template instantiation
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/ExceptionString.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/GLog.h>

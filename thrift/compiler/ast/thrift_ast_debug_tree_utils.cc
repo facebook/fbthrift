@@ -17,7 +17,7 @@
 #include "thrift/compiler/ast/thrift_ast_debug_tree_utils.h"
 
 #include <string>
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include "thrift/common/tree_printer.h"
 #include "thrift/compiler/ast/t_program_bundle.h"

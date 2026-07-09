@@ -18,7 +18,7 @@
 #include <thrift/lib/cpp2/dynamic/detail/DatumHash.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace apache::thrift::dynamic::detail {
 

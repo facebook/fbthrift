@@ -20,7 +20,7 @@
 #include <thrift/compiler/whisker/lexer.h>
 #include <thrift/compiler/whisker/parser.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <cassert>
 #include <iterator>

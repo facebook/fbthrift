@@ -16,7 +16,6 @@
 
 #include <thrift/lib/cpp2/async/AsyncProcessorFactory.h>
 
-#include <fmt/core.h>
 #include <fmt/format.h>
 
 namespace apache::thrift {

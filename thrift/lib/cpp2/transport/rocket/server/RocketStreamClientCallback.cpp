@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerUtil.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>

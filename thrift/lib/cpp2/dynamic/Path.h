@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp2/op/Encode.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/lang/Exception.h>
 

@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <cstdint>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <glog/logging.h>
 #include <folly/ExceptionString.h>
 #include <folly/ExceptionWrapper.h>

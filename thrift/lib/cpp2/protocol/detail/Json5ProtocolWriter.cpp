@@ -19,7 +19,7 @@
 #include <cmath>
 #include <concepts>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/Exception.h>
 #include <folly/Unicode.h>
 #include <folly/base64.h>

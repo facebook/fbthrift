@@ -18,7 +18,7 @@
 
 #include <thrift/lib/thrift/gen-cpp2/type_id_types.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace apache::thrift::type_system::detail {
 

@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
 #include <folly/lang/Hint.h>

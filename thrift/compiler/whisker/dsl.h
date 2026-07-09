@@ -20,7 +20,7 @@
 #include <thrift/compiler/whisker/managed_ptr.h>
 #include <thrift/compiler/whisker/object.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <algorithm>
 #include <concepts>

@@ -16,7 +16,7 @@
 
 #include <gtest/gtest.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <thrift/lib/cpp/ContextStack.h>
 #include <thrift/lib/cpp2/async/InterceptorFlags.h>
 #include <thrift/lib/cpp2/test/util/TrackingTProcessorEventHandler.h>

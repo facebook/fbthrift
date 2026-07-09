@@ -25,7 +25,7 @@
 #include <folly/lang/Assume.h>
 #include <folly/lang/Exception.h>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <stdexcept>
 #include <string>
