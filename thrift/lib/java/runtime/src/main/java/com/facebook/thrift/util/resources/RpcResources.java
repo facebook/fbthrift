@@ -50,6 +50,10 @@ public final class RpcResources {
 
   private RpcResources() {}
 
+  public static boolean enableIoUring() {
+    return ResourceConfiguration.enableIoUring;
+  }
+
   public static HashedWheelTimer getHashedWheelTimer() {
     return INSTANCE.doGet().getTimer();
   }
