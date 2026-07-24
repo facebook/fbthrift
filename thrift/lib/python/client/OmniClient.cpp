@@ -147,6 +147,9 @@ OmniClient::OmniClient(OmniClient&& other) noexcept
       ebLivenessProbe_(std::move(other.ebLivenessProbe_)) {}
 
 void OmniClient::armEventBaseLivenessProbe() {
+  if (!channel_) {
+    return;
+  }
   auto* eb = channel_->getEventBase();
   if (eb == nullptr) {
     return;
