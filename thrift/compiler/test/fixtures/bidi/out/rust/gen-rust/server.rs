@@ -655,11 +655,12 @@ where
                     }
                     ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                         tracing::debug!(?exn, method="BiDiService.canThrow", "Bidirectional Streaming declared exception");
+                        let declared_exception_name = ::fbthrift::ExceptionInfo::exn_name(&exn).to_owned();
                         let payload = ::fbthrift::help::serialize_stream_item::<P, crate::services::bi_di_service::CanThrowStreamExn>(
                             ::std::result::Result::Err(exn),
                             "canThrow",
                         );
-                        ::fbthrift::SerializedStreamElement::DeclaredException(payload)
+                        ::fbthrift::SerializedStreamElement::DeclaredException(payload, declared_exception_name)
                     }
                     ::std::result::Result::Err(exn) => {
                         tracing::error!(?exn, method="BiDiService.canThrow", "Bidirectional Streaming unwind");
