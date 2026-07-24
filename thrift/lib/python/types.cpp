@@ -1138,17 +1138,18 @@ inline UniquePyObjectPtr primitiveCppToPython(double value) {
  * Both source and target types MUST be integrals (or this will fail to
  * compile).
  *
- * Terminates the process (i.e., aborts) if the input value does not fit in the
- * target type range.
+ * The caller is responsible for ensuring `v` fits in the target type range: all
+ * public thrift-python set/construct paths validate integer bounds (raising
+ * OverflowError) before a value can reach serialization, so an out-of-range
+ * value here indicates a broken invariant rather than bad user input.
  */
 template <typename T, typename V>
 inline T convInt(V v) {
   static_assert(std::is_integral_v<T> && std::is_integral_v<V>);
-  if (v >= std::numeric_limits<T>::min() &&
-      v <= std::numeric_limits<T>::max()) {
-    return static_cast<T>(v);
-  }
-  LOG(FATAL) << "int out of range";
+  DCHECK(
+      v >= std::numeric_limits<T>::min() && v <= std::numeric_limits<T>::max())
+      << "int out of range";
+  return static_cast<T>(v);
 }
 
 /**
