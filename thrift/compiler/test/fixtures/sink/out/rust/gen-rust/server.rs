@@ -1059,12 +1059,11 @@ where
                 ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
             }
             ::std::result::Result::Err(exn) => {
-                let declared_exception_name = ::fbthrift::ExceptionInfo::exn_name(&exn).to_owned();
                 let payload = ::fbthrift::help::serialize_stream_item::<P, crate::services::sink_service::MethodFinalThrowSinkFinalExn>(
                     ::std::result::Result::Err(exn),
                     "methodFinalThrow",
                 );
-                ::fbthrift::SerializedStreamElement::DeclaredException(payload, declared_exception_name)
+                ::fbthrift::SerializedStreamElement::DeclaredException(payload)
             }
         };
         final_result_callback(enc_final_result);
@@ -1198,12 +1197,11 @@ where
                 ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
             }
             ::std::result::Result::Err(exn) => {
-                let declared_exception_name = ::fbthrift::ExceptionInfo::exn_name(&exn).to_owned();
                 let payload = ::fbthrift::help::serialize_stream_item::<P, crate::services::sink_service::MethodBothThrowSinkFinalExn>(
                     ::std::result::Result::Err(exn),
                     "methodBothThrow",
                 );
-                ::fbthrift::SerializedStreamElement::DeclaredException(payload, declared_exception_name)
+                ::fbthrift::SerializedStreamElement::DeclaredException(payload)
             }
         };
         final_result_callback(enc_final_result);

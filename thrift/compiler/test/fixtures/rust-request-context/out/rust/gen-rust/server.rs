@@ -1621,12 +1621,11 @@ where
                             }
                             ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                                 tracing::debug!(?exn, method="MyService.streamByIdWithException", "Streaming declared exception");
-                                let declared_exception_name = ::fbthrift::ExceptionInfo::exn_name(&exn).to_owned();
                                 let payload = ::fbthrift::help::serialize_stream_item::<P, crate::services::my_service::StreamByIdWithExceptionStreamExn>(
                                     ::std::result::Result::Err(exn),
                                     "streamByIdWithException",
                                 );
-                                ::fbthrift::SerializedStreamElement::DeclaredException(payload, declared_exception_name)
+                                ::fbthrift::SerializedStreamElement::DeclaredException(payload)
                             }
                             ::std::result::Result::Err(exn) => {
                                 tracing::error!(?exn, method="MyService.streamByIdWithException", "Streaming unwind");
