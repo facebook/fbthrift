@@ -113,6 +113,22 @@ TEST(TypeSystemTest, EmptyUnion) {
   EXPECT_EQ(emptyUnionDef.unionDef()->fields()->size(), 0);
 }
 
+TEST(TypeSystemTest, TrueTypeResolvesOpaqueAlias) {
+  TypeSystemBuilder builder;
+  builder.addType("meta.com/thrift/test/Struct", def::Struct({}));
+  builder.addType(
+      "meta.com/thrift/test/IntAlias", def::OpaqueAlias(TypeId::I32{}));
+  auto typeSystem = std::move(builder).build();
+
+  auto structRef = typeSystem->UserDefined("meta.com/thrift/test/Struct");
+  auto aliasRef = typeSystem->UserDefined("meta.com/thrift/test/IntAlias");
+  EXPECT_TRUE(TypeSystem::String().trueType().isString());
+  EXPECT_TRUE(structRef.trueType().isEqualIdentityTo(structRef));
+  EXPECT_FALSE(aliasRef.isEqualIdentityTo(TypeSystem::I32()));
+  EXPECT_TRUE(aliasRef.trueType().isEqualIdentityTo(TypeSystem::I32()));
+  EXPECT_FALSE(aliasRef.trueType().isEqualIdentityTo(aliasRef));
+}
+
 TEST(TypeSystemTest, NestedStructs) {
   TypeSystemBuilder builder;
 

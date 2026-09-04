@@ -609,6 +609,9 @@ class TypeRef final {
   bool isStructured() const { return isStruct() || isUnion(); }
   const StructuredNode& asStructured() const;
 
+  /** Resolves opaque alias, otherwise the identity. */
+  TypeRef trueType() const noexcept;
+
   /**
    * Returns this type's unique type identifier.
    *
@@ -1441,17 +1444,23 @@ inline TypeRef TypeSystem::UserDefined(UriView uri) const {
   return TypeRef::fromDefinition(this->getUserDefinedTypeOrThrow(uri));
 }
 
+inline TypeRef TypeRef::trueType() const noexcept {
+  auto type = *this;
+  if (type.isOpaqueAlias()) {
+    type = type.asOpaqueAliasUnchecked().targetType();
+  }
+  DCHECK(!type.isOpaqueAlias())
+      << "Opaque aliases may not target user-defined types.";
+  return type;
+}
+
 // TypeRef::matchKind implementation (defined after OpaqueAliasNode is complete)
 template <typename... F>
 TypeRef::MatchKindResult<F...> TypeRef::matchKind(F&&... visitors) const {
-  if (isOpaqueAlias()) {
-    return asOpaqueAlias().targetType().matchKind(std::forward<F>(visitors)...);
-  }
-
   // Intentionally does not support pointer-to-member callables or &&-qualified
   // operator() for build speed.
   auto invokeWith = folly::overload(std::forward<F>(visitors)...);
-  switch (kind()) {
+  switch (trueType().kind()) {
     case Kind::BOOL:
       return invokeWith(KindConstant<Kind::BOOL>{});
     case Kind::BYTE:

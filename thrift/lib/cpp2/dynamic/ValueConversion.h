@@ -43,13 +43,6 @@
 namespace apache::thrift::dynamic {
 namespace detail {
 
-inline type_system::TypeRef underlyingType(type_system::TypeRef type) {
-  while (type.isOpaqueAlias()) {
-    type = type.asOpaqueAlias().targetType();
-  }
-  return type;
-}
-
 [[noreturn]] inline void throwIncompatible() {
   throw std::invalid_argument("Dynamic value cannot be converted to target");
 }
@@ -152,7 +145,7 @@ struct ToDynamic<type::string_t> {
   DynamicValue operator()(
       const T& value, type_system::TypeRef expectedType) const {
     const std::string_view view(value);
-    const auto underlying = underlyingType(expectedType);
+    const auto underlying = expectedType.trueType();
     auto result = DynamicValue::makeDefault(expectedType);
     if (underlying.isString()) {
       result.asString() = view;
@@ -178,7 +171,7 @@ template <>
 struct FromDynamic<type::string_t> {
   template <typename T>
   void operator()(T& result, const DynamicConstRef& value) const {
-    const auto type = underlyingType(value.type());
+    const auto type = value.type().trueType();
     if (type.isString()) {
       result = value.asString().view();
     } else if constexpr (std::same_as<T, std::string>) {
@@ -197,7 +190,7 @@ struct ToDynamic<type::binary_t> {
   template <typename T>
   DynamicValue operator()(
       const T& value, type_system::TypeRef expectedType) const {
-    if (!underlyingType(expectedType).isBinary()) {
+    if (!expectedType.trueType().isBinary()) {
       throwIncompatible();
     }
     auto result = DynamicValue::makeDefault(expectedType);
@@ -218,7 +211,7 @@ template <>
 struct FromDynamic<type::binary_t> {
   template <typename T>
   void operator()(T& result, const DynamicConstRef& value) const {
-    if (!underlyingType(value.type()).isBinary()) {
+    if (!value.type().trueType().isBinary()) {
       throwIncompatible();
     }
     if constexpr (std::same_as<T, std::string>) {
@@ -260,7 +253,7 @@ struct ToDynamic<type::list<Tag>> {
   template <typename T>
   DynamicValue operator()(
       const T& value, type_system::TypeRef expectedType) const {
-    const auto underlying = underlyingType(expectedType);
+    const auto underlying = expectedType.trueType();
     if (!underlying.isList()) {
       throwIncompatible();
     }
@@ -279,7 +272,7 @@ template <typename Tag>
 struct FromDynamic<type::list<Tag>> {
   template <typename T>
   void operator()(T& result, const DynamicConstRef& value) const {
-    if (!underlyingType(value.type()).isList()) {
+    if (!value.type().trueType().isList()) {
       throwIncompatible();
     }
     result.clear();
@@ -297,7 +290,7 @@ struct ToDynamic<type::set<Tag>> {
   template <typename T>
   DynamicValue operator()(
       const T& value, type_system::TypeRef expectedType) const {
-    const auto underlying = underlyingType(expectedType);
+    const auto underlying = expectedType.trueType();
     if (!underlying.isSet()) {
       throwIncompatible();
     }
@@ -315,7 +308,7 @@ template <typename Tag>
 struct FromDynamic<type::set<Tag>> {
   template <typename T>
   void operator()(T& result, const DynamicConstRef& value) const {
-    if (!underlyingType(value.type()).isSet()) {
+    if (!value.type().trueType().isSet()) {
       throwIncompatible();
     }
     result.clear();
@@ -333,7 +326,7 @@ struct ToDynamic<type::map<KeyTag, ValueTag>> {
   template <typename T>
   DynamicValue operator()(
       const T& value, type_system::TypeRef expectedType) const {
-    const auto underlying = underlyingType(expectedType);
+    const auto underlying = expectedType.trueType();
     if (!underlying.isMap()) {
       throwIncompatible();
     }
@@ -353,7 +346,7 @@ template <typename KeyTag, typename ValueTag>
 struct FromDynamic<type::map<KeyTag, ValueTag>> {
   template <typename T>
   void operator()(T& result, const DynamicConstRef& value) const {
-    if (!underlyingType(value.type()).isMap()) {
+    if (!value.type().trueType().isMap()) {
       throwIncompatible();
     }
     result.clear();
@@ -372,7 +365,7 @@ template <typename T>
 struct ToDynamicStructure {
   DynamicValue operator()(
       const T& value, type_system::TypeRef expectedType) const {
-    const auto underlying = underlyingType(expectedType);
+    const auto underlying = expectedType.trueType();
     if (!underlying.isStruct()) {
       throwIncompatible();
     }
@@ -400,7 +393,7 @@ struct ToDynamicStructure {
 template <typename T>
 struct FromDynamicStructure {
   void operator()(T& result, const DynamicConstRef& value) const {
-    const auto underlying = underlyingType(value.type());
+    const auto underlying = value.type().trueType();
     if (!underlying.isStruct()) {
       throwIncompatible();
     }
@@ -435,7 +428,7 @@ template <typename T>
 struct ToDynamic<type::union_t<T>> {
   DynamicValue operator()(
       const T& value, type_system::TypeRef expectedType) const {
-    const auto underlying = underlyingType(expectedType);
+    const auto underlying = expectedType.trueType();
     if (!underlying.isUnion()) {
       throwIncompatible();
     }
@@ -463,7 +456,7 @@ struct ToDynamic<type::union_t<T>> {
 template <typename T>
 struct FromDynamic<type::union_t<T>> {
   void operator()(T& result, const DynamicConstRef& value) const {
-    const auto underlying = underlyingType(value.type());
+    const auto underlying = value.type().trueType();
     if (!underlying.isUnion()) {
       throwIncompatible();
     }
@@ -552,14 +545,14 @@ DynamicValue toDynamicValue(const T& value, type_system::TypeRef expectedType) {
     }
     return value;
   } else if constexpr (std::same_as<Value, type::AnyStruct>) {
-    if (!detail::underlyingType(expectedType).isAny()) {
+    if (!expectedType.trueType().isAny()) {
       detail::throwIncompatible();
     }
     auto result = DynamicValue::makeDefault(expectedType);
     result.asAny() = Any(type::AnyData(value));
     return result;
   } else if constexpr (std::same_as<Value, type::AnyData>) {
-    if (!detail::underlyingType(expectedType).isAny()) {
+    if (!expectedType.trueType().isAny()) {
       detail::throwIncompatible();
     }
     auto result = DynamicValue::makeDefault(expectedType);
@@ -577,17 +570,17 @@ DynamicValue toDynamicValue(const T& value, type_system::TypeRef expectedType) {
 template <typename T>
 T fromDynamicValue(const DynamicConstRef& value) {
   if constexpr (std::same_as<T, type::AnyStruct>) {
-    if (!detail::underlyingType(value.type()).isAny()) {
+    if (!value.type().trueType().isAny()) {
       detail::throwIncompatible();
     }
     return value.asAny().toThrift();
   } else if constexpr (std::same_as<T, type::AnyData>) {
-    if (!detail::underlyingType(value.type()).isAny()) {
+    if (!value.type().trueType().isAny()) {
       detail::throwIncompatible();
     }
     return type::AnyData(value.asAny().toThrift());
   } else if constexpr (std::same_as<T, std::string>) {
-    const auto type = detail::underlyingType(value.type());
+    const auto type = value.type().trueType();
     if (type.isBinary()) {
       return detail::copyBinaryToString(value.asBinary());
     }
