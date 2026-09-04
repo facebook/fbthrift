@@ -1077,3 +1077,149 @@ TEST(SchemaValidatorTest, WithPaths_ValidBlobReturnsEmptyPaths) {
   EXPECT_TRUE(result.unknownFields.empty());
   EXPECT_TRUE(result.mismatchedFields.empty());
 }
+
+TEST(SchemaValidatorTest, WithPaths_MapValueRetainsKey) {
+  using def = TypeSystemBuilder::DefinitionHelper;
+  TypeSystemBuilder builder;
+
+  builder.addType(
+      "facebook.com/thrift/test/Item",
+      def::Struct({def::Field(
+          def::Identity(1, "quantity"), def::Optional, TypeIds::I32)}));
+  builder.addType(
+      "facebook.com/thrift/test/Container",
+      def::Struct({def::Field(
+          def::Identity(1, "items"),
+          def::Optional,
+          TypeIds::map(
+              TypeIds::String,
+              TypeIds::uri("facebook.com/thrift/test/Item")))}));
+
+  auto typeSystem = std::move(builder).build();
+  const auto typeRef = TypeRef::fromDefinition(*typeSystem->getUserDefinedType(
+      Uri("facebook.com/thrift/test/Container")));
+
+  folly::IOBufQueue queue;
+  CompactProtocolWriter writer;
+  writer.setOutput(&queue);
+  writer.writeStructBegin(nullptr);
+  writer.writeFieldBegin("items", protocol::TType::T_MAP, 1);
+  writer.writeMapBegin(protocol::TType::T_STRING, protocol::TType::T_STRUCT, 1);
+  writer.writeString("target");
+  writer.writeStructBegin(nullptr);
+  writer.writeFieldBegin("quantity", protocol::TType::T_BOOL, 1);
+  writer.writeBool(true);
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+  writer.writeMapEnd();
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+
+  const auto result =
+      validateBlobWithPaths<CompactProtocolReader>(*queue.move(), typeRef);
+
+  ASSERT_EQ(result.mismatchedFields.size(), 1);
+  EXPECT_EQ(
+      result.mismatchedFields[0].path.toString(),
+      "Container.items[\"target\"].quantity");
+}
+
+TEST(SchemaValidatorTest, WithPaths_MapValueRetainsAliasedKey) {
+  using def = TypeSystemBuilder::DefinitionHelper;
+  TypeSystemBuilder builder;
+
+  builder.addType(
+      "facebook.com/thrift/test/Key", def::OpaqueAlias(TypeIds::String));
+  builder.addType(
+      "facebook.com/thrift/test/Item",
+      def::Struct({def::Field(
+          def::Identity(1, "quantity"), def::Optional, TypeIds::I32)}));
+  builder.addType(
+      "facebook.com/thrift/test/Container",
+      def::Struct({def::Field(
+          def::Identity(1, "items"),
+          def::Optional,
+          TypeIds::map(
+              TypeIds::uri("facebook.com/thrift/test/Key"),
+              TypeIds::uri("facebook.com/thrift/test/Item")))}));
+
+  auto typeSystem = std::move(builder).build();
+  const auto typeRef = TypeRef::fromDefinition(*typeSystem->getUserDefinedType(
+      Uri("facebook.com/thrift/test/Container")));
+
+  folly::IOBufQueue queue;
+  CompactProtocolWriter writer;
+  writer.setOutput(&queue);
+  writer.writeStructBegin(nullptr);
+  writer.writeFieldBegin("items", protocol::TType::T_MAP, 1);
+  writer.writeMapBegin(protocol::TType::T_STRING, protocol::TType::T_STRUCT, 1);
+  writer.writeString("target");
+  writer.writeStructBegin(nullptr);
+  writer.writeFieldBegin("quantity", protocol::TType::T_BOOL, 1);
+  writer.writeBool(true);
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+  writer.writeMapEnd();
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+
+  const auto result =
+      validateBlobWithPaths<CompactProtocolReader>(*queue.move(), typeRef);
+
+  ASSERT_EQ(result.mismatchedFields.size(), 1);
+  EXPECT_EQ(
+      result.mismatchedFields[0].path.toString(),
+      "Container.items[\"target\"].quantity");
+}
+
+TEST(SchemaValidatorTest, WithPaths_SetElementRetainsValue) {
+  using def = TypeSystemBuilder::DefinitionHelper;
+  TypeSystemBuilder builder;
+
+  builder.addType(
+      "facebook.com/thrift/test/Item",
+      def::Struct({def::Field(
+          def::Identity(1, "name"), def::Optional, TypeIds::String)}));
+  builder.addType(
+      "facebook.com/thrift/test/Container",
+      def::Struct({def::Field(
+          def::Identity(1, "items"),
+          def::Optional,
+          TypeIds::set(TypeIds::uri("facebook.com/thrift/test/Item")))}));
+
+  auto typeSystem = std::move(builder).build();
+  const auto typeRef = TypeRef::fromDefinition(*typeSystem->getUserDefinedType(
+      Uri("facebook.com/thrift/test/Container")));
+
+  folly::IOBufQueue queue;
+  CompactProtocolWriter writer;
+  writer.setOutput(&queue);
+  writer.writeStructBegin(nullptr);
+  writer.writeFieldBegin("items", protocol::TType::T_SET, 1);
+  writer.writeSetBegin(protocol::TType::T_STRUCT, 1);
+  writer.writeStructBegin(nullptr);
+  writer.writeFieldBegin("name", protocol::TType::T_STRING, 1);
+  writer.writeString("target");
+  writer.writeFieldEnd();
+  writer.writeFieldBegin("unknown", protocol::TType::T_I32, 2);
+  writer.writeI32(42);
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+  writer.writeSetEnd();
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+
+  const auto result =
+      validateBlobWithPaths<CompactProtocolReader>(*queue.move(), typeRef);
+
+  ASSERT_EQ(result.unknownFields.size(), 1);
+  EXPECT_EQ(
+      result.unknownFields[0].parentPath.toString(),
+      "Container.items{{\"name\":\"target\"}}");
+}

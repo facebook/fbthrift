@@ -15,14 +15,25 @@
  */
 
 #include <thrift/lib/cpp2/dynamic/Path.h>
+#include <thrift/lib/cpp2/dynamic/Serialization.h>
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 
 #include <fmt/format.h>
 #include <folly/Overload.h>
+#include <folly/io/IOBufQueue.h>
 #include <folly/lang/Exception.h>
 
 namespace apache::thrift::dynamic {
 
 namespace detail {
+
+std::string toSimpleJSON(const DynamicConstRef& value) {
+  folly::IOBufQueue queue;
+  SimpleJSONProtocolWriter writer;
+  writer.setOutput(&queue);
+  serializeValue(writer, value);
+  return queue.move()->to<std::string>();
+}
 
 std::string typeDisplayName(const type_system::TypeRef& type) {
   auto uriToName = [](std::string_view uri) {
@@ -103,10 +114,18 @@ std::string Path::toString() const {
           result += fmt::format(".{}", field.identity().name());
         },
         [&](const ListElement& l) { result += fmt::format("[{}]", l.index); },
-        [&](const SetElement& s) { result += fmt::format("{{{}}}", s.value); },
-        [&](const MapKey& m) { result += fmt::format("{{{}}}", m.key); },
-        [&](const MapValue& m) { result += fmt::format("[{}]", m.key); },
-        [&](const AnyType& a) { result += fmt::format("[{}]", a.typeId); });
+        [&](const SetElement& s) {
+          result += fmt::format("{{{}}}", detail::toSimpleJSON(s.value));
+        },
+        [&](const MapKey& m) {
+          result += fmt::format("{{{}}}", detail::toSimpleJSON(m.key));
+        },
+        [&](const MapValue& m) {
+          result += fmt::format("[{}]", detail::toSimpleJSON(m.key));
+        },
+        [&](const AnyType& a) {
+          result += fmt::format("[{}]", a.type.id().name());
+        });
   }
 
   return result;
@@ -114,11 +133,12 @@ std::string Path::toString() const {
 
 // PathBuilder implementation
 
-PathBuilder::ScopeGuard::ScopeGuard(PathBuilder* builder) : builder_(builder) {}
+PathBuilder::ScopeGuard::ScopeGuard(PathBuilder* builder, bool popComponent)
+    : builder_(builder), popComponent_(popComponent) {}
 
 PathBuilder::ScopeGuard::~ScopeGuard() {
   if (builder_) {
-    builder_->pop();
+    builder_->pop(popComponent_);
   }
 }
 
@@ -201,21 +221,6 @@ PathBuilder::ScopeGuard PathBuilder::enterListElement(std::size_t index) {
   return ScopeGuard(this);
 }
 
-PathBuilder::ScopeGuard PathBuilder::enterMapValueImpl(std::string key) {
-  const auto& current = currentType();
-
-  if (!current.isMap()) {
-    folly::throw_exception<InvalidPathAccessError>(fmt::format(
-        "cannot access map value on non-map type '{}'",
-        detail::typeDisplayName(current)));
-  }
-
-  typeStack_.push_back(current.asMap().valueType());
-  path_.push(Path::MapValue{std::move(key)});
-
-  return ScopeGuard(this);
-}
-
 PathBuilder::ScopeGuard PathBuilder::enterAnyType(
     type_system::TypeRef knownType) {
   const auto& current = currentType();
@@ -227,13 +232,21 @@ PathBuilder::ScopeGuard PathBuilder::enterAnyType(
   }
 
   typeStack_.push_back(knownType);
-  path_.push(Path::AnyType{knownType.id().name()});
+  path_.push(Path::AnyType{knownType});
 
   return ScopeGuard(this);
 }
 
-void PathBuilder::pop() {
-  path_.pop();
+PathBuilder::ScopeGuard PathBuilder::enterTypeContext(
+    type_system::TypeRef type) {
+  typeStack_.push_back(type);
+  return ScopeGuard(this, false);
+}
+
+void PathBuilder::pop(bool component) {
+  if (component) {
+    path_.pop();
+  }
   typeStack_.pop_back();
 }
 

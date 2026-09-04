@@ -16,14 +16,27 @@
 
 #include <thrift/lib/cpp2/dynamic/Path.h>
 #include <thrift/lib/cpp2/dynamic/TypeSystemBuilder.h>
+#include <thrift/lib/cpp2/op/Encode.h>
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
+#include <thrift/lib/cpp2/type/Any.h>
 
 #include <gtest/gtest.h>
+#include <folly/io/IOBufQueue.h>
 
 namespace apache::thrift::dynamic {
 namespace {
 
 using def = type_system::TypeSystemBuilder::DefinitionHelper;
 using type_system::TypeIds;
+
+template <typename T>
+std::string encodeSimpleJSON(const T& value) {
+  folly::IOBufQueue queue;
+  SimpleJSONProtocolWriter writer;
+  writer.setOutput(&queue);
+  op::encode<type::infer_tag<T>>(writer, value);
+  return queue.move()->to<std::string>();
+}
 
 // Helper to create container type caches
 type_system::detail::ContainerTypeCache& containerCache() {
@@ -245,6 +258,18 @@ TEST_F(PathTest, PathFormatsSelectorTypes) {
       "MyStruct.users[\"alice\"].metadata[meta.com/thrift/test/UserProfile]");
 }
 
+TEST_F(PathTest, BuilderStructuredMapKey) {
+  auto mapType = type_system::TypeRef(makeMapType(
+      type_system::TypeSystem::Any(), type_system::TypeSystem::String()));
+  PathBuilder builder(mapType);
+  auto key = type::AnyData::toAny<type::i32_t>(42).toThrift();
+
+  auto guard = builder.enterMapKey(key);
+
+  EXPECT_EQ(
+      builder.toString(),
+      fmt::format("map<any, string>{{{}}}", encodeSimpleJSON(key)));
+}
 // Tests for PathBuilder (typed builder with validation)
 
 TEST_F(PathTest, BuilderAllAccessTypes) {
@@ -365,6 +390,17 @@ TEST_F(PathTest, BuilderNestedScopes) {
   EXPECT_EQ(builder.toString(), "Root");
 }
 
+TEST_F(PathTest, BuilderTypeContext) {
+  PathBuilder builder(getMyStructType());
+  auto users = builder.enterField("users");
+  {
+    auto value = builder.enterTypeContext(getUserProfileType());
+    auto name = builder.enterField("name");
+    EXPECT_EQ(builder.toString(), "MyStruct.users.name");
+  }
+  EXPECT_EQ(builder.toString(), "MyStruct.users");
+}
+
 TEST_F(PathTest, BuilderExportPath) {
   PathBuilder builder(getMyStructType());
 
@@ -416,6 +452,21 @@ TEST_F(PathTest, BuilderInvalidMapAccess) {
 
   // Accessing map value on non-map type should throw
   EXPECT_THROW((void)builder.enterMapValue("key"), InvalidPathAccessError);
+}
+
+TEST_F(PathTest, BuilderRejectsMismatchedDynamicSelector) {
+  auto mapType = type_system::TypeRef(makeMapType(
+      type_system::TypeSystem::I32(), type_system::TypeSystem::String()));
+  PathBuilder builder(mapType);
+
+  EXPECT_THROW(
+      (void)builder.enterMapValue(DynamicValue::makeString("42")),
+      InvalidPathAccessError);
+
+  auto stringMapType = type_system::TypeRef(makeMapType(
+      type_system::TypeSystem::String(), type_system::TypeSystem::String()));
+  PathBuilder stringBuilder(stringMapType);
+  EXPECT_THROW((void)stringBuilder.enterMapValue(42), InvalidPathAccessError);
 }
 
 TEST_F(PathTest, BuilderInvalidAnyAccess) {

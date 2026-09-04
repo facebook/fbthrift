@@ -17,6 +17,7 @@
 #pragma once
 
 #include <thrift/lib/cpp2/dynamic/Path.h>
+#include <thrift/lib/cpp2/dynamic/Serialization.h>
 #include <thrift/lib/cpp2/protocol/detail/DynamicCursorSerializer.h>
 
 #include <vector>
@@ -144,6 +145,29 @@ SchemaValidationResult validateContainer(
     const type_system::TypeRef& containerTypeRef,
     ValidationState* state = nullptr);
 
+inline protocol::TType getExpectedTType(const type_system::TypeRef& typeRef);
+
+template <typename ProtocolReader>
+std::optional<dynamic::DynamicValue> peekDynamicValue(
+    ContainerDynamicCursorReader<ProtocolReader, false>& reader,
+    const type_system::TypeRef& typeRef) {
+  if (reader.nextTType() != getExpectedTType(typeRef)) {
+    return std::nullopt;
+  }
+
+  const auto checkpoint = reader.checkpoint();
+  auto serialized = reader.readRaw();
+  reader.restoreCheckpoint(checkpoint);
+
+  try {
+    ProtocolReader protocol;
+    protocol.setInput(serialized.get());
+    return dynamic::deserializeValue(protocol, typeRef, nullptr);
+  } catch (const std::exception&) {
+    return std::nullopt;
+  }
+}
+
 /**
  * Helper to validate a primitive type and skip the value.
  */
@@ -219,7 +243,7 @@ SchemaValidationResult validateElement(
   } else if (elementTypeRef.isOpaqueAlias()) {
     // Validate against the underlying target type
     return validateElement(
-        reader, elementTypeRef.asOpaqueAlias().targetType(), actualType, state);
+        reader, elementTypeRef.trueType(), actualType, state);
   } else if (elementTypeRef.isEnum()) {
     return validatePrimitive<type::i32_t>(
         reader, actualType, elementTypeRef, state);
@@ -266,6 +290,7 @@ SchemaValidationResult validateContainer(
     ValidationState* state) {
   bool hasUnknownFields = false;
   std::size_t index = 0;
+  std::optional<dynamic::DynamicValue> mapKey;
 
   // Helper to validate an element with optional path tracking
   auto validateWithPath = [&](auto&& enterPath) -> SchemaValidationResult {
@@ -274,7 +299,7 @@ SchemaValidationResult validateContainer(
     protocol::TType actualType = reader.nextTType();
 
     if (state) {
-      auto guard = enterPath();
+      auto guard = enterPath(*elementTypeRef);
       return validateElement(reader, *elementTypeRef, actualType, state);
     }
     return validateElement(reader, *elementTypeRef, actualType, state);
@@ -285,19 +310,33 @@ SchemaValidationResult validateContainer(
 
     if (state) {
       if (containerTypeRef.isList()) {
-        result = validateWithPath(
-            [&] { return state->pathBuilder.enterListElement(index); });
+        result = validateWithPath([&](const auto&) {
+          return state->pathBuilder.enterListElement(index);
+        });
       } else if (containerTypeRef.isSet()) {
-        result = validateWithPath(
-            [&] { return state->pathBuilder.enterSetElement(index); });
+        auto element = peekDynamicValue(reader, *reader.nextTypeRef());
+        result = validateWithPath([&](const auto& elementType) {
+          if (element) {
+            return state->pathBuilder.enterSetElement(*element);
+          }
+          return state->pathBuilder.enterTypeContext(elementType);
+        });
       } else if (containerTypeRef.isMap()) {
-        // For maps, alternate between key and value
         if (index % 2 == 0) {
-          result = validateWithPath(
-              [&] { return state->pathBuilder.enterMapKey(index / 2); });
+          mapKey = peekDynamicValue(reader, *reader.nextTypeRef());
+          result = validateWithPath([&](const auto& elementType) {
+            if (mapKey) {
+              return state->pathBuilder.enterMapKey(*mapKey);
+            }
+            return state->pathBuilder.enterTypeContext(elementType);
+          });
         } else {
-          result = validateWithPath(
-              [&] { return state->pathBuilder.enterMapValue(index / 2); });
+          result = validateWithPath([&](const auto& elementType) {
+            if (mapKey) {
+              return state->pathBuilder.enterMapValue(*mapKey);
+            }
+            return state->pathBuilder.enterTypeContext(elementType);
+          });
         }
       } else {
         // Unknown container type - just validate without path
@@ -400,29 +439,30 @@ namespace detail {
  * Maps a TypeRef to its expected TType.
  */
 inline protocol::TType getExpectedTType(const type_system::TypeRef& typeRef) {
-  if (typeRef.isStructured() || typeRef.isAny()) {
+  const auto trueType = typeRef.trueType();
+  if (trueType.isStructured() || trueType.isAny()) {
     return protocol::TType::T_STRUCT;
-  } else if (typeRef.isList()) {
+  } else if (trueType.isList()) {
     return protocol::TType::T_LIST;
-  } else if (typeRef.isSet()) {
+  } else if (trueType.isSet()) {
     return protocol::TType::T_SET;
-  } else if (typeRef.isMap()) {
+  } else if (trueType.isMap()) {
     return protocol::TType::T_MAP;
-  } else if (typeRef.isBool()) {
+  } else if (trueType.isBool()) {
     return protocol::TType::T_BOOL;
-  } else if (typeRef.isByte()) {
+  } else if (trueType.isByte()) {
     return protocol::TType::T_BYTE;
-  } else if (typeRef.isI16()) {
+  } else if (trueType.isI16()) {
     return protocol::TType::T_I16;
-  } else if (typeRef.isI32() || typeRef.isEnum()) {
+  } else if (trueType.isI32() || trueType.isEnum()) {
     return protocol::TType::T_I32;
-  } else if (typeRef.isI64()) {
+  } else if (trueType.isI64()) {
     return protocol::TType::T_I64;
-  } else if (typeRef.isFloat()) {
+  } else if (trueType.isFloat()) {
     return protocol::TType::T_FLOAT;
-  } else if (typeRef.isDouble()) {
+  } else if (trueType.isDouble()) {
     return protocol::TType::T_DOUBLE;
-  } else if (typeRef.isString() || typeRef.isBinary()) {
+  } else if (trueType.isString() || trueType.isBinary()) {
     return protocol::TType::T_STRING;
   } else {
     throw std::runtime_error("Unsupported TypeRef kind in schema validation");
@@ -442,7 +482,7 @@ SchemaValidationResult validateBlobImpl(
 
   if (typeRef.isOpaqueAlias()) {
     return validateBlobImpl<ProtocolReader>(
-        serializedData, typeRef.asOpaqueAlias().targetType(), state);
+        serializedData, typeRef.trueType(), state);
   }
 
   protocol::TType expectedTType = getExpectedTType(typeRef);
@@ -504,7 +544,7 @@ SchemaValidationResultWithPaths validateBlobWithPaths(
 
   if (typeRef.isOpaqueAlias()) {
     return validateBlobWithPaths<ProtocolReader>(
-        serializedData, typeRef.asOpaqueAlias().targetType());
+        serializedData, typeRef.trueType());
   }
 
   if (typeRef.isStructured()) {

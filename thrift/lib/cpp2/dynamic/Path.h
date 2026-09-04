@@ -16,12 +16,10 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/dynamic/TypeSystem.h>
-#include <thrift/lib/cpp2/op/Encode.h>
-#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
+#include <thrift/lib/cpp2/dynamic/DynamicValue.h>
+#include <thrift/lib/cpp2/dynamic/ValueConversion.h>
 
 #include <fmt/core.h>
-#include <folly/io/IOBufQueue.h>
 #include <folly/lang/Exception.h>
 
 #include <deque>
@@ -34,25 +32,6 @@
 namespace apache::thrift::dynamic {
 
 namespace detail {
-
-/**
- * Serialize a value to a SimpleJSON string.
- */
-template <typename T>
-std::string toSimpleJSON(const T& value) {
-  folly::IOBufQueue queue;
-  SimpleJSONProtocolWriter writer;
-  writer.setOutput(&queue);
-
-  if constexpr (std::convertible_to<T, std::string_view>) {
-    op::encode<type::string_t>(writer, std::string_view(value));
-  } else {
-    op::encode<type::infer_tag<T>>(writer, value);
-  }
-
-  return queue.move()->to<std::string>();
-}
-
 /**
  * Get a display name for a TypeRef.
  */
@@ -109,23 +88,19 @@ class Path {
   };
 
   struct SetElement {
-    // Serialized value - may replace with DynamicValue so shouldn't expose.
-    std::string value;
+    DynamicValue value;
   };
 
   struct MapKey {
-    // Serialized key - may replace with DynamicValue so shouldn't expose.
-    std::string key;
+    DynamicValue key;
   };
 
   struct MapValue {
-    // Serialized key - may replace with DynamicValue so shouldn't expose.
-    std::string key;
+    DynamicValue key;
   };
 
   struct AnyType {
-    // URI/typeId - may replace with TypeRef so shouldn't expose.
-    std::string typeId;
+    type_system::TypeRef type;
   };
 
   using Component = std::
@@ -186,9 +161,10 @@ class PathBuilder {
 
    private:
     friend class PathBuilder;
-    explicit ScopeGuard(PathBuilder* builder);
+    explicit ScopeGuard(PathBuilder* builder, bool popComponent = true);
 
     PathBuilder* builder_;
+    bool popComponent_;
   };
 
   /**
@@ -229,8 +205,10 @@ class PathBuilder {
           "cannot access set element on non-set type '{}'",
           detail::typeDisplayName(current)));
     }
-    typeStack_.push_back(current.asSet().elementType());
-    path_.push(Path::SetElement{detail::toSimpleJSON(value)});
+    const auto elementType = current.asSet().elementType();
+    auto encoded = makeSelector(value, elementType);
+    typeStack_.push_back(elementType);
+    path_.push(Path::SetElement{std::move(encoded)});
     return ScopeGuard(this);
   }
 
@@ -248,8 +226,10 @@ class PathBuilder {
           "cannot access map key on non-map type '{}'",
           detail::typeDisplayName(current)));
     }
-    typeStack_.push_back(current.asMap().keyType());
-    path_.push(Path::MapKey{detail::toSimpleJSON(key)});
+    const auto keyType = current.asMap().keyType();
+    auto encoded = makeSelector(key, keyType);
+    typeStack_.push_back(keyType);
+    path_.push(Path::MapKey{std::move(encoded)});
     return ScopeGuard(this);
   }
 
@@ -261,7 +241,16 @@ class PathBuilder {
    */
   template <typename T>
   [[nodiscard]] ScopeGuard enterMapValue(const T& key) {
-    return enterMapValueImpl(detail::toSimpleJSON(key));
+    const auto& current = currentType();
+    if (!current.isMap()) {
+      folly::throw_exception<InvalidPathAccessError>(fmt::format(
+          "cannot access map value on non-map type '{}'",
+          detail::typeDisplayName(current)));
+    }
+    auto encoded = makeSelector(key, current.asMap().keyType());
+    typeStack_.push_back(current.asMap().valueType());
+    path_.push(Path::MapValue{std::move(encoded)});
+    return ScopeGuard(this);
   }
 
   /**
@@ -271,6 +260,9 @@ class PathBuilder {
    * Throws InvalidPathAccessError if the current type is not an any type.
    */
   [[nodiscard]] ScopeGuard enterAnyType(type_system::TypeRef knownType);
+
+  /** Advance the type context without adding a path component. */
+  [[nodiscard]] ScopeGuard enterTypeContext(type_system::TypeRef type);
 
   /**
    * Returns the current path as a string.
@@ -289,8 +281,17 @@ class PathBuilder {
   const type_system::TypeRef& currentType() const { return typeStack_.back(); }
 
  private:
-  [[nodiscard]] ScopeGuard enterMapValueImpl(std::string key);
-  void pop();
+  template <typename T>
+  static DynamicValue makeSelector(
+      const T& value, type_system::TypeRef expectedType) {
+    try {
+      return toDynamicValue(value, expectedType);
+    } catch (const std::exception& error) {
+      folly::throw_exception<InvalidPathAccessError>(error.what());
+    }
+  }
+
+  void pop(bool component);
 
   template <typename Handle>
   [[nodiscard]] ScopeGuard enterFieldImpl(Handle handle);

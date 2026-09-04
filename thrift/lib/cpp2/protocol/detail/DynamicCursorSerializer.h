@@ -474,10 +474,11 @@ class ContainerDynamicCursorReader : detail::BaseCursorReader<ProtocolReader> {
   struct Checkpoint {
     size_t offset;
     uint32_t remaining;
+    bool partialRead;
   };
   Checkpoint checkpoint() {
     checkState(State::Active);
-    return {protocol_->getCursorPosition(), remaining_};
+    return {protocol_->getCursorPosition(), remaining_, partialRead_};
   }
   void restoreCheckpoint(Checkpoint c) {
     checkState(State::Active);
@@ -486,6 +487,7 @@ class ContainerDynamicCursorReader : detail::BaseCursorReader<ProtocolReader> {
     auto& cursor = const_cast<folly::io::Cursor&>(protocol_->getCursor());
     cursor.retreat(cursor.getCurrentPosition() - c.offset);
     remaining_ = c.remaining;
+    partialRead_ = c.partialRead;
   }
 
  private:

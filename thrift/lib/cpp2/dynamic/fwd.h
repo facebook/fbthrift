@@ -99,6 +99,8 @@ class Union;
 class DynamicValue;
 class DynamicConstRef;
 class DynamicRef;
+class Path;
+class PathBuilder;
 
 // Forward declarations for functions defined in Serialization.h
 template <typename ProtocolReader>

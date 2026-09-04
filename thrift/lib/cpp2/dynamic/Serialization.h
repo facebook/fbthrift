@@ -535,7 +535,7 @@ DynamicValue deserializeValue(
     type_system::TypeRef type,
     std::pmr::memory_resource* mr,
     Callbacks& callbacks) {
-  return DynamicValue(type, type.visit([&](auto&& t) {
+  return DynamicValue(type, type.trueType().visit([&](auto&& t) {
     return detail::Datum::make(deserialize(prot, t, mr, callbacks));
   }));
 }

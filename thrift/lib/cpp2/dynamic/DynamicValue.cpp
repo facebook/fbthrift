@@ -25,7 +25,6 @@
 #include <thrift/lib/cpp2/dynamic/Union.h>
 #include <thrift/lib/cpp2/dynamic/detail/DatumHash.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
-#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 
 #include <fmt/core.h>
 #include <folly/Overload.h>
@@ -715,75 +714,15 @@ std::ostream& operator<<(std::ostream& os, const DynamicValue& value) {
   return os << value.debugString();
 }
 
-// ============================================================================
-// traverse implementation
-// ============================================================================
-
 namespace {
 
-/**
- * Deserialize a primitive key from its SimpleJSON representation.
- * Only supports primitive types that can be used as map/set keys.
- */
-DynamicValue deserializePrimitiveKeyFromSimpleJSON(
-    std::string_view json, type_system::TypeRef keyType) {
-  auto buf = folly::IOBuf::copyBuffer(json);
-  SimpleJSONProtocolReader reader;
-  reader.setInput(buf.get());
-
-  using Kind = type_system::TypeRef::Kind;
-  switch (keyType.kind()) {
-    case Kind::BOOL: {
-      bool val;
-      reader.readBool(val);
-      return DynamicValue::makeBool(val);
-    }
-    case Kind::BYTE: {
-      int8_t val;
-      reader.readByte(val);
-      return DynamicValue::makeByte(val);
-    }
-    case Kind::I16: {
-      int16_t val;
-      reader.readI16(val);
-      return DynamicValue::makeI16(val);
-    }
-    case Kind::I32:
-    case Kind::ENUM: {
-      int32_t val;
-      reader.readI32(val);
-      return DynamicValue::makeI32(val);
-    }
-    case Kind::I64: {
-      int64_t val;
-      reader.readI64(val);
-      return DynamicValue::makeI64(val);
-    }
-    case Kind::FLOAT: {
-      float val;
-      reader.readFloat(val);
-      return DynamicValue::makeFloat(val);
-    }
-    case Kind::DOUBLE: {
-      double val;
-      reader.readDouble(val);
-      return DynamicValue::makeDouble(val);
-    }
-    case Kind::STRING: {
-      std::string val;
-      reader.readString(val);
-      return DynamicValue::makeString(val);
-    }
-    case Kind::BINARY: {
-      std::unique_ptr<folly::IOBuf> val;
-      reader.readBinary(val);
-      return DynamicValue::makeBinary(std::move(val));
-    }
-    default:
-      throw std::runtime_error(
-          fmt::format(
-              "Unsupported key type for path traversal: {}",
-              detail::typeDisplayName(keyType)));
+void validateSelectorType(
+    const DynamicConstRef& selector, const type_system::TypeRef& expectedType) {
+  if (!selector.type().isEqualIdentityTo(expectedType)) {
+    folly::throw_exception<InvalidPathAccessError>(fmt::format(
+        "selector type '{}' does not match container type '{}'",
+        detail::typeDisplayName(selector.type()),
+        detail::typeDisplayName(expectedType)));
   }
 }
 
@@ -834,15 +773,14 @@ std::optional<RefType> DynamicConstRef::traverseImpl(
                 detail::typeDisplayName(currentType)));
           }
           if constexpr (std::is_same_v<RefType, DynamicRef>) {
-            (void)s; // Suppress unused parameter warning
-            // Sets don't support mutable access to elements
+            (void)s;
+            // Sets don't support mutable access to elements.
             folly::throw_exception<InvalidPathAccessError>(
                 "cannot get mutable reference to set element");
           } else {
             const auto& setVal = current->asSet();
-            auto keyValue = deserializePrimitiveKeyFromSimpleJSON(
-                s.value, setVal.elementType());
-            return setVal.find(keyValue);
+            validateSelectorType(s.value, setVal.elementType());
+            return setVal.find(s.value);
           }
         },
         [&](const Path::MapKey& m) -> std::optional<RefType> {
@@ -853,15 +791,14 @@ std::optional<RefType> DynamicConstRef::traverseImpl(
                 detail::typeDisplayName(currentType)));
           }
           if constexpr (std::is_same_v<RefType, DynamicRef>) {
-            (void)m; // Suppress unused parameter warning
-            // Map keys are immutable
+            (void)m;
+            // Map keys are immutable.
             folly::throw_exception<InvalidPathAccessError>(
                 "cannot get mutable reference to map key");
           } else {
             const auto& mapVal = current->asMap();
-            auto keyValue =
-                deserializePrimitiveKeyFromSimpleJSON(m.key, mapVal.keyType());
-            return mapVal.findKey(keyValue);
+            validateSelectorType(m.key, mapVal.keyType());
+            return mapVal.findKey(m.key);
           }
         },
         [&](const Path::MapValue& m) -> std::optional<RefType> {
@@ -872,9 +809,8 @@ std::optional<RefType> DynamicConstRef::traverseImpl(
                 detail::typeDisplayName(currentType)));
           }
           auto& mapVal = current->asMap();
-          auto keyValue =
-              deserializePrimitiveKeyFromSimpleJSON(m.key, mapVal.keyType());
-          return mapVal.get(keyValue);
+          validateSelectorType(m.key, mapVal.keyType());
+          return mapVal.get(m.key);
         },
         [&](const Path::AnyType&) -> std::optional<RefType> {
           folly::throw_exception<std::runtime_error>(

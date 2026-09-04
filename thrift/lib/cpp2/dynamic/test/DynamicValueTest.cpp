@@ -20,6 +20,7 @@
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp2/dynamic/Any.h>
 #include <thrift/lib/cpp2/dynamic/List.h>
 #include <thrift/lib/cpp2/dynamic/Map.h>
 #include <thrift/lib/cpp2/dynamic/Path.h>
@@ -538,6 +539,8 @@ struct TraverseTest : ::testing::Test {
   static constexpr auto kInnerUri = "facebook.com/thrift/test/Inner";
   static constexpr auto kOuterUri = "facebook.com/thrift/test/Outer";
   static constexpr auto kTestUnionUri = "facebook.com/thrift/test/TestUnion";
+  static constexpr auto kTestEnumUri = "facebook.com/thrift/test/TestEnum";
+  static constexpr auto kTestAliasUri = "facebook.com/thrift/test/TestAlias";
 
   TraverseTest() {
     type_system::TypeSystemBuilder builder;
@@ -550,12 +553,19 @@ struct TraverseTest : ::testing::Test {
                 def::Identity(1, "value"), def::AlwaysPresent, TypeIds::I32),
         }));
 
+    builder.addType(kTestEnumUri, def::Enum({{"ONE", 1}}));
+    builder.addType(kTestAliasUri, def::OpaqueAlias(TypeIds::I64));
+
     // struct Outer {
     //   1: Inner inner
     //   2: optional Inner optionalInner
     //   3: list<i32> numbers
     //   4: map<string, i32> scores
     //   5: set<string> tags
+    //   6: map<binary, i32> binaryScores
+    //   7: map<i64, i32> wideScores
+    //   8: map<TestEnum, i32> enumScores
+    //   9: map<TestAlias, i32> aliasScores
     // }
     builder.addType(
         kOuterUri,
@@ -580,6 +590,22 @@ struct TraverseTest : ::testing::Test {
                 def::Identity(5, "tags"),
                 def::AlwaysPresent,
                 TypeIds::set(TypeIds::String)),
+            def::Field(
+                def::Identity(6, "binaryScores"),
+                def::AlwaysPresent,
+                TypeIds::map(TypeIds::Binary, TypeIds::I32)),
+            def::Field(
+                def::Identity(7, "wideScores"),
+                def::AlwaysPresent,
+                TypeIds::map(TypeIds::I64, TypeIds::I32)),
+            def::Field(
+                def::Identity(8, "enumScores"),
+                def::AlwaysPresent,
+                TypeIds::map(TypeIds::uri(kTestEnumUri), TypeIds::I32)),
+            def::Field(
+                def::Identity(9, "aliasScores"),
+                def::AlwaysPresent,
+                TypeIds::map(TypeIds::uri(kTestAliasUri), TypeIds::I32)),
         }));
 
     // union TestUnion { 1: i32 intValue; 2: string strValue }
@@ -601,6 +627,15 @@ struct TraverseTest : ::testing::Test {
 
   const type_system::UnionNode& unionNode() {
     return typeSystem->getUserDefinedTypeOrThrow(kTestUnionUri).asUnion();
+  }
+
+  const type_system::EnumNode& enumNode() {
+    return typeSystem->getUserDefinedTypeOrThrow(kTestEnumUri).asEnum();
+  }
+
+  type_system::TypeRef aliasType() {
+    return type_system::TypeRef(
+        typeSystem->getUserDefinedTypeOrThrow(kTestAliasUri).asOpaqueAlias());
   }
 };
 
@@ -702,6 +737,71 @@ TEST_F(TraverseTest, TraverseMap) {
   auto mg1 = missingPathBuilder.enterField("scores");
   auto mg2 = missingPathBuilder.enterMapValue("missing");
   EXPECT_FALSE(outer.traverse(missingPathBuilder.path()).has_value());
+}
+
+TEST_F(TraverseTest, TraverseMapWithDeclaredKeyType) {
+  auto outer = DynamicValue::makeDefault(outerNode().asRef());
+  outer.asStruct()
+      .getField("binaryScores")
+      ->asMap()
+      .insert(
+          DynamicValue::makeBinary(folly::IOBuf::copyBuffer("alice")),
+          DynamicValue::makeI32(100));
+  outer.asStruct()
+      .getField("wideScores")
+      ->asMap()
+      .insert(DynamicValue::makeI64(42), DynamicValue::makeI32(200));
+  outer.asStruct()
+      .getField("enumScores")
+      ->asMap()
+      .insert(
+          DynamicValue::makeEnum(enumNode(), 1), DynamicValue::makeI32(300));
+  outer.asStruct()
+      .getField("aliasScores")
+      ->asMap()
+      .insert(
+          toDynamicValue(int64_t{42}, aliasType()), DynamicValue::makeI32(400));
+  auto traverse = [&](std::string_view field, const auto& key) {
+    PathBuilder builder{outerNode().asRef()};
+    auto fieldGuard = builder.enterField(field);
+    auto valueGuard = builder.enterMapValue(key);
+    return DynamicConstRef(outer).traverse(builder.path());
+  };
+  const auto enumKey = DynamicValue::makeEnum(enumNode(), 1);
+
+  const auto binaryResult = traverse("binaryScores", "alice");
+  ASSERT_TRUE(binaryResult.has_value());
+  EXPECT_EQ(binaryResult->asI32(), 100);
+  const auto wideResult = traverse("wideScores", int64_t{42});
+  ASSERT_TRUE(wideResult.has_value());
+  EXPECT_EQ(wideResult->asI32(), 200);
+  const auto enumResult = traverse("enumScores", enumKey);
+  ASSERT_TRUE(enumResult.has_value());
+  EXPECT_EQ(enumResult->asI32(), 300);
+  const auto aliasResult = traverse("aliasScores", int64_t{42});
+  ASSERT_TRUE(aliasResult.has_value());
+  EXPECT_EQ(aliasResult->asI32(), 400);
+}
+
+TEST_F(TraverseTest, RejectsSelectorForDifferentContainerType) {
+  static type_system::detail::ContainerTypeCache cache;
+  const auto pathType = type_system::TypeRef(
+      type_system::TypeRef::Map::of(
+          type_system::TypeSystem::I64(),
+          type_system::TypeSystem::I32(),
+          cache));
+  PathBuilder builder(pathType);
+  auto value = builder.enterMapValue(int64_t{42});
+  const auto runtimeType = type_system::TypeRef(
+      type_system::TypeRef::Map::of(
+          type_system::TypeSystem::I32(),
+          type_system::TypeSystem::I32(),
+          cache));
+  const auto runtimeValue = DynamicValue::makeDefault(runtimeType);
+
+  EXPECT_THROW(
+      (void)DynamicConstRef(runtimeValue).traverse(builder.path()),
+      InvalidPathAccessError);
 }
 
 TEST_F(TraverseTest, TraverseSet) {

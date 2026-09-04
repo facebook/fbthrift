@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/dynamic/Path.h>
 #include <thrift/lib/cpp2/dynamic/TypeSystem.h>
 #include <thrift/lib/cpp2/dynamic/detail/Datum.h>
 #include <thrift/lib/cpp2/dynamic/fwd.h>
+#include <thrift/lib/cpp2/type/Any.h>
 
 #include <iosfwd>
 #include <optional>
