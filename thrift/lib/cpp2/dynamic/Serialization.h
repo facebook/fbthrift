@@ -46,7 +46,7 @@ struct ThrowingValidationCallbacks {
       std::string_view,
       protocol::TType) {}
 
-  void onTypeMismatch(
+  [[noreturn]] void onTypeMismatch(
       std::string_view context,
       protocol::TType expected,
       protocol::TType actual) {
@@ -55,7 +55,8 @@ struct ThrowingValidationCallbacks {
             "type mismatch in {}: {} vs {}", context, expected, actual));
   }
 
-  void onMultipleUnionFields(const type_system::UnionNode&, uint32_t) {
+  [[noreturn]] void onMultipleUnionFields(
+      const type_system::UnionNode&, uint32_t) {
     throw std::runtime_error(
         "Union cannot have more than one field during deserialization");
   }
@@ -144,7 +145,7 @@ void serialize(ProtocolWriter&, const Union&);
 
 // Null
 template <typename ProtocolWriter>
-void serialize(ProtocolWriter&, Null) {
+[[noreturn]] void serialize(ProtocolWriter&, Null) {
   throw std::logic_error("Serializing Null is not possible.");
 }
 
