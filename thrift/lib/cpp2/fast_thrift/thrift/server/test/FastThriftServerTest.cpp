@@ -55,6 +55,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/FastThriftServerAsyncClient.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersClientExtension.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersContext.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 THRIFT_FLAG_DECLARE_bool(rocket_client_binary_rpc_metadata_encoding);
 
@@ -324,7 +325,7 @@ class FastThriftServerTest : public ::testing::Test {
   }
 
   std::unique_ptr<apache::thrift::Client<integration::FastThriftServer>>
-  createClient() {
+  createClient(bool enableCompression = false) {
     auto* evb = clientThread_->getEventBase();
     std::unique_ptr<apache::thrift::Client<integration::FastThriftServer>>
         client;
@@ -332,6 +333,11 @@ class FastThriftServerTest : public ::testing::Test {
       auto socket = folly::AsyncSocket::newSocket(evb, server_->getAddress());
       auto channel =
           apache::thrift::RocketClientChannel::newChannel(std::move(socket));
+      if (enableCompression) {
+        apache::thrift::CompressionConfig compressionConfig;
+        compressionConfig.codecConfig().ensure().set_zlibConfig();
+        channel->setDesiredCompressionConfig(std::move(compressionConfig));
+      }
       client = std::make_unique<
           apache::thrift::Client<integration::FastThriftServer>>(
           std::move(channel));
@@ -496,6 +502,16 @@ TEST_F(FastThriftServerChecksumTest, XXH3ChecksumRequestRoundTrips) {
   auto resp =
       syncCall([&] { return client->semifuture_echo(options, "checksummed"); });
   EXPECT_EQ(*resp.message(), "echoed:checksummed");
+  destroyClientOnEvb(client);
+}
+
+TEST_F(FastThriftServerChecksumTest, CompressionAndXXH3ChecksumRoundTrip) {
+  auto client = createClient(/*enableCompression=*/true);
+  apache::thrift::RpcOptions options;
+  options.setChecksum(apache::thrift::RpcOptions::Checksum::XXH3_64);
+  auto resp = syncCall(
+      [&] { return client->semifuture_echo(options, "compressed-checksum"); });
+  EXPECT_EQ(*resp.message(), "echoed:compressed-checksum");
   destroyClientOnEvb(client);
 }
 

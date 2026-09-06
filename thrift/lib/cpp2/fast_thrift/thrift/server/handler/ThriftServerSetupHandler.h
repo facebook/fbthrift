@@ -119,10 +119,6 @@ class ThriftServerSetupHandler {
     // here waits on them.
     auto response = std::make_unique<apache::thrift::SetupResponse>();
     response->version() = *negotiatedVersion;
-    // fast_thrift has no compression codec yet, so advertising support would
-    // be untruthful. Flip once per-request compression lands.
-    response->zstdSupported() = false;
-    response->lz4Supported() = false;
 
     const auto writeResult = ctx.fireWrite(
         channel_pipeline::erase_and_box(

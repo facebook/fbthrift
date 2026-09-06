@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -33,10 +34,9 @@ namespace apache::thrift::fast_thrift::thrift {
 
 // Per-request context. Lives for the duration of one in-flight RPC.
 //
-// Default-constructed empty. Pipeline handlers populate individual fields as
-// the request traverses the chain: RequestContextHandler creates the object,
-// then ConnectionContextHandler stamps in the per-connection context, and so
-// on as additional handlers come online (metadata, headers, etc.).
+// Default-constructed empty. The first pipeline handler that needs request
+// state creates the object; subsequent handlers populate their fields as the
+// request traverses the chain.
 class ThriftRequestContext {
  public:
   // Same type as RequestRpcMetadata.otherMetadata, so headers move in with no
@@ -133,6 +133,16 @@ class ThriftRequestContext {
     return checksumAlgorithm_;
   }
 
+  void setResponseCompressionConfig(
+      apache::thrift::CompressionConfig config) noexcept {
+    responseCompressionConfig_ = std::move(config);
+  }
+
+  const apache::thrift::CompressionConfig* getResponseCompressionConfig()
+      const noexcept {
+    return responseCompressionConfig_ ? &*responseCompressionConfig_ : nullptr;
+  }
+
   // Builds this request's extension storage from the server's request-scope
   // layout, which must outlive the request. Called once, by whoever creates
   // the context, before any handler sees it.
@@ -165,6 +175,7 @@ class ThriftRequestContext {
   apache::thrift::ChecksumAlgorithm checksumAlgorithm_{
       apache::thrift::ChecksumAlgorithm::NONE};
   ExtensionSlots extensionSlots_;
+  std::optional<apache::thrift::CompressionConfig> responseCompressionConfig_;
 };
 
 } // namespace apache::thrift::fast_thrift::thrift

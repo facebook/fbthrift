@@ -46,6 +46,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServer.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/FastThriftServer.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/FastThriftServerAsyncClient.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 THRIFT_FLAG_DECLARE_bool(rocket_client_binary_rpc_metadata_encoding);
 
@@ -189,13 +190,19 @@ class FastThriftServerMonitoringE2ETest
   // physical connection model — distinct typed clients land at the same
   // server port, and the composite picks per-method.
   template <typename Service>
-  std::unique_ptr<apache::thrift::Client<Service>> createClient() {
+  std::unique_ptr<apache::thrift::Client<Service>> createClient(
+      bool enableCompression = false) {
     auto* evb = clientThread_->getEventBase();
     std::unique_ptr<apache::thrift::Client<Service>> client;
     evb->runInEventBaseThreadAndWait([&] {
       auto socket = folly::AsyncSocket::newSocket(evb, server_->getAddress());
       auto channel =
           apache::thrift::RocketClientChannel::newChannel(std::move(socket));
+      if (enableCompression) {
+        apache::thrift::CompressionConfig compressionConfig;
+        compressionConfig.codecConfig().ensure().set_zlibConfig();
+        channel->setDesiredCompressionConfig(std::move(compressionConfig));
+      }
       client =
           std::make_unique<apache::thrift::Client<Service>>(std::move(channel));
     });
@@ -235,6 +242,28 @@ TEST_P(FastThriftServerMonitoringE2ETest, RoutesUserAndMonitoringMethods) {
 
   destroyClientOnEvb(userClient);
   destroyClientOnEvb(monClient);
+}
+TEST_P(
+    FastThriftServerMonitoringE2ETest,
+    CompressedEmptyArgsReachGeneratedAdapter) {
+  auto client = createClient<integration::FastThriftServer>(
+      /*enableCompression=*/true);
+
+  client->semifuture_ping().get();
+
+  EXPECT_EQ(userHandler_->pingCount.load(), 1);
+  destroyClientOnEvb(client);
+}
+
+TEST_P(FastThriftServerMonitoringE2ETest, CompressedResponseRoundTrips) {
+  auto client = createClient<integration::FastThriftServer>(
+      /*enableCompression=*/true);
+  const std::string message = "compressed response payload";
+
+  const auto response = client->semifuture_echo(message).get();
+
+  EXPECT_EQ(*response.message(), "user:" + message);
+  destroyClientOnEvb(client);
 }
 
 // Both handlers must end up with the negotiated metadata protocol pushed
