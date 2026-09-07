@@ -92,6 +92,19 @@ class FastThriftServer {
   void setInterface(std::shared_ptr<ThriftServerAppAdapterFactory> handler);
 
   /**
+   * Returns the application interface factory registered by setInterface(),
+   * or nullptr if no interface has been registered.
+   *
+   * This is the fast_thrift counterpart of ThriftServer::getProcessorFactory:
+   * integrations can inspect the generated service metadata and schema before
+   * start() without including server-provided auxiliary interfaces.
+   */
+  const std::shared_ptr<ThriftServerAppAdapterFactory>& getAppAdapterFactory()
+      const noexcept {
+    return handler_;
+  }
+
+  /**
    * Attach an additional monitoring/debug handler. Methods on the monitoring
    * handler are dispatched on the same connection as the user handler;
    * routing is by method name with the user handler winning on conflict

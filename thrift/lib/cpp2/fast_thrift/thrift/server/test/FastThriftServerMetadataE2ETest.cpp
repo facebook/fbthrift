@@ -103,7 +103,7 @@ namespace ftt = ::apache::thrift::fast_thrift::thrift;
 
 class FastThriftServerMetadataE2ETest : public ::testing::Test {
  protected:
-  void StartServer(bool enableMetadataService) {
+  void ConfigureServer(bool enableMetadataService) {
     THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
     handler_ = std::make_shared<UserHandler>();
 
@@ -114,6 +114,10 @@ class FastThriftServerMetadataE2ETest : public ::testing::Test {
 
     server_ = std::make_unique<ftt::FastThriftServer>(std::move(config));
     server_->setInterface(handler_);
+  }
+
+  void StartServer(bool enableMetadataService) {
+    ConfigureServer(enableMetadataService);
     server_->start();
 
     clientThread_ = std::make_unique<folly::ScopedEventBaseThread>();
@@ -151,6 +155,26 @@ class FastThriftServerMetadataE2ETest : public ::testing::Test {
   std::unique_ptr<ftt::FastThriftServer> server_;
   std::unique_ptr<folly::ScopedEventBaseThread> clientThread_;
 };
+
+TEST_F(
+    FastThriftServerMetadataE2ETest,
+    ApplicationFactoryExposesMetadataAndSchemaBeforeStart) {
+  ConfigureServer(/*enableMetadataService=*/false);
+
+  const auto& factory = server_->getAppAdapterFactory();
+  ASSERT_NE(factory, nullptr);
+
+  apache::thrift::metadata::ThriftServiceMetadataResponse actual;
+  factory->getServiceMetadata(actual);
+
+  apache::thrift::metadata::ThriftServiceMetadataResponse expected;
+  apache::thrift::detail::md::ServiceMetadata<apache::thrift::ServiceHandler<
+      integration::FastThriftServer>>::gen(expected);
+
+  EXPECT_EQ(actual, expected);
+  EXPECT_FALSE(factory->getServiceSchemaNodes().empty());
+  EXPECT_EQ(server_->getMetadataResponse(), nullptr);
+}
 
 // With enableMetadataService=true the metadata RPC must succeed AND return
 // the same payload that detail::md::ServiceMetadata<ServiceHandler<S>>::gen
