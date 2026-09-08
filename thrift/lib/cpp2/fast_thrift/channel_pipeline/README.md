@@ -509,7 +509,7 @@ The pipeline endpoints use specialized handler concepts with fixed data flow dir
 
 | Concept | Method | Direction | Purpose |
 |---------|--------|-----------|---------|
-| `HeadEndpointHandler` | `onWrite()` | Outbound | Transport-side endpoint, sends data to network |
+| `HeadEndpointHandler` | `onWrite()`, optional `onWriteReady(ctx)` | Outbound | Transport-side endpoint |
 | `TailEndpointHandler` | `onRead()` | Inbound | Application-side endpoint, receives data from pipeline |
 
 **Pipeline Structure:**
@@ -886,11 +886,11 @@ class WriteBufferingHandler {
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 
-1. Handler calls ctx.awaitWriteReady()
-2. Hook is linked into write_ready_list (O(1) intrusive list insert)
-3. Transport signals pipeline.onWriteReady()
-4. Pipeline walks list, calls onWriteReady() for each registered handler
-5. Handler calls ctx.cancelAwaitWriteReady() when done (O(1) unlink)
+1. Producer registers with `ctx.awaitWriteReady()`
+2. Transport signals `pipeline.onWriteReady()`
+3. The head endpoint consumes the readiness edge before upstream handlers
+4. If the head re-arms its hook, propagation stops for that pass
+5. Each notified producer unregisters with `ctx.cancelAwaitWriteReady()` when done
 ```
 
 ### Performance Characteristics
