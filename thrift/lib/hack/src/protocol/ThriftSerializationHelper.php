@@ -109,15 +109,14 @@ abstract final class ThriftSerializationHelper {
 
       if ($has_type_wrapper && $field_name is nonnull) {
         $setter_method = "set_".$field_name."_DO_NOT_USE_THRIFT_INTERNAL";
-        /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-        $object->$setter_method($tmp);
+        HH\FIXME\UNSAFE_CAST<mixed, dynamic>($object)->$setter_method($tmp);
       } else if ($is_field_wrapped && $field_name is nonnull) {
         $getter_method = "get_".$field_name;
-        /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-        HH\FIXME\UNSAFE_CAST<mixed,HH_FIXME\UNKNOWN_TYPE_FOR_CAST>($object->$getter_method())->setValue_DO_NOT_USE_THRIFT_INTERNAL($tmp);
+        HH\FIXME\UNSAFE_CAST<mixed, HH_FIXME\UNKNOWN_TYPE_FOR_CAST>(
+          HH\FIXME\UNSAFE_CAST<mixed, dynamic>($object)->$getter_method(),
+        )->setValue_DO_NOT_USE_THRIFT_INTERNAL($tmp);
       } else {
-        /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-        $object->$field_name = $tmp;
+        HH\FIXME\UNSAFE_CAST<mixed, dynamic>($object)->$field_name = $tmp;
       }
       $xfer += $protocol->readFieldEnd();
     }
@@ -527,8 +526,7 @@ abstract final class ThriftSerializationHelper {
     if (($is_wrapped || $is_union_arm) && !Str\is_empty($field_name)) {
       $getter_method = 'get_'.$field_name;
       // @lint-ignore DYNAMICALLY_INVOKING_TARGETS_CONSIDERED_HARMFUL
-      /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-      $field_value = $struct->$getter_method();
+      $field_value = HH\FIXME\UNSAFE_CAST<mixed, dynamic>($struct)->$getter_method();
       if ($is_union_arm) {
         return $field_value;
       }
@@ -538,8 +536,7 @@ abstract final class ThriftSerializationHelper {
       return null;
     }
 
-    /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-    return $struct->$field_name;
+    return HH\FIXME\UNSAFE_CAST<mixed, dynamic>($struct)->$field_name;
   }
 
   private static function unwrapWrapperValue<T>(

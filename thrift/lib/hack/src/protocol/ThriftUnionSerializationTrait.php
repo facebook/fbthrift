@@ -111,11 +111,12 @@ trait ThriftUnionSerializationTrait implements IThriftStruct {
           Shapes::idx($tspec[$field_id], 'is_wrapped') ?? false;
         if ($has_type_wrapper || $is_field_wrapped) {
           $setter_method = "set_".$field_name;
-          /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-          $this->$setter_method($field_name_tmp);
+          HH\FIXME\UNSAFE_CAST<mixed, dynamic>($this)->$setter_method(
+            $field_name_tmp,
+          );
         } else {
-          /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-          $this->$field_name = $field_name_tmp;
+          HH\FIXME\UNSAFE_CAST<mixed, dynamic>($this)->$field_name =
+            $field_name_tmp;
           // every thrift union has a _type field
           $this_as_dynamic = HH_FIXME::dynamicCastForMissingMember($this);
           $this_as_dynamic->_type = HH\classname_to_class($union_enum_name)
@@ -198,8 +199,7 @@ trait ThriftUnionSerializationTrait implements IThriftStruct {
     foreach ($this::SPEC as $field_id => $field) {
       $field_name = $field['var'];
 
-      /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-      $field_value = $this->$field_name;
+      $field_value = HH\FIXME\UNSAFE_CAST<mixed, dynamic>($this)->$field_name;
 
       if ($field_value is IThriftWrapper<_>) {
         $field_value = HH\FIXME\UNSAFE_CAST<
@@ -324,8 +324,7 @@ trait ThriftUnionSerializationTrait implements IThriftStruct {
     $set_field_ids = keyset[];
     foreach ($this::SPEC as $field_id => $field) {
       $field_name = $field['var'];
-      /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-      $field_value = $this->$field_name;
+      $field_value = HH\FIXME\UNSAFE_CAST<mixed, dynamic>($this)->$field_name;
       /* HH_FIXME[4016] Field value may not exist*/
       if (isset($field_value)) {
         $num_field_count++;
@@ -333,7 +332,6 @@ trait ThriftUnionSerializationTrait implements IThriftStruct {
       }
     }
 
-    /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
     $type = HH_FIXME::dynamicCastForMissingMember($this)->_type;
 
     $correct_field_set = $type is nonnull &&

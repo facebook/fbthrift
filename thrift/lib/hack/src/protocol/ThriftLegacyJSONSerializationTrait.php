@@ -31,8 +31,7 @@ trait ThriftLegacyJSONSerializationTrait
     // i.e. "{\"intData\":[1,2,3]}" instead of {"intData":[1,2,3]}
     $result = dict[];
     foreach ($this::SPEC as $_ => $field) {
-      /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-      $field_value = $this->$field['var'];
+      $field_value = HH\FIXME\UNSAFE_CAST<mixed, dynamic>($this)->$field['var'];
       $result[$field['var']] = $field_value;
     }
 

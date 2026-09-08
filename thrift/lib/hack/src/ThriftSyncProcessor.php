@@ -67,8 +67,11 @@ abstract class ThriftSyncProcessor extends ThriftProcessorBase {
       return true;
     }
 
-    /* HH_FIXME[2011] Previously hidden by unsafe_expr */
-    $this->$methodname($rseqid, $input, $output);
+    HH\FIXME\UNSAFE_CAST<mixed, dynamic>($this)->$methodname(
+      $rseqid,
+      $input,
+      $output,
+    );
     return true;
   }
 }

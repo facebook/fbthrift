@@ -388,9 +388,9 @@ abstract class ThriftAsyncProcessor
       }
     } else if ($this->isSupportedMethod($methodname)) {
       // Fall back to old-style process_ method for backward compatibility
-      /* HH_FIXME[2011]: This is safe */
+
       // @lint-ignore DYNAMICALLY_INVOKING_TARGETS_CONSIDERED_HARMFUL
-      await $this->$methodname($rseqid, $input, $output);
+      await HH\FIXME\UNSAFE_CAST<mixed, dynamic>($this)->$methodname($rseqid, $input, $output);
       return true;
     }
 

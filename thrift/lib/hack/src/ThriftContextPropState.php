@@ -448,8 +448,10 @@ final class ThriftContextPropState {
   public function isSet()[write_props, zoned_shallow]: bool {
     foreach (ThriftFrameworkMetadata::FIELDMAP as $field_name => $_) {
       /* this assume that all fields are optional */
-      /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-      if (!$this->storage->$field_name is null) {
+      if (
+        !HH\FIXME\UNSAFE_CAST<mixed, dynamic>($this->storage)->$field_name
+          is null
+      ) {
         return true;
       }
     }

@@ -35,14 +35,18 @@ class TException extends ExceptionWithPureGetMessage {
     if (HH\is_any_array($p1) && HH\is_any_array($p2)) {
       $spec = $p1;
       $vals = $p2;
-      foreach ($spec as $fid => $fspec) {
+      foreach ($spec as $fspec) {
         $var = HH\FIXME\UNSAFE_CAST<mixed, KeyedContainer<nothing, nothing>>(
           $fspec,
           'FIXME[4063] Revealed by widening type inference of is_array',
         )['var'];
         if (isset($vals[$var])) {
-          /* HH_FIXME[2011] dynamic method is allowed on non dynamic types */
-          $this->$var = $vals[$var];
+          HH\Coeffects\fb\backdoor_to_globals_leak_safe__DO_NOT_USE(
+            ()[write_props] ==> {
+              HH\FIXME\UNSAFE_CAST<mixed, dynamic>($this)->$var = $vals[$var];
+            },
+            'Initialize dynamic Thrift exception fields',
+          );
         }
       }
       parent::__construct();
