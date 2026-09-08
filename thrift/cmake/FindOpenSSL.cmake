@@ -15,9 +15,10 @@
 # A wrapper around the standard CMake FindOpenSSL module.
 
 if (APPLE AND NOT DEFINED OPENSSL_ROOT_DIR)
-  execute_process(COMMAND brew --prefix openssl
-                  OUTPUT_VARIABLE OPENSSL_ROOT_DIR
-                  OUTPUT_STRIP_TRAILING_WHITESPACE)
+  execute_process(
+    COMMAND brew --prefix openssl
+    OUTPUT_VARIABLE OPENSSL_ROOT_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif ()
 
 set(saved_path ${CMAKE_MODULE_PATH})

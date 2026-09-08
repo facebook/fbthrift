@@ -26,43 +26,32 @@ endif ()
 # Install CMake package configuration files for Thrift.
 include(CMakePackageConfigHelpers)
 configure_package_config_file(
-  cmake/FBThriftConfig.cmake.in
-  FBThriftConfig.cmake
+  cmake/FBThriftConfig.cmake.in FBThriftConfig.cmake
   INSTALL_DESTINATION ${CMAKE_INSTALL_DIR}
-  PATH_VARS
-    CMAKE_INSTALL_DIR
-    BIN_INSTALL_DIR
-    INCLUDE_INSTALL_DIR
-)
-install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/FBThriftConfig.cmake
-  DESTINATION ${CMAKE_INSTALL_DIR}
-)
+  PATH_VARS CMAKE_INSTALL_DIR BIN_INSTALL_DIR INCLUDE_INSTALL_DIR)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/FBThriftConfig.cmake
+        DESTINATION ${CMAKE_INSTALL_DIR})
 # xxhash ships no CMake package config, so FBThriftConfig.cmake resolves Xxhash
 # in MODULE mode. Install FindXxhash.cmake next to the config (which prepends its
 # own directory to CMAKE_MODULE_PATH) so downstream find_package(FBThrift) works.
-install(
-  FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindXxhash.cmake
-  DESTINATION ${CMAKE_INSTALL_DIR}
-)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindXxhash.cmake
+        DESTINATION ${CMAKE_INSTALL_DIR})
 install(
   EXPORT fbthrift-exports
   FILE FBThriftTargets.cmake
   NAMESPACE FBThrift::
-  DESTINATION ${CMAKE_INSTALL_DIR}
-)
+  DESTINATION ${CMAKE_INSTALL_DIR})
 
 install(
   DIRECTORY annotation ${CMAKE_CURRENT_SOURCE_DIR}/annotation
   DESTINATION include/thrift
-  FILES_MATCHING PATTERN *.thrift
-)
+  FILES_MATCHING
+  PATTERN *.thrift)
 
 install(
   DIRECTORY annotation ${CMAKE_CURRENT_BINARY_DIR}/annotation
   DESTINATION include/thrift
   FILES_MATCHING
-    PATTERN *.h
-    PATTERN *.tcc
-    PATTERN CMakeFiles EXCLUDE
-)
+  PATTERN *.h
+  PATTERN *.tcc
+  PATTERN CMakeFiles EXCLUDE)

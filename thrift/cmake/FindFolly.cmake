@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-INCLUDE(FindPackageHandleStandardArgs)
+include(FindPackageHandleStandardArgs)
 
-FIND_LIBRARY(FOLLY_LIBRARY folly)
-FIND_PATH(FOLLY_INCLUDE_DIR "folly/String.h")
+find_library(FOLLY_LIBRARY folly)
+find_path(FOLLY_INCLUDE_DIR "folly/String.h")
 
-SET(FOLLY_LIBRARY ${FOLLY_LIBRARY})
+set(FOLLY_LIBRARY ${FOLLY_LIBRARY})
 
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(Folly
-  REQUIRED_ARGS FOLLY_INCLUDE_DIR FOLLY_LIBRARY)
+find_package_handle_standard_args(Folly REQUIRED_ARGS FOLLY_INCLUDE_DIR
+                                  FOLLY_LIBRARY)

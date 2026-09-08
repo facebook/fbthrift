@@ -25,16 +25,14 @@ find_path(Xxhash_INCLUDE_DIR NAMES xxhash.h)
 find_library(Xxhash_LIBRARY_RELEASE NAMES xxhash)
 
 include(SelectLibraryConfigurations)
-SELECT_LIBRARY_CONFIGURATIONS(Xxhash)
+select_library_configurations(Xxhash)
 
 include(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(
-    Xxhash DEFAULT_MSG
-    Xxhash_LIBRARY Xxhash_INCLUDE_DIR
-)
+find_package_handle_standard_args(Xxhash DEFAULT_MSG Xxhash_LIBRARY
+                                  Xxhash_INCLUDE_DIR)
 
 if (Xxhash_FOUND)
   message(STATUS "Found xxhash: ${Xxhash_LIBRARY}")
-endif()
+endif ()
 
 mark_as_advanced(Xxhash_INCLUDE_DIR Xxhash_LIBRARY)

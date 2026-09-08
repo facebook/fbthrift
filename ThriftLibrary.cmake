@@ -53,15 +53,15 @@
 #   add_library(somelib $<TARGET_OBJECTS:${file_name}-${language}-obj> ...)
 #
 
-macro(thrift_object
+macro (
+  thrift_object
   file_name
   services
   language
   options
   file_path
   output_path
-  include_prefix
-)
+  include_prefix)
   thrift_generate(
     "${file_name}"
     "${services}"
@@ -70,25 +70,19 @@ macro(thrift_object
     "${file_path}"
     "${output_path}"
     "${include_prefix}"
-    ${ARGN}
-  )
-  if("${language}" STREQUAL "python")
+    ${ARGN})
+  if ("${language}" STREQUAL "python")
     # Python: generated .py files are the artifacts
     message("Thrift will generate Python files for : ${file_name}-${language}")
-  else()
+  else ()
     bypass_source_check(${${file_name}-${language}-SOURCES})
-    add_library(
-      "${file_name}-${language}-obj"
-      OBJECT
-      ${${file_name}-${language}-SOURCES}
-    )
-    add_dependencies(
-      "${file_name}-${language}-obj"
-      "${file_name}-${language}-target"
-    )
+    add_library("${file_name}-${language}-obj" OBJECT
+                ${${file_name}-${language}-SOURCES})
+    add_dependencies("${file_name}-${language}-obj"
+                     "${file_name}-${language}-target")
     message("Thrift will create the Object file : ${file_name}-${language}-obj")
-  endif()
-endmacro()
+  endif ()
+endmacro ()
 
 # thrift_library
 # Same as thrift object in terms of usage but creates the library instead of
@@ -125,15 +119,15 @@ endmacro()
 #   target_link_libraries(somelib ${file_name}-${language} ...)
 #
 
-macro(thrift_library
+macro (
+  thrift_library
   file_name
   services
   language
   options
   file_path
   output_path
-  include_prefix
-)
+  include_prefix)
   thrift_object(
     "${file_name}"
     "${services}"
@@ -142,22 +136,20 @@ macro(thrift_library
     "${file_path}"
     "${output_path}"
     "${include_prefix}"
-    ${ARGN}
-  )
-  if("${language}" STREQUAL "python")
+    ${ARGN})
+  if ("${language}" STREQUAL "python")
     # Python: create an alias target so users can depend on <name>-python
     add_custom_target("${file_name}-${language}" ALL)
-    add_dependencies("${file_name}-${language}" "${file_name}-${language}-target")
+    add_dependencies("${file_name}-${language}"
+                     "${file_name}-${language}-target")
     message("Thrift will create the Python library : ${file_name}-${language}")
-  else()
-    add_library(
-      "${file_name}-${language}"
-      $<TARGET_OBJECTS:${file_name}-${language}-obj>
-    )
+  else ()
+    add_library("${file_name}-${language}"
+                $<TARGET_OBJECTS:${file_name}-${language}-obj>)
     target_link_libraries("${file_name}-${language}" ${THRIFTCPP2})
     message("Thrift will create the Library file : ${file_name}-${language}")
-  endif()
-endmacro()
+  endif ()
+endmacro ()
 
 #
 # bypass_source_check
@@ -169,12 +161,9 @@ endmacro()
 #   @sources - The list of files to ignore in source check
 #
 
-macro(bypass_source_check sources)
-  set_source_files_properties(
-    ${sources}
-    PROPERTIES GENERATED TRUE
-  )
-endmacro()
+macro (bypass_source_check sources)
+  set_source_files_properties(${sources} PROPERTIES GENERATED TRUE)
+endmacro ()
 
 #
 # thrift_generate
@@ -207,16 +196,17 @@ endmacro()
 #   bypass_source_check(${file_language-SOURCES})
 # This will prevent cmake from complaining about missing source files
 #
-macro(thrift_generate
+macro (
+  thrift_generate
   file_name
   services
   language
   options
   file_path
   output_path
-  include_prefix
-)
-  cmake_parse_arguments(THRIFT_GENERATE   # Prefix
+  include_prefix)
+  cmake_parse_arguments(
+    THRIFT_GENERATE # Prefix
     "" # Options
     "TARGET_NAME_BASE;NAMESPACE" # One Value args
     "THRIFT_INCLUDE_DIRECTORIES" # Multi-value args
@@ -225,150 +215,142 @@ macro(thrift_generate
   set(source_file_name ${file_name})
   set(target_file_name ${file_name})
   set(thrift_include_directories)
-  foreach(dir ${THRIFT_GENERATE_THRIFT_INCLUDE_DIRECTORIES})
+  foreach (dir ${THRIFT_GENERATE_THRIFT_INCLUDE_DIRECTORIES})
     list(APPEND thrift_include_directories "-I" "${dir}")
-  endforeach()
-  if(DEFINED THRIFT_GENERATE_TARGET_NAME_BASE
-     AND NOT THRIFT_GENERATE_TARGET_NAME_BASE STREQUAL "")
+  endforeach ()
+  if (DEFINED THRIFT_GENERATE_TARGET_NAME_BASE
+      AND NOT THRIFT_GENERATE_TARGET_NAME_BASE STREQUAL "")
     set(target_file_name ${THRIFT_GENERATE_TARGET_NAME_BASE})
-  endif()
+  endif ()
 
   set("${target_file_name}-${language}-HEADERS"
-    ${output_path}/gen-${language}/${source_file_name}_constants.h
-    ${output_path}/gen-${language}/${source_file_name}_data.h
-    ${output_path}/gen-${language}/${source_file_name}_metadata.h
-    ${output_path}/gen-${language}/${source_file_name}_types.h
-    ${output_path}/gen-${language}/${source_file_name}_types.tcc
-    ${output_path}/gen-${language}/${source_file_name}_types_custom_protocol.h
+      ${output_path}/gen-${language}/${source_file_name}_constants.h
+      ${output_path}/gen-${language}/${source_file_name}_data.h
+      ${output_path}/gen-${language}/${source_file_name}_metadata.h
+      ${output_path}/gen-${language}/${source_file_name}_types.h
+      ${output_path}/gen-${language}/${source_file_name}_types.tcc
+      ${output_path}/gen-${language}/${source_file_name}_types_custom_protocol.h
   )
   set("${target_file_name}-${language}-SOURCES"
-    ${output_path}/gen-${language}/${source_file_name}_constants.cpp
-    ${output_path}/gen-${language}/${source_file_name}_data.cpp
-    ${output_path}/gen-${language}/${source_file_name}_types.cpp
-    ${output_path}/gen-${language}/${source_file_name}_types_binary.cpp
-    ${output_path}/gen-${language}/${source_file_name}_types_compact.cpp
-    ${output_path}/gen-${language}/${source_file_name}_types_serialization.cpp
+      ${output_path}/gen-${language}/${source_file_name}_constants.cpp
+      ${output_path}/gen-${language}/${source_file_name}_data.cpp
+      ${output_path}/gen-${language}/${source_file_name}_types.cpp
+      ${output_path}/gen-${language}/${source_file_name}_types_binary.cpp
+      ${output_path}/gen-${language}/${source_file_name}_types_compact.cpp
+      ${output_path}/gen-${language}/${source_file_name}_types_serialization.cpp
   )
-  if("${options}" MATCHES "layouts")
+  if ("${options}" MATCHES "layouts")
     set("${target_file_name}-${language}-SOURCES"
-      ${${target_file_name}-${language}-SOURCES}
-      ${output_path}/gen-${language}/${source_file_name}_layouts.cpp
-    )
-  endif()
-  if(NOT "${options}" MATCHES "no_metadata")
+        ${${target_file_name}-${language}-SOURCES}
+        ${output_path}/gen-${language}/${source_file_name}_layouts.cpp)
+  endif ()
+  if (NOT "${options}" MATCHES "no_metadata")
     set("${target_file_name}-${language}-SOURCES"
-      ${${target_file_name}-${language}-SOURCES}
-      ${output_path}/gen-${language}/${source_file_name}_metadata.cpp
-    )
-  endif()
-  foreach(service ${services})
+        ${${target_file_name}-${language}-SOURCES}
+        ${output_path}/gen-${language}/${source_file_name}_metadata.cpp)
+  endif ()
+  foreach (service ${services})
     set("${target_file_name}-${language}-HEADERS"
-      ${${source_file_name}-${language}-HEADERS}
-      ${output_path}/gen-${language}/${service}.h
-      ${output_path}/gen-${language}/${service}.tcc
-      ${output_path}/gen-${language}/${service}AsyncClient.h
-      ${output_path}/gen-${language}/${service}_custom_protocol.h
-    )
+        ${${source_file_name}-${language}-HEADERS}
+        ${output_path}/gen-${language}/${service}.h
+        ${output_path}/gen-${language}/${service}.tcc
+        ${output_path}/gen-${language}/${service}AsyncClient.h
+        ${output_path}/gen-${language}/${service}_custom_protocol.h)
     set("${target_file_name}-${language}-SOURCES"
-      ${${source_file_name}-${language}-SOURCES}
-      ${output_path}/gen-${language}/${service}.cpp
-      ${output_path}/gen-${language}/${service}AsyncClient.cpp
-    )
-  endforeach()
-  if("${include_prefix}" STREQUAL "")
+        ${${source_file_name}-${language}-SOURCES}
+        ${output_path}/gen-${language}/${service}.cpp
+        ${output_path}/gen-${language}/${service}AsyncClient.cpp)
+  endforeach ()
+  if ("${include_prefix}" STREQUAL "")
     set(include_prefix_text "")
-  else()
+  else ()
     set(include_prefix_text "include_prefix=${include_prefix}")
-    if(NOT "${options}" STREQUAL "")
+    if (NOT "${options}" STREQUAL "")
       set(include_prefix_text ",${include_prefix_text}")
-    endif()
-  endif()
+    endif ()
+  endif ()
   set(gen_language ${language})
-  if("${language}" STREQUAL "cpp2")
+  if ("${language}" STREQUAL "cpp2")
     set(gen_language "mstch_cpp2")
-  elseif("${language}" STREQUAL "py3")
+  elseif ("${language}" STREQUAL "py3")
     set(gen_language "mstch_py3")
-    file(WRITE "${output_path}/gen-${language}/${source_file_name}/__init__.py")
-  elseif("${language}" STREQUAL "python")
+    file(WRITE "${output_path}/gen-${language}/${source_file_name}/__init__.py"
+         )
+  elseif ("${language}" STREQUAL "python")
     set(gen_language "mstch_python")
     # thrift-python uses PEP 420 namespace packages — no __init__.py.
     # NAMESPACE must match "namespace py3" in the .thrift file.
     # Dot-separated value maps to directory: "example.sum" -> example/sum/<file_name>/
-    if(DEFINED THRIFT_GENERATE_NAMESPACE
-        AND NOT THRIFT_GENERATE_NAMESPACE STREQUAL "")
+    if (DEFINED THRIFT_GENERATE_NAMESPACE AND NOT THRIFT_GENERATE_NAMESPACE
+                                              STREQUAL "")
       string(REPLACE "." "/" _namespace_dir "${THRIFT_GENERATE_NAMESPACE}")
       set(_python_output_subdir "${_namespace_dir}/${source_file_name}")
-    else()
+    else ()
       set(_python_output_subdir "${source_file_name}")
-    endif()
+    endif ()
     # Override C++ HEADERS/SOURCES with Python output files
     set("${target_file_name}-${language}-HEADERS" "")
     set("${target_file_name}-${language}-SOURCES"
-      ${output_path}/gen-python/${_python_output_subdir}/thrift_types.py
-      ${output_path}/gen-python/${_python_output_subdir}/thrift_types.pyi
-      ${output_path}/gen-python/${_python_output_subdir}/thrift_metadata.py
-      ${output_path}/gen-python/${_python_output_subdir}/thrift_enums.py
-      ${output_path}/gen-python/${_python_output_subdir}/thrift_abstract_types.py
-      ${output_path}/gen-python/${_python_output_subdir}/thrift_mutable_types.py
-      ${output_path}/gen-python/${_python_output_subdir}/thrift_mutable_types.pyi
+        ${output_path}/gen-python/${_python_output_subdir}/thrift_types.py
+        ${output_path}/gen-python/${_python_output_subdir}/thrift_types.pyi
+        ${output_path}/gen-python/${_python_output_subdir}/thrift_metadata.py
+        ${output_path}/gen-python/${_python_output_subdir}/thrift_enums.py
+        ${output_path}/gen-python/${_python_output_subdir}/thrift_abstract_types.py
+        ${output_path}/gen-python/${_python_output_subdir}/thrift_mutable_types.py
+        ${output_path}/gen-python/${_python_output_subdir}/thrift_mutable_types.pyi
     )
-    if(NOT "${services}" STREQUAL "")
-      list(APPEND "${target_file_name}-${language}-SOURCES"
+    if (NOT "${services}" STREQUAL "")
+      list(
+        APPEND
+        "${target_file_name}-${language}-SOURCES"
         ${output_path}/gen-python/${_python_output_subdir}/thrift_services.py
         ${output_path}/gen-python/${_python_output_subdir}/thrift_clients.py
         ${output_path}/gen-python/${_python_output_subdir}/thrift_mutable_services.py
         ${output_path}/gen-python/${_python_output_subdir}/thrift_mutable_clients.py
       )
-    endif()
+    endif ()
     # Python options format differs from C++: no include_prefix
-    if(NOT "${options}" STREQUAL "")
+    if (NOT "${options}" STREQUAL "")
       set(_python_gen_options ":${options}")
-    else()
+    else ()
       set(_python_gen_options "")
-    endif()
+    endif ()
     add_custom_command(
       OUTPUT ${${target_file_name}-${language}-SOURCES}
-      COMMAND ${THRIFT1}
-        --gen "${gen_language}${_python_gen_options}"
-        -o ${output_path}
-        ${thrift_include_directories}
+      COMMAND
+        ${THRIFT1} --gen "${gen_language}${_python_gen_options}" -o
+        ${output_path} ${thrift_include_directories}
         "${file_path}/${source_file_name}.thrift"
-      DEPENDS
-        ${THRIFT1}
-        "${file_path}/${source_file_name}.thrift"
-      COMMENT "Generating ${target_file_name} thrift-python files. Output: ${output_path}"
+      DEPENDS ${THRIFT1} "${file_path}/${source_file_name}.thrift"
+      COMMENT
+        "Generating ${target_file_name} thrift-python files. Output: ${output_path}"
     )
-    add_custom_target(
-      ${target_file_name}-${language}-target ALL
-      DEPENDS ${${target_file_name}-${language}-SOURCES}
-    )
-  endif()
-  if(NOT "${language}" STREQUAL "python")
+    add_custom_target(${target_file_name}-${language}-target ALL
+                      DEPENDS ${${target_file_name}-${language}-SOURCES})
+  endif ()
+  if (NOT "${language}" STREQUAL "python")
     add_custom_command(
       OUTPUT ${${target_file_name}-${language}-HEADERS}
-        ${${target_file_name}-${language}-SOURCES}
-      COMMAND ${THRIFT1}
-        --gen "${gen_language}:${options}${include_prefix_text}"
-        -o ${output_path}
-        ${thrift_include_directories}
+             ${${target_file_name}-${language}-SOURCES}
+      COMMAND
+        ${THRIFT1} --gen "${gen_language}:${options}${include_prefix_text}" -o
+        ${output_path} ${thrift_include_directories}
         "${file_path}/${source_file_name}.thrift"
-      DEPENDS
-        ${THRIFT1}
-        "${file_path}/${source_file_name}.thrift"
-      COMMENT "Generating ${target_file_name} files. Output: ${output_path}"
-    )
+      DEPENDS ${THRIFT1} "${file_path}/${source_file_name}.thrift"
+      COMMENT "Generating ${target_file_name} files. Output: ${output_path}")
     add_custom_target(
       ${target_file_name}-${language}-target ALL
       DEPENDS ${${language}-${language}-HEADERS}
-        ${${target_file_name}-${language}-SOURCES}
-    )
+              ${${target_file_name}-${language}-SOURCES})
     install(
       DIRECTORY gen-${language}
       DESTINATION include/${include_prefix}
-      FILES_MATCHING PATTERN "*.h")
+      FILES_MATCHING
+      PATTERN "*.h")
     install(
       DIRECTORY gen-${language}
       DESTINATION include/${include_prefix}
-      FILES_MATCHING PATTERN "*.tcc")
-  endif()
-endmacro()
+      FILES_MATCHING
+      PATTERN "*.tcc")
+  endif ()
+endmacro ()

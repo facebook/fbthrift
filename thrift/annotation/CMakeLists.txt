@@ -15,7 +15,15 @@
 add_library(thriftannotation)
 target_link_libraries(thriftannotation PUBLIC Folly::folly)
 
-foreach (name cpp hack java python go scope thrift)
+foreach (
+  name
+  cpp
+  hack
+  java
+  python
+  go
+  scope
+  thrift)
   thrift_generate(
     ${name} # file_name
     "" # services
@@ -24,9 +32,12 @@ foreach (name cpp hack java python go scope thrift)
     "${CMAKE_CURRENT_SOURCE_DIR}" # file_path
     "${CMAKE_CURRENT_BINARY_DIR}" # output_path
     "thrift/annotation" # include_prefix
-    THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR})
+    THRIFT_INCLUDE_DIRECTORIES
+    ${THRIFT_SOURCE_DIR})
   target_sources(thriftannotation PRIVATE ${${name}-cpp2-SOURCES})
 endforeach ()
 
-install(TARGETS thriftannotation EXPORT fbthrift-exports
-        DESTINATION ${LIB_INSTALL_DIR})
+install(
+  TARGETS thriftannotation
+  EXPORT fbthrift-exports
+  DESTINATION ${LIB_INSTALL_DIR})

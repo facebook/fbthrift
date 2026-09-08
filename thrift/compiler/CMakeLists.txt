@@ -18,46 +18,47 @@ set(COMPILER_DIR ${CMAKE_CURRENT_BINARY_DIR})
 # Override the default install path for `make install` step.
 set(CMAKE_INSTALL_PREFIX ${THRIFT_SOURCE_DIR})
 
-check_cxx_source_compiles("
+check_cxx_source_compiles(
+  "
   #include <type_traits>
   #if _GLIBCXX_RELEASE
   int main() {}
   #endif"
-  FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX
-)
-check_cxx_source_compiles("
+  FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX)
+check_cxx_source_compiles(
+  "
   #include <type_traits>
   #if _GLIBCXX_RELEASE >= 9
   int main() {}
   #endif"
-  FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX_GE_9
-)
-check_cxx_source_compiles("
+  FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX_GE_9)
+check_cxx_source_compiles(
+  "
   #include <type_traits>
   #if _LIBCPP_VERSION
   int main() {}
   #endif"
-  FBTHRIFT_COMPILER_STDLIB_LIBCXX
-)
-check_cxx_source_compiles("
+  FBTHRIFT_COMPILER_STDLIB_LIBCXX)
+check_cxx_source_compiles(
+  "
   #include <type_traits>
   #if _LIBCPP_VERSION >= 9000
   int main() {}
   #endif"
-  FBTHRIFT_COMPILER_STDLIB_LIBCXX_GE_9
-)
+  FBTHRIFT_COMPILER_STDLIB_LIBCXX_GE_9)
 
-if (FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX AND NOT FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX_GE_9)
-  list (APPEND FBTHRIFT_COMPILER_LINK_CXXFS stdc++fs)
-endif()
-if (FBTHRIFT_COMPILER_STDLIB_LIBCXX AND NOT FBTHRIFT_COMPILER_STDLIB_LIBCXX_GE_9)
-  list (APPEND FBTHRIFT_COMPILER_LINK_CXXFS c++fs)
+if (FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX
+    AND NOT FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX_GE_9)
+  list(APPEND FBTHRIFT_COMPILER_LINK_CXXFS stdc++fs)
+endif ()
+if (FBTHRIFT_COMPILER_STDLIB_LIBCXX AND NOT
+                                        FBTHRIFT_COMPILER_STDLIB_LIBCXX_GE_9)
+  list(APPEND FBTHRIFT_COMPILER_LINK_CXXFS c++fs)
 endif ()
 
 # The Thrift AST library.
 add_library(
   compiler_ast
-
   ast/t_primitive_type.cc
   ast/t_const.cc
   ast/t_const_value.cc
@@ -80,41 +81,21 @@ add_library(
   ast/t_type.cc
   ast/t_typedef.cc
   ast/t_union.cc
-  ast/scope_identifier.cc
-)
-target_link_libraries(
-  compiler_ast
-  ${OPENSSL_LIBRARIES}
-  Boost::boost
-  fmt::fmt
-  Folly::folly
-)
+  ast/scope_identifier.cc)
+target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES} Boost::boost fmt::fmt
+                      Folly::folly)
 
 # The base compiler infrastructure library
-add_library(
-  compiler_base
-  STATIC
-
-  detail/system.cc
-  detail/pluggable_functions.cc
-  diagnostic.cc
-  source_location.cc
-)
-set_target_properties(compiler_base PROPERTIES POSITION_INDEPENDENT_CODE "${BUILD_SHARED_LIBS}")
-target_link_libraries(
-  compiler_base
-  fmt::fmt
-  Boost::boost
-  Folly::folly
-  common
-  ${FBTHRIFT_COMPILER_LINK_CXXFS}
-)
+add_library(compiler_base STATIC detail/system.cc detail/pluggable_functions.cc
+                                 diagnostic.cc source_location.cc)
+set_target_properties(compiler_base PROPERTIES POSITION_INDEPENDENT_CODE
+                                               "${BUILD_SHARED_LIBS}")
+target_link_libraries(compiler_base fmt::fmt Boost::boost Folly::folly common
+                      ${FBTHRIFT_COMPILER_LINK_CXXFS})
 
 # The base Thrift compiler library.
 add_library(
-  compiler_lib
-  STATIC
-
+  compiler_lib STATIC
   parse/lexer.cc
   parse/lexer.h
   parse/parser.cc
@@ -133,23 +114,16 @@ add_library(
   sema/schematizer.cc
   sema/standard_validator.cc
   sema/sema_context.cc
-  sema/resolution_mismatch.cc
-)
-set_target_properties(compiler_lib PROPERTIES POSITION_INDEPENDENT_CODE "${BUILD_SHARED_LIBS}")
+  sema/resolution_mismatch.cc)
+set_target_properties(compiler_lib PROPERTIES POSITION_INDEPENDENT_CODE
+                                              "${BUILD_SHARED_LIBS}")
 target_compile_definitions(compiler_lib PRIVATE THRIFT_OSS)
-target_link_libraries(
-  compiler_lib
-  compiler_base
-  compiler_ast
-  Boost::regex
-  fmt::fmt
-  Folly::folly
-)
+target_link_libraries(compiler_lib compiler_base compiler_ast Boost::regex
+                      fmt::fmt Folly::folly)
 
 # The Thrift compiler library.
 add_library(
   compiler
-
   generate/cpp/reference_type.cc
   generate/cpp/name_resolver.cc
   generate/cpp/util.cc
@@ -158,21 +132,12 @@ add_library(
   generate/java/util.cc
   generate/python/util.cc
   generate/rust/util.cc
-  generate/swift/util.cc
-)
-target_link_libraries(
-  compiler
-  compiler_ast
-  compiler_base
-  fmt::fmt
-  Folly::folly
-  ${FBTHRIFT_COMPILER_LINK_CXXFS}
-)
+  generate/swift/util.cc)
+target_link_libraries(compiler compiler_ast compiler_base fmt::fmt Folly::folly
+                      ${FBTHRIFT_COMPILER_LINK_CXXFS})
 
 add_library(
-  whisker
-  STATIC
-
+  whisker STATIC
   whisker/ast.cc
   whisker/dsl.cc
   whisker/detail/string.cc
@@ -183,15 +148,10 @@ add_library(
   whisker/print_ast.cc
   whisker/render.cc
   whisker/standard_library.cc
-  whisker/token.cc
-)
-set_target_properties(whisker PROPERTIES POSITION_INDEPENDENT_CODE "${BUILD_SHARED_LIBS}")
-target_link_libraries(
-  whisker
-  fmt::fmt
-  Folly::folly
-  compiler_base
-)
+  whisker/token.cc)
+set_target_properties(whisker PROPERTIES POSITION_INDEPENDENT_CODE
+                                         "${BUILD_SHARED_LIBS}")
+target_link_libraries(whisker fmt::fmt Folly::folly compiler_base)
 
 add_subdirectory(generate)
 
@@ -201,54 +161,36 @@ if (MSVC)
 elseif (APPLE)
   set(GENERATE_LINKED -Wl,-force_load compiler_generators)
 else ()
-  set(GENERATE_LINKED
-      -Wl,--whole-archive compiler_generators -Wl,--no-whole-archive)
+  set(GENERATE_LINKED -Wl,--whole-archive compiler_generators
+                      -Wl,--no-whole-archive)
 endif ()
 
 # Create the Thrift compiler binary.
-add_executable(
-  thrift1
-  main.cc
-  compiler.cc
-)
-target_link_libraries(
-  thrift1
-  compiler_ast
-  compiler_lib
-  ${FBTHRIFT_COMPILER_LINK_CXXFS}
-  ${GENERATE_LINKED}
-)
+add_executable(thrift1 main.cc compiler.cc)
+target_link_libraries(thrift1 compiler_ast compiler_lib
+                      ${FBTHRIFT_COMPILER_LINK_CXXFS} ${GENERATE_LINKED})
 # Force compiler_generators linking (compiler will optimize it out otherwise).
 if (MSVC)
-  set_target_properties(
-    thrift1
-    PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:compiler_generators"
-  )
+  set_target_properties(thrift1 PROPERTIES LINK_FLAGS
+                                           "/WHOLEARCHIVE:compiler_generators")
 endif ()
 
 if (BUILD_SHARED_LIBS)
   # All but thrift1 since it's a binary.
   set_target_properties(
-    compiler_ast
-    compiler_base
-    compiler_lib
-    compiler
-    whisker
-    compiler_generators
-    PROPERTIES VERSION ${PACKAGE_VERSION}
-  )
+    compiler_ast compiler_base compiler_lib compiler whisker compiler_generators
+    PROPERTIES VERSION ${PACKAGE_VERSION})
 endif ()
 
 install(
   TARGETS thrift1
-    compiler_ast
-    compiler_base
-    compiler_lib
-    compiler
-    whisker
-    common
+          compiler_ast
+          compiler_base
+          compiler_lib
+          compiler
+          whisker
+          common
   EXPORT fbthrift-exports
   RUNTIME DESTINATION ${BIN_INSTALL_DIR}
   LIBRARY DESTINATION ${LIB_INSTALL_DIR}
-  ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
-)
+  ARCHIVE DESTINATION ${LIB_INSTALL_DIR})

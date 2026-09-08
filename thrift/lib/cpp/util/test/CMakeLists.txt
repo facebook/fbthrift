@@ -13,38 +13,24 @@
 # limitations under the License.
 
 if (THRIFT_BENCHMARKS)
-  add_executable(VarintUtilsBench
-    VarintUtilsBench.cpp
-  )
-  target_link_libraries(VarintUtilsBench
-    thriftcpp2
-    Folly::folly
-    Folly::follybenchmark
-  )
+  add_executable(VarintUtilsBench VarintUtilsBench.cpp)
+  target_link_libraries(VarintUtilsBench thriftcpp2 Folly::folly
+                        Folly::follybenchmark)
 
   install(
     TARGETS VarintUtilsBench
     EXPORT fbthrift-exports
     RUNTIME DESTINATION ${BIN_INSTALL_DIR}
     LIBRARY DESTINATION ${LIB_INSTALL_DIR}
-    ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
-  )
+    ARCHIVE DESTINATION ${LIB_INSTALL_DIR})
 endif ()
 
-set(PROTOCOL_TESTS
-   VarintUtilsTest)
+set(PROTOCOL_TESTS VarintUtilsTest)
 
 # Build each test independently.
 foreach (test_name ${PROTOCOL_TESTS})
-  add_executable(${test_name}
-     ${test_name}.cpp)
-  target_compile_options(${test_name} PUBLIC
-     -Wno-shadow-compatible-local)
-  target_link_libraries(${test_name}
-     GTest::gtest_main
-     thriftcpp2
-     Folly::folly
-  )
+  add_executable(${test_name} ${test_name}.cpp)
+  target_compile_options(${test_name} PUBLIC -Wno-shadow-compatible-local)
+  target_link_libraries(${test_name} GTest::gtest_main thriftcpp2 Folly::folly)
   gtest_discover_tests(${test_name})
 endforeach ()
-

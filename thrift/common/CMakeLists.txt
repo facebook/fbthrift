@@ -14,22 +14,13 @@
 
 set(COMPILER_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
-add_library(
-  common
-
-  detail/string.cc
-  tree_printer.cc
-  universal_name.cc
-)
+add_library(common detail/string.cc tree_printer.cc universal_name.cc)
 
 install(
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
   DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/common
-  FILES_MATCHING PATTERN "*.h" PATTERN "*.tcc"
-)
+  FILES_MATCHING
+  PATTERN "*.h"
+  PATTERN "*.tcc")
 
-target_link_libraries(
-  common
-  Boost::boost
-  fmt::fmt
-)
+target_link_libraries(common Boost::boost fmt::fmt)

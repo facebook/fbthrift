@@ -20,8 +20,8 @@ thrift_generate(
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/cpp2/schema" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
-)
+  THRIFT_INCLUDE_DIRECTORIES
+  ${THRIFT_SOURCE_DIR})
 
-set_property(GLOBAL PROPERTY
-  syntax_graph-cpp2-SOURCES ${syntax_graph-cpp2-SOURCES})
+set_property(GLOBAL PROPERTY syntax_graph-cpp2-SOURCES
+                             ${syntax_graph-cpp2-SOURCES})
