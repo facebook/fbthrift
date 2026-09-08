@@ -35,7 +35,7 @@ std::string toSimpleJSON(const DynamicConstRef& value) {
   return queue.move()->to<std::string>();
 }
 
-std::string typeDisplayName(const type_system::TypeRef& type) {
+std::string typeDisplayName(type_system::TypeRef type) {
   auto uriToName = [](std::string_view uri) {
     auto lastSlash = uri.find_last_of('/');
     if (lastSlash == std::string_view::npos) {
@@ -110,21 +110,20 @@ std::string Path::toString() const {
     folly::variant_match(
         component,
         [&](const FieldAccess& f) {
-          const auto& field = f.structuredType.asStructured().at(f.handle);
-          result += fmt::format(".{}", field.identity().name());
+          result += fmt::format(".{}", f.fieldName());
         },
-        [&](const ListElement& l) { result += fmt::format("[{}]", l.index); },
+        [&](const ListElement& l) { result += fmt::format("[{}]", l.index()); },
         [&](const SetElement& s) {
-          result += fmt::format("{{{}}}", detail::toSimpleJSON(s.value));
+          result += fmt::format("{{{}}}", detail::toSimpleJSON(s.value()));
         },
         [&](const MapKey& m) {
-          result += fmt::format("{{{}}}", detail::toSimpleJSON(m.key));
+          result += fmt::format("{{{}}}", detail::toSimpleJSON(m.key()));
         },
         [&](const MapValue& m) {
-          result += fmt::format("[{}]", detail::toSimpleJSON(m.key));
+          result += fmt::format("[{}]", detail::toSimpleJSON(m.key()));
         },
         [&](const AnyType& a) {
-          result += fmt::format("[{}]", a.type.id().name());
+          result += fmt::format("[{}]", a.type().id().name());
         });
   }
 

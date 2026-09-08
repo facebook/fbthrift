@@ -739,14 +739,14 @@ std::optional<RefType> DynamicConstRef::traverseImpl(
         [&](const Path::FieldAccess& f) -> std::optional<RefType> {
           const auto& currentType = current->type();
           if (currentType.isStruct()) {
-            return current->asStruct().getField(f.handle);
+            return current->asStruct().getField(f.fieldHandle());
           }
           if (currentType.isUnion()) {
             auto& unionValue = current->asUnion();
-            if (!unionValue.hasField(f.handle)) {
+            if (!unionValue.hasField(f.fieldHandle())) {
               return std::nullopt;
             }
-            return unionValue.getField(f.handle);
+            return unionValue.getField(f.fieldHandle());
           }
           folly::throw_exception<InvalidPathAccessError>(fmt::format(
               "cannot access field on non-structured type '{}'",
@@ -760,10 +760,10 @@ std::optional<RefType> DynamicConstRef::traverseImpl(
                 detail::typeDisplayName(currentType)));
           }
           auto& listValue = current->asList();
-          if (l.index >= listValue.size()) {
+          if (l.index() >= listValue.size()) {
             return std::nullopt;
           }
-          return listValue[l.index];
+          return listValue[l.index()];
         },
         [&](const Path::SetElement& s) -> std::optional<RefType> {
           const auto& currentType = current->type();
@@ -779,8 +779,8 @@ std::optional<RefType> DynamicConstRef::traverseImpl(
                 "cannot get mutable reference to set element");
           } else {
             const auto& setVal = current->asSet();
-            validateSelectorType(s.value, setVal.elementType());
-            return setVal.find(s.value);
+            validateSelectorType(s.value(), setVal.elementType());
+            return setVal.find(s.value());
           }
         },
         [&](const Path::MapKey& m) -> std::optional<RefType> {
@@ -797,8 +797,8 @@ std::optional<RefType> DynamicConstRef::traverseImpl(
                 "cannot get mutable reference to map key");
           } else {
             const auto& mapVal = current->asMap();
-            validateSelectorType(m.key, mapVal.keyType());
-            return mapVal.findKey(m.key);
+            validateSelectorType(m.key(), mapVal.keyType());
+            return mapVal.findKey(m.key());
           }
         },
         [&](const Path::MapValue& m) -> std::optional<RefType> {
@@ -809,8 +809,8 @@ std::optional<RefType> DynamicConstRef::traverseImpl(
                 detail::typeDisplayName(currentType)));
           }
           auto& mapVal = current->asMap();
-          validateSelectorType(m.key, mapVal.keyType());
-          return mapVal.get(m.key);
+          validateSelectorType(m.key(), mapVal.keyType());
+          return mapVal.get(m.key());
         },
         [&](const Path::AnyType&) -> std::optional<RefType> {
           folly::throw_exception<std::runtime_error>(

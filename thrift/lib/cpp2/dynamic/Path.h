@@ -23,6 +23,7 @@
 #include <folly/lang/Exception.h>
 
 #include <deque>
+#include <span>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -35,7 +36,7 @@ namespace detail {
 /**
  * Get a display name for a TypeRef.
  */
-std::string typeDisplayName(const type_system::TypeRef& type);
+std::string typeDisplayName(type_system::TypeRef type);
 
 } // namespace detail
 
@@ -69,53 +70,102 @@ class InvalidPathAccessError : public std::runtime_error {
  */
 class Path {
  public:
-  /**
-   * Returns the current path as a string.
-   */
-  std::string toString() const;
+  class FieldAccess final {
+   public:
+    FieldAccess(
+        type_system::TypeRef structuredType,
+        type_system::FastFieldHandle fieldHandle)
+        : structuredType_(structuredType), fieldHandle_(fieldHandle) {}
 
- private:
-  /**
-   * Access types for path components.
-   */
-  struct FieldAccess {
-    type_system::TypeRef structuredType; // The struct/union type
-    type_system::FastFieldHandle handle;
+    type_system::TypeRef structuredType() const { return structuredType_; }
+    type_system::FastFieldHandle fieldHandle() const { return fieldHandle_; }
+    type::FieldId fieldId() const { return field().identity().id(); }
+    std::string_view fieldName() const { return field().identity().name(); }
+    type_system::TypeRef fieldType() const { return field().type(); }
+
+   private:
+    const type_system::FieldDefinition& field() const {
+      return structuredType_.asStructured().at(fieldHandle_);
+    }
+
+    type_system::TypeRef structuredType_;
+    type_system::FastFieldHandle fieldHandle_;
   };
 
-  struct ListElement {
-    std::size_t index;
+  class ListElement final {
+   public:
+    explicit ListElement(std::size_t index) : index_(index) {}
+    std::size_t index() const { return index_; }
+
+   private:
+    std::size_t index_;
   };
 
-  struct SetElement {
-    DynamicValue value;
+  class SetElement final {
+   public:
+    explicit SetElement(DynamicValue value) : value_(std::move(value)) {}
+    DynamicConstRef value() const { return value_; }
+
+   private:
+    DynamicValue value_;
   };
 
-  struct MapKey {
-    DynamicValue key;
+  class MapKey final {
+   public:
+    explicit MapKey(DynamicValue key) : key_(std::move(key)) {}
+    DynamicConstRef key() const { return key_; }
+
+   private:
+    DynamicValue key_;
   };
 
-  struct MapValue {
-    DynamicValue key;
+  class MapValue final {
+   public:
+    explicit MapValue(DynamicValue key) : key_(std::move(key)) {}
+    DynamicConstRef key() const { return key_; }
+
+   private:
+    DynamicValue key_;
   };
 
-  struct AnyType {
-    type_system::TypeRef type;
+  class AnyType final {
+   public:
+    explicit AnyType(type_system::TypeRef type) : type_(type) {}
+    type_system::TypeRef type() const { return type_; }
+
+   private:
+    type_system::TypeRef type_;
   };
 
   using Component = std::
       variant<FieldAccess, ListElement, SetElement, MapKey, MapValue, AnyType>;
 
   /**
+   * Returns the current path as a human- and machine-readable string.
+   * The string uniquely determines a Path, but one Path may have multiple
+   * string representations.
+   */
+  std::string toString() const;
+
+  /**
    * Returns the root type.
    */
-  const type_system::TypeRef& rootType() const { return rootType_; }
+  type_system::TypeRef rootType() const { return rootType_; }
 
   /**
    * Returns the path components.
    */
-  std::span<const Component> components() const { return components_; }
+  std::span<const Component> components() const& { return components_; }
+  std::span<const Component> components() const&& = delete;
 
+  auto begin() const& { return components_.begin(); }
+  auto end() const& { return components_.end(); }
+  std::vector<Component>::const_iterator begin() const&& = delete;
+  std::vector<Component>::const_iterator end() const&& = delete;
+  bool empty() const { return components_.empty(); }
+  std::size_t size() const { return components_.size(); }
+
+ private:
   /**
    * Construct a Path with a root type.
    */
@@ -278,7 +328,7 @@ class PathBuilder {
   /**
    * Returns the current type at this path location.
    */
-  const type_system::TypeRef& currentType() const { return typeStack_.back(); }
+  type_system::TypeRef currentType() const { return typeStack_.back(); }
 
  private:
   template <typename T>

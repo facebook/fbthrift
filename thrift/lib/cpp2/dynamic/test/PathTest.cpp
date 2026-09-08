@@ -258,6 +258,65 @@ TEST_F(PathTest, PathFormatsSelectorTypes) {
       "MyStruct.users[\"alice\"].metadata[meta.com/thrift/test/UserProfile]");
 }
 
+TEST_F(PathTest, InspectComponents) {
+  Path path = [&] {
+    PathBuilder builder(getMyStructType());
+    auto users = builder.enterField("users");
+    auto user = builder.enterMapValue("alice");
+    auto metadata = builder.enterField("metadata");
+    auto type = builder.enterAnyType(getUserProfileType());
+    auto scores = builder.enterField("scores");
+    auto score = builder.enterListElement(2);
+    return builder.path();
+  }();
+
+  EXPECT_EQ(path.rootType().id(), getMyStructType().id());
+  EXPECT_FALSE(path.empty());
+  ASSERT_EQ(path.size(), 6);
+
+  const auto* users = std::get_if<Path::FieldAccess>(&path.components()[0]);
+  ASSERT_NE(users, nullptr);
+  EXPECT_EQ(users->structuredType().id(), getMyStructType().id());
+  EXPECT_EQ(users->fieldId(), FieldId{1});
+  EXPECT_EQ(users->fieldName(), "users");
+  EXPECT_TRUE(users->fieldType().isMap());
+
+  const auto* user = std::get_if<Path::MapValue>(&path.components()[1]);
+  ASSERT_NE(user, nullptr);
+  EXPECT_EQ(user->key(), DynamicValue::makeString("alice"));
+
+  const auto* type = std::get_if<Path::AnyType>(&path.components()[3]);
+  ASSERT_NE(type, nullptr);
+  EXPECT_EQ(type->type().id(), getUserProfileType().id());
+
+  const auto* score = std::get_if<Path::ListElement>(&path.components()[5]);
+  ASSERT_NE(score, nullptr);
+  EXPECT_EQ(score->index(), 2);
+
+  Path mapKeyPath = [&] {
+    PathBuilder builder(getMyStructType());
+    auto counts = builder.enterField("counts");
+    auto key = builder.enterMapKey(42);
+    return builder.path();
+  }();
+  const auto* mapKey =
+      std::get_if<Path::MapKey>(&mapKeyPath.components().back());
+  ASSERT_NE(mapKey, nullptr);
+  EXPECT_EQ(mapKey->key(), DynamicValue::makeI32(42));
+
+  auto setType =
+      type_system::TypeRef(makeSetType(type_system::TypeSystem::String()));
+  Path setPath = [&] {
+    PathBuilder builder(setType);
+    auto element = builder.enterSetElement("value");
+    return builder.path();
+  }();
+  const auto* setElement =
+      std::get_if<Path::SetElement>(&setPath.components().front());
+  ASSERT_NE(setElement, nullptr);
+  EXPECT_EQ(setElement->value(), DynamicValue::makeString("value"));
+}
+
 TEST_F(PathTest, BuilderStructuredMapKey) {
   auto mapType = type_system::TypeRef(makeMapType(
       type_system::TypeSystem::Any(), type_system::TypeSystem::String()));
