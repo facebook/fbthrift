@@ -921,20 +921,12 @@ TEST_F(BatchingFrameHandlerPipelineTest, TransportErrorPropagatesToTail) {
 
 namespace {
 
-// Single-value event enum mirroring a tracker's EventId.
-enum class CapturingEventId : std::uint32_t {
-  WriteComplete,
-  Count,
-};
+struct CapturingEvent : channel_pipeline::EventTag<int> {};
 
-// Tracker that captures hook invocations. Its onEvent records the raw
-// TypeErasedBox arrival count — the batcher just delegates onEvent through
-// without unpacking the type.
 struct CapturingTracker {
-  using EventId = CapturingEventId;
-  static constexpr apache::thrift::fast_thrift::channel_pipeline::Subscriptions<
-      EventId::WriteComplete>
-      kSubscribedEvents{};
+  using PublishedEvents = channel_pipeline::Events<>;
+  using SubscribedEvents = channel_pipeline::Events<CapturingEvent>;
+  using FlushWritesEventType = void;
 
   size_t onWriteCount{0};
   size_t onFlushCount{0};
@@ -945,31 +937,16 @@ struct CapturingTracker {
   void onFlush() noexcept { ++onFlushCount; }
   void onDiscard() noexcept { ++onDiscardCount; }
 
-  template <typename Context>
-  void onEvent(
-      Context& /*ctx*/,
-      EventId /*ev*/,
-      const apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&
-      /*box*/) noexcept {
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::same_as<E, CapturingEvent>
+  void on(Context&, const int&) noexcept {
     ++onEventCount;
   }
 };
 
 static_assert(WriteCompletionTracker<CapturingTracker>);
 
-// An event enum for a pipeline that asks its buffering handlers to flush ahead
-// of a teardown. A batcher bound to it subscribes to FlushWrites whether or not
-// it tracks write completions.
-enum class FlushableEventId : std::uint32_t {
-  WriteComplete,
-  FlushWrites,
-  Count,
-};
-
-static_assert(
-    !HasFlushWritesEvent<CapturingEventId>,
-    "an enum without FlushWrites must not opt its batcher into the flush path");
-static_assert(HasFlushWritesEvent<FlushableEventId>);
+struct FlushWritesEvent : channel_pipeline::EventTag<> {};
 
 class BatchingFrameHandlerTrackerTest : public ::testing::Test {
  protected:
@@ -1012,7 +989,7 @@ TEST_F(BatchingFrameHandlerTrackerTest, FlushWritesEventFlushesPendingBatch) {
   BatchingFrameHandlerT<
       NoOpWriteCompletionTracker,
       BackpressureEnabled,
-      FlushableEventId>
+      FlushWritesEvent>
       handler;
   handler.handlerAdded(*ctx_);
 
@@ -1022,10 +999,7 @@ TEST_F(BatchingFrameHandlerTrackerTest, FlushWritesEventFlushesPendingBatch) {
   ASSERT_TRUE(handler.hasPendingData());
   ASSERT_TRUE(ctx_->writtenBatches().empty()) << "batched, not yet downstream";
 
-  handler.onEvent(
-      *ctx_,
-      FlushableEventId::FlushWrites,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox{});
+  handler.on<FlushWritesEvent>(*ctx_);
 
   EXPECT_FALSE(handler.hasPendingData());
   EXPECT_EQ(ctx_->writtenBatches().size(), 1u)
@@ -1037,14 +1011,11 @@ TEST_F(BatchingFrameHandlerTrackerTest, FlushWritesEventOnEmptyBatchIsNoOp) {
   BatchingFrameHandlerT<
       NoOpWriteCompletionTracker,
       BackpressureEnabled,
-      FlushableEventId>
+      FlushWritesEvent>
       handler;
   handler.handlerAdded(*ctx_);
 
-  handler.onEvent(
-      *ctx_,
-      FlushableEventId::FlushWrites,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox{});
+  handler.on<FlushWritesEvent>(*ctx_);
 
   EXPECT_TRUE(ctx_->writtenBatches().empty());
 }
@@ -1072,14 +1043,8 @@ TEST_F(BatchingFrameHandlerTrackerTest, OnEventDelegatesToTracker) {
   // The batcher's onEvent should pass the box through to the tracker
   // unchanged. The tracker owns the per-pipeline event type discrimination.
   // We pass a dummy int box twice and confirm the tracker received both.
-  handler.onEvent(
-      *ctx_,
-      CapturingEventId::WriteComplete,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox(0));
-  handler.onEvent(
-      *ctx_,
-      CapturingEventId::WriteComplete,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox(0));
+  handler.on<CapturingEvent>(*ctx_, 0);
+  handler.on<CapturingEvent>(*ctx_, 0);
 
   EXPECT_EQ(handler.tracker().onEventCount, 2u);
 }

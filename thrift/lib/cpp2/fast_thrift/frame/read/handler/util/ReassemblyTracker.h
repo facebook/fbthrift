@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <utility>
 
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 
@@ -43,18 +44,21 @@ namespace apache::thrift::fast_thrift::frame::read::handler {
  * `kSubscribedEvents` — and the handler carrying it needs neither either.
  */
 template <typename T>
-concept ReassemblyTracker = requires(
-    T tracker,
-    apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl& ctx,
-    uint32_t streamId) {
-  { tracker.onFirstFragment(ctx, streamId) } noexcept;
-};
+concept ReassemblyTracker =
+    channel_pipeline::kIsEventSet<typename T::PublishedEvents> &&
+    requires(
+        T tracker,
+        channel_pipeline::detail::ContextImpl& ctx,
+        uint32_t streamId) {
+      { tracker.onFirstFragment(ctx, streamId) } noexcept;
+    };
 
 /**
  * Default tracker — the hook is an inline no-op and the compiler removes the
  * call. Empty, so `[[no_unique_address]]` collapses it to zero bytes.
  */
 struct NoOpReassemblyTracker {
+  using PublishedEvents = channel_pipeline::Events<>;
   template <typename Context>
   void onFirstFragment(Context& /*ctx*/, uint32_t /*streamId*/) noexcept {}
 };
@@ -70,15 +74,14 @@ static_assert(
  * rather than deep inside the tracker body.
  */
 template <typename T>
-concept FirstFragmentEventFactory = requires(
-    uint32_t streamId, std::chrono::steady_clock::time_point arrivalTime) {
-  typename T::EventId;
-  {
-    T::makeFirstResponseFrame(streamId, arrivalTime)
-  } noexcept -> std::same_as<std::pair<
-      typename T::EventId,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox>>;
-};
+concept FirstFragmentEventFactory =
+    channel_pipeline::PipelineEvent<typename T::FirstResponseFrameEventType> &&
+    requires(
+        uint32_t streamId, std::chrono::steady_clock::time_point arrivalTime) {
+      {
+        T::makeFirstResponseFrame(streamId, arrivalTime)
+      } noexcept -> std::same_as<typename T::FirstResponseFrameEventType>;
+    };
 
 /**
  * Concrete tracker — timestamps a stream's first fragment and fires the
@@ -96,11 +99,14 @@ concept FirstFragmentEventFactory = requires(
 template <FirstFragmentEventFactory EventFactory>
 class FirstFragmentTrackerT {
  public:
+  using FirstResponseEvent = typename EventFactory::FirstResponseFrameEventType;
+  using PublishedEvents = channel_pipeline::Events<FirstResponseEvent>;
   template <typename Context>
   void onFirstFragment(Context& ctx, uint32_t streamId) noexcept {
-    auto [eventId, eventMsg] = EventFactory::makeFirstResponseFrame(
-        streamId, std::chrono::steady_clock::now());
-    ctx.fireEvent(eventId, std::move(eventMsg));
+    PublishedEvents::template fire<FirstResponseEvent>(
+        ctx,
+        EventFactory::makeFirstResponseFrame(
+            streamId, std::chrono::steady_clock::now()));
   }
 };
 

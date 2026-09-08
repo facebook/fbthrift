@@ -18,8 +18,10 @@
 
 #include <array>
 #include <concepts>
+#include <cstddef>
 #include <cstdint>
 #include <type_traits>
+#include <utility>
 
 #include <folly/IntrusiveList.h>
 
@@ -32,19 +34,124 @@ class ContextImpl;
 } // namespace detail
 
 /**
- * NoEvent is the default event enum and disables the event subsystem.
+ * Base for a pipeline event tag. Each event derives from its own EventTag
+ * specialization and names the payload delivered to subscribers. Use void for
+ * a signal with no payload.
+ */
+template <typename PayloadT = void>
+struct EventTag {
+  using Payload = PayloadT;
+};
+
+/** A distinct type deriving from EventTag<Payload>. */
+template <typename E>
+concept PipelineEvent = requires { typename E::Payload; } &&
+    std::derived_from<E, EventTag<typename E::Payload>> &&
+    (!std::same_as<E, EventTag<typename E::Payload>>);
+
+/**
+ * Compile-time set used by handlers as PublishedEvents or SubscribedEvents.
+ * fire() is constrained to members of the set, making an undeclared publish a
+ * compile error when publishers fire through their own PublishedEvents alias
+ * and context. The event's position in this set selects its cached route.
+ */
+template <PipelineEvent... Evs>
+struct Events {
+ private:
+  template <PipelineEvent E>
+  static consteval std::size_t indexOf() {
+    constexpr std::array matches{std::same_as<E, Evs>...};
+    for (std::size_t i = 0; i < matches.size(); ++i) {
+      if (matches[i]) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
+ public:
+  template <PipelineEvent E>
+    requires((std::same_as<E, Evs> || ...))
+  static constexpr std::size_t index = indexOf<E>();
+
+  template <PipelineEvent E, typename Target, typename... Args>
+    requires((std::same_as<E, Evs> || ...))
+  static void fire(Target& target, Args&&... args) noexcept {
+    if constexpr (requires {
+                    target.template firePublishedEvent<E, index<E>>(
+                        std::forward<Args>(args)...);
+                  }) {
+      target.template firePublishedEvent<E, index<E>>(
+          std::forward<Args>(args)...);
+    } else {
+      target.template fireEvent<E>(std::forward<Args>(args)...);
+    }
+  }
+};
+
+template <typename T>
+inline constexpr bool kIsEventSet = false;
+
+template <PipelineEvent... Evs>
+inline constexpr bool kIsEventSet<Events<Evs...>> = true;
+
+/**
+ * Process-local identity for an event type. Inline variable-template address
+ * identity is collision-free and avoids maintaining a central numeric id
+ * catalog. A PipelineImpl maps these keys to pipeline-local subscriber slots.
+ */
+struct alignas(8) EventTypeToken {};
+using EventKey = const EventTypeToken*;
+
+template <PipelineEvent E>
+inline constexpr EventTypeToken kEventTypeToken{};
+
+template <PipelineEvent E>
+constexpr EventKey eventKey() noexcept {
+  return &kEventTypeToken<E>;
+}
+
+using TypeEventDispatchFn = void (*)(
+    void* target, detail::ContextImpl* ctx, const void* payload) noexcept;
+
+/** A type-based event subscriber's pipeline-owned dispatch entry. */
+struct TypeEventDispatch {
+  TypeEventDispatchFn fn{nullptr};
+  void* target{nullptr};
+  detail::ContextImpl* ctx{nullptr};
+};
+
+struct TypeEventSubscription {
+  EventKey key{nullptr};
+  TypeEventDispatchFn thunk{nullptr};
+};
+
+template <PipelineEvent... Evs>
+constexpr std::array<EventKey, sizeof...(Evs)> eventKeys(Events<Evs...>) {
+  return {eventKey<Evs>()...};
+}
+
+/**
+ * NoEvent is the default legacy event enum and disables enum-based events.
  *
- * A pipeline parameterized with NoEvent allocates no event lists, links no
- * hooks, and compiles out all event wiring — it pays nothing for events.
+ * A pipeline parameterized with NoEvent allocates no legacy event lists and
+ * links no legacy hooks. Type-based events are registered independently from
+ * handlers' PublishedEvents and SubscribedEvents declarations.
+ *
+ * @deprecated Use type-based EventTag and Events declarations. Kept while
+ * existing pipelines migrate; it intentionally has no compiler deprecation
+ * attribute so unchanged consumers do not fail warning-as-error builds.
  */
 enum class NoEvent : std::uint32_t { Count = 0 };
 
 /**
- * EventEnum constrains the type that identifies a pipeline's user events.
+ * EventEnum constrains the type used by the legacy enum event API.
  *
  * It must be a `uint32_t`-backed enum class whose last value is `Count`, the
  * sentinel that gives the pipeline its number of distinct event types at
  * compile time. NoEvent satisfies this and means "events disabled".
+ *
+ * @deprecated Use PipelineEvent.
  */
 template <typename E>
 concept EventEnum = std::is_enum_v<E> &&
@@ -165,6 +272,8 @@ struct EventSubscription {
  * — so each carries its own enum type and onEvent is dispatched typed per
  * layer. Layer enums share one anchored id space, so each value is its global
  * id.
+ *
+ * @deprecated Use Events<E...>.
  */
 template <auto... Evs>
 struct Subscriptions {};

@@ -110,8 +110,8 @@ struct RocketServerConnection {
     // the FIN. A pipeline that is already closed, or a batcher with nothing
     // buffered, makes this a no-op.
     if (pipeline) {
-      pipeline->fireEvent(
-          RocketServerEventId::FlushWrites, channel_pipeline::TypeErasedBox{});
+      channel_pipeline::Events<FlushWritesEvent>::fire<FlushWritesEvent>(
+          *pipeline);
     }
     if (transportHandler) {
       transportHandler->close(std::move(ew));

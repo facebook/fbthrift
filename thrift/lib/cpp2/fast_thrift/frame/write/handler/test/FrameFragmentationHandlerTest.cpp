@@ -109,8 +109,8 @@ class MockContext {
 // ============================================================================
 
 struct RecordingTracker {
-  using EventId = apache::thrift::fast_thrift::channel_pipeline::NoEvent;
-  static constexpr std::array<EventId, 0> kSubscribedEvents{};
+  using PublishedEvents = channel_pipeline::Events<>;
+  using SubscribedEvents = channel_pipeline::Events<>;
 
   struct FragmentCall {
     uint32_t streamId;
@@ -123,22 +123,7 @@ struct RecordingTracker {
     fragments.push_back({streamId, isLastFragment});
   }
   void onFlush() noexcept { ++flushCount; }
-
-  template <typename Context>
-  void onEvent(
-      Context& /*ctx*/,
-      EventId /*ev*/,
-      const apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&
-      /*box*/) noexcept {}
 };
-
-static_assert(
-    FragmentCompletionTracker<RecordingTracker>,
-    "RecordingTracker must satisfy FragmentCompletionTracker concept");
-
-// ============================================================================
-// Test Helpers
-// ============================================================================
 
 std::unique_ptr<folly::IOBuf> makePayload(size_t size) {
   auto buf = folly::IOBuf::create(size);

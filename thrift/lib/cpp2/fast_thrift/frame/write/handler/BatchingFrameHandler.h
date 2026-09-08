@@ -64,7 +64,7 @@ namespace apache::thrift::fast_thrift::frame::write::handler {
 template <
     WriteCompletionTracker Tracker = NoOpWriteCompletionTracker,
     BackpressurePolicy Backpressure = BackpressureEnabled,
-    typename Ev = typename Tracker::EventId>
+    typename FlushEvent = typename Tracker::FlushWritesEventType>
 class BatchingFrameHandlerT : public Backpressure {
  public:
   // Backpressure state (writeReadyHook_, backpressured_) is inherited from the
@@ -164,39 +164,22 @@ class BatchingFrameHandlerT : public Backpressure {
     }
   }
 
-  // The tracker's own subscriptions plus FlushWrites when the pipeline's event
-  // enum defines it. A pipeline with neither wires nothing and the whole event
-  // path compiles out.
-  using EventId = Ev;
-  static constexpr auto kSubscribedEvents =
-      makeBatcherSubscriptions<Tracker, Ev>();
+  using PublishedEvents = typename Tracker::PublishedEvents;
+  using SubscribedEvents = BatcherSubscribedEvents<Tracker, FlushEvent>;
 
-  // FlushWrites: teardown is imminent, so push the batch downstream now, while
-  // the transport still accepts writes. A refused write means the socket is
-  // already gone and there is nothing left to preserve, so the result is
-  // dropped rather than raised as an exception into a pipeline being torn down.
-  //
-  // Anything else is a write completion, which the tracker turns into per-batch
-  // attribution (see WriteCompletionTracker.h).
-  template <typename Context>
-  void onEvent(
-      Context& ctx,
-      EventId ev,
-      const apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&
-          box) noexcept {
-    if constexpr (HasFlushWritesEvent<EventId>) {
-      if (ev == EventId::FlushWrites) {
-        if (batch_) {
-          (void)flushNow(ctx);
-        }
-        return;
-      }
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::is_void_v<typename E::Payload>
+  void on(Context& ctx) noexcept {
+    static_assert(std::same_as<E, FlushEvent>);
+    if (batch_) {
+      (void)flushNow(ctx);
     }
-    if constexpr (!std::is_same_v<
-                      typename Tracker::EventId,
-                      apache::thrift::fast_thrift::channel_pipeline::NoEvent>) {
-      tracker_.onEvent(ctx, ev, box);
-    }
+  }
+
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires(!std::is_void_v<typename E::Payload>)
+  void on(Context& ctx, const typename E::Payload& event) noexcept {
+    tracker_.template on<E>(ctx, event);
   }
 
   // ===========================================================================

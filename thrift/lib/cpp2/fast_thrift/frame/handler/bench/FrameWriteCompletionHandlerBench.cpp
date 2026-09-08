@@ -134,10 +134,7 @@ class BenchSerializer {
 // touches the carried streamId so the fan-out can't be optimized away.
 class BenchWriteCompleteSubscriber {
  public:
-  using EventId = RocketClientEventId;
-  static constexpr apache::thrift::fast_thrift::channel_pipeline::Subscriptions<
-      EventId::FrameWriteComplete>
-      kSubscribedEvents{};
+  using SubscribedEvents = channel_pipeline::Events<FrameWriteCompleteEvent>;
 
   template <typename Context>
   void handlerAdded(Context& /*ctx*/) noexcept {}
@@ -164,21 +161,17 @@ class BenchWriteCompleteSubscriber {
     return ctx.fireWrite(std::move(msg));
   }
 
-  template <typename Context>
-  void onEvent(
-      Context& /*ctx*/, EventId /*ev*/, const TypeErasedBox& box) noexcept {
-    folly::doNotOptimizeAway(box.get<FrameWriteCompleteEvent>().streamId);
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::same_as<E, FrameWriteCompleteEvent>
+  void on(Context&, const FrameWriteCompleteEvent& event) noexcept {
+    folly::doNotOptimizeAway(event.streamId);
   }
 };
 
 // Fixture parameterized on the transport's event factory, the batcher's
 // tracker, the pipeline event enum, and whether the write-completion handler is
 // wired in.
-template <
-    typename Factory,
-    typename Tracker,
-    typename EventEnumT,
-    bool WithHandler>
+template <typename Factory, typename Tracker, bool WithHandler>
 struct FixtureT {
   static constexpr bool kWithHandler = WithHandler;
 
@@ -221,8 +214,7 @@ struct FixtureT {
           PipelineBuilder<
               TransportHandler,
               RocketClientAppAdapter,
-              SimpleBufferAllocator,
-              EventEnumT>()
+              SimpleBufferAllocator>()
               .setEventBase(&evb)
               .setHead(transportHandler.get())
               .setTail(appAdapter.get())
@@ -239,8 +231,7 @@ struct FixtureT {
       pipeline = PipelineBuilder<
                      TransportHandler,
                      RocketClientAppAdapter,
-                     SimpleBufferAllocator,
-                     EventEnumT>()
+                     SimpleBufferAllocator>()
                      .setEventBase(&evb)
                      .setHead(transportHandler.get())
                      .setTail(appAdapter.get())
@@ -258,12 +249,10 @@ struct FixtureT {
 using BaselineFixture = FixtureT<
     apache::thrift::fast_thrift::transport::NoOpWriteCompleteEventFactory,
     NoOpWriteCompletionTracker,
-    NoEvent,
     /*WithHandler=*/false>;
 using HandlerFixture = FixtureT<
     RocketClientEventFactory,
     WriteCompletionTrackerT<RocketClientEventFactory>,
-    RocketClientEventId,
     /*WithHandler=*/true>;
 
 // Drives `iters` batches of `framesPerBatch` outbound ComposedFrames. Frames

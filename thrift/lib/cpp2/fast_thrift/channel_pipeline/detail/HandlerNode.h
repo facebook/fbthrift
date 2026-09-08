@@ -86,6 +86,13 @@ struct HandlerNode {
   const EventSubscription* subscriptions{nullptr};
   std::size_t subscriptionCount{0};
 
+  // Type-based event metadata. Published keys register the event with this
+  // pipeline; subscriptions additionally carry the typed on<E>() thunk.
+  const EventKey* publishedEvents{nullptr};
+  std::size_t publishedEventCount{0};
+  const TypeEventSubscription* typeSubscriptions{nullptr};
+  std::size_t typeSubscriptionCount{0};
+
   // Lifecycle methods
   HandlerAddedFn handlerAddedFn{nullptr};
   HandlerRemovedFn handlerRemovedFn{nullptr};
@@ -112,6 +119,10 @@ struct HandlerNode {
         onPipelineInactiveFn(other.onPipelineInactiveFn),
         subscriptions(other.subscriptions),
         subscriptionCount(other.subscriptionCount),
+        publishedEvents(other.publishedEvents),
+        publishedEventCount(other.publishedEventCount),
+        typeSubscriptions(other.typeSubscriptions),
+        typeSubscriptionCount(other.typeSubscriptionCount),
         handlerAddedFn(other.handlerAddedFn),
         handlerRemovedFn(other.handlerRemovedFn),
         writeReadyHook_(other.writeReadyHook_),
@@ -127,6 +138,10 @@ struct HandlerNode {
     other.onPipelineInactiveFn = nullptr;
     other.subscriptions = nullptr;
     other.subscriptionCount = 0;
+    other.publishedEvents = nullptr;
+    other.publishedEventCount = 0;
+    other.typeSubscriptions = nullptr;
+    other.typeSubscriptionCount = 0;
     other.handlerAddedFn = nullptr;
     other.handlerRemovedFn = nullptr;
     other.writeReadyHook_ = nullptr;
@@ -147,6 +162,10 @@ struct HandlerNode {
       onPipelineInactiveFn = other.onPipelineInactiveFn;
       subscriptions = other.subscriptions;
       subscriptionCount = other.subscriptionCount;
+      publishedEvents = other.publishedEvents;
+      publishedEventCount = other.publishedEventCount;
+      typeSubscriptions = other.typeSubscriptions;
+      typeSubscriptionCount = other.typeSubscriptionCount;
       handlerAddedFn = other.handlerAddedFn;
       handlerRemovedFn = other.handlerRemovedFn;
       writeReadyHook_ = other.writeReadyHook_;
@@ -163,6 +182,10 @@ struct HandlerNode {
       other.onPipelineInactiveFn = nullptr;
       other.subscriptions = nullptr;
       other.subscriptionCount = 0;
+      other.publishedEvents = nullptr;
+      other.publishedEventCount = 0;
+      other.typeSubscriptions = nullptr;
+      other.typeSubscriptionCount = 0;
       other.handlerAddedFn = nullptr;
       other.handlerRemovedFn = nullptr;
       other.writeReadyHook_ = nullptr;
@@ -174,6 +197,43 @@ struct HandlerNode {
   HandlerNode(const HandlerNode&) = delete;
   HandlerNode& operator=(const HandlerNode&) = delete;
 };
+
+template <typename H, typename E, bool Endpoint, typename StateTuple>
+inline constexpr TypeEventDispatchFn kTypeSubThunk =
+    +[](void* h, ContextImpl* ctx, const void* payload) noexcept {
+      if constexpr (Endpoint) {
+        if constexpr (std::is_void_v<typename E::Payload>) {
+          static_cast<H*>(h)->template on<E>();
+        } else {
+          static_cast<H*>(h)->template on<E>(
+              *static_cast<const typename E::Payload*>(payload));
+        }
+      } else {
+        decltype(auto) c = contextFor<StateTuple>(*ctx);
+        if constexpr (std::is_void_v<typename E::Payload>) {
+          static_cast<H*>(h)->template on<E>(c);
+        } else {
+          static_cast<H*>(h)->template on<E>(
+              c, *static_cast<const typename E::Payload*>(payload));
+        }
+      }
+    };
+
+template <typename H, bool Endpoint, typename StateTuple, PipelineEvent... Evs>
+constexpr std::array<TypeEventSubscription, sizeof...(Evs)>
+makeTypeSubscriptions(Events<Evs...>) {
+  return {TypeEventSubscription{
+      eventKey<Evs>(), kTypeSubThunk<H, Evs, Endpoint, StateTuple>}...};
+}
+
+template <typename H>
+inline constexpr auto kHandlerPublishedEventKeys =
+    eventKeys(typename H::PublishedEvents{});
+
+template <typename H, bool Endpoint, typename StateTuple = std::tuple<>>
+inline constexpr auto kHandlerTypeSubscriptions =
+    makeTypeSubscriptions<H, Endpoint, StateTuple>(
+        typename H::SubscribedEvents{});
 
 /**
  * Typed dispatch thunk for one subscription: casts the global event id back to
@@ -347,6 +407,29 @@ HandlerNode makeHandlerNode(HandlerId handlerId, std::unique_ptr<H> handler) {
     node.onPipelineInactiveFn = [](void*, ContextImpl&) noexcept {
       // No-op for non-outbound handlers
     };
+  }
+
+  if constexpr (requires { typename H::PublishedEvents; }) {
+    static_assert(
+        TypeEventPublisher<H>,
+        "PublishedEvents must be a channel_pipeline::Events<...> set");
+    if constexpr (TypeEventPublisher<H>) {
+      node.publishedEvents = kHandlerPublishedEventKeys<H>.data();
+      node.publishedEventCount = kHandlerPublishedEventKeys<H>.size();
+    }
+  }
+
+  if constexpr (requires { typename H::SubscribedEvents; }) {
+    static_assert(
+        TypeEventSubscriber<H, Ctx>,
+        "SubscribedEvents requires a noexcept on<Event>(ctx, payload) for "
+        "every event; signal events omit payload");
+    if constexpr (TypeEventSubscriber<H, Ctx>) {
+      node.typeSubscriptions =
+          kHandlerTypeSubscriptions<H, /*Endpoint=*/false, StateTuple>.data();
+      node.typeSubscriptionCount =
+          kHandlerTypeSubscriptions<H, /*Endpoint=*/false, StateTuple>.size();
+    }
   }
 
   // User-event subscription: opt-in, and only when events are enabled for

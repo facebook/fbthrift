@@ -16,6 +16,10 @@
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 
+#include <algorithm>
+#include <cstdint>
+#include <functional>
+#include <limits>
 #include <memory>
 
 #include <folly/CppAttributes.h>
@@ -38,6 +42,7 @@
 
 namespace {
 
+using apache::thrift::fast_thrift::channel_pipeline::EventKey;
 using apache::thrift::fast_thrift::channel_pipeline::PipelineImpl;
 using apache::thrift::fast_thrift::channel_pipeline::Result;
 using apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox;
@@ -61,6 +66,12 @@ void tailHandlerExceptionFn(
     folly::exception_wrapper&& e) noexcept {
   static_cast<PipelineImpl*>(pipeline)->fireExceptionToTailHandler(
       std::move(e));
+}
+
+std::size_t typeEventStartIndex(EventKey key, std::size_t tableSize) noexcept {
+  auto value = reinterpret_cast<std::uintptr_t>(key) >> 3;
+  value ^= value >> 16;
+  return value & (tableSize - 1);
 }
 
 } // namespace
@@ -243,6 +254,203 @@ void PipelineImpl::clearEventLists() noexcept {
   }
 }
 
+void PipelineImpl::linkTypeEventLists() noexcept {
+  std::size_t declarationCount = tailPublishedEventCount_ +
+      tailTypeSubscriptionCount_ + headPublishedEventCount_ +
+      headTypeSubscriptionCount_;
+  for (const auto& node : handlers_) {
+    declarationCount += node.publishedEventCount + node.typeSubscriptionCount;
+  }
+
+  std::vector<EventKey> keys;
+  keys.reserve(declarationCount);
+  auto registerEvents = [&keys](const EventKey* events, std::size_t count) {
+    for (std::size_t i = 0; i < count; ++i) {
+      keys.push_back(events[i]);
+    }
+  };
+  auto registerSubscriptions = [&registerEvents](
+                                   const TypeEventSubscription* subscriptions,
+                                   std::size_t count) {
+    for (std::size_t i = 0; i < count; ++i) {
+      registerEvents(&subscriptions[i].key, 1);
+    }
+  };
+
+  registerEvents(tailPublishedEvents_, tailPublishedEventCount_);
+  registerSubscriptions(tailTypeSubscriptions_, tailTypeSubscriptionCount_);
+  for (const auto& node : handlers_) {
+    registerEvents(node.publishedEvents, node.publishedEventCount);
+    registerSubscriptions(node.typeSubscriptions, node.typeSubscriptionCount);
+  }
+  registerEvents(headPublishedEvents_, headPublishedEventCount_);
+  registerSubscriptions(headTypeSubscriptions_, headTypeSubscriptionCount_);
+
+  std::sort(keys.begin(), keys.end(), std::less<EventKey>{});
+  keys.erase(std::unique(keys.begin(), keys.end()), keys.end());
+  if (keys.empty()) {
+    return;
+  }
+
+  typeEventTableSize_ = 2;
+  while (typeEventTableSize_ < keys.size() * 2) {
+    typeEventTableSize_ *= 2;
+  }
+  typeEventTable_ = std::make_unique<TypeEventSlot[]>(typeEventTableSize_);
+  for (const auto key : keys) {
+    auto index = typeEventStartIndex(key, typeEventTableSize_);
+    while (typeEventTable_[index].key != nullptr) {
+      index = (index + 1) & (typeEventTableSize_ - 1);
+    }
+    typeEventTable_[index].key = key;
+  }
+
+  typeEventDispatchCount_ =
+      tailTypeSubscriptionCount_ + headTypeSubscriptionCount_;
+  for (const auto& node : handlers_) {
+    typeEventDispatchCount_ += node.typeSubscriptionCount;
+  }
+  if (typeEventDispatchCount_ != 0) {
+    typeEventDispatches_ =
+        std::make_unique<TypeEventDispatch[]>(typeEventDispatchCount_);
+  }
+
+  auto countSubscribers =
+      [this](const TypeEventSubscription* subscriptions, std::size_t count) {
+        for (std::size_t i = 0; i < count; ++i) {
+          auto* slot = findTypeEventSlot(subscriptions[i].key);
+          DCHECK(slot);
+          ++slot->subscriberCount;
+        }
+      };
+
+  countSubscribers(tailTypeSubscriptions_, tailTypeSubscriptionCount_);
+  for (const auto& node : handlers_) {
+    countSubscribers(node.typeSubscriptions, node.typeSubscriptionCount);
+  }
+  countSubscribers(headTypeSubscriptions_, headTypeSubscriptionCount_);
+
+  std::size_t subscriberOffset = 0;
+  for (std::size_t i = 0; i < typeEventTableSize_; ++i) {
+    auto& slot = typeEventTable_[i];
+    if (slot.key == nullptr) {
+      continue;
+    }
+    slot.subscribers = slot.subscriberCount == 0
+        ? nullptr
+        : typeEventDispatches_.get() + subscriberOffset;
+    subscriberOffset += slot.subscriberCount;
+  }
+  DCHECK_EQ(subscriberOffset, typeEventDispatchCount_);
+
+  // Advance each span pointer as its entries are filled, then restore every
+  // pointer to the start of its immutable span below.
+  auto link = [this](
+                  void* target,
+                  detail::ContextImpl* ctx,
+                  const TypeEventSubscription* subscriptions,
+                  std::size_t count) {
+    for (std::size_t i = 0; i < count; ++i) {
+      const auto& subscription = subscriptions[i];
+      auto* slot = findTypeEventSlot(subscription.key);
+      DCHECK(slot);
+      auto& dispatch = *slot->subscribers++;
+      dispatch.fn = subscription.thunk;
+      dispatch.target = target;
+      dispatch.ctx = ctx;
+    }
+  };
+
+  link(
+      tailHandler_,
+      nullptr,
+      tailTypeSubscriptions_,
+      tailTypeSubscriptionCount_);
+  for (std::size_t i = handlers_.size(); i > 0; --i) {
+    const auto index = i - 1;
+    const auto& node = handlers_[index];
+    link(
+        node.handlerPtr,
+        &contexts_[index],
+        node.typeSubscriptions,
+        node.typeSubscriptionCount);
+  }
+  link(
+      headHandler_,
+      nullptr,
+      headTypeSubscriptions_,
+      headTypeSubscriptionCount_);
+  subscriberOffset = 0;
+  for (std::size_t i = 0; i < typeEventTableSize_; ++i) {
+    auto& slot = typeEventTable_[i];
+    if (slot.key == nullptr) {
+      continue;
+    }
+    if (slot.subscriberCount != 0) {
+      DCHECK_EQ(
+          slot.subscribers,
+          typeEventDispatches_.get() + subscriberOffset + slot.subscriberCount);
+      slot.subscribers = typeEventDispatches_.get() + subscriberOffset;
+    }
+    subscriberOffset += slot.subscriberCount;
+  }
+
+  typeEventRouteCount_ = tailPublishedEventCount_ + headPublishedEventCount_;
+  for (const auto& node : handlers_) {
+    typeEventRouteCount_ += node.publishedEventCount;
+  }
+  if (typeEventRouteCount_ == 0) {
+    return;
+  }
+
+  typeEventRoutes_ = std::make_unique<TypeEventRoute[]>(typeEventRouteCount_);
+  std::size_t routeIndex = 0;
+  auto linkPublisher =
+      [this, &routeIndex](
+          detail::ContextImpl& ctx, const EventKey* events, std::size_t count) {
+        if (count == 0) {
+          return;
+        }
+        DCHECK_LE(routeIndex, std::numeric_limits<std::uint32_t>::max());
+        ctx.typeEventRouteOffset_ = static_cast<std::uint32_t>(routeIndex);
+        for (std::size_t i = 0; i < count; ++i) {
+          auto* slot = findTypeEventSlot(events[i]);
+          DCHECK(slot);
+          typeEventRoutes_[routeIndex++] = TypeEventRoute{
+              events[i], slot->subscribers, slot->subscriberCount};
+        }
+      };
+
+  linkPublisher(tailCtx_, tailPublishedEvents_, tailPublishedEventCount_);
+  for (std::size_t i = 0; i < handlers_.size(); ++i) {
+    linkPublisher(
+        contexts_[i],
+        handlers_[i].publishedEvents,
+        handlers_[i].publishedEventCount);
+  }
+  linkPublisher(headCtx_, headPublishedEvents_, headPublishedEventCount_);
+  DCHECK_EQ(routeIndex, typeEventRouteCount_);
+}
+
+PipelineImpl::TypeEventSlot* FOLLY_NULLABLE
+PipelineImpl::findTypeEventSlot(EventKey key) noexcept {
+  if (!typeEventTable_) {
+    return nullptr;
+  }
+
+  auto index = typeEventStartIndex(key, typeEventTableSize_);
+  while (true) {
+    auto& slot = typeEventTable_[index];
+    if (slot.key == key) {
+      return &slot;
+    }
+    if (slot.key == nullptr) {
+      return nullptr;
+    }
+    index = (index + 1) & (typeEventTableSize_ - 1);
+  }
+}
+
 void PipelineImpl::callHandlerAdded() noexcept {
   DestructorGuard dg(this);
   headHandlerAddedFn_(headHandler_);
@@ -341,6 +549,68 @@ PIPELINE_HOT_PATH void PipelineImpl::fireException(
     return;
   }
   firstExceptionFn_(firstHandler_, *firstCtx_, std::move(e));
+}
+
+void PipelineImpl::fireTypeEvent(EventKey key, const void* payload) noexcept {
+  RETURN_IF_CLOSED();
+  if (FOLLY_UNLIKELY(!typeEventTable_)) {
+    return;
+  }
+
+  auto index = typeEventStartIndex(key, typeEventTableSize_);
+  while (true) {
+    auto& slot = typeEventTable_[index];
+    if (FOLLY_LIKELY(slot.key == key)) {
+      if (FOLLY_UNLIKELY(slot.subscriberCount == 0)) {
+        return;
+      }
+      DestructorGuard dg(this);
+      for (std::size_t i = 0; i < slot.subscriberCount; ++i) {
+        const auto& dispatch = slot.subscribers[i];
+        dispatch.fn(dispatch.target, dispatch.ctx, payload);
+      }
+      return;
+    }
+    if (FOLLY_UNLIKELY(slot.key == nullptr)) {
+      return;
+    }
+    index = (index + 1) & (typeEventTableSize_ - 1);
+  }
+}
+
+void PipelineImpl::fireTypeEventSlot(
+    const TypeEventSlot* slot, const void* payload) noexcept {
+  RETURN_IF_CLOSED();
+  if (FOLLY_UNLIKELY(slot == nullptr || slot->subscriberCount == 0)) {
+    return;
+  }
+
+  DestructorGuard dg(this);
+  for (std::size_t i = 0; i < slot->subscriberCount; ++i) {
+    const auto& dispatch = slot->subscribers[i];
+    dispatch.fn(dispatch.target, dispatch.ctx, payload);
+  }
+}
+
+void PipelineImpl::fireTypeEventFromRoute(
+    std::uint32_t routeOffset,
+    std::size_t routeIndex,
+    EventKey key,
+    const void* payload) noexcept {
+  RETURN_IF_CLOSED();
+  const auto absoluteIndex = static_cast<std::size_t>(routeOffset) + routeIndex;
+  DCHECK_LT(absoluteIndex, typeEventRouteCount_);
+  DCHECK_EQ(typeEventRoutes_[absoluteIndex].key, key);
+
+  const auto& route = typeEventRoutes_[absoluteIndex];
+  if (FOLLY_UNLIKELY(route.subscriberCount == 0)) {
+    return;
+  }
+  DestructorGuard dg(this);
+  for (std::size_t i = 0; i < route.subscriberCount; ++i) {
+    const auto& dispatch = route.subscribers[i];
+    dispatch.fn(dispatch.target, dispatch.ctx, payload);
+  }
 }
 
 void PipelineImpl::fireEvent(

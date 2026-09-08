@@ -100,15 +100,12 @@ class EventCapturingAppHandler {
   void onPipelineInactive() noexcept {}
   void onWriteReady() noexcept {}
 
-  // --- Event subscription ---
-  // Subscribes only to the enriched BatchWriteComplete event the tracker
-  // fires; the raw TransportWriteComplete never reaches this handler.
-  static constexpr cp::Subscriptions<RocketClientEventId::BatchWriteComplete>
-      kSubscribedEvents{};
+  using SubscribedEvents = cp::Events<BatchWriteCompleteEvent>;
 
-  void onEvent(
-      RocketClientEventId /*ev*/, const cp::TypeErasedBox& box) noexcept {
-    events_.push_back(box.get<BatchWriteCompleteEvent>());
+  template <cp::PipelineEvent E>
+    requires std::same_as<E, BatchWriteCompleteEvent>
+  void on(const BatchWriteCompleteEvent& event) noexcept {
+    events_.push_back(event);
   }
 
   const std::vector<BatchWriteCompleteEvent>& events() const noexcept {
@@ -136,8 +133,7 @@ class RocketClientWriteCompletionIntegrationTest : public ::testing::Test {
     pipeline_ = cp::PipelineBuilder<
                     TestTransportHandler,
                     EventCapturingAppHandler,
-                    cp::SimpleBufferAllocator,
-                    RocketClientEventId>()
+                    cp::SimpleBufferAllocator>()
                     .setEventBase(&evb_)
                     .setHead(transportHandler_.get())
                     .setTail(&app_)

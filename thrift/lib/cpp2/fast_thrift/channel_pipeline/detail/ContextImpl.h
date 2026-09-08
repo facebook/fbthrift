@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 #include <memory>
 
@@ -125,6 +126,30 @@ class alignas(64) ContextImpl {
   FOLLY_ALWAYS_INLINE void fireException(
       folly::exception_wrapper&& e) noexcept {
     nextExceptionFn_(nextHandler_, *nextCtx_, std::move(e));
+  }
+
+  template <PipelineEvent E>
+    requires std::is_void_v<typename E::Payload>
+  void fireEvent() noexcept {
+    fireTypeEvent(eventKey<E>(), nullptr);
+  }
+
+  template <PipelineEvent E>
+    requires(!std::is_void_v<typename E::Payload>)
+  void fireEvent(const typename E::Payload& payload) noexcept {
+    fireTypeEvent(eventKey<E>(), &payload);
+  }
+
+  template <PipelineEvent E, std::size_t RouteIndex>
+    requires std::is_void_v<typename E::Payload>
+  void firePublishedEvent() noexcept {
+    fireTypeEventFromRoute(RouteIndex, eventKey<E>(), nullptr);
+  }
+
+  template <PipelineEvent E, std::size_t RouteIndex>
+    requires(!std::is_void_v<typename E::Payload>)
+  void firePublishedEvent(const typename E::Payload& payload) noexcept {
+    fireTypeEventFromRoute(RouteIndex, eventKey<E>(), &payload);
   }
 
   /**
@@ -254,6 +279,10 @@ class alignas(64) ContextImpl {
   void* typedViewStorage() noexcept { return &typedViewStorage_; }
 
  private:
+  void fireTypeEvent(EventKey key, const void* payload) noexcept;
+  void fireTypeEventFromRoute(
+      std::size_t routeIndex, EventKey key, const void* payload) noexcept;
+
   // Non-templated, out-of-line forward for fireEvent: the public typed overload
   // casts the event enum to its id and calls this, which hands off to the
   // owning pipeline. Out-of-line (defined in the .cpp) so this header need not
@@ -294,6 +323,9 @@ class alignas(64) ContextImpl {
   // subscribes to nothing. Allocated and linked by PipelineImpl during build.
   std::unique_ptr<EventHook[]> eventHooks_;
   std::uint32_t eventHookCount_{0};
+  // Offset of this publisher's compile-time-ordered routes. This occupies the
+  // former tail padding, keeping ContextImpl at two cache lines.
+  std::uint32_t typeEventRouteOffset_{0};
 
   friend class ::apache::thrift::fast_thrift::channel_pipeline::PipelineImpl;
 

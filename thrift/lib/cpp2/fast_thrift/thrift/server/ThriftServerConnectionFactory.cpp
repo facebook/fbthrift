@@ -92,17 +92,16 @@ using ServerFragmentationFrameHandlerNoBackpressure =
             rocket::server::RocketServerEventFactory>,
         frame::write::handler::BackpressureDisabled>;
 
-// A NoOp tracker collapses the handler's EventId to NoEvent and empties its
-// subscription list, which is silent at runtime: the batcher keeps firing and
-// PipelineImpl::fireEvent walks an empty list. Catch that at build time here
-// instead, on the seam where the chain is actually assembled.
+// Catch an accidentally disabled fragment completion tracker at the pipeline
+// assembly seam, where it would otherwise strand batch completion events.
 static_assert(
-    !std::is_same_v<
-        ServerFragmentationFrameHandler::EventId,
-        channel_pipeline::NoEvent> &&
-        !std::is_same_v<
-            ServerFragmentationFrameHandlerNoBackpressure::EventId,
-            channel_pipeline::NoEvent>,
+    !std::same_as<
+        typename ServerFragmentationFrameHandler::SubscribedEvents,
+        channel_pipeline::Events<>> &&
+        !std::same_as<
+            typename ServerFragmentationFrameHandlerNoBackpressure::
+                SubscribedEvents,
+            channel_pipeline::Events<>>,
     "the fragmenter is the batcher's only BatchWriteComplete subscriber in "
     "both backpressure configurations; a NoOp tracker here would strand it");
 

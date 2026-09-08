@@ -107,11 +107,10 @@ class MockStreamContext {
     exception_ = std::move(e);
   }
 
-  void fireEvent(
-      RocketClientStreamStateHandler::EventId ev,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox
-          box) noexcept {
-    firedEvents_.emplace_back(ev, std::move(box));
+  template <channel_pipeline::PipelineEvent E>
+  void fireEvent(const typename E::Payload& event) noexcept {
+    static_assert(std::same_as<E, RocketWriteCompleteEvent>);
+    firedEvents_.push_back(event);
   }
 
   void setReturnBackpressure(bool value) { returnBackpressure_ = value; }
@@ -139,12 +138,7 @@ class MockStreamContext {
   bool hasException() const { return static_cast<bool>(exception_); }
   const folly::exception_wrapper& exception() const { return exception_; }
 
-  std::vector<std::pair<
-      RocketClientStreamStateHandler::EventId,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox>>&
-  firedEvents() {
-    return firedEvents_;
-  }
+  std::vector<RocketWriteCompleteEvent>& firedEvents() { return firedEvents_; }
 
   void reset() {
     readMessages_.clear();
@@ -162,10 +156,7 @@ class MockStreamContext {
       readMessages_;
   std::vector<apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox>
       writeMessages_;
-  std::vector<std::pair<
-      RocketClientStreamStateHandler::EventId,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox>>
-      firedEvents_;
+  std::vector<RocketWriteCompleteEvent> firedEvents_;
   folly::exception_wrapper exception_;
   bool returnBackpressure_{false};
   bool readReturnError_{false};
@@ -987,22 +978,17 @@ TEST_F(
       Result::Success);
   ASSERT_TRUE(handler_.hasActiveStream(1));
 
-  handler_.onEvent(
+  handler_.on<FrameWriteCompleteEvent>(
       ctx_,
-      RocketClientStreamStateHandler::EventId::FrameWriteComplete,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox(
-          FrameWriteCompleteEvent{
-              .streamId = 1,
-              .status = apache::thrift::fast_thrift::transport::
-                  WriteCompletionStatus::Success,
-              .quiesced = false,
-          }));
+      FrameWriteCompleteEvent{
+          .streamId = 1,
+          .status = apache::thrift::fast_thrift::transport::
+              WriteCompletionStatus::Success,
+          .quiesced = false,
+      });
 
   ASSERT_EQ(ctx_.firedEvents().size(), 1);
-  EXPECT_EQ(
-      ctx_.firedEvents()[0].first,
-      RocketClientStreamStateHandler::EventId::RocketWriteComplete);
-  auto& event = ctx_.firedEvents()[0].second.get<RocketWriteCompleteEvent>();
+  auto& event = ctx_.firedEvents()[0];
   EXPECT_EQ(event.requestContext, kTestHandle);
   EXPECT_EQ(
       event.status,
@@ -1014,16 +1000,14 @@ TEST_F(
 // A FrameWriteComplete whose streamId has no live slot (already terminated or
 // never seen) is silently dropped — no RocketWriteComplete is fired.
 TEST_F(ClientStreamStateHandlerTest, OnEventForUnknownStreamFiresNothing) {
-  handler_.onEvent(
+  handler_.on<FrameWriteCompleteEvent>(
       ctx_,
-      RocketClientStreamStateHandler::EventId::FrameWriteComplete,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox(
-          FrameWriteCompleteEvent{
-              .streamId = 999,
-              .status = apache::thrift::fast_thrift::transport::
-                  WriteCompletionStatus::Success,
-              .quiesced = false,
-          }));
+      FrameWriteCompleteEvent{
+          .streamId = 999,
+          .status = apache::thrift::fast_thrift::transport::
+              WriteCompletionStatus::Success,
+          .quiesced = false,
+      });
 
   EXPECT_TRUE(ctx_.firedEvents().empty());
 }

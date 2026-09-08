@@ -20,6 +20,7 @@
 #include <cstddef>
 #include <cstdint>
 
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/WriteCompletion.h>
 
 namespace apache::thrift::fast_thrift::rocket::client {
@@ -73,7 +74,8 @@ enum class RocketClientEventId : std::uint32_t {
  * Message for RocketClientEventId::TransportWriteComplete — the outcome of one
  * socket-level writev.
  */
-struct TransportWriteCompleteEvent {
+struct TransportWriteCompleteEvent
+    : channel_pipeline::EventTag<TransportWriteCompleteEvent> {
   apache::thrift::fast_thrift::transport::WriteCompletionStatus status;
   size_t bytes;
 };
@@ -85,7 +87,8 @@ struct TransportWriteCompleteEvent {
  * from its outbound FIFO and fans them out as per-write RocketWriteComplete
  * events.
  */
-struct BatchWriteCompleteEvent {
+struct BatchWriteCompleteEvent
+    : channel_pipeline::EventTag<BatchWriteCompleteEvent> {
   apache::thrift::fast_thrift::transport::WriteCompletionStatus status;
   size_t frameCount;
   size_t bytes;
@@ -102,7 +105,8 @@ struct BatchWriteCompleteEvent {
  * active). Carries the streamId so StreamStateHandler can look up the request
  * context from its per-stream slot map.
  */
-struct FrameWriteCompleteEvent {
+struct FrameWriteCompleteEvent
+    : channel_pipeline::EventTag<FrameWriteCompleteEvent> {
   uint32_t streamId;
   apache::thrift::fast_thrift::transport::WriteCompletionStatus status;
   // See BatchWriteCompleteEvent::quiesced, narrowed by whatever the handler
@@ -118,7 +122,8 @@ struct FrameWriteCompleteEvent {
  * only valid for the duration of the onEvent call — subscribers must not retain
  * it. The owning layer (which knows the concrete context type) static_casts it.
  */
-struct RocketWriteCompleteEvent {
+struct RocketWriteCompleteEvent
+    : channel_pipeline::EventTag<RocketWriteCompleteEvent> {
   void* requestContext;
   apache::thrift::fast_thrift::transport::WriteCompletionStatus status;
 };
@@ -132,9 +137,12 @@ struct RocketWriteCompleteEvent {
  * subscriber's own observation of that frame is already the first-frame time
  * and no event is needed.
  */
-struct FirstResponseFrameEvent {
+struct FirstResponseFrameEvent
+    : channel_pipeline::EventTag<FirstResponseFrameEvent> {
   uint32_t streamId{0};
   std::chrono::steady_clock::time_point arrivalTime{};
 };
+
+struct ConnectionCloseEvent : channel_pipeline::EventTag<> {};
 
 } // namespace apache::thrift::fast_thrift::rocket::client

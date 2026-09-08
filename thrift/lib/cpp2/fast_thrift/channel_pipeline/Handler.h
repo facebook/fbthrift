@@ -110,6 +110,61 @@ concept OutboundHandler = HandlerLifecycle<H, Ctx> &&
 template <typename H, typename Ctx>
 concept DuplexHandler = InboundHandler<H, Ctx> && OutboundHandler<H, Ctx>;
 
+template <typename H>
+concept TypeEventPublisher = requires { typename H::PublishedEvents; } &&
+    kIsEventSet<typename H::PublishedEvents>;
+
+template <typename H, typename Ctx, PipelineEvent E>
+constexpr bool subscriberHasOn() {
+  if constexpr (std::is_void_v<typename E::Payload>) {
+    return requires(H& h, Ctx& ctx) {
+      { h.template on<E>(ctx) } noexcept -> std::same_as<void>;
+    };
+  } else {
+    return requires(H& h, Ctx& ctx, const typename E::Payload& payload) {
+      { h.template on<E>(ctx, payload) } noexcept -> std::same_as<void>;
+    };
+  }
+}
+
+template <typename H, PipelineEvent E>
+constexpr bool endpointHasOn() {
+  if constexpr (std::is_void_v<typename E::Payload>) {
+    return requires(H& h) {
+      { h.template on<E>() } noexcept -> std::same_as<void>;
+    };
+  } else {
+    return requires(H& h, const typename E::Payload& payload) {
+      { h.template on<E>(payload) } noexcept -> std::same_as<void>;
+    };
+  }
+}
+
+template <typename H, typename Ctx, PipelineEvent... Evs>
+constexpr bool subscriberHasOn(Events<Evs...>) {
+  return (subscriberHasOn<H, Ctx, Evs>() && ...);
+}
+
+template <typename H, PipelineEvent... Evs>
+constexpr bool endpointHasOn(Events<Evs...>) {
+  return (endpointHasOn<H, Evs>() && ...);
+}
+
+/**
+ * A type-based event subscriber. SubscribedEvents explicitly supplies the
+ * event types because C++ cannot enumerate on<E>() specializations.
+ */
+template <typename H, typename Ctx>
+concept TypeEventSubscriber = requires { typename H::SubscribedEvents; } &&
+    kIsEventSet<typename H::SubscribedEvents> &&
+    subscriberHasOn<H, Ctx>(typename H::SubscribedEvents{});
+
+template <typename H>
+concept EndpointTypeEventSubscriber =
+    requires { typename H::SubscribedEvents; } &&
+    kIsEventSet<typename H::SubscribedEvents> &&
+    endpointHasOn<H>(typename H::SubscribedEvents{});
+
 /**
  * True iff H implements a typed onEvent for EVERY event in its subscription
  * set. Each subscribed value carries its own (layer) enum type, so the

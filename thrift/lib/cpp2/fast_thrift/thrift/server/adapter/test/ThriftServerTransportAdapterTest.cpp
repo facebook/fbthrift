@@ -297,14 +297,12 @@ TEST(
   // Simulate the rocket pipeline delivering an enriched write-completion to
   // the rocket app adapter; the bridge's callback relays it up as a thrift
   // WriteComplete event.
-  rocketAdapter->onEvent(
-      rocket::server::RocketServerEventId::RocketWriteComplete,
-      TypeErasedBox(
-          rocket::server::RocketWriteCompleteEvent{
-              .streamId = 4,
-              .status = transport::WriteCompletionStatus::Success,
-              .quiesced = true,
-          }));
+  rocketAdapter->on<rocket::server::RocketWriteCompleteEvent>(
+      rocket::server::RocketWriteCompleteEvent{
+          .streamId = 4,
+          .status = transport::WriteCompletionStatus::Success,
+          .quiesced = true,
+      });
 
   ASSERT_EQ(thriftTail.events.size(), 1u);
   EXPECT_EQ(

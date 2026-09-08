@@ -265,42 +265,30 @@ class RocketServerAppAdapter : public folly::DelayedDestruction {
     }
   }
 
-  // === Event subscription ===
+  using SubscribedEvents = channel_pipeline::
+      Events<RocketWriteCompleteEvent, SetupReceivedEvent, SetupCompleteEvent>;
 
-  // Subscribes to the enriched per-batch completion fired by the rocket
-  // pipeline's WriteCompletionTracker. Wired only when the pipeline is built
-  // with RocketServerEventId; otherwise the framework compiles this out.
-  static constexpr channel_pipeline::Subscriptions<
-      RocketServerEventId::RocketWriteComplete,
-      RocketServerEventId::SetupReceived,
-      RocketServerEventId::SetupComplete>
-      kSubscribedEvents{};
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, RocketWriteCompleteEvent>
+  void on(const RocketWriteCompleteEvent& event) noexcept {
+    if (FOLLY_LIKELY(static_cast<bool>(onWriteComplete_))) {
+      onWriteComplete_(event);
+    }
+  }
 
-  void onEvent(
-      RocketServerEventId ev,
-      const channel_pipeline::TypeErasedBox& box) noexcept {
-    switch (ev) {
-      case RocketServerEventId::RocketWriteComplete:
-        if (FOLLY_LIKELY(static_cast<bool>(onWriteComplete_))) {
-          onWriteComplete_(box.get<RocketWriteCompleteEvent>());
-        }
-        break;
-      // The setup events are questions: the relay writes its answer into the
-      // event, and the setup handler reads it back once dispatch returns. With
-      // no relay installed the slots stay empty, which the handler reads as
-      // "accept, nothing to push back".
-      case RocketServerEventId::SetupReceived:
-        if (onSetupReceived_) {
-          onSetupReceived_(*box.get<RocketSetupEvent*>());
-        }
-        break;
-      case RocketServerEventId::SetupComplete:
-        if (onSetupComplete_) {
-          onSetupComplete_(*box.get<RocketSetupCompleteEvent*>());
-        }
-        break;
-      default:
-        break;
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, SetupReceivedEvent>
+  void on(RocketSetupEvent* event) noexcept {
+    if (onSetupReceived_) {
+      onSetupReceived_(*event);
+    }
+  }
+
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, SetupCompleteEvent>
+  void on(RocketSetupCompleteEvent* event) noexcept {
+    if (onSetupComplete_) {
+      onSetupComplete_(*event);
     }
   }
 

@@ -71,10 +71,8 @@ class RocketClientStatsHandler {
  public:
   RocketClientStatsHandler() = default;
 
-  using EventId = client::RocketClientEventId;
-  static constexpr apache::thrift::fast_thrift::channel_pipeline::
-      Subscriptions<EventId::FrameWriteComplete, EventId::FirstResponseFrame>
-          kSubscribedEvents{};
+  using SubscribedEvents = channel_pipeline::
+      Events<FrameWriteCompleteEvent, FirstResponseFrameEvent>;
 
   // Steady, not system: these marks only ever produce durations, and a wall
   // clock stepping backwards would turn one into a negative latency.
@@ -162,29 +160,23 @@ class RocketClientStatsHandler {
 
   // === EventSubscriber ===
 
-  template <typename Context>
-  void onEvent(
-      Context& ctx,
-      EventId ev,
-      const apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&
-          box) noexcept {
-    if (ev == EventId::FirstResponseFrame) {
-      const auto& event = box.get<client::FirstResponseFrameEvent>();
-      auto& streams = ctx.template state<RocketClientStreamContexts>().streams;
-      if (auto it = streams.find(event.streamId); it != streams.end()) {
-        it->second.stats.firstResponseFrame = event.arrivalTime;
-      }
-      return;
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::same_as<E, FirstResponseFrameEvent>
+  void on(Context& ctx, const FirstResponseFrameEvent& event) noexcept {
+    auto& streams = ctx.template state<RocketClientStreamContexts>().streams;
+    if (auto it = streams.find(event.streamId); it != streams.end()) {
+      it->second.stats.firstResponseFrame = event.arrivalTime;
     }
+  }
 
-    const auto& event = box.get<client::FrameWriteCompleteEvent>();
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::same_as<E, FrameWriteCompleteEvent>
+  void on(Context& ctx, const FrameWriteCompleteEvent& event) noexcept {
     auto& streams = ctx.template state<RocketClientStreamContexts>().streams;
     auto it = streams.find(event.streamId);
     if (it == streams.end()) {
       return;
     }
-    // The request's bytes are gone as of now. Stamped even on a failed write:
-    // a request that died on the socket still spent the write time it spent.
     it->second.stats.writeComplete = Clock::now();
   }
 
@@ -252,9 +244,9 @@ static_assert(
     "RocketClientStatsHandler must satisfy DuplexHandler concept");
 
 static_assert(
-    apache::thrift::fast_thrift::channel_pipeline::EventSubscriber<
+    apache::thrift::fast_thrift::channel_pipeline::TypeEventSubscriber<
         RocketClientStatsHandler,
         apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>,
-    "RocketClientStatsHandler must satisfy EventSubscriber concept");
+    "RocketClientStatsHandler must satisfy TypeEventSubscriber concept");
 
 } // namespace apache::thrift::fast_thrift::rocket::client::handler

@@ -41,35 +41,24 @@ namespace {
 namespace cp = apache::thrift::fast_thrift::channel_pipeline;
 using transport::WriteCompletionStatus;
 
-// Minimal event factory: supplies the handler's event enum and message types
-// without pulling in any concrete protocol (rocket) enum.
 struct FakeEventFactory {
-  enum class EventId : uint32_t { BatchWriteComplete, FrameWriteComplete };
-
-  struct BatchEvent {
+  struct BatchEvent : cp::EventTag<BatchEvent> {
     WriteCompletionStatus status;
     size_t frameCount;
     bool quiesced;
   };
-  struct FrameEvent {
+  struct FrameEvent : cp::EventTag<FrameEvent> {
     uint32_t streamId;
     WriteCompletionStatus status;
     bool quiesced;
   };
 
   using BatchWriteCompleteEventType = BatchEvent;
-  // Read only via the handler's kSubscribedEvents, which the unit test never
-  // accesses — mark to silence -Wunused-const-variable in this anon namespace.
-  [[maybe_unused]] static constexpr EventId kBatchWriteCompleteEvent =
-      EventId::BatchWriteComplete;
+  using FrameWriteCompleteEventType = FrameEvent;
 
-  static std::pair<EventId, cp::TypeErasedBox> makeFrameWriteComplete(
+  static FrameEvent makeFrameWriteComplete(
       WriteCompletionStatus status, uint32_t streamId, bool quiesced) noexcept {
-    return {
-        EventId::FrameWriteComplete,
-        cp::TypeErasedBox(
-            FrameEvent{
-                .streamId = streamId, .status = status, .quiesced = quiesced})};
+    return {.streamId = streamId, .status = status, .quiesced = quiesced};
   }
 };
 
@@ -94,10 +83,10 @@ class MockContext {
     ++exceptionCount_;
   }
 
-  void fireEvent(FakeEventFactory::EventId ev, cp::TypeErasedBox box) noexcept {
-    if (ev == FakeEventFactory::EventId::FrameWriteComplete) {
-      frameFired_.push_back(box.get<FakeEventFactory::FrameEvent>());
-    }
+  template <cp::PipelineEvent E>
+  void fireEvent(const typename E::Payload& event) noexcept {
+    static_assert(std::same_as<E, FakeEventFactory::FrameEvent>);
+    frameFired_.push_back(event);
   }
 
   void setNextWriteResult(cp::Result r) noexcept { nextWriteResult_ = r; }
@@ -154,11 +143,9 @@ cp::TypeErasedBox makeInboundFrame(
   return cp::erase_and_box(read::parseFrame(buildFrame(type, streamId, flags)));
 }
 
-cp::TypeErasedBox batchComplete(
+FakeEventFactory::BatchEvent batchComplete(
     WriteCompletionStatus status, size_t frameCount, bool quiesced) {
-  return cp::TypeErasedBox(
-      FakeEventFactory::BatchEvent{
-          .status = status, .frameCount = frameCount, .quiesced = quiesced});
+  return {.status = status, .frameCount = frameCount, .quiesced = quiesced};
 }
 
 } // namespace
@@ -173,9 +160,8 @@ TEST(FrameWriteCompletionHandlerTest, BatchFansOutPerFrameInOrder) {
   (void)handler.onWrite(ctx, makeOutboundFrame(3));
   EXPECT_EQ(handler.pendingCount(), 2u);
 
-  handler.onEvent(
+  handler.on<FakeEventFactory::BatchEvent>(
       ctx,
-      FakeEventFactory::EventId::BatchWriteComplete,
       batchComplete(WriteCompletionStatus::Success, 2, /*quiesced=*/false));
 
   ASSERT_EQ(ctx.frameFired().size(), 2u);
@@ -218,9 +204,8 @@ TEST(
 
   // The batch completion for that frame now arrives — the tombstoned entry is
   // popped but not re-fired.
-  handler.onEvent(
+  handler.on<FakeEventFactory::BatchEvent>(
       ctx,
-      FakeEventFactory::EventId::BatchWriteComplete,
       batchComplete(WriteCompletionStatus::Success, 1, /*quiesced=*/false));
 
   EXPECT_EQ(ctx.frameFired().size(), 1u);
@@ -275,10 +260,8 @@ TEST(FrameWriteCompletionHandlerTest, QuiescenceRidesOnlyOnTheLastFrame) {
   (void)handler.onWrite(ctx, makeOutboundFrame(1));
   (void)handler.onWrite(ctx, makeOutboundFrame(3));
 
-  handler.onEvent(
-      ctx,
-      FakeEventFactory::EventId::BatchWriteComplete,
-      batchComplete(WriteCompletionStatus::Success, 2, /*quiesced=*/true));
+  handler.on<FakeEventFactory::BatchEvent>(
+      ctx, batchComplete(WriteCompletionStatus::Success, 2, /*quiesced=*/true));
 
   ASSERT_EQ(ctx.frameFired().size(), 2u);
   EXPECT_FALSE(ctx.frameFired()[0].quiesced);
@@ -302,10 +285,8 @@ TEST(FrameWriteCompletionHandlerTest, QuiescenceRidesOnLastNonTombstonedFrame) {
   EXPECT_EQ(ctx.frameFired()[0].streamId, 3u);
   EXPECT_FALSE(ctx.frameFired()[0].quiesced);
 
-  handler.onEvent(
-      ctx,
-      FakeEventFactory::EventId::BatchWriteComplete,
-      batchComplete(WriteCompletionStatus::Success, 2, /*quiesced=*/true));
+  handler.on<FakeEventFactory::BatchEvent>(
+      ctx, batchComplete(WriteCompletionStatus::Success, 2, /*quiesced=*/true));
 
   ASSERT_EQ(ctx.frameFired().size(), 2u);
   EXPECT_EQ(ctx.frameFired()[1].streamId, 1u);
@@ -324,10 +305,8 @@ TEST(FrameWriteCompletionHandlerTest, FullyTombstonedBatchDropsQuiescence) {
       ctx, makeInboundFrame(FrameType::PAYLOAD, 1, detail::kCompleteBit));
   ASSERT_EQ(ctx.frameFired().size(), 1u);
 
-  handler.onEvent(
-      ctx,
-      FakeEventFactory::EventId::BatchWriteComplete,
-      batchComplete(WriteCompletionStatus::Success, 1, /*quiesced=*/true));
+  handler.on<FakeEventFactory::BatchEvent>(
+      ctx, batchComplete(WriteCompletionStatus::Success, 1, /*quiesced=*/true));
 
   EXPECT_EQ(ctx.frameFired().size(), 1u);
   EXPECT_FALSE(ctx.frameFired()[0].quiesced);
@@ -346,16 +325,13 @@ TEST(FrameWriteCompletionHandlerTest, FifoExhaustedDropsQuiescence) {
 #ifndef NDEBUG
   // The drift is an XLOG(DFATAL), fatal in debug builds.
   EXPECT_DEATH(
-      handler.onEvent(
+      handler.on<FakeEventFactory::BatchEvent>(
           ctx,
-          FakeEventFactory::EventId::BatchWriteComplete,
           batchComplete(WriteCompletionStatus::Success, 2, /*quiesced=*/true)),
       "FIFO exhausted before frameCount");
 #else
-  handler.onEvent(
-      ctx,
-      FakeEventFactory::EventId::BatchWriteComplete,
-      batchComplete(WriteCompletionStatus::Success, 2, /*quiesced=*/true));
+  handler.on<FakeEventFactory::BatchEvent>(
+      ctx, batchComplete(WriteCompletionStatus::Success, 2, /*quiesced=*/true));
 
   ASSERT_EQ(ctx.frameFired().size(), 1u);
   EXPECT_EQ(ctx.frameFired()[0].streamId, 1u);

@@ -123,6 +123,12 @@ class TypedContext {
 
 #undef FT_TYPED_CONTEXT_FORWARD
 
+  template <PipelineEvent E, std::size_t RouteIndex, typename... Args>
+  FOLLY_ALWAYS_INLINE void firePublishedEvent(Args&&... args) const noexcept {
+    ctx_.template firePublishedEvent<E, RouteIndex>(
+        std::forward<Args>(args)...);
+  }
+
  private:
   ContextImpl& ctx_;
 };

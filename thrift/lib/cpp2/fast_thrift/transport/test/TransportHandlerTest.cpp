@@ -1288,14 +1288,16 @@ struct CapturingFactoryState {
   static inline std::vector<std::pair<WriteCompletionStatus, size_t>> calls;
 };
 
-enum class TestEvent : std::uint32_t { WriteComplete, Count };
+struct TestWriteCompleteEvent : channel_pipeline::EventTag<> {};
 
 struct CapturingWriteCompleteEventFactory {
-  static std::pair<TestEvent, TypeErasedBox> make(
+  using TransportWriteCompleteEventType = TestWriteCompleteEvent;
+  using PublishedEvents = channel_pipeline::Events<TestWriteCompleteEvent>;
+
+  static TestWriteCompleteEvent make(
       WriteCompletionStatus status, size_t bytes) noexcept {
     CapturingFactoryState::calls.emplace_back(status, bytes);
-    return std::pair<TestEvent, TypeErasedBox>(
-        TestEvent::WriteComplete, TypeErasedBox{});
+    return {};
   }
 };
 

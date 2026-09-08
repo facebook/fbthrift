@@ -1108,6 +1108,8 @@ TEST(FrameDefragmentationHandlerTest, ErrorDoesNotAffectOtherStreams) {
  * exactly what the handler reports and how often.
  */
 struct RecordingReassemblyTracker {
+  using PublishedEvents = channel_pipeline::Events<>;
+
   template <typename Context>
   void onFirstFragment(Context& /*ctx*/, uint32_t streamId) noexcept {
     firstFragments.push_back(streamId);

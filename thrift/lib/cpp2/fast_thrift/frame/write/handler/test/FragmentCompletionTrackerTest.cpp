@@ -16,7 +16,6 @@
 
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FragmentCompletionTracker.h>
 
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/WriteCompletion.h>
 
 #include <gtest/gtest.h>
@@ -29,47 +28,34 @@
 namespace apache::thrift::fast_thrift::frame::write::handler {
 namespace {
 
-// Test event types mirroring the rocket-pipeline shape: one message per event
-// id, no shared discriminator.
-struct TestBatchWriteCompleteEvent {
+struct TestBatchWriteCompleteEvent
+    : channel_pipeline::EventTag<TestBatchWriteCompleteEvent> {
   transport::WriteCompletionStatus status;
   size_t frameCount;
   size_t bytes;
   bool quiesced;
 };
 
-struct TestFrameWriteCompleteEvent {
+struct TestFrameWriteCompleteEvent
+    : channel_pipeline::EventTag<TestFrameWriteCompleteEvent> {
   uint32_t streamId;
   transport::WriteCompletionStatus status;
   bool quiesced;
 };
 
-// Event enum mirroring a rocket pipeline's EventId — one value per message.
-enum class TestEventId : std::uint32_t {
-  BatchWriteComplete,
-  FrameWriteComplete,
-  Count,
-};
-
-// Declares status first, streamId second — the same convention as the real
-// RocketClientEventFactory. The tracker must call it in that order.
 struct TestEventFactory {
-  using EventId = TestEventId;
   using BatchWriteCompleteEventType = TestBatchWriteCompleteEvent;
+  using FrameWriteCompleteEventType = TestFrameWriteCompleteEvent;
 
-  static std::pair<EventId, channel_pipeline::TypeErasedBox>
-  makeFrameWriteComplete(
+  static TestFrameWriteCompleteEvent makeFrameWriteComplete(
       transport::WriteCompletionStatus status,
       uint32_t streamId,
       bool quiesced) noexcept {
     return {
-        EventId::FrameWriteComplete,
-        channel_pipeline::TypeErasedBox(
-            TestFrameWriteCompleteEvent{
-                .streamId = streamId,
-                .status = status,
-                .quiesced = quiesced,
-            })};
+        .streamId = streamId,
+        .status = status,
+        .quiesced = quiesced,
+    };
   }
 };
 
@@ -77,13 +63,12 @@ static_assert(
     FrameWriteCompleteEventFactory<TestEventFactory>,
     "TestEventFactory must satisfy FrameWriteCompleteEventFactory concept");
 
-// Minimal Context — captures fireEvent boxes so the test can inspect what the
-// tracker fired upstream.
 class CapturingContext {
  public:
-  void fireEvent(
-      TestEventId /*ev*/, channel_pipeline::TypeErasedBox box) noexcept {
-    events_.push_back(std::move(box).take<TestFrameWriteCompleteEvent>());
+  template <channel_pipeline::PipelineEvent E>
+  void fireEvent(const typename E::Payload& event) noexcept {
+    static_assert(std::same_as<E, TestFrameWriteCompleteEvent>);
+    events_.push_back(event);
   }
 
   const std::vector<TestFrameWriteCompleteEvent>& events() const noexcept {
@@ -96,18 +81,17 @@ class CapturingContext {
 
 // Helper: build a BatchWriteComplete box (what the downstream batch tracker
 // would fire).
-channel_pipeline::TypeErasedBox batchWriteComplete(
+TestBatchWriteCompleteEvent batchWriteComplete(
     transport::WriteCompletionStatus status,
     size_t frameCount,
     size_t bytes,
     bool quiesced = false) noexcept {
-  return channel_pipeline::TypeErasedBox(
-      TestBatchWriteCompleteEvent{
-          .status = status,
-          .frameCount = frameCount,
-          .bytes = bytes,
-          .quiesced = quiesced,
-      });
+  return {
+      .status = status,
+      .frameCount = frameCount,
+      .bytes = bytes,
+      .quiesced = quiesced,
+  };
 }
 
 } // namespace
@@ -120,9 +104,8 @@ TEST(FragmentCompletionTrackerTest, FragmentedFrameFiresOnceOnLastFragment) {
   tracker.onFragment(7, /*isLastFragment=*/false);
   tracker.onFragment(7, /*isLastFragment=*/false);
   tracker.onFragment(7, /*isLastFragment=*/true);
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(transport::WriteCompletionStatus::Success, 3, 0),
       /*handlerHasPendingWrites=*/false);
 
@@ -138,9 +121,8 @@ TEST(FragmentCompletionTrackerTest, UnfragmentedFramesEachFireOnce) {
   // Two unfragmented frames batched together: each is its own completed frame.
   tracker.onFragment(1, /*isLastFragment=*/true);
   tracker.onFragment(2, /*isLastFragment=*/true);
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(transport::WriteCompletionStatus::Success, 2, 0),
       /*handlerHasPendingWrites=*/false);
 
@@ -159,9 +141,8 @@ TEST(FragmentCompletionTrackerTest, MixedFragmentsResolveToOriginalFrames) {
   tracker.onFragment(1, /*isLastFragment=*/true);
   tracker.onFragment(2, /*isLastFragment=*/false);
   tracker.onFragment(2, /*isLastFragment=*/true);
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(transport::WriteCompletionStatus::Success, 4, 0),
       /*handlerHasPendingWrites=*/false);
 
@@ -181,17 +162,15 @@ TEST(FragmentCompletionTrackerTest, BatchBoundaryPopsExactlyFrameCount) {
   tracker.onFragment(2, /*isLastFragment=*/false); // batch 2: 2 fragments
   tracker.onFragment(2, /*isLastFragment=*/true);
 
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(transport::WriteCompletionStatus::Success, 1, 0),
       /*handlerHasPendingWrites=*/false);
   ASSERT_EQ(ctx.events().size(), 1u);
   EXPECT_EQ(ctx.events()[0].streamId, 1u);
 
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(transport::WriteCompletionStatus::Success, 2, 0),
       /*handlerHasPendingWrites=*/false);
   ASSERT_EQ(ctx.events().size(), 2u);
@@ -203,9 +182,8 @@ TEST(FragmentCompletionTrackerTest, ErrorStatusPropagatesToFrameEvent) {
   CapturingContext ctx;
 
   tracker.onFragment(9, /*isLastFragment=*/true);
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(transport::WriteCompletionStatus::Error, 1, 42),
       /*handlerHasPendingWrites=*/false);
 
@@ -225,9 +203,8 @@ TEST(FragmentCompletionTrackerTest, InterleavedFragmentsCompleteInFifoOrder) {
   tracker.onFragment(2, /*isLastFragment=*/false);
   tracker.onFragment(1, /*isLastFragment=*/true);
   tracker.onFragment(2, /*isLastFragment=*/true);
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(transport::WriteCompletionStatus::Success, 4, 0),
       /*handlerHasPendingWrites=*/false);
 
@@ -246,9 +223,8 @@ TEST(FragmentCompletionTrackerTest, InterleavedFragmentsCompleteInWireOrder) {
   tracker.onFragment(2, /*isLastFragment=*/false);
   tracker.onFragment(2, /*isLastFragment=*/true);
   tracker.onFragment(1, /*isLastFragment=*/true);
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(transport::WriteCompletionStatus::Success, 4, 0),
       /*handlerHasPendingWrites=*/false);
 
@@ -268,9 +244,8 @@ TEST(FragmentCompletionTrackerTest, ErrorBeforeLastFragmentFiresNoCompletion) {
   // receives NO FrameWriteComplete. Documents current behavior.
   tracker.onFragment(5, /*isLastFragment=*/false);
   tracker.onFragment(5, /*isLastFragment=*/false);
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(transport::WriteCompletionStatus::Error, 2, 0),
       /*handlerHasPendingWrites=*/false);
 
@@ -285,9 +260,8 @@ TEST(FragmentCompletionTrackerTest, PendingWritesInHandlerSuppressQuiescence) {
   CapturingContext ctx;
 
   tracker.onFragment(1, /*isLastFragment=*/true);
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(
           transport::WriteCompletionStatus::Success, 1, 0, /*quiesced=*/true),
       /*handlerHasPendingWrites=*/true);
@@ -301,9 +275,8 @@ TEST(FragmentCompletionTrackerTest, QuiescenceReportedWhenBothAreDrained) {
   CapturingContext ctx;
 
   tracker.onFragment(1, /*isLastFragment=*/true);
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(
           transport::WriteCompletionStatus::Success, 1, 0, /*quiesced=*/true),
       /*handlerHasPendingWrites=*/false);
@@ -321,9 +294,8 @@ TEST(FragmentCompletionTrackerTest, QuiescenceRidesOnlyOnTheLastFrameOfABatch) {
   tracker.onFragment(1, /*isLastFragment=*/true);
   tracker.onFragment(3, /*isLastFragment=*/true);
   tracker.onFragment(5, /*isLastFragment=*/true);
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(
           transport::WriteCompletionStatus::Success, 3, 0, /*quiesced=*/true),
       /*handlerHasPendingWrites=*/false);
@@ -346,9 +318,8 @@ TEST(FragmentCompletionTrackerTest, BatchCompletingNoFrameFiresNothing) {
   CapturingContext ctx;
 
   tracker.onFragment(1, /*isLastFragment=*/false);
-  tracker.onEvent(
+  tracker.on<TestBatchWriteCompleteEvent>(
       ctx,
-      TestEventId::BatchWriteComplete,
       batchWriteComplete(
           transport::WriteCompletionStatus::Success, 1, 0, /*quiesced=*/true),
       /*handlerHasPendingWrites=*/true);

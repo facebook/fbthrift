@@ -76,6 +76,9 @@ class RocketServerSetupFrameHandler {
 
   RocketServerSetupFrameHandler() = default;
 
+  using PublishedEvents =
+      channel_pipeline::Events<SetupCompleteEvent, FlushWritesEvent>;
+
   // === HandlerLifecycle ===
 
   template <typename Context>
@@ -254,9 +257,7 @@ class RocketServerSetupFrameHandler {
       Context& ctx,
       apache::thrift::fast_thrift::channel_pipeline::Result result) noexcept {
     RocketSetupCompleteEvent event;
-    ctx.fireEvent(
-        RocketServerEventId::SetupComplete,
-        apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox(&event));
+    PublishedEvents::template fire<SetupCompleteEvent>(ctx, &event);
     if (FOLLY_UNLIKELY(event.reject.has_value())) {
       return sendError(ctx, event.reject->code, event.reject->reason.c_str());
     }
@@ -327,9 +328,7 @@ class RocketServerSetupFrameHandler {
     // Per RSocket spec, setup errors require connection termination. The ERROR
     // frame is still buffered downstream, so ask for it to be pushed to the
     // socket before the close deactivates the batcher and discards it.
-    ctx.fireEvent(
-        RocketServerEventId::FlushWrites,
-        apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox{});
+    PublishedEvents::template fire<FlushWritesEvent>(ctx);
     ctx.close();
 
     return apache::thrift::fast_thrift::channel_pipeline::Result::Error;

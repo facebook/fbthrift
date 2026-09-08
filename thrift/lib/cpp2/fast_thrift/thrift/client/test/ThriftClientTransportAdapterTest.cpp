@@ -583,13 +583,11 @@ TEST(
   // to the rocket app adapter; the bridge's callback relays it up as a
   // thrift WriteComplete event.
   int dummy = 42;
-  rocketAppAdapter->onEvent(
-      rocket::client::RocketClientEventId::RocketWriteComplete,
-      TypeErasedBox(
-          rocket::client::RocketWriteCompleteEvent{
-              .requestContext = &dummy,
-              .status = transport::WriteCompletionStatus::Success,
-          }));
+  rocketAppAdapter->on<rocket::client::RocketWriteCompleteEvent>(
+      rocket::client::RocketWriteCompleteEvent{
+          .requestContext = &dummy,
+          .status = transport::WriteCompletionStatus::Success,
+      });
 
   ASSERT_EQ(thriftTail.events.size(), 1u);
   EXPECT_EQ(

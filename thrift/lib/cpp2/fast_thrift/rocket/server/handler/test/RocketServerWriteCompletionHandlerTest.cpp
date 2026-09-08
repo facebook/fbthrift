@@ -31,33 +31,27 @@ namespace {
 namespace cp = apache::thrift::fast_thrift::channel_pipeline;
 namespace transport = apache::thrift::fast_thrift::transport;
 
-// Minimal Context — records what the handler fired upstream, tagged with the
-// event id so the test can prove it re-fires under a different id than it
-// subscribes to.
 class CapturingContext {
  public:
-  void fireEvent(RocketServerEventId ev, cp::TypeErasedBox box) noexcept {
-    ids_.push_back(ev);
-    events_.push_back(std::move(box).take<RocketWriteCompleteEvent>());
+  template <cp::PipelineEvent E>
+  void fireEvent(const typename E::Payload& event) noexcept {
+    static_assert(std::same_as<E, RocketWriteCompleteEvent>);
+    events_.push_back(event);
   }
 
-  const std::vector<RocketServerEventId>& ids() const noexcept { return ids_; }
   const std::vector<RocketWriteCompleteEvent>& events() const noexcept {
     return events_;
   }
 
  private:
-  std::vector<RocketServerEventId> ids_;
   std::vector<RocketWriteCompleteEvent> events_;
 };
 
-cp::TypeErasedBox frameWriteComplete(
+FrameWriteCompleteEvent frameWriteComplete(
     uint32_t streamId,
     transport::WriteCompletionStatus status,
     bool quiesced = false) noexcept {
-  return cp::TypeErasedBox(
-      FrameWriteCompleteEvent{
-          .streamId = streamId, .status = status, .quiesced = quiesced});
+  return {.streamId = streamId, .status = status, .quiesced = quiesced};
 }
 
 } // namespace
@@ -66,28 +60,20 @@ TEST(
     RocketServerWriteCompletionHandlerTest, FrameCompletionBecomesRocketEvent) {
   RocketServerWriteCompletionHandler handler;
   CapturingContext ctx;
-
-  handler.onEvent(
-      ctx,
-      RocketServerEventId::FrameWriteComplete,
-      frameWriteComplete(7, transport::WriteCompletionStatus::Success));
+  handler.on<FrameWriteCompleteEvent>(
+      ctx, frameWriteComplete(7, transport::WriteCompletionStatus::Success));
 
   ASSERT_EQ(ctx.events().size(), 1u);
   EXPECT_EQ(ctx.events()[0].streamId, 7u);
   EXPECT_EQ(ctx.events()[0].status, transport::WriteCompletionStatus::Success);
-  // Re-fired under a different id than it subscribes to, so the handler's own
-  // output is never routed back into it.
-  EXPECT_EQ(ctx.ids()[0], RocketServerEventId::RocketWriteComplete);
 }
 
 TEST(RocketServerWriteCompletionHandlerTest, ErrorStatusIsForwarded) {
   RocketServerWriteCompletionHandler handler;
   CapturingContext ctx;
 
-  handler.onEvent(
-      ctx,
-      RocketServerEventId::FrameWriteComplete,
-      frameWriteComplete(9, transport::WriteCompletionStatus::Error));
+  handler.on<FrameWriteCompleteEvent>(
+      ctx, frameWriteComplete(9, transport::WriteCompletionStatus::Error));
 
   ASSERT_EQ(ctx.events().size(), 1u);
   EXPECT_EQ(ctx.events()[0].streamId, 9u);
@@ -101,14 +87,10 @@ TEST(RocketServerWriteCompletionHandlerTest, EachFrameFiresItsOwnEvent) {
   // A batch that carried several frames arrives as several FrameWriteCompletes
   // (FragmentCompletionTracker already split it); the handler must not collapse
   // them.
-  handler.onEvent(
-      ctx,
-      RocketServerEventId::FrameWriteComplete,
-      frameWriteComplete(1, transport::WriteCompletionStatus::Success));
-  handler.onEvent(
-      ctx,
-      RocketServerEventId::FrameWriteComplete,
-      frameWriteComplete(3, transport::WriteCompletionStatus::Success));
+  handler.on<FrameWriteCompleteEvent>(
+      ctx, frameWriteComplete(1, transport::WriteCompletionStatus::Success));
+  handler.on<FrameWriteCompleteEvent>(
+      ctx, frameWriteComplete(3, transport::WriteCompletionStatus::Success));
 
   ASSERT_EQ(ctx.events().size(), 2u);
   EXPECT_EQ(ctx.events()[0].streamId, 1u);
@@ -119,9 +101,8 @@ TEST(RocketServerWriteCompletionHandlerTest, QuiescenceIsRelayed) {
   RocketServerWriteCompletionHandler handler;
   CapturingContext ctx;
 
-  handler.onEvent(
+  handler.on<FrameWriteCompleteEvent>(
       ctx,
-      RocketServerEventId::FrameWriteComplete,
       frameWriteComplete(
           5, transport::WriteCompletionStatus::Success, /*quiesced=*/true));
 

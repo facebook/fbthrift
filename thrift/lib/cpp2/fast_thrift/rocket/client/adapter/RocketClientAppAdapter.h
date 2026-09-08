@@ -246,38 +246,24 @@ class RocketClientAppAdapter : public folly::DelayedDestruction {
     }
   }
 
-  // === Event subscription ===
-  //
-  // The adapter relays two pipeline events to its owner: the graceful-drain
-  // ConnectionClose signal (no payload) and per-request RocketWriteComplete
-  // (RocketWriteCompleteEvent). Both are wired only when the pipeline is
-  // built with RocketClientEventId; otherwise the framework compiles this
-  // out.
-  static constexpr channel_pipeline::Subscriptions<
-      RocketClientEventId::ConnectionClose,
-      RocketClientEventId::RocketWriteComplete>
-      kSubscribedEvents{};
+  using SubscribedEvents =
+      channel_pipeline::Events<ConnectionCloseEvent, RocketWriteCompleteEvent>;
 
-  void onEvent(
-      RocketClientEventId ev,
-      const channel_pipeline::TypeErasedBox& box) noexcept {
-    switch (ev) {
-      case RocketClientEventId::ConnectionClose:
-        // Server graceful drain — no payload; relay to the upper (thrift)
-        // pipeline via onClose so it can begin draining.
-        if (onClose_) {
-          onClose_();
-        }
-        return;
-      case RocketClientEventId::RocketWriteComplete:
-        if (FOLLY_UNLIKELY(!onWriteComplete_)) {
-          return;
-        }
-        onWriteComplete_(box.get<RocketWriteCompleteEvent>());
-        return;
-      default:
-        return;
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ConnectionCloseEvent>
+  void on() noexcept {
+    if (onClose_) {
+      onClose_();
     }
+  }
+
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, RocketWriteCompleteEvent>
+  void on(const RocketWriteCompleteEvent& event) noexcept {
+    if (FOLLY_UNLIKELY(!onWriteComplete_)) {
+      return;
+    }
+    onWriteComplete_(event);
   }
 
  protected:

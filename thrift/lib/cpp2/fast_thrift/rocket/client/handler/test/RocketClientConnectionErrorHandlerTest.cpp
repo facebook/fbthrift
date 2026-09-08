@@ -52,14 +52,14 @@ class MockErrorContext {
     exception_ = std::move(e);
   }
 
-  void fireEvent(RocketClientEventId ev, TypeErasedBox&& evt) noexcept {
-    eventIds_.push_back(ev);
-    events_.push_back(std::move(evt));
+  template <channel_pipeline::PipelineEvent E>
+  void fireEvent() noexcept {
+    static_assert(std::same_as<E, ConnectionCloseEvent>);
+    ++eventCount_;
   }
 
   std::vector<TypeErasedBox>& readMessages() { return readMessages_; }
-  std::vector<TypeErasedBox>& events() { return events_; }
-  std::vector<RocketClientEventId>& eventIds() { return eventIds_; }
+  size_t eventCount() const noexcept { return eventCount_; }
 
   bool hasException() const { return static_cast<bool>(exception_); }
 
@@ -67,15 +67,13 @@ class MockErrorContext {
 
   void reset() {
     readMessages_.clear();
-    events_.clear();
-    eventIds_.clear();
+    eventCount_ = 0;
     exception_ = folly::exception_wrapper();
   }
 
  private:
   std::vector<TypeErasedBox> readMessages_;
-  std::vector<TypeErasedBox> events_;
-  std::vector<RocketClientEventId> eventIds_;
+  size_t eventCount_{0};
   folly::exception_wrapper exception_;
 };
 
@@ -296,8 +294,7 @@ TEST_F(RocketClientConnectionErrorHandlerTest, ConnectionCloseFiresEvent) {
   EXPECT_EQ(result, Result::Success);
   EXPECT_FALSE(ctx_.hasException());
   EXPECT_EQ(ctx_.readMessages().size(), 0);
-  ASSERT_EQ(ctx_.events().size(), 1);
-  EXPECT_EQ(ctx_.eventIds()[0], RocketClientEventId::ConnectionClose);
+  EXPECT_EQ(ctx_.eventCount(), 1);
 }
 
 TEST_F(RocketClientConnectionErrorHandlerTest, ConnectionErrorFiresException) {

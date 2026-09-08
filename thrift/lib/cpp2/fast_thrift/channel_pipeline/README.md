@@ -921,62 +921,65 @@ The O(1) operations are achieved through:
 
 ## User Events
 
-Beyond the inbound/outbound data path, the pipeline supports **out-of-band user
-events**: typed, control-plane signals (e.g. "begin connection close",
-"connection settled") that are delivered to interested handlers regardless of
-data-flow direction. Events are a separate channel from `fireRead`/`fireWrite`
-— they carry no notion of inbound vs outbound.
-
-### Per-Event Subscription
-
-Events are identified by a **pipeline-specific event enum**, supplied as the
-last `PipelineBuilder` template parameter and constrained by the `EventEnum`
-concept (a `uint32_t`-backed `enum class` whose last value is a `Count`
-sentinel). The default is `NoEvent`, which disables the event subsystem
-entirely — a pipeline that does not use events pays nothing for them.
-
-A handler or endpoint **subscribes** to the specific event types it cares about
-by declaring a static `kSubscribedEvents` and implementing `onEvent`:
+User events are type-defined, out-of-band control signals. Event contracts live
+with their publisher rather than in a central enum or catalog:
 
 ```cpp
-enum class MyEvent : std::uint32_t { Drain, Settled, Count };
-
-class DrainHandler {
- public:
-  // Subscribe to exactly the events this handler reacts to.
-  static constexpr std::array<MyEvent, 1> kSubscribedEvents{MyEvent::Drain};
-
-  void onEvent(Context& ctx, MyEvent ev, const TypeErasedBox& msg) noexcept {
-    // Only subscribed events arrive here; switch on `ev` if subscribed to many.
-  }
-  // ... data-path handler methods ...
+struct WriteCompletePayload {
+  WriteCompletionStatus status;
+  std::size_t bytes;
 };
+
+struct WriteComplete : EventTag<WriteCompletePayload> {};
+struct CloseConnection : EventTag<> {};
 ```
 
-Endpoints subscribe the same way but their `onEvent` takes no context:
-`onEvent(MyEvent ev, const TypeErasedBox&)`.
-
-The pipeline keeps **one intrusive list per event type**. A subscriber is linked
-into the list for each event it subscribes to, so firing an event walks only its
-subscribers — there is no broadcast and no per-handler filtering. A handler may
-subscribe to several event types; it is reached through a separate list for each.
-A firer receives its own event back only if it also subscribed to that type.
-
-### Firing Events
+A handler or endpoint declares the events it publishes. Firing through this set
+makes publishing an undeclared event a compile error:
 
 ```cpp
-ctx.fireEvent(MyEvent::Drain, erase_and_box(payload));  // from a handler
-pipeline->fireEvent(MyEvent::Drain, TypeErasedBox{});   // from an endpoint/owner
+using PublishedEvents = Events<WriteComplete, CloseConnection>;
+
+PublishedEvents::fire<WriteComplete>(ctx, payload);
+
+auto publisher = pipeline->bindEvents<PublishedEvents>();
+publisher.fire<CloseConnection>();
 ```
 
-Within an event's list, subscribers are invoked in the order
-tail endpoint → internal handlers (tail→head) → head endpoint. The event box is
-delivered as `const&`; payload-less events fire an empty box.
+Subscribers explicitly list the types they consume because C++ cannot enumerate
+function-template specializations. Internal handlers implement
+`on<Event>(ctx, payload)`; signal events omit the payload:
 
-| Operation | Complexity |
-|-----------|------------|
-| `fireEvent(ev, msg)` | O(s) where s = subscribers of `ev` |
-| Subscription wiring | One-time, at pipeline build |
+```cpp
+using SubscribedEvents = Events<WriteComplete, CloseConnection>;
+
+template <typename Event, typename Context>
+  requires std::same_as<Event, WriteComplete>
+void on(Context&, const WriteCompletePayload& payload) noexcept;
+
+template <typename Event, typename Context>
+  requires std::same_as<Event, CloseConnection>
+void on(Context& ctx) noexcept;
+```
+
+Endpoints use the same declarations but omit the context argument. During
+`build()`, the pipeline collects publisher and subscriber type tokens into a
+pipeline-local registry and builds one contiguous subscriber span per
+registered type. It also resolves each publisher's declared event order to
+direct span pointers. Publishing through a handler context uses the event's
+compile-time position in `PublishedEvents`, so steady-state dispatch performs
+no type-token lookup. External publishers can bind their event set once and
+retain the non-owning publisher handle for the same cached dispatch. Direct
+pipeline-level publication retains the registry lookup. No global registry,
+numeric id, count sentinel, or layer anchoring is required.
+
+Dispatch remains synchronous and ordered tail endpoint → internal handlers
+tail-to-head → head endpoint. Payloads are borrowed as `const&` for the duration
+of dispatch.
+
+The enum-based `EventEnum`, `NoEvent`, `Subscriptions`, and
+`onEvent(enum, TypeErasedBox)` API remains available only for migration and is
+deprecated for new code.
 
 ---
 

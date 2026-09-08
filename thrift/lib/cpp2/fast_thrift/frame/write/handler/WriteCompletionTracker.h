@@ -47,99 +47,68 @@ namespace apache::thrift::fast_thrift::frame::write::handler {
  * batcher — owns the per-pipeline event type.
  */
 template <typename T>
-concept WriteCompletionTracker = requires(T tracker) {
-  { tracker.onWrite() } noexcept;
-  { tracker.onFlush() } noexcept;
-  { tracker.onDiscard() } noexcept;
-};
+concept WriteCompletionTracker =
+    channel_pipeline::kIsEventSet<typename T::PublishedEvents> &&
+    channel_pipeline::kIsEventSet<typename T::SubscribedEvents> &&
+    requires(T tracker) {
+      { tracker.onWrite() } noexcept;
+      { tracker.onFlush() } noexcept;
+      { tracker.onDiscard() } noexcept;
+    };
 
-/**
- * Default tracker — fully elided in batchers whose pipeline composition does
- * not opt into per-write fan-out. All hooks are inline no-ops; the compiler
- * removes the calls.
- */
 struct NoOpWriteCompletionTracker {
-  // Events disabled: NoEvent + an empty subscription list. The batcher forwards
-  // these uniformly, so with this tracker it subscribes to nothing and the
-  // whole event path compiles out.
-  using EventId = apache::thrift::fast_thrift::channel_pipeline::NoEvent;
-  static constexpr apache::thrift::fast_thrift::channel_pipeline::
-      Subscriptions<>
-          kSubscribedEvents{};
+  using PublishedEvents = channel_pipeline::Events<>;
+  using SubscribedEvents = channel_pipeline::Events<>;
+  using FlushWritesEventType = void;
 
   void onWrite() noexcept {}
   void onFlush() noexcept {}
   void onDiscard() noexcept {}
-
-  template <typename Context>
-  void onEvent(
-      Context& /*ctx*/,
-      EventId /*ev*/,
-      const apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&
-      /*box*/) noexcept {}
 };
 
 static_assert(
     WriteCompletionTracker<NoOpWriteCompletionTracker>,
     "NoOpWriteCompletionTracker must satisfy WriteCompletionTracker concept");
 
-/**
- * Whether a pipeline's event enum defines FlushWrites — the request to push
- * buffered outbound bytes downstream immediately, ahead of a teardown.
- */
-template <typename E>
-concept HasFlushWritesEvent = requires { E::FlushWrites; };
-
 namespace detail {
-template <auto... A, auto... B>
-constexpr apache::thrift::fast_thrift::channel_pipeline::
-    Subscriptions<A..., B...>
-    concatSubscriptions(
-        apache::thrift::fast_thrift::channel_pipeline::Subscriptions<A...>,
-        apache::thrift::fast_thrift::channel_pipeline::Subscriptions<
-            B...>) noexcept {
+template <
+    channel_pipeline::PipelineEvent... A,
+    channel_pipeline::PipelineEvent... B>
+constexpr channel_pipeline::Events<A..., B...> concatEvents(
+    channel_pipeline::Events<A...>, channel_pipeline::Events<B...>) noexcept {
   return {};
+}
+
+template <typename E>
+constexpr auto optionalEventSet() noexcept {
+  if constexpr (channel_pipeline::PipelineEvent<E>) {
+    return channel_pipeline::Events<E>{};
+  } else {
+    return channel_pipeline::Events<>{};
+  }
 }
 } // namespace detail
 
-/**
- * A batching handler's subscription list: whatever its tracker subscribes to,
- * plus FlushWrites when the pipeline's event enum defines it. A pipeline whose
- * enum has neither gets an empty list and no event wiring at all.
- */
-template <typename Tracker, typename Ev>
-constexpr auto makeBatcherSubscriptions() noexcept {
-  if constexpr (HasFlushWritesEvent<Ev>) {
-    return detail::concatSubscriptions(
-        Tracker::kSubscribedEvents,
-        apache::thrift::fast_thrift::channel_pipeline::Subscriptions<
-            Ev::FlushWrites>{});
-  } else {
-    return Tracker::kSubscribedEvents;
-  }
-}
+template <typename Tracker, typename FlushEvent>
+using BatcherSubscribedEvents = decltype(detail::concatEvents(
+    typename Tracker::SubscribedEvents{},
+    detail::optionalEventSet<FlushEvent>()));
 
-/**
- * Event factory contract for WriteCompletionTrackerT. Pins the member types the
- * tracker reads off and the exact `(status, count, bytes, quiesced)` argument
- * order and `pair<EventId, TypeErasedBox>` result of the batch factory method,
- * so a mismatched factory is rejected at the point of instantiation rather than
- * deep inside the tracker body.
- */
 template <typename T>
-concept BatchWriteCompleteEventFactory = requires(
-    typename T::TransportWriteCompleteEventType transportEvent,
-    size_t frameCount,
-    bool quiesced) {
-  typename T::EventId;
-  typename T::TransportWriteCompleteEventType;
-  {
-    T::makeBatchWriteComplete(
-        transportEvent.status, frameCount, transportEvent.bytes, quiesced)
-  } noexcept -> std::same_as<std::pair<
-      typename T::EventId,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox>>;
-};
+concept BatchWriteCompleteEventFactory =
+    channel_pipeline::PipelineEvent<
+        typename T::TransportWriteCompleteEventType> &&
+    channel_pipeline::PipelineEvent<typename T::BatchWriteCompleteEventType> &&
+    requires(
+        typename T::TransportWriteCompleteEventType transportEvent,
+        size_t frameCount,
+        bool quiesced) {
+      typename T::FlushWritesEventType;
+      {
+        T::makeBatchWriteComplete(
+            transportEvent.status, frameCount, transportEvent.bytes, quiesced)
+      } noexcept -> std::same_as<typename T::BatchWriteCompleteEventType>;
+    };
 
 /**
  * Concrete tracker — counts outbound frames per batch and, on each raw
@@ -179,14 +148,11 @@ concept BatchWriteCompleteEventFactory = requires(
 template <BatchWriteCompleteEventFactory EventFactory>
 class WriteCompletionTrackerT {
  public:
-  // The tracker subscribes to the raw transport event and re-fires the
-  // enriched one. Sourced from the factory so the tracker stays agnostic of
-  // the concrete protocol enum. Subscribing only to TransportWriteComplete
-  // means its own BatchWriteComplete re-fires are never routed back to it.
-  using EventId = typename EventFactory::EventId;
-  static constexpr apache::thrift::fast_thrift::channel_pipeline::Subscriptions<
-      EventId::TransportWriteComplete>
-      kSubscribedEvents{};
+  using TransportEvent = typename EventFactory::TransportWriteCompleteEventType;
+  using BatchEvent = typename EventFactory::BatchWriteCompleteEventType;
+  using FlushWritesEventType = typename EventFactory::FlushWritesEventType;
+  using PublishedEvents = channel_pipeline::Events<BatchEvent>;
+  using SubscribedEvents = channel_pipeline::Events<TransportEvent>;
 
   void onWrite() noexcept { ++framesInCurrentBatch_; }
 
@@ -208,31 +174,20 @@ class WriteCompletionTrackerT {
     batchFrameCounts_.clear();
   }
 
-  template <typename Context>
-  void onEvent(
-      Context& ctx,
-      EventId /*ev*/,
-      const apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&
-          box) noexcept {
-    using TransportEvent =
-        typename EventFactory::TransportWriteCompleteEventType;
-    auto& evt = box.template get<TransportEvent>();
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::same_as<E, TransportEvent>
+  void on(Context& ctx, const TransportEvent& evt) noexcept {
     if (batchFrameCounts_.empty()) {
-      // Defensive: writeSuccess without a prior flush shouldn't happen.
       return;
     }
     auto count = batchFrameCounts_.front();
     batchFrameCounts_.pop_front();
-    // Egress has gone idle when this completion leaves nothing else handed to
-    // the socket and nothing buffered awaiting a flush. Both halves are load
-    // bearing: with backpressure disabled the batcher keeps flushing without
-    // waiting for completions, so an empty FIFO on its own can still be
-    // followed immediately by a batch that is only buffered.
     const bool quiesced =
         batchFrameCounts_.empty() && framesInCurrentBatch_ == 0;
-    auto [eventId, eventMsg] = EventFactory::makeBatchWriteComplete(
-        evt.status, count, evt.bytes, quiesced);
-    ctx.fireEvent(eventId, std::move(eventMsg));
+    PublishedEvents::template fire<BatchEvent>(
+        ctx,
+        EventFactory::makeBatchWriteComplete(
+            evt.status, count, evt.bytes, quiesced));
   }
 
  private:

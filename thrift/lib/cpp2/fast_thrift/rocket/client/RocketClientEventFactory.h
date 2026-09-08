@@ -38,83 +38,47 @@ namespace apache::thrift::fast_thrift::rocket::client {
  * after popping its frame-count FIFO.
  */
 struct RocketClientEventFactory {
-  using EventId = RocketClientEventId;
   using TransportWriteCompleteEventType = TransportWriteCompleteEvent;
-
-  // Batch-level event consumed by FrameWriteCompletionHandlerT: the event it
-  // subscribes to, plus the message type carried.
   using BatchWriteCompleteEventType = BatchWriteCompleteEvent;
-  static constexpr EventId kBatchWriteCompleteEvent =
-      EventId::BatchWriteComplete;
+  using FrameWriteCompleteEventType = FrameWriteCompleteEvent;
+  using FirstResponseFrameEventType = FirstResponseFrameEvent;
+  using FlushWritesEventType = void;
+  using PublishedEvents =
+      channel_pipeline::Events<TransportWriteCompleteEventType>;
 
-  static std::pair<
-      EventId,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox>
-  make(
-      apache::thrift::fast_thrift::transport::WriteCompletionStatus status,
-      size_t bytes) noexcept {
-    return {
-        EventId::TransportWriteComplete,
-        apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox(
-            TransportWriteCompleteEvent{
-                .status = status,
-                .bytes = bytes,
-            })};
+  static TransportWriteCompleteEvent make(
+      transport::WriteCompletionStatus status, size_t bytes) noexcept {
+    return {.status = status, .bytes = bytes};
   }
 
-  static std::pair<
-      EventId,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox>
-  makeBatchWriteComplete(
-      apache::thrift::fast_thrift::transport::WriteCompletionStatus status,
+  static BatchWriteCompleteEvent makeBatchWriteComplete(
+      transport::WriteCompletionStatus status,
       size_t frameCount,
       size_t bytes,
       bool quiesced) noexcept {
     return {
-        EventId::BatchWriteComplete,
-        apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox(
-            BatchWriteCompleteEvent{
-                .status = status,
-                .frameCount = frameCount,
-                .bytes = bytes,
-                .quiesced = quiesced,
-            })};
+        .status = status,
+        .frameCount = frameCount,
+        .bytes = bytes,
+        .quiesced = quiesced,
+    };
   }
 
-  // Per-frame event fired by FrameWriteCompletionHandlerT; StreamStateHandler
-  // resolves the streamId to the request context.
-  static std::pair<
-      EventId,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox>
-  makeFrameWriteComplete(
-      apache::thrift::fast_thrift::transport::WriteCompletionStatus status,
+  static FrameWriteCompleteEvent makeFrameWriteComplete(
+      transport::WriteCompletionStatus status,
       uint32_t streamId,
       bool quiesced) noexcept {
     return {
-        EventId::FrameWriteComplete,
-        apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox(
-            FrameWriteCompleteEvent{
-                .streamId = streamId,
-                .status = status,
-                .quiesced = quiesced,
-            })};
+        .streamId = streamId,
+        .status = status,
+        .quiesced = quiesced,
+    };
   }
 
-  // Fired by FirstFragmentTrackerT from inside the defragmentation handler when
-  // a fragmented response starts arriving.
-  static std::pair<
-      EventId,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox>
-  makeFirstResponseFrame(
+  static FirstResponseFrameEvent makeFirstResponseFrame(
       uint32_t streamId,
       std::chrono::steady_clock::time_point arrivalTime) noexcept {
-    return {
-        EventId::FirstResponseFrame,
-        apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox(
-            FirstResponseFrameEvent{
-                .streamId = streamId,
-                .arrivalTime = arrivalTime,
-            })};
+    return {.streamId = streamId, .arrivalTime = arrivalTime};
   }
 };
 

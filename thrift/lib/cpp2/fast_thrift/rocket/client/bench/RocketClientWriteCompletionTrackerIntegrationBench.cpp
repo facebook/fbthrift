@@ -88,7 +88,7 @@ HANDLER_TAG(batching);
 // compiles out. The baseline and tracking variants differ only in the three
 // template parameters, so the relative benchmark isolates tracking cost
 // through the real consumer path.
-template <typename Factory, typename Tracker, typename EventEnumT>
+template <typename Factory, typename Tracker>
 struct FixtureT {
   using TransportHandler =
       apache::thrift::fast_thrift::transport::TransportHandlerT<
@@ -126,8 +126,7 @@ struct FixtureT {
     pipeline = PipelineBuilder<
                    TransportHandler,
                    RocketClientAppAdapter,
-                   SimpleBufferAllocator,
-                   EventEnumT>()
+                   SimpleBufferAllocator>()
                    .setEventBase(&evb)
                    .setHead(transportHandler.get())
                    .setTail(appAdapter.get())
@@ -151,12 +150,10 @@ struct FixtureT {
 
 using BaselineFixture = FixtureT<
     apache::thrift::fast_thrift::transport::NoOpWriteCompleteEventFactory,
-    NoOpWriteCompletionTracker,
-    NoEvent>;
+    NoOpWriteCompletionTracker>;
 using TrackingFixture = FixtureT<
     RocketClientEventFactory,
-    WriteCompletionTrackerT<RocketClientEventFactory>,
-    RocketClientEventId>;
+    WriteCompletionTrackerT<RocketClientEventFactory>>;
 
 // Drives `iters` batches of `framesPerBatch` outbound frames each. Frames are
 // preallocated outside the timed region. Each batch is flushed by two loop

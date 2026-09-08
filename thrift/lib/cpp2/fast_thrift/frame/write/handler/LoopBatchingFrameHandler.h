@@ -106,21 +106,12 @@ class LoopBatchingFrameHandlerT {
   template <typename Context>
   void onWriteReady(Context& /*ctx*/) noexcept {}
 
-  // Event subscription is sourced from the tracker, which owns the per-pipeline
-  // event type via its EventFactory. With NoOpWriteCompletionTracker EventId is
-  // NoEvent and kSubscribedEvents is empty, so nothing is wired and the event
-  // path compiles out.
-  using EventId = typename Tracker::EventId;
-  static constexpr auto kSubscribedEvents = Tracker::kSubscribedEvents;
+  using PublishedEvents = typename Tracker::PublishedEvents;
+  using SubscribedEvents = typename Tracker::SubscribedEvents;
 
-  // Receives the per-pipeline event fired by TransportHandlerT and delegates to
-  // the tracker for per-batch attribution.
-  template <typename Context>
-  void onEvent(
-      Context& ctx,
-      EventId ev,
-      const channel_pipeline::TypeErasedBox& box) noexcept {
-    tracker_.onEvent(ctx, ev, box);
+  template <channel_pipeline::PipelineEvent E, typename Context>
+  void on(Context& ctx, const typename E::Payload& event) noexcept {
+    tracker_.template on<E>(ctx, event);
   }
 
   /**

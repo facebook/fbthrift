@@ -218,16 +218,12 @@ class FrameFragmentationHandlerT : public folly::EventBase::LoopCallback,
 
   Tracker& tracker() noexcept { return tracker_; }
 
-  using EventId = typename Tracker::EventId;
-  static constexpr auto kSubscribedEvents = Tracker::kSubscribedEvents;
+  using PublishedEvents = typename Tracker::PublishedEvents;
+  using SubscribedEvents = typename Tracker::SubscribedEvents;
 
-  template <typename Context>
-  void onEvent(
-      Context& ctx,
-      EventId ev,
-      const apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&
-          box) noexcept {
-    tracker_.onEvent(ctx, ev, box, hasPendingWrites());
+  template <channel_pipeline::PipelineEvent E, typename Context>
+  void on(Context& ctx, const typename E::Payload& event) noexcept {
+    tracker_.template on<E>(ctx, event, hasPendingWrites());
   }
 
  private:

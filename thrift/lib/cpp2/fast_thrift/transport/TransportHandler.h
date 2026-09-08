@@ -79,6 +79,9 @@ class TransportHandlerT : public folly::DelayedDestruction,
   using Result = apache::thrift::fast_thrift::channel_pipeline::Result;
   using TypeErasedBox =
       apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox;
+  using PublishedEvents = typename Factory::PublishedEvents;
+  using EventPublisher =
+      channel_pipeline::EventPublisherHandle<PublishedEvents>;
 
   enum class State : uint8_t {
     Created,
@@ -132,6 +135,7 @@ class TransportHandlerT : public folly::DelayedDestruction,
     DCHECK(pipeline);
     DCHECK(state_ == State::Created);
     pipeline_ = pipeline;
+    eventPublisher_ = pipeline->template bindEvents<PublishedEvents>();
     pipelineGuard_ =
         std::make_unique<folly::DelayedDestruction::DestructorGuard>(pipeline_);
     // Read buffers come from the pipeline's allocator, same as every other
@@ -278,6 +282,7 @@ class TransportHandlerT : public folly::DelayedDestruction,
     // Pipeline must not be actively dispatching when we drop it.
     DCHECK(state_ != State::Open);
     onClosed_ = nullptr;
+    eventPublisher_ = {};
     pipeline_ = nullptr;
     pipelineGuard_.reset();
   }
@@ -346,8 +351,13 @@ class TransportHandlerT : public folly::DelayedDestruction,
     if constexpr (!std::is_same_v<Factory, NoOpWriteCompleteEventFactory>) {
       if (FOLLY_LIKELY(state_ == State::Open)) {
         DCHECK(pipeline_);
-        auto [eventId, eventMsg] = Factory::make(status, bytes);
-        pipeline_->fireEvent(eventId, std::move(eventMsg));
+        using Event = typename Factory::TransportWriteCompleteEventType;
+        if constexpr (std::is_void_v<typename Event::Payload>) {
+          Factory::make(status, bytes);
+          eventPublisher_.template fire<Event>();
+        } else {
+          eventPublisher_.template fire<Event>(Factory::make(status, bytes));
+        }
       }
     }
   }
@@ -517,6 +527,7 @@ class TransportHandlerT : public folly::DelayedDestruction,
   ParserT parser_;
   std::chrono::milliseconds drainTimeoutDuration_;
   channel_pipeline::PipelineImpl* pipeline_{nullptr};
+  EventPublisher eventPublisher_;
   std::unique_ptr<folly::DelayedDestruction::DestructorGuard> pipelineGuard_;
   folly::Function<void() noexcept> onClosed_;
   State state_{State::Created};

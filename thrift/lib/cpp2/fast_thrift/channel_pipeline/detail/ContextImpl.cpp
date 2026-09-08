@@ -46,6 +46,16 @@ void ContextImpl::deactivate() noexcept {
   }
 }
 
+void ContextImpl::fireTypeEvent(EventKey key, const void* payload) noexcept {
+  pipeline_->fireTypeEvent(key, payload);
+}
+
+void ContextImpl::fireTypeEventFromRoute(
+    std::size_t routeIndex, EventKey key, const void* payload) noexcept {
+  pipeline_->fireTypeEventFromRoute(
+      typeEventRouteOffset_, routeIndex, key, payload);
+}
+
 void ContextImpl::fireEvent(
     std::uint32_t ev, TypeErasedBox&& eventMessage) noexcept {
   pipeline_->fireEvent(ev, std::move(eventMessage));

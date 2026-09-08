@@ -35,47 +35,26 @@ enum class WriteCompletionStatus : uint8_t {
   Error,
 };
 
-namespace detail {
-// True only for `std::pair<E, TypeErasedBox>` where `E` is a pipeline event
-// enum — the exact shape `make` must return so its result feeds straight into
-// the pipeline's typed `fireEvent(eventId, eventMessage)`.
-template <typename T>
-inline constexpr bool isWriteCompleteEventResult = false;
-template <apache::thrift::fast_thrift::channel_pipeline::EventEnum E>
-inline constexpr bool isWriteCompleteEventResult<std::pair<
-    E,
-    apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox>> = true;
-} // namespace detail
+struct NoOpWriteCompleteEvent : channel_pipeline::EventTag<> {};
 
-/**
- * Concept for the per-pipeline factory that constructs the write-completion
- * event TransportHandler fires from writeSuccess / writeErr. The factory's
- * `make` is invoked with the per-write outcome and (on error) the partially
- * written byte count; it returns the event id paired with the boxed event the
- * pipeline carries. The id is a value of the pipeline's shared event enum (the
- * transport has no enum of its own), so the pair forwards straight into the
- * typed `fireEvent`.
- */
+/** Factory for the typed write-completion event emitted by TransportHandler. */
 template <typename T>
 concept WriteCompleteEventFactory =
+    channel_pipeline::PipelineEvent<
+        typename T::TransportWriteCompleteEventType> &&
+    channel_pipeline::kIsEventSet<typename T::PublishedEvents> &&
     requires(WriteCompletionStatus status, size_t bytes) {
-      { T::make(status, bytes) } noexcept;
-    } &&
-    detail::isWriteCompleteEventResult<decltype(T::make(
-        WriteCompletionStatus{}, size_t{}))>;
+      {
+        T::make(status, bytes)
+      } noexcept -> std::same_as<typename T::TransportWriteCompleteEventType>;
+    };
 
-/**
- * Compile-time-elided default factory. TransportHandler gates its fireEvent
- * via `std::is_same_v<Factory, NoOpWriteCompleteEventFactory>`; for pipelines
- * that don't consume the event (tests, bare TCP), the entire fireEvent call
- * is removed by `if constexpr`. The returned pair is never fired — it exists
- * only to satisfy the concept.
- */
+/** Compile-time-elided default factory. */
 struct NoOpWriteCompleteEventFactory {
-  static std::pair<
-      apache::thrift::fast_thrift::channel_pipeline::NoEvent,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox>
-  make(WriteCompletionStatus, size_t) noexcept {
+  using TransportWriteCompleteEventType = NoOpWriteCompleteEvent;
+  using PublishedEvents = channel_pipeline::Events<>;
+
+  static NoOpWriteCompleteEvent make(WriteCompletionStatus, size_t) noexcept {
     return {};
   }
 };

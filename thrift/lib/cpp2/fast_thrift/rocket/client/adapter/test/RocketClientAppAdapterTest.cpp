@@ -204,8 +204,7 @@ TEST(RocketClientAppAdapterTest, OnEventFiresOnCloseCallback) {
   adapter->setOnClose([&]() noexcept { closeCount++; });
 
   // ConnectionClose carries no payload — the id alone is the signal.
-  adapter->onEvent(
-      RocketClientEventId::ConnectionClose, channel_pipeline::TypeErasedBox{});
+  adapter->on<ConnectionCloseEvent>();
 
   EXPECT_EQ(closeCount, 1);
 }
@@ -213,8 +212,7 @@ TEST(RocketClientAppAdapterTest, OnEventFiresOnCloseCallback) {
 TEST(RocketClientAppAdapterTest, OnEventNoOpWhenCloseCallbackUnset) {
   RocketClientAppAdapter::Ptr adapter(new RocketClientAppAdapter());
   // No setOnClose — must not crash.
-  adapter->onEvent(
-      RocketClientEventId::ConnectionClose, channel_pipeline::TypeErasedBox{});
+  adapter->on<ConnectionCloseEvent>();
 }
 
 TEST(RocketClientAppAdapterTest, HandlerRemovedClearsOnCloseCallback) {
@@ -223,8 +221,7 @@ TEST(RocketClientAppAdapterTest, HandlerRemovedClearsOnCloseCallback) {
   adapter->setOnClose([&]() noexcept { closeCount++; });
 
   adapter->handlerRemoved();
-  adapter->onEvent(
-      RocketClientEventId::ConnectionClose, channel_pipeline::TypeErasedBox{});
+  adapter->on<ConnectionCloseEvent>();
 
   EXPECT_EQ(closeCount, 0);
 }
@@ -241,13 +238,10 @@ TEST(RocketClientAppAdapterTest, OnEventInvokesOnWriteCompleteCallback) {
   });
 
   int dummy = 42;
-  adapter->onEvent(
-      RocketClientEventId::RocketWriteComplete,
-      TypeErasedBox(
-          RocketWriteCompleteEvent{
-              .requestContext = &dummy,
-              .status = transport::WriteCompletionStatus::Error,
-          }));
+  adapter->on<RocketWriteCompleteEvent>(RocketWriteCompleteEvent{
+      .requestContext = &dummy,
+      .status = transport::WriteCompletionStatus::Error,
+  });
 
   EXPECT_EQ(count, 1);
   EXPECT_EQ(status, transport::WriteCompletionStatus::Error);
@@ -257,13 +251,10 @@ TEST(RocketClientAppAdapterTest, OnEventInvokesOnWriteCompleteCallback) {
 TEST(RocketClientAppAdapterTest, OnEventNoOpWhenCallbackUnset) {
   RocketClientAppAdapter::Ptr adapter(new RocketClientAppAdapter());
   // No setOnWriteComplete call — must not crash.
-  adapter->onEvent(
-      RocketClientEventId::RocketWriteComplete,
-      TypeErasedBox(
-          RocketWriteCompleteEvent{
-              .requestContext = nullptr,
-              .status = transport::WriteCompletionStatus::Success,
-          }));
+  adapter->on<RocketWriteCompleteEvent>(RocketWriteCompleteEvent{
+      .requestContext = nullptr,
+      .status = transport::WriteCompletionStatus::Success,
+  });
 }
 
 TEST(RocketClientAppAdapterTest, HandlerRemovedClearsOnWriteCompleteCallback) {
@@ -273,13 +264,10 @@ TEST(RocketClientAppAdapterTest, HandlerRemovedClearsOnWriteCompleteCallback) {
       [&](const RocketWriteCompleteEvent&) noexcept { count++; });
 
   adapter->handlerRemoved();
-  adapter->onEvent(
-      RocketClientEventId::RocketWriteComplete,
-      TypeErasedBox(
-          RocketWriteCompleteEvent{
-              .requestContext = nullptr,
-              .status = transport::WriteCompletionStatus::Success,
-          }));
+  adapter->on<RocketWriteCompleteEvent>(RocketWriteCompleteEvent{
+      .requestContext = nullptr,
+      .status = transport::WriteCompletionStatus::Success,
+  });
 
   EXPECT_EQ(count, 0);
 }
@@ -368,38 +356,29 @@ TEST(RocketClientAppAdapterTest, RocketWriteCompleteDeliveredThroughPipeline) {
 
   // Built with RocketClientEventId so the adapter's subscription is wired; a
   // NoEvent pipeline would compile the subscription out entirely.
-  auto pipeline = PipelineBuilder<
-                      MockHeadHandler,
-                      RocketClientAppAdapter,
-                      TestAllocator,
-                      RocketClientEventId>()
-                      .setEventBase(&evb)
-                      .setHead(&head)
-                      .setTail(adapter.get())
-                      .setAllocator(&allocator)
-                      .build();
+  auto pipeline =
+      PipelineBuilder<MockHeadHandler, RocketClientAppAdapter, TestAllocator>()
+          .setEventBase(&evb)
+          .setHead(&head)
+          .setTail(adapter.get())
+          .setAllocator(&allocator)
+          .build();
 
   int dummy = 42;
   // The per-request event reaches the subscribed callback.
-  pipeline->fireEvent(
-      RocketClientEventId::RocketWriteComplete,
-      TypeErasedBox(
-          RocketWriteCompleteEvent{
-              .requestContext = &dummy,
-              .status = transport::WriteCompletionStatus::Success,
-          }));
+  pipeline->fireEvent<RocketWriteCompleteEvent>(RocketWriteCompleteEvent{
+      .requestContext = &dummy,
+      .status = transport::WriteCompletionStatus::Success,
+  });
   EXPECT_EQ(count, 1);
   EXPECT_EQ(receivedCtx, &dummy);
 
   // The raw transport event is not delivered — the adapter subscribes only to
   // RocketWriteComplete.
-  pipeline->fireEvent(
-      RocketClientEventId::TransportWriteComplete,
-      TypeErasedBox(
-          TransportWriteCompleteEvent{
-              .status = transport::WriteCompletionStatus::Success,
-              .bytes = 256,
-          }));
+  pipeline->fireEvent<TransportWriteCompleteEvent>(TransportWriteCompleteEvent{
+      .status = transport::WriteCompletionStatus::Success,
+      .bytes = 256,
+  });
   EXPECT_EQ(count, 1);
 
   pipeline->close();

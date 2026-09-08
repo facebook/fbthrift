@@ -87,28 +87,19 @@ class RocketServerWriteCompletionHandler {
   template <typename Context>
   void onWriteReady(Context& /*ctx*/) noexcept {}
 
-  // === EventSubscriber ===
+  using PublishedEvents = channel_pipeline::Events<RocketWriteCompleteEvent>;
+  using SubscribedEvents = channel_pipeline::Events<FrameWriteCompleteEvent>;
 
-  // Only the frame-layer event. The RocketWriteComplete this handler fires is a
-  // different id, so its own output is never routed back to it.
-  static constexpr channel_pipeline::Subscriptions<
-      RocketServerEventId::FrameWriteComplete>
-      kSubscribedEvents{};
-
-  template <typename Context>
-  void onEvent(
-      Context& ctx,
-      RocketServerEventId /*ev*/,
-      const channel_pipeline::TypeErasedBox& box) noexcept {
-    const auto& event = box.template get<FrameWriteCompleteEvent>();
-    ctx.fireEvent(
-        RocketServerEventId::RocketWriteComplete,
-        channel_pipeline::TypeErasedBox(
-            RocketWriteCompleteEvent{
-                .streamId = event.streamId,
-                .status = event.status,
-                .quiesced = event.quiesced,
-            }));
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::same_as<E, FrameWriteCompleteEvent>
+  void on(Context& ctx, const FrameWriteCompleteEvent& event) noexcept {
+    PublishedEvents::template fire<RocketWriteCompleteEvent>(
+        ctx,
+        RocketWriteCompleteEvent{
+            .streamId = event.streamId,
+            .status = event.status,
+            .quiesced = event.quiesced,
+        });
   }
 };
 

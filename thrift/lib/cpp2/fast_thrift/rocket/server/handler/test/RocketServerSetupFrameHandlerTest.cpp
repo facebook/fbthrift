@@ -87,24 +87,19 @@ class MockContext {
 
   void close() noexcept { closeCalled_ = true; }
 
-  // Setup completion is announced as an event carrying a pointer, so a
-  // subscriber can fill its reject slot in place. The hook lets a test stand
-  // in for that subscriber.
-  using OnEventFn =
-      std::function<void(RocketServerEventId, const TypeErasedBox&)>;
-
-  void setOnEvent(OnEventFn fn) { onEvent_ = std::move(fn); }
-
-  void fireEvent(RocketServerEventId ev, TypeErasedBox&& evt) noexcept {
-    firedEvents_.push_back(ev);
-    if (onEvent_) {
-      onEvent_(ev, evt);
-    }
+  template <channel_pipeline::PipelineEvent E>
+    requires std::is_void_v<typename E::Payload>
+  void fireEvent() noexcept {
+    ++eventCount_;
   }
 
-  const std::vector<RocketServerEventId>& firedEvents() const {
-    return firedEvents_;
+  template <channel_pipeline::PipelineEvent E>
+    requires(!std::is_void_v<typename E::Payload>)
+  void fireEvent(const typename E::Payload&) noexcept {
+    ++eventCount_;
   }
+
+  size_t eventCount() const noexcept { return eventCount_; }
 
   folly::EventBase* eventBase() noexcept { return &evb_; }
 
@@ -145,8 +140,7 @@ class MockContext {
     writeResult_ = Result::Success;
     disconnectCalled_ = false;
     closeCalled_ = false;
-    firedEvents_.clear();
-    onEvent_ = nullptr;
+    eventCount_ = 0;
     writeReadyCalled_ = false;
   }
 
@@ -158,8 +152,7 @@ class MockContext {
   Result writeResult_{Result::Success};
   bool disconnectCalled_{false};
   bool closeCalled_{false};
-  std::vector<RocketServerEventId> firedEvents_;
-  OnEventFn onEvent_;
+  size_t eventCount_{0};
   folly::EventBase evb_;
   bool writeReadyCalled_{false};
 };
@@ -734,7 +727,7 @@ TEST_F(ServerSetupFrameHandlerTest, UpstreamRefusalIsNotAnnouncedAsComplete) {
 
   EXPECT_EQ(result, Result::Error);
   EXPECT_FALSE(handler_.isSetupComplete());
-  EXPECT_TRUE(ctx_.firedEvents().empty())
+  EXPECT_TRUE(ctx_.eventCount() == 0)
       << "a refused connection must not be announced as established";
 }
 

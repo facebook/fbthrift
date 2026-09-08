@@ -55,6 +55,8 @@ class RocketClientConnectionErrorHandler {
  public:
   RocketClientConnectionErrorHandler() = default;
 
+  using PublishedEvents = channel_pipeline::Events<ConnectionCloseEvent>;
+
   // === HandlerLifecycle ===
 
   template <typename Context>
@@ -109,9 +111,7 @@ class RocketClientConnectionErrorHandler {
     // carries no per-request payload. Every other connection-level error is
     // fatal and is converted to an exception.
     if (extractError(parsed).first == ErrorCode::CONNECTION_CLOSE) {
-      ctx.fireEvent(
-          RocketClientEventId::ConnectionClose,
-          apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox{});
+      PublishedEvents::template fire<ConnectionCloseEvent>(ctx);
       return apache::thrift::fast_thrift::channel_pipeline::Result::Success;
     }
 

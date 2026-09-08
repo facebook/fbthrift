@@ -413,6 +413,7 @@ class PipelineBuilder {
     if constexpr (kEventsEnabled<EventEnumT>) {
       pipeline->linkEventLists();
     }
+    pipeline->linkTypeEventLists();
 
     // Wire pipeline-level state. A stateless pipeline (empty tuple) does none
     // of this: it allocates nothing, leaves each context's state pointer at its
@@ -475,6 +476,36 @@ class PipelineBuilder {
       static_cast<HeadHandler*>(h)->onReadReady();
     };
 
+    if constexpr (requires { typename HeadHandler::PublishedEvents; }) {
+      static_assert(
+          TypeEventPublisher<HeadHandler>,
+          "PublishedEvents must be a channel_pipeline::Events<...> set");
+      if constexpr (TypeEventPublisher<HeadHandler>) {
+        pipeline->headPublishedEvents_ =
+            detail::kHandlerPublishedEventKeys<HeadHandler>.data();
+        pipeline->headPublishedEventCount_ =
+            detail::kHandlerPublishedEventKeys<HeadHandler>.size();
+      }
+    }
+    if constexpr (requires { typename HeadHandler::SubscribedEvents; }) {
+      static_assert(
+          EndpointTypeEventSubscriber<HeadHandler>,
+          "SubscribedEvents requires a noexcept on<Event>(payload) for every "
+          "event; signal events omit payload");
+      if constexpr (EndpointTypeEventSubscriber<HeadHandler>) {
+        pipeline->headTypeSubscriptions_ =
+            detail::kHandlerTypeSubscriptions<
+                HeadHandler,
+                /*Endpoint=*/true>
+                .data();
+        pipeline->headTypeSubscriptionCount_ =
+            detail::kHandlerTypeSubscriptions<
+                HeadHandler,
+                /*Endpoint=*/true>
+                .size();
+      }
+    }
+
     // User-event subscription: the head endpoint opts in by declaring
     // kSubscribedEvents and implementing `onEvent(E, const TypeErasedBox&)`.
     // linkEventLists() then links one hook per subscribed event.
@@ -514,6 +545,36 @@ class PipelineBuilder {
     pipeline->tailOnWriteReadyFn_ = [](void* t) noexcept {
       static_cast<TailHandler*>(t)->onWriteReady();
     };
+
+    if constexpr (requires { typename TailHandler::PublishedEvents; }) {
+      static_assert(
+          TypeEventPublisher<TailHandler>,
+          "PublishedEvents must be a channel_pipeline::Events<...> set");
+      if constexpr (TypeEventPublisher<TailHandler>) {
+        pipeline->tailPublishedEvents_ =
+            detail::kHandlerPublishedEventKeys<TailHandler>.data();
+        pipeline->tailPublishedEventCount_ =
+            detail::kHandlerPublishedEventKeys<TailHandler>.size();
+      }
+    }
+    if constexpr (requires { typename TailHandler::SubscribedEvents; }) {
+      static_assert(
+          EndpointTypeEventSubscriber<TailHandler>,
+          "SubscribedEvents requires a noexcept on<Event>(payload) for every "
+          "event; signal events omit payload");
+      if constexpr (EndpointTypeEventSubscriber<TailHandler>) {
+        pipeline->tailTypeSubscriptions_ =
+            detail::kHandlerTypeSubscriptions<
+                TailHandler,
+                /*Endpoint=*/true>
+                .data();
+        pipeline->tailTypeSubscriptionCount_ =
+            detail::kHandlerTypeSubscriptions<
+                TailHandler,
+                /*Endpoint=*/true>
+                .size();
+      }
+    }
 
     // User-event subscription: the tail endpoint opts in by declaring
     // kSubscribedEvents and implementing `onEvent(E, const TypeErasedBox&)`.

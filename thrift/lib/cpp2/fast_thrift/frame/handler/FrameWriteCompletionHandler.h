@@ -74,10 +74,10 @@ class FrameWriteCompletionHandlerT {
  public:
   FrameWriteCompletionHandlerT() = default;
 
-  using EventId = typename EventFactory::EventId;
-  static constexpr apache::thrift::fast_thrift::channel_pipeline::Subscriptions<
-      EventFactory::kBatchWriteCompleteEvent>
-      kSubscribedEvents{};
+  using BatchEvent = typename EventFactory::BatchWriteCompleteEventType;
+  using FrameEvent = typename EventFactory::FrameWriteCompleteEventType;
+  using PublishedEvents = channel_pipeline::Events<FrameEvent>;
+  using SubscribedEvents = channel_pipeline::Events<BatchEvent>;
 
   // === HandlerLifecycle ===
 
@@ -175,14 +175,9 @@ class FrameWriteCompletionHandlerT {
 
   // === EventSubscriber ===
 
-  template <typename Context>
-  void onEvent(
-      Context& ctx,
-      EventId /*ev*/,
-      const apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&
-          box) noexcept {
-    const auto& batch =
-        box.get<typename EventFactory::BatchWriteCompleteEventType>();
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::same_as<E, BatchEvent>
+  void on(Context& ctx, const BatchEvent& batch) noexcept {
     // Held back one completion so the last one — and only it — can carry the
     // quiescence edge; which frame is last is not known until the pop ends.
     // This handler buffers nothing of its own, so the batch's verdict stands.
@@ -255,9 +250,8 @@ class FrameWriteCompletionHandlerT {
       uint32_t streamId,
       apache::thrift::fast_thrift::transport::WriteCompletionStatus status,
       bool quiesced) noexcept {
-    auto [eventId, eventMsg] =
-        EventFactory::makeFrameWriteComplete(status, streamId, quiesced);
-    ctx.fireEvent(eventId, std::move(eventMsg));
+    PublishedEvents::template fire<FrameEvent>(
+        ctx, EventFactory::makeFrameWriteComplete(status, streamId, quiesced));
   }
 
   // Outbound frames in write order. The companion map tracks, per still-live

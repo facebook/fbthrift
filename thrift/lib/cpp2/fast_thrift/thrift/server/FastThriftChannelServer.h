@@ -590,12 +590,12 @@ FastThriftServerT<Stats>::buildRocketPipeline(
     builder.addNextOutbound<frame::write::handler::BatchingFrameHandlerT<
         frame::write::handler::NoOpWriteCompletionTracker,
         frame::write::handler::BackpressureEnabled,
-        rocket::server::RocketServerEventId>>(batching_frame_handler_tag);
+        rocket::server::FlushWritesEvent>>(batching_frame_handler_tag);
   } else {
     builder.addNextOutbound<frame::write::handler::BatchingFrameHandlerT<
         frame::write::handler::NoOpWriteCompletionTracker,
         frame::write::handler::BackpressureDisabled,
-        rocket::server::RocketServerEventId>>(batching_frame_handler_tag);
+        rocket::server::FlushWritesEvent>>(batching_frame_handler_tag);
   }
   builder
       .addNextOutbound<frame::write::handler::FrameLengthEncoderHandler>(

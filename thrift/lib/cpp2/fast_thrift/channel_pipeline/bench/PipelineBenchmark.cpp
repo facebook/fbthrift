@@ -33,6 +33,8 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 
+#include <array>
+#include <cstdint>
 #include <memory>
 #include <vector>
 
@@ -53,6 +55,13 @@ HANDLER_TAG(bench_backpressure);
 HANDLER_TAG(bench_backpressure2);
 HANDLER_TAG(bench_backpressure3);
 HANDLER_TAG(bench_backpressure4);
+HANDLER_TAG(bench_event2);
+HANDLER_TAG(bench_event3);
+HANDLER_TAG(bench_event4);
+HANDLER_TAG(bench_event5);
+HANDLER_TAG(bench_event6);
+HANDLER_TAG(bench_event7);
+HANDLER_TAG(bench_event8);
 
 // Minimal passthrough handler - measures dispatch overhead
 struct PassthroughHandler {
@@ -306,6 +315,55 @@ struct BenchAppHandler {
   void onWriteReady() noexcept {}
 };
 
+enum class LegacyBenchEvent : std::uint32_t {
+  Value,
+  Unused1,
+  Unused2,
+  Unused3,
+  Unused4,
+  Unused5,
+  Count,
+};
+
+struct TypeBenchEvent : EventTag<std::uint64_t> {};
+struct UnusedTypeBenchEvent1 : EventTag<> {};
+struct UnusedTypeBenchEvent2 : EventTag<> {};
+struct UnusedTypeBenchEvent3 : EventTag<> {};
+struct UnusedTypeBenchEvent4 : EventTag<> {};
+struct UnusedTypeBenchEvent5 : EventTag<> {};
+
+struct LegacyEventBenchHandler : PassthroughHandler {
+  static constexpr Subscriptions<LegacyBenchEvent::Value> kSubscribedEvents{};
+
+  void onEvent(
+      detail::ContextImpl&,
+      LegacyBenchEvent,
+      const TypeErasedBox& event) noexcept {
+    sum += event.get<std::uint64_t>();
+  }
+
+  std::uint64_t sum{0};
+};
+
+struct TypeEventBenchHandler : PassthroughHandler {
+  using PublishedEvents = Events<
+      TypeBenchEvent,
+      UnusedTypeBenchEvent1,
+      UnusedTypeBenchEvent2,
+      UnusedTypeBenchEvent3,
+      UnusedTypeBenchEvent4,
+      UnusedTypeBenchEvent5>;
+  using SubscribedEvents = Events<TypeBenchEvent>;
+
+  template <typename E, typename Context>
+    requires std::same_as<E, TypeBenchEvent>
+  void on(Context&, const std::uint64_t& value) noexcept {
+    sum += value;
+  }
+
+  std::uint64_t sum{0};
+};
+
 // Simple buffer allocator
 struct BenchAllocator {
   BytesPtr allocate(std::size_t size) noexcept {
@@ -422,6 +480,219 @@ BENCHMARK(IOBuf_Clone, iters) {
   for (size_t i = 0; i < iters; ++i) {
     auto cloned = template_buf->clone();
     folly::doNotOptimizeAway(cloned);
+  }
+}
+
+BENCHMARK_DRAW_LINE();
+
+// =============================================================================
+// Event dispatch
+// =============================================================================
+
+BENCHMARK(Pipeline_LegacyEvent_OneSubscriber, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  auto handler = std::make_unique<LegacyEventBenchHandler>();
+  auto* handlerPtr = handler.get();
+  auto pipeline = PipelineBuilder<
+                      BenchTransportHandler,
+                      BenchAppHandler,
+                      BenchAllocator,
+                      LegacyBenchEvent>()
+                      .setEventBase(&evb)
+                      .setHead(&transport)
+                      .setTail(&app)
+                      .setAllocator(&allocator)
+                      .addNextDuplex<LegacyEventBenchHandler>(
+                          bench_passthrough_tag, std::move(handler))
+                      .build();
+
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    pipeline->fireEvent(
+        LegacyBenchEvent::Value, TypeErasedBox(static_cast<std::uint64_t>(i)));
+  }
+  folly::doNotOptimizeAway(handlerPtr->sum);
+}
+
+BENCHMARK_RELATIVE(Pipeline_TypeEvent_OneSubscriber, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  auto handler = std::make_unique<TypeEventBenchHandler>();
+  auto* handlerPtr = handler.get();
+  auto pipeline =
+      PipelineBuilder<BenchTransportHandler, BenchAppHandler, BenchAllocator>()
+          .setEventBase(&evb)
+          .setHead(&transport)
+          .setTail(&app)
+          .setAllocator(&allocator)
+          .addNextDuplex<TypeEventBenchHandler>(
+              bench_passthrough_tag, std::move(handler))
+          .build();
+  auto* context = pipeline->context(bench_passthrough_tag);
+
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    TypeEventBenchHandler::PublishedEvents::fire<TypeBenchEvent>(
+        *context, static_cast<std::uint64_t>(i));
+  }
+  folly::doNotOptimizeAway(handlerPtr->sum);
+}
+
+BENCHMARK(Pipeline_TypeEvent_NoSubscriber, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  auto pipeline =
+      PipelineBuilder<BenchTransportHandler, BenchAppHandler, BenchAllocator>()
+          .setEventBase(&evb)
+          .setHead(&transport)
+          .setTail(&app)
+          .setAllocator(&allocator)
+          .addNextDuplex<TypeEventBenchHandler>(bench_passthrough_tag)
+          .build();
+  auto* context = pipeline->context(bench_passthrough_tag);
+
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    TypeEventBenchHandler::PublishedEvents::fire<UnusedTypeBenchEvent1>(
+        *context);
+  }
+}
+
+BENCHMARK(Pipeline_TypeEvent_EightSubscribers, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  std::array<TypeEventBenchHandler*, 8> handlers{};
+  auto makeHandler = [&handlers](std::size_t index) {
+    auto handler = std::make_unique<TypeEventBenchHandler>();
+    handlers[index] = handler.get();
+    return handler;
+  };
+  auto pipeline =
+      PipelineBuilder<BenchTransportHandler, BenchAppHandler, BenchAllocator>()
+          .setEventBase(&evb)
+          .setHead(&transport)
+          .setTail(&app)
+          .setAllocator(&allocator)
+          .addNextDuplex<TypeEventBenchHandler>(
+              bench_passthrough_tag, makeHandler(0))
+          .addNextDuplex<TypeEventBenchHandler>(
+              bench_event2_tag, makeHandler(1))
+          .addNextDuplex<TypeEventBenchHandler>(
+              bench_event3_tag, makeHandler(2))
+          .addNextDuplex<TypeEventBenchHandler>(
+              bench_event4_tag, makeHandler(3))
+          .addNextDuplex<TypeEventBenchHandler>(
+              bench_event5_tag, makeHandler(4))
+          .addNextDuplex<TypeEventBenchHandler>(
+              bench_event6_tag, makeHandler(5))
+          .addNextDuplex<TypeEventBenchHandler>(
+              bench_event7_tag, makeHandler(6))
+          .addNextDuplex<TypeEventBenchHandler>(
+              bench_event8_tag, makeHandler(7))
+          .build();
+  auto* context = pipeline->context(bench_passthrough_tag);
+
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    TypeEventBenchHandler::PublishedEvents::fire<TypeBenchEvent>(
+        *context, static_cast<std::uint64_t>(i));
+  }
+  for (const auto* handler : handlers) {
+    folly::doNotOptimizeAway(handler->sum);
+  }
+}
+
+BENCHMARK(Pipeline_TypeEvent_BoundPublisher, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  auto handler = std::make_unique<TypeEventBenchHandler>();
+  auto* handlerPtr = handler.get();
+  auto pipeline =
+      PipelineBuilder<BenchTransportHandler, BenchAppHandler, BenchAllocator>()
+          .setEventBase(&evb)
+          .setHead(&transport)
+          .setTail(&app)
+          .setAllocator(&allocator)
+          .addNextDuplex<TypeEventBenchHandler>(
+              bench_passthrough_tag, std::move(handler))
+          .build();
+  auto publisher =
+      pipeline->bindEvents<TypeEventBenchHandler::PublishedEvents>();
+
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    publisher.fire<TypeBenchEvent>(static_cast<std::uint64_t>(i));
+  }
+  folly::doNotOptimizeAway(handlerPtr->sum);
+}
+
+BENCHMARK(Pipeline_TypeEvent_UnboundPublisher, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  auto handler = std::make_unique<TypeEventBenchHandler>();
+  auto* handlerPtr = handler.get();
+  auto pipeline =
+      PipelineBuilder<BenchTransportHandler, BenchAppHandler, BenchAllocator>()
+          .setEventBase(&evb)
+          .setHead(&transport)
+          .setTail(&app)
+          .setAllocator(&allocator)
+          .addNextDuplex<TypeEventBenchHandler>(
+              bench_passthrough_tag, std::move(handler))
+          .build();
+
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    TypeEventBenchHandler::PublishedEvents::fire<TypeBenchEvent>(
+        *pipeline, static_cast<std::uint64_t>(i));
+  }
+  folly::doNotOptimizeAway(handlerPtr->sum);
+}
+
+BENCHMARK(Pipeline_TypeEvent_Build, iters) {
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  for (std::size_t i = 0; i < iters; ++i) {
+    auto pipeline =
+        PipelineBuilder<
+            BenchTransportHandler,
+            BenchAppHandler,
+            BenchAllocator>()
+            .setEventBase(&evb)
+            .setHead(&transport)
+            .setTail(&app)
+            .setAllocator(&allocator)
+            .addNextDuplex<TypeEventBenchHandler>(bench_passthrough_tag)
+            .build();
+    folly::doNotOptimizeAway(pipeline.get());
   }
 }
 

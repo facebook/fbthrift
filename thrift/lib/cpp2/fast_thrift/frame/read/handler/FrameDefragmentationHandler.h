@@ -62,6 +62,8 @@ namespace apache::thrift::fast_thrift::frame::read::handler {
 template <ReassemblyTracker Tracker = NoOpReassemblyTracker>
 class FrameDefragmentationHandlerT {
  public:
+  using PublishedEvents = typename Tracker::PublishedEvents;
+
   static constexpr size_t kDefaultMaxPendingBytes = 16 * 1024 * 1024; // 16MB
 
   explicit FrameDefragmentationHandlerT(

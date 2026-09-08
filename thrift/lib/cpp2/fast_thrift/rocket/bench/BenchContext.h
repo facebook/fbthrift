@@ -17,11 +17,13 @@
 #pragma once
 
 #include <cstring>
+#include <type_traits>
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 
 namespace apache::thrift::fast_thrift::rocket::bench {
@@ -63,9 +65,14 @@ class BenchContext {
     lastException_ = std::move(e);
   }
 
-  template <typename E>
-  void fireEvent(E /*ev*/, TypeErasedBox&& evt) noexcept {
-    lastEvent_ = std::move(evt);
+  template <channel_pipeline::PipelineEvent E>
+    requires std::is_void_v<typename E::Payload>
+  void fireEvent() noexcept {}
+
+  template <channel_pipeline::PipelineEvent E>
+    requires(!std::is_void_v<typename E::Payload>)
+  void fireEvent(const typename E::Payload& event) noexcept {
+    lastEvent_ = TypeErasedBox(event);
   }
 
   void deactivate() noexcept {}

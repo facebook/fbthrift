@@ -215,14 +215,11 @@ TEST(RocketServerAppAdapterTest, OnEventInvokesOnWriteCompleteCallback) {
     streamId = e.streamId;
   });
 
-  adapter->onEvent(
-      RocketServerEventId::RocketWriteComplete,
-      TypeErasedBox(
-          RocketWriteCompleteEvent{
-              .streamId = 3,
-              .status = transport::WriteCompletionStatus::Error,
-              .quiesced = false,
-          }));
+  adapter->on<RocketWriteCompleteEvent>(RocketWriteCompleteEvent{
+      .streamId = 3,
+      .status = transport::WriteCompletionStatus::Error,
+      .quiesced = false,
+  });
 
   EXPECT_EQ(count, 1);
   EXPECT_EQ(status, transport::WriteCompletionStatus::Error);
@@ -232,14 +229,11 @@ TEST(RocketServerAppAdapterTest, OnEventInvokesOnWriteCompleteCallback) {
 TEST(RocketServerAppAdapterTest, OnEventNoOpWhenCallbackUnset) {
   RocketServerAppAdapter::Ptr adapter(new RocketServerAppAdapter());
   // No setOnWriteComplete call — must not crash.
-  adapter->onEvent(
-      RocketServerEventId::RocketWriteComplete,
-      TypeErasedBox(
-          RocketWriteCompleteEvent{
-              .streamId = 1,
-              .status = transport::WriteCompletionStatus::Success,
-              .quiesced = false,
-          }));
+  adapter->on<RocketWriteCompleteEvent>(RocketWriteCompleteEvent{
+      .streamId = 1,
+      .status = transport::WriteCompletionStatus::Success,
+      .quiesced = false,
+  });
 }
 
 TEST(RocketServerAppAdapterTest, HandlerRemovedClearsOnWriteCompleteCallback) {
@@ -249,14 +243,11 @@ TEST(RocketServerAppAdapterTest, HandlerRemovedClearsOnWriteCompleteCallback) {
       [&](const RocketWriteCompleteEvent&) noexcept { count++; });
 
   adapter->handlerRemoved();
-  adapter->onEvent(
-      RocketServerEventId::RocketWriteComplete,
-      TypeErasedBox(
-          RocketWriteCompleteEvent{
-              .streamId = 1,
-              .status = transport::WriteCompletionStatus::Success,
-              .quiesced = false,
-          }));
+  adapter->on<RocketWriteCompleteEvent>(RocketWriteCompleteEvent{
+      .streamId = 1,
+      .status = transport::WriteCompletionStatus::Success,
+      .quiesced = false,
+  });
 
   EXPECT_EQ(count, 0);
 }
@@ -347,38 +338,29 @@ TEST(RocketServerAppAdapterTest, RocketWriteCompleteDeliveredThroughPipeline) {
 
   // Built with RocketServerEventId so the adapter's subscription is wired; a
   // NoEvent pipeline would compile the subscription out entirely.
-  auto pipeline = PipelineBuilder<
-                      MockHeadHandler,
-                      RocketServerAppAdapter,
-                      TestAllocator,
-                      RocketServerEventId>()
-                      .setEventBase(&evb)
-                      .setHead(&head)
-                      .setTail(adapter.get())
-                      .setAllocator(&allocator)
-                      .build();
+  auto pipeline =
+      PipelineBuilder<MockHeadHandler, RocketServerAppAdapter, TestAllocator>()
+          .setEventBase(&evb)
+          .setHead(&head)
+          .setTail(adapter.get())
+          .setAllocator(&allocator)
+          .build();
 
   // The enriched event reaches the subscribed callback.
-  pipeline->fireEvent(
-      RocketServerEventId::RocketWriteComplete,
-      TypeErasedBox(
-          RocketWriteCompleteEvent{
-              .streamId = 4,
-              .status = transport::WriteCompletionStatus::Success,
-              .quiesced = false,
-          }));
+  pipeline->fireEvent<RocketWriteCompleteEvent>(RocketWriteCompleteEvent{
+      .streamId = 4,
+      .status = transport::WriteCompletionStatus::Success,
+      .quiesced = false,
+  });
   EXPECT_EQ(count, 1);
   EXPECT_EQ(streamId, 4u);
 
   // The raw transport event is not delivered — the adapter subscribes only to
   // RocketWriteComplete.
-  pipeline->fireEvent(
-      RocketServerEventId::TransportWriteComplete,
-      TypeErasedBox(
-          TransportWriteCompleteEvent{
-              .status = transport::WriteCompletionStatus::Success,
-              .bytes = 256,
-          }));
+  pipeline->fireEvent<TransportWriteCompleteEvent>(TransportWriteCompleteEvent{
+      .status = transport::WriteCompletionStatus::Success,
+      .bytes = 256,
+  });
   EXPECT_EQ(count, 1);
 
   pipeline->close();

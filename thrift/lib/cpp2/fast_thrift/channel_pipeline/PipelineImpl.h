@@ -36,6 +36,9 @@
 
 namespace apache::thrift::fast_thrift::channel_pipeline {
 
+template <typename EventSet>
+class EventPublisherHandle;
+
 /**
  * PipelineImpl is the concrete implementation of the Pipeline concept.
  *
@@ -131,6 +134,22 @@ class PipelineImpl : public folly::DelayedDestruction {
    * Fire an exception event starting from the read-entry handler.
    */
   void fireException(folly::exception_wrapper&& e) noexcept;
+
+  template <PipelineEvent E>
+    requires std::is_void_v<typename E::Payload>
+  void fireEvent() noexcept {
+    fireTypeEvent(eventKey<E>(), nullptr);
+  }
+
+  template <PipelineEvent E>
+    requires(!std::is_void_v<typename E::Payload>)
+  void fireEvent(const typename E::Payload& payload) noexcept {
+    fireTypeEvent(eventKey<E>(), &payload);
+  }
+
+  template <typename EventSet>
+    requires kIsEventSet<EventSet>
+  EventPublisherHandle<EventSet> bindEvents() noexcept;
 
   /**
    * Fire a user event of type `ev` carrying `eventMessage` to the handlers and
@@ -350,6 +369,28 @@ class PipelineImpl : public folly::DelayedDestruction {
   }
 
  private:
+  struct TypeEventSlot {
+    EventKey key{nullptr};
+    TypeEventDispatch* subscribers{nullptr};
+    std::size_t subscriberCount{0};
+  };
+
+  struct TypeEventRoute {
+    EventKey key{nullptr};
+    const TypeEventDispatch* subscribers{nullptr};
+    std::size_t subscriberCount{0};
+  };
+
+  TypeEventSlot* findTypeEventSlot(EventKey key) noexcept;
+  void fireTypeEvent(EventKey key, const void* payload) noexcept;
+  void fireTypeEventSlot(
+      const TypeEventSlot* slot, const void* payload) noexcept;
+  void fireTypeEventFromRoute(
+      std::uint32_t routeOffset,
+      std::size_t routeIndex,
+      EventKey key,
+      const void* payload) noexcept;
+
   // Non-templated, out-of-line dispatch core for fireEvent. The public typed
   // overload casts the event enum to its id and forwards here. Private so
   // callers go through the type-safe enum API; defined once in the .cpp so the
@@ -375,6 +416,7 @@ class PipelineImpl : public folly::DelayedDestruction {
   // arrays that own those hooks are destroyed, else auto-unlink touches a dead
   // list sentinel. Idempotent.
   void clearEventLists() noexcept;
+  void linkTypeEventLists() noexcept;
   // Call handlerAdded for all handlers
   void callHandlerAdded() noexcept;
   // Call handlerRemoved for all handlers (reverse order)
@@ -409,6 +451,10 @@ class PipelineImpl : public folly::DelayedDestruction {
   const EventSubscription* tailSubscriptions_{nullptr};
   std::size_t tailSubscriptionCount_{0};
   std::unique_ptr<EventHook[]> tailEventHooks_;
+  const EventKey* tailPublishedEvents_{nullptr};
+  std::size_t tailPublishedEventCount_{0};
+  const TypeEventSubscription* tailTypeSubscriptions_{nullptr};
+  std::size_t tailTypeSubscriptionCount_{0};
   // Tail handler lifecycle callbacks
   void (*tailOnPipelineActiveFn_)(void*) noexcept {nullptr};
   void (*tailOnPipelineInactiveFn_)(void*) noexcept {nullptr};
@@ -425,6 +471,10 @@ class PipelineImpl : public folly::DelayedDestruction {
   const EventSubscription* headSubscriptions_{nullptr};
   std::size_t headSubscriptionCount_{0};
   std::unique_ptr<EventHook[]> headEventHooks_;
+  const EventKey* headPublishedEvents_{nullptr};
+  std::size_t headPublishedEventCount_{0};
+  const TypeEventSubscription* headTypeSubscriptions_{nullptr};
+  std::size_t headTypeSubscriptionCount_{0};
   // Head handler lifecycle callbacks
   void (*headOnPipelineActiveFn_)(void*) noexcept {nullptr};
   void (*headOnPipelineInactiveFn_)(void*) noexcept {nullptr};
@@ -467,6 +517,15 @@ class PipelineImpl : public folly::DelayedDestruction {
   std::unique_ptr<EventList[]> eventLists_;
   std::uint32_t eventListCount_{0};
 
+  // Immutable open-address table built once from process-local type tokens.
+  // Subscriber dispatch entries are grouped into contiguous per-event spans.
+  std::unique_ptr<TypeEventSlot[]> typeEventTable_;
+  std::size_t typeEventTableSize_{0};
+  std::unique_ptr<TypeEventDispatch[]> typeEventDispatches_;
+  std::size_t typeEventDispatchCount_{0};
+  std::unique_ptr<TypeEventRoute[]> typeEventRoutes_;
+  std::size_t typeEventRouteCount_{0};
+
   // Pipeline-level state — type-erased, owned by the pipeline.
   void* pipelineState_{nullptr};
   void (*pipelineStateDeleter_)(void*) noexcept {nullptr};
@@ -482,6 +541,45 @@ class PipelineImpl : public folly::DelayedDestruction {
 
   // ContextImpl needs access to ready lists for registration
   friend class detail::ContextImpl;
+  template <typename EventSet>
+  friend class EventPublisherHandle;
 };
+
+template <PipelineEvent... Evs>
+class EventPublisherHandle<Events<Evs...>> {
+ public:
+  EventPublisherHandle() noexcept = default;
+  template <PipelineEvent E>
+    requires(
+        (std::same_as<E, Evs> || ...) && std::is_void_v<typename E::Payload>)
+  void fire() const noexcept {
+    pipeline_->fireTypeEventSlot(
+        slots_[Events<Evs...>::template index<E>], nullptr);
+  }
+
+  template <PipelineEvent E>
+    requires(
+        (std::same_as<E, Evs> || ...) && (!std::is_void_v<typename E::Payload>))
+  void fire(const typename E::Payload& payload) const noexcept {
+    pipeline_->fireTypeEventSlot(
+        slots_[Events<Evs...>::template index<E>], &payload);
+  }
+
+ private:
+  explicit EventPublisherHandle(PipelineImpl& pipeline) noexcept
+      : pipeline_(&pipeline),
+        slots_{pipeline.findTypeEventSlot(eventKey<Evs>())...} {}
+
+  PipelineImpl* pipeline_{nullptr};
+  std::array<const PipelineImpl::TypeEventSlot*, sizeof...(Evs)> slots_{};
+
+  friend class PipelineImpl;
+};
+
+template <typename EventSet>
+  requires kIsEventSet<EventSet>
+EventPublisherHandle<EventSet> PipelineImpl::bindEvents() noexcept {
+  return EventPublisherHandle<EventSet>{*this};
+}
 
 } // namespace apache::thrift::fast_thrift::channel_pipeline

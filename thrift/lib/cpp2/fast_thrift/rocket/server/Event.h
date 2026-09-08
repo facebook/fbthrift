@@ -24,6 +24,7 @@
 
 #include <folly/io/IOBuf.h>
 
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/ErrorCode.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/SetupParameters.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/WriteCompletion.h>
@@ -73,7 +74,8 @@ enum class RocketServerEventId : std::uint32_t {
  * Message for RocketServerEventId::TransportWriteComplete — the outcome of one
  * socket-level writev.
  */
-struct TransportWriteCompleteEvent {
+struct TransportWriteCompleteEvent
+    : channel_pipeline::EventTag<TransportWriteCompleteEvent> {
   apache::thrift::fast_thrift::transport::WriteCompletionStatus status;
   size_t bytes;
 };
@@ -83,7 +85,8 @@ struct TransportWriteCompleteEvent {
  * batch as the batcher saw it. `frameCount` is the number of rocket frames in
  * that batch (> 0).
  */
-struct BatchWriteCompleteEvent {
+struct BatchWriteCompleteEvent
+    : channel_pipeline::EventTag<BatchWriteCompleteEvent> {
   apache::thrift::fast_thrift::transport::WriteCompletionStatus status;
   size_t frameCount;
   size_t bytes;
@@ -102,7 +105,8 @@ struct BatchWriteCompleteEvent {
  * streamId is the one the fragmentation handler recorded at write time: below
  * it the frame is serialized bytes and the stream is no longer recoverable.
  */
-struct FrameWriteCompleteEvent {
+struct FrameWriteCompleteEvent
+    : channel_pipeline::EventTag<FrameWriteCompleteEvent> {
   uint32_t streamId;
   apache::thrift::fast_thrift::transport::WriteCompletionStatus status;
   // See BatchWriteCompleteEvent::quiesced, narrowed by whatever the
@@ -117,7 +121,8 @@ struct FrameWriteCompleteEvent {
  * is no request context to resolve against, because the server's is carried on
  * the request message rather than held in a per-stream table.
  */
-struct RocketWriteCompleteEvent {
+struct RocketWriteCompleteEvent
+    : channel_pipeline::EventTag<RocketWriteCompleteEvent> {
   uint32_t streamId;
   apache::thrift::fast_thrift::transport::WriteCompletionStatus status;
   // See FrameWriteCompleteEvent::quiesced — relayed through unchanged.
@@ -169,5 +174,11 @@ struct RocketSetupEvent {
 struct RocketSetupCompleteEvent {
   std::optional<SetupRejection> reject;
 };
+
+struct SetupReceivedEvent : channel_pipeline::EventTag<RocketSetupEvent*> {};
+struct SetupCompleteEvent
+    : channel_pipeline::EventTag<RocketSetupCompleteEvent*> {};
+
+struct FlushWritesEvent : channel_pipeline::EventTag<> {};
 
 } // namespace apache::thrift::fast_thrift::rocket::server

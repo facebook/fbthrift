@@ -627,7 +627,7 @@ using NoBackpressureBatcher = apache::thrift::fast_thrift::frame::write::
             NoOpWriteCompletionTracker,
         apache::thrift::fast_thrift::frame::write::handler::
             BackpressureDisabled,
-        RocketServerEventId>;
+        FlushWritesEvent>;
 
 template <typename RejectionBatcher>
 class RocketServerSetupRejectionTest : public ::testing::Test {
@@ -644,8 +644,7 @@ class RocketServerSetupRejectionTest : public ::testing::Test {
         PipelineBuilder<
             RejectionTransportHandler,
             rocket::server::RocketServerAppAdapter,
-            TestAllocator,
-            RocketServerEventId>()
+            TestAllocator>()
             .setEventBase(&evb_)
             .setHead(transportHandler_.get())
             .setTail(appAdapter_.get())

@@ -80,10 +80,8 @@ class RocketClientStreamStateHandler {
  public:
   RocketClientStreamStateHandler() = default;
 
-  using EventId = client::RocketClientEventId;
-  static constexpr apache::thrift::fast_thrift::channel_pipeline::Subscriptions<
-      EventId::FrameWriteComplete>
-      kSubscribedEvents{};
+  using PublishedEvents = channel_pipeline::Events<RocketWriteCompleteEvent>;
+  using SubscribedEvents = channel_pipeline::Events<FrameWriteCompleteEvent>;
 
   // === HandlerLifecycle ===
 
@@ -282,24 +280,19 @@ class RocketClientStreamStateHandler {
 
   // === EventSubscriber ===
 
-  template <typename Context>
-  void onEvent(
-      Context& ctx,
-      EventId /*ev*/,
-      const apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&
-          box) noexcept {
-    const auto& event = box.get<client::FrameWriteCompleteEvent>();
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::same_as<E, FrameWriteCompleteEvent>
+  void on(Context& ctx, const FrameWriteCompleteEvent& event) noexcept {
     auto it = streams().find(event.streamId);
     if (it == streams().end()) {
       return;
     }
-    ctx.fireEvent(
-        EventId::RocketWriteComplete,
-        apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox(
-            client::RocketWriteCompleteEvent{
-                .requestContext = it->second.requestContext.get(),
-                .status = event.status,
-            }));
+    PublishedEvents::template fire<RocketWriteCompleteEvent>(
+        ctx,
+        RocketWriteCompleteEvent{
+            .requestContext = it->second.requestContext.get(),
+            .status = event.status,
+        });
   }
 
   // === Stream ID Generation ===
@@ -457,9 +450,9 @@ static_assert(
     "RocketClientStreamStateHandler must satisfy DuplexHandler concept");
 
 static_assert(
-    apache::thrift::fast_thrift::channel_pipeline::EventSubscriber<
+    apache::thrift::fast_thrift::channel_pipeline::TypeEventSubscriber<
         RocketClientStreamStateHandler,
         apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>,
-    "RocketClientStreamStateHandler must satisfy EventSubscriber concept");
+    "RocketClientStreamStateHandler must satisfy TypeEventSubscriber concept");
 
 } // namespace apache::thrift::fast_thrift::rocket::client::handler
