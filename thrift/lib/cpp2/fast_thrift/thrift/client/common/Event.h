@@ -16,47 +16,24 @@
 
 #pragma once
 
-#include <cstdint>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 
 #include <thrift/lib/cpp2/fast_thrift/transport/WriteCompletion.h>
 
 namespace apache::thrift::fast_thrift::thrift {
 
-/**
- * ThriftClientEventType — the event enum for thrift-client pipelines.
- *
- * Used as the channel pipeline's EventEnum template parameter: each value
- * names a distinct user event that a pipeline handler or endpoint may
- * subscribe to via `kSubscribedEvents`. `fireEvent(type, ...)` reaches only
- * the subscribers of `type`. Each value carries its own payload as needed, or
- * none for pure signals.
- *
- * The trailing `Count` sentinel gives the pipeline the number of event types
- * at compile time and must remain the last enumerator.
- */
-enum class ThriftClientEventType : std::uint32_t {
-  // Per-request write completion relayed up from the rocket pipeline by
-  // ThriftClientTransportAdapter. Carries a ThriftClientWriteCompleteEvent.
-  WriteComplete,
-  // The transport is draining: the server sent a graceful close (rocket
-  // CONNECTION_CLOSE). ThriftClientTransportAdapter translates the
-  // rocket-native close notification into this event; the pipeline-resident
-  // ThriftClientGracefulDrainHandler picks it up and begins draining (reject
-  // new requests, let in-flight finish, then deactivate). Not a fault —
-  // in-flight work is never failed. Carries no payload — the type alone is the
-  // signal.
-  CloseConnection,
-  // Sentinel: number of event types. Keep last.
-  Count,
-};
+/** Graceful-drain signal published by a transport adapter. */
+struct ThriftClientCloseConnectionEvent : channel_pipeline::EventTag<> {};
 
 /**
- * Payload for ThriftClientEventType::WriteComplete — the completion of one
+ * `ThriftClientWriteCompleteEvent` reports the completion of one
  * individual request write, relayed up from the rocket pipeline.
  * `requestContext` is a NON-OWNING borrow valid for the duration of the
- * onEvent call; the owning layer static_casts it to the concrete context type.
+ * event callback; the owning layer static_casts it to the concrete context
+ * type.
  */
-struct ThriftClientWriteCompleteEvent {
+struct ThriftClientWriteCompleteEvent
+    : channel_pipeline::EventTag<ThriftClientWriteCompleteEvent> {
   void* requestContext;
   apache::thrift::fast_thrift::transport::WriteCompletionStatus status;
 };

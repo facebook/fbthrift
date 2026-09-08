@@ -90,17 +90,11 @@ class RocketServerAppAdapter : public folly::DelayedDestruction {
 
   // Write-completion relay: invoked once per completed outbound rocket frame
   // with the RocketWriteCompleteEvent (streamId, status).
-  // Only delivered when the pipeline is built with RocketServerEventId; for
-  // a default (NoEvent) pipeline the subscription compiles out entirely.
   using OnWriteCompleteFn =
       folly::Function<void(const RocketWriteCompleteEvent&) noexcept>;
 
-  // Setup relays: the rocket pipeline's setup handler asks what to answer a
-  // validated SETUP frame with, then reports once that answer is on the write
-  // path. Both events carry out-slots the relay fills in place — this is how
-  // the layer above (which owns setup-metadata interpretation) gets its
-  // decision back down to the rocket side. Only delivered when the pipeline is
-  // built with RocketServerEventId.
+  // Setup relays let the Thrift layer interpret SETUP metadata and observe
+  // when the response reaches the write path. Both events carry out-slots.
   using OnSetupReceivedFn = folly::Function<void(RocketSetupEvent&) noexcept>;
   using OnSetupCompleteFn =
       folly::Function<void(RocketSetupCompleteEvent&) noexcept>;

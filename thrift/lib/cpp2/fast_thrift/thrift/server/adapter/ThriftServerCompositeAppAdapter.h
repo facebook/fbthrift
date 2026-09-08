@@ -109,25 +109,20 @@ class ThriftServerCompositeAppAdapter final : public folly::DelayedDestruction {
   void handlerRemoved() noexcept;
   void onPipelineActive() noexcept;
   void onPipelineInactive() noexcept;
-  // The single pipeline event this endpoint subscribes to: the inbound
-  // ConnectionClosed emitted by ThriftServerConnectionCloseHandler.
-  static constexpr channel_pipeline::Subscriptions<
-      ThriftServerEventType::ConnectionClosed>
-      kSubscribedEvents{};
+  using PublishedEvents =
+      channel_pipeline::Events<ThriftServerCloseConnectionEvent>;
+  using SubscribedEvents =
+      channel_pipeline::Events<ThriftServerConnectionClosedEvent>;
 
-  // Handles the ConnectionClosed event from the pipeline's
-  // ThriftServerConnectionCloseHandler — the edge that guarantees in-flight
-  // handler callbacks have settled. Fires the user closeCallback. The
-  // subscription means only ConnectionClosed reaches us; our own emitted
-  // CloseConnection is never self-delivered. The pipeline's
-  // onPipelineInactive is no longer the close trigger — see the cpp.
-  void onEvent(
-      ThriftServerEventType ev,
-      const channel_pipeline::TypeErasedBox& evt) noexcept;
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerConnectionClosedEvent>
+  void on() noexcept {
+    onConnectionClosed();
+  }
   void onWriteReady() noexcept;
 
   // Initiate connection close. Internally fires a
-  // ThriftServerEventType::CloseConnection pipeline event; the
+  // ThriftServerCloseConnectionEvent pipeline event; the
   // pipeline-resident ThriftServerConnectionCloseHandler picks it up and runs
   // the terminal state machine. The user closeCallback fires when the
   // connection has fully settled. No-op if the pipeline is not wired.
@@ -137,6 +132,8 @@ class ThriftServerCompositeAppAdapter final : public folly::DelayedDestruction {
   ~ThriftServerCompositeAppAdapter() override;
 
  private:
+  void onConnectionClosed() noexcept;
+
   // Per-child dispatch surfaces. Two thunk groups:
   //   - invokeOnRead<T>     : per-request, looked up by method name
   //   - kLifecycleVTable<T> : pipeline -> child wiring + lifecycle fan-out

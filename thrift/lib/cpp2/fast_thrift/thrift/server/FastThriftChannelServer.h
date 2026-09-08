@@ -574,8 +574,7 @@ FastThriftServerT<Stats>::buildRocketPipeline(
   auto builder = channel_pipeline::PipelineBuilder<
                      rocket::server::RocketServerTransportHandler,
                      rocket::server::RocketServerAppAdapter,
-                     channel_pipeline::SimpleBufferAllocator,
-                     rocket::server::RocketServerEventId>()
+                     channel_pipeline::SimpleBufferAllocator>()
                      .setEventBase(evb)
                      .setHead(transportHandler)
                      .setTail(appAdapter)

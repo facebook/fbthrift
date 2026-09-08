@@ -60,6 +60,9 @@ namespace apache::thrift::fast_thrift::thrift {
 template <typename Context>
 class ThriftServerSetupHandler {
  public:
+  using PublishedEvents =
+      channel_pipeline::Events<ThriftServerCloseConnectionEvent>;
+
   // HandlerLifecycle
   void handlerAdded(Context& /*ctx*/) noexcept {}
   void handlerRemoved(Context& /*ctx*/) noexcept {}
@@ -147,11 +150,10 @@ class ThriftServerSetupHandler {
       Context& ctx,
       apache::thrift::fast_thrift::frame::ErrorCode errorCode,
       std::string_view reason) noexcept {
-    ctx.fireEvent(
-        ThriftServerEventType::CloseConnection,
-        channel_pipeline::TypeErasedBox(
-            ThriftServerCloseConnectionEvent{
-                .rejection = SetupRejection{errorCode, std::string(reason)}}));
+    PublishedEvents::template fire<ThriftServerCloseConnectionEvent>(
+        ctx,
+        ThriftServerCloseConnectionEvent{
+            .rejection = SetupRejection{errorCode, std::string(reason)}});
     return channel_pipeline::Result::Error;
   }
 };

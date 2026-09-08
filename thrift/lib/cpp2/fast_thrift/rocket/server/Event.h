@@ -32,46 +32,7 @@
 namespace apache::thrift::fast_thrift::rocket::server {
 
 /**
- * RocketServerEventId — the rocket-server pipeline's event enum (the
- * `EventEnum` the pipeline is built with). Each value is a distinct pipeline
- * event with its own message type; subscribers select the events they consume
- * via `kSubscribedEvents` and the id alone identifies the message.
- */
-enum class RocketServerEventId : std::uint32_t {
-  // Raw socket-level write-completion fired by TransportHandlerT (via
-  // RocketServerEventFactory::make) once per writev. Carries
-  // TransportWriteCompleteEvent.
-  TransportWriteComplete,
-  // Enriched per-batch completion fired by WriteCompletionTrackerT (via
-  // makeBatchWriteComplete) after popping one entry from its frame-count FIFO.
-  // One per flushed batch. Carries BatchWriteCompleteEvent. Consumed by the
-  // fragmentation handler's tracker, which is the first handler above the
-  // batcher that knows what the batch was made of.
-  BatchWriteComplete,
-  // Per-frame write completion — one per original outbound frame, carrying the
-  // streamId. Fired by FragmentCompletionTracker, which reassembles the batch
-  // into the frames it was made of. Carries FrameWriteCompleteEvent.
-  FrameWriteComplete,
-  // The rocket layer's view of the completion. Carries
-  // RocketWriteCompleteEvent.
-  RocketWriteComplete,
-  // Fired by RocketServerSetupFrameHandler once the client's SETUP frame has
-  // passed RSocket validation, to ask the layer above what to answer with.
-  // Carries RocketSetupEvent*.
-  SetupReceived,
-  // Fired by the same handler once that answer is on the write path and the
-  // connection is ready to carry requests. Carries RocketSetupCompleteEvent*.
-  SetupComplete,
-  // Fired before the connection is torn down: buffered outbound frames must
-  // reach the socket now, while the transport still accepts writes. Carries no
-  // message — the id is the whole signal. Subscribers must not close or
-  // deactivate in response; the teardown follows once dispatch returns.
-  FlushWrites,
-  Count,
-};
-
-/**
- * Message for RocketServerEventId::TransportWriteComplete — the outcome of one
+ * `TransportWriteCompleteEvent` reports the outcome of one
  * socket-level writev.
  */
 struct TransportWriteCompleteEvent
@@ -81,7 +42,7 @@ struct TransportWriteCompleteEvent
 };
 
 /**
- * Message for RocketServerEventId::BatchWriteComplete — the completion of one
+ * `BatchWriteCompleteEvent` reports the completion of one
  * batch as the batcher saw it. `frameCount` is the number of rocket frames in
  * that batch (> 0).
  */
@@ -100,7 +61,7 @@ struct BatchWriteCompleteEvent
 };
 
 /**
- * Message for RocketServerEventId::FrameWriteComplete — the completion of one
+ * `FrameWriteCompleteEvent` reports the completion of one
  * original outbound frame, whether it went out whole or in fragments. The
  * streamId is the one the fragmentation handler recorded at write time: below
  * it the frame is serialized bytes and the stream is no longer recoverable.
@@ -116,7 +77,7 @@ struct FrameWriteCompleteEvent
 };
 
 /**
- * Message for RocketServerEventId::RocketWriteComplete — one outbound rocket
+ * `RocketWriteCompleteEvent` reports one outbound rocket
  * frame reached the socket. The streamId identifies it; unlike the client there
  * is no request context to resolve against, because the server's is carried on
  * the request message rather than held in a per-stream table.
@@ -141,7 +102,7 @@ struct SetupRejection {
 };
 
 /**
- * Message for RocketServerEventId::SetupReceived — a validated SETUP frame and
+ * Payload carried by `SetupReceivedEvent` for a validated SETUP frame and
  * the slots for the answer to it.
  *
  * This event is a question, not a notification: the emitter reads the response
@@ -165,7 +126,7 @@ struct RocketSetupEvent {
 };
 
 /**
- * Message for RocketServerEventId::SetupComplete — the second decision point,
+ * Payload carried by `SetupCompleteEvent` for the second decision point,
  * once the SETUP response is on the write path and before any request can be
  * dispatched. `reject` is an out-slot: setting it refuses a connection that
  * has already been answered, which the client sees as an error frame following
@@ -175,10 +136,13 @@ struct RocketSetupCompleteEvent {
   std::optional<SetupRejection> reject;
 };
 
+/** Carries the mutable setup request and response slots to subscribers. */
 struct SetupReceivedEvent : channel_pipeline::EventTag<RocketSetupEvent*> {};
+/** Carries the post-response setup decision to subscribers. */
 struct SetupCompleteEvent
     : channel_pipeline::EventTag<RocketSetupCompleteEvent*> {};
 
+/** Signals that buffered frames must reach the socket before teardown. */
 struct FlushWritesEvent : channel_pipeline::EventTag<> {};
 
 } // namespace apache::thrift::fast_thrift::rocket::server

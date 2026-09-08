@@ -175,8 +175,7 @@ class ThriftServerBackwardsCompatibilityE2ETest : public ::testing::Test {
             apache::thrift::fast_thrift::rocket::server::
                 RocketServerTransportHandler,
             apache::thrift::fast_thrift::rocket::server::RocketServerAppAdapter,
-            SimpleBufferAllocator,
-            apache::thrift::fast_thrift::rocket::server::RocketServerEventId>()
+            SimpleBufferAllocator>()
             .setEventBase(evb)
             .setHead(rocketConnRef.transportHandler.get())
             .setTail(rocketConnRef.appAdapter.get())

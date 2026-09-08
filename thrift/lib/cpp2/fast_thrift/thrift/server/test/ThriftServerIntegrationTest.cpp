@@ -1216,16 +1216,14 @@ TEST_F(
 
   setupPipelineWithSetup();
 
-  // Call onEvent directly on the test thread. fireCloseCallback defers the
-  // user callback via runInEventBaseThread, which queues onto the EVB's
-  // notification queue. A blocking loopOnce drains it deterministically
-  // — using NONBLOCK here races on mac-arm64, where the eventfd write
-  // from the same thread may not propagate before the non-blocking dispatch
-  // returns, deferring the cb into TearDown after closeCalled has been
-  // destroyed on the stack.
-  adapter_->onEvent(
-      ThriftServerEventType::ConnectionClosed,
-      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox{});
+  // Call the typed event callback directly on the test thread.
+  // fireCloseCallback defers the user callback via runInEventBaseThread, which
+  // queues onto the EVB's notification queue. A blocking loopOnce drains it
+  // deterministically — using NONBLOCK here races on mac-arm64, where the
+  // eventfd write from the same thread may not propagate before the
+  // non-blocking dispatch returns, deferring the cb into TearDown after
+  // closeCalled has been destroyed on the stack.
+  adapter_->on<ThriftServerConnectionClosedEvent>();
   evb_.loopOnce();
 
   EXPECT_TRUE(closeCalled);

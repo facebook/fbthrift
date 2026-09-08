@@ -40,7 +40,7 @@ concept ServerInboundAppAdapter = channel_pipeline::TailEndpointHandler<T>;
  * Codegen builds a ThriftServerResponseMessage via the helpers in
  * util/ResponsePayloads.h and hands it to writeResponse(). The adapter
  * also owns the close-initiation API: close() fires a
- * ThriftServerEventType::CloseConnection through the pipeline so the
+ * ThriftServerCloseConnectionEvent through the pipeline so the
  * resident ThriftServerConnectionCloseHandler can drive the terminal
  * state machine. Mirrors ClientOutboundAppAdapter on the client side.
  */

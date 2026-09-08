@@ -19,8 +19,8 @@
 //
 // The unit tests call the bridge's callbacks directly, which proves it reacts
 // correctly but not that the pipeline ever reaches it. Two things can only
-// break here: the event subscription (a wrong `kSubscribedEvents`, or an
-// `onEvent` signature that drifts by a character, compiles and passes every
+// break here: the event subscription (a wrong `SubscribedEvents`, or an
+// `on<Event>` signature that drifts by a character, compiles and passes every
 // unit test while silently never announcing a connection), and the server
 // config that populates the request context and headers the bridge reads.
 //

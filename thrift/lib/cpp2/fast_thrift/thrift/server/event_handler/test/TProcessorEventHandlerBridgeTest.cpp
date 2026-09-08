@@ -264,8 +264,7 @@ void establish(
   (void)bridge.onRead(ctx, erase_and_box(std::move(setupMsg)));
 
   ThriftServerSetupCompleteEvent event{};
-  bridge.onEvent(
-      ctx, ThriftServerEventType::SetupComplete, erase_and_box(&event));
+  bridge.on<ThriftServerSetupCompleteEvent>(ctx, &event);
 }
 
 boost::intrusive_ptr<ThriftConnContext> makeConn() {
@@ -547,8 +546,8 @@ TEST(TProcessorEventHandlerBridgeTest, ConnectionClosedIsAnnouncedOnce) {
   auto conn = makeConn();
   establish(bridge, ctx, conn);
 
-  bridge.onEvent(ctx, ThriftServerEventType::ConnectionClosed, TypeErasedBox{});
-  bridge.onEvent(ctx, ThriftServerEventType::ConnectionClosed, TypeErasedBox{});
+  bridge.on<ThriftServerConnectionClosedEvent>(ctx);
+  bridge.on<ThriftServerConnectionClosedEvent>(ctx);
 
   EXPECT_EQ(
       std::count(log.calls.begin(), log.calls.end(), "connectionDestroyed"), 1);

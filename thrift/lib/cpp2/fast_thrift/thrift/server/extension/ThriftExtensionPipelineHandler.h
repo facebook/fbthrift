@@ -49,22 +49,24 @@ namespace apache::thrift::fast_thrift::thrift::server {
 
 namespace extension_detail {
 
-template <bool Subscribe, auto Ev>
-using SubscriptionIf = std::conditional_t<
+template <bool Subscribe, channel_pipeline::PipelineEvent E>
+using EventsIf = std::conditional_t<
     Subscribe,
-    channel_pipeline::Subscriptions<Ev>,
-    channel_pipeline::Subscriptions<>>;
+    channel_pipeline::Events<E>,
+    channel_pipeline::Events<>>;
 
 template <typename A, typename B>
-struct ConcatSubscriptionsImpl;
-template <auto... A, auto... B>
-struct ConcatSubscriptionsImpl<
-    channel_pipeline::Subscriptions<A...>,
-    channel_pipeline::Subscriptions<B...>> {
-  using type = channel_pipeline::Subscriptions<A..., B...>;
+struct ConcatEventsImpl;
+template <
+    channel_pipeline::PipelineEvent... A,
+    channel_pipeline::PipelineEvent... B>
+struct ConcatEventsImpl<
+    channel_pipeline::Events<A...>,
+    channel_pipeline::Events<B...>> {
+  using type = channel_pipeline::Events<A..., B...>;
 };
 template <typename A, typename B>
-using ConcatSubscriptions = typename ConcatSubscriptionsImpl<A, B>::type;
+using ConcatEvents = typename ConcatEventsImpl<A, B>::type;
 
 /**
  * The connection events H's adapter listens to. The two after-the-fact points
@@ -74,18 +76,17 @@ using ConcatSubscriptions = typename ConcatSubscriptionsImpl<A, B>::type;
  * hooks no connection point is linked into no event list.
  */
 template <typename H>
-using ConnectionSubscriptions = ConcatSubscriptions<
-    ConcatSubscriptions<
-        SubscriptionIf<
+using ConnectionEventSet = ConcatEvents<
+    ConcatEvents<
+        EventsIf<
             ThriftConnectionExtensionHandler<H>,
-            ThriftServerEventType::SetupComplete>,
-        SubscriptionIf<
+            ThriftServerSetupCompleteEvent>,
+        EventsIf<
             HasConnectionClosedCallback<H>,
-            ThriftServerEventType::ConnectionClosed>>,
-    SubscriptionIf<
+            ThriftServerConnectionClosedEvent>>,
+    EventsIf<
         ThriftBackpressureExtensionHandler<H>,
-        ThriftServerEventType::WriteComplete>>;
-
+        ThriftServerWriteCompleteEvent>>;
 /**
  * Per-connection state an admission-control extension needs and nothing else
  * pays for: the resumer's control block, the pipeline to wake, and the latch
@@ -212,42 +213,33 @@ class ThriftExtensionPipelineHandler {
     return result;
   }
 
-  static constexpr extension_detail::ConnectionSubscriptions<H>
-      kSubscribedEvents{};
+  using SubscribedEvents = extension_detail::ConnectionEventSet<H>;
 
-  /**
-   * The two lifecycle points that fire after the exchange they report on:
-   * SetupComplete once the answer is on the wire, ConnectionClosed during
-   * teardown. Only onConnectionAttempted stays a message, because it is the
-   * one point that still has an answer to shape.
-   */
-  void onEvent(
-      ThriftPipelineHandlerContext& /*ctx*/,
-      ThriftServerEventType ev,
-      const channel_pipeline::TypeErasedBox& evt) noexcept {
-    if constexpr (ThriftBackpressureExtensionHandler<H>) {
-      if (ev == ThriftServerEventType::WriteComplete) {
-        onWriteComplete(evt.get<ThriftServerWriteCompleteEvent>());
-        return;
-      }
-    }
-    if constexpr (ThriftConnectionExtensionHandler<H>) {
-      if (ev == ThriftServerEventType::SetupComplete) {
-        onSetupComplete(*evt.get<ThriftServerSetupCompleteEvent*>());
-        return;
-      }
-    }
-    if (ev != ThriftServerEventType::ConnectionClosed) {
-      return;
-    }
-    if constexpr (HasConnectionClosedCallback<H>) {
-      // Rebuilt from the context latched during setup: the event carries no
-      // payload, and the connection-context handler still owns the context
-      // while the pipeline tears down.
-      if (established_ && connContext_ != nullptr) {
-        const ThriftConnectionView view(*connContext_);
-        handler_.onConnectionClosed(view);
-      }
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerWriteCompleteEvent> &&
+      ThriftBackpressureExtensionHandler<H>
+  void on(
+      ThriftPipelineHandlerContext&,
+      const ThriftServerWriteCompleteEvent& event) noexcept {
+    onWriteComplete(event);
+  }
+
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerSetupCompleteEvent> &&
+      ThriftConnectionExtensionHandler<H>
+  void on(
+      ThriftPipelineHandlerContext&,
+      ThriftServerSetupCompleteEvent* event) noexcept {
+    onSetupComplete(*event);
+  }
+
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerConnectionClosedEvent> &&
+      HasConnectionClosedCallback<H>
+  void on(ThriftPipelineHandlerContext&) noexcept {
+    if (established_ && connContext_ != nullptr) {
+      const ThriftConnectionView view(*connContext_);
+      handler_.onConnectionClosed(view);
     }
   }
 
@@ -556,9 +548,8 @@ ThriftPipelineHandlerFactory makeThriftExtensionHandlerFactory(
       "ThriftExtensionPipelineHandler<H> must satisfy the Inbound, Outbound, or "
       "Duplex handler concept over ThriftPipelineHandlerContext");
   return [id, args...](ExtensionStateStore& store) {
-    return channel_pipeline::detail::
-        makeHandlerNode<Adapter, ThriftServerEventType>(
-            id, std::make_unique<Adapter>(store, args...));
+    return channel_pipeline::detail::makeHandlerNode<Adapter>(
+        id, std::make_unique<Adapter>(store, args...));
   };
 }
 

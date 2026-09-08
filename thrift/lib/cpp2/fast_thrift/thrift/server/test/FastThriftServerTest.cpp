@@ -1991,10 +1991,9 @@ TEST(FastThriftServerConnectionExtensionTest, CallbackFamiliesAreIndependent) {
       "a request/response extension hooks no connection event");
   static_assert(
       std::is_same_v<
-          std::remove_const_t<
-              decltype(ftt::server::ThriftExtensionPipelineHandler<
-                       CountingExtension>::kSubscribedEvents)>,
-          cp::Subscriptions<>>,
+          typename ftt::server::ThriftExtensionPipelineHandler<
+              CountingExtension>::SubscribedEvents,
+          cp::Events<>>,
       "an extension with no connection callback must subscribe to no events");
 }
 

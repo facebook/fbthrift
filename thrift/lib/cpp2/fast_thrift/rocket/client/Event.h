@@ -26,52 +26,7 @@
 namespace apache::thrift::fast_thrift::rocket::client {
 
 /**
- * RocketClientEventId — the rocket-client pipeline's event enum (the
- * `EventEnum` the pipeline is built with). Each value is a distinct pipeline
- * event with its own message type, or no payload for pure signals; subscribers
- * select the events they consume via `kSubscribedEvents` and the id alone
- * identifies the message.
- */
-enum class RocketClientEventId : std::uint32_t {
-  // Raw socket-level write-completion fired by TransportHandlerT (via
-  // RocketClientEventFactory::make) once per writev. Carries
-  // TransportWriteCompleteEvent.
-  TransportWriteComplete,
-  // Enriched per-rocket-batch completion fired by WriteCompletionTrackerT (via
-  // makeBatchWriteComplete) after popping one entry from its frame-count FIFO.
-  // One per flushed batch. Carries BatchWriteCompleteEvent. Consumed by the
-  // WriteCompletionRouter (or FragmentCompletionTracker when fragmentation is
-  // enabled), which fans it out into per-frame FrameWriteComplete events.
-  BatchWriteComplete,
-  // Per-frame write completion — one per original outbound frame, carrying the
-  // streamId so StreamStateHandler can look up the request context. Fired by
-  // WriteCompletionRouter (simple 1:1 fan-out from BatchWriteComplete) or by
-  // FragmentCompletionTracker (fragment reassembly). Carries
-  // FrameWriteCompleteEvent.
-  FrameWriteComplete,
-  // Per-request write completion fired by StreamStateHandler after resolving
-  // FrameWriteComplete.streamId to the request's context pointer. Carries
-  // RocketWriteCompleteEvent.
-  RocketWriteComplete,
-  // A response frame for a stream began arriving in fragments. Fired by
-  // FirstFragmentTrackerT from inside the defragmentation handler, which is the
-  // only place the individual wire frames are still observable — above it the
-  // fragments have already been collapsed into one assembled frame. Carries
-  // FirstResponseFrameEvent. Consumed by RocketClientStatsHandler, which needs
-  // the arrival of the FIRST frame, not the last, to report
-  // firstResponsePayloadFrameLatency.
-  FirstResponseFrame,
-  // The server sent RSocket ERROR(CONNECTION_CLOSE), the graceful-drain signal.
-  // Fired by RocketClientConnectionErrorHandler; the RocketClientAppAdapter
-  // (pipeline tail) relays it to the upper (thrift) layer via onClose. The id
-  // is the whole signal — it carries no payload. Unlike an exception, this
-  // never fails in-flight work.
-  ConnectionClose,
-  Count,
-};
-
-/**
- * Message for RocketClientEventId::TransportWriteComplete — the outcome of one
+ * `TransportWriteCompleteEvent` reports the outcome of one
  * socket-level writev.
  */
 struct TransportWriteCompleteEvent
@@ -81,7 +36,7 @@ struct TransportWriteCompleteEvent
 };
 
 /**
- * Message for RocketClientEventId::BatchWriteComplete — the completion of one
+ * `BatchWriteCompleteEvent` reports the completion of one
  * rocket-frame batch. `frameCount` is the number of rocket frames in that batch
  * (> 0). Consumed by the WriteCompletionRouter, which pops `frameCount` entries
  * from its outbound FIFO and fans them out as per-write RocketWriteComplete
@@ -100,7 +55,7 @@ struct BatchWriteCompleteEvent
 };
 
 /**
- * Message for RocketClientEventId::FrameWriteComplete — the completion of one
+ * `FrameWriteCompleteEvent` reports the completion of one
  * original outbound frame (or one reassembled request when fragmentation is
  * active). Carries the streamId so StreamStateHandler can look up the request
  * context from its per-stream slot map.
@@ -116,11 +71,12 @@ struct FrameWriteCompleteEvent
 };
 
 /**
- * Message for RocketClientEventId::RocketWriteComplete — the completion of one
+ * `RocketWriteCompleteEvent` reports the completion of one
  * individual write. `requestContext` is a NON-OWNING borrow of that request's
  * context (the same TypeErasedPtr the rocket layer carries opaquely); it is
- * only valid for the duration of the onEvent call — subscribers must not retain
- * it. The owning layer (which knows the concrete context type) static_casts it.
+ * only valid for the duration of `on<RocketWriteCompleteEvent>()` — subscribers
+ * must not retain it. The owning layer (which knows the concrete context type)
+ * static_casts it.
  */
 struct RocketWriteCompleteEvent
     : channel_pipeline::EventTag<RocketWriteCompleteEvent> {
@@ -129,7 +85,7 @@ struct RocketWriteCompleteEvent
 };
 
 /**
- * Message for RocketClientEventId::FirstResponseFrame — when the first wire
+ * `FirstResponseFrameEvent` reports when the first wire
  * frame of a fragmented response for `streamId` was parsed by the client.
  *
  * Only fired for responses the server fragmented. A response that arrives as a
@@ -143,6 +99,7 @@ struct FirstResponseFrameEvent
   std::chrono::steady_clock::time_point arrivalTime{};
 };
 
+/** Signals that the server initiated a graceful connection drain. */
 struct ConnectionCloseEvent : channel_pipeline::EventTag<> {};
 
 } // namespace apache::thrift::fast_thrift::rocket::client

@@ -54,7 +54,8 @@ class BenchCtx {
   // NOLINTNEXTLINE(clang-diagnostic-unused-member-function)
   void fireException(folly::exception_wrapper&&) noexcept {}
   // NOLINTNEXTLINE(clang-diagnostic-unused-member-function)
-  void fireEvent(StreamEvent, TypeErasedBox&&) noexcept {}
+  template <PipelineEvent E>
+  void fireEvent() noexcept {}
 };
 
 ThriftStreamMessage makeRequestN(uint64_t n) {

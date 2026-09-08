@@ -40,16 +40,16 @@ namespace apache::thrift::fast_thrift::thrift::stream {
  * REQUEST_N, where one credit authorizes exactly one stream element (a
  * `Payload`); a producer may emit an element only while it holds credit. This
  * handler owns the credit budget *privately* — the count never leaves the
- * handler. It publishes only readiness, as StreamEvent flow-control events:
+ * handler. It publishes only readiness, as typed flow-control events:
  *
  *   - Inbound `RequestN` adds to the credit and is consumed — it is the grant
  *     itself, not data to deliver upward. When credit becomes available after
- *     being exhausted, it fires `StreamEvent::FlowControlResume` so a writer
+ *     being exhausted, it fires `FlowControlResumeEvent` so a writer
  *     that paused upstream (e.g. a buffer) can resume. Other inbound frames
  *     pass through.
  *   - Outbound `Payload` spends one credit and is forwarded. The element that
  *     spends the *last* credit is still forwarded, but the handler fires
- *     `StreamEvent::FlowControlPause` and returns `Result::Backpressure` so the
+ *     `FlowControlPauseEvent` and returns `Result::Backpressure` so the
  *     producer is paused the moment demand is exhausted rather than one element
  *     too late. A further element sent while exhausted is beyond the peer's
  *     demand — a credit-contract violation an upstream buffer honoring
@@ -64,6 +64,9 @@ namespace apache::thrift::fast_thrift::thrift::stream {
 template <typename Context>
 class InboundCreditHandler {
  public:
+  using PublishedEvents =
+      channel_pipeline::Events<FlowControlPauseEvent, FlowControlResumeEvent>;
+
   // HandlerLifecycle
   void handlerAdded(Context& /*ctx*/) noexcept {}
   void handlerRemoved(Context& /*ctx*/) noexcept {}
@@ -83,8 +86,7 @@ class InboundCreditHandler {
       // Credit just became available: tell a writer that paused upstream while
       // exhausted that it may resume. Credit stays private — only readiness is
       // published.
-      ctx.fireEvent(
-          StreamEvent::FlowControlResume, channel_pipeline::TypeErasedBox{});
+      PublishedEvents::template fire<FlowControlResumeEvent>(ctx);
     }
     return channel_pipeline::Result::Success;
   }
@@ -108,8 +110,7 @@ class InboundCreditHandler {
     if (credits_ == 0) {
       // Demand just hit zero: publish the pause before returning, so a
       // subscriber observes it in the same turn as the Backpressure result.
-      ctx.fireEvent(
-          StreamEvent::FlowControlPause, channel_pipeline::TypeErasedBox{});
+      PublishedEvents::template fire<FlowControlPauseEvent>(ctx);
     }
     if (forwarded != channel_pipeline::Result::Success) {
       // Downstream congestion or failure: propagate its status unchanged.

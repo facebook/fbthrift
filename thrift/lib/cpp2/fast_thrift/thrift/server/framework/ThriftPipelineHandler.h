@@ -81,9 +81,9 @@ inline channel_pipeline::HandlerId deriveThriftPipelineHandlerId(
  *
  * T's concrete type and constructor arguments are captured here, where T is in
  * scope; the returned factory erases T and constructs a fresh T per connection
- * from copies of `args`. The node is created with ThriftServerEventType so T
- * may subscribe to server events (e.g. connection drain/close) exactly like the
- * built-in thrift pipeline handlers.
+ * from copies of `args`. The node is created with typed Thrift server events so
+ * T may subscribe to server events (e.g. connection drain/close) exactly like
+ * the built-in thrift pipeline handlers.
  *
  * @param id A pipeline-unique handler id (e.g. from a HANDLER_TAG or a
  *           registration-order-derived id). Used for context lookup and
@@ -107,7 +107,7 @@ ThriftPipelineHandlerFactory makeThriftPipelineHandlerFactory(
       "the constrained observer/modifier extension API "
       "(FastServerModule::addThriftExtension) for user handlers.");
   return [id, args...](ExtensionStateStore&) {
-    return channel_pipeline::detail::makeHandlerNode<T, ThriftServerEventType>(
+    return channel_pipeline::detail::makeHandlerNode<T>(
         id, std::make_unique<T>(args...));
   };
 }

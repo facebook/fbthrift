@@ -64,7 +64,6 @@ class BenchContext {
   void fireException(folly::exception_wrapper&& e) noexcept {
     lastException_ = std::move(e);
   }
-
   template <channel_pipeline::PipelineEvent E>
     requires std::is_void_v<typename E::Payload>
   void fireEvent() noexcept {}

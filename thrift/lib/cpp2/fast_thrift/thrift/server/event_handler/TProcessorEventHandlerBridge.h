@@ -337,51 +337,48 @@ class TProcessorEventHandlerBridge {
     return ctx.fireWrite(std::move(msg));
   }
 
-  static constexpr channel_pipeline::Subscriptions<
-      ThriftServerEventType::SetupComplete,
-      ThriftServerEventType::ConnectionClosed>
-      kSubscribedEvents{};
+  using SubscribedEvents = channel_pipeline::
+      Events<ThriftServerSetupCompleteEvent, ThriftServerConnectionClosedEvent>;
 
-  void onEvent(
-      Context& /*ctx*/,
-      ThriftServerEventType ev,
-      const channel_pipeline::TypeErasedBox& /*evt*/) noexcept {
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerSetupCompleteEvent>
+  void on(Context&, ThriftServerSetupCompleteEvent*) noexcept {
     // Nothing installed: the connection context exists only to be handed to
     // handlers, so there is none to build and nobody to tell about it.
     if (handlers_ == nullptr) {
       return;
     }
-    if (ev == ThriftServerEventType::SetupComplete) {
-      // The connection is answered and about to carry requests. Build the
-      // context now so per-connection handler state exists before the first
-      // request needs it.
-      if (ftConnContext_ == nullptr || connectionContext_ != nullptr) {
-        return;
-      }
-      connectionContext_ = std::make_unique<Cpp2ConnContextAdapter>(
-          boost::intrusive_ptr<ThriftConnContext>(ftConnContext_),
-          config_.identityResolver);
-      for (const auto& handler : handlers_->server) {
-        handler->newConnection(&connectionContext_->get());
-      }
+    // The connection is answered and about to carry requests. Build the
+    // context now so per-connection handler state exists before the first
+    // request needs it.
+    if (ftConnContext_ == nullptr || connectionContext_ != nullptr) {
       return;
     }
-    if (ev != ThriftServerEventType::ConnectionClosed ||
-        connectionContext_ == nullptr || connectionDestroyed_) {
+    connectionContext_ = std::make_unique<Cpp2ConnContextAdapter>(
+        boost::intrusive_ptr<ThriftConnContext>(ftConnContext_),
+        config_.identityResolver);
+    for (const auto& handler : handlers_->server) {
+      handler->newConnection(&connectionContext_->get());
+    }
+  }
+
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerConnectionClosedEvent>
+  void on(Context&) noexcept {
+    if (handlers_ == nullptr || connectionContext_ == nullptr ||
+        connectionDestroyed_) {
       return;
     }
-    // The close is announced once even if the event arrives twice: a handler
-    // is promised one connectionDestroyed for the newConnection it was told.
+    // Announce closure once even if the event arrives twice: each handler is
+    // promised one connectionDestroyed for the newConnection it observed.
     connectionDestroyed_ = true;
     // Requests still outstanding never produced a response, so their
-    // write-side callbacks do not run — as on a classic connection dropped
-    // mid-flight. Their state is not dropped here though: the service may
-    // still hold a request whose classic context this connection's one backs,
-    // so the bridge's own destruction is the safe point to release them.
+    // write-side callbacks do not run. Keep their state until bridge
+    // destruction because a service may still hold a request backed by this
+    // connection context.
     for (const auto& handler : handlers_->server) {
       handler->connectionDestroyed(&connectionContext_->get());
     }
-    return;
   }
 
   void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {

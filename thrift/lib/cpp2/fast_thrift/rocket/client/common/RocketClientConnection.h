@@ -39,7 +39,7 @@ namespace apache::thrift::fast_thrift::rocket::client {
  * WriteCompletion.h). The default NoOp factory means no per-write event is
  * fired — zero cost. Connections that want write tracking instantiate with
  * RocketClientEventFactory (see the RocketClientTrackingConnection alias) and
- * build the pipeline with RocketClientEventId plus a subscriber.
+ * build the pipeline with typed Rocket client events plus a subscriber.
  *
  * Lifecycle is split between disconnect() and destroy():
  *   - disconnect(ew) deactivates the pipeline and closes the underlying
@@ -154,10 +154,8 @@ struct RocketClientConnectionT {
 // cost. Use RocketClientConnection::TransportHandler when building the
 // pipeline.
 using RocketClientConnection = RocketClientConnectionT<>;
-
 // Opt-in: fires a TransportWriteComplete event on each socket write completion
-// for write tracking. The pipeline must be built with RocketClientEventId and a
-// subscriber for the events to be delivered.
+// for write tracking. Subscribers declare the event in SubscribedEvents.
 using RocketClientTrackingConnection =
     RocketClientConnectionT<RocketClientEventFactory>;
 

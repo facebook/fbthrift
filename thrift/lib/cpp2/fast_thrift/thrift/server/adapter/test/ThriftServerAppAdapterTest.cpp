@@ -430,7 +430,7 @@ TEST_F(ThriftServerAppAdapterTest, OnConnectionClosedEventDefersCloseCallback) {
   // deferred onto the EVB — firing synchronously could destroy the
   // pipeline mid-walk.
   evb_->runInEventBaseThreadAndWait([&] {
-    adapter->onEvent(ThriftServerEventType::ConnectionClosed, TypeErasedBox{});
+    adapter->on<ThriftServerConnectionClosedEvent>();
     EXPECT_FALSE(closeCalled)
         << "Close callback must not fire synchronously during onEvent "
            "(use-after-free risk)";
@@ -1021,9 +1021,8 @@ TEST_F(
 
   // Simulate the reap-timeout force-close — close handler fires
   // ConnectionClosed inbound.
-  evb_->runInEventBaseThreadAndWait([&] {
-    adapter->onEvent(ThriftServerEventType::ConnectionClosed, TypeErasedBox{});
-  });
+  evb_->runInEventBaseThreadAndWait(
+      [&] { adapter->on<ThriftServerConnectionClosedEvent>(); });
 
   // Straggler write — must NOT dispatch through the pipeline.
   evb_->runInEventBaseThreadAndWait([&] {

@@ -154,22 +154,16 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   void onPipelineActive() noexcept {}
   void onPipelineInactive() noexcept {}
 
-  // The single pipeline event this endpoint subscribes to: the inbound
-  // ConnectionClosed emitted by ThriftServerConnectionCloseHandler.
-  static constexpr channel_pipeline::Subscriptions<
-      ThriftServerEventType::ConnectionClosed>
-      kSubscribedEvents{};
+  using PublishedEvents =
+      channel_pipeline::Events<ThriftServerCloseConnectionEvent>;
+  using SubscribedEvents =
+      channel_pipeline::Events<ThriftServerConnectionClosedEvent>;
 
-  // Handles the ConnectionClosed event from the pipeline's
-  // ThriftServerConnectionCloseHandler — the canonical "pipeline is done"
-  // edge. Clears pipelineActive_, releases pipelineGuard_ (so the pipeline
-  // can die independently of any straggler FastHandlerCallbacks still holding
-  // a DG on the adapter), and fires the user closeCallback. The subscription
-  // means only ConnectionClosed reaches us; our own emitted CloseConnection
-  // is never self-delivered.
-  void onEvent(
-      ThriftServerEventType ev,
-      const channel_pipeline::TypeErasedBox& evt) noexcept;
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerConnectionClosedEvent>
+  void on() noexcept {
+    onConnectionClosed();
+  }
   void onWriteReady() noexcept {}
 
   // Write entry point for callers that may be off the EventBase.
@@ -195,7 +189,7 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   void writeResponse(ThriftServerResponseMessage&& message) noexcept;
 
   // Initiate connection close. Internally fires a
-  // ThriftServerEventType::CloseConnection pipeline event; the
+  // ThriftServerCloseConnectionEvent pipeline event; the
   // pipeline-resident ThriftServerConnectionCloseHandler picks it up and runs
   // the terminal state machine (drain timeout → reap → force-close on stuck
   // handler callbacks). The user closeCallback fires when the connection has
@@ -237,6 +231,8 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   FOLLY_NOINLINE void handleUnknownMethod(
       uint32_t streamId, std::string_view methodName) noexcept;
   FOLLY_NOINLINE void handleMissingPipeline() noexcept;
+
+  void onConnectionClosed() noexcept;
 
   // Must be called on evb_.
   void writeResponseOnEventBase(ThriftServerResponseMessage&& message) noexcept;

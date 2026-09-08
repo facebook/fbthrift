@@ -81,11 +81,6 @@ class MockDrainContext {
   ThriftClientGracefulDrainHandler* handler_{nullptr};
 };
 
-TypeErasedBox makeCloseEvent() {
-  // CloseConnection carries no payload — the type alone is the signal.
-  return TypeErasedBox{};
-}
-
 // Any inbound response — content is irrelevant to in-flight accounting; the
 // handler decrements and forwards every inbound message.
 ThriftResponseMessage makeResponse() {
@@ -150,8 +145,7 @@ TEST_F(ThriftClientGracefulDrainHandlerTest, CloseWithInFlightEntersDraining) {
   (void)handler_.onWrite(ctx_, erase_and_box(makeRequest(nullptr)));
   ASSERT_EQ(handler_.inFlight(), 1u);
 
-  handler_.onEvent(
-      ctx_, ThriftClientEventType::CloseConnection, makeCloseEvent());
+  handler_.on<ThriftClientCloseConnectionEvent>(ctx_);
 
   // In-flight work remains; we drain rather than close immediately.
   EXPECT_TRUE(handler_.isDraining());
@@ -162,8 +156,7 @@ TEST_F(ThriftClientGracefulDrainHandlerTest, CloseWithInFlightEntersDraining) {
 TEST_F(
     ThriftClientGracefulDrainHandlerTest,
     CloseWithNoInFlightDeactivatesImmediately) {
-  handler_.onEvent(
-      ctx_, ThriftClientEventType::CloseConnection, makeCloseEvent());
+  handler_.on<ThriftClientCloseConnectionEvent>(ctx_);
 
   // Nothing to wait for — close immediately.
   EXPECT_TRUE(handler_.isClosed());
@@ -174,8 +167,7 @@ TEST_F(
 TEST_F(ThriftClientGracefulDrainHandlerTest, DrainCompletesOnLastResponse) {
   (void)handler_.onWrite(ctx_, erase_and_box(makeRequest(nullptr)));
   (void)handler_.onWrite(ctx_, erase_and_box(makeRequest(nullptr)));
-  handler_.onEvent(
-      ctx_, ThriftClientEventType::CloseConnection, makeCloseEvent());
+  handler_.on<ThriftClientCloseConnectionEvent>(ctx_);
   ASSERT_TRUE(handler_.isDraining());
 
   // First response: still one in flight, no close yet.
@@ -193,8 +185,7 @@ TEST_F(ThriftClientGracefulDrainHandlerTest, DrainCompletesOnLastResponse) {
 TEST_F(ThriftClientGracefulDrainHandlerTest, WriteRejectedWhenDraining) {
   // Enter draining with one request still in flight so we stay in Closing.
   (void)handler_.onWrite(ctx_, erase_and_box(makeRequest(nullptr)));
-  handler_.onEvent(
-      ctx_, ThriftClientEventType::CloseConnection, makeCloseEvent());
+  handler_.on<ThriftClientCloseConnectionEvent>(ctx_);
   ASSERT_TRUE(handler_.isDraining());
   ASSERT_EQ(ctx_.writeMessages().size(), 1);
 
@@ -230,8 +221,7 @@ TEST_F(ThriftClientGracefulDrainHandlerTest, PipelineInactiveSetsClosed) {
 
 TEST_F(ThriftClientGracefulDrainHandlerTest, PipelineActiveResetsState) {
   (void)handler_.onWrite(ctx_, erase_and_box(makeRequest(nullptr)));
-  handler_.onEvent(
-      ctx_, ThriftClientEventType::CloseConnection, makeCloseEvent());
+  handler_.on<ThriftClientCloseConnectionEvent>(ctx_);
   ASSERT_TRUE(handler_.isDraining());
 
   // A reconnect re-activates the pipeline and clears drain state.

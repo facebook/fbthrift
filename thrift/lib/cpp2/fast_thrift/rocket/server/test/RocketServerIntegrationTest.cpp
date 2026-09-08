@@ -31,10 +31,9 @@
  * and call evb_.loopOnce() to drain the deferred callback.
  *
  * Setup error tests for the bare pipeline below are covered in handler unit
- * tests. RocketServerSetupRejectionTest at the bottom of this file covers
- * rejection end-to-end on a pipeline that mirrors production (batcher present,
- * built with RocketServerEventId), where the buffered ERROR frame has to reach
- * the socket ahead of the close.
+ * tests. RocketServerSetupRejectionTest at the bottom mirrors the production
+ * pipeline with the outbound batcher present, where the buffered ERROR frame
+ * must reach the socket before close.
  */
 
 #include <cstring>
@@ -603,20 +602,16 @@ TEST_F(RocketServerIntegrationTest, EmptyPayloadResponse) {
 // Setup rejection must reach the wire
 //
 // Mirrors the production rocket pipeline from
-// ThriftServerConnectionFactory::buildRocketPipeline: the outbound batcher is
-// present and the pipeline is built with RocketServerEventId, so write
-// completions actually fire. That combination is what makes a rejected SETUP
-// observable end-to-end.
+// ThriftServerConnectionFactory::buildRocketPipeline with the outbound batcher
+// present, so write completions fire and a rejected SETUP is observable
+// end-to-end.
 // =============================================================================
-
 using RejectionTransportHandler =
     apache::thrift::fast_thrift::transport::TransportHandlerT<
         RocketServerEventFactory,
         apache::thrift::fast_thrift::frame::read::FrameLengthParser>;
-// Both batcher specializations a production rocket pipeline can be built with.
-// The refusal has to survive either: the batcher hears FlushWrites through the
-// pipeline's event enum, which is independent of whether it tracks write
-// completions or participates in backpressure.
+// Both batcher specializations used by production subscribe to FlushWrites,
+// independently of write-completion tracking and backpressure.
 using BackpressureBatcher = apache::thrift::fast_thrift::frame::write::handler::
     IntervalBatchingFrameHandlerT<
         apache::thrift::fast_thrift::frame::write::handler::

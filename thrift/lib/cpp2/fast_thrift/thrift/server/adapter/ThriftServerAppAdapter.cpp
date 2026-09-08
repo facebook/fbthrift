@@ -66,11 +66,7 @@ void ThriftServerAppAdapter::resetPipeline() noexcept {
   evb_ = {};
 }
 
-void ThriftServerAppAdapter::onEvent(
-    ThriftServerEventType ev,
-    const channel_pipeline::TypeErasedBox& /*evt*/) noexcept {
-  // We subscribe only to ConnectionClosed, so that's the only event delivered.
-  DCHECK(ev == ThriftServerEventType::ConnectionClosed);
+void ThriftServerAppAdapter::onConnectionClosed() noexcept {
   // Detach from pipeline. Stragglers (FastHandlerCallbacks still
   // alive, each holding a DG on us) call writeResponse, hit
   // pipelineActive_==false in writeResponseOnEventBase, and drop
@@ -228,9 +224,8 @@ void ThriftServerAppAdapter::close() noexcept {
   if (!pipeline_) {
     return;
   }
-  pipeline_->fireEvent(
-      ThriftServerEventType::CloseConnection,
-      channel_pipeline::TypeErasedBox(ThriftServerCloseConnectionEvent{}));
+  PublishedEvents::template fire<ThriftServerCloseConnectionEvent>(
+      *pipeline_, ThriftServerCloseConnectionEvent{});
 }
 
 } // namespace apache::thrift::fast_thrift::thrift

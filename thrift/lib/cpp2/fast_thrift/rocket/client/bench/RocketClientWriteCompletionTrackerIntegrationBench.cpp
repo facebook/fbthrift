@@ -27,7 +27,7 @@
  *   tracking: TransportHandlerT<RocketClientEventFactory,
  * apache::thrift::fast_thrift::transport::test::PassthroughParser> →
  * LoopBatchingFrameHandlerT<WriteCompletionTrackerT<...>> → tail (subscribes to
- * RocketClientEventId)
+ * typed Rocket client events)
  *
  * The baseline is the BENCHMARK reference and the tracking variant is its
  * BENCHMARK_RELATIVE, so the relative number is the tracking overhead: the
@@ -80,14 +80,11 @@ constexpr size_t kLargeBatch = 256;
 
 HANDLER_TAG(batching);
 
-// Fixture parameterized on the transport's event factory, the batcher's
-// tracker, and the pipeline event enum. The tail is the real
-// RocketClientAppAdapter — in the tracking pipeline it subscribes to the
-// enriched write-completion event and runs the owner's onWriteComplete
-// callback; in the baseline pipeline (events disabled) the subscription
-// compiles out. The baseline and tracking variants differ only in the three
-// template parameters, so the relative benchmark isolates tracking cost
-// through the real consumer path.
+// Fixture parameterized on the transport event factory and batcher tracker.
+// The real RocketClientAppAdapter consumes typed completion events in the
+// tracking case; the baseline factory and tracker make that path a no-op.
+// The relative benchmark therefore isolates tracking through the real consumer
+// path.
 template <typename Factory, typename Tracker>
 struct FixtureT {
   using TransportHandler =

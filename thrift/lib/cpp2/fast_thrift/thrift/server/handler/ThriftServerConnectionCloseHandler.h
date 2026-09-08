@@ -111,6 +111,10 @@ class ThriftServerConnectionCloseHandler {
       std::chrono::milliseconds drainTimeout,
       std::chrono::milliseconds reapTimeout) noexcept
       : drainTimeout_(drainTimeout), reapTimeout_(reapTimeout) {}
+  using PublishedEvents =
+      channel_pipeline::Events<ThriftServerConnectionClosedEvent>;
+  using SubscribedEvents =
+      channel_pipeline::Events<ThriftServerCloseConnectionEvent>;
 
   // HandlerLifecycle
   void handlerAdded(Context& ctx) noexcept {
@@ -221,23 +225,11 @@ class ThriftServerConnectionCloseHandler {
     ctx.fireException(std::move(e));
   }
 
-  // The single pipeline event this handler subscribes to: CloseConnection,
-  // emitted by the tail adapter's close() or by a handler refusing the
-  // connection. The subscription means only CloseConnection reaches us; our own
-  // emitted ConnectionClosed is never self-delivered.
-  static constexpr channel_pipeline::Subscriptions<
-      ThriftServerEventType::CloseConnection>
-      kSubscribedEvents{};
-
-  // Kicks off the terminal drain/reap state machine, answering the client with
-  // whatever the event names.
-  void onEvent(
-      Context& ctx,
-      ThriftServerEventType ev,
-      const channel_pipeline::TypeErasedBox& evt) noexcept {
-    DCHECK(ev == ThriftServerEventType::CloseConnection);
-    handleCloseConnectionEvent(
-        ctx, evt.get<ThriftServerCloseConnectionEvent>());
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerCloseConnectionEvent>
+  void on(
+      Context& ctx, const ThriftServerCloseConnectionEvent& event) noexcept {
+    handleCloseConnectionEvent(ctx, event);
   }
 
   // === Test accessors ===
@@ -328,9 +320,7 @@ class ThriftServerConnectionCloseHandler {
     state_ = State::Closed;
     drainTimer_->cancelTimeout();
     reapTimer_->cancelTimeout();
-    ctx.fireEvent(
-        ThriftServerEventType::ConnectionClosed,
-        channel_pipeline::TypeErasedBox{});
+    PublishedEvents::template fire<ThriftServerConnectionClosedEvent>(ctx);
   }
 
   uint32_t inFlight_{0};

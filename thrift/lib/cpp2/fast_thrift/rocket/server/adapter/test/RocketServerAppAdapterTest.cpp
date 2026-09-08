@@ -335,9 +335,6 @@ TEST(RocketServerAppAdapterTest, RocketWriteCompleteDeliveredThroughPipeline) {
     count++;
     streamId = e.streamId;
   });
-
-  // Built with RocketServerEventId so the adapter's subscription is wired; a
-  // NoEvent pipeline would compile the subscription out entirely.
   auto pipeline =
       PipelineBuilder<MockHeadHandler, RocketServerAppAdapter, TestAllocator>()
           .setEventBase(&evb)

@@ -78,6 +78,11 @@ namespace apache::thrift::fast_thrift::thrift::server {
  */
 class ThriftServerTransportAdapter {
  public:
+  using PublishedEvents = channel_pipeline::
+      Events<ThriftServerWriteCompleteEvent, ThriftServerSetupCompleteEvent>;
+  using EventPublisher =
+      channel_pipeline::EventPublisherHandle<PublishedEvents>;
+
   // Takes ownership of the rocket connection. The rocket connection is
   // torn down (disconnect + destroy) when the thrift pipeline tears down
   // this bridge, via handlerRemoved / onPipelineInactive.
@@ -99,6 +104,7 @@ class ThriftServerTransportAdapter {
       XLOG(FATAL) << "must reset pipeline before setting a new one";
     }
     pipeline_ = pipeline;
+    eventPublisher_ = pipeline->template bindEvents<PublishedEvents>();
     pipelineGuard_ =
         std::make_unique<folly::DelayedDestruction::DestructorGuard>(pipeline);
   }
@@ -109,6 +115,7 @@ class ThriftServerTransportAdapter {
    * defensive fallback.
    */
   void resetPipeline() noexcept {
+    eventPublisher_ = {};
     pipeline_ = nullptr;
     pipelineGuard_.reset();
   }
@@ -165,19 +172,17 @@ class ThriftServerTransportAdapter {
   }
 
   // Called when the rocket pipeline reports a completed frame write. Relays it
-  // up the thrift pipeline as a ThriftServerEventType::WriteComplete event.
-  // Precondition: pipeline is wired (the rocket connection that fires this is
-  // torn down before pipeline_ is cleared).
+  // up the thrift pipeline as a ThriftServerWriteCompleteEvent event.
+  // Precondition: the thrift pipeline is wired; teardown must stop rocket
+  // event delivery before resetPipeline() clears eventPublisher_.
   void onWriteComplete(
       const rocket::server::RocketWriteCompleteEvent& event) noexcept {
-    pipeline_->fireEvent(
-        ThriftServerEventType::WriteComplete,
-        channel_pipeline::TypeErasedBox(
-            ThriftServerWriteCompleteEvent{
-                .streamId = event.streamId,
-                .status = event.status,
-                .quiesced = event.quiesced,
-            }));
+    eventPublisher_.template fire<ThriftServerWriteCompleteEvent>(
+        ThriftServerWriteCompleteEvent{
+            .streamId = event.streamId,
+            .status = event.status,
+            .quiesced = event.quiesced,
+        });
   }
 
   // === HeadEndpointHandler interface ===
@@ -259,6 +264,8 @@ class ThriftServerTransportAdapter {
   // Relays the rocket setup handler's completion announcement up the thrift
   // pipeline. A subscriber that refuses fills the thrift event's slot; that
   // refusal is copied back into `event` for the rocket handler to act on.
+  // Precondition: the thrift pipeline is wired; teardown must stop rocket
+  // event delivery before resetPipeline() clears eventPublisher_.
   FOLLY_NOINLINE void onSetupComplete(
       rocket::server::RocketSetupCompleteEvent& event) noexcept;
 
@@ -277,6 +284,7 @@ class ThriftServerTransportAdapter {
       const folly::exception_wrapper& error) noexcept;
 
   channel_pipeline::PipelineImpl* pipeline_{nullptr};
+  EventPublisher eventPublisher_;
   std::unique_ptr<folly::DelayedDestruction::DestructorGuard> pipelineGuard_;
   // Owned rocket connection — torn down by handlerRemoved /
   // onPipelineInactive when the thrift pipeline goes away.

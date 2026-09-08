@@ -238,13 +238,13 @@ struct WriteCompleteCapturingTail {
   void onPipelineInactive() noexcept {}
   void onWriteReady() noexcept {}
 
-  static constexpr channel_pipeline::Subscriptions<
-      ThriftServerEventType::WriteComplete>
-      kSubscribedEvents{};
+  using SubscribedEvents =
+      channel_pipeline::Events<ThriftServerWriteCompleteEvent>;
 
-  void onEvent(
-      ThriftServerEventType /*ev*/, const TypeErasedBox& box) noexcept {
-    events.push_back(box.get<ThriftServerWriteCompleteEvent>());
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerWriteCompleteEvent>
+  void on(const ThriftServerWriteCompleteEvent& event) noexcept {
+    events.push_back(event);
   }
 
   std::vector<ThriftServerWriteCompleteEvent> events;
@@ -279,14 +279,10 @@ TEST(
 
   auto bridge =
       std::make_unique<ThriftServerTransportAdapter>(std::move(rocketConn));
-
-  // Thrift pipeline built with ThriftServerEventType so the tail's
-  // WriteComplete subscription is wired.
   auto thriftPipeline = PipelineBuilder<
                             ThriftServerTransportAdapter,
                             WriteCompleteCapturingTail,
-                            TestAllocator,
-                            ThriftServerEventType>()
+                            TestAllocator>()
                             .setEventBase(&evb)
                             .setHead(bridge.get())
                             .setTail(&thriftTail)

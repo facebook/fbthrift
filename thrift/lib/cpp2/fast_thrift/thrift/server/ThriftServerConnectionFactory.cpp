@@ -70,9 +70,9 @@ using channel_pipeline::SimpleBufferAllocator;
 // transport's per-writev completion becomes the batcher's per-batch event,
 // which the fragmenter resolves into the per-frame completion the rocket layer
 // consumes — and each stage's only subscriber is the next one, so a NoOp
-// tracker anywhere strands every event below it with nowhere to go. The
-// batching aliases bind the rocket event space through the tracker's own
-// EventId, so the batcher still hears FlushWrites either way.
+// tracker anywhere strands every event below it with nowhere to go. Both
+// batching aliases inherit their FlushWritesEvent subscription from the
+// tracker, so either backpressure policy still flushes before teardown.
 using ServerBatchingFrameHandler =
     frame::write::handler::IntervalBatchingFrameHandlerT<
         frame::write::handler::WriteCompletionTrackerT<
@@ -340,8 +340,7 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   PipelineBuilder<
       ThriftServerTransportAdapter,
       TailAdapter,
-      SimpleBufferAllocator,
-      ThriftServerEventType>
+      SimpleBufferAllocator>
       thriftPipelineBuilder;
   thriftPipelineBuilder.setEventBase(evb)
       .setHead(transportAdapterPtr)
@@ -394,8 +393,8 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   }
   // Connection-close handler sits immediately upstream of the tail.
   // ThriftServerConnection::close() fires
-  // ThriftServerEventType::CloseConnection through the pipeline; the handler
-  // picks it up via onEvent and drives the terminal state machine.
+  // ThriftServerCloseConnectionEvent through the pipeline; the handler
+  // handles the typed event and drives the terminal state machine.
   thriftPipelineBuilder.template addNextDuplex<CloseHandler>(
       thrift_server_connection_close_handler_tag,
       config_.drainTimeout,
@@ -440,8 +439,7 @@ PipelineImpl::Ptr ThriftServerConnectionFactory::buildRocketPipeline(
   auto builder = PipelineBuilder<
                      rocket::server::RocketServerTransportHandler,
                      rocket::server::RocketServerAppAdapter,
-                     SimpleBufferAllocator,
-                     rocket::server::RocketServerEventId>()
+                     SimpleBufferAllocator>()
                      .setEventBase(evb)
                      .setHead(transportHandler)
                      .setTail(appAdapter)

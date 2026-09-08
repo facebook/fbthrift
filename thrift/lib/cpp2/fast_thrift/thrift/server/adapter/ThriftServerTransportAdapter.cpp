@@ -66,9 +66,7 @@ ThriftServerTransportAdapter::ThriftServerTransportAdapter(
 void ThriftServerTransportAdapter::onSetupComplete(
     rocket::server::RocketSetupCompleteEvent& event) noexcept {
   ThriftServerSetupCompleteEvent thriftEvent;
-  pipeline_->fireEvent(
-      ThriftServerEventType::SetupComplete,
-      channel_pipeline::TypeErasedBox(&thriftEvent));
+  eventPublisher_.template fire<ThriftServerSetupCompleteEvent>(&thriftEvent);
   if (FOLLY_UNLIKELY(thriftEvent.reject.has_value())) {
     event.reject = rocket::server::SetupRejection{
         .code = thriftEvent.reject->code,

@@ -126,28 +126,16 @@ class ThriftClientGracefulDrainHandler {
     ctx.fireException(std::move(e));
   }
 
-  // The single pipeline event this handler subscribes to: the
-  // CloseConnection emitted by the transport adapter on graceful close.
-  static constexpr channel_pipeline::Subscriptions<
-      ThriftClientEventType::CloseConnection>
-      kSubscribedEvents{};
+  using SubscribedEvents =
+      channel_pipeline::Events<ThriftClientCloseConnectionEvent>;
 
-  // Begin draining on CloseConnection. The subscription delivers only the
-  // event types in kSubscribedEvents, so CloseConnection is the only one
-  // that reaches us; the event type arrives as the discriminator argument.
-  template <typename Context>
-  void onEvent(
-      Context& ctx,
-      ThriftClientEventType ev,
-      const apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&
-      /*evt*/) noexcept {
-    DCHECK(ev == ThriftClientEventType::CloseConnection);
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::same_as<E, ThriftClientCloseConnectionEvent>
+  void on(Context& ctx) noexcept {
     if (state_ != State::Open) {
       return;
     }
     state_ = State::Closing;
-    // Nothing in flight — close immediately rather than waiting for a
-    // response that will never come.
     if (inFlight_ == 0) {
       finalize(ctx);
     }
@@ -241,10 +229,10 @@ static_assert(
     "ThriftClientGracefulDrainHandler must satisfy DuplexHandler concept");
 
 static_assert(
-    apache::thrift::fast_thrift::channel_pipeline::EventSubscriber<
+    apache::thrift::fast_thrift::channel_pipeline::TypeEventSubscriber<
         ThriftClientGracefulDrainHandler,
         apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>,
-    "ThriftClientGracefulDrainHandler must satisfy EventSubscriber concept "
+    "ThriftClientGracefulDrainHandler must satisfy TypeEventSubscriber concept "
     "so the pipeline links its CloseConnection event hook");
 
 } // namespace apache::thrift::fast_thrift::thrift::client::handler

@@ -353,9 +353,6 @@ TEST(RocketClientAppAdapterTest, RocketWriteCompleteDeliveredThroughPipeline) {
     count++;
     receivedCtx = e.requestContext;
   });
-
-  // Built with RocketClientEventId so the adapter's subscription is wired; a
-  // NoEvent pipeline would compile the subscription out entirely.
   auto pipeline =
       PipelineBuilder<MockHeadHandler, RocketClientAppAdapter, TestAllocator>()
           .setEventBase(&evb)

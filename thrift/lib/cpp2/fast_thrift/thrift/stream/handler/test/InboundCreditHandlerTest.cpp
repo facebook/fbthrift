@@ -58,15 +58,16 @@ class FakeContext {
     exceptions.push_back(std::move(e));
   }
 
-  void fireEvent(StreamEvent ev, TypeErasedBox&& /*msg*/) noexcept {
-    firedEvents.push_back(ev);
+  template <channel_pipeline::PipelineEvent E>
+  void fireEvent() noexcept {
+    firedEvents.push_back(channel_pipeline::eventKey<E>());
   }
 
   Result nextWriteResult{Result::Success};
   std::vector<TypeErasedBox> reads;
   std::vector<TypeErasedBox> writes;
   std::vector<folly::exception_wrapper> exceptions;
-  std::vector<StreamEvent> firedEvents;
+  std::vector<channel_pipeline::EventKey> firedEvents;
 };
 
 ThriftStreamMessage makeRequestN(uint64_t n) {
@@ -236,7 +237,8 @@ TEST(InboundCreditHandlerTest, GrantingCreditAfterExhaustionFiresResume) {
   // A fresh handler holds no credit (exhausted); the first grant unblocks it.
   (void)handler.onRead(ctx, erase_and_box(makeRequestN(1)));
 
-  const std::vector<StreamEvent> expected{StreamEvent::FlowControlResume};
+  const std::vector<channel_pipeline::EventKey> expected{
+      channel_pipeline::eventKey<FlowControlResumeEvent>()};
   EXPECT_EQ(ctx.firedEvents, expected);
 }
 
@@ -248,7 +250,8 @@ TEST(
   (void)handler.onRead(ctx, erase_and_box(makeRequestN(2))); // 0 -> 2: resume
   (void)handler.onRead(ctx, erase_and_box(makeRequestN(3))); // 2 -> 5: no event
 
-  const std::vector<StreamEvent> expected{StreamEvent::FlowControlResume};
+  const std::vector<channel_pipeline::EventKey> expected{
+      channel_pipeline::eventKey<FlowControlResumeEvent>()};
   EXPECT_EQ(ctx.firedEvents, expected)
       << "no writer is paused while credit remains, so no resume is published";
 }
@@ -262,7 +265,8 @@ TEST(InboundCreditHandlerTest, ConsumingLastCreditFiresPause) {
   // Spending the sole credit exhausts demand: publish the pause.
   (void)handler.onWrite(ctx, erase_and_box(makeItem()));
 
-  const std::vector<StreamEvent> expected{StreamEvent::FlowControlPause};
+  const std::vector<channel_pipeline::EventKey> expected{
+      channel_pipeline::eventKey<FlowControlPauseEvent>()};
   EXPECT_EQ(ctx.firedEvents, expected);
 }
 
@@ -286,10 +290,10 @@ TEST(InboundCreditHandlerTest, ReExhaustAndRegrantRepublishReadiness) {
   (void)handler.onWrite(ctx, erase_and_box(makeItem())); // spend -> pause
   (void)handler.onRead(ctx, erase_and_box(makeRequestN(1))); // resume again
 
-  const std::vector<StreamEvent> expected{
-      StreamEvent::FlowControlResume,
-      StreamEvent::FlowControlPause,
-      StreamEvent::FlowControlResume};
+  const std::vector<channel_pipeline::EventKey> expected{
+      channel_pipeline::eventKey<FlowControlResumeEvent>(),
+      channel_pipeline::eventKey<FlowControlPauseEvent>(),
+      channel_pipeline::eventKey<FlowControlResumeEvent>()};
   EXPECT_EQ(ctx.firedEvents, expected);
 }
 

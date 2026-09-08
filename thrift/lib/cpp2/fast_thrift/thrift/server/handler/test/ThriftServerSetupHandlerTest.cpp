@@ -57,13 +57,15 @@ class FakeContext {
     exception = std::move(e);
   }
 
-  void fireEvent(ThriftServerEventType ev, TypeErasedBox&& msg) noexcept {
-    events.emplace_back(ev, std::move(msg));
+  template <channel_pipeline::PipelineEvent E>
+  void fireEvent(const typename E::Payload& event) noexcept {
+    static_assert(std::same_as<E, ThriftServerCloseConnectionEvent>);
+    events.push_back(event);
   }
 
   std::vector<TypeErasedBox> forwarded;
   std::vector<TypeErasedBox> written;
-  std::vector<std::pair<ThriftServerEventType, TypeErasedBox>> events;
+  std::vector<ThriftServerCloseConnectionEvent> events;
   folly::exception_wrapper exception;
   Result writeResult{Result::Success};
 };
@@ -73,9 +75,7 @@ const SetupRejection& expectRejectionEvent(const FakeContext& ctx) {
   EXPECT_TRUE(ctx.written.empty())
       << "the close handler owns writing the refusal";
   EXPECT_EQ(ctx.events.size(), 1);
-  EXPECT_EQ(ctx.events.front().first, ThriftServerEventType::CloseConnection);
-  const auto& evt =
-      ctx.events.front().second.get<ThriftServerCloseConnectionEvent>();
+  const auto& evt = ctx.events.front();
   EXPECT_TRUE(evt.rejection.has_value());
   return *evt.rejection;
 }

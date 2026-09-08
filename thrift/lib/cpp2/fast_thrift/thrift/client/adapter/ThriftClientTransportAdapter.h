@@ -79,6 +79,11 @@ class ThriftClientTransportAdapterT {
  public:
   using Connection = rocket::client::RocketClientConnectionT<Factory>;
 
+  using PublishedEvents = channel_pipeline::
+      Events<ThriftClientCloseConnectionEvent, ThriftClientWriteCompleteEvent>;
+  using EventPublisher =
+      channel_pipeline::EventPublisherHandle<PublishedEvents>;
+
   explicit ThriftClientTransportAdapterT(std::unique_ptr<Connection> connection)
       : connection_(std::move(connection)) {
     connection_->appAdapter->setResponseHandlers(
@@ -101,16 +106,11 @@ class ThriftClientTransportAdapterT {
         pipeline_->onWriteReady();
       }
     });
-    // Bridge the rocket transport's graceful-close notification (server sent
-    // CONNECTION_CLOSE) into a thrift CloseConnection event. The
-    // pipeline-resident drain handler reacts to it; the bridge only
-    // translates the rocket-native signal into thrift vocabulary. The event
-    // carries no payload — the type alone is the signal.
+    // Bridge the rocket transport graceful-close notification into the thrift
+    // pipeline. The drain handler owns the resulting state transition.
     connection_->appAdapter->setOnClose([this]() noexcept {
       if (pipeline_) {
-        pipeline_->fireEvent(
-            ThriftClientEventType::CloseConnection,
-            channel_pipeline::TypeErasedBox{});
+        eventPublisher_.template fire<ThriftClientCloseConnectionEvent>();
       }
     });
     // Bridge per-request write-completion notifications from the rocket
@@ -145,6 +145,7 @@ class ThriftClientTransportAdapterT {
       XLOG(FATAL) << "must reset pipeline before setting a new one";
     }
     pipeline_ = pipeline;
+    eventPublisher_ = pipeline->template bindEvents<PublishedEvents>();
     pipelineGuard_ =
         std::make_unique<folly::DelayedDestruction::DestructorGuard>(pipeline);
   }
@@ -155,6 +156,7 @@ class ThriftClientTransportAdapterT {
    * defensive fallback.
    */
   void resetPipeline() noexcept {
+    eventPublisher_ = {};
     pipeline_ = nullptr;
     pipelineGuard_.reset();
   }
@@ -225,18 +227,15 @@ class ThriftClientTransportAdapterT {
   }
 
   // Called when the rocket pipeline reports a per-request write completion.
-  // Relays it up the thrift pipeline as ThriftClientEventType::WriteComplete.
-  // Precondition: pipeline is wired (the rocket connection that fires this is
-  // torn down before pipeline_ is cleared).
+  // Precondition: the thrift pipeline is wired; teardown must stop rocket
+  // event delivery before resetPipeline() clears eventPublisher_.
   void onWriteComplete(
       const rocket::client::RocketWriteCompleteEvent& event) noexcept {
-    pipeline_->fireEvent(
-        ThriftClientEventType::WriteComplete,
-        channel_pipeline::TypeErasedBox(
-            ThriftClientWriteCompleteEvent{
-                .requestContext = event.requestContext,
-                .status = event.status,
-            }));
+    eventPublisher_.template fire<ThriftClientWriteCompleteEvent>(
+        ThriftClientWriteCompleteEvent{
+            .requestContext = event.requestContext,
+            .status = event.status,
+        });
   }
 
   // === HeadEndpointHandler interface ===
@@ -371,6 +370,7 @@ class ThriftClientTransportAdapterT {
   }
 
   channel_pipeline::PipelineImpl* pipeline_{nullptr};
+  EventPublisher eventPublisher_;
   std::unique_ptr<folly::DelayedDestruction::DestructorGuard> pipelineGuard_;
   std::unique_ptr<Connection> connection_;
   bool connected_{false};
