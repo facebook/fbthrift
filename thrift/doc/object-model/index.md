@@ -267,9 +267,9 @@ When there is no ambiguity, the specification henceforth uses these terms interc
     * `NaN` is excluded — there is no such <KW>datum</KW> in the <KW>dataset</KW> of Thrift floating point numbers.
     * Zero is not signed — there is exactly one <KW>datum</KW> that represents the [additive identity](https://en.wikipedia.org/wiki/Additive_identity).
 * **<Bookmark id="text-type">Unicode text</Bookmark>**
-  * An unbounded sequence of [Unicode scalar values](https://unicode.org/glossary/#unicode_scalar_value) (i.e. Unicode code points excluding surrogates U+D800 to U+DFFF).
+  * A sequence of [Unicode scalar values](https://unicode.org/glossary/#unicode_scalar_value) (i.e. Unicode code points excluding surrogates U+D800 to U+DFFF) whose UTF-8 encoding is at most <code>2<sup>31</sup> - 1</code> bytes.
 * **<Bookmark id="byte-array-type">Byte array</Bookmark>**
-  * An unbounded sequence of (8-bit) bytes.
+  * A sequence of at most <code>2<sup>31</sup> - 1</code> (8-bit) bytes.
 * **<Bookmark id="any-type">Any</Bookmark>**
   * A dynamically type-checked container of (at most) a single Thrift <KW>value</KW>.
     * An *empty* Any contains no <KW>value</KW>.
@@ -295,20 +295,20 @@ For example, a <KW>list</KW> instantiated with the <KW>type</KW> `i32` produces 
 
 ##### List of V
 
-A Thrift **<KW>list of `V`</KW>** <KW>type</KW> is a finite, **ordered sequence of <KW>values</KW>** where:
+A Thrift **<KW>list of `V`</KW>** <KW>type</KW> is an **ordered sequence of at most <code>2<sup>31</sup> - 1</code> <KW>values</KW>** where:
 * The <KW>type</KW> of each <KW>value</KW> is `V`
 * `V` can be any <KW>type</KW>
 
 ##### Set of V
 
-A Thrift **<KW>set of `V`</KW>** type is a finite, **unordered collection of unique <KW>values</KW>**, where:
+A Thrift **<KW>set of `V`</KW>** type is an **unordered collection of at most <code>2<sup>31</sup> - 1</code> unique <KW>values</KW>**, where:
 * The <KW>type</KW> of each <KW>value</KW> is `V`
 * No two <KW>values</KW> in the set [compare equal](#operation-areequal)
 * The <KW>type</KW> `V` is [<KW>sealed</KW>](#sealed-types)
 
 ##### Map of K to V
 
-A Thrift **<KW>map of `K` to `V`</KW>** <KW>type</KW> is defined as a finite, **unordered collection of key-value pairs** (`k` → `v`) with **unique** keys, where:
+A Thrift **<KW>map of `K` to `V`</KW>** <KW>type</KW> is defined as an **unordered collection of at most <code>2<sup>31</sup> - 1</code> key-value pairs** (`k` → `v`) with **unique** keys, where:
 * `k` and `v` are Thrift <KW>values</KW>.
 * The <KW>type</KW> of each key (`k`) is `K`
 * The <KW>type</KW> of each value (`v`) is `V`
@@ -2335,6 +2335,7 @@ Equivalent to **<code><a href="#operation-materialize">materialize<sub>S,P</sub>
 | April 21, 2026    | 1.3.1   | [`PATCH`](#versioning-patch): <ol><li>Threaded <KW>runtime environment</KW> `E` through [`areEqual`](#operation-areequal), [`isStableLessThan`](#operation-isstablelessthan), and [`isRecordStableLessThan`](#operation-isrecordstablelessthan) operations, and their [`anyUnpack`](#operation-anyunpack) calls.</li></ol>
 | May 12, 2026      | 1.3.2   | [`PATCH`](#versioning-patch): <ol><li>Added [`areRecordsEqual`](#operation-arerecordsequal) operation formalizing record equality.</li></ol>
 | May 12, 2026      | 1.4.0   | [`MINOR`](#versioning-minor): <ol><li>Added [Path](#path) definition.</li></ol>
+| September 4, 2026 | 1.5.0   | [`MINOR`](#versioning-minor): <ol><li>Limited [`string`](#text-type), [`binary`](#byte-array-type), and [container](#container-types) sizes to <code>2<sup>31</sup> - 1</code>.</li></ol>
 
 ### Versioning
 
