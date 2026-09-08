@@ -192,14 +192,6 @@ if (enable_tests)
   enable_testing()
 endif ()
 
-# Create a generalized function for tests
-function (thrift_gtest tname srcfile)
-  add_executable("${tname}-t" ${srcfile})
-  target_link_libraries("${tname}-t" ${ARGN} ${GTEST_BOTH_LIBRARIES}
-                        ${GMOCK_BOTH_LIBRARIES} pthread)
-  gtest_add_tests("${tname}-t" "" ${srcfile})
-endfunction ()
-
 add_subdirectory(thrift)
 
 # include(CPack) snapshots the CPACK_* variables where it is called, so keep it
