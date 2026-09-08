@@ -80,6 +80,85 @@ func runHeaderTest(t *testing.T, serverTransport thrift.TransportID) {
 	require.Equal(t, echoedHeaders[rpcHeaderKey], rpcHeaderValue)
 }
 
+// responseHeaderInterceptor sets a header on the response, which is the only
+// way server-side code can send metadata back out of band.
+type responseHeaderInterceptor struct {
+	thrift.BaseServiceInterceptor
+
+	key, value string
+}
+
+func (i *responseHeaderInterceptor) OnResponse(ctx context.Context, _ thrift.InterceptorResult) error {
+	if reqCtx := thrift.GetRequestContext(ctx); reqCtx != nil {
+		reqCtx.SetWriteHeader(i.key, i.value)
+	}
+	return nil
+}
+
+// TestResponseHeaders ensures a header the server sets on the request context
+// reaches the client on the response, as ResponseRpcMetadata.otherMetadata.
+//
+// This is the return leg of TestServiceHeaders above. Without it the server's
+// write headers are collected and dropped, which silently breaks any
+// out-of-band reverse propagation -- context propagation frameworks in
+// particular, which need to send state back to the caller.
+func TestResponseHeaders(t *testing.T) {
+	t.Run("UpgradeToRocket", func(t *testing.T) {
+		runResponseHeaderTest(t, thrift.TransportIDUpgradeToRocket)
+	})
+	t.Run("Rocket", func(t *testing.T) {
+		runResponseHeaderTest(t, thrift.TransportIDRocket)
+	})
+}
+
+func runResponseHeaderTest(t *testing.T, serverTransport thrift.TransportID) {
+	const (
+		respHeaderKey   = "responseHeader"
+		respHeaderValue = "responseHeaderValue"
+	)
+
+	var clientTransportOption thrift.ClientOption
+	switch serverTransport {
+	case thrift.TransportIDUpgradeToRocket:
+		clientTransportOption = thrift.WithUpgradeToRocket()
+	case thrift.TransportIDRocket:
+		clientTransportOption = thrift.WithRocket()
+	}
+
+	addr, stopServer := startE2EServer(
+		t,
+		serverTransport,
+		thrift.WithNumWorkers(10),
+		thrift.WithServiceInterceptor(&responseHeaderInterceptor{
+			key:   respHeaderKey,
+			value: respHeaderValue,
+		}),
+	)
+	defer stopServer()
+
+	channel, err := thrift.NewClient(
+		clientTransportOption,
+		thrift.WithDialer(func() (net.Conn, error) {
+			return net.DialTimeout("tcp", addr.String(), 5*time.Second)
+		}),
+		thrift.WithIoTimeout(5*time.Second),
+	)
+	require.NoError(t, err)
+	client := service.NewE2EChannelClient(channel)
+	defer client.Close()
+
+	rpcOpts := thrift.RPCOptions{}
+	ctx := thrift.WithRPCOptions(context.Background(), &rpcOpts)
+	_, err = client.EchoHeaders(ctx)
+	require.NoError(t, err)
+
+	readHeaders := rpcOpts.GetReadHeaders()
+	assert.Equal(t, respHeaderValue, readHeaders[respHeaderKey])
+	// The runtime's own response keys must still be there: the handler's
+	// headers are merged in, not substituted for them.
+	assert.Contains(t, readHeaders, thrift.LoadHeaderKey)
+}
+
 func TestHeadersUnderConcurrency(t *testing.T) {
 	// Ensures that headers are not mixed up under concurrency/load.
 	const (

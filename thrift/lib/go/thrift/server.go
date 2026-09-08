@@ -501,7 +501,7 @@ func (s *rocketServerSocket) requestResponse(msg payload.Payload) mono.Mono {
 			resErr = respIntErr
 		}
 
-		payload, err := s.makeResponsePayload(metadata, result, resErr, true /* isFirstResponse */)
+		payload, err := s.makeResponsePayload(metadata, reqCtx, result, resErr, true /* isFirstResponse */)
 		if err != nil {
 			s.observer.ConnDropped()
 			return nil, err
@@ -612,7 +612,7 @@ func (s *rocketServerSocket) requestStream(msg payload.Payload) flux.Flux {
 				// ignored. This is sufficient for logging-style interceptors
 				// that only inspect the result struct and/or error.
 				_ = s.runOnResponseInterceptors(ctx, respRes, respErr)
-				respPayload, err := s.makeResponsePayload(metadata, respRes, respErr, true /* isFirstResponse */)
+				respPayload, err := s.makeResponsePayload(metadata, reqCtx, respRes, respErr, true /* isFirstResponse */)
 				if err != nil {
 					s.log("server requestStream makeResponsePayload error: %v", err)
 					return
@@ -620,7 +620,7 @@ func (s *rocketServerSocket) requestStream(msg payload.Payload) flux.Flux {
 				sink.Next(respPayload)
 			}
 			onStreamNext := func(respRes WritableResult, respErr error) {
-				streamPayload, err := s.makeResponsePayload(metadata, respRes, respErr, false /* isFirstResponse */)
+				streamPayload, err := s.makeResponsePayload(metadata, reqCtx, respRes, respErr, false /* isFirstResponse */)
 				if err != nil {
 					s.log("server requestStream makeResponsePayload error: %v", err)
 					return
@@ -691,7 +691,7 @@ func (s *rocketServerSocket) requestChannelSink(
 		firstResponseQueued := make(chan struct{})
 
 		onFirstResponse := func(respRes WritableResult, respErr error) {
-			respPayload, err := s.makeResponsePayload(metadata, respRes, respErr, true /* isFirstResponse */)
+			respPayload, err := s.makeResponsePayload(metadata, reqCtx, respRes, respErr, true /* isFirstResponse */)
 			if err != nil {
 				s.log("server requestChannel makeResponsePayload error: %v", err)
 				return
@@ -701,7 +701,7 @@ func (s *rocketServerSocket) requestChannelSink(
 		}
 
 		onFinalResponse := func(respRes WritableResult, respErr error) {
-			finalPayload, err := s.makeResponsePayload(metadata, respRes, respErr, false /* isFirstResponse */)
+			finalPayload, err := s.makeResponsePayload(metadata, reqCtx, respRes, respErr, false /* isFirstResponse */)
 			if err != nil {
 				s.log("server requestChannel makeResponsePayload error: %v", err)
 				return
@@ -833,7 +833,7 @@ func (s *rocketServerSocket) requestChannelBiDi(
 		firstResponseQueued := make(chan struct{})
 
 		onFirstResponse := func(respRes WritableResult, respErr error) {
-			respPayload, err := s.makeResponsePayload(metadata, respRes, respErr, true /* isFirstResponse */)
+			respPayload, err := s.makeResponsePayload(metadata, reqCtx, respRes, respErr, true /* isFirstResponse */)
 			if err != nil {
 				s.log("server requestChannel makeResponsePayload error: %v", err)
 				return
@@ -843,7 +843,7 @@ func (s *rocketServerSocket) requestChannelBiDi(
 		}
 
 		onStreamNext := func(respRes WritableResult, respErr error) {
-			streamPayload, err := s.makeResponsePayload(metadata, respRes, respErr, false /* isFirstResponse */)
+			streamPayload, err := s.makeResponsePayload(metadata, reqCtx, respRes, respErr, false /* isFirstResponse */)
 			if err != nil {
 				s.log("server requestChannel makeResponsePayload error: %v", err)
 				return
@@ -941,6 +941,7 @@ func (s *rocketServerSocket) requestChannelBiDi(
 // paths (stream, sink, bidi).
 func (s *rocketServerSocket) makeResponsePayload(
 	metadata *rpcmetadata.RequestRpcMetadata,
+	reqCtx *RequestContext,
 	respRes WritableResult,
 	respErr error,
 	isFirstResponse bool,
@@ -998,6 +999,17 @@ func (s *rocketServerSocket) makeResponsePayload(
 
 	if isFirstResponse {
 		headers := map[string]string{}
+		// Headers the handler or a ServiceInterceptor set on the request
+		// context, which is the only way server-side code can send anything
+		// back out of band. Copied in first so the runtime's own keys below
+		// cannot be shadowed by a handler reusing one of their names.
+		//
+		// Only the first response carries them: otherMetadata lives on
+		// ResponseRpcMetadata, and stream and sink elements after the first are
+		// StreamPayloadMetadata, which has no equivalent field.
+		if reqCtx != nil {
+			maps.Copy(headers, reqCtx.GetWriteHeaders())
+		}
 		loadMetric := s.loadFn()
 		loadMetricPtr := (*int64)(nil)
 		if metadata.IsSetLoadMetric() {
