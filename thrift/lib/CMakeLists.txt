@@ -47,8 +47,8 @@ if (thriftpy3)
   # apache.thrift.metadata package, created and installed later in setup.py.
   add_custom_target(
     generate_apache_thrift_metadata_python
-    COMMAND thrift1 -I ${CMAKE_SOURCE_DIR} --out . --gen mstch_python
-            ${CMAKE_CURRENT_SOURCE_DIR}/thrift/metadata.thrift
+    COMMAND $<TARGET_FILE:${THRIFT1}> -I ${CMAKE_SOURCE_DIR} --out . --gen
+            mstch_python ${CMAKE_CURRENT_SOURCE_DIR}/thrift/metadata.thrift
     WORKING_DIRECTORY ${_cybld}
     BYPRODUCTS ${_cybld}/apache/thrift/metadata/thrift_abstract_types.py
                ${_cybld}/apache/thrift/metadata/thrift_clients.py
@@ -61,6 +61,7 @@ if (thriftpy3)
                ${_cybld}/apache/thrift/metadata/thrift_services.py
                ${_cybld}/apache/thrift/metadata/thrift_types.py
                ${_cybld}/apache/thrift/metadata/thrift_types.pyi)
+  add_dependencies(generate_apache_thrift_metadata_python ${THRIFT1})
 
   # Create symlinks in the cybld directory for cython extensions
   add_custom_target(create_binding_symlink_python_types ALL)
@@ -259,7 +260,7 @@ if (thriftpy3)
     python/Serializer.cpp
     py3/stream.cpp)
   add_dependencies(thrift_python_cpp create_cython_types_api_symlink)
-  set_property(TARGET thrift_python_cpp PROPERTY VERSION ${PACKAGE_VERSION})
+  set_property(TARGET thrift_python_cpp PROPERTY VERSION ${PROJECT_VERSION})
   target_compile_definitions(thrift_python_cpp PRIVATE BOOST_NO_AUTO_PTR)
   target_compile_definitions(thrift_python_cpp
                              PRIVATE THRIFT_NO_HTTP_CLIENT_CHANNEL)
@@ -294,7 +295,8 @@ if (thriftpy3)
   get_filename_component(glog_lib ${GLOG_LIBRARIES} DIRECTORY)
   get_filename_component(python_lib ${Python3_LIBRARIES} DIRECTORY)
   get_filename_component(python_libname ${Python3_LIBRARIES} NAME)
-  set(libs "-L${CMAKE_LIBRARY_OUTPUT_DIRECTORY}:${fmt_lib_dir}:${folly_lib}"
+  # All thrift libraries share this directory.
+  set(libs "-L$<TARGET_FILE_DIR:thrift_python_cpp>:${fmt_lib_dir}:${folly_lib}"
            ":${glog_lib}:${python_lib}")
   set(py_install_dir ${CMAKE_INSTALL_PREFIX})
   if (NOT ${PYTHON_PACKAGE_INSTALL_DIR} STREQUAL "")

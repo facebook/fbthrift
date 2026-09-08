@@ -499,9 +499,9 @@ if (BUILD_SHARED_LIBS)
     thrifttype
     thriftanyrep
     serverdbginfo
-    PROPERTIES VERSION ${PACKAGE_VERSION})
+    PROPERTIES VERSION ${PROJECT_VERSION})
   if (THRIFT_RPC)
-    set_target_properties(thriftcpp2 PROPERTIES VERSION ${PACKAGE_VERSION})
+    set_target_properties(thriftcpp2 PROPERTIES VERSION ${PROJECT_VERSION})
   endif ()
 endif ()
 

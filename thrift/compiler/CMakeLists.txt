@@ -179,7 +179,7 @@ if (BUILD_SHARED_LIBS)
   # All but thrift1 since it's a binary.
   set_target_properties(
     compiler_ast compiler_base compiler_lib compiler whisker compiler_generators
-    PROPERTIES VERSION ${PACKAGE_VERSION})
+    PROPERTIES VERSION ${PROJECT_VERSION})
 endif ()
 
 install(

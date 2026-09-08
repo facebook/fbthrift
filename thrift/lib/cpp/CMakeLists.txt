@@ -112,9 +112,9 @@ endforeach ()
 if (BUILD_SHARED_LIBS)
   # all but thrift since it's an interface
   set_target_properties(thrift-core concurrency PROPERTIES VERSION
-                                                           ${PACKAGE_VERSION})
+                                                           ${PROJECT_VERSION})
   if (THRIFT_RPC)
-    set_target_properties(async transport PROPERTIES VERSION ${PACKAGE_VERSION})
+    set_target_properties(async transport PROPERTIES VERSION ${PROJECT_VERSION})
   endif ()
 endif ()
 

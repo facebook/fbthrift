@@ -15,7 +15,7 @@
 #
 # Requirements:
 # Please provide the following two variables before using these macros:
-#   ${THRIFT1} - path/to/bin/thrift1
+#   ${THRIFT1} - the thrift1 executable target, or a path to a thrift1 binary
 #   ${THRIFTCPP2} - path/to/lib/thriftcpp2
 #
 
@@ -212,6 +212,14 @@ macro (
     "THRIFT_INCLUDE_DIRECTORIES" # Multi-value args
     "${ARGN}")
 
+  # fbthrift always passes a target, but consumers of the installed copy of this
+  # file may pass a path, and $<TARGET_FILE:...> on a non-target is an error.
+  if (TARGET ${THRIFT1})
+    set(_thrift1_command "$<TARGET_FILE:${THRIFT1}>")
+  else ()
+    set(_thrift1_command "${THRIFT1}")
+  endif ()
+
   set(source_file_name ${file_name})
   set(target_file_name ${file_name})
   set(thrift_include_directories)
@@ -318,7 +326,7 @@ macro (
     add_custom_command(
       OUTPUT ${${target_file_name}-${language}-SOURCES}
       COMMAND
-        ${THRIFT1} --gen "${gen_language}${_python_gen_options}" -o
+        ${_thrift1_command} --gen "${gen_language}${_python_gen_options}" -o
         ${output_path} ${thrift_include_directories}
         "${file_path}/${source_file_name}.thrift"
       DEPENDS ${THRIFT1} "${file_path}/${source_file_name}.thrift"
@@ -333,9 +341,9 @@ macro (
       OUTPUT ${${target_file_name}-${language}-HEADERS}
              ${${target_file_name}-${language}-SOURCES}
       COMMAND
-        ${THRIFT1} --gen "${gen_language}:${options}${include_prefix_text}" -o
-        ${output_path} ${thrift_include_directories}
-        "${file_path}/${source_file_name}.thrift"
+        ${_thrift1_command} --gen
+        "${gen_language}:${options}${include_prefix_text}" -o ${output_path}
+        ${thrift_include_directories} "${file_path}/${source_file_name}.thrift"
       DEPENDS ${THRIFT1} "${file_path}/${source_file_name}.thrift"
       COMMENT "Generating ${target_file_name} files. Output: ${output_path}")
     add_custom_target(

@@ -262,7 +262,11 @@ else ()
                          ABSOLUTE)
 endif ()
 file(GLOB installed_packages "${GETDEPS_INSTALL_ROOT}/*")
-set(all_lib_dirs "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+
+# All thrift libraries share this directory. thrift_python_cpp is defined below;
+# generator expressions resolve at generate time, so the forward reference is
+# fine.
+set(all_lib_dirs "$<TARGET_FILE_DIR:thrift_python_cpp>")
 foreach (pkg ${installed_packages})
   if (EXISTS "${pkg}/lib")
     list(APPEND all_lib_dirs "${pkg}/lib")
@@ -312,7 +316,7 @@ endif ()
 add_custom_target(
   generate_apache_thrift_metadata_python
   COMMAND
-    thrift1 -I ${CMAKE_SOURCE_DIR} --out . --gen
+    $<TARGET_FILE:${THRIFT1}> -I ${CMAKE_SOURCE_DIR} --out . --gen
     "mstch_python:include_prefix=thrift" ${_lib_dir}/thrift/metadata.thrift
   COMMAND ${CMAKE_COMMAND} -E make_directory ${_cybld}/apache/thrift/metadata
   WORKING_DIRECTORY ${_cybld}
@@ -334,13 +338,16 @@ add_custom_target(
 ###
 add_custom_target(
   generate_apache_thrift_metadata_py3
-  COMMAND thrift1 -I ${CMAKE_SOURCE_DIR} --out . --gen
+  COMMAND $<TARGET_FILE:${THRIFT1}> -I ${CMAKE_SOURCE_DIR} --out . --gen
           "mstch_py3:include_prefix=thrift" ${_lib_dir}/thrift/metadata.thrift
   WORKING_DIRECTORY ${_cybld}
   BYPRODUCTS ${_cybld}/apache/thrift/metadata/cbindings.pxd
              ${_cybld}/apache/thrift/metadata/cbindings.pyx
              ${_cybld}/apache/thrift/metadata/metadata.pxd
              ${_cybld}/apache/thrift/metadata/metadata.pyx)
+
+add_dependencies(generate_apache_thrift_metadata_python ${THRIFT1})
+add_dependencies(generate_apache_thrift_metadata_py3 ${THRIFT1})
 
 ####
 # Next, prepare for building cython extensions by creating the necessary
@@ -535,7 +542,7 @@ add_library(
   types.cpp
   ${_lib_dir}/py3/stream.cpp)
 add_dependencies(thrift_python_cpp create_cython_types_api_symlink)
-set_property(TARGET thrift_python_cpp PROPERTY VERSION ${PACKAGE_VERSION})
+set_property(TARGET thrift_python_cpp PROPERTY VERSION ${PROJECT_VERSION})
 target_compile_definitions(thrift_python_cpp PRIVATE BOOST_NO_AUTO_PTR)
 target_compile_definitions(thrift_python_cpp
                            PRIVATE THRIFT_NO_HTTP_CLIENT_CHANNEL)

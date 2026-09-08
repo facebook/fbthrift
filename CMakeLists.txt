@@ -12,23 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cmake_minimum_required(VERSION 3.20.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.20.4)
 
-# Package information.
-if (NOT DEFINED PACKAGE_VERSION)
-  set(PACKAGE_VERSION 1.0.0)
-endif ()
 project(
   THRIFT
-  VERSION ${PACKAGE_VERSION}
+  VERSION 1.0.0
   LANGUAGES CXX)
 
-if (NOT DEFINED CPACK_GENERATOR)
-  set(CPACK_GENERATOR RPM)
-endif ()
-set(CPACK_RPM_PACKAGE_PROVIDES thrift)
-include(CPack)
-
+# Build rules should still use $<TARGET_FILE...> instead of these paths:
+# multi-config generators add a per-config subdirectory they do not carry.
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -92,7 +84,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fcoroutines>)
 endif ()
 
-# Enable modular builds.
 option(THRIFT_COMPILER_ONLY "Build the Thrift compiler only" OFF)
 option(THRIFT_LIB_ONLY "Build the Thrift libraries only" OFF)
 option(
@@ -175,10 +166,14 @@ if (THRIFT_LIB_ONLY OR build_all)
     ${ZSTD_INCLUDE_DIRS} ${Xxhash_INCLUDE_DIR})
   add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
   if (THRIFT_LIB_ONLY)
-    find_program(THRIFT1 thrift1)
+    # Wrap the external compiler in a target so THRIFT1 always names one.
+    find_program(THRIFT1_EXECUTABLE thrift1 REQUIRED)
+    add_executable(thrift1 IMPORTED GLOBAL)
+    set_target_properties(thrift1 PROPERTIES IMPORTED_LOCATION
+                                             "${THRIFT1_EXECUTABLE}")
+    set(THRIFT1 thrift1)
     include(${THRIFT_COMPILER_INCLUDE}/thrift/ThriftLibrary.cmake)
   endif ()
-
 endif ()
 
 if (thriftpy3)
@@ -195,7 +190,7 @@ if (enable_tests)
   find_package(GMock REQUIRED)
   include_directories(${GTEST_INCLUDE_DIRS} ${GMOCK_INCLUDE_DIRS})
   enable_testing()
-endif (enable_tests)
+endif ()
 
 # Create a generalized function for tests
 function (thrift_gtest tname srcfile)
@@ -203,6 +198,14 @@ function (thrift_gtest tname srcfile)
   target_link_libraries("${tname}-t" ${ARGN} ${GTEST_BOTH_LIBRARIES}
                         ${GMOCK_BOTH_LIBRARIES} pthread)
   gtest_add_tests("${tname}-t" "" ${srcfile})
-endfunction (thrift_gtest)
+endfunction ()
 
 add_subdirectory(thrift)
+
+# include(CPack) snapshots the CPACK_* variables where it is called, so keep it
+# after every target, install rule and CPACK_* setting.
+if (NOT DEFINED CPACK_GENERATOR)
+  set(CPACK_GENERATOR RPM)
+endif ()
+set(CPACK_RPM_PACKAGE_PROVIDES thrift)
+include(CPack)
