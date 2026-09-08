@@ -41,10 +41,14 @@ struct Payload {
   std::unique_ptr<folly::IOBuf> data{nullptr};
 };
 
+// End-of-stream: the producer has no more items. Carries no data and is ordered
+// after all payloads on the stream.
+struct Complete {};
+
 // The frames that flow on an established stream today. Grows as more frame
 // kinds (cancel, error, ...) come online. CompactVariant keeps the
 // discriminator to a single byte so the message stays inline in TypeErasedBox.
-using StreamMessageVariant = CompactVariant<RequestN, Payload>;
+using StreamMessageVariant = CompactVariant<RequestN, Payload, Complete>;
 
 struct ThriftStreamMessage {
   StreamMessageVariant payload;
