@@ -30,6 +30,34 @@
 
 namespace channel_pipeline_rust {
 
+class LocalPipelineContext final {
+ public:
+  // The owning Rust endpoint must drop this context from handlerRemoved().
+  // Pipeline teardown invalidates ContextImpl after that callback returns.
+  explicit LocalPipelineContext(
+      apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl&
+          context) noexcept;
+  ~LocalPipelineContext();
+
+  LocalPipelineContext(const LocalPipelineContext&) = delete;
+  LocalPipelineContext& operator=(const LocalPipelineContext&) = delete;
+  LocalPipelineContext(LocalPipelineContext&&) = delete;
+  LocalPipelineContext& operator=(LocalPipelineContext&&) = delete;
+
+  int32_t fireWriteBox(
+      apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox
+          message) noexcept;
+  void notifyReadReady() noexcept;
+  void awaitWriteReady() noexcept;
+  void cancelWriteReady() noexcept;
+  bool isClosed() const noexcept;
+  folly::EventBase* eventBase() const noexcept;
+
+ private:
+  apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl* context_;
+  folly::EventBase& eventBase_;
+};
+
 /**
  * Callback-scoped view of the live C++ context and message container.
  *
@@ -87,6 +115,8 @@ class CallbackContext final {
   // caller-provided storage. Must be destroyed with destroyContextHandle().
   void initContextHandle(uint8_t* storage) noexcept;
 
+  std::unique_ptr<LocalPipelineContext> makeLocalPipelineContext() noexcept;
+
   // Moves the current inbound message and its continuation into an opaque
   // token referenced by caller-provided pointer storage. Returns false if no
   // live message is available, allocation fails, or it was already forwarded.
@@ -100,6 +130,7 @@ class CallbackContext final {
   int32_t fireWriteBox(
       apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox
           message) noexcept;
+  void fireException(const uint8_t* messageData, size_t messageSize) noexcept;
 
   // Forward the message downstream UNCHANGED, without recovering its type.
   // This is the "forward what you don't understand" (Netty pass-through)
@@ -147,6 +178,10 @@ void fireContextHandleRead(
     uint8_t* storage, std::unique_ptr<folly::IOBuf> message) noexcept;
 void fireContextHandleWrite(
     uint8_t* storage, std::unique_ptr<folly::IOBuf> message) noexcept;
+void fireContextHandleWriteBox(
+    uint8_t* storage,
+    apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox
+        message) noexcept;
 void fireContextHandleException(
     uint8_t* storage, const uint8_t* messageData, size_t messageSize) noexcept;
 

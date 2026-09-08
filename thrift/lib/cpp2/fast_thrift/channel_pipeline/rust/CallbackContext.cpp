@@ -156,6 +156,65 @@ void fireContextHandle(
 
 } // namespace
 
+LocalPipelineContext::LocalPipelineContext(ContextImpl& context) noexcept
+    : context_{&context}, eventBase_{*CHECK_NOTNULL(context.eventBase())} {
+  eventBase_.dcheckIsInEventBaseThread();
+}
+
+LocalPipelineContext::~LocalPipelineContext() {
+  eventBase_.dcheckIsInEventBaseThread();
+}
+
+int32_t LocalPipelineContext::fireWriteBox(
+    apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox
+        message) noexcept {
+  auto& context = *CHECK_NOTNULL(context_);
+  eventBase_.dcheckIsInEventBaseThread();
+  auto* pipeline = context.pipeline();
+  if (message.empty() || pipeline == nullptr || pipeline->isClosed()) {
+    return toInt(Result::Error);
+  }
+  return toInt(context.fireWrite(std::move(message)));
+}
+
+void LocalPipelineContext::notifyReadReady() noexcept {
+  auto& context = *CHECK_NOTNULL(context_);
+  eventBase_.dcheckIsInEventBaseThread();
+  if (auto* pipeline = context.pipeline();
+      pipeline != nullptr && !pipeline->isClosed()) {
+    pipeline->onReadReady();
+  }
+}
+
+void LocalPipelineContext::awaitWriteReady() noexcept {
+  auto& context = *CHECK_NOTNULL(context_);
+  eventBase_.dcheckIsInEventBaseThread();
+  if (auto* pipeline = context.pipeline();
+      pipeline != nullptr && !pipeline->isClosed()) {
+    context.awaitWriteReady();
+  }
+}
+
+void LocalPipelineContext::cancelWriteReady() noexcept {
+  auto& context = *CHECK_NOTNULL(context_);
+  eventBase_.dcheckIsInEventBaseThread();
+  if (auto* pipeline = context.pipeline();
+      pipeline != nullptr && !pipeline->isClosed()) {
+    context.cancelAwaitWriteReady();
+  }
+}
+
+bool LocalPipelineContext::isClosed() const noexcept {
+  auto& context = *CHECK_NOTNULL(context_);
+  eventBase_.dcheckIsInEventBaseThread();
+  auto* pipeline = context.pipeline();
+  return pipeline == nullptr || pipeline->isClosed();
+}
+
+folly::EventBase* LocalPipelineContext::eventBase() const noexcept {
+  return &eventBase_;
+}
+
 void CallbackContext::initContextHandle(uint8_t* storage) noexcept {
   CHECK(context_.eventBase()->isInEventBaseThread());
   CHECK(storage != nullptr);
@@ -163,6 +222,12 @@ void CallbackContext::initContextHandle(uint8_t* storage) noexcept {
       reinterpret_cast<uintptr_t>(storage) % alignof(RustContextHandleToken) ==
       0);
   ::new (storage) RustContextHandleToken(context_);
+}
+
+std::unique_ptr<LocalPipelineContext>
+CallbackContext::makeLocalPipelineContext() noexcept {
+  CHECK_NOTNULL(context_.eventBase())->dcheckIsInEventBaseThread();
+  return std::make_unique<LocalPipelineContext>(context_);
 }
 
 bool CallbackContext::initDeferredRead(
@@ -186,6 +251,18 @@ bool CallbackContext::initDeferredRead(
 
 folly::EventBase* CallbackContext::eventBase() const noexcept {
   return context_.eventBase();
+}
+
+void CallbackContext::fireException(
+    const uint8_t* messageData, size_t messageSize) noexcept {
+  CHECK(messageData != nullptr || messageSize == 0);
+  auto* pipeline = context_.pipeline();
+  if (pipeline == nullptr || pipeline->isClosed()) {
+    return;
+  }
+  pipeline->fireException(
+      folly::make_exception_wrapper<std::runtime_error>(std::string(
+          reinterpret_cast<const char*>(messageData), messageSize)));
 }
 
 bool isInEventBaseThread(folly::EventBase* eventBase) noexcept {
@@ -255,6 +332,27 @@ void fireContextHandleWrite(uint8_t* storage, BytesPtr message) noexcept {
       [](ContextImpl& context, auto boxed) noexcept {
         (void)context.fireWrite(std::move(boxed));
       });
+}
+
+void fireContextHandleWriteBox(
+    uint8_t* storage,
+    apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox
+        message) noexcept {
+  auto token = consumeContextHandle(storage);
+  auto& context = *CHECK_NOTNULL(token.context);
+  auto& eventBase = *CHECK_NOTNULL(context.eventBase());
+  CHECK(eventBase.isInEventBaseThread());
+  eventBase.runInLoop(
+      [token = std::move(token),
+       message = std::move(message)]() mutable noexcept {
+        folly::RequestContextSaverScopeGuard requestContextGuard;
+        auto& context = *CHECK_NOTNULL(token.context);
+        auto& pipeline = *CHECK_NOTNULL(context.pipeline());
+        if (!message.empty() && !pipeline.isClosed()) {
+          (void)context.fireWrite(std::move(message));
+        }
+      },
+      true);
 }
 
 void fireContextHandleException(

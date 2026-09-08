@@ -220,6 +220,34 @@ TEST(AdapterTest, NullBytesReportsConversionFailure) {
   EXPECT_FALSE(RustMessageAdapter<BytesPtr>::tryBox(nullptr).has_value());
 }
 
+TEST(LocalPipelineContextTest, ClosedPipelineReadinessOperationsAreNoOps) {
+  TestWatchdog watchdog{"closed LocalPipelineContext readiness operations"};
+  ContextFixture fixture;
+
+  fixture.eventBase->runInEventBaseThreadAndWait([&] {
+    LocalPipelineContext context{fixture.context()};
+    fixture.pipeline->close();
+
+    EXPECT_TRUE(context.isClosed());
+    context.awaitWriteReady();
+    context.cancelWriteReady();
+    context.notifyReadReady();
+  });
+}
+
+TEST(LocalPipelineContextTest, DestructionDoesNotAccessDestroyedContext) {
+  TestWatchdog watchdog{"LocalPipelineContext destruction after pipeline"};
+  ContextFixture fixture;
+
+  fixture.eventBase->runInEventBaseThreadAndWait([&] {
+    auto context = std::make_unique<LocalPipelineContext>(fixture.context());
+    fixture.pipeline.reset();
+    context.reset();
+  });
+
+  EXPECT_EQ(fixture.removed.load(std::memory_order_relaxed), 1);
+}
+
 TEST(ContextHandleSafetyDeathTest, NullConstructionStorage) {
   TestWatchdog watchdog{"null ContextHandle construction storage"};
   GTEST_FLAG_SET(death_test_style, "threadsafe");
