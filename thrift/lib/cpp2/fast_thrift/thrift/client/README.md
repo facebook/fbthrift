@@ -233,7 +233,7 @@ Server
   │                           ConnectionClose event (no payload, no exception raised)
   │                              │
   │                              ▼
-  │                           Thrift adapter on<ConnectionCloseEvent>()
+  │                           Thrift adapter on<ThriftClientCloseConnectionEvent>()
   │                              └─ Relays via onClose callback
   │                              └─ In-flight requests untouched
   │
