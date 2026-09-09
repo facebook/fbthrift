@@ -18,6 +18,16 @@
 #   ${THRIFT1} - the thrift1 executable target, or a path to a thrift1 binary
 #   ${THRIFTCPP2} - path/to/lib/thriftcpp2
 #
+# ${THRIFT1} goes to COMMAND as-is rather than through $<TARGET_FILE:...>.
+# CMake substitutes an imported target's location and adds the dependency, and
+# when cross-compiling an in-tree compiler it falls back to a host thrift1 on
+# PATH -- which a baked-in path to the unrunnable target-architecture binary
+# would defeat.
+#
+
+# Consumers include this file directly, so it cannot assume the includer has
+# already pulled in the standard install directory variables.
+include(GNUInstallDirs)
 
 #
 # thrift_object
@@ -212,14 +222,6 @@ macro (
     "THRIFT_INCLUDE_DIRECTORIES" # Multi-value args
     "${ARGN}")
 
-  # fbthrift always passes a target, but consumers of the installed copy of this
-  # file may pass a path, and $<TARGET_FILE:...> on a non-target is an error.
-  if (TARGET ${THRIFT1})
-    set(_thrift1_command "$<TARGET_FILE:${THRIFT1}>")
-  else ()
-    set(_thrift1_command "${THRIFT1}")
-  endif ()
-
   set(source_file_name ${file_name})
   set(target_file_name ${file_name})
   set(thrift_include_directories)
@@ -326,7 +328,7 @@ macro (
     add_custom_command(
       OUTPUT ${${target_file_name}-${language}-SOURCES}
       COMMAND
-        ${_thrift1_command} --gen "${gen_language}${_python_gen_options}" -o
+        ${THRIFT1} --gen "${gen_language}${_python_gen_options}" -o
         ${output_path} ${thrift_include_directories}
         "${file_path}/${source_file_name}.thrift"
       DEPENDS ${THRIFT1} "${file_path}/${source_file_name}.thrift"
@@ -341,9 +343,9 @@ macro (
       OUTPUT ${${target_file_name}-${language}-HEADERS}
              ${${target_file_name}-${language}-SOURCES}
       COMMAND
-        ${_thrift1_command} --gen
-        "${gen_language}:${options}${include_prefix_text}" -o ${output_path}
-        ${thrift_include_directories} "${file_path}/${source_file_name}.thrift"
+        ${THRIFT1} --gen "${gen_language}:${options}${include_prefix_text}" -o
+        ${output_path} ${thrift_include_directories}
+        "${file_path}/${source_file_name}.thrift"
       DEPENDS ${THRIFT1} "${file_path}/${source_file_name}.thrift"
       COMMENT "Generating ${target_file_name} files. Output: ${output_path}")
     add_custom_target(
@@ -352,12 +354,12 @@ macro (
               ${${target_file_name}-${language}-SOURCES})
     install(
       DIRECTORY gen-${language}
-      DESTINATION include/${include_prefix}
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${include_prefix}
       FILES_MATCHING
       PATTERN "*.h")
     install(
       DIRECTORY gen-${language}
-      DESTINATION include/${include_prefix}
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${include_prefix}
       FILES_MATCHING
       PATTERN "*.tcc")
   endif ()

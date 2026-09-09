@@ -25,23 +25,14 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(BIN_INSTALL_DIR
-    bin
-    CACHE STRING
-          "The subdirectory where the compiler binary should be installed")
-set(INCLUDE_INSTALL_DIR
-    include
-    CACHE STRING "The subdirectory where include files should be installed")
-set(LIB_INSTALL_DIR
-    lib
-    CACHE STRING "The subdirectory where libraries should be installed")
-set(CMAKE_INSTALL_DIR
-    lib/cmake/fbthrift
-    CACHE
-      STRING
-      "The subdirectory where CMake package config files should be installed")
+include(GNUInstallDirs)
 
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}")
+# Not cached, so the default follows CMAKE_INSTALL_LIBDIR on a reconfigure.
+if (NOT DEFINED THRIFT_INSTALL_CMAKEDIR)
+  set(THRIFT_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/fbthrift")
+endif ()
+
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 # Build all fbthrift libraries (and their object files) with -fPIC so that
 # the resulting static archives can be linked into a downstream shared
@@ -141,7 +132,8 @@ if (THRIFT_COMPILER_ONLY OR build_all)
   set(THRIFT1 thrift1)
   set(THRIFTCPP2 thriftcpp2)
   include(ThriftLibrary.cmake)
-  install(FILES ThriftLibrary.cmake DESTINATION ${INCLUDE_INSTALL_DIR}/thrift)
+  install(FILES ThriftLibrary.cmake
+          DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift)
 endif ()
 
 # Find required dependencies for thrift/lib

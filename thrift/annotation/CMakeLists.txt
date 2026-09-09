@@ -40,4 +40,4 @@ endforeach ()
 install(
   TARGETS thriftannotation
   EXPORT fbthrift-exports
-  DESTINATION ${LIB_INSTALL_DIR})
+  DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -481,7 +481,7 @@ set(THRIFT2_HEADER_DIRS
     util)
 install(
   DIRECTORY ${THRIFT2_HEADER_DIRS}
-  DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/lib/cpp2
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift/lib/cpp2
   FILES_MATCHING
   PATTERN "*.h"
   PATTERN "*.tcc")
@@ -517,10 +517,10 @@ install(
           thriftprotocol
           serverdbginfo
   EXPORT fbthrift-exports
-  DESTINATION ${LIB_INSTALL_DIR})
+  DESTINATION ${CMAKE_INSTALL_LIBDIR})
 if (THRIFT_RPC)
   install(
     TARGETS thriftcpp2
     EXPORT fbthrift-exports
-    DESTINATION ${LIB_INSTALL_DIR})
+    DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif ()

@@ -316,7 +316,7 @@ endif ()
 add_custom_target(
   generate_apache_thrift_metadata_python
   COMMAND
-    $<TARGET_FILE:${THRIFT1}> -I ${CMAKE_SOURCE_DIR} --out . --gen
+    ${THRIFT1} -I ${CMAKE_SOURCE_DIR} --out . --gen
     "mstch_python:include_prefix=thrift" ${_lib_dir}/thrift/metadata.thrift
   COMMAND ${CMAKE_COMMAND} -E make_directory ${_cybld}/apache/thrift/metadata
   WORKING_DIRECTORY ${_cybld}
@@ -338,7 +338,7 @@ add_custom_target(
 ###
 add_custom_target(
   generate_apache_thrift_metadata_py3
-  COMMAND $<TARGET_FILE:${THRIFT1}> -I ${CMAKE_SOURCE_DIR} --out . --gen
+  COMMAND ${THRIFT1} -I ${CMAKE_SOURCE_DIR} --out . --gen
           "mstch_py3:include_prefix=thrift" ${_lib_dir}/thrift/metadata.thrift
   WORKING_DIRECTORY ${_cybld}
   BYPRODUCTS ${_cybld}/apache/thrift/metadata/cbindings.pxd
@@ -700,6 +700,8 @@ add_custom_command(
 # Install the self-contained wheel to the install prefix
 # for users to pip install
 # The wheel is processed by auditwheel to ${_cybld}/dist_self_contained/
+# Destination stays literal (not CMAKE_INSTALL_DATADIR): out-of-tree consumers
+# glob this path directly and cannot observe that variable.
 install(
   DIRECTORY "${_cybld}/dist_self_contained/"
   DESTINATION share/thrift/wheels

@@ -21,13 +21,8 @@ include(CMakeFindDependencyMacro)
 # was searched for.
 set(FBTHRIFT_PREFIX_DIR "${PACKAGE_PREFIX_DIR}")
 
-set_and_check(FBTHRIFT_CMAKE_DIR "@PACKAGE_CMAKE_INSTALL_DIR@")
-set_and_check(FBTHRIFT_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
-if (WIN32)
-  set_and_check(FBTHRIFT_COMPILER "@PACKAGE_BIN_INSTALL_DIR@/thrift1.exe")
-else()
-  set_and_check(FBTHRIFT_COMPILER "@PACKAGE_BIN_INSTALL_DIR@/thrift1")
-endif()
+set_and_check(FBTHRIFT_CMAKE_DIR "@PACKAGE_THRIFT_INSTALL_CMAKEDIR@")
+set_and_check(FBTHRIFT_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
 
 # xxhash ships no CMake package config, so Xxhash resolves in MODULE mode via
 # the FindXxhash.cmake module installed alongside this config. Prepend this
@@ -50,6 +45,18 @@ find_package(mvfst CONFIG)
 
 if (NOT TARGET FBThrift::thriftcpp2)
   include("${FBTHRIFT_CMAKE_DIR}/FBThriftTargets.cmake")
+endif()
+
+# Prefer the FBThrift::thrift1 target, which carries the right executable
+# suffix on every platform. FBTHRIFT_COMPILER is kept for consumers that
+# predate it; LOCATION is readable on IMPORTED targets and resolves here at
+# configure time. A libraries-only install exports no compiler, so leave a
+# NOTFOUND value rather than an empty string, which would reach a consumer's
+# COMMAND as a silently empty argument.
+if (TARGET FBThrift::thrift1)
+  get_target_property(FBTHRIFT_COMPILER FBThrift::thrift1 LOCATION)
+else()
+  set(FBTHRIFT_COMPILER "FBTHRIFT_COMPILER-NOTFOUND")
 endif()
 
 #

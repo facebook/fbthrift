@@ -18,7 +18,7 @@ add_library(common detail/string.cc tree_printer.cc universal_name.cc)
 
 install(
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
-  DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/common
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift/common
   FILES_MATCHING
   PATTERN "*.h"
   PATTERN "*.tcc")

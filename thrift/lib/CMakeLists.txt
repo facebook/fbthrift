@@ -47,8 +47,8 @@ if (thriftpy3)
   # apache.thrift.metadata package, created and installed later in setup.py.
   add_custom_target(
     generate_apache_thrift_metadata_python
-    COMMAND $<TARGET_FILE:${THRIFT1}> -I ${CMAKE_SOURCE_DIR} --out . --gen
-            mstch_python ${CMAKE_CURRENT_SOURCE_DIR}/thrift/metadata.thrift
+    COMMAND ${THRIFT1} -I ${CMAKE_SOURCE_DIR} --out . --gen mstch_python
+            ${CMAKE_CURRENT_SOURCE_DIR}/thrift/metadata.thrift
     WORKING_DIRECTORY ${_cybld}
     BYPRODUCTS ${_cybld}/apache/thrift/metadata/thrift_abstract_types.py
                ${_cybld}/apache/thrift/metadata/thrift_clients.py
@@ -351,7 +351,7 @@ set(LIB_DIRS thrift cpp cpp2 python py3)
 foreach (dir ${LIB_DIRS})
   install(
     DIRECTORY ${dir} "${CMAKE_CURRENT_BINARY_DIR}/${dir}"
-    DESTINATION include/thrift/lib
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift/lib
     FILES_MATCHING
     PATTERN "*.h"
     PATTERN "*.tcc"

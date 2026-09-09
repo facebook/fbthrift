@@ -18,7 +18,7 @@ endif ()
 
 add_library(thrift-core Thrift.cpp ../cpp2/FieldRef.cpp)
 target_include_directories(
-  thrift-core INTERFACE $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>)
+  thrift-core INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 target_link_libraries(thrift-core PUBLIC fmt::fmt Folly::folly)
 
 add_library(
@@ -99,12 +99,12 @@ set(THRIFT1_HEADER_DIRS async concurrency protocol server transport)
 foreach (dir ${THRIFT1_HEADER_DIRS})
   install(
     DIRECTORY ${dir}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/lib/cpp
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift/lib/cpp
     FILES_MATCHING
     PATTERN "*.h")
   install(
     DIRECTORY ${dir}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/lib/cpp
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift/lib/cpp
     FILES_MATCHING
     PATTERN "*.tcc")
 endforeach ()
@@ -118,12 +118,12 @@ if (BUILD_SHARED_LIBS)
   endif ()
 endif ()
 
-install(TARGETS thrift-core concurrency runtime EXPORT fbthrift-exports
-                                                DESTINATION ${LIB_INSTALL_DIR})
+install(TARGETS thrift-core concurrency
+        runtime EXPORT fbthrift-exports DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 if (THRIFT_RPC)
   install(
     TARGETS transport async thrift
     EXPORT fbthrift-exports
-    DESTINATION ${LIB_INSTALL_DIR})
+    DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif ()
