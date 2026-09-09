@@ -470,7 +470,7 @@ func (r *rsocketClient) RequestSink(
 		}
 
 		// Decode the final response
-		return decodeResponse(r.thriftProtoID, finalRespPayload.Data(), finalResponse)
+		return decodeResultOrException(r.thriftProtoID, finalRespPayload.Data(), finalResponse)
 	}
 
 	return firstResponse.Data(), sinkCallback, nil

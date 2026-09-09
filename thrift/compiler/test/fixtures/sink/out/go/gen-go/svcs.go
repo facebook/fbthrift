@@ -106,8 +106,6 @@ func (c *sinkServiceClientImpl) Method(ctx context.Context) (func(iter.Seq2[*Sin
         fbthriftFinalErr := fbthriftSinkFn(sinkPayloadSeq, fbthriftFinalResp)
         if fbthriftFinalErr != nil {
             return nil, fbthriftFinalErr
-        } else if fbthriftFinalEx := fbthriftFinalResp.Exception(); fbthriftFinalEx != nil {
-            return nil, fbthriftFinalEx
         }
         return fbthriftFinalResp.GetSuccess(), nil
     }
@@ -151,8 +149,6 @@ func (c *sinkServiceClientImpl) MethodAndReponse(ctx context.Context) (*InitialR
         fbthriftFinalErr := fbthriftSinkFn(sinkPayloadSeq, fbthriftFinalResp)
         if fbthriftFinalErr != nil {
             return nil, fbthriftFinalErr
-        } else if fbthriftFinalEx := fbthriftFinalResp.Exception(); fbthriftFinalEx != nil {
-            return nil, fbthriftFinalEx
         }
         return fbthriftFinalResp.GetSuccess(), nil
     }
@@ -195,8 +191,6 @@ func (c *sinkServiceClientImpl) MethodThrow(ctx context.Context) (func(iter.Seq2
         fbthriftFinalErr := fbthriftSinkFn(sinkPayloadSeq, fbthriftFinalResp)
         if fbthriftFinalErr != nil {
             return nil, fbthriftFinalErr
-        } else if fbthriftFinalEx := fbthriftFinalResp.Exception(); fbthriftFinalEx != nil {
-            return nil, fbthriftFinalEx
         }
         return fbthriftFinalResp.GetSuccess(), nil
     }
@@ -245,8 +239,6 @@ func (c *sinkServiceClientImpl) MethodSinkThrow(ctx context.Context) (func(iter.
         fbthriftFinalErr := fbthriftSinkFn(sinkPayloadSeq, fbthriftFinalResp)
         if fbthriftFinalErr != nil {
             return nil, fbthriftFinalErr
-        } else if fbthriftFinalEx := fbthriftFinalResp.Exception(); fbthriftFinalEx != nil {
-            return nil, fbthriftFinalEx
         }
         return fbthriftFinalResp.GetSuccess(), nil
     }
@@ -289,8 +281,6 @@ func (c *sinkServiceClientImpl) MethodFinalThrow(ctx context.Context) (func(iter
         fbthriftFinalErr := fbthriftSinkFn(sinkPayloadSeq, fbthriftFinalResp)
         if fbthriftFinalErr != nil {
             return nil, fbthriftFinalErr
-        } else if fbthriftFinalEx := fbthriftFinalResp.Exception(); fbthriftFinalEx != nil {
-            return nil, fbthriftFinalEx
         }
         return fbthriftFinalResp.GetSuccess(), nil
     }
@@ -339,8 +329,6 @@ func (c *sinkServiceClientImpl) MethodBothThrow(ctx context.Context) (func(iter.
         fbthriftFinalErr := fbthriftSinkFn(sinkPayloadSeq, fbthriftFinalResp)
         if fbthriftFinalErr != nil {
             return nil, fbthriftFinalErr
-        } else if fbthriftFinalEx := fbthriftFinalResp.Exception(); fbthriftFinalEx != nil {
-            return nil, fbthriftFinalEx
         }
         return fbthriftFinalResp.GetSuccess(), nil
     }
@@ -383,8 +371,6 @@ func (c *sinkServiceClientImpl) MethodFast(ctx context.Context) (func(iter.Seq2[
         fbthriftFinalErr := fbthriftSinkFn(sinkPayloadSeq, fbthriftFinalResp)
         if fbthriftFinalErr != nil {
             return nil, fbthriftFinalErr
-        } else if fbthriftFinalEx := fbthriftFinalResp.Exception(); fbthriftFinalEx != nil {
-            return nil, fbthriftFinalEx
         }
         return fbthriftFinalResp.GetSuccess(), nil
     }

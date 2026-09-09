@@ -168,8 +168,6 @@ func (c *myInteractionClientImpl) Encode(ctx context.Context) ([]int32, func(ite
         fbthriftFinalErr := fbthriftSinkFn(sinkPayloadSeq, fbthriftFinalResp)
         if fbthriftFinalErr != nil {
             return nil, fbthriftFinalErr
-        } else if fbthriftFinalEx := fbthriftFinalResp.Exception(); fbthriftFinalEx != nil {
-            return nil, fbthriftFinalEx
         }
         return fbthriftFinalResp.GetSuccess(), nil
     }
@@ -538,8 +536,6 @@ func (c *myInteractionFastClientImpl) Encode(ctx context.Context) ([]int32, func
         fbthriftFinalErr := fbthriftSinkFn(sinkPayloadSeq, fbthriftFinalResp)
         if fbthriftFinalErr != nil {
             return nil, fbthriftFinalErr
-        } else if fbthriftFinalEx := fbthriftFinalResp.Exception(); fbthriftFinalEx != nil {
-            return nil, fbthriftFinalEx
         }
         return fbthriftFinalResp.GetSuccess(), nil
     }

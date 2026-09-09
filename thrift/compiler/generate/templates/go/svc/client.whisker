@@ -193,8 +193,6 @@ func (c *{{svc.go_client_name}}) {{#partial client_func_signature func=func}} {
         fbthriftFinalErr := fbthriftSinkFn(sinkPayloadSeq, fbthriftFinalResp)
         if fbthriftFinalErr != nil {
             return {{#partial types.go_zero_value type=func.sink.final_response_type}}, fbthriftFinalErr
-        } else if fbthriftFinalEx := fbthriftFinalResp.Exception(); fbthriftFinalEx != nil {
-            return {{#partial types.go_zero_value type=func.sink.final_response_type}}, fbthriftFinalEx
         }
         return fbthriftFinalResp.Get{{func.retval_field_name}}(), nil
     }
