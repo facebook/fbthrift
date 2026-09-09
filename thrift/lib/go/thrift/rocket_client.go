@@ -139,7 +139,7 @@ func (p *rocketClient) SendRequestSink(
 	messageName string,
 	request WritableStruct,
 	firstResponse ReadableResult,
-) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
+) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableResult) error, error) {
 	headers := p.getWriteHeaders(ctx)
 	resultData, sinkCallback, resultErr := p.client.RequestSink(ctx, messageName, headers, request)
 	if resultErr != nil {

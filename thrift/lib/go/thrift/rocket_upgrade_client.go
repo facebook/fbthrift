@@ -126,7 +126,7 @@ func (p *upgradeToRocketClient) SendRequestSink(
 	method string,
 	request WritableStruct,
 	firstResponse ReadableResult,
-) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
+) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableResult) error, error) {
 	p.maybeUpgrade(ctx)
 	return p.actualChannel.SendRequestSink(ctx, method, request, firstResponse)
 }

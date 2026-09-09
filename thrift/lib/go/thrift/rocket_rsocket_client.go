@@ -62,7 +62,7 @@ type RSocketClient interface {
 		messageName string,
 		headers map[string]string,
 		request WritableStruct,
-	) ([]byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error)
+	) ([]byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableResult) error, error)
 	RequestBiDiStream(
 		ctx context.Context,
 		messageName string,
@@ -339,7 +339,7 @@ func (r *rsocketClient) RequestSink(
 	messageName string,
 	headers map[string]string,
 	request WritableStruct,
-) ([]byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
+) ([]byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableResult) error, error) {
 	reqPayload, err := r.prepareRequestPayload(
 		ctx,
 		messageName,
@@ -395,7 +395,7 @@ func (r *rsocketClient) RequestSink(
 	setReadHeaders(ctx, firstResponse.Headers())
 
 	// Create sink callback that will be called by the user to send sink items
-	sinkCallback := func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error {
+	sinkCallback := func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableResult) error {
 		defer channelCancel()
 
 		sendAllSinkItems := func() error {

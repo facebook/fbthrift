@@ -174,7 +174,7 @@ func (c *serialChannel) SendRequestSink(
 	method string,
 	request WritableStruct,
 	firstResponse ReadableResult,
-) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
+) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableResult) error, error) {
 	return nil, fmt.Errorf("not implemented")
 }
 

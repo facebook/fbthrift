@@ -60,7 +60,7 @@ type RequestChannel interface {
 		method string,
 		request WritableStruct,
 		firstResponse ReadableResult,
-	) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error)
+	) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableResult) error, error)
 	SendRequestBiDi(
 		ctx context.Context,
 		method string,
@@ -142,7 +142,7 @@ func (c *interactionChannel) SendRequestSink(
 	method string,
 	request WritableStruct,
 	firstResponse ReadableResult,
-) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
+) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableResult) error, error) {
 	ctx = c.withInteractionContext(ctx)
 	return c.channel.SendRequestSink(ctx, method, request, firstResponse)
 }
