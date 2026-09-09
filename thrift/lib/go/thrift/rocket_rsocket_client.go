@@ -222,10 +222,10 @@ func (r *rsocketClient) RequestResponse(
 		return nil, nil, err
 	}
 	response, err := rocket.DecodeResponsePayload(val)
-	if response != nil {
-		return response.Headers(), response.Data(), err
+	if err != nil {
+		return nil, nil, err
 	}
-	return nil, nil, err
+	return response.Headers(), response.Data(), err
 }
 
 func (r *rsocketClient) FireAndForget(ctx context.Context, messageName string, headers map[string]string, request WritableStruct) error {
