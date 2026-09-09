@@ -4,7 +4,8 @@ High-performance RSocket frame parsing and serialization designed for the Channe
 
 ## Overview
 
-This module provides efficient frame handling for RSocket protocol frames used in Thrift transport. The design prioritizes:
+This module provides efficient frame handling for RSocket protocol frames used in
+Thrift transport. The design prioritizes:
 
 - **Parse-once semantics**: Common header fields cached on first parse
 - **Inline storage compatibility**: 32-byte `FrameMetadata` fits in `TypeErasedBox`
@@ -260,7 +261,7 @@ Clear separation of concerns between incoming and outgoing frame handling:
 ### Why No Frame Length Prefix?
 
 Our format omits the 3-byte RSocket frame length prefix because:
-1. `FrameLengthParser` (separate layer) handles length-prefixed framing
+1. `FrameLengthParser` is composed into `TransportHandlerT` for length-prefixed inbound framing
 2. Pipeline handlers receive frames with length already stripped
 3. Cleaner separation: frame layer vs frame parsing layer
 
@@ -316,5 +317,5 @@ buck2 test fbcode//thrift/lib/cpp2/fast_thrift/frame/write/test:...
 ## See Also
 
 - [Channel Pipeline README](../../fast_thrift/channel_pipeline/README.md) - Pipeline architecture
-- [FrameLengthParser](../frame/read/FrameParser.h) - Length-prefixed frame extraction
+- [FrameLengthParser](read/FrameLengthParser.h) - Length-prefixed frame extraction
 - [RSocket Protocol Spec](https://rsocket.io/about/protocol) - Wire format reference
