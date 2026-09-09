@@ -150,6 +150,30 @@ TEST(UniversalNameTest, validate_universal_name_canonical) {
   validate_universal_name("facebook.com/thrift/Value");
 }
 
+TEST(UniversalNameTest, validate_universal_name_more_parts_than_the_minimum) {
+  // The URI is walked in place, with no inline capacity to overflow, so a URI
+  // deeper than the canonical 3 parts is validated the same way.
+  validate_universal_name("a.b.c.d.e.f/g/h/i/j/k/Value");
+  expect_validate_error(
+      "a.b.c.d.e.f/g/h/i/j/K/Value",
+      R"(Not a valid Thrift URI: "a.b.c.d.e.f/g/h/i/j/K/Value" (URI path segment #4 has invalid character at position 0: 'K'))");
+  expect_validate_error(
+      "a.b.c.d.e.F/g/h/i/j/k/Value",
+      R"(Not a valid Thrift URI: "a.b.c.d.e.F/g/h/i/j/k/Value" (URI domain component #5 has invalid character at position 0: 'F'))");
+}
+
+TEST(UniversalNameTest, validate_universal_name_single_domain_component) {
+  expect_validate_error(
+      "facebook/thrift/Value",
+      R"(Not a valid Thrift URI: "facebook/thrift/Value" (Not enough domain components: expected at least 2, got 1))");
+}
+
+TEST(UniversalNameTest, validate_universal_name_empty_domain) {
+  expect_validate_error(
+      "/thrift/Value",
+      R"(Not a valid Thrift URI: "/thrift/Value" (Not enough domain components: expected at least 2, got 1))");
+}
+
 TEST(UniversalNameTest, validate_universal_name_missing_path_type) {
   // BAD: Missing path, type
   expect_validate_error(

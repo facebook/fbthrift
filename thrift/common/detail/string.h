@@ -19,6 +19,7 @@
 #include <cstddef>
 #include <string>
 #include <string_view>
+#include <type_traits>
 
 namespace apache::thrift::detail {
 /**
@@ -53,12 +54,40 @@ void to_lower_ascii(std::string& str);
 void to_upper_ascii(std::string& str);
 
 /**
+ * Returns whether `a` and `b` are equal, ignoring the case of ASCII letters.
+ * Every other byte is compared as-is, including bytes belonging to a multi-byte
+ * encoding, so the result does not depend on the current locale.
+ */
+bool iequals(std::string_view a, std::string_view b);
+
+/**
+ * Returns whether `str` starts with `prefix`, ignoring the case of ASCII
+ * letters. Same locale independence as iequals.
+ */
+bool istarts_with(std::string_view str, std::string_view prefix);
+
+/**
  * Returns a predicate matching any single character in `chars`, for use as a
- * split_if delimiter.
+ * split_if delimiter. `chars` is captured as a view, so it must outlive the
+ * returned predicate.
  */
 inline auto is_any_of(std::string_view chars) {
   return [chars](char c) { return chars.find(c) != std::string_view::npos; };
 }
+
+/**
+ * An owning temporary dies at the end of the full expression, leaving the
+ * predicate holding a dangling view, so reject it at compile time. Deleting a
+ * plain `std::string&&` overload would not do: a string literal converts to
+ * both parameter types just as well, which makes every literal call site
+ * ambiguous. Constraining the deleted overload to an exact match keeps it
+ * limited to the temporaries that actually dangle.
+ */
+template <
+    typename T,
+    typename =
+        std::enable_if_t<std::is_same_v<std::remove_cv_t<T>, std::string>>>
+void is_any_of(T&&) = delete;
 
 /**
  * Splits `str` at every character for which `is_delimiter` returns true and

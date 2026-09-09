@@ -16,8 +16,11 @@
 
 #include <thrift/common/universal_name.h>
 
+#include <algorithm>
 #include <cctype>
+#include <cstddef>
 #include <stdexcept>
+#include <string_view>
 #include <vector>
 #include <fmt/core.h>
 #include <fmt/format.h>
@@ -78,6 +81,34 @@ bool is_type_char(char c) {
   return is_path_char(c) || (c >= 'A' && c <= 'Z');
 }
 
+void check_domain_component(std::size_t i, std::string_view component) {
+  check(!component.empty(), "URI domain component at index {} is empty", i);
+
+  for (std::size_t j = 0; j < component.size(); ++j) {
+    char c = component[j];
+    check(
+        is_domain_char(c),
+        "URI domain component #{} has invalid character at position {}: {}",
+        i,
+        j,
+        printable_char(c));
+  }
+}
+
+void check_path_segment(std::size_t i, std::string_view segment) {
+  check(!segment.empty(), "URI path segment at index {} is empty", i);
+
+  for (std::size_t j = 0; j < segment.size(); ++j) {
+    char c = segment[j];
+    check(
+        is_path_char(c),
+        "URI path segment #{} has invalid character at position {}: {}",
+        i,
+        j,
+        printable_char(c));
+  }
+}
+
 template <typename TStringContainer>
 void check_domain_components(const TStringContainer& domain) {
   check(
@@ -85,18 +116,7 @@ void check_domain_components(const TStringContainer& domain) {
       "Not enough domain components: expected at least 2, got {}",
       domain.size());
   for (std::size_t i = 0; i < domain.size(); ++i) {
-    const auto& component = domain[i];
-    check(!component.empty(), "URI domain component at index {} is empty", i);
-
-    for (std::size_t j = 0; j < component.size(); ++j) {
-      char c = component[j];
-      check(
-          is_domain_char(c),
-          "URI domain component #{} has invalid character at position {}: {}",
-          i,
-          j,
-          printable_char(c));
-    }
+    check_domain_component(i, domain[i]);
   }
 }
 
@@ -106,18 +126,7 @@ void check_path_segments(TStringishIterator begin, TStringishIterator end) {
 
   std::size_t i = 0;
   for (TStringishIterator it = begin; it != end; ++it, ++i) {
-    const auto& segment = *it;
-    check(!segment.empty(), "URI path segment at index {} is empty", i);
-
-    for (std::size_t j = 0; j < segment.size(); ++j) {
-      char c = segment[j];
-      check(
-          is_path_char(c),
-          "URI path segment #{} has invalid character at position {}: {}",
-          i,
-          j,
-          printable_char(c));
-    }
+    check_path_segment(i, *it);
   }
 }
 
@@ -133,23 +142,40 @@ void check_type_segment(std::string_view segment) {
   }
 }
 
-void split(
-    std::vector<std::string_view>& result,
-    std::string_view input,
-    char delimiter) {
-  // Both call sites below expect around 4 components, so reserve that many up
-  // front to avoid reallocating while splitting.
-  result.reserve(4);
-  size_t start = 0, size = input.size();
-  while (start <= size) {
-    size_t end = input.find(delimiter, start);
+/**
+ * Returns how many `delimiter`-separated segments `str` has, counting empty
+ * ones. Never 0: an empty string has a single, empty segment.
+ */
+std::size_t count_segments(std::string_view str, char delimiter) {
+  return 1 +
+      static_cast<std::size_t>(std::count(str.begin(), str.end(), delimiter));
+}
+
+/**
+ * Calls `visit(index, segment)` for every `delimiter`-separated segment of
+ * `str`, in order and including empty ones.
+ */
+template <typename TVisitor>
+void for_each_segment(std::string_view str, char delimiter, TVisitor visit) {
+  std::size_t index = 0;
+  for (std::size_t start = 0;; ++index) {
+    const std::size_t end = str.find(delimiter, start);
     if (end == std::string_view::npos) {
-      result.emplace_back(input.substr(start));
-      break;
+      visit(index, str.substr(start));
+      return;
     }
-    result.emplace_back(input.substr(start, end - start));
+    visit(index, str.substr(start, end - start));
     start = end + 1;
   }
+}
+
+void check_domain_components(std::string_view domain) {
+  const std::size_t size = count_segments(domain, '.');
+  check(
+      size >= 2,
+      "Not enough domain components: expected at least 2, got {}",
+      size);
+  for_each_segment(domain, '.', check_domain_component);
 }
 
 } // namespace
@@ -185,22 +211,24 @@ void validate_universal_name(std::string_view uri) {
   //
   // e.g.: "facebook.com/thrift/Value"
   //
-  // We expect most will have at least 4 parts, which is what `split` reserves.
-  std::vector<std::string_view> uri_parts;
-  split(uri_parts, uri, '/');
+  // The URI is walked in place rather than split into a container: this runs
+  // from AnyRegistry::registerType during static initialization, once per
+  // registered type, so it must not allocate.
   try {
-    check(
-        uri_parts.size() >= 3,
-        "Not enough parts: expected at least 3, got: {}",
-        uri_parts.size());
+    const std::size_t parts = count_segments(uri, '/');
+    check(parts >= 3, "Not enough parts: expected at least 3, got: {}", parts);
 
-    // We require a minimum of 2 domain segments, but up to 4 is likely to be
-    // common.
-    std::vector<std::string_view> domain;
-    split(domain, uri_parts[0], '.');
-    check_domain_components(domain);
-    check_path_segments(uri_parts.begin() + 1, uri_parts.end() - 1);
-    check_type_segment(uri_parts.back());
+    // With at least 3 parts there are at least 2 separators, so the domain,
+    // the path and the type segment are all non-empty ranges of `uri`.
+    const std::size_t domain_end = uri.find('/');
+    const std::size_t type_begin = uri.rfind('/') + 1;
+
+    check_domain_components(uri.substr(0, domain_end));
+    for_each_segment(
+        uri.substr(domain_end + 1, type_begin - domain_end - 2),
+        '/',
+        check_path_segment);
+    check_type_segment(uri.substr(type_begin));
   } catch (const std::invalid_argument& ex) {
     throw std::invalid_argument(
         fmt::format("Not a valid Thrift URI: \"{}\" ({})", uri, ex.what()));

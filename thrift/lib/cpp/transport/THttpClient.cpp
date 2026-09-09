@@ -16,32 +16,22 @@
 
 #include <thrift/lib/cpp/transport/THttpClient.h>
 
-#include <algorithm>
 #include <cstdlib>
 #include <sstream>
 #include <string_view>
 
 #include <folly/Conv.h>
 
+#include <thrift/common/detail/string.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 
 namespace apache::thrift::transport {
 
 using std::string;
 
-namespace {
-// ASCII case-insensitive comparison, as used for HTTP header names and
-// values (RFC 2616 tokens are ASCII).
-bool iequals(std::string_view a, std::string_view b) {
-  auto lower = [](char c) {
-    return c >= 'A' && c <= 'Z' ? static_cast<char>(c - 'A' + 'a') : c;
-  };
-  return a.size() == b.size() &&
-      std::equal(a.begin(), a.end(), b.begin(), [&](char x, char y) {
-           return lower(x) == lower(y);
-         });
-}
-} // namespace
+// ASCII case-insensitive comparison, as used for HTTP header names and values
+// (RFC 2616 tokens are ASCII).
+using ::apache::thrift::detail::iequals;
 
 const string THttpClient::kAcceptHeader = "Accept";
 const string THttpClient::kConnectionHeader = "Connection";

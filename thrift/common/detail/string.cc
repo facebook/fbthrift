@@ -16,7 +16,16 @@
 
 #include <thrift/common/detail/string.h>
 
+#include <algorithm>
+
 namespace apache::thrift::detail {
+namespace {
+
+constexpr char lowered(char ch) {
+  return ch >= 'A' && ch <= 'Z' ? static_cast<char>(ch + ('a' - 'A')) : ch;
+}
+
+} // namespace
 
 std::string escape(std::string_view str) {
   std::string result;
@@ -82,9 +91,7 @@ std::string replace_all_copy(
 
 void to_lower_ascii(std::string& str) {
   for (char& ch : str) {
-    if (ch >= 'A' && ch <= 'Z') {
-      ch += 'a' - 'A';
-    }
+    ch = lowered(ch);
   }
 }
 
@@ -94,6 +101,18 @@ void to_upper_ascii(std::string& str) {
       ch -= 'a' - 'A';
     }
   }
+}
+
+bool iequals(std::string_view a, std::string_view b) {
+  return a.size() == b.size() &&
+      std::equal(a.begin(), a.end(), b.begin(), [](char x, char y) {
+           return lowered(x) == lowered(y);
+         });
+}
+
+bool istarts_with(std::string_view str, std::string_view prefix) {
+  return str.size() >= prefix.size() &&
+      iequals(str.substr(0, prefix.size()), prefix);
 }
 
 } // namespace apache::thrift::detail
