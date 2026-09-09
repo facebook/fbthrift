@@ -79,11 +79,6 @@ func newRocketClient(
 }
 
 func (p *rocketClient) SendRequestNoResponse(ctx context.Context, messageName string, request WritableStruct) error {
-	dataBytes, err := encodeRequest(p.protoID, request)
-	if err != nil {
-		return err
-	}
-
 	if p.ioTimeout > 0 {
 		var cancel context.CancelFunc
 		ctx, cancel = context.WithTimeout(ctx, p.ioTimeout)
@@ -91,15 +86,10 @@ func (p *rocketClient) SendRequestNoResponse(ctx context.Context, messageName st
 	}
 
 	headers := p.getWriteHeaders(ctx)
-	return p.client.FireAndForget(ctx, messageName, headers, dataBytes)
+	return p.client.FireAndForget(ctx, messageName, headers, request)
 }
 
 func (p *rocketClient) SendRequestResponse(ctx context.Context, messageName string, request WritableStruct, response ReadableResult) error {
-	dataBytes, err := encodeRequest(p.protoID, request)
-	if err != nil {
-		return err
-	}
-
 	if p.ioTimeout > 0 {
 		var cancel context.CancelFunc
 		ctx, cancel = context.WithTimeout(ctx, p.ioTimeout)
@@ -107,13 +97,13 @@ func (p *rocketClient) SendRequestResponse(ctx context.Context, messageName stri
 	}
 
 	headers := p.getWriteHeaders(ctx)
-	respHeaders, resultData, resultErr := p.client.RequestResponse(ctx, messageName, headers, dataBytes)
+	respHeaders, resultData, resultErr := p.client.RequestResponse(ctx, messageName, headers, request)
 	if resultErr != nil {
 		return resultErr
 	}
 
 	setReadHeaders(ctx, respHeaders)
-	err = decodeResponse(p.protoID, resultData, response)
+	err := decodeResponse(p.protoID, resultData, response)
 	if err != nil {
 		return err
 	}
@@ -136,19 +126,14 @@ func (p *rocketClient) SendRequestStream(
 		return nil, errors.New("context does not support cancellation")
 	}
 
-	dataBytes, err := encodeRequest(p.protoID, request)
-	if err != nil {
-		return nil, err
-	}
-
 	headers := p.getWriteHeaders(ctx)
-	respHeaders, resultData, streamSeq, resultErr := p.client.RequestStream(ctx, messageName, headers, dataBytes, newStreamElemFn)
+	respHeaders, resultData, streamSeq, resultErr := p.client.RequestStream(ctx, messageName, headers, request, newStreamElemFn)
 	if resultErr != nil {
 		return nil, resultErr
 	}
 
 	setReadHeaders(ctx, respHeaders)
-	err = decodeResponse(p.protoID, resultData, response)
+	err := decodeResponse(p.protoID, resultData, response)
 	if err != nil {
 		return nil, err
 	}
@@ -165,19 +150,14 @@ func (p *rocketClient) SendRequestSink(
 	request WritableStruct,
 	firstResponse ReadableResult,
 ) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
-	dataBytes, err := encodeRequest(p.protoID, request)
-	if err != nil {
-		return nil, err
-	}
-
 	headers := p.getWriteHeaders(ctx)
-	respHeaders, resultData, sinkCallback, resultErr := p.client.RequestSink(ctx, messageName, headers, dataBytes)
+	respHeaders, resultData, sinkCallback, resultErr := p.client.RequestSink(ctx, messageName, headers, request)
 	if resultErr != nil {
 		return nil, resultErr
 	}
 
 	setReadHeaders(ctx, respHeaders)
-	err = decodeResponse(p.protoID, resultData, firstResponse)
+	err := decodeResponse(p.protoID, resultData, firstResponse)
 	if err != nil {
 		return nil, err
 	}
@@ -200,19 +180,14 @@ func (p *rocketClient) SendRequestBiDi(
 		return nil, nil, errors.New("context does not support cancellation")
 	}
 
-	dataBytes, err := encodeRequest(p.protoID, request)
-	if err != nil {
-		return nil, nil, err
-	}
-
 	headers := p.getWriteHeaders(ctx)
-	respHeaders, resultData, sinkCallback, streamSeq, resultErr := p.client.RequestBiDiStream(ctx, messageName, headers, dataBytes, newStreamElemFn)
+	respHeaders, resultData, sinkCallback, streamSeq, resultErr := p.client.RequestBiDiStream(ctx, messageName, headers, request, newStreamElemFn)
 	if resultErr != nil {
 		return nil, nil, resultErr
 	}
 
 	setReadHeaders(ctx, respHeaders)
-	err = decodeResponse(p.protoID, resultData, firstResponse)
+	err := decodeResponse(p.protoID, resultData, firstResponse)
 	if err != nil {
 		return nil, nil, err
 	}

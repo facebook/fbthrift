@@ -42,32 +42,32 @@ type RSocketClient interface {
 		ctx context.Context,
 		messageName string,
 		headers map[string]string,
-		dataBytes []byte,
+		request WritableStruct,
 	) error
 	RequestResponse(
 		ctx context.Context,
 		messageName string,
 		headers map[string]string,
-		dataBytes []byte,
+		request WritableStruct,
 	) (map[string]string, []byte, error)
 	RequestStream(
 		ctx context.Context,
 		messageName string,
 		headers map[string]string,
-		dataBytes []byte,
+		request WritableStruct,
 		newStreamElemFn func() ReadableResult,
 	) (map[string]string, []byte, iter.Seq2[ReadableStruct, error], error)
 	RequestSink(
 		ctx context.Context,
 		messageName string,
 		headers map[string]string,
-		dataBytes []byte,
+		request WritableStruct,
 	) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error)
 	RequestBiDiStream(
 		ctx context.Context,
 		messageName string,
 		headers map[string]string,
-		dataBytes []byte,
+		request WritableStruct,
 		newStreamElemFn func() ReadableResult,
 	) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error]), iter.Seq2[ReadableStruct, error], error)
 	MetadataPush(
@@ -175,16 +175,20 @@ func (r *rsocketClient) RequestResponse(
 	ctx context.Context,
 	messageName string,
 	headers map[string]string,
-	dataBytes []byte,
+	request WritableStruct,
 ) (map[string]string, []byte, error) {
 	if err := ctx.Err(); err != nil {
+		return nil, nil, err
+	}
+	dataBytes, err := encodeRequest(r.thriftProtoID, request)
+	if err != nil {
 		return nil, nil, err
 	}
 	if err := r.SendSetup(ctx); err != nil {
 		return nil, nil, err
 	}
 	r.resetDeadline()
-	request, err := rocket.EncodeRequestPayload(
+	reqPayload, err := rocket.EncodeRequestPayload(
 		ctx,
 		messageName,
 		r.protoID,
@@ -196,7 +200,7 @@ func (r *rsocketClient) RequestResponse(
 	if err != nil {
 		return nil, nil, err
 	}
-	mono := r.client.RequestResponse(request)
+	mono := r.client.RequestResponse(reqPayload)
 	val, err := mono.Block(ctx)
 	if err != nil {
 		return nil, nil, err
@@ -208,15 +212,19 @@ func (r *rsocketClient) RequestResponse(
 	return nil, nil, err
 }
 
-func (r *rsocketClient) FireAndForget(ctx context.Context, messageName string, headers map[string]string, dataBytes []byte) error {
+func (r *rsocketClient) FireAndForget(ctx context.Context, messageName string, headers map[string]string, request WritableStruct) error {
 	if err := ctx.Err(); err != nil {
+		return err
+	}
+	dataBytes, err := encodeRequest(r.thriftProtoID, request)
+	if err != nil {
 		return err
 	}
 	if err := r.SendSetup(ctx); err != nil {
 		return err
 	}
 	r.resetDeadline()
-	request, err := rocket.EncodeRequestPayload(
+	reqPayload, err := rocket.EncodeRequestPayload(
 		ctx,
 		messageName,
 		r.protoID,
@@ -228,7 +236,7 @@ func (r *rsocketClient) FireAndForget(ctx context.Context, messageName string, h
 	if err != nil {
 		return err
 	}
-	r.client.FireAndForget(request)
+	r.client.FireAndForget(reqPayload)
 	return nil
 }
 
@@ -236,10 +244,14 @@ func (r *rsocketClient) RequestStream(
 	ctx context.Context,
 	messageName string,
 	headers map[string]string,
-	dataBytes []byte,
+	request WritableStruct,
 	newStreamElemFn func() ReadableResult,
 ) (map[string]string, []byte, iter.Seq2[ReadableStruct, error], error) {
 	if err := ctx.Err(); err != nil {
+		return nil, nil, nil, err
+	}
+	dataBytes, err := encodeRequest(r.thriftProtoID, request)
+	if err != nil {
 		return nil, nil, nil, err
 	}
 	if err := r.SendSetup(ctx); err != nil {
@@ -247,7 +259,7 @@ func (r *rsocketClient) RequestStream(
 	}
 	r.resetDeadline()
 
-	request, err := rocket.EncodeRequestPayload(
+	reqPayload, err := rocket.EncodeRequestPayload(
 		ctx,
 		messageName,
 		r.protoID,
@@ -260,7 +272,7 @@ func (r *rsocketClient) RequestStream(
 		return nil, nil, nil, err
 	}
 
-	flux := r.client.RequestStream(request)
+	flux := r.client.RequestStream(reqPayload)
 
 	streamCtx, streamCancel := context.WithCancel(ctx)
 	streamPayloadChan, streamErrChan := flux.ToChan(streamCtx, types.DefaultStreamBufferSize)
@@ -328,9 +340,13 @@ func (r *rsocketClient) RequestSink(
 	ctx context.Context,
 	messageName string,
 	headers map[string]string,
-	dataBytes []byte,
+	request WritableStruct,
 ) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
 	if err := ctx.Err(); err != nil {
+		return nil, nil, nil, err
+	}
+	dataBytes, err := encodeRequest(r.thriftProtoID, request)
+	if err != nil {
 		return nil, nil, nil, err
 	}
 	if err := r.SendSetup(ctx); err != nil {
@@ -338,7 +354,7 @@ func (r *rsocketClient) RequestSink(
 	}
 	r.resetDeadline()
 
-	request, err := rocket.EncodeRequestPayload(
+	reqPayload, err := rocket.EncodeRequestPayload(
 		ctx,
 		messageName,
 		r.protoID,
@@ -374,7 +390,7 @@ func (r *rsocketClient) RequestSink(
 		}
 	})
 
-	receivingFlux := r.client.RequestChannel(request, sendingFlux)
+	receivingFlux := r.client.RequestChannel(reqPayload, sendingFlux)
 
 	channelCtx, channelCancel := context.WithCancel(ctx)
 	receivingPayloadChan, receivingErrChan := receivingFlux.ToChan(channelCtx, types.DefaultStreamBufferSize)
@@ -479,10 +495,14 @@ func (r *rsocketClient) RequestBiDiStream(
 	ctx context.Context,
 	messageName string,
 	headers map[string]string,
-	dataBytes []byte,
+	request WritableStruct,
 	newStreamElemFn func() ReadableResult,
 ) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error]), iter.Seq2[ReadableStruct, error], error) {
 	if err := ctx.Err(); err != nil {
+		return nil, nil, nil, nil, err
+	}
+	dataBytes, err := encodeRequest(r.thriftProtoID, request)
+	if err != nil {
 		return nil, nil, nil, nil, err
 	}
 	if err := r.SendSetup(ctx); err != nil {
@@ -490,7 +510,7 @@ func (r *rsocketClient) RequestBiDiStream(
 	}
 	r.resetDeadline()
 
-	request, err := rocket.EncodeRequestPayload(
+	reqPayload, err := rocket.EncodeRequestPayload(
 		ctx,
 		messageName,
 		r.protoID,
@@ -526,7 +546,7 @@ func (r *rsocketClient) RequestBiDiStream(
 		}
 	})
 
-	receivingFlux := r.client.RequestChannel(request, sendingFlux)
+	receivingFlux := r.client.RequestChannel(reqPayload, sendingFlux)
 
 	channelCtx, channelCancel := context.WithCancel(ctx)
 	receivingPayloadChan, receivingErrChan := receivingFlux.ToChan(channelCtx, types.DefaultStreamBufferSize)
