@@ -50,4 +50,50 @@ std::string escape(std::string_view str) {
   return result;
 }
 
+void replace_all(std::string& str, std::string_view from, std::string_view to) {
+  if (from.empty()) {
+    return;
+  }
+  std::size_t pos = str.find(from);
+  if (pos == std::string::npos) {
+    return;
+  }
+  // Build the result in one pass. Replacing in place would shift the tail of
+  // the string on every match whenever `from` and `to` differ in length.
+  std::string result;
+  result.reserve(str.size());
+  std::size_t copied = 0;
+  do {
+    result.append(str, copied, pos - copied);
+    result.append(to);
+    copied = pos + from.size();
+    pos = str.find(from, copied);
+  } while (pos != std::string::npos);
+  result.append(str, copied);
+  str = std::move(result);
+}
+
+std::string replace_all_copy(
+    std::string_view str, std::string_view from, std::string_view to) {
+  std::string result(str);
+  replace_all(result, from, to);
+  return result;
+}
+
+void to_lower_ascii(std::string& str) {
+  for (char& ch : str) {
+    if (ch >= 'A' && ch <= 'Z') {
+      ch += 'a' - 'A';
+    }
+  }
+}
+
+void to_upper_ascii(std::string& str) {
+  for (char& ch : str) {
+    if (ch >= 'a' && ch <= 'z') {
+      ch -= 'a' - 'A';
+    }
+  }
+}
+
 } // namespace apache::thrift::detail

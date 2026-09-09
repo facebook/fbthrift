@@ -32,7 +32,7 @@
 
 #include <fmt/ranges.h>
 
-#include <boost/algorithm/string/split.hpp>
+#include <thrift/common/detail/string.h>
 
 namespace w = whisker::make;
 using whisker::array;
@@ -945,7 +945,7 @@ class t_whisker_generator::whisker_source_parser
       source_location include_from,
       diagnostics_engine& diags) override {
     std::vector<std::string> path_parts;
-    boost::algorithm::split(
+    apache::thrift::detail::split_if(
         path_parts, combined_path, [](char c) { return c == '/'; });
     std::string path = normalize_path(path_parts, include_from);
 

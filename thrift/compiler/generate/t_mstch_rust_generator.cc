@@ -23,9 +23,7 @@
 #include <unordered_set>
 #include <variant>
 
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/replace.hpp>
-#include <boost/algorithm/string/split.hpp>
+#include <thrift/common/detail/string.h>
 
 #include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_struct.h>
@@ -1021,7 +1019,7 @@ class t_mstch_rust_generator : public t_whisker_generator {
           ctx.declare_named_arguments({});
           ctx.declare_arity(1);
           return whisker::make::string(
-              boost::algorithm::replace_all_copy(
+              apache::thrift::detail::replace_all_copy(
                   ctx.argument<whisker::string>(0), ".", "_"));
         });
     globals["rust_quote"] = whisker::dsl::make_function(
@@ -1959,12 +1957,12 @@ void t_mstch_rust_generator::process_options(
     const std::map<std::string, std::string>& options) {
   t_whisker_generator::process_options(options);
   if (auto types_crate_flag = get_compiler_option("types_crate")) {
-    options_.types_crate = boost::algorithm::replace_all_copy(
+    options_.types_crate = apache::thrift::detail::replace_all_copy(
         std::string(*types_crate_flag), "-", "_");
   }
 
   if (auto clients_crate_flag = get_compiler_option("clients_crate")) {
-    options_.clients_crate = boost::algorithm::replace_all_copy(
+    options_.clients_crate = apache::thrift::detail::replace_all_copy(
         std::string(*clients_crate_flag), "-", "_");
   }
 
@@ -2028,7 +2026,8 @@ void t_mstch_rust_generator::generate_program() {
   std::string namespace_rust = program_->get_namespace("rust");
   if (!namespace_rust.empty()) {
     std::vector<std::string> pieces;
-    boost::split(pieces, namespace_rust, boost::is_any_of("."));
+    apache::thrift::detail::split_if(
+        pieces, namespace_rust, apache::thrift::detail::is_any_of("."));
     if (options_.multifile_mode) {
       if (pieces.size() > 2) {
         throw std::runtime_error(

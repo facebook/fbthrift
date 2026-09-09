@@ -20,22 +20,41 @@
 #include <thrift/compiler/whisker/detail/overload.h>
 
 #include <cassert>
+#include <cstdlib>
+#include <memory>
 #include <ostream>
 #include <type_traits>
 
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 
-#include <boost/core/demangle.hpp>
+// Only the Itanium C++ ABI mangles type_info::name(). MSVC (and clang-cl, which
+// defines __clang__ but targets the MSVC ABI) ships no <cxxabi.h> and already
+// returns a readable name, so test for the header rather than the compiler.
+#if __has_include(<cxxabi.h>)
+#include <cxxabi.h>
+#define WHISKER_HAS_CXXABI_H 1
+#endif
 
 namespace whisker {
 
+std::string demangle(const std::type_info& type) {
+#ifdef WHISKER_HAS_CXXABI_H
+  int status = 0;
+  const std::unique_ptr<char, decltype(&std::free)> demangled(
+      abi::__cxa_demangle(type.name(), nullptr, nullptr, &status), &std::free);
+  if (status == 0 && demangled != nullptr) {
+    return demangled.get();
+  }
+#endif
+  // Either the name is already readable, or it did not follow the mangling
+  // scheme (as is the case for built-in types). The raw name is then the best
+  // we can do.
+  return type.name();
+}
+
 namespace {
 using apache::thrift::detail::escape;
-
-std::string demangle(const std::type_info& type) {
-  return boost::core::demangle(type.name());
-}
 
 class to_string_visitor {
  public:

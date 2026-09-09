@@ -15,9 +15,8 @@
  */
 
 #include <string>
-#include <boost/algorithm/string/erase.hpp>
-#include <boost/algorithm/string/replace.hpp>
 #include <fmt/format.h>
+#include <thrift/common/detail/string.h>
 #include <thrift/compiler/generate/go/util.h>
 #include <thrift/compiler/generate/t_whisker_generator.h>
 #include <thrift/compiler/generate/templates.h>
@@ -25,6 +24,14 @@
 namespace apache::thrift::compiler {
 
 namespace {
+
+// Returns `str` with the first occurrence of `sub` removed.
+std::string erase_first(std::string str, std::string_view sub) {
+  if (auto pos = str.find(sub); pos != std::string::npos) {
+    str.erase(pos, sub.size());
+  }
+  return str;
+}
 
 class t_mstch_go_generator : public t_whisker_generator {
  public:
@@ -294,12 +301,10 @@ class t_mstch_go_generator : public t_whisker_generator {
       return prefix + go::go_name(self);
     });
     def.property("go_public_req_name", [](const t_structured& self) {
-      return boost::algorithm::erase_first_copy(self.name(), "req") +
-          "ArgsDeprecated";
+      return erase_first(self.name(), "req") + "ArgsDeprecated";
     });
     def.property("go_public_resp_name", [](const t_structured& self) {
-      return boost::algorithm::erase_first_copy(self.name(), "resp") +
-          "ResultDeprecated";
+      return erase_first(self.name(), "resp") + "ResultDeprecated";
     });
     def.property("struct_spec_name", [](const t_structured& self) {
       return fmt::format("premadeStructSpec_{}", self.name());

@@ -28,8 +28,8 @@
 #include <unordered_set>
 #include <vector>
 
-#include <boost/algorithm/string/split.hpp>
 #include <fmt/ranges.h>
+#include <thrift/common/detail/string.h>
 
 #include <thrift/common/universal_name.h>
 #include <thrift/compiler/ast/t_enum.h>
@@ -2346,7 +2346,8 @@ void deprecate_annotations(sema_context& ctx, const t_named& node) {
     std::string replacement;
     if (directly_deprecated) {
       std::vector<std::string> parts;
-      boost::split(parts, deprecations.at(k), [](char c) { return c == '/'; });
+      apache::thrift::detail::split_if(
+          parts, deprecations.at(k), [](char c) { return c == '/'; });
       if (parts.size() == 1) {
         replacement = parts[0];
       } else if (parts.size() == 4) {

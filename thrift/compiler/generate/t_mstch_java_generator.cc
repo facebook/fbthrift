@@ -20,13 +20,10 @@
 #include <iomanip>
 #include <set>
 
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/algorithm/string/replace.hpp>
-
 #include <fmt/core.h>
 
 #include <openssl/evp.h>
+#include <thrift/common/detail/string.h>
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/uri.h>
 #include <thrift/compiler/generate/cpp/name_resolver.h>
@@ -627,7 +624,7 @@ class t_mstch_java_generator : public t_whisker_generator {
     });
     def.property("javaAllCapsName", [](const t_field& self) {
       auto field_name = self.name();
-      boost::to_upper(field_name);
+      apache::thrift::detail::to_upper_ascii(field_name);
       return field_name;
     });
     def.property("javaConstantName", [](const t_field& self) {

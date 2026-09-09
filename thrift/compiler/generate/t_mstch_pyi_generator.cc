@@ -19,7 +19,6 @@
 #include <set>
 #include <string>
 
-#include <boost/algorithm/string/replace.hpp>
 #include <fmt/format.h>
 
 #include <thrift/compiler/ast/t_program.h>

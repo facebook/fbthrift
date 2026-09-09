@@ -82,15 +82,14 @@ add_library(
   ast/t_typedef.cc
   ast/t_union.cc
   ast/scope_identifier.cc)
-target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES} Boost::boost fmt::fmt
-                      Folly::folly)
+target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES} fmt::fmt Folly::folly)
 
 # The base compiler infrastructure library
 add_library(compiler_base STATIC detail/system.cc detail/pluggable_functions.cc
                                  diagnostic.cc source_location.cc)
 set_target_properties(compiler_base PROPERTIES POSITION_INDEPENDENT_CODE
                                                "${BUILD_SHARED_LIBS}")
-target_link_libraries(compiler_base fmt::fmt Boost::boost Folly::folly common
+target_link_libraries(compiler_base fmt::fmt Folly::folly common
                       ${FBTHRIFT_COMPILER_LINK_CXXFS})
 
 # The base Thrift compiler library.
@@ -118,8 +117,8 @@ add_library(
 set_target_properties(compiler_lib PROPERTIES POSITION_INDEPENDENT_CODE
                                               "${BUILD_SHARED_LIBS}")
 target_compile_definitions(compiler_lib PRIVATE THRIFT_OSS)
-target_link_libraries(compiler_lib compiler_base compiler_ast Boost::regex
-                      fmt::fmt Folly::folly)
+target_link_libraries(compiler_lib compiler_base compiler_ast fmt::fmt
+                      Folly::folly)
 
 # The Thrift compiler library.
 add_library(

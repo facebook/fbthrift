@@ -16,17 +16,32 @@
 
 #include <thrift/lib/cpp/transport/THttpClient.h>
 
+#include <algorithm>
 #include <cstdlib>
 #include <sstream>
+#include <string_view>
 
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
+#include <folly/Conv.h>
 
 #include <thrift/lib/cpp/transport/TSocket.h>
 
 namespace apache::thrift::transport {
 
 using std::string;
+
+namespace {
+// ASCII case-insensitive comparison, as used for HTTP header names and
+// values (RFC 2616 tokens are ASCII).
+bool iequals(std::string_view a, std::string_view b) {
+  auto lower = [](char c) {
+    return c >= 'A' && c <= 'Z' ? static_cast<char>(c - 'A' + 'a') : c;
+  };
+  return a.size() == b.size() &&
+      std::equal(a.begin(), a.end(), b.begin(), [&](char x, char y) {
+           return lower(x) == lower(y);
+         });
+}
+} // namespace
 
 const string THttpClient::kAcceptHeader = "Accept";
 const string THttpClient::kConnectionHeader = "Connection";
@@ -80,15 +95,15 @@ void THttpClient::parseHeader(char* header) {
   // If the same header appears twice, we simply overwrite it
   responseHeaders_[name] = value;
 
-  if (boost::iequals(name, kTransferEncodingHeader)) {
-    if (boost::iequals(value, "chunked")) {
+  if (iequals(name, kTransferEncodingHeader)) {
+    if (iequals(value, "chunked")) {
       chunked_ = true;
     }
-  } else if (boost::iequals(name, kContentLengthHeader)) {
+  } else if (iequals(name, kContentLengthHeader)) {
     chunked_ = false;
     contentLength_ = atoi(value);
-  } else if (boost::iequals(name, kConnectionHeader)) {
-    if (boost::iequals(value, "close")) {
+  } else if (iequals(name, kConnectionHeader)) {
+    if (iequals(value, "close")) {
       connectionClosedByServer_ = true;
     }
   }
@@ -116,13 +131,13 @@ bool THttpClient::parseStatusLine(char* status) {
   }
 
   try {
-    statusCode_ = boost::lexical_cast<uint16_t>(string(code, endCode - code));
+    statusCode_ = folly::to<uint16_t>(std::string_view(code, endCode - code));
     if (statusCode_ == 100) {
       // HTTP 100 = continue, just keep reading
       return false;
     }
     return true;
-  } catch (boost::bad_lexical_cast&) {
+  } catch (const folly::ConversionError&) {
     throw TTransportException(string("Bad Status: ") + status);
   }
 }

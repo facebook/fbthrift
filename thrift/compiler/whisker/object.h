@@ -44,8 +44,6 @@
 
 #include <fmt/core.h>
 
-#include <boost/core/demangle.hpp>
-
 namespace whisker {
 
 // Whisker supports a small set of types.
@@ -68,6 +66,13 @@ using f64 = double;
 using string = std::string;
 using boolean = bool;
 using null = std::monostate;
+
+/**
+ * Returns a human-readable name for the given type. Falls back to the
+ * implementation-defined `std::type_info::name()` where demangling is
+ * unavailable, so the result is only suitable for diagnostics.
+ */
+std::string demangle(const std::type_info& type);
 
 class object;
 /**
@@ -1247,8 +1252,7 @@ class prototype_database {
     if (!inserted) {
       throw std::runtime_error(
           fmt::format(
-              "Prototype for type '{}' already exists.",
-              boost::core::demangle(typeid(T).name())));
+              "Prototype for type '{}' already exists.", demangle(typeid(T))));
     }
   }
 
@@ -1269,15 +1273,14 @@ class prototype_database {
       }
       throw std::runtime_error(
           fmt::format(
-              "Prototype for type '{}' does not exist.",
-              boost::core::demangle(typeid(T).name())));
+              "Prototype for type '{}' does not exist.", demangle(typeid(T))));
     }
     auto casted = std::dynamic_pointer_cast<const prototype<T>>(found->second);
     if (casted == nullptr) {
       throw std::runtime_error(
           fmt::format(
               "Prototype for type '{}' is of an unexpected type.",
-              boost::core::demangle(typeid(T).name())));
+              demangle(typeid(T))));
     }
     return casted;
   }

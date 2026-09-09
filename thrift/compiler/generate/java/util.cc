@@ -18,7 +18,7 @@
 
 #include <cassert>
 #include <cctype>
-#include <boost/algorithm/string.hpp>
+#include <thrift/common/detail/string.h>
 
 namespace apache::thrift::compiler::java {
 
@@ -106,12 +106,12 @@ std::string quote_java_string(const std::string& unescaped) {
 }
 
 std::string package_to_path(std::string package) {
-  if (boost::algorithm::contains(package, "/")) {
+  if (package.find('/') != std::string::npos) {
     std::ostringstream err;
     err << "\"" << package << "\" is not a valid Java package name";
     throw std::runtime_error{err.str()};
   }
-  boost::algorithm::replace_all(package, ".", "/");
+  apache::thrift::detail::replace_all(package, ".", "/");
   return package;
 }
 

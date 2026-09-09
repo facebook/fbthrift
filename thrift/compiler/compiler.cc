@@ -39,7 +39,7 @@
 #include <fstream>
 #include <set>
 
-#include <boost/algorithm/string/split.hpp>
+#include <thrift/common/detail/string.h>
 
 #include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/detail/system.h>
@@ -392,12 +392,13 @@ void parse_generator_options(
     const std::function<parse_control(std::string, std::string)>& callback) {
   std::vector<std::string> parts;
   bool inside_braces = false;
-  boost::algorithm::split(parts, option_string, [&inside_braces](char c) {
-    if (c == '{' || c == '}') {
-      inside_braces = (c == '{');
-    }
-    return c == ',' && !inside_braces;
-  });
+  apache::thrift::detail::split_if(
+      parts, option_string, [&inside_braces](char c) {
+        if (c == '{' || c == '}') {
+          inside_braces = (c == '{');
+        }
+        return c == ',' && !inside_braces;
+      });
   for (const auto& part : parts) {
     auto key = part.substr(0, part.find('='));
     auto value = part.substr(std::min(key.size() + 1, part.size()));
@@ -931,7 +932,7 @@ std::string parse_args(
         return {};
       }
       std::vector<std::string> validators;
-      boost::algorithm::split(
+      apache::thrift::detail::split_if(
           validators, *arg, [](char c) { return c == ','; });
       for (const std::string& validator : validators) {
         if (validator == "unstructured_annotations") {
@@ -1087,7 +1088,7 @@ std::string parse_args(
 
   if (const char* env_p = std::getenv("THRIFT_INCLUDE_PATH")) {
     std::vector<std::string> components;
-    boost::algorithm::split(components, env_p, isPathSeparator);
+    apache::thrift::detail::split_if(components, env_p, isPathSeparator);
     pparams.incl_searchpath.insert(
         pparams.incl_searchpath.end(), components.begin(), components.end());
   }

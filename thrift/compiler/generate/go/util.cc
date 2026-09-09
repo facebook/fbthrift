@@ -16,8 +16,8 @@
 
 #include <cctype>
 #include <utility>
-#include <boost/algorithm/string.hpp>
 #include <fmt/core.h>
+#include <thrift/common/detail/string.h>
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/generate/go/util.h>
 
@@ -302,7 +302,9 @@ std::string get_go_package_name(const t_program* program) {
     return real_package;
   }
 
-  return boost::algorithm::to_lower_copy(program->name());
+  std::string name = program->name();
+  apache::thrift::detail::to_lower_ascii(name);
+  return name;
 }
 
 std::string get_go_package_dir(const t_program* program) {
@@ -310,7 +312,7 @@ std::string get_go_package_dir(const t_program* program) {
   if (go_package.find('/') != std::string::npos) {
     return go_package;
   }
-  return boost::replace_all_copy(go_package, ".", "/");
+  return apache::thrift::detail::replace_all_copy(go_package, ".", "/");
 }
 
 std::string get_go_package_base_name(const t_program* program) {
@@ -325,9 +327,11 @@ std::string get_go_package_base_name(const t_program* program) {
   //      foo.bar -> bar
   //      foo.bar.baz -> baz
   if (go_package.find('/') != std::string::npos) {
-    boost::split(parts, go_package, boost::is_any_of("/"));
+    apache::thrift::detail::split_if(
+        parts, go_package, apache::thrift::detail::is_any_of("/"));
   } else {
-    boost::split(parts, go_package, boost::is_any_of("."));
+    apache::thrift::detail::split_if(
+        parts, go_package, apache::thrift::detail::is_any_of("."));
   }
   auto base_name = go_package;
   if (parts.size() > 0) {
@@ -374,7 +378,8 @@ std::string munge_ident(const std::string& ident, bool exported, bool compat) {
 
     size_t word_len = i - word_start + 1;
     std::string word = ident.substr(word_start, word_len);
-    std::string upper = boost::algorithm::to_upper_copy(word);
+    std::string upper = word;
+    apache::thrift::detail::to_upper_ascii(upper);
     bool is_initialism = (common_initialisms.count(upper) > 0);
     bool is_first_word = (word_start == 0);
     size_t next_underscore_pos = ident.find('_', word_start);
@@ -388,7 +393,7 @@ std::string munge_ident(const std::string& ident, bool exported, bool compat) {
       // Compat: legacy generator does not change initialisms
       // to uppercase if it hits a substring bug.
       if (!(compat && is_first_word) && !(compat && is_legacy_substr_bug)) {
-        boost::algorithm::to_upper(word);
+        apache::thrift::detail::to_upper_ascii(word);
       }
     }
 
@@ -398,7 +403,7 @@ std::string munge_ident(const std::string& ident, bool exported, bool compat) {
       } else {
         if (is_initialism) {
           // Make the entire initialism lowercase
-          boost::algorithm::to_lower(word);
+          apache::thrift::detail::to_lower_ascii(word);
         } else {
           word.at(0) = tolower(word.at(0));
         }
@@ -588,11 +593,11 @@ std::string get_go_field_name(const t_field* field) {
 
 std::string get_go_type_sanitized_full_name(const t_type& type) {
   std::string full_name = type.get_full_name();
-  boost::replace_all(full_name, " ", "");
-  boost::replace_all(full_name, ".", "_");
-  boost::replace_all(full_name, ",", "_");
-  boost::replace_all(full_name, "<", "_");
-  boost::replace_all(full_name, ">", "");
+  apache::thrift::detail::replace_all(full_name, " ", "");
+  apache::thrift::detail::replace_all(full_name, ".", "_");
+  apache::thrift::detail::replace_all(full_name, ",", "_");
+  apache::thrift::detail::replace_all(full_name, "<", "_");
+  apache::thrift::detail::replace_all(full_name, ">", "");
   return full_name;
 }
 

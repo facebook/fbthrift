@@ -18,8 +18,6 @@
 
 #include <functional>
 
-#include <boost/algorithm/string/replace.hpp>
-
 namespace apache::thrift::compiler::detail {
 
 std::filesystem::path make_abs_path(
@@ -51,7 +49,11 @@ std::filesystem::path format_abs_path(std::string_view path) {
     if (!abs_path.wstring().starts_with(kExtendedLengthPathPrefix)) {
       auto native_path = abs_path.make_preferred().wstring();
       // At this point the path may have a mix of '\\' and '\' separators.
-      boost::algorithm::replace_all(native_path, L"\\\\", L"\\");
+      for (std::size_t pos = native_path.find(L"\\\\");
+           pos != std::wstring::npos;
+           pos = native_path.find(L"\\\\", pos + 1)) {
+        native_path.replace(pos, 2, L"\\");
+      }
       abs_path = kExtendedLengthPathPrefix + native_path;
     }
   }

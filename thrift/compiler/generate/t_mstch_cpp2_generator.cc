@@ -23,8 +23,8 @@
 #include <utility>
 #include <vector>
 
-#include <boost/algorithm/string/split.hpp>
 #include <fmt/core.h>
+#include <thrift/common/detail/string.h>
 
 #include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_field.h>
@@ -1193,9 +1193,10 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
         return whisker::make::array();
       }
       std::vector<std::string> extra_includes;
-      boost::split(extra_includes, extra_includes_option.value(), [](char c) {
-        return c == ':';
-      });
+      apache::thrift::detail::split_if(
+          extra_includes, extra_includes_option.value(), [](char c) {
+            return c == ':';
+          });
       whisker::array::raw result;
       for (std::string& s : extra_includes) {
         result.emplace_back(std::move(s));
@@ -2504,7 +2505,8 @@ std::string t_mstch_cpp2_generator::include_prefix(
 
 static auto split(const std::string_view& s, char delimiter) {
   std::vector<std::string> ret;
-  boost::algorithm::split(ret, s, [&](char c) { return c == delimiter; });
+  apache::thrift::detail::split_if(
+      ret, s, [&](char c) { return c == delimiter; });
   return ret;
 }
 

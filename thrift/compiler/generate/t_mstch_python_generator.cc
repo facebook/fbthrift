@@ -24,7 +24,7 @@
 #include <vector>
 #include <fmt/format.h>
 
-#include <boost/algorithm/string.hpp>
+#include <thrift/common/detail/string.h>
 
 #include <thrift/common/BaseType.h>
 #include <thrift/compiler/ast/t_exception.h>
@@ -152,7 +152,7 @@ std::string mangle_program_path(
     const t_program* program, const std::string& root_module_prefix) {
   std::string prefix =
       root_module_prefix.empty() ? "_fbthrift" : root_module_prefix;
-  boost::algorithm::replace_all(prefix, ".", "__");
+  apache::thrift::detail::replace_all(prefix, ".", "__");
   return get_py3_namespace_with_name_and_prefix(program, prefix, "__");
 }
 
@@ -557,7 +557,8 @@ void validate_no_reserved_key_in_namespace(
   }
 
   std::vector<std::string> components;
-  boost::split(components, prog.path(), boost::is_any_of("\\/."));
+  apache::thrift::detail::split_if(
+      components, prog.path(), apache::thrift::detail::is_any_of("\\/."));
   for (const auto& component : components) {
     if (component == "include") {
       ctx.report(

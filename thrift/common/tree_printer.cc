@@ -17,8 +17,6 @@
 #include <thrift/common/detail/string.h>
 #include <thrift/common/tree_printer.h>
 
-#include <boost/algorithm/string/replace.hpp>
-
 #include <sstream>
 
 namespace apache::thrift::tree_printer {
@@ -57,10 +55,10 @@ std::string generate_indentation(
   // characters are multi-byte in UTF-8, we perform replacements as a
   // post-processing step. This allows us to calculate the offsets above in a
   // sane manner.
-  boost::algorithm::replace_all(out, "+", "├");
-  boost::algorithm::replace_all(out, "-", "─");
-  boost::algorithm::replace_all(out, "\\", "╰");
-  boost::algorithm::replace_all(out, "|", "│");
+  detail::replace_all(out, "+", "├");
+  detail::replace_all(out, "-", "─");
+  detail::replace_all(out, "\\", "╰");
+  detail::replace_all(out, "|", "│");
 
   return out;
 }

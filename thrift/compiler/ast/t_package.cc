@@ -16,7 +16,7 @@
 
 #include <thrift/compiler/ast/t_package.h>
 
-#include <boost/algorithm/string/split.hpp>
+#include <thrift/common/detail/string.h>
 
 namespace apache::thrift::compiler {
 namespace {
@@ -45,7 +45,7 @@ std::string gen_prefix(
 
 std::vector<std::string> parse_domain(const std::string& domain) {
   std::vector<std::string> labels;
-  boost::algorithm::split(
+  apache::thrift::detail::split_if(
       labels, domain, [](auto ch) { return ch == DOMAIN_DELIM[0]; });
   return labels;
 }
@@ -54,7 +54,7 @@ std::vector<std::string> parse_domain(const std::string& domain) {
 
 t_package::t_package(std::string name)
     : uri_prefix_(std::move(name)), explicit_(true) {
-  boost::algorithm::split(
+  apache::thrift::detail::split_if(
       path_, uri_prefix_, [](auto ch) { return ch == PATH_DELIM[0]; });
   // The vector size is ideally length >=2 (domain and 1+ path segments) at this
   // point, but MIGHT be 1 (the entirety of `name`) if the package is malformed.

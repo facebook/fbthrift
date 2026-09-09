@@ -16,7 +16,7 @@
 
 #include <thrift/compiler/generate/python/util.h>
 
-#include <boost/algorithm/string/replace.hpp>
+#include <thrift/common/detail/string.h>
 #include <thrift/compiler/ast/ast_visitor.h>
 #include <thrift/compiler/ast/uri.h>
 #include <thrift/compiler/generate/cpp/util.h>
@@ -217,7 +217,7 @@ void strip_cpp_comments_and_newlines(std::string& s) {
   }
 
   // strip newlines
-  boost::algorithm::replace_all(s, "\n", " ");
+  apache::thrift::detail::replace_all(s, "\n", " ");
 }
 
 namespace python {
@@ -293,7 +293,7 @@ std::string cached_properties::to_cython_template() const {
     return "cmap";
   }
   // then default handling:
-  return boost::algorithm::replace_all_copy(cpp_template_, "::", "_");
+  return apache::thrift::detail::replace_all_copy(cpp_template_, "::", "_");
 }
 
 std::string cached_properties::to_cython_type() const {
@@ -301,12 +301,12 @@ std::string cached_properties::to_cython_type() const {
     return "";
   }
   std::string cython_type = cpp_type_;
-  boost::algorithm::replace_all(cython_type, "::", "_");
-  boost::algorithm::replace_all(cython_type, "<", "_");
-  boost::algorithm::replace_all(cython_type, ">", "");
-  boost::algorithm::replace_all(cython_type, " ", "");
-  boost::algorithm::replace_all(cython_type, ", ", "_");
-  boost::algorithm::replace_all(cython_type, ",", "_");
+  apache::thrift::detail::replace_all(cython_type, "::", "_");
+  apache::thrift::detail::replace_all(cython_type, "<", "_");
+  apache::thrift::detail::replace_all(cython_type, ">", "");
+  apache::thrift::detail::replace_all(cython_type, " ", "");
+  apache::thrift::detail::replace_all(cython_type, ", ", "_");
+  apache::thrift::detail::replace_all(cython_type, ",", "_");
   return cython_type;
 }
 
@@ -354,8 +354,8 @@ std::unordered_set<std::string_view> extract_modules_and_insert_into(
 
 std::string to_python_string_literal(std::string val) {
   std::string quotes = R"(""")";
-  boost::algorithm::replace_all(val, "\\", "\\\\");
-  boost::algorithm::replace_all(val, "\"", "\\\"");
+  apache::thrift::detail::replace_all(val, "\\", "\\\\");
+  apache::thrift::detail::replace_all(val, "\"", "\\\"");
   return quotes + val + quotes;
 }
 

@@ -23,4 +23,4 @@ install(
   PATTERN "*.h"
   PATTERN "*.tcc")
 
-target_link_libraries(common Boost::boost fmt::fmt)
+target_link_libraries(common fmt::fmt)

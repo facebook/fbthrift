@@ -17,7 +17,6 @@
 #ifndef _THRIFT_TRANSPORT_TZLIBTRANSPORT_H_
 #define _THRIFT_TRANSPORT_TZLIBTRANSPORT_H_ 1
 
-#include <boost/lexical_cast.hpp>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/transport/TVirtualTransport.h>
 
@@ -46,7 +45,7 @@ class TZlibTransportException : public TTransportException {
       rv += "(no message)";
     }
     rv += " (status = ";
-    rv += boost::lexical_cast<std::string>(status);
+    rv += std::to_string(status);
     rv += ")";
     return rv;
   }
@@ -106,7 +105,7 @@ class TZlibTransport : public TVirtualTransport<TZlibTransport> {
       throw TTransportException(
           TTransportException::BAD_ARGS,
           "TZLibTransport: uncompressed write buffer must be at least" +
-              boost::lexical_cast<std::string>(minimum) + ".");
+              std::to_string(minimum) + ".");
     }
 
     try {

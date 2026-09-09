@@ -16,8 +16,8 @@
 
 #pragma once
 
+#include <algorithm>
 #include <string_view>
-#include <boost/algorithm/string.hpp>
 
 namespace apache::thrift::compiler {
 
@@ -32,8 +32,19 @@ inline bool is_reserved_identifier(std::string_view name) {
   auto after_underscores =
       std::string_view(name.data() + pos, name.size() - pos);
 
-  return boost::algorithm::istarts_with(
-      after_underscores, prefix, std::locale::classic());
+  if (after_underscores.size() < prefix.size()) {
+    return false;
+  }
+  return std::equal(
+      prefix.begin(),
+      prefix.end(),
+      after_underscores.begin(),
+      [](char a, char b) {
+        auto lower = [](char c) {
+          return c >= 'A' && c <= 'Z' ? static_cast<char>(c - 'A' + 'a') : c;
+        };
+        return lower(a) == lower(b);
+      });
 }
 
 } // namespace apache::thrift::compiler

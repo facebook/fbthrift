@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <string>
 #include <string_view>
 
@@ -25,5 +26,57 @@ namespace apache::thrift::detail {
  * This includes new lines and other whitespace characters.
  */
 std::string escape(std::string_view str);
+
+/**
+ * Replaces every occurrence of `from` in `str` with `to`. Replacements are not
+ * rescanned, so replacing "aa" with "a" in "aaaa" yields "aa". Does nothing if
+ * `from` is empty.
+ */
+void replace_all(std::string& str, std::string_view from, std::string_view to);
+
+/**
+ * Same as replace_all, but returns the result instead of modifying in place.
+ */
+std::string replace_all_copy(
+    std::string_view str, std::string_view from, std::string_view to);
+
+/**
+ * Lowercases every ASCII letter ('A'-'Z') in `str`, in place. Every other byte
+ * is left untouched, including bytes belonging to a multi-byte encoding, so the
+ * result does not depend on the current locale.
+ */
+void to_lower_ascii(std::string& str);
+
+/**
+ * Same as to_lower_ascii, but uppercases every ASCII letter ('a'-'z') instead.
+ */
+void to_upper_ascii(std::string& str);
+
+/**
+ * Returns a predicate matching any single character in `chars`, for use as a
+ * split_if delimiter.
+ */
+inline auto is_any_of(std::string_view chars) {
+  return [chars](char c) { return chars.find(c) != std::string_view::npos; };
+}
+
+/**
+ * Splits `str` at every character for which `is_delimiter` returns true and
+ * assigns the tokens to `out`, replacing its previous contents. Empty tokens
+ * are kept: splitting "" yields one empty token, and "a..b" on '.' yields
+ * three.
+ */
+template <typename Container, typename Predicate>
+void split_if(Container& out, std::string_view str, Predicate is_delimiter) {
+  out.clear();
+  std::size_t begin = 0;
+  for (std::size_t i = 0; i < str.size(); ++i) {
+    if (is_delimiter(str[i])) {
+      out.emplace_back(str.substr(begin, i - begin));
+      begin = i + 1;
+    }
+  }
+  out.emplace_back(str.substr(begin));
+}
 
 } // namespace apache::thrift::detail

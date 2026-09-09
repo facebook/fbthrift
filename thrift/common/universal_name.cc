@@ -18,7 +18,7 @@
 
 #include <cctype>
 #include <stdexcept>
-#include <boost/container/small_vector.hpp>
+#include <vector>
 #include <fmt/core.h>
 #include <fmt/format.h>
 
@@ -134,9 +134,12 @@ void check_type_segment(std::string_view segment) {
 }
 
 void split(
-    boost::container::small_vector<std::string_view, 4>& result,
+    std::vector<std::string_view>& result,
     std::string_view input,
     char delimiter) {
+  // Both call sites below expect around 4 components, so reserve that many up
+  // front to avoid reallocating while splitting.
+  result.reserve(4);
   size_t start = 0, size = input.size();
   while (start <= size) {
     size_t end = input.find(delimiter, start);
@@ -182,9 +185,8 @@ void validate_universal_name(std::string_view uri) {
   //
   // e.g.: "facebook.com/thrift/Value"
   //
-  // We expect most will have at least 4 parts, so initializing the container
-  // accordingly.
-  boost::container::small_vector<std::string_view, 4> uri_parts;
+  // We expect most will have at least 4 parts, which is what `split` reserves.
+  std::vector<std::string_view> uri_parts;
   split(uri_parts, uri, '/');
   try {
     check(
@@ -194,7 +196,7 @@ void validate_universal_name(std::string_view uri) {
 
     // We require a minimum of 2 domain segments, but up to 4 is likely to be
     // common.
-    boost::container::small_vector<std::string_view, 4> domain;
+    std::vector<std::string_view> domain;
     split(domain, uri_parts[0], '.');
     check_domain_components(domain);
     check_path_segments(uri_parts.begin() + 1, uri_parts.end() - 1);

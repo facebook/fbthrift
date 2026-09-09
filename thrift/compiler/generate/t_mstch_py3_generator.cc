@@ -17,9 +17,8 @@
 #include <filesystem>
 #include <memory>
 
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
 #include <fmt/format.h>
+#include <thrift/common/detail/string.h>
 
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/ast/t_typedef.h>
@@ -578,7 +577,8 @@ void validate_no_reserved_key_in_namespace(
   }
 
   std::vector<std::string> components;
-  boost::split(components, prog.path(), boost::is_any_of("\\/."));
+  apache::thrift::detail::split_if(
+      components, prog.path(), apache::thrift::detail::is_any_of("\\/."));
   for (const auto& component : components) {
     if (component == "include") {
       ctx.report(

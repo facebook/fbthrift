@@ -32,7 +32,7 @@
 
 #include <algorithm>
 
-#include <boost/algorithm/string.hpp>
+#include <thrift/common/detail/string.h>
 
 #include <thrift/compiler/ast/t_const_value.h>
 #include <thrift/compiler/ast/t_field.h>
@@ -67,7 +67,7 @@ class t_name_generator {
 };
 
 std::string unescape(std::string s) {
-  boost::replace_all(s, "\\\\", "\\");
+  apache::thrift::detail::replace_all(s, "\\\\", "\\");
   return s;
 }
 

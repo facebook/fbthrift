@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <boost/algorithm/string.hpp>
+#include <thrift/common/detail/string.h>
 #include <thrift/compiler/ast/t_program.h>
 
 #include <memory>
@@ -117,7 +117,8 @@ std::vector<std::string> t_program::gen_namespace_or_default(
   auto pos = namespaces_.find(language);
   if (pos != namespaces_.end()) {
     if (!pos->second->ns().empty()) {
-      split(ret, pos->second->ns(), boost::algorithm::is_any_of("."));
+      apache::thrift::detail::split_if(
+          ret, pos->second->ns(), apache::thrift::detail::is_any_of("."));
     }
     return ret;
   }
