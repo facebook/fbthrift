@@ -224,8 +224,8 @@ class JSONProtocolReaderCommon : public detail::ProtocolBase {
   using DecodedEscapeSequence = folly::unicode_code_point_utf8;
 
   // skip over whitespace so that we can peek, and store number of bytes
-  // skipped
-  void skipWhitespace();
+  // skipped; returns the next non-whitespace byte, or 0 at end of input
+  int8_t skipWhitespace();
   // skip over whitespace *and* return the number whitespace bytes skipped
   uint32_t readWhitespace();
   uint32_t ensureCharNoWhitespace(char expected);

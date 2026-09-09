@@ -328,9 +328,7 @@ void JSONProtocolReader::readStructEnd() {
 
 void JSONProtocolReader::readFieldBegin(
     std::string& /*name*/, TType& fieldType, int16_t& fieldId) {
-  skipWhitespace();
-
-  auto peek = peekCharSafe();
+  auto peek = skipWhitespace();
   if (peek == apache::thrift::detail::json::kJSONObjectEnd) {
     fieldType = TType::T_STOP;
     fieldId = 0;

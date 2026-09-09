@@ -542,26 +542,34 @@ inline void JSONProtocolReaderCommon::readBinary(folly::IOBuf& str) {
  * Protected reading functions
  */
 
-inline void JSONProtocolReaderCommon::skipWhitespace() {
+inline int8_t JSONProtocolReaderCommon::skipWhitespace() {
   constexpr auto& vector_needle = detail::json::json_ws_vector_needle;
   constexpr auto& scalar_needle = detail::json::json_ws_scalar_needle;
   while (true) { // for loop generates larger code with 2 calls to peekBytesSlow
     auto const peek = folly::reinterpret_span_cast<char const>(in_.peek());
     if (peek.empty()) {
-      return;
+      return 0;
     }
     auto const newl = apache::thrift::detail::json::kJSONNewline;
+    auto const first = peek[0];
+    // Fast path for compact JSON: the current byte is usually not whitespace.
+    if (first != char(apache::thrift::detail::json::kJSONSpace) &&
+        first != newl &&
+        first != char(apache::thrift::detail::json::kJSONTab) &&
+        first != char(apache::thrift::detail::json::kJSONCarriageReturn)) {
+      return first;
+    }
     // if 0th char is newline then it is likely that indentation follows; vector
     // algorithm is better for indentation but worse for single-char whitespace
     auto const usevec = !folly::kIsMobile /* has vector acceleration */ && //
-        folly::kIsArchAmd64 && peek.size() > 16 && peek[0] == newl;
+        folly::kIsArchAmd64 && peek.size() > 16 && first == newl;
     auto const vecskip = size_t(usevec);
     auto const size =
         vecskip + vector_needle(scalar_needle, usevec, peek.subspan(vecskip));
     skippedWhitespace_ += size;
     in_.skip(size);
     if (size < peek.size()) {
-      return;
+      return peek[size];
     }
   }
 }
