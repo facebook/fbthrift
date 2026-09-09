@@ -102,13 +102,9 @@ func (p *rocketClient) SendRequestResponse(ctx context.Context, messageName stri
 		return resultErr
 	}
 
-	err := decodeResponse(p.protoID, resultData, response)
+	err := decodeResultOrException(p.protoID, resultData, response)
 	if err != nil {
 		return err
-	}
-	// Declared exception (inside the response)
-	if exception := response.Exception(); exception != nil {
-		return exception
 	}
 	return nil
 }
@@ -131,13 +127,9 @@ func (p *rocketClient) SendRequestStream(
 		return nil, resultErr
 	}
 
-	err := decodeResponse(p.protoID, resultData, response)
+	err := decodeResultOrException(p.protoID, resultData, response)
 	if err != nil {
 		return nil, err
-	}
-	// Declared exception (inside the response)
-	if exception := response.Exception(); exception != nil {
-		return nil, exception
 	}
 	return streamSeq, nil
 }
@@ -154,13 +146,9 @@ func (p *rocketClient) SendRequestSink(
 		return nil, resultErr
 	}
 
-	err := decodeResponse(p.protoID, resultData, firstResponse)
+	err := decodeResultOrException(p.protoID, resultData, firstResponse)
 	if err != nil {
 		return nil, err
-	}
-	// Declared exception (inside the response)
-	if exception := firstResponse.Exception(); exception != nil {
-		return nil, exception
 	}
 	return sinkCallback, nil
 }
@@ -183,13 +171,9 @@ func (p *rocketClient) SendRequestBiDi(
 		return nil, nil, resultErr
 	}
 
-	err := decodeResponse(p.protoID, resultData, firstResponse)
+	err := decodeResultOrException(p.protoID, resultData, firstResponse)
 	if err != nil {
 		return nil, nil, err
-	}
-	// Declared exception (inside the response)
-	if exception := firstResponse.Exception(); exception != nil {
-		return nil, nil, exception
 	}
 	return sinkCallback, streamSeq, nil
 }
@@ -200,6 +184,18 @@ func (p *rocketClient) TerminateInteraction(interactionID int64) error {
 	metadata := rpcmetadata.NewClientPushMetadata().
 		SetInteractionTerminate(interactionTerminate)
 	return p.client.MetadataPush(context.Background(), metadata)
+}
+
+func decodeResultOrException(protoID types.ProtocolID, data []byte, result ReadableResult) error {
+	err := decodeResponse(protoID, data, result)
+	if err != nil {
+		return err
+	}
+	// Declared exception (inside the response)
+	if exception := result.Exception(); exception != nil {
+		return exception
+	}
+	return nil
 }
 
 func (p *rocketClient) getWriteHeaders(ctx context.Context) map[string]string {
