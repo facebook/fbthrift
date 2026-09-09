@@ -171,31 +171,47 @@ func (r *rsocketClient) resetDeadline() {
 	r.conn.SetDeadline(time.Time{})
 }
 
+func (r *rsocketClient) prepareRequestPayload(
+	ctx context.Context,
+	messageName string,
+	headers map[string]string,
+	request WritableStruct,
+	rpcKind rpcmetadata.RpcKind,
+) (payload.Payload, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	dataBytes, err := encodeRequest(r.thriftProtoID, request)
+	if err != nil {
+		return nil, err
+	}
+	if err := r.SendSetup(ctx); err != nil {
+		return nil, err
+	}
+	r.resetDeadline()
+	return rocket.EncodeRequestPayload(
+		ctx,
+		messageName,
+		r.protoID,
+		rpcKind,
+		headers,
+		rpcmetadata.CompressionAlgorithm_NONE,
+		dataBytes,
+	)
+}
+
 func (r *rsocketClient) RequestResponse(
 	ctx context.Context,
 	messageName string,
 	headers map[string]string,
 	request WritableStruct,
 ) (map[string]string, []byte, error) {
-	if err := ctx.Err(); err != nil {
-		return nil, nil, err
-	}
-	dataBytes, err := encodeRequest(r.thriftProtoID, request)
-	if err != nil {
-		return nil, nil, err
-	}
-	if err := r.SendSetup(ctx); err != nil {
-		return nil, nil, err
-	}
-	r.resetDeadline()
-	reqPayload, err := rocket.EncodeRequestPayload(
+	reqPayload, err := r.prepareRequestPayload(
 		ctx,
 		messageName,
-		r.protoID,
-		rpcmetadata.RpcKind_SINGLE_REQUEST_SINGLE_RESPONSE,
 		headers,
-		rpcmetadata.CompressionAlgorithm_NONE,
-		dataBytes,
+		request,
+		rpcmetadata.RpcKind_SINGLE_REQUEST_SINGLE_RESPONSE,
 	)
 	if err != nil {
 		return nil, nil, err
@@ -213,25 +229,12 @@ func (r *rsocketClient) RequestResponse(
 }
 
 func (r *rsocketClient) FireAndForget(ctx context.Context, messageName string, headers map[string]string, request WritableStruct) error {
-	if err := ctx.Err(); err != nil {
-		return err
-	}
-	dataBytes, err := encodeRequest(r.thriftProtoID, request)
-	if err != nil {
-		return err
-	}
-	if err := r.SendSetup(ctx); err != nil {
-		return err
-	}
-	r.resetDeadline()
-	reqPayload, err := rocket.EncodeRequestPayload(
+	reqPayload, err := r.prepareRequestPayload(
 		ctx,
 		messageName,
-		r.protoID,
-		rpcmetadata.RpcKind_SINGLE_REQUEST_NO_RESPONSE,
 		headers,
-		rpcmetadata.CompressionAlgorithm_NONE,
-		dataBytes,
+		request,
+		rpcmetadata.RpcKind_SINGLE_REQUEST_NO_RESPONSE,
 	)
 	if err != nil {
 		return err
@@ -247,26 +250,12 @@ func (r *rsocketClient) RequestStream(
 	request WritableStruct,
 	newStreamElemFn func() ReadableResult,
 ) (map[string]string, []byte, iter.Seq2[ReadableStruct, error], error) {
-	if err := ctx.Err(); err != nil {
-		return nil, nil, nil, err
-	}
-	dataBytes, err := encodeRequest(r.thriftProtoID, request)
-	if err != nil {
-		return nil, nil, nil, err
-	}
-	if err := r.SendSetup(ctx); err != nil {
-		return nil, nil, nil, err
-	}
-	r.resetDeadline()
-
-	reqPayload, err := rocket.EncodeRequestPayload(
+	reqPayload, err := r.prepareRequestPayload(
 		ctx,
 		messageName,
-		r.protoID,
-		rpcmetadata.RpcKind_SINGLE_REQUEST_STREAMING_RESPONSE,
 		headers,
-		rpcmetadata.CompressionAlgorithm_NONE,
-		dataBytes,
+		request,
+		rpcmetadata.RpcKind_SINGLE_REQUEST_STREAMING_RESPONSE,
 	)
 	if err != nil {
 		return nil, nil, nil, err
@@ -342,26 +331,12 @@ func (r *rsocketClient) RequestSink(
 	headers map[string]string,
 	request WritableStruct,
 ) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
-	if err := ctx.Err(); err != nil {
-		return nil, nil, nil, err
-	}
-	dataBytes, err := encodeRequest(r.thriftProtoID, request)
-	if err != nil {
-		return nil, nil, nil, err
-	}
-	if err := r.SendSetup(ctx); err != nil {
-		return nil, nil, nil, err
-	}
-	r.resetDeadline()
-
-	reqPayload, err := rocket.EncodeRequestPayload(
+	reqPayload, err := r.prepareRequestPayload(
 		ctx,
 		messageName,
-		r.protoID,
-		rpcmetadata.RpcKind_SINK,
 		headers,
-		rpcmetadata.CompressionAlgorithm_NONE,
-		dataBytes,
+		request,
+		rpcmetadata.RpcKind_SINK,
 	)
 	if err != nil {
 		return nil, nil, nil, err
@@ -498,26 +473,12 @@ func (r *rsocketClient) RequestBiDiStream(
 	request WritableStruct,
 	newStreamElemFn func() ReadableResult,
 ) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error]), iter.Seq2[ReadableStruct, error], error) {
-	if err := ctx.Err(); err != nil {
-		return nil, nil, nil, nil, err
-	}
-	dataBytes, err := encodeRequest(r.thriftProtoID, request)
-	if err != nil {
-		return nil, nil, nil, nil, err
-	}
-	if err := r.SendSetup(ctx); err != nil {
-		return nil, nil, nil, nil, err
-	}
-	r.resetDeadline()
-
-	reqPayload, err := rocket.EncodeRequestPayload(
+	reqPayload, err := r.prepareRequestPayload(
 		ctx,
 		messageName,
-		r.protoID,
-		rpcmetadata.RpcKind_BIDIRECTIONAL_STREAM,
 		headers,
-		rpcmetadata.CompressionAlgorithm_NONE,
-		dataBytes,
+		request,
+		rpcmetadata.RpcKind_BIDIRECTIONAL_STREAM,
 	)
 	if err != nil {
 		return nil, nil, nil, nil, err
