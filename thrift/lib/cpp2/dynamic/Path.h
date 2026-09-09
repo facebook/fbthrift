@@ -320,6 +320,20 @@ class PathBuilder {
   std::string toString() const { return path_.toString(); }
 
   /**
+   * Initialize a PathBuilder from a path string.
+   * The path string may begin with a type name for human friendliness, which is
+   * ignored.
+   *
+   * Throws InvalidPathAccessError if the string is not compatible with the
+   * supplied type.
+   * Throws InvalidTypeError if a type URI does not resolve.
+   */
+  static PathBuilder fromString(
+      const type_system::TypeSystem& typeSystem,
+      type_system::TypeRef type,
+      std::string_view path);
+
+  /**
    * Returns a copy of the current path.
    */
   Path path() const& { return path_; }

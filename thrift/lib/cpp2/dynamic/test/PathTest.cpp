@@ -67,6 +67,10 @@ class PathTest : public ::testing::Test {
   static constexpr auto kRootUri = "meta.com/thrift/test/Root";
   static constexpr auto kInner1Uri = "meta.com/thrift/test/Inner1";
   static constexpr auto kInner2Uri = "meta.com/thrift/test/Inner2";
+  static constexpr auto kBoolPrefixUri = "bool.example/thrift/test/boolRecord";
+  static constexpr auto kListAliasUri = "meta.com/thrift/test/IntList";
+  static constexpr auto kSetAliasUri = "meta.com/thrift/test/IntSet";
+  static constexpr auto kMapAliasUri = "meta.com/thrift/test/IntMap";
 
   PathTest() {
     type_system::TypeSystemBuilder builder;
@@ -138,6 +142,17 @@ class PathTest : public ::testing::Test {
             def::Field(def::Identity(1, "c"), def::AlwaysPresent, TypeIds::I32),
         }));
 
+    builder.addType(
+        kBoolPrefixUri,
+        def::Struct({def::Field(
+            def::Identity(1, "value"), def::AlwaysPresent, TypeIds::I32)}));
+    builder.addType(
+        kListAliasUri, def::OpaqueAlias(TypeIds::list(TypeIds::I32)));
+    builder.addType(kSetAliasUri, def::OpaqueAlias(TypeIds::set(TypeIds::I32)));
+    builder.addType(
+        kMapAliasUri,
+        def::OpaqueAlias(TypeIds::map(TypeIds::I32, TypeIds::String)));
+
     typeSystem = std::move(builder).build();
   }
 
@@ -154,6 +169,48 @@ class PathTest : public ::testing::Test {
   type_system::TypeRef getRootType() {
     return type_system::TypeRef(
         typeSystem->getUserDefinedTypeOrThrow(kRootUri).asStruct());
+  }
+
+  type_system::TypeRef getBoolPrefixType() {
+    return type_system::TypeRef(
+        typeSystem->getUserDefinedTypeOrThrow(kBoolPrefixUri).asStruct());
+  }
+
+  type_system::TypeRef getType(std::string_view uri) {
+    return type_system::TypeRef(
+        typeSystem->getUserDefinedTypeOrThrow(uri).asOpaqueAlias());
+  }
+
+  void expectRoundTrip(
+      type_system::TypeRef rootType,
+      std::string_view serialized,
+      type_system::TypeRef finalType,
+      std::size_t componentCount) {
+    SCOPED_TRACE(serialized);
+    try {
+      auto parsed = PathBuilder::fromString(*typeSystem, rootType, serialized);
+      EXPECT_EQ(parsed.toString(), serialized);
+      EXPECT_EQ(parsed.currentType().id(), finalType.id());
+      EXPECT_EQ(parsed.path().size(), componentCount);
+    } catch (const std::exception& error) {
+      ADD_FAILURE() << "Unexpected exception: " << error.what();
+    }
+  }
+
+  void expectInvalidPath(
+      type_system::TypeRef rootType, std::string_view serialized) {
+    SCOPED_TRACE(serialized);
+    EXPECT_THROW(
+        (void)PathBuilder::fromString(*typeSystem, rootType, serialized),
+        InvalidPathAccessError);
+  }
+
+  void expectInvalidType(
+      type_system::TypeRef rootType, std::string_view serialized) {
+    SCOPED_TRACE(serialized);
+    EXPECT_THROW(
+        (void)PathBuilder::fromString(*typeSystem, rootType, serialized),
+        type_system::InvalidTypeError);
   }
 };
 
@@ -683,6 +740,261 @@ TEST_F(PathTest, BuilderContainerTypes) {
     // After entering map key, current type is the key type
     EXPECT_TRUE(mapBuilder.currentType().isI32());
   }
+}
+
+TEST_F(PathTest, ParsePrimitiveRootTypesRoundTrip) {
+  expectRoundTrip(
+      type_system::TypeSystem::Bool(),
+      "bool",
+      type_system::TypeSystem::Bool(),
+      0);
+  expectRoundTrip(
+      type_system::TypeSystem::Byte(),
+      "byte",
+      type_system::TypeSystem::Byte(),
+      0);
+  expectRoundTrip(
+      type_system::TypeSystem::I16(), "i16", type_system::TypeSystem::I16(), 0);
+  expectRoundTrip(
+      type_system::TypeSystem::I32(), "i32", type_system::TypeSystem::I32(), 0);
+  expectRoundTrip(
+      type_system::TypeSystem::I64(), "i64", type_system::TypeSystem::I64(), 0);
+  expectRoundTrip(
+      type_system::TypeSystem::Float(),
+      "float",
+      type_system::TypeSystem::Float(),
+      0);
+  expectRoundTrip(
+      type_system::TypeSystem::Double(),
+      "double",
+      type_system::TypeSystem::Double(),
+      0);
+  expectRoundTrip(
+      type_system::TypeSystem::String(),
+      "string",
+      type_system::TypeSystem::String(),
+      0);
+  expectRoundTrip(
+      type_system::TypeSystem::Binary(),
+      "binary",
+      type_system::TypeSystem::Binary(),
+      0);
+  expectRoundTrip(
+      type_system::TypeSystem::Any(), "any", type_system::TypeSystem::Any(), 0);
+}
+
+TEST_F(PathTest, ParseEveryComponentTypeRoundTrips) {
+  const auto myStructType = getMyStructType();
+  expectRoundTrip(myStructType, "MyStruct", myStructType, 0);
+  const auto usersType =
+      myStructType.asStruct()
+          .at(myStructType.asStruct().fieldHandleFor("users"))
+          .type();
+  expectRoundTrip(myStructType, "MyStruct.users", usersType, 1);
+  expectRoundTrip(
+      getMyStructType(), "MyStruct.users[\"alice\"]", getUserProfileType(), 2);
+  expectRoundTrip(
+      getMyStructType(),
+      "MyStruct.users{\"alice\"}",
+      type_system::TypeSystem::String(),
+      2);
+  expectRoundTrip(
+      getMyStructType(),
+      "MyStruct.users[\"alice\"].scores[0]",
+      type_system::TypeSystem::I32(),
+      4);
+  expectRoundTrip(
+      getMyStructType(),
+      "MyStruct.users[\"alice\"].tags{-42}",
+      type_system::TypeSystem::I32(),
+      4);
+  expectRoundTrip(
+      getMyStructType(),
+      "MyStruct.users[\"alice\"].metadata[meta.com/thrift/test/UserProfile].name",
+      type_system::TypeSystem::String(),
+      5);
+}
+
+TEST_F(PathTest, ParsePopulatesComponentsWithOptionalRootTypeName) {
+  auto expectComponents = [&](std::string_view serialized) {
+    SCOPED_TRACE(serialized);
+    auto builder =
+        PathBuilder::fromString(*typeSystem, getMyStructType(), serialized);
+    auto path = builder.path();
+
+    EXPECT_EQ(path.rootType().id(), getMyStructType().id());
+    EXPECT_EQ(builder.currentType().id(), TypeIds::I32);
+    ASSERT_EQ(path.size(), 6);
+
+    const auto& components = path.components();
+    const auto* users = std::get_if<Path::FieldAccess>(&components[0]);
+    ASSERT_NE(users, nullptr);
+    EXPECT_EQ(users->structuredType().id(), getMyStructType().id());
+    EXPECT_EQ(users->fieldId(), FieldId{1});
+    EXPECT_EQ(users->fieldName(), "users");
+
+    const auto* user = std::get_if<Path::MapValue>(&components[1]);
+    ASSERT_NE(user, nullptr);
+    EXPECT_EQ(user->key(), DynamicValue::makeString("alice"));
+
+    const auto* metadata = std::get_if<Path::FieldAccess>(&components[2]);
+    ASSERT_NE(metadata, nullptr);
+    EXPECT_EQ(metadata->structuredType().id(), getUserProfileType().id());
+    EXPECT_EQ(metadata->fieldId(), FieldId{4});
+    EXPECT_EQ(metadata->fieldName(), "metadata");
+
+    const auto* anyType = std::get_if<Path::AnyType>(&components[3]);
+    ASSERT_NE(anyType, nullptr);
+    EXPECT_EQ(anyType->type().id(), getUserProfileType().id());
+
+    const auto* scores = std::get_if<Path::FieldAccess>(&components[4]);
+    ASSERT_NE(scores, nullptr);
+    EXPECT_EQ(scores->structuredType().id(), getUserProfileType().id());
+    EXPECT_EQ(scores->fieldId(), FieldId{2});
+    EXPECT_EQ(scores->fieldName(), "scores");
+
+    const auto* score = std::get_if<Path::ListElement>(&components[5]);
+    ASSERT_NE(score, nullptr);
+    EXPECT_EQ(score->index(), 2);
+  };
+
+  constexpr std::string_view components =
+      R"(.users["alice"].metadata[meta.com/thrift/test/UserProfile].scores[2])";
+  expectComponents(fmt::format("MyStruct{}", components));
+  expectComponents(components);
+}
+
+TEST_F(PathTest, ParseUriStartingWithPrimitiveNameRoundTrips) {
+  expectRoundTrip(
+      getBoolPrefixType(),
+      "boolRecord.value",
+      type_system::TypeSystem::I32(),
+      1);
+  expectRoundTrip(
+      type_system::TypeSystem::Any(),
+      "any[bool.example/thrift/test/boolRecord].value",
+      type_system::TypeSystem::I32(),
+      2);
+}
+
+TEST_F(PathTest, ParseOpaqueAliasContainerTraversalRoundTrips) {
+  expectRoundTrip(
+      getType(kListAliasUri), "IntList[2]", type_system::TypeSystem::I32(), 1);
+  expectRoundTrip(
+      getType(kSetAliasUri), "IntSet{3}", type_system::TypeSystem::I32(), 1);
+  expectRoundTrip(
+      getType(kMapAliasUri), "IntMap[4]", type_system::TypeSystem::String(), 1);
+}
+
+TEST_F(PathTest, ParseContainerRootTypesRoundTrip) {
+  const auto listType =
+      type_system::TypeRef(makeListType(type_system::TypeSystem::I32()));
+  expectRoundTrip(listType, "list<i32>[42]", type_system::TypeSystem::I32(), 1);
+
+  const auto setType =
+      type_system::TypeRef(makeSetType(type_system::TypeSystem::String()));
+  expectRoundTrip(
+      setType, "set<string>{\"hello\"}", type_system::TypeSystem::String(), 1);
+
+  const auto mapType = type_system::TypeRef(makeMapType(
+      type_system::TypeSystem::I32(), type_system::TypeSystem::String()));
+  expectRoundTrip(
+      mapType, "map<i32, string>{-42}", type_system::TypeSystem::I32(), 1);
+  expectRoundTrip(
+      mapType, "map<i32, string>[42]", type_system::TypeSystem::String(), 1);
+}
+
+TEST_F(PathTest, ParseNestedContainerTypeNamesRoundTrip) {
+  const auto setType =
+      type_system::TypeRef(makeSetType(type_system::TypeSystem::I64()));
+  const auto listType = type_system::TypeRef(makeListType(setType));
+  const auto mapType = type_system::TypeRef(
+      makeMapType(type_system::TypeSystem::String(), listType));
+
+  expectRoundTrip(
+      mapType,
+      "map<string, list<set<i64>>>[\"key\"][3]{-1}",
+      type_system::TypeSystem::I64(),
+      3);
+}
+
+TEST_F(PathTest, ParseSimpleJsonSelectorsWithPathDelimitersRoundTrip) {
+  const auto mapType = type_system::TypeRef(makeMapType(
+      type_system::TypeSystem::String(), type_system::TypeSystem::I32()));
+  expectRoundTrip(
+      mapType,
+      R"(map<string, i32>["a.b[0]{\"x\"}"])",
+      type_system::TypeSystem::I32(),
+      1);
+}
+
+TEST_F(PathTest, ParseRejectsInvalidStructuredTraversal) {
+  expectInvalidPath(getMyStructType(), "MyStruct.");
+  expectInvalidPath(getMyStructType(), "MyStruct.unknown");
+  expectInvalidPath(getMyStructType(), "MyStruct.users.");
+  expectInvalidPath(getMyStructType(), "MyStruct.users[\"alice\"]name");
+  expectInvalidPath(getMyStructType(), "MyStruct.users-name");
+}
+
+TEST_F(PathTest, ParseRejectsInvalidListTraversal) {
+  const auto listType =
+      type_system::TypeRef(makeListType(type_system::TypeSystem::I32()));
+  expectInvalidPath(listType, "list<i32>[]");
+  expectInvalidPath(listType, "list<i32>[-1]");
+  expectInvalidPath(listType, "list<i32>[abc]");
+  expectInvalidPath(listType, "list<i32>[1");
+  expectInvalidPath(listType, "list<i32>[1]trailing");
+  expectInvalidPath(listType, "list<i32>[184467440737095516160]");
+}
+
+TEST_F(PathTest, ParseRejectsInvalidSetTraversal) {
+  const auto setType =
+      type_system::TypeRef(makeSetType(type_system::TypeSystem::String()));
+  expectInvalidPath(setType, "set<string>[\"value\"]");
+  expectInvalidPath(setType, "set<string>{\"value\"]");
+  expectInvalidPath(setType, "set<string>{not-json}");
+  expectInvalidPath(setType, "set<string>{\"value");
+  expectInvalidPath(setType, "set<string>{\"value\"}trailing");
+}
+
+TEST_F(PathTest, ParseRejectsInvalidMapTraversal) {
+  const auto mapType = type_system::TypeRef(makeMapType(
+      type_system::TypeSystem::I32(), type_system::TypeSystem::String()));
+  expectInvalidPath(mapType, "map<i32, string>(42)");
+  expectInvalidPath(mapType, "map<i32, string>{\"wrong type\"}");
+  expectInvalidPath(mapType, "map<i32, string>[42");
+  expectInvalidPath(mapType, "map<i32, string>{42]");
+  expectInvalidPath(mapType, "map<i32, string>[42]trailing");
+}
+
+TEST_F(PathTest, ParseRejectsMalformedContainerTypeNames) {
+  const auto listType =
+      type_system::TypeRef(makeListType(type_system::TypeSystem::I32()));
+  expectInvalidPath(listType, "list<i32[0]");
+  expectInvalidPath(listType, "list<list<i32>[0]");
+
+  const auto mapType = type_system::TypeRef(makeMapType(
+      type_system::TypeSystem::I32(), type_system::TypeSystem::String()));
+  expectInvalidPath(mapType, "map<i32 string>[42]");
+  expectInvalidPath(mapType, "map<i32, string[42]");
+}
+
+TEST_F(PathTest, ParseRejectsInvalidAnyTraversal) {
+  expectInvalidPath(type_system::TypeSystem::Any(), "any[]");
+  expectInvalidType(
+      type_system::TypeSystem::Any(), "any[unknown.example/Type]");
+  expectInvalidPath(
+      type_system::TypeSystem::Any(), "any[meta.com/thrift/test/UserProfile");
+  expectInvalidPath(type_system::TypeSystem::Any(), "any[list<i32,junk>]");
+  expectInvalidPath(
+      type_system::TypeSystem::Any(),
+      "any[meta.com/thrift/test/UserProfile]trailing");
+}
+
+TEST_F(PathTest, ParseRejectsTraversalFromPrimitiveType) {
+  expectInvalidPath(type_system::TypeSystem::Bool(), "bool.value");
+  expectInvalidPath(type_system::TypeSystem::I32(), "i32[0]");
+  expectInvalidPath(type_system::TypeSystem::String(), "string{\"value\"}");
 }
 
 } // namespace

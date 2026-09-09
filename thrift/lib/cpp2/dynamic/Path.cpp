@@ -16,9 +16,11 @@
 
 #include <thrift/lib/cpp2/dynamic/Path.h>
 #include <thrift/lib/cpp2/dynamic/Serialization.h>
+#include <thrift/lib/cpp2/dynamic/TypeId.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 
 #include <fmt/format.h>
+#include <folly/ExceptionString.h>
 #include <folly/Overload.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/lang/Exception.h>
@@ -26,14 +28,6 @@
 namespace apache::thrift::dynamic {
 
 namespace detail {
-
-std::string toSimpleJSON(const DynamicConstRef& value) {
-  folly::IOBufQueue queue;
-  SimpleJSONProtocolWriter writer;
-  writer.setOutput(&queue);
-  serializeValue(writer, value);
-  return queue.move()->to<std::string>();
-}
 
 std::string typeDisplayName(type_system::TypeRef type) {
   auto uriToName = [](std::string_view uri) {
@@ -89,6 +83,298 @@ std::string typeDisplayName(type_system::TypeRef type) {
   return "unknown";
 }
 
+namespace {
+
+std::string toSimpleJSON(const DynamicConstRef& value) {
+  folly::IOBufQueue queue;
+  SimpleJSONProtocolWriter writer;
+  writer.setOutput(&queue);
+  serializeValue(writer, value);
+  return queue.move()->to<std::string>();
+}
+
+struct PathParser {
+  std::string_view path;
+  const type_system::TypeSystem* ts = nullptr;
+
+  [[noreturn]] void invalid(
+      std::string_view what, bool withCurrentException = false) {
+    if (withCurrentException) {
+      throw InvalidPathAccessError(
+          fmt::format(
+              "Invalid {} ({}): {}",
+              what,
+              folly::exceptionStr(std::current_exception()),
+              path));
+    }
+    throw InvalidPathAccessError(fmt::format("Invalid {}: {}", what, path));
+  }
+
+  std::string_view consumeTo(char terminator, std::string_view error) {
+    size_t bracketDepth = 1;
+    for (size_t pos = 0; pos < path.size(); ++pos) {
+      switch (path[pos]) {
+        case '<':
+          ++bracketDepth;
+          break;
+        case '>':
+          --bracketDepth;
+          if (bracketDepth == 0) {
+            if (terminator != '>') {
+              invalid(error);
+            }
+            auto ret = path.substr(0, pos);
+            path.remove_prefix(pos + 1);
+            return ret;
+          }
+          break;
+        case ',':
+          if (terminator == ',' && bracketDepth == 1) {
+            auto ret = path.substr(0, pos);
+            if (pos + 1 < path.size() && path[pos + 1] == ' ') {
+              ++pos;
+            }
+            path.remove_prefix(pos + 1);
+            return ret;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    invalid(error);
+  }
+
+  bool tryConsume(std::string_view prefix) {
+    if (path.starts_with(prefix)) {
+      path.remove_prefix(prefix.length());
+      return true;
+    }
+    return false;
+  }
+
+  bool tryConsumePrimitive(std::string_view name) {
+    if (!path.starts_with(name) ||
+        (path.size() > name.size() &&
+         std::string_view{",[{}]>"}.find(path[name.size()]) ==
+             std::string_view::npos)) {
+      return false;
+    }
+    path.remove_prefix(name.size());
+    return true;
+  }
+
+  type_system::TypeId parseTypeName() {
+    if (tryConsumePrimitive("bool")) {
+      return type_system::TypeIds::Bool;
+    } else if (tryConsumePrimitive("byte")) {
+      return type_system::TypeIds::Byte;
+    } else if (tryConsumePrimitive("i16")) {
+      return type_system::TypeIds::I16;
+    } else if (tryConsumePrimitive("i32")) {
+      return type_system::TypeIds::I32;
+    } else if (tryConsumePrimitive("i64")) {
+      return type_system::TypeIds::I64;
+    } else if (tryConsumePrimitive("float")) {
+      return type_system::TypeIds::Float;
+    } else if (tryConsumePrimitive("double")) {
+      return type_system::TypeIds::Double;
+    } else if (tryConsumePrimitive("string")) {
+      return type_system::TypeIds::String;
+    } else if (tryConsumePrimitive("binary")) {
+      return type_system::TypeIds::Binary;
+    } else if (tryConsumePrimitive("any")) {
+      return type_system::TypeIds::Any;
+    } else if (tryConsume("list<")) {
+      auto elemType = parseTypeName(
+          consumeTo('>', "container name"), "container element type");
+      return type_system::TypeIds::list(elemType);
+    } else if (tryConsume("set<")) {
+      auto elemType = parseTypeName(
+          consumeTo('>', "container name"), "container element type");
+      return type_system::TypeIds::set(elemType);
+    } else if (tryConsume("map<")) {
+      auto keyType = parseTypeName(consumeTo(',', "map name"), "map key type");
+      auto valType =
+          parseTypeName(consumeTo('>', "map name"), "map value type");
+      return type_system::TypeIds::map(keyType, valType);
+    } else {
+      // URI: skip over domain name, then look for start of the next component
+      // or end of the current Any traversal.
+      auto slashPos = path.find('/');
+      auto selectorPos = path.find_first_of("[{");
+      if (slashPos == std::string_view::npos || selectorPos < slashPos) {
+        // Raw type name (generated in display mode).
+        slashPos = 0;
+      }
+      auto end = path.find_first_of(".[]{", slashPos);
+      auto uri = path.substr(0, end);
+      if (uri.empty()) {
+        invalid("type name");
+      }
+      path.remove_prefix(uri.size());
+      return type_system::TypeIds::uri(uri);
+    }
+  }
+
+  type_system::TypeId parseTypeName(
+      std::string_view typeName, std::string_view error) {
+    PathParser parser{typeName};
+    auto typeId = parser.parseTypeName();
+    if (!parser.path.empty()) {
+      parser.invalid(error);
+    }
+    return typeId;
+  }
+
+  std::string_view parseIdentifier() {
+    size_t pos = 0;
+    for (; pos < path.size() &&
+         (std::isalnum(static_cast<unsigned char>(path[pos])) ||
+          path[pos] == '_');
+         ++pos) {
+    }
+    if (pos == 0) {
+      invalid("identifier");
+    }
+    auto ret = path.substr(0, pos);
+    path.remove_prefix(pos);
+    return ret;
+  }
+
+  void skipTypeName() {
+    if (path.empty()) {
+      return;
+    }
+    // Type name may be omitted, in which case path starts with a traversal.
+    if (std::string_view(".[{").find(path[0]) != std::string_view::npos) {
+      return;
+    }
+    std::ignore = parseTypeName();
+  }
+
+  DynamicValue parseValue(type_system::TypeRef type) {
+    SimpleJSONProtocolReader reader;
+    auto buf = folly::IOBuf::wrapBufferAsValue(path.data(), path.size());
+    reader.setInput(&buf);
+    try {
+      auto ret = deserializeValue(reader, type);
+      path.remove_prefix(reader.getCursorPosition());
+      return ret;
+    } catch (const type_system::InvalidTypeError&) {
+      throw;
+    } catch (const std::runtime_error&) {
+      invalid("value literal for expected type", /*withCurrentException=*/true);
+    } catch (const TProtocolException&) {
+      invalid("serialized value literal", /*withCurrentException=*/true);
+    } catch (const std::out_of_range&) {
+      invalid("serialized value literal", /*withCurrentException=*/true);
+    }
+  }
+
+  using NextComponent = std::pair<Path::Component, type_system::TypeRef>;
+  NextComponent parseNext(type_system::TypeRef type) {
+    type = type.trueType();
+    return type.matchKind(
+        [&](type_system::TypeRef::KindConstant<
+            type_system::TypeRef::Kind::ANY>) {
+          if (!tryConsume("[")) {
+            invalid("any traversal");
+          }
+          const auto end = path.find(']');
+          if (end == std::string_view::npos) {
+            invalid("any traversal");
+          }
+          auto typeId =
+              parseTypeName(path.substr(0, end), "any traversal type");
+          path.remove_prefix(end + 1);
+          type = DCHECK_NOTNULL(ts)->resolveTypeId(typeId);
+          return NextComponent{Path::AnyType(type), type};
+        },
+        [&](type_system::TypeRef::KindConstant<
+            type_system::TypeRef::Kind::LIST>) {
+          if (!tryConsume("[")) {
+            invalid("list traversal");
+          }
+          size_t index;
+          const auto* begin = path.data();
+          const auto* end = begin + path.size();
+          auto [ptr, error] = std::from_chars(begin, end, index);
+          if (error != std::errc{}) {
+            invalid("list traversal");
+          }
+          path.remove_prefix(ptr - begin);
+          if (!tryConsume("]")) {
+            invalid("list traversal");
+          }
+          return NextComponent{
+              Path::ListElement(index), type.asListUnchecked().elementType()};
+        },
+        [&](type_system::TypeRef::KindConstant<
+            type_system::TypeRef::Kind::SET>) {
+          if (!tryConsume("{")) {
+            invalid("set traversal");
+          }
+          auto elementType = type.asSetUnchecked().elementType();
+          auto value = parseValue(elementType);
+          if (!tryConsume("}")) {
+            invalid("set traversal");
+          }
+          return NextComponent{Path::SetElement(std::move(value)), elementType};
+        },
+        [&](type_system::TypeRef::KindConstant<
+            type_system::TypeRef::Kind::MAP>) {
+          auto keyType = type.asMapUnchecked().keyType();
+          auto valueType = type.asMapUnchecked().valueType();
+          if (tryConsume("{")) {
+            auto key = parseValue(keyType);
+            if (!tryConsume("}")) {
+              invalid("map key traversal");
+            }
+            return NextComponent{Path::MapKey(std::move(key)), keyType};
+          } else if (tryConsume("[")) {
+            auto key = parseValue(keyType);
+            if (!tryConsume("]")) {
+              invalid("map value traversal");
+            }
+            return NextComponent{Path::MapValue(std::move(key)), valueType};
+          } else {
+            invalid("map traversal");
+          }
+        },
+        [&]<type_system::TypeRef::Kind Kind>(
+            type_system::TypeRef::KindConstant<Kind>) {
+          if (Kind != type_system::TypeRef::Kind::STRUCT &&
+              Kind != type_system::TypeRef::Kind::UNION) {
+            invalid("traversal target");
+          }
+
+          if (!tryConsume(".")) {
+            invalid("structured traversal");
+          }
+
+          const auto& structuredType =
+              Kind == type_system::TypeRef::Kind::STRUCT
+              ? static_cast<const type_system::StructuredNode&>(
+                    type.asStructUnchecked())
+              : type.asUnionUnchecked();
+          auto fieldName = parseIdentifier();
+          auto fieldHandle = structuredType.fieldHandleFor(fieldName);
+          if (!fieldHandle.valid()) {
+            invalid(
+                fmt::format(
+                    "field name `{}` in traversal of structured type `{}`",
+                    fieldName,
+                    structuredType.debugName()));
+          }
+          const auto& field = structuredType.at(fieldHandle);
+          return NextComponent{
+              Path::FieldAccess(type, fieldHandle), field.type()};
+        });
+  }
+};
+
+} // namespace
 } // namespace detail
 
 // Path implementation
@@ -128,6 +414,22 @@ std::string Path::toString() const {
   }
 
   return result;
+}
+
+PathBuilder PathBuilder::fromString(
+    const type_system::TypeSystem& typeSystem,
+    type_system::TypeRef type,
+    std::string_view path) {
+  detail::PathParser parser{path, &typeSystem};
+  PathBuilder builder(type);
+  parser.skipTypeName();
+  while (!parser.path.empty()) {
+    auto [component, nextType] = parser.parseNext(type);
+    type = nextType;
+    builder.path_.push(std::move(component));
+    builder.typeStack_.push_back(type);
+  }
+  return builder;
 }
 
 // PathBuilder implementation
