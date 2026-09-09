@@ -302,12 +302,9 @@ func (r *rsocketClient) RequestStream(
 				}
 				data := streamResponse.Data()
 				destStruct := newStreamElemFn()
-				err = decodeResponse(r.thriftProtoID, data, destStruct)
+				err = decodeResultOrException(r.thriftProtoID, data, destStruct)
 				if err != nil {
 					yield(nil, err)
-					return
-				} else if destEx := destStruct.Exception(); destEx != nil {
-					yield(nil, destEx)
 					return
 				}
 
@@ -607,12 +604,9 @@ func (r *rsocketClient) RequestBiDiStream(
 				}
 				data := streamResponse.Data()
 				destStruct := newStreamElemFn()
-				err = decodeResponse(r.thriftProtoID, data, destStruct)
+				err = decodeResultOrException(r.thriftProtoID, data, destStruct)
 				if err != nil {
 					yield(nil, err)
-					return
-				} else if destEx := destStruct.Exception(); destEx != nil {
-					yield(nil, destEx)
 					return
 				}
 

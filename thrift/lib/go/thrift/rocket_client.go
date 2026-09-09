@@ -187,7 +187,15 @@ func (p *rocketClient) TerminateInteraction(interactionID int64) error {
 }
 
 func decodeResultOrException(protoID types.ProtocolID, data []byte, result ReadableResult) error {
-	err := decodeResponse(protoID, data, result)
+	var err error
+	switch protoID {
+	case types.ProtocolIDBinary:
+		err = DecodeBinary(data, result)
+	case types.ProtocolIDCompact:
+		err = DecodeCompact(data, result)
+	default:
+		err = types.NewProtocolException(fmt.Errorf("Unknown protocol id: %d", protoID))
+	}
 	if err != nil {
 		return err
 	}
@@ -215,17 +223,6 @@ func encodeRequest(protoID types.ProtocolID, request WritableStruct) ([]byte, er
 		return EncodeCompact(request)
 	default:
 		return nil, types.NewProtocolException(fmt.Errorf("Unknown protocol id: %d", protoID))
-	}
-}
-
-func decodeResponse(protoID types.ProtocolID, data []byte, response ReadableStruct) error {
-	switch protoID {
-	case types.ProtocolIDBinary:
-		return DecodeBinary(data, response)
-	case types.ProtocolIDCompact:
-		return DecodeCompact(data, response)
-	default:
-		return types.NewProtocolException(fmt.Errorf("Unknown protocol id: %d", protoID))
 	}
 }
 
