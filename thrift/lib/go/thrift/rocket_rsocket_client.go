@@ -49,27 +49,27 @@ type RSocketClient interface {
 		messageName string,
 		headers map[string]string,
 		request WritableStruct,
-	) (map[string]string, []byte, error)
+	) ([]byte, error)
 	RequestStream(
 		ctx context.Context,
 		messageName string,
 		headers map[string]string,
 		request WritableStruct,
 		newStreamElemFn func() ReadableResult,
-	) (map[string]string, []byte, iter.Seq2[ReadableStruct, error], error)
+	) ([]byte, iter.Seq2[ReadableStruct, error], error)
 	RequestSink(
 		ctx context.Context,
 		messageName string,
 		headers map[string]string,
 		request WritableStruct,
-	) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error)
+	) ([]byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error)
 	RequestBiDiStream(
 		ctx context.Context,
 		messageName string,
 		headers map[string]string,
 		request WritableStruct,
 		newStreamElemFn func() ReadableResult,
-	) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error]), iter.Seq2[ReadableStruct, error], error)
+	) ([]byte, func(sinkSeq iter.Seq2[WritableResult, error]), iter.Seq2[ReadableStruct, error], error)
 	MetadataPush(
 		ctx context.Context,
 		metadata *rpcmetadata.ClientPushMetadata,
@@ -171,6 +171,13 @@ func (r *rsocketClient) resetDeadline() {
 	r.conn.SetDeadline(time.Time{})
 }
 
+func setReadHeaders(ctx context.Context, headers map[string]string) {
+	rpcOpts := GetRPCOptions(ctx)
+	if rpcOpts != nil {
+		rpcOpts.SetReadHeaders(headers)
+	}
+}
+
 func (r *rsocketClient) prepareRequestPayload(
 	ctx context.Context,
 	messageName string,
@@ -205,7 +212,7 @@ func (r *rsocketClient) RequestResponse(
 	messageName string,
 	headers map[string]string,
 	request WritableStruct,
-) (map[string]string, []byte, error) {
+) ([]byte, error) {
 	reqPayload, err := r.prepareRequestPayload(
 		ctx,
 		messageName,
@@ -214,18 +221,19 @@ func (r *rsocketClient) RequestResponse(
 		rpcmetadata.RpcKind_SINGLE_REQUEST_SINGLE_RESPONSE,
 	)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	mono := r.client.RequestResponse(reqPayload)
 	val, err := mono.Block(ctx)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	response, err := rocket.DecodeResponsePayload(val)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	return response.Headers(), response.Data(), err
+	setReadHeaders(ctx, response.Headers())
+	return response.Data(), nil
 }
 
 func (r *rsocketClient) FireAndForget(ctx context.Context, messageName string, headers map[string]string, request WritableStruct) error {
@@ -249,7 +257,7 @@ func (r *rsocketClient) RequestStream(
 	headers map[string]string,
 	request WritableStruct,
 	newStreamElemFn func() ReadableResult,
-) (map[string]string, []byte, iter.Seq2[ReadableStruct, error], error) {
+) ([]byte, iter.Seq2[ReadableStruct, error], error) {
 	reqPayload, err := r.prepareRequestPayload(
 		ctx,
 		messageName,
@@ -258,7 +266,7 @@ func (r *rsocketClient) RequestStream(
 		rpcmetadata.RpcKind_SINGLE_REQUEST_STREAMING_RESPONSE,
 	)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, err
 	}
 
 	flux := r.client.RequestStream(reqPayload)
@@ -269,13 +277,14 @@ func (r *rsocketClient) RequestStream(
 	firstPayload, err := recvStreamNext(streamCtx, streamPayloadChan, streamErrChan)
 	if err != nil {
 		streamCancel()
-		return nil, nil, nil, err
+		return nil, nil, err
 	}
 	firstResponse, err := rocket.DecodeResponsePayload(firstPayload)
 	if err != nil {
 		streamCancel()
-		return nil, nil, nil, err
+		return nil, nil, err
 	}
+	setReadHeaders(ctx, firstResponse.Headers())
 
 	streamSeq := func(yield func(ReadableStruct, error) bool) {
 		defer streamCancel()
@@ -312,7 +321,7 @@ func (r *rsocketClient) RequestStream(
 		}
 	}
 
-	return firstResponse.Headers(), firstResponse.Data(), streamSeq, nil
+	return firstResponse.Data(), streamSeq, nil
 }
 
 func (r *rsocketClient) MetadataPush(_ context.Context, metadata *rpcmetadata.ClientPushMetadata) error {
@@ -330,7 +339,7 @@ func (r *rsocketClient) RequestSink(
 	messageName string,
 	headers map[string]string,
 	request WritableStruct,
-) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
+) ([]byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
 	reqPayload, err := r.prepareRequestPayload(
 		ctx,
 		messageName,
@@ -339,7 +348,7 @@ func (r *rsocketClient) RequestSink(
 		rpcmetadata.RpcKind_SINK,
 	)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, err
 	}
 
 	// Create a flux that yields the initial request payload and then waits for sink items
@@ -375,14 +384,15 @@ func (r *rsocketClient) RequestSink(
 	if err != nil {
 		channelCancel()
 		close(sinkPayloadChan)
-		return nil, nil, nil, err
+		return nil, nil, err
 	}
 	firstResponse, err := rocket.DecodeResponsePayload(firstPayload)
 	if err != nil {
 		channelCancel()
 		close(sinkPayloadChan)
-		return nil, nil, nil, err
+		return nil, nil, err
 	}
+	setReadHeaders(ctx, firstResponse.Headers())
 
 	// Create sink callback that will be called by the user to send sink items
 	sinkCallback := func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error {
@@ -463,7 +473,7 @@ func (r *rsocketClient) RequestSink(
 		return decodeResponse(r.thriftProtoID, finalRespPayload.Data(), finalResponse)
 	}
 
-	return firstResponse.Headers(), firstResponse.Data(), sinkCallback, nil
+	return firstResponse.Data(), sinkCallback, nil
 }
 
 func (r *rsocketClient) RequestBiDiStream(
@@ -472,7 +482,7 @@ func (r *rsocketClient) RequestBiDiStream(
 	headers map[string]string,
 	request WritableStruct,
 	newStreamElemFn func() ReadableResult,
-) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error]), iter.Seq2[ReadableStruct, error], error) {
+) ([]byte, func(sinkSeq iter.Seq2[WritableResult, error]), iter.Seq2[ReadableStruct, error], error) {
 	reqPayload, err := r.prepareRequestPayload(
 		ctx,
 		messageName,
@@ -481,7 +491,7 @@ func (r *rsocketClient) RequestBiDiStream(
 		rpcmetadata.RpcKind_BIDIRECTIONAL_STREAM,
 	)
 	if err != nil {
-		return nil, nil, nil, nil, err
+		return nil, nil, nil, err
 	}
 
 	// Create a flux for sending sink items to the server
@@ -517,14 +527,15 @@ func (r *rsocketClient) RequestBiDiStream(
 	if err != nil {
 		channelCancel()
 		close(sinkPayloadChan)
-		return nil, nil, nil, nil, err
+		return nil, nil, nil, err
 	}
 	firstResponse, err := rocket.DecodeResponsePayload(firstPayload)
 	if err != nil {
 		channelCancel()
 		close(sinkPayloadChan)
-		return nil, nil, nil, nil, err
+		return nil, nil, nil, err
 	}
+	setReadHeaders(ctx, firstResponse.Headers())
 
 	// Create sink callback for sending items to the server (no final response in BiDi)
 	sinkCallback := func(sinkSeq iter.Seq2[WritableResult, error]) {
@@ -615,7 +626,7 @@ func (r *rsocketClient) RequestBiDiStream(
 		}
 	}
 
-	return firstResponse.Headers(), firstResponse.Data(), sinkCallback, streamSeq, nil
+	return firstResponse.Data(), sinkCallback, streamSeq, nil
 }
 
 func (r *rsocketClient) Close() error {

@@ -97,12 +97,11 @@ func (p *rocketClient) SendRequestResponse(ctx context.Context, messageName stri
 	}
 
 	headers := p.getWriteHeaders(ctx)
-	respHeaders, resultData, resultErr := p.client.RequestResponse(ctx, messageName, headers, request)
+	resultData, resultErr := p.client.RequestResponse(ctx, messageName, headers, request)
 	if resultErr != nil {
 		return resultErr
 	}
 
-	setReadHeaders(ctx, respHeaders)
 	err := decodeResponse(p.protoID, resultData, response)
 	if err != nil {
 		return err
@@ -127,12 +126,11 @@ func (p *rocketClient) SendRequestStream(
 	}
 
 	headers := p.getWriteHeaders(ctx)
-	respHeaders, resultData, streamSeq, resultErr := p.client.RequestStream(ctx, messageName, headers, request, newStreamElemFn)
+	resultData, streamSeq, resultErr := p.client.RequestStream(ctx, messageName, headers, request, newStreamElemFn)
 	if resultErr != nil {
 		return nil, resultErr
 	}
 
-	setReadHeaders(ctx, respHeaders)
 	err := decodeResponse(p.protoID, resultData, response)
 	if err != nil {
 		return nil, err
@@ -151,12 +149,11 @@ func (p *rocketClient) SendRequestSink(
 	firstResponse ReadableResult,
 ) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
 	headers := p.getWriteHeaders(ctx)
-	respHeaders, resultData, sinkCallback, resultErr := p.client.RequestSink(ctx, messageName, headers, request)
+	resultData, sinkCallback, resultErr := p.client.RequestSink(ctx, messageName, headers, request)
 	if resultErr != nil {
 		return nil, resultErr
 	}
 
-	setReadHeaders(ctx, respHeaders)
 	err := decodeResponse(p.protoID, resultData, firstResponse)
 	if err != nil {
 		return nil, err
@@ -181,12 +178,11 @@ func (p *rocketClient) SendRequestBiDi(
 	}
 
 	headers := p.getWriteHeaders(ctx)
-	respHeaders, resultData, sinkCallback, streamSeq, resultErr := p.client.RequestBiDiStream(ctx, messageName, headers, request, newStreamElemFn)
+	resultData, sinkCallback, streamSeq, resultErr := p.client.RequestBiDiStream(ctx, messageName, headers, request, newStreamElemFn)
 	if resultErr != nil {
 		return nil, nil, resultErr
 	}
 
-	setReadHeaders(ctx, respHeaders)
 	err := decodeResponse(p.protoID, resultData, firstResponse)
 	if err != nil {
 		return nil, nil, err
@@ -213,13 +209,6 @@ func (p *rocketClient) getWriteHeaders(ctx context.Context) map[string]string {
 		writeHeaders = rpcOpts.GetWriteHeaders()
 	}
 	return unionMaps(writeHeaders, p.persistentHeaders)
-}
-
-func setReadHeaders(ctx context.Context, headers map[string]string) {
-	rpcOpts := GetRPCOptions(ctx)
-	if rpcOpts != nil {
-		rpcOpts.SetReadHeaders(headers)
-	}
 }
 
 func encodeRequest(protoID types.ProtocolID, request WritableStruct) ([]byte, error) {
