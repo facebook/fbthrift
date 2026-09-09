@@ -20,10 +20,27 @@
 
 namespace apache::thrift::fast_thrift::thrift::stream {
 
-/** Signals that outbound stream credit has been exhausted. */
+/**
+ * Type-based flow-control events for the established stream sub-pipeline's
+ * control plane (fireEvent / on<E>). These readiness signals let
+ * InboundCreditHandler keep the credit budget private while still telling an
+ * upstream buffer when to stop and start. Both are pure signals — they carry no
+ * payload (EventTag<>).
+ *
+ * These are stream-layer policy signals, distinct from transport write
+ * backpressure, which flows on the data path as Result::Backpressure.
+ */
+
+/**
+ * The credit budget just reached zero; no more Payloads may be sent until
+ * credit is regranted. Emitted as the exhausting Payload is forwarded.
+ */
 struct FlowControlPauseEvent : channel_pipeline::EventTag<> {};
 
-/** Signals that outbound stream credit is available again. */
+/**
+ * Credit became available after being exhausted (an inbound RequestN grant); a
+ * writer that paused upstream may resume.
+ */
 struct FlowControlResumeEvent : channel_pipeline::EventTag<> {};
 
 } // namespace apache::thrift::fast_thrift::thrift::stream

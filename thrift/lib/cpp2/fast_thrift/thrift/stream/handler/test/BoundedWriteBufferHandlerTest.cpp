@@ -52,8 +52,8 @@ using channel_pipeline::TypeErasedBox;
 // `fireWrite` always takes the element, modeling the sink contract that a
 // Backpressure result means the downstream consumed it. `duringFireWrite`, if
 // set, runs inside fireWrite before it returns — used to model the credit
-// handler firing a synchronous FlowControlPause as it forwards the element that
-// exhausts demand.
+// handler firing a synchronous FlowControlPauseEvent as it forwards the element
+// that exhausts demand.
 class FakeContext {
  public:
   // NOLINTNEXTLINE(clang-diagnostic-unused-member-function)
@@ -103,15 +103,15 @@ class FakeContext {
 
 using Handler = BoundedWriteBufferHandler<FakeContext>;
 
-// Open the credit gate: models InboundCreditHandler firing FlowControlResume on
-// a peer credit grant.
+// Open the credit gate: models InboundCreditHandler firing
+// FlowControlResumeEvent on a peer credit grant.
 void resumeCredit(Handler& handler, FakeContext& ctx) {
-  handler.onEvent(ctx, StreamEvent::FlowControlResume, TypeErasedBox{});
+  handler.template on<FlowControlResumeEvent>(ctx);
 }
 
-// Close the credit gate: models FlowControlPause on credit exhaustion.
+// Close the credit gate: models FlowControlPauseEvent on credit exhaustion.
 void pauseCredit(Handler& handler, FakeContext& ctx) {
-  handler.onEvent(ctx, StreamEvent::FlowControlPause, TypeErasedBox{});
+  handler.template on<FlowControlPauseEvent>(ctx);
 }
 
 ThriftStreamMessage makeItem(uint8_t tag) {
@@ -148,7 +148,7 @@ TEST(BoundedWriteBufferHandlerTest, StartsCreditPausedSoPayloadIsHeld) {
   Handler handler;
   FakeContext ctx;
 
-  // No FlowControlResume yet: the payload cannot be sent, so it is held.
+  // No FlowControlResumeEvent yet: the payload cannot be sent, so it is held.
   EXPECT_EQ(handler.onWrite(ctx, erase_and_box(makeItem(1))), Result::Success);
   EXPECT_TRUE(ctx.forwardedTags.empty())
       << "no credit -> payload held, not sent";
@@ -306,7 +306,7 @@ TEST(BoundedWriteBufferHandlerTest, TransportWakeDoesNotBypassCreditGate) {
   resumeCredit(handler, ctx);
 
   // The forward that spends the last credit: the credit handler fires
-  // FlowControlPause synchronously and the write returns Backpressure. The
+  // FlowControlPauseEvent synchronously and the write returns Backpressure. The
   // buffer must read this as credit exhaustion, not transport congestion.
   ctx.nextWriteResult = Result::Backpressure;
   ctx.duringFireWrite = [&] { pauseCredit(handler, ctx); };
@@ -458,10 +458,10 @@ TEST(BoundedWriteBufferHandlerTest, BufferSurvivesPipelineInactive) {
 }
 
 // =============================================================================
-// Integration: embedded in a real PipelineImpl parameterized with StreamEvent.
-// Catches wiring bugs the FakeContext cannot — a missing writeReadyHook_ that
-// keeps the handler off the writeReadyList, or an unlinked event subscription
-// that would drop FlowControlResume.
+// Integration: embedded in a real PipelineImpl. Catches wiring bugs the
+// FakeContext cannot — a missing writeReadyHook_ that keeps the handler off the
+// writeReadyList, or an unlinked event subscription that would drop
+// FlowControlResumeEvent.
 // =============================================================================
 
 namespace cp = channel_pipeline;
@@ -479,8 +479,7 @@ class BoundedWriteBufferHandlerPipelineTest : public ::testing::Test {
     return cp::PipelineBuilder<
                cp::test::MockHeadHandler,
                cp::test::MockTailHandler,
-               cp::test::TestAllocator,
-               StreamEvent>()
+               cp::test::TestAllocator>()
         .setEventBase(&evb_)
         .setHead(&head_)
         .setTail(&tail_)
@@ -521,9 +520,9 @@ TEST_F(
   (void)pipeline->fireWrite(cp::erase_and_box(makeItem(2)));
   EXPECT_TRUE(written.empty());
 
-  // A FlowControlResume event drains them in order — proves the subscription is
-  // linked through the real pipeline.
-  pipeline->fireEvent(StreamEvent::FlowControlResume, cp::TypeErasedBox{});
+  // A FlowControlResumeEvent event drains them in order — proves the
+  // subscription is linked through the real pipeline.
+  pipeline->fireEvent<FlowControlResumeEvent>();
   const std::vector<uint8_t> expected{1, 2};
   EXPECT_EQ(written, expected);
 }
@@ -539,7 +538,7 @@ TEST_F(
 
   auto pipeline = buildPipeline(std::move(handler));
   ASSERT_NE(pipeline, nullptr);
-  pipeline->fireEvent(StreamEvent::FlowControlResume, cp::TypeErasedBox{});
+  pipeline->fireEvent<FlowControlResumeEvent>();
   ASSERT_FALSE(pipeline->hasPendingWriteReady());
 
   (void)pipeline->fireWrite(cp::erase_and_box(makeItem(1)));
@@ -565,7 +564,7 @@ TEST_F(BoundedWriteBufferHandlerPipelineTest, DrainsBufferOnWriteReady) {
 
   auto pipeline = buildPipeline(std::move(handler));
   ASSERT_NE(pipeline, nullptr);
-  pipeline->fireEvent(StreamEvent::FlowControlResume, cp::TypeErasedBox{});
+  pipeline->fireEvent<FlowControlResumeEvent>();
 
   // Payload 1 is consumed by the head and arms transport backpressure; 2 and 3
   // are buffered.

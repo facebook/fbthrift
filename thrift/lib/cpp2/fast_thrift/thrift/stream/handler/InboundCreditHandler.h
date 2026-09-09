@@ -26,6 +26,7 @@
 #include <folly/Likely.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
@@ -40,20 +41,20 @@ namespace apache::thrift::fast_thrift::thrift::stream {
  * REQUEST_N, where one credit authorizes exactly one stream element (a
  * `Payload`); a producer may emit an element only while it holds credit. This
  * handler owns the credit budget *privately* — the count never leaves the
- * handler. It publishes only readiness, as typed flow-control events:
+ * handler. It publishes only readiness, as type-based flow-control events:
  *
  *   - Inbound `RequestN` adds to the credit and is consumed — it is the grant
  *     itself, not data to deliver upward. When credit becomes available after
- *     being exhausted, it fires `FlowControlResumeEvent` so a writer
- *     that paused upstream (e.g. a buffer) can resume. Other inbound frames
- *     pass through.
+ *     being exhausted, it fires `FlowControlResumeEvent` so a writer that
+ * paused upstream (e.g. a buffer) can resume. Other inbound frames pass
+ * through.
  *   - Outbound `Payload` spends one credit and is forwarded. The element that
  *     spends the *last* credit is still forwarded, but the handler fires
  *     `FlowControlPauseEvent` and returns `Result::Backpressure` so the
  *     producer is paused the moment demand is exhausted rather than one element
  *     too late. A further element sent while exhausted is beyond the peer's
  *     demand — a credit-contract violation an upstream buffer honoring
- *     `FlowControlPause` keeps unreachable, so it fatals in debug and is
+ *     `FlowControlPauseEvent` keeps unreachable, so it fatals in debug and is
  * dropped with `Result::Error` in release. Non-`Payload` frames pass through
  * ungated.
  *
@@ -64,6 +65,7 @@ namespace apache::thrift::fast_thrift::thrift::stream {
 template <typename Context>
 class InboundCreditHandler {
  public:
+  // Flow-control readiness published to subscribers (e.g. an upstream buffer).
   using PublishedEvents =
       channel_pipeline::Events<FlowControlPauseEvent, FlowControlResumeEvent>;
 
@@ -86,7 +88,7 @@ class InboundCreditHandler {
       // Credit just became available: tell a writer that paused upstream while
       // exhausted that it may resume. Credit stays private — only readiness is
       // published.
-      PublishedEvents::template fire<FlowControlResumeEvent>(ctx);
+      PublishedEvents::fire<FlowControlResumeEvent>(ctx);
     }
     return channel_pipeline::Result::Success;
   }
@@ -110,7 +112,7 @@ class InboundCreditHandler {
     if (credits_ == 0) {
       // Demand just hit zero: publish the pause before returning, so a
       // subscriber observes it in the same turn as the Backpressure result.
-      PublishedEvents::template fire<FlowControlPauseEvent>(ctx);
+      PublishedEvents::fire<FlowControlPauseEvent>(ctx);
     }
     if (forwarded != channel_pipeline::Result::Success) {
       // Downstream congestion or failure: propagate its status unchanged.
@@ -132,8 +134,8 @@ class InboundCreditHandler {
  private:
   // A Payload reached this consuming sink while demand is exhausted: the
   // producer overran the credit contract. An upstream buffer honoring
-  // FlowControlPause keeps this unreachable, so reaching here is a bug rather
-  // than a runtime condition — fail loudly in debug. In release the hard
+  // FlowControlPauseEvent keeps this unreachable, so reaching here is a bug
+  // rather than a runtime condition — fail loudly in debug. In release the hard
   // contract still holds: the element is dropped with Result::Error (tearing
   // down the peer) rather than delivered beyond demand. Kept out-of-line so the
   // cold violation path adds nothing to the hot path.
@@ -172,5 +174,10 @@ static_assert(
         InboundCreditHandler<channel_pipeline::detail::ContextImpl>,
         channel_pipeline::detail::ContextImpl>,
     "InboundCreditHandler must satisfy OutboundHandler concept");
+
+static_assert(
+    channel_pipeline::TypeEventPublisher<
+        InboundCreditHandler<channel_pipeline::detail::ContextImpl>>,
+    "InboundCreditHandler must publish its flow-control events");
 
 } // namespace apache::thrift::fast_thrift::thrift::stream

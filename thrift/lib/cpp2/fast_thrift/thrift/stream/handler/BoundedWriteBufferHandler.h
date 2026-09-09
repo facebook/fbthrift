@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <concepts>
 #include <cstddef>
 #include <utility>
 #include <vector>
@@ -100,10 +101,10 @@ class BoundedMessageRing {
  * immediately, even while payloads are held.
  *
  * Two independent gates decide whether a payload can be sent:
- *   - Credit: gated by StreamEvent flow-control events from
- * InboundCreditHandler (credit itself stays private there). `FlowControlPause`
- * closes the gate, `FlowControlResume` opens it. It starts closed — no credit
- * is granted until the peer's first RequestN.
+ *   - Credit: gated by type-based flow-control events from
+ * InboundCreditHandler (credit itself stays private there).
+ * `FlowControlPauseEvent` closes the gate, `FlowControlResumeEvent` opens it.
+ * It starts closed — no credit is granted until the peer's first RequestN.
  *   - Transport: gated by the data path. A `Result::Backpressure` from
  *     downstream (socket saturation, taken to mean the element was consumed
  *     since `fireWrite` is a sink) closes it; the pipeline's `onWriteReady`
@@ -114,7 +115,7 @@ class BoundedMessageRing {
  * `Result::Backpressure`, and any further payload while full is dropped with
  * `Result::Error`. When both gates are open, buffered payloads drain in FIFO
  * order. A `Backpressure` return during a forward is credit exhaustion if a
- * `FlowControlPause` was delivered in the same turn (it is synchronous, so
+ * `FlowControlPauseEvent` was delivered in the same turn (it is synchronous, so
  * `creditPaused_` is already set), otherwise transport congestion — the two are
  * disjoint, so a wake for one never drains into the other.
  *
@@ -135,29 +136,28 @@ class BoundedWriteBufferHandler {
   // writeReadyList so onWriteReady() fires when the transport drains.
   channel_pipeline::WriteReadyHook writeReadyHook_;
 
-  // Credit flow-control readiness is delivered out-of-band as user events.
-  static constexpr channel_pipeline::Subscriptions<
-      StreamEvent::FlowControlPause,
-      StreamEvent::FlowControlResume>
-      kSubscribedEvents{};
+  // Credit flow-control readiness is delivered out-of-band as type-based
+  // events.
+  using SubscribedEvents =
+      channel_pipeline::Events<FlowControlPauseEvent, FlowControlResumeEvent>;
 
   // HandlerLifecycle
   void handlerAdded(Context& /*ctx*/) noexcept {}
   void handlerRemoved(Context& /*ctx*/) noexcept {}
 
-  // Credit readiness. A Pause closes the credit gate; a Resume opens it and
-  // drains what credit now allows.
-  void onEvent(
-      Context& ctx,
-      StreamEvent ev,
-      const channel_pipeline::TypeErasedBox& /*msg*/) noexcept {
-    // Only the two subscribed flow-control events are ever delivered here.
-    if (ev == StreamEvent::FlowControlPause) {
-      creditPaused_ = true;
-    } else if (ev == StreamEvent::FlowControlResume) {
-      creditPaused_ = false;
-      tryDrain(ctx);
-    }
+  // A Pause closes the credit gate.
+  template <typename E>
+    requires std::same_as<E, FlowControlPauseEvent>
+  void on(Context& /*ctx*/) noexcept {
+    creditPaused_ = true;
+  }
+
+  // A Resume opens the credit gate and drains what credit now allows.
+  template <typename E>
+    requires std::same_as<E, FlowControlResumeEvent>
+  void on(Context& ctx) noexcept {
+    creditPaused_ = false;
+    tryDrain(ctx);
   }
 
   // OutboundHandler
@@ -213,9 +213,9 @@ class BoundedWriteBufferHandler {
   }
 
   // Classify a downstream Backpressure and arm the matching resume. A
-  // FlowControlPause fired synchronously during the forward would already have
-  // set creditPaused_, so a set flag means credit exhaustion (wait for
-  // FlowControlResume); otherwise it is transport congestion (await
+  // FlowControlPauseEvent fired synchronously during the forward would already
+  // have set creditPaused_, so a set flag means credit exhaustion (wait for
+  // FlowControlResumeEvent); otherwise it is transport congestion (await
   // write-ready).
   void noteBackpressure(Context& ctx) noexcept {
     if (!creditPaused_) {
@@ -285,7 +285,7 @@ class BoundedWriteBufferHandler {
   }
 
   // Credit starts closed: no payload may be sent until the peer's first
-  // RequestN produces a FlowControlResume.
+  // RequestN produces a FlowControlResumeEvent.
   bool creditPaused_{true};
   bool transportPaused_{false};
   bool completePending_{false};
@@ -298,5 +298,11 @@ static_assert(
         BoundedWriteBufferHandler<channel_pipeline::detail::ContextImpl>,
         channel_pipeline::detail::ContextImpl>,
     "BoundedWriteBufferHandler must satisfy OutboundHandler concept");
+
+static_assert(
+    channel_pipeline::TypeEventSubscriber<
+        BoundedWriteBufferHandler<channel_pipeline::detail::ContextImpl>,
+        channel_pipeline::detail::ContextImpl>,
+    "BoundedWriteBufferHandler must subscribe to its flow-control events");
 
 } // namespace apache::thrift::fast_thrift::thrift::stream

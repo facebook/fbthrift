@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/stream/handler/InboundCreditHandler.h>
 
+#include <concepts>
 #include <cstdint>
 #include <limits>
 #include <vector>
@@ -38,9 +39,16 @@ using channel_pipeline::erase_and_box;
 using channel_pipeline::Result;
 using channel_pipeline::TypeErasedBox;
 
+// Identifies the flow-control events the handler fires, for order assertions.
+enum class Fired { Pause, Resume };
+
 // Minimal ContextApi stand-in. The tests assert only on the handler's
 // observable contract — what it forwards, the flow-control result, and the
 // flow-control events it fires — never on internal credit state.
+//
+// The handler publishes type-based events through its context; with no cached
+// publisher route on this stand-in, that resolves to the templated `fireEvent`
+// below, which records each event's identity.
 class FakeContext {
  public:
   Result fireRead(TypeErasedBox&& msg) noexcept {
@@ -58,16 +66,20 @@ class FakeContext {
     exceptions.push_back(std::move(e));
   }
 
-  template <channel_pipeline::PipelineEvent E>
+  template <typename E>
   void fireEvent() noexcept {
-    firedEvents.push_back(channel_pipeline::eventKey<E>());
+    if constexpr (std::same_as<E, FlowControlResumeEvent>) {
+      firedEvents.push_back(Fired::Resume);
+    } else if constexpr (std::same_as<E, FlowControlPauseEvent>) {
+      firedEvents.push_back(Fired::Pause);
+    }
   }
 
   Result nextWriteResult{Result::Success};
   std::vector<TypeErasedBox> reads;
   std::vector<TypeErasedBox> writes;
   std::vector<folly::exception_wrapper> exceptions;
-  std::vector<channel_pipeline::EventKey> firedEvents;
+  std::vector<Fired> firedEvents;
 };
 
 ThriftStreamMessage makeRequestN(uint64_t n) {
@@ -94,9 +106,10 @@ TEST(InboundCreditHandlerTest, WriteWhileExhaustedIsAProtocolViolation) {
   FakeContext ctx;
 
   // A Payload written with no credit overruns the peer's demand. An upstream
-  // buffer honoring FlowControlPause keeps this unreachable, so it is a bug: it
-  // fatals in debug. In release the handler still enforces the hard contract —
-  // the element is dropped with Error (tearing down the peer), not delivered.
+  // buffer honoring FlowControlPauseEvent keeps this unreachable, so it is a
+  // bug: it fatals in debug. In release the handler still enforces the hard
+  // contract — the element is dropped with Error (tearing down the peer), not
+  // delivered.
   if (folly::kIsDebug) {
     EXPECT_DEATH(
         (void)handler.onWrite(ctx, erase_and_box(makeItem())),
@@ -226,8 +239,8 @@ TEST(InboundCreditHandlerTest, CreditSurvivesPipelineInactive) {
 
 // =============================================================================
 // Flow-control events: credit stays private, so the handler publishes only
-// readiness. It fires FlowControlPause as the last credit is spent and
-// FlowControlResume when credit becomes available after exhaustion.
+// readiness. It fires FlowControlPauseEvent as the last credit is spent and
+// FlowControlResumeEvent when credit becomes available after exhaustion.
 // =============================================================================
 
 TEST(InboundCreditHandlerTest, GrantingCreditAfterExhaustionFiresResume) {
@@ -237,8 +250,7 @@ TEST(InboundCreditHandlerTest, GrantingCreditAfterExhaustionFiresResume) {
   // A fresh handler holds no credit (exhausted); the first grant unblocks it.
   (void)handler.onRead(ctx, erase_and_box(makeRequestN(1)));
 
-  const std::vector<channel_pipeline::EventKey> expected{
-      channel_pipeline::eventKey<FlowControlResumeEvent>()};
+  const std::vector<Fired> expected{Fired::Resume};
   EXPECT_EQ(ctx.firedEvents, expected);
 }
 
@@ -250,8 +262,7 @@ TEST(
   (void)handler.onRead(ctx, erase_and_box(makeRequestN(2))); // 0 -> 2: resume
   (void)handler.onRead(ctx, erase_and_box(makeRequestN(3))); // 2 -> 5: no event
 
-  const std::vector<channel_pipeline::EventKey> expected{
-      channel_pipeline::eventKey<FlowControlResumeEvent>()};
+  const std::vector<Fired> expected{Fired::Resume};
   EXPECT_EQ(ctx.firedEvents, expected)
       << "no writer is paused while credit remains, so no resume is published";
 }
@@ -265,8 +276,7 @@ TEST(InboundCreditHandlerTest, ConsumingLastCreditFiresPause) {
   // Spending the sole credit exhausts demand: publish the pause.
   (void)handler.onWrite(ctx, erase_and_box(makeItem()));
 
-  const std::vector<channel_pipeline::EventKey> expected{
-      channel_pipeline::eventKey<FlowControlPauseEvent>()};
+  const std::vector<Fired> expected{Fired::Pause};
   EXPECT_EQ(ctx.firedEvents, expected);
 }
 
@@ -290,10 +300,7 @@ TEST(InboundCreditHandlerTest, ReExhaustAndRegrantRepublishReadiness) {
   (void)handler.onWrite(ctx, erase_and_box(makeItem())); // spend -> pause
   (void)handler.onRead(ctx, erase_and_box(makeRequestN(1))); // resume again
 
-  const std::vector<channel_pipeline::EventKey> expected{
-      channel_pipeline::eventKey<FlowControlResumeEvent>(),
-      channel_pipeline::eventKey<FlowControlPauseEvent>(),
-      channel_pipeline::eventKey<FlowControlResumeEvent>()};
+  const std::vector<Fired> expected{Fired::Resume, Fired::Pause, Fired::Resume};
   EXPECT_EQ(ctx.firedEvents, expected);
 }
 

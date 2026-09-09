@@ -61,7 +61,7 @@ class BenchCtx {
 // than credit gating (the handler starts credit-paused).
 template <typename Handler>
 void openCredit(Handler& handler, BenchCtx& ctx) {
-  handler.onEvent(ctx, StreamEvent::FlowControlResume, TypeErasedBox{});
+  handler.template on<FlowControlResumeEvent>(ctx);
 }
 
 ThriftStreamMessage makeItem() {
