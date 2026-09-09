@@ -21,7 +21,5 @@ if (APPLE AND NOT DEFINED OPENSSL_ROOT_DIR)
     OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif ()
 
-set(saved_path ${CMAKE_MODULE_PATH})
-set(CMAKE_MODULE_PATH ${CMAKE_STD_MODULE_PATH})
-find_package(OpenSSL ${ARGN})
-set(CMAKE_MODULE_PATH ${saved_path})
+# find_package(OpenSSL) would re-enter this file, which shadows the builtin.
+include("${CMAKE_ROOT}/Modules/FindOpenSSL.cmake")

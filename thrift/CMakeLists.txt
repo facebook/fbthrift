@@ -14,11 +14,11 @@
 
 add_subdirectory(common)
 
-if (THRIFT_COMPILER_ONLY OR build_all)
+if (THRIFT_COMPILER_ONLY OR NOT THRIFT_LIB_ONLY)
   add_subdirectory(compiler)
 endif ()
 
-if (THRIFT_LIB_ONLY OR build_all)
+if (THRIFT_LIB_ONLY OR NOT THRIFT_COMPILER_ONLY)
   add_subdirectory(annotation)
   add_subdirectory(lib)
 endif ()

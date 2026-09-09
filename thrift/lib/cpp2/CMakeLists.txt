@@ -15,7 +15,7 @@
 # Set the cpp2 directory
 set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 
-if (THRIFT_LIB_ONLY OR build_all)
+if (THRIFT_LIB_ONLY OR NOT THRIFT_COMPILER_ONLY)
   add_subdirectory(schema)
 endif ()
 

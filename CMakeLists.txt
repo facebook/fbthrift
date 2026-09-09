@@ -34,28 +34,19 @@ endif ()
 
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-# Build all fbthrift libraries (and their object files) with -fPIC so that
-# the resulting static archives can be linked into a downstream shared
-# library. fbthrift's libraries default to STATIC; without PIC they fail
-# to link into any consumer that uses BUILD_SHARED_LIBS=ON. PIC has
-# negligible cost on x86_64/aarch64 and lets static-archive consumers
-# stay static, which avoids the cross-dylib RTTI / undefined-symbol
-# problems that BUILD_SHARED_LIBS=ON exposes inside fbthrift.
+# Thrift's libraries default to STATIC, and without PIC they cannot link into
+# a consumer built with BUILD_SHARED_LIBS=ON. PIC is cheap here, and keeping
+# the archives static avoids the cross-dylib RTTI and undefined-symbol
+# problems that building Thrift itself shared exposes.
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Add root dir so qualified includes work, e.g. #include "thrift/compiler/*.h".
 include_directories(.)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-# Set directory of the Find$x.cmake files to properly include dependencies.
-set(CMAKE_STD_MODULE_PATH ${CMAKE_MODULE_PATH})
-set(CMAKE_MODULE_PATH
-    ${CMAKE_CURRENT_SOURCE_DIR}/thrift/cmake
-    # For in-fbsource builds:
-    ${CMAKE_CURRENT_SOURCE_DIR}/../opensource/fbcode_builder/CMake
-    # For shipit-transformed builds:
-    ${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/CMake
-    ${CMAKE_MODULE_PATH})
+# Prepend, so entries from a parent project or the command line survive.
+list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/thrift/cmake"
+     "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/CMake")
 
 # Find required dependencies.
 find_package(fmt CONFIG REQUIRED)
@@ -94,11 +85,6 @@ if (NOT THRIFT_RPC AND THRIFT_BENCHMARKS)
   )
   set(THRIFT_BENCHMARKS OFF)
 endif ()
-if (THRIFT_COMPILER_ONLY OR THRIFT_LIB_ONLY)
-  set(build_all OFF)
-else ()
-  set(build_all ON)
-endif ()
 
 set(thriftpy
     AUTO
@@ -126,7 +112,7 @@ endif ()
 find_package(folly CONFIG REQUIRED)
 
 # Find required dependencies for the Thrift compiler.
-if (THRIFT_COMPILER_ONLY OR build_all)
+if (THRIFT_COMPILER_ONLY OR NOT THRIFT_LIB_ONLY)
   include_directories(${OPENSSL_INCLUDE_DIR})
   set(THRIFT1 thrift1)
   set(THRIFTCPP2 thriftcpp2)
@@ -136,7 +122,7 @@ if (THRIFT_COMPILER_ONLY OR build_all)
 endif ()
 
 # Find required dependencies for thrift/lib
-if (THRIFT_LIB_ONLY OR build_all)
+if (THRIFT_LIB_ONLY OR NOT THRIFT_COMPILER_ONLY)
   find_package(Gflags REQUIRED)
   find_package(Glog REQUIRED)
   if (THRIFT_RPC)
@@ -173,8 +159,7 @@ if (thriftpy3)
   find_package(Cython 0.28 REQUIRED)
 endif ()
 
-# Add the test dependencies
-# To run tests: `make test`
+# Add the test dependencies.
 if (enable_tests)
   find_package(PythonInterp REQUIRED)
   find_package(GTest REQUIRED)
