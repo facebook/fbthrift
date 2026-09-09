@@ -65,7 +65,7 @@ namespace apache::thrift::fast_thrift::thrift {
  * gone (signaled to the adapter via ConnectionClosed), pipelineActive_
  * is false and straggler writeResponse calls are silently dropped.
  *
- * Threading: when a CPU executor is attached, generated method bodies run
+ * Threading: when a CPU executor is attached, the generated service path runs
  * off the connection's EventBase. Two refcounts reachable from a request
  * are deliberately non-atomic — this adapter's DelayedDestruction
  * guardCount_, and the ThriftConnContext refcount held via
@@ -81,8 +81,8 @@ namespace apache::thrift::fast_thrift::thrift {
  *      which covers both its adapter guard and its request context.
  *   3. Moving a request context never touches the refcount, so building a
  *      response off-EventBase is safe.
- * Everything else off-EventBase must confine itself to writeResponse,
- * which does its own hop.
+ * Serialized responses return through writeResponse, which performs the hop
+ * back to the EventBase.
  */
 class ThriftServerAppAdapter : public folly::DelayedDestruction {
  public:
@@ -121,8 +121,9 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
 
   void setPipeline(channel_pipeline::PipelineImpl* pipeline) noexcept;
 
-  // Attach the executor that generated dispatchers offload method bodies to.
-  // When unset, dispatch stays inline on the connection's EventBase.
+  // Attach the executor that generated dispatchers use for request
+  // deserialization, method execution, and response serialization. When
+  // unset, the service path stays inline on the connection's EventBase.
   //
   // Must be called before the connection starts reading — the executor is
   // read without synchronization on the dispatch path.
@@ -220,8 +221,8 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
 
   folly::EventBase* getEventBase() const { return evb_.get(); }
 
-  // Executor for generated dispatchers to offload to, or null when method
-  // bodies should run inline on the EventBase.
+  // Executor for the generated service path, or null when it should run
+  // inline on the EventBase.
   folly::Executor* cpuExecutor() const noexcept { return cpuExecutor_.get(); }
 
  private:

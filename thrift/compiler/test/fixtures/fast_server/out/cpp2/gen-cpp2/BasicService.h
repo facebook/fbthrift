@@ -595,7 +595,7 @@ class BasicServiceAppAdapter
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU
   // thread when a pool is configured, otherwise inline on the EventBase.
-  // Touches no adapter state beyond handler_ and the callback.
+  // Synchronous completion serializes on the same execution lane.
   template <typename ProtocolReader, typename ProtocolWriter>
   void process_ping_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<void> callback,
@@ -625,7 +625,7 @@ class BasicServiceAppAdapter
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU
   // thread when a pool is configured, otherwise inline on the EventBase.
-  // Touches no adapter state beyond handler_ and the callback.
+  // Synchronous completion serializes on the same execution lane.
   template <typename ProtocolReader, typename ProtocolWriter>
   void process_add_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<::std::int32_t> callback,
@@ -655,7 +655,7 @@ class BasicServiceAppAdapter
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU
   // thread when a pool is configured, otherwise inline on the EventBase.
-  // Touches no adapter state beyond handler_ and the callback.
+  // Synchronous completion serializes on the same execution lane.
   template <typename ProtocolReader, typename ProtocolWriter>
   void process_buildItem_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<std::unique_ptr<::cpp2::test::DataItem>> callback,
@@ -685,7 +685,7 @@ class BasicServiceAppAdapter
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU
   // thread when a pool is configured, otherwise inline on the EventBase.
-  // Touches no adapter state beyond handler_ and the callback.
+  // Synchronous completion serializes on the same execution lane.
   template <typename ProtocolReader, typename ProtocolWriter>
   void process_lookup_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<std::unique_ptr<::cpp2::test::DataItem>> callback,
@@ -715,7 +715,7 @@ class BasicServiceAppAdapter
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU
   // thread when a pool is configured, otherwise inline on the EventBase.
-  // Touches no adapter state beyond handler_ and the callback.
+  // Synchronous completion serializes on the same execution lane.
   template <typename ProtocolReader, typename ProtocolWriter>
   void process_secureLookup_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<std::unique_ptr<::cpp2::test::DataItem>> callback,
@@ -745,7 +745,7 @@ class BasicServiceAppAdapter
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU
   // thread when a pool is configured, otherwise inline on the EventBase.
-  // Touches no adapter state beyond handler_ and the callback.
+  // Synchronous completion serializes on the same execution lane.
   template <typename ProtocolReader, typename ProtocolWriter>
   void process_ebLookup_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<std::unique_ptr<::cpp2::test::DataItem>> callback,

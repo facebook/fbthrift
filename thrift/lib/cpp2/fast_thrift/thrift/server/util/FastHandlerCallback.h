@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cassert>
 #include <cstdint>
 #include <memory>
 #include <optional>
@@ -25,6 +26,7 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Executor.h>
+#include <folly/Portability.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -40,10 +42,213 @@ namespace apache::thrift::fast_thrift::thrift {
 
 namespace detail {
 
+inline constexpr auto kHandlerCallbackNotCompleted =
+    "FastHandlerCallback not completed";
+inline constexpr auto kHandlerExecutorUnavailable =
+    "Fast handler executor rejected or dropped request";
+
+enum class HandlerState : uint8_t {
+  AwaitingDispatch,
+  Running,
+  Completed,
+};
+
 template <typename U>
 struct IsUniquePtr : std::false_type {};
 template <typename U>
 struct IsUniquePtr<std::unique_ptr<U>> : std::true_type {};
+
+FOLLY_EXPORT inline folly::Executor*& currentHandlerExecutor() noexcept {
+  static thread_local folly::Executor* executor = nullptr;
+  return executor;
+}
+
+inline bool isOnHandlerExecutor(folly::Executor* executor) noexcept {
+  return executor == nullptr || executor == currentHandlerExecutor();
+}
+
+class HandlerExecutorScope {
+ public:
+  explicit HandlerExecutorScope(folly::Executor* executor) noexcept
+      : previous_(std::exchange(currentHandlerExecutor(), executor)) {}
+
+  HandlerExecutorScope(const HandlerExecutorScope&) = delete;
+  HandlerExecutorScope& operator=(const HandlerExecutorScope&) = delete;
+  HandlerExecutorScope(HandlerExecutorScope&&) = delete;
+  HandlerExecutorScope& operator=(HandlerExecutorScope&&) = delete;
+
+  ~HandlerExecutorScope() { currentHandlerExecutor() = previous_; }
+
+ private:
+  folly::Executor* previous_;
+};
+
+template <typename F>
+class HandlerExecutorTask {
+  static_assert(std::is_nothrow_move_constructible_v<F>);
+
+ private:
+  struct State {
+    explicit State(folly::Executor::KeepAlive<folly::EventBase> evb) noexcept
+        : evb(std::move(evb)) {}
+
+    folly::Executor::KeepAlive<folly::EventBase> evb;
+    std::optional<F> fn;
+  };
+
+ public:
+  HandlerExecutorTask(folly::Executor::KeepAlive<folly::EventBase> evb, F&& fn)
+      : state_(std::make_unique<State>(std::move(evb))) {
+    state_->fn.emplace(static_cast<F&&>(fn));
+  }
+
+  template <typename Factory>
+  HandlerExecutorTask(
+      folly::Executor::KeepAlive<folly::EventBase> evb,
+      std::in_place_t,
+      Factory&& factory)
+      : state_(std::make_unique<State>(std::move(evb))) {
+    state_->fn.emplace(static_cast<Factory&&>(factory)());
+  }
+
+  HandlerExecutorTask(const HandlerExecutorTask&) = delete;
+  HandlerExecutorTask& operator=(const HandlerExecutorTask&) = delete;
+  HandlerExecutorTask(HandlerExecutorTask&&) noexcept = default;
+  HandlerExecutorTask& operator=(HandlerExecutorTask&&) = delete;
+
+  ~HandlerExecutorTask() {
+    static_assert(std::is_nothrow_invocable_v<F&>);
+
+    if (!state_) {
+      return;
+    }
+    auto state = std::move(state_);
+    auto* evb = state->evb.get();
+    assert(evb != nullptr);
+    if (evb == nullptr) {
+      (*state->fn)();
+      return;
+    }
+    auto fallback = [state = std::move(state)]() mutable noexcept {
+      (*state->fn)();
+    };
+    static_assert(
+        sizeof(fallback) <= 6 * sizeof(void*),
+        "fallback task outgrew folly::Function's in-situ buffer");
+    evb->runImmediatelyOrRunInEventBaseThread(std::move(fallback));
+  }
+
+  void run(folly::Executor* executor) noexcept {
+    if (!state_) {
+      return;
+    }
+    auto state = std::move(state_);
+    HandlerExecutorScope scope(executor);
+    (*state->fn)();
+  }
+
+ private:
+  std::unique_ptr<State> state_;
+};
+
+template <typename F>
+void runOnHandlerExecutor(
+    folly::Executor* executor, HandlerExecutorTask<F>&& task) noexcept {
+  auto run = [executor, task = std::move(task)]() mutable noexcept {
+    task.run(executor);
+  };
+  static_assert(
+      sizeof(run) <= 6 * sizeof(void*),
+      "completion task outgrew folly::Function's in-situ buffer");
+  try {
+    executor->add(std::move(run));
+  } catch (...) {
+    // Destruction of the sole task owner performs the fallback. A second
+    // action here would compete if add() consumed the task before throwing.
+  }
+}
+
+template <typename F>
+void completeOnHandlerExecutorNothrow(
+    HandlerState& state,
+    ThriftServerAppAdapter* handler,
+    uint32_t streamId,
+    std::unique_ptr<ThriftRequestContext>& requestContext,
+    folly::DelayedDestruction::DestructorGuard& adapterGuard,
+    const folly::Executor::KeepAlive<folly::EventBase>& evb,
+    folly::Executor* executor,
+    F&& fn) {
+  static_assert(std::is_nothrow_move_constructible_v<std::decay_t<F>>);
+
+  assert(state != HandlerState::Completed);
+  assert(!isOnHandlerExecutor(executor));
+
+  auto makeTask = [&]() noexcept {
+    return [handler,
+            streamId,
+            requestContext = std::move(requestContext),
+            adapterGuard = std::move(adapterGuard),
+            fn = static_cast<F&&>(fn)]() mutable noexcept {
+      fn(handler, streamId, std::move(requestContext), std::move(adapterGuard));
+    };
+  };
+  using Task = HandlerExecutorTask<decltype(makeTask())>;
+
+  // State allocation completes before makeTask() moves requestContext and
+  // adapterGuard out of the callback.
+  Task task(evb, std::in_place, makeTask);
+  state = HandlerState::Completed;
+  runOnHandlerExecutor(executor, std::move(task));
+}
+
+template <typename F>
+void completeOnHandlerExecutor(
+    HandlerState& state,
+    ThriftServerAppAdapter* handler,
+    uint32_t streamId,
+    std::unique_ptr<ThriftRequestContext>& requestContext,
+    folly::DelayedDestruction::DestructorGuard& adapterGuard,
+    const folly::Executor::KeepAlive<folly::EventBase>& evb,
+    folly::Executor* executor,
+    F&& fn) {
+  using Completion = std::decay_t<F>;
+  if constexpr (std::is_nothrow_move_constructible_v<Completion>) {
+    completeOnHandlerExecutorNothrow(
+        state,
+        handler,
+        streamId,
+        requestContext,
+        adapterGuard,
+        evb,
+        executor,
+        static_cast<F&&>(fn));
+  } else {
+    // The box is created before requestContext or adapterGuard moves. Generated
+    // result types avoid this allocation; custom throwing-move types require
+    // the indirection only when their completion is deferred.
+    auto boxed = std::make_unique<Completion>(static_cast<F&&>(fn));
+    completeOnHandlerExecutorNothrow(
+        state,
+        handler,
+        streamId,
+        requestContext,
+        adapterGuard,
+        evb,
+        executor,
+        [boxed = std::move(boxed)](
+            ThriftServerAppAdapter* handler,
+            uint32_t streamId,
+            std::unique_ptr<ThriftRequestContext> requestContext,
+            folly::DelayedDestruction::DestructorGuard&&
+                adapterGuard) mutable noexcept {
+          (*boxed)(
+              handler,
+              streamId,
+              std::move(requestContext),
+              std::move(adapterGuard));
+        });
+  }
+}
 
 /**
  * Sole-ownership handle for a FastHandlerCallback.
@@ -116,6 +321,21 @@ inline std::string exceptionMessage(
   }
 }
 
+inline void writeAppError(
+    ThriftServerAppAdapter* handler,
+    uint32_t streamId,
+    std::unique_ptr<ThriftRequestContext> requestContext,
+    folly::DelayedDestruction::DestructorGuard&& adapterGuard,
+    const folly::exception_wrapper& ew) noexcept {
+  auto message = makeAppErrorMessage(
+      streamId,
+      "TApplicationException",
+      exceptionMessage(ew),
+      apache::thrift::ErrorBlame::SERVER);
+  message.requestContext = std::move(requestContext);
+  handler->writeResponse(std::move(message), std::move(adapterGuard));
+}
+
 // Shared exception cascade — declared exception via insert_exn (success
 // frame with declaredException metadata) vs undeclared (success frame with
 // appUnknownException metadata). Templated on Presult/ProtocolWriter so the
@@ -173,13 +393,13 @@ class FastHandlerCallback {
       uint32_t,
       std::unique_ptr<ThriftRequestContext>,
       folly::DelayedDestruction::DestructorGuard&&,
-      T);
+      T&&) noexcept;
   using ExceptionFn = void (*)(
       ThriftServerAppAdapter*,
       uint32_t,
       std::unique_ptr<ThriftRequestContext>,
       folly::DelayedDestruction::DestructorGuard&&,
-      folly::exception_wrapper);
+      folly::exception_wrapper) noexcept;
 
   // Must be constructed on `evb`: adapterGuard_ bumps the adapter's
   // non-atomic guardCount_.
@@ -188,7 +408,7 @@ class FastHandlerCallback {
       ExceptionFn exceptionFn,
       ThriftServerAppAdapter* handler,
       uint32_t streamId,
-      folly::EventBase* evb,
+      folly::EventBase& evb,
       folly::Executor* executor,
       std::unique_ptr<ThriftRequestContext> requestContext)
       : resultFn_(resultFn),
@@ -196,51 +416,79 @@ class FastHandlerCallback {
         handler_(handler),
         adapterGuard_(handler),
         streamId_(streamId),
-        evb_(folly::getKeepAliveToken(evb)),
+        evb_(folly::getKeepAliveToken(&evb)),
         executor_(executor),
-        requestContext_(std::move(requestContext)) {}
+        requestContext_(std::move(requestContext)),
+        state_(
+            executor == nullptr ? detail::HandlerState::Running
+                                : detail::HandlerState::AwaitingDispatch) {}
 
   FastHandlerCallback(const FastHandlerCallback&) = delete;
   FastHandlerCallback& operator=(const FastHandlerCallback&) = delete;
   FastHandlerCallback(FastHandlerCallback&&) = delete;
   FastHandlerCallback& operator=(FastHandlerCallback&&) = delete;
 
-  // Callable from any thread *when the request was offloaded to a CPU pool*;
-  // the adapter's writeResponse handles the EventBase hop. Without a pool the
-  // request's reference count is non-atomic, so completion must stay on the
-  // EventBase.
+  // Callable from any thread when the request uses a CPU executor.
+  // Completion returns to that executor for response serialization, then the
+  // adapter's writeResponse handles the EventBase hop. Without an executor,
+  // completion must stay on the EventBase.
   //
   // Safe even after the connection has been force-closed: the donated guard
   // keeps the adapter alive, and writeResponse drops the write because
   // pipelineActive_ is false.
   void result(T value) {
-    completed_ = true;
-    // Hand the per-request context to the thunk so it rides onto the response
-    // message; write-side handlers (e.g. checksum) read request-derived state
-    // off the message. The callback itself stays request/response-agnostic.
-    //
-    // The adapter guard is donated, not copied — constructing one here could
-    // be off the EventBase. Moving it is refcount-free, and it lands on the
-    // EventBase inside writeResponse.
-    resultFn_(
-        handler_,
-        streamId_,
-        std::move(requestContext_),
-        std::move(adapterGuard_),
-        std::move(value));
+    if (tryCompleteInline([&]() noexcept {
+          resultFn_(
+              handler_,
+              streamId_,
+              std::move(requestContext_),
+              std::move(adapterGuard_),
+              std::move(value));
+        })) {
+      return;
+    }
+    complete([resultFn = resultFn_, value = std::move(value)](
+                 ThriftServerAppAdapter* handler,
+                 uint32_t streamId,
+                 std::unique_ptr<ThriftRequestContext> requestContext,
+                 folly::DelayedDestruction::DestructorGuard&&
+                     adapterGuard) mutable noexcept {
+      resultFn(
+          handler,
+          streamId,
+          std::move(requestContext),
+          std::move(adapterGuard),
+          std::move(value));
+    });
   }
 
   // The context rides onto the error response too: an exception reply is a
   // response like any other, and the write-side handlers owe it the same
   // request-derived state a success reply gets.
   void exception(folly::exception_wrapper ew) {
-    completed_ = true;
-    exceptionFn_(
-        handler_,
-        streamId_,
-        std::move(requestContext_),
-        std::move(adapterGuard_),
-        std::move(ew));
+    if (tryCompleteInline([&]() noexcept {
+          exceptionFn_(
+              handler_,
+              streamId_,
+              std::move(requestContext_),
+              std::move(adapterGuard_),
+              std::move(ew));
+        })) {
+      return;
+    }
+    complete([exceptionFn = exceptionFn_, ew = std::move(ew)](
+                 ThriftServerAppAdapter* handler,
+                 uint32_t streamId,
+                 std::unique_ptr<ThriftRequestContext> requestContext,
+                 folly::DelayedDestruction::DestructorGuard&&
+                     adapterGuard) mutable noexcept {
+      exceptionFn(
+          handler,
+          streamId,
+          std::move(requestContext),
+          std::move(adapterGuard),
+          std::move(ew));
+    });
   }
 
   // Writes a TApplicationException frame directly rather than through the
@@ -248,34 +496,55 @@ class FastHandlerCallback {
   // for the cascade to mean anything. Marks the callback complete so the
   // destructor does not add a second response.
   void sendAppError(const folly::exception_wrapper& ew) noexcept {
-    completed_ = true;
-    auto message = makeAppErrorMessage(
-        streamId_,
-        "TApplicationException",
-        detail::exceptionMessage(ew),
-        apache::thrift::ErrorBlame::SERVER);
-    message.requestContext = std::move(requestContext_);
-    handler_->writeResponse(std::move(message), std::move(adapterGuard_));
+    if (tryCompleteInline([&]() noexcept {
+          detail::writeAppError(
+              handler_,
+              streamId_,
+              std::move(requestContext_),
+              std::move(adapterGuard_),
+              ew);
+        })) {
+      return;
+    }
+    try {
+      complete([ew = ew](
+                   ThriftServerAppAdapter* handler,
+                   uint32_t streamId,
+                   std::unique_ptr<ThriftRequestContext> requestContext,
+                   folly::DelayedDestruction::DestructorGuard&&
+                       adapterGuard) mutable noexcept {
+        detail::writeAppError(
+            handler,
+            streamId,
+            std::move(requestContext),
+            std::move(adapterGuard),
+            ew);
+      });
+    } catch (...) {
+      // Callback destruction will synthesize the fallback response.
+    }
   }
-
-  // True once result()/exception()/sendAppError() has been invoked. Used by
-  // generated dispatchers to avoid double-completing a callback when a user
-  // handler both completes the callback and then throws synchronously.
-  bool isCompleted() const noexcept { return completed_; }
 
   uint32_t streamId() const noexcept { return streamId_; }
 
   folly::EventBase* getEventBase() const { return evb_.get(); }
 
   // Where a generated dispatcher should run a coroutine handler body. Null
-  // when the server has no CPU pool, in which case the caller falls back to
-  // the EventBase. Raw rather than a KeepAlive: the executor outlives the
+  // when dispatch is configured to stay on the EventBase. Raw rather than a
+  // KeepAlive: the executor outlives the
   // adapter, which this callback already keeps alive through adapterGuard_,
   // so a per-request refcount would buy nothing.
   folly::Executor* getHandlerExecutor() const noexcept { return executor_; }
 
   ThriftRequestContext* requestContext() const noexcept {
     return requestContext_.get();
+  }
+
+  // Distinguishes executor rejection/drop from an abandoned handler callback.
+  void markHandlerStarted() noexcept {
+    if (state_ == detail::HandlerState::AwaitingDispatch) {
+      state_ = detail::HandlerState::Running;
+    }
   }
 
   // Called by CallbackPtr when the sole owner lets go. Destruction has to land
@@ -308,7 +577,7 @@ class FastHandlerCallback {
       uint32_t sid,
       std::unique_ptr<ThriftRequestContext> requestContext,
       folly::DelayedDestruction::DestructorGuard&& adapterGuard,
-      T value) noexcept {
+      T&& value) noexcept {
     Presult presult;
     if constexpr (detail::IsUniquePtr<T>::value) {
       presult.template get<0>().value = value.get();
@@ -338,23 +607,66 @@ class FastHandlerCallback {
   }
 
  private:
-  // Non-virtual and private: the only caller is destroyOnEventBase, so there
-  // is no vtable on this type. Synthesizes INTERNAL_ERROR if the user handler
-  // dropped the callback without completing. Always runs on the EventBase, so
-  // adapterGuard_ — still held, since no completion donated it away — and the
-  // request context both release on the right thread.
-  ~FastHandlerCallback() {
-    if (completed_) {
-      return;
+  template <typename F>
+  bool tryCompleteInline(F&& fn) noexcept {
+    static_assert(std::is_nothrow_invocable_v<F&>);
+    if (state_ == detail::HandlerState::Completed) {
+      return true;
     }
+    if (!detail::isOnHandlerExecutor(executor_)) {
+      return false;
+    }
+    state_ = detail::HandlerState::Completed;
+    fn();
+    return true;
+  }
+
+  template <typename F>
+  void complete(F&& fn) {
+    detail::completeOnHandlerExecutor(
+        state_,
+        handler_,
+        streamId_,
+        requestContext_,
+        adapterGuard_,
+        evb_,
+        executor_,
+        static_cast<F&&>(fn));
+  }
+
+  // Pre-dispatch failures must not retry the executor that rejected the task.
+  void completeInline(folly::exception_wrapper ew) noexcept {
+    state_ = detail::HandlerState::Completed;
     exceptionFn_(
         handler_,
         streamId_,
         std::move(requestContext_),
         std::move(adapterGuard_),
-        folly::make_exception_wrapper<TApplicationException>(
-            TApplicationException::INTERNAL_ERROR,
-            "FastHandlerCallback not completed"));
+        std::move(ew));
+  }
+
+  // Non-virtual and private: the only caller is destroyOnEventBase, so there
+  // is no vtable on this type. Destruction before dispatch reports executor
+  // overload; destruction after dispatch reports an abandoned callback.
+  ~FastHandlerCallback() {
+    try {
+      if (state_ == detail::HandlerState::Completed) {
+        return;
+      }
+      if (state_ == detail::HandlerState::AwaitingDispatch) {
+        completeInline(
+            folly::make_exception_wrapper<TApplicationException>(
+                TApplicationException::LOADSHEDDING,
+                detail::kHandlerExecutorUnavailable));
+        return;
+      }
+      exception(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::INTERNAL_ERROR,
+              detail::kHandlerCallbackNotCompleted));
+    } catch (...) {
+      // Error construction must not make destruction terminate the process.
+    }
   }
 
   ResultFn resultFn_;
@@ -362,8 +674,8 @@ class FastHandlerCallback {
   ThriftServerAppAdapter* handler_;
   // Keeps the adapter alive while this request is outstanding. Acquired on
   // the EventBase in the constructor, and either donated to the write hop on
-  // completion or released here on the EventBase — never acquired or released
-  // from a CPU thread, because the adapter's count is not atomic.
+  // completion and ultimately released on the EventBase — never acquired or
+  // released from a CPU thread, because the adapter's count is not atomic.
   folly::DelayedDestruction::DestructorGuard adapterGuard_;
   uint32_t streamId_;
   // Keepalive rather than a raw pointer: destroyOnEventBase may need to hop
@@ -372,7 +684,7 @@ class FastHandlerCallback {
   // Non-owning; see getHandlerExecutor().
   folly::Executor* executor_{nullptr};
   std::unique_ptr<ThriftRequestContext> requestContext_;
-  bool completed_{false};
+  detail::HandlerState state_;
 };
 
 template <>
@@ -382,13 +694,13 @@ class FastHandlerCallback<void> {
       ThriftServerAppAdapter*,
       uint32_t,
       std::unique_ptr<ThriftRequestContext>,
-      folly::DelayedDestruction::DestructorGuard&&);
+      folly::DelayedDestruction::DestructorGuard&&) noexcept;
   using ExceptionFn = void (*)(
       ThriftServerAppAdapter*,
       uint32_t,
       std::unique_ptr<ThriftRequestContext>,
       folly::DelayedDestruction::DestructorGuard&&,
-      folly::exception_wrapper);
+      folly::exception_wrapper) noexcept;
 
   // See FastHandlerCallback<T>'s constructor.
   FastHandlerCallback(
@@ -396,7 +708,7 @@ class FastHandlerCallback<void> {
       ExceptionFn exceptionFn,
       ThriftServerAppAdapter* handler,
       uint32_t streamId,
-      folly::EventBase* evb,
+      folly::EventBase& evb,
       folly::Executor* executor,
       std::unique_ptr<ThriftRequestContext> requestContext)
       : doneFn_(doneFn),
@@ -404,9 +716,12 @@ class FastHandlerCallback<void> {
         handler_(handler),
         adapterGuard_(handler),
         streamId_(streamId),
-        evb_(folly::getKeepAliveToken(evb)),
+        evb_(folly::getKeepAliveToken(&evb)),
         executor_(executor),
-        requestContext_(std::move(requestContext)) {}
+        requestContext_(std::move(requestContext)),
+        state_(
+            executor == nullptr ? detail::HandlerState::Running
+                                : detail::HandlerState::AwaitingDispatch) {}
 
   FastHandlerCallback(const FastHandlerCallback&) = delete;
   FastHandlerCallback& operator=(const FastHandlerCallback&) = delete;
@@ -415,52 +730,107 @@ class FastHandlerCallback<void> {
 
   // Safe to call from any thread; see FastHandlerCallback<T>::result.
   void done() {
-    completed_ = true;
-    doneFn_(
-        handler_,
-        streamId_,
-        std::move(requestContext_),
-        std::move(adapterGuard_));
+    if (tryCompleteInline([&]() noexcept {
+          doneFn_(
+              handler_,
+              streamId_,
+              std::move(requestContext_),
+              std::move(adapterGuard_));
+        })) {
+      return;
+    }
+    complete([doneFn = doneFn_](
+                 ThriftServerAppAdapter* handler,
+                 uint32_t streamId,
+                 std::unique_ptr<ThriftRequestContext> requestContext,
+                 folly::DelayedDestruction::DestructorGuard&&
+                     adapterGuard) mutable noexcept {
+      doneFn(
+          handler,
+          streamId,
+          std::move(requestContext),
+          std::move(adapterGuard));
+    });
   }
 
   // See FastHandlerCallback<T>::exception.
   void exception(folly::exception_wrapper ew) {
-    completed_ = true;
-    exceptionFn_(
-        handler_,
-        streamId_,
-        std::move(requestContext_),
-        std::move(adapterGuard_),
-        std::move(ew));
+    if (tryCompleteInline([&]() noexcept {
+          exceptionFn_(
+              handler_,
+              streamId_,
+              std::move(requestContext_),
+              std::move(adapterGuard_),
+              std::move(ew));
+        })) {
+      return;
+    }
+    complete([exceptionFn = exceptionFn_, ew = std::move(ew)](
+                 ThriftServerAppAdapter* handler,
+                 uint32_t streamId,
+                 std::unique_ptr<ThriftRequestContext> requestContext,
+                 folly::DelayedDestruction::DestructorGuard&&
+                     adapterGuard) mutable noexcept {
+      exceptionFn(
+          handler,
+          streamId,
+          std::move(requestContext),
+          std::move(adapterGuard),
+          std::move(ew));
+    });
   }
 
   // See FastHandlerCallback<T>::sendAppError.
   void sendAppError(const folly::exception_wrapper& ew) noexcept {
-    completed_ = true;
-    auto message = makeAppErrorMessage(
-        streamId_,
-        "TApplicationException",
-        detail::exceptionMessage(ew),
-        apache::thrift::ErrorBlame::SERVER);
-    message.requestContext = std::move(requestContext_);
-    handler_->writeResponse(std::move(message), std::move(adapterGuard_));
+    if (tryCompleteInline([&]() noexcept {
+          detail::writeAppError(
+              handler_,
+              streamId_,
+              std::move(requestContext_),
+              std::move(adapterGuard_),
+              ew);
+        })) {
+      return;
+    }
+    try {
+      complete([ew = ew](
+                   ThriftServerAppAdapter* handler,
+                   uint32_t streamId,
+                   std::unique_ptr<ThriftRequestContext> requestContext,
+                   folly::DelayedDestruction::DestructorGuard&&
+                       adapterGuard) mutable noexcept {
+        detail::writeAppError(
+            handler,
+            streamId,
+            std::move(requestContext),
+            std::move(adapterGuard),
+            ew);
+      });
+    } catch (...) {
+      // Callback destruction will synthesize the fallback response.
+    }
   }
-
-  bool isCompleted() const noexcept { return completed_; }
 
   uint32_t streamId() const noexcept { return streamId_; }
 
   folly::EventBase* getEventBase() const { return evb_.get(); }
 
   // Where a generated dispatcher should run a coroutine handler body. Null
-  // when the server has no CPU pool, in which case the caller falls back to
-  // the EventBase. Raw rather than a KeepAlive: the executor outlives the
+  // when dispatch is configured to stay on the EventBase. Raw rather than a
+  // KeepAlive: the executor outlives the
   // adapter, which this callback already keeps alive through adapterGuard_,
   // so a per-request refcount would buy nothing.
   folly::Executor* getHandlerExecutor() const noexcept { return executor_; }
 
   ThriftRequestContext* requestContext() const noexcept {
     return requestContext_.get();
+  }
+
+  // Distinguishes executor rejection/drop from an abandoned handler callback.
+  void markHandlerStarted() noexcept {
+    if (state_ == detail::HandlerState::AwaitingDispatch) {
+      state_ = detail::HandlerState::Running;
+    }
   }
 
   // See FastHandlerCallback<T>::destroyOnEventBase.
@@ -503,19 +873,64 @@ class FastHandlerCallback<void> {
   }
 
  private:
-  // See FastHandlerCallback<T>::~FastHandlerCallback.
-  ~FastHandlerCallback() {
-    if (completed_) {
-      return;
+  template <typename F>
+  bool tryCompleteInline(F&& fn) noexcept {
+    static_assert(std::is_nothrow_invocable_v<F&>);
+    if (state_ == detail::HandlerState::Completed) {
+      return true;
     }
+    if (!detail::isOnHandlerExecutor(executor_)) {
+      return false;
+    }
+    state_ = detail::HandlerState::Completed;
+    fn();
+    return true;
+  }
+
+  template <typename F>
+  void complete(F&& fn) {
+    detail::completeOnHandlerExecutor(
+        state_,
+        handler_,
+        streamId_,
+        requestContext_,
+        adapterGuard_,
+        evb_,
+        executor_,
+        static_cast<F&&>(fn));
+  }
+
+  // Pre-dispatch failures must not retry the executor that rejected the task.
+  void completeInline(folly::exception_wrapper ew) noexcept {
+    state_ = detail::HandlerState::Completed;
     exceptionFn_(
         handler_,
         streamId_,
         std::move(requestContext_),
         std::move(adapterGuard_),
-        folly::make_exception_wrapper<TApplicationException>(
-            TApplicationException::INTERNAL_ERROR,
-            "FastHandlerCallback not completed"));
+        std::move(ew));
+  }
+
+  // See FastHandlerCallback<T>::~FastHandlerCallback.
+  ~FastHandlerCallback() {
+    try {
+      if (state_ == detail::HandlerState::Completed) {
+        return;
+      }
+      if (state_ == detail::HandlerState::AwaitingDispatch) {
+        completeInline(
+            folly::make_exception_wrapper<TApplicationException>(
+                TApplicationException::LOADSHEDDING,
+                detail::kHandlerExecutorUnavailable));
+        return;
+      }
+      exception(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::INTERNAL_ERROR,
+              detail::kHandlerCallbackNotCompleted));
+    } catch (...) {
+      // Error construction must not make destruction terminate the process.
+    }
   }
 
   DoneFn doneFn_;
@@ -529,7 +944,7 @@ class FastHandlerCallback<void> {
   // Non-owning; see getHandlerExecutor().
   folly::Executor* executor_{nullptr};
   std::unique_ptr<ThriftRequestContext> requestContext_;
-  bool completed_{false};
+  detail::HandlerState state_;
 };
 
 template <typename T>

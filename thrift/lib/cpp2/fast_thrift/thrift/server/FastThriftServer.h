@@ -323,17 +323,17 @@ class FastThriftServer {
   void setIOThreadPool(std::shared_ptr<folly::IOThreadPoolExecutorBase> pool);
 
   /**
-   * Supply the CPU executor that user handler methods are dispatched to,
-   * instead of constructing a thread pool from config_.numCPUThreads. Lets
-   * multiple servers/subsystems share one executor.
+   * Supply the CPU executor used by the generated service path, instead of
+   * constructing a thread pool from config_.numCPUThreads. Lets multiple
+   * servers/subsystems share one executor.
    *
    * The keep-alive token is held for the server's lifetime, so the executor
    * outlives every dispatch the server enqueues onto it.
    *
-   * When no executor is configured (the default), argument deserialization
-   * and the handler call both run inline on the IO thread owning the
-   * connection. That is the cheapest path, and correct for handlers that
-   * never block.
+   * When no executor is configured (the default), argument deserialization,
+   * the handler call, and response serialization run inline on the IO thread
+   * owning the connection. That is the cheapest path, and correct for handlers
+   * that never block.
    *
    * Applies to the user handler and to the monitoring, status and debug aux
    * interfaces. Methods pinned with @cpp.ProcessInEbThreadUnsafe in their
@@ -546,9 +546,9 @@ class FastThriftServer {
   // the embedder and this stays null. Declared before cpuExecutor_ so the
   // keep-alive is released before the pool it refers to is destroyed.
   std::shared_ptr<folly::Executor> ownedCPUThreadPool_;
-  // CPU executor for user handler dispatch. Either embedder-supplied via
-  // setCPUExecutor or a keep-alive on ownedCPUThreadPool_. Null means
-  // handlers run inline on the IO threads.
+  // CPU executor for the generated service path. Either embedder-supplied
+  // via setCPUExecutor or a keep-alive on ownedCPUThreadPool_. Null keeps the
+  // service path inline on the IO threads.
   folly::Executor::KeepAlive<> cpuExecutor_;
   connection::ConnectionManager::Ptr connectionManager_;
   folly::Baton<> stopBaton_;

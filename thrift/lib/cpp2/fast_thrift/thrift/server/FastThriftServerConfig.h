@@ -37,12 +37,15 @@ struct FastThriftServerConfig {
   // connections via SO_REUSEPORT.
   uint32_t numIOThreads{1};
 
-  // Size of the CPU thread pool that handler methods are dispatched to.
-  // Zero keeps the pre-existing behavior: request deserialization and the
-  // handler call both run inline on the IO thread that owns the connection,
-  // so a handler that blocks stalls every other connection on that thread.
+  // Size of the CPU thread pool used by the generated service path.
+  // Zero keeps the pre-existing behavior: request deserialization, the
+  // handler call, and response serialization all run inline on the IO thread
+  // that owns the connection, so a handler that blocks stalls every other
+  // connection on that thread.
   //
-  // Ignored when an executor is supplied via FastThriftServer::setCPUExecutor.
+  // The server-owned pool uses a striped queue; size it to the available core
+  // count for balanced LLC utilization. Ignored when an executor is supplied
+  // via FastThriftServer::setCPUExecutor.
   // Auxiliary monitoring / status / debug interfaces dispatch to it too,
   // except for methods pinned with @cpp.ProcessInEbThreadUnsafe — see
   // setCPUExecutor.

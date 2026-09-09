@@ -58,8 +58,8 @@ namespace apache::thrift::fast_thrift::thrift::server {
  */
 struct ThriftServerConnectionFactoryConfig {
   std::shared_ptr<ThriftServerAppAdapterFactory> handler;
-  // Executor that handler methods are dispatched to. Null keeps dispatch
-  // inline on the connection's EventBase.
+  // Executor for request deserialization, method execution, and response
+  // serialization. Null keeps that service path on the connection's EventBase.
   //
   // Applied to the user handler and to the monitoring / status / debug /
   // security aux interfaces alike. Methods that must stay on the EventBase —

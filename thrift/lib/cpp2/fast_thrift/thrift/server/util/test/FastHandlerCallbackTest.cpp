@@ -16,9 +16,16 @@
 
 #include <gtest/gtest.h>
 
+#include <optional>
+#include <stdexcept>
+#include <utility>
+
+#include <folly/executors/ManualExecutor.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
 
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/FastHandlerCallback.h>
 
 namespace apache::thrift::fast_thrift::thrift {
@@ -31,18 +38,34 @@ namespace {
 // DelayedDestruction; the static dispatch fns downcast to read counters.
 class RecordingAdapter : public ThriftServerAppAdapter {
  public:
+  explicit RecordingAdapter(bool* destroyed = nullptr)
+      : destroyed_(destroyed) {}
+
   int resultCount{0};
   int doneCount{0};
   int exceptionCount{0};
   uint32_t lastStreamId{0};
   int lastValue{0};
   std::string lastExceptionMessage;
+  FastHandlerCallback<int>* reentrantCallback{nullptr};
   // Recorded rather than kept alive: the thunks own the context and drop it,
   // so only its identity survives the call.
   const ThriftRequestContext* lastRequestContext{nullptr};
+  void markPipelineClosed() {
+    pipelineActive_ = false;
+    pipeline_ = nullptr;
+    pipelineGuard_.reset();
+  }
 
  protected:
-  ~RecordingAdapter() override = default;
+  ~RecordingAdapter() override {
+    if (destroyed_) {
+      *destroyed_ = true;
+    }
+  }
+
+ private:
+  bool* destroyed_;
 };
 
 RecordingAdapter& asRecorder(ThriftServerAppAdapter* p) {
@@ -57,12 +80,15 @@ void onResult(
     uint32_t streamId,
     std::unique_ptr<ThriftRequestContext> requestContext,
     folly::DelayedDestruction::DestructorGuard&& /*adapterGuard*/,
-    int value) {
+    int&& value) noexcept {
   auto& r = asRecorder(a);
   r.resultCount++;
   r.lastStreamId = streamId;
   r.lastValue = value;
   r.lastRequestContext = requestContext.get();
+  if (auto* callback = std::exchange(r.reentrantCallback, nullptr)) {
+    callback->result(456);
+  }
 }
 
 // The by-value exception_wrapper matches the ExceptionFn signature.
@@ -72,7 +98,7 @@ void onException(
     std::unique_ptr<ThriftRequestContext> requestContext,
     folly::DelayedDestruction::DestructorGuard&& /*adapterGuard*/,
     // NOLINTNEXTLINE(performance-unnecessary-value-param)
-    folly::exception_wrapper ew) {
+    folly::exception_wrapper ew) noexcept {
   auto& r = asRecorder(a);
   r.exceptionCount++;
   r.lastStreamId = streamId;
@@ -80,11 +106,42 @@ void onException(
   r.lastRequestContext = requestContext.get();
 }
 
+struct ThrowingMoveValue {
+  explicit ThrowingMoveValue(int value, int* moveCount = nullptr)
+      : value(value), moveCount(moveCount) {}
+
+  ThrowingMoveValue(const ThrowingMoveValue&) = delete;
+  ThrowingMoveValue& operator=(const ThrowingMoveValue&) = delete;
+  ThrowingMoveValue(ThrowingMoveValue&& other) noexcept(false)
+      : value(std::exchange(other.value, 0)), moveCount(other.moveCount) {
+    if (moveCount != nullptr) {
+      ++*moveCount;
+    }
+  }
+  ThrowingMoveValue& operator=(ThrowingMoveValue&&) = delete;
+
+  int value;
+  int* moveCount;
+};
+
+void onThrowingMoveResult(
+    ThriftServerAppAdapter* a,
+    uint32_t streamId,
+    std::unique_ptr<ThriftRequestContext> requestContext,
+    folly::DelayedDestruction::DestructorGuard&& /*adapterGuard*/,
+    ThrowingMoveValue&& value) noexcept {
+  auto& r = asRecorder(a);
+  r.resultCount++;
+  r.lastStreamId = streamId;
+  r.lastValue = value.value;
+  r.lastRequestContext = requestContext.get();
+}
+
 void onDone(
     ThriftServerAppAdapter* a,
     uint32_t streamId,
     std::unique_ptr<ThriftRequestContext> requestContext,
-    folly::DelayedDestruction::DestructorGuard&& /*adapterGuard*/) {
+    folly::DelayedDestruction::DestructorGuard&& /*adapterGuard*/) noexcept {
   auto& r = asRecorder(a);
   r.doneCount++;
   r.lastStreamId = streamId;
@@ -94,20 +151,127 @@ void onDone(
 using RecordingAdapterPtr =
     folly::DelayedDestructionUniquePtr<RecordingAdapter>;
 
-RecordingAdapterPtr makeRecorder() {
-  return folly::makeDelayedDestructionUniquePtr<RecordingAdapter>();
+RecordingAdapterPtr makeRecorder(bool* destroyed = nullptr) {
+  return folly::makeDelayedDestructionUniquePtr<RecordingAdapter>(destroyed);
+}
+
+void configureClosedPipeline(folly::EventBase& evb, RecordingAdapter& adapter) {
+  channel_pipeline::test::MockHeadHandler head;
+  channel_pipeline::test::TestAllocator allocator;
+  auto pipeline = channel_pipeline::PipelineBuilder<
+                      channel_pipeline::test::MockHeadHandler,
+                      RecordingAdapter,
+                      channel_pipeline::test::TestAllocator>()
+                      .setEventBase(&evb)
+                      .setHead(&head)
+                      .setTail(&adapter)
+                      .setAllocator(&allocator)
+                      .build();
+  adapter.setPipeline(pipeline.get());
+  adapter.markPipelineClosed();
 }
 
 constexpr uint32_t kStreamId = 42;
 
+class RejectingExecutor final : public folly::Executor {
+ public:
+  [[noreturn]] void add(folly::Func) override {
+    throw std::runtime_error("rejected");
+  }
+};
+
+class EnqueueThenThrowExecutor final : public folly::Executor {
+ public:
+  void add(folly::Func func) override {
+    EXPECT_FALSE(task_.has_value());
+    task_.emplace(std::move(func));
+    throw std::runtime_error("rejected after enqueue");
+  }
+
+  void runStoredTask() {
+    ASSERT_TRUE(task_.has_value());
+    auto task = std::move(*task_);
+    task_.reset();
+    task();
+  }
+
+ private:
+  std::optional<folly::Func> task_;
+};
+
+class DroppingExecutor final : public folly::Executor {
+ public:
+  void add(folly::Func) override {}
+};
+
+template <typename F>
+void runOnHandlerExecutorForTest(
+    folly::Executor* executor, folly::EventBase& evb, F&& fn) {
+  using Task = detail::HandlerExecutorTask<std::decay_t<F>>;
+  Task task(folly::getKeepAliveToken(&evb), static_cast<F&&>(fn));
+  detail::runOnHandlerExecutor(executor, std::move(task));
+}
+
 } // namespace
+
+TEST(FastHandlerCallbackTest, RejectedExecutorRunsTaskInline) {
+  folly::EventBase evb;
+  RejectingExecutor executor;
+  int calls = 0;
+
+  runOnHandlerExecutorForTest(&executor, evb, [&]() noexcept { ++calls; });
+
+  EXPECT_EQ(calls, 1);
+}
+
+TEST(FastHandlerCallbackTest, ThrowAfterEnqueueRunsTaskExactlyOnce) {
+  folly::EventBase evb;
+  EnqueueThenThrowExecutor executor;
+  int calls = 0;
+
+  runOnHandlerExecutorForTest(&executor, evb, [&]() noexcept { ++calls; });
+  EXPECT_EQ(calls, 0);
+
+  executor.runStoredTask();
+  EXPECT_EQ(calls, 1);
+}
+
+TEST(FastHandlerCallbackTest, DroppedExecutorTaskFallsBackToEventBase) {
+  folly::EventBase evb;
+  DroppingExecutor executor;
+  int calls = 0;
+
+  runOnHandlerExecutorForTest(&executor, evb, [&]() noexcept { ++calls; });
+  evb.loopOnce();
+
+  EXPECT_EQ(calls, 1);
+}
+
+TEST(FastHandlerCallbackTest, DroppedDispatchTaskCompletesWithError) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  DroppingExecutor executor;
+  auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
+      &onResult, &onException, rec.get(), kStreamId, evb, &executor, nullptr);
+
+  executor.add([cb = std::move(cb)]() mutable {
+    cb->markHandlerStarted();
+    cb->result(123);
+  });
+
+  EXPECT_EQ(rec->resultCount, 0);
+  EXPECT_EQ(rec->exceptionCount, 1);
+  EXPECT_NE(
+      rec->lastExceptionMessage.find(detail::kHandlerExecutorUnavailable),
+      std::string::npos);
+}
 
 TEST(FastHandlerCallbackTest, ResultInvokesResultFnAndSuppressesDestructor) {
   auto rec = makeRecorder();
   folly::EventBase evb;
   {
     auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
-        &onResult, &onException, rec.get(), kStreamId, &evb, nullptr, nullptr);
+        &onResult, &onException, rec.get(), kStreamId, evb, nullptr, nullptr);
     cb->result(123);
   }
   // Single success invocation, no synthetic destructor exception.
@@ -117,6 +281,166 @@ TEST(FastHandlerCallbackTest, ResultInvokesResultFnAndSuppressesDestructor) {
   EXPECT_EQ(rec->lastValue, 123);
 }
 
+TEST(FastHandlerCallbackTest, DuplicateCompletionIsIgnored) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
+      &onResult, &onException, rec.get(), kStreamId, evb, nullptr, nullptr);
+
+  cb->result(123);
+  cb->result(456);
+
+  EXPECT_EQ(rec->resultCount, 1);
+  EXPECT_EQ(rec->lastValue, 123);
+}
+
+TEST(FastHandlerCallbackTest, ReentrantCompletionIsIgnored) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
+      &onResult, &onException, rec.get(), kStreamId, evb, nullptr, nullptr);
+  rec->reentrantCallback = cb.get();
+
+  cb->result(123);
+
+  EXPECT_EQ(rec->resultCount, 1);
+  EXPECT_EQ(rec->lastValue, 123);
+}
+
+TEST(FastHandlerCallbackTest, MarkHandlerStartedDoesNotRearmCompletion) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  folly::ManualExecutor executor;
+  auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
+      &onResult, &onException, rec.get(), kStreamId, evb, &executor, nullptr);
+
+  {
+    detail::HandlerExecutorScope scope(&executor);
+    cb->result(123);
+  }
+  cb->markHandlerStarted();
+  {
+    detail::HandlerExecutorScope scope(&executor);
+    cb->result(456);
+  }
+
+  EXPECT_EQ(rec->resultCount, 1);
+  EXPECT_EQ(rec->lastValue, 123);
+}
+
+TEST(FastHandlerCallbackTest, ResultRunsOnConfiguredExecutor) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  folly::ManualExecutor executor;
+  {
+    auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
+        &onResult, &onException, rec.get(), kStreamId, evb, &executor, nullptr);
+    cb->result(123);
+  }
+
+  EXPECT_EQ(rec->resultCount, 0);
+  EXPECT_EQ(executor.drain(), 1);
+  EXPECT_EQ(rec->resultCount, 1);
+  EXPECT_EQ(rec->lastValue, 123);
+}
+
+TEST(FastHandlerCallbackTest, ThrowingMoveResultRunsOnConfiguredExecutor) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  folly::ManualExecutor executor;
+  {
+    auto cb = makeFastHandlerCallback<FastHandlerCallback<ThrowingMoveValue>>(
+        &onThrowingMoveResult,
+        &onException,
+        rec.get(),
+        kStreamId,
+        evb,
+        &executor,
+        nullptr);
+    cb->result(ThrowingMoveValue{123});
+  }
+
+  EXPECT_EQ(rec->resultCount, 0);
+  EXPECT_EQ(executor.drain(), 1);
+  EXPECT_EQ(rec->resultCount, 1);
+  EXPECT_EQ(rec->lastValue, 123);
+}
+
+TEST(FastHandlerCallbackTest, InlineResultDoesNotMoveReturnValueAgain) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  folly::ManualExecutor executor;
+  auto cb = makeFastHandlerCallback<FastHandlerCallback<ThrowingMoveValue>>(
+      &onThrowingMoveResult,
+      &onException,
+      rec.get(),
+      kStreamId,
+      evb,
+      &executor,
+      nullptr);
+  int moveCount = 0;
+
+  {
+    detail::HandlerExecutorScope scope(&executor);
+    cb->result(ThrowingMoveValue{123, &moveCount});
+  }
+
+  EXPECT_EQ(moveCount, 0);
+  EXPECT_EQ(rec->resultCount, 1);
+  EXPECT_EQ(rec->lastValue, 123);
+}
+
+TEST(FastHandlerCallbackTest, ResultAlreadyOnConfiguredExecutorRunsInline) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  folly::ManualExecutor executor;
+  auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
+      &onResult, &onException, rec.get(), kStreamId, evb, &executor, nullptr);
+
+  {
+    detail::HandlerExecutorScope scope(&executor);
+    cb->result(123);
+  }
+
+  EXPECT_EQ(rec->resultCount, 1);
+  EXPECT_EQ(executor.drain(), 0);
+}
+
+TEST(FastHandlerCallbackTest, ExceptionRunsOnConfiguredExecutor) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  folly::ManualExecutor executor;
+  auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
+      &onResult, &onException, rec.get(), kStreamId, evb, &executor, nullptr);
+
+  cb->exception(
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::UNKNOWN_METHOD, "boom"));
+
+  EXPECT_EQ(rec->exceptionCount, 0);
+  EXPECT_EQ(executor.drain(), 1);
+  EXPECT_EQ(rec->exceptionCount, 1);
+  EXPECT_NE(rec->lastExceptionMessage.find("boom"), std::string::npos);
+}
+
+TEST(FastHandlerCallbackTest, AppErrorRunsOnConfiguredExecutor) {
+  folly::EventBase evb;
+  bool adapterDestroyed = false;
+  auto rec = makeRecorder(&adapterDestroyed);
+  configureClosedPipeline(evb, *rec);
+  folly::ManualExecutor executor;
+  auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
+      &onResult, &onException, rec.get(), kStreamId, evb, &executor, nullptr);
+
+  cb->sendAppError(folly::make_exception_wrapper<TApplicationException>());
+  cb.reset();
+  rec.reset();
+
+  EXPECT_FALSE(adapterDestroyed);
+  EXPECT_EQ(executor.drain(), 1);
+  EXPECT_TRUE(adapterDestroyed);
+}
+
 TEST(
     FastHandlerCallbackTest,
     ExceptionInvokesExceptionFnAndSuppressesDestructor) {
@@ -124,7 +448,7 @@ TEST(
   folly::EventBase evb;
   {
     auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
-        &onResult, &onException, rec.get(), kStreamId, &evb, nullptr, nullptr);
+        &onResult, &onException, rec.get(), kStreamId, evb, nullptr, nullptr);
     cb->exception(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::UNKNOWN_METHOD, "boom"));
@@ -140,7 +464,7 @@ TEST(FastHandlerCallbackTest, DestructorFiresExceptionWhenNotCompleted) {
   folly::EventBase evb;
   {
     auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
-        &onResult, &onException, rec.get(), kStreamId, &evb, nullptr, nullptr);
+        &onResult, &onException, rec.get(), kStreamId, evb, nullptr, nullptr);
     // Drop without completing — destructor must synthesize an error so the
     // peer never hangs.
   }
@@ -150,12 +474,28 @@ TEST(FastHandlerCallbackTest, DestructorFiresExceptionWhenNotCompleted) {
   EXPECT_NE(rec->lastExceptionMessage.find("not completed"), std::string::npos);
 }
 
+TEST(FastHandlerCallbackTest, DestructorErrorRunsOnConfiguredExecutor) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  folly::ManualExecutor executor;
+  {
+    auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
+        &onResult, &onException, rec.get(), kStreamId, evb, &executor, nullptr);
+    cb->markHandlerStarted();
+  }
+
+  EXPECT_EQ(rec->exceptionCount, 0);
+  EXPECT_EQ(executor.drain(), 1);
+  EXPECT_EQ(rec->exceptionCount, 1);
+  EXPECT_NE(rec->lastExceptionMessage.find("not completed"), std::string::npos);
+}
+
 TEST(FastHandlerCallbackTest, VoidDoneInvokesDoneFnAndSuppressesDestructor) {
   auto rec = makeRecorder();
   folly::EventBase evb;
   {
     auto cb = makeFastHandlerCallback<FastHandlerCallback<void>>(
-        &onDone, &onException, rec.get(), kStreamId, &evb, nullptr, nullptr);
+        &onDone, &onException, rec.get(), kStreamId, evb, nullptr, nullptr);
     cb->done();
   }
   EXPECT_EQ(rec->doneCount, 1);
@@ -163,12 +503,62 @@ TEST(FastHandlerCallbackTest, VoidDoneInvokesDoneFnAndSuppressesDestructor) {
   EXPECT_EQ(rec->lastStreamId, kStreamId);
 }
 
+TEST(FastHandlerCallbackTest, VoidDoneRunsOnConfiguredExecutor) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  folly::ManualExecutor executor;
+  {
+    auto cb = makeFastHandlerCallback<FastHandlerCallback<void>>(
+        &onDone, &onException, rec.get(), kStreamId, evb, &executor, nullptr);
+    cb->done();
+  }
+
+  EXPECT_EQ(rec->doneCount, 0);
+  EXPECT_EQ(executor.drain(), 1);
+  EXPECT_EQ(rec->doneCount, 1);
+}
+
+TEST(FastHandlerCallbackTest, VoidExceptionRunsOnConfiguredExecutor) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  folly::ManualExecutor executor;
+  auto cb = makeFastHandlerCallback<FastHandlerCallback<void>>(
+      &onDone, &onException, rec.get(), kStreamId, evb, &executor, nullptr);
+
+  cb->exception(
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::UNKNOWN_METHOD, "boom"));
+
+  EXPECT_EQ(rec->exceptionCount, 0);
+  EXPECT_EQ(executor.drain(), 1);
+  EXPECT_EQ(rec->exceptionCount, 1);
+  EXPECT_NE(rec->lastExceptionMessage.find("boom"), std::string::npos);
+}
+
+TEST(FastHandlerCallbackTest, VoidAppErrorRunsOnConfiguredExecutor) {
+  folly::EventBase evb;
+  bool adapterDestroyed = false;
+  auto rec = makeRecorder(&adapterDestroyed);
+  configureClosedPipeline(evb, *rec);
+  folly::ManualExecutor executor;
+  auto cb = makeFastHandlerCallback<FastHandlerCallback<void>>(
+      &onDone, &onException, rec.get(), kStreamId, evb, &executor, nullptr);
+
+  cb->sendAppError(folly::make_exception_wrapper<TApplicationException>());
+  cb.reset();
+  rec.reset();
+
+  EXPECT_FALSE(adapterDestroyed);
+  EXPECT_EQ(executor.drain(), 1);
+  EXPECT_TRUE(adapterDestroyed);
+}
+
 TEST(FastHandlerCallbackTest, VoidDestructorFiresExceptionWhenNotCompleted) {
   auto rec = makeRecorder();
   folly::EventBase evb;
   {
     auto cb = makeFastHandlerCallback<FastHandlerCallback<void>>(
-        &onDone, &onException, rec.get(), kStreamId, &evb, nullptr, nullptr);
+        &onDone, &onException, rec.get(), kStreamId, evb, nullptr, nullptr);
   }
   EXPECT_EQ(rec->doneCount, 0);
   EXPECT_EQ(rec->exceptionCount, 1);
@@ -179,7 +569,7 @@ TEST(FastHandlerCallbackTest, GetEventBaseReturnsConfiguredEventBase) {
   auto rec = makeRecorder();
   folly::EventBase evb;
   auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
-      &onResult, &onException, rec.get(), kStreamId, &evb, nullptr, nullptr);
+      &onResult, &onException, rec.get(), kStreamId, evb, nullptr, nullptr);
   EXPECT_EQ(cb->getEventBase(), &evb);
   cb->result(0); // suppress destructor exception
 }
@@ -194,7 +584,7 @@ TEST(FastHandlerCallbackTest, RequestContextAccessorReturnsStoredPointer) {
       &onException,
       rec.get(),
       kStreamId,
-      &evb,
+      evb,
       nullptr,
       std::move(requestContext));
   EXPECT_EQ(cb->requestContext(), requestContextPtr);
@@ -215,7 +605,7 @@ TEST(FastHandlerCallbackTest, ExceptionForwardsRequestContextToThunk) {
         &onException,
         rec.get(),
         kStreamId,
-        &evb,
+        evb,
         nullptr,
         std::move(requestContext));
     cb->exception(
@@ -239,7 +629,7 @@ TEST(FastHandlerCallbackTest, UncompletedDestructorForwardsRequestContext) {
         &onException,
         rec.get(),
         kStreamId,
-        &evb,
+        evb,
         nullptr,
         std::move(requestContext));
   }
@@ -260,7 +650,7 @@ TEST(FastHandlerCallbackTest, OutlivingFHCKeepsAdapterAlive) {
   RecordingAdapter* recPtr = rec.get();
 
   auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
-      &onResult, &onException, recPtr, kStreamId, &evb, nullptr, nullptr);
+      &onResult, &onException, recPtr, kStreamId, evb, nullptr, nullptr);
 
   // Owner drops its Ptr while the FHC is still alive — the FHC's
   // adapterGuard_ must hold the adapter live.
@@ -290,7 +680,7 @@ TEST(FastHandlerCallbackTest, UncompletedFHCDestructorIsSafeAfterOwnerDrop) {
   RecordingAdapter* recPtr = rec.get();
 
   auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
-      &onResult, &onException, recPtr, kStreamId, &evb, nullptr, nullptr);
+      &onResult, &onException, recPtr, kStreamId, evb, nullptr, nullptr);
 
   // Test-only: keep the adapter alive past cb.reset() so we can
   // observe state. In production, dropping the owner Ptr leaves only

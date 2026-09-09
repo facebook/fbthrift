@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/Executor.h>
+#include <folly/Portability.h>
 #include <folly/io/async/EventBase.h>
 
 namespace apache::thrift::fast_thrift::thrift {
@@ -51,8 +52,8 @@ class FastRequestParams {
     return requestContext_;
   }
   folly::EventBase* getEventBase() const noexcept { return eventBase_; }
-  // Null when the server has no CPU pool, i.e. the body is running inline on
-  // the EventBase.
+  // Null when this method is dispatched on the EventBase, either because the
+  // server has no CPU pool or because the method is EventBase-pinned.
   folly::Executor* getHandlerExecutor() const noexcept {
     return handlerExecutor_;
   }
@@ -67,7 +68,7 @@ namespace detail {
 
 // Function-local so the header stays definition-free; one instance per thread
 // for the whole process, overwritten per dispatch.
-inline FastRequestParams& tlRequestParams() {
+FOLLY_EXPORT inline FastRequestParams& tlRequestParams() {
   static thread_local FastRequestParams params;
   return params;
 }

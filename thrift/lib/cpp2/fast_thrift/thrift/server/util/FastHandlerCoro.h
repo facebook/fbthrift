@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <exception>
 #include <utility>
 
 #include <folly/Executor.h>
@@ -37,11 +38,10 @@ namespace apache::thrift::fast_thrift::thrift::detail {
  * Kept out of FastHandlerCallback.h so that only the generated sources that
  * actually dispatch a coroutine pull in <folly/coro/Task.h>.
  *
- * Scheduled on the callback's handler executor, which is the pool the calling
- * dispatcher is already running on. Falls back to the connection's EventBase
- * when the server has no CPU pool, so a coroutine handler still works on a
- * server that never configured one — at the cost of running on the data path,
- * which is the same trade every non-eb method makes in that configuration.
+ * Entered on the callback's handler executor by the generated dispatcher.
+ * Starting inline avoids a second scheduling hop; TaskWithExecutor guarantees
+ * that the completion continuation resumes on that bound executor. Servers
+ * without a CPU pool bind to the connection's EventBase instead.
  */
 template <typename T>
 void fastRunCoro(
@@ -52,13 +52,19 @@ void fastRunCoro(
           ? folly::Executor::KeepAlive<>(executor)
           : folly::Executor::KeepAlive<>(callback->getEventBase()),
       std::move(task))
-      .start([cb = std::move(callback)](auto&& result) mutable noexcept {
-        if (result.hasException()) {
-          cb->exception(std::move(result.exception()));
-        } else {
-          cb->result(std::move(result.value()));
-        }
-      });
+      .startInlineUnsafe(
+          [cb = std::move(callback), executor](auto&& result) mutable noexcept {
+            HandlerExecutorScope scope(executor);
+            if (result.hasException()) {
+              cb->exception(std::move(result.exception()));
+              return;
+            }
+            try {
+              cb->result(std::move(result.value()));
+            } catch (...) {
+              cb->exception(folly::exception_wrapper(std::current_exception()));
+            }
+          });
 }
 
 inline void fastRunCoro(
@@ -69,13 +75,19 @@ inline void fastRunCoro(
           ? folly::Executor::KeepAlive<>(executor)
           : folly::Executor::KeepAlive<>(callback->getEventBase()),
       std::move(task))
-      .start([cb = std::move(callback)](auto&& result) mutable noexcept {
-        if (result.hasException()) {
-          cb->exception(std::move(result.exception()));
-        } else {
-          cb->done();
-        }
-      });
+      .startInlineUnsafe(
+          [cb = std::move(callback), executor](auto&& result) mutable noexcept {
+            HandlerExecutorScope scope(executor);
+            if (result.hasException()) {
+              cb->exception(std::move(result.exception()));
+              return;
+            }
+            try {
+              cb->done();
+            } catch (...) {
+              cb->exception(folly::exception_wrapper(std::current_exception()));
+            }
+          });
 }
 
 #endif // FOLLY_HAS_COROUTINES

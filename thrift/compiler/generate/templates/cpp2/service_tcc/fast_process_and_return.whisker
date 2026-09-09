@@ -41,16 +41,15 @@ void {{interface.cpp_name}}AppAdapter::process_{{function.cpp_name}}_impl(
   // counter is non-atomic. The callback releases it back on the EventBase
   // too, so the whole guard lifetime stays single-threaded.
   //
-  // Ownership is unique from here on. The handle moves down the chain and is
-  // never copied, so the callback needs no reference count even once it is
-  // running on a CPU thread.
+  // Ownership is unique from here on. The callback moves into the executor
+  // task and is never copied.
   auto callback = ::apache::thrift::fast_thrift::thrift::makeFastHandlerCallback<Cb>(
       &Cb::template {{#if function.return_type.void?}}writeDone{{#else}}writeSuccess{{/if function.return_type.void?}}<PresultT, ProtocolWriter>,
       &Cb::template writeException<PresultT, ProtocolWriter>,
       this,
       streamId,
-      getEventBase(),
-      cpuExecutor(),
+      *getEventBase(),
+      {{#if function.event_based?}}nullptr{{#else}}cpuExecutor(){{/if}},
       std::move(requestContext));
 
   {{#if function.event_based?}}
@@ -66,30 +65,26 @@ void {{interface.cpp_name}}AppAdapter::process_{{function.cpp_name}}_impl(
     return;
   }
 
-  using CbPtr = ::apache::thrift::fast_thrift::thrift::detail::CallbackPtr<Cb>;
-
-  // The task carries a raw pointer rather than the owning handle. add() is not
-  // noexcept — a bounded queue rejects by throwing — and this function is, so
-  // ownership has to stay here until the enqueue commits; otherwise the
-  // rejection unwinds through the task and the client is told the callback was
-  // dropped rather than that the request was refused.
-  auto* cb = callback.release();
-  auto task = [this, cb, data = std::move(data)]() mutable {
+  auto task = [this,
+               executor,
+               callback = std::move(callback),
+               data = std::move(data)]() mutable {
+    ::apache::thrift::fast_thrift::thrift::detail::HandlerExecutorScope scope(
+        executor);
+    callback->markHandlerStarted();
     process_{{function.cpp_name}}_run<ProtocolReader, ProtocolWriter>(
-        CbPtr(cb), std::move(data));
+        std::move(callback), std::move(data));
   };
   // folly::Function stores callables of up to six pointers inline, so
-  // staying under that keeps enqueueing a request allocation-free.
+  // staying under that keeps task type erasure allocation-free.
   static_assert(
       sizeof(task) <= 6 * sizeof(void*),
       "dispatch task outgrew folly::Function's in-situ buffer");
   try {
     executor->add(std::move(task));
   } catch (...) {
-    // add() never took the task, so the callback is still ours to answer with.
-    CbPtr owned(cb);
-    owned->sendAppError(
-        ::folly::exception_wrapper(std::current_exception()));
+    // The move-only task retains sole callback ownership. Rejection destroys
+    // it here; an executor that accepted it owns either execution or cleanup.
   }
   {{/if function.event_based?}}
 }

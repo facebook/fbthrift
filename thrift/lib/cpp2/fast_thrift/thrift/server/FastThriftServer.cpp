@@ -27,6 +27,7 @@
 #include <folly/Executor.h>
 #include <folly/Function.h>
 #include <folly/executors/CPUThreadPoolExecutor.h>
+#include <folly/executors/task_queue/StripedPriorityUnboundedBlockingQueue.h>
 #include <folly/io/async/AsyncSignalHandler.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
@@ -410,8 +411,12 @@ void FastThriftServer::start() {
   // Materialize the CPU pool only when asked for one and the embedder didn't
   // supply it. Leaving it null keeps handlers inline on the IO threads.
   if (!cpuExecutor_ && config_.numCPUThreads > 0) {
-    ownedCPUThreadPool_ =
-        std::make_shared<folly::CPUThreadPoolExecutor>(config_.numCPUThreads);
+    ownedCPUThreadPool_ = std::make_shared<folly::CPUThreadPoolExecutor>(
+        std::pair<size_t, size_t>{config_.numCPUThreads, config_.numCPUThreads},
+        folly::StripedPriorityUnboundedBlockingQueue<
+            folly::CPUThreadPoolExecutor::CPUTask>::
+            create(
+                /*numPriorities=*/1));
     cpuExecutor_ = folly::getKeepAliveToken(ownedCPUThreadPool_.get());
   }
   // Materialize the counters config_.enableStats asks for, leaving alone any

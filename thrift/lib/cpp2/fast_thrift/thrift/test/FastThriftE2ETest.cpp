@@ -51,6 +51,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServer.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/util/FastHandlerCallback.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/TestFastService.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/TestFastServiceAsyncClient.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
@@ -698,14 +699,11 @@ TEST_P(FastThriftE2ETest, ConcurrentRequestsOnOneConnection) {
 }
 
 // The handler completes on a thread that is neither the connection's
-// EventBase nor the thread the method was dispatched on, so the callback —
-// and with it the adapter guard and the request context's ThriftConnContext
-// reference — is released from a third thread.
-//
-// Runs in both configurations. Ownership of the callback is unique and simply
-// travels to whichever thread completes it, so there is no count to race; the
-// only requirement is that destruction lands back on the EventBase, which
-// holds regardless of whether a CPU pool is configured.
+// EventBase nor the thread the method was dispatched on. With a CPU pool, the
+// callback returns response serialization to that pool before the serialized
+// message hops to the EventBase. Without one, completion remains inline.
+// Adapter and request-context destruction still land on the EventBase in both
+// configurations.
 TEST_P(FastThriftE2ETest, HandlerCompletesOnForeignThread) {
   folly::CPUThreadPoolExecutor completionPool(2);
   handler_->setEchoCompletionExecutor(&completionPool);
@@ -795,17 +793,15 @@ constexpr const char* kRejectionReason = "cpu queue refused the task";
 // Refuses every task, standing in for a bounded CPU queue at its limit.
 class RejectingExecutor : public folly::Executor {
  public:
-  void add(folly::Func) override {
+  [[noreturn]] void add(folly::Func) override {
     throw folly::QueueFullException(kRejectionReason);
   }
 };
 } // namespace
 
-// A CPU executor that refuses the request still has to answer the client, and
-// the answer has to name the refusal. The dispatcher hands the task a raw
-// pointer and keeps the owning handle until the enqueue commits, so a
-// rejection leaves the callback completable rather than unwinding through the
-// task — which would report only that the callback went uncompleted.
+// A CPU executor that refuses the request still has to answer the client.
+// The move-only dispatch task reports a stable load-shedding error when it is
+// destroyed before the handler starts.
 class FastThriftRejectedDispatchTest : public FastThriftE2ETest {
  protected:
   void configureServer(ftt::FastThriftServer& server) override {
@@ -816,7 +812,7 @@ class FastThriftRejectedDispatchTest : public FastThriftE2ETest {
   RejectingExecutor executor_;
 };
 
-TEST_P(FastThriftRejectedDispatchTest, RejectedEnqueueTellsClientWhy) {
+TEST_P(FastThriftRejectedDispatchTest, RejectedEnqueueReportsOverload) {
   auto client = createFastClient();
   auto* evb = clientThread_->getEventBase();
 
@@ -829,7 +825,9 @@ TEST_P(FastThriftRejectedDispatchTest, RejectedEnqueueTellsClientWhy) {
     message = ex.what();
   }
 
-  EXPECT_NE(message.find(kRejectionReason), std::string::npos) << message;
+  EXPECT_NE(
+      message.find(ftt::detail::kHandlerExecutorUnavailable), std::string::npos)
+      << message;
   EXPECT_EQ(message.find("not completed"), std::string::npos) << message;
 
   destroyFastClientOnEvb(client);
