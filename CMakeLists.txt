@@ -62,10 +62,6 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/thrift/cmake"
      "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/CMake")
 
-# Find required dependencies.
-find_package(fmt CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
-
 if (NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 20)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -78,6 +74,23 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fcoroutines>)
 endif ()
+
+# Fetch fmt if it is not installed.
+find_package(fmt CONFIG QUIET)
+if (NOT fmt_FOUND)
+  include(FetchContent)
+  # fmt defaults this off for a subproject, which would leave it out of every
+  # export set and make install(EXPORT) fail.
+  set(FMT_INSTALL ON)
+  FetchContent_Declare(
+    fmt
+    URL https://github.com/fmtlib/fmt/archive/refs/tags/12.1.0.tar.gz
+    URL_HASH
+      SHA256=ea7de4299689e12b6dddd392f9896f08fb0777ac7168897a244a6d6085043fea)
+  FetchContent_MakeAvailable(fmt)
+endif ()
+
+find_package(OpenSSL REQUIRED)
 
 option(THRIFT_COMPILER_ONLY "Build the Thrift compiler only" OFF)
 option(THRIFT_LIB_ONLY "Build the Thrift libraries only" OFF)
