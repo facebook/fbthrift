@@ -217,6 +217,15 @@ TEST(Json5CustomProtocolExtraTest, NegativeZeroRoundTrip) {
   EXPECT_EQ(*d2.doubleValue(), 0.0);
 }
 
+TEST(Json5CustomProtocolExtraTest, NonBmpStringRoundTrip) {
+  // The reader recombines the surrogate pair; the writer emits raw UTF-8
+  // rather than splitting it back into one.
+  auto json =
+      writeExample(readExample(R"RAW({"stringValue": "\ud83d\ude00"})RAW"), {});
+  EXPECT_EQ(json, R"RAW({"stringValue":"😀"})RAW");
+  EXPECT_EQ(*readExample(json).stringValue(), "😀");
+}
+
 // ── Tests for Json5ProtocolWriter::Options ──────────────────────────────────
 
 TEST(Json5WriterOptionsTest, EnumAsInteger) {

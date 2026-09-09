@@ -64,6 +64,37 @@ std::int64_t parseHexInteger(std::string_view str, bool isNegative) {
   throwParseError(fmt::format("hex number {} out of range", str));
 }
 
+std::uint16_t readFourHexDigits(folly::io::Cursor& cursor) {
+  if (!cursor.canAdvance(4)) {
+    throwParseError("expected 4 hex digits");
+  }
+  return static_cast<std::uint16_t>(
+      parseHexInteger(cursor.readFixedString(4), false));
+}
+
+// Decodes a `\uXXXX` escape, with the cursor just past the `u`. A code point
+// outside the BMP is written as a UTF-16 surrogate pair, i.e. two escapes.
+void decodeUnicodeEscape(folly::io::Cursor& cursor, std::string& out) {
+  const std::uint16_t first = readFourHexDigits(cursor);
+  char32_t codePoint = first;
+
+  if (folly::utf16_code_unit_is_high_surrogate(first)) {
+    if (!cursor.canAdvance(2) || cursor.readFixedString(2) != "\\u") {
+      throwParseError("expected a second escape to complete surrogate pair");
+    }
+    const std::uint16_t second = readFourHexDigits(cursor);
+    if (!folly::utf16_code_unit_is_low_surrogate(second)) {
+      throwParseError("invalid second half of surrogate pair");
+    }
+    codePoint =
+        folly::unicode_code_point_from_utf16_surrogate_pair(first, second);
+  } else if (!folly::utf16_code_unit_is_bmp(first)) {
+    throwParseError("unpaired low surrogate");
+  }
+
+  folly::appendCodePointToUtf8(codePoint, out);
+}
+
 } // namespace
 
 // -- cursor operations ----------------------------------------------------
@@ -227,12 +258,9 @@ std::string Json5Reader::parseString(char quote) {
       case 't':
         result.push_back('\t');
         break;
-      case 'u': {
-        auto cp = folly::to<std::int32_t>(
-            parseHexInteger(cursor().readFixedString(4), false));
-        folly::appendCodePointToUtf8(cp, result);
+      case 'u':
+        decodeUnicodeEscape(cursor(), result);
         break;
-      }
       default:
         throwParseError(fmt::format("unknown escape '\\{}' in string", esc));
     }

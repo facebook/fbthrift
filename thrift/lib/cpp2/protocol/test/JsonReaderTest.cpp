@@ -349,6 +349,21 @@ TEST_F(Json5ReaderTest, UnicodeEscape) {
   EXPECT_THROW(readStr(R"("\u00GZ")"), std::exception); // invalid hex
 }
 
+TEST_F(Json5ReaderTest, UnicodeEscapeSurrogatePairs) {
+  auto readStr = [this](std::string_view input) {
+    return std::get<std::string>(reader(input).readPrimitive());
+  };
+
+  EXPECT_EQ(readStr(R"("\ud83d\ude00")"), "😀");
+  EXPECT_EQ(readStr(R"("\uD83D\uDE00")"), "😀"); // case insensitive
+  EXPECT_EQ(readStr(R"("a\ud83d\ude00b")"), "a😀b");
+
+  EXPECT_THROW(readStr(R"("\ud83d")"), std::exception); // no second half
+  EXPECT_THROW(readStr(R"("\ud83dA")"), std::exception); // not an escape
+  EXPECT_THROW(readStr(R"("\ud83d\u0041")"), std::exception); // not a low half
+  EXPECT_THROW(readStr(R"("\ude00")"), std::exception); // lone low half
+}
+
 TEST_F(Json5ReaderTest, PeekToken) {
   using Token = Json5Reader::Token;
 
