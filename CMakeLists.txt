@@ -32,8 +32,22 @@ if (NOT DEFINED THRIFT_INSTALL_CMAKEDIR)
   set(THRIFT_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/fbthrift")
 endif ()
 
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+# Relative RPATHs keep the installation relocatable. Append, so a value from
+# the command line or from fbcode_builder (which sets one on macOS) survives.
+# Both entries go on everything: libraries resolve via the first, executables
+# in bindir via the second, and the unused one is an empty search path.
+if (NOT WIN32)
+  if (APPLE)
+    set(_rpath_origin "@loader_path")
+  else ()
+    set(_rpath_origin "$ORIGIN")
+  endif ()
+  file(RELATIVE_PATH _libdir_from_bindir "/${CMAKE_INSTALL_BINDIR}"
+       "/${CMAKE_INSTALL_LIBDIR}")
+  list(APPEND CMAKE_INSTALL_RPATH "${_rpath_origin}"
+       "${_rpath_origin}/${_libdir_from_bindir}")
+endif ()
+
 # Thrift's libraries default to STATIC, and without PIC they cannot link into
 # a consumer built with BUILD_SHARED_LIBS=ON. PIC is cheap here, and keeping
 # the archives static avoids the cross-dylib RTTI and undefined-symbol
