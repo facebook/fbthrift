@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/dynamic/detail/ValueSize.h>
+
 #include <memory_resource>
 #include <string>
 #include <string_view>
@@ -33,7 +35,9 @@ class String final {
   explicit String(std::pmr::memory_resource* mr)
       : data_(mr ? mr : std::pmr::get_default_resource()) {}
   explicit String(std::string_view sv, std::pmr::memory_resource* mr = nullptr)
-      : data_(sv, mr ? mr : std::pmr::get_default_resource()) {}
+      : data_(mr ? mr : std::pmr::get_default_resource()) {
+    append(sv);
+  }
 
   // Copy and move
   String(const String&) = default;
@@ -52,15 +56,28 @@ class String final {
   operator std::string_view() const noexcept { return view(); }
 
   // Mutation methods
-  void append(std::string_view sv) { data_.append(sv); }
-  void append(const char* s, size_t n) { data_.append(s, n); }
+  void append(std::string_view sv) {
+    detail::checkThriftValueGrowth(size(), sv.size());
+    data_.append(sv);
+  }
+  void append(const char* s, size_t n) { append(std::string_view(s, n)); }
   void clear() noexcept { data_.clear(); }
-  void reserve(size_t n) { data_.reserve(n); }
-  void resize(size_t n) { data_.resize(n); }
-  void resize(size_t n, char c) { data_.resize(n, c); }
+  void reserve(size_t n) {
+    detail::checkThriftValueSize(n);
+    data_.reserve(n);
+  }
+  void resize(size_t n) {
+    detail::checkThriftValueSize(n);
+    data_.resize(n);
+  }
+  void resize(size_t n, char c) {
+    detail::checkThriftValueSize(n);
+    data_.resize(n, c);
+  }
 
   // Assignment from string_view
   String& operator=(std::string_view sv) {
+    detail::checkThriftValueSize(sv.size());
     data_ = sv;
     return *this;
   }

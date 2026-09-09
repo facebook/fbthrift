@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp2/dynamic/detail/ConcreteTypes.h>
 #include <thrift/lib/cpp2/dynamic/detail/Datum.h>
 #include <thrift/lib/cpp2/dynamic/detail/DatumHash.h>
+#include <thrift/lib/cpp2/dynamic/detail/ValueSize.h>
 
 #include <folly/container/F14Map.h>
 
@@ -159,6 +160,11 @@ class ConcreteMap final : public IMap {
   void insert(DynamicValue key, DynamicValue value) override {
     expectType(this->mapType_.asMapUnchecked().keyType(), key.type());
     expectType(this->mapType_.asMapUnchecked().valueType(), value.type());
+    if (elements_.size() >= kMaxThriftValueSize &&
+        (elements_.size() > kMaxThriftValueSize ||
+         !elements_.contains(key.datum().as<K>()))) {
+      throwThriftValueSizeExceeded();
+    }
     elements_.insert_or_assign(
         std::move(key).datum().as<K>(), std::move(value).datum().as<V>());
   }
@@ -177,7 +183,10 @@ class ConcreteMap final : public IMap {
 
   void clear() override { elements_.clear(); }
 
-  void reserve(size_t capacity) override { elements_.reserve(capacity); }
+  void reserve(size_t capacity) override {
+    checkThriftValueSize(capacity);
+    elements_.reserve(capacity);
+  }
 
   bool operator==(const IMap& other) const override {
     if (!mapType_.isEqualIdentityTo(other.type())) {

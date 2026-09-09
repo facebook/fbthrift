@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/dynamic/DynamicValue.h>
 #include <thrift/lib/cpp2/dynamic/List.h>
 #include <thrift/lib/cpp2/dynamic/detail/Datum.h>
+#include <thrift/lib/cpp2/dynamic/detail/ValueSize.h>
 
 namespace apache::thrift::dynamic {
 namespace detail {
@@ -101,12 +102,14 @@ bool ConcreteList<T>::isEmpty() const {
 template <typename T>
 void ConcreteList<T>::push_back(DynamicValue value) {
   expectType(elementType(), value.type());
+  checkThriftValueGrowth(elements_.size(), 1);
   elements_.push_back(extractValue<T>(std::move(value).datum()));
 }
 
 template <typename T>
 void ConcreteList<T>::push_front(DynamicValue value) {
   expectType(elementType(), value.type());
+  checkThriftValueGrowth(elements_.size(), 1);
   auto extractedValue = extractValue<T>(std::move(value).datum());
   elements_.insert(elements_.begin(), extractedValue);
 }
@@ -117,6 +120,7 @@ void ConcreteList<T>::insertAtIndex(size_t index, DynamicValue value) {
     throw std::out_of_range("Index out of range in List::insertAtIndex");
   }
   expectType(elementType(), value.type());
+  checkThriftValueGrowth(elements_.size(), 1);
   auto extractedValue = extractValue<T>(std::move(value).datum());
   elements_.insert(elements_.begin() + index, extractedValue);
 }
@@ -124,6 +128,7 @@ void ConcreteList<T>::insertAtIndex(size_t index, DynamicValue value) {
 template <typename T>
 void ConcreteList<T>::fill(size_t count, DynamicValue value) {
   expectType(elementType(), value.type());
+  checkThriftValueSize(count);
   auto extractedValue = extractValue<T>(std::move(value).datum());
   elements_.assign(count, extractedValue);
 }
@@ -153,6 +158,7 @@ template <typename T>
 void ConcreteList<T>::extend(const IList& other) {
   other.visit([this]<typename U>(const ConcreteList<U>& otherList) {
     if constexpr (std::is_same_v<T, U>) {
+      checkThriftValueGrowth(elements_.size(), otherList.size());
       elements_.insert(
           elements_.end(),
           otherList.elements().begin(),
@@ -196,6 +202,7 @@ void ConcreteList<T>::clear() {
 
 template <typename T>
 void ConcreteList<T>::reserve(size_t capacity) {
+  checkThriftValueSize(capacity);
   elements_.reserve(capacity);
 }
 

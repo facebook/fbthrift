@@ -294,6 +294,12 @@ Set deserialize(
   protocol::TType ttype;
   uint32_t size;
   reader.readSetBegin(ttype, size);
+  if constexpr (!ProtocolReader::kOmitsContainerSizes()) {
+    if (size > detail::kMaxThriftValueSize) {
+      protocol::TProtocolException::throwExceededSizeLimit(
+          size, detail::kMaxThriftValueSize);
+    }
+  }
 
   // Handle protocols that omit container sizes (e.g., SimpleJSON)
   if constexpr (ProtocolReader::kOmitsContainerSizes()) {
@@ -368,6 +374,12 @@ Map deserialize(
   protocol::TType valueTType;
   uint32_t size;
   reader.readMapBegin(keyTType, valueTType, size);
+  if constexpr (!ProtocolReader::kOmitsContainerSizes()) {
+    if (size > detail::kMaxThriftValueSize) {
+      protocol::TProtocolException::throwExceededSizeLimit(
+          size, detail::kMaxThriftValueSize);
+    }
+  }
 
   // Handle protocols that omit container sizes (e.g., SimpleJSON)
   if constexpr (ProtocolReader::kOmitsContainerSizes()) {
@@ -647,6 +659,12 @@ List deserialize(
         protocol::TType ttype;
         uint32_t size;
         reader.readListBegin(ttype, size);
+        if constexpr (!ProtocolReader::kOmitsContainerSizes()) {
+          if (size > detail::kMaxThriftValueSize) {
+            protocol::TProtocolException::throwExceededSizeLimit(
+                size, detail::kMaxThriftValueSize);
+          }
+        }
 
         // Handle protocols that omit container sizes (e.g., SimpleJSON)
         if constexpr (ProtocolReader::kOmitsContainerSizes()) {
@@ -660,6 +678,7 @@ List deserialize(
                 continue;
               }
             }
+            detail::checkThriftValueGrowth(data.size(), 1);
             if constexpr (std::is_same_v<elemDatumType, bool>) {
               bool value = deserialize(reader, elemTypeNode, alloc, callbacks);
               data.emplace_back(static_cast<std::byte>(value));

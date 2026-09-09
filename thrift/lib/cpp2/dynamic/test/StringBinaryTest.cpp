@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/dynamic/DynamicValue.h>
 #include <thrift/lib/cpp2/dynamic/Serialization.h>
 #include <thrift/lib/cpp2/dynamic/detail/Datum.h>
+#include <thrift/lib/cpp2/dynamic/detail/ValueSize.h>
 
 #include <gtest/gtest.h>
 #include <folly/io/Cursor.h>
@@ -25,6 +26,14 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 namespace apache::thrift::dynamic {
+namespace {
+
+void selfMoveAssign(Binary& value) {
+  Binary* destination = &value;
+  destination->operator=(std::move(value));
+}
+
+} // namespace
 
 // String tests
 TEST(StringTest, BasicUsage) {
@@ -54,6 +63,14 @@ TEST(StringTest, Mutation) {
   EXPECT_TRUE(s.empty());
 }
 
+TEST(StringTest, RejectsOversizedCapacity) {
+  String value;
+  const auto oversized = detail::kMaxThriftValueSize + 1;
+
+  EXPECT_THROW(value.reserve(oversized), std::length_error);
+  EXPECT_THROW(value.resize(oversized), std::length_error);
+}
+
 // Binary tests
 TEST(BinaryTest, BasicUsage) {
   auto buf = folly::IOBuf::copyBuffer("test data");
@@ -64,6 +81,36 @@ TEST(BinaryTest, BasicUsage) {
   std::array<char, 9> data{};
   cursor.pull(data.data(), 9);
   EXPECT_EQ(std::string_view(data.data(), 9), "test data");
+}
+
+TEST(BinaryTest, CachesChainedLength) {
+  auto buf = folly::IOBuf::copyBuffer("a");
+  buf->appendToChain(folly::IOBuf::copyBuffer("bc"));
+
+  Binary value(std::move(buf));
+
+  EXPECT_EQ(value.computeChainDataLength(), 3);
+  EXPECT_EQ(value.clone().computeChainDataLength(), 3);
+}
+
+TEST(BinaryTest, MoveClearsSourceLength) {
+  Binary source(folly::IOBuf::copyBuffer("data"));
+  Binary* movedFrom = &source;
+
+  Binary destination(std::move(source));
+
+  EXPECT_EQ(destination.computeChainDataLength(), 4);
+  EXPECT_TRUE(movedFrom->empty());
+  EXPECT_EQ(movedFrom->computeChainDataLength(), 0);
+}
+
+TEST(BinaryTest, SelfMovePreservesLength) {
+  Binary value(folly::IOBuf::copyBuffer("data"));
+
+  selfMoveAssign(value);
+
+  EXPECT_EQ(value.computeChainDataLength(), 4);
+  EXPECT_FALSE(value.empty());
 }
 
 TEST(BinaryTest, CopyAndClone) {

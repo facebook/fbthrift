@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/dynamic/Serialization.h>
 #include <thrift/lib/cpp2/dynamic/Set.h>
 #include <thrift/lib/cpp2/dynamic/detail/ConcreteSet.h>
+#include <thrift/lib/cpp2/dynamic/detail/ValueSize.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 namespace apache::thrift::dynamic {
@@ -76,6 +77,12 @@ TEST(SetTest, InsertDuplicate) {
   // Duplicate insert returns false
   EXPECT_FALSE(set.insert(DynamicValue::makeI32(10)));
   EXPECT_EQ(set.size(), 1);
+}
+
+TEST(SetTest, RejectsOversizedCapacity) {
+  auto set = makeSet(makeSetType(type_system::TypeSystem::I32()));
+
+  EXPECT_THROW(set.reserve(detail::kMaxThriftValueSize + 1), std::length_error);
 }
 
 TEST(SetTest, Erase) {

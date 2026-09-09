@@ -22,6 +22,7 @@
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp2/dynamic/Serialization.h>
 #include <thrift/lib/cpp2/dynamic/detail/ConcreteList.h>
+#include <thrift/lib/cpp2/dynamic/detail/ValueSize.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 namespace apache::thrift::dynamic {
@@ -202,6 +203,15 @@ TEST(ListTest, Reserve) {
   // But we can still append
   list.push_back(DynamicValue::makeI32(42));
   EXPECT_EQ(list.size(), 1);
+}
+
+TEST(ListTest, RejectsOversizedCapacity) {
+  auto list = makeList(makeListType(type_system::TypeSystem::I32()));
+  const auto oversized = detail::kMaxThriftValueSize + 1;
+
+  EXPECT_THROW(list.reserve(oversized), std::length_error);
+  EXPECT_THROW(
+      list.fill(oversized, DynamicValue::makeI32(0)), std::length_error);
 }
 
 TEST(ListTest, Equality) {

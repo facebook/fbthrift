@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/dynamic/detail/ValueSize.h>
 #include <thrift/lib/cpp2/dynamic/fwd.h>
 
 #include <folly/io/Cursor.h>
@@ -23,6 +24,7 @@
 
 #include <memory>
 #include <memory_resource>
+#include <utility>
 
 namespace apache::thrift::dynamic {
 
@@ -38,13 +40,27 @@ class Binary final {
   explicit Binary(
       std::unique_ptr<folly::IOBuf> buf,
       std::pmr::memory_resource* mr = nullptr)
-      : data_(std::move(buf)), mr_(mr) {}
+      : data_(std::move(buf)),
+        mr_(mr),
+        size_(data_ ? data_->computeChainDataLength() : 0) {
+    detail::checkThriftValueSize(size_);
+  }
 
   // Copy and move
   Binary(const Binary& other);
-  Binary(Binary&&) noexcept = default;
+  Binary(Binary&& other) noexcept
+      : data_(std::move(other.data_)),
+        mr_(other.mr_),
+        size_(std::exchange(other.size_, 0)) {}
   Binary& operator=(const Binary& other);
-  Binary& operator=(Binary&&) noexcept = default;
+  Binary& operator=(Binary&& other) noexcept {
+    if (this != &other) {
+      data_ = std::move(other.data_);
+      mr_ = other.mr_;
+      size_ = std::exchange(other.size_, 0);
+    }
+    return *this;
+  }
   ~Binary() = default;
 
   // Create cursor for reading
@@ -52,10 +68,8 @@ class Binary final {
   // No RWCursor access because it doesn't support memory_resource.
 
   // Size and empty checks
-  size_t computeChainDataLength() const {
-    return data_ ? data_->computeChainDataLength() : 0;
-  }
-  bool empty() const { return !data_ || data_->empty(); }
+  size_t computeChainDataLength() const { return size_; }
+  bool empty() const { return size_ == 0; }
 
   // Clone with memory resource
   Binary clone(std::pmr::memory_resource* mr = nullptr) const;
@@ -66,6 +80,7 @@ class Binary final {
  private:
   std::unique_ptr<folly::IOBuf> data_;
   std::pmr::memory_resource* mr_ = nullptr;
+  size_t size_ = 0;
 
   template <typename ProtocolWriter>
   friend void serialize(ProtocolWriter& writer, const Binary& binary);

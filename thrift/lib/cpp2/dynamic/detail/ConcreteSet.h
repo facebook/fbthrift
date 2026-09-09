@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp2/dynamic/detail/ConcreteTypes.h>
 #include <thrift/lib/cpp2/dynamic/detail/Datum.h>
 #include <thrift/lib/cpp2/dynamic/detail/DatumHash.h>
+#include <thrift/lib/cpp2/dynamic/detail/ValueSize.h>
 
 #include <folly/container/F14Set.h>
 
@@ -114,6 +115,11 @@ class ConcreteSet final : public ISet {
 
   bool insert(DynamicValue value) override {
     expectType(this->setType_.asSetUnchecked().elementType(), value.type());
+    if (elements_.size() >= kMaxThriftValueSize &&
+        (elements_.size() > kMaxThriftValueSize ||
+         !elements_.contains(value.datum().as<T>()))) {
+      throwThriftValueSizeExceeded();
+    }
     return elements_.insert(std::move(value).datum().as<T>()).second;
   }
 
@@ -140,7 +146,10 @@ class ConcreteSet final : public ISet {
 
   void clear() override { elements_.clear(); }
 
-  void reserve(size_t capacity) override { elements_.reserve(capacity); }
+  void reserve(size_t capacity) override {
+    checkThriftValueSize(capacity);
+    elements_.reserve(capacity);
+  }
 
   bool operator==(const ISet& other) const override {
     if (!setType_.isEqualIdentityTo(other.type())) {

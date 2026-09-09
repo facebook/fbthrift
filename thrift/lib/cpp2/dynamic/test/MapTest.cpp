@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/dynamic/SerializableRecord.h>
 #include <thrift/lib/cpp2/dynamic/Serialization.h>
 #include <thrift/lib/cpp2/dynamic/detail/ConcreteMap.h>
+#include <thrift/lib/cpp2/dynamic/detail/ValueSize.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 namespace apache::thrift::dynamic {
@@ -86,6 +87,13 @@ TEST(MapTest, InsertOrAssign) {
   auto val2 = map.get(DynamicValue::makeI32(1));
   ASSERT_TRUE(val2.has_value());
   EXPECT_EQ(val2->asString().view(), "ONE");
+}
+
+TEST(MapTest, RejectsOversizedCapacity) {
+  auto map = makeMap(makeMapType(
+      type_system::TypeSystem::I32(), type_system::TypeSystem::String()));
+
+  EXPECT_THROW(map.reserve(detail::kMaxThriftValueSize + 1), std::length_error);
 }
 
 TEST(MapTest, Contains) {
