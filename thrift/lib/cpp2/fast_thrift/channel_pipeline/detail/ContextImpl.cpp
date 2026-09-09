@@ -56,10 +56,6 @@ void ContextImpl::fireTypeEventFromRoute(
       typeEventRouteOffset_, routeIndex, key, payload);
 }
 
-void ContextImpl::fireEvent(
-    std::uint32_t ev, TypeErasedBox&& eventMessage) noexcept {
-  pipeline_->fireEvent(ev, std::move(eventMessage));
-}
 BytesPtr ContextImpl::allocate(size_t size) noexcept {
   return pipeline_->allocate(size);
 }

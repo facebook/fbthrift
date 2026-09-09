@@ -78,14 +78,6 @@ struct HandlerNode {
   OnReadReadyFn onReadReadyFn{nullptr};
   OnPipelineInactiveFn onPipelineInactiveFn{nullptr};
 
-  // User-event subscription — opt-in. Populated only when the handler
-  // subscribes to one or more events (see EventSubscriber). Each subscription
-  // carries its global id and a typed dispatch thunk; PipelineImpl links one
-  // per-event hook per subscription. A null pointer / zero count means the
-  // handler receives no events.
-  const EventSubscription* subscriptions{nullptr};
-  std::size_t subscriptionCount{0};
-
   // Type-based event metadata. Published keys register the event with this
   // pipeline; subscriptions additionally carry the typed on<E>() thunk.
   const EventKey* publishedEvents{nullptr};
@@ -117,8 +109,6 @@ struct HandlerNode {
         onWriteReadyFn(other.onWriteReadyFn),
         onReadReadyFn(other.onReadReadyFn),
         onPipelineInactiveFn(other.onPipelineInactiveFn),
-        subscriptions(other.subscriptions),
-        subscriptionCount(other.subscriptionCount),
         publishedEvents(other.publishedEvents),
         publishedEventCount(other.publishedEventCount),
         typeSubscriptions(other.typeSubscriptions),
@@ -136,8 +126,6 @@ struct HandlerNode {
     other.onWriteReadyFn = nullptr;
     other.onReadReadyFn = nullptr;
     other.onPipelineInactiveFn = nullptr;
-    other.subscriptions = nullptr;
-    other.subscriptionCount = 0;
     other.publishedEvents = nullptr;
     other.publishedEventCount = 0;
     other.typeSubscriptions = nullptr;
@@ -160,8 +148,6 @@ struct HandlerNode {
       onWriteReadyFn = other.onWriteReadyFn;
       onReadReadyFn = other.onReadReadyFn;
       onPipelineInactiveFn = other.onPipelineInactiveFn;
-      subscriptions = other.subscriptions;
-      subscriptionCount = other.subscriptionCount;
       publishedEvents = other.publishedEvents;
       publishedEventCount = other.publishedEventCount;
       typeSubscriptions = other.typeSubscriptions;
@@ -180,8 +166,6 @@ struct HandlerNode {
       other.onWriteReadyFn = nullptr;
       other.onReadReadyFn = nullptr;
       other.onPipelineInactiveFn = nullptr;
-      other.subscriptions = nullptr;
-      other.subscriptionCount = 0;
       other.publishedEvents = nullptr;
       other.publishedEventCount = 0;
       other.typeSubscriptions = nullptr;
@@ -236,47 +220,6 @@ inline constexpr auto kHandlerTypeSubscriptions =
         typename H::SubscribedEvents{});
 
 /**
- * Typed dispatch thunk for one subscription: casts the global event id back to
- * the subscriber's layer enum E and invokes onEvent. Internal handlers receive
- * the same ContextFor<StateTuple> every other callback hands them, so state is
- * reachable from onEvent too; endpoints (Endpoint == true) receive no context
- * and ignore StateTuple.
- */
-template <typename H, typename E, bool Endpoint, typename StateTuple>
-inline constexpr EventHook::DispatchFn kSubThunk =
-    +[](void* h,
-        ContextImpl* ctx,
-        std::uint32_t id,
-        const TypeErasedBox& evt) noexcept {
-      if constexpr (Endpoint) {
-        static_cast<H*>(h)->onEvent(static_cast<E>(id), evt);
-      } else {
-        decltype(auto) c = contextFor<StateTuple>(*ctx);
-        static_cast<H*>(h)->onEvent(c, static_cast<E>(id), evt);
-      }
-    };
-
-/**
- * Compile-time array of a handler's subscriptions — one {global id, typed
- * thunk} per event in its kSubscribedEvents. Each event keeps its own (layer)
- * enum type, so its thunk dispatches the correct typed onEvent overload. This
- * is how a handler listens to events from its own layer and any lower layer.
- * Endpoints pass Endpoint == true (no context). Layer enums share one anchored
- * id space, so each value is already its global id.
- */
-template <typename H, bool Endpoint, typename StateTuple, auto... Evs>
-constexpr std::array<EventSubscription, sizeof...(Evs)> makeSubscriptions(
-    Subscriptions<Evs...>) {
-  return {EventSubscription{
-      static_cast<std::uint32_t>(Evs),
-      kSubThunk<H, decltype(Evs), Endpoint, StateTuple>}...};
-}
-
-template <typename H, bool Endpoint, typename StateTuple = std::tuple<>>
-inline constexpr auto kHandlerSubscriptions =
-    makeSubscriptions<H, Endpoint, StateTuple>(H::kSubscribedEvents);
-
-/**
  * Creates a HandlerNode from a concrete handler type.
  *
  * This function template captures the concrete handler type at compile time
@@ -289,12 +232,11 @@ inline constexpr auto kHandlerSubscriptions =
  * await_write_ready() context methods.
  *
  * @tparam H The concrete handler type
- * @tparam E The pipeline's event enum (NoEvent disables events)
  * @param handler_id The unique ID for this handler
  * @param handler Unique pointer to the handler instance
  * @return A fully initialized HandlerNode
  */
-template <typename H, EventEnum E = NoEvent, typename StateTuple = std::tuple<>>
+template <typename H, typename StateTuple = std::tuple<>>
 HandlerNode makeHandlerNode(HandlerId handlerId, std::unique_ptr<H> handler) {
   // The context a handler receives in every callback: the bare ContextImpl for
   // a stateless pipeline (zero overhead, unchanged), otherwise the
@@ -430,18 +372,6 @@ HandlerNode makeHandlerNode(HandlerId handlerId, std::unique_ptr<H> handler) {
       node.typeSubscriptionCount =
           kHandlerTypeSubscriptions<H, /*Endpoint=*/false, StateTuple>.size();
     }
-  }
-
-  // User-event subscription: opt-in, and only when events are enabled for
-  // this pipeline. A subscriber declares its event types via kSubscribedEvents
-  // and implements onEvent(ctx, E, box); the framework records the dispatch
-  // thunk and subscription ids so PipelineImpl can link one hook per event.
-  // Non-subscribers leave the fields null and are never iterated.
-  if constexpr (kEventsEnabled<E> && EventSubscriber<H, Ctx>) {
-    node.subscriptions =
-        kHandlerSubscriptions<H, /*Endpoint=*/false, StateTuple>.data();
-    node.subscriptionCount =
-        kHandlerSubscriptions<H, /*Endpoint=*/false, StateTuple>.size();
   }
 
   return node;

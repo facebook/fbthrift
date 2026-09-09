@@ -24,8 +24,7 @@
  * apache::thrift::fast_thrift::transport::test::PassthroughParser>
  *     -> LoopBatchingFrameHandlerT<
  *          WriteCompletionTrackerT<RocketClientEventFactory>>
- *     -> EventCapturingAppHandler  (subscribes to BatchWriteComplete via
- * onEvent)
+ *     -> EventCapturingAppHandler  (subscribes to `BatchWriteCompleteEvent`)
  *
  * Each test drives one or more outbound writes through the pipeline, lets the
  * loop callback flush, then triggers writeSuccess / writeErr on the mocked

@@ -107,7 +107,7 @@ class TestChildAdapter : public ThriftServerAppAdapter {
   // Lifecycle shadows — bump counters so tests can verify fan-out, then
   // chain to base. The composite's vtable resolves on T = TestChildAdapter,
   // so chaining keeps base behavior (e.g. closeCallback firing from
-  // onEvent) intact.
+  // typed event callback) intact.
   void handlerAdded() noexcept { ++handlerAddedCount; }
   void handlerRemoved() noexcept { ++handlerRemovedCount; }
   void onPipelineActive() noexcept {

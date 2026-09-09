@@ -43,9 +43,9 @@ namespace apache::thrift::fast_thrift::frame::write::handler {
  * BatchWriteComplete; on each batch completion it pops `frameCount` records
  * and fires FrameWriteComplete for every completed original frame.
  *
- * onEvent additionally receives whether the handler is still holding frames it
- * has not handed downstream, which is the term the layer below cannot see when
- * it reports the connection caught up.
+ * The typed event callback additionally receives whether the handler is still
+ * holding frames it has not handed downstream, which is the term the layer
+ * below cannot see when it reports the connection caught up.
  */
 template <typename T>
 concept FragmentCompletionTracker =

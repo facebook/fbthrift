@@ -93,8 +93,7 @@ class PipelineImpl : public folly::DelayedDestruction {
       std::vector<detail::HandlerNode> handlers,
       void* headHandler,
       void* tailHandler,
-      void* allocator,
-      std::uint32_t eventCount) noexcept;
+      void* allocator) noexcept;
 
   // Non-copyable
   PipelineImpl(const PipelineImpl&) = delete;
@@ -150,26 +149,6 @@ class PipelineImpl : public folly::DelayedDestruction {
   template <typename EventSet>
     requires kIsEventSet<EventSet>
   EventPublisherHandle<EventSet> bindEvents() noexcept;
-
-  /**
-   * Fire a user event of type `ev` carrying `eventMessage` to the handlers and
-   * endpoints subscribed to that event type — and only those. Walks the single
-   * per-event list `eventLists_[ev]`; within it the order is tail endpoint →
-   * internal handlers (tail→head, descending index) → head endpoint.
-   *
-   * Subscribers register the event types they care about (see
-   * EventSubscriber); a handler subscribed to several types is reached through
-   * a separate list for each. The firer is itself invoked only if it
-   * subscribed to `ev`. Out-of-range / disabled (no such event type) is a
-   * no-op. Direction is not part of the event identity.
-   *
-   * Type-safe entry point: callers pass the pipeline's event enum; the
-   * non-templated dispatch core (private) does the work.
-   */
-  template <EventEnum E>
-  void fireEvent(E ev, TypeErasedBox&& eventMessage) noexcept {
-    fireEvent(static_cast<std::uint32_t>(ev), std::move(eventMessage));
-  }
 
   // === Fire to specific handler ===
 
@@ -355,14 +334,10 @@ class PipelineImpl : public folly::DelayedDestruction {
     if (delayed && !getDestroyPending()) {
       return;
     }
-    // Unlink intrusive hooks before their handler owners or list sentinels are
-    // destroyed. Call handlerRemoved directly to avoid DestructorGuard
-    // recursion.
     if (state_ != State::Closed) {
       state_ = State::Closed;
       writeReadyList_.clear();
       readReadyList_.clear();
-      clearEventLists();
       callHandlerRemovedImpl();
     }
     delete this;
@@ -391,13 +366,6 @@ class PipelineImpl : public folly::DelayedDestruction {
       EventKey key,
       const void* payload) noexcept;
 
-  // Non-templated, out-of-line dispatch core for fireEvent. The public typed
-  // overload casts the event enum to its id and forwards here. Private so
-  // callers go through the type-safe enum API; defined once in the .cpp so the
-  // per-event dispatch is not instantiated per event-enum. Reached via the
-  // friend ContextImpl forward.
-  void fireEvent(std::uint32_t ev, TypeErasedBox&& eventMessage) noexcept;
-
   // O(log N) handler lookup using sorted_vector_map - cache-friendly for small
   // N
   size_t lookupHandler(HandlerId handlerId) const noexcept;
@@ -406,16 +374,6 @@ class PipelineImpl : public folly::DelayedDestruction {
 
   // Initialize contexts after construction
   void initializeContexts() noexcept;
-  // Allocate the per-event lists and link one hook per subscribed event for
-  // every subscriber: tail endpoint first, then internal handlers tail→head,
-  // then head endpoint last (preserving event iteration order within each
-  // list). Called by the builder after endpoints are wired. No-op when events
-  // are disabled (eventListCount_ == 0).
-  void linkEventLists() noexcept;
-  // Unlink all per-event hooks. Must run before the contexts / endpoint hook
-  // arrays that own those hooks are destroyed, else auto-unlink touches a dead
-  // list sentinel. Idempotent.
-  void clearEventLists() noexcept;
   void linkTypeEventLists() noexcept;
   // Call handlerAdded for all handlers
   void callHandlerAdded() noexcept;
@@ -443,14 +401,6 @@ class PipelineImpl : public folly::DelayedDestruction {
   void (*tailOnExceptionFn_)(void*, folly::exception_wrapper&&) noexcept {
       nullptr};
   void (*tailOnWriteReadyFn_)(void*) noexcept {nullptr};
-  // User-event subscription for the tail endpoint (see
-  // EndpointEventSubscriber). Each subscription carries its global id and a
-  // typed dispatch thunk (which ignores the null context). Set by the builder;
-  // linkEventLists allocates tailEventHooks_ and links one hook per
-  // subscription into the per-event lists.
-  const EventSubscription* tailSubscriptions_{nullptr};
-  std::size_t tailSubscriptionCount_{0};
-  std::unique_ptr<EventHook[]> tailEventHooks_;
   const EventKey* tailPublishedEvents_{nullptr};
   std::size_t tailPublishedEventCount_{0};
   const TypeEventSubscription* tailTypeSubscriptions_{nullptr};
@@ -466,11 +416,6 @@ class PipelineImpl : public folly::DelayedDestruction {
       void*, detail::ContextImpl&, TypeErasedBox&&) noexcept {nullptr};
   void (*headOnWriteReadyFn_)(void*, detail::ContextImpl&) noexcept {nullptr};
   void (*headOnReadReadyFn_)(void*) noexcept {nullptr};
-  // User-event subscription for the head endpoint (see
-  // EndpointEventSubscriber).
-  const EventSubscription* headSubscriptions_{nullptr};
-  std::size_t headSubscriptionCount_{0};
-  std::unique_ptr<EventHook[]> headEventHooks_;
   const EventKey* headPublishedEvents_{nullptr};
   std::size_t headPublishedEventCount_{0};
   const TypeEventSubscription* headTypeSubscriptions_{nullptr};
@@ -509,14 +454,6 @@ class PipelineImpl : public folly::DelayedDestruction {
   bool writeReadyDispatching_{false};
   bool writeReadyDispatchPending_{false};
 
-  // One intrusive list of subscribers per event type, indexed by event id.
-  // Sized to the event enum's Count at construction; the array stays null and
-  // the count zero when the pipeline's EventEnum is NoEvent. fireEvent(ev)
-  // walks only eventLists_[ev]. Hooks are owned by the subscribers' contexts
-  // (internal handlers) or by head/tailEventHooks_ (endpoints).
-  std::unique_ptr<EventList[]> eventLists_;
-  std::uint32_t eventListCount_{0};
-
   // Immutable open-address table built once from process-local type tokens.
   // Subscriber dispatch entries are grouped into contiguous per-event spans.
   std::unique_ptr<TypeEventSlot[]> typeEventTable_;
@@ -535,7 +472,6 @@ class PipelineImpl : public folly::DelayedDestruction {
       typename HeadHandler,
       typename TailHandler,
       typename Allocator,
-      typename EventEnumT,
       typename StateTuple>
   friend class PipelineBuilder;
 

@@ -25,8 +25,7 @@
  * apache::thrift::fast_thrift::transport::test::PassthroughParser>
  *     -> IntervalBatchingFrameHandlerT<
  *          WriteCompletionTrackerT<RocketServerEventFactory>>
- *     -> EventCapturingAppHandler  (subscribes to BatchWriteComplete via
- * onEvent)
+ *     -> EventCapturingAppHandler  (subscribes to `BatchWriteCompleteEvent`)
  *
  * Each test drives outbound writes, lets the loop / interval timer flush,
  * then triggers writeSuccess / writeErr on the mocked AsyncTransport and

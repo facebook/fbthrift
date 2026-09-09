@@ -394,7 +394,8 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   // Connection-close handler sits immediately upstream of the tail.
   // ThriftServerConnection::close() fires
   // ThriftServerCloseConnectionEvent through the pipeline; the handler
-  // handles the typed event and drives the terminal state machine.
+  // handles it through its typed callback and drives the terminal state
+  // machine.
   thriftPipelineBuilder.template addNextDuplex<CloseHandler>(
       thrift_server_connection_close_handler_tag,
       config_.drainTimeout,

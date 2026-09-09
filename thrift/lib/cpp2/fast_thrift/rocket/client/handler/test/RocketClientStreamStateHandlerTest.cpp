@@ -959,14 +959,14 @@ TEST_F(ClientStreamStateHandlerTest, ErrorFrameOnStreamZeroPassesThrough) {
 }
 
 // =============================================================================
-// Write Completion (onEvent: FrameWriteComplete -> RocketWriteComplete)
+// Write Completion (FrameWriteComplete -> RocketWriteComplete)
 // =============================================================================
 
 // A FrameWriteComplete for a live stream resolves the streamId to its request
 // context and fires RocketWriteComplete carrying that context and the status.
 TEST_F(
     ClientStreamStateHandlerTest,
-    OnEventFiresRocketWriteCompleteForKnownStream) {
+    FrameWriteCompleteFiresRocketWriteCompleteForKnownStream) {
   int testHook;
   void* const kTestHandle = &testHook;
   auto request = makeClientRequest(
@@ -999,7 +999,9 @@ TEST_F(
 
 // A FrameWriteComplete whose streamId has no live slot (already terminated or
 // never seen) is silently dropped — no RocketWriteComplete is fired.
-TEST_F(ClientStreamStateHandlerTest, OnEventForUnknownStreamFiresNothing) {
+TEST_F(
+    ClientStreamStateHandlerTest,
+    FrameWriteCompleteForUnknownStreamFiresNothing) {
   handler_.on<FrameWriteCompleteEvent>(
       ctx_,
       FrameWriteCompleteEvent{

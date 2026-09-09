@@ -165,46 +165,4 @@ concept EndpointTypeEventSubscriber =
     kIsEventSet<typename H::SubscribedEvents> &&
     endpointHasOn<H>(typename H::SubscribedEvents{});
 
-/**
- * True iff H implements a typed onEvent for EVERY event in its subscription
- * set. Each subscribed value carries its own (layer) enum type, so the
- * overloads are checked per layer — a handler may subscribe to events from its
- * own layer and any lower layer and must handle each typed.
- */
-template <typename H, typename Ctx, auto... Evs>
-constexpr bool subscriberHasOnEvent(Subscriptions<Evs...>) {
-  return (requires(H& h, Ctx& ctx, const TypeErasedBox& evt) {
-    { h.onEvent(ctx, Evs, evt) } noexcept -> std::same_as<void>;
-  } && ...);
-}
-
-template <typename H, auto... Evs>
-constexpr bool endpointHasOnEvent(Subscriptions<Evs...>) {
-  return (requires(H& h, const TypeErasedBox& evt) {
-    { h.onEvent(Evs, evt) } noexcept -> std::same_as<void>;
-  } && ...);
-}
-
-/**
- * EventSubscriber concept - an internal handler that registers for user events.
- *
- * The handler declares its set via a static `kSubscribedEvents` of type
- * `Subscriptions<...>` (values from its own layer and/or any lower layer) and
- * implements a typed `onEvent(ctx, Ev, const TypeErasedBox&)` for each. The
- * framework links one hook per subscribed event.
- */
-template <typename H, typename Ctx>
-concept EventSubscriber = requires { H::kSubscribedEvents; } &&
-    subscriberHasOnEvent<H, Ctx>(H::kSubscribedEvents);
-
-/**
- * EndpointEventSubscriber concept - a head/tail endpoint that subscribes.
- *
- * Identical to EventSubscriber except endpoints receive no Context: they
- * implement `onEvent(Ev, const TypeErasedBox&)`.
- */
-template <typename H>
-concept EndpointEventSubscriber = requires { H::kSubscribedEvents; } &&
-    endpointHasOnEvent<H>(H::kSubscribedEvents);
-
 } // namespace apache::thrift::fast_thrift::channel_pipeline

@@ -43,7 +43,8 @@ namespace apache::thrift::fast_thrift::frame::handler {
  * context.
  *
  * Delivery is exactly-once via two terminal paths:
- *  - onEvent(BatchWriteComplete{frameCount=N}): pop N streamIds in write order;
+ *  - on<BatchWriteCompleteEvent>({frameCount=N}): pop N streamIds in write
+ *    order;
  *    fire FrameWriteComplete per still-live entry.
  *  - onRead: a terminal stream response proves the request reached the wire, so
  *    fire FrameWriteComplete{streamId, Success} early — before the stream-state

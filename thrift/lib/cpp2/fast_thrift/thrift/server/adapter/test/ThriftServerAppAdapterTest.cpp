@@ -432,7 +432,7 @@ TEST_F(ThriftServerAppAdapterTest, OnConnectionClosedEventDefersCloseCallback) {
   evb_->runInEventBaseThreadAndWait([&] {
     adapter->on<ThriftServerConnectionClosedEvent>();
     EXPECT_FALSE(closeCalled)
-        << "Close callback must not fire synchronously during onEvent "
+        << "Close callback must not fire synchronously during the typed event callback "
            "(use-after-free risk)";
   });
 

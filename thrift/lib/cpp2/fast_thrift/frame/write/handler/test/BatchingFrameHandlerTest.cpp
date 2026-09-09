@@ -931,7 +931,7 @@ struct CapturingTracker {
   size_t onWriteCount{0};
   size_t onFlushCount{0};
   size_t onDiscardCount{0};
-  size_t onEventCount{0};
+  size_t eventCount{0};
 
   void onWrite() noexcept { ++onWriteCount; }
   void onFlush() noexcept { ++onFlushCount; }
@@ -940,7 +940,7 @@ struct CapturingTracker {
   template <channel_pipeline::PipelineEvent E, typename Context>
     requires std::same_as<E, CapturingEvent>
   void on(Context&, const int&) noexcept {
-    ++onEventCount;
+    ++eventCount;
   }
 };
 
@@ -1036,17 +1036,17 @@ TEST_F(BatchingFrameHandlerTrackerTest, DiscardedBatchNotifiesTracker) {
   EXPECT_EQ(handler.tracker().onDiscardCount, 1u);
 }
 
-TEST_F(BatchingFrameHandlerTrackerTest, OnEventDelegatesToTracker) {
+TEST_F(BatchingFrameHandlerTrackerTest, TypedEventDelegatesToTracker) {
   BatchingFrameHandlerT<CapturingTracker> handler;
   handler.handlerAdded(*ctx_);
 
-  // The batcher's onEvent should pass the box through to the tracker
-  // unchanged. The tracker owns the per-pipeline event type discrimination.
+  // The batcher should pass the payload through to the tracker
+  // unchanged. The tracker owns the typed event subscription.
   // We pass a dummy int box twice and confirm the tracker received both.
   handler.on<CapturingEvent>(*ctx_, 0);
   handler.on<CapturingEvent>(*ctx_, 0);
 
-  EXPECT_EQ(handler.tracker().onEventCount, 2u);
+  EXPECT_EQ(handler.tracker().eventCount, 2u);
 }
 
 // The zero-cost claim, observed through a real pipeline. The no-backpressure

@@ -36,15 +36,14 @@ namespace apache::thrift::fast_thrift::frame::write::handler {
  *   - onDiscard()         — when the batcher abandons its buffered writes
  *                           instead of flushing them, so the tracker's counts
  *                           don't outlive the frames they stand for.
- *   - onEvent(ctx, box)   — when the pipeline's per-pipeline event arrives
- *                           via the batcher's onEvent. The tracker subscribes
+ *   - on<Event>(ctx, box) — when the pipeline's typed event arrives via the
+ *                           batcher's matching handler. The tracker subscribes
  *                           only to the raw transport-fired
  *                           TransportWriteComplete event, so its own enriched
  *                           re-fires are never routed back to it.
  *
- * `onEvent` is a member template parameterized on the pipeline's Context
- * type and consumes a `TypeErasedBox` directly, so the tracker — not the
- * batcher — owns the per-pipeline event type.
+ * `on<Event>` is a member template parameterized on the pipeline's Context
+ * type, so the tracker — not the batcher — owns the event type.
  */
 template <typename T>
 concept WriteCompletionTracker =

@@ -75,7 +75,6 @@ template <
     typename HeadHandler,
     typename TailHandler,
     typename Allocator = SimpleBufferAllocator,
-    typename EventEnumT = NoEvent,
     typename StateTuple = std::tuple<>>
 class PipelineBuilder {
   static_assert(
@@ -85,10 +84,6 @@ class PipelineBuilder {
   static_assert(
       BufferAllocator<Allocator>,
       "Allocator must satisfy BufferAllocator concept");
-  static_assert(
-      EventEnum<EventEnumT>,
-      "EventEnum must be NoEvent (events disabled) or a uint32_t-backed enum "
-      "class exposing a Count sentinel as its last value");
 
   // The context type handlers receive: bare ContextImpl for a stateless
   // pipeline, otherwise a TypedContext<StateTuple>. Handler concepts are
@@ -98,7 +93,7 @@ class PipelineBuilder {
 
   // Sibling instantiations (produced by addState) construct one another
   // through the private rebind constructor.
-  template <typename, typename, typename, typename, typename>
+  template <typename, typename, typename, typename>
   friend class PipelineBuilder;
 
  public:
@@ -340,12 +335,7 @@ class PipelineBuilder {
     }
     using NewStateTuple = decltype(std::tuple_cat(
         std::declval<StateTuple&&>(), std::declval<std::tuple<T>>()));
-    return PipelineBuilder<
-        HeadHandler,
-        TailHandler,
-        Allocator,
-        EventEnumT,
-        NewStateTuple>(
+    return PipelineBuilder<HeadHandler, TailHandler, Allocator, NewStateTuple>(
         detail::PipelineBuilderRebindTag{},
         eventBase_,
         headHandler_,
@@ -363,11 +353,11 @@ class PipelineBuilder {
    *
    * Unlike addNext{Inbound,Outbound,Duplex}, the concrete handler type is not
    * known at this call site — the node was produced by
-   * detail::makeHandlerNode<H, EventEnumT> where H was in scope (e.g. a
+   * detail::makeHandlerNode<H> where H was in scope (e.g. a
    * config-time handler registry that erased H into a factory). The node is
    * placed at the current tail-most position, so nodes appended later sit
    * closer to the tail. Callers are responsible for building the node with the
-   * same EventEnumT as this builder so event subscriptions link correctly.
+   * same state tuple as this builder so typed contexts remain valid.
    *
    * @param node A HandlerNode produced by detail::makeHandlerNode
    * @return Reference to this builder for chaining
@@ -394,8 +384,7 @@ class PipelineBuilder {
         std::move(handlers_),
         static_cast<void*>(headHandler_),
         static_cast<void*>(tailHandler_),
-        static_cast<void*>(allocator_),
-        kEventCount<EventEnumT>));
+        static_cast<void*>(allocator_)));
 
     wireHeadHandler(pipeline.get());
     wireTailHandler(pipeline.get());
@@ -408,11 +397,6 @@ class PipelineBuilder {
       return static_cast<Allocator*>(alloc)->copyBuffer(data, size);
     };
 
-    // Link per-event subscriber lists now that endpoints are wired (endpoints
-    // subscribe too). No-op when events are disabled.
-    if constexpr (kEventsEnabled<EventEnumT>) {
-      pipeline->linkEventLists();
-    }
     pipeline->linkTypeEventLists();
 
     // Wire pipeline-level state. A stateless pipeline (empty tuple) does none
@@ -506,17 +490,6 @@ class PipelineBuilder {
       }
     }
 
-    // User-event subscription: the head endpoint opts in by declaring
-    // kSubscribedEvents and implementing `onEvent(E, const TypeErasedBox&)`.
-    // linkEventLists() then links one hook per subscribed event.
-    if constexpr (
-        kEventsEnabled<EventEnumT> && EndpointEventSubscriber<HeadHandler>) {
-      pipeline->headSubscriptions_ =
-          detail::kHandlerSubscriptions<HeadHandler, /*Endpoint=*/true>.data();
-      pipeline->headSubscriptionCount_ =
-          detail::kHandlerSubscriptions<HeadHandler, /*Endpoint=*/true>.size();
-    }
-
     // Lifecycle methods
     pipeline->headOnPipelineActiveFn_ = [](void* h) noexcept {
       static_cast<HeadHandler*>(h)->onPipelineActive();
@@ -576,17 +549,6 @@ class PipelineBuilder {
       }
     }
 
-    // User-event subscription: the tail endpoint opts in by declaring
-    // kSubscribedEvents and implementing `onEvent(E, const TypeErasedBox&)`.
-    // linkEventLists() then links one hook per subscribed event.
-    if constexpr (
-        kEventsEnabled<EventEnumT> && EndpointEventSubscriber<TailHandler>) {
-      pipeline->tailSubscriptions_ =
-          detail::kHandlerSubscriptions<TailHandler, /*Endpoint=*/true>.data();
-      pipeline->tailSubscriptionCount_ =
-          detail::kHandlerSubscriptions<TailHandler, /*Endpoint=*/true>.size();
-    }
-
     // Lifecycle methods
     pipeline->tailOnPipelineActiveFn_ = [](void* t) noexcept {
       static_cast<TailHandler*>(t)->onPipelineActive();
@@ -606,16 +568,14 @@ class PipelineBuilder {
   PipelineBuilder& addHandler(HandlerId id, Args&&... args) {
     auto handler = std::make_unique<H>(std::forward<Args>(args)...);
     handlers_.push_back(
-        detail::makeHandlerNode<H, EventEnumT, StateTuple>(
-            id, std::move(handler)));
+        detail::makeHandlerNode<H, StateTuple>(id, std::move(handler)));
     return *this;
   }
 
   template <typename H>
   PipelineBuilder& addHandler(HandlerId id, std::unique_ptr<H> handler) {
     handlers_.push_back(
-        detail::makeHandlerNode<H, EventEnumT, StateTuple>(
-            id, std::move(handler)));
+        detail::makeHandlerNode<H, StateTuple>(id, std::move(handler)));
     return *this;
   }
 

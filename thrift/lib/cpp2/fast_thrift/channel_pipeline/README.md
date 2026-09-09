@@ -428,7 +428,7 @@ The container that owns all handlers and contexts.
 | `fireWrite(msg)` | Fire outbound from tail |
 | `sendRead(id, msg)` | Fire to specific handler |
 | `sendWrite(id, msg)` | Fire to specific handler |
-| `fireEvent(ev, msg)` | Deliver a user event to its subscribers (see User Events) |
+| `fireEvent<Event>(payload)` | Deliver a user event to its subscribers (see User Events) |
 | `context(id)` | Get context by ID (nullptr if not found) |
 | `close()` | Shutdown pipeline |
 
@@ -445,7 +445,7 @@ A handler's view into the pipeline.
 | `fireRead(msg)` | Fire to next inbound handler |
 | `fireWrite(msg)` | Fire to next outbound handler |
 | `fireException(e)` | Propagate exception as message |
-| `fireEvent(ev, msg)` | Deliver a user event to its subscribers (see User Events) |
+| `fireEvent<Event>(payload)` | Deliver a user event to its subscribers (see User Events) |
 | `pipeline()` | Access owning pipeline |
 | `handlerId()` | This handler's ID |
 | `allocate(size)` | Allocate buffer using pipeline's allocator |
@@ -977,9 +977,6 @@ Dispatch remains synchronous and ordered tail endpoint → internal handlers
 tail-to-head → head endpoint. Payloads are borrowed as `const&` for the duration
 of dispatch.
 
-The enum-based `EventEnum`, `NoEvent`, `Subscriptions`, and
-`onEvent(enum, TypeErasedBox)` API remains available only for migration and is
-deprecated for new code.
 
 ---
 

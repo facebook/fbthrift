@@ -39,9 +39,9 @@ namespace apache::thrift::fast_thrift::frame::read::handler {
  * timing without acquiring an opinion about what the timing is for. What the
  * arrival of a first fragment *means* belongs to the layer above.
  *
- * A tracker only ever fires; it never subscribes. `ctx.fireEvent` is a template
- * over any event enum, so a tracker needs no `EventId` typedef and no
- * `kSubscribedEvents` — and the handler carrying it needs neither either.
+ * A tracker only ever publishes; it never subscribes. Its `PublishedEvents`
+ * declaration owns the event tags it may fire, so the handler carrying it does
+ * not need to know about them.
  */
 template <typename T>
 concept ReassemblyTracker =

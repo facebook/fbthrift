@@ -315,35 +315,12 @@ struct BenchAppHandler {
   void onWriteReady() noexcept {}
 };
 
-enum class LegacyBenchEvent : std::uint32_t {
-  Value,
-  Unused1,
-  Unused2,
-  Unused3,
-  Unused4,
-  Unused5,
-  Count,
-};
-
 struct TypeBenchEvent : EventTag<std::uint64_t> {};
 struct UnusedTypeBenchEvent1 : EventTag<> {};
 struct UnusedTypeBenchEvent2 : EventTag<> {};
 struct UnusedTypeBenchEvent3 : EventTag<> {};
 struct UnusedTypeBenchEvent4 : EventTag<> {};
 struct UnusedTypeBenchEvent5 : EventTag<> {};
-
-struct LegacyEventBenchHandler : PassthroughHandler {
-  static constexpr Subscriptions<LegacyBenchEvent::Value> kSubscribedEvents{};
-
-  void onEvent(
-      detail::ContextImpl&,
-      LegacyBenchEvent,
-      const TypeErasedBox& event) noexcept {
-    sum += event.get<std::uint64_t>();
-  }
-
-  std::uint64_t sum{0};
-};
 
 struct TypeEventBenchHandler : PassthroughHandler {
   using PublishedEvents = Events<
@@ -489,37 +466,7 @@ BENCHMARK_DRAW_LINE();
 // Event dispatch
 // =============================================================================
 
-BENCHMARK(Pipeline_LegacyEvent_OneSubscriber, iters) {
-  folly::BenchmarkSuspender susp;
-  folly::EventBase evb;
-  BenchTransportHandler transport;
-  BenchAppHandler app;
-  BenchAllocator allocator;
-
-  auto handler = std::make_unique<LegacyEventBenchHandler>();
-  auto* handlerPtr = handler.get();
-  auto pipeline = PipelineBuilder<
-                      BenchTransportHandler,
-                      BenchAppHandler,
-                      BenchAllocator,
-                      LegacyBenchEvent>()
-                      .setEventBase(&evb)
-                      .setHead(&transport)
-                      .setTail(&app)
-                      .setAllocator(&allocator)
-                      .addNextDuplex<LegacyEventBenchHandler>(
-                          bench_passthrough_tag, std::move(handler))
-                      .build();
-
-  susp.dismiss();
-  for (std::size_t i = 0; i < iters; ++i) {
-    pipeline->fireEvent(
-        LegacyBenchEvent::Value, TypeErasedBox(static_cast<std::uint64_t>(i)));
-  }
-  folly::doNotOptimizeAway(handlerPtr->sum);
-}
-
-BENCHMARK_RELATIVE(Pipeline_TypeEvent_OneSubscriber, iters) {
+BENCHMARK(Pipeline_TypeEvent_OneSubscriber, iters) {
   folly::BenchmarkSuspender susp;
   folly::EventBase evb;
   BenchTransportHandler transport;

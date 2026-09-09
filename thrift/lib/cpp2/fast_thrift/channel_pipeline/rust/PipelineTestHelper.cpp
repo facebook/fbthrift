@@ -19,6 +19,7 @@
 #include <thrift/lib/rust/channel_pipeline/src/integration_test.rs.h>
 
 #include <chrono>
+#include <concepts>
 #include <condition_variable>
 #include <cstdio>
 #include <cstdlib>
@@ -1290,14 +1291,11 @@ AdapterExtResult run_adapter_ext_test() noexcept {
 
 namespace {
 
-enum class Phase6Ev : std::uint32_t {
-  Alpha,
-  Beta,
-  Count,
-};
+struct Phase6AlphaEvent : EventTag<TypeErasedBox> {};
+struct Phase6BetaEvent : EventTag<> {};
 
 struct Phase6AlphaHandler {
-  static constexpr Subscriptions<Phase6Ev::Alpha> kSubscribedEvents{};
+  using SubscribedEvents = Events<Phase6AlphaEvent>;
   void handlerAdded(detail::ContextImpl&) noexcept {}
   void handlerRemoved(detail::ContextImpl&) noexcept {}
   void onPipelineActive(detail::ContextImpl&) noexcept {}
@@ -1314,8 +1312,9 @@ struct Phase6AlphaHandler {
   }
   void onWriteReady(detail::ContextImpl&) noexcept {}
   void onPipelineInactive(detail::ContextImpl&) noexcept {}
-  void onEvent(
-      detail::ContextImpl&, Phase6Ev, const TypeErasedBox& box) noexcept {
+  template <typename Event>
+    requires std::same_as<Event, Phase6AlphaEvent>
+  void on(detail::ContextImpl&, const TypeErasedBox& box) noexcept {
     ++PHASE6_EVENT_COUNT;
     if (box.empty()) {
       ++PHASE6_EMPTY_DELIVERED;
@@ -1336,8 +1335,8 @@ EventNoopResult run_event_noop_test() noexcept {
   rust_handler_reset_test_counts();
   Phase6AlphaHandler::reset();
 
-  // 1) NoEvent default (Mock handlers have no kSubscribedEvents) -> fireEvent
-  // is no-op via out-of-range check PipelineImpl.cpp:321-337 covers disabled.
+  // 1) No subscribers for Phase6BetaEvent -> fireEvent
+  // is a no-op.
   bool no_event_is_noop = false;
   {
     folly::EventBase evb;
@@ -1351,49 +1350,46 @@ EventNoopResult run_event_noop_test() noexcept {
             .setTail(&tail)
             .setAllocator(&alloc)
             .build();
-    pipeline->fireEvent(NoEvent::Count, TypeErasedBox{});
-    // out-of-range -> return early, no crash
+    if (!pipeline) {
+      std::abort();
+    }
+    pipeline->fireEvent<Phase6BetaEvent>();
+    // Unregistered events are ignored.
     no_event_is_noop = true;
     pipeline.reset();
   }
 
-  // 2) Out-of-range id on disabled pipeline remains no-op; enabled pipeline
-  // firing unsubscribed event also no-op.
+  // 2) A pipeline with subscribers also ignores an unregistered event.
   bool out_of_range_noop = false;
   {
     folly::EventBase evb;
     MockHeadHandler head;
     MockTailHandler tail;
     TestAllocator alloc;
-    // Pipeline with Phase6Ev but only Alpha subscriber; Beta/Gamma out-of
-    // subscriber set -> no callback, proves per-event O(s) walk.
+    // Pipeline with only an Alpha subscriber; Beta is outside its
+    // subscription set, proving per-event dispatch.
     auto handler = std::make_unique<Phase6AlphaHandler>();
-    auto pipeline = PipelineBuilder<
-                        MockHeadHandler,
-                        MockTailHandler,
-                        TestAllocator,
-                        Phase6Ev>()
-                        .setEventBase(&evb)
-                        .setHead(&head)
-                        .setTail(&tail)
-                        .setAllocator(&alloc)
-                        .addNextDuplex<Phase6AlphaHandler>(
-                            normal_before_tag, std::move(handler))
-                        .build();
-    // Out-of-range event id (>= Count) -> no-op per PipelineImpl.cpp check
-    pipeline->fireEvent(
-        static_cast<Phase6Ev>(static_cast<uint32_t>(Phase6Ev::Count) + 10),
-        TypeErasedBox{});
+    auto pipeline =
+        PipelineBuilder<MockHeadHandler, MockTailHandler, TestAllocator>()
+            .setEventBase(&evb)
+            .setHead(&head)
+            .setTail(&tail)
+            .setAllocator(&alloc)
+            .addNextDuplex<Phase6AlphaHandler>(
+                normal_before_tag, std::move(handler))
+            .build();
+    if (!pipeline) {
+      std::abort();
+    }
+    // Unsubscribed event is a no-op
+    pipeline->fireEvent<Phase6BetaEvent>();
     if (Phase6AlphaHandler::PHASE6_EVENT_COUNT.load() == 0) {
       out_of_range_noop = true;
     }
     pipeline.reset();
   }
 
-  // 3) Empty payload delivered: pure signal via TypeErasedBox{} delivered as
-  // const TypeErasedBox& non-consuming per audit
-  // ThriftServerCompositeAppAdapter.cpp:185-195 emits CloseConnection empty
-  // box.
+  // 3) A `TypeErasedBox` payload is delivered by const reference.
   bool empty_payload_delivered = false;
   uint32_t subscriber_count_for_A = 0;
   {
@@ -1403,19 +1399,19 @@ EventNoopResult run_event_noop_test() noexcept {
     MockTailHandler tail;
     TestAllocator alloc;
     auto handler = std::make_unique<Phase6AlphaHandler>();
-    auto pipeline = PipelineBuilder<
-                        MockHeadHandler,
-                        MockTailHandler,
-                        TestAllocator,
-                        Phase6Ev>()
-                        .setEventBase(&evb)
-                        .setHead(&head)
-                        .setTail(&tail)
-                        .setAllocator(&alloc)
-                        .addNextDuplex<Phase6AlphaHandler>(
-                            normal_before_tag, std::move(handler))
-                        .build();
-    pipeline->fireEvent(Phase6Ev::Alpha, TypeErasedBox{});
+    auto pipeline =
+        PipelineBuilder<MockHeadHandler, MockTailHandler, TestAllocator>()
+            .setEventBase(&evb)
+            .setHead(&head)
+            .setTail(&tail)
+            .setAllocator(&alloc)
+            .addNextDuplex<Phase6AlphaHandler>(
+                normal_before_tag, std::move(handler))
+            .build();
+    if (!pipeline) {
+      std::abort();
+    }
+    pipeline->fireEvent<Phase6AlphaEvent>(TypeErasedBox{});
     uint32_t cnt = Phase6AlphaHandler::PHASE6_EVENT_COUNT.load();
     uint32_t emptyCnt = Phase6AlphaHandler::PHASE6_EMPTY_DELIVERED.load();
     if (cnt == 1 && emptyCnt == 1) {
@@ -1424,14 +1420,14 @@ EventNoopResult run_event_noop_test() noexcept {
     subscriber_count_for_A = cnt;
 
     // Beta not subscribed to this handler -> proves dispatch only subscribed
-    pipeline->fireEvent(Phase6Ev::Beta, TypeErasedBox{});
+    pipeline->fireEvent<Phase6BetaEvent>();
     // Count still 1
     if (Phase6AlphaHandler::PHASE6_EVENT_COUNT.load() != 1) {
       empty_payload_delivered = false;
     }
 
     // Non-empty box also: const TypeErasedBox& non-consuming via get<T>()
-    pipeline->fireEvent(Phase6Ev::Alpha, TypeErasedBox{int{42}});
+    pipeline->fireEvent<Phase6AlphaEvent>(TypeErasedBox{int{42}});
     // Now count 2, empty still 1
     uint32_t cnt2 = Phase6AlphaHandler::PHASE6_EVENT_COUNT.load();
     uint32_t empty2 = Phase6AlphaHandler::PHASE6_EMPTY_DELIVERED.load();

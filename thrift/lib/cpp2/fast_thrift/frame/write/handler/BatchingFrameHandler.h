@@ -54,7 +54,7 @@ namespace apache::thrift::fast_thrift::frame::write::handler {
  *
  * Templated on a `WriteCompletionTracker`-satisfying type (see
  * WriteCompletionTracker.h). The default `NoOpWriteCompletionTracker` makes
- * the three hook sites (onWrite, doFlush, onEvent) fully no-op and the
+ * the three hook sites (onWrite, doFlush, typed event) fully no-op and the
  * compiler elides them. Pipelines that need per-write completion notifications
  * instantiate `BatchingFrameHandlerT<RealTracker>` and the same hooks drive
  * the tracker.

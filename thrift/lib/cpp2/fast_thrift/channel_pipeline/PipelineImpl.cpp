@@ -89,16 +89,14 @@ PipelineImpl::PipelineImpl(
     std::vector<detail::HandlerNode> handlers,
     void* headHandler,
     void* tailHandler,
-    void* allocator,
-    std::uint32_t eventCount) noexcept
+    void* allocator) noexcept
     : eventBase_(eventBase),
       handlers_(std::move(handlers)),
       headCtx_(this, eventBase, allocator, handlers_.size(), 0),
       tailCtx_(this, eventBase, allocator, handlers_.size(), 0),
       headHandler_(headHandler),
       tailHandler_(tailHandler),
-      allocator_(allocator),
-      eventListCount_(eventCount) {
+      allocator_(allocator) {
   initializeContexts();
 }
 
@@ -176,82 +174,6 @@ void PipelineImpl::initializeContexts() noexcept {
   tailCtx_.prevWriteFn_ = lastWriteFn_ ? lastWriteFn_ : &headHandlerWriteFn;
   tailCtx_.prevHandler_ = lastHandler_ ? lastHandler_ : this;
   tailCtx_.prevCtx_ = lastCtx_ ? lastCtx_ : &headCtx_;
-
-  // Per-event hooks are linked later by linkEventLists(), after the builder has
-  // wired the endpoints (endpoints subscribe too). See build().
-}
-
-void PipelineImpl::linkEventLists() noexcept {
-  if (eventListCount_ == 0) {
-    return;
-  }
-  eventLists_ = std::make_unique<EventList[]>(eventListCount_);
-
-  // Links one hook per subscription for an endpoint. Endpoints take no context,
-  // so the hook's ctx is null and the dispatch thunk ignores it. Each
-  // subscription carries its own typed thunk.
-  auto linkEndpoint = [this](
-                          void* target,
-                          const EventSubscription* subs,
-                          std::size_t count,
-                          std::unique_ptr<EventHook[]>& hooks) noexcept {
-    if (!subs || count == 0) {
-      return;
-    }
-    hooks = std::make_unique<EventHook[]>(count);
-    for (std::size_t j = 0; j < count; ++j) {
-      const EventSubscription& sub = subs[j];
-      DCHECK_LT(sub.id, eventListCount_);
-      auto& hook = hooks[j];
-      hook.fn = sub.thunk;
-      hook.target = target;
-      hook.ctx = nullptr;
-      eventLists_[sub.id].push_back(hook);
-    }
-  };
-
-  // Link order within each per-event list: tail endpoint first, then internal
-  // handlers tail→head (descending index), then head endpoint last.
-  linkEndpoint(
-      tailHandler_,
-      tailSubscriptions_,
-      tailSubscriptionCount_,
-      tailEventHooks_);
-
-  for (size_t i = handlers_.size(); i > 0; --i) {
-    const size_t idx = i - 1;
-    auto& node = handlers_[idx];
-    if (!node.subscriptions || node.subscriptionCount == 0) {
-      continue;
-    }
-    auto& ctx = contexts_[idx];
-    ctx.eventHooks_ = std::make_unique<EventHook[]>(node.subscriptionCount);
-    ctx.eventHookCount_ = static_cast<std::uint32_t>(node.subscriptionCount);
-    for (std::size_t j = 0; j < node.subscriptionCount; ++j) {
-      const EventSubscription& sub = node.subscriptions[j];
-      DCHECK_LT(sub.id, eventListCount_);
-      auto& hook = ctx.eventHooks_[j];
-      hook.fn = sub.thunk;
-      hook.target = node.handlerPtr;
-      hook.ctx = &ctx;
-      eventLists_[sub.id].push_back(hook);
-    }
-  }
-
-  linkEndpoint(
-      headHandler_,
-      headSubscriptions_,
-      headSubscriptionCount_,
-      headEventHooks_);
-}
-
-void PipelineImpl::clearEventLists() noexcept {
-  if (!eventLists_) {
-    return;
-  }
-  for (std::uint32_t ev = 0; ev < eventListCount_; ++ev) {
-    eventLists_[ev].clear();
-  }
 }
 
 void PipelineImpl::linkTypeEventLists() noexcept {
@@ -613,24 +535,6 @@ void PipelineImpl::fireTypeEventFromRoute(
   }
 }
 
-void PipelineImpl::fireEvent(
-    std::uint32_t ev, TypeErasedBox&& eventMessage) noexcept {
-  RETURN_IF_CLOSED();
-  DestructorGuard dg(this);
-  // Out-of-range covers the events-disabled (NoEvent) case too: no lists, so
-  // any fire is a clean no-op.
-  if (FOLLY_UNLIKELY(ev >= eventListCount_)) {
-    return;
-  }
-  // Walk only the subscribers of this event type. Within the list the order is
-  // tail endpoint → internal handlers tail→head → head endpoint (see
-  // linkEventLists). The hook is self-contained, so handlers and endpoints
-  // dispatch uniformly; ctx is null for endpoints.
-  for (auto& hook : eventLists_[ev]) {
-    hook.fn(hook.target, hook.ctx, ev, eventMessage);
-  }
-}
-
 Result PipelineImpl::sendRead(
     HandlerId handlerId, TypeErasedBox&& msg) noexcept {
   DestructorGuard dg(this);
@@ -685,10 +589,6 @@ void PipelineImpl::close() noexcept {
   // Clear ready lists - handlers should not receive callbacks after close
   writeReadyList_.clear();
   readReadyList_.clear();
-  // Unlink per-event hooks before contexts_ / endpoint hook arrays (which own
-  // the hooks) are destroyed; otherwise auto-unlink would touch a dead list
-  // sentinel.
-  clearEventLists();
 
   callHandlerRemoved();
 }

@@ -74,8 +74,8 @@ struct FrameWriteCompleteEvent
  * `RocketWriteCompleteEvent` reports the completion of one
  * individual write. `requestContext` is a NON-OWNING borrow of that request's
  * context (the same TypeErasedPtr the rocket layer carries opaquely); it is
- * only valid for the duration of `on<RocketWriteCompleteEvent>()` — subscribers
- * must not retain it. The owning layer (which knows the concrete context type)
+ * only valid for the duration of the typed event callback — subscribers must
+ * not retain it. The owning layer (which knows the concrete context type)
  * static_casts it.
  */
 struct RocketWriteCompleteEvent
