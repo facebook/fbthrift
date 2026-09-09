@@ -54,9 +54,17 @@ endif ()
 # problems that building Thrift itself shared exposes.
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# Add root dir so qualified includes work, e.g. #include "thrift/compiler/*.h".
-include_directories(.)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+# Include directories for `#include <thrift/...>` and generated headers.
+# PUBLIC targets also export the relocatable install path; PRIVATE ones do not.
+function (thrift_add_include_dirs target visibility)
+  target_include_directories(
+    ${target} ${visibility} $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>)
+  if (NOT visibility STREQUAL "PRIVATE")
+    target_include_directories(${target} ${visibility}
+                               $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+  endif ()
+endfunction ()
 
 # Prepend, so entries from a parent project or the command line survive.
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/thrift/cmake"

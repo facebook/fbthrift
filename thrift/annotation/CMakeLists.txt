@@ -13,6 +13,7 @@
 # limitations under the License.
 
 add_library(thriftannotation)
+thrift_add_include_dirs(thriftannotation PUBLIC)
 target_link_libraries(thriftannotation PUBLIC Folly::folly)
 
 foreach (

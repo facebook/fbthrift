@@ -221,6 +221,7 @@ target_link_libraries(rpcmetadata PUBLIC Folly::folly thriftprotocol)
 
 bypass_source_check("${serverdbginfo-cpp2-SOURCES}")
 add_library(serverdbginfo ${serverdbginfo-cpp2-SOURCES})
+thrift_add_include_dirs(serverdbginfo PUBLIC)
 add_dependencies(serverdbginfo serverdbginfo-cpp2-target)
 target_link_libraries(serverdbginfo PUBLIC Folly::folly)
 

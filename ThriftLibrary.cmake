@@ -88,6 +88,12 @@ macro (
     bypass_source_check(${${file_name}-${language}-SOURCES})
     add_library("${file_name}-${language}-obj" OBJECT
                 ${${file_name}-${language}-SOURCES})
+    # $<TARGET_OBJECTS:...> and add_dependencies() carry no usage
+    # requirements, so the generated sources need the roots directly.
+    target_include_directories(
+      "${file_name}-${language}-obj"
+      PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+             $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>)
     add_dependencies("${file_name}-${language}-obj"
                      "${file_name}-${language}-target")
     message("Thrift will create the Object file : ${file_name}-${language}-obj")

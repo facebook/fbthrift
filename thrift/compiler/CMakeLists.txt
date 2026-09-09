@@ -82,6 +82,7 @@ add_library(
   ast/t_typedef.cc
   ast/t_union.cc
   ast/scope_identifier.cc)
+thrift_add_include_dirs(compiler_ast PUBLIC)
 target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES} fmt::fmt Folly::folly)
 
 # The base compiler infrastructure library

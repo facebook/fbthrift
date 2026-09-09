@@ -17,13 +17,13 @@ if (enable_tests)
 endif ()
 
 add_library(thrift-core Thrift.cpp ../cpp2/FieldRef.cpp)
-target_include_directories(
-  thrift-core INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+thrift_add_include_dirs(thrift-core PUBLIC)
 target_link_libraries(thrift-core PUBLIC fmt::fmt Folly::folly)
 
 add_library(
   concurrency concurrency/InitThreadFactory.cpp
               concurrency/PosixThreadFactory.cpp concurrency/ThreadManager.cpp)
+thrift_add_include_dirs(concurrency PUBLIC)
 target_link_libraries(concurrency PUBLIC Folly::folly ${LIBGFLAGS_LIBRARY}
                                          ${GLOG_LIBRARIES})
 
@@ -61,6 +61,7 @@ if (THRIFT_RPC)
 endif ()
 
 add_library(runtime ../cpp2/runtime/Init.cpp)
+thrift_add_include_dirs(runtime PUBLIC)
 target_link_libraries(runtime PUBLIC Folly::folly)
 
 if (THRIFT_RPC)

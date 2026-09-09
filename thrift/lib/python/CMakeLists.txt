@@ -214,7 +214,6 @@ add_custom_target(create_binding_symlink_py3 ALL)
 #####################################################################
 # Include Path Setup (must be done early, before API header generation)
 #####################################################################
-get_target_property(thrift_include_dirs thrift INCLUDE_DIRECTORIES)
 get_target_property(fmt_include_dirs fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
 get_target_property(wangle_incs wangle::wangle INTERFACE_INCLUDE_DIRECTORIES)
 get_target_property(glog_include_dirs glog::glog INTERFACE_INCLUDE_DIRECTORIES)
@@ -228,8 +227,10 @@ get_target_property(mvfst_incs mvfst::mvfst_transport
                     INTERFACE_INCLUDE_DIRECTORIES)
 
 set(_all_cython_includes
-    # Thrift includes
-    ${thrift_include_dirs}
+    # Thrift includes. setup.py is outside CMake's target graph, so the source
+    # and build roots have to be listed explicitly.
+    ${PROJECT_SOURCE_DIR}
+    ${PROJECT_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/thrift/lib
     ${CMAKE_BINARY_DIR}/thrift/lib/cybld
     # Folly includes (including .pxd files)

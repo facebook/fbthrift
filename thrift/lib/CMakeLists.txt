@@ -280,15 +280,23 @@ if (thriftpy3)
             create_binding_symlink_py3 thriftcpp2 thrift_python_cpp
     WORKING_DIRECTORY ${_cybld})
 
-  set(inc_dirs "$<TARGET_PROPERTY:thrift,INCLUDE_DIRECTORIES>")
   get_target_property(fmt_include_dirs fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
   get_target_property(wangle_incs wangle::wangle INTERFACE_INCLUDE_DIRECTORIES)
-  get_target_property(thrift_include_dirs thrift INCLUDE_DIRECTORIES)
   list(JOIN wangle_incs ":" wangle_include_dirs)
-  set(incs
-      "-I$<JOIN:${inc_dirs},:>:${FOLLY_INCLUDE_DIR}:${Boost_INCLUDE_DIRS}"
-      ":${fmt_include_dirs}:${wangle_include_dirs}"
-      ":${CMAKE_BINARY_DIR}/thrift/lib/cybld")
+  # setup.py is outside CMake's target graph, so the source and build roots
+  # have to be listed explicitly. One argument: setup.py parses -I as a single
+  # colon-separated value.
+  string(
+    JOIN
+    ":"
+    incs
+    "-I${PROJECT_SOURCE_DIR}"
+    "${PROJECT_BINARY_DIR}"
+    "${FOLLY_INCLUDE_DIR}"
+    "${Boost_INCLUDE_DIRS}"
+    "${fmt_include_dirs}"
+    "${wangle_include_dirs}"
+    "${CMAKE_BINARY_DIR}/thrift/lib/cybld")
   get_target_property(fmt_lib fmt::fmt LOCATION)
   get_filename_component(fmt_lib_dir ${fmt_lib} DIRECTORY)
   get_filename_component(folly_lib ${FOLLY_LIBRARY} DIRECTORY)
