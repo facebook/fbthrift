@@ -38,7 +38,6 @@ import (
 
 // RSocketClient is a client that uses a rsocket library.
 type RSocketClient interface {
-	SendSetup(ctx context.Context) error
 	FireAndForget(
 		ctx context.Context,
 		messageName string,
@@ -181,6 +180,9 @@ func (r *rsocketClient) RequestResponse(
 	if err := ctx.Err(); err != nil {
 		return nil, nil, err
 	}
+	if err := r.SendSetup(ctx); err != nil {
+		return nil, nil, err
+	}
 	r.resetDeadline()
 	request, err := rocket.EncodeRequestPayload(
 		ctx,
@@ -210,6 +212,9 @@ func (r *rsocketClient) FireAndForget(ctx context.Context, messageName string, h
 	if err := ctx.Err(); err != nil {
 		return err
 	}
+	if err := r.SendSetup(ctx); err != nil {
+		return err
+	}
 	r.resetDeadline()
 	request, err := rocket.EncodeRequestPayload(
 		ctx,
@@ -235,6 +240,9 @@ func (r *rsocketClient) RequestStream(
 	newStreamElemFn func() ReadableResult,
 ) (map[string]string, []byte, iter.Seq2[ReadableStruct, error], error) {
 	if err := ctx.Err(); err != nil {
+		return nil, nil, nil, err
+	}
+	if err := r.SendSetup(ctx); err != nil {
 		return nil, nil, nil, err
 	}
 	r.resetDeadline()
@@ -323,6 +331,9 @@ func (r *rsocketClient) RequestSink(
 	dataBytes []byte,
 ) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
 	if err := ctx.Err(); err != nil {
+		return nil, nil, nil, err
+	}
+	if err := r.SendSetup(ctx); err != nil {
 		return nil, nil, nil, err
 	}
 	r.resetDeadline()
@@ -472,6 +483,9 @@ func (r *rsocketClient) RequestBiDiStream(
 	newStreamElemFn func() ReadableResult,
 ) (map[string]string, []byte, func(sinkSeq iter.Seq2[WritableResult, error]), iter.Seq2[ReadableStruct, error], error) {
 	if err := ctx.Err(); err != nil {
+		return nil, nil, nil, nil, err
+	}
+	if err := r.SendSetup(ctx); err != nil {
 		return nil, nil, nil, nil, err
 	}
 	r.resetDeadline()

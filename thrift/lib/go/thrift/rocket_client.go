@@ -90,11 +90,6 @@ func (p *rocketClient) SendRequestNoResponse(ctx context.Context, messageName st
 		defer cancel()
 	}
 
-	err = p.client.SendSetup(ctx)
-	if err != nil {
-		return err
-	}
-
 	headers := p.getWriteHeaders(ctx)
 	return p.client.FireAndForget(ctx, messageName, headers, dataBytes)
 }
@@ -109,11 +104,6 @@ func (p *rocketClient) SendRequestResponse(ctx context.Context, messageName stri
 		var cancel context.CancelFunc
 		ctx, cancel = context.WithTimeout(ctx, p.ioTimeout)
 		defer cancel()
-	}
-
-	err = p.client.SendSetup(ctx)
-	if err != nil {
-		return err
 	}
 
 	headers := p.getWriteHeaders(ctx)
@@ -151,11 +141,6 @@ func (p *rocketClient) SendRequestStream(
 		return nil, err
 	}
 
-	err = p.client.SendSetup(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	headers := p.getWriteHeaders(ctx)
 	respHeaders, resultData, streamSeq, resultErr := p.client.RequestStream(ctx, messageName, headers, dataBytes, newStreamElemFn)
 	if resultErr != nil {
@@ -181,11 +166,6 @@ func (p *rocketClient) SendRequestSink(
 	firstResponse ReadableResult,
 ) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableStruct) error, error) {
 	dataBytes, err := encodeRequest(p.protoID, request)
-	if err != nil {
-		return nil, err
-	}
-
-	err = p.client.SendSetup(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -221,11 +201,6 @@ func (p *rocketClient) SendRequestBiDi(
 	}
 
 	dataBytes, err := encodeRequest(p.protoID, request)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	err = p.client.SendSetup(ctx)
 	if err != nil {
 		return nil, nil, err
 	}
