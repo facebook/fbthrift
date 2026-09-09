@@ -17,7 +17,6 @@
 package thrift
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"iter"
@@ -27,7 +26,6 @@ import (
 
 	"golang.org/x/sync/singleflight"
 
-	"github.com/facebook/fbthrift/thrift/lib/go/thrift/format"
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift/rocket"
 	"github.com/facebook/fbthrift/thrift/lib/go/thrift/types"
 	"github.com/facebook/fbthrift/thrift/lib/thrift/rpcmetadata"
@@ -285,19 +283,8 @@ func (r *rsocketClient) RequestStream(
 					return
 				}
 				data := streamResponse.Data()
-				reader := bytes.NewBuffer(data)
-				var decoder types.Decoder
-				switch r.protoID {
-				case rpcmetadata.ProtocolId_BINARY:
-					decoder = format.NewBinaryDecoder(reader)
-				case rpcmetadata.ProtocolId_COMPACT:
-					decoder = format.NewCompactDecoder(reader)
-				default:
-					yield(nil, types.NewProtocolException(fmt.Errorf("Unknown protocol id: %d", r.protoID)))
-					return
-				}
 				destStruct := newStreamElemFn()
-				err = destStruct.Read(decoder)
+				err = decodeResponse(r.thriftProtoID, data, destStruct)
 				if err != nil {
 					yield(nil, err)
 					return
@@ -585,7 +572,7 @@ func (r *rsocketClient) RequestBiDiStream(
 				return
 			}
 
-		select {
+			select {
 			case sinkPayloadChan <- sinkPayload:
 			case <-channelCtx.Done():
 				return
@@ -613,19 +600,8 @@ func (r *rsocketClient) RequestBiDiStream(
 					return
 				}
 				data := streamResponse.Data()
-				reader := bytes.NewBuffer(data)
-				var decoder types.Decoder
-				switch r.protoID {
-				case rpcmetadata.ProtocolId_BINARY:
-					decoder = format.NewBinaryDecoder(reader)
-				case rpcmetadata.ProtocolId_COMPACT:
-					decoder = format.NewCompactDecoder(reader)
-				default:
-					yield(nil, types.NewProtocolException(fmt.Errorf("Unknown protocol id: %d", r.protoID)))
-					return
-				}
 				destStruct := newStreamElemFn()
-				err = destStruct.Read(decoder)
+				err = decodeResponse(r.thriftProtoID, data, destStruct)
 				if err != nil {
 					yield(nil, err)
 					return
