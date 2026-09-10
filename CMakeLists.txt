@@ -95,7 +95,6 @@ endif ()
 
 find_package(OpenSSL REQUIRED)
 
-option(THRIFT_COMPILER_ONLY "Build the Thrift compiler only" OFF)
 option(THRIFT_LIB_ONLY "Build the Thrift libraries only" OFF)
 option(
   THRIFT_RPC
@@ -142,7 +141,7 @@ endif ()
 find_package(folly CONFIG REQUIRED)
 
 # Find required dependencies for the Thrift compiler.
-if (THRIFT_COMPILER_ONLY OR NOT THRIFT_LIB_ONLY)
+if (NOT THRIFT_LIB_ONLY)
   include_directories(${OPENSSL_INCLUDE_DIR})
   set(THRIFT1 thrift1)
   set(THRIFTCPP2 thriftcpp2)
@@ -152,35 +151,33 @@ if (THRIFT_COMPILER_ONLY OR NOT THRIFT_LIB_ONLY)
 endif ()
 
 # Find required dependencies for thrift/lib
-if (THRIFT_LIB_ONLY OR NOT THRIFT_COMPILER_ONLY)
-  find_package(Gflags REQUIRED)
-  find_package(Glog REQUIRED)
-  if (THRIFT_RPC)
-    find_package(fizz CONFIG REQUIRED)
-    find_package(wangle CONFIG REQUIRED)
-  endif ()
-  find_package(ZLIB REQUIRED)
-  find_package(Zstd REQUIRED)
-  find_package(Xxhash REQUIRED)
-  if (THRIFT_RPC)
-    find_package(mvfst CONFIG REQUIRED)
-  endif ()
-  # https://cmake.org/cmake/help/v3.9/module/FindThreads.html
-  set(THREADS_PREFER_PTHREAD_FLAG ON)
-  find_package(Threads)
-  include_directories(
-    ${LIBGFLAGS_INCLUDE_DIR} ${GLOG_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR}
-    ${ZSTD_INCLUDE_DIRS} ${Xxhash_INCLUDE_DIR})
-  add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
-  if (THRIFT_LIB_ONLY)
-    # Wrap the external compiler in a target so THRIFT1 always names one.
-    find_program(THRIFT1_EXECUTABLE thrift1 REQUIRED)
-    add_executable(thrift1 IMPORTED GLOBAL)
-    set_target_properties(thrift1 PROPERTIES IMPORTED_LOCATION
-                                             "${THRIFT1_EXECUTABLE}")
-    set(THRIFT1 thrift1)
-    include(${THRIFT_COMPILER_INCLUDE}/thrift/ThriftLibrary.cmake)
-  endif ()
+find_package(Gflags REQUIRED)
+find_package(Glog REQUIRED)
+if (THRIFT_RPC)
+  find_package(fizz CONFIG REQUIRED)
+  find_package(wangle CONFIG REQUIRED)
+endif ()
+find_package(ZLIB REQUIRED)
+find_package(Zstd REQUIRED)
+find_package(Xxhash REQUIRED)
+if (THRIFT_RPC)
+  find_package(mvfst CONFIG REQUIRED)
+endif ()
+# https://cmake.org/cmake/help/v3.9/module/FindThreads.html
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads)
+include_directories(${LIBGFLAGS_INCLUDE_DIR} ${GLOG_INCLUDE_DIRS}
+                    ${OPENSSL_INCLUDE_DIR} ${ZSTD_INCLUDE_DIRS}
+                    ${Xxhash_INCLUDE_DIR})
+add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
+if (THRIFT_LIB_ONLY)
+  # Wrap the external compiler in a target so THRIFT1 always names one.
+  find_program(THRIFT1_EXECUTABLE thrift1 REQUIRED)
+  add_executable(thrift1 IMPORTED GLOBAL)
+  set_target_properties(thrift1 PROPERTIES IMPORTED_LOCATION
+                                           "${THRIFT1_EXECUTABLE}")
+  set(THRIFT1 thrift1)
+  include(${THRIFT_COMPILER_INCLUDE}/thrift/ThriftLibrary.cmake)
 endif ()
 
 if (thriftpy3)
