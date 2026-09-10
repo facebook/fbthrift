@@ -425,9 +425,8 @@ class ThriftServerCompositeE2ETest : public ::testing::Test {
     // composite's setPipeline fans out to both children so their
     // writeResponse fires through the same thrift pipeline.
     ctx.composite->setPipeline(ctx.thriftPipeline.get());
-    // Activate so composite's onPipelineActive fans out to children
-    // (Ready -> Open). Without this, child onRead rejects with
-    // Result::Error because base state-checks state == Open.
+    // Activate the thrift pipeline so the composite forwards the pipeline
+    // lifecycle to its children.
     ctx.thriftPipeline->activate();
     // Connection is inert; ConnectionHandler's installer lambda calls
     // start() after registering the entry, which fires onConnect().

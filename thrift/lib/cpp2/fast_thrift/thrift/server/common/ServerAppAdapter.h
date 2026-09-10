@@ -18,14 +18,47 @@
 
 #include <concepts>
 #include <ranges>
+#include <string_view>
 #include <utility>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/EndpointAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 
 namespace apache::thrift::fast_thrift::thrift {
+
+enum class ServerRequestRoutingStatus {
+  MissingMetadata,
+  UnsupportedRpcKind,
+  Ready,
+};
+
+struct ServerRequestRoutingMetadata {
+  std::string_view methodName;
+  apache::thrift::RpcKind kind{static_cast<apache::thrift::RpcKind>(-1)};
+  ServerRequestRoutingStatus status{
+      ServerRequestRoutingStatus::MissingMetadata};
+};
+
+inline ServerRequestRoutingMetadata getServerRequestRoutingMetadata(
+    const ThriftServerRequestMessage& request) noexcept {
+  const auto* metadata = request.payload.getRequestRpcMetadata();
+  if (metadata == nullptr) {
+    return {};
+  }
+  const auto kind =
+      metadata->kind().value_or(static_cast<apache::thrift::RpcKind>(-1));
+  if (kind != apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
+    return {{}, kind, ServerRequestRoutingStatus::UnsupportedRpcKind};
+  }
+  auto name = metadata->name();
+  return {
+      name.has_value() ? name->view() : std::string_view{},
+      kind,
+      ServerRequestRoutingStatus::Ready};
+}
 
 /**
  * ServerInboundAppAdapter — server-side inbound endpoint concept. The
@@ -54,15 +87,32 @@ concept ServerOutboundAppAdapter =
 /**
  * ServerComposableAppAdapter — wiring + routing-metadata concept.
  * An adapter satisfies this when it can be plugged into a routing fabric
- * (e.g. ThriftServerCompositeAppAdapter): it declares the method names it
- * owns and accepts a pipeline pointer at setup time. Orthogonal to
+ * (e.g. ThriftServerCompositeAppAdapter): it publishes the methods it owns
+ * and accepts a pipeline pointer at setup time. Orthogonal to
  * inbound/outbound data flow — purely about composition wiring.
+ *
+ * methodTable() pairs each owned method name with a resolved method containing
+ * the owning adapter and its typed process function. The routing fabric stores
+ * that value beside the name, so the name is hashed once for the whole request
+ * instead of once per layer.
+ *
+ * Each resolved method binds its owning adapter to the process function and
+ * exposes the resolved-dispatch entry point. This is deliberately distinct
+ * from the adapter's unresolved onRead required by channel_pipeline's
+ * TailEndpointHandler.
  */
 template <typename T>
-concept ServerComposableAppAdapter =
-    requires(T& t, channel_pipeline::PipelineImpl* pipe) {
-      { t.methodNames() } -> std::ranges::range;
-      { t.setPipeline(pipe) } noexcept;
-    };
+concept ServerComposableAppAdapter = requires(
+    T& t,
+    channel_pipeline::detail::ContextImpl& ctx,
+    channel_pipeline::TypeErasedBox&& msg,
+    typename T::ResolvedMethod method,
+    channel_pipeline::PipelineImpl* pipe) {
+  { t.methodTable() } -> std::ranges::range;
+  {
+    method.onRead(ctx, std::move(msg))
+  } noexcept -> std::same_as<channel_pipeline::Result>;
+  { t.setPipeline(pipe) } noexcept;
+};
 
 } // namespace apache::thrift::fast_thrift::thrift

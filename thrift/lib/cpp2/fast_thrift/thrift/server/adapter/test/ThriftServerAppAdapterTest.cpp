@@ -318,6 +318,32 @@ TEST_F(ThriftServerAppAdapterTest, OnReadUnknownMethodSendsErrorResponse) {
       apache::thrift::ResponseRpcErrorCode::UNKNOWN_METHOD);
 }
 
+TEST_F(ThriftServerAppAdapterTest, OnReadMissingMetadataSendsErrorResponse) {
+  TestServerAppAdapter::Ptr adapter{new TestServerAppAdapter()};
+
+  apache::thrift::ResponseRpcErrorCode capturedRpcErrorCode{};
+  auto built = buildPipeline(
+      adapter.get(),
+      [&](apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl&,
+          TypeErasedBox&& box) {
+        auto& response = box.get<ThriftServerResponseMessage>();
+        auto rpcError = deserializeResponseRpcError(*payloadData(response));
+        capturedRpcErrorCode = *rpcError.code();
+        return Result::Success;
+      });
+
+  ThriftServerRequestMessage msg;
+  msg.streamId = 1;
+  EXPECT_EQ(
+      adapter->onRead(
+          channel_pipeline::test::inertEndpointContext(),
+          erase_and_box(std::move(msg))),
+      Result::Success);
+  EXPECT_EQ(
+      capturedRpcErrorCode,
+      apache::thrift::ResponseRpcErrorCode::UNKNOWN_METHOD);
+}
+
 TEST_F(ThriftServerAppAdapterTest, OnReadPassesProtocolId) {
   TestServerAppAdapter::Ptr adapter{new TestServerAppAdapter()};
 
@@ -412,6 +438,32 @@ TEST_F(ThriftServerAppAdapterTest, OnReadMultipleMethodsDispatched) {
 
   EXPECT_EQ(adapter->method1Count, 2);
   EXPECT_EQ(adapter->method2Count, 1);
+}
+
+TEST_F(
+    ThriftServerAppAdapterTest, ResolvedMethodOnReadRejectsUnexpectedPayload) {
+  TestServerAppAdapter::Ptr adapter{new TestServerAppAdapter()};
+  adapter->registerMethod(
+      "testMethod",
+      +[](ThriftServerAppAdapter* self,
+          uint32_t,
+          std::unique_ptr<folly::IOBuf>,
+          apache::thrift::ProtocolId,
+          std::unique_ptr<ThriftRequestContext>) noexcept {
+        static_cast<TestServerAppAdapter*>(self)->handlerCalled = true;
+      });
+
+  auto methods = adapter->methodTable();
+  ASSERT_EQ(methods.size(), 1);
+
+  ThriftServerRequestMessage msg;
+  msg.streamId = 1;
+  EXPECT_EQ(
+      methods.front().second.onRead(
+          channel_pipeline::test::inertEndpointContext(),
+          erase_and_box(std::move(msg))),
+      Result::Error);
+  EXPECT_FALSE(adapter->handlerCalled);
 }
 
 // =============================================================================
@@ -593,11 +645,16 @@ TEST_F(ThriftServerAppAdapterTest, DestructorInvokesCloseCallback) {
 }
 
 // =============================================================================
-// onRead Unsupported Frame Type Tests
+// Unsupported RPC Kind Tests
 // =============================================================================
 
-TEST_F(ThriftServerAppAdapterTest, OnReadUnsupportedFrameSendsErrorResponse) {
+TEST_F(
+    ThriftServerAppAdapterTest,
+    OnReadWrongKindTakesPrecedenceOverUnknownMethod) {
   TestServerAppAdapter::Ptr adapter{new TestServerAppAdapter()};
+
+  // The method is intentionally unregistered: RPC-kind validation must take
+  // precedence over method lookup.
 
   bool writeCalled = false;
   uint32_t capturedErrorCode = 0;
@@ -617,15 +674,15 @@ TEST_F(ThriftServerAppAdapterTest, OnReadUnsupportedFrameSendsErrorResponse) {
         return Result::Success;
       });
 
-  // FNF frame is not REQUEST_RESPONSE, so should trigger error response
+  // FNF is not a supported RPC kind, so it should trigger an error response.
   auto msg = makeFnfRequestMessage(1, "testMethod");
   auto result = adapter->onRead(
       channel_pipeline::test::inertEndpointContext(),
       erase_and_box(std::move(msg)));
 
   EXPECT_EQ(result, Result::Success);
-  EXPECT_TRUE(writeCalled) << "Should send error response for unsupported "
-                              "frame type (not silently drop)";
+  EXPECT_TRUE(writeCalled)
+      << "Should send error response for unsupported RPC kind";
   EXPECT_NE(capturedErrorCode, 0u) << "Should be ERROR frame (errorCode != 0)";
   EXPECT_EQ(
       capturedRpcErrorCode,
@@ -771,13 +828,23 @@ TEST_F(ThriftServerAppAdapterTest, WriteAppErrorWithServerBlame) {
 }
 
 // =============================================================================
-// Unsupported RPC Kind Tests
+// Registered Method RPC Kind Test
 // =============================================================================
 
-TEST_F(
-    ThriftServerAppAdapterTest,
-    HandleRequestResponseRejectsUnsupportedRpcKind) {
+TEST_F(ThriftServerAppAdapterTest, OnReadRejectsRegisteredUnsupportedRpcKind) {
   TestServerAppAdapter::Ptr adapter{new TestServerAppAdapter()};
+
+  // Register the method so the reject is unambiguously the RPC-kind check
+  // and not an unknown-method miss, which reports a different error code.
+  adapter->registerMethod(
+      "testMethod",
+      +[](ThriftServerAppAdapter* self,
+          uint32_t,
+          std::unique_ptr<folly::IOBuf>,
+          apache::thrift::ProtocolId,
+          std::unique_ptr<ThriftRequestContext>) noexcept {
+        static_cast<TestServerAppAdapter*>(self)->handlerCalled = true;
+      });
 
   bool writeCalled = false;
   uint32_t capturedErrorCode = 0;
@@ -806,6 +873,8 @@ TEST_F(
   EXPECT_EQ(result, Result::Success);
   EXPECT_TRUE(writeCalled)
       << "Should send error response for unsupported RPC kind";
+  EXPECT_FALSE(adapter->handlerCalled)
+      << "Rejected kinds must not reach the registered handler";
   EXPECT_NE(capturedErrorCode, 0u) << "Should be ERROR frame (errorCode != 0)";
   EXPECT_EQ(
       capturedRpcErrorCode,

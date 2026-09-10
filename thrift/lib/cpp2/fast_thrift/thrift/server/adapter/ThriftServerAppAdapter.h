@@ -20,6 +20,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include <folly/ExceptionWrapper.h>
@@ -113,6 +114,23 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
       apache::thrift::ProtocolId protocol,
       std::unique_ptr<ThriftRequestContext> requestContext) noexcept;
 
+  class ResolvedMethod {
+   public:
+    FOLLY_ALWAYS_INLINE channel_pipeline::Result onRead(
+        channel_pipeline::detail::ContextImpl&,
+        channel_pipeline::TypeErasedBox&& msg) const noexcept;
+
+   private:
+    ResolvedMethod(
+        ThriftServerAppAdapter* owner, RequestResponseProcessFn method) noexcept
+        : owner_(owner), method_(method) {}
+
+    ThriftServerAppAdapter* owner_;
+    RequestResponseProcessFn method_;
+
+    friend class ThriftServerAppAdapter;
+  };
+
   ThriftServerAppAdapter() = default;
   ThriftServerAppAdapter(ThriftServerAppAdapter&&) = delete;
   ThriftServerAppAdapter& operator=(ThriftServerAppAdapter&&) = delete;
@@ -144,6 +162,9 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
 
   // === TailEndpointHandler interface ===
 
+  // Unresolved entry point, used when this adapter is the pipeline tail on
+  // its own. Resolves the method against dispatch_ and forwards to the
+  // resolved overload below.
   channel_pipeline::Result onRead(
       channel_pipeline::detail::ContextImpl&,
       channel_pipeline::TypeErasedBox&& msg) noexcept;
@@ -197,9 +218,11 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   // fully settled. No-op if the pipeline is not yet wired.
   void close() noexcept;
 
-  // Methods registered via addMethodHandler — consumed by the composite
-  // to build its name -> owner routing map.
-  std::vector<std::string_view> methodNames() const noexcept;
+  // Methods registered via addMethodHandler, each paired with a resolved method
+  // that binds this adapter to its typed process function. The composite copies
+  // that two-pointer value so the child does not repeat the method-name lookup.
+  std::vector<std::pair<std::string_view, ResolvedMethod>>
+  methodTable() noexcept;
 
  protected:
   void addMethodHandler(
@@ -226,7 +249,6 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   folly::Executor* cpuExecutor() const noexcept { return cpuExecutor_.get(); }
 
  private:
-  void handleRequestResponse(ThriftServerRequestMessage&& request) noexcept;
   FOLLY_NOINLINE void handleWrongRpcKind(
       uint32_t streamId, apache::thrift::RpcKind kind) noexcept;
   FOLLY_NOINLINE void handleUnknownMethod(
@@ -247,5 +269,32 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
 
   void fireCloseCallback() noexcept;
 };
+
+FOLLY_ALWAYS_INLINE channel_pipeline::Result
+ThriftServerAppAdapter::ResolvedMethod::onRead(
+    channel_pipeline::detail::ContextImpl&,
+    channel_pipeline::TypeErasedBox&& msg) const noexcept {
+  auto request = msg.take<ThriftServerRequestMessage>();
+  DCHECK(request.streamId != 0) << "Invalid stream ID";
+  DCHECK(owner_ != nullptr);
+  DCHECK(method_ != nullptr);
+
+  auto& inbound = request.payload;
+  if (FOLLY_UNLIKELY(!inbound.is<ThriftRequestResponsePayload>())) {
+    // Result::Error propagates to TransportHandler, which closes the
+    // connection.
+    return channel_pipeline::Result::Error;
+  }
+  auto& requestResponse = inbound.get<ThriftRequestResponsePayload>();
+  DCHECK(requestResponse.metadata != nullptr);
+  const auto protocol = requestResponse.metadata->protocol().value_or(0);
+  method_(
+      owner_,
+      request.streamId,
+      std::move(requestResponse.data),
+      protocol,
+      std::move(request.requestContext));
+  return channel_pipeline::Result::Success;
+}
 
 } // namespace apache::thrift::fast_thrift::thrift

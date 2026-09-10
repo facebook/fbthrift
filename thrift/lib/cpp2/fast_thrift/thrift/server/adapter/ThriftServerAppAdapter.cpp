@@ -85,12 +85,29 @@ void ThriftServerAppAdapter::fireCloseCallback() noexcept {
 }
 
 channel_pipeline::Result ThriftServerAppAdapter::onRead(
-    channel_pipeline::detail::ContextImpl&,
+    channel_pipeline::detail::ContextImpl& ctx,
     channel_pipeline::TypeErasedBox&& msg) noexcept {
-  auto request = msg.take<ThriftServerRequestMessage>();
+  const auto& request = msg.get<ThriftServerRequestMessage>();
   DCHECK(request.streamId != 0) << "Invalid stream ID";
-  handleRequestResponse(std::move(request));
-  return channel_pipeline::Result::Success;
+
+  const auto routing = getServerRequestRoutingMetadata(request);
+  if (FOLLY_UNLIKELY(
+          routing.status == ServerRequestRoutingStatus::MissingMetadata)) {
+    handleUnknownMethod(request.streamId, {});
+    return channel_pipeline::Result::Success;
+  }
+  if (FOLLY_UNLIKELY(
+          routing.status == ServerRequestRoutingStatus::UnsupportedRpcKind)) {
+    handleWrongRpcKind(request.streamId, routing.kind);
+    return channel_pipeline::Result::Success;
+  }
+
+  auto it = dispatch_.find(routing.methodName);
+  if (FOLLY_UNLIKELY(it == dispatch_.end())) {
+    handleUnknownMethod(request.streamId, routing.methodName);
+    return channel_pipeline::Result::Success;
+  }
+  return ResolvedMethod(this, it->second).onRead(ctx, std::move(msg));
 }
 
 void ThriftServerAppAdapter::onException(
@@ -112,50 +129,14 @@ void ThriftServerAppAdapter::addMethodHandler(
   dispatch_[std::string(name)] = handler;
 }
 
-std::vector<std::string_view> ThriftServerAppAdapter::methodNames()
-    const noexcept {
-  std::vector<std::string_view> names;
-  names.reserve(dispatch_.size());
-  for (const auto& [name, _] : dispatch_) {
-    names.push_back(name);
+std::vector<std::pair<std::string_view, ThriftServerAppAdapter::ResolvedMethod>>
+ThriftServerAppAdapter::methodTable() noexcept {
+  std::vector<std::pair<std::string_view, ResolvedMethod>> table;
+  table.reserve(dispatch_.size());
+  for (const auto& [name, handler] : dispatch_) {
+    table.emplace_back(name, ResolvedMethod(this, handler));
   }
-  return names;
-}
-
-void ThriftServerAppAdapter::handleRequestResponse(
-    ThriftServerRequestMessage&& request) noexcept {
-  auto& inbound = request.payload;
-  DCHECK(inbound.is<ThriftRequestResponsePayload>());
-  auto& rr = inbound.get<ThriftRequestResponsePayload>();
-  DCHECK(rr.metadata != nullptr);
-  auto& metadata = *rr.metadata;
-
-  std::string_view methodName;
-  if (FOLLY_LIKELY(metadata.name().has_value())) {
-    methodName = metadata.name()->view();
-  }
-
-  const auto kind =
-      metadata.kind().value_or(static_cast<apache::thrift::RpcKind>(-1));
-  if (FOLLY_UNLIKELY(
-          kind != apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
-    handleWrongRpcKind(request.streamId, kind);
-    return;
-  }
-
-  auto it = dispatch_.find(methodName);
-  if (FOLLY_LIKELY(it != dispatch_.end())) {
-    apache::thrift::ProtocolId protocol = metadata.protocol().value_or(0);
-    it->second(
-        this,
-        request.streamId,
-        std::move(rr.data),
-        protocol,
-        std::move(request.requestContext));
-    return;
-  }
-
-  handleUnknownMethod(request.streamId, methodName);
+  return table;
 }
 
 void ThriftServerAppAdapter::handleWrongRpcKind(

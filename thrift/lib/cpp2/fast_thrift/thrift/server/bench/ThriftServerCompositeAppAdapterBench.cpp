@@ -18,9 +18,9 @@
  * ThriftServerCompositeAppAdapter routing microbenchmark.
  *
  * Isolates the per-request cost the composite adds over a bare adapter:
- * the F14 methodMap probe + the extra onRead hop into the chosen child.
- * The child's per-method thunk is a no-op that returns Success without
- * touching the pipeline, so each iter measures only the routing decision
+ * the F14 methodMap probe + direct invocation of the resolved child method.
+ * The child's method handler is a no-op that does not touch the pipeline,
+ * so each iter measures only the routing decision
  * (no rocket framing, no protocol parsing, no wire I/O).
  *
  * Comparisons:
@@ -39,6 +39,7 @@
  */
 
 #include <folly/Benchmark.h>
+#include <folly/CppAttributes.h>
 #include <folly/init/Init.h>
 #include <folly/io/IOBuf.h>
 
@@ -72,9 +73,9 @@ endpointContext() noexcept {
   return context;
 }
 
-// Adapter whose registered methods are no-op thunks. Lets us bench routing
-// in isolation: addMethodHandler inserts into dispatch_; the thunk returns
-// Success without writing to a pipeline (so no pipeline wiring is needed).
+// Adapter whose registered methods are no-op handlers. Lets us bench routing
+// in isolation: addMethodHandler inserts into dispatch_, and the handler does
+// not write to a pipeline (so no pipeline wiring is needed).
 class NoOpAdapter : public ThriftServerAppAdapter {
  public:
   using Ptr = std::unique_ptr<NoOpAdapter, Destructor>;
@@ -110,7 +111,7 @@ ThriftServerRequestMessage makeRequest(
 // the child owners (composite borrows; caller keeps them alive), and the
 // method names registered for child indices the bench wants to hit.
 struct CompositeFixture {
-  ThriftServerCompositeAppAdapter::Ptr composite;
+  ThriftServerCompositeAppAdapter::Ptr FOLLY_NONNULL composite;
   std::vector<NoOpAdapter::Ptr> children;
   std::vector<std::string> methodNames; // one method name per child
 };
@@ -137,7 +138,7 @@ CompositeFixture makeComposite(size_t numChildren) {
   return fixture;
 }
 
-NoOpAdapter::Ptr makeBareAdapter() {
+NoOpAdapter::Ptr FOLLY_NONNULL makeBareAdapter() {
   NoOpAdapter::Ptr adapter{new NoOpAdapter()};
   for (int m = 0; m < 4; ++m) {
     adapter->registerMethod("bare_method" + std::to_string(m));
@@ -166,11 +167,12 @@ std::vector<ThriftServerRequestMessage> prebuildRequests(
 BENCHMARK(BareAdapter_HitMethod, iters) {
   folly::BenchmarkSuspender suspender;
   auto adapter = makeBareAdapter();
+  auto& adapterRef = *adapter;
   auto requests = prebuildRequests(iters, "bare_method0");
   suspender.dismiss();
 
   for (size_t i = 0; i < iters; ++i) {
-    auto result = adapter->onRead(
+    auto result = adapterRef.onRead(
         endpointContext(), erase_and_box(std::move(requests[i])));
     folly::doNotOptimizeAway(result);
   }
@@ -183,11 +185,12 @@ BENCHMARK(BareAdapter_HitMethod, iters) {
 BENCHMARK_RELATIVE(Composite_OneChild_HitMethod, iters) {
   folly::BenchmarkSuspender suspender;
   auto fixture = makeComposite(/*numChildren=*/1);
+  auto& composite = *fixture.composite;
   auto requests = prebuildRequests(iters, fixture.methodNames[0]);
   suspender.dismiss();
 
   for (size_t i = 0; i < iters; ++i) {
-    auto result = fixture.composite->onRead(
+    auto result = composite.onRead(
         endpointContext(), erase_and_box(std::move(requests[i])));
     folly::doNotOptimizeAway(result);
   }
@@ -202,11 +205,12 @@ BENCHMARK_DRAW_LINE();
 BENCHMARK(Composite_TwoChildren_HitFirst, iters) {
   folly::BenchmarkSuspender suspender;
   auto fixture = makeComposite(/*numChildren=*/2);
+  auto& composite = *fixture.composite;
   auto requests = prebuildRequests(iters, fixture.methodNames[0]);
   suspender.dismiss();
 
   for (size_t i = 0; i < iters; ++i) {
-    auto result = fixture.composite->onRead(
+    auto result = composite.onRead(
         endpointContext(), erase_and_box(std::move(requests[i])));
     folly::doNotOptimizeAway(result);
   }
@@ -215,11 +219,12 @@ BENCHMARK(Composite_TwoChildren_HitFirst, iters) {
 BENCHMARK_RELATIVE(Composite_TwoChildren_HitLast, iters) {
   folly::BenchmarkSuspender suspender;
   auto fixture = makeComposite(/*numChildren=*/2);
+  auto& composite = *fixture.composite;
   auto requests = prebuildRequests(iters, fixture.methodNames[1]);
   suspender.dismiss();
 
   for (size_t i = 0; i < iters; ++i) {
-    auto result = fixture.composite->onRead(
+    auto result = composite.onRead(
         endpointContext(), erase_and_box(std::move(requests[i])));
     folly::doNotOptimizeAway(result);
   }
@@ -234,11 +239,12 @@ BENCHMARK_DRAW_LINE();
 BENCHMARK(Composite_FourChildren_HitFirst, iters) {
   folly::BenchmarkSuspender suspender;
   auto fixture = makeComposite(/*numChildren=*/4);
+  auto& composite = *fixture.composite;
   auto requests = prebuildRequests(iters, fixture.methodNames[0]);
   suspender.dismiss();
 
   for (size_t i = 0; i < iters; ++i) {
-    auto result = fixture.composite->onRead(
+    auto result = composite.onRead(
         endpointContext(), erase_and_box(std::move(requests[i])));
     folly::doNotOptimizeAway(result);
   }
@@ -247,11 +253,12 @@ BENCHMARK(Composite_FourChildren_HitFirst, iters) {
 BENCHMARK_RELATIVE(Composite_FourChildren_HitLast, iters) {
   folly::BenchmarkSuspender suspender;
   auto fixture = makeComposite(/*numChildren=*/4);
+  auto& composite = *fixture.composite;
   auto requests = prebuildRequests(iters, fixture.methodNames[3]);
   suspender.dismiss();
 
   for (size_t i = 0; i < iters; ++i) {
-    auto result = fixture.composite->onRead(
+    auto result = composite.onRead(
         endpointContext(), erase_and_box(std::move(requests[i])));
     folly::doNotOptimizeAway(result);
   }
@@ -266,11 +273,12 @@ BENCHMARK_DRAW_LINE();
 BENCHMARK(Composite_EightChildren_HitLast, iters) {
   folly::BenchmarkSuspender suspender;
   auto fixture = makeComposite(/*numChildren=*/8);
+  auto& composite = *fixture.composite;
   auto requests = prebuildRequests(iters, fixture.methodNames[7]);
   suspender.dismiss();
 
   for (size_t i = 0; i < iters; ++i) {
-    auto result = fixture.composite->onRead(
+    auto result = composite.onRead(
         endpointContext(), erase_and_box(std::move(requests[i])));
     folly::doNotOptimizeAway(result);
   }
@@ -279,11 +287,12 @@ BENCHMARK(Composite_EightChildren_HitLast, iters) {
 BENCHMARK_RELATIVE(Composite_SixteenChildren_HitLast, iters) {
   folly::BenchmarkSuspender suspender;
   auto fixture = makeComposite(/*numChildren=*/16);
+  auto& composite = *fixture.composite;
   auto requests = prebuildRequests(iters, fixture.methodNames[15]);
   suspender.dismiss();
 
   for (size_t i = 0; i < iters; ++i) {
-    auto result = fixture.composite->onRead(
+    auto result = composite.onRead(
         endpointContext(), erase_and_box(std::move(requests[i])));
     folly::doNotOptimizeAway(result);
   }
@@ -292,15 +301,14 @@ BENCHMARK_RELATIVE(Composite_SixteenChildren_HitLast, iters) {
 BENCHMARK_DRAW_LINE();
 
 // =============================================================================
-// Heterogeneous children — concept-based design's headline capability.
-// Two distinct concrete child types share the composite. Per-T thunks
-// dispatch correctly without inheriting from a common base. Expect parity
-// with the homogeneous Composite_TwoChildren benches.
+// Heterogeneous children — two distinct concrete adapter types share the
+// composite and dispatch through resolved methods. Expect parity with the
+// homogeneous Composite_TwoChildren benches.
 // =============================================================================
 
 // Second adapter type whose runtime shape matches NoOpAdapter but whose
-// concrete C++ type is distinct — proves the composite stores heterogeneous
-// children via per-T thunks, not via shared base inheritance.
+// concrete C++ type is distinct. Request dispatch uses the common adapter
+// base, while lifecycle dispatch remains type-erased per concrete type.
 class OtherNoOpAdapter : public ThriftServerAppAdapter {
  public:
   using Ptr = std::unique_ptr<OtherNoOpAdapter, Destructor>;
@@ -318,7 +326,7 @@ class OtherNoOpAdapter : public ThriftServerAppAdapter {
 };
 
 struct HeterogeneousFixture {
-  ThriftServerCompositeAppAdapter::Ptr composite;
+  ThriftServerCompositeAppAdapter::Ptr FOLLY_NONNULL composite;
   NoOpAdapter::Ptr firstChild;
   OtherNoOpAdapter::Ptr secondChild;
   std::string firstMethod;
@@ -345,11 +353,12 @@ HeterogeneousFixture makeHeterogeneousComposite() {
 BENCHMARK(Composite_HeterogeneousChildren_HitFirst, iters) {
   folly::BenchmarkSuspender suspender;
   auto fixture = makeHeterogeneousComposite();
+  auto& composite = *fixture.composite;
   auto requests = prebuildRequests(iters, fixture.firstMethod);
   suspender.dismiss();
 
   for (size_t i = 0; i < iters; ++i) {
-    auto result = fixture.composite->onRead(
+    auto result = composite.onRead(
         endpointContext(), erase_and_box(std::move(requests[i])));
     folly::doNotOptimizeAway(result);
   }
@@ -358,11 +367,12 @@ BENCHMARK(Composite_HeterogeneousChildren_HitFirst, iters) {
 BENCHMARK_RELATIVE(Composite_HeterogeneousChildren_HitSecond, iters) {
   folly::BenchmarkSuspender suspender;
   auto fixture = makeHeterogeneousComposite();
+  auto& composite = *fixture.composite;
   auto requests = prebuildRequests(iters, fixture.secondMethod);
   suspender.dismiss();
 
   for (size_t i = 0; i < iters; ++i) {
-    auto result = fixture.composite->onRead(
+    auto result = composite.onRead(
         endpointContext(), erase_and_box(std::move(requests[i])));
     folly::doNotOptimizeAway(result);
   }
@@ -379,6 +389,7 @@ BENCHMARK_DRAW_LINE();
 BENCHMARK(Composite_UnknownMethod, iters) {
   folly::BenchmarkSuspender suspender;
   auto fixture = makeComposite(/*numChildren=*/4);
+  auto& composite = *fixture.composite;
   // Use a method name no child registered. Cannot share buildPipeline here
   // (bench has no pipeline wiring); composite's writeUnknownMethodError
   // returns Result::Error early when pipeline_ is unset. The hot work
@@ -387,7 +398,7 @@ BENCHMARK(Composite_UnknownMethod, iters) {
   suspender.dismiss();
 
   for (size_t i = 0; i < iters; ++i) {
-    auto result = fixture.composite->onRead(
+    auto result = composite.onRead(
         endpointContext(), erase_and_box(std::move(requests[i])));
     folly::doNotOptimizeAway(result);
   }

@@ -348,9 +348,8 @@ class ThriftServerCompositeIntegrationTest : public ::testing::Test {
     // composite's setPipeline fans out to children — children need
     // pipeline_ set so their writeResponse fires through the same pipeline.
     composite_->setPipeline(thriftPipeline_.get());
-    // Activate the thrift pipeline so composite's onPipelineActive fans out
-    // to children (Ready -> Open). Without this, child onRead rejects with
-    // Result::Error because base state-checks state == Open.
+    // Activate the thrift pipeline so the composite forwards the pipeline
+    // lifecycle to its children.
     thriftPipeline_->activate();
 
     transportHandler_()->setPipeline(rocketPipeline_());

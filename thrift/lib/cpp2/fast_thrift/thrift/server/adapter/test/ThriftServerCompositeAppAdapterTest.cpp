@@ -390,6 +390,75 @@ TEST_F(ThriftServerCompositeAppAdapterTest, UnknownMethodEmitsFrameworkError) {
   EXPECT_EQ(monitoringChild->dispatchedTo, "");
 }
 
+TEST_F(
+    ThriftServerCompositeAppAdapterTest,
+    WrongKindTakesPrecedenceOverUnknownMethod) {
+  TestChildAdapter::Ptr child{new TestChildAdapter("user")};
+  child->registerMethod("knownMethod");
+  ThriftServerCompositeAppAdapter::Ptr composite{
+      new ThriftServerCompositeAppAdapter()};
+  composite->addChild(child.get());
+
+  apache::thrift::ResponseRpcErrorCode capturedRpcErrorCode{};
+  auto built = buildPipeline(
+      composite.get(),
+      [&](apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl&,
+          TypeErasedBox&& box) {
+        auto& response = box.get<ThriftServerResponseMessage>();
+        auto rpcError = deserializeResponseRpcError(*payloadData(response));
+        capturedRpcErrorCode = *rpcError.code();
+        return Result::Success;
+      });
+
+  auto msg = makeRequestMessage(
+      1,
+      "unknownMethod",
+      apache::thrift::ProtocolId::BINARY,
+      apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+  EXPECT_EQ(
+      composite->onRead(
+          channel_pipeline::test::inertEndpointContext(),
+          erase_and_box(std::move(msg))),
+      Result::Success);
+  EXPECT_EQ(
+      capturedRpcErrorCode,
+      apache::thrift::ResponseRpcErrorCode::WRONG_RPC_KIND);
+  EXPECT_EQ(child->dispatchedTo, "");
+}
+
+TEST_F(
+    ThriftServerCompositeAppAdapterTest,
+    MissingMetadataEmitsUnknownMethodError) {
+  TestChildAdapter::Ptr child{new TestChildAdapter("user")};
+  child->registerMethod("knownMethod");
+  ThriftServerCompositeAppAdapter::Ptr composite{
+      new ThriftServerCompositeAppAdapter()};
+  composite->addChild(child.get());
+
+  apache::thrift::ResponseRpcErrorCode capturedRpcErrorCode{};
+  auto built = buildPipeline(
+      composite.get(),
+      [&](apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl&,
+          TypeErasedBox&& box) {
+        auto& response = box.get<ThriftServerResponseMessage>();
+        auto rpcError = deserializeResponseRpcError(*payloadData(response));
+        capturedRpcErrorCode = *rpcError.code();
+        return Result::Success;
+      });
+
+  ThriftServerRequestMessage msg;
+  msg.streamId = 1;
+  EXPECT_EQ(
+      composite->onRead(
+          channel_pipeline::test::inertEndpointContext(),
+          erase_and_box(std::move(msg))),
+      Result::Success);
+  EXPECT_EQ(
+      capturedRpcErrorCode,
+      apache::thrift::ResponseRpcErrorCode::UNKNOWN_METHOD);
+  EXPECT_EQ(child->dispatchedTo, "");
+}
+
 // =============================================================================
 // Per-connection state forwarding
 // =============================================================================
@@ -487,9 +556,6 @@ TEST_F(ThriftServerCompositeAppAdapterTest, OnExceptionForwardsToBothChildren) {
       << "onException must fan out to monitoring child";
 }
 
-// The composite forwards the inbound box to the chosen child's onRead, so
-// the RPC-kind reject lives in the child's handleRequestResponse. Verify
-// it's still enforced end-to-end through the composite.
 TEST_F(ThriftServerCompositeAppAdapterTest, RejectsUnsupportedRpcKind) {
   TestChildAdapter::Ptr userChild{new TestChildAdapter("user")};
   TestChildAdapter::Ptr monitoringChild{new TestChildAdapter("monitoring")};
@@ -517,7 +583,7 @@ TEST_F(ThriftServerCompositeAppAdapterTest, RejectsUnsupportedRpcKind) {
         return Result::Success;
       });
 
-  // Method exists in user, but RPC kind is streaming — child must reject
+  // Method exists in user, but RPC kind is streaming — composite must reject
   // before invoking the user thunk.
   auto msg = makeRequestMessage(
       1,

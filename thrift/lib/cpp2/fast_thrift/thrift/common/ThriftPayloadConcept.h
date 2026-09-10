@@ -57,14 +57,11 @@ concept ThriftPayloadConcept =
 
 /**
  * Refines `ThriftPayloadConcept` for the 5 initial-request payload types
- * (RR, Fnf, Stream, Sink, Bidi). These open a new exchange and always
- * carry routing metadata — the composite app adapter reads
- * `getRequestRpcMetadata()->name()` to pick a child handler.
+ * (RR, Fnf, Stream, Sink, Bidi). These open a new exchange and expose
+ * routing metadata used to select a child handler.
  *
- * Today only `ThriftRequestResponsePayload` returns a typed metadata
- * pointer; the other four still hold raw IOBuf metadata and return
- * nullptr. Reshaping them to typed metadata is a future step that's
- * structurally invisible to consumers of this concept.
+ * All five payload types expose typed metadata. Individual payloads may
+ * return nullptr when metadata is absent.
  */
 template <typename T>
 concept ThriftRequestPayloadConcept =
