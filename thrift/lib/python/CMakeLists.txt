@@ -242,7 +242,14 @@ set(_all_cython_includes
     ${fmt_include_dirs}
     ${wangle_incs}
     ${glog_include_dirs}
-    ${mvfst_incs})
+    ${mvfst_incs}
+    # Reached transitively through folly and glog headers. setup.py sees only
+    # this list, not the directory-wide include_directories() in the top-level
+    # CMakeLists that the CMake targets inherit.
+    ${LIBGFLAGS_INCLUDE_DIR}
+    ${OPENSSL_INCLUDE_DIR}
+    ${ZSTD_INCLUDE_DIRS}
+    ${Xxhash_INCLUDE_DIR})
 list(JOIN _all_cython_includes ":" cython_include_path)
 log_debug("cython_include_path='${cython_include_path}'")
 

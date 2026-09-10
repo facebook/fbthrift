@@ -283,8 +283,9 @@ if (thriftpy3)
   get_target_property(fmt_include_dirs fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
   get_target_property(wangle_incs wangle::wangle INTERFACE_INCLUDE_DIRECTORIES)
   list(JOIN wangle_incs ":" wangle_include_dirs)
-  # setup.py is outside CMake's target graph, so the source and build roots
-  # have to be listed explicitly. One argument: setup.py parses -I as a single
+  # setup.py is outside CMake's target graph, so the source and build roots and
+  # the roots reached transitively through folly and glog headers have to be
+  # listed explicitly. One argument: setup.py parses -I as a single
   # colon-separated value.
   string(
     JOIN
@@ -296,6 +297,11 @@ if (thriftpy3)
     "${Boost_INCLUDE_DIRS}"
     "${fmt_include_dirs}"
     "${wangle_include_dirs}"
+    "${LIBGFLAGS_INCLUDE_DIR}"
+    "${GLOG_INCLUDE_DIRS}"
+    "${OPENSSL_INCLUDE_DIR}"
+    "${ZSTD_INCLUDE_DIRS}"
+    "${Xxhash_INCLUDE_DIR}"
     "${CMAKE_BINARY_DIR}/thrift/lib/cybld")
   get_target_property(fmt_lib fmt::fmt LOCATION)
   get_filename_component(fmt_lib_dir ${fmt_lib} DIRECTORY)
