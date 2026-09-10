@@ -118,6 +118,36 @@ if (NOT fmt_FOUND)
   FetchContent_MakeAvailable(fmt)
 endif ()
 
+# Fetch Boost if it is not installed.
+find_package(Boost QUIET)
+if (NOT Boost_FOUND)
+  # The archive this repo is tested against. CMake untars on every platform, so
+  # the manifest's Windows .zip entry is not needed.
+  set(boost_manifest
+      "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/manifests/boost")
+  file(READ "${boost_manifest}" boost_manifest_text)
+  if (NOT boost_manifest_text MATCHES
+      "url = (https://[^\r\n]+\\.tar\\.gz)[\r\n]+sha256 = ([0-9a-f]+)")
+    message(FATAL_ERROR "no boost archive in ${boost_manifest}")
+  endif ()
+  set(boost_url "${CMAKE_MATCH_1}")
+  set(boost_sha256 "${CMAKE_MATCH_2}")
+  message(STATUS "Boost not found, fetching ${boost_url}")
+  include(FetchContent)
+  set(BOOST_ENABLE_CMAKE ON)
+  # Thrift itself only needs Boost::headers, which the superproject always
+  # defines. The list is what folly asks for.
+  set(BOOST_INCLUDE_LIBRARIES context filesystem program_options regex)
+  if (WIN32)
+    list(APPEND BOOST_INCLUDE_LIBRARIES thread)
+  endif ()
+  FetchContent_Declare(
+    Boost
+    URL ${boost_url}
+    URL_HASH SHA256=${boost_sha256})
+  FetchContent_MakeAvailable(Boost)
+endif ()
+
 # Fetch folly if it is not installed.
 find_package(folly CONFIG QUIET)
 if (NOT folly_FOUND)

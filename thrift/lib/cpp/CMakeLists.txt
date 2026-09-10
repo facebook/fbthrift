@@ -84,7 +84,7 @@ if (THRIFT_RPC)
     PUBLIC concurrency
            runtime
            transport
-           Boost::boost
+           Boost::headers
            Folly::folly
            wangle::wangle
            ${GLOG_LIBRARIES}

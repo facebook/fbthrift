@@ -14,7 +14,7 @@
 
 include(FindFolly)
 include(FindPackageHandleStandardArgs)
-find_package(Boost MODULE REQUIRED)
+find_package(Boost REQUIRED)
 
 set(LIB_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -280,13 +280,19 @@ if (thriftpy3)
             create_binding_symlink_py3 thriftcpp2 thrift_python_cpp
     WORKING_DIRECTORY ${_cybld})
 
-  get_target_property(fmt_include_dirs fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
-  # A fetched folly's include dirs are generator expressions, so read them
-  # through $<TARGET_PROPERTY> to get them evaluated rather than pasted in.
+  # Read the include dirs from the targets: a fetched dependency's are generator
+  # expressions, which $<TARGET_PROPERTY> evaluates rather than pastes in.
+  set(fmt_include_dirs
+      "$<JOIN:$<TARGET_PROPERTY:fmt::fmt,INTERFACE_INCLUDE_DIRECTORIES>,:>")
   set(folly_include_dirs
       "$<JOIN:$<TARGET_PROPERTY:Folly::folly,INTERFACE_INCLUDE_DIRECTORIES>,:>")
-  get_target_property(wangle_incs wangle::wangle INTERFACE_INCLUDE_DIRECTORIES)
-  list(JOIN wangle_incs ":" wangle_include_dirs)
+  set(boost_include_dirs
+      "$<JOIN:$<TARGET_PROPERTY:Boost::headers,INTERFACE_INCLUDE_DIRECTORIES>,:>"
+  )
+  set(wangle_include_dirs
+      "$<JOIN:$<TARGET_PROPERTY:wangle::wangle,INTERFACE_INCLUDE_DIRECTORIES>,:>"
+  )
+
   # setup.py is outside CMake's target graph, so the source and build roots and
   # the roots reached transitively through folly and glog headers have to be
   # listed explicitly. One argument: setup.py parses -I as a single
@@ -298,7 +304,7 @@ if (thriftpy3)
     "-I${PROJECT_SOURCE_DIR}"
     "${PROJECT_BINARY_DIR}"
     "${folly_include_dirs}"
-    "${Boost_INCLUDE_DIRS}"
+    "${boost_include_dirs}"
     "${fmt_include_dirs}"
     "${wangle_include_dirs}"
     "${LIBGFLAGS_INCLUDE_DIR}"
