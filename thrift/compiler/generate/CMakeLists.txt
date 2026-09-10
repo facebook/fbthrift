@@ -13,7 +13,7 @@
 # limitations under the License.
 
 add_executable(compiler_generate_build_templates build_templates.cc)
-thrift_add_include_dirs(compiler_generate_build_templates PRIVATE)
+thrift_configure_target(compiler_generate_build_templates PRIVATE)
 target_link_libraries(compiler_generate_build_templates
                       ${FBTHRIFT_COMPILER_LINK_CXXFS})
 

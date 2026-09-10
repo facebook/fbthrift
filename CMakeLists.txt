@@ -54,9 +54,17 @@ endif ()
 # problems that building Thrift itself shared exposes.
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# Include directories for `#include <thrift/...>` and generated headers.
-# PUBLIC targets also export the relocatable install path; PRIVATE ones do not.
-function (thrift_add_include_dirs target visibility)
+# The compile settings and the include directories for `#include <thrift/...>`
+# and generated headers. PUBLIC targets also export the relocatable install
+# path; PRIVATE ones do not.
+function (thrift_configure_target target visibility)
+  target_compile_features(${target} ${visibility} cxx_std_20)
+  # GCC 10 needs this even under -std=c++20, and folly keys FOLLY_HAS_COROUTINES
+  # off it. Inert from GCC 11 on.
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(${target} ${visibility}
+                           $<$<COMPILE_LANGUAGE:CXX>:-fcoroutines>)
+  endif ()
   target_include_directories(
     ${target} ${visibility} $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>)
@@ -69,19 +77,6 @@ endfunction ()
 # Prepend, so entries from a parent project or the command line survive.
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/thrift/cmake"
      "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/CMake")
-
-if (NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 20)
-  set(CMAKE_CXX_STANDARD_REQUIRED ON)
-  message(STATUS "setting C++ standard to C++${CMAKE_CXX_STANDARD}")
-endif ()
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-# Explicitly enable coroutine support, since GCC does not enable it
-# by default when targeting C++17.
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fcoroutines>)
-endif ()
 
 # Fetch fmt if it is not installed.
 find_package(fmt CONFIG QUIET)
