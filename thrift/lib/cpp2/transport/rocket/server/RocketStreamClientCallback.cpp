@@ -25,6 +25,65 @@ THRIFT_FLAG_DEFINE_bool(rocket_server_disable_send_callback, false);
 
 namespace apache::thrift::rocket {
 
+namespace {
+
+class ChainedSendCallback final
+    : public apache::thrift::MessageChannel::SendCallback {
+ public:
+  ChainedSendCallback(
+      apache::thrift::MessageChannel::SendCallbackPtr first,
+      apache::thrift::MessageChannel::SendCallbackPtr second)
+      : first_(std::move(first)), second_(std::move(second)) {
+    DCHECK(first_);
+    DCHECK(second_);
+  }
+
+  void sendQueued() override {
+    first_->sendQueued();
+    second_->sendQueued();
+  }
+
+  void messageSent() override {
+    auto first = std::move(first_);
+    auto second = std::move(second_);
+    delete this;
+    settleSent(std::move(first));
+    settleSent(std::move(second));
+  }
+
+  void messageSendError(folly::exception_wrapper&& ew) override {
+    auto ewCopy = ew;
+    auto first = std::move(first_);
+    auto second = std::move(second_);
+    delete this;
+    settleError(std::move(first), std::move(ewCopy));
+    settleError(std::move(second), std::move(ew));
+  }
+
+ private:
+  static void settleSent(
+      apache::thrift::MessageChannel::SendCallbackPtr callback) {
+    auto* rawCallback = callback.release();
+    if (rawCallback != nullptr) {
+      rawCallback->messageSent();
+    }
+  }
+
+  static void settleError(
+      apache::thrift::MessageChannel::SendCallbackPtr callback,
+      folly::exception_wrapper ew) {
+    auto* rawCallback = callback.release();
+    if (rawCallback != nullptr) {
+      rawCallback->messageSendError(std::move(ew));
+    }
+  }
+
+  apache::thrift::MessageChannel::SendCallbackPtr first_;
+  apache::thrift::MessageChannel::SendCallbackPtr second_;
+};
+
+} // namespace
+
 class TimeoutCallback : public folly::HHWheelTimer::Callback {
  public:
   explicit TimeoutCallback(RocketStreamClientCallback& parent)
@@ -48,6 +107,7 @@ bool RocketStreamClientCallback::onFirstResponse(
   if (UNLIKELY(serverCallbackOrCancelled_ == kCancelledFlag)) {
     serverCallback->onStreamCancel();
     firstResponse.payload.reset();
+    delete firstResponseSendCallback_.release();
     connection_.freeStream(streamId_, true /* complete */);
     return false;
   }
@@ -74,7 +134,9 @@ bool RocketStreamClientCallback::onFirstResponse(
           std::move(firstResponse.payload),
           std::move(firstResponse.fds));
     } catch (std::exception const& ex) {
-      sendError(RocketException(ErrorCode::CANCELED, ex.what()));
+      sendError(
+          RocketException(ErrorCode::CANCELED, ex.what()),
+          std::move(firstResponseSendCallback_));
       // The destructor does not cancel, and the source still holds our pointer.
       // markRequestComplete is true because unsetMarkRequestComplete() already
       // ran before onFirstResponse().
@@ -86,13 +148,14 @@ bool RocketStreamClientCallback::onFirstResponse(
         streamId_,
         std::move(rocketPayload),
         Flags().next(true).complete(false),
-        nullptr);
+        std::move(firstResponseSendCallback_));
   } else {
     if (!sendPayload(
             std::move(firstResponse),
             /* next */ true,
             /* complete */ false,
-            /* sendCallback */ nullptr)) {
+            std::move(firstResponseSendCallback_),
+            SendCallbackMode::FIRST_RESPONSE)) {
       serverCallback->onStreamCancel();
       connection_.freeStream(streamId_, /* markRequestComplete */ true);
       return false;
@@ -110,13 +173,14 @@ void RocketStreamClientCallback::onFirstResponseError(
   bool isEncodedError = false;
   ew.handle(
       [this, &isEncodedError](RocketException& rex) {
-        sendError(std::move(rex));
+        sendError(std::move(rex), std::move(firstResponseSendCallback_));
         isEncodedError = true;
       },
       [this, &isEncodedError](thrift::detail::EncodedFirstResponseError& err) {
         DCHECK(err.encoded.payload);
         isEncodedError = true;
-        sendErrorPayload(std::move(err.encoded));
+        sendErrorPayload(
+            std::move(err.encoded), std::move(firstResponseSendCallback_));
       });
   DCHECK(isEncodedError);
 
@@ -395,8 +459,20 @@ void RocketStreamClientCallback::sendCompletePayload() {
       makeSendCallback(details::STREAM_ENDING_TYPES::COMPLETE));
 }
 
+RocketStreamClientCallback::SendCallbackPtr
+RocketStreamClientCallback::makeErrorSendCallback(
+    SendCallbackPtr sendCallback) {
+  auto streamCallback = makeSendCallback(details::STREAM_ENDING_TYPES::ERROR);
+  if (!sendCallback) {
+    return streamCallback;
+  }
+  return SendCallbackPtr(new ChainedSendCallback(
+      std::move(sendCallback), std::move(streamCallback)));
+}
+
 void RocketStreamClientCallback::sendPackFailureError(
-    const folly::exception_wrapper& ew) {
+    const folly::exception_wrapper& ew,
+    apache::thrift::MessageChannel::SendCallbackPtr sendCallback) {
   StreamRpcError streamRpcError;
   streamRpcError.code() = StreamRpcErrorCode::UNKNOWN;
   streamRpcError.name_utf8() =
@@ -404,9 +480,11 @@ void RocketStreamClientCallback::sendPackFailureError(
           StreamRpcErrorCode::UNKNOWN);
   streamRpcError.what_utf8() =
       fmt::format("Failed to pack stream payload: {}", ew.what());
-  sendError(RocketException(
-      ErrorCode::CANCELED,
-      connection_.getPayloadSerializer()->packCompact(streamRpcError)));
+  sendError(
+      RocketException(
+          ErrorCode::CANCELED,
+          connection_.getPayloadSerializer()->packCompact(streamRpcError)),
+      std::move(sendCallback));
 }
 
 void RocketStreamClientCallback::applyCompressionConfigIfNeeded(

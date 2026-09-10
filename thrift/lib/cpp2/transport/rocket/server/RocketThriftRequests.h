@@ -31,6 +31,8 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 
+THRIFT_FLAG_DECLARE(enable_stream_first_response_request_logging, bool);
+
 namespace folly {
 class EventBase;
 class IOBuf;
@@ -228,6 +230,14 @@ class ThriftServerRequestStream final : public RocketThriftRequest {
   void closeConnection(folly::exception_wrapper ew) noexcept override;
 
  private:
+  // Returns the client callback the initial response should be delivered to:
+  // either clientCallback_ itself, or a short-lived wrapper around it that
+  // records the initial-response write timings for `thrift_request_events`.
+  // Must be called before `metadata` is moved into the first response payload.
+  StreamClientCallback* clientCallbackForFirstResponse(
+      const ResponseRpcMetadata& metadata,
+      const std::optional<ResponseRpcError>& responseRpcError = std::nullopt);
+
   const int32_t version_;
   RocketStreamClientCallback* clientCallback_;
 

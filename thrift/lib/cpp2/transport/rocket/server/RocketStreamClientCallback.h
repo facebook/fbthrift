@@ -88,6 +88,14 @@ class RocketStreamClientCallback final : public StreamClientCallback,
     contextStack_ = std::move(contextStack);
   }
 
+  // Attaches a send callback to the initial-response write only; subsequent
+  // stream items keep using makeSendCallback(). Must be called before
+  // onFirstResponse()/onFirstResponseError(), which consumes it.
+  void setFirstResponseSendCallback(
+      apache::thrift::MessageChannel::SendCallbackPtr sendCallback) {
+    firstResponseSendCallback_ = std::move(sendCallback);
+  }
+
   StreamId streamId() const override { return streamId_; }
 
  private:
@@ -157,6 +165,8 @@ class RocketStreamClientCallback final : public StreamClientCallback,
         std::move(endReason),
         chunksInMemory_));
   }
+  SendCallbackPtr makeErrorSendCallback(SendCallbackPtr sendCallback);
+  enum class SendCallbackMode { DEFAULT, FIRST_RESPONSE, ERROR };
 
   // Returns false if a stream error was sent instead of the payload.
   template <typename Payload>
@@ -164,23 +174,31 @@ class RocketStreamClientCallback final : public StreamClientCallback,
       Payload&& payload,
       bool next,
       bool complete,
-      apache::thrift::MessageChannel::SendCallbackPtr sendCallback);
+      apache::thrift::MessageChannel::SendCallbackPtr sendCallback,
+      SendCallbackMode sendCallbackMode = SendCallbackMode::DEFAULT);
 
   bool sendStreamPayload(StreamPayload&& payload);
 
   template <typename Payload>
-  void sendErrorPayload(Payload&& payload);
+  void sendErrorPayload(
+      Payload&& payload,
+      apache::thrift::MessageChannel::SendCallbackPtr sendCallback = nullptr);
 
   void sendCompletePayload();
 
   template <typename ErrorData>
   void sendError(ErrorCode errorCode, ErrorData errorData);
+  inline void sendError(
+      RocketException&& rex,
+      apache::thrift::MessageChannel::SendCallbackPtr sendCallback);
 
   inline void sendError(RocketException&& rex);
 
   // Error data must be a serialized StreamRpcError, or the client cannot parse
   // the error frame.
-  void sendPackFailureError(const folly::exception_wrapper& ew);
+  void sendPackFailureError(
+      const folly::exception_wrapper& ew,
+      apache::thrift::MessageChannel::SendCallbackPtr sendCallback = nullptr);
 
   void applyCompressionConfigIfNeeded(StreamPayload& payload);
 
@@ -200,6 +218,7 @@ class RocketStreamClientCallback final : public StreamClientCallback,
   bool cpuCompressionEnabled_{false};
   std::string rpcMethodName_{"<unknown_stream_method>"};
   std::shared_ptr<ContextStack> contextStack_{nullptr};
+  SendCallbackPtr firstResponseSendCallback_{nullptr};
 
   // Tracks chunks in memory (received but not yet sent).
   // Uses shared_ptr so callback can safely decrement after stream destruction.
@@ -214,7 +233,8 @@ bool RocketStreamClientCallback::sendPayload(
     Payload&& payload,
     bool next,
     bool complete,
-    apache::thrift::MessageChannel::SendCallbackPtr sendCallback) {
+    apache::thrift::MessageChannel::SendCallbackPtr sendCallback,
+    SendCallbackMode sendCallbackMode) {
   auto serializer = connection_.getPayloadSerializer();
   // pack() compresses, and callers are noexcept: an escaping throw would abort
   // the process instead of failing one stream.
@@ -225,8 +245,15 @@ bool RocketStreamClientCallback::sendPayload(
         connection_.getRawSocket());
   });
   if (rocketPayload.hasException()) {
-    sendPackFailureError(rocketPayload.exception());
+    sendPackFailureError(
+        rocketPayload.exception(),
+        sendCallbackMode != SendCallbackMode::DEFAULT ? std::move(sendCallback)
+                                                      : SendCallbackPtr());
     return false;
+  }
+
+  if (sendCallbackMode == SendCallbackMode::ERROR) {
+    sendCallback = makeErrorSendCallback(std::move(sendCallback));
   }
 
   connection_.sendPayload(
@@ -244,19 +271,28 @@ void RocketStreamClientCallback::sendError(
 }
 
 void RocketStreamClientCallback::sendError(RocketException&& rex) {
+  sendError(std::move(rex), nullptr);
+}
+
+void RocketStreamClientCallback::sendError(
+    RocketException&& rex,
+    apache::thrift::MessageChannel::SendCallbackPtr sendCallback) {
   connection_.sendError(
       streamId_,
       std::move(rex),
-      makeSendCallback(details::STREAM_ENDING_TYPES::ERROR));
+      makeErrorSendCallback(std::move(sendCallback)));
 }
 
 template <typename Payload>
-void RocketStreamClientCallback::sendErrorPayload(Payload&& payload) {
+void RocketStreamClientCallback::sendErrorPayload(
+    Payload&& payload,
+    apache::thrift::MessageChannel::SendCallbackPtr sendCallback) {
   sendPayload(
       std::forward<Payload>(payload),
       true /* next */,
       true /* complete */,
-      makeSendCallback(details::STREAM_ENDING_TYPES::ERROR));
+      std::move(sendCallback),
+      SendCallbackMode::ERROR);
 }
 
 } // namespace apache::thrift::rocket

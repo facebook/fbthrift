@@ -185,6 +185,11 @@ class ThriftRequestCore : public ResponseChannelRequest {
       folly::Optional<uint32_t> crc32c) final {
     if (tryTerminate(RequestTerminationCause::RequestFinished)) {
       cancelTimeout();
+      // Marks the end of processing for the stream's initial response, the
+      // counterpart of sendReply()'s processEnd. Without it the write timings
+      // recorded for the initial response have no baseline to be measured
+      // against and writeDelayLatencyUsec() stays empty.
+      getTimestamps().processEnd = std::chrono::steady_clock::now();
       auto metadata = makeResponseRpcMetadata(
           header_.extractAllWriteHeaders(),
           header_.extractProxiedPayloadMetadata(),
@@ -209,6 +214,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
       folly::Optional<uint32_t> crc32c) final {
     if (tryTerminate(RequestTerminationCause::RequestFinished)) {
       cancelTimeout();
+      // See the StreamServerCallbackPtr overload above.
+      getTimestamps().processEnd = std::chrono::steady_clock::now();
       auto metadata = makeResponseRpcMetadata(
           header_.extractAllWriteHeaders(),
           header_.extractProxiedPayloadMetadata(),

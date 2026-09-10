@@ -17,7 +17,9 @@
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
+#include <thrift/lib/cpp2/transport/rocket/server/StreamFirstResponseLoggingCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/test/MockIRocketServerConnection.h>
+#include <thrift/lib/cpp2/transport/rocket/server/test/ThrowingPayloadSerializer.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 THRIFT_FLAG_DEFINE_bool(enable_rocket_connection_observers, false);
@@ -37,6 +39,36 @@ class MockStreamServerCallback : public StreamServerCallback {
   MOCK_METHOD(bool, onSinkHeaders, (HeadersPayload&&), (override));
 };
 
+/**
+ * Records which SendCallback method ran, mirroring LogRequestSampleCallback's
+ * `delete this` semantics (which is what emits the request event sample).
+ */
+class FakeSendCallback : public MessageChannel::SendCallback {
+ public:
+  struct Record {
+    bool queued{false};
+    bool sent{false};
+    bool sendError{false};
+    bool destroyed{false};
+  };
+
+  explicit FakeSendCallback(Record& record) : record_(record) {}
+  ~FakeSendCallback() override { record_.destroyed = true; }
+
+  void sendQueued() override { record_.queued = true; }
+  void messageSent() override {
+    record_.sent = true;
+    delete this;
+  }
+  void messageSendError(folly::exception_wrapper&&) override {
+    record_.sendError = true;
+    delete this;
+  }
+
+ private:
+  Record& record_;
+};
+
 class RocketStreamClientCallbackTest : public ::testing::Test {
  protected:
   static constexpr StreamId kStreamId{1};
@@ -45,6 +77,42 @@ class RocketStreamClientCallbackTest : public ::testing::Test {
   void SetUp() override {
     callback_ = std::make_unique<RocketStreamClientCallback>(
         kStreamId, connection_, kInitialRequestN);
+  }
+
+  static FirstResponsePayload makeFirstResponsePayload() {
+    return FirstResponsePayload(
+        folly::IOBuf::copyBuffer(""), ResponseRpcMetadata());
+  }
+
+  MessageChannel::SendCallbackPtr makeFakeSendCallback(
+      FakeSendCallback::Record& record) {
+    return MessageChannel::SendCallbackPtr(new FakeSendCallback(record));
+  }
+
+  /**
+   * Captures the send callback that the initial-response write carries, so the
+   * test can settle it explicitly instead of having gmock drop it.
+   */
+  void captureFirstWriteSendCallback(MessageChannel::SendCallbackPtr& into) {
+    EXPECT_CALL(connection_, sendPayload(kStreamId, _, _, _))
+        .WillOnce(
+            [&](StreamId,
+                Payload&&,
+                Flags,
+                MessageChannel::SendCallbackPtr cb) { into = std::move(cb); });
+  }
+
+  void captureFirstErrorSendCallback(MessageChannel::SendCallbackPtr& into) {
+    EXPECT_CALL(connection_, sendError(kStreamId, _, _))
+        .WillOnce(
+            [&](StreamId,
+                RocketException&&,
+                MessageChannel::SendCallbackPtr cb) { into = std::move(cb); });
+  }
+
+  /** Cancels the stream before the first response has been delivered. */
+  void cancelBeforeFirstResponse() {
+    callback_->handleFrame(CancelFrame(kStreamId));
   }
 
   /**
@@ -229,4 +297,195 @@ TEST_F(RocketStreamClientCallbackTest, HandleResumedByConnectionPreReady) {
   EXPECT_CALL(serverCallback_, resumeStream()).Times(0);
 
   callback_->handleResumedByConnection();
+}
+
+TEST_F(
+    RocketStreamClientCallbackTest, FirstResponseSendCallbackCarriedByWrite) {
+  FakeSendCallback::Record record;
+  MessageChannel::SendCallbackPtr carried;
+  captureFirstWriteSendCallback(carried);
+  EXPECT_CALL(serverCallback_, onStreamRequestN(_))
+      .WillRepeatedly(Return(true));
+
+  callback_->setFirstResponseSendCallback(makeFakeSendCallback(record));
+  EXPECT_TRUE(callback_->onFirstResponse(
+      makeFirstResponsePayload(),
+      &connection_.getEventBase(),
+      &serverCallback_));
+
+  ASSERT_NE(carried, nullptr);
+  carried.release()->messageSent();
+  EXPECT_TRUE(record.sent);
+}
+
+TEST_F(
+    RocketStreamClientCallbackTest, FirstResponseSendCallbackNotReusedByItems) {
+  FakeSendCallback::Record record;
+  MessageChannel::SendCallbackPtr carried;
+  captureFirstWriteSendCallback(carried);
+  EXPECT_CALL(serverCallback_, onStreamRequestN(_))
+      .WillRepeatedly(Return(true));
+
+  callback_->setFirstResponseSendCallback(makeFakeSendCallback(record));
+  EXPECT_TRUE(callback_->onFirstResponse(
+      makeFirstResponsePayload(),
+      &connection_.getEventBase(),
+      &serverCallback_));
+
+  // The next item gets its own send callback; gmock drops it, and dropping it
+  // must not settle the initial response's callback a second time.
+  EXPECT_CALL(connection_, sendPayload(kStreamId, _, _, _)).Times(1);
+  EXPECT_TRUE(
+      callback_->onStreamNext(StreamPayload(folly::IOBuf::copyBuffer(""), {})));
+
+  EXPECT_FALSE(record.destroyed);
+  carried.release()->messageSent();
+  EXPECT_TRUE(record.sent);
+}
+
+TEST_F(
+    RocketStreamClientCallbackTest,
+    FirstResponseSendCallbackDroppedWhenCancelledBeforeResponse) {
+  FakeSendCallback::Record record;
+  callback_->setFirstResponseSendCallback(makeFakeSendCallback(record));
+  cancelBeforeFirstResponse();
+
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(1);
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+  EXPECT_CALL(connection_, sendPayload(kStreamId, _, _, _)).Times(0);
+
+  EXPECT_FALSE(callback_->onFirstResponse(
+      makeFirstResponsePayload(),
+      &connection_.getEventBase(),
+      &serverCallback_));
+
+  EXPECT_TRUE(record.destroyed);
+  EXPECT_FALSE(record.sendError);
+}
+
+TEST_F(RocketStreamClientCallbackTest, WrapperTimesFirstResponseThenRebinds) {
+  FakeSendCallback::Record record;
+  auto* wrapper = new StreamFirstResponseLoggingCallback(
+      *callback_, makeFakeSendCallback(record));
+
+  MessageChannel::SendCallbackPtr carried;
+  captureFirstWriteSendCallback(carried);
+  EXPECT_CALL(serverCallback_, onStreamRequestN(_))
+      .WillRepeatedly(Return(true));
+  // The wrapper deletes itself once the first response is forwarded, so it must
+  // hand the server callback back to the wrapped callback on the way out.
+  EXPECT_CALL(serverCallback_, resetClientCallback(_))
+      .WillOnce([&](StreamClientCallback& clientCallback) {
+        EXPECT_EQ(&clientCallback, callback_.get());
+      });
+
+  EXPECT_TRUE(wrapper->onFirstResponse(
+      makeFirstResponsePayload(),
+      &connection_.getEventBase(),
+      &serverCallback_));
+
+  ASSERT_NE(carried, nullptr);
+  carried.release()->messageSent();
+  EXPECT_TRUE(record.sent);
+}
+
+TEST_F(
+    RocketStreamClientCallbackTest, WrapperPropagatesTerminatedFirstResponse) {
+  FakeSendCallback::Record record;
+  auto* wrapper = new StreamFirstResponseLoggingCallback(
+      *callback_, makeFakeSendCallback(record));
+  cancelBeforeFirstResponse();
+
+  EXPECT_CALL(serverCallback_, resetClientCallback(_)).Times(1);
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(1);
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  // Reporting `true` here would let the caller keep driving a stream that the
+  // wrapped callback already tore down.
+  EXPECT_FALSE(wrapper->onFirstResponse(
+      makeFirstResponsePayload(),
+      &connection_.getEventBase(),
+      &serverCallback_));
+
+  EXPECT_TRUE(record.destroyed);
+  EXPECT_FALSE(record.sendError);
+}
+
+TEST_F(RocketStreamClientCallbackTest, WrapperTimesFirstResponseError) {
+  FakeSendCallback::Record record;
+  auto* wrapper = new StreamFirstResponseLoggingCallback(
+      *callback_, makeFakeSendCallback(record));
+
+  MessageChannel::SendCallbackPtr carried;
+  captureFirstErrorSendCallback(carried);
+  EXPECT_CALL(connection_, freeStream(kStreamId, false)).Times(1);
+
+  wrapper->onFirstResponseError(
+      folly::make_exception_wrapper<RocketException>(
+          ErrorCode::CANCELED, "cancelled"));
+
+  ASSERT_NE(carried, nullptr);
+  carried.release()->messageSent();
+  EXPECT_TRUE(record.sent);
+}
+
+class RocketStreamClientCallbackPackFailureTest
+    : public RocketStreamClientCallbackTest {
+ protected:
+  void SetUp() override {
+    RocketStreamClientCallbackTest::SetUp();
+    ON_CALL(connection_, getPayloadSerializer()).WillByDefault([this] {
+      return serializer_.getNonOwningPtr();
+    });
+  }
+
+  static FirstResponsePayload makeUncompressableFirstResponse() {
+    ResponseRpcMetadata metadata;
+    metadata.compression() = CompressionAlgorithm::CUSTOM;
+    return FirstResponsePayload(
+        folly::IOBuf::copyBuffer("data"), std::move(metadata));
+  }
+
+  ThrowingPayloadSerializer serializer_;
+};
+
+TEST_F(
+    RocketStreamClientCallbackPackFailureTest,
+    FirstResponseSendCallbackCarriedByErrorWrite) {
+  FakeSendCallback::Record record;
+  MessageChannel::SendCallbackPtr carried;
+  captureFirstErrorSendCallback(carried);
+  EXPECT_CALL(connection_, sendPayload(kStreamId, _, _, _)).Times(0);
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(1);
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  callback_->setFirstResponseSendCallback(makeFakeSendCallback(record));
+  EXPECT_FALSE(callback_->onFirstResponse(
+      makeUncompressableFirstResponse(),
+      &connection_.getEventBase(),
+      &serverCallback_));
+
+  ASSERT_NE(carried, nullptr);
+  carried.release()->messageSent();
+  EXPECT_TRUE(record.sent);
+}
+
+TEST_F(
+    RocketStreamClientCallbackPackFailureTest,
+    EncodedFirstResponseErrorPackFailureCarriesSendCallback) {
+  FakeSendCallback::Record record;
+  MessageChannel::SendCallbackPtr carried;
+  captureFirstErrorSendCallback(carried);
+  EXPECT_CALL(connection_, sendPayload(kStreamId, _, _, _)).Times(0);
+  EXPECT_CALL(connection_, freeStream(kStreamId, false)).Times(1);
+
+  callback_->setFirstResponseSendCallback(makeFakeSendCallback(record));
+  callback_->onFirstResponseError(
+      folly::make_exception_wrapper<
+          apache::thrift::detail::EncodedFirstResponseError>(
+          makeUncompressableFirstResponse()));
+
+  ASSERT_NE(carried, nullptr);
+  carried.release()->messageSent();
+  EXPECT_TRUE(record.sent);
 }

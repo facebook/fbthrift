@@ -50,6 +50,7 @@
 #include <thrift/lib/cpp2/transport/core/RequestStateMachine.h>
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketThriftRequests.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace apache::thrift;
@@ -121,6 +122,10 @@ class TestInterface
   folly::coro::Task<apache::thrift::ServerStream<int32_t>>
   co_sendStreamingRequest() override {
     auto rg = requestGuard();
+    if (failNextStreamingRequest_.exchange(false)) {
+      throw TApplicationException(
+          TApplicationException::UNKNOWN, "stream failed");
+    }
     co_await finished_;
     co_return folly::coro::co_invoke(
         []() -> folly::coro::AsyncGenerator<int32_t&&> { co_yield 0; });
@@ -191,9 +196,12 @@ class TestInterface
     callback2_ = std::move(cob);
   }
 
+  void failNextStreamingRequest() { failNextStreamingRequest_ = true; }
+
  private:
   folly::coro::Baton finished_;
   std::atomic<int32_t> reqCount_{0};
+  std::atomic<bool> failNextStreamingRequest_{false};
   folly::Function<void(TestInterface*)> callback_;
   folly::Function<void(TestInterface*)> callback2_;
 };
@@ -1221,6 +1229,52 @@ TEST_P(TimestampsTest, QueueTimeout) {
   // callCompleted should not be called for requests which timed out the
   // queue.
   EXPECT_FALSE(timestamps_.has_value());
+}
+
+TEST_P(TimestampsTest, StreamFirstResponse) {
+  // Streams are Rocket-only, and without the observer nothing reports
+  // timestamps.
+  if (!rocket_ || !forceTimestamps_) {
+    return;
+  }
+  THRIFT_FLAG_SET_MOCK(enable_stream_first_response_request_logging, true);
+  auto resetFlag = folly::makeGuard(
+      [] { THRIFT_FLAG_UNMOCK(enable_stream_first_response_request_logging); });
+
+  timestampObserverComplete_.emplace();
+  auto client = makeRocketClient();
+  auto now = std::chrono::steady_clock::now();
+  handler()->stopRequests();
+  auto stream = client->sync_sendStreamingRequest();
+
+  // Before this change the initial response of a stream carried no send
+  // callback, so callCompleted() never ran for a streaming method at all.
+  ASSERT_TRUE(timestampObserverComplete_->try_wait_for(1s));
+  ASSERT_TRUE(timestamps_.has_value());
+  EXPECT_GT(timestamps_->processEnd, now);
+  EXPECT_GT(timestamps_->writeBegin, timestamps_->processEnd);
+  EXPECT_GT(timestamps_->writeEnd, timestamps_->writeBegin);
+}
+
+TEST_P(TimestampsTest, StreamFirstResponseError) {
+  if (!rocket_ || !forceTimestamps_) {
+    return;
+  }
+  THRIFT_FLAG_SET_MOCK(enable_stream_first_response_request_logging, true);
+  auto resetFlag = folly::makeGuard(
+      [] { THRIFT_FLAG_UNMOCK(enable_stream_first_response_request_logging); });
+
+  timestampObserverComplete_.emplace();
+  auto client = makeRocketClient();
+  auto now = std::chrono::steady_clock::now();
+  handler()->failNextStreamingRequest();
+  EXPECT_THROW(client->sync_sendStreamingRequest(), TApplicationException);
+
+  ASSERT_TRUE(timestampObserverComplete_->try_wait_for(1s));
+  ASSERT_TRUE(timestamps_.has_value());
+  EXPECT_GT(timestamps_->processEnd, now);
+  EXPECT_GT(timestamps_->writeBegin, timestamps_->processEnd);
+  EXPECT_GT(timestamps_->writeEnd, timestamps_->writeBegin);
 }
 
 INSTANTIATE_TEST_CASE_P(

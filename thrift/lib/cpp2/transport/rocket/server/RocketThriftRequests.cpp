@@ -26,6 +26,7 @@
 #include <folly/io/IOBufQueue.h>
 
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/async/ServerSinkBridge.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
@@ -44,12 +45,19 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
+#include <thrift/lib/cpp2/transport/rocket/server/StreamFirstResponseLoggingCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/detail/RequestEncryptionStateDispatch.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #if __has_include(<thrift/lib/thrift/gen-cpp2/any_rep_types.h>)
 #include <thrift/lib/thrift/gen-cpp2/any_rep_types.h>
 #define THRIFT_ANY_AVAILABLE
 #endif
+
+// Emits a `thrift_request_events` sample for the initial response of a stream,
+// which is otherwise never logged at all. Off by default: it puts a wrapper in
+// the stream setup path and starts producing rows for methods that have never
+// produced any, so it needs to be rolled out gradually.
+THRIFT_FLAG_DEFINE_bool(enable_stream_first_response_request_logging, false);
 
 namespace apache::thrift::rocket {
 
@@ -713,6 +721,28 @@ ThriftServerRequestStream::ThriftServerRequestStream(
   scheduleTimeouts();
 }
 
+StreamClientCallback* ThriftServerRequestStream::clientCallbackForFirstResponse(
+    const ResponseRpcMetadata& metadata,
+    const std::optional<ResponseRpcError>& responseRpcError) {
+  auto* clientCallback = clientCallback_;
+  CHECK(clientCallback != nullptr)
+      << "Stream request is missing its client callback";
+  if (!THRIFT_FLAG(enable_stream_first_response_request_logging)) {
+    return clientCallback;
+  }
+  auto loggingCallback = createRequestLoggingCallback(
+      apache::thrift::MessageChannel::SendCallbackPtr(),
+      metadata,
+      responseRpcError,
+      makeWriteEncryptionStateCapture(getRequestContext()));
+  if (!loggingCallback) {
+    // Request isn't sampled; stay out of the stream's callback chain entirely.
+    return clientCallback;
+  }
+  return new StreamFirstResponseLoggingCallback(
+      *clientCallback, std::move(loggingCallback));
+}
+
 void ThriftServerRequestStream::sendThriftResponse(
     ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf> buf,
@@ -750,29 +780,34 @@ bool ThriftServerRequestStream::sendStreamThriftResponse(
     }
 
     context_.unsetMarkRequestComplete();
-    stream->resetClientCallback(*clientCallback_);
+    auto* clientCallback = clientCallbackForFirstResponse(metadata);
+    stream->resetClientCallback(*clientCallback);
     clientCallback_->setProtoId(getProtoId());
     auto payload = FirstResponsePayload{std::move(data), std::move(metadata)};
     payload.fds = std::move(fds.dcheckToSendOrEmpty());
     payload.preCompressed = true;
-    return clientCallback_->onFirstResponse(
+    return clientCallback->onFirstResponse(
         std::move(payload), nullptr /* evb */, stream.release());
   }
 
   if (auto responseRpcError = processFirstResponse(
           metadata, data, getProtoId(), version_, getCompressionConfig())) {
+    auto* clientCallback =
+        clientCallbackForFirstResponse(metadata, responseRpcError);
     auto ex = makeRocketException(
         *responseRpcError, *context_.connection().getPayloadSerializer());
-    handleStreamError(std::move(ex), clientCallback_);
+    clientCallback_ = nullptr;
+    clientCallback->onFirstResponseError(std::move(ex));
     return false;
   }
   context_.unsetMarkRequestComplete();
-  stream->resetClientCallback(*clientCallback_);
+  auto* clientCallback = clientCallbackForFirstResponse(metadata);
+  stream->resetClientCallback(*clientCallback);
   clientCallback_->setProtoId(getProtoId());
   auto payload = FirstResponsePayload{std::move(data), std::move(metadata)};
   payload.fds =
       std::move(getRequestContext()->getHeader()->fds.dcheckToSendOrEmpty());
-  return clientCallback_->onFirstResponse(
+  return clientCallback->onFirstResponse(
       std::move(payload), nullptr /* evb */, stream.release());
 }
 
@@ -820,19 +855,23 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
       stream.setStreamLog(connLog->createStreamLog(stream.getMethodName()));
     }
 
+    auto* clientCallback = clientCallbackForFirstResponse(metadata);
     auto payload = apache::thrift::FirstResponsePayload{
         std::move(data), std::move(metadata)};
     payload.fds = std::move(fds.dcheckToSendOrEmpty());
     payload.preCompressed = true;
-    stream(std::move(payload), clientCallback_, &evb_);
+    stream(std::move(payload), clientCallback, &evb_);
     return;
   }
 
   if (auto responseRpcError = processFirstResponse(
           metadata, data, getProtoId(), version_, getCompressionConfig())) {
+    auto* clientCallback =
+        clientCallbackForFirstResponse(metadata, responseRpcError);
     auto ex = makeRocketException(
         *responseRpcError, *context_.connection().getPayloadSerializer());
-    handleStreamError(std::move(ex), clientCallback_);
+    clientCallback_ = nullptr;
+    clientCallback->onFirstResponseError(std::move(ex));
     return;
   }
   context_.unsetMarkRequestComplete();
@@ -846,28 +885,31 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
     stream.setStreamLog(connLog->createStreamLog(stream.getMethodName()));
   }
 
+  auto* clientCallback = clientCallbackForFirstResponse(metadata);
   auto payload = apache::thrift::FirstResponsePayload{
       std::move(data), std::move(metadata)};
   payload.fds =
       std::move(getRequestContext()->getHeader()->fds.dcheckToSendOrEmpty());
-  stream(std::move(payload), clientCallback_, &evb_);
+  stream(std::move(payload), clientCallback, &evb_);
 }
 
 void ThriftServerRequestStream::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
-  if (auto responseRpcError = processFirstResponse(
-          metadata, exbuf, getProtoId(), version_, getCompressionConfig())) {
+  auto responseRpcError = processFirstResponse(
+      metadata, exbuf, getProtoId(), version_, getCompressionConfig());
+  auto* clientCallback =
+      clientCallbackForFirstResponse(metadata, responseRpcError);
+  clientCallback_ = nullptr;
+  if (responseRpcError) {
     auto ex = makeRocketException(
         *responseRpcError, *context_.connection().getPayloadSerializer());
-    handleStreamError(std::move(ex), clientCallback_);
+    clientCallback->onFirstResponseError(std::move(ex));
     return;
   }
-  std::exchange(clientCallback_, nullptr)
-      ->onFirstResponseError(
-          folly::make_exception_wrapper<
-              thrift::detail::EncodedFirstResponseError>(
-              FirstResponsePayload(std::move(exbuf), std::move(metadata))));
+  clientCallback->onFirstResponseError(
+      folly::make_exception_wrapper<thrift::detail::EncodedFirstResponseError>(
+          FirstResponsePayload(std::move(exbuf), std::move(metadata))));
 }
 
 void ThriftServerRequestStream::closeConnection(

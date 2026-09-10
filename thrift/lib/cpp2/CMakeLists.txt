@@ -414,6 +414,7 @@ if (THRIFT_RPC)
     transport/rocket/server/RocketSinkClientCallback.cpp
     transport/rocket/server/RocketServerUtil.cpp
     transport/rocket/server/RocketStreamClientCallback.cpp
+    transport/rocket/server/StreamFirstResponseLoggingCallback.cpp
     transport/rocket/server/RocketBiDiClientCallback.cpp
     transport/rocket/server/RocketThriftRequests.cpp
     transport/rocket/server/RocketServerConnectionFactory.cpp
