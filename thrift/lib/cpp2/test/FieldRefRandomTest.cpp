@@ -42,7 +42,7 @@ void callRandomMethod(
           EXPECT_EQ(a.value(), b.value());
         } else {
           EXPECT_THROW(a.value(), apache::thrift::bad_field_access);
-          EXPECT_THROW(b.value(), bad_optional_access);
+          EXPECT_THROW((void)b.value(), bad_optional_access);
         }
       },
       [&] {
