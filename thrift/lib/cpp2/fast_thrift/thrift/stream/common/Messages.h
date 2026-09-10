@@ -19,6 +19,7 @@
 #include <cstdint>
 #include <memory>
 
+#include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
@@ -45,10 +46,23 @@ struct Payload {
 // after all payloads on the stream.
 struct Complete {};
 
+// Stream teardown requested by the consumer. Inbound terminal: the peer no
+// longer wants items, so a producer should stop and any buffered-but-unsent
+// items may be discarded. Carries no data.
+struct Cancel {};
+
+// Stream teardown caused by a producer failure. Outbound terminal: ordered
+// after all payloads, it ends the stream in error rather than success. Carries
+// the failure so a downstream handler can serialize it to the wire.
+struct Error {
+  folly::exception_wrapper ex;
+};
+
 // The frames that flow on an established stream today. Grows as more frame
-// kinds (cancel, error, ...) come online. CompactVariant keeps the
-// discriminator to a single byte so the message stays inline in TypeErasedBox.
-using StreamMessageVariant = CompactVariant<RequestN, Payload, Complete>;
+// kinds come online. CompactVariant keeps the discriminator to a single byte so
+// the message stays inline in TypeErasedBox.
+using StreamMessageVariant =
+    CompactVariant<RequestN, Payload, Complete, Cancel, Error>;
 
 struct ThriftStreamMessage {
   StreamMessageVariant payload;
