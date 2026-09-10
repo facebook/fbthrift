@@ -126,9 +126,6 @@ If you want to invoke `cmake` again to iterate, there is a helpful `run_cmake.py
 
 CMake options:
 
-* `THRIFT_LIB_ONLY`:
-  specifies whether to build only the Thrift libraries, using a `thrift1`
-  compiler found on the system (OFF by default)
 * `enable_tests`:
   specifies whether to enable tests
 

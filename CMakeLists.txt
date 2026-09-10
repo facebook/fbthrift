@@ -140,15 +140,11 @@ endif ()
 
 find_package(OpenSSL REQUIRED)
 
-option(THRIFT_LIB_ONLY "Build the Thrift libraries only" OFF)
 option(
   THRIFT_RPC
-  "Build the RPC transport stack and its dependencies (fizz, wangle, mvfst). Disable for codegen + (de)serialization-only consumers."
+  "Enable the RPC transport stack and its dependencies (fizz, wangle, mvfst)."
   ON)
-option(
-  THRIFT_BENCHMARKS
-  "Build benchmark executables (requires google/benchmark). Forced OFF when THRIFT_RPC=OFF because benchmarks link thriftcpp2."
-  ON)
+option(THRIFT_BENCHMARKS "Enable benchmarks (requires google/benchmark)." ON)
 
 # Benchmarks link thriftcpp2, which only exists when RPC is on. Force
 # benchmarks off whenever RPC is off so the two options can never disagree.
@@ -161,14 +157,12 @@ if (NOT THRIFT_RPC AND THRIFT_BENCHMARKS)
 endif ()
 
 # Find required dependencies for the Thrift compiler.
-if (NOT THRIFT_LIB_ONLY)
-  include_directories(${OPENSSL_INCLUDE_DIR})
-  set(THRIFT1 thrift1)
-  set(THRIFTCPP2 thriftcpp2)
-  include(ThriftLibrary.cmake)
-  install(FILES ThriftLibrary.cmake
-          DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift)
-endif ()
+include_directories(${OPENSSL_INCLUDE_DIR})
+set(THRIFT1 thrift1)
+set(THRIFTCPP2 thriftcpp2)
+include(ThriftLibrary.cmake)
+install(FILES ThriftLibrary.cmake
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift)
 
 # Find required dependencies for thrift/lib
 find_package(Gflags REQUIRED)
@@ -190,15 +184,6 @@ include_directories(${LIBGFLAGS_INCLUDE_DIR} ${GLOG_INCLUDE_DIRS}
                     ${OPENSSL_INCLUDE_DIR} ${ZSTD_INCLUDE_DIRS}
                     ${Xxhash_INCLUDE_DIR})
 add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
-if (THRIFT_LIB_ONLY)
-  # Wrap the external compiler in a target so THRIFT1 always names one.
-  find_program(THRIFT1_EXECUTABLE thrift1 REQUIRED)
-  add_executable(thrift1 IMPORTED GLOBAL)
-  set_target_properties(thrift1 PROPERTIES IMPORTED_LOCATION
-                                           "${THRIFT1_EXECUTABLE}")
-  set(THRIFT1 thrift1)
-  include(${THRIFT_COMPILER_INCLUDE}/thrift/ThriftLibrary.cmake)
-endif ()
 
 if (thriftpy3)
   find_package(PythonInterp 3.6 REQUIRED)

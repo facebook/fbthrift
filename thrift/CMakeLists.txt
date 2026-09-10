@@ -13,11 +13,7 @@
 # limitations under the License.
 
 add_subdirectory(common)
-
-if (NOT THRIFT_LIB_ONLY)
-  add_subdirectory(compiler)
-endif ()
-
+add_subdirectory(compiler)
 add_subdirectory(annotation)
 add_subdirectory(lib)
 
