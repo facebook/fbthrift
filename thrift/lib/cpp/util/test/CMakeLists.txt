@@ -14,7 +14,7 @@
 
 if (THRIFT_BENCHMARKS)
   add_executable(VarintUtilsBench VarintUtilsBench.cpp)
-  target_link_libraries(VarintUtilsBench thriftcpp2 Folly::folly
+  target_link_libraries(VarintUtilsBench thriftprotocol Folly::folly
                         Folly::follybenchmark)
 
   install(

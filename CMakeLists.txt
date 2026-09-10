@@ -146,16 +146,6 @@ option(
   ON)
 option(THRIFT_BENCHMARKS "Enable benchmarks (requires google/benchmark)." ON)
 
-# Benchmarks link thriftcpp2, which only exists when RPC is on. Force
-# benchmarks off whenever RPC is off so the two options can never disagree.
-if (NOT THRIFT_RPC AND THRIFT_BENCHMARKS)
-  message(
-    STATUS
-      "THRIFT_RPC=OFF forces THRIFT_BENCHMARKS=OFF (benchmarks link thriftcpp2)."
-  )
-  set(THRIFT_BENCHMARKS OFF)
-endif ()
-
 # Find required dependencies for the Thrift compiler.
 include_directories(${OPENSSL_INCLUDE_DIR})
 set(THRIFT1 thrift1)

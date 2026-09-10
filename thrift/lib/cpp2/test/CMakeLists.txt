@@ -72,8 +72,8 @@ endforeach ()
 add_executable(ProtocolBench ${SOURCE_FILES} ${ADDITIONAL_SOURCE_FILES}
                              ${GENERATED_THRIFT_SOURCES})
 find_package(benchmark CONFIG REQUIRED)
-target_link_libraries(ProtocolBench thriftcpp2 Folly::folly
-                      benchmark::benchmark)
+target_link_libraries(ProtocolBench thriftfrozen2 thriftprotocol thrifttype
+                      Folly::folly benchmark::benchmark)
 
 install(
   TARGETS ProtocolBench
