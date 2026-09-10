@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cmake_minimum_required(VERSION 3.20.4)
+cmake_minimum_required(VERSION 3.24)
 
 project(
   THRIFT
@@ -78,9 +78,34 @@ endfunction ()
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/thrift/cmake"
      "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/CMake")
 
+set(thriftpy
+    AUTO
+    CACHE BOOL
+          "Install the thrift/lib/py library as an FB Python archive manifest")
+set_property(CACHE thriftpy PROPERTY STRINGS ON OFF AUTO)
+option(thriftpy3
+       "Include thrift-py3 library and extensions in the build, requires Cython"
+       OFF)
+option(
+  thrift_python
+  "Include thrift-python library and extensions in the build, requires Cython"
+  OFF)
+
+# thrift_python requires position-independent code so static libs can be
+# linked into the extension .so files. Must precede the fetch blocks: this
+# only seeds targets created after it is set.
+if (thrift_python)
+  set(CMAKE_POSITION_INDEPENDENT_CODE
+      ON
+      CACHE BOOL
+            "Forced ON because thrift_python requires position-independent code"
+            FORCE)
+endif ()
+
 # Fetch fmt if it is not installed.
 find_package(fmt CONFIG QUIET)
 if (NOT fmt_FOUND)
+  message(STATUS "fmt not found, fetching it")
   include(FetchContent)
   # fmt defaults this off for a subproject, which would leave it out of every
   # export set and make install(EXPORT) fail.
@@ -91,6 +116,26 @@ if (NOT fmt_FOUND)
     URL_HASH
       SHA256=ea7de4299689e12b6dddd392f9896f08fb0777ac7168897a244a6d6085043fea)
   FetchContent_MakeAvailable(fmt)
+endif ()
+
+# Fetch folly if it is not installed.
+find_package(folly CONFIG QUIET)
+if (NOT folly_FOUND)
+  # The revision this repo is tested against, kept current by rev_sync.
+  set(folly_rev_file
+      "${CMAKE_CURRENT_SOURCE_DIR}/build/deps/github_hashes/facebook/folly-rev.txt"
+  )
+  file(READ "${folly_rev_file}" folly_rev_text)
+  if (NOT folly_rev_text MATCHES "Subproject commit ([0-9a-f]+)")
+    message(FATAL_ERROR "no folly revision in ${folly_rev_file}")
+  endif ()
+  message(STATUS "folly not found, fetching ${CMAKE_MATCH_1}")
+  include(FetchContent)
+  FetchContent_Declare(
+    folly
+    GIT_REPOSITORY https://github.com/facebook/folly.git
+    GIT_TAG ${CMAKE_MATCH_1})
+  FetchContent_MakeAvailable(folly)
 endif ()
 
 find_package(OpenSSL REQUIRED)
@@ -114,31 +159,6 @@ if (NOT THRIFT_RPC AND THRIFT_BENCHMARKS)
   )
   set(THRIFT_BENCHMARKS OFF)
 endif ()
-
-set(thriftpy
-    AUTO
-    CACHE BOOL
-          "Install the thrift/lib/py library as an FB Python archive manifest")
-set_property(CACHE thriftpy PROPERTY STRINGS ON OFF AUTO)
-option(thriftpy3
-       "Include thrift-py3 library and extensions in the build, requires Cython"
-       OFF)
-option(
-  thrift_python
-  "Include thrift-python library and extensions in the build, requires Cython"
-  OFF)
-
-# thrift_python requires position-independent code so static libs can be
-# linked into the extension .so files.
-if (thrift_python)
-  set(CMAKE_POSITION_INDEPENDENT_CODE
-      ON
-      CACHE BOOL
-            "Forced ON because thrift_python requires position-independent code"
-            FORCE)
-endif ()
-
-find_package(folly CONFIG REQUIRED)
 
 # Find required dependencies for the Thrift compiler.
 if (NOT THRIFT_LIB_ONLY)

@@ -281,6 +281,10 @@ if (thriftpy3)
     WORKING_DIRECTORY ${_cybld})
 
   get_target_property(fmt_include_dirs fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
+  # A fetched folly's include dirs are generator expressions, so read them
+  # through $<TARGET_PROPERTY> to get them evaluated rather than pasted in.
+  set(folly_include_dirs
+      "$<JOIN:$<TARGET_PROPERTY:Folly::folly,INTERFACE_INCLUDE_DIRECTORIES>,:>")
   get_target_property(wangle_incs wangle::wangle INTERFACE_INCLUDE_DIRECTORIES)
   list(JOIN wangle_incs ":" wangle_include_dirs)
   # setup.py is outside CMake's target graph, so the source and build roots and
@@ -293,7 +297,7 @@ if (thriftpy3)
     incs
     "-I${PROJECT_SOURCE_DIR}"
     "${PROJECT_BINARY_DIR}"
-    "${FOLLY_INCLUDE_DIR}"
+    "${folly_include_dirs}"
     "${Boost_INCLUDE_DIRS}"
     "${fmt_include_dirs}"
     "${wangle_include_dirs}"
@@ -305,13 +309,13 @@ if (thriftpy3)
     "${CMAKE_BINARY_DIR}/thrift/lib/cybld")
   get_target_property(fmt_lib fmt::fmt LOCATION)
   get_filename_component(fmt_lib_dir ${fmt_lib} DIRECTORY)
-  get_filename_component(folly_lib ${FOLLY_LIBRARY} DIRECTORY)
   get_filename_component(glog_lib ${GLOG_LIBRARIES} DIRECTORY)
   get_filename_component(python_lib ${Python3_LIBRARIES} DIRECTORY)
   get_filename_component(python_libname ${Python3_LIBRARIES} NAME)
   # All thrift libraries share this directory.
-  set(libs "-L$<TARGET_FILE_DIR:thrift_python_cpp>:${fmt_lib_dir}:${folly_lib}"
-           ":${glog_lib}:${python_lib}")
+  set(libs
+      "-L$<TARGET_FILE_DIR:thrift_python_cpp>:${fmt_lib_dir}:$<TARGET_FILE_DIR:Folly::folly>"
+      ":${glog_lib}:${python_lib}")
   set(py_install_dir ${CMAKE_INSTALL_PREFIX})
   if (NOT ${PYTHON_PACKAGE_INSTALL_DIR} STREQUAL "")
     set(py_install_dir ${PYTHON_PACKAGE_INSTALL_DIR})

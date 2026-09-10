@@ -17,10 +17,6 @@ find_package(
   COMPONENTS Interpreter Development
   REQUIRED)
 
-# FOLLY_INCLUDE_DIR is exported by folly-config.cmake (set by find_package)
-# Used by setup.py to locate folly .pxd files during Cython compilation
-message(STATUS "FOLLY_INCLUDE_DIR: ${FOLLY_INCLUDE_DIR}")
-
 # Set FOLLY_PYTHON_SITE_PACKAGES for Cython .pxd files
 # (folly.pxd, iobuf.pxd, etc.)
 # These are separate from C++ headers and live in Python site-packages
@@ -215,6 +211,10 @@ add_custom_target(create_binding_symlink_py3 ALL)
 # Include Path Setup (must be done early, before API header generation)
 #####################################################################
 get_target_property(fmt_include_dirs fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
+# A fetched folly's include dirs are generator expressions, so read them
+# through $<TARGET_PROPERTY> to get them evaluated rather than pasted in.
+set(folly_incs
+    "$<JOIN:$<TARGET_PROPERTY:Folly::folly,INTERFACE_INCLUDE_DIRECTORIES>,:>")
 get_target_property(wangle_incs wangle::wangle INTERFACE_INCLUDE_DIRECTORIES)
 get_target_property(glog_include_dirs glog::glog INTERFACE_INCLUDE_DIRECTORIES)
 
@@ -234,7 +234,7 @@ set(_all_cython_includes
     ${CMAKE_BINARY_DIR}/thrift/lib
     ${CMAKE_BINARY_DIR}/thrift/lib/cybld
     # Folly includes (including .pxd files)
-    ${FOLLY_INCLUDE_DIR}
+    ${folly_incs}
     ${FOLLY_PYTHON_SITE_PACKAGES}
     # Boost
     ${Boost_INCLUDE_DIRS}
