@@ -391,12 +391,12 @@ cdef int combinedHandler(
     object func,
     object interaction_self,
     string funcName,
-    Cpp2RequestContext* ctx,
     Promise_Py promise,
-    SerializedRequest serializedRequest,
-    Protocol prot,
-    RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
 ) except -1:
+    cdef Cpp2RequestContext* ctx = requestDispatchParameters.requestContext
+    cdef Protocol prot = requestDispatchParameters.protocol
+    cdef RpcKind kind = requestDispatchParameters.rpcKind
     # For an inside-interaction method, `func` is the *unbound* dispatch
     # function and `interaction_self` is the per-session handler instance; bind
     # the two here. For ordinary service methods `interaction_self` is None and
@@ -410,7 +410,7 @@ cdef int combinedHandler(
                 call_func,
                 funcName.decode('UTF-8'),
                 promise,
-                from_unique_ptr(cmove(serializedRequest.buffer)),
+                from_unique_ptr(cmove(requestDispatchParameters.serializedRequest.buffer)),
                 prot,
                 kind,
             )
@@ -448,14 +448,17 @@ cdef api int handleServerCallback(
     object func,
     object interaction_self,
     string funcName,
-    Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cIOBuf]] cPromise,
-    SerializedRequest serializedRequest,
-    Protocol prot,
-    RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
 ) except -1:
     cdef Promise_IOBuf __promise = Promise_IOBuf.create(cmove(cPromise))
-    return combinedHandler(func, interaction_self, funcName, ctx, __promise, cmove(serializedRequest), prot, kind)
+    return combinedHandler(
+        func,
+        interaction_self,
+        funcName,
+        __promise,
+        cmove(requestDispatchParameters),
+    )
 
 def install_interaction_tile(object tile):
     """Install ``tile`` as the per-session Tile for the in-flight interaction.
@@ -472,53 +475,65 @@ cdef api int handleServerStreamCallback(
     object func,
     object interaction_self,
     string funcName,
-    Cpp2RequestContext* ctx,
     cFollyPromise[cResponseAndServerStream[unique_ptr[cIOBuf], unique_ptr[cIOBuf]]] cPromise,
-    SerializedRequest serializedRequest,
-    Protocol prot,
-    RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
 ) except -1:
     cdef Promise_Stream __promise = Promise_Stream.create(cmove(cPromise))
-    return combinedHandler(func, interaction_self, funcName, ctx, __promise, cmove(serializedRequest), prot, kind)
+    return combinedHandler(
+        func,
+        interaction_self,
+        funcName,
+        __promise,
+        cmove(requestDispatchParameters),
+    )
 
 cdef api int handleServerSinkCallback(
     object func,
     object interaction_self,
     string funcName,
-    Cpp2RequestContext* ctx,
     cFollyPromise[cResponseAndSinkConsumer[unique_ptr[cIOBuf], unique_ptr[cIOBuf], unique_ptr[cIOBuf]]] cPromise,
-    SerializedRequest serializedRequest,
-    Protocol prot,
-    RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
 ) except -1:
     cdef Promise_Sink __promise = Promise_Sink.create(cmove(cPromise))
-    return combinedHandler(func, interaction_self, funcName, ctx, __promise, cmove(serializedRequest), prot, kind)
+    return combinedHandler(
+        func,
+        interaction_self,
+        funcName,
+        __promise,
+        cmove(requestDispatchParameters),
+    )
 
 cdef api int handleServerBidiCallback(
     object func,
     object interaction_self,
     string funcName,
-    Cpp2RequestContext* ctx,
     cFollyPromise[cResponseAndStreamTransformation[unique_ptr[cIOBuf], unique_ptr[cIOBuf], unique_ptr[cIOBuf]]] cPromise,
-    SerializedRequest serializedRequest,
-    Protocol prot,
-    RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
 ) except -1:
     cdef Promise_BiDi __promise = Promise_BiDi.create(cmove(cPromise))
-    return combinedHandler(func, interaction_self, funcName, ctx, __promise, cmove(serializedRequest), prot, kind)
+    return combinedHandler(
+        func,
+        interaction_self,
+        funcName,
+        __promise,
+        cmove(requestDispatchParameters),
+    )
 
 cdef api int handleServerCallbackOneway(
     object func,
     object interaction_self,
     string funcName,
-    Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    SerializedRequest serializedRequest,
-    Protocol prot,
-    RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
 ) except -1:
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    return combinedHandler(func, interaction_self, funcName, ctx, __promise, cmove(serializedRequest), prot, kind)
+    return combinedHandler(
+        func,
+        interaction_self,
+        funcName,
+        __promise,
+        cmove(requestDispatchParameters),
+    )
 
 cdef api unique_ptr[cIOBuf] getSerializedPythonMetadata(object server):
     metadata = server.__get_metadata_service_response__()

@@ -20,7 +20,8 @@ from libcpp.pair cimport pair
 from libcpp.vector cimport vector as cvector
 from folly.iobuf cimport cIOBuf
 from thrift.python.exceptions cimport cException
-from thrift.python.protocol cimport RpcKind
+from thrift.python.protocol cimport Protocol, RpcKind
+from thrift.python.server_impl.request_context cimport Cpp2RequestContext
 from thrift.python.types cimport ServiceInterface as cServiceInterface
 from thrift.python.server_impl.async_processor cimport (
     cAsyncProcessorFactory,
@@ -89,6 +90,15 @@ cdef extern from "thrift/lib/python/server/PythonAsyncProcessorFactory.h" namesp
 cdef extern from "thrift/lib/cpp2/async/RpcTypes.h" namespace "::apache::thrift":
     cdef cppclass SerializedRequest "::apache::thrift::SerializedRequest":
         unique_ptr[cIOBuf] buffer
+
+cdef extern from "thrift/lib/python/server/PythonAsyncProcessor.h" namespace "::apache::thrift::python":
+    cdef cppclass RequestDispatchParameters:
+        Protocol protocol
+        Cpp2RequestContext* requestContext
+        SerializedRequest serializedRequest
+        RpcKind rpcKind
+        const HandlerFunc* function
+        PyObjPtr handlerFunction
 
 cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
     cdef dict funcMap

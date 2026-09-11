@@ -418,14 +418,13 @@ std::unique_ptr<folly::IOBuf> PythonAsyncProcessor::getPythonMetadata() {
 }
 
 folly::SemiFuture<folly::Unit> PythonAsyncProcessor::handlePythonServerCallback(
-    apache::thrift::ProtocolType protocol,
-    apache::thrift::Cpp2RequestContext* context,
-    apache::thrift::SerializedRequest serializedRequest,
-    apache::thrift::RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
     apache::thrift::HandlerCallback<std::unique_ptr<::folly::IOBuf>>::Ptr
         callback) {
   do_python_import();
-  const auto& function = functions_.at(context->getMethodName());
+  auto* const context = requestDispatchParameters.requestContext;
+  const auto& function = *requestDispatchParameters.function;
+  auto* const handlerFunction = requestDispatchParameters.handlerFunction;
 
   // Interaction routing (req/resp path). A factory method may need to fulfill
   // a parked TilePromise; an inside-interaction method dispatches against the
@@ -442,14 +441,11 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessor::handlePythonServerCallback(
     promise.setException(std::move(interactionSelf).exception());
   } else {
     const int retcode = handleServerCallback(
-        function.funcObject,
+        handlerFunction,
         *interactionSelf,
         function.fullName,
-        context,
         std::move(promise),
-        std::move(serializedRequest),
-        protocol,
-        kind);
+        std::move(requestDispatchParameters));
     if (retcode != 0) {
       DCHECK(PyErr_Occurred());
       // converts python error to thrown std::runtime_error
@@ -464,15 +460,14 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessor::handlePythonServerCallback(
 
 folly::SemiFuture<folly::Unit>
 PythonAsyncProcessor::handlePythonServerCallbackStreaming(
-    apache::thrift::ProtocolType protocol,
-    apache::thrift::Cpp2RequestContext* context,
-    apache::thrift::SerializedRequest serializedRequest,
-    apache::thrift::RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
     ::apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<
         std::unique_ptr<::folly::IOBuf>,
         std::unique_ptr<::folly::IOBuf>>>::Ptr callback) {
   do_python_import();
-  const auto& function = functions_.at(context->getMethodName());
+  auto* const context = requestDispatchParameters.requestContext;
+  const auto& function = *requestDispatchParameters.function;
+  auto* const handlerFunction = requestDispatchParameters.handlerFunction;
   auto [promise, future] =
       folly::makePromiseContract<::apache::thrift::ResponseAndServerStream<
           std::unique_ptr<::folly::IOBuf>,
@@ -485,14 +480,11 @@ PythonAsyncProcessor::handlePythonServerCallbackStreaming(
     promise.setException(std::move(interactionSelf).exception());
   } else {
     const int retcode = handleServerStreamCallback(
-        function.funcObject,
+        handlerFunction,
         *interactionSelf,
         function.fullName,
-        context,
         std::move(promise),
-        std::move(serializedRequest),
-        protocol,
-        kind);
+        std::move(requestDispatchParameters));
     if (retcode != 0) {
       DCHECK(PyErr_Occurred());
       // converts python error to thrown std::runtime_error
@@ -507,30 +499,25 @@ PythonAsyncProcessor::handlePythonServerCallbackStreaming(
 
 folly::SemiFuture<folly::Unit>
 PythonAsyncProcessor::handlePythonServerCallbackSink(
-    apache::thrift::ProtocolType protocol,
-    apache::thrift::Cpp2RequestContext* context,
-    apache::thrift::SerializedRequest serializedRequest,
-    apache::thrift::RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
     ::apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<
         std::unique_ptr<::folly::IOBuf>,
         std::unique_ptr<::folly::IOBuf>,
         std::unique_ptr<::folly::IOBuf>>>::Ptr callback) {
   do_python_import();
-  const auto& function = functions_.at(context->getMethodName());
+  const auto& function = *requestDispatchParameters.function;
+  auto* const handlerFunction = requestDispatchParameters.handlerFunction;
   auto [promise, future] =
       folly::makePromiseContract<::apache::thrift::ResponseAndSinkConsumer<
           std::unique_ptr<::folly::IOBuf>,
           std::unique_ptr<::folly::IOBuf>,
           std::unique_ptr<::folly::IOBuf>>>();
   const int retcode = handleServerSinkCallback(
-      function.funcObject,
+      handlerFunction,
       Py_None,
       function.fullName,
-      context,
       std::move(promise),
-      std::move(serializedRequest),
-      protocol,
-      kind);
+      std::move(requestDispatchParameters));
   if (retcode != 0) {
     DCHECK(PyErr_Occurred());
     // converts python error to thrown std::runtime_error
@@ -544,31 +531,26 @@ PythonAsyncProcessor::handlePythonServerCallbackSink(
 
 folly::SemiFuture<folly::Unit>
 PythonAsyncProcessor::handlePythonServerCallbackBidi(
-    apache::thrift::ProtocolType protocol,
-    apache::thrift::Cpp2RequestContext* context,
-    apache::thrift::SerializedRequest serializedRequest,
-    apache::thrift::RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
     ::apache::thrift::HandlerCallback<
         ::apache::thrift::ResponseAndStreamTransformation<
             std::unique_ptr<::folly::IOBuf>,
             std::unique_ptr<::folly::IOBuf>,
             std::unique_ptr<::folly::IOBuf>>>::Ptr callback) {
   do_python_import();
-  const auto& function = functions_.at(context->getMethodName());
+  const auto& function = *requestDispatchParameters.function;
+  auto* const handlerFunction = requestDispatchParameters.handlerFunction;
   auto [promise, future] = folly::makePromiseContract<
       ::apache::thrift::ResponseAndStreamTransformation<
           std::unique_ptr<::folly::IOBuf>,
           std::unique_ptr<::folly::IOBuf>,
           std::unique_ptr<::folly::IOBuf>>>();
   const int retcode = handleServerBidiCallback(
-      function.funcObject,
+      handlerFunction,
       Py_None,
       function.fullName,
-      context,
       std::move(promise),
-      std::move(serializedRequest),
-      protocol,
-      kind);
+      std::move(requestDispatchParameters));
   if (retcode != 0) {
     DCHECK(PyErr_Occurred());
     // converts python error to thrown std::runtime_error
@@ -582,13 +564,12 @@ PythonAsyncProcessor::handlePythonServerCallbackBidi(
 
 folly::SemiFuture<folly::Unit>
 PythonAsyncProcessor::handlePythonServerCallbackOneway(
-    apache::thrift::ProtocolType protocol,
-    apache::thrift::Cpp2RequestContext* context,
-    apache::thrift::SerializedRequest serializedRequest,
-    apache::thrift::RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
     apache::thrift::HandlerCallbackBase::Ptr callback) {
   do_python_import();
-  const auto& function = functions_.at(context->getMethodName());
+  auto* const context = requestDispatchParameters.requestContext;
+  const auto& function = *requestDispatchParameters.function;
+  auto* const handlerFunction = requestDispatchParameters.handlerFunction;
 
   // Inside-interaction oneway methods dispatch against the per-session handler.
   // Oneway methods are never interaction factories, so this never carries a
@@ -603,14 +584,11 @@ PythonAsyncProcessor::handlePythonServerCallbackOneway(
     promise.setException(std::move(interactionSelf).exception());
   } else {
     const int retcode = handleServerCallbackOneway(
-        function.funcObject,
+        handlerFunction,
         *interactionSelf,
         function.fullName,
-        context,
         std::move(promise),
-        std::move(serializedRequest),
-        protocol,
-        kind);
+        std::move(requestDispatchParameters));
     if (retcode != 0) {
       DCHECK(PyErr_Occurred());
       // converts python error to thrown std::runtime_error
@@ -696,146 +674,117 @@ void PythonAsyncProcessor::executeRequest(
     return;
   }
 
+  RequestDispatchParameters requestDispatchParameters{
+      .protocol = protocol,
+      .requestContext = ctx,
+      .serializedRequest = std::move(serializedRequest),
+      .rpcKind = kind.value(),
+      .function = &function,
+      .handlerFunction = function.funcObject,
+  };
+
   // This folly::makeSemiFuture().deferValue()
   // ensures that the dispatchRequest(),
   // which imports the cython module that must happen
   // on the python thread, runs in the python thread.
   folly::makeSemiFuture()
-      .deferValue([this,
-                   protocol,
-                   ctx,
-                   eb,
-                   executor,
-                   serviceName,
-                   qualifiedMethodName = function.fullName.c_str(),
-                   kind,
-                   requestData = std::move(requestData),
-                   req = std::move(req),
-                   ctxStack = std::move(ctxStack),
-                   serializedRequest = std::move(serializedRequest)](
-                      auto&& /* unused */) mutable {
-        return dispatchRequest(
-            protocol,
-            ctx,
-            eb,
-            executor,
-            std::move(requestData),
-            std::move(req),
-            std::move(ctxStack),
-            serviceName,
-            qualifiedMethodName,
-            std::move(serializedRequest),
-            kind.value());
-      })
+      .deferValue(
+          [this,
+           eb,
+           executor,
+           serviceName,
+           qualifiedMethodName = function.fullName.c_str(),
+           requestData = std::move(requestData),
+           req = std::move(req),
+           ctxStack = std::move(ctxStack),
+           requestDispatchParameters = std::move(requestDispatchParameters)](
+              auto&& /* unused */) mutable {
+            return dispatchRequest(
+                eb,
+                executor,
+                std::move(requestData),
+                std::move(req),
+                std::move(ctxStack),
+                serviceName,
+                qualifiedMethodName,
+                std::move(requestDispatchParameters));
+          })
       .via(executor_);
 }
 
 folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequestOneway(
-    apache::thrift::protocol::PROTOCOL_TYPES protocol,
-    apache::thrift::Cpp2RequestContext* ctx,
-    apache::thrift::SerializedRequest serializedRequest,
-    apache::thrift::RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
     apache::thrift::HandlerCallbackBase::Ptr callback) {
   return folly::coro::co_invoke(
              [this,
-              protocol,
-              ctx,
-              serializedRequest = std::move(serializedRequest),
-              kind,
+              requestDispatchParameters = std::move(requestDispatchParameters),
               callback = std::move(
                   callback)]() mutable -> folly::coro::Task<folly::Unit> {
                if (shouldProcessServiceInterceptorsOnRequest(*callback)) {
                  if (!co_await processServiceInterceptorsOnRequest(
                          *callback,
                          emptyInterceptorsArguments(),
-                         serializedRequest)) {
+                         requestDispatchParameters.serializedRequest)) {
                    co_return folly::unit;
                  }
                }
                co_return co_await handlePythonServerCallbackOneway(
-                   protocol,
-                   ctx,
-                   std::move(serializedRequest),
-                   kind,
-                   std::move(callback));
+                   std::move(requestDispatchParameters), std::move(callback));
              })
       .semi();
 }
 
 folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequestStreaming(
-    apache::thrift::protocol::PROTOCOL_TYPES protocol,
-    apache::thrift::Cpp2RequestContext* ctx,
-    apache::thrift::SerializedRequest serializedRequest,
-    apache::thrift::RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
     ::apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<
         std::unique_ptr<::folly::IOBuf>,
         std::unique_ptr<::folly::IOBuf>>>::Ptr callback) {
   return folly::coro::co_invoke(
              [this,
-              protocol,
-              ctx,
-              serializedRequest = std::move(serializedRequest),
-              kind,
+              requestDispatchParameters = std::move(requestDispatchParameters),
               callback = std::move(
                   callback)]() mutable -> folly::coro::Task<folly::Unit> {
                if (shouldProcessServiceInterceptorsOnRequest(*callback)) {
                  if (!co_await processServiceInterceptorsOnRequest(
                          *callback,
                          emptyInterceptorsArguments(),
-                         serializedRequest)) {
+                         requestDispatchParameters.serializedRequest)) {
                    co_return folly::unit;
                  }
                }
                co_return co_await handlePythonServerCallbackStreaming(
-                   protocol,
-                   ctx,
-                   std::move(serializedRequest),
-                   kind,
-                   std::move(callback));
+                   std::move(requestDispatchParameters), std::move(callback));
              })
       .semi();
 }
 
 folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequestSink(
-    apache::thrift::protocol::PROTOCOL_TYPES protocol,
-    apache::thrift::Cpp2RequestContext* ctx,
-    apache::thrift::SerializedRequest serializedRequest,
-    apache::thrift::RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
     ::apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<
         std::unique_ptr<::folly::IOBuf>,
         std::unique_ptr<::folly::IOBuf>,
         std::unique_ptr<::folly::IOBuf>>>::Ptr callback) {
   return folly::coro::co_invoke(
              [this,
-              protocol,
-              ctx,
-              serializedRequest = std::move(serializedRequest),
-              kind,
+              requestDispatchParameters = std::move(requestDispatchParameters),
               callback = std::move(
                   callback)]() mutable -> folly::coro::Task<folly::Unit> {
                if (shouldProcessServiceInterceptorsOnRequest(*callback)) {
                  if (!co_await processServiceInterceptorsOnRequest(
                          *callback,
                          emptyInterceptorsArguments(),
-                         serializedRequest)) {
+                         requestDispatchParameters.serializedRequest)) {
                    co_return folly::unit;
                  }
                }
                co_return co_await handlePythonServerCallbackSink(
-                   protocol,
-                   ctx,
-                   std::move(serializedRequest),
-                   kind,
-                   std::move(callback));
+                   std::move(requestDispatchParameters), std::move(callback));
              })
       .semi();
 }
 
 folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequestBidi(
-    apache::thrift::protocol::PROTOCOL_TYPES protocol,
-    apache::thrift::Cpp2RequestContext* ctx,
-    apache::thrift::SerializedRequest serializedRequest,
-    apache::thrift::RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
     ::apache::thrift::HandlerCallback<
         ::apache::thrift::ResponseAndStreamTransformation<
             std::unique_ptr<::folly::IOBuf>,
@@ -843,42 +792,29 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequestBidi(
             std::unique_ptr<::folly::IOBuf>>>::Ptr callback) {
   return folly::coro::co_invoke(
              [this,
-              protocol,
-              ctx,
-              serializedRequest = std::move(serializedRequest),
-              kind,
+              requestDispatchParameters = std::move(requestDispatchParameters),
               callback = std::move(
                   callback)]() mutable -> folly::coro::Task<folly::Unit> {
                if (shouldProcessServiceInterceptorsOnRequest(*callback)) {
                  if (!co_await processServiceInterceptorsOnRequest(
                          *callback,
                          emptyInterceptorsArguments(),
-                         serializedRequest)) {
+                         requestDispatchParameters.serializedRequest)) {
                    co_return folly::unit;
                  }
                }
                co_return co_await handlePythonServerCallbackBidi(
-                   protocol,
-                   ctx,
-                   std::move(serializedRequest),
-                   kind,
-                   std::move(callback));
+                   std::move(requestDispatchParameters), std::move(callback));
              })
       .semi();
 }
 
 folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequestResponse(
-    apache::thrift::protocol::PROTOCOL_TYPES protocol,
-    apache::thrift::Cpp2RequestContext* ctx,
-    apache::thrift::SerializedRequest serializedRequest,
-    apache::thrift::RpcKind kind,
+    RequestDispatchParameters requestDispatchParameters,
     HandlerCallback<std::unique_ptr<folly::IOBuf>>::Ptr callback) {
   return folly::coro::co_invoke(
              [this,
-              protocol,
-              ctx,
-              serializedRequest = std::move(serializedRequest),
-              kind,
+              requestDispatchParameters = std::move(requestDispatchParameters),
               callback = std::move(
                   callback)]() mutable -> folly::coro::Task<folly::Unit> {
                if (shouldProcessServiceInterceptorsOnRequest(*callback)) {
@@ -889,23 +825,17 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequestResponse(
                  if (!co_await processServiceInterceptorsOnRequest(
                          *callback,
                          emptyInterceptorsArguments(),
-                         serializedRequest)) {
+                         requestDispatchParameters.serializedRequest)) {
                    co_return folly::unit;
                  }
                }
                co_return co_await handlePythonServerCallback(
-                   protocol,
-                   ctx,
-                   std::move(serializedRequest),
-                   kind,
-                   std::move(callback));
+                   std::move(requestDispatchParameters), std::move(callback));
              })
       .semi();
 }
 
 folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequest(
-    apache::thrift::protocol::PROTOCOL_TYPES protocol,
-    apache::thrift::Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     folly::Executor::KeepAlive<> executor,
     apache::thrift::ServerRequestData requestData,
@@ -913,8 +843,10 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequest(
     apache::thrift::ContextStack::UniquePtr ctxStack,
     const char* serviceName,
     const char* qualifiedMethodName,
-    apache::thrift::SerializedRequest serializedRequest,
-    apache::thrift::RpcKind kind) {
+    RequestDispatchParameters requestDispatchParameters) {
+  const auto protocol = requestDispatchParameters.protocol;
+  auto* const ctx = requestDispatchParameters.requestContext;
+  const auto kind = requestDispatchParameters.rpcKind;
   const char* methodName = ctx->getMethodName().c_str();
   auto get_throw_wrapped = [](protocol::PROTOCOL_TYPES protocol) {
     return protocol ==
@@ -945,11 +877,7 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequest(
           nullptr,
           requestData);
       return dispatchRequestOneway(
-          protocol,
-          ctx,
-          std::move(serializedRequest),
-          kind,
-          std::move(callback));
+          std::move(requestDispatchParameters), std::move(callback));
     }
     case apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE: {
       auto return_streaming = protocol ==
@@ -982,11 +910,7 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequest(
               nullptr,
               requestData);
       return dispatchRequestStreaming(
-          protocol,
-          ctx,
-          std::move(serializedRequest),
-          kind,
-          std::move(callback));
+          std::move(requestDispatchParameters), std::move(callback));
     }
     case apache::thrift::RpcKind::SINK: {
       auto return_sink = protocol ==
@@ -1020,11 +944,7 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequest(
               nullptr,
               requestData);
       return dispatchRequestSink(
-          protocol,
-          ctx,
-          std::move(serializedRequest),
-          kind,
-          std::move(callback));
+          std::move(requestDispatchParameters), std::move(callback));
     }
     case apache::thrift::RpcKind::BIDIRECTIONAL_STREAM: {
       auto return_bidistream = protocol ==
@@ -1061,11 +981,7 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequest(
               nullptr,
               requestData);
       return dispatchRequestBidi(
-          protocol,
-          ctx,
-          std::move(serializedRequest),
-          kind,
-          std::move(callback));
+          std::move(requestDispatchParameters), std::move(callback));
     }
     default: {
       auto return_serialized = protocol ==
@@ -1095,11 +1011,7 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequest(
               nullptr,
               requestData);
       return dispatchRequestResponse(
-          protocol,
-          ctx,
-          std::move(serializedRequest),
-          kind,
-          std::move(callback));
+          std::move(requestDispatchParameters), std::move(callback));
     }
   }
 }
