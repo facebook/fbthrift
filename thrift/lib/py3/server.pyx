@@ -76,6 +76,38 @@ cdef class StatusServerInterface:
     pass
 
 
+cdef class _NormalizedServerInput:
+    cdef bytes thrift_version
+    cdef PythonServiceInterface handler
+    cdef Py3AsyncProcessorFactory factory
+
+    def __cinit__(
+        self,
+        bytes thrift_version,
+        PythonServiceInterface handler,
+        Py3AsyncProcessorFactory factory,
+    ):
+        self.thrift_version = thrift_version
+        self.handler = handler
+        self.factory = factory
+
+
+cdef _NormalizedServerInput _normalize_server_input(object handler):
+    # thrift-python path
+    if isinstance(handler, PythonServiceInterface):
+        return _NormalizedServerInput(
+            b"python",
+            handler,
+            PythonAsyncProcessorFactory.create(handler),
+        )
+    # thrift-py3 path
+    if isinstance(handler, Py3AsyncProcessorFactory):
+        return _NormalizedServerInput(b"py3", None, handler)
+    if handler is None:
+        return _NormalizedServerInput(b"unknown", None, None)
+    raise TypeError("handler must be a ServiceInterface or AsyncProcessorFactory")
+
+
 # TODO: move this to thrift/lib/python/server.pyx when no longer referenced by
 # thrift/lib/py3/__init__.py
 cdef class ThriftServer:
@@ -84,22 +116,9 @@ cdef class ThriftServer:
         self._health_polling_task = None
         self._health_polling_interval = 5  #5 seconds for default
     def __init__(self, handler, int port=0, ip=None, path=None, socket_fd=None):
-        # thrift-python path
-        if isinstance(handler, PythonServiceInterface):
-            thrift_version = b"python"
-            self.handler = handler
-            self.factory = PythonAsyncProcessorFactory.create(handler)
-        # thrift-py3 path
-        elif isinstance(handler, Py3AsyncProcessorFactory):
-            thrift_version = b"py3"
-            self.handler = None
-            self.factory = handler
-        elif handler is None:
-            thrift_version = b"unknown"
-            self.handler = None
-            self.factory = None
-        else:
-            raise TypeError("handler must be a ServiceInterface or AsyncProcessorFactory")
+        cdef _NormalizedServerInput server_input = _normalize_server_input(handler)
+        self.handler = server_input.handler
+        self.factory = server_input.factory
 
         self.loop = asyncio.get_event_loop()
         if self.factory is not None:
@@ -135,7 +154,9 @@ cdef class ThriftServer:
                 object_partial(handleAddressCallback, <PyObject*> self.address_future)
             )
         )
-        self.server.get().metadata().wrapper = b"ThriftServer-" + thrift_version
+        self.server.get().metadata().wrapper = (
+            b"ThriftServer-" + server_input.thrift_version
+        )
 
     async def serve(self):
         # This check is only useful for C++-based Thrift servers.

@@ -17,7 +17,7 @@
 import asyncio
 import types
 import unittest
-from typing import AbstractSet, Mapping, Sequence
+from typing import AbstractSet, cast, Mapping, Sequence
 
 from test_thrift.services import TestingServiceInterface
 from test_thrift.types import Color, easy
@@ -105,6 +105,13 @@ class Handler(TestingServiceInterface):
 
 
 class ServicesTests(unittest.IsolatedAsyncioTestCase):
+    def test_server_rejects_invalid_handler(self) -> None:
+        invalid_handler = cast(TestingServiceInterface, object())
+        expected_pattern = "ServiceInterface or AsyncProcessorFactory"
+
+        with self.assertRaisesRegex(TypeError, expected_pattern):
+            ThriftServer(invalid_handler)
+
     async def test_handler_acontext(self) -> None:
         async with Handler() as h:
             self.assertTrue(h.initialized)
