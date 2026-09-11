@@ -307,6 +307,7 @@ if (THRIFT_RPC)
     gen/module_constants_cpp.cpp
     gen/module_types_cpp.cpp
     detail/Enum.cpp
+    fast_thrift/common/allocator/EvbAllocator.cpp
     fast_thrift/channel_pipeline/PipelineImpl.cpp
     fast_thrift/channel_pipeline/detail/ContextImpl.cpp
     fast_thrift/frame/write/FrameWriter.cpp
