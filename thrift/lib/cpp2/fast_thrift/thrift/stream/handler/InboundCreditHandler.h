@@ -26,49 +26,39 @@
 #include <folly/Likely.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/stream/common/Messages.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/stream/common/StreamEvents.h>
 
 namespace apache::thrift::fast_thrift::thrift::stream {
 
 /**
- * InboundCreditHandler — the receiving end of the RSocket credit contract on an
- * established stream / sink / bidi exchange. The peer grants credit via
- * REQUEST_N, where one credit authorizes exactly one stream element (a
- * `Payload`); a producer may emit an element only while it holds credit. This
- * handler owns the credit budget *privately* — the count never leaves the
- * handler. It publishes only readiness, as type-based flow-control events:
+ * InboundCreditHandler — enforces the RSocket credit contract on an established
+ * stream / sink / bidi exchange. The peer grants credit via REQUEST_N, where
+ * one credit authorizes exactly one stream element (a `Payload`). This handler
+ * owns the credit budget *privately* (the count never leaves it) and plays two
+ * roles:
  *
- *   - Inbound `RequestN` adds to the credit and is consumed — it is the grant
- *     itself, not data to deliver upward. When credit becomes available after
- *     being exhausted, it fires `FlowControlResumeEvent` so a writer that
- * paused upstream (e.g. a buffer) can resume. Other inbound frames pass
- * through.
- *   - Outbound `Payload` spends one credit and is forwarded. The element that
- *     spends the *last* credit is still forwarded, but the handler fires
- *     `FlowControlPauseEvent` and returns `Result::Backpressure` so the
- *     producer is paused the moment demand is exhausted rather than one element
- *     too late. A further element sent while exhausted is beyond the peer's
- *     demand — a credit-contract violation an upstream buffer honoring
- *     `FlowControlPauseEvent` keeps unreachable, so it fatals in debug and is
- * dropped with `Result::Error` in release. Non-`Payload` frames pass through
- * ungated.
+ *   - Inbound `RequestN` adds to the credit budget and is then **forwarded** on
+ *     as demand — the source produces in response to it. The count stays
+ *     private; only the demand travels onward. Other inbound frames (e.g.
+ *     `Cancel`) pass through untouched.
+ *   - Outbound `Payload` spends one credit and is forwarded; the downstream
+ *     result (including transport `Backpressure`) propagates unchanged. Writing
+ *     a `Payload` while the budget is exhausted overruns the peer's demand — a
+ *     credit-contract violation an upstream buffer/producer keeps unreachable
+ * by honoring the demand it was granted, so it fatals in debug and is dropped
+ *     with `Result::Error` in release. Non-`Payload` outbound frames
+ * (`Complete`, `Error`, an outbound `RequestN`) pass through ungated.
  *
  * Side-agnostic: a server stream producer and a client sink producer both spend
- * the credit their peer grants. Scope is credit accounting only — buffering
- * refused elements is a separate concern owned by another handler.
+ * the credit their peer grants. Scope is credit accounting + contract
+ * enforcement only; buffering and demand metering are separate concerns.
  */
 template <typename Context>
 class InboundCreditHandler {
  public:
-  // Flow-control readiness published to subscribers (e.g. an upstream buffer).
-  using PublishedEvents =
-      channel_pipeline::Events<FlowControlPauseEvent, FlowControlResumeEvent>;
-
   // HandlerLifecycle
   void handlerAdded(Context& /*ctx*/) noexcept {}
   void handlerRemoved(Context& /*ctx*/) noexcept {}
@@ -79,18 +69,20 @@ class InboundCreditHandler {
   channel_pipeline::Result onRead(
       Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
     auto& message = msg.get<ThriftStreamMessage>();
-    if (!message.payload.is<RequestN>()) {
-      return ctx.fireRead(std::move(msg));
+    if (message.payload.is<RequestN>()) {
+      // Account the grant, then forward on only the demand we actually admitted
+      // so the forwarded demand and the private budget stay in lockstep. On the
+      // (practically unreachable) overflow the budget saturates, and we forward
+      // just the remaining headroom rather than the raw ask — otherwise the
+      // source would be authorized to produce elements the budget will not
+      // admit, and they would trip the exhaustion-violation path on the way
+      // out.
+      auto& requestN = message.payload.get<RequestN>();
+      const uint64_t before = credits_;
+      credits_ = addSaturating(credits_, requestN.n);
+      requestN.n = credits_ - before;
     }
-    const bool wasExhausted = credits_ == 0;
-    credits_ = addSaturating(credits_, message.payload.get<RequestN>().n);
-    if (FOLLY_UNLIKELY(wasExhausted && credits_ > 0)) {
-      // Credit just became available: tell a writer that paused upstream while
-      // exhausted that it may resume. Credit stays private — only readiness is
-      // published.
-      PublishedEvents::fire<FlowControlResumeEvent>(ctx);
-    }
-    return channel_pipeline::Result::Success;
+    return ctx.fireRead(std::move(msg));
   }
 
   void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
@@ -108,20 +100,14 @@ class InboundCreditHandler {
       return onCreditExhaustedViolation();
     }
     --credits_;
-    const channel_pipeline::Result forwarded = ctx.fireWrite(std::move(msg));
-    if (credits_ == 0) {
-      // Demand just hit zero: publish the pause before returning, so a
-      // subscriber observes it in the same turn as the Backpressure result.
-      PublishedEvents::fire<FlowControlPauseEvent>(ctx);
-    }
-    if (forwarded != channel_pipeline::Result::Success) {
-      // Downstream congestion or failure: propagate its status unchanged.
-      return forwarded;
-    }
-    // Raise backpressure on the very element that exhausts demand so the
-    // producer pauses before emitting the next one, not after.
-    return credits_ == 0 ? channel_pipeline::Result::Backpressure
-                         : channel_pipeline::Result::Success;
+    // Forward and let the downstream result (including transport Backpressure)
+    // propagate unchanged. Credit exhaustion is not signalled here: the source
+    // already limits itself to the demand it was granted. The credit is spent
+    // once here and not restored on a non-Success result: fireWrite is a sink,
+    // so Backpressure means the element was consumed (only "slow down"), and
+    // the element is moved away — there is no re-send at this layer to
+    // double-charge.
+    return ctx.fireWrite(std::move(msg));
   }
 
   void onWriteReady(Context& /*ctx*/) noexcept {}
@@ -133,8 +119,8 @@ class InboundCreditHandler {
 
  private:
   // A Payload reached this consuming sink while demand is exhausted: the
-  // producer overran the credit contract. An upstream buffer honoring
-  // FlowControlPauseEvent keeps this unreachable, so reaching here is a bug
+  // producer overran the credit contract. An upstream buffer/producer honoring
+  // the demand it was granted keeps this unreachable, so reaching here is a bug
   // rather than a runtime condition — fail loudly in debug. In release the hard
   // contract still holds: the element is dropped with Result::Error (tearing
   // down the peer) rather than delivered beyond demand. Kept out-of-line so the
@@ -174,10 +160,5 @@ static_assert(
         InboundCreditHandler<channel_pipeline::detail::ContextImpl>,
         channel_pipeline::detail::ContextImpl>,
     "InboundCreditHandler must satisfy OutboundHandler concept");
-
-static_assert(
-    channel_pipeline::TypeEventPublisher<
-        InboundCreditHandler<channel_pipeline::detail::ContextImpl>>,
-    "InboundCreditHandler must publish its flow-control events");
 
 } // namespace apache::thrift::fast_thrift::thrift::stream

@@ -37,7 +37,6 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/stream/common/Messages.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/stream/common/StreamEvents.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/stream/handler/InboundCreditHandler.h>
 
 using namespace folly;
@@ -48,14 +47,10 @@ namespace {
 
 class BenchCtx {
  public:
-  // NOLINTNEXTLINE(clang-diagnostic-unused-member-function)
   Result fireRead(TypeErasedBox&&) noexcept { return Result::Success; }
   Result fireWrite(TypeErasedBox&&) noexcept { return Result::Success; }
   // NOLINTNEXTLINE(clang-diagnostic-unused-member-function)
   void fireException(folly::exception_wrapper&&) noexcept {}
-  // NOLINTNEXTLINE(clang-diagnostic-unused-member-function)
-  template <PipelineEvent E>
-  void fireEvent() noexcept {}
 };
 
 ThriftStreamMessage makeRequestN(uint64_t n) {
@@ -72,7 +67,7 @@ BENCHMARK(OnWrite_ForwardWithCredit, iters) {
   InboundCreditHandler<BenchCtx> handler;
   BenchCtx ctx;
   // Grant one more credit than items so every item takes the pure forward path
-  // and none hits the demand-exhausted (Backpressure) branch.
+  // and none hits the credit-exhausted violation path (DCHECK / Result::Error).
   (void)handler.onRead(ctx, erase_and_box(makeRequestN(iters + 1)));
 
   std::vector<TypeErasedBox> items;
