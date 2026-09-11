@@ -269,6 +269,7 @@ void establish(
 
 boost::intrusive_ptr<ThriftConnContext> makeConn() {
   boost::intrusive_ptr<ThriftConnContext> conn{new ThriftConnContext()};
+  conn->installExtensions(bridgeLayout());
   conn->setPeerAddress(folly::SocketAddress("127.0.0.1", 4321));
   return conn;
 }

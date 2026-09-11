@@ -96,9 +96,11 @@ Cpp2ConnContextAdapter::Cpp2ConnContextAdapter(
   }
   // Resolved by the constructor above, from the hook or the certificate.
   ftConnContext_->setPeerIdentities(cpp2ConnContext_->getPeerIdentities());
+  ftConnContext_->setState<Cpp2BridgeExtension>(cpp2ConnContext_.get());
 }
 
 Cpp2ConnContextAdapter::~Cpp2ConnContextAdapter() {
+  ftConnContext_->setState<Cpp2BridgeExtension>(nullptr);
   ftConnContext_->setPeerIdentities(nullptr);
 }
 

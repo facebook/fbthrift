@@ -134,6 +134,12 @@ class ThriftConnectionView {
   // service hangs the state its per-connection decisions are made against.
   void* userData() const noexcept { return connContext_.getUserData(); }
 
+  // State published on this connection by another installed extension.
+  template <class Ext>
+  typename Ext::ConnState* tryState() const noexcept {
+    return connContext_.template tryState<Ext>();
+  }
+
  private:
   const ThriftConnContext& connContext_;
 };

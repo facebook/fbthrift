@@ -187,6 +187,14 @@ class ThriftRequestView {
   // Rocket stream id correlating this request with its response.
   uint32_t streamId() const noexcept { return request_.streamId; }
 
+  // State published on this request by another installed extension.
+  template <class Ext>
+  typename Ext::RequestState* tryState() const noexcept {
+    return request_.requestContext == nullptr
+        ? nullptr
+        : request_.requestContext->template tryState<Ext>();
+  }
+
  private:
   const ThriftServerRequestMessage& request_;
 };

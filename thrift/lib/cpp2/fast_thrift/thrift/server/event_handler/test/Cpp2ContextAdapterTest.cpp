@@ -50,9 +50,12 @@ std::unique_ptr<void, void (*)(void*)> resolveIdentities(
       +[](void* p) noexcept { delete static_cast<ResolvedIdentities*>(p); });
 }
 
+const ExtensionLayout& bridgeLayout();
+
 boost::intrusive_ptr<ThriftConnContext> makeConnContext(
     std::shared_ptr<const folly::AsyncTransportCertificate> cert) {
   boost::intrusive_ptr<ThriftConnContext> conn{new ThriftConnContext()};
+  conn->installExtensions(bridgeLayout());
   conn->setPeerAddress(folly::SocketAddress("127.0.0.1", 4321));
   conn->setSecurityProtocol("TLS1.3");
   conn->setPeerCertificate(std::move(cert));
@@ -261,6 +264,17 @@ TEST(Cpp2ContextAdapterTest, PeerIdentitiesAreReachableFromTheConnection) {
         "peer.identity");
   }
   EXPECT_EQ(conn->getPeerIdentities(), nullptr);
+}
+
+TEST(Cpp2ContextAdapterTest, ClassicContextIsReachableThroughTheConnection) {
+  auto conn = makeConnContext(nullptr);
+  EXPECT_EQ(tryGetCpp2ConnContext(*conn), nullptr);
+
+  {
+    Cpp2ConnContextAdapter connAdapter(conn, /*resolver=*/nullptr);
+    EXPECT_EQ(tryGetCpp2ConnContext(*conn), &connAdapter.get());
+  }
+  EXPECT_EQ(tryGetCpp2ConnContext(*conn), nullptr);
 }
 
 // The classic context is reachable from the request for as long as its storage

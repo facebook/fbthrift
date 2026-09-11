@@ -72,12 +72,12 @@ using PeerIdentityResolver = std::unique_ptr<void, void (*)(void*)> (*)(
     const folly::SocketAddress& peerAddress);
 
 /**
- * The event-handler bridge's slot on a fast_thrift request.
+ * The event-handler bridge's slots on a fast_thrift connection and request.
  *
- * The slot holds the classic context the bridge already owns, so a consumer
- * written against the classic server reaches it for the whole request and the
- * bridge allocates nothing for it. Cleared once the response has left, so a
- * reader that outlives the response finds nothing.
+ * Each slot holds the corresponding classic context the bridge already owns,
+ * so a consumer written against the classic server reaches it without another
+ * allocation. The connection slot is cleared when its adapter is destroyed;
+ * the request slot is cleared once the response has left.
  *
  * A server that installs the bridge registers this; one that does not leaves
  * every lookup below reading null, which is the answer a server with no bridge
@@ -85,8 +85,18 @@ using PeerIdentityResolver = std::unique_ptr<void, void (*)(void*)> (*)(
  */
 struct Cpp2BridgeExtension {
   EXTENSION_ID(cpp2_bridge);
+  using ConnState = apache::thrift::Cpp2ConnContext;
   using RequestState = apache::thrift::Cpp2RequestContext;
 };
+
+/**
+ * The classic context for this connection, or null on a server that installed
+ * no event-handler bridge.
+ */
+inline apache::thrift::Cpp2ConnContext* FOLLY_NULLABLE
+tryGetCpp2ConnContext(const ThriftConnContext& connContext) noexcept {
+  return connContext.tryState<Cpp2BridgeExtension>();
+}
 
 /**
  * The classic context for this request, or null on a server that installed no
