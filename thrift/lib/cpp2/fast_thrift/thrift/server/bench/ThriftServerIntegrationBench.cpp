@@ -66,9 +66,14 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerTransportAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerCompressionHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionCloseHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionContextHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestContextHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/FastThriftServer.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/FastThriftServer.tcc>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/bench/BenchAsyncTransport.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
@@ -83,6 +88,7 @@ using namespace apache::thrift::fast_thrift::frame::read::handler;
 using namespace apache::thrift::fast_thrift::frame::write::handler;
 using namespace apache::thrift::fast_thrift::frame::write;
 using namespace apache::thrift::fast_thrift::transport::bench;
+using namespace apache::thrift::fast_thrift::thrift::test::integration;
 
 namespace {
 
@@ -91,10 +97,6 @@ namespace {
 // =============================================================================
 
 constexpr size_t kPayloadSize = 4'096;
-
-std::unique_ptr<folly::IOBuf> makePayloadData(size_t size) {
-  return folly::IOBuf::copyBuffer(std::string(size, 'x'));
-}
 
 HANDLER_TAG(frame_length_encoder_handler);
 HANDLER_TAG(frame_codec_handler);
@@ -106,6 +108,11 @@ HANDLER_TAG(server_request_response_frame_handler);
 HANDLER_TAG(server_stream_state_handler);
 HANDLER_TAG(thrift_server_request_context_handler);
 HANDLER_TAG(thrift_server_connection_context_handler);
+HANDLER_TAG(thrift_server_compression_handler);
+HANDLER_TAG(thrift_server_connection_close_handler);
+HANDLER_TAG(thrift_server_setup_handler);
+using ServerSetupHandler =
+    thrift::ThriftServerSetupHandler<channel_pipeline::detail::ContextImpl>;
 
 // =============================================================================
 // Echo AsyncProcessor — synchronously echoes request payload as reply
@@ -249,6 +256,25 @@ apache::thrift::RequestRpcMetadata createRequestMetadataWithHeaders() {
   return metadata;
 }
 
+std::unique_ptr<folly::IOBuf> serializeEmptyPargs() {
+  apache::thrift::BinaryProtocolWriter writer;
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+  writer.setOutput(&queue);
+  FastThriftServer_ping_pargs pargs;
+  pargs.write(&writer);
+  return queue.move();
+}
+
+std::unique_ptr<folly::IOBuf> serializeEchoPargs(const std::string& payload) {
+  apache::thrift::BinaryProtocolWriter writer;
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+  writer.setOutput(&queue);
+  FastThriftServer_echo_pargs pargs;
+  pargs.template get<0>().value = const_cast<std::string*>(&payload);
+  pargs.write(&writer);
+  return queue.move();
+}
+
 std::unique_ptr<folly::IOBuf> createFastThriftRequestFrame(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> metadata,
@@ -365,15 +391,17 @@ struct ChannelBenchFixture {
         std::make_unique<thrift::server::ThriftServerTransportAdapter>(
             std::move(rocketConn));
 
-    thriftPipeline = PipelineBuilder<
-                         thrift::server::ThriftServerTransportAdapter,
-                         thrift::ThriftServerChannel,
-                         SimpleBufferAllocator>()
-                         .setEventBase(&evb)
-                         .setHead(transportAdapter.get())
-                         .setTail(serverChannel.get())
-                         .setAllocator(&thriftAllocator)
-                         .build();
+    thriftPipeline =
+        PipelineBuilder<
+            thrift::server::ThriftServerTransportAdapter,
+            thrift::ThriftServerChannel,
+            SimpleBufferAllocator>()
+            .setEventBase(&evb)
+            .setHead(transportAdapter.get())
+            .setTail(serverChannel.get())
+            .setAllocator(&thriftAllocator)
+            .addNextDuplex<ServerSetupHandler>(thrift_server_setup_handler_tag)
+            .build();
 
     transportAdapter->setPipeline(thriftPipeline.get());
     serverChannel->setPipelineRef(*thriftPipeline);
@@ -388,7 +416,7 @@ struct ChannelBenchFixture {
         nullptr,
         nullptr);
     testTransport->injectReadData(prependLengthPrefix(std::move(setupFrame)));
-    evb.loopOnce();
+    evb.loopOnce(EVLOOP_NONBLOCK);
   }
 
   void injectFrame(std::unique_ptr<folly::IOBuf> frame) {
@@ -422,16 +450,14 @@ struct AppAdapterBenchFixture {
           "benchMethod",
           +[](thrift::ThriftServerAppAdapter* self,
               uint32_t streamId,
-              std::unique_ptr<folly::IOBuf>,
+              std::unique_ptr<folly::IOBuf> data,
               apache::thrift::ProtocolId,
               std::unique_ptr<thrift::ThriftRequestContext>) noexcept {
             auto md = std::make_unique<apache::thrift::ResponseRpcMetadata>();
             thrift::fillSuccessResponseMetadata(*md);
             self->writeResponse(
                 thrift::makeResponseMessage(
-                    streamId,
-                    folly::IOBuf::copyBuffer("echo response"),
-                    std::move(md)));
+                    streamId, std::move(data), std::move(md)));
           });
     } else {
       adapter->registerMethod(
@@ -451,6 +477,10 @@ struct AppAdapterBenchFixture {
         apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>;
     using ConnCtxHandler = thrift::ThriftServerConnectionContextHandler<
         apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>;
+    using CompressionHandler = thrift::ThriftServerCompressionHandler<
+        apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>;
+    using ConnectionCloseHandler = thrift::ThriftServerConnectionCloseHandler<
+        apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>;
     using Builder = PipelineBuilder<
         thrift::server::ThriftServerTransportAdapter,
         BenchServerAppAdapter,
@@ -464,11 +494,17 @@ struct AppAdapterBenchFixture {
               .setHead(transportAdapter.get())
               .setTail(adapter.get())
               .setAllocator(&thriftAllocator)
+              .addNextDuplex<CompressionHandler>(
+                  thrift_server_compression_handler_tag)
+              .addNextDuplex<ConnectionCloseHandler>(
+                  thrift_server_connection_close_handler_tag)
               .addNextDuplex<ReqCtxHandler>(
                   thrift_server_request_context_handler_tag,
                   /*requestExtensionLayout=*/nullptr)
               .addNextDuplex<ConnCtxHandler>(
                   thrift_server_connection_context_handler_tag, connContext)
+              .addNextDuplex<ServerSetupHandler>(
+                  thrift_server_setup_handler_tag)
               .build();
     } else {
       thriftPipeline = Builder()
@@ -476,6 +512,12 @@ struct AppAdapterBenchFixture {
                            .setHead(transportAdapter.get())
                            .setTail(adapter.get())
                            .setAllocator(&thriftAllocator)
+                           .addNextDuplex<CompressionHandler>(
+                               thrift_server_compression_handler_tag)
+                           .addNextDuplex<ConnectionCloseHandler>(
+                               thrift_server_connection_close_handler_tag)
+                           .addNextDuplex<ServerSetupHandler>(
+                               thrift_server_setup_handler_tag)
                            .build();
     }
 
@@ -491,7 +533,7 @@ struct AppAdapterBenchFixture {
         nullptr,
         nullptr);
     testTransport->injectReadData(prependLengthPrefix(std::move(setupFrame)));
-    evb.loopOnce();
+    evb.loopOnce(EVLOOP_NONBLOCK);
   }
 
   void injectFrame(std::unique_ptr<folly::IOBuf> frame) {
@@ -507,10 +549,11 @@ BENCHMARK(Channel_Request, iters) {
   folly::BenchmarkSuspender suspender;
   ChannelBenchFixture<NoopProcessor> fixture;
   fixture.setup();
+  suspender.dismiss();
 
   auto metadataTemplate =
       serializeRequestMetadata(createMinimalRequestMetadata());
-  auto payloadTemplate = makePayloadData(kPayloadSize);
+  auto payloadTemplate = serializeEmptyPargs();
 
   std::vector<std::unique_ptr<folly::IOBuf>> requests;
   requests.reserve(iters);
@@ -519,22 +562,22 @@ BENCHMARK(Channel_Request, iters) {
         i * 2 + 1, metadataTemplate->clone(), payloadTemplate->clone()));
   }
 
-  suspender.dismiss();
-
   for (uint32_t i = 0; i < iters; ++i) {
     fixture.injectFrame(std::move(requests[i]));
-    fixture.evb.loopOnce();
+    fixture.evb.loopOnce(EVLOOP_NONBLOCK);
   }
+  suspender.rehire();
 }
 
 BENCHMARK_RELATIVE(AppAdapter_Request, iters) {
   folly::BenchmarkSuspender suspender;
   AppAdapterBenchFixture fixture;
   fixture.setup(false);
+  suspender.dismiss();
 
   auto metadataTemplate =
       serializeRequestMetadata(createMinimalRequestMetadata());
-  auto payloadTemplate = makePayloadData(kPayloadSize);
+  auto payloadTemplate = serializeEmptyPargs();
 
   std::vector<std::unique_ptr<folly::IOBuf>> requests;
   requests.reserve(iters);
@@ -543,22 +586,22 @@ BENCHMARK_RELATIVE(AppAdapter_Request, iters) {
         i * 2 + 1, metadataTemplate->clone(), payloadTemplate->clone()));
   }
 
-  suspender.dismiss();
-
   for (uint32_t i = 0; i < iters; ++i) {
     fixture.injectFrame(std::move(requests[i]));
-    fixture.evb.loopOnce();
+    fixture.evb.loopOnce(EVLOOP_NONBLOCK);
   }
+  suspender.rehire();
 }
 
 BENCHMARK_RELATIVE(AppAdapter_Request_Ctx, iters) {
   folly::BenchmarkSuspender suspender;
   AppAdapterBenchFixture fixture;
   fixture.setup(/*echo=*/false, /*withContextHandlers=*/true);
+  suspender.dismiss();
 
   auto metadataTemplate =
       serializeRequestMetadata(createMinimalRequestMetadata());
-  auto payloadTemplate = makePayloadData(kPayloadSize);
+  auto payloadTemplate = serializeEmptyPargs();
 
   std::vector<std::unique_ptr<folly::IOBuf>> requests;
   requests.reserve(iters);
@@ -567,12 +610,11 @@ BENCHMARK_RELATIVE(AppAdapter_Request_Ctx, iters) {
         i * 2 + 1, metadataTemplate->clone(), payloadTemplate->clone()));
   }
 
-  suspender.dismiss();
-
   for (uint32_t i = 0; i < iters; ++i) {
     fixture.injectFrame(std::move(requests[i]));
-    fixture.evb.loopOnce();
+    fixture.evb.loopOnce(EVLOOP_NONBLOCK);
   }
+  suspender.rehire();
 }
 
 BENCHMARK_DRAW_LINE();
@@ -585,10 +627,11 @@ BENCHMARK(Channel_Request_Headers, iters) {
   folly::BenchmarkSuspender suspender;
   ChannelBenchFixture<NoopProcessor> fixture;
   fixture.setup();
+  suspender.dismiss();
 
   auto metadataTemplate =
       serializeRequestMetadata(createRequestMetadataWithHeaders());
-  auto payloadTemplate = makePayloadData(kPayloadSize);
+  auto payloadTemplate = serializeEmptyPargs();
 
   std::vector<std::unique_ptr<folly::IOBuf>> requests;
   requests.reserve(iters);
@@ -597,22 +640,22 @@ BENCHMARK(Channel_Request_Headers, iters) {
         i * 2 + 1, metadataTemplate->clone(), payloadTemplate->clone()));
   }
 
-  suspender.dismiss();
-
   for (uint32_t i = 0; i < iters; ++i) {
     fixture.injectFrame(std::move(requests[i]));
-    fixture.evb.loopOnce();
+    fixture.evb.loopOnce(EVLOOP_NONBLOCK);
   }
+  suspender.rehire();
 }
 
 BENCHMARK_RELATIVE(AppAdapter_Request_Headers, iters) {
   folly::BenchmarkSuspender suspender;
   AppAdapterBenchFixture fixture;
   fixture.setup(false);
+  suspender.dismiss();
 
   auto metadataTemplate =
       serializeRequestMetadata(createRequestMetadataWithHeaders());
-  auto payloadTemplate = makePayloadData(kPayloadSize);
+  auto payloadTemplate = serializeEmptyPargs();
 
   std::vector<std::unique_ptr<folly::IOBuf>> requests;
   requests.reserve(iters);
@@ -621,66 +664,11 @@ BENCHMARK_RELATIVE(AppAdapter_Request_Headers, iters) {
         i * 2 + 1, metadataTemplate->clone(), payloadTemplate->clone()));
   }
 
-  suspender.dismiss();
-
   for (uint32_t i = 0; i < iters; ++i) {
     fixture.injectFrame(std::move(requests[i]));
-    fixture.evb.loopOnce();
+    fixture.evb.loopOnce(EVLOOP_NONBLOCK);
   }
-}
-
-BENCHMARK_DRAW_LINE();
-
-// =============================================================================
-// Response Path Benchmark (Echo: request in -> reply out)
-// =============================================================================
-
-BENCHMARK(Channel_Response, iters) {
-  folly::BenchmarkSuspender suspender;
-  ChannelBenchFixture<EchoProcessor> fixture;
-  fixture.setup();
-
-  auto metadataTemplate =
-      serializeRequestMetadata(createMinimalRequestMetadata());
-  auto payloadTemplate = makePayloadData(kPayloadSize);
-
-  std::vector<std::unique_ptr<folly::IOBuf>> requests;
-  requests.reserve(iters);
-  for (uint32_t i = 0; i < iters; ++i) {
-    requests.push_back(createFastThriftRequestFrame(
-        i * 2 + 1, metadataTemplate->clone(), payloadTemplate->clone()));
-  }
-
-  suspender.dismiss();
-
-  for (uint32_t i = 0; i < iters; ++i) {
-    fixture.injectFrame(std::move(requests[i]));
-    fixture.evb.loopOnce();
-  }
-}
-
-BENCHMARK_RELATIVE(AppAdapter_Response, iters) {
-  folly::BenchmarkSuspender suspender;
-  AppAdapterBenchFixture fixture;
-  fixture.setup(true);
-
-  auto metadataTemplate =
-      serializeRequestMetadata(createMinimalRequestMetadata());
-  auto payloadTemplate = makePayloadData(kPayloadSize);
-
-  std::vector<std::unique_ptr<folly::IOBuf>> requests;
-  requests.reserve(iters);
-  for (uint32_t i = 0; i < iters; ++i) {
-    requests.push_back(createFastThriftRequestFrame(
-        i * 2 + 1, metadataTemplate->clone(), payloadTemplate->clone()));
-  }
-
-  suspender.dismiss();
-
-  for (uint32_t i = 0; i < iters; ++i) {
-    fixture.injectFrame(std::move(requests[i]));
-    fixture.evb.loopOnce();
-  }
+  suspender.rehire();
 }
 
 BENCHMARK_DRAW_LINE();
@@ -693,10 +681,11 @@ BENCHMARK(Channel_RoundTrip, iters) {
   folly::BenchmarkSuspender suspender;
   ChannelBenchFixture<EchoProcessor> fixture;
   fixture.setup();
+  suspender.dismiss();
 
   auto metadataTemplate =
       serializeRequestMetadata(createMinimalRequestMetadata());
-  auto payloadTemplate = makePayloadData(kPayloadSize);
+  auto payloadTemplate = serializeEchoPargs(std::string(kPayloadSize, 'x'));
 
   std::vector<std::unique_ptr<folly::IOBuf>> requests;
   requests.reserve(iters);
@@ -705,23 +694,23 @@ BENCHMARK(Channel_RoundTrip, iters) {
         i * 2 + 1, metadataTemplate->clone(), payloadTemplate->clone()));
   }
 
-  suspender.dismiss();
-
   for (uint32_t i = 0; i < iters; ++i) {
     fixture.injectFrame(std::move(requests[i]));
-    fixture.evb.loopOnce();
+    fixture.evb.loopOnce(EVLOOP_NONBLOCK);
     fixture.testTransport->clearWrittenData();
   }
+  suspender.rehire();
 }
 
 BENCHMARK_RELATIVE(AppAdapter_RoundTrip, iters) {
   folly::BenchmarkSuspender suspender;
   AppAdapterBenchFixture fixture;
   fixture.setup(true);
+  suspender.dismiss();
 
   auto metadataTemplate =
       serializeRequestMetadata(createMinimalRequestMetadata());
-  auto payloadTemplate = makePayloadData(kPayloadSize);
+  auto payloadTemplate = serializeEchoPargs(std::string(kPayloadSize, 'x'));
 
   std::vector<std::unique_ptr<folly::IOBuf>> requests;
   requests.reserve(iters);
@@ -730,23 +719,23 @@ BENCHMARK_RELATIVE(AppAdapter_RoundTrip, iters) {
         i * 2 + 1, metadataTemplate->clone(), payloadTemplate->clone()));
   }
 
-  suspender.dismiss();
-
   for (uint32_t i = 0; i < iters; ++i) {
     fixture.injectFrame(std::move(requests[i]));
-    fixture.evb.loopOnce();
+    fixture.evb.loopOnce(EVLOOP_NONBLOCK);
     fixture.testTransport->clearWrittenData();
   }
+  suspender.rehire();
 }
 
 BENCHMARK_RELATIVE(AppAdapter_RoundTrip_Ctx, iters) {
   folly::BenchmarkSuspender suspender;
   AppAdapterBenchFixture fixture;
   fixture.setup(/*echo=*/true, /*withContextHandlers=*/true);
+  suspender.dismiss();
 
   auto metadataTemplate =
       serializeRequestMetadata(createMinimalRequestMetadata());
-  auto payloadTemplate = makePayloadData(kPayloadSize);
+  auto payloadTemplate = serializeEchoPargs(std::string(kPayloadSize, 'x'));
 
   std::vector<std::unique_ptr<folly::IOBuf>> requests;
   requests.reserve(iters);
@@ -755,13 +744,12 @@ BENCHMARK_RELATIVE(AppAdapter_RoundTrip_Ctx, iters) {
         i * 2 + 1, metadataTemplate->clone(), payloadTemplate->clone()));
   }
 
-  suspender.dismiss();
-
   for (uint32_t i = 0; i < iters; ++i) {
     fixture.injectFrame(std::move(requests[i]));
-    fixture.evb.loopOnce();
+    fixture.evb.loopOnce(EVLOOP_NONBLOCK);
     fixture.testTransport->clearWrittenData();
   }
+  suspender.rehire();
 }
 
 } // namespace

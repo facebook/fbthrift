@@ -33,14 +33,12 @@
  * ThriftServerTransportAdapter and use BenchAsyncTransport so the comparison
  * isolates the dispatch path (parse → route → invoke handler → write reply).
  *
- * Mirrors the Request_* / Response_* / RequestResponse_RoundTrip layout from
- * ThriftServerIntegrationBench:
- *   Request_*  — handler drops the callback. Both paths incur an
- *                INTERNAL_ERROR reply on destruct; comparing the dispatch
- *                cost ahead of the reply.
- *   Response_* — handler echoes the payload back through the typed callback.
- *   RoundTrip  — Response_* with `clearWrittenData` per iteration.
+ * Request benchmarks stop after handler invocation; callback completion and the
+ * response path run while timing is suspended. Round-trip benchmarks measure
+ * the complete request and successful response path with bounded output state.
  */
+
+#include <exception>
 
 #include <folly/Benchmark.h>
 #include <folly/init/Init.h>
@@ -73,6 +71,9 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/ThriftServerChannel.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerTransportAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerCompressionHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionCloseHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/FastThriftChannelServer.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/FastThriftServer.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/FastThriftServer.tcc>
@@ -108,21 +109,26 @@ HANDLER_TAG(rocket_server_message_marshal_handler);
 HANDLER_TAG(server_setup_frame_handler);
 HANDLER_TAG(server_request_response_frame_handler);
 HANDLER_TAG(server_stream_state_handler);
+HANDLER_TAG(thrift_server_compression_handler);
+HANDLER_TAG(thrift_server_connection_close_handler);
+HANDLER_TAG(thrift_server_setup_handler);
 
 // =============================================================================
-// Generated handlers — one per dispatch path. Both honor `noReply`:
-//   true  → callback is dropped (destructor writes INTERNAL_ERROR)
-//   false → callback completes with the echoed payload
+// Generated handlers — one per dispatch path. Request-only benchmarks retain
+// the ping callback and complete it while timing is suspended. Round-trip
+// benchmarks complete callbacks normally with the echoed payload.
 // =============================================================================
 
 class ChannelHandler
     : public apache::thrift::ServiceHandler<FastThriftChannelServer> {
  public:
-  bool noReply{false};
+  using PingCallback = apache::thrift::HandlerCallbackPtr<void>;
 
-  void async_tm_ping(
-      apache::thrift::HandlerCallbackPtr<void> callback) override {
-    if (noReply) {
+  bool deferReply{false};
+
+  void async_tm_ping(PingCallback callback) override {
+    if (deferReply) {
+      deferredPing_ = std::move(callback);
       return;
     }
     callback->done();
@@ -132,24 +138,34 @@ class ChannelHandler
       apache::thrift::HandlerCallbackPtr<std::unique_ptr<EchoResponse>>
           callback,
       std::unique_ptr<std::string> message) override {
-    if (noReply) {
-      return;
-    }
     auto response = std::make_unique<EchoResponse>();
     response->message() = std::move(*message);
     callback->result(std::move(response));
   }
+
+  void completeDeferredPing() {
+    auto callback = std::move(deferredPing_);
+    if (!callback) {
+      std::terminate();
+    }
+    callback->done();
+  }
+
+ private:
+  PingCallback deferredPing_;
 };
 
 class FastHandler
     : public ::apache::thrift::FastServiceHandler<FastThriftServer> {
  public:
-  bool noReply{false};
+  using PingCallback =
+      ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<void>;
 
-  void async_tm_ping(
-      ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<void>
-          callback) override {
-    if (noReply) {
+  bool deferReply{false};
+
+  void async_tm_ping(PingCallback callback) override {
+    if (deferReply) {
+      deferredPing_ = std::move(callback);
       return;
     }
     callback->done();
@@ -159,13 +175,21 @@ class FastHandler
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<
           std::unique_ptr<EchoResponse>> callback,
       std::unique_ptr<std::string> message) override {
-    if (noReply) {
-      return;
-    }
     auto response = std::make_unique<EchoResponse>();
     response->message() = std::move(*message);
     callback->result(std::move(response));
   }
+
+  void completeDeferredPing() {
+    auto callback = std::move(deferredPing_);
+    if (!callback) {
+      std::terminate();
+    }
+    callback->done();
+  }
+
+ private:
+  PingCallback deferredPing_;
 };
 
 // =============================================================================
@@ -321,7 +345,7 @@ void injectSetupFrame(BenchAsyncTransport* transport, folly::EventBase& evb) {
       nullptr,
       nullptr);
   transport->injectReadData(prependLengthPrefix(std::move(setupFrame)));
-  evb.loopOnce();
+  evb.loopOnce(EVLOOP_NONBLOCK);
 }
 
 // =============================================================================
@@ -339,11 +363,11 @@ struct ChannelBenchFixture {
   PipelineImpl::Ptr thriftPipeline;
   SimpleBufferAllocator thriftAllocator;
 
-  void setup(bool noReply) {
+  void setup(bool deferReply) {
     auto rocketConn = buildRocketConnection(&evb, &testTransport);
 
     handler = std::make_shared<ChannelHandler>();
-    handler->noReply = noReply;
+    handler->deferReply = deferReply;
     serverChannel = std::make_shared<thrift::ThriftServerChannel>(handler);
 
     transportAdapter =
@@ -358,6 +382,9 @@ struct ChannelBenchFixture {
                          .setHead(transportAdapter.get())
                          .setTail(serverChannel.get())
                          .setAllocator(&thriftAllocator)
+                         .addNextDuplex<thrift::ThriftServerSetupHandler<
+                             channel_pipeline::detail::ContextImpl>>(
+                             thrift_server_setup_handler_tag)
                          .build();
 
     transportAdapter->setPipeline(thriftPipeline.get());
@@ -370,6 +397,8 @@ struct ChannelBenchFixture {
   void injectFrame(std::unique_ptr<folly::IOBuf> frame) {
     testTransport->injectReadData(prependLengthPrefix(std::move(frame)));
   }
+
+  void completeDeferredRequest() { handler->completeDeferredPing(); }
 };
 
 // =============================================================================
@@ -391,36 +420,47 @@ struct FastBenchFixture {
   PipelineImpl::Ptr thriftPipeline;
   SimpleBufferAllocator thriftAllocator;
 
-  void setup(bool noReply) {
+  void setup(bool deferReply) {
     auto rocketConn = buildRocketConnection(&evb, &testTransport);
 
     handler = std::make_shared<FastHandler>();
-    handler->noReply = noReply;
+    handler->deferReply = deferReply;
     adapter.reset(new FastThriftServerAppAdapter(handler));
 
     transportAdapter =
         std::make_unique<thrift::server::ThriftServerTransportAdapter>(
             std::move(rocketConn));
 
-    thriftPipeline = PipelineBuilder<
-                         thrift::server::ThriftServerTransportAdapter,
-                         FastThriftServerAppAdapter,
-                         SimpleBufferAllocator>()
-                         .setEventBase(&evb)
-                         .setHead(transportAdapter.get())
-                         .setTail(adapter.get())
-                         .setAllocator(&thriftAllocator)
-                         .build();
+    thriftPipeline =
+        PipelineBuilder<
+            thrift::server::ThriftServerTransportAdapter,
+            FastThriftServerAppAdapter,
+            SimpleBufferAllocator>()
+            .setEventBase(&evb)
+            .setHead(transportAdapter.get())
+            .setTail(adapter.get())
+            .setAllocator(&thriftAllocator)
+            .addNextDuplex<thrift::ThriftServerCompressionHandler<
+                channel_pipeline::detail::ContextImpl>>(
+                thrift_server_compression_handler_tag)
+            .addNextDuplex<thrift::ThriftServerConnectionCloseHandler<
+                channel_pipeline::detail::ContextImpl>>(
+                thrift_server_connection_close_handler_tag)
+            .addNextDuplex<thrift::ThriftServerSetupHandler<
+                channel_pipeline::detail::ContextImpl>>(
+                thrift_server_setup_handler_tag)
+            .build();
 
     transportAdapter->setPipeline(thriftPipeline.get());
     adapter->setPipeline(thriftPipeline.get());
-
     injectSetupFrame(testTransport, evb);
   }
 
   void injectFrame(std::unique_ptr<folly::IOBuf> frame) {
     testTransport->injectReadData(prependLengthPrefix(std::move(frame)));
   }
+
+  void completeDeferredRequest() { handler->completeDeferredPing(); }
 };
 
 // =============================================================================
@@ -444,22 +484,22 @@ void runRequestBench(
 
   for (uint32_t i = 0; i < iters; ++i) {
     fixture.injectFrame(std::move(requests[i]));
-    // injectFrame delivers the read inline, so the request is fully processed
-    // synchronously; loopOnce only flushes deferred callbacks (e.g. the
-    // per-stream pipeline's runInLoop teardown). Must be non-blocking —
-    // a fully-synchronous fixture leaves nothing on the loop, so a blocking
-    // loopOnce() would wait forever in epoll_wait.
     fixture.evb.loopOnce(EVLOOP_NONBLOCK);
+    {
+      folly::BenchmarkSuspender cleanupSuspender;
+      fixture.completeDeferredRequest();
+      fixture.evb.loopOnce(EVLOOP_NONBLOCK);
+      fixture.testTransport->clearWrittenData();
+    }
   }
 }
 
 template <typename Fixture>
-void runResponseBench(
+void runRoundTripBench(
     Fixture& fixture,
     const apache::thrift::RequestRpcMetadata& metadataProto,
     const std::string& payload,
-    uint32_t iters,
-    bool clearBetween) {
+    uint32_t iters) {
   auto metadataTemplate = serializeRequestMetadata(metadataProto);
   auto pargsTemplate = serializeEchoPargs(payload);
 
@@ -472,134 +512,83 @@ void runResponseBench(
 
   for (uint32_t i = 0; i < iters; ++i) {
     fixture.injectFrame(std::move(requests[i]));
-    // injectFrame delivers the read inline, so the request is fully processed
-    // synchronously; loopOnce only flushes deferred callbacks (e.g. the
-    // per-stream pipeline's runInLoop teardown). Must be non-blocking —
-    // a fully-synchronous fixture leaves nothing on the loop, so a blocking
-    // loopOnce() would wait forever in epoll_wait.
     fixture.evb.loopOnce(EVLOOP_NONBLOCK);
-    if (clearBetween) {
-      fixture.testTransport->clearWrittenData();
-    }
+    fixture.testTransport->clearWrittenData();
   }
 }
 
 // =============================================================================
-// Request-only — minimal metadata
+// Request-only - callback completion and response processing are not timed
 // =============================================================================
 
 BENCHMARK(FastThriftChannel_Request_MinimalMetadata, iters) {
   folly::BenchmarkSuspender suspender;
   ChannelBenchFixture fixture;
-  fixture.setup(/*noReply=*/true);
+  fixture.setup(/*deferReply=*/true);
   suspender.dismiss();
 
   runRequestBench(fixture, makeRequestMetadata("ping"), iters);
+  suspender.rehire();
 }
 
 BENCHMARK_RELATIVE(FastThriftHandler_Request_MinimalMetadata, iters) {
   folly::BenchmarkSuspender suspender;
   FastBenchFixture fixture;
-  fixture.setup(/*noReply=*/true);
+  fixture.setup(/*deferReply=*/true);
   suspender.dismiss();
 
   runRequestBench(fixture, makeRequestMetadata("ping"), iters);
+  suspender.rehire();
 }
 
 BENCHMARK_DRAW_LINE();
 
-// =============================================================================
-// Request-only — request metadata with headers
-// =============================================================================
-
 BENCHMARK(FastThriftChannel_Request_WithHeaders, iters) {
   folly::BenchmarkSuspender suspender;
   ChannelBenchFixture fixture;
-  fixture.setup(/*noReply=*/true);
+  fixture.setup(/*deferReply=*/true);
   suspender.dismiss();
 
   runRequestBench(fixture, makeRequestMetadataWithHeaders("ping"), iters);
+  suspender.rehire();
 }
 
 BENCHMARK_RELATIVE(FastThriftHandler_Request_WithHeaders, iters) {
   folly::BenchmarkSuspender suspender;
   FastBenchFixture fixture;
-  fixture.setup(/*noReply=*/true);
+  fixture.setup(/*deferReply=*/true);
   suspender.dismiss();
 
   runRequestBench(fixture, makeRequestMetadataWithHeaders("ping"), iters);
+  suspender.rehire();
 }
 
 BENCHMARK_DRAW_LINE();
 
 // =============================================================================
-// Response — handler echoes back
-// =============================================================================
-
-BENCHMARK(FastThriftChannel_Response_Success, iters) {
-  folly::BenchmarkSuspender suspender;
-  ChannelBenchFixture fixture;
-  fixture.setup(/*noReply=*/false);
-  std::string payload(kPayloadSize, 'x');
-  suspender.dismiss();
-
-  runResponseBench(
-      fixture,
-      makeRequestMetadata("echo"),
-      payload,
-      iters,
-      /*clearBetween=*/false);
-}
-
-BENCHMARK_RELATIVE(FastThriftHandler_Response_Success, iters) {
-  folly::BenchmarkSuspender suspender;
-  FastBenchFixture fixture;
-  fixture.setup(/*noReply=*/false);
-  std::string payload(kPayloadSize, 'x');
-  suspender.dismiss();
-
-  runResponseBench(
-      fixture,
-      makeRequestMetadata("echo"),
-      payload,
-      iters,
-      /*clearBetween=*/false);
-}
-
-BENCHMARK_DRAW_LINE();
-
-// =============================================================================
-// Round trip — handler echoes, written data cleared per iteration
+// Full request-response round trip
 // =============================================================================
 
 BENCHMARK(FastThriftChannel_RequestResponse_RoundTrip, iters) {
   folly::BenchmarkSuspender suspender;
   ChannelBenchFixture fixture;
-  fixture.setup(/*noReply=*/false);
+  fixture.setup(/*deferReply=*/false);
   std::string payload(kPayloadSize, 'x');
   suspender.dismiss();
 
-  runResponseBench(
-      fixture,
-      makeRequestMetadata("echo"),
-      payload,
-      iters,
-      /*clearBetween=*/true);
+  runRoundTripBench(fixture, makeRequestMetadata("echo"), payload, iters);
+  suspender.rehire();
 }
 
 BENCHMARK_RELATIVE(FastThriftHandler_RequestResponse_RoundTrip, iters) {
   folly::BenchmarkSuspender suspender;
   FastBenchFixture fixture;
-  fixture.setup(/*noReply=*/false);
+  fixture.setup(/*deferReply=*/false);
   std::string payload(kPayloadSize, 'x');
   suspender.dismiss();
 
-  runResponseBench(
-      fixture,
-      makeRequestMetadata("echo"),
-      payload,
-      iters,
-      /*clearBetween=*/true);
+  runRoundTripBench(fixture, makeRequestMetadata("echo"), payload, iters);
+  suspender.rehire();
 }
 
 } // namespace
