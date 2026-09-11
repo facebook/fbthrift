@@ -99,38 +99,41 @@ if (thrift_python)
             FORCE)
 endif ()
 
+# Fetch the archive that `manifest` pins, so a fetched dependency matches the
+# version getdeps builds. `name` is the FetchContent content name. Variables
+# the dependency reads can be set by the caller; a function body sees them.
+# Always takes the manifest's .tar.gz entry, since CMake untars everywhere.
+function (thrift_fetch_from_manifest name manifest)
+  set(path
+      "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/manifests/${manifest}")
+  file(READ "${path}" text)
+  if (NOT text MATCHES
+      "url = (https://[^\r\n]+\\.tar\\.gz)[\r\n]+sha256 = ([0-9a-f]+)")
+    message(FATAL_ERROR "no archive in ${path}")
+  endif ()
+  set(url "${CMAKE_MATCH_1}")
+  set(sha256 "${CMAKE_MATCH_2}")
+  message(STATUS "${name} not found, fetching ${url}")
+  include(FetchContent)
+  FetchContent_Declare(
+    ${name}
+    URL ${url}
+    URL_HASH SHA256=${sha256})
+  FetchContent_MakeAvailable(${name})
+endfunction ()
+
 # Fetch fmt if it is not installed.
 find_package(fmt CONFIG QUIET)
 if (NOT fmt_FOUND)
-  message(STATUS "fmt not found, fetching it")
-  include(FetchContent)
   # fmt defaults this off for a subproject, which would leave it out of every
   # export set and make install(EXPORT) fail.
   set(FMT_INSTALL ON)
-  FetchContent_Declare(
-    fmt
-    URL https://github.com/fmtlib/fmt/archive/refs/tags/12.1.0.tar.gz
-    URL_HASH
-      SHA256=ea7de4299689e12b6dddd392f9896f08fb0777ac7168897a244a6d6085043fea)
-  FetchContent_MakeAvailable(fmt)
+  thrift_fetch_from_manifest(fmt fmt)
 endif ()
 
 # Fetch Boost if it is not installed.
 find_package(Boost QUIET)
 if (NOT Boost_FOUND)
-  # The archive this repo is tested against. CMake untars on every platform, so
-  # the manifest's Windows .zip entry is not needed.
-  set(boost_manifest
-      "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/manifests/boost")
-  file(READ "${boost_manifest}" boost_manifest_text)
-  if (NOT boost_manifest_text MATCHES
-      "url = (https://[^\r\n]+\\.tar\\.gz)[\r\n]+sha256 = ([0-9a-f]+)")
-    message(FATAL_ERROR "no boost archive in ${boost_manifest}")
-  endif ()
-  set(boost_url "${CMAKE_MATCH_1}")
-  set(boost_sha256 "${CMAKE_MATCH_2}")
-  message(STATUS "Boost not found, fetching ${boost_url}")
-  include(FetchContent)
   set(BOOST_ENABLE_CMAKE ON)
   # Thrift itself only needs Boost::headers, which the superproject always
   # defines. The list is what folly asks for.
@@ -138,11 +141,7 @@ if (NOT Boost_FOUND)
   if (WIN32)
     list(APPEND BOOST_INCLUDE_LIBRARIES thread)
   endif ()
-  FetchContent_Declare(
-    Boost
-    URL ${boost_url}
-    URL_HASH SHA256=${boost_sha256})
-  FetchContent_MakeAvailable(Boost)
+  thrift_fetch_from_manifest(Boost boost)
 endif ()
 
 # Fetch folly if it is not installed.
