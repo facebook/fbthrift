@@ -230,15 +230,16 @@ struct ServerAttributeAtomic
   using apache::thrift::detail::ServerAttributeObservable<
       T>::getOverrideInternal;
 
-  T get() const { return *getAtomicObserver(); }
+  T get() const { return *getObserverInternal(); }
 
-  const folly::observer::AtomicObserver<T>& getAtomicObserver() const {
-    return atomicObserver_.try_emplace(getObserver());
+  // Exposed for unit test(s)
+  const auto& getObserverInternal() const {
+    return observer_.try_emplace(getObserver());
   }
 
  private:
-  mutable folly::DelayedInit<folly::observer::AtomicObserver<T>>
-      atomicObserver_;
+  mutable folly::DelayedInit<folly::observer::ReadMostlyAtomicObserver<T>>
+      observer_;
 };
 
 template <typename T>
@@ -255,14 +256,15 @@ struct ServerAttributeThreadLocal
   using apache::thrift::detail::ServerAttributeObservable<
       T>::getOverrideInternal;
 
-  const T& get() const { return **getTLObserver(); }
+  const T& get() const { return **getObserverInternal(); }
 
-  const folly::observer::TLObserver<T>& getTLObserver() const {
-    return tlObserver_.try_emplace(getObserver());
+  // Exposed for unit test(s)
+  const auto& getObserverInternal() const {
+    return observer_.try_emplace(getObserver());
   }
 
  private:
-  mutable folly::DelayedInit<folly::observer::TLObserver<T>> tlObserver_;
+  mutable folly::DelayedInit<folly::observer::TLObserver<T>> observer_;
 };
 
 template <typename T>

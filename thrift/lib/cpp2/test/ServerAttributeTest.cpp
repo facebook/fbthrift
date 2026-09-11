@@ -178,7 +178,7 @@ TEST(ServerAttributeDynamic, Atomic) {
   ServerAttributeAtomic<int> attr{42};
   folly::observer::SimpleObservable<std::optional<int>> baselineObservable{24};
   folly::observer::SimpleObservable<std::optional<int>> overrideObservable{12};
-  auto observer = attr.getAtomicObserver();
+  const auto& observer = attr.getObserverInternal();
   EXPECT_EQ(*observer, 42);
 
   attr.set(baselineObservable.getObserver(), AttributeSource::BASELINE);
@@ -198,7 +198,7 @@ TEST(ServerAttributeDynamic, ThreadLocal) {
   ServerAttributeThreadLocal<int> attr{42};
   folly::observer::SimpleObservable<std::optional<int>> baselineObservable{24};
   folly::observer::SimpleObservable<std::optional<int>> overrideObservable{12};
-  auto observer = attr.getTLObserver();
+  auto observer = attr.getObserverInternal();
   EXPECT_EQ(**observer, 42);
 
   attr.set(baselineObservable.getObserver(), AttributeSource::BASELINE);
