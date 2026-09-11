@@ -24,8 +24,8 @@ add_subdirectory(cpp2)
 if (thrift_python)
   add_subdirectory(python)
 endif ()
-# DEPRECATED: thriftpy is deprecated. On Linux, use thrift_python instead.
-if (thriftpy)
+# DEPRECATED: on Linux, use thrift_python instead.
+if (THRIFT_PY_DEPRECATED)
   add_subdirectory(py)
 endif ()
 

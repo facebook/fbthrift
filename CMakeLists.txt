@@ -78,11 +78,8 @@ endfunction ()
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/thrift/cmake"
      "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/CMake")
 
-set(thriftpy
-    AUTO
-    CACHE BOOL
-          "Install the thrift/lib/py library as an FB Python archive manifest")
-set_property(CACHE thriftpy PROPERTY STRINGS ON OFF AUTO)
+option(THRIFT_PY_DEPRECATED
+       "Install the thrift/lib/py library as an FB Python archive manifest" ON)
 option(thriftpy3
        "Include thrift-py3 library and extensions in the build, requires Cython"
        OFF)
