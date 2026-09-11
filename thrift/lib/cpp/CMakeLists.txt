@@ -27,8 +27,13 @@ thrift_configure_target(concurrency PUBLIC)
 target_link_libraries(concurrency PUBLIC Folly::folly ${LIBGFLAGS_LIBRARY}
                                          ${GLOG_LIBRARIES})
 
+add_library(runtime ../cpp2/runtime/Init.cpp)
+thrift_configure_target(runtime PUBLIC)
+target_link_libraries(runtime PUBLIC Folly::folly)
+
 # transport pulls in rocket/CompressionManager via THeader.cpp, which
-# lives in thriftcpp2. Build it only when the RPC stack is enabled.
+# lives in thriftcpp2, and async and thrift build on transport. Build them only
+# when the RPC stack is enabled.
 if (THRIFT_RPC)
   add_library(
     transport
@@ -58,13 +63,7 @@ if (THRIFT_RPC)
            ZLIB::ZLIB
            ${OPENSSL_LIBRARIES}
            ${ZSTD_LIBRARIES})
-endif ()
 
-add_library(runtime ../cpp2/runtime/Init.cpp)
-thrift_configure_target(runtime PUBLIC)
-target_link_libraries(runtime PUBLIC Folly::folly)
-
-if (THRIFT_RPC)
   add_library(
     async
     ContextStack.cpp

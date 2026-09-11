@@ -187,14 +187,12 @@ install(FILES ThriftLibrary.cmake
 # Find required dependencies for thrift/lib
 find_package(Gflags REQUIRED)
 find_package(Glog REQUIRED)
-if (THRIFT_RPC)
-  find_package(fizz CONFIG REQUIRED)
-  find_package(wangle CONFIG REQUIRED)
-endif ()
 find_package(ZLIB REQUIRED)
 find_package(Zstd REQUIRED)
 find_package(Xxhash REQUIRED)
 if (THRIFT_RPC)
+  find_package(fizz CONFIG REQUIRED)
+  find_package(wangle CONFIG REQUIRED)
   find_package(mvfst CONFIG REQUIRED)
 endif ()
 # https://cmake.org/cmake/help/v3.9/module/FindThreads.html
