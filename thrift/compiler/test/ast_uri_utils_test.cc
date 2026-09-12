@@ -29,25 +29,20 @@ namespace apache::thrift::compiler {
 
 TEST(AstUriUtilsTest, ShouldHaveUri_True) {
   EXPECT_TRUE(
-      AstUriUtils::shouldHaveUri(
-          t_struct(/*program=*/nullptr, /*name=*/"TestStruct")));
+      should_have_uri(t_struct(/*program=*/nullptr, /*name=*/"TestStruct")));
   EXPECT_TRUE(
-      AstUriUtils::shouldHaveUri(
-          t_union(/*program=*/nullptr, /*name=*/"TestUnion")));
+      should_have_uri(t_union(/*program=*/nullptr, /*name=*/"TestUnion")));
+  EXPECT_TRUE(should_have_uri(
+      t_exception(/*program=*/nullptr, /*name=*/"TestException")));
   EXPECT_TRUE(
-      AstUriUtils::shouldHaveUri(
-          t_exception(/*program=*/nullptr, /*name=*/"TestException")));
-  EXPECT_TRUE(
-      AstUriUtils::shouldHaveUri(
-          t_enum(/*program=*/nullptr, /*name=*/"TestEnum")));
+      should_have_uri(t_enum(/*program=*/nullptr, /*name=*/"TestEnum")));
 }
 
 TEST(AstUriUtilsTest, ShouldHaveUri_False) {
   static const t_struct kStruct(/*program=*/nullptr, /*name=*/"TestStruct");
 
-  EXPECT_FALSE(
-      AstUriUtils::shouldHaveUri(t_typedef(
-          /*program=*/nullptr, /*name=*/"TestTypedef", /*type=*/kStruct)));
+  EXPECT_FALSE(should_have_uri(t_typedef(
+      /*program=*/nullptr, /*name=*/"TestTypedef", /*type=*/kStruct)));
 }
 
 } // namespace apache::thrift::compiler

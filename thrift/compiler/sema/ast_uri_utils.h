@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
+#pragma once
+
 namespace apache::thrift::compiler {
 
 class t_named;
 
-class AstUriUtils final {
- public:
-  AstUriUtils() = delete;
-
-  static bool shouldHaveUri(const t_named& node);
-};
+bool should_have_uri(const t_named& node);
 
 } // namespace apache::thrift::compiler

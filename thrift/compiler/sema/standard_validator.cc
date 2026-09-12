@@ -1123,7 +1123,7 @@ void validate_missing_uris(sema_context& ctx, const t_program& program) {
   ast_visitor.add_root_definition_visitor([&](const t_named& node) {
     const bool nodeHasAnnotation =
         node.has_structured_annotation(kAllowLegacyMissingUris);
-    if (!AstUriUtils::shouldHaveUri(node)) {
+    if (!should_have_uri(node)) {
       if (nodeHasAnnotation) {
         ctx.report(
             node,

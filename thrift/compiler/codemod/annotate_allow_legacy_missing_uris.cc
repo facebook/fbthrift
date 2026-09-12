@@ -69,7 +69,7 @@ bool needs_new_package_level_annotation(const t_program& program) {
       return;
     }
 
-    if (!AstUriUtils::shouldHaveUri(node)) {
+    if (!should_have_uri(node)) {
       // Node does not require a URI => skip
       return;
     }

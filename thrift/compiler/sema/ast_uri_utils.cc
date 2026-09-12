@@ -25,7 +25,7 @@
 
 namespace apache::thrift::compiler {
 
-bool AstUriUtils::shouldHaveUri(const t_named& node) {
+bool should_have_uri(const t_named& node) {
   const auto* nodeAsType = dynamic_cast<const t_type*>(&node);
   if (nodeAsType == nullptr) {
     return false;
