@@ -608,12 +608,16 @@ cdef api void scheduleInteractionTermination(object handler):
 cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
     @staticmethod
     cdef PythonAsyncProcessorFactory create(cServiceInterface server):
+        cdef cServiceInterface controlHandler = server
         cdef cmap[string_view, HandlerFunc] funcs
         cdef cvector[PyObject*] lifecycle
         cdef string_view name_view
 
-        cdef dict funcMap = server.getFunctionTable()
-        cdef list lifecycleFuncs = [server.onStartServing, server.onStopRequested]
+        cdef dict funcMap = controlHandler.getFunctionTable()
+        cdef list lifecycleFuncs = [
+            controlHandler.onStartServing,
+            controlHandler.onStopRequested,
+        ]
         cdef FunctionEntry entry
         cdef PyObject* factory_obj
 
@@ -629,7 +633,7 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
                 funcs[name_view] = makeInteractionHandlerFunc(
                     entry.rpc_kind,
                     <PyObject*>entry.handler,
-                    <bytes>server.service_name(),
+                    <bytes>controlHandler.service_name(),
                     name_view,
                     bytes_to_string_view(entry.interaction),
                     entry.creates_interaction,
@@ -640,7 +644,7 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
                 funcs[name_view] = makeHandlerFunc(
                     entry.rpc_kind,
                     <PyObject*>entry.handler,
-                    <bytes>server.service_name(),
+                    <bytes>controlHandler.service_name(),
                     name_view,
                 )
 
@@ -652,9 +656,9 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
         inst.lifecycleFuncs = lifecycleFuncs
         inst._cpp_obj = static_pointer_cast[cAsyncProcessorFactory, cPythonAsyncProcessorFactory](
             cCreatePythonAsyncProcessorFactory(
-                <PyObject*>server,
+                <PyObject*>controlHandler,
                 cmove(funcs),
                 cmove(lifecycle),
                 get_executor(),
-                <bytes>server.service_name()))
+                <bytes>controlHandler.service_name()))
         return inst
