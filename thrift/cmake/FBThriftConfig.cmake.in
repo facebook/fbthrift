@@ -42,6 +42,8 @@ endif()
 
 find_dependency(fmt CONFIG)
 find_dependency(ZLIB REQUIRED)
+# transport, async and thrifttype carry OpenSSL::Crypto in their link interface.
+find_dependency(OpenSSL)
 find_package(mvfst CONFIG)
 
 if (NOT TARGET FBThrift::thriftcpp2)

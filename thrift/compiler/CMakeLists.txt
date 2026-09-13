@@ -83,7 +83,7 @@ add_library(
   ast/t_union.cc
   ast/scope_identifier.cc)
 thrift_configure_target(compiler_ast PUBLIC)
-target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES} fmt::fmt Folly::folly)
+target_link_libraries(compiler_ast fmt::fmt Folly::folly)
 
 # The base compiler infrastructure library
 add_library(compiler_base STATIC detail/system.cc detail/pluggable_functions.cc
@@ -119,7 +119,7 @@ set_target_properties(compiler_lib PROPERTIES POSITION_INDEPENDENT_CODE
                                               "${BUILD_SHARED_LIBS}")
 target_compile_definitions(compiler_lib PRIVATE THRIFT_OSS)
 target_link_libraries(compiler_lib compiler_base compiler_ast fmt::fmt
-                      Folly::folly)
+                      Folly::folly OpenSSL::Crypto)
 
 # The Thrift compiler library.
 add_library(
@@ -133,8 +133,14 @@ add_library(
   generate/python/util.cc
   generate/rust/util.cc
   generate/swift/util.cc)
-target_link_libraries(compiler compiler_ast compiler_base fmt::fmt Folly::folly
-                      ${FBTHRIFT_COMPILER_LINK_CXXFS})
+target_link_libraries(
+  compiler
+  compiler_ast
+  compiler_base
+  fmt::fmt
+  Folly::folly
+  OpenSSL::Crypto
+  ${FBTHRIFT_COMPILER_LINK_CXXFS})
 
 add_library(
   whisker STATIC

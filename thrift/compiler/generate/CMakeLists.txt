@@ -58,4 +58,4 @@ target_link_libraries(
   compiler_lib
   compiler
   whisker
-  ${OPENSSL_LIBRARIES})
+  OpenSSL::Crypto)

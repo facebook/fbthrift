@@ -250,8 +250,9 @@ set(_all_cython_includes
     ${glog_include_dirs}
     ${mvfst_incs}
     # Reached transitively through folly and glog headers. setup.py sees only
-    # this list, not the directory-wide include_directories() in the top-level
-    # CMakeLists that the CMake targets inherit.
+    # this list: neither the directory-wide include_directories() in the
+    # top-level CMakeLists nor an imported target's usage requirements (how the
+    # CMake targets pick these up) reach it.
     ${LIBGFLAGS_INCLUDE_DIR}
     ${OPENSSL_INCLUDE_DIR}
     ${ZSTD_INCLUDE_DIRS}

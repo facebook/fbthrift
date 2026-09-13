@@ -172,8 +172,6 @@ option(
   ON)
 option(THRIFT_BENCHMARKS "Enable benchmarks (requires google/benchmark)." ON)
 
-# Find required dependencies for the Thrift compiler.
-include_directories(${OPENSSL_INCLUDE_DIR})
 set(THRIFT1 thrift1)
 set(THRIFTCPP2 thriftcpp2)
 include(ThriftLibrary.cmake)
@@ -195,8 +193,7 @@ endif ()
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads)
 include_directories(${LIBGFLAGS_INCLUDE_DIR} ${GLOG_INCLUDE_DIRS}
-                    ${OPENSSL_INCLUDE_DIR} ${ZSTD_INCLUDE_DIRS}
-                    ${Xxhash_INCLUDE_DIR})
+                    ${ZSTD_INCLUDE_DIRS} ${Xxhash_INCLUDE_DIR})
 add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
 
 if (thriftpy3)
