@@ -44,8 +44,8 @@ func newHTTPPostClient(urlstr string) (*httpClient, error) {
 		return nil, err
 	}
 	buf := make([]byte, 0, 1024)
-	client := http.DefaultClient
-	return &httpClient{client: client, url: parsedURL, requestBuffer: bytes.NewBuffer(buf), header: http.Header{}}, nil
+	client := *http.DefaultClient
+	return &httpClient{client: &client, url: parsedURL, requestBuffer: bytes.NewBuffer(buf), header: http.Header{}}, nil
 }
 
 // SetHeader sets the HTTP Header for this specific Thrift Transport
