@@ -16,7 +16,10 @@
 
 #pragma once
 
+#include <list>
+#include <map>
 #include <optional>
+#include <set>
 #include <folly/system/MemoryMapping.h>
 #include <folly/testing/TestUtil.h>
 
@@ -33,6 +36,15 @@ struct MockSize : Base {
 
   std::optional<size_t> mockedSize;
 };
+
+template <class T>
+using MockSizeList = MockSize<std::list<T>>;
+
+template <class T>
+using MockSizeSet = MockSize<std::set<T>>;
+
+template <class K, class V>
+using MockSizeMap = MockSize<std::map<K, V>>;
 
 // `off_t` is 32-bit on Windows
 constexpr int64_t kPlatformMaxSize =

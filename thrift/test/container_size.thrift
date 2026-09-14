@@ -32,10 +32,10 @@ struct Struct {
   2: binary iobuf;
   @cpp.Type{name = "std::unique_ptr<folly::IOBuf>"}
   3: optional binary unique_iobuf;
-  @cpp.Type{name = "MockSize<std::list<std::int64_t>>"}
+  @cpp.Type{template = "::apache::thrift::test::MockSizeList"}
   4: list<i64> l;
-  @cpp.Type{name = "MockSize<std::set<std::int64_t>>"}
+  @cpp.Type{template = "::apache::thrift::test::MockSizeSet"}
   5: set<i64> s;
-  @cpp.Type{name = "MockSize<std::map<std::int64_t, std::int64_t>>"}
+  @cpp.Type{template = "::apache::thrift::test::MockSizeMap"}
   6: map<i64, i64> m;
 }
