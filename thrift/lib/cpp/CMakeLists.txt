@@ -88,9 +88,10 @@ if (THRIFT_RPC)
            glog::glog
            OpenSSL::Crypto)
 
-  add_library(thrift INTERFACE)
-  target_link_libraries(thrift INTERFACE async concurrency thriftprotocol
-                                         transport Folly::folly glog::glog)
+  add_library(thrift-cpp INTERFACE)
+  target_link_libraries(
+    thrift-cpp INTERFACE async concurrency thriftprotocol transport
+                         Folly::folly glog::glog)
 endif () # THRIFT_RPC
 
 set(THRIFT1_HEADER_DIRS async concurrency protocol server transport)
@@ -108,7 +109,7 @@ foreach (dir ${THRIFT1_HEADER_DIRS})
 endforeach ()
 
 if (BUILD_SHARED_LIBS)
-  # all but thrift since it's an interface
+  # all but thrift-cpp since it's an interface
   set_target_properties(thrift-core concurrency PROPERTIES VERSION
                                                            ${PROJECT_VERSION})
   if (THRIFT_RPC)
@@ -121,7 +122,7 @@ install(TARGETS thrift-core concurrency
 
 if (THRIFT_RPC)
   install(
-    TARGETS transport async thrift
+    TARGETS transport async thrift-cpp
     EXPORT fbthrift-exports
     DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif ()

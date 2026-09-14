@@ -450,7 +450,7 @@ if (THRIFT_RPC)
   target_link_libraries(
     thriftcpp2
     PUBLIC fmt::fmt
-           thrift
+           thrift-cpp
            rpcmetadata
            thriftannotation
            thriftmetadata

@@ -198,7 +198,7 @@ option(
   ON)
 option(THRIFT_BENCHMARKS "Enable benchmarks (requires google/benchmark)." ON)
 
-set(THRIFT1 thrift1)
+set(THRIFT1 thrift)
 set(THRIFTCPP2 thriftcpp2)
 include(ThriftLibrary.cmake)
 install(FILES ThriftLibrary.cmake

@@ -118,7 +118,7 @@ The Thrift compiler only depends on Boost, CMake and {fmt}.
 
 `getdeps.py` will invoke cmake etc and put output in its scratch area (you can see in logs, and can override with `--scratch-path`):
 
-* `installed/fbthrift/bin/thrift1`: The Thrift compiler binary to generate client and
+* `installed/fbthrift/bin/thrift`: The Thrift compiler binary to generate client and
   server code.
 * `installed/fbthrift/lib/libthriftcpp2.a`: Library for clients and servers.
 

@@ -172,24 +172,24 @@ else ()
 endif ()
 
 # Create the Thrift compiler binary.
-add_executable(thrift1 main.cc compiler.cc)
-target_link_libraries(thrift1 compiler_ast compiler_lib
+add_executable(thrift main.cc compiler.cc)
+target_link_libraries(thrift compiler_ast compiler_lib
                       ${FBTHRIFT_COMPILER_LINK_CXXFS} ${GENERATE_LINKED})
 # Force compiler_generators linking (compiler will optimize it out otherwise).
 if (MSVC)
-  set_target_properties(thrift1 PROPERTIES LINK_FLAGS
-                                           "/WHOLEARCHIVE:compiler_generators")
+  set_target_properties(thrift PROPERTIES LINK_FLAGS
+                                          "/WHOLEARCHIVE:compiler_generators")
 endif ()
 
 if (BUILD_SHARED_LIBS)
-  # All but thrift1 since it's a binary.
+  # All but thrift since it's a binary.
   set_target_properties(
     compiler_ast compiler_base compiler_lib compiler whisker compiler_generators
     PROPERTIES VERSION ${PROJECT_VERSION})
 endif ()
 
 install(
-  TARGETS thrift1
+  TARGETS thrift
           compiler_ast
           compiler_base
           compiler_lib
@@ -200,3 +200,22 @@ install(
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+# Deprecated alias. The link is relative, so the install stays relocatable.
+# Windows has no dependable symlink support for an unprivileged install, so
+# copy there.
+if (WIN32)
+  install(
+    CODE "
+set(_dir \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}\")
+execute_process(
+  COMMAND \"\${CMAKE_COMMAND}\" -E copy_if_different
+          \"\${_dir}/thrift${CMAKE_EXECUTABLE_SUFFIX}\"
+          \"\${_dir}/thrift1${CMAKE_EXECUTABLE_SUFFIX}\")")
+else ()
+  install(
+    CODE "
+set(_dir \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}\")
+execute_process(
+  COMMAND \"\${CMAKE_COMMAND}\" -E create_symlink thrift \"\${_dir}/thrift1\")")
+endif ()

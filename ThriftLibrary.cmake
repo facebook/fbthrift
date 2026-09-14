@@ -15,12 +15,12 @@
 #
 # Requirements:
 # Please provide the following two variables before using these macros:
-#   ${THRIFT1} - the thrift1 executable target, or a path to a thrift1 binary
+#   ${THRIFT1} - the compiler executable target, or a path to a thrift binary
 #   ${THRIFTCPP2} - path/to/lib/thriftcpp2
 #
 # ${THRIFT1} goes to COMMAND as-is rather than through $<TARGET_FILE:...>.
 # CMake substitutes an imported target's location and adds the dependency, and
-# when cross-compiling an in-tree compiler it falls back to a host thrift1 on
+# when cross-compiling an in-tree compiler it falls back to a host thrift on
 # PATH -- which a baked-in path to the unrunnable target-architecture binary
 # would defeat.
 #
