@@ -106,8 +106,7 @@ add_dependencies(
   service_catalog-cpp2-target)
 target_link_libraries(thriftmetadata PUBLIC Folly::folly thriftprotocol)
 if (Xxhash_FOUND)
-  target_link_libraries(thriftmetadata PUBLIC ${Xxhash_LIBRARY})
-  target_include_directories(thriftmetadata PUBLIC ${Xxhash_INCLUDE_DIR})
+  target_link_libraries(thriftmetadata PUBLIC Xxhash::xxhash)
 endif ()
 # SerializableRecord.cpp includes F14Map and instantiates PrimitiveDatum for
 # every primitive type; on MSVC this exceeds the default COFF section limit.
@@ -172,9 +171,8 @@ bypass_source_check("${frozen-cpp2-SOURCES}")
 add_library(thriftfrozen2 frozen/Frozen.cpp frozen/FrozenUtil.cpp
                           frozen/schema/MemorySchema.cpp ${frozen-cpp2-SOURCES})
 add_dependencies(thriftfrozen2 frozen-cpp2-target thriftmetadata)
-target_link_libraries(
-  thriftfrozen2 PUBLIC Folly::folly thriftmetadata thriftprotocol
-                       ${GLOG_LIBRARIES} ${LIBGFLAGS_LIBRARY})
+target_link_libraries(thriftfrozen2 PUBLIC Folly::folly thriftmetadata
+                                           thriftprotocol glog::glog gflags)
 
 bypass_source_check("${id-cpp2-SOURCES}")
 bypass_source_check("${standard-cpp2-SOURCES}")
@@ -241,8 +239,8 @@ add_library(
   ../cpp/protocol/TProtocolException.cpp
   ../cpp/protocol/TType.cpp
   ../cpp/util/VarintUtils.cpp)
-target_link_libraries(thriftprotocol PUBLIC fmt::fmt Folly::folly
-                                            ${GLOG_LIBRARIES} thrift-core)
+target_link_libraries(thriftprotocol PUBLIC fmt::fmt Folly::folly glog::glog
+                                            thrift-core)
 
 if (THRIFT_RPC)
   bypass_source_check("${RocketUpgrade-cpp2-SOURCES}")
@@ -464,7 +462,7 @@ if (THRIFT_RPC)
            thrifttype
            thriftanyrep
            serverdbginfo
-           ${Xxhash_LIBRARY})
+           Xxhash::xxhash)
 
   add_library(quic_thriftcpp2 server/ThriftQuicServer.cpp)
   add_dependencies(quic_thriftcpp2 thriftcpp2 mvfst::mvfst_server_async_tran)

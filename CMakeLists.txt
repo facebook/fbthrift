@@ -218,8 +218,6 @@ endif ()
 # https://cmake.org/cmake/help/v3.9/module/FindThreads.html
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads)
-include_directories(${LIBGFLAGS_INCLUDE_DIR} ${GLOG_INCLUDE_DIRS}
-                    ${ZSTD_INCLUDE_DIRS} ${Xxhash_INCLUDE_DIR})
 add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
 
 if (thriftpy3)

@@ -18,6 +18,7 @@
 # ZSTD_FOUND
 # ZSTD_INCLUDE_DIR
 # ZSTD_LIBRARIES
+# zstd::zstd (imported target)
 #
 
 find_path(ZSTD_INCLUDE_DIRS zstd.h HINTS $ENV{ZSTD_ROOT}/include
@@ -29,8 +30,21 @@ find_library(ZSTD_LIBRARIES zstd zstd_static HINTS $ENV{ZSTD_ROOT}/lib
 mark_as_advanced(ZSTD_INCLUDE_DIRS ZSTD_LIBRARIES)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(Zstd ZSTD_INCLUDE_DIRS ZSTD_LIBRARIES)
+find_package_handle_standard_args(Zstd REQUIRED_VARS ZSTD_LIBRARIES
+                                                    ZSTD_INCLUDE_DIRS)
 
 if (ZSTD_FOUND AND NOT ZSTD_FIND_QUIETLY)
   message(STATUS "ZSTD: ${ZSTD_INCLUDE_DIRS}")
+endif ()
+
+# Not zstd::libzstd_shared / zstd::libzstd_static / zstd::libzstd: those names
+# belong to zstd's own package config, and this module is used precisely when
+# that config is absent. Guarded so a consumer that has both does not collide.
+if (ZSTD_FOUND AND NOT TARGET zstd::zstd)
+  add_library(zstd::zstd UNKNOWN IMPORTED)
+  set_target_properties(
+    zstd::zstd
+    PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+               IMPORTED_LOCATION "${ZSTD_LIBRARIES}"
+               INTERFACE_INCLUDE_DIRECTORIES "${ZSTD_INCLUDE_DIRS}")
 endif ()

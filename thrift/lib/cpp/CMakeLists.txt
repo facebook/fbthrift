@@ -24,8 +24,7 @@ add_library(
   concurrency concurrency/InitThreadFactory.cpp
               concurrency/PosixThreadFactory.cpp concurrency/ThreadManager.cpp)
 thrift_configure_target(concurrency PUBLIC)
-target_link_libraries(concurrency PUBLIC Folly::folly ${LIBGFLAGS_LIBRARY}
-                                         ${GLOG_LIBRARIES})
+target_link_libraries(concurrency PUBLIC Folly::folly gflags glog::glog)
 
 add_library(runtime ../cpp2/runtime/Init.cpp)
 thrift_configure_target(runtime PUBLIC)
@@ -62,7 +61,7 @@ if (THRIFT_RPC)
            Folly::folly
            ZLIB::ZLIB
            OpenSSL::Crypto
-           ${ZSTD_LIBRARIES})
+           zstd::zstd)
 
   add_library(
     async
@@ -86,13 +85,12 @@ if (THRIFT_RPC)
            Boost::headers
            Folly::folly
            wangle::wangle
-           ${GLOG_LIBRARIES}
+           glog::glog
            OpenSSL::Crypto)
 
   add_library(thrift INTERFACE)
-  target_link_libraries(
-    thrift INTERFACE async concurrency thriftprotocol transport Folly::folly
-                     ${GLOG_LIBRARIES})
+  target_link_libraries(thrift INTERFACE async concurrency thriftprotocol
+                                         transport Folly::folly glog::glog)
 endif () # THRIFT_RPC
 
 set(THRIFT1_HEADER_DIRS async concurrency protocol server transport)

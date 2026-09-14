@@ -25,11 +25,18 @@ configure_package_config_file(
   PATH_VARS THRIFT_INSTALL_CMAKEDIR CMAKE_INSTALL_INCLUDEDIR)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/FBThriftConfig.cmake
         DESTINATION ${THRIFT_INSTALL_CMAKEDIR})
-# xxhash ships no CMake package config, so FBThriftConfig.cmake resolves Xxhash
-# in MODULE mode. Install FindXxhash.cmake next to the config (which prepends its
-# own directory to CMAKE_MODULE_PATH) so downstream find_package(FBThrift) works.
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindXxhash.cmake
-        DESTINATION ${THRIFT_INSTALL_CMAKEDIR})
+# xxhash, gflags, glog and zstd ship no CMake package config, so
+# FBThriftConfig.cmake resolves them in MODULE mode. Install their Find modules
+# next to the config (which prepends its own directory to CMAKE_MODULE_PATH) so
+# downstream find_package(FBThrift) can define the imported targets that
+# FBThriftTargets.cmake refers to. FindLibUnwind is here because FindGlog uses it.
+install(
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindXxhash.cmake
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindZstd.cmake
+        ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindGflags.cmake
+        ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindGlog.cmake
+        ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindLibUnwind.cmake
+  DESTINATION ${THRIFT_INSTALL_CMAKEDIR})
 install(
   EXPORT fbthrift-exports
   FILE FBThriftTargets.cmake
