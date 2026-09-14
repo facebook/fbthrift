@@ -49,9 +49,10 @@ if (NOT WIN32)
 endif ()
 
 # Thrift's libraries default to STATIC, and without PIC they cannot link into
-# a consumer built with BUILD_SHARED_LIBS=ON. PIC is cheap here, and keeping
-# the archives static avoids the cross-dylib RTTI and undefined-symbol
-# problems that building Thrift itself shared exposes.
+# a consumer built with BUILD_SHARED_LIBS=ON, nor into the thrift_python
+# extension .so files. PIC is cheap here, and keeping the archives static
+# avoids the cross-dylib RTTI and undefined-symbol problems that building
+# Thrift itself shared exposes.
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # The compile settings and the include directories for `#include <thrift/...>`
@@ -87,17 +88,6 @@ option(
   thrift_python
   "Include thrift-python library and extensions in the build, requires Cython"
   OFF)
-
-# thrift_python requires position-independent code so static libs can be
-# linked into the extension .so files. Must precede the fetch blocks: this
-# only seeds targets created after it is set.
-if (thrift_python)
-  set(CMAKE_POSITION_INDEPENDENT_CODE
-      ON
-      CACHE BOOL
-            "Forced ON because thrift_python requires position-independent code"
-            FORCE)
-endif ()
 
 # Fetch the archive that `manifest` pins, so a fetched dependency matches the
 # version getdeps builds. `name` is the FetchContent content name. Variables
