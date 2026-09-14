@@ -78,7 +78,7 @@ PythonAsyncProcessorFactory::semifuture_onStopRequested() {
   // test in test/server.py and marks the issue. Since it is not clear if this
   // should apply to GIL builds, only enable this for free-threaded builds with
   // the Py_GIL_DISABLED macro.
-  executor = folly::Executor::KeepAlive<>{};
+  controlExecutor_ = folly::Executor::KeepAlive<>{};
 #endif
 
   return callLifecycle(LifecycleFunc::ON_STOP_REQUESTED);
@@ -124,14 +124,14 @@ PythonAsyncProcessorFactory::create(
     PyObject* python_server,
     FunctionMapType functions,
     std::vector<PyObject*> lifecycleFuncs,
-    folly::Executor::KeepAlive<> executor,
+    folly::Executor::KeepAlive<> controlExecutor,
     std::string serviceName) {
   return std::shared_ptr<PythonAsyncProcessorFactory>(
       new PythonAsyncProcessorFactory(
           python_server,
           std::move(functions),
           std::move(lifecycleFuncs),
-          std::move(executor),
+          std::move(controlExecutor),
           std::move(serviceName)));
 }
 

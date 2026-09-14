@@ -46,7 +46,7 @@ class PythonAsyncProcessorFactory
 
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     return std::make_unique<PythonAsyncProcessor>(
-        python_server_, functions_, executor, serviceName_);
+        python_server_, functions_, controlExecutor_, serviceName_);
   }
 
   std::vector<apache::thrift::ServiceHandlerBase*> getServiceHandlers()
@@ -68,7 +68,7 @@ class PythonAsyncProcessorFactory
       PyObject* python_server,
       FunctionMapType functions,
       std::vector<PyObject*> lifecycleFuncs,
-      folly::Executor::KeepAlive<> executor,
+      folly::Executor::KeepAlive<> controlExecutor,
       std::string serviceName);
 
  private:
@@ -80,7 +80,7 @@ class PythonAsyncProcessorFactory
   // PythonAsyncProcessorFactory`
   const FunctionMapType functions_;
   const std::vector<PyObject*> lifecycleFuncs_;
-  folly::Executor::KeepAlive<> executor;
+  folly::Executor::KeepAlive<> controlExecutor_;
   std::string serviceName_;
 
   /**
@@ -92,12 +92,12 @@ class PythonAsyncProcessorFactory
       PyObject* python_server,
       FunctionMapType functions,
       std::vector<PyObject*> lifecycleFuncs,
-      folly::Executor::KeepAlive<> executor,
+      folly::Executor::KeepAlive<> controlExecutor,
       std::string serviceName)
       : python_server_(python_server),
         functions_(std::move(functions)),
         lifecycleFuncs_(std::move(lifecycleFuncs)),
-        executor(std::move(executor)),
+        controlExecutor_(std::move(controlExecutor)),
         serviceName_(std::move(serviceName)) {}
 };
 

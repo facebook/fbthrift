@@ -83,7 +83,7 @@ cdef extern from "thrift/lib/python/server/PythonAsyncProcessorFactory.h" namesp
             PyObject* server,
             cmap[string_view, HandlerFunc] funcs,
             cvector[PyObjPtr] lifecycle,
-            cAsyncioExecutor* executor,
+            cAsyncioExecutor* controlExecutor,
             string serviceName,
         ) except +
 
