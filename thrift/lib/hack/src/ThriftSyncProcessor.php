@@ -32,6 +32,10 @@ abstract class ThriftSyncProcessor extends ThriftProcessorBase {
     ?string $fname = null,
     ?int $rseqid = null,
   ): bool {
+    Vulture::checkIsThisDeadCodeSynchronous(
+      __METHOD__,
+      'dynamic_property_access_cleanup',
+    );
     if ($fname === null || $rseqid === null) {
       $_type = 0;
       $fname = '';
