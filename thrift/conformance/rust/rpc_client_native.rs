@@ -16,11 +16,11 @@
 
 //! `rpc_client.rs` run over `nativeclient` instead of `bareclient`.
 //!
-//! `nativeclient` implements only request-response, so every stream, sink,
-//! interaction and bidi case fails through `Transport`'s default methods and is
-//! listed in `thrift/conformance/data/nonconforming.txt`. Those entries are
-//! inverted expectations and implementing one of those features turns the
-//! corresponding test red until its line is deleted.
+//! Whatever `nativeclient` does not implement yet fails through `Transport`'s
+//! default methods and is listed in
+//! `thrift/conformance/data/nonconforming.txt`. Those entries are inverted
+//! expectations and implementing one of those features turns the corresponding
+//! test red until its line is deleted. Bidi is what is left.
 
 use std::net::SocketAddr;
 use std::sync::Arc;
