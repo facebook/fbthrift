@@ -49,7 +49,7 @@ if (NOT WIN32)
 endif ()
 
 # Thrift's libraries default to STATIC, and without PIC they cannot link into
-# a consumer built with BUILD_SHARED_LIBS=ON, nor into the thrift_python
+# a consumer built with BUILD_SHARED_LIBS=ON, nor into the thrift-python
 # extension .so files. PIC is cheap here, and keeping the archives static
 # avoids the cross-dylib RTTI and undefined-symbol problems that building
 # Thrift itself shared exposes.
@@ -79,15 +79,18 @@ endfunction ()
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/thrift/cmake"
      "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/CMake")
 
-option(THRIFT_PY_DEPRECATED
-       "Install the thrift/lib/py library as an FB Python archive manifest" ON)
-option(thriftpy3
-       "Include thrift-py3 library and extensions in the build, requires Cython"
-       OFF)
 option(
-  thrift_python
-  "Include thrift-python library and extensions in the build, requires Cython"
-  OFF)
+  THRIFT_RPC
+  "Enable the RPC transport stack and its dependencies (fizz, wangle, mvfst)."
+  ON)
+option(THRIFT_BENCHMARKS "Enable benchmarks (requires google/benchmark)." ON)
+option(THRIFT_PY_DEPRECATED
+       "Enable the deprecated thrift-py library; use thrift-python instead" ON)
+option(THRIFT_PY3_DEPRECATED
+       "Enable the deprecated thrift-py3 library; use thrift-python instead"
+       OFF)
+option(THRIFT_PYTHON
+       "Enable the thrift-python library and extensions (requires Cython)" OFF)
 
 # Fetch the archive that `manifest` pins, so a fetched dependency matches the
 # version getdeps builds. `name` is the FetchContent content name. Variables
@@ -192,12 +195,6 @@ endif ()
 
 find_package(OpenSSL REQUIRED)
 
-option(
-  THRIFT_RPC
-  "Enable the RPC transport stack and its dependencies (fizz, wangle, mvfst)."
-  ON)
-option(THRIFT_BENCHMARKS "Enable benchmarks (requires google/benchmark)." ON)
-
 set(THRIFT1 thrift)
 set(THRIFTCPP2 thriftcpp2)
 include(ThriftLibrary.cmake)
@@ -220,7 +217,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads)
 add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
 
-if (thriftpy3)
+if (THRIFT_PY3_DEPRECATED)
   find_package(PythonInterp 3.6 REQUIRED)
   find_package(PythonLibs 3 REQUIRED)
   find_package(Cython 0.28 REQUIRED)

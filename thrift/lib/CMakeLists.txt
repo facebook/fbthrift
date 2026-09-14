@@ -21,16 +21,16 @@ set(LIB_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory(thrift)
 add_subdirectory(cpp)
 add_subdirectory(cpp2)
-if (thrift_python)
+if (THRIFT_PYTHON)
   add_subdirectory(python)
 endif ()
-# DEPRECATED: on Linux, use thrift_python instead.
+# DEPRECATED: on Linux, use thrift-python instead.
 if (THRIFT_PY_DEPRECATED)
   add_subdirectory(py)
 endif ()
 
-# DEPRECATED: thriftpy3 is deprecated. On Linux, use thrift_python instead.
-if (thriftpy3)
+# DEPRECATED: on Linux, use thrift-python instead.
+if (THRIFT_PY3_DEPRECATED)
   set(_cybld "${CMAKE_CURRENT_BINARY_DIR}/cybld")
   file(MAKE_DIRECTORY "${_cybld}/thrift/python/")
   file(MAKE_DIRECTORY "${_cybld}/thrift/python/client/")

@@ -92,7 +92,7 @@ set(FBThrift_cpp2_FOUND True)
 # (Note that this generator is deprecated in favor of the "python" generator.)
 set(FBThrift_py_FOUND @THRIFT_PY_DEPRECATED@)
 
-set(FBThrift_python_FOUND @thrift_python@)
+set(FBThrift_python_FOUND @THRIFT_PYTHON@)
 
 set(FBThrift_FOUND True)
 check_required_components(FBThrift)
