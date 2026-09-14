@@ -7044,6 +7044,11 @@ rust/ThriftRPCServerTest/BidiMethodUndeclaredException/Success.BidiMethodUndecla
 # configuring the server in a client-test specific way. It should be
 # supported, but it's not today
 rust/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTimeoutTest
+# bareclient does not implement `Transport::call_bidirectional`, so every bidi
+# case fails in fbthrift's default method ("Bidirectional streaming is not
+# supported by this transport") rather than on the wire. `rpc_client.rs`
+# answers them with an error to match; the `rustnative` category below runs the
+# real thing.
 rust/ThriftRPCClientTest/BidiBasic/Success.BidiBasicTest
 rust/ThriftRPCClientTest/BidiInitialResponse/Success.BidiInitialResponseTest
 rust/ThriftRPCClientTest/BidiStreamDeclaredException/Success.BidiStreamDeclaredExceptionTest
@@ -7055,25 +7060,11 @@ rust/ThriftRPCClientTest/BidiMethodUndeclaredException/Success.BidiMethodUndecla
 
 # Rust nativeclient RPC client tests
 #
-# nativeclient implements request-response only. Everything below fails in
-# fbthrift's default Transport methods ("... is not supported by this
-# transport") rather than on the wire. These are inverted expectations:
-# implementing one of these features turns its test red until the line is
-# deleted.
+# These are inverted expectations: whatever is listed here is expected to fail,
+# so implementing one turns its test red until the line is deleted. Everything
+# else in the suite conforms — request-response, interactions, streams, sinks
+# and bidi.
 
-# Streams
-
-# Sinks
-
-# Interactions
-
-# BiDi streaming
-rustnative/ThriftRPCClientTest/BidiBasic/Success.BidiBasicTest
-rustnative/ThriftRPCClientTest/BidiInitialResponse/Success.BidiInitialResponseTest
-rustnative/ThriftRPCClientTest/BidiStreamDeclaredException/Success.BidiStreamDeclaredExceptionTest
-rustnative/ThriftRPCClientTest/BidiStreamUndeclaredException/Success.BidiStreamUndeclaredExceptionTest
-rustnative/ThriftRPCClientTest/BidiSinkDeclaredException/Success.BidiSinkDeclaredExceptionTest
-rustnative/ThriftRPCClientTest/BidiSinkUndeclaredException/Success.BidiSinkUndeclaredExceptionTest
-rustnative/ThriftRPCClientTest/BidiMethodDeclaredException/Success.BidiMethodDeclaredExceptionTest
-rustnative/ThriftRPCClientTest/BidiMethodUndeclaredException/Success.BidiMethodUndeclaredExceptionTest
+# Same reason as the `rust` category above: the case needs the server
+# configured for it, which the client side of the harness cannot do.
 rustnative/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTimeoutTest

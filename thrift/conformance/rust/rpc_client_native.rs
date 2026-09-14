@@ -20,7 +20,12 @@
 //! default methods and is listed in
 //! `thrift/conformance/data/nonconforming.txt`. Those entries are inverted
 //! expectations and implementing one of those features turns the corresponding
-//! test red until its line is deleted. Bidi is what is left.
+//! test red until its line is deleted.
+//!
+//! The bidi cases below are the one place the two files cannot stay identical:
+//! `bareclient` never implemented `Transport::call_bidirectional`, so the
+//! `rust` category is listed as nonconforming for all eight of them and
+//! `rpc_client.rs` still answers them with an error.
 
 use std::net::SocketAddr;
 use std::sync::Arc;
@@ -30,6 +35,22 @@ use anyhow::Result;
 use anyhow::anyhow;
 use clap::Parser;
 use futures::stream::StreamExt;
+use rpc::rpc::BidiBasicClientInstruction;
+use rpc::rpc::BidiBasicClientTestResult;
+use rpc::rpc::BidiInitialResponseClientInstruction;
+use rpc::rpc::BidiInitialResponseClientTestResult;
+use rpc::rpc::BidiMethodDeclaredExceptionClientInstruction;
+use rpc::rpc::BidiMethodDeclaredExceptionClientTestResult;
+use rpc::rpc::BidiMethodUndeclaredExceptionClientInstruction;
+use rpc::rpc::BidiMethodUndeclaredExceptionClientTestResult;
+use rpc::rpc::BidiSinkDeclaredExceptionClientInstruction;
+use rpc::rpc::BidiSinkDeclaredExceptionClientTestResult;
+use rpc::rpc::BidiSinkUndeclaredExceptionClientInstruction;
+use rpc::rpc::BidiSinkUndeclaredExceptionClientTestResult;
+use rpc::rpc::BidiStreamDeclaredExceptionClientInstruction;
+use rpc::rpc::BidiStreamDeclaredExceptionClientTestResult;
+use rpc::rpc::BidiStreamUndeclaredExceptionClientInstruction;
+use rpc::rpc::BidiStreamUndeclaredExceptionClientTestResult;
 use rpc::rpc::SinkBasicClientInstruction;
 use rpc::rpc::SinkBasicClientTestResult;
 use rpc::rpc::SinkChunkTimeoutClientInstruction;
@@ -63,6 +84,10 @@ use rpc::rpc::StreamInitialUndeclaredExceptionClientTestResult;
 use rpc::rpc::StreamUndeclaredExceptionClientInstruction;
 use rpc::rpc::StreamUndeclaredExceptionClientTestResult;
 use rpc_clients::rpc::RPCConformanceServiceExt;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiMethodDeclaredExceptionError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiSinkDeclaredExceptionSinkError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiSinkUndeclaredExceptionSinkError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiStreamDeclaredExceptionStreamError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkChunkTimeoutSinkFinalError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkDeclaredExceptionSinkError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkUndeclaredExceptionSinkError;
@@ -190,32 +215,14 @@ async fn test(client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>
         sinkDeclaredException(i) => sink_declared_exception(client, i).await,
         sinkServerDeclaredException(i) => sink_server_declared_exception(client, i).await,
         sinkUndeclaredException(i) => sink_undeclared_exception(client, i).await,
-        bidiBasic(i) => Err(anyhow!("bidiBasic not implemented: {:?}", i)),
-        bidiInitialResponse(i) => Err(anyhow!("bidiInitialResponse not implemented: {:?}", i)),
-        bidiStreamDeclaredException(i) => Err(anyhow!(
-            "bidiStreamDeclaredException not implemented: {:?}",
-            i
-        )),
-        bidiStreamUndeclaredException(i) => Err(anyhow!(
-            "bidiStreamUndeclaredException not implemented: {:?}",
-            i
-        )),
-        bidiSinkDeclaredException(i) => Err(anyhow!(
-            "bidiSinkDeclaredException not implemented: {:?}",
-            i
-        )),
-        bidiSinkUndeclaredException(i) => Err(anyhow!(
-            "bidiSinkUndeclaredException not implemented: {:?}",
-            i
-        )),
-        bidiMethodDeclaredException(i) => Err(anyhow!(
-            "bidiMethodDeclaredException not implemented: {:?}",
-            i
-        )),
-        bidiMethodUndeclaredException(i) => Err(anyhow!(
-            "bidiMethodUndeclaredException not implemented: {:?}",
-            i
-        )),
+        bidiBasic(i) => bidi_basic(client, i).await,
+        bidiInitialResponse(i) => bidi_initial_response(client, i).await,
+        bidiStreamDeclaredException(i) => bidi_stream_declared_exception(client, i).await,
+        bidiStreamUndeclaredException(i) => bidi_stream_undeclared_exception(client, i).await,
+        bidiSinkDeclaredException(i) => bidi_sink_declared_exception(client, i).await,
+        bidiSinkUndeclaredException(i) => bidi_sink_undeclared_exception(client, i).await,
+        bidiMethodDeclaredException(i) => bidi_method_declared_exception(client, i).await,
+        bidiMethodUndeclaredException(i) => bidi_method_undeclared_exception(client, i).await,
         UnknownField(i) => Err(anyhow!(format!("not supported: {:?}", i))),
     }
 }
@@ -803,6 +810,251 @@ async fn sink_server_declared_exception(
     };
     client
         .sendTestResult(&ClientTestResult::sinkServerDeclaredException(test_result))
+        .await?;
+    Ok(())
+}
+
+// =================== Bidi ===================
+
+/// The bidi transport prefixes the exception type to the message, and the
+/// expected result recorded in the test suite carries only the message. C++
+/// trims it the same way and with the same crudeness, first `": "` wins, so a
+/// message that contains one of its own would be trimmed too
+/// (`RPCClient.cpp:517-522`).
+fn without_type_prefix(message: &str) -> String {
+    match message.split_once(": ") {
+        Some((_, rest)) => rest.to_string(),
+        None => message.to_string(),
+    }
+}
+
+async fn bidi_basic(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &BidiBasicClientInstruction,
+) -> Result<()> {
+    let (stream, sink) = client.bidiBasic(&instr.request).await?;
+    let payloads = instr.sinkPayloads.clone();
+    let (sink_result, stream_payloads) = futures::future::join(
+        (sink)(futures::stream::iter(payloads).map(Ok).boxed()),
+        stream.collect::<Vec<_>>(),
+    )
+    .await;
+    sink_result.map_err(|err| anyhow!("bidi_basic: sink failed: {:?}", err))?;
+
+    let test_result = BidiBasicClientTestResult {
+        streamPayloads: stream_payloads
+            .into_iter()
+            .collect::<std::result::Result<Vec<_>, _>>()
+            .map_err(|err| anyhow!("bidi_basic: stream failed: {:?}", err))?,
+        ..Default::default()
+    };
+    client
+        .sendTestResult(&ClientTestResult::bidiBasic(test_result))
+        .await?;
+    Ok(())
+}
+
+async fn bidi_initial_response(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &BidiInitialResponseClientInstruction,
+) -> Result<()> {
+    let (initial_response, stream, sink) = client.bidiInitialResponse(&instr.request).await?;
+    let payloads = instr.sinkPayloads.clone();
+    let (sink_result, stream_payloads) = futures::future::join(
+        (sink)(futures::stream::iter(payloads).map(Ok).boxed()),
+        stream.collect::<Vec<_>>(),
+    )
+    .await;
+    sink_result.map_err(|err| anyhow!("bidi_initial_response: sink failed: {:?}", err))?;
+
+    let test_result = BidiInitialResponseClientTestResult {
+        initialResponse: initial_response,
+        streamPayloads: stream_payloads
+            .into_iter()
+            .collect::<std::result::Result<Vec<_>, _>>()
+            .map_err(|err| anyhow!("bidi_initial_response: stream failed: {:?}", err))?,
+        ..Default::default()
+    };
+    client
+        .sendTestResult(&ClientTestResult::bidiInitialResponse(test_result))
+        .await?;
+    Ok(())
+}
+
+async fn bidi_stream_declared_exception(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &BidiStreamDeclaredExceptionClientInstruction,
+) -> Result<()> {
+    let (stream, sink) = client.bidiStreamDeclaredException(&instr.request).await?;
+    let payloads = instr.sinkPayloads.clone();
+    let mut test_result = BidiStreamDeclaredExceptionClientTestResult {
+        ..Default::default()
+    };
+    let collect = async {
+        let mut stream = stream;
+        let mut payloads = vec![];
+        let mut thrown = None;
+        while let Some(item) = stream.next().await {
+            match item {
+                Ok(response) => payloads.push(response),
+                Err(BidiStreamDeclaredExceptionStreamError::e(user_error)) => {
+                    thrown = Some(Box::new(user_error));
+                }
+                Err(_) => {}
+            }
+        }
+        (payloads, thrown)
+    };
+    let (_sink_result, (stream_payloads, thrown)) = futures::future::join(
+        (sink)(futures::stream::iter(payloads).map(Ok).boxed()),
+        collect,
+    )
+    .await;
+
+    test_result.streamPayloads = stream_payloads;
+    test_result.userException = thrown;
+    client
+        .sendTestResult(&ClientTestResult::bidiStreamDeclaredException(test_result))
+        .await?;
+    Ok(())
+}
+
+async fn bidi_stream_undeclared_exception(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &BidiStreamUndeclaredExceptionClientInstruction,
+) -> Result<()> {
+    let (stream, sink) = client.bidiStreamUndeclaredException(&instr.request).await?;
+    let payloads = instr.sinkPayloads.clone();
+    let collect = async {
+        let mut stream = stream;
+        let mut payloads = vec![];
+        let mut message = String::new();
+        while let Some(item) = stream.next().await {
+            match item {
+                Ok(response) => payloads.push(response),
+                Err(err) => message = without_type_prefix(&err.to_string()),
+            }
+        }
+        (payloads, message)
+    };
+    let (_sink_result, (stream_payloads, exception_message)) = futures::future::join(
+        (sink)(futures::stream::iter(payloads).map(Ok).boxed()),
+        collect,
+    )
+    .await;
+
+    let test_result = BidiStreamUndeclaredExceptionClientTestResult {
+        streamPayloads: stream_payloads,
+        exceptionMessage: exception_message,
+        ..Default::default()
+    };
+    client
+        .sendTestResult(&ClientTestResult::bidiStreamUndeclaredException(
+            test_result,
+        ))
+        .await?;
+    Ok(())
+}
+
+async fn bidi_sink_declared_exception(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &BidiSinkDeclaredExceptionClientInstruction,
+) -> Result<()> {
+    let (stream, sink) = client.bidiSinkDeclaredException(&instr.request).await?;
+    let payloads = instr.sinkPayloads.clone();
+    let thrown = instr.userException.clone();
+    let items = futures::stream::iter(payloads)
+        .map(Ok)
+        .chain(futures::stream::iter(
+            thrown
+                .into_iter()
+                .map(|exn| Err(BidiSinkDeclaredExceptionSinkError::e(*exn))),
+        ))
+        .boxed();
+    let (sink_result, stream_payloads) =
+        futures::future::join((sink)(items), stream.collect::<Vec<_>>()).await;
+
+    let test_result = BidiSinkDeclaredExceptionClientTestResult {
+        sinkThrew: sink_result.is_err(),
+        streamPayloads: stream_payloads
+            .into_iter()
+            .collect::<std::result::Result<Vec<_>, _>>()
+            .map_err(|err| anyhow!("bidi_sink_declared_exception: stream failed: {:?}", err))?,
+        ..Default::default()
+    };
+    client
+        .sendTestResult(&ClientTestResult::bidiSinkDeclaredException(test_result))
+        .await?;
+    Ok(())
+}
+
+async fn bidi_sink_undeclared_exception(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &BidiSinkUndeclaredExceptionClientInstruction,
+) -> Result<()> {
+    let (stream, sink) = client.bidiSinkUndeclaredException(&instr.request).await?;
+    let payloads = instr.sinkPayloads.clone();
+    let thrown = instr.exceptionMessage.clone();
+    let items = futures::stream::iter(payloads)
+        .map(Ok)
+        .chain(futures::stream::iter(thrown.into_iter().map(|message| {
+            Err(BidiSinkUndeclaredExceptionSinkError::ApplicationException(
+                fbthrift::ApplicationException::new(
+                    fbthrift::ApplicationExceptionErrorCode::Unknown,
+                    message,
+                ),
+            ))
+        })))
+        .boxed();
+    let (sink_result, stream_payloads) =
+        futures::future::join((sink)(items), stream.collect::<Vec<_>>()).await;
+
+    let test_result = BidiSinkUndeclaredExceptionClientTestResult {
+        sinkThrew: sink_result.is_err(),
+        streamPayloads: stream_payloads
+            .into_iter()
+            .collect::<std::result::Result<Vec<_>, _>>()
+            .map_err(|err| anyhow!("bidi_sink_undeclared_exception: stream failed: {:?}", err))?,
+        ..Default::default()
+    };
+    client
+        .sendTestResult(&ClientTestResult::bidiSinkUndeclaredException(test_result))
+        .await?;
+    Ok(())
+}
+
+async fn bidi_method_declared_exception(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &BidiMethodDeclaredExceptionClientInstruction,
+) -> Result<()> {
+    let mut test_result = BidiMethodDeclaredExceptionClientTestResult {
+        ..Default::default()
+    };
+    if let Err(BidiMethodDeclaredExceptionError::e(user_error)) =
+        client.bidiMethodDeclaredException(&instr.request).await
+    {
+        test_result.userException = Some(Box::new(user_error));
+    }
+    client
+        .sendTestResult(&ClientTestResult::bidiMethodDeclaredException(test_result))
+        .await?;
+    Ok(())
+}
+
+async fn bidi_method_undeclared_exception(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &BidiMethodUndeclaredExceptionClientInstruction,
+) -> Result<()> {
+    let mut test_result = BidiMethodUndeclaredExceptionClientTestResult {
+        ..Default::default()
+    };
+    if let Err(err) = client.bidiMethodUndeclaredException(&instr.request).await {
+        test_result.exceptionMessage = without_type_prefix(&err.to_string());
+    }
+    client
+        .sendTestResult(&ClientTestResult::bidiMethodUndeclaredException(
+            test_result,
+        ))
         .await?;
     Ok(())
 }
