@@ -28,24 +28,24 @@ def get_types_reflection():
 
 __all__ = []
 
-class std_deque_std_string__List__string(thrift.py3.types.List):
+class std_deque__List__string(thrift.py3.types.List):
     __module__ = _fbthrift__module_name__
     __slots__ = ()
 
     def __init__(self, items=None, private_ctor_token=None) -> None:
         if private_ctor_token is thrift.py3.types._fbthrift_list_private_ctor:
             _py_obj = items
-        elif isinstance(items, std_deque_std_string__List__string):
+        elif isinstance(items, std_deque__List__string):
             _py_obj = list(items)
         elif items is None:
             _py_obj = []
         else:
             if isinstance(items, str):
                 raise TypeError("If you really want to pass a string into a _typing.Sequence[str] field, explicitly convert it first.")
-            check_method = std_deque_std_string__List__string._check_item_type_or_raise
+            check_method = std_deque__List__string._check_item_type_or_raise
             _py_obj = [check_method(item) for item in items]
 
-        super().__init__(_py_obj, std_deque_std_string__List__string)
+        super().__init__(_py_obj, std_deque__List__string)
 
     @staticmethod
     def _check_item_type_or_raise(item):
@@ -64,11 +64,11 @@ class std_deque_std_string__List__string(thrift.py3.types.List):
 
     @staticmethod
     def __get_reflection__():
-        return get_types_reflection().get_reflection__std_deque_std_string__List__string()
+        return get_types_reflection().get_reflection__std_deque__List__string()
 
 
-Sequence.register(std_deque_std_string__List__string)
+Sequence.register(std_deque__List__string)
 
-__all__.append('std_deque_std_string__List__string')
+__all__.append('std_deque__List__string')
 
 

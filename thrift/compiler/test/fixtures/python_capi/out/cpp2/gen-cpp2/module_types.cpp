@@ -1027,7 +1027,7 @@ ListStruct& ListStruct::operator=([[maybe_unused]] ListStruct&& other) noexcept 
 }
 
 
-ListStruct::ListStruct(apache::thrift::FragileConstructor, ::std::vector<bool> boolz__arg, ::std::vector<::std::int64_t> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::string>> stringz__arg, std::deque<::std::string> encoded__arg, std::deque<uint64_t> uidz__arg, ::std::vector<::std::vector<double>> matrix__arg, folly::small_vector<folly::small_vector<uint8_t>> ucharz__arg, folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>> voxels__arg, ::std::vector<::test::fixtures::python_capi::IOBufPtr> buf_ptrs__arg) :
+ListStruct::ListStruct(apache::thrift::FragileConstructor, ::std::vector<bool> boolz__arg, ::std::vector<::std::int64_t> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::string>> stringz__arg, std::deque<::std::string> encoded__arg, std::deque<::test::fixtures::python_capi::uint64> uidz__arg, ::std::vector<::std::vector<double>> matrix__arg, folly::small_vector<::test::fixtures::python_capi::small_vector_uint8> ucharz__arg, folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8> voxels__arg, ::std::vector<::test::fixtures::python_capi::IOBufPtr> buf_ptrs__arg) :
     __fbthrift_field_boolz(std::move(boolz__arg)),
     __fbthrift_field_intz(std::move(intz__arg)),
     __fbthrift_field_stringz(std::move(stringz__arg)),
@@ -1098,12 +1098,12 @@ std::deque<::std::string> ListStruct::get_encoded() && {
   return static_cast<std::deque<::std::string>&&>(__fbthrift_field_encoded);
 }
 
-const std::deque<uint64_t>& ListStruct::get_uidz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+const std::deque<::test::fixtures::python_capi::uint64>& ListStruct::get_uidz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
   return __fbthrift_field_uidz;
 }
 
-std::deque<uint64_t> ListStruct::get_uidz() && {
-  return static_cast<std::deque<uint64_t>&&>(__fbthrift_field_uidz);
+std::deque<::test::fixtures::python_capi::uint64> ListStruct::get_uidz() && {
+  return static_cast<std::deque<::test::fixtures::python_capi::uint64>&&>(__fbthrift_field_uidz);
 }
 
 const ::std::vector<::std::vector<double>>& ListStruct::get_matrix() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
@@ -1114,20 +1114,20 @@ const ::std::vector<::std::vector<double>>& ListStruct::get_matrix() const& [[FO
   return static_cast<::std::vector<::std::vector<double>>&&>(__fbthrift_field_matrix);
 }
 
-const folly::small_vector<folly::small_vector<uint8_t>>& ListStruct::get_ucharz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+const folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>& ListStruct::get_ucharz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
   return __fbthrift_field_ucharz;
 }
 
-folly::small_vector<folly::small_vector<uint8_t>> ListStruct::get_ucharz() && {
-  return static_cast<folly::small_vector<folly::small_vector<uint8_t>>&&>(__fbthrift_field_ucharz);
+folly::small_vector<::test::fixtures::python_capi::small_vector_uint8> ListStruct::get_ucharz() && {
+  return static_cast<folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>&&>(__fbthrift_field_ucharz);
 }
 
-const folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>& ListStruct::get_voxels() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+const folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>& ListStruct::get_voxels() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
   return __fbthrift_field_voxels;
 }
 
-folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>> ListStruct::get_voxels() && {
-  return static_cast<folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>&&>(__fbthrift_field_voxels);
+folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8> ListStruct::get_voxels() && {
+  return static_cast<folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>&&>(__fbthrift_field_voxels);
 }
 
 const ::std::vector<::test::fixtures::python_capi::IOBufPtr>& ListStruct::get_buf_ptrs() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
@@ -1198,7 +1198,7 @@ SetStruct& SetStruct::operator=([[maybe_unused]] SetStruct&& other) noexcept {
 }
 
 
-SetStruct::SetStruct(apache::thrift::FragileConstructor, ::std::set<::test::fixtures::python_capi::MyEnum> enumz__arg, ::std::set<::std::int32_t> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::set<::std::string>> binnaz__arg, std::unordered_set<::std::string> encoded__arg, std::unordered_set<uint64_t> uidz__arg, folly::F14FastSet<uint8_t> charz__arg, ::std::vector<::std::set<::std::int64_t>> setz__arg) :
+SetStruct::SetStruct(apache::thrift::FragileConstructor, ::std::set<::test::fixtures::python_capi::MyEnum> enumz__arg, ::std::set<::std::int32_t> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::set<::std::string>> binnaz__arg, std::unordered_set<::std::string> encoded__arg, std::unordered_set<::test::fixtures::python_capi::uint64> uidz__arg, folly::F14FastSet<::test::fixtures::python_capi::uint8> charz__arg, ::std::vector<::std::set<::std::int64_t>> setz__arg) :
     __fbthrift_field_enumz(std::move(enumz__arg)),
     __fbthrift_field_intz(std::move(intz__arg)),
     __fbthrift_field_binnaz(std::move(binnaz__arg)),
@@ -1263,20 +1263,20 @@ std::unordered_set<::std::string> SetStruct::get_encoded() && {
   return static_cast<std::unordered_set<::std::string>&&>(__fbthrift_field_encoded);
 }
 
-const std::unordered_set<uint64_t>& SetStruct::get_uidz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+const std::unordered_set<::test::fixtures::python_capi::uint64>& SetStruct::get_uidz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
   return __fbthrift_field_uidz;
 }
 
-std::unordered_set<uint64_t> SetStruct::get_uidz() && {
-  return static_cast<std::unordered_set<uint64_t>&&>(__fbthrift_field_uidz);
+std::unordered_set<::test::fixtures::python_capi::uint64> SetStruct::get_uidz() && {
+  return static_cast<std::unordered_set<::test::fixtures::python_capi::uint64>&&>(__fbthrift_field_uidz);
 }
 
-const folly::F14FastSet<uint8_t>& SetStruct::get_charz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+const folly::F14FastSet<::test::fixtures::python_capi::uint8>& SetStruct::get_charz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
   return __fbthrift_field_charz;
 }
 
-folly::F14FastSet<uint8_t> SetStruct::get_charz() && {
-  return static_cast<folly::F14FastSet<uint8_t>&&>(__fbthrift_field_charz);
+folly::F14FastSet<::test::fixtures::python_capi::uint8> SetStruct::get_charz() && {
+  return static_cast<folly::F14FastSet<::test::fixtures::python_capi::uint8>&&>(__fbthrift_field_charz);
 }
 
 const ::std::vector<::std::set<::std::int64_t>>& SetStruct::get_setz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
@@ -1371,7 +1371,7 @@ MapStruct& MapStruct::operator=([[maybe_unused]] MapStruct&& other) noexcept {
 }
 
 
-MapStruct::MapStruct(apache::thrift::FragileConstructor, ::std::map<::test::fixtures::python_capi::MyEnum, ::std::string> enumz__arg, ::std::map<::std::int32_t, ::std::string> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::map<::std::string, ::test::fixtures::python_capi::PrimitiveStruct>> binnaz__arg, std::unordered_map<::std::string, double> encoded__arg, std::unordered_map<uint64_t, float> flotz__arg, ::std::vector<::std::map<::std::int32_t, ::std::int64_t>> map_list__arg, ::std::map<::std::int32_t, ::std::vector<::std::int64_t>> list_map__arg, folly::F14FastMap<int, folly::fbvector<double>> fast_list_map__arg, ::std::map<::std::string, ::test::fixtures::python_capi::IOBufPtr> buf_map__arg, ::std::map<::test::fixtures::python_capi::ui64, ::std::vector<::test::fixtures::python_capi::ui64>> unsigned_list_map__arg) :
+MapStruct::MapStruct(apache::thrift::FragileConstructor, ::std::map<::test::fixtures::python_capi::MyEnum, ::std::string> enumz__arg, ::std::map<::std::int32_t, ::std::string> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::map<::std::string, ::test::fixtures::python_capi::PrimitiveStruct>> binnaz__arg, std::unordered_map<::std::string, double> encoded__arg, std::unordered_map<::test::fixtures::python_capi::uint64, float> flotz__arg, ::std::vector<::std::map<::std::int32_t, ::std::int64_t>> map_list__arg, ::std::map<::std::int32_t, ::std::vector<::std::int64_t>> list_map__arg, folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double> fast_list_map__arg, ::std::map<::std::string, ::test::fixtures::python_capi::IOBufPtr> buf_map__arg, ::std::map<::test::fixtures::python_capi::ui64, ::std::vector<::test::fixtures::python_capi::ui64>> unsigned_list_map__arg) :
     __fbthrift_field_enumz(std::move(enumz__arg)),
     __fbthrift_field_intz(std::move(intz__arg)),
     __fbthrift_field_binnaz(std::move(binnaz__arg)),
@@ -1445,12 +1445,12 @@ std::unordered_map<::std::string, double> MapStruct::get_encoded() && {
   return static_cast<std::unordered_map<::std::string, double>&&>(__fbthrift_field_encoded);
 }
 
-const std::unordered_map<uint64_t, float>& MapStruct::get_flotz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+const std::unordered_map<::test::fixtures::python_capi::uint64, float>& MapStruct::get_flotz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
   return __fbthrift_field_flotz;
 }
 
-std::unordered_map<uint64_t, float> MapStruct::get_flotz() && {
-  return static_cast<std::unordered_map<uint64_t, float>&&>(__fbthrift_field_flotz);
+std::unordered_map<::test::fixtures::python_capi::uint64, float> MapStruct::get_flotz() && {
+  return static_cast<std::unordered_map<::test::fixtures::python_capi::uint64, float>&&>(__fbthrift_field_flotz);
 }
 
 const ::std::vector<::std::map<::std::int32_t, ::std::int64_t>>& MapStruct::get_map_list() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
@@ -1469,12 +1469,12 @@ const ::std::map<::std::int32_t, ::std::vector<::std::int64_t>>& MapStruct::get_
   return static_cast<::std::map<::std::int32_t, ::std::vector<::std::int64_t>>&&>(__fbthrift_field_list_map);
 }
 
-const folly::F14FastMap<int, folly::fbvector<double>>& MapStruct::get_fast_list_map() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+const folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>& MapStruct::get_fast_list_map() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
   return __fbthrift_field_fast_list_map;
 }
 
-folly::F14FastMap<int, folly::fbvector<double>> MapStruct::get_fast_list_map() && {
-  return static_cast<folly::F14FastMap<int, folly::fbvector<double>>&&>(__fbthrift_field_fast_list_map);
+folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double> MapStruct::get_fast_list_map() && {
+  return static_cast<folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>&&>(__fbthrift_field_fast_list_map);
 }
 
 const ::std::map<::std::string, ::test::fixtures::python_capi::IOBufPtr>& MapStruct::get_buf_map() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {

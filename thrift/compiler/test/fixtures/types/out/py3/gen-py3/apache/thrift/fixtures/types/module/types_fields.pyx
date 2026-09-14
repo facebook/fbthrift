@@ -41,7 +41,6 @@ from apache.thrift.fixtures.types.module.containers_FBTHRIFT_ONLY_DO_NOT_USE imp
     folly_small_vector__List__i32,
     folly_sorted_vector_set__Set__i32,
     folly_sorted_vector_map__Map__i32_string,
-    std_list_int32_t__List__i32,
     Map__string_i32,
     List__std_unordered_map__Map__i32_string,
     Map__i32_IncompleteMapDep,
@@ -202,7 +201,7 @@ cdef class __CppTypeStruct_FieldsSetter(__StructFieldsSetter):
         if _fbthrift_value is None:
             __reset_field[_apache_thrift_fixtures_types_module_cbindings.cCppTypeStruct](deref(self._struct_cpp_obj), 0)
             return
-        deref(self._struct_cpp_obj).fieldA_ref().assign(_apache_thrift_fixtures_types_module_types.std_list_int32_t__List__i32__make_instance(_fbthrift_value))
+        deref(self._struct_cpp_obj).fieldA_ref().assign(_apache_thrift_fixtures_types_module_types.std_list__List__i32__make_instance(_fbthrift_value))
 
 
 @__cython.auto_pickle(False)

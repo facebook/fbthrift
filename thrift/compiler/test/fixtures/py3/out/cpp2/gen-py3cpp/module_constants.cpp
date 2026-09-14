@@ -74,13 +74,13 @@ namespace module_constants {
 }
 
 
-::std::string_view _fbthrift_schema_3bc10a418c851f3a() {
+::std::string_view _fbthrift_schema_502c116129e78e05() {
   return "";
 }
-::folly::Range<const ::std::string_view*> _fbthrift_schema_3bc10a418c851f3a_includes() {
+::folly::Range<const ::std::string_view*> _fbthrift_schema_502c116129e78e05_includes() {
   return {};
 }
-::folly::Range<const ::std::string_view*> _fbthrift_schema_3bc10a418c851f3a_uris() {
+::folly::Range<const ::std::string_view*> _fbthrift_schema_502c116129e78e05_uris() {
   return {};
 }
 

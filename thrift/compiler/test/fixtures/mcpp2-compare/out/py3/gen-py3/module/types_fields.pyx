@@ -54,14 +54,13 @@ from module.containers_FBTHRIFT_ONLY_DO_NOT_USE import (
     Map__List__Set__string_string,
     Map__Set__List__i32_Map__List__Set__string_string,
     Set__i32,
-    folly_small_vector_int64_t_8__List__i64,
-    folly_sorted_vector_set_std_string__Set__string,
-    FakeMap__Map__i64_double,
-    std_unordered_map_std_string_ContainerStruct__Map__string_ContainerStruct,
+    folly_small_vector__List__i64,
+    folly_sorted_vector_set__Set__string,
+    _FakeMap__Map__i64_double,
+    std_unordered_map__Map__string_ContainerStruct,
     Map__i64_string,
     std_list__List__i32,
     std_deque__List__string,
-    folly_sorted_vector_set__Set__string,
     folly_sorted_vector_map__Map__i64_string,
     List__binary,
     Map__MyEnumA_string,
@@ -1214,29 +1213,29 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
         if _fbthrift_value is None:
             __reset_field[_module_cbindings.cAnnotatedStruct](deref(self._struct_cpp_obj), 20)
             return
-        deref(self._struct_cpp_obj).list_type_ref().assign(_module_types.folly_small_vector_int64_t_8__List__i64__make_instance(_fbthrift_value))
+        deref(self._struct_cpp_obj).list_type_ref().assign(_module_types.folly_small_vector__List__i64__make_instance(_fbthrift_value))
 
     cdef void _set_field_21(self, _fbthrift_value) except *:
         # for field set_type
         if _fbthrift_value is None:
             __reset_field[_module_cbindings.cAnnotatedStruct](deref(self._struct_cpp_obj), 21)
             return
-        deref(self._struct_cpp_obj).set_type_ref().assign(_module_types.folly_sorted_vector_set_std_string__Set__string__make_instance(_fbthrift_value))
+        deref(self._struct_cpp_obj).set_type_ref().assign(_module_types.folly_sorted_vector_set__Set__string__make_instance(_fbthrift_value))
 
     cdef void _set_field_22(self, _fbthrift_value) except *:
         # for field map_type
         if _fbthrift_value is None:
             __reset_field[_module_cbindings.cAnnotatedStruct](deref(self._struct_cpp_obj), 22)
             return
-        deref(self._struct_cpp_obj).map_type_ref().assign(_module_types.FakeMap__Map__i64_double__make_instance(_fbthrift_value))
+        deref(self._struct_cpp_obj).map_type_ref().assign(_module_types._FakeMap__Map__i64_double__make_instance(_fbthrift_value))
 
     cdef void _set_field_23(self, _fbthrift_value) except *:
         # for field map_struct_type
         if _fbthrift_value is None:
             __reset_field[_module_cbindings.cAnnotatedStruct](deref(self._struct_cpp_obj), 23)
             return
-        _fbthrift_value = _ensure_py3_container_or_raise(_fbthrift_value, std_unordered_map_std_string_ContainerStruct__Map__string_ContainerStruct)
-        deref(self._struct_cpp_obj).map_struct_type_ref().assign(_module_types.std_unordered_map_std_string_ContainerStruct__Map__string_ContainerStruct__make_instance(_fbthrift_value))
+        _fbthrift_value = _ensure_py3_container_or_raise(_fbthrift_value, std_unordered_map__Map__string_ContainerStruct)
+        deref(self._struct_cpp_obj).map_struct_type_ref().assign(_module_types.std_unordered_map__Map__string_ContainerStruct__make_instance(_fbthrift_value))
 
     cdef void _set_field_24(self, _fbthrift_value) except *:
         # for field iobuf_type

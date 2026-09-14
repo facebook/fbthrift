@@ -98,7 +98,7 @@
       "type_enum" : "LIST",
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} ,
       "structured_annotations" : {
-        "cpp.Type" : { "name" : "std::deque<std::string>" }
+        "cpp.Type" : { "template" : "std::deque" }
       },
       "source_range" : {
         "begin" : {

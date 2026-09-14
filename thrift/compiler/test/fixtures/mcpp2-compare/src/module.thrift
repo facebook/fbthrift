@@ -282,13 +282,13 @@ struct MyIncludedStruct {
 
 @cpp.Type{name = "CppFakeI32"}
 typedef i32 CppFakeI32
-@cpp.Type{name = "folly::small_vector<int64_t, 8 /* maxInline */>"}
+@cpp.Type{template = "folly::small_vector"}
 typedef list<i64> FollySmallVectorI64
-@cpp.Type{name = "folly::sorted_vector_set<std::string>"}
+@cpp.Type{template = "folly::sorted_vector_set"}
 typedef set<string> SortedVectorSetString
-@cpp.Type{name = "FakeMap"}
+@cpp.Type{template = "::FakeMap"}
 typedef map<i64, double> FakeMap
-@cpp.Type{name = "std::unordered_map<std::string, ContainerStruct>"}
+@cpp.Type{template = "std::unordered_map"}
 typedef map<string, ContainerStruct> UnorderedMapStruct
 @cpp.Type{template = "std::list"}
 typedef list<i32> std_list

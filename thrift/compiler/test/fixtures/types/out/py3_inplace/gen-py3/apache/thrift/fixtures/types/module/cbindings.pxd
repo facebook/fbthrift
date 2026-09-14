@@ -414,43 +414,6 @@ cdef extern from * nogil:
         void clear()
         bint empty()
 
-cdef extern from * nogil:
-    cdef cppclass std_list_int32_t "std::list<int32_t>":
-        ctypedef cint32_t value_type
-        ctypedef size_t size_type
-
-        cppclass iterator:
-            cint32_t& operator*()
-            iterator operator++()
-            bint operator==(iterator)
-            bint operator!=(iterator)
-        cppclass reverse_iterator:
-            cint32_t& operator*()
-            iterator operator++()
-            bint operator==(reverse_iterator)
-            bint operator!=(reverse_iterator)
-        cppclass const_iterator(iterator):
-            pass
-        cppclass const_reverse_iterator(reverse_iterator):
-            pass
-
-        std_list_int32_t() except +
-        std_list_int32_t(std_list_int32_t&) except +
-
-        cint32_t& operator[](size_type)
-        void push_back(cint32_t&) except +
-        size_type size()
-        iterator begin()
-        const_iterator const_begin "begin"()
-        iterator end()
-        const_iterator const_end "end"()
-        reverse_iterator rbegin()
-        const_reverse_iterator const_rbegin "rbegin"()
-        reverse_iterator rend()
-        const_reverse_iterator const_rend "rend"()
-        void clear()
-        bint empty()
-
 cdef extern from *:
     ctypedef cint32_t std_uint32_t "std::uint32_t"
 
@@ -529,7 +492,7 @@ cdef extern from "thrift/compiler/test/fixtures/types/gen-cpp2/module_types_cust
         bint operator>(cCppTypeStruct&)
         bint operator<=(cCppTypeStruct&)
         bint operator>=(cCppTypeStruct&)
-        __field_ref[std_list_int32_t] fieldA_ref "fieldA_ref" ()
+        __field_ref[std_list[cint32_t]] fieldA_ref "fieldA_ref" ()
 
 
     cdef cppclass cVirtualStruct "::apache::thrift::fixtures::types::VirtualStruct":

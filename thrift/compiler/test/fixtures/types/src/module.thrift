@@ -50,7 +50,7 @@ struct ContainerStruct {
 }
 
 struct CppTypeStruct {
-  @cpp.Type{name = "std::list<int32_t>"}
+  @cpp.Type{template = "std::list"}
   1: list<i32> fieldA;
 }
 

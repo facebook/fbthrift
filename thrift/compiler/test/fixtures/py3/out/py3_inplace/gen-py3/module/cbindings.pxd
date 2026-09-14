@@ -74,122 +74,122 @@ cdef extern from * nogil:
         void clear()
         bint empty()
 
+cdef extern from * nogil:
+    cdef cppclass _MyType "::MyType"[T]:
+        ctypedef T value_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
+
+        _MyType() except +
+        _MyType(_MyType&) except +
+
+        T& operator[](size_type)
+        void push_back(T&) except +
+        size_type size()
+        iterator begin()
+        const_iterator const_begin "begin"()
+        iterator end()
+        const_iterator const_end "end"()
+        reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
+        reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass _MyType "::MyType"[T]:
+        ctypedef T value_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
+
+        _MyType() except +
+        _MyType(_MyType&) except +
+
+        cpair[iterator, bint] insert(const T&) except +
+        size_type size()
+        size_type count(const T&)
+        iterator begin()
+        const_iterator const_begin "begin"()
+        iterator end()
+        const_iterator const_end "end"()
+        reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
+        reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass _MyType "::MyType"[T, U]:
+        ctypedef T key_type
+        ctypedef U mapped_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            cpair[T, U]& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            cpair[T, U]& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
+
+        _MyType() except +
+        _MyType(_MyType&) except +
+
+        U& operator[](T&)
+        iterator find(const T&)
+        const_iterator const_find "find"(const T&)
+        size_type count(const T&)
+        size_type size()
+        iterator begin()
+        const_iterator const_begin "begin"()
+        iterator end()
+        const_iterator const_end "end"()
+        reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
+        reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
+        void clear()
+        bint empty()
+
 cdef extern from *:
     ctypedef bstring foo_Bar "foo::Bar"
-cdef extern from * nogil:
-    cdef cppclass _MyType "::MyType":
-        ctypedef cint32_t value_type
-        ctypedef size_t size_type
-
-        cppclass iterator:
-            cint32_t& operator*()
-            iterator operator++()
-            bint operator==(iterator)
-            bint operator!=(iterator)
-        cppclass reverse_iterator:
-            cint32_t& operator*()
-            iterator operator++()
-            bint operator==(reverse_iterator)
-            bint operator!=(reverse_iterator)
-        cppclass const_iterator(iterator):
-            pass
-        cppclass const_reverse_iterator(reverse_iterator):
-            pass
-
-        _MyType() except +
-        _MyType(_MyType&) except +
-
-        cint32_t& operator[](size_type)
-        void push_back(cint32_t&) except +
-        size_type size()
-        iterator begin()
-        const_iterator const_begin "begin"()
-        iterator end()
-        const_iterator const_end "end"()
-        reverse_iterator rbegin()
-        const_reverse_iterator const_rbegin "rbegin"()
-        reverse_iterator rend()
-        const_reverse_iterator const_rend "rend"()
-        void clear()
-        bint empty()
-
-cdef extern from * nogil:
-    cdef cppclass _MyType "::MyType":
-        ctypedef cint32_t value_type
-        ctypedef size_t size_type
-
-        cppclass iterator:
-            cint32_t& operator*()
-            iterator operator++()
-            bint operator==(iterator)
-            bint operator!=(iterator)
-        cppclass reverse_iterator:
-            cint32_t& operator*()
-            iterator operator++()
-            bint operator==(reverse_iterator)
-            bint operator!=(reverse_iterator)
-        cppclass const_iterator(iterator):
-            pass
-        cppclass const_reverse_iterator(reverse_iterator):
-            pass
-
-        _MyType() except +
-        _MyType(_MyType&) except +
-
-        cpair[iterator, bint] insert(const cint32_t&) except +
-        size_type size()
-        size_type count(const cint32_t&)
-        iterator begin()
-        const_iterator const_begin "begin"()
-        iterator end()
-        const_iterator const_end "end"()
-        reverse_iterator rbegin()
-        const_reverse_iterator const_rbegin "rbegin"()
-        reverse_iterator rend()
-        const_reverse_iterator const_rend "rend"()
-        void clear()
-        bint empty()
-
-cdef extern from * nogil:
-    cdef cppclass _MyType "::MyType":
-        ctypedef cint32_t key_type
-        ctypedef cint32_t mapped_type
-        ctypedef size_t size_type
-
-        cppclass iterator:
-            cpair[cint32_t, cint32_t]& operator*()
-            iterator operator++()
-            bint operator==(iterator)
-            bint operator!=(iterator)
-        cppclass reverse_iterator:
-            cpair[cint32_t, cint32_t]& operator*()
-            iterator operator++()
-            bint operator==(reverse_iterator)
-            bint operator!=(reverse_iterator)
-        cppclass const_iterator(iterator):
-            pass
-        cppclass const_reverse_iterator(reverse_iterator):
-            pass
-
-        _MyType() except +
-        _MyType(_MyType&) except +
-
-        cint32_t& operator[](cint32_t&)
-        iterator find(const cint32_t&)
-        const_iterator const_find "find"(const cint32_t&)
-        size_type count(const cint32_t&)
-        size_type size()
-        iterator begin()
-        const_iterator const_begin "begin"()
-        iterator end()
-        const_iterator const_end "end"()
-        reverse_iterator rbegin()
-        const_reverse_iterator const_rbegin "rbegin"()
-        reverse_iterator rend()
-        const_reverse_iterator const_rend "rend"()
-        void clear()
-        bint empty()
-
 cdef extern from *:
     ctypedef string _py3_simple_AdaptedString "::py3::simple::AdaptedString"
 cdef extern from *:
@@ -464,9 +464,9 @@ cdef extern from "thrift/compiler/test/fixtures/py3/gen-cpp2/module_types_custom
         __field_ref[_MyType] double_field_ref "double_field_ref" ()
         __field_ref[_MyType] string_field_ref "string_field_ref" ()
         __field_ref[_MyType] binary_field_ref "binary_field_ref" ()
-        __field_ref[_MyType] list_field_ref "list_field_ref" ()
-        __field_ref[_MyType] set_field_ref "set_field_ref" ()
-        __field_ref[_MyType] map_field_ref "map_field_ref" ()
+        __field_ref[_MyType[cint32_t]] list_field_ref "list_field_ref" ()
+        __field_ref[_MyType[cint32_t]] set_field_ref "set_field_ref" ()
+        __field_ref[_MyType[cint32_t,cint32_t]] map_field_ref "map_field_ref" ()
         __field_ref[cSimpleStruct] struct_field_ref "struct_field_ref" ()
 
 
@@ -480,9 +480,9 @@ cdef extern from "thrift/compiler/test/fixtures/py3/gen-cpp2/module_types_custom
         __field_ref[_MyType] double_field_ref "double_field_ref" ()
         __field_ref[_MyType] string_field_ref "string_field_ref" ()
         __field_ref[_MyType] binary_field_ref "binary_field_ref" ()
-        __field_ref[_MyType] list_field_ref "list_field_ref" ()
-        __field_ref[_MyType] set_field_ref "set_field_ref" ()
-        __field_ref[_MyType] map_field_ref "map_field_ref" ()
+        __field_ref[_MyType[cint32_t]] list_field_ref "list_field_ref" ()
+        __field_ref[_MyType[cint32_t]] set_field_ref "set_field_ref" ()
+        __field_ref[_MyType[cint32_t,cint32_t]] map_field_ref "map_field_ref" ()
         __field_ref[cSimpleStruct] struct_field_ref "struct_field_ref" ()
 
 

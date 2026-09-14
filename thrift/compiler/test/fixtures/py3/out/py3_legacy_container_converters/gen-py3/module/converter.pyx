@@ -187,13 +187,13 @@ cdef vector[float] List__float__make_instance(object items) except *:
 cdef cmap[string,vector[float]] Map__string_List__float__make_instance(object items) except *:
     return _fbthrift_ctypes.Map__string_List__float__make_instance(items)
 
-cdef _module_cbindings._MyType _MyType__List__i32__make_instance(object items) except *:
+cdef _module_cbindings._MyType[cint32_t] _MyType__List__i32__make_instance(object items) except *:
     return _fbthrift_ctypes._MyType__List__i32__make_instance(items)
 
-cdef _module_cbindings._MyType _MyType__Set__i32__make_instance(object items) except *:
+cdef _module_cbindings._MyType[cint32_t] _MyType__Set__i32__make_instance(object items) except *:
     return _fbthrift_ctypes._MyType__Set__i32__make_instance(items)
 
-cdef _module_cbindings._MyType _MyType__Map__i32_i32__make_instance(object items) except *:
+cdef _module_cbindings._MyType[cint32_t,cint32_t] _MyType__Map__i32_i32__make_instance(object items) except *:
     return _fbthrift_ctypes._MyType__Map__i32_i32__make_instance(items)
 
 cdef _module_cbindings._py3_simple_AdaptedList _py3_simple_AdaptedList__List__i32__make_instance(object items) except *:

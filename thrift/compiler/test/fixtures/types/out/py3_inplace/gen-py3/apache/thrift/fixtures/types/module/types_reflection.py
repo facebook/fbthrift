@@ -184,7 +184,7 @@ def get_reflection__CppTypeStruct() -> __StructSpec:
             id=1,
             name="fieldA",
             py_name="fieldA",
-            type=_apache_thrift_fixtures_types_module_types.std_list_int32_t__List__i32,
+            type=_apache_thrift_fixtures_types_module_types.std_list__List__i32,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -1160,12 +1160,6 @@ def get_reflection__folly_sorted_vector_map__Map__i32_string() -> __MapSpec:
         key_kind=__NumberType.I32,
         value=str,
         value_kind=__NumberType.NOT_A_NUMBER,
-    )
-
-def get_reflection__std_list_int32_t__List__i32() -> __ListSpec :
-    return __ListSpec._fbthrift_create(
-        value=int,
-        kind=__NumberType.I32,
     )
 
 def get_reflection__Map__string_i32() -> __MapSpec:

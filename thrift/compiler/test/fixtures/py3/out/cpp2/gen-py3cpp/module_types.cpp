@@ -1405,7 +1405,7 @@ CustomFields& CustomFields::operator=([[maybe_unused]] CustomFields&& other) noe
 }
 
 
-CustomFields::CustomFields(apache::thrift::FragileConstructor, ::MyType bool_field__arg, ::MyType integer_field__arg, ::MyType double_field__arg, ::MyType string_field__arg, ::MyType binary_field__arg, ::MyType list_field__arg, ::MyType set_field__arg, ::MyType map_field__arg, ::py3::simple::SimpleStruct struct_field__arg) :
+CustomFields::CustomFields(apache::thrift::FragileConstructor, ::MyType bool_field__arg, ::MyType integer_field__arg, ::MyType double_field__arg, ::MyType string_field__arg, ::MyType binary_field__arg, ::MyType<::std::int32_t> list_field__arg, ::MyType<::std::int32_t> set_field__arg, ::MyType<::std::int32_t, ::std::int32_t> map_field__arg, ::py3::simple::SimpleStruct struct_field__arg) :
     __fbthrift_field_bool_field(std::move(bool_field__arg)),
     __fbthrift_field_integer_field(std::move(integer_field__arg)),
     __fbthrift_field_double_field(std::move(double_field__arg)),
@@ -1476,28 +1476,28 @@ bool CustomFields::operator==([[maybe_unused]] const CustomFields& rhs) const {
   return __fbthrift_field_double_field;
 }
 
-const ::MyType& CustomFields::get_list_field() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+const ::MyType<::std::int32_t>& CustomFields::get_list_field() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
   return __fbthrift_field_list_field;
 }
 
-::MyType CustomFields::get_list_field() && {
-  return static_cast<::MyType&&>(__fbthrift_field_list_field);
+::MyType<::std::int32_t> CustomFields::get_list_field() && {
+  return static_cast<::MyType<::std::int32_t>&&>(__fbthrift_field_list_field);
 }
 
-const ::MyType& CustomFields::get_set_field() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+const ::MyType<::std::int32_t>& CustomFields::get_set_field() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
   return __fbthrift_field_set_field;
 }
 
-::MyType CustomFields::get_set_field() && {
-  return static_cast<::MyType&&>(__fbthrift_field_set_field);
+::MyType<::std::int32_t> CustomFields::get_set_field() && {
+  return static_cast<::MyType<::std::int32_t>&&>(__fbthrift_field_set_field);
 }
 
-const ::MyType& CustomFields::get_map_field() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+const ::MyType<::std::int32_t, ::std::int32_t>& CustomFields::get_map_field() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
   return __fbthrift_field_map_field;
 }
 
-::MyType CustomFields::get_map_field() && {
-  return static_cast<::MyType&&>(__fbthrift_field_map_field);
+::MyType<::std::int32_t, ::std::int32_t> CustomFields::get_map_field() && {
+  return static_cast<::MyType<::std::int32_t, ::std::int32_t>&&>(__fbthrift_field_map_field);
 }
 
 const ::py3::simple::SimpleStruct& CustomFields::get_struct_field() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {

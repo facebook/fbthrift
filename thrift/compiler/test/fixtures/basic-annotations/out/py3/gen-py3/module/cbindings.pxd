@@ -35,17 +35,17 @@ from thrift.python.common cimport cThriftMetadata as __fbthrift_cThriftMetadata
 
 
 cdef extern from * nogil:
-    cdef cppclass std_deque_std_string "std::deque<std::string>":
-        ctypedef string value_type
+    cdef cppclass std_deque "std::deque"[T]:
+        ctypedef T value_type
         ctypedef size_t size_type
 
         cppclass iterator:
-            string& operator*()
+            T& operator*()
             iterator operator++()
             bint operator==(iterator)
             bint operator!=(iterator)
         cppclass reverse_iterator:
-            string& operator*()
+            T& operator*()
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
@@ -54,11 +54,11 @@ cdef extern from * nogil:
         cppclass const_reverse_iterator(reverse_iterator):
             pass
 
-        std_deque_std_string() except +
-        std_deque_std_string(std_deque_std_string&) except +
+        std_deque() except +
+        std_deque(std_deque&) except +
 
-        string& operator[](size_type)
-        void push_back(string&) except +
+        T& operator[](size_type)
+        void push_back(T&) except +
         size_type size()
         iterator begin()
         const_iterator const_begin "begin"()

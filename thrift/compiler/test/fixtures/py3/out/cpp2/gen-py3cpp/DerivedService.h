@@ -160,8 +160,8 @@ class ServiceHandler<::py3::simple::DerivedService> : virtual public ::py3::simp
 namespace detail {
 template <> struct TSchemaAssociation<::py3::simple::DerivedService, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 4305733995389591354;
-  static constexpr ::std::string_view definitionKey = {"\x84\x0d\x90\xe5\xb0\x22\xf1\xa0\x2e\x2b\x04\xb5\xe8\xca\xbe\x78", 16};
+  static constexpr int64_t programId = 5777011531022044677;
+  static constexpr ::std::string_view definitionKey = {"\x1c\x3f\xf5\x1c\x04\x46\xb7\x26\xf5\xe1\xc5\xd9\x4a\x51\xfe\x36", 16};
 };
 }
 } // namespace apache::thrift

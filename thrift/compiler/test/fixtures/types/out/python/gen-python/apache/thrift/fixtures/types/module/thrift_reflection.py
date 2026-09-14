@@ -259,7 +259,7 @@ def get_reflection__CppTypeStruct():
             qualifier=_Qualifier.UNQUALIFIED,
             default=_fbthrift_field_1_type(),
             structured_annotations={
-                "cpp.Type": _ConstantSpec(value=  _ConstantStructSpec(struct_type=_fbthrift__facebook__thrift__annotation__cpp__thrift_types.Type, fields={  "name": _ConstantSpec(value=  "std::list<int32_t>", thrift_type=_ThriftType.STRING),}), thrift_type=_ThriftType.STRUCT),
+                "cpp.Type": _ConstantSpec(value=  _ConstantStructSpec(struct_type=_fbthrift__facebook__thrift__annotation__cpp__thrift_types.Type, fields={  "template": _ConstantSpec(value=  "std::list", thrift_type=_ThriftType.STRING),}), thrift_type=_ThriftType.STRUCT),
             },
         ),
     )

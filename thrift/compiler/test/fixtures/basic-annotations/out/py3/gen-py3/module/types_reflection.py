@@ -83,7 +83,7 @@ def get_reflection__SecretStruct() -> __StructSpec:
         ),
     )
     return spec
-def get_reflection__std_deque_std_string__List__string() -> __ListSpec :
+def get_reflection__std_deque__List__string() -> __ListSpec :
     return __ListSpec._fbthrift_create(
         value=str,
         kind=__NumberType.NOT_A_NUMBER,

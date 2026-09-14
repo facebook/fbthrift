@@ -56,7 +56,7 @@ from module.thrift_enums import (
 )
 
 from module.containers_FBTHRIFT_ONLY_DO_NOT_USE import (
-    std_deque_std_string__List__string,
+    std_deque__List__string,
 )
 
 _fbthrift__module_name__ = "module.types"
@@ -289,8 +289,8 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         py_deprecated_types = importlib.import_module("module.ttypes")
         return thrift.util.converter.to_py_struct(py_deprecated_types.SecretStruct, self)
 
-cdef _module_cbindings.std_deque_std_string std_deque_std_string__List__string__make_instance(object items) except *:
-    cdef _module_cbindings.std_deque_std_string c_inst
+cdef _module_cbindings.std_deque[string] std_deque__List__string__make_instance(object items) except *:
+    cdef _module_cbindings.std_deque[string] c_inst
     if items is None:
         return cmove(c_inst)
     if isinstance(items, str):
@@ -301,13 +301,13 @@ cdef _module_cbindings.std_deque_std_string std_deque_std_string__List__string__
         c_inst.push_back(item.encode('UTF-8'))
     return cmove(c_inst)
 
-cdef object std_deque_std_string__List__string__from_cpp(const _module_cbindings.std_deque_std_string& c_vec) except *:
+cdef object std_deque__List__string__from_cpp(const _module_cbindings.std_deque[string]& c_vec) except *:
     cdef list py_list = []
     cdef int idx = 0
     for idx in range(c_vec.size()):
         py_list.append(__init_unicode_from_cpp(c_vec[idx]))
-    return std_deque_std_string__List__string(py_list, thrift.py3.types._fbthrift_list_private_ctor)
+    return std_deque__List__string(py_list, thrift.py3.types._fbthrift_list_private_ctor)
 
 
 myStruct = MyStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(constant_shared_ptr(_module_cbindings.cmyStruct()))
-list_string_6884 = std_deque_std_string__List__string
+list_string_6884 = std_deque__List__string

@@ -188,10 +188,10 @@ class ParamServiceWrapper : virtual public ParamServiceSvIf {
         , std::unique_ptr<::some::valid::ns::ContainerStruct> no_annotation
         , std::unique_ptr<std::set<int32_t>> opt_ref_type_shared
         , CppFakeI32 base_type
-        , std::unique_ptr<folly::small_vector<int64_t, 8 >> list_type
+        , std::unique_ptr<folly::small_vector<int64_t>> list_type
         , std::unique_ptr<folly::sorted_vector_set<std::string>> set_type
-        , std::unique_ptr<FakeMap> map_type
-        , std::unique_ptr<std::unordered_map<std::string, ContainerStruct>> map_struct_type
+        , std::unique_ptr<::FakeMap<int64_t,double>> map_type
+        , std::unique_ptr<std::unordered_map<std::string,::some::valid::ns::ContainerStruct>> map_struct_type
         , std::unique_ptr<folly::IOBuf> iobuf_type
         , std::unique_ptr<std::unique_ptr<folly::IOBuf>> iobuf_ptr
         , std::unique_ptr<std::vector<int32_t>> list_i32_template

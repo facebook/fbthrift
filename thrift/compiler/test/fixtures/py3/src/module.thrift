@@ -266,11 +266,11 @@ typedef double CustomDouble
 typedef string CustomString
 @cpp.Type{name = "::MyType"}
 typedef binary CustomBinary
-@cpp.Type{name = "::MyType"}
+@cpp.Type{template = "::MyType"}
 typedef list<i32> CustomList
-@cpp.Type{name = "::MyType"}
+@cpp.Type{template = "::MyType"}
 typedef set<i32> CustomSet
-@cpp.Type{name = "::MyType"}
+@cpp.Type{template = "::MyType"}
 typedef map<i32, i32> CustomMap
 typedef SimpleStruct CustomStruct
 
@@ -309,11 +309,11 @@ struct CustomFields {
   4: string string_field;
   @cpp.Type{name = "::MyType"}
   5: binary binary_field;
-  @cpp.Type{name = "::MyType"}
+  @cpp.Type{template = "::MyType"}
   6: list<i32> list_field;
-  @cpp.Type{name = "::MyType"}
+  @cpp.Type{template = "::MyType"}
   7: set<i32> set_field;
-  @cpp.Type{name = "::MyType"}
+  @cpp.Type{template = "::MyType"}
   8: map<i32, i32> map_field;
   9: SimpleStruct struct_field;
 }

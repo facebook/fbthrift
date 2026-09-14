@@ -30,7 +30,7 @@ from thrift.py3.types cimport _ensure_py3_container_or_raise
 
 import module.types as _module_types
 from module.containers_FBTHRIFT_ONLY_DO_NOT_USE import (
-    std_deque_std_string__List__string,
+    std_deque__List__string,
 )
 
 

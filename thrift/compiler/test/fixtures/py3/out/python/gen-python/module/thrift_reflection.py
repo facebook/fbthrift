@@ -820,7 +820,7 @@ def get_reflection__CustomFields():
             qualifier=_Qualifier.UNQUALIFIED,
             default=_fbthrift_field_6_type(),
             structured_annotations={
-                "cpp.Type": _ConstantSpec(value=  _ConstantStructSpec(struct_type=_fbthrift__facebook__thrift__annotation__cpp__thrift_types.Type, fields={  "name": _ConstantSpec(value=  "::MyType", thrift_type=_ThriftType.STRING),}), thrift_type=_ThriftType.STRUCT),
+                "cpp.Type": _ConstantSpec(value=  _ConstantStructSpec(struct_type=_fbthrift__facebook__thrift__annotation__cpp__thrift_types.Type, fields={  "template": _ConstantSpec(value=  "::MyType", thrift_type=_ThriftType.STRING),}), thrift_type=_ThriftType.STRUCT),
             },
         ),
     )
@@ -834,7 +834,7 @@ def get_reflection__CustomFields():
             qualifier=_Qualifier.UNQUALIFIED,
             default=_fbthrift_field_7_type(),
             structured_annotations={
-                "cpp.Type": _ConstantSpec(value=  _ConstantStructSpec(struct_type=_fbthrift__facebook__thrift__annotation__cpp__thrift_types.Type, fields={  "name": _ConstantSpec(value=  "::MyType", thrift_type=_ThriftType.STRING),}), thrift_type=_ThriftType.STRUCT),
+                "cpp.Type": _ConstantSpec(value=  _ConstantStructSpec(struct_type=_fbthrift__facebook__thrift__annotation__cpp__thrift_types.Type, fields={  "template": _ConstantSpec(value=  "::MyType", thrift_type=_ThriftType.STRING),}), thrift_type=_ThriftType.STRUCT),
             },
         ),
     )
@@ -848,7 +848,7 @@ def get_reflection__CustomFields():
             qualifier=_Qualifier.UNQUALIFIED,
             default=_fbthrift_field_8_type(),
             structured_annotations={
-                "cpp.Type": _ConstantSpec(value=  _ConstantStructSpec(struct_type=_fbthrift__facebook__thrift__annotation__cpp__thrift_types.Type, fields={  "name": _ConstantSpec(value=  "::MyType", thrift_type=_ThriftType.STRING),}), thrift_type=_ThriftType.STRUCT),
+                "cpp.Type": _ConstantSpec(value=  _ConstantStructSpec(struct_type=_fbthrift__facebook__thrift__annotation__cpp__thrift_types.Type, fields={  "template": _ConstantSpec(value=  "::MyType", thrift_type=_ThriftType.STRING),}), thrift_type=_ThriftType.STRUCT),
             },
         ),
     )

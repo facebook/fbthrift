@@ -3225,20 +3225,20 @@ struct UnnecessaryAnnotation {
 }
 
 struct UnorderableCustomType {
-  @cpp.Type{name = "custom"}
+  @cpp.Type{template = "custom"}
   1: set<i32> a;
 }
 
 @cpp.EnableCustomTypeOrdering
 struct ExplicitlyEnabledCustomType {
-  @cpp.Type{name = "custom"}
+  @cpp.Type{template = "custom"}
   1: set<i32> a;
 }
 
 @thrift.Uri{value = "facebook.com/thrift/ExplicitlyEnabledCustomTypeWithUri"}
 @cpp.EnableCustomTypeOrdering
 struct ExplicitlyEnabledCustomTypeWithUri {
-  @cpp.Type{name = "custom"}
+  @cpp.Type{template = "custom"}
   1: set<i32> a;
 }
 )",

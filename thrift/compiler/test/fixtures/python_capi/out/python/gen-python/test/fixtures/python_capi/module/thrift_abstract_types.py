@@ -554,6 +554,11 @@ _fbthrift_SomeBinary = SomeBinary
 
 uint64 = builtins.int
 ui64 = builtins.int
+uint8 = builtins.int
+small_vector_uint8 = _typing.Sequence[builtins.int]
+fbvector_uint8 = _typing.Sequence[builtins.int]
+fbvector2_uint8 = _typing.Sequence[_typing.Sequence[builtins.int]]
+fbvector_double = _typing.Sequence[builtins.float]
 signed_byte = builtins.int
 IOBuf = _fbthrift_iobuf.IOBuf
 IOBufPtr = _fbthrift_iobuf.IOBuf

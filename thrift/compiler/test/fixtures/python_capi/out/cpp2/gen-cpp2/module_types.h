@@ -562,6 +562,16 @@ namespace test::fixtures::python_capi {
 using uint64 = uint64_t;
 /** Glean {"file": "thrift/compiler/test/fixtures/python_capi/src/module.thrift", "name": "ui64", "kind": "typedef" } */
 using ui64 = ::test::fixtures::python_capi::uint64;
+/** Glean {"file": "thrift/compiler/test/fixtures/python_capi/src/module.thrift", "name": "uint8", "kind": "typedef" } */
+using uint8 = uint8_t;
+/** Glean {"file": "thrift/compiler/test/fixtures/python_capi/src/module.thrift", "name": "small_vector_uint8", "kind": "typedef" } */
+using small_vector_uint8 = folly::small_vector<::test::fixtures::python_capi::uint8>;
+/** Glean {"file": "thrift/compiler/test/fixtures/python_capi/src/module.thrift", "name": "fbvector_uint8", "kind": "typedef" } */
+using fbvector_uint8 = folly::fbvector<::test::fixtures::python_capi::uint8>;
+/** Glean {"file": "thrift/compiler/test/fixtures/python_capi/src/module.thrift", "name": "fbvector2_uint8", "kind": "typedef" } */
+using fbvector2_uint8 = folly::fbvector<::test::fixtures::python_capi::fbvector_uint8>;
+/** Glean {"file": "thrift/compiler/test/fixtures/python_capi/src/module.thrift", "name": "fbvector_double", "kind": "typedef" } */
+using fbvector_double = folly::fbvector<double>;
 /** Glean {"file": "thrift/compiler/test/fixtures/python_capi/src/module.thrift", "name": "signed_byte", "kind": "typedef" } */
 using signed_byte = ::std::int8_t;
 /** Glean {"file": "thrift/compiler/test/fixtures/python_capi/src/module.thrift", "name": "IOBuf", "kind": "typedef" } */
@@ -2990,10 +3000,10 @@ class ListStruct final  {
     ::apache::thrift::type::list<::apache::thrift::type::i64_t>,
     ::apache::thrift::type::list<::apache::thrift::type::string_t>,
     ::apache::thrift::type::cpp_type<std::deque<::std::string>, ::apache::thrift::type::list<::apache::thrift::type::binary_t>>,
-    ::apache::thrift::type::cpp_type<std::deque<uint64_t>, ::apache::thrift::type::list<::apache::thrift::type::i64_t>>,
+    ::apache::thrift::type::cpp_type<std::deque<::test::fixtures::python_capi::uint64>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::uint64, ::apache::thrift::type::i64_t>>>,
     ::apache::thrift::type::list<::apache::thrift::type::list<::apache::thrift::type::double_t>>,
-    ::apache::thrift::type::cpp_type<folly::small_vector<folly::small_vector<uint8_t>>, ::apache::thrift::type::list<::apache::thrift::type::list<::apache::thrift::type::byte_t>>>,
-    ::apache::thrift::type::cpp_type<folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>, ::apache::thrift::type::list<::apache::thrift::type::list<::apache::thrift::type::list<::apache::thrift::type::byte_t>>>>,
+    ::apache::thrift::type::cpp_type<folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::small_vector_uint8, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::uint8, ::apache::thrift::type::byte_t>>>>>,
+    ::apache::thrift::type::cpp_type<folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::fbvector2_uint8, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::fbvector_uint8, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::uint8, ::apache::thrift::type::byte_t>>>>>>>,
     ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::IOBufPtr, ::apache::thrift::type::binary_t>>
   >;
   void __fbthrift_clear();
@@ -3011,7 +3021,7 @@ class ListStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ListStruct(apache::thrift::FragileConstructor, ::std::vector<bool> boolz__arg, ::std::vector<::std::int64_t> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::string>> stringz__arg, std::deque<::std::string> encoded__arg, std::deque<uint64_t> uidz__arg, ::std::vector<::std::vector<double>> matrix__arg, folly::small_vector<folly::small_vector<uint8_t>> ucharz__arg, folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>> voxels__arg, ::std::vector<::test::fixtures::python_capi::IOBufPtr> buf_ptrs__arg);
+  ListStruct(apache::thrift::FragileConstructor, ::std::vector<bool> boolz__arg, ::std::vector<::std::int64_t> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::string>> stringz__arg, std::deque<::std::string> encoded__arg, std::deque<::test::fixtures::python_capi::uint64> uidz__arg, ::std::vector<::std::vector<double>> matrix__arg, folly::small_vector<::test::fixtures::python_capi::small_vector_uint8> ucharz__arg, folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8> voxels__arg, ::std::vector<::test::fixtures::python_capi::IOBufPtr> buf_ptrs__arg);
 
   ListStruct(ListStruct&&) noexcept;
 
@@ -3029,13 +3039,13 @@ class ListStruct final  {
  private:
   std::deque<::std::string> __fbthrift_field_encoded;
  private:
-  std::deque<uint64_t> __fbthrift_field_uidz;
+  std::deque<::test::fixtures::python_capi::uint64> __fbthrift_field_uidz;
  private:
   ::std::vector<::std::vector<double>> __fbthrift_field_matrix;
  private:
-  folly::small_vector<folly::small_vector<uint8_t>> __fbthrift_field_ucharz;
+  folly::small_vector<::test::fixtures::python_capi::small_vector_uint8> __fbthrift_field_ucharz;
  private:
-  folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>> __fbthrift_field_voxels;
+  folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8> __fbthrift_field_voxels;
  private:
   ::std::vector<::test::fixtures::python_capi::IOBufPtr> __fbthrift_field_buf_ptrs;
  private:
@@ -3191,37 +3201,37 @@ class ListStruct final  {
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::deque<uint64_t>>
+  template <typename..., typename fbthrift_T = std::deque<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> uidz_ref() const& {
     return {this->__fbthrift_field_uidz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::deque<uint64_t>>
+  template <typename..., typename fbthrift_T = std::deque<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> uidz_ref() & {
     return {this->__fbthrift_field_uidz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::deque<uint64_t>>
+  template <typename..., typename fbthrift_T = std::deque<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> uidz_ref() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_uidz), __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::deque<uint64_t>>
+  template <typename..., typename fbthrift_T = std::deque<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> uidz() const& {
     return {this->__fbthrift_field_uidz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::deque<uint64_t>>
+  template <typename..., typename fbthrift_T = std::deque<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> uidz() & {
     return {this->__fbthrift_field_uidz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::deque<uint64_t>>
+  template <typename..., typename fbthrift_T = std::deque<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> uidz() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_uidz), __isset.at(3), __isset.bit(3)};
   }
@@ -3263,73 +3273,73 @@ class ListStruct final  {
   }
 
   /** Glean { "field": "ucharz" } */
-  template <typename..., typename fbthrift_T = folly::small_vector<folly::small_vector<uint8_t>>>
+  template <typename..., typename fbthrift_T = folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> ucharz_ref() const& {
     return {this->__fbthrift_field_ucharz, __isset.at(5), __isset.bit(5)};
   }
 
   /** Glean { "field": "ucharz" } */
-  template <typename..., typename fbthrift_T = folly::small_vector<folly::small_vector<uint8_t>>>
+  template <typename..., typename fbthrift_T = folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> ucharz_ref() & {
     return {this->__fbthrift_field_ucharz, __isset.at(5), __isset.bit(5)};
   }
 
   /** Glean { "field": "ucharz" } */
-  template <typename..., typename fbthrift_T = folly::small_vector<folly::small_vector<uint8_t>>>
+  template <typename..., typename fbthrift_T = folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> ucharz_ref() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_ucharz), __isset.at(5), __isset.bit(5)};
   }
 
   /** Glean { "field": "ucharz" } */
-  template <typename..., typename fbthrift_T = folly::small_vector<folly::small_vector<uint8_t>>>
+  template <typename..., typename fbthrift_T = folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> ucharz() const& {
     return {this->__fbthrift_field_ucharz, __isset.at(5), __isset.bit(5)};
   }
 
   /** Glean { "field": "ucharz" } */
-  template <typename..., typename fbthrift_T = folly::small_vector<folly::small_vector<uint8_t>>>
+  template <typename..., typename fbthrift_T = folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> ucharz() & {
     return {this->__fbthrift_field_ucharz, __isset.at(5), __isset.bit(5)};
   }
 
   /** Glean { "field": "ucharz" } */
-  template <typename..., typename fbthrift_T = folly::small_vector<folly::small_vector<uint8_t>>>
+  template <typename..., typename fbthrift_T = folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> ucharz() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_ucharz), __isset.at(5), __isset.bit(5)};
   }
 
   /** Glean { "field": "voxels" } */
-  template <typename..., typename fbthrift_T = folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>>
+  template <typename..., typename fbthrift_T = folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> voxels_ref() const& {
     return {this->__fbthrift_field_voxels, __isset.at(6), __isset.bit(6)};
   }
 
   /** Glean { "field": "voxels" } */
-  template <typename..., typename fbthrift_T = folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>>
+  template <typename..., typename fbthrift_T = folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> voxels_ref() & {
     return {this->__fbthrift_field_voxels, __isset.at(6), __isset.bit(6)};
   }
 
   /** Glean { "field": "voxels" } */
-  template <typename..., typename fbthrift_T = folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>>
+  template <typename..., typename fbthrift_T = folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> voxels_ref() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_voxels), __isset.at(6), __isset.bit(6)};
   }
 
   /** Glean { "field": "voxels" } */
-  template <typename..., typename fbthrift_T = folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>>
+  template <typename..., typename fbthrift_T = folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> voxels() const& {
     return {this->__fbthrift_field_voxels, __isset.at(6), __isset.bit(6)};
   }
 
   /** Glean { "field": "voxels" } */
-  template <typename..., typename fbthrift_T = folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>>
+  template <typename..., typename fbthrift_T = folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> voxels() & {
     return {this->__fbthrift_field_voxels, __isset.at(6), __isset.bit(6)};
   }
 
   /** Glean { "field": "voxels" } */
-  template <typename..., typename fbthrift_T = folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>>
+  template <typename..., typename fbthrift_T = folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> voxels() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_voxels), __isset.at(6), __isset.bit(6)};
   }
@@ -3422,16 +3432,16 @@ class ListStruct final  {
 
   /** Glean { "field": "uidz" } */
   [[deprecated("Use `FOO.uidz().value()` instead of `FOO.get_uidz()`")]]
-  const std::deque<uint64_t>& get_uidz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
+  const std::deque<::test::fixtures::python_capi::uint64>& get_uidz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
 
   /** Glean { "field": "uidz" } */
   [[deprecated("Use `FOO.uidz().value()` instead of `FOO.get_uidz()`")]]
-  std::deque<uint64_t> get_uidz() &&;
+  std::deque<::test::fixtures::python_capi::uint64> get_uidz() &&;
 
   /** Glean { "field": "uidz" } */
-  template <typename T_ListStruct_uidz_struct_setter = std::deque<uint64_t>>
+  template <typename T_ListStruct_uidz_struct_setter = std::deque<::test::fixtures::python_capi::uint64>>
   [[deprecated("Use `FOO.uidz() = BAR` instead of `FOO.set_uidz(BAR)`")]]
-  std::deque<uint64_t>& set_uidz(T_ListStruct_uidz_struct_setter&& uidz_) {
+  std::deque<::test::fixtures::python_capi::uint64>& set_uidz(T_ListStruct_uidz_struct_setter&& uidz_) {
     uidz_ref() = std::forward<T_ListStruct_uidz_struct_setter>(uidz_);
     return __fbthrift_field_uidz;
   }
@@ -3454,32 +3464,32 @@ class ListStruct final  {
 
   /** Glean { "field": "ucharz" } */
   [[deprecated("Use `FOO.ucharz().value()` instead of `FOO.get_ucharz()`")]]
-  const folly::small_vector<folly::small_vector<uint8_t>>& get_ucharz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
+  const folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>& get_ucharz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
 
   /** Glean { "field": "ucharz" } */
   [[deprecated("Use `FOO.ucharz().value()` instead of `FOO.get_ucharz()`")]]
-  folly::small_vector<folly::small_vector<uint8_t>> get_ucharz() &&;
+  folly::small_vector<::test::fixtures::python_capi::small_vector_uint8> get_ucharz() &&;
 
   /** Glean { "field": "ucharz" } */
-  template <typename T_ListStruct_ucharz_struct_setter = folly::small_vector<folly::small_vector<uint8_t>>>
+  template <typename T_ListStruct_ucharz_struct_setter = folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>>
   [[deprecated("Use `FOO.ucharz() = BAR` instead of `FOO.set_ucharz(BAR)`")]]
-  folly::small_vector<folly::small_vector<uint8_t>>& set_ucharz(T_ListStruct_ucharz_struct_setter&& ucharz_) {
+  folly::small_vector<::test::fixtures::python_capi::small_vector_uint8>& set_ucharz(T_ListStruct_ucharz_struct_setter&& ucharz_) {
     ucharz_ref() = std::forward<T_ListStruct_ucharz_struct_setter>(ucharz_);
     return __fbthrift_field_ucharz;
   }
 
   /** Glean { "field": "voxels" } */
   [[deprecated("Use `FOO.voxels().value()` instead of `FOO.get_voxels()`")]]
-  const folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>& get_voxels() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
+  const folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>& get_voxels() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
 
   /** Glean { "field": "voxels" } */
   [[deprecated("Use `FOO.voxels().value()` instead of `FOO.get_voxels()`")]]
-  folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>> get_voxels() &&;
+  folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8> get_voxels() &&;
 
   /** Glean { "field": "voxels" } */
-  template <typename T_ListStruct_voxels_struct_setter = folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>>
+  template <typename T_ListStruct_voxels_struct_setter = folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>>
   [[deprecated("Use `FOO.voxels() = BAR` instead of `FOO.set_voxels(BAR)`")]]
-  folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>& set_voxels(T_ListStruct_voxels_struct_setter&& voxels_) {
+  folly::fbvector<::test::fixtures::python_capi::fbvector2_uint8>& set_voxels(T_ListStruct_voxels_struct_setter&& voxels_) {
     voxels_ref() = std::forward<T_ListStruct_voxels_struct_setter>(voxels_);
     return __fbthrift_field_voxels;
   }
@@ -3560,8 +3570,8 @@ class SetStruct final  {
     ::apache::thrift::type::set<::apache::thrift::type::i32_t>,
     ::apache::thrift::type::set<::apache::thrift::type::binary_t>,
     ::apache::thrift::type::cpp_type<std::unordered_set<::std::string>, ::apache::thrift::type::set<::apache::thrift::type::binary_t>>,
-    ::apache::thrift::type::cpp_type<std::unordered_set<uint64_t>, ::apache::thrift::type::set<::apache::thrift::type::i64_t>>,
-    ::apache::thrift::type::cpp_type<folly::F14FastSet<uint8_t>, ::apache::thrift::type::set<::apache::thrift::type::byte_t>>,
+    ::apache::thrift::type::cpp_type<std::unordered_set<::test::fixtures::python_capi::uint64>, ::apache::thrift::type::set<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::uint64, ::apache::thrift::type::i64_t>>>,
+    ::apache::thrift::type::cpp_type<folly::F14FastSet<::test::fixtures::python_capi::uint8>, ::apache::thrift::type::set<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::uint8, ::apache::thrift::type::byte_t>>>,
     ::apache::thrift::type::list<::apache::thrift::type::set<::apache::thrift::type::i64_t>>
   >;
   void __fbthrift_clear();
@@ -3579,7 +3589,7 @@ class SetStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  SetStruct(apache::thrift::FragileConstructor, ::std::set<::test::fixtures::python_capi::MyEnum> enumz__arg, ::std::set<::std::int32_t> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::set<::std::string>> binnaz__arg, std::unordered_set<::std::string> encoded__arg, std::unordered_set<uint64_t> uidz__arg, folly::F14FastSet<uint8_t> charz__arg, ::std::vector<::std::set<::std::int64_t>> setz__arg);
+  SetStruct(apache::thrift::FragileConstructor, ::std::set<::test::fixtures::python_capi::MyEnum> enumz__arg, ::std::set<::std::int32_t> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::set<::std::string>> binnaz__arg, std::unordered_set<::std::string> encoded__arg, std::unordered_set<::test::fixtures::python_capi::uint64> uidz__arg, folly::F14FastSet<::test::fixtures::python_capi::uint8> charz__arg, ::std::vector<::std::set<::std::int64_t>> setz__arg);
 
   SetStruct(SetStruct&&) noexcept;
   SetStruct(const SetStruct& src);
@@ -3599,9 +3609,9 @@ class SetStruct final  {
  private:
   std::unordered_set<::std::string> __fbthrift_field_encoded;
  private:
-  std::unordered_set<uint64_t> __fbthrift_field_uidz;
+  std::unordered_set<::test::fixtures::python_capi::uint64> __fbthrift_field_uidz;
  private:
-  folly::F14FastSet<uint8_t> __fbthrift_field_charz;
+  folly::F14FastSet<::test::fixtures::python_capi::uint8> __fbthrift_field_charz;
  private:
   ::std::vector<::std::set<::std::int64_t>> __fbthrift_field_setz;
  private:
@@ -3757,73 +3767,73 @@ class SetStruct final  {
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::unordered_set<uint64_t>>
+  template <typename..., typename fbthrift_T = std::unordered_set<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> uidz_ref() const& {
     return {this->__fbthrift_field_uidz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::unordered_set<uint64_t>>
+  template <typename..., typename fbthrift_T = std::unordered_set<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> uidz_ref() & {
     return {this->__fbthrift_field_uidz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::unordered_set<uint64_t>>
+  template <typename..., typename fbthrift_T = std::unordered_set<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> uidz_ref() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_uidz), __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::unordered_set<uint64_t>>
+  template <typename..., typename fbthrift_T = std::unordered_set<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> uidz() const& {
     return {this->__fbthrift_field_uidz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::unordered_set<uint64_t>>
+  template <typename..., typename fbthrift_T = std::unordered_set<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> uidz() & {
     return {this->__fbthrift_field_uidz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "uidz" } */
-  template <typename..., typename fbthrift_T = std::unordered_set<uint64_t>>
+  template <typename..., typename fbthrift_T = std::unordered_set<::test::fixtures::python_capi::uint64>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> uidz() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_uidz), __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "charz" } */
-  template <typename..., typename fbthrift_T = folly::F14FastSet<uint8_t>>
+  template <typename..., typename fbthrift_T = folly::F14FastSet<::test::fixtures::python_capi::uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> charz_ref() const& {
     return {this->__fbthrift_field_charz, __isset.at(4), __isset.bit(4)};
   }
 
   /** Glean { "field": "charz" } */
-  template <typename..., typename fbthrift_T = folly::F14FastSet<uint8_t>>
+  template <typename..., typename fbthrift_T = folly::F14FastSet<::test::fixtures::python_capi::uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> charz_ref() & {
     return {this->__fbthrift_field_charz, __isset.at(4), __isset.bit(4)};
   }
 
   /** Glean { "field": "charz" } */
-  template <typename..., typename fbthrift_T = folly::F14FastSet<uint8_t>>
+  template <typename..., typename fbthrift_T = folly::F14FastSet<::test::fixtures::python_capi::uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> charz_ref() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_charz), __isset.at(4), __isset.bit(4)};
   }
 
   /** Glean { "field": "charz" } */
-  template <typename..., typename fbthrift_T = folly::F14FastSet<uint8_t>>
+  template <typename..., typename fbthrift_T = folly::F14FastSet<::test::fixtures::python_capi::uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> charz() const& {
     return {this->__fbthrift_field_charz, __isset.at(4), __isset.bit(4)};
   }
 
   /** Glean { "field": "charz" } */
-  template <typename..., typename fbthrift_T = folly::F14FastSet<uint8_t>>
+  template <typename..., typename fbthrift_T = folly::F14FastSet<::test::fixtures::python_capi::uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> charz() & {
     return {this->__fbthrift_field_charz, __isset.at(4), __isset.bit(4)};
   }
 
   /** Glean { "field": "charz" } */
-  template <typename..., typename fbthrift_T = folly::F14FastSet<uint8_t>>
+  template <typename..., typename fbthrift_T = folly::F14FastSet<::test::fixtures::python_capi::uint8>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> charz() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_charz), __isset.at(4), __isset.bit(4)};
   }
@@ -3916,32 +3926,32 @@ class SetStruct final  {
 
   /** Glean { "field": "uidz" } */
   [[deprecated("Use `FOO.uidz().value()` instead of `FOO.get_uidz()`")]]
-  const std::unordered_set<uint64_t>& get_uidz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
+  const std::unordered_set<::test::fixtures::python_capi::uint64>& get_uidz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
 
   /** Glean { "field": "uidz" } */
   [[deprecated("Use `FOO.uidz().value()` instead of `FOO.get_uidz()`")]]
-  std::unordered_set<uint64_t> get_uidz() &&;
+  std::unordered_set<::test::fixtures::python_capi::uint64> get_uidz() &&;
 
   /** Glean { "field": "uidz" } */
-  template <typename T_SetStruct_uidz_struct_setter = std::unordered_set<uint64_t>>
+  template <typename T_SetStruct_uidz_struct_setter = std::unordered_set<::test::fixtures::python_capi::uint64>>
   [[deprecated("Use `FOO.uidz() = BAR` instead of `FOO.set_uidz(BAR)`")]]
-  std::unordered_set<uint64_t>& set_uidz(T_SetStruct_uidz_struct_setter&& uidz_) {
+  std::unordered_set<::test::fixtures::python_capi::uint64>& set_uidz(T_SetStruct_uidz_struct_setter&& uidz_) {
     uidz_ref() = std::forward<T_SetStruct_uidz_struct_setter>(uidz_);
     return __fbthrift_field_uidz;
   }
 
   /** Glean { "field": "charz" } */
   [[deprecated("Use `FOO.charz().value()` instead of `FOO.get_charz()`")]]
-  const folly::F14FastSet<uint8_t>& get_charz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
+  const folly::F14FastSet<::test::fixtures::python_capi::uint8>& get_charz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
 
   /** Glean { "field": "charz" } */
   [[deprecated("Use `FOO.charz().value()` instead of `FOO.get_charz()`")]]
-  folly::F14FastSet<uint8_t> get_charz() &&;
+  folly::F14FastSet<::test::fixtures::python_capi::uint8> get_charz() &&;
 
   /** Glean { "field": "charz" } */
-  template <typename T_SetStruct_charz_struct_setter = folly::F14FastSet<uint8_t>>
+  template <typename T_SetStruct_charz_struct_setter = folly::F14FastSet<::test::fixtures::python_capi::uint8>>
   [[deprecated("Use `FOO.charz() = BAR` instead of `FOO.set_charz(BAR)`")]]
-  folly::F14FastSet<uint8_t>& set_charz(T_SetStruct_charz_struct_setter&& charz_) {
+  folly::F14FastSet<::test::fixtures::python_capi::uint8>& set_charz(T_SetStruct_charz_struct_setter&& charz_) {
     charz_ref() = std::forward<T_SetStruct_charz_struct_setter>(charz_);
     return __fbthrift_field_charz;
   }
@@ -4025,10 +4035,10 @@ class MapStruct final  {
     ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::map<::apache::thrift::type::binary_t, ::apache::thrift::type::struct_t<::test::fixtures::python_capi::PrimitiveStruct>>,
     ::apache::thrift::type::cpp_type<std::unordered_map<::std::string, double>, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::double_t>>,
-    ::apache::thrift::type::cpp_type<std::unordered_map<uint64_t, float>, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::float_t>>,
+    ::apache::thrift::type::cpp_type<std::unordered_map<::test::fixtures::python_capi::uint64, float>, ::apache::thrift::type::map<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::uint64, ::apache::thrift::type::i64_t>, ::apache::thrift::type::float_t>>,
     ::apache::thrift::type::list<::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::i64_t>>,
     ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::list<::apache::thrift::type::i64_t>>,
-    ::apache::thrift::type::cpp_type<folly::F14FastMap<int, folly::fbvector<double>>, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::list<::apache::thrift::type::double_t>>>,
+    ::apache::thrift::type::cpp_type<folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::cpp_type<::test::fixtures::python_capi::fbvector_double, ::apache::thrift::type::list<::apache::thrift::type::double_t>>>>,
     ::apache::thrift::type::map<::apache::thrift::type::binary_t, ::apache::thrift::type::cpp_type<::test::fixtures::python_capi::IOBufPtr, ::apache::thrift::type::binary_t>>,
     ::apache::thrift::type::map<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::uint64, ::apache::thrift::type::i64_t>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::uint64, ::apache::thrift::type::i64_t>>>
   >;
@@ -4047,7 +4057,7 @@ class MapStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MapStruct(apache::thrift::FragileConstructor, ::std::map<::test::fixtures::python_capi::MyEnum, ::std::string> enumz__arg, ::std::map<::std::int32_t, ::std::string> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::map<::std::string, ::test::fixtures::python_capi::PrimitiveStruct>> binnaz__arg, std::unordered_map<::std::string, double> encoded__arg, std::unordered_map<uint64_t, float> flotz__arg, ::std::vector<::std::map<::std::int32_t, ::std::int64_t>> map_list__arg, ::std::map<::std::int32_t, ::std::vector<::std::int64_t>> list_map__arg, folly::F14FastMap<int, folly::fbvector<double>> fast_list_map__arg, ::std::map<::std::string, ::test::fixtures::python_capi::IOBufPtr> buf_map__arg, ::std::map<::test::fixtures::python_capi::ui64, ::std::vector<::test::fixtures::python_capi::ui64>> unsigned_list_map__arg);
+  MapStruct(apache::thrift::FragileConstructor, ::std::map<::test::fixtures::python_capi::MyEnum, ::std::string> enumz__arg, ::std::map<::std::int32_t, ::std::string> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::map<::std::string, ::test::fixtures::python_capi::PrimitiveStruct>> binnaz__arg, std::unordered_map<::std::string, double> encoded__arg, std::unordered_map<::test::fixtures::python_capi::uint64, float> flotz__arg, ::std::vector<::std::map<::std::int32_t, ::std::int64_t>> map_list__arg, ::std::map<::std::int32_t, ::std::vector<::std::int64_t>> list_map__arg, folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double> fast_list_map__arg, ::std::map<::std::string, ::test::fixtures::python_capi::IOBufPtr> buf_map__arg, ::std::map<::test::fixtures::python_capi::ui64, ::std::vector<::test::fixtures::python_capi::ui64>> unsigned_list_map__arg);
 
   MapStruct(MapStruct&&) noexcept;
   MapStruct(const MapStruct& src);
@@ -4067,13 +4077,13 @@ class MapStruct final  {
  private:
   std::unordered_map<::std::string, double> __fbthrift_field_encoded;
  private:
-  std::unordered_map<uint64_t, float> __fbthrift_field_flotz;
+  std::unordered_map<::test::fixtures::python_capi::uint64, float> __fbthrift_field_flotz;
  private:
   ::std::vector<::std::map<::std::int32_t, ::std::int64_t>> __fbthrift_field_map_list;
  private:
   ::std::map<::std::int32_t, ::std::vector<::std::int64_t>> __fbthrift_field_list_map;
  private:
-  folly::F14FastMap<int, folly::fbvector<double>> __fbthrift_field_fast_list_map;
+  folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double> __fbthrift_field_fast_list_map;
  private:
   ::std::map<::std::string, ::test::fixtures::python_capi::IOBufPtr> __fbthrift_field_buf_map;
  private:
@@ -4231,37 +4241,37 @@ class MapStruct final  {
   }
 
   /** Glean { "field": "flotz" } */
-  template <typename..., typename fbthrift_T = std::unordered_map<uint64_t, float>>
+  template <typename..., typename fbthrift_T = std::unordered_map<::test::fixtures::python_capi::uint64, float>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> flotz_ref() const& {
     return {this->__fbthrift_field_flotz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "flotz" } */
-  template <typename..., typename fbthrift_T = std::unordered_map<uint64_t, float>>
+  template <typename..., typename fbthrift_T = std::unordered_map<::test::fixtures::python_capi::uint64, float>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> flotz_ref() & {
     return {this->__fbthrift_field_flotz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "flotz" } */
-  template <typename..., typename fbthrift_T = std::unordered_map<uint64_t, float>>
+  template <typename..., typename fbthrift_T = std::unordered_map<::test::fixtures::python_capi::uint64, float>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> flotz_ref() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_flotz), __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "flotz" } */
-  template <typename..., typename fbthrift_T = std::unordered_map<uint64_t, float>>
+  template <typename..., typename fbthrift_T = std::unordered_map<::test::fixtures::python_capi::uint64, float>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> flotz() const& {
     return {this->__fbthrift_field_flotz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "flotz" } */
-  template <typename..., typename fbthrift_T = std::unordered_map<uint64_t, float>>
+  template <typename..., typename fbthrift_T = std::unordered_map<::test::fixtures::python_capi::uint64, float>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> flotz() & {
     return {this->__fbthrift_field_flotz, __isset.at(3), __isset.bit(3)};
   }
 
   /** Glean { "field": "flotz" } */
-  template <typename..., typename fbthrift_T = std::unordered_map<uint64_t, float>>
+  template <typename..., typename fbthrift_T = std::unordered_map<::test::fixtures::python_capi::uint64, float>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> flotz() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_flotz), __isset.at(3), __isset.bit(3)};
   }
@@ -4339,37 +4349,37 @@ class MapStruct final  {
   }
 
   /** Glean { "field": "fast_list_map" } */
-  template <typename..., typename fbthrift_T = folly::F14FastMap<int, folly::fbvector<double>>>
+  template <typename..., typename fbthrift_T = folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> fast_list_map_ref() const& {
     return {this->__fbthrift_field_fast_list_map, __isset.at(6), __isset.bit(6)};
   }
 
   /** Glean { "field": "fast_list_map" } */
-  template <typename..., typename fbthrift_T = folly::F14FastMap<int, folly::fbvector<double>>>
+  template <typename..., typename fbthrift_T = folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> fast_list_map_ref() & {
     return {this->__fbthrift_field_fast_list_map, __isset.at(6), __isset.bit(6)};
   }
 
   /** Glean { "field": "fast_list_map" } */
-  template <typename..., typename fbthrift_T = folly::F14FastMap<int, folly::fbvector<double>>>
+  template <typename..., typename fbthrift_T = folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> fast_list_map_ref() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_fast_list_map), __isset.at(6), __isset.bit(6)};
   }
 
   /** Glean { "field": "fast_list_map" } */
-  template <typename..., typename fbthrift_T = folly::F14FastMap<int, folly::fbvector<double>>>
+  template <typename..., typename fbthrift_T = folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const fbthrift_T&> fast_list_map() const& {
     return {this->__fbthrift_field_fast_list_map, __isset.at(6), __isset.bit(6)};
   }
 
   /** Glean { "field": "fast_list_map" } */
-  template <typename..., typename fbthrift_T = folly::F14FastMap<int, folly::fbvector<double>>>
+  template <typename..., typename fbthrift_T = folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&> fast_list_map() & {
     return {this->__fbthrift_field_fast_list_map, __isset.at(6), __isset.bit(6)};
   }
 
   /** Glean { "field": "fast_list_map" } */
-  template <typename..., typename fbthrift_T = folly::F14FastMap<int, folly::fbvector<double>>>
+  template <typename..., typename fbthrift_T = folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>>
   FOLLY_ERASE ::apache::thrift::field_ref<fbthrift_T&&> fast_list_map() && {
     return {static_cast<fbthrift_T&&>(this->__fbthrift_field_fast_list_map), __isset.at(6), __isset.bit(6)};
   }
@@ -4498,16 +4508,16 @@ class MapStruct final  {
 
   /** Glean { "field": "flotz" } */
   [[deprecated("Use `FOO.flotz().value()` instead of `FOO.get_flotz()`")]]
-  const std::unordered_map<uint64_t, float>& get_flotz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
+  const std::unordered_map<::test::fixtures::python_capi::uint64, float>& get_flotz() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
 
   /** Glean { "field": "flotz" } */
   [[deprecated("Use `FOO.flotz().value()` instead of `FOO.get_flotz()`")]]
-  std::unordered_map<uint64_t, float> get_flotz() &&;
+  std::unordered_map<::test::fixtures::python_capi::uint64, float> get_flotz() &&;
 
   /** Glean { "field": "flotz" } */
-  template <typename T_MapStruct_flotz_struct_setter = std::unordered_map<uint64_t, float>>
+  template <typename T_MapStruct_flotz_struct_setter = std::unordered_map<::test::fixtures::python_capi::uint64, float>>
   [[deprecated("Use `FOO.flotz() = BAR` instead of `FOO.set_flotz(BAR)`")]]
-  std::unordered_map<uint64_t, float>& set_flotz(T_MapStruct_flotz_struct_setter&& flotz_) {
+  std::unordered_map<::test::fixtures::python_capi::uint64, float>& set_flotz(T_MapStruct_flotz_struct_setter&& flotz_) {
     flotz_ref() = std::forward<T_MapStruct_flotz_struct_setter>(flotz_);
     return __fbthrift_field_flotz;
   }
@@ -4546,16 +4556,16 @@ class MapStruct final  {
 
   /** Glean { "field": "fast_list_map" } */
   [[deprecated("Use `FOO.fast_list_map().value()` instead of `FOO.get_fast_list_map()`")]]
-  const folly::F14FastMap<int, folly::fbvector<double>>& get_fast_list_map() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
+  const folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>& get_fast_list_map() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]];
 
   /** Glean { "field": "fast_list_map" } */
   [[deprecated("Use `FOO.fast_list_map().value()` instead of `FOO.get_fast_list_map()`")]]
-  folly::F14FastMap<int, folly::fbvector<double>> get_fast_list_map() &&;
+  folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double> get_fast_list_map() &&;
 
   /** Glean { "field": "fast_list_map" } */
-  template <typename T_MapStruct_fast_list_map_struct_setter = folly::F14FastMap<int, folly::fbvector<double>>>
+  template <typename T_MapStruct_fast_list_map_struct_setter = folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>>
   [[deprecated("Use `FOO.fast_list_map() = BAR` instead of `FOO.set_fast_list_map(BAR)`")]]
-  folly::F14FastMap<int, folly::fbvector<double>>& set_fast_list_map(T_MapStruct_fast_list_map_struct_setter&& fast_list_map_) {
+  folly::F14FastMap<::std::int32_t, ::test::fixtures::python_capi::fbvector_double>& set_fast_list_map(T_MapStruct_fast_list_map_struct_setter&& fast_list_map_) {
     fast_list_map_ref() = std::forward<T_MapStruct_fast_list_map_struct_setter>(fast_list_map_);
     return __fbthrift_field_fast_list_map;
   }
@@ -6393,82 +6403,82 @@ template <> struct TEnumTraits<::test::fixtures::python_capi::SomeBinary::Type> 
 namespace apache::thrift::detail {
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::MyStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\xc6\xf5\xc0\x38\x42\x1a\x5e\x7d\x81\x08\xb7\xa0\x43\x39\x93\x25", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\xc6\x03\x2d\x5d\x92\xc7\x4b\xda\x85\x16\x1d\x81\x2c\x45\x27\x90", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::MyDataItem, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x7f\x84\xab\x78\xd0\x92\x23\x48\x99\xaf\x42\x5b\x5e\x95\x0f\x3a", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\x66\xf7\xba\x55\xb7\x6b\x61\xd8\xc7\xf2\x4f\x2c\x75\x6c\x1e\xa0", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::TransitiveDoubler, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\xd6\xf3\xc3\xc1\x5a\xe2\x5b\xda\xc9\x8d\x0e\xdd\xf3\xb1\x01\xa8", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\xa2\x51\xee\x6d\x66\xda\x1d\x3b\x8a\xc8\x05\xba\x5f\x45\x51\x4d", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::detail::DoubledPair, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x77\x55\xec\x5d\x00\xe5\x34\xa1\xd5\x11\xa6\xd3\xfa\x4d\x46\x53", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\x85\xb5\xce\xcf\xfe\x64\x1f\xeb\x42\xa0\x8c\x63\x8e\xa7\xb9\x3d", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::StringPair, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x80\xbf\xbf\xb9\x29\xef\x58\xf0\xb1\x1c\x48\x4c\x2a\xdf\x64\xa1", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\x81\xe4\xdd\x13\x51\xf7\x49\xc6\xbf\x2b\x6d\xc5\x13\x04\xb7\xaf", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::VapidStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x80\xdd\x29\x36\xe4\xa6\x9d\x65\xc3\xa7\x3b\xba\x04\x54\x16\xe8", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\xfa\x5b\x67\xa3\x4d\xfb\xfb\xb2\x45\x26\xa2\xae\xa6\xc1\xfa\xc7", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::PrimitiveStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x96\x6b\x3e\x6a\x9c\x71\xa4\x18\xd5\xb8\x53\x1c\x41\xe7\xd4\x2b", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\x60\x99\x69\x4e\xad\x15\xd9\xd8\xe3\x6d\xe1\xcb\xaa\x1d\x43\xaa", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::AdaptedFields, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x05\x3d\xb1\x75\xbb\xd0\x32\xfd\x49\xdc\xa8\x41\x19\xcb\x01\xe0", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\xfe\x3a\xce\x35\xc4\xb5\x4e\x77\xc1\x33\x87\xf8\x6b\xdc\xe6\x0c", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::ListStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x48\x37\x77\x71\x40\x26\xd8\xdb\xf7\xf9\x84\x0a\x8d\x09\x81\x16", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\x52\x10\xe9\x93\x24\x89\xfc\x95\x3e\x35\x41\x7e\x73\xbb\xec\x31", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::SetStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x93\xb5\xfa\x8a\x3d\x43\x3e\xb1\x3b\x4a\x01\xc3\xc4\xe5\xaa\xb5", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\xd0\xa5\x52\x93\x1f\x8c\x7d\xaf\xca\x47\x0f\x8a\x11\x49\x73\xf1", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::MapStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x6d\x10\xe1\xf8\xe8\x24\x36\x40\x2c\x40\xe2\x8f\x77\xfd\x44\x8c", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\x5e\xe1\x7f\x46\x45\x71\x49\x78\x97\x29\xd5\xde\x32\x7b\x77\x27", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::ComposeStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\xee\xbb\xdf\x5a\x36\x91\xbb\x81\x57\xb9\x35\x43\xd6\xe1\x40\xc4", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\x19\xf2\xd7\x84\x27\x02\xbc\x6b\xe6\x36\x16\x84\x6f\x1a\x2d\xe1", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::Shallot, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\xdf\x38\xfe\x2e\x42\x05\xb4\xe6\x87\x53\x93\x73\xd7\xcb\x75\x92", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\xcc\x66\xdc\xe2\x58\x72\xb0\x11\xb3\xdf\x00\x8c\x47\x30\xf9\x70", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::SomeBinary, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x39\x2e\x10\x83\x6d\x53\x95\xa2\x59\x81\xe0\xe1\xd9\x4a\x9e\x5f", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\xa0\x83\x97\x54\x4f\xea\xcb\x8c\x0a\xad\x43\x68\x40\x7b\x08\x98", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::MyEnum, true> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x91\x58\x3d\xc9\x13\xfe\xd0\xeb\x89\x02\xb9\x9b\x57\x95\x83\xa6", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\x5a\x44\x7a\x79\xbf\xa3\xed\xed\x3a\x5c\x60\x77\x59\x69\x61\xaf", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::NormalDecentEnum, true> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8356597225850880439;
-  static constexpr ::std::string_view definitionKey = {"\x65\x72\xef\x40\xea\xbb\x62\x6e\xdf\x6c\x92\x54\xc3\x31\x49\x78", 16};
+  static constexpr int64_t programId = 1336288575876310534;
+  static constexpr ::std::string_view definitionKey = {"\x11\xc8\xef\x28\x35\x42\x81\xfb\x84\xee\x28\xeb\xd4\x48\x96\x1d", 16};
 };
 } // namespace apache::thrift::detail

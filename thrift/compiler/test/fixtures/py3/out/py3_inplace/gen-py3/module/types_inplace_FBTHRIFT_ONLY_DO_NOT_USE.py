@@ -1523,7 +1523,7 @@ class _MyType__Map__i32_i32(thrift.py3.types.Map):
     __module__ = _fbthrift__module_name__
     __slots__ = ()
 
-    _FBTHRIFT_USE_SORTED_REPR = True
+    _FBTHRIFT_USE_SORTED_REPR = False
 
     def __init__(self, items=None, private_ctor_token=None) -> None:
         if private_ctor_token is thrift.py3.types._fbthrift_map_private_ctor:

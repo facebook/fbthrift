@@ -140,7 +140,7 @@ class MyStruct(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xc6\xf5\xc0\x38\x42\x1a\x5e\x7d\x81\x08\xb7\xa0\x43\x39\x93\x25"
+        return b"\xc6\x03\x2d\x5d\x92\xc7\x4b\xda\x85\x16\x1d\x81\x2c\x45\x27\x90"
 
     @staticmethod
     def __get_metadata__():
@@ -197,7 +197,7 @@ class MyDataItem(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x7f\x84\xab\x78\xd0\x92\x23\x48\x99\xaf\x42\x5b\x5e\x95\x0f\x3a"
+        return b"\x66\xf7\xba\x55\xb7\x6b\x61\xd8\xc7\xf2\x4f\x2c\x75\x6c\x1e\xa0"
 
     @staticmethod
     def __get_metadata__():
@@ -243,7 +243,7 @@ class TransitiveDoubler(metaclass=_fbthrift_python_mutable_types.MutableStructMe
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xd6\xf3\xc3\xc1\x5a\xe2\x5b\xda\xc9\x8d\x0e\xdd\xf3\xb1\x01\xa8"
+        return b"\xa2\x51\xee\x6d\x66\xda\x1d\x3b\x8a\xc8\x05\xba\x5f\x45\x51\x4d"
 
     @staticmethod
     def __get_metadata__():
@@ -311,7 +311,7 @@ class DoubledPair(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x77\x55\xec\x5d\x00\xe5\x34\xa1\xd5\x11\xa6\xd3\xfa\x4d\x46\x53"
+        return b"\x85\xb5\xce\xcf\xfe\x64\x1f\xeb\x42\xa0\x8c\x63\x8e\xa7\xb9\x3d"
 
     @staticmethod
     def __get_metadata__():
@@ -379,7 +379,7 @@ class StringPair(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x80\xbf\xbf\xb9\x29\xef\x58\xf0\xb1\x1c\x48\x4c\x2a\xdf\x64\xa1"
+        return b"\x81\xe4\xdd\x13\x51\xf7\x49\xc6\xbf\x2b\x6d\xc5\x13\x04\xb7\xaf"
 
     @staticmethod
     def __get_metadata__():
@@ -425,7 +425,7 @@ class EmptyStruct(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x80\xdd\x29\x36\xe4\xa6\x9d\x65\xc3\xa7\x3b\xba\x04\x54\x16\xe8"
+        return b"\xfa\x5b\x67\xa3\x4d\xfb\xfb\xb2\x45\x26\xa2\xae\xa6\xc1\xfa\xc7"
 
     @staticmethod
     def __get_metadata__():
@@ -647,7 +647,7 @@ class PrimitiveStruct(metaclass=_fbthrift_python_mutable_types.MutableStructMeta
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x96\x6b\x3e\x6a\x9c\x71\xa4\x18\xd5\xb8\x53\x1c\x41\xe7\xd4\x2b"
+        return b"\x60\x99\x69\x4e\xad\x15\xd9\xd8\xe3\x6d\xe1\xcb\xaa\x1d\x43\xaa"
 
     @staticmethod
     def __get_metadata__():
@@ -737,7 +737,7 @@ class AdaptedFields(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x05\x3d\xb1\x75\xbb\xd0\x32\xfd\x49\xdc\xa8\x41\x19\xcb\x01\xe0"
+        return b"\xfe\x3a\xce\x35\xc4\xb5\x4e\x77\xc1\x33\x87\xf8\x6b\xdc\xe6\x0c"
 
     @staticmethod
     def __get_metadata__():
@@ -882,7 +882,7 @@ class ListStruct(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x48\x37\x77\x71\x40\x26\xd8\xdb\xf7\xf9\x84\x0a\x8d\x09\x81\x16"
+        return b"\x52\x10\xe9\x93\x24\x89\xfc\x95\x3e\x35\x41\x7e\x73\xbb\xec\x31"
 
     @staticmethod
     def __get_metadata__():
@@ -1005,7 +1005,7 @@ class SetStruct(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x93\xb5\xfa\x8a\x3d\x43\x3e\xb1\x3b\x4a\x01\xc3\xc4\xe5\xaa\xb5"
+        return b"\xd0\xa5\x52\x93\x1f\x8c\x7d\xaf\xca\x47\x0f\x8a\x11\x49\x73\xf1"
 
     @staticmethod
     def __get_metadata__():
@@ -1161,7 +1161,7 @@ class MapStruct(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x6d\x10\xe1\xf8\xe8\x24\x36\x40\x2c\x40\xe2\x8f\x77\xfd\x44\x8c"
+        return b"\x5e\xe1\x7f\x46\x45\x71\x49\x78\x97\x29\xd5\xde\x32\x7b\x77\x27"
 
     @staticmethod
     def __get_metadata__():
@@ -1317,7 +1317,7 @@ class ComposeStruct(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xee\xbb\xdf\x5a\x36\x91\xbb\x81\x57\xb9\x35\x43\xd6\xe1\x40\xc4"
+        return b"\x19\xf2\xd7\x84\x27\x02\xbc\x6b\xe6\x36\x16\x84\x6f\x1a\x2d\xe1"
 
     @staticmethod
     def __get_metadata__():
@@ -1443,7 +1443,7 @@ class Onion(metaclass=_fbthrift_python_mutable_types.MutableUnionMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xdf\x38\xfe\x2e\x42\x05\xb4\xe6\x87\x53\x93\x73\xd7\xcb\x75\x92"
+        return b"\xcc\x66\xdc\xe2\x58\x72\xb0\x11\xb3\xdf\x00\x8c\x47\x30\xf9\x70"
 
     @staticmethod
     def __get_metadata__():
@@ -1525,7 +1525,7 @@ class SomeBinary(metaclass=_fbthrift_python_mutable_types.MutableUnionMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x39\x2e\x10\x83\x6d\x53\x95\xa2\x59\x81\xe0\xe1\xd9\x4a\x9e\x5f"
+        return b"\xa0\x83\x97\x54\x4f\xea\xcb\x8c\x0a\xad\x43\x68\x40\x7b\x08\x98"
 
     @staticmethod
     def __get_metadata__():
@@ -1584,6 +1584,19 @@ _fbthrift_python_mutable_types.fill_specs(*_fbthrift_all_structs)
 
 uint64 = int
 ui64 = int
+uint8 = int
+class small_vector_uint8(_fbthrift_python_mutable_containers._MutableListTypedefBase):
+    __slots__ = ()
+    _fbthrift_mutable_list_type_info = _fbthrift_python_types.typeinfo_byte
+class fbvector_uint8(_fbthrift_python_mutable_containers._MutableListTypedefBase):
+    __slots__ = ()
+    _fbthrift_mutable_list_type_info = _fbthrift_python_types.typeinfo_byte
+class fbvector2_uint8(_fbthrift_python_mutable_containers._MutableListTypedefBase):
+    __slots__ = ()
+    _fbthrift_mutable_list_type_info = _fbthrift_python_mutable_typeinfos.MutableListTypeInfo(_fbthrift_python_types.typeinfo_byte)
+class fbvector_double(_fbthrift_python_mutable_containers._MutableListTypedefBase):
+    __slots__ = ()
+    _fbthrift_mutable_list_type_info = _fbthrift_python_types.typeinfo_double
 signed_byte = int
 IOBuf = _fbthrift_iobuf.IOBuf
 IOBufPtr = _fbthrift_iobuf.IOBuf

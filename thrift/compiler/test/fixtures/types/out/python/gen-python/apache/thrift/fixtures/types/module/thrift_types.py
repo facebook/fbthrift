@@ -47,7 +47,7 @@ class empty_struct(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xdf\x4a\xc6\xa0\x9f\x3d\xa7\x40\xeb\x9c\x9e\xf2\x07\x92\x73\x9e"
+        return b"\x0a\x90\x24\x00\x86\x97\x9a\x14\x21\x90\x3f\x03\x3d\x2f\x0f\x67"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -116,7 +116,7 @@ class decorated_struct(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x36\xd4\x7f\x40\xfe\xd8\x0f\xc2\xf9\xdc\x1f\x6c\x49\x98\x5b\x02"
+        return b"\x50\xb8\x81\x85\x1e\x8c\x1a\x15\x7d\x0b\x82\x95\x39\xd0\x3c\xd8"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -262,7 +262,7 @@ class ContainerStruct(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x68\x84\x65\x2a\x5a\xd2\x47\xbc\x51\xc3\x03\xde\xef\xce\x74\x88"
+        return b"\xfe\x83\xdd\x00\x05\xbb\xad\xa5\xda\xc6\xd2\x11\x3c\xae\xfc\x11"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -331,7 +331,7 @@ class CppTypeStruct(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xad\x54\x09\xa0\x75\x84\x56\x01\xcd\x1d\x0b\x95\xfb\x5b\x7c\x65"
+        return b"\x34\xbd\xbc\x5b\x60\x1a\xb6\x38\x75\xca\x12\x72\x7a\x41\xdf\x87"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -400,7 +400,7 @@ class VirtualStruct(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x09\xc9\x2d\x8e\xbd\xfc\x63\xe0\xb2\x2d\xbe\x4d\xc5\x93\x37\x2a"
+        return b"\xcb\xba\x58\xbd\x99\x18\x4e\x00\x1b\xdc\xed\x0a\x3c\xb5\x81\xa8"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -480,7 +480,7 @@ class MyStructWithForwardRefEnum(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xb4\x51\xb6\x0b\x0c\x32\x8a\x4d\xd1\x24\x29\x0e\x2d\x29\xa2\xca"
+        return b"\x39\xb3\xf6\x56\x33\x37\x9e\xa8\xff\x03\x66\x1d\xb3\xf6\x39\x46"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -560,7 +560,7 @@ class TrivialNumeric(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x85\xcc\xeb\x8c\x04\xe2\x0a\x9f\x5d\xf2\xe7\xfc\x30\xac\x54\xf3"
+        return b"\xcf\x72\xb3\x5e\x2a\x8d\x31\xb6\xd4\x01\xd7\x58\x90\xba\x8c\x9d"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -640,7 +640,7 @@ class TrivialNestedWithDefault(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x81\x81\xb2\x95\x99\xc6\xc4\x70\xe0\x9f\x96\x9d\xcd\x78\xff\x2e"
+        return b"\xcc\xea\x08\x7f\x5f\x4c\xbc\xc1\xba\x7f\x00\x23\x36\x47\x3d\x5d"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -720,7 +720,7 @@ class ComplexString(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x6e\x2d\x9d\xb8\x90\x6c\x18\x2a\xee\xa8\x37\xcb\x7c\xc6\x18\x23"
+        return b"\x9f\x4a\xb3\x2c\xc1\xfa\x3d\xfd\x5a\xc2\xbb\xc6\x26\x27\x67\xbf"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -800,7 +800,7 @@ class ComplexNestedWithDefault(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x38\x9b\x00\x86\xc0\x80\x5f\x79\x64\x21\x02\x7b\x11\x36\xc5\xd7"
+        return b"\x26\x96\xc3\x53\x52\xd2\x73\xdd\x66\x0f\x77\x0c\xd2\x32\xf4\x89"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -913,7 +913,7 @@ class MinPadding(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x50\xf1\x0a\xd4\x65\x26\xed\x00\x6b\xd9\x74\x47\x93\x0c\x6a\xed"
+        return b"\x46\xf1\xff\x21\x63\x16\x2c\x2f\x10\x20\x2d\xf6\xff\xec\x77\xbb"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1026,7 +1026,7 @@ class MinPaddingWithCustomType(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xc4\xf4\x4c\x5f\xb7\x6f\x99\x3c\xe3\x1a\xd9\x12\x10\xd9\x9d\xe6"
+        return b"\x46\xce\x2f\x27\x5c\x49\xed\x45\x9b\x9e\x30\x60\xa1\x5e\x11\x77"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1128,7 +1128,7 @@ class MyStruct(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x6c\xd6\xe3\x51\xa9\xe3\x1c\xfd\x10\x50\xc6\xbe\x2d\xa8\x5b\x28"
+        return b"\x4d\x43\xb3\x72\x3d\x33\x44\xd8\xca\xca\x66\x35\xfa\x83\x2b\xa0"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1186,7 +1186,7 @@ class MyDataItem(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xbb\xb0\x2c\xca\x9b\x28\x4a\x63\x3f\x4f\x39\x61\x85\x6c\xb0\xe5"
+        return b"\xf3\x52\xcd\xf3\xae\xe5\x96\x2c\xa0\xd7\x45\xe0\x28\x0c\x06\xc6"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1255,7 +1255,7 @@ class Renaming(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xe5\x34\xa0\xc9\xc5\x8c\x16\xa4\x41\x97\xa0\x7f\x89\xe9\xfa\x09"
+        return b"\xd9\xec\x19\x73\x46\x18\x9f\xc0\xb0\xed\xa9\xfa\x59\xb5\xcd\x42"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1335,7 +1335,7 @@ class AnnotatedTypes(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xb6\x37\xfe\x12\x11\x76\x0e\x1b\xef\xb3\xd3\x45\x8d\xa4\x44\xaf"
+        return b"\x2a\x20\xe2\xa2\xc3\x52\xfc\x9b\x88\xde\xb5\x25\x2a\x08\x94\x59"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1415,7 +1415,7 @@ class ForwardUsageRoot(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x4b\x87\xeb\xce\xe6\x17\x4c\xe9\xc9\x8b\x78\xef\xce\x8f\x15\x9f"
+        return b"\x1e\x03\x3d\xf3\x11\xfd\x94\xd0\x12\x51\xeb\xd3\xc6\x79\x61\x8d"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1484,7 +1484,7 @@ class ForwardUsageStruct(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x8a\xcc\xfa\x34\x3e\xcb\xf3\xcc\x04\x96\x1d\xed\xe4\x48\x18\xc0"
+        return b"\xf3\x5e\x8b\x72\xfc\xa6\x8a\x4a\xea\x72\xbd\x95\x0c\xac\x6f\xb3"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1553,7 +1553,7 @@ class ForwardUsageByRef(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x82\x6e\xc9\x26\x88\xf3\x15\xf9\x51\x25\x1c\x62\xa2\xbf\xd9\x46"
+        return b"\x1e\xbc\xa5\xf7\xeb\x06\xad\x8d\x3c\xe7\x29\x7c\xf0\x6d\xc6\xe9"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1622,7 +1622,7 @@ class IncompleteMap(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x0e\xc5\xa2\x9d\xa7\x2c\x7a\xba\x8b\x56\x74\x07\x36\x57\xc6\x0f"
+        return b"\xd2\x61\x40\xf8\xca\xcd\x8c\xb2\xec\x00\x38\xf1\x82\x4c\xa5\xb2"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1680,7 +1680,7 @@ class IncompleteMapDep(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x29\x62\x2f\xb3\xe7\xc4\x95\xa1\xc0\xe2\xce\x3f\xf3\xf7\x41\x5e"
+        return b"\x2f\x0d\x98\x51\x4d\xd8\xb6\x34\xf8\xd9\x77\x0f\x5a\x13\x26\x45"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1749,7 +1749,7 @@ class CompleteMap(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x73\xf7\x2b\x85\x51\xdb\x5a\x1c\x11\x93\xb6\x96\x28\x3c\x80\x7f"
+        return b"\xff\x4b\x59\x3c\x5e\x45\x8e\x84\x2f\x49\xe1\x27\x22\x4c\xc4\xcf"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1807,7 +1807,7 @@ class CompleteMapDep(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x95\xe2\x2f\x59\x3f\x70\x5c\x90\xa5\xae\xda\xd2\xaf\x3f\x61\xad"
+        return b"\x4c\xc0\xb9\x0c\x09\xfb\xf9\xa1\x6c\x20\x12\xa4\x07\x91\x75\x7c"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1876,7 +1876,7 @@ class IncompleteList(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xe8\x5d\x06\xce\xc1\x57\x18\xff\xb4\x92\x88\xba\x63\x1d\x41\x9e"
+        return b"\x37\x5b\x35\xd1\x6d\x7e\xbf\xce\xea\x39\x50\xf4\x1a\x1c\x6b\x0e"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -1934,7 +1934,7 @@ class IncompleteListDep(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x89\xd0\x7e\x4b\x5d\xcc\x65\xf6\x7e\x81\x8f\xc6\xa5\x7f\xce\xc1"
+        return b"\x36\xc2\xac\xf8\x78\x06\x2c\x0e\x4f\xce\xc6\x17\x4c\xfe\x3c\xf9"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -2003,7 +2003,7 @@ class CompleteList(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x5f\x32\x74\xd3\x75\x33\x74\x27\xe5\xbd\x71\xe2\xf7\x4c\xe5\x44"
+        return b"\x76\x9a\xad\xa7\x65\xf2\x29\xfc\x58\x5d\xef\x98\x5d\x4f\x6d\x6c"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -2061,7 +2061,7 @@ class CompleteListDep(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xed\xfb\x3d\x86\x8c\x08\x90\x6f\xe8\x4c\xc7\x32\x52\x3b\x62\x79"
+        return b"\x97\x7f\x70\x34\xa9\x11\x72\x3a\x9f\xfe\x23\x7d\x77\xcc\xeb\xf6"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -2130,7 +2130,7 @@ class AdaptedList(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xfb\x96\x68\x30\xa7\xf8\x71\x76\x55\x98\x97\xfa\xf7\xab\x48\x25"
+        return b"\x2f\x7c\xc9\xae\xfd\x4b\xe1\xea\xcb\x3f\x51\x3c\x59\x39\xd8\xde"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -2199,7 +2199,7 @@ class AdaptedListDep(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x32\x3f\xf1\x74\x53\x8f\x29\x3e\x0d\x7f\xf8\xa5\xcf\x99\xe0\x01"
+        return b"\x9b\x12\x0a\x59\xf0\xa3\x17\xc0\x39\x09\xd1\x5e\xfb\x07\xac\xa2"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -2268,7 +2268,7 @@ class DependentAdaptedList(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x64\x4f\x5e\xa7\x7f\x1b\x4e\x38\x66\x83\xd8\xa7\xa3\x5b\x17\x0c"
+        return b"\xea\x98\x9c\xab\xb3\xdd\x50\xa3\x0d\x6b\x73\x0a\x6d\xff\xce\x19"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -2337,7 +2337,7 @@ class DependentAdaptedListDep(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xc7\x3b\x37\x45\x0f\xd0\x78\xc7\x8b\x11\xa9\x0d\x75\x71\xc5\xa2"
+        return b"\xb1\x26\xa4\x19\x47\x94\xb1\x67\x44\x5c\x67\x06\x06\x31\xd4\x58"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -2472,7 +2472,7 @@ class AllocatorAware(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x91\x16\xcd\xc8\xc3\x6b\x4f\x7f\x8c\x50\xcc\x99\xa5\x14\xf3\x2e"
+        return b"\x99\xaa\x99\x2c\x50\x74\x16\x6a\x76\x10\x70\x24\xd1\x53\xc4\xe6"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -2552,7 +2552,7 @@ class AllocatorAware2(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x5a\x0b\xd2\xd5\x3a\x31\x6f\x4c\xf1\x34\x83\xed\x5a\xd4\x72\x12"
+        return b"\x6c\x3b\x1e\x6c\x96\xf2\x53\x7c\x99\x1a\xe4\x0a\x7f\x76\x9d\x9f"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -2643,7 +2643,7 @@ class TypedefStruct(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x66\x3e\x0a\xaf\x89\x16\x1f\xa8\x0b\x3c\xf1\xb3\x05\xd3\x90\xb0"
+        return b"\x93\x8e\x31\x7c\xf1\xc8\xaa\xf8\xd7\x14\xb8\x9a\x26\xf3\xaf\xb0"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):
@@ -2712,7 +2712,7 @@ class StructWithDoubleUnderscores(metaclass=_fbthrift_python_types.StructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x4a\x01\xc2\x9e\xd6\x80\x37\x78\x20\x4b\xdd\x35\xf2\xf6\x36\x58"
+        return b"\x6a\xb1\xc5\x8a\x94\xb1\x13\xf9\xde\xcd\x37\xa1\xeb\x89\xee\xc8"
 
     @classmethod
     def _fbthrift_auto_migrate_enabled(cls):

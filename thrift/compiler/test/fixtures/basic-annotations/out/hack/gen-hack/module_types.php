@@ -769,7 +769,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftSh
           'type' => dict[
             '\facebook\thrift\annotation\cpp\Type' => \facebook\thrift\annotation\cpp\Type::fromShape(
               shape(
-                "name" => "std::deque<std::string>",
+                "template" => "std::deque",
               )
             ),
           ],

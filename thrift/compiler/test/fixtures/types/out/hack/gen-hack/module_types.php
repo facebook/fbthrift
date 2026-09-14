@@ -985,7 +985,7 @@ class CppTypeStruct implements \IThriftSyncStruct, \IThriftStructMetadata {
           'field' => dict[
             '\facebook\thrift\annotation\cpp\Type' => \facebook\thrift\annotation\cpp\Type::fromShape(
               shape(
-                "name" => "std::list<int32_t>",
+                "template" => "std::list",
               )
             ),
           ],

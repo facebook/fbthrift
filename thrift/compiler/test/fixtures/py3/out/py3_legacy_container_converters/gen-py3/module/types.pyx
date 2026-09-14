@@ -2331,8 +2331,8 @@ cdef object Map__string_List__float__from_cpp(const cmap[string,vector[float]]& 
         py_items[__init_unicode_from_cpp(ckey)] = List__float__from_cpp(cval)
     return Map__string_List__float(py_items, private_ctor_token=thrift.py3.types._fbthrift_map_private_ctor)
 
-cdef _module_cbindings._MyType _MyType__List__i32__make_instance(object items) except *:
-    cdef _module_cbindings._MyType c_inst
+cdef _module_cbindings._MyType[cint32_t] _MyType__List__i32__make_instance(object items) except *:
+    cdef _module_cbindings._MyType[cint32_t] c_inst
     if items is None:
         return cmove(c_inst)
     for item in items:
@@ -2342,15 +2342,15 @@ cdef _module_cbindings._MyType _MyType__List__i32__make_instance(object items) e
         c_inst.push_back(item)
     return cmove(c_inst)
 
-cdef object _MyType__List__i32__from_cpp(const _module_cbindings._MyType& c_vec) except *:
+cdef object _MyType__List__i32__from_cpp(const _module_cbindings._MyType[cint32_t]& c_vec) except *:
     cdef list py_list = []
     cdef int idx = 0
     for idx in range(c_vec.size()):
         py_list.append(c_vec[idx])
     return _MyType__List__i32(py_list, thrift.py3.types._fbthrift_list_private_ctor)
 
-cdef _module_cbindings._MyType _MyType__Set__i32__make_instance(object items) except *:
-    cdef _module_cbindings._MyType c_inst
+cdef _module_cbindings._MyType[cint32_t] _MyType__Set__i32__make_instance(object items) except *:
+    cdef _module_cbindings._MyType[cint32_t] c_inst
     cdef cint32_t c_item
     if items is None:
         return cmove(c_inst)
@@ -2361,17 +2361,17 @@ cdef _module_cbindings._MyType _MyType__Set__i32__make_instance(object items) ex
         c_inst.insert(c_item)
     return cmove(c_inst)
 
-cdef object _MyType__Set__i32__from_cpp(const _module_cbindings._MyType& c_set) except *:
+cdef object _MyType__Set__i32__from_cpp(const _module_cbindings._MyType[cint32_t]& c_set) except *:
     cdef list py_items = []
-    cdef __set_iter[_module_cbindings._MyType] iter = __set_iter[_module_cbindings._MyType](c_set)
+    cdef __set_iter[_module_cbindings._MyType[cint32_t]] iter = __set_iter[_module_cbindings._MyType[cint32_t]](c_set)
     cdef cint32_t citem = 0
     for i in range(c_set.size()):
         iter.genNextItem(citem)
         py_items.append(citem)
     return _MyType__Set__i32(frozenset(py_items), thrift.py3.types._fbthrift_set_private_ctor)
 
-cdef _module_cbindings._MyType _MyType__Map__i32_i32__make_instance(object items) except *:
-    cdef _module_cbindings._MyType c_inst
+cdef _module_cbindings._MyType[cint32_t,cint32_t] _MyType__Map__i32_i32__make_instance(object items) except *:
+    cdef _module_cbindings._MyType[cint32_t,cint32_t] c_inst
     cdef cint32_t c_key
     if items is None:
         return cmove(c_inst)
@@ -2386,9 +2386,9 @@ cdef _module_cbindings._MyType _MyType__Map__i32_i32__make_instance(object items
         c_inst[c_key] = item
     return cmove(c_inst)
 
-cdef object _MyType__Map__i32_i32__from_cpp(const _module_cbindings._MyType& c_map) except *:
+cdef object _MyType__Map__i32_i32__from_cpp(const _module_cbindings._MyType[cint32_t,cint32_t]& c_map) except *:
     cdef dict py_items = {}
-    cdef __map_iter[_module_cbindings._MyType] iter = __map_iter[_module_cbindings._MyType](c_map)
+    cdef __map_iter[_module_cbindings._MyType[cint32_t,cint32_t]] iter = __map_iter[_module_cbindings._MyType[cint32_t,cint32_t]](c_map)
     cdef cint32_t ckey = 0
     cdef cint32_t cval = 0
     for i in range(c_map.size()):

@@ -432,8 +432,8 @@ cdef cmap[string,vector[float]] Map__string_List__float__make_instance(object it
             c_inst[c_key] = List__float__make_instance(item)
         return cmove(c_inst)
 
-cdef _module_cbindings._MyType _MyType__List__i32__make_instance(object items) except *:
-        cdef _module_cbindings._MyType c_inst
+cdef _module_cbindings._MyType[cint32_t] _MyType__List__i32__make_instance(object items) except *:
+        cdef _module_cbindings._MyType[cint32_t] c_inst
         if items is None:
             return cmove(c_inst)
         for item in items:
@@ -443,8 +443,8 @@ cdef _module_cbindings._MyType _MyType__List__i32__make_instance(object items) e
             c_inst.push_back(item)
         return cmove(c_inst)
 
-cdef _module_cbindings._MyType _MyType__Set__i32__make_instance(object items) except *:
-        cdef _module_cbindings._MyType c_inst
+cdef _module_cbindings._MyType[cint32_t] _MyType__Set__i32__make_instance(object items) except *:
+        cdef _module_cbindings._MyType[cint32_t] c_inst
         cdef cint32_t c_item
         if items is None:
             return cmove(c_inst)
@@ -455,8 +455,8 @@ cdef _module_cbindings._MyType _MyType__Set__i32__make_instance(object items) ex
             c_inst.insert(c_item)
         return cmove(c_inst)
 
-cdef _module_cbindings._MyType _MyType__Map__i32_i32__make_instance(object items) except *:
-        cdef _module_cbindings._MyType c_inst
+cdef _module_cbindings._MyType[cint32_t,cint32_t] _MyType__Map__i32_i32__make_instance(object items) except *:
+        cdef _module_cbindings._MyType[cint32_t,cint32_t] c_inst
         cdef cint32_t c_key
         if items is None:
             return cmove(c_inst)

@@ -46,7 +46,7 @@ class SomeServiceInterface(
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xe6\x32\xc4\xb8\x1b\xf3\x9a\x28\x7e\x62\xd0\xfc\x09\x99\xd8\xa5"
+        return b"\xb5\xb4\xe1\xd0\x0e\x6f\x73\xf7\x2c\xca\xd2\x2c\x3d\x7f\x73\x91"
 
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:

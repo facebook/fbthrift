@@ -70,7 +70,6 @@ from apache.thrift.fixtures.types.module.containers_FBTHRIFT_ONLY_DO_NOT_USE imp
     folly_small_vector__List__i32,
     folly_sorted_vector_set__Set__i32,
     folly_sorted_vector_map__Map__i32_string,
-    std_list_int32_t__List__i32,
     Map__string_i32,
     List__std_unordered_map__Map__i32_string,
     Map__i32_IncompleteMapDep,
@@ -496,7 +495,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
 
     cdef inline fieldA_impl(self):
         if self.__fbthrift_cached_fieldA is None:
-            self.__fbthrift_cached_fieldA = std_list_int32_t__List__i32__from_cpp(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldA_ref().ref())
+            self.__fbthrift_cached_fieldA = std_list__List__i32__from_cpp(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldA_ref().ref())
         return self.__fbthrift_cached_fieldA
 
     @property
@@ -4090,24 +4089,6 @@ cdef object folly_sorted_vector_map__Map__i32_string__from_cpp(const _apache_thr
         iter.genNextKeyVal(ckey, cval)
         py_items[ckey] = __init_unicode_from_cpp(cval)
     return folly_sorted_vector_map__Map__i32_string(py_items, private_ctor_token=thrift.py3.types._fbthrift_map_private_ctor)
-
-cdef _apache_thrift_fixtures_types_module_cbindings.std_list_int32_t std_list_int32_t__List__i32__make_instance(object items) except *:
-    cdef _apache_thrift_fixtures_types_module_cbindings.std_list_int32_t c_inst
-    if items is None:
-        return cmove(c_inst)
-    for item in items:
-        if not isinstance(item, int):
-            raise TypeError(f"{item!r} is not of type int")
-        item = <cint32_t> item
-        c_inst.push_back(item)
-    return cmove(c_inst)
-
-cdef object std_list_int32_t__List__i32__from_cpp(const _apache_thrift_fixtures_types_module_cbindings.std_list_int32_t& c_vec) except *:
-    cdef list py_list = []
-    cdef int idx = 0
-    for idx in range(c_vec.size()):
-        py_list.append(c_vec[idx])
-    return std_list_int32_t__List__i32(py_list, thrift.py3.types._fbthrift_list_private_ctor)
 
 cdef cmap[string,cint32_t] Map__string_i32__make_instance(object items) except *:
     cdef cmap[string,cint32_t] c_inst

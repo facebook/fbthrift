@@ -1094,7 +1094,7 @@ Extractor<::apache::thrift::python::capi::ComposedStruct<
       cpp.encoded_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__ListStruct__tuple_pos[3]),
       error);
-  Extractor<list<int64_t, std::deque<uint64_t>>>{}.extractInto(
+  Extractor<list<uint64_t, std::deque<native_t<uint64_t>>>>{}.extractInto(
       cpp.uidz_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__ListStruct__tuple_pos[4]),
       error);
@@ -1102,11 +1102,11 @@ Extractor<::apache::thrift::python::capi::ComposedStruct<
       cpp.matrix_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__ListStruct__tuple_pos[5]),
       error);
-  Extractor<list<list<int8_t, folly::small_vector<folly::small_vector<uint8_t>>::value_type>, folly::small_vector<folly::small_vector<uint8_t>>>>{}.extractInto(
+  Extractor<list<list<uint8_t, folly::small_vector<native_t<uint8_t>>>, folly::small_vector<native_t<list<uint8_t, folly::small_vector<native_t<uint8_t>>>>>>>{}.extractInto(
       cpp.ucharz_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__ListStruct__tuple_pos[6]),
       error);
-  Extractor<list<list<list<int8_t, folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>::value_type::value_type>, folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>::value_type>, folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>>>{}.extractInto(
+  Extractor<list<list<list<uint8_t, folly::fbvector<native_t<uint8_t>>>, folly::fbvector<native_t<list<uint8_t, folly::fbvector<native_t<uint8_t>>>>>>, folly::fbvector<native_t<list<list<uint8_t, folly::fbvector<native_t<uint8_t>>>, folly::fbvector<native_t<list<uint8_t, folly::fbvector<native_t<uint8_t>>>>>>>>>>{}.extractInto(
       cpp.voxels_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__ListStruct__tuple_pos[7]),
       error);
@@ -1210,7 +1210,7 @@ PyObject* Constructor<::apache::thrift::python::capi::ComposedStruct<
     return nullptr;
   }
   StrongRef _fbthrift__uidz(
-    Constructor<list<int64_t, std::deque<uint64_t>>>{}
+    Constructor<list<uint64_t, std::deque<native_t<uint64_t>>>>{}
     .constructFrom(val.uidz_ref()));
   if (!_fbthrift__uidz ||
       setStructField(
@@ -1230,7 +1230,7 @@ PyObject* Constructor<::apache::thrift::python::capi::ComposedStruct<
     return nullptr;
   }
   StrongRef _fbthrift__ucharz(
-    Constructor<list<list<int8_t, folly::small_vector<folly::small_vector<uint8_t>>::value_type>, folly::small_vector<folly::small_vector<uint8_t>>>>{}
+    Constructor<list<list<uint8_t, folly::small_vector<native_t<uint8_t>>>, folly::small_vector<native_t<list<uint8_t, folly::small_vector<native_t<uint8_t>>>>>>>{}
     .constructFrom(val.ucharz_ref()));
   if (!_fbthrift__ucharz ||
       setStructField(
@@ -1240,7 +1240,7 @@ PyObject* Constructor<::apache::thrift::python::capi::ComposedStruct<
     return nullptr;
   }
   StrongRef _fbthrift__voxels(
-    Constructor<list<list<list<int8_t, folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>::value_type::value_type>, folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>::value_type>, folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>>>{}
+    Constructor<list<list<list<uint8_t, folly::fbvector<native_t<uint8_t>>>, folly::fbvector<native_t<list<uint8_t, folly::fbvector<native_t<uint8_t>>>>>>, folly::fbvector<native_t<list<list<uint8_t, folly::fbvector<native_t<uint8_t>>>, folly::fbvector<native_t<list<uint8_t, folly::fbvector<native_t<uint8_t>>>>>>>>>>{}
     .constructFrom(val.voxels_ref()));
   if (!_fbthrift__voxels ||
       setStructField(
@@ -1299,11 +1299,11 @@ Extractor<::apache::thrift::python::capi::ComposedStruct<
       cpp.encoded_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__SetStruct__tuple_pos[3]),
       error);
-  Extractor<set<int64_t, std::unordered_set<uint64_t>>>{}.extractInto(
+  Extractor<set<uint64_t, std::unordered_set<native_t<uint64_t>>>>{}.extractInto(
       cpp.uidz_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__SetStruct__tuple_pos[4]),
       error);
-  Extractor<set<int8_t, folly::F14FastSet<uint8_t>>>{}.extractInto(
+  Extractor<set<uint8_t, folly::F14FastSet<native_t<uint8_t>>>>{}.extractInto(
       cpp.charz_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__SetStruct__tuple_pos[5]),
       error);
@@ -1407,7 +1407,7 @@ PyObject* Constructor<::apache::thrift::python::capi::ComposedStruct<
     return nullptr;
   }
   StrongRef _fbthrift__uidz(
-    Constructor<set<int64_t, std::unordered_set<uint64_t>>>{}
+    Constructor<set<uint64_t, std::unordered_set<native_t<uint64_t>>>>{}
     .constructFrom(val.uidz_ref()));
   if (!_fbthrift__uidz ||
       setStructField(
@@ -1417,7 +1417,7 @@ PyObject* Constructor<::apache::thrift::python::capi::ComposedStruct<
     return nullptr;
   }
   StrongRef _fbthrift__charz(
-    Constructor<set<int8_t, folly::F14FastSet<uint8_t>>>{}
+    Constructor<set<uint8_t, folly::F14FastSet<native_t<uint8_t>>>>{}
     .constructFrom(val.charz_ref()));
   if (!_fbthrift__charz ||
       setStructField(
@@ -1476,7 +1476,7 @@ Extractor<::apache::thrift::python::capi::ComposedStruct<
       cpp.encoded_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__MapStruct__tuple_pos[3]),
       error);
-  Extractor<map<int64_t, float, std::unordered_map<uint64_t, float>>>{}.extractInto(
+  Extractor<map<uint64_t, float, std::unordered_map<native_t<uint64_t>, native_t<float>>>>{}.extractInto(
       cpp.flotz_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__MapStruct__tuple_pos[4]),
       error);
@@ -1488,7 +1488,7 @@ Extractor<::apache::thrift::python::capi::ComposedStruct<
       cpp.list_map_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__MapStruct__tuple_pos[6]),
       error);
-  Extractor<map<int32_t, list<double, folly::F14FastMap<int, folly::fbvector<double>>::mapped_type>, folly::F14FastMap<int, folly::fbvector<double>>>>{}.extractInto(
+  Extractor<map<int32_t, list<double, folly::fbvector<native_t<double>>>, folly::F14FastMap<native_t<int32_t>, native_t<list<double, folly::fbvector<native_t<double>>>>>>>{}.extractInto(
       cpp.fast_list_map_ref(),
       PyTuple_GET_ITEM(fbThriftData, _fbthrift__MapStruct__tuple_pos[7]),
       error);
@@ -1596,7 +1596,7 @@ PyObject* Constructor<::apache::thrift::python::capi::ComposedStruct<
     return nullptr;
   }
   StrongRef _fbthrift__flotz(
-    Constructor<map<int64_t, float, std::unordered_map<uint64_t, float>>>{}
+    Constructor<map<uint64_t, float, std::unordered_map<native_t<uint64_t>, native_t<float>>>>{}
     .constructFrom(val.flotz_ref()));
   if (!_fbthrift__flotz ||
       setStructField(
@@ -1626,7 +1626,7 @@ PyObject* Constructor<::apache::thrift::python::capi::ComposedStruct<
     return nullptr;
   }
   StrongRef _fbthrift__fast_list_map(
-    Constructor<map<int32_t, list<double, folly::F14FastMap<int, folly::fbvector<double>>::mapped_type>, folly::F14FastMap<int, folly::fbvector<double>>>>{}
+    Constructor<map<int32_t, list<double, folly::fbvector<native_t<double>>>, folly::F14FastMap<native_t<int32_t>, native_t<list<double, folly::fbvector<native_t<double>>>>>>>{}
     .constructFrom(val.fast_list_map_ref()));
   if (!_fbthrift__fast_list_map ||
       setStructField(

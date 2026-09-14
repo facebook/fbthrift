@@ -91,9 +91,9 @@ var (
                                 Name: "cpp.Type",
                             },
                             Fields: map[string]*metadata.ThriftConstValue{
-                                "name":
+                                "template":
                                     &metadata.ThriftConstValue{
-                                        CvString: new("std::deque<std::string>"),
+                                        CvString: new("std::deque"),
                                     },
                             },
                         },

@@ -72,7 +72,7 @@ cdef class SecretStruct(thrift.py3.types.Struct):
     cdef _create_FBTHRIFT_ONLY_DO_NOT_USE(shared_ptr[_module_cbindings.cSecretStruct])
 
 
-cdef _module_cbindings.std_deque_std_string std_deque_std_string__List__string__make_instance(object items) except *
-cdef object std_deque_std_string__List__string__from_cpp(const _module_cbindings.std_deque_std_string&) except *
+cdef _module_cbindings.std_deque[string] std_deque__List__string__make_instance(object items) except *
+cdef object std_deque__List__string__from_cpp(const _module_cbindings.std_deque[string]&) except *
 
 

@@ -123,14 +123,14 @@ cdef object List__float__from_cpp(const vector[float]&) except *
 cdef cmap[string,vector[float]] Map__string_List__float__make_instance(object items) except *
 cdef object Map__string_List__float__from_cpp(const cmap[string,vector[float]]&) except *
 
-cdef _module_cbindings._MyType _MyType__List__i32__make_instance(object items) except *
-cdef object _MyType__List__i32__from_cpp(const _module_cbindings._MyType&) except *
+cdef _module_cbindings._MyType[cint32_t] _MyType__List__i32__make_instance(object items) except *
+cdef object _MyType__List__i32__from_cpp(const _module_cbindings._MyType[cint32_t]&) except *
 
-cdef _module_cbindings._MyType _MyType__Set__i32__make_instance(object items) except *
-cdef object _MyType__Set__i32__from_cpp(const _module_cbindings._MyType&) except *
+cdef _module_cbindings._MyType[cint32_t] _MyType__Set__i32__make_instance(object items) except *
+cdef object _MyType__Set__i32__from_cpp(const _module_cbindings._MyType[cint32_t]&) except *
 
-cdef _module_cbindings._MyType _MyType__Map__i32_i32__make_instance(object items) except *
-cdef object _MyType__Map__i32_i32__from_cpp(const _module_cbindings._MyType&) except *
+cdef _module_cbindings._MyType[cint32_t,cint32_t] _MyType__Map__i32_i32__make_instance(object items) except *
+cdef object _MyType__Map__i32_i32__from_cpp(const _module_cbindings._MyType[cint32_t,cint32_t]&) except *
 
 cdef _module_cbindings._py3_simple_AdaptedList _py3_simple_AdaptedList__List__i32__make_instance(object items) except *
 cdef object _py3_simple_AdaptedList__List__i32__from_cpp(const _module_cbindings._py3_simple_AdaptedList&) except *

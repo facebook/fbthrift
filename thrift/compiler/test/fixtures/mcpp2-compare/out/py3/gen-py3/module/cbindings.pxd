@@ -38,6 +38,160 @@ cimport includes.cbindings as _includes_cbindings
 cdef extern from "<folly/small_vector.h>":
   pass
 cdef extern from * nogil:
+    cdef cppclass folly_small_vector "folly::small_vector"[T]:
+        ctypedef T value_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
+
+        folly_small_vector() except +
+        folly_small_vector(folly_small_vector&) except +
+
+        T& operator[](size_type)
+        void push_back(T&) except +
+        size_type size()
+        iterator begin()
+        const_iterator const_begin "begin"()
+        iterator end()
+        const_iterator const_end "end"()
+        reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
+        reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass folly_sorted_vector_set "folly::sorted_vector_set"[T]:
+        ctypedef T value_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
+
+        folly_sorted_vector_set() except +
+        folly_sorted_vector_set(folly_sorted_vector_set&) except +
+
+        cpair[iterator, bint] insert(const T&) except +
+        size_type size()
+        size_type count(const T&)
+        iterator begin()
+        const_iterator const_begin "begin"()
+        iterator end()
+        const_iterator const_end "end"()
+        reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
+        reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass _FakeMap "::FakeMap"[T, U]:
+        ctypedef T key_type
+        ctypedef U mapped_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            cpair[T, U]& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            cpair[T, U]& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
+
+        _FakeMap() except +
+        _FakeMap(_FakeMap&) except +
+
+        U& operator[](T&)
+        iterator find(const T&)
+        const_iterator const_find "find"(const T&)
+        size_type count(const T&)
+        size_type size()
+        iterator begin()
+        const_iterator const_begin "begin"()
+        iterator end()
+        const_iterator const_end "end"()
+        reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
+        reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass std_unordered_map "std::unordered_map"[T, U]:
+        ctypedef T key_type
+        ctypedef U mapped_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            cpair[T, U]& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            cpair[T, U]& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
+
+        std_unordered_map() except +
+        std_unordered_map(std_unordered_map&) except +
+
+        U& operator[](T&)
+        iterator find(const T&)
+        const_iterator const_find "find"(const T&)
+        size_type count(const T&)
+        size_type size()
+        iterator begin()
+        const_iterator const_begin "begin"()
+        iterator end()
+        const_iterator const_end "end"()
+        reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
+        reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
     cdef cppclass std_list "std::list"[T]:
         ctypedef T value_type
         ctypedef size_t size_type
@@ -112,43 +266,6 @@ cdef extern from * nogil:
         bint empty()
 
 cdef extern from * nogil:
-    cdef cppclass folly_sorted_vector_set "folly::sorted_vector_set"[T]:
-        ctypedef T value_type
-        ctypedef size_t size_type
-
-        cppclass iterator:
-            T& operator*()
-            iterator operator++()
-            bint operator==(iterator)
-            bint operator!=(iterator)
-        cppclass reverse_iterator:
-            T& operator*()
-            iterator operator++()
-            bint operator==(reverse_iterator)
-            bint operator!=(reverse_iterator)
-        cppclass const_iterator(iterator):
-            pass
-        cppclass const_reverse_iterator(reverse_iterator):
-            pass
-
-        folly_sorted_vector_set() except +
-        folly_sorted_vector_set(folly_sorted_vector_set&) except +
-
-        cpair[iterator, bint] insert(const T&) except +
-        size_type size()
-        size_type count(const T&)
-        iterator begin()
-        const_iterator const_begin "begin"()
-        iterator end()
-        const_iterator const_end "end"()
-        reverse_iterator rbegin()
-        const_reverse_iterator const_rbegin "rbegin"()
-        reverse_iterator rend()
-        const_reverse_iterator const_rend "rend"()
-        void clear()
-        bint empty()
-
-cdef extern from * nogil:
     cdef cppclass folly_sorted_vector_map "folly::sorted_vector_map"[T, U]:
         ctypedef T key_type
         ctypedef U mapped_type
@@ -190,160 +307,6 @@ cdef extern from * nogil:
 
 cdef extern from *:
     ctypedef cint32_t CppFakeI32 "CppFakeI32"
-cdef extern from * nogil:
-    cdef cppclass folly_small_vector_int64_t_8 "folly::small_vector<int64_t, 8 >":
-        ctypedef cint64_t value_type
-        ctypedef size_t size_type
-
-        cppclass iterator:
-            cint64_t& operator*()
-            iterator operator++()
-            bint operator==(iterator)
-            bint operator!=(iterator)
-        cppclass reverse_iterator:
-            cint64_t& operator*()
-            iterator operator++()
-            bint operator==(reverse_iterator)
-            bint operator!=(reverse_iterator)
-        cppclass const_iterator(iterator):
-            pass
-        cppclass const_reverse_iterator(reverse_iterator):
-            pass
-
-        folly_small_vector_int64_t_8() except +
-        folly_small_vector_int64_t_8(folly_small_vector_int64_t_8&) except +
-
-        cint64_t& operator[](size_type)
-        void push_back(cint64_t&) except +
-        size_type size()
-        iterator begin()
-        const_iterator const_begin "begin"()
-        iterator end()
-        const_iterator const_end "end"()
-        reverse_iterator rbegin()
-        const_reverse_iterator const_rbegin "rbegin"()
-        reverse_iterator rend()
-        const_reverse_iterator const_rend "rend"()
-        void clear()
-        bint empty()
-
-cdef extern from * nogil:
-    cdef cppclass folly_sorted_vector_set_std_string "folly::sorted_vector_set<std::string>":
-        ctypedef string value_type
-        ctypedef size_t size_type
-
-        cppclass iterator:
-            string& operator*()
-            iterator operator++()
-            bint operator==(iterator)
-            bint operator!=(iterator)
-        cppclass reverse_iterator:
-            string& operator*()
-            iterator operator++()
-            bint operator==(reverse_iterator)
-            bint operator!=(reverse_iterator)
-        cppclass const_iterator(iterator):
-            pass
-        cppclass const_reverse_iterator(reverse_iterator):
-            pass
-
-        folly_sorted_vector_set_std_string() except +
-        folly_sorted_vector_set_std_string(folly_sorted_vector_set_std_string&) except +
-
-        cpair[iterator, bint] insert(const string&) except +
-        size_type size()
-        size_type count(const string&)
-        iterator begin()
-        const_iterator const_begin "begin"()
-        iterator end()
-        const_iterator const_end "end"()
-        reverse_iterator rbegin()
-        const_reverse_iterator const_rbegin "rbegin"()
-        reverse_iterator rend()
-        const_reverse_iterator const_rend "rend"()
-        void clear()
-        bint empty()
-
-cdef extern from * nogil:
-    cdef cppclass FakeMap "FakeMap":
-        ctypedef cint64_t key_type
-        ctypedef double mapped_type
-        ctypedef size_t size_type
-
-        cppclass iterator:
-            cpair[cint64_t, double]& operator*()
-            iterator operator++()
-            bint operator==(iterator)
-            bint operator!=(iterator)
-        cppclass reverse_iterator:
-            cpair[cint64_t, double]& operator*()
-            iterator operator++()
-            bint operator==(reverse_iterator)
-            bint operator!=(reverse_iterator)
-        cppclass const_iterator(iterator):
-            pass
-        cppclass const_reverse_iterator(reverse_iterator):
-            pass
-
-        FakeMap() except +
-        FakeMap(FakeMap&) except +
-
-        double& operator[](cint64_t&)
-        iterator find(const cint64_t&)
-        const_iterator const_find "find"(const cint64_t&)
-        size_type count(const cint64_t&)
-        size_type size()
-        iterator begin()
-        const_iterator const_begin "begin"()
-        iterator end()
-        const_iterator const_end "end"()
-        reverse_iterator rbegin()
-        const_reverse_iterator const_rbegin "rbegin"()
-        reverse_iterator rend()
-        const_reverse_iterator const_rend "rend"()
-        void clear()
-        bint empty()
-
-cdef extern from * nogil:
-    cdef cppclass std_unordered_map_std_string_ContainerStruct "std::unordered_map<std::string, ContainerStruct>":
-        ctypedef string key_type
-        ctypedef cContainerStruct mapped_type
-        ctypedef size_t size_type
-
-        cppclass iterator:
-            cpair[string, cContainerStruct]& operator*()
-            iterator operator++()
-            bint operator==(iterator)
-            bint operator!=(iterator)
-        cppclass reverse_iterator:
-            cpair[string, cContainerStruct]& operator*()
-            iterator operator++()
-            bint operator==(reverse_iterator)
-            bint operator!=(reverse_iterator)
-        cppclass const_iterator(iterator):
-            pass
-        cppclass const_reverse_iterator(reverse_iterator):
-            pass
-
-        std_unordered_map_std_string_ContainerStruct() except +
-        std_unordered_map_std_string_ContainerStruct(std_unordered_map_std_string_ContainerStruct&) except +
-
-        cContainerStruct& operator[](string&)
-        iterator find(const string&)
-        const_iterator const_find "find"(const string&)
-        size_type count(const string&)
-        size_type size()
-        iterator begin()
-        const_iterator const_begin "begin"()
-        iterator end()
-        const_iterator const_end "end"()
-        reverse_iterator rbegin()
-        const_reverse_iterator const_rbegin "rbegin"()
-        reverse_iterator rend()
-        const_reverse_iterator const_rend "rend"()
-        void clear()
-        bint empty()
-
 
 cdef extern from "thrift/lib/cpp2/gen/module_metadata_h.h" namespace "apache::thrift::detail::md":
     cdef cppclass EnumMetadata[T]:
@@ -678,10 +641,10 @@ cdef extern from "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_ty
         unique_ptr[cContainerStruct] opt_ref_type_unique_ref "opt_ref_type_unique_ref" ()
         shared_ptr[cset[cint32_t]] opt_ref_type_shared_ref "opt_ref_type_shared_ref" ()
         __field_ref[CppFakeI32] base_type_ref "base_type_ref" ()
-        __field_ref[folly_small_vector_int64_t_8] list_type_ref "list_type_ref" ()
-        __field_ref[folly_sorted_vector_set_std_string] set_type_ref "set_type_ref" ()
-        __field_ref[FakeMap] map_type_ref "map_type_ref" ()
-        __field_ref[std_unordered_map_std_string_ContainerStruct] map_struct_type_ref "map_struct_type_ref" ()
+        __field_ref[folly_small_vector[cint64_t]] list_type_ref "list_type_ref" ()
+        __field_ref[folly_sorted_vector_set[string]] set_type_ref "set_type_ref" ()
+        __field_ref[_FakeMap[cint64_t,double]] map_type_ref "map_type_ref" ()
+        __field_ref[std_unordered_map[string,cContainerStruct]] map_struct_type_ref "map_struct_type_ref" ()
         __field_ref[_fbthrift_iobuf.cIOBuf] iobuf_type_ref "iobuf_type_ref" ()
         __field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] iobuf_ptr_ref "iobuf_ptr_ref" ()
         __field_ref[std_list[cint32_t]] list_i32_template_ref "list_i32_template_ref" ()

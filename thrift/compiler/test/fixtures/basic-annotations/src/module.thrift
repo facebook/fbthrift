@@ -151,5 +151,5 @@ service FooBarBazService {
 }
 
 // The following were automatically generated and may benefit from renaming.
-@cpp.Type{name = "std::deque<std::string>"}
+@cpp.Type{template = "std::deque"}
 typedef list<string> list_string_6884

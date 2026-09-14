@@ -88,9 +88,9 @@ cdef vector[_module_cbindings.cAnEnum] List__AnEnum__make_instance(object items)
 cdef _module_cbindings._std_unordered_map[cint32_t,cint32_t] _std_unordered_map__Map__i32_i32__make_instance(object items) except *
 cdef vector[float] List__float__make_instance(object items) except *
 cdef cmap[string,vector[float]] Map__string_List__float__make_instance(object items) except *
-cdef _module_cbindings._MyType _MyType__List__i32__make_instance(object items) except *
-cdef _module_cbindings._MyType _MyType__Set__i32__make_instance(object items) except *
-cdef _module_cbindings._MyType _MyType__Map__i32_i32__make_instance(object items) except *
+cdef _module_cbindings._MyType[cint32_t] _MyType__List__i32__make_instance(object items) except *
+cdef _module_cbindings._MyType[cint32_t] _MyType__Set__i32__make_instance(object items) except *
+cdef _module_cbindings._MyType[cint32_t,cint32_t] _MyType__Map__i32_i32__make_instance(object items) except *
 cdef _module_cbindings._py3_simple_AdaptedList _py3_simple_AdaptedList__List__i32__make_instance(object items) except *
 cdef _module_cbindings._py3_simple_AdaptedSet _py3_simple_AdaptedSet__Set__i32__make_instance(object items) except *
 cdef _module_cbindings._py3_simple_AdaptedMap _py3_simple_AdaptedMap__Map__i32_i32__make_instance(object items) except *

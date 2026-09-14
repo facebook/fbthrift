@@ -125,7 +125,7 @@ def _fbthrift_gen_metadata_struct_CppTypeStruct(metadata_struct: _fbthrift_metad
         return metadata_struct
     fields = [
         _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), name="fieldA", is_optional=False, structured_annotations=[
-            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Type"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="std::list<int32_t>"),  }),
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Type"), fields= { "template": _fbthrift_metadata.ThriftConstValue(cv_string="std::list"),  }),
         ]),
     ]
     struct_dict = dict(metadata_struct.structs)

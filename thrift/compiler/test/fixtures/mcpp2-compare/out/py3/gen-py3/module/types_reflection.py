@@ -1841,7 +1841,7 @@ def get_reflection__AnnotatedStruct() -> __StructSpec:
             id=21,
             name="list_type",
             py_name="list_type",
-            type=_module_types.folly_small_vector_int64_t_8__List__i64,
+            type=_module_types.folly_small_vector__List__i64,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -1854,7 +1854,7 @@ def get_reflection__AnnotatedStruct() -> __StructSpec:
             id=22,
             name="set_type",
             py_name="set_type",
-            type=_module_types.folly_sorted_vector_set_std_string__Set__string,
+            type=_module_types.folly_sorted_vector_set__Set__string,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -1867,7 +1867,7 @@ def get_reflection__AnnotatedStruct() -> __StructSpec:
             id=23,
             name="map_type",
             py_name="map_type",
-            type=_module_types.FakeMap__Map__i64_double,
+            type=_module_types._FakeMap__Map__i64_double,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -1880,7 +1880,7 @@ def get_reflection__AnnotatedStruct() -> __StructSpec:
             id=24,
             name="map_struct_type",
             py_name="map_struct_type",
-            type=_module_types.std_unordered_map_std_string_ContainerStruct__Map__string_ContainerStruct,
+            type=_module_types.std_unordered_map__Map__string_ContainerStruct,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -2329,19 +2329,19 @@ def get_reflection__Set__i32() -> __SetSpec:
         kind=__NumberType.I32,
      )
 
-def get_reflection__folly_small_vector_int64_t_8__List__i64() -> __ListSpec :
+def get_reflection__folly_small_vector__List__i64() -> __ListSpec :
     return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I64,
     )
 
-def get_reflection__folly_sorted_vector_set_std_string__Set__string() -> __SetSpec:
+def get_reflection__folly_sorted_vector_set__Set__string() -> __SetSpec:
     return __SetSpec._fbthrift_create(
         value=str,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
-def get_reflection__FakeMap__Map__i64_double() -> __MapSpec:
+def get_reflection___FakeMap__Map__i64_double() -> __MapSpec:
     return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I64,
@@ -2349,7 +2349,7 @@ def get_reflection__FakeMap__Map__i64_double() -> __MapSpec:
         value_kind=__NumberType.DOUBLE,
     )
 
-def get_reflection__std_unordered_map_std_string_ContainerStruct__Map__string_ContainerStruct() -> __MapSpec:
+def get_reflection__std_unordered_map__Map__string_ContainerStruct() -> __MapSpec:
     return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
@@ -2376,12 +2376,6 @@ def get_reflection__std_deque__List__string() -> __ListSpec :
         value=str,
         kind=__NumberType.NOT_A_NUMBER,
     )
-
-def get_reflection__folly_sorted_vector_set__Set__string() -> __SetSpec:
-    return __SetSpec._fbthrift_create(
-        value=str,
-        kind=__NumberType.NOT_A_NUMBER,
-     )
 
 def get_reflection__folly_sorted_vector_map__Map__i64_string() -> __MapSpec:
     return __MapSpec._fbthrift_create(

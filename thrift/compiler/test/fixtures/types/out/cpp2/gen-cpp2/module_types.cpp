@@ -477,7 +477,7 @@ CppTypeStruct& CppTypeStruct::operator=([[maybe_unused]] CppTypeStruct&& other) 
 }
 
 
-CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg) :
+CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::list<::std::int32_t> fieldA__arg) :
     __fbthrift_field_fieldA(std::move(fieldA__arg)) { 
   __isset.set(folly::index_constant<0>(), true);
 }
@@ -501,12 +501,12 @@ std::partial_ordering CppTypeStruct::operator<=>([[maybe_unused]] const CppTypeS
 }
 
 
-const std::list<int32_t>& CppTypeStruct::get_fieldA() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+const std::list<::std::int32_t>& CppTypeStruct::get_fieldA() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
   return __fbthrift_field_fieldA;
 }
 
-std::list<int32_t> CppTypeStruct::get_fieldA() && {
-  return static_cast<std::list<int32_t>&&>(__fbthrift_field_fieldA);
+std::list<::std::int32_t> CppTypeStruct::get_fieldA() && {
+  return static_cast<std::list<::std::int32_t>&&>(__fbthrift_field_fieldA);
 }
 
 void swap([[maybe_unused]] CppTypeStruct& a, [[maybe_unused]] CppTypeStruct& b) {

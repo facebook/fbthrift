@@ -1635,8 +1635,8 @@ impl ::fbthrift::metadata::ThriftAnnotations for CppTypeStruct {
                 let matches_type = type_id == ::std::any::TypeId::of::<cpp__types::Type>();
                 if matches_type {
                     let mut tmp = ::std::option::Option::Some(cpp__types::Type {
-                        name: "std::list<int32_t>".to_owned(),
-                        template: ::std::default::Default::default(),
+                        name: ::std::default::Default::default(),
+                        template: "std::list".to_owned(),
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;

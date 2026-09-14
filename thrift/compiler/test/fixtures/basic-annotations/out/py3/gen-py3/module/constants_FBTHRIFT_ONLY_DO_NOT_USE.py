@@ -9,7 +9,7 @@ import thrift.py3.types
 import module.types
 
 from module.containers_FBTHRIFT_ONLY_DO_NOT_USE import (
-    std_deque_std_string__List__string,
+    std_deque__List__string,
 )
 
 myStruct = module.types.MyStruct(major=42, abstract="abstract", my_enum=module.types.MyEnum.DOMAIN)

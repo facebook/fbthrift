@@ -825,6 +825,31 @@ _fbthrift_SomeBinary = SomeBinary
 
 uint64 = builtins.int
 ui64 = builtins.int
+uint8 = builtins.int
+class small_vector_uint8(_fbthrift_python_mutable_containers.MutableList[builtins.int]):
+    def __init__(
+        self,
+        values: _fbthrift_python_mutable_types._ThriftListWrapper | _fbthrift_python_mutable_containers.MutableList[builtins.int] | None = ...,
+    ) -> None: ...
+
+class fbvector_uint8(_fbthrift_python_mutable_containers.MutableList[builtins.int]):
+    def __init__(
+        self,
+        values: _fbthrift_python_mutable_types._ThriftListWrapper | _fbthrift_python_mutable_containers.MutableList[builtins.int] | None = ...,
+    ) -> None: ...
+
+class fbvector2_uint8(_fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.int]]):
+    def __init__(
+        self,
+        values: _fbthrift_python_mutable_types._ThriftListWrapper | _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.int]] | None = ...,
+    ) -> None: ...
+
+class fbvector_double(_fbthrift_python_mutable_containers.MutableList[builtins.float]):
+    def __init__(
+        self,
+        values: _fbthrift_python_mutable_types._ThriftListWrapper | _fbthrift_python_mutable_containers.MutableList[builtins.float] | None = ...,
+    ) -> None: ...
+
 signed_byte = builtins.int
 IOBuf = _fbthrift_iobuf.IOBuf
 IOBufPtr = _fbthrift_iobuf.IOBuf

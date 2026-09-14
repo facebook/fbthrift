@@ -652,8 +652,8 @@ void CppTypeStruct::readNoXfer(Protocol_* iprot) {
 _readField_fieldA:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_fieldA = std::list<int32_t>();
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>, ::apache::thrift::type::cpp_type<std::list<int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>::read(*iprot, this->__fbthrift_field_fieldA);
+    this->__fbthrift_field_fieldA = std::list<::std::int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<::std::int32_t>, ::apache::thrift::type::cpp_type<std::list<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>::read(*iprot, this->__fbthrift_field_fieldA);
     _readState.afterSubobject(iprot);
   }
  this->__isset.set(0, true);
@@ -708,7 +708,7 @@ uint32_t CppTypeStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("CppTypeStruct");
   {
     xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::TType::T_LIST, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>, ::apache::thrift::type::cpp_type<std::list<int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>::serializedSize<false>(*prot_, this->__fbthrift_field_fieldA);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<::std::int32_t>, ::apache::thrift::type::cpp_type<std::list<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>::serializedSize<false>(*prot_, this->__fbthrift_field_fieldA);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -720,7 +720,7 @@ uint32_t CppTypeStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("CppTypeStruct");
   {
     xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::TType::T_LIST, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>, ::apache::thrift::type::cpp_type<std::list<int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>::serializedSize<false>(*prot_, this->__fbthrift_field_fieldA);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<::std::int32_t>, ::apache::thrift::type::cpp_type<std::list<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>::serializedSize<false>(*prot_, this->__fbthrift_field_fieldA);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -743,7 +743,7 @@ uint32_t CppTypeStruct::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_LIST, 1, kPrevFieldId>(*prot_, "fieldA", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>, ::apache::thrift::type::cpp_type<std::list<int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>::write(*prot_, this->__fbthrift_field_fieldA);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<::std::int32_t>, ::apache::thrift::type::cpp_type<std::list<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>::write(*prot_, this->__fbthrift_field_fieldA);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

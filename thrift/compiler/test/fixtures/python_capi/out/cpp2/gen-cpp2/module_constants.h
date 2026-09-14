@@ -14,9 +14,9 @@ namespace test::fixtures::python_capi {
 /** Glean {"file": "thrift/compiler/test/fixtures/python_capi/src/module.thrift"} */
 namespace module_constants {
 
-  FOLLY_EXPORT ::std::string_view _fbthrift_schema_73f898e6d9db41b7();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_73f898e6d9db41b7_includes();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_73f898e6d9db41b7_uris();
+  FOLLY_EXPORT ::std::string_view _fbthrift_schema_128b73613a852606();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_128b73613a852606_includes();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_128b73613a852606_uris();
 
 } // namespace module_constants
 } // namespace test::fixtures::python_capi
