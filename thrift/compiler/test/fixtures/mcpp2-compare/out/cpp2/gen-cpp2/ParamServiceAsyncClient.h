@@ -11,6 +11,7 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_types.h"
 #include <folly/small_vector.h>
+#include <thrift/lib/cpp2/SizedContainer.h>
 
 namespace apache { namespace thrift {
   class Cpp2RequestContext;

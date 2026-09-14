@@ -1841,7 +1841,7 @@ def get_reflection__AnnotatedStruct() -> __StructSpec:
             id=21,
             name="list_type",
             py_name="list_type",
-            type=_module_types.folly_small_vector__List__i64,
+            type=_module_types._apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -2329,7 +2329,7 @@ def get_reflection__Set__i32() -> __SetSpec:
         kind=__NumberType.I32,
      )
 
-def get_reflection__folly_small_vector__List__i64() -> __ListSpec :
+def get_reflection___apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64() -> __ListSpec :
     return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I64,

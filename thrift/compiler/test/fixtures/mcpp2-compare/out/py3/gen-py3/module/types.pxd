@@ -529,8 +529,8 @@ cdef object Map__Set__List__i32_Map__List__Set__string_string__from_cpp(const cm
 cdef cset[cint32_t] Set__i32__make_instance(object items) except *
 cdef object Set__i32__from_cpp(const cset[cint32_t]&) except *
 
-cdef _module_cbindings.folly_small_vector[cint64_t] folly_small_vector__List__i64__make_instance(object items) except *
-cdef object folly_small_vector__List__i64__from_cpp(const _module_cbindings.folly_small_vector[cint64_t]&) except *
+cdef _module_cbindings._apache_thrift_SizedContainer__folly_small_vector_8_type[cint64_t] _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64__make_instance(object items) except *
+cdef object _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64__from_cpp(const _module_cbindings._apache_thrift_SizedContainer__folly_small_vector_8_type[cint64_t]&) except *
 
 cdef _module_cbindings.folly_sorted_vector_set[string] folly_sorted_vector_set__Set__string__make_instance(object items) except *
 cdef object folly_sorted_vector_set__Set__string__from_cpp(const _module_cbindings.folly_sorted_vector_set[string]&) except *

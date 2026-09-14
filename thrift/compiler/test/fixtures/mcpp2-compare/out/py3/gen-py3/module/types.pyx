@@ -89,7 +89,7 @@ from module.containers_FBTHRIFT_ONLY_DO_NOT_USE import (
     Map__List__Set__string_string,
     Map__Set__List__i32_Map__List__Set__string_string,
     Set__i32,
-    folly_small_vector__List__i64,
+    _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64,
     folly_sorted_vector_set__Set__string,
     _FakeMap__Map__i64_double,
     std_unordered_map__Map__string_ContainerStruct,
@@ -2715,7 +2715,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
     cdef inline list_type_impl(self):
         if self.__fbthrift_cached_list_type is None:
-            self.__fbthrift_cached_list_type = folly_small_vector__List__i64__from_cpp(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).list_type_ref().ref())
+            self.__fbthrift_cached_list_type = _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64__from_cpp(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).list_type_ref().ref())
         return self.__fbthrift_cached_list_type
 
     @property
@@ -3964,8 +3964,8 @@ cdef object Set__i32__from_cpp(const cset[cint32_t]& c_set) except *:
         py_items.append(citem)
     return Set__i32(frozenset(py_items), thrift.py3.types._fbthrift_set_private_ctor)
 
-cdef _module_cbindings.folly_small_vector[cint64_t] folly_small_vector__List__i64__make_instance(object items) except *:
-    cdef _module_cbindings.folly_small_vector[cint64_t] c_inst
+cdef _module_cbindings._apache_thrift_SizedContainer__folly_small_vector_8_type[cint64_t] _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64__make_instance(object items) except *:
+    cdef _module_cbindings._apache_thrift_SizedContainer__folly_small_vector_8_type[cint64_t] c_inst
     if items is None:
         return cmove(c_inst)
     for item in items:
@@ -3975,12 +3975,12 @@ cdef _module_cbindings.folly_small_vector[cint64_t] folly_small_vector__List__i6
         c_inst.push_back(item)
     return cmove(c_inst)
 
-cdef object folly_small_vector__List__i64__from_cpp(const _module_cbindings.folly_small_vector[cint64_t]& c_vec) except *:
+cdef object _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64__from_cpp(const _module_cbindings._apache_thrift_SizedContainer__folly_small_vector_8_type[cint64_t]& c_vec) except *:
     cdef list py_list = []
     cdef int idx = 0
     for idx in range(c_vec.size()):
         py_list.append(c_vec[idx])
-    return folly_small_vector__List__i64(py_list, thrift.py3.types._fbthrift_list_private_ctor)
+    return _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64(py_list, thrift.py3.types._fbthrift_list_private_ctor)
 
 cdef _module_cbindings.folly_sorted_vector_set[string] folly_sorted_vector_set__Set__string__make_instance(object items) except *:
     cdef _module_cbindings.folly_sorted_vector_set[string] c_inst
@@ -4667,7 +4667,7 @@ structTypeDef = List__MyStruct
 complexStructTypeDef = List__Map__Empty_MyStruct
 mostComplexTypeDef = List__List__Map__Empty_MyStruct
 CppFakeI32 = int
-FollySmallVectorI64 = folly_small_vector__List__i64
+FollySmallVectorI64 = _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64
 SortedVectorSetString = folly_sorted_vector_set__Set__string
 FakeMap = _FakeMap__Map__i64_double
 UnorderedMapStruct = std_unordered_map__Map__string_ContainerStruct

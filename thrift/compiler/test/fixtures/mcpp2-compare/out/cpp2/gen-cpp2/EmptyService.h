@@ -12,6 +12,7 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_types.h"
 #include <folly/small_vector.h>
+#include <thrift/lib/cpp2/SizedContainer.h>
 
 namespace folly {
   class IOBuf;
@@ -59,8 +60,8 @@ class ServiceHandler<::some::valid::ns::EmptyService> : public apache::thrift::S
 namespace detail {
 template <> struct TSchemaAssociation<::some::valid::ns::EmptyService, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -4957870143697906920;
-  static constexpr ::std::string_view definitionKey = {"\xdf\x65\xcb\xfa\x0d\xb8\xec\x2a\x68\x61\xea\x95\x61\x1b\x7c\x03", 16};
+  static constexpr int64_t programId = 4363650368578291296;
+  static constexpr ::std::string_view definitionKey = {"\xdd\x4d\x90\x64\xa0\xd6\xa2\xbb\xd5\x55\xd8\x38\x38\xd6\x59\x25", 16};
 };
 }
 } // namespace apache::thrift

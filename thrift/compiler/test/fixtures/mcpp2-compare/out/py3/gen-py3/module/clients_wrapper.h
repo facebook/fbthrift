@@ -203,7 +203,7 @@ class ParamServiceClientWrapper : public ::thrift::py3::ClientWrapper {
       ::some::valid::ns::ContainerStruct arg_no_annotation,
       std::set<int32_t> arg_opt_ref_type_shared,
       CppFakeI32 arg_base_type,
-      folly::small_vector<int64_t> arg_list_type,
+      ::apache::thrift::SizedContainer<::folly::small_vector, 8>::type<int64_t> arg_list_type,
       folly::sorted_vector_set<std::string> arg_set_type,
       ::FakeMap<int64_t,double> arg_map_type,
       std::unordered_map<std::string,::some::valid::ns::ContainerStruct> arg_map_struct_type,

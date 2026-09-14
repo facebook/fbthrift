@@ -54,7 +54,7 @@ from module.containers_FBTHRIFT_ONLY_DO_NOT_USE import (
     Map__List__Set__string_string,
     Map__Set__List__i32_Map__List__Set__string_string,
     Set__i32,
-    folly_small_vector__List__i64,
+    _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64,
     folly_sorted_vector_set__Set__string,
     _FakeMap__Map__i64_double,
     std_unordered_map__Map__string_ContainerStruct,
@@ -1213,7 +1213,7 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
         if _fbthrift_value is None:
             __reset_field[_module_cbindings.cAnnotatedStruct](deref(self._struct_cpp_obj), 20)
             return
-        deref(self._struct_cpp_obj).list_type_ref().assign(_module_types.folly_small_vector__List__i64__make_instance(_fbthrift_value))
+        deref(self._struct_cpp_obj).list_type_ref().assign(_module_types._apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64__make_instance(_fbthrift_value))
 
     cdef void _set_field_21(self, _fbthrift_value) except *:
         # for field set_type

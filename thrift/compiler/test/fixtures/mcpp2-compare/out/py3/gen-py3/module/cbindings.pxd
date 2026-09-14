@@ -37,8 +37,10 @@ cimport includes.cbindings as _includes_cbindings
 
 cdef extern from "<folly/small_vector.h>":
   pass
+cdef extern from "<thrift/lib/cpp2/SizedContainer.h>":
+  pass
 cdef extern from * nogil:
-    cdef cppclass folly_small_vector "folly::small_vector"[T]:
+    cdef cppclass _apache_thrift_SizedContainer__folly_small_vector_8_type "::apache::thrift::SizedContainer<::folly::small_vector, 8>::type"[T]:
         ctypedef T value_type
         ctypedef size_t size_type
 
@@ -57,8 +59,8 @@ cdef extern from * nogil:
         cppclass const_reverse_iterator(reverse_iterator):
             pass
 
-        folly_small_vector() except +
-        folly_small_vector(folly_small_vector&) except +
+        _apache_thrift_SizedContainer__folly_small_vector_8_type() except +
+        _apache_thrift_SizedContainer__folly_small_vector_8_type(_apache_thrift_SizedContainer__folly_small_vector_8_type&) except +
 
         T& operator[](size_type)
         void push_back(T&) except +
@@ -641,7 +643,7 @@ cdef extern from "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_ty
         unique_ptr[cContainerStruct] opt_ref_type_unique_ref "opt_ref_type_unique_ref" ()
         shared_ptr[cset[cint32_t]] opt_ref_type_shared_ref "opt_ref_type_shared_ref" ()
         __field_ref[CppFakeI32] base_type_ref "base_type_ref" ()
-        __field_ref[folly_small_vector[cint64_t]] list_type_ref "list_type_ref" ()
+        __field_ref[_apache_thrift_SizedContainer__folly_small_vector_8_type[cint64_t]] list_type_ref "list_type_ref" ()
         __field_ref[folly_sorted_vector_set[string]] set_type_ref "set_type_ref" ()
         __field_ref[_FakeMap[cint64_t,double]] map_type_ref "map_type_ref" ()
         __field_ref[std_unordered_map[string,cContainerStruct]] map_struct_type_ref "map_struct_type_ref" ()

@@ -22,6 +22,7 @@ include "thrift/annotation/thrift.thrift"
 package;
 
 cpp_include "<folly/small_vector.h>"
+cpp_include "<thrift/lib/cpp2/SizedContainer.h>"
 
 namespace cpp2 some.valid.ns
 
@@ -282,7 +283,9 @@ struct MyIncludedStruct {
 
 @cpp.Type{name = "CppFakeI32"}
 typedef i32 CppFakeI32
-@cpp.Type{template = "folly::small_vector"}
+@cpp.Type{
+  template = "::apache::thrift::SizedContainer<::folly::small_vector, 8>::type",
+}
 typedef list<i64> FollySmallVectorI64
 @cpp.Type{template = "folly::sorted_vector_set"}
 typedef set<string> SortedVectorSetString

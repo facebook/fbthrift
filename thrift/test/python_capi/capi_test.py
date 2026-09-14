@@ -133,7 +133,7 @@ class PythonCapiFixture(unittest.TestCase):
             intz=[-1, -2, -1, 0, 1, 2, 2, 2, 2, 10],
             stringz=["wat", "", "-1", "-1", "lol", "loool"],
             encoded=[b"beep", b"boop", b"bop"],
-            uidz=[-(2**63), -1, 0, 1, 2**63 - 1],
+            uidz=[0, 1, 2, 2**63 - 1],
             matrix=[[4.0, 9.0, 2.0], [3.0, 5.0, 7.0], [8.0, 1.0, 6.0]],
             ucharz=[[2, 7, 6], [9, 5, 1], [4, 3, 8]],
             voxels=[

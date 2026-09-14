@@ -1189,7 +1189,7 @@ void ParamServiceWrapper::async_tm_annotatedParams(
     , std::unique_ptr<::some::valid::ns::ContainerStruct> no_annotation
     , std::unique_ptr<std::set<int32_t>> opt_ref_type_shared
     , CppFakeI32 base_type
-    , std::unique_ptr<folly::small_vector<int64_t>> list_type
+    , std::unique_ptr<::apache::thrift::SizedContainer<::folly::small_vector, 8>::type<int64_t>> list_type
     , std::unique_ptr<folly::sorted_vector_set<std::string>> set_type
     , std::unique_ptr<::FakeMap<int64_t,double>> map_type
     , std::unique_ptr<std::unordered_map<std::string,::some::valid::ns::ContainerStruct>> map_struct_type

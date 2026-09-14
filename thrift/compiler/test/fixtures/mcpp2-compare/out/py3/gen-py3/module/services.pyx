@@ -2536,7 +2536,7 @@ cdef api void call_cy_ParamService_annotatedParams(
     unique_ptr[_module_cbindings.cContainerStruct] no_annotation,
     unique_ptr[cset[cint32_t]] opt_ref_type_shared,
     _module_cbindings.CppFakeI32 base_type,
-    unique_ptr[_module_cbindings.folly_small_vector[cint64_t]] list_type,
+    unique_ptr[_module_cbindings._apache_thrift_SizedContainer__folly_small_vector_8_type[cint64_t]] list_type,
     unique_ptr[_module_cbindings.folly_sorted_vector_set[string]] set_type,
     unique_ptr[_module_cbindings._FakeMap[cint64_t,double]] map_type,
     unique_ptr[_module_cbindings.std_unordered_map[string,_module_cbindings.cContainerStruct]] map_struct_type,
@@ -2558,7 +2558,7 @@ cdef api void call_cy_ParamService_annotatedParams(
     arg_no_annotation = _module_types.ContainerStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(shared_ptr[_module_cbindings.cContainerStruct](no_annotation.release()))
     arg_opt_ref_type_shared = _module_types.Set__i32__from_cpp(deref(opt_ref_type_shared))
     arg_base_type = base_type
-    arg_list_type = _module_types.folly_small_vector__List__i64__from_cpp(deref(list_type))
+    arg_list_type = _module_types._apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64__from_cpp(deref(list_type))
     arg_set_type = _module_types.folly_sorted_vector_set__Set__string__from_cpp(deref(set_type))
     arg_map_type = _module_types._FakeMap__Map__i64_double__from_cpp(deref(map_type))
     arg_map_struct_type = _module_types.std_unordered_map__Map__string_ContainerStruct__from_cpp(deref(map_struct_type))

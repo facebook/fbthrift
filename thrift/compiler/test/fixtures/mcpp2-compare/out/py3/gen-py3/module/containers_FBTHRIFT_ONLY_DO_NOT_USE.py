@@ -1172,22 +1172,22 @@ Set.register(Set__i32)
 __all__.append('Set__i32')
 
 
-class folly_small_vector__List__i64(thrift.py3.types.List):
+class _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64(thrift.py3.types.List):
     __module__ = _fbthrift__module_name__
     __slots__ = ()
 
     def __init__(self, items=None, private_ctor_token=None) -> None:
         if private_ctor_token is thrift.py3.types._fbthrift_list_private_ctor:
             _py_obj = items
-        elif isinstance(items, folly_small_vector__List__i64):
+        elif isinstance(items, _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64):
             _py_obj = list(items)
         elif items is None:
             _py_obj = []
         else:
-            check_method = folly_small_vector__List__i64._check_item_type_or_raise
+            check_method = _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64._check_item_type_or_raise
             _py_obj = [check_method(item) for item in items]
 
-        super().__init__(_py_obj, folly_small_vector__List__i64)
+        super().__init__(_py_obj, _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64)
 
     @staticmethod
     def _check_item_type_or_raise(item):
@@ -1206,12 +1206,12 @@ class folly_small_vector__List__i64(thrift.py3.types.List):
 
     @staticmethod
     def __get_reflection__():
-        return get_types_reflection().get_reflection__folly_small_vector__List__i64()
+        return get_types_reflection().get_reflection___apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64()
 
 
-Sequence.register(folly_small_vector__List__i64)
+Sequence.register(_apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64)
 
-__all__.append('folly_small_vector__List__i64')
+__all__.append('_apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64')
 
 
 class folly_sorted_vector_set__Set__string(thrift.py3.types.Set):

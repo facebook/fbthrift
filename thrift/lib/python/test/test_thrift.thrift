@@ -116,11 +116,14 @@ typedef map<string, easy> StrEasyMap
 @cpp.Type{name = "uint32_t"}
 typedef i32 ui32
 @thrift.AllowLegacyTypedefUri
-@cpp.Type{name = "folly::F14FastMap<std::string, folly::fbstring>"}
-typedef map<string, string> F14MapFollyString
+@cpp.Type{name = "::folly::fbstring"}
+typedef string FollyFbString
 @thrift.AllowLegacyTypedefUri
-@cpp.Type{name = "std::vector<uint32_t>"}
-typedef list<i32> Uint32List
+@cpp.Type{template = "::folly::F14FastMap"}
+typedef map<string, FollyFbString> F14MapFollyString
+@thrift.AllowLegacyTypedefUri
+@cpp.Type{template = "::std::vector"}
+typedef list<ui32> Uint32List
 
 @thrift.AllowLegacyTypedefUri
 @cpp.Adapter{name = "::apache::thrift::test::FBStringAdapter"}
@@ -430,17 +433,13 @@ struct NestedStructContainers {
 }
 
 @thrift.AllowLegacyTypedefUri
-@cpp.Type{name = "std::deque<int>"}
+@cpp.Type{template = "::std::deque"}
 typedef list<i32> list_typedef
 @thrift.AllowLegacyTypedefUri
-@cpp.Type{name = "std::unordered_set<int>"}
+@cpp.Type{template = "::std::unordered_set"}
 typedef set<i32> set_typedef
 @thrift.AllowLegacyTypedefUri
-@cpp.Type{
-  name = "std::unordered_map<int,
-    // comments
-    int /* inline comments */>",
-}
+@cpp.Type{template = "::std::unordered_map"}
 typedef map<i32, i32> map_typedef
 @thrift.AllowLegacyTypedefUri
 @cpp.Type{name = "folly::fbstring"}

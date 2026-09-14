@@ -2064,8 +2064,8 @@ cdef class ParamService(thrift.py3.client.Client):
             raise TypeError(f'base_type is not a {int !r}.')
         else:
             base_type = <cint32_t> base_type
-        if not isinstance(list_type, _module_types.folly_small_vector__List__i64):
-            list_type = _module_types.folly_small_vector__List__i64(list_type)
+        if not isinstance(list_type, _module_types._apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64):
+            list_type = _module_types._apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64(list_type)
         if not isinstance(set_type, _module_types.folly_sorted_vector_set__Set__string):
             set_type = _module_types.folly_sorted_vector_set__Set__string(set_type)
         if not isinstance(map_type, _module_types._FakeMap__Map__i64_double):
@@ -2098,7 +2098,7 @@ cdef class ParamService(thrift.py3.client.Client):
                 deref((<_module_types.ContainerStruct>no_annotation)._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE),
                 _module_types.Set__i32__make_instance(opt_ref_type_shared),
                 base_type,
-                _module_types.folly_small_vector__List__i64__make_instance(list_type),
+                _module_types._apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64__make_instance(list_type),
                 _module_types.folly_sorted_vector_set__Set__string__make_instance(set_type),
                 _module_types._FakeMap__Map__i64_double__make_instance(map_type),
                 _module_types.std_unordered_map__Map__string_ContainerStruct__make_instance(map_struct_type),

@@ -33,7 +33,7 @@ from module.containers_FBTHRIFT_ONLY_DO_NOT_USE import (
     Map__List__Set__string_string,
     Map__Set__List__i32_Map__List__Set__string_string,
     Set__i32,
-    folly_small_vector__List__i64,
+    _apache_thrift_SizedContainer__folly_small_vector_8_type__List__i64,
     folly_sorted_vector_set__Set__string,
     _FakeMap__Map__i64_double,
     std_unordered_map__Map__string_ContainerStruct,
