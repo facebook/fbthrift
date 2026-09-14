@@ -15,6 +15,9 @@
  */
 
 #include <memory>
+
+#include <folly/python/error.h>
+#include <folly/python/import.h>
 #include <thrift/lib/python/server/PythonAsyncProcessor.h>
 #include <thrift/lib/python/server/PythonAsyncProcessorFactory.h>
 #include <thrift/lib/python/server/python_async_processor_api.h> // @manual
@@ -23,9 +26,11 @@ namespace apache::thrift::python {
 
 namespace {
 
-void do_import() {
-  if (0 != import_thrift__python__server_impl__python_async_processor()) {
-    throw std::runtime_error(
+void do_python_import() {
+  constinit static folly::python::import_cache_nocapture import(
+      ::import_thrift__python__server_impl__python_async_processor);
+  if (!import()) {
+    folly::python::handlePythonError(
         "import thrift.python.server_impl.python_async_processor failed");
   }
 }
@@ -90,7 +95,7 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessorFactory::callLifecycle(
   if (ind < lifecycleFuncs_.size()) {
     if (auto func = lifecycleFuncs_[ind]) {
       auto [promise, future] = folly::makePromiseContract<folly::Unit>();
-      [[maybe_unused]] static bool done = (do_import(), false);
+      do_python_import();
       handleLifecycleCallback(
           func, getLifecycleFuncName(funcType), std::move(promise));
       return std::move(future);
