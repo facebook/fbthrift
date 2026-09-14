@@ -283,17 +283,30 @@ cached_properties::cached_properties(
   strip_cpp_comments_and_newlines(cpp_type_);
 }
 
+namespace {
+void sanitize_type(std::string& type) {
+  apache::thrift::detail::replace_all(type, "::", "_");
+  apache::thrift::detail::replace_all(type, "<", "_");
+  apache::thrift::detail::replace_all(type, ">", "");
+  apache::thrift::detail::replace_all(type, " ", "");
+  apache::thrift::detail::replace_all(type, ",", "_");
+}
+} // namespace
+
 std::string cached_properties::to_cython_template() const {
+  auto cpp_template = cpp_template_;
+  strip_cpp_comments_and_newlines(cpp_template);
   // handle special built-ins first:
-  if (cpp_template_ == "std::vector") {
+  if (cpp_template == "std::vector") {
     return "vector";
-  } else if (cpp_template_ == "std::set") {
+  } else if (cpp_template == "std::set") {
     return "cset";
-  } else if (cpp_template_ == "std::map") {
+  } else if (cpp_template == "std::map") {
     return "cmap";
   }
   // then default handling:
-  return apache::thrift::detail::replace_all_copy(cpp_template_, "::", "_");
+  sanitize_type(cpp_template);
+  return cpp_template;
 }
 
 std::string cached_properties::to_cython_type() const {
@@ -301,12 +314,7 @@ std::string cached_properties::to_cython_type() const {
     return "";
   }
   std::string cython_type = cpp_type_;
-  apache::thrift::detail::replace_all(cython_type, "::", "_");
-  apache::thrift::detail::replace_all(cython_type, "<", "_");
-  apache::thrift::detail::replace_all(cython_type, ">", "");
-  apache::thrift::detail::replace_all(cython_type, " ", "");
-  apache::thrift::detail::replace_all(cython_type, ", ", "_");
-  apache::thrift::detail::replace_all(cython_type, ",", "_");
+  sanitize_type(cython_type);
   return cython_type;
 }
 

@@ -81,4 +81,14 @@ TEST(GenerateCommon, StripCppCommentsAndNewlines) {
   EXPECT_THROW(strip_cpp_comments_and_newlines(unpaired), std::runtime_error);
 }
 
+TEST(GenerateCommon, CythonTemplateName) {
+  python::cached_properties properties(
+      "::apache::thrift::SizedContainer<::folly::small_vector, 8>::type",
+      "",
+      "");
+  EXPECT_EQ(
+      "_apache_thrift_SizedContainer__folly_small_vector_8_type",
+      properties.to_cython_template());
+}
+
 } // namespace apache::thrift::compiler
