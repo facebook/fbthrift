@@ -211,5 +211,5 @@ struct CarbonTestDataLarge {
   63: double doubleField9
 }
 
-@cpp.Type{name = "std::map<std::string, int32_t>"}
+@cpp.Type{template = "std::map"}
 typedef map<string, i32> string_to_i32_std_map
