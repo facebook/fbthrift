@@ -155,9 +155,10 @@ if (NOT Boost_FOUND)
     URL_HASH
       SHA256=c5a0688e1f0c05f354bbd0b32244d36085d9ffc9f932e8a18983a9908096f614
     OVERRIDE_FIND_PACKAGE)
-  # Some Boost 1.83 modules (libs/predef) still declare
-  # cmake_minimum_required(VERSION 2.8/3.0), which CMake 4 rejects.
-  set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+  # Some Boost 1.83 modules (libs/predef, libs/filesystem) still declare
+  # cmake_minimum_required(VERSION 2.8/3.0). CMake 4 errors out below 3.5 and
+  # deprecation-warns below 3.10, so the floor has to clear both.
+  set(CMAKE_POLICY_VERSION_MINIMUM 3.10)
   FetchContent_MakeAvailable(Boost)
   unset(CMAKE_POLICY_VERSION_MINIMUM)
   # In the modular layout Boost::headers maps to libs/headers/include, which is
