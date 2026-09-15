@@ -17,11 +17,6 @@
 #ifndef _LIB_CPP_THRIFT_CONFIG_H
 #define _LIB_CPP_THRIFT_CONFIG_H 1
 
-/* Define to 1 if you have the `snappy' library (-lsnappy). */
-#ifndef THRIFT_HAVE_LIBSNAPPY
-#define THRIFT_HAVE_LIBSNAPPY 1
-#endif
-
 /* Version number of package */
 #ifndef THRIFT_VERSION
 #define THRIFT_VERSION "1.0"

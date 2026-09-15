@@ -134,7 +134,6 @@ endif ()
 # https://cmake.org/cmake/help/v3.9/module/FindThreads.html
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads)
-add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
 
 if (THRIFT_PY3_DEPRECATED)
   find_package(PythonInterp 3.6 REQUIRED)
