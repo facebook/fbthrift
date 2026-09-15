@@ -79,6 +79,10 @@ func newRocketClient(
 }
 
 func (p *rocketClient) SendRequestNoResponse(ctx context.Context, messageName string, request WritableStruct) error {
+	// Keep p alive for the duration of the call: p owns a GC cleanup that
+	// closes the underlying client, and p is otherwise dead once p.client is
+	// loaded, so the finalizer could run (and close the socket) mid-request.
+	defer runtime.KeepAlive(p)
 	if p.ioTimeout > 0 {
 		var cancel context.CancelFunc
 		ctx, cancel = context.WithTimeout(ctx, p.ioTimeout)
@@ -90,6 +94,8 @@ func (p *rocketClient) SendRequestNoResponse(ctx context.Context, messageName st
 }
 
 func (p *rocketClient) SendRequestResponse(ctx context.Context, messageName string, request WritableStruct, response ReadableResult) error {
+	// See SendRequestNoResponse: p must stay alive across the blocking call.
+	defer runtime.KeepAlive(p)
 	if p.ioTimeout > 0 {
 		var cancel context.CancelFunc
 		ctx, cancel = context.WithTimeout(ctx, p.ioTimeout)
@@ -97,16 +103,7 @@ func (p *rocketClient) SendRequestResponse(ctx context.Context, messageName stri
 	}
 
 	headers := p.getWriteHeaders(ctx)
-	resultData, resultErr := p.client.RequestResponse(ctx, messageName, headers, request)
-	if resultErr != nil {
-		return resultErr
-	}
-
-	err := decodeResultOrException(p.protoID, resultData, response)
-	if err != nil {
-		return err
-	}
-	return nil
+	return p.client.RequestResponse(ctx, messageName, headers, request, response)
 }
 
 func (p *rocketClient) SendRequestStream(
@@ -116,22 +113,15 @@ func (p *rocketClient) SendRequestStream(
 	response ReadableResult,
 	newStreamElemFn func() ReadableResult,
 ) (iter.Seq2[ReadableStruct, error], error) {
+	// See SendRequestNoResponse: p must stay alive across the blocking call.
+	defer runtime.KeepAlive(p)
 	if ctx.Done() == nil {
 		// We require that the context is cancellable, to prevent goroutine leaks.
 		return nil, errors.New("context does not support cancellation")
 	}
 
 	headers := p.getWriteHeaders(ctx)
-	resultData, streamSeq, resultErr := p.client.RequestStream(ctx, messageName, headers, request, newStreamElemFn)
-	if resultErr != nil {
-		return nil, resultErr
-	}
-
-	err := decodeResultOrException(p.protoID, resultData, response)
-	if err != nil {
-		return nil, err
-	}
-	return streamSeq, nil
+	return p.client.RequestStream(ctx, messageName, headers, request, response, newStreamElemFn)
 }
 
 func (p *rocketClient) SendRequestSink(
@@ -140,17 +130,10 @@ func (p *rocketClient) SendRequestSink(
 	request WritableStruct,
 	firstResponse ReadableResult,
 ) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableResult) error, error) {
+	// See SendRequestNoResponse: p must stay alive across the blocking call.
+	defer runtime.KeepAlive(p)
 	headers := p.getWriteHeaders(ctx)
-	resultData, sinkCallback, resultErr := p.client.RequestSink(ctx, messageName, headers, request)
-	if resultErr != nil {
-		return nil, resultErr
-	}
-
-	err := decodeResultOrException(p.protoID, resultData, firstResponse)
-	if err != nil {
-		return nil, err
-	}
-	return sinkCallback, nil
+	return p.client.RequestSink(ctx, messageName, headers, request, firstResponse)
 }
 
 func (p *rocketClient) SendRequestBiDi(
@@ -160,25 +143,20 @@ func (p *rocketClient) SendRequestBiDi(
 	firstResponse ReadableResult,
 	newStreamElemFn func() ReadableResult,
 ) (func(sinkSeq iter.Seq2[WritableResult, error]), iter.Seq2[ReadableStruct, error], error) {
+	// See SendRequestNoResponse: p must stay alive across the blocking call.
+	defer runtime.KeepAlive(p)
 	if ctx.Done() == nil {
 		// We require that the context is cancellable, to prevent goroutine leaks.
 		return nil, nil, errors.New("context does not support cancellation")
 	}
 
 	headers := p.getWriteHeaders(ctx)
-	resultData, sinkCallback, streamSeq, resultErr := p.client.RequestBiDiStream(ctx, messageName, headers, request, newStreamElemFn)
-	if resultErr != nil {
-		return nil, nil, resultErr
-	}
-
-	err := decodeResultOrException(p.protoID, resultData, firstResponse)
-	if err != nil {
-		return nil, nil, err
-	}
-	return sinkCallback, streamSeq, nil
+	return p.client.RequestBiDiStream(ctx, messageName, headers, request, firstResponse, newStreamElemFn)
 }
 
 func (p *rocketClient) TerminateInteraction(interactionID int64) error {
+	// See SendRequestNoResponse: p must stay alive across the blocking call.
+	defer runtime.KeepAlive(p)
 	interactionTerminate := rpcmetadata.NewInteractionTerminate().
 		SetInteractionId(interactionID)
 	metadata := rpcmetadata.NewClientPushMetadata().
