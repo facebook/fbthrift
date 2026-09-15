@@ -22,17 +22,9 @@
       {
         return;
       }
-  {{#each struct.fields as |field|}}
-      case Type::{{field.cpp_name}}:
-      {
-    {{#if field.cpp_ref?}}
-        set_{{field.cpp_name}}(std::move(*rhs.value_.{{field.cpp_name}}));
-    {{#else}}
-        set_{{field.cpp_name}}(std::move(rhs.value_.{{field.cpp_name}}));
-    {{/if field.cpp_ref?}}
-        break;
-      }
-  {{/each}}
+    {{#if struct.fields?}}
+      {{#partial module_types.union_move_field_cases struct=struct src="rhs"}}
+    {{/if struct.fields?}}
       default:
       {
         assert(false);

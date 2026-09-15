@@ -21,18 +21,9 @@
     switch (rhs.getType()) {
       case Type::__EMPTY__:
         return;
-    {{#each struct.fields as |field|}}
-      case Type::{{field.cpp_name}}:
-      {{#if field.transitively_refers_to_unique?}}
-        set_{{field.cpp_name}}(::apache::thrift::detail::st::copy_field<
-          {{field.type.type_class}}>(rhs.value_.{{field.cpp_name}}));
-      {{#else if field.cpp_ref?}}
-        set_{{field.cpp_name}}(*rhs.value_.{{field.cpp_name}});
-      {{#else}}
-        set_{{field.cpp_name}}(rhs.value_.{{field.cpp_name}});
-      {{/if field.transitively_refers_to_unique?}}
-        break;
-    {{/each}}
+    {{#if struct.fields?}}
+      {{#partial module_types.union_copy_field_cases struct=struct src="rhs"}}
+    {{/if struct.fields?}}
       default:
         assert(false);
     }
@@ -45,18 +36,9 @@
       case Type::__EMPTY__:
         __fbthrift_clear();
         return *this;
-    {{#each struct.fields as |field|}}
-      case Type::{{field.cpp_name}}:
-      {{#if field.transitively_refers_to_unique?}}
-        set_{{field.cpp_name}}(::apache::thrift::detail::st::copy_field<
-          {{field.type.type_class}}>(rhs.value_.{{field.cpp_name}}));
-      {{#else if field.cpp_ref?}}
-        set_{{field.cpp_name}}(*rhs.value_.{{field.cpp_name}});
-      {{#else}}
-        set_{{field.cpp_name}}(rhs.value_.{{field.cpp_name}});
-      {{/if field.transitively_refers_to_unique?}}
-        break;
-    {{/each}}
+    {{#if struct.fields?}}
+      {{#partial module_types.union_copy_field_cases struct=struct src="rhs"}}
+    {{/if struct.fields?}}
       default:
         __fbthrift_clear();
         assert(false);

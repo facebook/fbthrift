@@ -131,6 +131,37 @@ std::partial_ordering {{struct.cpp_underlying_name}}::operator<=>([[maybe_unused
 }}{{/let partial}}
 
 
+{{! Union switch cases that copy `src` into `*this`. Callers supply the
+    __EMPTY__ and default arms. }}
+{{#let export partial union_copy_field_cases |struct src|}}
+  {{#each struct.fields as |field|}}
+case Type::{{field.cpp_name}}:
+    {{#if field.transitively_refers_to_unique?}}
+  set_{{field.cpp_name}}(::apache::thrift::detail::st::copy_field<
+    {{field.type.type_class}}>({{src}}.value_.{{field.cpp_name}}));
+    {{#else if field.cpp_ref?}}
+  set_{{field.cpp_name}}(*{{src}}.value_.{{field.cpp_name}});
+    {{#else}}
+  set_{{field.cpp_name}}({{src}}.value_.{{field.cpp_name}});
+    {{/if field.transitively_refers_to_unique?}}
+  break;
+  {{/each}}
+{{/let partial}}
+
+
+{{! Union switch cases that move `src` into `*this`. Callers supply the
+    __EMPTY__ and default arms. }}
+{{#let export partial union_move_field_cases |struct src|}}
+  {{#each struct.fields as |field|}}
+case Type::{{field.cpp_name}}:
+{
+  set_{{field.cpp_name}}(std::move({{#if field.cpp_ref?}}*{{/if}}{{src}}.value_.{{field.cpp_name}}));
+  break;
+}
+  {{/each}}
+{{/let partial}}
+
+
 {{#let export partial union_eq_overload |struct|}}
 bool {{struct.cpp_underlying_name}}::operator==(const {{struct.cpp_underlying_name}}& rhs) const {
   return ::apache::thrift::op::detail::UnionEquality{}(*this, rhs);
