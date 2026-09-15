@@ -134,15 +134,8 @@ inline std::string get_capi_include(
       prog->name());
 }
 
-const std::string& gen_capi_module_prefix(const t_program* program) {
-  static std::unordered_map<const t_program*, std::string> cache;
-  auto it = cache.find(program);
-  if (it != cache.end()) {
-    return it->second;
-  }
-  auto inserted =
-      cache.emplace(program, python::gen_capi_module_prefix_impl(program));
-  return inserted.first->second;
+std::string gen_capi_module_prefix(const t_program* program) {
+  return python::gen_capi_module_prefix_impl(program);
 }
 
 // Formats a field's type, or a sub-type
