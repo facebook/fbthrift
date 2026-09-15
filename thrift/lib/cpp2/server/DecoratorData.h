@@ -18,7 +18,6 @@
 
 #include <span>
 #include <stdexcept>
-#include <folly/container/span.h>
 #include <thrift/lib/cpp2/server/DecoratorDataHandle.h>
 #include <thrift/lib/cpp2/server/DecoratorDataStorage.h>
 
