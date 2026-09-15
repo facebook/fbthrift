@@ -195,11 +195,13 @@ void THttpTransport::refill() {
           TTransportException::CORRUPTED_DATA,
           "HTTP message buffer size overflow");
     }
-    httpBufSize_ *= 2;
-    httpBuf_ = (char*)std::realloc(httpBuf_, httpBufSize_ + 1);
-    if (httpBuf_ == nullptr) {
+    const auto newBufSize = httpBufSize_ * 2;
+    auto* newBuf = static_cast<char*>(std::realloc(httpBuf_, newBufSize + 1));
+    if (newBuf == nullptr) {
       throw std::bad_alloc();
     }
+    httpBuf_ = newBuf;
+    httpBufSize_ = newBufSize;
   }
 
   // Read more data
