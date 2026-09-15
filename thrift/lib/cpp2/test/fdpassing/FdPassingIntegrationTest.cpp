@@ -140,6 +140,8 @@ auto makeServerThread(const std::string& sockPath) {
   }
   server->setNumIOWorkerThreads(1);
   server->setNumCPUWorkerThreads(1);
+  server->setSSLPolicy(apache::thrift::SSLPolicy::DISABLED);
+  server->setSSLConfig(std::make_shared<wangle::SSLContextConfig>());
 
   thread->start(server, [=]() {});
   thread->setServeThreadName("fd-demo-server");
@@ -147,7 +149,7 @@ auto makeServerThread(const std::string& sockPath) {
   return thread;
 }
 
-TEST(FdPassingIntegrationTest, clientToServerAndBack) {
+TEST(FdPassingIntegrationTest, clientToServerAndBackWithTlsDisabled) {
   folly::test::TemporaryDirectory tempDir;
   auto sockPath = (tempDir.path() / "fd-passing-test-socket").native();
   auto serverThread = makeServerThread(sockPath);

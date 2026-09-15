@@ -2662,7 +2662,8 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
 
   std::shared_ptr<wangle::ServerSocketConfig> getServerSocketConfig() {
     auto config = std::make_shared<wangle::ServerSocketConfig>();
-    if (sslContextObserver_.has_value()) {
+    if (sslContextObserver_.has_value() &&
+        getSSLPolicy() != SSLPolicy::DISABLED) {
       config->sslContextConfigs.push_back(*sslContextObserver_->getSnapshot());
     }
     if (sslCacheOptions_) {
