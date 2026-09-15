@@ -29,6 +29,8 @@ jobs:
       run: sudo --preserve-env=http_proxy apt-get update
     - name: Install system deps
       run: sudo --preserve-env=http_proxy python3 build/fbcode_builder/getdeps.py --allow-system-packages install-system-deps --recursive fbthrift-python
+    - name: Install supported CMake
+      run: python3 -m pip install 'cmake>=3.24,<4'
     - id: paths
       name: Query paths
       run: python3 build/fbcode_builder/getdeps.py --allow-system-packages query-paths --recursive --src-dir=. fbthrift-python  >> "$GITHUB_OUTPUT"
