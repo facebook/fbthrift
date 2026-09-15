@@ -140,35 +140,18 @@ if (NOT Boost_FOUND)
   if (WIN32)
     list(APPEND BOOST_INCLUDE_LIBRARIES thread)
   endif ()
-  # Not thrift_fetch_from_manifest: the manifest pins the b2 distribution from
-  # archives.boost.io, which ships no CMakeLists.txt, so FetchContent would add
-  # nothing. Take the modular CMake release at the version the manifest pins.
-  set(boost_manifest
-      "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/manifests/boost")
-  file(READ "${boost_manifest}" boost_manifest_text)
-  if (NOT boost_manifest_text MATCHES "boost_([0-9]+)_([0-9]+)_([0-9]+)\\.tar")
-    message(FATAL_ERROR "no boost version in ${boost_manifest}")
-  endif ()
-  set(boost_version "${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3}")
-  message(STATUS "Boost not found, fetching ${boost_version}")
-  include(FetchContent)
-  FetchContent_Declare(
-    Boost
-    URL "https://github.com/boostorg/boost/releases/download/boost-${boost_version}/boost-${boost_version}.tar.xz"
-    URL_HASH
-      SHA256=c5a0688e1f0c05f354bbd0b32244d36085d9ffc9f932e8a18983a9908096f614
-    OVERRIDE_FIND_PACKAGE)
   # Some Boost 1.83 modules (libs/predef, libs/filesystem) still declare
   # cmake_minimum_required(VERSION 2.8/3.0). CMake 4 errors out below 3.5 and
   # deprecation-warns below 3.10, so the floor has to clear both.
   set(CMAKE_POLICY_VERSION_MINIMUM 3.10)
-  FetchContent_MakeAvailable(Boost)
+  thrift_fetch_from_manifest(Boost boost)
   unset(CMAKE_POLICY_VERSION_MINIMUM)
   # In the modular layout Boost::headers maps to libs/headers/include, which is
   # empty, so #include <boost/...> resolves to nothing for folly and
   # thrift/lib/cpp. Put every module's headers on the target instead.
-  file(GLOB boost_include_dirs "${boost_SOURCE_DIR}/libs/*/include"
-       "${boost_SOURCE_DIR}/libs/numeric/*/include")
+  FetchContent_GetProperties(Boost SOURCE_DIR boost_source_dir)
+  file(GLOB boost_include_dirs "${boost_source_dir}/libs/*/include"
+       "${boost_source_dir}/libs/numeric/*/include")
   target_include_directories(
     boost_headers INTERFACE "$<BUILD_INTERFACE:${boost_include_dirs}>")
 endif ()
