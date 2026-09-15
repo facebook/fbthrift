@@ -115,8 +115,6 @@ endif ()
 
 find_package(OpenSSL REQUIRED)
 
-set(THRIFT1 thrift)
-set(THRIFTCPP2 thriftcpp2)
 include(ThriftLibrary.cmake)
 install(FILES ThriftLibrary.cmake
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift)

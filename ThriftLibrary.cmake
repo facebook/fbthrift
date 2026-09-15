@@ -13,17 +13,23 @@
 # limitations under the License.
 
 #
-# Requirements:
-# Please provide the following two variables before using these macros:
-#   ${THRIFT1} - the compiler executable target, or a path to a thrift binary
-#   ${THRIFTCPP2} - path/to/lib/thriftcpp2
-#
 # ${THRIFT1} goes to COMMAND as-is rather than through $<TARGET_FILE:...>.
 # CMake substitutes an imported target's location and adds the dependency, and
 # when cross-compiling an in-tree compiler it falls back to a host thrift on
 # PATH -- which a baked-in path to the unrunnable target-architecture binary
 # would defeat.
 #
+
+# The in-tree target names. A project building against an installed Thrift
+# overrides these before including this file: its exported targets are
+# namespaced (FBThrift::thrift, FBThrift::thriftcpp2), and some such projects
+# point THRIFT1 at a thrift binary found on PATH instead.
+if (NOT DEFINED THRIFT1)
+  set(THRIFT1 thrift)
+endif ()
+if (NOT DEFINED THRIFTCPP2)
+  set(THRIFTCPP2 thriftcpp2)
+endif ()
 
 # Consumers include this file directly, so it cannot assume the includer has
 # already pulled in the standard install directory variables.
