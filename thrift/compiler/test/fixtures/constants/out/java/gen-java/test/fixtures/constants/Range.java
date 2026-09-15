@@ -81,7 +81,7 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -100,10 +100,10 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
         THRIFT_NAMES_TO_IDS.put("max", 2);
         FIELD_METADATA.put(2, MAX_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
     public int getMin() { return min; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
     public int getMax() { return max; }
 

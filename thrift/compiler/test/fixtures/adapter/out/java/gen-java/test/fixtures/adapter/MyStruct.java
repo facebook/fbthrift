@@ -104,7 +104,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/MyStruct"),
             MyStruct.class, MyStruct::read0));
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public int getField() { return field; }
     @Nullable

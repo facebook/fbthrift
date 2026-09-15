@@ -293,7 +293,8 @@ ast::text::non_whitespace make_non_whitespace_text(const token& t) {
  *   1. They can be contextually standalone even though they are not invisible.
  *   2. They cannot be combined with other standalone constructs. For example,
  *      two partial applications on the same line is not standalone.
- *   3. Standalone partial whitespace stripping applies only to its right side.
+ *   3. Their stripped leading whitespace is retained in the AST as the
+ *      indentation to apply to every line the partial renders.
  *
  * Why does this belong here (in between the lexer and the parser)?
  *
@@ -471,8 +472,6 @@ class standalone_lines_scanner {
                 });
             current_line.markings.emplace_back(
                 scan_start, partial_apply{std::move(preceding_whitespace)});
-            // Do not strip the left side
-            current_line.start = scan.head;
             break;
           }
           default:
@@ -502,8 +501,6 @@ class standalone_lines_scanner {
   // ..and ONLY those constructs are candidates for whitespace stripping. That's
   // because these kind of templates are invisible in the output — their purpose
   // is purely to express intent within the templating language.
-  // The only exception is partial applications, where only the right side is
-  // stripped when standalone.
   enum class standalone_compatible_kind {
     comment, // "{{!"
     block_or_statement, // "{{#" (except "{{#partial"), "{{^", or "{{"/"}

@@ -31,7 +31,7 @@ def _fbthrift_gen_metadata_exception_SimpleException(metadata_struct: _fbthrift_
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # err_code
-    
+
     return new_struct
 def gen_metadata_exception_SimpleException() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_SimpleException(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -55,7 +55,7 @@ def _fbthrift_gen_metadata_struct_OptionalRefStruct(metadata_struct: _fbthrift_m
     new_struct = metadata_struct(structs=struct_dict)
 
     # optional_blob
-    
+
     return new_struct
 def gen_metadata_struct_OptionalRefStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_OptionalRefStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -106,18 +106,18 @@ def _fbthrift_gen_metadata_struct_SimpleStruct(metadata_struct: _fbthrift_metada
     new_struct = metadata_struct(structs=struct_dict)
 
     # is_on
-        # tiny_int
-        # small_int
-        # nice_sized_int
-        # big_int
-        # real
-        # smaller_real
-        # something
+    # tiny_int
+    # small_int
+    # nice_sized_int
+    # big_int
+    # real
+    # smaller_real
+    # something
      # key
      # val     # hidden_field
-        # opt_default_int
-        # opt_default_str
-        # opt_default_enum
+    # opt_default_int
+    # opt_default_str
+    # opt_default_enum
     new_struct = module.thrift_enums._fbthrift_gen_metadata_enum_AnEnum(new_struct)
     return new_struct
 def gen_metadata_struct_SimpleStruct() -> _fbthrift_metadata.ThriftMetadata:
@@ -148,9 +148,9 @@ def _fbthrift_gen_metadata_struct_Float32Struct(metadata_struct: _fbthrift_metad
     new_struct = metadata_struct(structs=struct_dict)
 
     # float32
-        # float64
-        # float_list
-        # float_map
+    # float64
+    # float_list
+    # float_map
      # key
      # val 
     return new_struct
@@ -181,9 +181,9 @@ def _fbthrift_gen_metadata_struct_IssetInspectionStruct(metadata_struct: _fbthri
     new_struct = metadata_struct(structs=struct_dict)
 
     # int_field
-        # opt_str_field
-        # bool_field
-    
+    # opt_str_field
+    # bool_field
+
     return new_struct
 def gen_metadata_struct_IssetInspectionStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_IssetInspectionStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -243,7 +243,7 @@ def _fbthrift_gen_metadata_struct_AdaptedUnion(metadata_struct: _fbthrift_metada
     new_struct = metadata_struct(structs=struct_dict)
 
     # best
-    
+
     return new_struct
 def gen_metadata_struct_AdaptedUnion() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_AdaptedUnion(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -267,7 +267,7 @@ def _fbthrift_gen_metadata_exception_HiddenException(metadata_struct: _fbthrift_
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # test
-    
+
     return new_struct
 def gen_metadata_exception_HiddenException() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_HiddenException(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -310,13 +310,13 @@ def _fbthrift_gen_metadata_struct_ComplexStruct(metadata_struct: _fbthrift_metad
     # structOne
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct)    # structTwo
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct)    # an_integer
-        # name
-        # an_enum
+    # name
+    # an_enum
     new_struct = module.thrift_enums._fbthrift_gen_metadata_enum_AnEnum(new_struct)    # some_bytes
-        # from
-        # cdef
-        # bytes_with_cpp_type
-    
+    # from
+    # cdef
+    # bytes_with_cpp_type
+
     return new_struct
 def gen_metadata_struct_ComplexStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_ComplexStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -341,7 +341,7 @@ def _fbthrift_gen_metadata_struct_BinaryUnion(metadata_struct: _fbthrift_metadat
     new_struct = metadata_struct(structs=struct_dict)
 
     # iobuf_val
-    
+
     return new_struct
 def gen_metadata_struct_BinaryUnion() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_BinaryUnion(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -414,13 +414,13 @@ def _fbthrift_gen_metadata_struct_CustomFields(metadata_struct: _fbthrift_metada
     new_struct = metadata_struct(structs=struct_dict)
 
     # bool_field
-        # integer_field
-        # double_field
-        # string_field
-        # binary_field
-        # list_field
-        # set_field
-        # map_field
+    # integer_field
+    # double_field
+    # string_field
+    # binary_field
+    # list_field
+    # set_field
+    # map_field
      # key
      # val     # struct_field
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct)
@@ -463,13 +463,13 @@ def _fbthrift_gen_metadata_struct_CustomTypedefFields(metadata_struct: _fbthrift
     new_struct = metadata_struct(structs=struct_dict)
 
     # bool_field
-        # integer_field
-        # double_field
-        # string_field
-        # binary_field
-        # list_field
-        # set_field
-        # map_field
+    # integer_field
+    # double_field
+    # string_field
+    # binary_field
+    # list_field
+    # set_field
+    # map_field
      # key
      # val     # struct_field
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct)
@@ -512,13 +512,13 @@ def _fbthrift_gen_metadata_struct_AdaptedTypedefFields(metadata_struct: _fbthrif
     new_struct = metadata_struct(structs=struct_dict)
 
     # bool_field
-        # integer_field
-        # double_field
-        # string_field
-        # binary_field
-        # list_field
-        # set_field
-        # map_field
+    # integer_field
+    # double_field
+    # string_field
+    # binary_field
+    # list_field
+    # set_field
+    # map_field
      # key
      # val     # struct_field
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct)

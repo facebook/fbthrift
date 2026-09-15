@@ -68,7 +68,7 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -84,7 +84,7 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
             new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/RenamedStruct"),
             RenamedStruct.class, RenamedStruct::read0));
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)
     public long getData() { return data; }
 

@@ -172,7 +172,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -236,7 +236,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/basic_annotations/src/module/MyStruct"),
             MyStruct.class, MyStruct::read0));
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
     @Nullable

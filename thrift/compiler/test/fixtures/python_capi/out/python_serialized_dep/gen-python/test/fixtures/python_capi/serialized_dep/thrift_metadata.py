@@ -40,10 +40,10 @@ def _fbthrift_gen_metadata_struct_SerializedStruct(metadata_struct: _fbthrift_me
     new_struct = metadata_struct(structs=struct_dict)
 
     # s
-        # i
-        # os
-        # rs
-    
+    # i
+    # os
+    # rs
+
     return new_struct
 def gen_metadata_struct_SerializedStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_SerializedStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -70,8 +70,8 @@ def _fbthrift_gen_metadata_struct_SerializedUnion(metadata_struct: _fbthrift_met
     new_struct = metadata_struct(structs=struct_dict)
 
     # s
-        # i
-    
+    # i
+
     return new_struct
 def gen_metadata_struct_SerializedUnion() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_SerializedUnion(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -100,9 +100,9 @@ def _fbthrift_gen_metadata_exception_SerializedError(metadata_struct: _fbthrift_
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # msg
-        # os
-        # rs
-    
+    # os
+    # rs
+
     return new_struct
 def gen_metadata_exception_SerializedError() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_SerializedError(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -134,10 +134,10 @@ def _fbthrift_gen_metadata_struct_MarshalStruct(metadata_struct: _fbthrift_metad
     new_struct = metadata_struct(structs=struct_dict)
 
     # s
-        # i
-        # os
-        # rs
-    
+    # i
+    # os
+    # rs
+
     return new_struct
 def gen_metadata_struct_MarshalStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_MarshalStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -164,8 +164,8 @@ def _fbthrift_gen_metadata_struct_MarshalUnion(metadata_struct: _fbthrift_metada
     new_struct = metadata_struct(structs=struct_dict)
 
     # s
-        # i
-    
+    # i
+
     return new_struct
 def gen_metadata_struct_MarshalUnion() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_MarshalUnion(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -194,9 +194,9 @@ def _fbthrift_gen_metadata_exception_MarshalError(metadata_struct: _fbthrift_met
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # msg
-        # os
-        # rs
-    
+    # os
+    # rs
+
     return new_struct
 def gen_metadata_exception_MarshalError() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_MarshalError(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

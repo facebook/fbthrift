@@ -59,15 +59,15 @@ def _fbthrift_gen_metadata_struct_MyStruct(metadata_struct: _fbthrift_metadata.T
     new_struct = metadata_struct(structs=struct_dict)
 
     # inty
-        # stringy
-        # myItemy
+    # stringy
+    # myItemy
     new_struct = _fbthrift_gen_metadata_struct_MyDataItem(new_struct)    # myEnumy
     new_struct = test.fixtures.python_capi.module.thrift_enums._fbthrift_gen_metadata_enum_MyEnum(new_struct)    # booly
-        # floatListy
-        # strMappy
+    # floatListy
+    # strMappy
      # key
      # val     # intSetty
-    
+
     return new_struct
 def gen_metadata_struct_MyStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_MyStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -91,7 +91,7 @@ def _fbthrift_gen_metadata_struct_MyDataItem(metadata_struct: _fbthrift_metadata
     new_struct = metadata_struct(structs=struct_dict)
 
     # s
-    
+
     return new_struct
 def gen_metadata_struct_MyDataItem() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_MyDataItem(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -141,8 +141,8 @@ def _fbthrift_gen_metadata_struct_DoubledPair(metadata_struct: _fbthrift_metadat
     new_struct = metadata_struct(structs=struct_dict)
 
     # s
-        # x
-    
+    # x
+
     return new_struct
 def gen_metadata_struct_DoubledPair() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_DoubledPair(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -169,8 +169,8 @@ def _fbthrift_gen_metadata_struct_StringPair(metadata_struct: _fbthrift_metadata
     new_struct = metadata_struct(structs=struct_dict)
 
     # normal
-        # doubled
-    
+    # doubled
+
     return new_struct
 def gen_metadata_struct_StringPair() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_StringPair(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -254,21 +254,21 @@ def _fbthrift_gen_metadata_struct_PrimitiveStruct(metadata_struct: _fbthrift_met
     new_struct = metadata_struct(structs=struct_dict)
 
     # booly
-        # charry
-        # shorty
-        # inty
-        # longy
-        # floaty
-        # dubby
-        # stringy
-        # bytey
-        # buffy
-        # pointbuffy
-        # patched_struct
+    # charry
+    # shorty
+    # inty
+    # longy
+    # floaty
+    # dubby
+    # stringy
+    # bytey
+    # buffy
+    # pointbuffy
+    # patched_struct
     new_struct = _fbthrift_gen_metadata_struct_MyStruct(new_struct)    # empty_struct
     new_struct = _fbthrift_gen_metadata_struct_EmptyStruct(new_struct)    # fbstring
-        # managed_string_view
-        # some_error
+    # managed_string_view
+    # some_error
     new_struct = test.fixtures.python_capi.thrift_dep.thrift_metadata._fbthrift_gen_metadata_exception_SomeError(new_struct)
     return new_struct
 def gen_metadata_struct_PrimitiveStruct() -> _fbthrift_metadata.ThriftMetadata:
@@ -300,10 +300,10 @@ def _fbthrift_gen_metadata_struct_AdaptedFields(metadata_struct: _fbthrift_metad
     new_struct = metadata_struct(structs=struct_dict)
 
     # adapted_int
-        # list_adapted_int
-        # set_adapted_int
-        # inline_adapted_int
-    
+    # list_adapted_int
+    # set_adapted_int
+    # inline_adapted_int
+
     return new_struct
 def gen_metadata_struct_AdaptedFields() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_AdaptedFields(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -349,15 +349,15 @@ def _fbthrift_gen_metadata_struct_ListStruct(metadata_struct: _fbthrift_metadata
     new_struct = metadata_struct(structs=struct_dict)
 
     # boolz
-        # intz
-        # stringz
-        # encoded
-        # uidz
-        # matrix
-        # ucharz
-        # voxels
-        # buf_ptrs
-    
+    # intz
+    # stringz
+    # encoded
+    # uidz
+    # matrix
+    # ucharz
+    # voxels
+    # buf_ptrs
+
     return new_struct
 def gen_metadata_struct_ListStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_ListStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -399,12 +399,12 @@ def _fbthrift_gen_metadata_struct_SetStruct(metadata_struct: _fbthrift_metadata.
 
     # enumz
     new_struct = test.fixtures.python_capi.module.thrift_enums._fbthrift_gen_metadata_enum_MyEnum(new_struct)    # intz
-        # binnaz
-        # encoded
-        # uidz
-        # charz
-        # setz
-    
+    # binnaz
+    # encoded
+    # uidz
+    # charz
+    # setz
+
     return new_struct
 def gen_metadata_struct_SetStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_SetStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -568,12 +568,12 @@ def _fbthrift_gen_metadata_struct_Onion(metadata_struct: _fbthrift_metadata.Thri
     # myEnum
     new_struct = test.fixtures.python_capi.module.thrift_enums._fbthrift_gen_metadata_enum_MyEnum(new_struct)    # myStruct
     new_struct = _fbthrift_gen_metadata_struct_PrimitiveStruct(new_struct)    # intSet
-        # myString
-        # doubleList
-        # strMap
+    # myString
+    # doubleList
+    # strMap
      # key
      # val     # adapted_int
-    
+
     return new_struct
 def gen_metadata_struct_Onion() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_Onion(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -603,9 +603,9 @@ def _fbthrift_gen_metadata_struct_SomeBinary(metadata_struct: _fbthrift_metadata
     new_struct = metadata_struct(structs=struct_dict)
 
     # iobuf
-        # iobuf_ptr
-        # iobufRef
-    
+    # iobuf_ptr
+    # iobufRef
+
     return new_struct
 def gen_metadata_struct_SomeBinary() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_SomeBinary(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

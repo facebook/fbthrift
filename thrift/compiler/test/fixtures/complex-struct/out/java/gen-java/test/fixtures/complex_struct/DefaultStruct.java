@@ -437,7 +437,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -576,16 +576,16 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
         THRIFT_NAMES_TO_IDS.put("enumMapDFset", 23);
         FIELD_METADATA.put(23, ENUM_MAP_DFSET_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE)
     public long getMyLongDFset() { return myLongDFset; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE)
     public long getMyLongDF() { return myLongDF; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE)
     public int getPortDFset() { return portDFset; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE)
     public int getPortNum() { return portNum; }
     @Nullable
@@ -594,19 +594,19 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE)
     public byte[] getMyBinary() { return myBinary; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE)
     public byte getMyByteDFSet() { return myByteDFSet; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE)
     public byte getMyByte() { return myByte; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE)
     public double getMyDoubleDFset() { return myDoubleDFset; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE)
     public double getMyDoubleDFZero() { return myDoubleDFZero; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE)
     public double getMyDouble() { return myDouble; }
     @Nullable

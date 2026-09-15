@@ -68,7 +68,7 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -81,7 +81,7 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
         THRIFT_NAMES_TO_IDS.put("num", 1);
         FIELD_METADATA.put(1, NUM_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
     public long getNum() { return num; }
 

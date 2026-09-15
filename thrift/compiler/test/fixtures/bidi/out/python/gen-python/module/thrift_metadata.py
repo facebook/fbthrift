@@ -31,7 +31,7 @@ def _fbthrift_gen_metadata_exception_BiDiSinkException(metadata_struct: _fbthrif
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # message
-    
+
     return new_struct
 def gen_metadata_exception_BiDiSinkException() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_BiDiSinkException(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -54,7 +54,7 @@ def _fbthrift_gen_metadata_exception_BiDiStreamException(metadata_struct: _fbthr
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # message
-    
+
     return new_struct
 def gen_metadata_exception_BiDiStreamException() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_BiDiStreamException(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -77,7 +77,7 @@ def _fbthrift_gen_metadata_exception_BiDiMethodException(metadata_struct: _fbthr
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # message
-    
+
     return new_struct
 def gen_metadata_exception_BiDiMethodException() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_BiDiMethodException(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

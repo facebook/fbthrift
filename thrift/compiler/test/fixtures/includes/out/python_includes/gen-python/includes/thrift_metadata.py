@@ -37,7 +37,7 @@ def _fbthrift_gen_metadata_struct_Included(metadata_struct: _fbthrift_metadata.T
     new_struct = metadata_struct(structs=struct_dict)
 
     # MyIntField
-        # MyTransitiveField
+    # MyTransitiveField
     new_struct = transitive.thrift_metadata._fbthrift_gen_metadata_struct_Foo(new_struct)
     return new_struct
 def gen_metadata_struct_Included() -> _fbthrift_metadata.ThriftMetadata:

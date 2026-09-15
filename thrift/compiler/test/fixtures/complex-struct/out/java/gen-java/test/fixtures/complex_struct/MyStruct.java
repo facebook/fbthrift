@@ -419,7 +419,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -594,7 +594,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         THRIFT_NAMES_TO_IDS.put("mListList", 28);
         FIELD_METADATA.put(28, M_LIST_LIST_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
     @Nullable
@@ -606,19 +606,19 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyEnum getMyEnum() { return myEnum; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=5, name="MyBoolField", requiredness=Requiredness.NONE)
     public boolean isMyBoolField() { return myBoolField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=6, name="MyByteField", requiredness=Requiredness.NONE)
     public byte getMyByteField() { return myByteField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=7, name="MyShortField", requiredness=Requiredness.NONE)
     public short getMyShortField() { return myShortField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=8, name="MyLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=9, name="MyDoubleField", requiredness=Requiredness.NONE)
     public double getMyDoubleField() { return myDoubleField; }
     @Nullable

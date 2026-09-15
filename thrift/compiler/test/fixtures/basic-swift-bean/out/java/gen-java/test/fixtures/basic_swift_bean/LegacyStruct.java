@@ -71,7 +71,7 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -90,7 +90,7 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
         THRIFT_NAMES_TO_IDS.put("bad", -1);
         FIELD_METADATA.put(-1, BAD_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
     public int getNormal() { return normal; }
 
@@ -99,7 +99,7 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
         this.normal = normal;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
     public int getBad() { return bad; }
 

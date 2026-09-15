@@ -81,7 +81,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -100,7 +100,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
         THRIFT_NAMES_TO_IDS.put("name", 2);
         FIELD_METADATA.put(2, NAME_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
     public long getAge() { return age; }
     @Nullable

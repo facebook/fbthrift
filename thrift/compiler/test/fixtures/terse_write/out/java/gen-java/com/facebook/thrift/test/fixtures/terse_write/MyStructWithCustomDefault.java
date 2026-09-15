@@ -68,7 +68,7 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -84,7 +84,7 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
             new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/terse_write/MyStructWithCustomDefault"),
             MyStructWithCustomDefault.class, MyStructWithCustomDefault::read0));
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
     public long getField1() { return field1; }
 

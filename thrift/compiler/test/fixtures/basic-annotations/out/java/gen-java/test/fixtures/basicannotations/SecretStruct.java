@@ -82,7 +82,7 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -102,7 +102,7 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
         THRIFT_NAMES_TO_IDS.put("password", 2);
         FIELD_METADATA.put(2, PASSWORD_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
     @Nullable

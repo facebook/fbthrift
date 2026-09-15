@@ -185,7 +185,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -252,7 +252,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
         THRIFT_NAMES_TO_IDS.put("vehicles", 10);
         FIELD_METADATA.put(10, VEHICLES_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
     @Nullable

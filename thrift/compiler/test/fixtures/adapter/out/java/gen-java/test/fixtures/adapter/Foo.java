@@ -363,13 +363,13 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo"),
             Foo.class, Foo::read0));
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedI32_5137_1 getIntField() { return intField; }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="optionalIntField", requiredness=Requiredness.OPTIONAL)
     public com.facebook.thrift.my.AdaptedI32_5137_1 getOptionalIntField() { return optionalIntField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="intFieldWithDefault", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedI32_5137_1 getIntFieldWithDefault() { return intFieldWithDefault; }
     @Nullable
@@ -387,13 +387,13 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedBinary_5673_3 getBinaryField() { return binaryField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=9, name="longField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedI64_1 getLongField() { return longField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=10, name="adaptedLongField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedMyI64_2 getAdaptedLongField() { return adaptedLongField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=11, name="doubleAdaptedField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedI64_1 getDoubleAdaptedField() { return doubleAdaptedField; }
     @Nullable

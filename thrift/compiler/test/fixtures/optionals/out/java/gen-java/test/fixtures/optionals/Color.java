@@ -107,7 +107,7 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -138,16 +138,16 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
         THRIFT_NAMES_TO_IDS.put("alpha", 4);
         FIELD_METADATA.put(4, ALPHA_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
     public double getRed() { return red; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
     public double getGreen() { return green; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
     public double getBlue() { return blue; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
     public double getAlpha() { return alpha; }
 

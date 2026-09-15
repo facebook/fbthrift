@@ -2876,7 +2876,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -4506,7 +4506,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.msg9 = msg9;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=10, name="myIntField10", requiredness=Requiredness.NONE)
     public int getMyIntField10() { return myIntField10; }
 
@@ -4515,7 +4515,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myIntField10 = myIntField10;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=11, name="myIntField11", requiredness=Requiredness.NONE)
     public int getMyIntField11() { return myIntField11; }
 
@@ -4524,7 +4524,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myIntField11 = myIntField11;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=12, name="myIntField12", requiredness=Requiredness.NONE)
     public int getMyIntField12() { return myIntField12; }
 
@@ -4533,7 +4533,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myIntField12 = myIntField12;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=13, name="myIntField13", requiredness=Requiredness.NONE)
     public int getMyIntField13() { return myIntField13; }
 
@@ -4542,7 +4542,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myIntField13 = myIntField13;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=14, name="myIntField14", requiredness=Requiredness.NONE)
     public int getMyIntField14() { return myIntField14; }
 
@@ -4551,7 +4551,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myIntField14 = myIntField14;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=15, name="myIntField15", requiredness=Requiredness.NONE)
     public int getMyIntField15() { return myIntField15; }
 
@@ -4560,7 +4560,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myIntField15 = myIntField15;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=16, name="myIntField16", requiredness=Requiredness.NONE)
     public int getMyIntField16() { return myIntField16; }
 
@@ -4569,7 +4569,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myIntField16 = myIntField16;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=17, name="myIntField17", requiredness=Requiredness.NONE)
     public int getMyIntField17() { return myIntField17; }
 
@@ -4578,7 +4578,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myIntField17 = myIntField17;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=18, name="myIntField18", requiredness=Requiredness.NONE)
     public int getMyIntField18() { return myIntField18; }
 
@@ -4587,7 +4587,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myIntField18 = myIntField18;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=19, name="myIntField19", requiredness=Requiredness.NONE)
     public int getMyIntField19() { return myIntField19; }
 
@@ -4596,7 +4596,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myIntField19 = myIntField19;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=20, name="myIntField20", requiredness=Requiredness.NONE)
     public int getMyIntField20() { return myIntField20; }
 
@@ -4605,7 +4605,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myIntField20 = myIntField20;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=21, name="myDoubleField21", requiredness=Requiredness.NONE)
     public double getMyDoubleField21() { return myDoubleField21; }
 
@@ -4614,7 +4614,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myDoubleField21 = myDoubleField21;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=22, name="myDoubleField22", requiredness=Requiredness.NONE)
     public double getMyDoubleField22() { return myDoubleField22; }
 
@@ -4623,7 +4623,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myDoubleField22 = myDoubleField22;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=23, name="myDoubleField23", requiredness=Requiredness.NONE)
     public double getMyDoubleField23() { return myDoubleField23; }
 
@@ -4632,7 +4632,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myDoubleField23 = myDoubleField23;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=24, name="myDoubleField24", requiredness=Requiredness.NONE)
     public double getMyDoubleField24() { return myDoubleField24; }
 
@@ -4641,7 +4641,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myDoubleField24 = myDoubleField24;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=25, name="myDoubleField25", requiredness=Requiredness.NONE)
     public double getMyDoubleField25() { return myDoubleField25; }
 
@@ -4650,7 +4650,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myDoubleField25 = myDoubleField25;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=26, name="myDoubleField26", requiredness=Requiredness.NONE)
     public double getMyDoubleField26() { return myDoubleField26; }
 
@@ -4659,7 +4659,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myDoubleField26 = myDoubleField26;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=27, name="myDoubleField27", requiredness=Requiredness.NONE)
     public double getMyDoubleField27() { return myDoubleField27; }
 
@@ -4668,7 +4668,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myDoubleField27 = myDoubleField27;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=28, name="myDoubleField28", requiredness=Requiredness.NONE)
     public double getMyDoubleField28() { return myDoubleField28; }
 
@@ -4677,7 +4677,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myDoubleField28 = myDoubleField28;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=29, name="myDoubleField29", requiredness=Requiredness.NONE)
     public double getMyDoubleField29() { return myDoubleField29; }
 
@@ -4686,7 +4686,7 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
         this.myDoubleField29 = myDoubleField29;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=30, name="myDoubleField30", requiredness=Requiredness.NONE)
     public double getMyDoubleField30() { return myDoubleField30; }
 

@@ -37,4 +37,4 @@ _fbthrift_all_structs = [
 
 
 _fbthrift_python_types.fill_specs(
-    )
+)

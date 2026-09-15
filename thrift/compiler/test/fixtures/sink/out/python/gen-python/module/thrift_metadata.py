@@ -32,7 +32,7 @@ def _fbthrift_gen_metadata_struct_InitialResponse(metadata_struct: _fbthrift_met
     new_struct = metadata_struct(structs=struct_dict)
 
     # content
-    
+
     return new_struct
 def gen_metadata_struct_InitialResponse() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_InitialResponse(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -56,7 +56,7 @@ def _fbthrift_gen_metadata_struct_FinalResponse(metadata_struct: _fbthrift_metad
     new_struct = metadata_struct(structs=struct_dict)
 
     # content
-    
+
     return new_struct
 def gen_metadata_struct_FinalResponse() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_FinalResponse(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -80,7 +80,7 @@ def _fbthrift_gen_metadata_struct_SinkPayload(metadata_struct: _fbthrift_metadat
     new_struct = metadata_struct(structs=struct_dict)
 
     # content
-    
+
     return new_struct
 def gen_metadata_struct_SinkPayload() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_SinkPayload(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -104,7 +104,7 @@ def _fbthrift_gen_metadata_struct_CompatibleWithKeywordSink(metadata_struct: _fb
     new_struct = metadata_struct(structs=struct_dict)
 
     # sink
-    
+
     return new_struct
 def gen_metadata_struct_CompatibleWithKeywordSink() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_CompatibleWithKeywordSink(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -127,7 +127,7 @@ def _fbthrift_gen_metadata_exception_InitialException(metadata_struct: _fbthrift
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # reason
-    
+
     return new_struct
 def gen_metadata_exception_InitialException() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_InitialException(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -150,7 +150,7 @@ def _fbthrift_gen_metadata_exception_SinkException1(metadata_struct: _fbthrift_m
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # reason
-    
+
     return new_struct
 def gen_metadata_exception_SinkException1() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_SinkException1(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -173,7 +173,7 @@ def _fbthrift_gen_metadata_exception_SinkException2(metadata_struct: _fbthrift_m
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # reason
-    
+
     return new_struct
 def gen_metadata_exception_SinkException2() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_SinkException2(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

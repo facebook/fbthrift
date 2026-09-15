@@ -45,11 +45,11 @@ def _fbthrift_gen_metadata_struct_TemplateLists(metadata_struct: _fbthrift_metad
     new_struct = metadata_struct(structs=struct_dict)
 
     # std_string
-        # deque_string
-        # small_vector_iobuf
-        # nested_small_vector
-        # small_vector_tensor
-    
+    # deque_string
+    # small_vector_iobuf
+    # nested_small_vector
+    # small_vector_tensor
+
     return new_struct
 def gen_metadata_struct_TemplateLists() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_TemplateLists(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -93,13 +93,13 @@ def _fbthrift_gen_metadata_struct_TemplateSets(metadata_struct: _fbthrift_metada
     new_struct = metadata_struct(structs=struct_dict)
 
     # std_set
-        # std_unordered
-        # folly_fast
-        # folly_node
-        # folly_value
-        # folly_vector
-        # folly_sorted_vector
-    
+    # std_unordered
+    # folly_fast
+    # folly_node
+    # folly_value
+    # folly_vector
+    # folly_sorted_vector
+
     return new_struct
 def gen_metadata_struct_TemplateSets() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_TemplateSets(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -182,8 +182,8 @@ def _fbthrift_gen_metadata_struct_TWrapped(metadata_struct: _fbthrift_metadata.T
     new_struct = metadata_struct(structs=struct_dict)
 
     # fieldA
-        # fieldB
-    
+    # fieldB
+
     return new_struct
 def gen_metadata_struct_TWrapped() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_TWrapped(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

@@ -1609,7 +1609,6 @@ TEST_F(ParserTest, partial_statement_standalone) {
   EXPECT_EQ(
       to_string(ast),
       "root [path/to/test-1.whisker]\n"
-      "├─ text <line:1:1, col:4> ' \\t '\n"
       "╰─ partial-statement <line:1:4, col:30> 'foo'\n"
       "   ├─ standalone-indentation ' \\t '\n"
       "   ╰─ argument 'arg1=true'\n");
@@ -1673,7 +1672,6 @@ TEST_F(ParserTest, macro_in_section) {
       "root [path/to/test-1.whisker]\n"
       "╰─ section-block <line:1:1, line:3:22>\n"
       "   ├─ variable-lookup <line:1:4, col:20> 'news.has-update?'\n"
-      "   ├─ text <line:2:1, col:3> '  '\n"
       "   ╰─ macro <line:2:3, col:19> 'print/news'\n"
       "      ╰─ standalone-indentation '  '\n");
 }
@@ -1683,7 +1681,6 @@ TEST_F(ParserTest, macro_preserves_whitespace_indentation) {
   EXPECT_EQ(
       to_string(ast),
       "root [path/to/test-1.whisker]\n"
-      "├─ text <line:1:1, col:4> ' \\t '\n"
       "╰─ macro <line:1:4, col:20> 'print/news'\n"
       "   ╰─ standalone-indentation ' \\t '\n");
 }

@@ -94,7 +94,7 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -122,7 +122,7 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
     public String getStrVal() { return strVal; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
     public int getIntVal() { return intVal; }
     @Nullable

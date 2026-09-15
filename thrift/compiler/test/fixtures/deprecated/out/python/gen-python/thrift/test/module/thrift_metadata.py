@@ -42,11 +42,11 @@ def _fbthrift_gen_metadata_struct_User(metadata_struct: _fbthrift_metadata.Thrif
     new_struct = metadata_struct(structs=struct_dict)
 
     # id
-        # name
-        # full_name
-        # email
-        # email_address
-    
+    # name
+    # full_name
+    # email
+    # email_address
+
     return new_struct
 def gen_metadata_struct_User() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_User(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -75,9 +75,9 @@ def _fbthrift_gen_metadata_struct_ExampleUnion(metadata_struct: _fbthrift_metada
     new_struct = metadata_struct(structs=struct_dict)
 
     # stringValue
-        # intValue
-        # doubleValue
-    
+    # intValue
+    # doubleValue
+
     return new_struct
 def gen_metadata_struct_ExampleUnion() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_ExampleUnion(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

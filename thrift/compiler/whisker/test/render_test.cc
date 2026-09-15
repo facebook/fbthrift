@@ -2687,6 +2687,31 @@ line2
 )");
 }
 
+TEST_F(RenderTest, partials_indentation_empty_output) {
+  auto result = render(
+      R"({{#let partial field_cases |fields|}}
+{{#each fields as |field|}}
+case Type::{{field}}:
+  return true;
+{{/each}}
+{{/let partial}}
+switch (type) {
+  {{#partial field_cases fields=fields}}
+  default:
+    return false;
+}
+)",
+      w::map({{"fields", w::array()}}));
+  EXPECT_THAT(diagnostics(), testing::IsEmpty());
+  EXPECT_EQ(
+      *result,
+      R"(switch (type) {
+  default:
+    return false;
+}
+)");
+}
+
 TEST_F(RenderTest, macros) {
   auto result = render(
       "{{> some/file /path}}\n"

@@ -81,7 +81,7 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -103,7 +103,7 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
     public test.fixtures.module2.Struct getS() { return s; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
     public int getId() { return id; }
 

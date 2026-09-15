@@ -107,7 +107,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -144,7 +144,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> getIoMap() { return ioMap; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
     public java.math.BigInteger getBigInteger() { return bigInteger; }
     @Nullable

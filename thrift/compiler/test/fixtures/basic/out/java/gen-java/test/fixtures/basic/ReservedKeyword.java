@@ -68,7 +68,7 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -84,7 +84,7 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
             new com.facebook.thrift.type.UniversalName("test.dev/fixtures/basic/ReservedKeyword"),
             ReservedKeyword.class, ReservedKeyword::read0));
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="reserved_field", requiredness=Requiredness.NONE)
     public int getReservedField() { return reservedField; }
 

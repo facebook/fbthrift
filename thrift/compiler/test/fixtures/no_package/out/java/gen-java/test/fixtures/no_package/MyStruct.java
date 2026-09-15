@@ -172,7 +172,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -233,7 +233,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         THRIFT_NAMES_TO_IDS.put("no_hack_codegen_field", 9);
         FIELD_METADATA.put(9, NO_HACK_CODEGEN_FIELD_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
     @Nullable
@@ -245,13 +245,13 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.no_package.MyEnum getMyEnum() { return myEnum; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=5, name="oneway", requiredness=Requiredness.NONE)
     public boolean isOneway() { return oneway; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=6, name="readonly", requiredness=Requiredness.NONE)
     public boolean isReadonly() { return readonly; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE)
     public boolean isIdempotent() { return idempotent; }
     @Nullable

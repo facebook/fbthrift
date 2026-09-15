@@ -172,7 +172,7 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -233,10 +233,10 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
         THRIFT_NAMES_TO_IDS.put("myMapListOfTypeDef", 9);
         FIELD_METADATA.put(9, MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE)
     public long getMyLongTypeDef() { return myLongTypeDef; }
     @Nullable

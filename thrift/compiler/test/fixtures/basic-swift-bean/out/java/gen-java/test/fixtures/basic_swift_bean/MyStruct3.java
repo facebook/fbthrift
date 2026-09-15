@@ -217,7 +217,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -296,7 +296,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         THRIFT_NAMES_TO_IDS.put("myEmptyMapList", 12);
         FIELD_METADATA.put(12, MY_EMPTY_MAP_LIST_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)
     public short getMyInt16() { return myInt16; }
 
@@ -305,7 +305,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myInt16 = myInt16;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)
     public int getMyInt32() { return myInt32; }
 
@@ -314,7 +314,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myInt32 = myInt32;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)
     public long getMyInt64() { return myInt64; }
 
@@ -332,7 +332,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myString = myString;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)
     public boolean isMyBool() { return myBool; }
 
@@ -341,7 +341,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         this.myBool = myBool;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)
     public double getMyDouble() { return myDouble; }
 

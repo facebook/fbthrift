@@ -120,7 +120,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -160,7 +160,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
             new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/User"),
             User.class, User::read0));
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
     @Deprecated

@@ -68,7 +68,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -81,7 +81,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         THRIFT_NAMES_TO_IDS.put("a", 1);
         FIELD_METADATA.put(1, A_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public long getA() { return a; }
 

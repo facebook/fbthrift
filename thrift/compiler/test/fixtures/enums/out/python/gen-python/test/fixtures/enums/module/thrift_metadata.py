@@ -44,7 +44,7 @@ def _fbthrift_gen_metadata_struct_SomeStruct(metadata_struct: _fbthrift_metadata
     new_struct = test.fixtures.enums.module.thrift_enums._fbthrift_gen_metadata_enum_Metasyntactic(new_struct)    # fine
     new_struct = test.fixtures.enums.module.thrift_enums._fbthrift_gen_metadata_enum_Metasyntactic(new_struct)    # questionable
     new_struct = test.fixtures.enums.module.thrift_enums._fbthrift_gen_metadata_enum_Metasyntactic(new_struct)    # tags
-    
+
     return new_struct
 def gen_metadata_struct_SomeStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_SomeStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

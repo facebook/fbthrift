@@ -81,7 +81,7 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -100,7 +100,7 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
         THRIFT_NAMES_TO_IDS.put("mapListOfFloats", 2);
         FIELD_METADATA.put(2, MAP_LIST_OF_FLOATS_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
     @Nullable

@@ -34,7 +34,7 @@ def _fbthrift_gen_metadata_exception_CustomException(metadata_struct: _fbthrift_
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # message
-    
+
     return new_struct
 def gen_metadata_exception_CustomException() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_CustomException(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -58,7 +58,7 @@ def _fbthrift_gen_metadata_struct_ShouldBeBoxed(metadata_struct: _fbthrift_metad
     new_struct = metadata_struct(structs=struct_dict)
 
     # sessionId
-    
+
     return new_struct
 def gen_metadata_struct_ShouldBeBoxed() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_ShouldBeBoxed(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

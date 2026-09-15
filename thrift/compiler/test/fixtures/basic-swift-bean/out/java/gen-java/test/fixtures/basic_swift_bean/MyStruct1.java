@@ -107,7 +107,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -138,7 +138,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
         THRIFT_NAMES_TO_IDS.put("major", 4);
         FIELD_METADATA.put(4, MAJOR_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
     @Nullable
@@ -147,7 +147,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
 

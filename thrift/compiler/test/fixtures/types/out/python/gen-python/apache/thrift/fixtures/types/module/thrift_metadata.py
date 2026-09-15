@@ -58,7 +58,7 @@ def _fbthrift_gen_metadata_struct_decorated_struct(metadata_struct: _fbthrift_me
     new_struct = metadata_struct(structs=struct_dict)
 
     # field
-    
+
     return new_struct
 def gen_metadata_struct_decorated_struct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_decorated_struct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -102,12 +102,12 @@ def _fbthrift_gen_metadata_struct_ContainerStruct(metadata_struct: _fbthrift_met
     new_struct = metadata_struct(structs=struct_dict)
 
     # fieldA
-        # fieldB
-        # fieldC
-        # fieldD
-        # fieldE
-        # fieldF
-        # fieldG
+    # fieldB
+    # fieldC
+    # fieldD
+    # fieldE
+    # fieldF
+    # fieldG
      # key
      # val     # fieldH
      # key
@@ -136,7 +136,7 @@ def _fbthrift_gen_metadata_struct_CppTypeStruct(metadata_struct: _fbthrift_metad
     new_struct = metadata_struct(structs=struct_dict)
 
     # fieldA
-    
+
     return new_struct
 def gen_metadata_struct_CppTypeStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_CppTypeStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -161,7 +161,7 @@ def _fbthrift_gen_metadata_struct_VirtualStruct(metadata_struct: _fbthrift_metad
     new_struct = metadata_struct(structs=struct_dict)
 
     # MyIntField
-    
+
     return new_struct
 def gen_metadata_struct_VirtualStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_VirtualStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -214,8 +214,8 @@ def _fbthrift_gen_metadata_struct_TrivialNumeric(metadata_struct: _fbthrift_meta
     new_struct = metadata_struct(structs=struct_dict)
 
     # a
-        # b
-    
+    # b
+
     return new_struct
 def gen_metadata_struct_TrivialNumeric() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_TrivialNumeric(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -241,7 +241,7 @@ def _fbthrift_gen_metadata_struct_TrivialNestedWithDefault(metadata_struct: _fbt
     new_struct = metadata_struct(structs=struct_dict)
 
     # z
-        # n
+    # n
     new_struct = _fbthrift_gen_metadata_struct_TrivialNumeric(new_struct)
     return new_struct
 def gen_metadata_struct_TrivialNestedWithDefault() -> _fbthrift_metadata.ThriftMetadata:
@@ -268,7 +268,7 @@ def _fbthrift_gen_metadata_struct_ComplexString(metadata_struct: _fbthrift_metad
     new_struct = metadata_struct(structs=struct_dict)
 
     # a
-        # b
+    # b
      # key
      # val 
     return new_struct
@@ -296,7 +296,7 @@ def _fbthrift_gen_metadata_struct_ComplexNestedWithDefault(metadata_struct: _fbt
     new_struct = metadata_struct(structs=struct_dict)
 
     # z
-        # n
+    # n
     new_struct = _fbthrift_gen_metadata_struct_ComplexString(new_struct)
     return new_struct
 def gen_metadata_struct_ComplexNestedWithDefault() -> _fbthrift_metadata.ThriftMetadata:
@@ -335,11 +335,11 @@ def _fbthrift_gen_metadata_struct_MinPadding(metadata_struct: _fbthrift_metadata
     new_struct = metadata_struct(structs=struct_dict)
 
     # small
-        # big
-        # medium
-        # biggish
-        # tiny
-    
+    # big
+    # medium
+    # biggish
+    # tiny
+
     return new_struct
 def gen_metadata_struct_MinPadding() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_MinPadding(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -375,11 +375,11 @@ def _fbthrift_gen_metadata_struct_MinPaddingWithCustomType(metadata_struct: _fbt
     new_struct = metadata_struct(structs=struct_dict)
 
     # small
-        # biggish
-        # medium
-        # big
-        # tiny
-    
+    # biggish
+    # medium
+    # big
+    # tiny
+
     return new_struct
 def gen_metadata_struct_MinPaddingWithCustomType() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_MinPaddingWithCustomType(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -410,9 +410,9 @@ def _fbthrift_gen_metadata_struct_MyStruct(metadata_struct: _fbthrift_metadata.T
     new_struct = metadata_struct(structs=struct_dict)
 
     # MyIntField
-        # MyStringField
-        # majorVer
-        # data
+    # MyStringField
+    # majorVer
+    # data
     new_struct = _fbthrift_gen_metadata_struct_MyDataItem(new_struct)
     return new_struct
 def gen_metadata_struct_MyStruct() -> _fbthrift_metadata.ThriftMetadata:
@@ -461,7 +461,7 @@ def _fbthrift_gen_metadata_struct_Renaming(metadata_struct: _fbthrift_metadata.T
     new_struct = metadata_struct(structs=struct_dict)
 
     # foo
-    
+
     return new_struct
 def gen_metadata_struct_Renaming() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_Renaming(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -488,7 +488,7 @@ def _fbthrift_gen_metadata_struct_AnnotatedTypes(metadata_struct: _fbthrift_meta
     new_struct = metadata_struct(structs=struct_dict)
 
     # binary_field
-        # list_field
+    # list_field
      # key
      # val 
     return new_struct
@@ -853,7 +853,7 @@ def _fbthrift_gen_metadata_struct_DependentAdaptedListDep(metadata_struct: _fbth
     new_struct = metadata_struct(structs=struct_dict)
 
     # field
-    
+
     return new_struct
 def gen_metadata_struct_DependentAdaptedListDep() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_DependentAdaptedListDep(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -894,14 +894,14 @@ def _fbthrift_gen_metadata_struct_AllocatorAware(metadata_struct: _fbthrift_meta
     new_struct = metadata_struct(structs=struct_dict)
 
     # aa_list
-        # aa_set
-        # aa_map
+    # aa_set
+    # aa_map
      # key
      # val     # aa_string
-        # not_a_container
-        # aa_unique
-        # aa_shared
-    
+    # not_a_container
+    # aa_unique
+    # aa_shared
+
     return new_struct
 def gen_metadata_struct_AllocatorAware() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_AllocatorAware(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -929,8 +929,8 @@ def _fbthrift_gen_metadata_struct_AllocatorAware2(metadata_struct: _fbthrift_met
     new_struct = metadata_struct(structs=struct_dict)
 
     # not_a_container
-        # box_field
-    
+    # box_field
+
     return new_struct
 def gen_metadata_struct_AllocatorAware2() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_AllocatorAware2(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -958,9 +958,9 @@ def _fbthrift_gen_metadata_struct_TypedefStruct(metadata_struct: _fbthrift_metad
     new_struct = metadata_struct(structs=struct_dict)
 
     # i32_field
-        # IntTypedef_field
-        # UintTypedef_field
-    
+    # IntTypedef_field
+    # UintTypedef_field
+
     return new_struct
 def gen_metadata_struct_TypedefStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_TypedefStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -984,7 +984,7 @@ def _fbthrift_gen_metadata_struct_StructWithDoubleUnderscores(metadata_struct: _
     new_struct = metadata_struct(structs=struct_dict)
 
     # __field
-    
+
     return new_struct
 def gen_metadata_struct_StructWithDoubleUnderscores() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_StructWithDoubleUnderscores(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

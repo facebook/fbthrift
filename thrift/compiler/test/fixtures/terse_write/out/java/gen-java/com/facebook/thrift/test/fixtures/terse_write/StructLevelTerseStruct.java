@@ -250,7 +250,7 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -350,25 +350,25 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
             new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/terse_write/StructLevelTerseStruct"),
             StructLevelTerseStruct.class, StructLevelTerseStruct::read0));
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="bool_field", requiredness=Requiredness.TERSE)
     public boolean isBoolField() { return boolField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="byte_field", requiredness=Requiredness.TERSE)
     public byte getByteField() { return byteField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="short_field", requiredness=Requiredness.TERSE)
     public short getShortField() { return shortField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=4, name="int_field", requiredness=Requiredness.TERSE)
     public int getIntField() { return intField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=5, name="long_field", requiredness=Requiredness.TERSE)
     public long getLongField() { return longField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=6, name="float_field", requiredness=Requiredness.TERSE)
     public float getFloatField() { return floatField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=7, name="double_field", requiredness=Requiredness.TERSE)
     public double getDoubleField() { return doubleField; }
     @Nullable

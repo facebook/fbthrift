@@ -94,7 +94,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -125,7 +125,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getRef() { return ref; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyField getReqRef() { return reqRef; }
 

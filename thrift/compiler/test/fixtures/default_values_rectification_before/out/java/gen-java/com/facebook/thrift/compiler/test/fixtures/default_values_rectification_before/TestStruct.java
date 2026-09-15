@@ -161,7 +161,7 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -219,10 +219,10 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
             new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/default_values_rectification_before/TestStruct"),
             TestStruct.class, TestStruct::read0));
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="unqualified_int_field", requiredness=Requiredness.NONE)
     public int getUnqualifiedIntField() { return unqualifiedIntField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="unqualified_bool_field", requiredness=Requiredness.NONE)
     public boolean isUnqualifiedBoolField() { return unqualifiedBoolField; }
     @Nullable

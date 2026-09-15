@@ -32,7 +32,7 @@ def _fbthrift_gen_metadata_struct_HsFoo(metadata_struct: _fbthrift_metadata.Thri
     new_struct = metadata_struct(structs=struct_dict)
 
     # MyInt
-    
+
     return new_struct
 def gen_metadata_struct_HsFoo() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_HsFoo(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

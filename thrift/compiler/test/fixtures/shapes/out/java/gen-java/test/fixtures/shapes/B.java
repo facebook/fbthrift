@@ -565,7 +565,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -866,16 +866,16 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.shapes.Enum getOptionalEnum() { return optionalEnum; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=70, name="required_enum_with_default", requiredness=Requiredness.REQUIRED)
     public test.fixtures.shapes.Enum getRequiredEnumWithDefault() { return requiredEnumWithDefault; }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=80, name="string_with_default_value", requiredness=Requiredness.NONE)
     public String getStringWithDefaultValue() { return stringWithDefaultValue; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=81, name="i32_with_default_value", requiredness=Requiredness.NONE)
     public int getI32WithDefaultValue() { return i32WithDefaultValue; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=82, name="double_with_default_value", requiredness=Requiredness.NONE)
     public double getDoubleWithDefaultValue() { return doubleWithDefaultValue; }
     @Nullable

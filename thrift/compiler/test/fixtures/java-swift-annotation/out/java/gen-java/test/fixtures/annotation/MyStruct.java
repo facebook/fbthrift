@@ -134,7 +134,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -178,7 +178,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         THRIFT_NAMES_TO_IDS.put("password", 6);
         FIELD_METADATA.put(6, PASSWORD_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
     @Nullable

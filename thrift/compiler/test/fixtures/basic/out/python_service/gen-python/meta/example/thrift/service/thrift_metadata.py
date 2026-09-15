@@ -35,7 +35,7 @@ def _fbthrift_gen_metadata_struct_EchoRequest(metadata_struct: _fbthrift_metadat
     new_struct = metadata_struct(structs=struct_dict)
 
     # text
-    
+
     return new_struct
 def gen_metadata_struct_EchoRequest() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_EchoRequest(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -59,7 +59,7 @@ def _fbthrift_gen_metadata_struct_EchoResponse(metadata_struct: _fbthrift_metada
     new_struct = metadata_struct(structs=struct_dict)
 
     # text
-    
+
     return new_struct
 def gen_metadata_struct_EchoResponse() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_EchoResponse(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -82,7 +82,7 @@ def _fbthrift_gen_metadata_exception_WhisperException(metadata_struct: _fbthrift
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # message
-    
+
     return new_struct
 def gen_metadata_exception_WhisperException() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_WhisperException(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

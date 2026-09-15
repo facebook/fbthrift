@@ -32,7 +32,7 @@ def _fbthrift_gen_metadata_struct_StructForInvariantTypes(metadata_struct: _fbth
     new_struct = metadata_struct(structs=struct_dict)
 
     # num
-    
+
     return new_struct
 def gen_metadata_struct_StructForInvariantTypes() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_StructForInvariantTypes(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -58,8 +58,8 @@ def _fbthrift_gen_metadata_struct_UnionForInvariantTypes(metadata_struct: _fbthr
     new_struct = metadata_struct(structs=struct_dict)
 
     # num32
-        # num64
-    
+    # num64
+
     return new_struct
 def gen_metadata_struct_UnionForInvariantTypes() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_UnionForInvariantTypes(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

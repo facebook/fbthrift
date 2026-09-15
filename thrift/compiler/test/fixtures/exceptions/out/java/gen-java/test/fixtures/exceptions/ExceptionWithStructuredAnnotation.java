@@ -22,7 +22,7 @@ import com.google.common.collect.*;
 public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.TBaseException implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -97,7 +97,7 @@ public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.T
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="message_field", requiredness=Requiredness.NONE)
     public String getMessageField() { return messageField; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="error_code", requiredness=Requiredness.NONE)
     public int getErrorCode() { return errorCode; }
 

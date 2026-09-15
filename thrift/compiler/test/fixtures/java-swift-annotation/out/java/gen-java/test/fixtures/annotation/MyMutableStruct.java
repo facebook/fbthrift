@@ -71,7 +71,7 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -90,7 +90,7 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
         THRIFT_NAMES_TO_IDS.put("stringField", 2);
         FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
 

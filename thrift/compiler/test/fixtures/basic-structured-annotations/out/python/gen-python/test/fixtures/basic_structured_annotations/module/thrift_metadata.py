@@ -62,8 +62,8 @@ def _fbthrift_gen_metadata_struct_structured_annotation_inline(metadata_struct: 
     new_struct = metadata_struct(structs=struct_dict)
 
     # count
-        # name
-    
+    # name
+
     return new_struct
 def gen_metadata_struct_structured_annotation_inline() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_structured_annotation_inline(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -87,7 +87,7 @@ def _fbthrift_gen_metadata_struct_structured_annotation_with_default(metadata_st
     new_struct = metadata_struct(structs=struct_dict)
 
     # name
-    
+
     return new_struct
 def gen_metadata_struct_structured_annotation_with_default() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_structured_annotation_with_default(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -116,7 +116,7 @@ def _fbthrift_gen_metadata_struct_structured_annotation_recursive(metadata_struc
     new_struct = metadata_struct(structs=struct_dict)
 
     # name
-        # recurse
+    # recurse
     new_struct = _fbthrift_gen_metadata_struct_structured_annotation_recursive(new_struct)    # forward
     new_struct = _fbthrift_gen_metadata_struct_structured_annotation_forward(new_struct)
     return new_struct
@@ -142,7 +142,7 @@ def _fbthrift_gen_metadata_struct_structured_annotation_forward(metadata_struct:
     new_struct = metadata_struct(structs=struct_dict)
 
     # count
-    
+
     return new_struct
 def gen_metadata_struct_structured_annotation_forward() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_structured_annotation_forward(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -168,7 +168,7 @@ def _fbthrift_gen_metadata_struct_structured_annotation_nested(metadata_struct: 
     new_struct = metadata_struct(structs=struct_dict)
 
     # name
-        # nest
+    # nest
     new_struct = _fbthrift_gen_metadata_struct_structured_annotation_with_default(new_struct)
     return new_struct
 def gen_metadata_struct_structured_annotation_nested() -> _fbthrift_metadata.ThriftMetadata:
@@ -209,10 +209,10 @@ def _fbthrift_gen_metadata_struct_MyStruct(metadata_struct: _fbthrift_metadata.T
     new_struct = metadata_struct(structs=struct_dict)
 
     # annotated_field
-        # annotated_type
-        # annotated_recursive
-        # annotated_nested
-    
+    # annotated_type
+    # annotated_recursive
+    # annotated_nested
+
     return new_struct
 def gen_metadata_struct_MyStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_MyStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -237,7 +237,7 @@ def _fbthrift_gen_metadata_exception_MyException(metadata_struct: _fbthrift_meta
     new_struct = metadata_struct(exceptions=struct_dict)
 
     # context
-    
+
     return new_struct
 def gen_metadata_exception_MyException() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_exception_MyException(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -266,8 +266,8 @@ def _fbthrift_gen_metadata_struct_MyUnion(metadata_struct: _fbthrift_metadata.Th
     new_struct = metadata_struct(structs=struct_dict)
 
     # first
-        # second
-    
+    # second
+
     return new_struct
 def gen_metadata_struct_MyUnion() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_MyUnion(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

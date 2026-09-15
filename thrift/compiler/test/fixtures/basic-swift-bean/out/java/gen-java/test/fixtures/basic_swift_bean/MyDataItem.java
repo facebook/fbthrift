@@ -71,7 +71,7 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -90,7 +90,7 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
         THRIFT_NAMES_TO_IDS.put("field2", 2);
         FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
     public int getField1() { return field1; }
 
@@ -99,7 +99,7 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
         this.field1 = field1;
         return this;
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
 

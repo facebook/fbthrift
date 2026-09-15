@@ -94,7 +94,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -119,7 +119,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
         THRIFT_NAMES_TO_IDS.put("employer", 3);
         FIELD_METADATA.put(3, EMPLOYER_FIELD_DESC);
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
     public int getWeeks() { return weeks; }
     @Nullable

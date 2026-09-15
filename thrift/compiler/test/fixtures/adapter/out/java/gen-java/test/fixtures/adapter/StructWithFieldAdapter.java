@@ -143,10 +143,10 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
             new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/StructWithFieldAdapter"),
             StructWithFieldAdapter.class, StructWithFieldAdapter::read0));
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedI32_1 getField() { return field; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="shared_field", requiredness=Requiredness.NONE)
     public int getSharedField() { return sharedField; }
     @Nullable

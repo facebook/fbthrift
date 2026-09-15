@@ -31,4 +31,4 @@ _fbthrift_all_structs = [
 
 
 _fbthrift_python_mutable_types.fill_specs(
-    )
+)

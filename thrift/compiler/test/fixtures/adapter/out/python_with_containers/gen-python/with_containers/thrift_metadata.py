@@ -36,7 +36,7 @@ def _fbthrift_gen_metadata_struct__fbthrift_unadapted_AnnotationWithContainers(m
     new_struct = metadata_struct(structs=struct_dict)
 
     # names
-        # counts
+    # counts
      # key
      # val 
     return new_struct
@@ -64,7 +64,7 @@ def _fbthrift_gen_metadata_struct__fbthrift_unadapted_MyStruct(metadata_struct: 
     new_struct = metadata_struct(structs=struct_dict)
 
     # abc
-    
+
     return new_struct
 def gen_metadata_struct__fbthrift_unadapted_MyStruct() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct__fbthrift_unadapted_MyStruct(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))

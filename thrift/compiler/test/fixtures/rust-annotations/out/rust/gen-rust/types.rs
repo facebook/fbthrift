@@ -1535,7 +1535,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for T5 {
 impl ::std::default::Default for self::T6 {
     fn default() -> Self {
         Self {
-            
+
         }
     }
 }

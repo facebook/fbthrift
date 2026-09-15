@@ -185,7 +185,7 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
         }
     }
 
-    
+
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -255,16 +255,16 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
             new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptTestStruct"),
             AdaptTestStruct.class, AdaptTestStruct::read0));
     }
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="delay", requiredness=Requiredness.NONE)
     public long getDelay() { return delay; }
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="custom", requiredness=Requiredness.NONE)
     public byte[] getCustom() { return custom; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="timeout", requiredness=Requiredness.NONE)
     public long getTimeout() { return timeout; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=4, name="data", requiredness=Requiredness.NONE)
     public long getData() { return data; }
     @Nullable
@@ -276,10 +276,10 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="string_data", requiredness=Requiredness.NONE)
     public String getStringData() { return stringData; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=8, name="double_wrapped_bool", requiredness=Requiredness.NONE)
     public boolean isDoubleWrappedBool() { return doubleWrappedBool; }
-    
+
     @com.facebook.swift.codec.ThriftField(value=9, name="double_wrapped_integer", requiredness=Requiredness.NONE)
     public int getDoubleWrappedInteger() { return doubleWrappedInteger; }
     @Nullable

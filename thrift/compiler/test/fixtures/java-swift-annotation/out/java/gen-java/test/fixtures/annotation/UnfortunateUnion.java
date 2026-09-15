@@ -20,7 +20,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("Unfortunate_union")
 public final class UnfortunateUnion implements com.facebook.thrift.payload.ThriftSerializable {
-    
+
     private static final boolean allowNullFieldValues =
         System.getProperty("thrift.union.allow-null-field-values", "false").equalsIgnoreCase("true");
 
