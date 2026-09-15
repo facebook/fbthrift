@@ -20,6 +20,7 @@
 #include <folly/Utility.h>
 #include <folly/algorithm/simd/find_first_of.h>
 #include <folly/codec/hex.h>
+#include <folly/lang/Cast.h>
 
 namespace apache {
 namespace thrift {
