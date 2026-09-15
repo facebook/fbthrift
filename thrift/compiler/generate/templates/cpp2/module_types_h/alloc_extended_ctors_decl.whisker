@@ -16,5 +16,7 @@
 
 }}{{! -- Derived from module_types_cpp/alloc_extended_ctors.whisker }}
   explicit {{struct.cpp_underlying_name}}(const allocator_type& alloc) noexcept;
+  {{#if (not struct.cpp_noncopyable)}}
   explicit {{struct.cpp_underlying_name}}(const {{struct.cpp_underlying_name}}& other, const allocator_type& alloc);
+  {{/if (not struct.cpp_noncopyable)}}
   explicit {{struct.cpp_underlying_name}}({{struct.cpp_underlying_name}}&& other, const allocator_type& alloc);

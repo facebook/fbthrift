@@ -34,6 +34,7 @@
 }}{{#partial alloc_smart_ptr_fn field=field}}({{#if (object.notnull? field.default_value)}}{{#partial fields.default_value field=field}}{{#else if field.type.cpp_use_allocator?}}alloc{{/if}}){{/if field.cpp_ref_not_boxed?}}{{!
 }}{{#if (and (not field.cpp_ref?) field.cpp_use_allocator?)}}alloc{{/if}}){{#if last?}} {}{{#else}},{{/if}}
   {{/each}}
+{{#if (not struct.cpp_noncopyable)}}
 
 {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const {{struct.cpp_underlying_name}}& other, const allocator_type& alloc) :
   {{#if (object.eq? null struct.cpp_allocator_via)}}
@@ -46,6 +47,7 @@
     }}){{#if last?}}{{#if struct.isset_fields?}},{{/if}}{{#else}},{{/if}}
   {{/each}}
 {{#if struct.isset_fields?}}    __isset(other.__isset){{/if}} {}
+{{/if (not struct.cpp_noncopyable)}}
 
 {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}({{struct.cpp_underlying_name}}&& other, const allocator_type& alloc) :
   {{#if (object.eq? null struct.cpp_allocator_via)}}
