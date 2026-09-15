@@ -112,6 +112,9 @@ Cpp2RequestContextAdapter::Cpp2RequestContextAdapter(
       requestContext_(requestContext),
       cpp2RequestContext_(&cpp2RequestContext),
       ambientContext_(std::make_shared<folly::RequestContext>()) {
+  apache::thrift::detail::Cpp2RequestContextUnsafeAPI(*cpp2RequestContext_)
+      .setBorrowedMethodName(requestContext_.getMethodName());
+
   // Published on the request for its whole lifetime. Missing registration is a
   // wiring error, so setState aborts instead of silently exposing a null
   // classic context.

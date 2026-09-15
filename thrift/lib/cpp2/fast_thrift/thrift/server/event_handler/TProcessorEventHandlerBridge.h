@@ -240,10 +240,7 @@ class TProcessorEventHandlerBridge {
     }
 
     auto state = acquireState();
-    state->cpp2Request.emplace(
-        &connectionContext_->get(),
-        &state->header,
-        std::string(method->methodName));
+    state->cpp2Request.emplace(&connectionContext_->get(), &state->header);
     state->context.emplace(
         *state->cpp2Request, state->header, *request.requestContext);
 

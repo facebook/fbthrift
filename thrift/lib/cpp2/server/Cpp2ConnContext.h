@@ -806,9 +806,18 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     requestTimeout_ = requestTimeout;
   }
 
-  const std::string& getMethodName() const { return methodName_; }
+  const std::string& getMethodName() const noexcept {
+    return borrowedMethodName_ != nullptr ? *borrowedMethodName_ : methodName_;
+  }
 
-  std::string releaseMethodName() { return std::move(methodName_); }
+  std::string releaseMethodName() {
+    if (borrowedMethodName_ == nullptr) {
+      return std::move(methodName_);
+    }
+    std::string methodName(*borrowedMethodName_);
+    borrowedMethodName_ = nullptr;
+    return methodName;
+  }
 
   void setRpcKind(RpcKind rpcKind) { rpcKind_ = rpcKind; }
 
@@ -1000,6 +1009,9 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   folly::erased_unique_ptr requestData_{nullptr, nullptr};
   std::chrono::milliseconds requestTimeout_{0};
   std::string methodName_;
+  // Non-null only for internal adapters whose source string is guaranteed to
+  // outlive this context. Public construction continues to own methodName_.
+  const std::string* borrowedMethodName_{nullptr};
   RpcKind rpcKind_{RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE};
   int32_t protoSeqId_{0};
   int64_t interactionId_{0};
@@ -1028,6 +1040,12 @@ class Cpp2RequestContextUnsafeAPI {
  public:
   explicit Cpp2RequestContextUnsafeAPI(Cpp2RequestContext& requestContext)
       : requestContext_(requestContext) {}
+  void setBorrowedMethodName(const std::string& methodName) noexcept {
+    requestContext_.methodName_.clear();
+    requestContext_.borrowedMethodName_ = &methodName;
+  }
+
+  void setBorrowedMethodName(std::string&&) = delete;
 
   void initializeInterceptorFrameworkMetadata(
       const folly::IOBuf& interceptorFrameworkMetadata) {

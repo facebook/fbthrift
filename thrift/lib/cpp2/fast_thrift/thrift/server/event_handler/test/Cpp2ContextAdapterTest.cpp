@@ -186,12 +186,14 @@ TEST(Cpp2ContextAdapterTest, RequestContextCarriesHeadersMethodAndConnection) {
   ThriftRequestContext request;
   request.installExtensions(bridgeLayout());
   request.setConnectionContext(conn);
+  request.setMethodName("ping");
   request.setHeaders(ThriftRequestContext::HeaderMap{{"cat", "token"}});
 
-  Cpp2RequestContext cpp2Request(&connAdapter.get(), &header, "ping");
+  Cpp2RequestContext cpp2Request(&connAdapter.get(), &header);
   Cpp2RequestContextAdapter requestAdapter(cpp2Request, header, request);
 
   EXPECT_EQ(requestAdapter.get().getMethodName(), "ping");
+  EXPECT_EQ(&requestAdapter.get().getMethodName(), &request.getMethodName());
   EXPECT_EQ(requestAdapter.get().getConnectionContext(), &connAdapter.get());
   ASSERT_NE(requestAdapter.get().getHeader(), nullptr);
 
@@ -201,6 +203,25 @@ TEST(Cpp2ContextAdapterTest, RequestContextCarriesHeadersMethodAndConnection) {
   ASSERT_TRUE(read.contains("cat"));
   EXPECT_EQ(read.at("cat"), "token");
   EXPECT_TRUE(request.getHeaders().contains("cat"));
+}
+
+TEST(Cpp2ContextAdapterTest, BorrowsAndCanReleaseTheNativeMethodName) {
+  auto conn = makeConnContext(nullptr);
+  Cpp2ConnContextAdapter connAdapter(conn, /*resolver=*/nullptr);
+  transport::THeader header;
+  ThriftRequestContext request;
+  request.installExtensions(bridgeLayout());
+  request.setConnectionContext(conn);
+  request.setMethodName("taoMultiShardTransactionReserveRequest");
+
+  Cpp2RequestContext cpp2Request(&connAdapter.get(), &header);
+  Cpp2RequestContextAdapter requestAdapter(cpp2Request, header, request);
+
+  EXPECT_EQ(&cpp2Request.getMethodName(), &request.getMethodName());
+
+  const auto released = cpp2Request.releaseMethodName();
+  EXPECT_EQ(released, request.getMethodName());
+  EXPECT_TRUE(cpp2Request.getMethodName().empty());
 }
 
 // What a handler writes on the way out is collected once, for the response to
@@ -286,9 +307,10 @@ TEST(Cpp2ContextAdapterTest, ClassicContextIsReachableThroughTheRequest) {
   ThriftRequestContext request;
   request.installExtensions(bridgeLayout());
   request.setConnectionContext(conn);
+  request.setMethodName("ping");
   EXPECT_EQ(tryGetCpp2RequestContext(request), nullptr);
 
-  Cpp2RequestContext cpp2Request(&connAdapter.get(), &header, "ping");
+  Cpp2RequestContext cpp2Request(&connAdapter.get(), &header);
   {
     Cpp2RequestContextAdapter requestAdapter(cpp2Request, header, request);
     EXPECT_EQ(tryGetCpp2RequestContext(request), &requestAdapter.get());

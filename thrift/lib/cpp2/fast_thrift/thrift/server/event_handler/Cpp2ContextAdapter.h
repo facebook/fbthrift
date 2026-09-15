@@ -149,6 +149,9 @@ class Cpp2ConnContextAdapter {
  * `THeader` it reads request headers from and writes response headers to, and
  * the `folly::RequestContext` those handlers stamp ambient state onto.
  *
+ * Its method name is a view of the string owned by the native request context,
+ * which must therefore also outlive the adapted context.
+ *
  * Lives from the point the request enters the pipeline until its response
  * leaves, so both directions of a handler's callbacks see the same objects.
  *
