@@ -53,7 +53,7 @@ service StreamService {
 
   stream<i32> slowCancellation();
 
-  // These method will not be overiden, so the default implementation will be
+  // These method will not be overridden, so the default implementation will be
   // used. If client calls these methods, it should not cause any crash and it
   // should end gracefully
   stream<Message> nonImplementedStream(1: string sender);
