@@ -148,7 +148,7 @@ void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
   if (req_ == nullptr) {
     LOG(ERROR) << ew.what();
   } else {
-    callExceptionInEventBaseThread(ewp_, ew);
+    callExceptionInEventBaseThread(ewp_, std::move(ew));
   }
 }
 
