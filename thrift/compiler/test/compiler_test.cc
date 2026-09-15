@@ -3196,6 +3196,21 @@ TEST(CompilerTest, cpp_deprecated_terse_write_ref) {
   )");
 }
 
+TEST(CompilerTest, cpp_allocator_via_on_union) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/thrift.thrift"
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc", "cpp.allocator_via": "field1"},
+    }
+    union Bad {
+      1: i32 field1;
+    }
+      # expected-error@-6: `cpp.allocator_via` is not supported on union `Bad`.
+  )");
+}
+
 TEST(CompilerTest, base_service_defined_after_use) {
   check_compile(R"(
     package "facebook.com/thrift/test"

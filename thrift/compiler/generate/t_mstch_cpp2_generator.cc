@@ -2673,6 +2673,18 @@ void forbid_deprecated_terse_writes_ref(
   }
 }
 
+// A union has no fields to route the allocator through, so `cpp.allocator_via`
+// has nothing to name.
+void forbid_allocator_via_on_union(sema_context& ctx, const t_union& node) {
+  if (node.has_unstructured_annotation("cpp.allocator_via")) {
+    ctx.report(
+        node,
+        diagnostic_level::error,
+        "`cpp.allocator_via` is not supported on union `{}`.",
+        node.name());
+  }
+}
+
 void validate_lazy_fields(sema_context& ctx, const t_field& field) {
   if (cpp2::is_lazy(&field)) {
     auto t = field.type()->get_true_type();
@@ -2705,6 +2717,7 @@ void t_mstch_cpp2_generator::fill_validator_visitors(
           std::placeholders::_2,
           compiler_options()));
   validator.add_struct_visitor(forbid_deprecated_terse_writes_ref);
+  validator.add_union_visitor(forbid_allocator_via_on_union);
   validator.add_program_visitor(validate_splits(
       get_split_count(compiler_options()), client_name_to_split_count_));
   validator.add_field_visitor(validate_lazy_fields);
