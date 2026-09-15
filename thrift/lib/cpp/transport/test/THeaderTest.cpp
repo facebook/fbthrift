@@ -97,6 +97,60 @@ TEST(THeaderTest, eraseReadHeader) {
   EXPECT_EQ(2, header.getHeaders().size());
 }
 
+TEST(THeaderTest, borrowedReadHeadersDetachOnMutation) {
+  THeader::StringToStringMap source;
+  source.emplace("kept", "source");
+  source.emplace("changed", "source");
+  source.emplace("identity", "peer");
+  source.emplace("id_version", "1");
+  THeader header;
+  header.setReadHeadersView(source);
+
+  EXPECT_EQ(&header.getHeaders(), &source);
+  EXPECT_EQ(header.getPeerIdentity(), "peer");
+
+  header.setReadHeader("changed", "owned");
+
+  EXPECT_NE(&header.getHeaders(), &source);
+  EXPECT_EQ(header.getHeaders().at("changed"), "owned");
+  EXPECT_EQ(source.at("changed"), "source");
+}
+
+TEST(THeaderTest, copiedHeaderOwnsBorrowedReadHeaders) {
+  THeader::StringToStringMap source{{"key", "original"}};
+  THeader header;
+  header.setReadHeadersView(source);
+
+  auto copied = header.copyOrDfatalIfReceived();
+  source["key"] = "changed";
+
+  EXPECT_EQ(copied.getHeaders().at("key"), "original");
+}
+
+TEST(THeaderTest, borrowedReadHeadersReleaseAndClearOwnership) {
+  const THeader::StringToStringMap source{{"key", "value"}};
+  THeader header;
+  header.setReadHeadersView(source);
+
+  const auto released = header.releaseHeaders();
+
+  EXPECT_EQ(released, source);
+  EXPECT_TRUE(header.getHeaders().empty());
+}
+
+TEST(THeaderTest, borrowedReadHeadersCanBeClearedAndRebound) {
+  const THeader::StringToStringMap first{{"first", "value"}};
+  const THeader::StringToStringMap second{{"second", "value"}};
+  THeader header;
+  header.setReadHeadersView(first);
+
+  header.clearReadHeaders();
+  EXPECT_TRUE(header.getHeaders().empty());
+
+  header.setReadHeadersView(second);
+  EXPECT_EQ(&header.getHeaders(), &second);
+}
+
 TEST(THeaderTest, removeHeaderNullptrQueue) {
   THeader header;
   size_t needed;

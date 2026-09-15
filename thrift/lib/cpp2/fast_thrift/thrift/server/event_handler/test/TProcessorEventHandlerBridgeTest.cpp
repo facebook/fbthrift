@@ -88,6 +88,7 @@ struct CallLog {
   std::string ambientMarker;
   uint32_t postReadBytes{0};
   uint32_t postWriteBytes{0};
+  bool mutateReadHeaders{false};
   bool refusePreRead{false};
   bool refuseGetServiceContext{false};
 };
@@ -130,6 +131,9 @@ class RecordingEventHandler : public apache::thrift::TProcessorEventHandler {
     log_->connFromRequest = reqCtx->getConnectionContext();
     folly::RequestContext::get()->setContextData(
         markerToken(), std::make_unique<AmbientMarker>("stamped"));
+    if (log_->mutateReadHeaders) {
+      reqCtx->getHeader()->setReadHeader("cat", "classic");
+    }
     if (log_->refusePreRead) {
       reqCtx->getHeader()->setHeader("denied-by", "recording-handler");
       throw apache::thrift::TApplicationException("refused");
@@ -609,6 +613,32 @@ TEST(TProcessorEventHandlerBridgeTest, ConnectionClosedIsAnnouncedOnce) {
 
   EXPECT_EQ(
       std::count(log.calls.begin(), log.calls.end(), "connectionDestroyed"), 1);
+}
+
+TEST(
+    TProcessorEventHandlerBridgeTest,
+    BridgeDestruction_InFlightDetachedHeaders_PreservesNativeHeaders) {
+  CallLog log;
+  log.mutateReadHeaders = true;
+  FakeContext ctx;
+  auto conn = makeConn();
+
+  {
+    Bridge bridge(makeConfig(&log));
+    establish(bridge, ctx, conn);
+    EXPECT_EQ(
+        bridge.onRead(
+            ctx,
+            erase_and_box(makeRequest(conn, 1, "ping", {{"cat", "native"}}))),
+        Result::Success);
+
+    ASSERT_NE(log.readContext, nullptr);
+    EXPECT_EQ(log.readContext->getHeader()->getHeaders().at("cat"), "classic");
+  }
+
+  auto& request = ctx.read.back().get<ThriftServerRequestMessage>();
+  ASSERT_NE(request.requestContext, nullptr);
+  EXPECT_EQ(request.requestContext->getHeaders().at("cat"), "native");
 }
 
 // With nothing installed the bridge is a pass-through, so a server can wire it

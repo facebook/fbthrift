@@ -297,6 +297,10 @@ class THeader final {
 
   // these work with read headers
   void setReadHeaders(StringToStringMap&&);
+  // The caller keeps `headers` alive until this view is cleared or replaced.
+  // A mutating read-header operation first detaches an owned copy.
+  void setReadHeadersView(const StringToStringMap&) noexcept;
+  void clearReadHeaders() noexcept;
   void setReadHeader(std::string_view key, std::string&& value);
   void eraseReadHeader(std::string_view key);
   const StringToStringMap& getHeaders() const;
@@ -605,6 +609,7 @@ class THeader final {
 
     // Map to use for headers
     std::optional<StringToStringMap> readHeaders_;
+    const StringToStringMap* borrowedReadHeaders_{nullptr};
     std::optional<StringToStringMap> writeHeaders_;
 
     // Won't be cleared when flushing

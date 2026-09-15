@@ -410,6 +410,12 @@ class TProcessorEventHandlerBridge {
     std::optional<apache::thrift::Cpp2RequestContext> cpp2Request;
     explicit RequestState(const EventHandlerChain::HandlerList& handlers)
         : chain(handlers) {}
+
+    ~RequestState() {
+      // The adapter clears the header view, so it must die while the pooled
+      // header is still alive.
+      context.reset();
+    }
   };
 
   std::unique_ptr<RequestState> acquireState() {

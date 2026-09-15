@@ -120,12 +120,14 @@ Cpp2RequestContextAdapter::Cpp2RequestContextAdapter(
   // classic context.
   requestContext_.setState<Cpp2BridgeExtension>(cpp2RequestContext_);
 
-  // Copied, not moved: the request keeps its own headers for the service to
-  // read, and the classic context gets them for as long as the request lasts,
-  // so a consumer reading through either finds them at any point.
-  header_.setReadHeaders(
-      apache::thrift::transport::THeader::StringToStringMap(
-          requestContext_.getHeaders()));
+  // The native request owns these for longer than this adapter lives. A
+  // classic handler that mutates them makes the THeader detach its own copy,
+  // preserving the two contexts' independent-header semantics.
+  header_.setReadHeadersView(requestContext_.getHeaders());
+}
+
+Cpp2RequestContextAdapter::~Cpp2RequestContextAdapter() {
+  header_.clearReadHeaders();
 }
 
 apache::thrift::transport::THeader::StringToStringMap

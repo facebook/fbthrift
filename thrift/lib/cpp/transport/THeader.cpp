@@ -95,7 +95,12 @@ THeader::THeader::TriviallyCopiable::TriviallyCopiable(int options)
 THeader THeader::copyOrDfatalIfReceived() const {
   SocketFds newFds;
   newFds.cloneToSendFromOrDfatal(fds);
-  return THeader(c_, std::move(newFds));
+  auto copied = c_;
+  if (!copied.readHeaders_ && copied.borrowedReadHeaders_) {
+    copied.readHeaders_.emplace(*copied.borrowedReadHeaders_);
+    copied.borrowedReadHeaders_ = nullptr;
+  }
+  return THeader(std::move(copied), std::move(newFds));
 }
 
 int8_t THeader::getProtocolVersion() const {
@@ -167,6 +172,7 @@ unique_ptr<IOBuf> THeader::removeHttpClient(IOBufQueue* queue, size_t& needed) {
       bytesParsed += toCopyLen;
       if (parser.readDataAvailable(toCopyLen)) {
         queue->trimStart(bytesParsed - parser.getUnparsedDataLen());
+        clearReadHeaders();
         c_.readHeaders_ = parser.moveReadHeaders();
         return memBuffer.cloneBufferAsIOBuf();
       }
@@ -456,7 +462,7 @@ static void readInfoHeaders(
 unique_ptr<IOBuf> THeader::readHeaderFormat(
     unique_ptr<IOBuf> buf, StringToStringMap& persistentReadHeaders) {
   c_.readTrans_.clear(); // Clear out any previous transforms.
-  c_.readHeaders_.reset(); // Clear out any previous headers.
+  clearReadHeaders(); // Clear out any previous headers.
 
   // magic(4), seqId(2), flags(2), headerSize(2)
   const uint8_t commonHeaderSize = 10;
@@ -694,12 +700,32 @@ void THeader::setHeaders(THeader::StringToStringMap&& headers) {
 }
 
 void THeader::setReadHeaders(THeader::StringToStringMap&& headers) {
+  c_.borrowedReadHeaders_ = nullptr;
   c_.readHeaders_ = std::move(headers);
+}
+
+void THeader::setReadHeadersView(
+    const THeader::StringToStringMap& headers) noexcept {
+  if (c_.readHeaders_ && &headers == &*c_.readHeaders_) {
+    return;
+  }
+  c_.readHeaders_.reset();
+  c_.borrowedReadHeaders_ = &headers;
+}
+
+void THeader::clearReadHeaders() noexcept {
+  c_.readHeaders_.reset();
+  c_.borrowedReadHeaders_ = nullptr;
 }
 
 void THeader::eraseReadHeader(std::string_view key) {
   if (c_.readHeaders_) {
     c_.readHeaders_->erase(key);
+    return;
+  }
+  if (c_.borrowedReadHeaders_ &&
+      c_.borrowedReadHeaders_->find(key) != c_.borrowedReadHeaders_->end()) {
+    ensureReadHeaders().erase(key);
   }
 }
 
@@ -732,7 +758,12 @@ void THeader::clearHeaders() {
 
 THeader::StringToStringMap& THeader::ensureReadHeaders() {
   if (!c_.readHeaders_) {
-    c_.readHeaders_.emplace();
+    if (c_.borrowedReadHeaders_) {
+      c_.readHeaders_.emplace(*c_.borrowedReadHeaders_);
+      c_.borrowedReadHeaders_ = nullptr;
+    } else {
+      c_.readHeaders_.emplace();
+    }
   }
   return *c_.readHeaders_;
 }
@@ -774,20 +805,28 @@ void THeader::setReadHeader(std::string_view key, std::string&& value) {
 }
 
 const THeader::StringToStringMap& THeader::getHeaders() const {
-  return c_.readHeaders_ ? *c_.readHeaders_ : kEmptyMap();
+  if (c_.readHeaders_) {
+    return *c_.readHeaders_;
+  }
+  return c_.borrowedReadHeaders_ ? *c_.borrowedReadHeaders_ : kEmptyMap();
 }
 
 THeader::StringToStringMap THeader::releaseHeaders() {
-  return c_.readHeaders_ ? *std::exchange(c_.readHeaders_, std::nullopt)
-                         : THeader::StringToStringMap{};
+  if (c_.readHeaders_) {
+    return *std::exchange(c_.readHeaders_, std::nullopt);
+  }
+  if (c_.borrowedReadHeaders_) {
+    auto headers = *c_.borrowedReadHeaders_;
+    c_.borrowedReadHeaders_ = nullptr;
+    return headers;
+  }
+  return {};
 }
 
 string THeader::getPeerIdentity() const {
-  if (!c_.readHeaders_) {
-    return "";
-  }
-  if (auto* id = folly::get_ptr(*c_.readHeaders_, IDENTITY_HEADER)) {
-    if (auto* version = folly::get_ptr(*c_.readHeaders_, ID_VERSION_HEADER);
+  const auto& headers = getHeaders();
+  if (auto* id = folly::get_ptr(headers, IDENTITY_HEADER)) {
+    if (auto* version = folly::get_ptr(headers, ID_VERSION_HEADER);
         version && *version == ID_VERSION) {
       return *id;
     }
@@ -1086,7 +1125,11 @@ std::optional<ClientMetadata> THeader::extractClientMetadata() {
 
 std::optional<std::string> THeader::extractHeader(std::string_view key) {
   if (!c_.readHeaders_) {
-    return std::nullopt;
+    if (!c_.borrowedReadHeaders_ ||
+        c_.borrowedReadHeaders_->find(key) == c_.borrowedReadHeaders_->end()) {
+      return std::nullopt;
+    }
+    ensureReadHeaders();
   }
   std::optional<std::string> res;
   auto itr = c_.readHeaders_->find(std::string{key});

@@ -197,9 +197,9 @@ TEST(Cpp2ContextAdapterTest, RequestContextCarriesHeadersMethodAndConnection) {
   EXPECT_EQ(requestAdapter.get().getConnectionContext(), &connAdapter.get());
   ASSERT_NE(requestAdapter.get().getHeader(), nullptr);
 
-  // The classic header gets a copy for the whole request, and the request
-  // keeps its own: a consumer reading through either finds them.
+  // The classic header borrows the native map until a handler mutates it.
   const auto& read = requestAdapter.get().getHeader()->getHeaders();
+  EXPECT_EQ(&read, &request.getHeaders());
   ASSERT_TRUE(read.contains("cat"));
   EXPECT_EQ(read.at("cat"), "token");
   EXPECT_TRUE(request.getHeaders().contains("cat"));
@@ -222,6 +222,41 @@ TEST(Cpp2ContextAdapterTest, BorrowsAndCanReleaseTheNativeMethodName) {
   const auto released = cpp2Request.releaseMethodName();
   EXPECT_EQ(released, request.getMethodName());
   EXPECT_TRUE(cpp2Request.getMethodName().empty());
+}
+
+TEST(Cpp2ContextAdapterTest, ClassicHeaderMutationDetachesFromNativeHeaders) {
+  auto conn = makeConnContext(nullptr);
+  Cpp2ConnContextAdapter connAdapter(conn, /*resolver=*/nullptr);
+  transport::THeader header;
+  ThriftRequestContext request;
+  request.installExtensions(bridgeLayout());
+  request.setConnectionContext(conn);
+  request.setHeaders(ThriftRequestContext::HeaderMap{{"cat", "native"}});
+
+  Cpp2RequestContext cpp2Request(&connAdapter.get(), &header, "ping");
+  Cpp2RequestContextAdapter requestAdapter(cpp2Request, header, request);
+  requestAdapter.header().setReadHeader("cat", "classic");
+
+  EXPECT_EQ(requestAdapter.header().getHeaders().at("cat"), "classic");
+  EXPECT_EQ(request.getHeaders().at("cat"), "native");
+}
+
+TEST(Cpp2ContextAdapterTest, AdapterClearsBorrowedHeadersOnDestruction) {
+  auto conn = makeConnContext(nullptr);
+  Cpp2ConnContextAdapter connAdapter(conn, /*resolver=*/nullptr);
+  transport::THeader header;
+  ThriftRequestContext request;
+  request.installExtensions(bridgeLayout());
+  request.setConnectionContext(conn);
+  request.setHeaders(ThriftRequestContext::HeaderMap{{"cat", "token"}});
+  Cpp2RequestContext cpp2Request(&connAdapter.get(), &header, "ping");
+
+  {
+    Cpp2RequestContextAdapter requestAdapter(cpp2Request, header, request);
+    EXPECT_EQ(&header.getHeaders(), &request.getHeaders());
+  }
+
+  EXPECT_TRUE(header.getHeaders().empty());
 }
 
 // What a handler writes on the way out is collected once, for the response to

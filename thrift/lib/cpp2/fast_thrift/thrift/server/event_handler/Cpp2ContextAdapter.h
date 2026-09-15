@@ -176,7 +176,7 @@ class Cpp2RequestContextAdapter {
       apache::thrift::Cpp2RequestContext& cpp2RequestContext,
       apache::thrift::transport::THeader& header,
       ThriftRequestContext& requestContext);
-  ~Cpp2RequestContextAdapter() = default;
+  ~Cpp2RequestContextAdapter();
 
   Cpp2RequestContextAdapter(const Cpp2RequestContextAdapter&) = delete;
   Cpp2RequestContextAdapter& operator=(const Cpp2RequestContextAdapter&) =
