@@ -63,6 +63,17 @@ inline constexpr auto json_str_vector_needle =
 inline constexpr auto json_str_scalar_needle =
     json_str_scalar_needle_t{json_str_alphabet};
 
+template <size_t... I>
+bool json_ws_alphabet_any_(char c, std::index_sequence<I...>) {
+  // The compiler can optimize this form to bit-tests against a constant.
+  return ((c == json_ws_alphabet[I]) || ...);
+}
+
+inline bool json_ws_alphabet_any(char c) {
+  constexpr auto size = json_ws_alphabet.size();
+  return json_ws_alphabet_any_(c, std::make_index_sequence<size>{});
+}
+
 } // namespace detail::json
 
 // Return the hex character representing the integer val. The value is masked
@@ -554,10 +565,7 @@ inline int8_t JSONProtocolReaderCommon::skipWhitespace() {
     auto const newl = apache::thrift::detail::json::kJSONNewline;
     auto const first = peek[0];
     // Fast path for compact JSON: the current byte is usually not whitespace.
-    if (first != char(apache::thrift::detail::json::kJSONSpace) &&
-        first != newl &&
-        first != char(apache::thrift::detail::json::kJSONTab) &&
-        first != char(apache::thrift::detail::json::kJSONCarriageReturn)) {
+    if (!detail::json::json_ws_alphabet_any(first)) {
       return first;
     }
     // if 0th char is newline then it is likely that indentation follows; vector
