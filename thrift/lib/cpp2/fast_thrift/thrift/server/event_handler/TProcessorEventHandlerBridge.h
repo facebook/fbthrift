@@ -17,7 +17,6 @@
 #pragma once
 
 #include <cstdint>
-#include <cstring>
 #include <memory>
 #include <optional>
 #include <string>
@@ -29,12 +28,10 @@
 
 #include <glog/logging.h>
 
-#include <fmt/core.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/container/F14Map.h>
 #include <folly/io/async/Request.h>
 #include <folly/lang/Exception.h>
-#include <folly/small_vector.h>
 
 #include <thrift/lib/cpp/TProcessorEventHandler.h>
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
@@ -45,6 +42,8 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ConnectionPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/MethodMetadata.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/event_handler/Cpp2ContextAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/event_handler/EventHandlerChain.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
@@ -55,15 +54,11 @@ namespace apache::thrift::fast_thrift::thrift::server {
  * What the bridge drives, and on whose behalf. Built once and shared by every
  * connection, so nothing here changes after install.
  *
- * `serviceName` names the service for the handlers' benefit: they are given
- * "Service.method", the same form the classic server passes.
- *
  * The handler lists are the ones an embedder would have installed on a
  * `ThriftServer`. Both may be empty; a bridge with no processor event handlers
  * forwards everything untouched.
  */
 struct TProcessorEventHandlers {
-  std::string serviceName;
   std::vector<std::shared_ptr<apache::thrift::TProcessorEventHandler>>
       processor;
   std::vector<std::shared_ptr<apache::thrift::server::TServerEventHandler>>
@@ -74,27 +69,11 @@ struct TProcessorEventHandlerBridgeConfig {
   // Shared rather than held by value: this config is copied into every
   // connection's handler, and one refcount is the whole cost of that copy.
   std::shared_ptr<const TProcessorEventHandlers> handlers;
+  std::shared_ptr<const ThriftServerMethodMetadataRegistry> methodMetadata;
   PeerIdentityResolver identityResolver{nullptr};
 };
 
 namespace event_handler_detail {
-
-// The name handlers are given: the classic server passes "Service.method", and
-// interface ACLs and per-method action lookups are keyed on that form.
-inline std::string qualify(
-    std::string_view serviceName, std::string_view method) {
-  return fmt::format("{}.{}", serviceName, method);
-}
-
-inline std::string_view methodOf(
-    const ThriftServerRequestMessage& request) noexcept {
-  const auto* md = request.payload.getRequestRpcMetadata();
-  if (md == nullptr || !md->name().has_value()) {
-    return {};
-  }
-  const auto sp = md->name()->view();
-  return std::string_view(sp.data(), sp.size());
-}
 
 inline std::uint32_t requestBytes(
     const ThriftServerRequestMessage& request) noexcept {
@@ -183,6 +162,7 @@ class TProcessorEventHandlerBridge {
       TProcessorEventHandlerBridgeConfig config)
       : config_(std::move(config)),
         handlers_(config_.handlers.get()),
+        methodMetadata_(config_.methodMetadata.get()),
         drivesProcessorHandlers_(
             handlers_ != nullptr && !handlers_->processor.empty()) {
     if (drivesProcessorHandlers_) {
@@ -225,7 +205,24 @@ class TProcessorEventHandlerBridge {
       return ctx.fireRead(std::move(msg));
     }
 
+    const auto routing = getServerRequestRoutingMetadata(request);
+    if (FOLLY_UNLIKELY(routing.status != ServerRequestRoutingStatus::Ready)) {
+      return ctx.fireRead(std::move(msg));
+    }
+
     const uint32_t streamId = request.streamId;
+    if (FOLLY_UNLIKELY(methodMetadata_ == nullptr)) {
+      return ctx.fireWrite(
+          channel_pipeline::erase_and_box(makeAppErrorMessage(
+              streamId,
+              "TProcessorEventHandlerBridgeMisconfigured",
+              "event handlers are installed but the server has no method "
+              "metadata registry")));
+    }
+    const auto* method = methodMetadata_->find(routing.methodName);
+    if (FOLLY_UNLIKELY(method == nullptr)) {
+      return ctx.fireRead(std::move(msg));
+    }
 
     // Fail closed. A handler may be the thing authorizing this request, and
     // there is no way to tell from here, so a request the bridge cannot run
@@ -242,10 +239,11 @@ class TProcessorEventHandlerBridge {
               "required")));
     }
 
-    const auto methodName = event_handler_detail::methodOf(request);
     auto state = acquireState();
     state->cpp2Request.emplace(
-        &connectionContext_->get(), &state->header, std::string(methodName));
+        &connectionContext_->get(),
+        &state->header,
+        std::string(method->methodName));
     state->context.emplace(
         *state->cpp2Request, state->header, *request.requestContext);
 
@@ -259,7 +257,9 @@ class TProcessorEventHandlerBridge {
     // out of a noexcept pipeline callback would take the process with it.
     if (auto refusal = folly::try_and_catch([&] {
           state->chain.bind(
-              state->context->get(), qualifiedMethodName(*state, methodName));
+              state->context->get(),
+              method->serviceName,
+              method->qualifiedMethodName);
           state->chain.preRead();
           state->chain.postRead(
               state->context->header(),
@@ -394,10 +394,6 @@ class TProcessorEventHandlerBridge {
 
  private:
   static constexpr std::size_t kInitialInFlight = 8;
-  // Wide enough for any service's own method set, and the longest the
-  // per-request scan can ever get. See qualifiedMethodName().
-  static constexpr std::size_t kMaxCachedMethods = 64;
-
   // One request's adapted state, from the point it enters the pipeline until
   // its response leaves. Only the context is per-request; the chain resolves
   // the handler list once and is rebound for whatever request holds this next.
@@ -415,20 +411,13 @@ class TProcessorEventHandlerBridge {
     // request builds, and recycling the storage keeps it warm. Reconstructed
     // for each request so the security layer's fields never carry over.
     std::optional<apache::thrift::Cpp2RequestContext> cpp2Request;
-    // Holds the qualified name for a request the connection's method cache
-    // had no room for; see qualifiedMethodName(). Empty otherwise.
-    std::string uncachedMethodName;
-
-    RequestState(
-        const EventHandlerChain::HandlerList& handlers,
-        std::string_view serviceName)
-        : chain(handlers, serviceName) {}
+    explicit RequestState(const EventHandlerChain::HandlerList& handlers)
+        : chain(handlers) {}
   };
 
   std::unique_ptr<RequestState> acquireState() {
     if (idleStates_.empty()) {
-      return std::make_unique<RequestState>(
-          handlers_->processor, handlers_->serviceName);
+      return std::make_unique<RequestState>(handlers_->processor);
     }
     auto state = std::move(idleStates_.back());
     idleStates_.pop_back();
@@ -452,52 +441,12 @@ class TProcessorEventHandlerBridge {
     idleStates_.push_back(std::move(state));
   }
 
-  // The "{Service}.{method}" name handlers are keyed on, built once per method
-  // per connection rather than once per request. A request holds a view of the
-  // value for its lifetime, which the node map keeps put across a rehash.
-  //
-  // A connection multiplexes a handful of methods, so remembering only the
-  // last one thrashes and every alternation pays a hash. The resolved set is
-  // small enough that scanning it outright is cheaper.
-  //
-  // Capped, because the name arrives on the wire: a peer sending distinct
-  // names would otherwise grow the connection for as long as it holds it, and
-  // lengthen the scan every request pays. Past the cap a request qualifies
-  // into its own state.
-  std::string_view qualifiedMethodName(
-      RequestState& state, std::string_view method) {
-    for (const auto& [name, qualified] : methodCache_) {
-      if (name.size() == method.size() &&
-          std::memcmp(name.data(), method.data(), name.size()) == 0) {
-        return qualified;
-      }
-    }
-    return resolveQualifiedMethodName(state, method);
-  }
-
-  FOLLY_NOINLINE std::string_view resolveQualifiedMethodName(
-      RequestState& state, std::string_view method) {
-    if (FOLLY_UNLIKELY(methodCache_.size() == kMaxCachedMethods)) {
-      state.uncachedMethodName =
-          event_handler_detail::qualify(handlers_->serviceName, method);
-      return state.uncachedMethodName;
-    }
-    // Views into the node map, which keeps both put across a rehash.
-    const auto& entry =
-        *qualifiedMethodNames_
-             .emplace(
-                 method,
-                 event_handler_detail::qualify(handlers_->serviceName, method))
-             .first;
-    methodCache_.push_back({entry.first, entry.second});
-    return entry.second;
-  }
-
   const TProcessorEventHandlerBridgeConfig config_;
   // Resolved once: the answer cannot change, and reaching it through the
   // shared_ptr on every request is two dependent loads into memory that every
   // connection shares.
   const TProcessorEventHandlers* const handlers_;
+  const ThriftServerMethodMetadataRegistry* const methodMetadata_;
   const bool drivesProcessorHandlers_;
   // Sits here to land in the padding the flag above leaves, rather than widen
   // the connection by a word of its own.
@@ -513,14 +462,6 @@ class TProcessorEventHandlerBridge {
   // Keyed by stream id rather than by the request context, because a
   // framework-generated error response carries no context to key on.
   folly::F14FastMap<uint32_t, std::unique_ptr<RequestState>> requests_;
-
-  // Node map: a request holds a view of the value, which must survive a
-  // rehash. See qualifiedMethodName().
-  folly::F14NodeMap<std::string, std::string> qualifiedMethodNames_;
-  // Contiguous mirror of the map above, scanned linearly; see
-  // qualifiedMethodName().
-  folly::small_vector<std::pair<std::string_view, std::string_view>, 8>
-      methodCache_;
 
   // Contiguous spine: acquiring pops a pointer without dereferencing the state
   // it names, so the state's own cache miss overlaps the work that follows.

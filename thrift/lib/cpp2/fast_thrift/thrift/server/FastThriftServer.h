@@ -105,6 +105,15 @@ class FastThriftServer {
   }
 
   /**
+   * Returns the methods currently dispatchable by this server. The registry
+   * is updated as interfaces are configured and frozen when the server starts.
+   */
+  std::shared_ptr<const ThriftServerMethodMetadataRegistry>
+  getMethodMetadataRegistry() const noexcept {
+    return methodMetadataRegistry_;
+  }
+
+  /**
    * Attach an additional monitoring/debug handler. Methods on the monitoring
    * handler are dispatched on the same connection as the user handler;
    * routing is by method name with the user handler winning on conflict
@@ -503,9 +512,12 @@ class FastThriftServer {
         nullptr};
   };
 
+  void rebuildMethodMetadataRegistry();
+
   const FastThriftServerConfig config_;
   std::shared_ptr<ThriftServerAppAdapterFactory> handler_;
   AuxiliaryInterfaces auxInterfaces_;
+  std::shared_ptr<ThriftServerMethodMetadataRegistry> methodMetadataRegistry_;
   // Embedder-registered thrift pipeline handler factories, in registration
   // order. Copied into the per-connection factory config at start().
   std::vector<server::ThriftPipelineHandlerFactory>

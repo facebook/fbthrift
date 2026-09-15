@@ -52,9 +52,7 @@ class EventHandlerChain {
   using HandlerList =
       std::vector<std::shared_ptr<apache::thrift::TProcessorEventHandler>>;
 
-  // `serviceName` and the handlers must outlive the chain.
-  EventHandlerChain(const HandlerList& handlers, std::string_view serviceName)
-      : serviceName_(serviceName) {
+  explicit EventHandlerChain(const HandlerList& handlers) {
     callees_.reserve(handlers.size());
     for (const auto& handler : handlers) {
       CHECK(handler != nullptr);
@@ -83,14 +81,16 @@ class EventHandlerChain {
    */
   void bind(
       apache::thrift::Cpp2RequestContext& requestContext,
+      std::string_view serviceName,
       std::string_view method) {
     DCHECK(!bound_);
+    serviceName_ = serviceName;
     method_ = method;
     bound_ = true;
-    const auto serviceName = serviceName_;
+    const auto boundServiceName = serviceName_;
     forEachCallee([&](Callee& callee) {
       callee.context = callee.handler->getServiceContext(
-          serviceName, method, &requestContext);
+          boundServiceName, method, &requestContext);
     });
   }
 
@@ -100,6 +100,7 @@ class EventHandlerChain {
       return;
     }
     bound_ = false;
+    serviceName_ = {};
     const auto method = method_;
     forEachCallee([&](Callee& callee) {
       callee.handler->freeContext(callee.context, method);
@@ -164,7 +165,7 @@ class EventHandlerChain {
     }
   }
 
-  const std::string_view serviceName_;
+  std::string_view serviceName_;
   std::string_view method_;
   std::vector<Callee> callees_;
   bool bound_{false};

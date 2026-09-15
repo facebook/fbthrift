@@ -1105,6 +1105,47 @@ FastServiceHandler<::cpp2::test::BasicService>::getAppAdapter(
           std::move(typed)));
 }
 
+void FastServiceHandler<::cpp2::test::BasicService>::populateMethodMetadata(
+    ::apache::thrift::fast_thrift::thrift::ThriftServerMethodMetadataRegistry&
+        registry) const {
+  registry.add({
+      .serviceName = "BasicService",
+      .definingServiceName = "BasicService",
+      .methodName = "ping",
+      .qualifiedMethodName = "BasicService.ping",
+  });
+  registry.add({
+      .serviceName = "BasicService",
+      .definingServiceName = "BasicService",
+      .methodName = "add",
+      .qualifiedMethodName = "BasicService.add",
+  });
+  registry.add({
+      .serviceName = "BasicService",
+      .definingServiceName = "BasicService",
+      .methodName = "buildItem",
+      .qualifiedMethodName = "BasicService.buildItem",
+  });
+  registry.add({
+      .serviceName = "BasicService",
+      .definingServiceName = "BasicService",
+      .methodName = "lookup",
+      .qualifiedMethodName = "BasicService.lookup",
+  });
+  registry.add({
+      .serviceName = "BasicService",
+      .definingServiceName = "BasicService",
+      .methodName = "secureLookup",
+      .qualifiedMethodName = "BasicService.secureLookup",
+  });
+  registry.add({
+      .serviceName = "BasicService",
+      .definingServiceName = "BasicService",
+      .methodName = "ebLookup",
+      .qualifiedMethodName = "BasicService.ebLookup",
+  });
+}
+
 void FastServiceHandler<::cpp2::test::BasicService>::getServiceMetadata(
     ::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::test::BasicService>>::gen(response);

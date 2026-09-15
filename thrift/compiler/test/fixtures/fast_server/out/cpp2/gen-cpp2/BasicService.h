@@ -448,6 +448,10 @@ class FastServiceHandler<::cpp2::test::BasicService>
               ::apache::thrift::fast_thrift::thrift::ThriftServerAppAdapterFactory>
               self) override;
 
+  void populateMethodMetadata(
+      ::apache::thrift::fast_thrift::thrift::ThriftServerMethodMetadataRegistry&
+          registry) const override;
+
   // Populate `response` with the static metadata for ::cpp2::test::BasicService.
   // Reuses the legacy detail::md::ServiceMetadata<S> table — same source of
   // truth as <Service>AsyncProcessor::getServiceMetadata.

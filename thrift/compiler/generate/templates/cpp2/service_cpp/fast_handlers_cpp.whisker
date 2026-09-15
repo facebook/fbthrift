@@ -38,6 +38,21 @@ FastServiceHandler<{{service.qualified_name}}>::getAppAdapter(
           std::move(typed)));
 }
 
+void FastServiceHandler<{{service.qualified_name}}>::populateMethodMetadata(
+    ::apache::thrift::fast_thrift::thrift::ThriftServerMethodMetadataRegistry&
+        registry) const {
+  {{#each service.functions as |function|}}
+  {{#if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}
+  registry.add({
+      .serviceName = "{{service.name}}",
+      .definingServiceName = "{{service.name}}",
+      .methodName = "{{function.name}}",
+      .qualifiedMethodName = "{{service.name}}.{{function.name}}",
+  });
+  {{/if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}
+  {{/each}}
+}
+
 void FastServiceHandler<{{service.qualified_name}}>::getServiceMetadata(
     ::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<{{service.qualified_name}}>>::gen(response);

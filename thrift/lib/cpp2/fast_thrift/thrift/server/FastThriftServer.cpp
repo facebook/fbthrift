@@ -38,6 +38,7 @@
 #include <thrift/lib/cpp2/fast_thrift/connection/security/common/TLSStats.h>
 #include <thrift/lib/cpp2/fast_thrift/security/FizzServerContextBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/ThriftServerConnectionFactory.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/MetadataAppAdapter.h>
 
 namespace apache::thrift::fast_thrift::thrift {
 
@@ -46,7 +47,41 @@ using channel_pipeline::PipelineImpl;
 using channel_pipeline::SimpleBufferAllocator;
 
 FastThriftServer::FastThriftServer(FastThriftServerConfig config)
-    : config_(std::move(config)) {}
+    : config_(std::move(config)),
+      methodMetadataRegistry_(
+          std::make_shared<ThriftServerMethodMetadataRegistry>()) {
+  rebuildMethodMetadataRegistry();
+}
+
+void FastThriftServer::rebuildMethodMetadataRegistry() {
+  methodMetadataRegistry_->clear();
+  if (handler_) {
+    handler_->populateMethodMetadata(*methodMetadataRegistry_);
+  }
+  if (auxInterfaces_.monitoringHandler) {
+    auxInterfaces_.monitoringHandler->populateMethodMetadata(
+        *methodMetadataRegistry_);
+  }
+  if (auxInterfaces_.statusHandler) {
+    auxInterfaces_.statusHandler->populateMethodMetadata(
+        *methodMetadataRegistry_);
+  }
+  if (auxInterfaces_.debugHandler) {
+    auxInterfaces_.debugHandler->populateMethodMetadata(
+        *methodMetadataRegistry_);
+  }
+  if (auxInterfaces_.controlHandler) {
+    auxInterfaces_.controlHandler->populateMethodMetadata(
+        *methodMetadataRegistry_);
+  }
+  if (auxInterfaces_.securityHandler) {
+    auxInterfaces_.securityHandler->populateMethodMetadata(
+        *methodMetadataRegistry_);
+  }
+  if (config_.enableMetadataService) {
+    methodMetadataRegistry_->add(MetadataAppAdapter::methodMetadata());
+  }
+}
 
 void FastThriftServer::setInterface(
     std::shared_ptr<ThriftServerAppAdapterFactory> handler) {
@@ -59,6 +94,7 @@ void FastThriftServer::setInterface(
       << "FastThriftServer::setInterface called more than once; only a single "
          "handler is supported today";
   handler_ = std::move(handler);
+  rebuildMethodMetadataRegistry();
 }
 
 void FastThriftServer::setMonitoringInterface(
@@ -72,6 +108,7 @@ void FastThriftServer::setMonitoringInterface(
   CHECK(!auxInterfaces_.monitoringHandler)
       << "FastThriftServer::setMonitoringInterface called more than once";
   auxInterfaces_.monitoringHandler = std::move(handler);
+  rebuildMethodMetadataRegistry();
 }
 
 void FastThriftServer::setStatusInterface(
@@ -85,6 +122,7 @@ void FastThriftServer::setStatusInterface(
   CHECK(!auxInterfaces_.statusHandler)
       << "FastThriftServer::setStatusInterface called more than once";
   auxInterfaces_.statusHandler = std::move(handler);
+  rebuildMethodMetadataRegistry();
 }
 
 void FastThriftServer::setDebugInterface(
@@ -98,6 +136,7 @@ void FastThriftServer::setDebugInterface(
   CHECK(!auxInterfaces_.debugHandler)
       << "FastThriftServer::setDebugInterface called more than once";
   auxInterfaces_.debugHandler = std::move(handler);
+  rebuildMethodMetadataRegistry();
 }
 
 void FastThriftServer::setControlInterface(
@@ -111,6 +150,7 @@ void FastThriftServer::setControlInterface(
   CHECK(!auxInterfaces_.controlHandler)
       << "FastThriftServer::setControlInterface called more than once";
   auxInterfaces_.controlHandler = std::move(handler);
+  rebuildMethodMetadataRegistry();
 }
 
 void FastThriftServer::setSecurityInterface(
@@ -124,6 +164,7 @@ void FastThriftServer::setSecurityInterface(
   CHECK(!auxInterfaces_.securityHandler)
       << "FastThriftServer::setSecurityInterface called more than once";
   auxInterfaces_.securityHandler = std::move(handler);
+  rebuildMethodMetadataRegistry();
 }
 
 void FastThriftServer::setStats(std::shared_ptr<ServerStats> stats) {

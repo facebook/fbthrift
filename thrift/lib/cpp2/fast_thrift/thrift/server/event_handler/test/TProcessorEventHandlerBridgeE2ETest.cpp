@@ -206,18 +206,19 @@ class TProcessorEventHandlerBridgeE2ETest : public ::testing::Test {
     server_->registerExtension<Cpp2BridgeExtension>();
 
     auto handlers = std::make_shared<TProcessorEventHandlers>();
-    handlers->serviceName = "FastThriftServer";
     handlers->processor.push_back(
         std::make_shared<ObservingEventHandler>(&observed_));
     handlers->server.push_back(
         std::make_shared<ObservingServerEventHandler>(&observed_));
 
-    server_->addModule(FastServerModule("event_handlers")
-                           .addNativeThriftHandler<TProcessorEventHandlerBridge<
-                               channel_pipeline::detail::ContextImpl>>(
-                               TProcessorEventHandlerBridgeConfig{
-                                   .handlers = std::move(handlers),
-                                   .identityResolver = nullptr}));
+    server_->addModule(
+        FastServerModule("event_handlers")
+            .addNativeThriftHandler<TProcessorEventHandlerBridge<
+                channel_pipeline::detail::ContextImpl>>(
+                TProcessorEventHandlerBridgeConfig{
+                    .handlers = std::move(handlers),
+                    .methodMetadata = server_->getMethodMetadataRegistry(),
+                    .identityResolver = nullptr}));
 
     server_->setInterface(handler_);
     server_->start();

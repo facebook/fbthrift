@@ -54,6 +54,25 @@ class FakeContext {
 
 using Bridge = TProcessorEventHandlerBridge<FakeContext>;
 
+constexpr ThriftServerMethodMetadata kPingMethod{
+    .serviceName = "TestService",
+    .definingServiceName = "TestService",
+    .methodName = "ping",
+    .qualifiedMethodName = "TestService.ping",
+};
+constexpr ThriftServerMethodMetadata kEchoMethod{
+    .serviceName = "TestService",
+    .definingServiceName = "TestService",
+    .methodName = "echo",
+    .qualifiedMethodName = "TestService.echo",
+};
+constexpr ThriftServerMethodMetadata kInheritedMethod{
+    .serviceName = "LeafService",
+    .definingServiceName = "BaseService",
+    .methodName = "baseMethod",
+    .qualifiedMethodName = "BaseService.baseMethod",
+};
+
 // Records the callback sequence across every request on the connection, and
 // what each callback was told, so ordering and naming can be asserted
 // together.
@@ -176,12 +195,17 @@ class RecordingServerEventHandler
 
 TProcessorEventHandlerBridgeConfig makeConfig(CallLog* log) {
   auto handlers = std::make_shared<TProcessorEventHandlers>();
-  handlers->serviceName = "TestService";
   handlers->processor.push_back(std::make_shared<RecordingEventHandler>(log));
   handlers->server.push_back(
       std::make_shared<RecordingServerEventHandler>(log));
+  auto methodMetadata = std::make_shared<ThriftServerMethodMetadataRegistry>();
+  methodMetadata->add(kPingMethod);
+  methodMetadata->add(kEchoMethod);
+  methodMetadata->add(kInheritedMethod);
   return TProcessorEventHandlerBridgeConfig{
-      .handlers = std::move(handlers), .identityResolver = nullptr};
+      .handlers = std::move(handlers),
+      .methodMetadata = std::move(methodMetadata),
+      .identityResolver = nullptr};
 }
 
 // The slot plan a server that registered the bridge's extension builds at
@@ -206,9 +230,9 @@ ThriftServerRequestMessage makeRequest(
   req.requestContext->installExtensions(bridgeLayout());
   req.requestContext->setConnectionContext(conn);
   req.requestContext->setHeaders(std::move(headers));
-
   auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
   metadata->name() = std::string(method);
+  metadata->kind() = apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
   req.payload = ThriftRequestResponsePayload{
       .data = folly::IOBuf::copyBuffer("0123456789"),
       .metadata = std::move(metadata)};
@@ -432,23 +456,56 @@ TEST(TProcessorEventHandlerBridgeTest, GetServiceContextRefusalIsCaught) {
       log.calls.end());
 }
 
-// The method names a connection can accumulate are capped, so a peer sending
-// more distinct ones than the cap still gets each one qualified correctly —
-// the name just comes from the request's own state rather than the cache.
-TEST(TProcessorEventHandlerBridgeTest, QualifiesBeyondTheMethodCacheCap) {
+// Inherited methods retain the leaf service name while using the service that
+// defined the method for the qualified name, matching generated processors.
+TEST(TProcessorEventHandlerBridgeTest, UsesResolvedInheritedMethodNames) {
   CallLog log;
   Bridge bridge(makeConfig(&log));
   FakeContext ctx;
   auto conn = makeConn();
   establish(bridge, ctx, conn);
 
-  constexpr uint32_t kDistinctMethods = 200;
-  for (uint32_t i = 1; i <= kDistinctMethods; ++i) {
-    const auto method = "method" + std::to_string(i);
-    (void)bridge.onRead(ctx, erase_and_box(makeRequest(conn, i, method)));
-    (void)bridge.onWrite(ctx, erase_and_box(makeResponse(i)));
-    EXPECT_EQ(log.methodName, "TestService." + method);
-  }
+  (void)bridge.onRead(ctx, erase_and_box(makeRequest(conn, 1, "baseMethod")));
+  (void)bridge.onWrite(ctx, erase_and_box(makeResponse(1)));
+
+  EXPECT_EQ(log.serviceName, "LeafService");
+  EXPECT_EQ(log.methodName, "BaseService.baseMethod");
+}
+
+TEST(TProcessorEventHandlerBridgeTest, UnknownMethodSkipsCallbacks) {
+  CallLog log;
+  Bridge bridge(makeConfig(&log));
+  FakeContext ctx;
+  auto conn = makeConn();
+  establish(bridge, ctx, conn);
+  log.calls.clear();
+
+  EXPECT_EQ(
+      bridge.onRead(ctx, erase_and_box(makeRequest(conn, 1, "unknown"))),
+      Result::Success);
+
+  EXPECT_EQ(ctx.read.size(), 2);
+  EXPECT_TRUE(ctx.written.empty());
+  EXPECT_TRUE(log.calls.empty());
+}
+
+TEST(TProcessorEventHandlerBridgeTest, UnsupportedRpcKindSkipsCallbacks) {
+  CallLog log;
+  Bridge bridge(makeConfig(&log));
+  FakeContext ctx;
+  auto conn = makeConn();
+  establish(bridge, ctx, conn);
+  log.calls.clear();
+  auto request = makeRequest(conn, 1, "ping");
+  request.payload.get<ThriftRequestResponsePayload>().metadata->kind() =
+      apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE;
+
+  EXPECT_EQ(
+      bridge.onRead(ctx, erase_and_box(std::move(request))), Result::Success);
+
+  EXPECT_EQ(ctx.read.size(), 2);
+  EXPECT_TRUE(ctx.written.empty());
+  EXPECT_TRUE(log.calls.empty());
 }
 
 // The write-side callbacks bracket serializing a reply body, so a framework
@@ -560,7 +617,9 @@ TEST(TProcessorEventHandlerBridgeTest, NoHandlersForwardsUntouched) {
   CallLog log;
   Bridge bridge(
       TProcessorEventHandlerBridgeConfig{
-          .handlers = nullptr, .identityResolver = nullptr});
+          .handlers = nullptr,
+          .methodMetadata = nullptr,
+          .identityResolver = nullptr});
   FakeContext ctx;
   auto conn = makeConn();
   establish(bridge, ctx, conn);

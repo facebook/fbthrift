@@ -20,6 +20,7 @@
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/MethodMetadata.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 
 namespace apache::thrift::fast_thrift::thrift {
@@ -50,6 +51,15 @@ class MetadataAppAdapter final : public ThriftServerAppAdapter {
       std::shared_ptr<
           const apache::thrift::metadata::ThriftServiceMetadataResponse>
           response);
+
+  static constexpr ThriftServerMethodMetadata methodMetadata() noexcept {
+    return {
+        .serviceName = "ThriftMetadataService",
+        .definingServiceName = "ThriftMetadataService",
+        .methodName = "getThriftServiceMetadata",
+        .qualifiedMethodName = "ThriftMetadataService.getThriftServiceMetadata",
+    };
+  }
 
   const apache::thrift::metadata::ThriftServiceMetadataResponse& response()
       const noexcept {

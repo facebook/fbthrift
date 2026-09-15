@@ -24,6 +24,7 @@
 #include <folly/memory/not_null.h>
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/MethodMetadata.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/FastRequestParams.h>
 #include <thrift/lib/cpp2/schema/SchemaV1.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
@@ -55,6 +56,9 @@ class ThriftServerAppAdapterFactory {
   // generated <Service>AppAdapter ctor without enable_shared_from_this.
   virtual ThriftServerAppAdapter::Ptr getAppAdapter(
       std::shared_ptr<ThriftServerAppAdapterFactory> self) = 0;
+
+  virtual void populateMethodMetadata(
+      ThriftServerMethodMetadataRegistry& registry) const = 0;
 
   // Populate `response` with the static metadata for the service this
   // factory serves. Generated ServiceFastHandler<S> overrides this to call

@@ -176,6 +176,26 @@ TEST_F(
   EXPECT_EQ(server_->getMetadataResponse(), nullptr);
 }
 
+TEST_F(FastThriftServerMetadataE2ETest, MethodRegistryIsCompleteBeforeStart) {
+  ConfigureServer(/*enableMetadataService=*/true);
+
+  const auto registry = server_->getMethodMetadataRegistry();
+  ASSERT_NE(registry, nullptr);
+  const auto* userMethod = registry->find("add");
+  ASSERT_NE(userMethod, nullptr);
+  EXPECT_EQ(userMethod->serviceName, "FastThriftServer");
+  EXPECT_EQ(userMethod->definingServiceName, "FastThriftServer");
+  EXPECT_EQ(userMethod->methodName, "add");
+  EXPECT_EQ(userMethod->qualifiedMethodName, "FastThriftServer.add");
+
+  const auto* metadataMethod = registry->find("getThriftServiceMetadata");
+  ASSERT_NE(metadataMethod, nullptr);
+  EXPECT_EQ(metadataMethod->serviceName, "ThriftMetadataService");
+  EXPECT_EQ(
+      metadataMethod->qualifiedMethodName,
+      "ThriftMetadataService.getThriftServiceMetadata");
+}
+
 // With enableMetadataService=true the metadata RPC must succeed AND return
 // the same payload that detail::md::ServiceMetadata<ServiceHandler<S>>::gen
 // produces — proving the cached response was built from the user handler's
