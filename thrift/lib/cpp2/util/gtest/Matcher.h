@@ -17,6 +17,8 @@
 #pragma once
 
 #include <ostream>
+#include <string>
+#include <type_traits>
 
 #include <gmock/gmock.h>
 #include <thrift/lib/cpp2/FieldRef.h>
@@ -32,6 +34,19 @@ class ThriftFieldMatcher;
 
 template <typename FieldTag, typename InnerMatcher>
 class IsThriftUnionWithMatcher;
+
+struct ThriftPropertyAccessor {
+  template <typename FieldRef>
+  decltype(auto) operator()(FieldRef fieldRef) const {
+    if constexpr (
+        apache::thrift::detail::is_optional_field_ref_v<FieldRef> ||
+        apache::thrift::detail::is_optional_boxed_field_ref_v<FieldRef>) {
+      return apache::thrift::get_pointer(fieldRef);
+    } else {
+      return *fieldRef;
+    }
+  }
+};
 
 } // namespace detail
 
@@ -78,6 +93,31 @@ auto ThriftField(
     const Matcher& matcher) {
   return testing::ResultOf(
       [=](const Struct& s) { return (s.*ref)(); }, matcher);
+}
+
+// A replacement for testing::Property that accepts Thrift field accessors
+// while preserving Property's support for object and pointer inputs.
+//
+//   EXPECT_THAT(person, ThriftProperty(&Person::name<>, NotNull()));
+//   EXPECT_THAT(&person, ThriftProperty("id", &Person::id<>, Eq(42)));
+template <typename FieldRef, typename Struct, typename Matcher>
+  requires apache::thrift::detail::is_any_field_ref_v<FieldRef>
+auto ThriftProperty(FieldRef (Struct::*ref)() const&, const Matcher& matcher) {
+  return testing::Property(
+      ref,
+      testing::ResultOf("value", detail::ThriftPropertyAccessor{}, matcher));
+}
+
+template <typename FieldRef, typename Struct, typename Matcher>
+  requires apache::thrift::detail::is_any_field_ref_v<FieldRef>
+auto ThriftProperty(
+    const std::string& fieldName,
+    FieldRef (Struct::*ref)() const&,
+    const Matcher& matcher) {
+  return testing::Property(
+      fieldName,
+      ref,
+      testing::ResultOf("value", detail::ThriftPropertyAccessor{}, matcher));
 }
 
 template <typename FieldTag, typename Matcher>

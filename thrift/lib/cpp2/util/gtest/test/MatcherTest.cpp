@@ -28,10 +28,21 @@ using apache::thrift::test::Person;
 using apache::thrift::test::Result;
 using apache::thrift::test::SameType;
 using apache::thrift::test::ThriftField;
+using apache::thrift::test::ThriftProperty;
 using testing::_;
 using testing::Eq;
 using testing::Not;
 using testing::Optional;
+
+class TerseStruct {
+ public:
+  apache::thrift::terse_field_ref<const int&> value() const& {
+    return apache::thrift::terse_field_ref<const int&>(value_);
+  }
+
+ private:
+  int value_ = 42;
+};
 
 TEST(MatcherTest, ThriftField) {
   auto p = Person();
@@ -39,6 +50,41 @@ TEST(MatcherTest, ThriftField) {
   EXPECT_THAT(p, ThriftField(&Person::name<>, Eq("Zaphod")));
   p.id() = 42;
   EXPECT_THAT(p, ThriftField(&Person::id<>, Eq(42)));
+}
+
+TEST(MatcherTest, ThriftPropertyPreservesPropertySemantics) {
+  auto empty = Person();
+  EXPECT_THAT(empty, ThriftProperty(&Person::name<>, testing::IsNull()));
+
+  auto p = Person();
+  p.name() = "Zaphod";
+  p.id() = 42;
+  p.required_id() = 43;
+
+  EXPECT_THAT(&p, ThriftProperty(&Person::name<>, testing::NotNull()));
+  EXPECT_THAT(
+      &p, ThriftProperty(&Person::name<>, testing::Pointee(Eq("Zaphod"))));
+  EXPECT_THAT(&p, ThriftProperty("name", &Person::name<>, testing::NotNull()));
+  EXPECT_THAT(p, ThriftProperty(&Person::id<>, Eq(42)));
+  EXPECT_THAT(&p, ThriftProperty(&Person::id<>, Eq(42)));
+  EXPECT_THAT(&p, ThriftProperty("id", &Person::id<>, Eq(42)));
+  EXPECT_THAT(&p, ThriftProperty(&Person::required_id<>, Eq(43)));
+  EXPECT_THAT(
+      &p, ThriftProperty("required_id", &Person::required_id<>, Eq(43)));
+
+  Person* nullPerson = nullptr;
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(nullPerson, ThriftProperty(&Person::id<>, Eq(42))), "");
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(p, ThriftProperty("id", &Person::id<>, Eq(43))),
+      "whose property `id`");
+
+  const TerseStruct terse;
+  EXPECT_THAT(&terse, ThriftProperty(&TerseStruct::value, Eq(42)));
+
+  auto result = Result();
+  result.success() = 44;
+  EXPECT_THAT(&result, ThriftProperty(&Result::success, Eq(44)));
 }
 
 TEST(MatcherTestThriftMacher, FieldRef) {
@@ -82,6 +128,12 @@ TEST(MatcherTest, FiledRefPrintsCorrectly) {
       "optional_field_ref holding \"Zaphod\"");
   p.id() = 42;
   EXPECT_EQ(testing::PrintToString(p.id()), "field_ref holding 42");
+  p.required_id() = 43;
+  EXPECT_EQ(
+      testing::PrintToString(p.required_id()), "required_field_ref holding 43");
+  const TerseStruct terse;
+  EXPECT_EQ(
+      testing::PrintToString(terse.value()), "terse_field_ref holding 42");
 }
 
 TEST(ThriftMacherUnion, MatchesIfActiveMemberIsCorrectAndInnerMatcherMatches) {

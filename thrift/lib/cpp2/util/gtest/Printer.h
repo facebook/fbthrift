@@ -35,6 +35,25 @@ void PrintTo(field_ref<T> obj, std::ostream* os) {
 }
 
 template <typename T>
+void PrintTo(required_field_ref<T> obj, std::ostream* os) {
+  *os << "required_field_ref holding " << testing::PrintToString(*obj);
+}
+
+template <typename T>
+void PrintTo(terse_field_ref<T> obj, std::ostream* os) {
+  *os << "terse_field_ref holding " << testing::PrintToString(*obj);
+}
+
+template <typename T>
+void PrintTo(optional_boxed_field_ref<T> obj, std::ostream* os) {
+  if (!obj) {
+    *os << "empty optional_boxed_field_ref";
+    return;
+  }
+  *os << "optional_boxed_field_ref holding " << testing::PrintToString(*obj);
+}
+
+template <typename T>
 void PrintTo(optional_field_ref<T> obj, std::ostream* os) {
   if (!obj) {
     *os << "empty optional_field_ref";

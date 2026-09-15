@@ -24,6 +24,8 @@ namespace cpp2 apache.thrift.test
 struct Person {
   1: optional string name;
   2: i32 id;
+  @thrift.AllowUnsafeRequiredFieldQualifier
+  3: required i32 required_id;
 }
 
 union Result {
