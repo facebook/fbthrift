@@ -2235,7 +2235,7 @@ void deprecate_annotations(sema_context& ctx, const t_named& node) {
     return fmt::format("facebook.com/thrift/annotation/erlang/{}", name);
   };
   // cpp[2].ref[_type] are handled in dedicated validators.
-  static std::map<std::string, std::string> deprecations = {
+  static const std::map<std::string, std::string> deprecations = {
       {"cpp.ref", kCppRefUri},
       {"cpp2.ref", kCppRefUri},
       {"cpp.ref_type", kCppRefUri},

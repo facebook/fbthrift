@@ -37,9 +37,9 @@ namespace apache::thrift::compiler {
 namespace {
 
 std::vector<const t_function*> lifecycleFunctions() {
-  static t_function onStartServing_{
+  static const t_function onStartServing_{
       nullptr, t_primitive_type::t_void(), "onStartServing"};
-  static t_function onStopRequested_{
+  static const t_function onStopRequested_{
       nullptr, t_primitive_type::t_void(), "onStopRequested"};
 
   return {&onStartServing_, &onStopRequested_};

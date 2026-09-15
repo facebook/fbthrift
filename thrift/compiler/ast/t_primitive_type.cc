@@ -19,52 +19,52 @@
 namespace apache::thrift::compiler {
 
 const t_primitive_type& t_primitive_type::t_void() {
-  static t_primitive_type type{"void", type::t_void};
+  static const t_primitive_type type{"void", type::t_void};
   return type;
 }
 
 const t_primitive_type& t_primitive_type::t_string() {
-  static t_primitive_type type{"string", type::t_string};
+  static const t_primitive_type type{"string", type::t_string};
   return type;
 }
 
 const t_primitive_type& t_primitive_type::t_binary() {
-  static t_primitive_type type{"binary", type::t_binary};
+  static const t_primitive_type type{"binary", type::t_binary};
   return type;
 }
 
 const t_primitive_type& t_primitive_type::t_bool() {
-  static t_primitive_type type{"bool", type::t_bool};
+  static const t_primitive_type type{"bool", type::t_bool};
   return type;
 }
 
 const t_primitive_type& t_primitive_type::t_byte() {
-  static t_primitive_type type{"byte", type::t_byte};
+  static const t_primitive_type type{"byte", type::t_byte};
   return type;
 }
 
 const t_primitive_type& t_primitive_type::t_i16() {
-  static t_primitive_type type{"i16", type::t_i16};
+  static const t_primitive_type type{"i16", type::t_i16};
   return type;
 }
 
 const t_primitive_type& t_primitive_type::t_i32() {
-  static t_primitive_type type{"i32", type::t_i32};
+  static const t_primitive_type type{"i32", type::t_i32};
   return type;
 }
 
 const t_primitive_type& t_primitive_type::t_i64() {
-  static t_primitive_type type{"i64", type::t_i64};
+  static const t_primitive_type type{"i64", type::t_i64};
   return type;
 }
 
 const t_primitive_type& t_primitive_type::t_double() {
-  static t_primitive_type type{"double", type::t_double};
+  static const t_primitive_type type{"double", type::t_double};
   return type;
 }
 
 const t_primitive_type& t_primitive_type::t_float() {
-  static t_primitive_type type{"float", type::t_float};
+  static const t_primitive_type type{"float", type::t_float};
   return type;
 }
 
