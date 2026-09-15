@@ -15,14 +15,16 @@
  */
 
 /**
- * BoundedWriteBufferHandler microbenchmarks.
+ * PayloadPrefetchHandler microbenchmarks.
  *
- * `OnWrite_PassThrough` measures the hot path (no backpressure): a flag check +
- * forward. `FillAndDrainBatched` measures the backpressure path: buffering a
- * batch into the ring and draining it on write-ready.
+ * `OnWrite_PassThrough` measures the hot path: a produced payload is sent
+ * straight through while send-credit and transport are both open.
+ * `FillAndDrainBatched` measures the held path: a batch is held behind
+ * transport backpressure, then drained on write-ready.
  */
 
 #include <cstddef>
+#include <cstdint>
 #include <utility>
 #include <vector>
 
@@ -32,8 +34,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/stream/common/Messages.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/stream/common/StreamEvents.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/stream/handler/BoundedWriteBufferHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/stream/handler/PayloadPrefetchHandler.h>
 
 using namespace folly;
 using namespace apache::thrift::fast_thrift::channel_pipeline;
@@ -42,11 +43,10 @@ using namespace apache::thrift::fast_thrift::thrift::stream;
 namespace {
 
 // Local bench context with a configurable fireWrite result so the handler's
-// backpressure state can be armed from outside. fireWrite does not consume the
-// box (models a refusing downstream), so buffered items are retained.
+// transport backpressure state can be armed from outside. fireRead absorbs the
+// demand the buffer meters to (an absent) producer.
 class BenchCtx {
  public:
-  // NOLINTNEXTLINE(clang-diagnostic-unused-member-function)
   Result fireRead(TypeErasedBox&&) noexcept { return Result::Success; }
   Result fireWrite(TypeErasedBox&&) noexcept { return nextWriteResult; }
   // NOLINTNEXTLINE(clang-diagnostic-unused-member-function)
@@ -57,11 +57,11 @@ class BenchCtx {
   Result nextWriteResult{Result::Success};
 };
 
-// Open the credit gate so the benchmark measures the buffer's own paths rather
-// than credit gating (the handler starts credit-paused).
+// Grant send-credit by delivering a RequestN inbound.
 template <typename Handler>
-void openCredit(Handler& handler, BenchCtx& ctx) {
-  handler.template on<FlowControlResumeEvent>(ctx);
+void grant(Handler& handler, BenchCtx& ctx, uint64_t n) {
+  (void)handler.onRead(
+      ctx, erase_and_box(ThriftStreamMessage{.payload = RequestN{.n = n}}));
 }
 
 ThriftStreamMessage makeItem() {
@@ -71,9 +71,10 @@ ThriftStreamMessage makeItem() {
 BENCHMARK(OnWrite_PassThrough, iters) {
   BenchmarkSuspender suspender;
 
-  BoundedWriteBufferHandler<BenchCtx> handler;
+  PayloadPrefetchHandler<BenchCtx> handler{
+      PayloadPrefetchConfig{.capacity = 1024, .replenishThreshold = 512}};
   BenchCtx ctx;
-  openCredit(handler, ctx);
+  grant(handler, ctx, iters + 1); // enough credit to send every payload
 
   std::vector<TypeErasedBox> items;
   items.reserve(iters);
@@ -94,17 +95,17 @@ constexpr size_t kBatch = 8;
 BENCHMARK(FillAndDrainBatched, iters) {
   BenchmarkSuspender suspender;
 
-  BoundedWriteBufferHandler<BenchCtx> handler{
-      BoundedWriteBufferConfig{.maxBufferedElements = kBatch}};
+  PayloadPrefetchHandler<BenchCtx> handler{
+      PayloadPrefetchConfig{.capacity = kBatch, .replenishThreshold = 1}};
   BenchCtx ctx;
-  openCredit(handler, ctx);
+  grant(handler, ctx, iters + kBatch); // ample send-credit; transport gates
 
   const size_t cycles = (iters + kBatch - 1) / kBatch;
 
   suspender.dismiss();
 
   for (size_t c = 0; c < cycles; ++c) {
-    // Fill the ring under backpressure, then drain it.
+    // Hold a batch behind transport backpressure, then drain it on write-ready.
     ctx.nextWriteResult = Result::Backpressure;
     for (size_t i = 0; i < kBatch; ++i) {
       (void)handler.onWrite(ctx, erase_and_box(makeItem()));
