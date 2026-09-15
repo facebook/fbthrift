@@ -152,6 +152,34 @@ TEST(OpsTest, filter) {
   EXPECT_EQ(nested.string_field(), "foo");
 }
 
+template <typename Serializer>
+void testFilterWriteOpts() {
+  NestedStruct value;
+  value.int_field() = 42;
+  value.string_field() = "value";
+  const auto serialized = Serializer::template serialize<std::string>(value);
+  const auto partialMask = MaskBuilder<NestedStruct>(noneMask())
+                               .includes<ident::int_field>()
+                               .toThrift();
+  for (const auto& mask : {noneMask(), partialMask, allMask()}) {
+    auto input = folly::IOBuf::copyBuffer(serialized);
+    auto output = filterSerialized<Serializer>(
+        MaskRef{mask},
+        input,
+        CursorWriteOpts{.minGrowth = 16, .maxGrowth = 16, .prefix = nullptr});
+    EXPECT_EQ(input->template to<std::string>(), serialized);
+    EXPECT_LT(output->computeChainCapacity(), 4096);
+    EXPECT_THRIFT_EQ(
+        Serializer::template deserialize<NestedStruct>(output.get()),
+        protocol::filter(mask, value));
+  }
+}
+
+TEST(OpsTest, filterWriteOpts) {
+  testFilterWriteOpts<CompactSerializer>();
+  testFilterWriteOpts<BinarySerializer>();
+}
+
 // Parameterized test for all protocol combinations
 enum class SerializerType {
   Binary,

@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/dynamic/TypeSystemBuilder.h>
 #include <thrift/lib/cpp2/dynamic/TypeSystemTraits.h>
+#include <thrift/lib/cpp2/protocol/CursorBasedSerializer.h>
 #include <thrift/lib/cpp2/protocol/FieldMaskRef.h>
 #include <thrift/lib/cpp2/protocol/Object.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -53,7 +54,9 @@ std::unique_ptr<folly::IOBuf> transcodeSerialized(
 // input is borrowed and will be unmodified when the function returns.
 template <typename Serializer, bool Contiguous = false>
 std::unique_ptr<folly::IOBuf> filterSerialized(
-    MaskRef mask, std::unique_ptr<folly::IOBuf>& input);
+    MaskRef mask,
+    std::unique_ptr<folly::IOBuf>& input,
+    CursorWriteOpts opts = {});
 
 namespace detail {
 using apache::thrift::detail::ContainerDynamicCursorReader;
@@ -74,7 +77,9 @@ struct FilterVisitor {
   DynamicCursorSerializationWrapper<Reader, Writer>* inWrapper_;
 
   std::unique_ptr<folly::IOBuf> operator()(
-      MaskRef mask, std::unique_ptr<folly::IOBuf>& input) {
+      MaskRef mask,
+      std::unique_ptr<folly::IOBuf>& input,
+      CursorWriteOpts opts) {
     if (!mask.isFieldMask()) {
       throw std::runtime_error("Top-level mask must be a FieldMask.");
     }
@@ -85,7 +90,7 @@ struct FilterVisitor {
     DynamicCursorSerializationWrapper<Reader, Writer> outputWrapper;
 
     auto reader = inputWrapper.beginRead();
-    auto writer = outputWrapper.beginWrite();
+    auto writer = outputWrapper.beginWriteWithOpts(std::move(opts));
     onStruct(mask, reader, writer);
     inputWrapper.endRead(std::move(reader));
     outputWrapper.endWrite(std::move(writer));
@@ -661,7 +666,8 @@ std::unique_ptr<folly::IOBuf> transcodeSerialized(
 
 template <typename Serializer, bool Contiguous>
 std::unique_ptr<folly::IOBuf> filterSerialized(
-    MaskRef mask, std::unique_ptr<folly::IOBuf>& input) {
-  return detail::FilterVisitor<Serializer, Contiguous>{}(mask, input);
+    MaskRef mask, std::unique_ptr<folly::IOBuf>& input, CursorWriteOpts opts) {
+  return detail::FilterVisitor<Serializer, Contiguous>{}(
+      mask, input, std::move(opts));
 }
 } // namespace apache::thrift::protocol
