@@ -126,7 +126,7 @@ If you want to invoke `cmake` again to iterate, there is a helpful `run_cmake.py
 
 CMake options:
 
-* `enable_tests`:
+* `THRIFT_TESTS`:
   specifies whether to enable tests
 
 ### Thrift Files

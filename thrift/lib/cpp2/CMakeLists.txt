@@ -17,7 +17,7 @@ set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(schema)
 
-if (enable_tests)
+if (THRIFT_TESTS)
   add_subdirectory(protocol/test)
   add_subdirectory(test)
 endif ()

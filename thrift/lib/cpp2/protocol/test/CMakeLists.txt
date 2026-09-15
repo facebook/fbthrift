@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(GoogleTest)
-
 # Generate required Thrift dependencies.
 foreach (thrift_file Module CompactProtocolTestStructs)
   thrift_generate(

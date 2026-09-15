@@ -84,6 +84,7 @@ option(
   "Enable the RPC transport stack and its dependencies (fizz, wangle, mvfst)."
   ON)
 option(THRIFT_BENCHMARKS "Enable benchmarks (requires google/benchmark)." ON)
+option(THRIFT_TESTS "Enable tests (requires GTest)." OFF)
 option(THRIFT_PY_DEPRECATED
        "Enable the deprecated thrift-py library; use thrift-python instead" ON)
 option(THRIFT_PY3_DEPRECATED
@@ -142,11 +143,9 @@ if (THRIFT_PY3_DEPRECATED)
 endif ()
 
 # Add the test dependencies.
-if (enable_tests)
-  find_package(PythonInterp REQUIRED)
+if (THRIFT_TESTS)
   find_package(GTest REQUIRED)
-  find_package(GMock REQUIRED)
-  include_directories(${GTEST_INCLUDE_DIRS} ${GMOCK_INCLUDE_DIRS})
+  include(GoogleTest)
   enable_testing()
 endif ()
 
