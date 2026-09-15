@@ -328,7 +328,10 @@ struct SerializedSize<ZeroCopy, type::enum_t<T>> {
 template <bool ZeroCopy, typename Tag>
 struct SerializedSize<ZeroCopy, type::list<Tag>> {
   template <typename Protocol, typename ListType>
-  uint32_t operator()(Protocol& prot, const ListType& list) const {
+  // noinline limits optimizer work for generated translation units with many
+  // list fields.
+  FOLLY_NOINLINE uint32_t
+  operator()(Protocol& prot, const ListType& list) const {
     uint32_t xfer = 0;
     xfer += prot.serializedSizeListBegin(
         typeTagToTType<Tag>, checked_container_size(list.size()));
@@ -667,7 +670,9 @@ struct Encode<type::enum_t<T>> {
 template <typename Tag>
 struct ListEncode {
   template <typename Protocol, typename T>
-  uint32_t operator()(Protocol& prot, const T& list) const {
+  // noinline limits optimizer work for generated translation units with many
+  // list fields.
+  FOLLY_NOINLINE uint32_t operator()(Protocol& prot, const T& list) const {
     using elem_type = type::native_type<Tag>;
     uint32_t xfer = 0;
     xfer += prot.writeListBegin(
