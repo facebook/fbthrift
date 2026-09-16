@@ -113,6 +113,11 @@ if (NOT folly_FOUND)
   FetchContent_MakeAvailable(folly)
 endif ()
 
+# Older folly installs export Threads::Threads without declaring it.
+# Newer folly finds it itself, making this redundant.
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads)
+
 find_package(OpenSSL REQUIRED)
 
 include(ThriftLibrary.cmake)
@@ -130,9 +135,6 @@ if (THRIFT_RPC)
   find_package(wangle CONFIG REQUIRED)
   find_package(mvfst CONFIG REQUIRED)
 endif ()
-# https://cmake.org/cmake/help/v3.9/module/FindThreads.html
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads)
 
 if (THRIFT_PY3_DEPRECATED)
   find_package(PythonInterp 3.6 REQUIRED)
