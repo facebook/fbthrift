@@ -416,6 +416,25 @@ std::string Path::toString() const {
   return result;
 }
 
+type_system::TypeRef Path::targetType() const {
+  type_system::TypeRef type = rootType_;
+
+  for (const auto& component : components_) {
+    folly::variant_match(
+        component,
+        [&](const FieldAccess& f) { type = f.fieldType(); },
+        [&](const ListElement&) {
+          type = type.asListUnchecked().elementType();
+        },
+        [&](const SetElement&) { type = type.asSetUnchecked().elementType(); },
+        [&](const MapKey&) { type = type.asMapUnchecked().keyType(); },
+        [&](const MapValue&) { type = type.asMapUnchecked().valueType(); },
+        [&](const AnyType& a) { type = a.type(); });
+  }
+
+  return type;
+}
+
 PathBuilder PathBuilder::fromString(
     const type_system::TypeSystem& typeSystem,
     type_system::TypeRef type,

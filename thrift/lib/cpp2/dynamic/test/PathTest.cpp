@@ -285,6 +285,48 @@ TEST_F(PathTest, PathAllComponentTypes) {
   }
 }
 
+TEST_F(PathTest, TargetTypeTracksTraversal) {
+  PathBuilder builder(getMyStructType());
+  EXPECT_EQ(builder.path().targetType().id(), getMyStructType().id());
+
+  auto users = builder.enterField("users");
+  EXPECT_EQ(
+      builder.path().targetType().id(),
+      TypeIds::map(TypeIds::String, TypeIds::uri(kUserProfileUri)));
+
+  {
+    auto key = builder.enterMapKey("alice");
+    EXPECT_EQ(builder.path().targetType().id(), TypeIds::String);
+  }
+
+  auto user = builder.enterMapValue("alice");
+  EXPECT_EQ(builder.path().targetType().id(), getUserProfileType().id());
+
+  {
+    auto scores = builder.enterField("scores");
+    EXPECT_EQ(builder.path().targetType().id(), TypeIds::list(TypeIds::I32));
+
+    auto score = builder.enterListElement(0);
+    EXPECT_EQ(builder.path().targetType().id(), TypeIds::I32);
+  }
+
+  {
+    auto tags = builder.enterField("tags");
+    EXPECT_EQ(builder.path().targetType().id(), TypeIds::set(TypeIds::I32));
+
+    auto tag = builder.enterSetElement(42);
+    EXPECT_EQ(builder.path().targetType().id(), TypeIds::I32);
+  }
+
+  {
+    auto metadata = builder.enterField("metadata");
+    EXPECT_EQ(builder.path().targetType().id(), TypeIds::Any);
+
+    auto type = builder.enterAnyType(getUserProfileType());
+    EXPECT_EQ(builder.path().targetType().id(), getUserProfileType().id());
+  }
+}
+
 TEST_F(PathTest, PathFormatsSelectorTypes) {
   auto stringKeyPath = [&] {
     PathBuilder builder(getMyStructType());

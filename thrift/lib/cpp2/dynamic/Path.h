@@ -153,6 +153,12 @@ class Path {
   type_system::TypeRef rootType() const { return rootType_; }
 
   /**
+   * Returns the type of the target value.
+   * Walks the path each time it is called.
+   */
+  type_system::TypeRef targetType() const;
+
+  /**
    * Returns the path components.
    */
   std::span<const Component> components() const& { return components_; }
