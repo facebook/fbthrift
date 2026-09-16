@@ -23,9 +23,8 @@
 #include <thrift/conformance/cpp2/AnyStructSerializer.h>
 #include <thrift/conformance/cpp2/internal/AnyStructSerializer.h>
 #include <thrift/conformance/data/internal/TestGenerator.h>
+#include <thrift/lib/cpp2/protocol/Json5Protocol.h>
 #include <thrift/lib/cpp2/protocol/Object.h>
-#include <thrift/lib/cpp2/protocol/detail/Json5ProtocolReader.h>
-#include <thrift/lib/cpp2/protocol/detail/Json5ProtocolWriter.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/test/testset/Testset.h>
 
@@ -34,9 +33,6 @@ using apache::thrift::test::testset::FieldModifier;
 
 namespace apache::thrift::conformance::detail {
 
-// Uses the unconditional `detail` reader/writer headers rather than the
-// THRIFT_HAS_JSON5_PROTOCOL-gated Json5Protocol.h facade, which the xplat
-// generator build never sees.
 template <>
 struct ProtocolHelper<StandardProtocol::Json5> {
   using reader = apache::thrift::json5::detail::Json5ProtocolReader;

@@ -234,7 +234,16 @@ add_library(
   protocol/Serializer.cpp
   protocol/TableBasedSerializer.cpp
   protocol/TableBasedSerializerImpl.cpp
+  protocol/TableBasedSerializerJson5.cpp
   protocol/VirtualProtocol.cpp
+  # Required by TableBasedSerializerJson5.cpp, which instantiates the JSON5
+  # reader/writer.
+  protocol/detail/Json5ProtocolReader.cpp
+  protocol/detail/Json5ProtocolWriter.cpp
+  protocol/detail/JsonReader.cpp
+  protocol/detail/JsonWriter.cpp
+  protocol/detail/JsonUtils.cpp
+  protocol/detail/CompoundTypeTracker.cpp
   ../cpp/protocol/TBase64Utils.cpp
   ../cpp/protocol/TProtocolException.cpp
   ../cpp/protocol/TType.cpp

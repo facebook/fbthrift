@@ -28,21 +28,14 @@ namespace apache::thrift::python {
 using apache::thrift::protocol::PROTOCOL_TYPES;
 
 std::unique_ptr<folly::IOBuf> serializeJson5(
-    [[maybe_unused]] const DynamicStructInfo& dynamicStructInfo,
-    [[maybe_unused]] const PyObject* object,
-    [[maybe_unused]] const json5::detail::Json5ProtocolWriter::Options&
-        options) {
-#ifdef THRIFT_HAS_JSON5_PROTOCOL
+    const DynamicStructInfo& dynamicStructInfo,
+    const PyObject* object,
+    const json5::detail::Json5ProtocolWriter::Options& options) {
   folly::IOBufQueue queue{folly::IOBufQueue::cacheChainLength()};
   json5::detail::Json5ProtocolWriter writer(SHARE_EXTERNAL_BUFFER, options);
   writer.setOutput(&queue);
   detail::write(&writer, dynamicStructInfo.getStructInfo(), object);
   return queue.move();
-#else
-  throw TProtocolException(
-      TProtocolException::NOT_IMPLEMENTED,
-      "Json5 serialization is not supported on this platform");
-#endif
 }
 
 std::unique_ptr<folly::IOBuf> serialize(
@@ -62,11 +55,9 @@ std::unique_ptr<folly::IOBuf> serialize(
     // Deprecated, remove as soon as thrift-python migration complete
     case PROTOCOL_TYPES::T_JSON_PROTOCOL:
       return serializeWithWriter<JSONProtocolWriter>(dynamicStructInfo, object);
-#ifdef THRIFT_HAS_JSON5_PROTOCOL
     case PROTOCOL_TYPES::T_JSON5_PROTOCOL:
       return serializeJson5(
           dynamicStructInfo, object, {.writer = {.indentWidth = 2}});
-#endif
     default:
       throw TProtocolException(
           TProtocolException::NOT_IMPLEMENTED, "protocol not supported yet");
@@ -98,11 +89,9 @@ size_t deserialize(
     case PROTOCOL_TYPES::T_JSON_PROTOCOL:
       return deserializeWithReader<JSONProtocolReader>(
           dynamicStructInfo, buf, object);
-#ifdef THRIFT_HAS_JSON5_PROTOCOL
     case PROTOCOL_TYPES::T_JSON5_PROTOCOL:
       return deserializeWithReader<json5::detail::Json5ProtocolReader>(
           dynamicStructInfo, buf, object);
-#endif
     default:
       throw TProtocolException(
           TProtocolException::NOT_IMPLEMENTED, "protocol not supported yet");

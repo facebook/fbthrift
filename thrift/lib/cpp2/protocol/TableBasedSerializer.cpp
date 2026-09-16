@@ -19,7 +19,6 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/JSONProtocol.h>
-#include <thrift/lib/cpp2/protocol/Json5Protocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 
 namespace apache::thrift::detail {
@@ -102,14 +101,4 @@ template size_t write<JSONProtocolWriter>(
     JSONProtocolWriter* iprot,
     const StructInfo& structInfo,
     const void* object);
-#ifdef THRIFT_HAS_JSON5_PROTOCOL
-template void read<json5::detail::Json5ProtocolReader>(
-    json5::detail::Json5ProtocolReader* iprot,
-    const StructInfo& structInfo,
-    void* object);
-template size_t write<json5::detail::Json5ProtocolWriter>(
-    json5::detail::Json5ProtocolWriter* iprot,
-    const StructInfo& structInfo,
-    const void* object);
-#endif
 } // namespace apache::thrift::detail
