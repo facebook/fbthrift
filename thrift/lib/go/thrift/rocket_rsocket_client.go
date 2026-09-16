@@ -211,6 +211,19 @@ func (r *rsocketClient) prepareRequestPayload(
 	)
 }
 
+func (r *rsocketClient) processResponsePayload(
+	ctx context.Context,
+	firstPayload payload.Payload,
+	response ReadableResult,
+) error {
+	firstRespPayload, err := rocket.DecodeResponsePayload(firstPayload)
+	if err != nil {
+		return err
+	}
+	setReadHeaders(ctx, firstRespPayload.Headers())
+	return decodeResultOrException(r.thriftProtoID, firstRespPayload.Data(), response)
+}
+
 func (r *rsocketClient) RequestResponse(
 	ctx context.Context,
 	messageName string,
@@ -233,12 +246,7 @@ func (r *rsocketClient) RequestResponse(
 	if err != nil {
 		return err
 	}
-	respPayload, err := rocket.DecodeResponsePayload(val)
-	if err != nil {
-		return err
-	}
-	setReadHeaders(ctx, respPayload.Headers())
-	return decodeResultOrException(r.thriftProtoID, respPayload.Data(), response)
+	return r.processResponsePayload(ctx, val, response)
 }
 
 func (r *rsocketClient) FireAndForget(ctx context.Context, messageName string, headers map[string]string, request WritableStruct) error {
@@ -285,13 +293,7 @@ func (r *rsocketClient) RequestStream(
 		streamCancel()
 		return nil, err
 	}
-	firstResponse, err := rocket.DecodeResponsePayload(firstPayload)
-	if err != nil {
-		streamCancel()
-		return nil, err
-	}
-	setReadHeaders(ctx, firstResponse.Headers())
-	err = decodeResultOrException(r.thriftProtoID, firstResponse.Data(), response)
+	err = r.processResponsePayload(ctx, firstPayload, response)
 	if err != nil {
 		streamCancel()
 		return nil, err
@@ -395,14 +397,7 @@ func (r *rsocketClient) RequestSink(
 		close(sinkPayloadChan)
 		return nil, err
 	}
-	firstRespPayload, err := rocket.DecodeResponsePayload(firstPayload)
-	if err != nil {
-		channelCancel()
-		close(sinkPayloadChan)
-		return nil, err
-	}
-	setReadHeaders(ctx, firstRespPayload.Headers())
-	err = decodeResultOrException(r.thriftProtoID, firstRespPayload.Data(), firstResponse)
+	err = r.processResponsePayload(ctx, firstPayload, firstResponse)
 	if err != nil {
 		channelCancel()
 		close(sinkPayloadChan)
@@ -545,14 +540,7 @@ func (r *rsocketClient) RequestBiDiStream(
 		close(sinkPayloadChan)
 		return nil, nil, err
 	}
-	firstRespPayload, err := rocket.DecodeResponsePayload(firstPayload)
-	if err != nil {
-		channelCancel()
-		close(sinkPayloadChan)
-		return nil, nil, err
-	}
-	setReadHeaders(ctx, firstRespPayload.Headers())
-	err = decodeResultOrException(r.thriftProtoID, firstRespPayload.Data(), firstResponse)
+	err = r.processResponsePayload(ctx, firstPayload, firstResponse)
 	if err != nil {
 		channelCancel()
 		close(sinkPayloadChan)
