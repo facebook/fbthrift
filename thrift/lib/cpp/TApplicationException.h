@@ -289,7 +289,9 @@ class FOLLY_EXPORT TApplicationException : public TException {
  */
 struct FOLLY_EXPORT AppClientException : public TApplicationException {
   AppClientException(std::string&& name, std::string&& message)
-      : TApplicationException(std::move(message)), name_(std::move(name)) {}
+      : TApplicationException(
+            TApplicationException::UNKNOWN, std::move(message)),
+        name_(std::move(name)) {}
   const auto& name() const noexcept { return name_; }
 
  private:
@@ -304,7 +306,9 @@ struct FOLLY_EXPORT AppClientException : public TApplicationException {
  */
 struct FOLLY_EXPORT AppServerException : TApplicationException {
   AppServerException(std::string&& name, std::string&& message)
-      : TApplicationException(std::move(message)), name_(std::move(name)) {}
+      : TApplicationException(
+            TApplicationException::UNKNOWN, std::move(message)),
+        name_(std::move(name)) {}
   const auto& name() const noexcept { return name_; }
 
  private:
@@ -319,7 +323,9 @@ struct FOLLY_EXPORT AppServerException : TApplicationException {
  */
 struct FOLLY_EXPORT AppOverloadedException : TApplicationException {
   AppOverloadedException(std::string&& name, std::string&& message)
-      : TApplicationException(std::move(message)), name_(std::move(name)) {}
+      : TApplicationException(
+            TApplicationException::UNKNOWN, std::move(message)),
+        name_(std::move(name)) {}
   const auto& name() const noexcept { return name_; }
 
  private:
