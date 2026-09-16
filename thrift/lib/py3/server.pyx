@@ -27,6 +27,8 @@ from libcpp.memory cimport make_unique
 import asyncio
 import collections
 import ipaddress
+import logging
+from contextlib import AsyncExitStack
 from pathlib import Path
 import os
 
@@ -59,7 +61,7 @@ from thrift.python.types cimport cServiceHealth, cServiceHealth_OK, cServiceHeal
 
 AsyncProcessorFactory = AsyncProcessorFactory_
 
-
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 class SSLPolicy(Enum):
@@ -175,17 +177,29 @@ cdef class ThriftServer:
         # async context manager protocol.
         handler_cm = self.handler if self.handler is not None else self.factory
         try:
-            if handler_cm is not None:
-                async with handler_cm:
-                    await self.loop.run_in_executor(None, _serve)
-            else:
-                await self.loop.run_in_executor(None, _serve)
+            async with AsyncExitStack() as ownership_stack:
+                if handler_cm is not None:
+                    await ownership_stack.enter_async_context(handler_cm)
+                native_serve = self.loop.run_in_executor(None, _serve)
+                try:
+                    await asyncio.wait((native_serve,))
+                    await native_serve
+                except asyncio.CancelledError:
+                    await asyncio.wait(
+                        (self.address_future, native_serve),
+                        return_when=asyncio.FIRST_COMPLETED,
+                    )
+                    self.server.get().stop()
+                    try:
+                        await native_serve
+                    except Exception:
+                        logger.exception(
+                            "Native ThriftServer.serve() failed before cancellation cleanup completed"
+                        )
+                    raise
             self.address_future.cancel()
         except asyncio.CancelledError:
-            try:
-                await self.get_address()
-            finally:
-                self.server.get().stop()
+            self.address_future.cancel()
             raise
         except Exception as e:
             self.server.get().stop()

@@ -19,13 +19,17 @@ from __future__ import annotations
 import asyncio
 import gc
 import threading
-import unittest
 from contextlib import contextmanager
+from types import TracebackType
 from typing import Iterator, Optional, Sequence
+from unittest import mock
 
+import later.unittest
+from test_thrift.thrift_clients import TestingService
 from test_thrift.thrift_services import TestingServiceInterface
 from test_thrift.thrift_types import Color, easy
 from thrift.py3.server import SocketAddress
+from thrift.python.client import get_client
 from thrift.python.server import ThriftServer
 
 # White-box: the runtime holds strong refs to in-flight onStopRequested lifecycle
@@ -147,7 +151,63 @@ class BlockingOnStopRequestedHandler(Handler):
         self.on_stop_requested = True
 
 
-class ServicesTests(unittest.TestCase):
+class DrainingHandler(Handler):
+    def __init__(self) -> None:
+        super().__init__()
+        self.events: list[str] = []
+        self.request_started: asyncio.Event = asyncio.Event()
+        self.release_request: asyncio.Event = asyncio.Event()
+        self.stop_requested: asyncio.Event = asyncio.Event()
+
+    async def __aenter__(self) -> "DrainingHandler":
+        self.events.append("context_enter")
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> None:
+        self.events.append("context_exit")
+
+    async def onStartServing(self) -> None:
+        self.events.append("start_serving")
+
+    async def onStopRequested(self) -> None:
+        self.events.append("stop_requested")
+        self.stop_requested.set()
+
+    async def invert(self, value: bool) -> bool:
+        self.events.append("request_started")
+        self.request_started.set()
+        await self.release_request.wait()
+        self.events.append("request_finished")
+        return not value
+
+
+class BlockingEntryHandler(Handler):
+    def __init__(self) -> None:
+        super().__init__()
+        self.events: list[str] = []
+        self.enter_started: asyncio.Event = asyncio.Event()
+
+    async def __aenter__(self) -> "BlockingEntryHandler":
+        self.events.append("context_enter")
+        self.enter_started.set()
+        await asyncio.Event().wait()
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> None:
+        self.events.append("context_exit")
+
+
+class ServicesTests(later.unittest.TestCase):
     def test_handler_acontext(self) -> None:
         async def inner() -> None:
             async with Handler() as h:
@@ -267,6 +327,143 @@ class ServicesTests(unittest.TestCase):
 
         asyncio.run(inner())
         self.assertTrue(handler.on_stop_requested)
+
+    def test_cancellation_drains_request_before_context_exit(self) -> None:
+        # GIVEN
+        handler = DrainingHandler()
+        expected_events = [
+            "context_enter",
+            "start_serving",
+            "request_started",
+            "stop_requested",
+            "request_finished",
+            "context_exit",
+        ]
+
+        async def inner() -> tuple[bool, bool, bool, list[str]]:
+            server = ThriftServer(handler, ip="::1", port=0)
+            serve_task = asyncio.create_task(server.serve())
+            try:
+                address = await server.get_address()
+                assert address.ip and address.port
+
+                async with get_client(
+                    TestingService,
+                    host=address.ip,
+                    port=address.port,
+                ) as client:
+                    request_task = asyncio.create_task(client.invert(True))
+                    await asyncio.wait_for(handler.request_started.wait(), timeout=5)
+                    serve_task.cancel()
+                    await asyncio.wait_for(handler.stop_requested.wait(), timeout=5)
+                    serve_completed_before_request_release = serve_task.done()
+                    handler.release_request.set()
+                    response = await asyncio.wait_for(request_task, timeout=5)
+
+                serve_result = await asyncio.wait_for(
+                    asyncio.gather(serve_task, return_exceptions=True),
+                    timeout=5,
+                )
+                return (
+                    serve_completed_before_request_release,
+                    response,
+                    isinstance(serve_result[0], asyncio.CancelledError),
+                    handler.events,
+                )
+            finally:
+                handler.release_request.set()
+                server.stop()
+                await asyncio.gather(serve_task, return_exceptions=True)
+
+        # WHEN
+        (
+            actual_serve_completed_before_request_release,
+            actual_response,
+            actual_serve_cancelled,
+            actual_events,
+        ) = asyncio.run(inner())
+
+        # THEN
+        self.assertFalse(actual_serve_completed_before_request_release)
+        self.assertFalse(actual_response)
+        self.assertTrue(actual_serve_cancelled)
+        self.assertEqual(expected_events, actual_events)
+
+    def test_cancellation_during_context_entry_does_not_start_serving(self) -> None:
+        # GIVEN
+        handler = BlockingEntryHandler()
+        expected_events = ["context_enter"]
+
+        async def inner() -> tuple[bool, bool, list[str]]:
+            server = ThriftServer(handler, ip="::1", port=0)
+            serve_task = asyncio.create_task(server.serve())
+            try:
+                await asyncio.wait_for(handler.enter_started.wait(), timeout=5)
+                serve_task.cancel()
+                serve_result = await asyncio.wait_for(
+                    asyncio.gather(serve_task, return_exceptions=True),
+                    timeout=5,
+                )
+                return (
+                    isinstance(serve_result[0], asyncio.CancelledError),
+                    handler.on_start_serving,
+                    handler.events,
+                )
+            finally:
+                server.stop()
+                await asyncio.gather(serve_task, return_exceptions=True)
+
+        # WHEN
+        actual_serve_cancelled, actual_serving_started, actual_events = asyncio.run(
+            inner()
+        )
+
+        # THEN
+        self.assertTrue(actual_serve_cancelled)
+        self.assertFalse(actual_serving_started)
+        self.assertEqual(expected_events, actual_events)
+
+    async def test_native_failure_during_cancellation_preserves_cancellation(
+        self,
+    ) -> None:
+        # GIVEN
+        native_failure = RuntimeError("native serve failed during cancellation")
+        # pyrefly: ignore [bad-specialization]
+        server = ThriftServer(Handler(), port=0)
+        loop = asyncio.get_running_loop()
+        native_serve: asyncio.Future[None] = loop.create_future()
+        native_serve_started = asyncio.Event()
+        expected_log_messages = [
+            "Native ThriftServer.serve() failed before cancellation cleanup completed"
+        ]
+
+        def start_native_serve(
+            _executor: object,
+            _serve: object,
+        ) -> asyncio.Future[None]:
+            native_serve_started.set()
+            return native_serve
+
+        # WHEN
+        with (
+            mock.patch.object(loop, "run_in_executor", side_effect=start_native_serve),
+            self.assertLogs("thrift.py3.server", level="ERROR") as captured_logs,
+        ):
+            serve_task = asyncio.create_task(server.serve())
+            await asyncio.wait_for(native_serve_started.wait(), timeout=5)
+            serve_task.cancel()
+            await asyncio.sleep(0)
+            native_serve.set_exception(native_failure)
+            serve_result = await asyncio.wait_for(
+                asyncio.gather(serve_task, return_exceptions=True),
+                timeout=5,
+            )
+        actual_serve_cancelled = isinstance(serve_result[0], asyncio.CancelledError)
+        actual_log_messages = [record.getMessage() for record in captured_logs.records]
+
+        # THEN
+        self.assertTrue(actual_serve_cancelled)
+        self.assertEqual(expected_log_messages, actual_log_messages)
 
     def test_threaded_destruction(self) -> None:
         handler = Handler()
