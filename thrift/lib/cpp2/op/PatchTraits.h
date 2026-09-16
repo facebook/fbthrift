@@ -27,7 +27,6 @@ template <typename T, typename = void>
 inline constexpr bool is_patch_v = false;
 
 template <typename T>
-inline constexpr bool
-    is_patch_v<T, folly::void_t<typename T::underlying_type>> =
-        std::is_base_of_v<detail::BasePatch<typename T::underlying_type, T>, T>;
+inline constexpr bool is_patch_v<T, std::void_t<typename T::underlying_type>> =
+    std::is_base_of_v<detail::BasePatch<typename T::underlying_type, T>, T>;
 } // namespace apache::thrift::op

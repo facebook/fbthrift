@@ -59,13 +59,39 @@ struct reserve_result {
   using type = T;
 };
 
+// The Cpp2Ops container specializations below dispatch on these as
+// std::enable_if_t<...> rather than on std::void_t<...> directly. std::void_t
+// is a plain alias template, so every std::void_t<X> canonicalizes to void and
+// all three specializations would collide as redefinitions of
+// Cpp2Ops<T, void>. std::enable_if_t resolves through a class template, so each
+// second argument stays a distinct dependent type.
+template <typename C, typename = void>
+inline constexpr bool has_push_back_v = false;
+template <typename C>
+inline constexpr bool
+    has_push_back_v<C, std::void_t<typename push_back_result<C>::type>> = true;
+
+template <typename C, typename = void>
+inline constexpr bool has_insert_key_v = false;
+template <typename C>
+inline constexpr bool
+    has_insert_key_v<C, std::void_t<typename insert_key_result<C>::type>> =
+        true;
+
+template <typename C, typename = void>
+inline constexpr bool has_subscript_key_v = false;
+template <typename C>
+inline constexpr bool has_subscript_key_v<
+    C,
+    std::void_t<typename subscript_key_result<C>::type>> = true;
+
 template <typename C, typename = void>
 struct Reserver {
   static void reserve(C&, typename C::size_type) {}
 };
 
 template <typename C>
-struct Reserver<C, folly::void_t<typename reserve_result<C>::type>> {
+struct Reserver<C, std::void_t<typename reserve_result<C>::type>> {
   static void reserve(C& container, typename C::size_type size) {
     container.reserve(size);
   }
@@ -77,8 +103,7 @@ template <typename Cont, typename Elem>
 inline constexpr bool alloc_is_recursive<
     Cont,
     Elem,
-    folly::
-        void_t<typename Cont::allocator_type, typename Elem::allocator_type>> =
+    std::void_t<typename Cont::allocator_type, typename Elem::allocator_type>> =
     std::uses_allocator<Elem, typename Cont::allocator_type>::value;
 template <typename Cont, typename Elem>
 inline constexpr bool alloc_should_propagate = alloc_is_recursive<Cont, Elem> &&
@@ -540,9 +565,7 @@ uint32_t forEachElement(Protocol* prot, const std::vector<bool>* vec) {
 } // namespace detail
 
 template <class L>
-class Cpp2Ops<
-    L,
-    folly::void_t<typename apache::thrift::detail::push_back_result<L>::type>> {
+class Cpp2Ops<L, std::enable_if_t<apache::thrift::detail::has_push_back_v<L>>> {
  private:
   // Need a resize func instead of c.resize(size, defaultElement(C)), because
   // some non-standard vectors do not support resize(size_type, T value = T()).
@@ -607,8 +630,7 @@ class Cpp2Ops<
 template <class S>
 class Cpp2Ops<
     S,
-    folly::void_t<
-        typename apache::thrift::detail::insert_key_result<S>::type>> {
+    std::enable_if_t<apache::thrift::detail::has_insert_key_v<S>>> {
  private:
   template <typename C = S>
   std::enable_if_t<
@@ -681,8 +703,7 @@ class Cpp2Ops<
 template <class M>
 class Cpp2Ops<
     M,
-    folly::void_t<
-        typename apache::thrift::detail::subscript_key_result<M>::type>> {
+    std::enable_if_t<apache::thrift::detail::has_subscript_key_v<M>>> {
  private:
   template <typename Map, typename ValueType>
   std::enable_if_t<

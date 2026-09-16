@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <type_traits>
+
 #include <gtest/gtest.h>
 
 #include <folly/Utility.h>
@@ -104,14 +106,14 @@ template <typename E, typename = void>
 constexpr bool t_enum_trait_has_min_v = false;
 template <typename E>
 constexpr bool
-    t_enum_trait_has_min_v<E, folly::void_t<decltype(TEnumTraits<E>::min())>> =
+    t_enum_trait_has_min_v<E, std::void_t<decltype(TEnumTraits<E>::min())>> =
         true;
 
 template <typename E, typename = void>
 constexpr bool t_enum_trait_has_max_v = false;
 template <typename E>
 constexpr bool
-    t_enum_trait_has_max_v<E, folly::void_t<decltype(TEnumTraits<E>::max())>> =
+    t_enum_trait_has_max_v<E, std::void_t<decltype(TEnumTraits<E>::max())>> =
         true;
 
 TEST(EnumTestCpp2, Enum) {
@@ -205,11 +207,11 @@ struct HasType {
   using type = void;
 };
 
-template <typename T, typename = folly::void_t<>>
+template <typename T, typename = std::void_t<>>
 struct has_type_member : std::false_type {};
 
 template <typename T>
-struct has_type_member<T, folly::void_t<typename T::type>> : std::true_type {};
+struct has_type_member<T, std::void_t<typename T::type>> : std::true_type {};
 
 } // namespace
 

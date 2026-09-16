@@ -22,6 +22,7 @@
 #include <cstring>
 #include <optional>
 #include <string_view>
+#include <type_traits>
 #include <fmt/format.h>
 
 #include <folly/Portability.h>
@@ -39,7 +40,7 @@ inline constexpr bool is_thrift_enum_v = false;
 template <typename EnumType>
 inline constexpr bool is_thrift_enum_v<
     EnumType,
-    folly::void_t<decltype(TEnumTraits<EnumType>::size)>> = true;
+    std::void_t<decltype(TEnumTraits<EnumType>::size)>> = true;
 
 template <>
 inline constexpr bool is_thrift_enum_v<void> = false;

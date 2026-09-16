@@ -295,7 +295,7 @@ struct target_type_impl {
 };
 
 template <typename Tag, typename T>
-struct target_type_impl<Tag, T, folly::void_t<type::standard_type<Tag>>> {
+struct target_type_impl<Tag, T, std::void_t<type::standard_type<Tag>>> {
   using type = type::standard_type<Tag>;
 };
 

@@ -19,6 +19,7 @@
 #include <concepts>
 #include <memory>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 
 #include <folly/Memory.h>
@@ -226,10 +227,9 @@ struct gen_check_get_json {
 template <typename Void, typename Get, typename Type>
 constexpr bool gen_check_get_ = true;
 template <typename Get, typename Type>
-constexpr bool gen_check_get_<
-    folly::void_t<typename Get::template apply<Type>>,
-    Get,
-    Type> = Get::template apply<Type>::value;
+constexpr bool
+    gen_check_get_<std::void_t<typename Get::template apply<Type>>, Get, Type> =
+        Get::template apply<Type>::value;
 template <typename Get, typename Type>
 constexpr bool gen_check_get = gen_check_get_<void, Get, Type>;
 

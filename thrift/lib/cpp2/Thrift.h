@@ -126,7 +126,7 @@ struct struct_private_access {
   template <typename T, typename = void>
   struct detect_uri : std::false_type {};
   template <typename T>
-  struct detect_uri<T, folly::void_t<decltype(T::__fbthrift_thrift_uri)>>
+  struct detect_uri<T, std::void_t<decltype(T::__fbthrift_thrift_uri)>>
       : std::true_type {};
 
   template <typename T, typename Ord>
@@ -233,14 +233,14 @@ template <typename T, typename = void>
 struct IsThriftClass : std::false_type {};
 
 template <typename T>
-struct IsThriftClass<T, folly::void_t<typename T::__fbthrift_cpp2_type>>
+struct IsThriftClass<T, std::void_t<typename T::__fbthrift_cpp2_type>>
     : std::true_type {};
 
 template <typename T, typename = void>
 struct IsThriftUnion : std::false_type {};
 
 template <typename T>
-struct IsThriftUnion<T, folly::void_t<typename T::__fbthrift_cpp2_type>>
+struct IsThriftUnion<T, std::void_t<typename T::__fbthrift_cpp2_type>>
     : std::bool_constant<T::__fbthrift_cpp2_is_union> {};
 
 template <typename T>

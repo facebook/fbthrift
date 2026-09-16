@@ -149,7 +149,7 @@ template <typename Void, typename T>
 inline constexpr bool sorted_unique_constructible_ = false;
 template <typename T>
 inline constexpr bool sorted_unique_constructible_<
-    folly::void_t<
+    std::void_t<
         decltype(T(
             folly::sorted_unique,
             typename T::container_type(),
