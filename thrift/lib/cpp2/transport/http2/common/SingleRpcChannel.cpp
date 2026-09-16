@@ -190,7 +190,7 @@ void SingleRpcChannel::sendThriftResponse(
     }
 
     if (auto otherMetadata = metadata.otherMetadata()) {
-      encodeHeaders(std::move(*otherMetadata), msg);
+      encodeHeaders(*otherMetadata, msg);
     }
 
     httpTransaction_->sendHeaders(msg);
