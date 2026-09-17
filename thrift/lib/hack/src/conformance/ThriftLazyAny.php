@@ -26,11 +26,11 @@ final class ThriftLazyAny implements JsonSerializable {
 
   const type TCustomSerializerFromId = (function(
     int,
-  )[write_props]: classname<TProtocolWritePropsSerializer>);
+  )[write_props]: class<TProtocolWritePropsSerializer>);
 
   const type TCustomSerializerFromString = (function(
     string,
-  )[write_props]: classname<TProtocolWritePropsSerializer>);
+  )[write_props]: class<TProtocolWritePropsSerializer>);
 
   private ?self::TCustomSerializerFromId $idToSerializer;
 
@@ -194,7 +194,7 @@ final class ThriftLazyAny implements JsonSerializable {
 
   private function getSerializer(
     apache_thrift_type_rep_ProtocolUnion $protocol_union,
-  )[write_props]: classname<TProtocolWritePropsSerializer> {
+  )[write_props]: class<TProtocolWritePropsSerializer> {
     switch ($protocol_union->getType()) {
       case apache_thrift_type_rep_ProtocolUnionEnum::standard:
         return
@@ -212,7 +212,7 @@ final class ThriftLazyAny implements JsonSerializable {
 
   private function getSerializerForProtocol(
     apache_thrift_type_standard_StandardProtocol $protocol,
-  )[write_props]: classname<TProtocolWritePropsSerializer> {
+  )[write_props]: class<TProtocolWritePropsSerializer> {
     switch ($protocol) {
       case apache_thrift_type_standard_StandardProtocol::Compact:
         return TCompactSerializer::class;
