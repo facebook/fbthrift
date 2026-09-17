@@ -87,9 +87,6 @@ option(THRIFT_BENCHMARKS "Enable benchmarks (requires google/benchmark)." ON)
 option(THRIFT_TESTS "Enable tests (requires GTest)." OFF)
 option(THRIFT_PY_DEPRECATED
        "Enable the deprecated thrift-py library; use thrift-python instead" ON)
-option(THRIFT_PY3_DEPRECATED
-       "Enable the deprecated thrift-py3 library; use thrift-python instead"
-       OFF)
 option(THRIFT_PYTHON
        "Enable the thrift-python library and extensions (requires Cython)" OFF)
 
@@ -134,12 +131,6 @@ if (THRIFT_RPC)
   find_package(fizz CONFIG REQUIRED)
   find_package(wangle CONFIG REQUIRED)
   find_package(mvfst CONFIG REQUIRED)
-endif ()
-
-if (THRIFT_PY3_DEPRECATED)
-  find_package(PythonInterp 3.6 REQUIRED)
-  find_package(PythonLibs 3 REQUIRED)
-  find_package(Cython 0.28 REQUIRED)
 endif ()
 
 # Add the test dependencies.
