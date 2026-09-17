@@ -90,6 +90,7 @@ func process(
 	processor Processor,
 	prot Protocol,
 	observer ServerObserver,
+	interceptors []ServiceInterceptor,
 ) (*ApplicationException, error) {
 	// Step 1: Decode message only using Decoder interface and GetResponseHeaders method on the protocol.
 

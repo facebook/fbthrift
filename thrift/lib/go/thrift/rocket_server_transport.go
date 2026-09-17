@@ -29,13 +29,14 @@ import (
 )
 
 type rocketServerTransport struct {
-	listener    net.Listener
-	processor   Processor
-	acceptor    transport.ServerTransportAcceptor
-	transportID TransportID
-	connContext ConnContextFunc
-	log         func(format string, args ...any)
-	observer    ServerObserver
+	listener     net.Listener
+	processor    Processor
+	acceptor     transport.ServerTransportAcceptor
+	transportID  TransportID
+	connContext  ConnContextFunc
+	log          func(format string, args ...any)
+	observer     ServerObserver
+	interceptors []ServiceInterceptor
 }
 
 // Compile time interface enforcer
@@ -48,14 +49,16 @@ func newRocketServerTransport(
 	transportID TransportID,
 	log func(format string, args ...any),
 	observer ServerObserver,
+	interceptors []ServiceInterceptor,
 ) transport.ServerTransport {
 	return &rocketServerTransport{
-		listener:    listener,
-		processor:   processor,
-		transportID: transportID,
-		connContext: connContext,
-		log:         log,
-		observer:    observer,
+		listener:     listener,
+		processor:    processor,
+		transportID:  transportID,
+		connContext:  connContext,
+		log:          log,
+		observer:     observer,
+		interceptors: interceptors,
 	}
 }
 
@@ -214,7 +217,7 @@ func (r *rocketServerTransport) processHeaderRequest(ctx context.Context, protoc
 	// Track each individual header request being processed
 	r.observer.ReceivedHeaderRequest()
 
-	_, err := process(ctx, processor, protocol, r.observer)
+	_, err := process(ctx, processor, protocol, r.observer, r.interceptors)
 	if isEOF(err) {
 		return err
 	}

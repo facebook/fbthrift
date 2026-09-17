@@ -181,6 +181,7 @@ func (s *server) ServeContext(ctx context.Context) error {
 			s.transportID,
 			s.log,
 			s.observer,
+			s.interceptors,
 		), nil
 	}
 
