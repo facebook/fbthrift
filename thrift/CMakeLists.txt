@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include(ThriftLibrary)
+
 add_subdirectory(common)
 add_subdirectory(compiler)
 add_subdirectory(annotation)
@@ -42,6 +44,8 @@ install(
   FILE FBThriftTargets.cmake
   NAMESPACE FBThrift::
   DESTINATION ${THRIFT_INSTALL_CMAKEDIR})
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ThriftLibrary.cmake
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift)
 
 install(
   DIRECTORY annotation ${CMAKE_CURRENT_SOURCE_DIR}/annotation

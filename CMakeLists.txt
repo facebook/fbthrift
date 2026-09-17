@@ -115,18 +115,13 @@ endif ()
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads)
 
-find_package(OpenSSL REQUIRED)
-
-include(ThriftLibrary.cmake)
-install(FILES ThriftLibrary.cmake
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift)
-
 # Find required dependencies for thrift/lib
 find_package(Gflags REQUIRED)
 find_package(Glog REQUIRED)
+find_package(OpenSSL REQUIRED)
+find_package(Xxhash REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(Zstd REQUIRED)
-find_package(Xxhash REQUIRED)
 if (THRIFT_RPC)
   find_package(fizz CONFIG REQUIRED)
   find_package(wangle CONFIG REQUIRED)
