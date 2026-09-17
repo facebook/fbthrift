@@ -95,7 +95,7 @@ func TestRunOnRequestInterceptorsForwardOrder(t *testing.T) {
 	c := &recordingInterceptor{name: "c", log: &log}
 	s := newTestServer(a, b, c)
 
-	ctx, err := s.runOnRequestInterceptors(context.Background(), nil)
+	ctx, err := runOnRequestInterceptors(context.Background(), nil, s.interceptors)
 	require.NoError(t, err)
 	require.NotNil(t, ctx)
 	require.Equal(t, []string{"req:a", "req:b", "req:c"}, log)
@@ -108,7 +108,7 @@ func TestRunOnResponseInterceptorsReverseOrder(t *testing.T) {
 	c := &recordingInterceptor{name: "c", log: &log}
 	s := newTestServer(a, b, c)
 
-	err := s.runOnResponseInterceptors(context.Background(), nil, nil)
+	err := runOnResponseInterceptors(context.Background(), nil, nil, s.interceptors)
 	require.NoError(t, err)
 	require.Equal(t, []string{"resp:c", "resp:b", "resp:a"}, log)
 }
@@ -121,10 +121,10 @@ func TestRunInterceptorsThreadsRequestState(t *testing.T) {
 	c := &recordingInterceptor{name: "c", log: &log, reqState: 42}
 	s := newTestServer(a, b, c)
 
-	ctx, err := s.runOnRequestInterceptors(context.Background(), nil)
+	ctx, err := runOnRequestInterceptors(context.Background(), nil, s.interceptors)
 	require.NoError(t, err)
 
-	err = s.runOnResponseInterceptors(ctx, nil, nil)
+	err = runOnResponseInterceptors(ctx, nil, nil, s.interceptors)
 	require.NoError(t, err)
 
 	// Each interceptor's OnResponse receives exactly the state its OnRequest returned.
@@ -147,11 +147,11 @@ func TestRunOnRequestInterceptorsDiscardsInvalidContext(t *testing.T) {
 	d := &recordingInterceptor{name: "d", log: &log, reqState: "stateD"}
 	s := newTestServer(a, b, c, d)
 
-	ctx, err := s.runOnRequestInterceptors(context.Background(), nil)
+	ctx, err := runOnRequestInterceptors(context.Background(), nil, s.interceptors)
 	require.NoError(t, err)
 	require.NotNil(t, ctx)
 
-	err = s.runOnResponseInterceptors(ctx, nil, nil)
+	err = runOnResponseInterceptors(ctx, nil, nil, s.interceptors)
 	require.NoError(t, err)
 
 	// a's and d's state survived despite b and c returning invalid contexts that
@@ -171,7 +171,7 @@ func TestRunOnRequestInterceptorsKeepsFirstError(t *testing.T) {
 	c := &recordingInterceptor{name: "c", log: &log, onRequestErr: errSecond}
 	s := newTestServer(a, b, c)
 
-	_, err := s.runOnRequestInterceptors(context.Background(), nil)
+	_, err := runOnRequestInterceptors(context.Background(), nil, s.interceptors)
 	require.ErrorIs(t, err, errFirst)
 	require.Equal(t, []string{"req:a", "req:b", "req:c"}, log)
 }
@@ -183,10 +183,10 @@ func TestRunOnRequestInterceptorsThreadsStateDespiteError(t *testing.T) {
 	b := &recordingInterceptor{name: "b", log: &log, reqState: "stateB"}
 	s := newTestServer(a, b)
 
-	ctx, err := s.runOnRequestInterceptors(context.Background(), nil)
+	ctx, err := runOnRequestInterceptors(context.Background(), nil, s.interceptors)
 	require.Error(t, err)
 
-	err = s.runOnResponseInterceptors(ctx, nil, nil)
+	err = runOnResponseInterceptors(ctx, nil, nil, s.interceptors)
 	require.NoError(t, err)
 	require.Equal(t, "stateA", a.gotReqState)
 	require.Equal(t, "stateB", b.gotReqState)
@@ -203,7 +203,7 @@ func TestRunOnResponseInterceptorsKeepsLastError(t *testing.T) {
 	c := &recordingInterceptor{name: "c", log: &log, onResponseErr: errC}
 	s := newTestServer(a, b, c)
 
-	err := s.runOnResponseInterceptors(context.Background(), nil, nil)
+	err := runOnResponseInterceptors(context.Background(), nil, nil, s.interceptors)
 	require.ErrorIs(t, err, errA)
 	require.Equal(t, []string{"resp:c", "resp:b", "resp:a"}, log)
 }
@@ -211,11 +211,11 @@ func TestRunOnResponseInterceptorsKeepsLastError(t *testing.T) {
 func TestRunInterceptorsNoInterceptors(t *testing.T) {
 	s := newTestServer()
 
-	ctx, err := s.runOnRequestInterceptors(context.Background(), nil)
+	ctx, err := runOnRequestInterceptors(context.Background(), nil, s.interceptors)
 	require.NoError(t, err)
 	require.Equal(t, context.Background(), ctx)
 
-	require.NoError(t, s.runOnResponseInterceptors(context.Background(), nil, nil))
+	require.NoError(t, runOnResponseInterceptors(context.Background(), nil, nil, s.interceptors))
 }
 
 // --- End-to-end server tests ---
