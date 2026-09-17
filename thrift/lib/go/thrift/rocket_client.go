@@ -32,8 +32,8 @@ import (
 
 type rocketClient struct {
 	// rsocket client state
-	client RSocketClient
-	// Handle containing the cleanup (.Close call) for the 'client' (RSocketClient) above,
+	client *rsocketClient
+	// Handle containing the cleanup (.Close call) for the 'client' (*rsocketClient) above,
 	// for when the enclosing 'rocketClient' object goes out of scope, and in case the user
 	// forgets to explicitly close the client.
 	// This cleanup is VERY IMPORTANT - not cleaning up can lead to Goroutine and FD leaks!
@@ -64,17 +64,17 @@ func newRocketClient(
 	default:
 		return nil, fmt.Errorf("unsupported ProtocolID: %d", protoID)
 	}
-	rsocketClient := newRSocketClient(conn, rpcProtocolID, protoID)
+	client := newRSocketClient(conn, rpcProtocolID, protoID)
 	p := &rocketClient{
-		client:            rsocketClient,
+		client:            client,
 		protoID:           protoID,
 		persistentHeaders: persistentHeaders,
 		ioTimeout:         ioTimeout,
 	}
 	p.clientCleanup = runtime.AddCleanup(p,
-		func(underlyingClient RSocketClient) {
+		func(underlyingClient *rsocketClient) {
 			underlyingClient.Close()
-		}, rsocketClient)
+		}, client)
 	return p, nil
 }
 

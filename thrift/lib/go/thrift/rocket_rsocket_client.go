@@ -36,51 +36,6 @@ import (
 	"github.com/rsocket/rsocket-go/rx/flux"
 )
 
-// RSocketClient is a client that uses a rsocket library.
-type RSocketClient interface {
-	FireAndForget(
-		ctx context.Context,
-		messageName string,
-		headers map[string]string,
-		request WritableStruct,
-	) error
-	RequestResponse(
-		ctx context.Context,
-		messageName string,
-		headers map[string]string,
-		request WritableStruct,
-		response ReadableResult,
-	) error
-	RequestStream(
-		ctx context.Context,
-		messageName string,
-		headers map[string]string,
-		request WritableStruct,
-		response ReadableResult,
-		newStreamElemFn func() ReadableResult,
-	) (iter.Seq2[ReadableStruct, error], error)
-	RequestSink(
-		ctx context.Context,
-		messageName string,
-		headers map[string]string,
-		request WritableStruct,
-		firstResponse ReadableResult,
-	) (func(sinkSeq iter.Seq2[WritableResult, error], finalResponse ReadableResult) error, error)
-	RequestBiDiStream(
-		ctx context.Context,
-		messageName string,
-		headers map[string]string,
-		request WritableStruct,
-		firstResponse ReadableResult,
-		newStreamElemFn func() ReadableResult,
-	) (func(sinkSeq iter.Seq2[WritableResult, error]), iter.Seq2[ReadableStruct, error], error)
-	MetadataPush(
-		ctx context.Context,
-		metadata *rpcmetadata.ClientPushMetadata,
-	) error
-	Close() error
-}
-
 type rsocketClient struct {
 	client rsocket.Client
 	conn   net.Conn
@@ -93,7 +48,7 @@ type rsocketClient struct {
 	thriftProtoID types.ProtocolID
 }
 
-func newRSocketClient(conn net.Conn, protoID rpcmetadata.ProtocolId, thriftProtoID types.ProtocolID) RSocketClient {
+func newRSocketClient(conn net.Conn, protoID rpcmetadata.ProtocolId, thriftProtoID types.ProtocolID) *rsocketClient {
 	return &rsocketClient{
 		conn:            conn,
 		clientScheduler: scheduler.NewElastic(math.MaxInt32),
