@@ -606,6 +606,13 @@ cdef api void scheduleInteractionTermination(object handler):
     _schedule_termination(handler, None)
 
 cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
+    async def __aenter__(self):
+        await self.handler.__aenter__()
+        return self
+
+    async def __aexit__(self, *exc_info):
+        return await self.handler.__aexit__(*exc_info)
+
     @staticmethod
     cdef PythonAsyncProcessorFactory create(cServiceInterface server):
         cdef cServiceInterface controlHandler = server
@@ -654,6 +661,7 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
         cdef PythonAsyncProcessorFactory inst = PythonAsyncProcessorFactory.__new__(PythonAsyncProcessorFactory)
         inst.funcMap = funcMap
         inst.lifecycleFuncs = lifecycleFuncs
+        inst.handler = controlHandler
         inst._cpp_obj = static_pointer_cast[cAsyncProcessorFactory, cPythonAsyncProcessorFactory](
             cCreatePythonAsyncProcessorFactory(
                 <PyObject*>controlHandler,

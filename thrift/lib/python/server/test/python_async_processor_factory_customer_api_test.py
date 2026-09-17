@@ -22,6 +22,9 @@ from thrift.python.test.python_async_processor_factory_customer_api_test import 
 class PythonAsyncProcessorFactoryCustomerApiTest(later.unittest.TestCase):
     """Bootstraps component tests for customer-facing Cython APIs."""
 
+    async def test_factory_context_composes_handler_context(self) -> None:
+        await CTests(self).test_factory_context_composes_handler_context()
+
     async def test_unary_rpc_round_trips(self) -> None:
         await CTests(self).test_unary_rpc_round_trips()
 

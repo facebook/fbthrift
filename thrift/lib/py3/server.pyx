@@ -167,19 +167,15 @@ cdef class ThriftServer:
         def _serve():
             with nogil:
                 self.server.get().serve()
-        # Enter handler async context before serving. Every thrift handler
-        # is generated with __aenter__ and __aexit__ stubs, allowing async
-        # initialization in __aenter__ instead of __init__ and async cleanup
-        # in __aexit__ instead of __del__. This makes ThriftServer behave
-        # like modern SvcThriftServer/ServiceDecorator/CodeFrameworks versions.
-        # Handler may be stored in self.handler (thrift-python path) or
-        # self.factory (py3 path); both inherit AsyncProcessorFactory with
-        # async context manager protocol.
-        handler_cm = self.handler if self.handler is not None else self.factory
+        ownership_context = (
+            self.factory
+            if isinstance(self.factory, PythonAsyncProcessorFactory)
+            else self.handler if self.handler is not None else self.factory
+        )
         try:
             async with AsyncExitStack() as ownership_stack:
-                if handler_cm is not None:
-                    await ownership_stack.enter_async_context(handler_cm)
+                if ownership_context is not None:
+                    await ownership_stack.enter_async_context(ownership_context)
                 native_serve = self.loop.run_in_executor(None, _serve)
                 try:
                     await asyncio.wait((native_serve,))

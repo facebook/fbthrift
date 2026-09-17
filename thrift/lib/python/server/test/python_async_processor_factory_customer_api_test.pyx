@@ -42,6 +42,18 @@ class Handler(BaseServiceInterface):
         return 42
 
 
+class ContextHandler(Handler):
+    def __init__(self):
+        self.events = []
+
+    async def __aenter__(self):
+        self.events.append("enter")
+        return self
+
+    async def __aexit__(self, *exc_info):
+        self.events.append("exit")
+
+
 cdef AsyncProcessorFactory compose_processor_factory(
     PythonAsyncProcessorFactory factory,
 ):
@@ -87,6 +99,21 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
 
     def __cinit__(self, object unit_test):
         self.ut = unit_test
+
+    async def test_factory_context_composes_handler_context(self):
+        # GIVEN
+        handler = ContextHandler()
+        cdef PythonAsyncProcessorFactory factory = (
+            PythonAsyncProcessorFactory.create(<cServiceInterface>handler)
+        )
+        expected = ["enter", "inside", "exit"]
+
+        # WHEN
+        async with factory:
+            handler.events.append("inside")
+
+        # THEN
+        self.ut.assertEqual(expected, handler.events)
 
     async def test_unary_rpc_round_trips(self):
         # GIVEN

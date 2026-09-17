@@ -103,6 +103,7 @@ cdef extern from "thrift/lib/python/server/PythonAsyncProcessor.h" namespace "::
 cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
     cdef dict funcMap
     cdef list lifecycleFuncs
+    cdef object handler
 
     @staticmethod
     cdef PythonAsyncProcessorFactory create(cServiceInterface server)
