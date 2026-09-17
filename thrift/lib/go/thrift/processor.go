@@ -147,11 +147,40 @@ func process(
 	var result types.WritableResult
 	var runError error
 	if pfunc != nil {
-		pfuncStartTime := time.Now()
-		result, runError = pfunc.RunContext(ctx, argStruct)
-		pfuncDuration := time.Since(pfuncStartTime)
-		// Record function-level process timing for stats collection
-		observer.TimeProcessUsForFunction(methodName, pfuncDuration)
+		// The Rocket upgrade handshake is transport negotiation, not an
+		// application RPC: it must still run, but it stays invisible to
+		// ServiceInterceptors, matching the C++ server (which handles it
+		// before any interceptor/observer pipeline) and the Rocket path
+		// (where it never surfaces as a request).
+		isUpgradeToRocket := methodName == rocketUpgradeMethodName
+
+		// Run OnRequest interceptors before the handler.
+		var reqIntErr error
+		if !isUpgradeToRocket {
+			ctx, reqIntErr = runOnRequestInterceptors(ctx, argStruct, interceptors)
+		}
+
+		if reqIntErr != nil {
+			// Skip handler if OnRequest interceptors returned an error
+			runError = reqIntErr
+		} else {
+			pfuncStartTime := time.Now()
+			result, runError = pfunc.RunContext(ctx, argStruct)
+			pfuncDuration := time.Since(pfuncStartTime)
+			// Record function-level process timing for stats collection
+			observer.TimeProcessUsForFunction(methodName, pfuncDuration)
+		}
+
+		// Run OnResponse interceptors.
+		var respIntErr error
+		if !isUpgradeToRocket {
+			respIntErr = runOnResponseInterceptors(ctx, result, runError, interceptors)
+		}
+		if respIntErr != nil {
+			result = nil
+			runError = respIntErr
+		}
+
 		if runError != nil {
 			appException = maybeWrapApplicationException(runError)
 		}

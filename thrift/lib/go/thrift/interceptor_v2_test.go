@@ -228,11 +228,11 @@ func TestRunInterceptorsNoInterceptors(t *testing.T) {
 // Interceptors are wired into the Rocket server path, so these tests use
 // TransportIDRocket.
 
-// serveDummyWithInterceptors stands up a Rocket DummyService server with the
-// given interceptors and returns a connected client. Shutdown is registered via
-// t.Cleanup so it runs after the test and all of its (possibly parallel)
-// subtests complete.
-func serveDummyWithInterceptors(t *testing.T, interceptors ...ServiceInterceptor) dummyif.DummyClient {
+// serveDummyWithInterceptors stands up a DummyService server speaking the
+// given transport with the given interceptors and returns a connected client.
+// Shutdown is registered via t.Cleanup so it runs after the test and all of
+// its (possibly parallel) subtests complete.
+func serveDummyWithInterceptors(t *testing.T, transportID TransportID, interceptors ...ServiceInterceptor) dummyif.DummyClient {
 	t.Helper()
 
 	listener, err := net.Listen("tcp", "[::]:0")
@@ -244,7 +244,7 @@ func serveDummyWithInterceptors(t *testing.T, interceptors ...ServiceInterceptor
 		opts = append(opts, WithServiceInterceptor(interceptor))
 	}
 	processor := dummyif.NewDummyProcessor(&dummy.DummyHandler{})
-	server := NewServer(processor, listener, TransportIDRocket, opts...)
+	server := NewServer(processor, listener, transportID, opts...)
 
 	serverCtx, serverCancel := context.WithCancel(context.Background())
 	var serverEG errgroup.Group
@@ -253,7 +253,7 @@ func serveDummyWithInterceptors(t *testing.T, interceptors ...ServiceInterceptor
 	})
 
 	channel, err := NewClient(
-		getClientTransportOption(TransportIDRocket),
+		getClientTransportOption(transportID),
 		WithIoTimeout(5*time.Second),
 		WithDialer(func() (net.Conn, error) {
 			return net.DialTimeout(addr.Network(), addr.String(), 5*time.Second)
@@ -295,13 +295,15 @@ func (r *interceptorRecorder) get(method string) []string {
 }
 
 // serverTestInterceptor is a concurrency-safe ServiceInterceptor for the shared
-// server tests. It records every OnRequest call (keyed by method name) into a
-// shared recorder and optionally fails OnRequest for specific methods.
+// server tests. It records every OnRequest/OnResponse call (keyed by method
+// name) into a shared recorder and optionally fails either callback for
+// specific methods.
 type serverTestInterceptor struct {
 	BaseServiceInterceptor
-	name     string
-	recorder *interceptorRecorder
-	failOn   map[string]error // method name -> error returned from OnRequest
+	name           string
+	recorder       *interceptorRecorder
+	failOn         map[string]error // method name -> error returned from OnRequest
+	failOnResponse map[string]error // method name -> error returned from OnResponse
 }
 
 func (i *serverTestInterceptor) OnRequest(ctx context.Context, _ types.ReadableStruct, _ any) (context.Context, error) {
@@ -313,22 +315,45 @@ func (i *serverTestInterceptor) OnRequest(ctx context.Context, _ types.ReadableS
 func (i *serverTestInterceptor) OnResponse(ctx context.Context, _ InterceptorResult) error {
 	method := GetRequestContext(ctx).MethodName
 	i.recorder.record(method+":resp", i.name)
-	return nil
+	return i.failOnResponse[method]
 }
 
 // TestServiceInterceptorServer exercises the wired OnRequest behavior end-to-end
 // against a single shared server, with the subtests running in parallel. Each
 // subtest uses a distinct RPC method so their recorded calls don't overlap.
+// The whole suite runs once per transport so both the Rocket path and the
+// header (process) path are covered.
 func TestServiceInterceptorServer(t *testing.T) {
 	t.Parallel()
 
+	for _, transport := range []struct {
+		name string
+		id   TransportID
+	}{
+		{"Rocket", TransportIDRocket},
+		{"Header", TransportIDHeader},
+	} {
+		t.Run(transport.name, func(t *testing.T) {
+			t.Parallel()
+			testServiceInterceptorServer(t, transport.id)
+		})
+	}
+}
+
+func testServiceInterceptorServer(t *testing.T, transportID TransportID) {
+	t.Helper()
+
 	recorder := newInterceptorRecorder()
 	errDenied := errors.New("denied by interceptor")
+	errRejectedA := errors.New("rejected-a by OnResponse")
+	errRejectedB := errors.New("rejected-b by OnResponse")
 	// Two interceptors share the recorder. "a" rejects OnRequest for the Ping
-	// method (used by the error subtest); both record every OnRequest call.
-	a := &serverTestInterceptor{name: "a", recorder: recorder, failOn: map[string]error{"Ping": errDenied}}
-	b := &serverTestInterceptor{name: "b", recorder: recorder}
-	client := serveDummyWithInterceptors(t, a, b)
+	// method (used by the OnRequest error subtest) and both reject OnResponse
+	// for the Sleep method with distinct errors (used by the OnResponse error
+	// subtest); both record every OnRequest/OnResponse call.
+	a := &serverTestInterceptor{name: "a", recorder: recorder, failOn: map[string]error{"Ping": errDenied}, failOnResponse: map[string]error{"Sleep": errRejectedA}}
+	b := &serverTestInterceptor{name: "b", recorder: recorder, failOnResponse: map[string]error{"Sleep": errRejectedB}}
+	client := serveDummyWithInterceptors(t, transportID, a, b)
 
 	t.Run("OnRequest runs for all interceptors in forward order", func(t *testing.T) {
 		t.Parallel()
@@ -364,5 +389,20 @@ func TestServiceInterceptorServer(t *testing.T) {
 		// OnRequest runs in forward order; OnResponse runs in reverse order.
 		require.Equal(t, []string{"a", "b"}, recorder.get("OnewayRPC"))
 		require.Equal(t, []string{"b", "a"}, recorder.get("OnewayRPC:resp"))
+	})
+
+	t.Run("OnResponse error overrides the handler result", func(t *testing.T) {
+		t.Parallel()
+		// Sleep normally returns nil; both interceptors reject OnResponse for
+		// it, so an interceptor error surfaces to the client instead, which
+		// proves the handler result was discarded. OnResponse runs in reverse
+		// order (b, then a), and the last error wins, so the client sees a's
+		// error, matching the C++ overwrite semantics.
+		err := client.Sleep(context.Background(), 0)
+		require.ErrorContains(t, err, "rejected-a by OnResponse")
+		require.NotContains(t, err.Error(), "rejected-b by OnResponse")
+		// OnRequest ran in forward order; OnResponse ran in reverse order.
+		require.Equal(t, []string{"a", "b"}, recorder.get("Sleep"))
+		require.Equal(t, []string{"b", "a"}, recorder.get("Sleep:resp"))
 	})
 }

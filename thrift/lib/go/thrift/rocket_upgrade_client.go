@@ -156,7 +156,7 @@ func (p *upgradeToRocketClient) Close() error {
 // If this fails, we continue using the Header.
 func (p *upgradeToRocketClient) maybeUpgrade(ctx context.Context) {
 	p.upgradeGroup.Do(
-		"upgradeToRocket",
+		rocketUpgradeMethodName,
 		func() (any, error) {
 			if p.actualChannel == nil {
 				ruClient := rocket_upgrade.NewRocketUpgradeChannelClient(p.headerChannel)

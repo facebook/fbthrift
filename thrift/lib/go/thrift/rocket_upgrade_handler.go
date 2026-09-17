@@ -26,6 +26,13 @@ type rocketUpgradeHandler struct {
 	upgradeInvoked bool
 }
 
+// rocketUpgradeMethodName is the wire method name of the synthetic
+// RocketUpgrade.upgradeToRocket handshake (see RocketUpgrade.thrift). It is a
+// transport-negotiation request, not an application RPC: like the C++ server
+// (Cpp2Connection::handleUpgradeToRocket), the Go server must not expose it to
+// ServiceInterceptors or method-level observers.
+const rocketUpgradeMethodName = "upgradeToRocket"
+
 var _ rocket_upgrade.RocketUpgrade = (*rocketUpgradeHandler)(nil)
 
 func newRocketUpgradeHandler() *rocketUpgradeHandler {
