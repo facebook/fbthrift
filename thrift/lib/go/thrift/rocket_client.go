@@ -64,7 +64,7 @@ func newRocketClient(
 	default:
 		return nil, fmt.Errorf("unsupported ProtocolID: %d", protoID)
 	}
-	client := newRSocketClient(conn, rpcProtocolID, protoID)
+	client := newRSocketClient(conn, rpcProtocolID)
 	p := &rocketClient{
 		client:            client,
 		protoID:           protoID,
@@ -164,12 +164,12 @@ func (p *rocketClient) TerminateInteraction(interactionID int64) error {
 	return p.client.MetadataPush(context.Background(), metadata)
 }
 
-func decodeResultOrException(protoID types.ProtocolID, data []byte, result ReadableResult) error {
+func decodeResultOrException(protoID rpcmetadata.ProtocolId, data []byte, result ReadableResult) error {
 	var err error
 	switch protoID {
-	case types.ProtocolIDBinary:
+	case rpcmetadata.ProtocolId_BINARY:
 		err = DecodeBinary(data, result)
-	case types.ProtocolIDCompact:
+	case rpcmetadata.ProtocolId_COMPACT:
 		err = DecodeCompact(data, result)
 	default:
 		err = types.NewProtocolException(fmt.Errorf("Unknown protocol id: %d", protoID))
@@ -193,11 +193,11 @@ func (p *rocketClient) getWriteHeaders(ctx context.Context) map[string]string {
 	return unionMaps(writeHeaders, p.persistentHeaders)
 }
 
-func encodeRequest(protoID types.ProtocolID, request WritableStruct) ([]byte, error) {
+func encodeRequest(protoID rpcmetadata.ProtocolId, request WritableStruct) ([]byte, error) {
 	switch protoID {
-	case types.ProtocolIDBinary:
+	case rpcmetadata.ProtocolId_BINARY:
 		return EncodeBinary(request)
-	case types.ProtocolIDCompact:
+	case rpcmetadata.ProtocolId_COMPACT:
 		return EncodeCompact(request)
 	default:
 		return nil, types.NewProtocolException(fmt.Errorf("Unknown protocol id: %d", protoID))

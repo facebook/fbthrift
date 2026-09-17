@@ -44,16 +44,14 @@ type rsocketClient struct {
 
 	initGroup singleflight.Group
 
-	protoID       rpcmetadata.ProtocolId
-	thriftProtoID types.ProtocolID
+	protoID rpcmetadata.ProtocolId
 }
 
-func newRSocketClient(conn net.Conn, protoID rpcmetadata.ProtocolId, thriftProtoID types.ProtocolID) *rsocketClient {
+func newRSocketClient(conn net.Conn, protoID rpcmetadata.ProtocolId) *rsocketClient {
 	return &rsocketClient{
 		conn:            conn,
 		clientScheduler: scheduler.NewElastic(math.MaxInt32),
 		protoID:         protoID,
-		thriftProtoID:   thriftProtoID,
 	}
 }
 
@@ -147,7 +145,7 @@ func (r *rsocketClient) prepareRequestPayload(
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
-	dataBytes, err := encodeRequest(r.thriftProtoID, request)
+	dataBytes, err := encodeRequest(r.protoID, request)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +174,7 @@ func (r *rsocketClient) processResponsePayload(
 		return err
 	}
 	setReadHeaders(ctx, firstRespPayload.Headers())
-	return decodeResultOrException(r.thriftProtoID, firstRespPayload.Data(), response)
+	return decodeResultOrException(r.protoID, firstRespPayload.Data(), response)
 }
 
 func (r *rsocketClient) RequestResponse(
@@ -270,7 +268,7 @@ func (r *rsocketClient) RequestStream(
 				}
 				data := streamResponse.Data()
 				destStruct := newStreamElemFn()
-				err = decodeResultOrException(r.thriftProtoID, data, destStruct)
+				err = decodeResultOrException(r.protoID, data, destStruct)
 				if err != nil {
 					yield(nil, err)
 					return
@@ -392,7 +390,7 @@ func (r *rsocketClient) RequestSink(
 				// Encode the sink item
 				var itemBytes []byte
 				if item != nil {
-					itemBytes, err = encodeRequest(r.thriftProtoID, item)
+					itemBytes, err = encodeRequest(r.protoID, item)
 					if err != nil {
 						return err
 					}
@@ -435,7 +433,7 @@ func (r *rsocketClient) RequestSink(
 		}
 
 		// Decode the final response
-		return decodeResultOrException(r.thriftProtoID, finalRespPayload.Data(), finalResponse)
+		return decodeResultOrException(r.protoID, finalRespPayload.Data(), finalResponse)
 	}
 
 	return sinkCallback, nil
@@ -532,7 +530,7 @@ func (r *rsocketClient) RequestBiDiStream(
 			// Encode the sink item
 			var itemBytes []byte
 			if item != nil {
-				itemBytes, err = encodeRequest(r.thriftProtoID, item)
+				itemBytes, err = encodeRequest(r.protoID, item)
 				if err != nil {
 					return
 				}
@@ -572,7 +570,7 @@ func (r *rsocketClient) RequestBiDiStream(
 				}
 				data := streamResponse.Data()
 				destStruct := newStreamElemFn()
-				err = decodeResultOrException(r.thriftProtoID, data, destStruct)
+				err = decodeResultOrException(r.protoID, data, destStruct)
 				if err != nil {
 					yield(nil, err)
 					return
