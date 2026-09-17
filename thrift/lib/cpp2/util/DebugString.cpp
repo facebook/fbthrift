@@ -714,7 +714,7 @@ void parseField(
 }
 } // namespace
 
-template <class ProtocolReader>
+template <ThriftProtocolReader ProtocolReader>
 std::string toDebugString(
     ProtocolReader& inProtoReader, DebugStringParams params) {
   RenderState rs;
@@ -725,7 +725,7 @@ std::string toDebugString(
   return fmt::format("{} {}", outType, outVal);
 }
 
-template <class ProtocolWriter>
+template <ThriftProtocolWriter ProtocolWriter>
 void fromDebugString(folly::StringPiece text, ProtocolWriter& outProtoWriter) {
   Tokenizer tok(text);
   parseField(protocol::TType::T_STRUCT, "", tok, &outProtoWriter);

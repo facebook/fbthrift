@@ -73,8 +73,8 @@ struct CursorWriteOpts {
  */
 template <
     typename T,
-    typename ProtocolReader = BinaryProtocolReader,
-    typename ProtocolWriter = BinaryProtocolWriter>
+    ThriftProtocolReader ProtocolReader = BinaryProtocolReader,
+    ThriftProtocolWriter ProtocolWriter = BinaryProtocolWriter>
 class CursorSerializationWrapper {
   using Tag = type::infer_tag<T>;
   static_assert(

@@ -24,6 +24,7 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp2/op/Encode.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/type/AnyValue.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Protocol.h>
@@ -138,7 +139,10 @@ class TagSerializer : public Serializer {
 
 // A serializer for any class that knows how to read and write itself using a
 // Thrift protocol.
-template <typename Tag, typename Reader, typename Writer>
+template <
+    typename Tag,
+    ThriftProtocolReader Reader,
+    ThriftProtocolWriter Writer>
 class ProtocolSerializer : public TagSerializer<Tag> {
   using Base = TagSerializer<Tag>;
   using T = type::native_type<Tag>;

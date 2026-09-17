@@ -31,7 +31,7 @@
 
 namespace apache::thrift {
 
-template <typename Reader, typename Writer>
+template <ThriftProtocolReader Reader, ThriftProtocolWriter Writer>
 struct Serializer {
  private:
   template <typename T>
@@ -231,7 +231,10 @@ static_assert(ThriftSerializer<JSONSerializer>);
 static_assert(ThriftSerializer<SimpleJSONSerializer>);
 
 // Serialization code specific to handling errors
-template <typename ProtIn, typename ProtOut, bool includeEnvelope = true>
+template <
+    ThriftProtocolReader ProtIn,
+    ThriftProtocolWriter ProtOut,
+    bool includeEnvelope = true>
 std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
     const TApplicationException& obj, folly::IOBuf* req) {
   ProtOut prot;
@@ -254,7 +257,7 @@ std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
   return queue.move();
 }
 
-template <typename ProtOut, bool includeEnvelope = true>
+template <ThriftProtocolWriter ProtOut, bool includeEnvelope = true>
 std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
     const TApplicationException& obj,
     const std::string& fname,

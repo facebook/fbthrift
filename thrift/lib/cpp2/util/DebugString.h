@@ -18,6 +18,7 @@
 
 #include <string>
 #include <folly/Range.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
 namespace apache::thrift {
 
@@ -64,7 +65,7 @@ struct DebugStringParams {
 //   reader.setInput(iobufWithSerializedData);
 //   std::cout << apache::thrift::toDebugString(reader);
 //
-template <class ProtocolReader>
+template <ThriftProtocolReader ProtocolReader>
 std::string toDebugString(
     ProtocolReader& inProtoReader, DebugStringParams p = {});
 
@@ -77,7 +78,7 @@ std::string toDebugString(
 //   apache::thrift::fromDebugString(debugString, writer);
 //   auto outputIOBufWithData = outputQueue.move();
 //
-template <class ProtocolWriter>
+template <ThriftProtocolWriter ProtocolWriter>
 void fromDebugString(folly::StringPiece text, ProtocolWriter& outProtoWriter);
 
 } // namespace apache::thrift

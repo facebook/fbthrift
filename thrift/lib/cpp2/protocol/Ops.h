@@ -40,8 +40,8 @@ enum class UnknownFieldIdPolicy {
 // input is borrowed and will be unmodified when the function returns.
 // typeRef is optional, required for field name-based protocols.
 template <
-    typename FromSerializer,
-    typename ToSerializer,
+    ThriftSerializer FromSerializer,
+    ThriftSerializer ToSerializer,
     bool Contiguous = false>
 std::unique_ptr<folly::IOBuf> transcodeSerialized(
     std::unique_ptr<folly::IOBuf>& input,
@@ -52,7 +52,7 @@ std::unique_ptr<folly::IOBuf> transcodeSerialized(
 // masked fields present in the input serialized object (which must be a
 // structured type).
 // input is borrowed and will be unmodified when the function returns.
-template <typename Serializer, bool Contiguous = false>
+template <ThriftSerializer Serializer, bool Contiguous = false>
 std::unique_ptr<folly::IOBuf> filterSerialized(
     MaskRef mask,
     std::unique_ptr<folly::IOBuf>& input,
@@ -654,7 +654,10 @@ struct TranscodeVisitor {
 };
 } // namespace detail
 
-template <typename FromSerializer, typename ToSerializer, bool Contiguous>
+template <
+    ThriftSerializer FromSerializer,
+    ThriftSerializer ToSerializer,
+    bool Contiguous>
 std::unique_ptr<folly::IOBuf> transcodeSerialized(
     std::unique_ptr<folly::IOBuf>& input,
     std::optional<type_system::TypeRef> typeRef,
@@ -664,7 +667,7 @@ std::unique_ptr<folly::IOBuf> transcodeSerialized(
   return visitor(input);
 }
 
-template <typename Serializer, bool Contiguous>
+template <ThriftSerializer Serializer, bool Contiguous>
 std::unique_ptr<folly::IOBuf> filterSerialized(
     MaskRef mask, std::unique_ptr<folly::IOBuf>& input, CursorWriteOpts opts) {
   return detail::FilterVisitor<Serializer, Contiguous>{}(

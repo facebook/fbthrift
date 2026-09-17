@@ -94,7 +94,7 @@ struct SchemaValidationResultWithPaths {
  *   - MaybeWithUnknownFields: The blob conforms but contains unknown fields
  *   - No: Type mismatch, blob not fully consumed, or parse error
  */
-template <typename ProtocolReader>
+template <ThriftProtocolReader ProtocolReader>
 SchemaValidationResult validateBlob(
     const folly::IOBuf& serializedData, const type_system::TypeRef& typeRef);
 
@@ -109,7 +109,7 @@ SchemaValidationResult validateBlob(
  *   - unknownFieldPaths: Paths to fields in the blob not found in the schema
  *   - mismatchedFieldPaths: Paths to fields with type mismatches
  */
-template <typename ProtocolReader>
+template <ThriftProtocolReader ProtocolReader>
 SchemaValidationResultWithPaths validateBlobWithPaths(
     const folly::IOBuf& serializedData, const type_system::TypeRef& typeRef);
 
@@ -529,14 +529,14 @@ SchemaValidationResult validateBlobImpl(
 
 } // namespace detail
 
-template <typename ProtocolReader>
+template <ThriftProtocolReader ProtocolReader>
 SchemaValidationResult validateBlob(
     const folly::IOBuf& serializedData, const type_system::TypeRef& typeRef) {
   return detail::validateBlobImpl<ProtocolReader>(
       serializedData, typeRef, nullptr);
 }
 
-template <typename ProtocolReader>
+template <ThriftProtocolReader ProtocolReader>
 SchemaValidationResultWithPaths validateBlobWithPaths(
     const folly::IOBuf& serializedData, const type_system::TypeRef& typeRef) {
   SchemaValidationResultWithPaths resultWithPaths;
