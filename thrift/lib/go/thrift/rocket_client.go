@@ -112,7 +112,7 @@ func (p *rocketClient) SendRequestStream(
 	request WritableStruct,
 	response ReadableResult,
 	newStreamElemFn func() ReadableResult,
-) (iter.Seq2[ReadableStruct, error], error) {
+) (StreamingHandle[ReadableStruct], error) {
 	// See SendRequestNoResponse: p must stay alive across the blocking call.
 	defer runtime.KeepAlive(p)
 	if ctx.Done() == nil {

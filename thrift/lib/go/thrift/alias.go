@@ -61,6 +61,8 @@ type WritableResult = types.WritableResult
 
 type ReadableResult = types.ReadableResult
 
+type StreamingHandle[T types.ReadableStruct] = types.StreamingHandle[T]
+
 type TransportException = types.TransportException
 
 type FormatException = types.ProtocolException

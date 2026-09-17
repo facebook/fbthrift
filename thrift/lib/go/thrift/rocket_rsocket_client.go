@@ -224,7 +224,7 @@ func (r *rsocketClient) RequestStream(
 	request WritableStruct,
 	response ReadableResult,
 	newStreamElemFn func() ReadableResult,
-) (iter.Seq2[ReadableStruct, error], error) {
+) (StreamingHandle[ReadableStruct], error) {
 	reqPayload, err := r.prepareRequestPayload(
 		ctx,
 		messageName,
