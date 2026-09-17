@@ -126,6 +126,9 @@ class JSONProtocolReader : public JSONProtocolReaderCommon {
   [[noreturn]] static void throwUnrecognizableAsBoolean(int8_t byte);
 };
 
+static_assert(ThriftProtocolReader<JSONProtocolReader>);
+static_assert(ThriftProtocolWriter<JSONProtocolWriter>);
+
 } // namespace apache::thrift
 
 #include <thrift/lib/cpp2/protocol/JSONProtocol-inl.h>

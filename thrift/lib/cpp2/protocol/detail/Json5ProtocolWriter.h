@@ -225,6 +225,8 @@ class Json5ProtocolWriter final {
   JsonWriter writer_;
 };
 
+static_assert(ThriftProtocolWriter<Json5ProtocolWriter>);
+
 template <class Tag>
 [[nodiscard]] std::string toJsonImpl(
     const type::native_type<Tag>& value,

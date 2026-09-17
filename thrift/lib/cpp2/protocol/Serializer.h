@@ -225,6 +225,11 @@ using JSONSerializer = Serializer<JSONProtocolReader, JSONProtocolWriter>;
 using SimpleJSONSerializer =
     Serializer<SimpleJSONProtocolReader, SimpleJSONProtocolWriter>;
 
+static_assert(ThriftSerializer<CompactSerializer>);
+static_assert(ThriftSerializer<BinarySerializer>);
+static_assert(ThriftSerializer<JSONSerializer>);
+static_assert(ThriftSerializer<SimpleJSONSerializer>);
+
 // Serialization code specific to handling errors
 template <typename ProtIn, typename ProtOut, bool includeEnvelope = true>
 std::unique_ptr<folly::IOBuf> serializeErrorProtocol(

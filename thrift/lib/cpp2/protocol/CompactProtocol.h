@@ -453,6 +453,8 @@ struct CompactProtocolReader::StructReadState {
 
 static_assert(!usesFieldNames<CompactProtocolReader>());
 static_assert(!usesFieldNames<CompactProtocolWriter>());
+static_assert(ThriftProtocolReader<CompactProtocolReader>);
+static_assert(ThriftProtocolWriter<CompactProtocolWriter>);
 
 namespace detail {
 

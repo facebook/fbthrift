@@ -381,6 +381,8 @@ struct BinaryProtocolReader::StructReadState {
 
 static_assert(!usesFieldNames<BinaryProtocolReader>());
 static_assert(!usesFieldNames<BinaryProtocolWriter>());
+static_assert(ThriftProtocolReader<BinaryProtocolReader>);
+static_assert(ThriftProtocolWriter<BinaryProtocolWriter>);
 
 namespace detail {
 

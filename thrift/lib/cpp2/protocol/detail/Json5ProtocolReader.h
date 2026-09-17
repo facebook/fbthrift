@@ -298,4 +298,6 @@ void Json5ProtocolReader::readEnum(
   value = providedValue.value();
 }
 
+static_assert(ThriftProtocolReader<Json5ProtocolReader>);
+
 } // namespace apache::thrift::json5::detail

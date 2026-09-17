@@ -143,6 +143,9 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   static constexpr bool kSupportsArithmeticVectors() { return false; }
 };
 
+static_assert(ThriftProtocolReader<CompactV1ProtocolReader>);
+static_assert(ThriftProtocolWriter<CompactV1ProtocolWriter>);
+
 } // namespace apache::thrift
 
 #include <thrift/lib/cpp2/protocol/CompactV1Protocol-inl.h>

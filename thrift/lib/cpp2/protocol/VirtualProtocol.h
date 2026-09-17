@@ -87,6 +87,8 @@ class VirtualReaderBase {
   virtual bool peekList() { return false; }
 };
 
+static_assert(ThriftProtocolReader<VirtualReaderBase>);
+
 std::unique_ptr<VirtualReaderBase> makeVirtualReader(ProtocolType type);
 
 template <class ProtocolT>

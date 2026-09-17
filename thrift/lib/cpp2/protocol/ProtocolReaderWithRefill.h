@@ -442,6 +442,9 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
   }
 };
 
+static_assert(ThriftProtocolReader<CompactProtocolReaderWithRefill>);
+static_assert(ThriftProtocolReader<BinaryProtocolReaderWithRefill>);
+
 template <>
 inline bool canReadNElements(
     CompactProtocolReaderWithRefill& /* prot */,

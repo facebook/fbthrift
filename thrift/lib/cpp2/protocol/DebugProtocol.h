@@ -186,6 +186,7 @@ class DebugProtocolWriter {
 };
 
 static_assert(usesFieldNames<DebugProtocolWriter>());
+static_assert(ThriftProtocolWriter<DebugProtocolWriter>);
 
 template <class T>
 std::string debugString(

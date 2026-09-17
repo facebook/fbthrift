@@ -19,12 +19,14 @@
 
 #include <sys/types.h>
 
+#include <concepts>
 #include <cstdint>
 #include <memory>
 #include <string>
 
 #include <glog/logging.h>
 
+#include <folly/Range.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
@@ -111,6 +113,94 @@ enum class MessageType {
   T_REPLY = 2,
   T_EXCEPTION = 3,
   T_ONEWAY = 4,
+};
+
+template <typename T>
+concept ThriftProtocolReader = requires(
+    T& reader,
+    std::string& name,
+    TType& type,
+    int16_t& fieldId,
+    uint32_t& size,
+    bool& boolValue,
+    int8_t& byteValue,
+    int16_t& i16Value,
+    int32_t& i32Value,
+    int64_t& i64Value,
+    float& floatValue,
+    double& doubleValue,
+    std::string& stringValue,
+    folly::IOBuf& binaryValue) {
+  reader.readStructBegin(name);
+  reader.readStructEnd();
+  reader.readFieldBegin(name, type, fieldId);
+  reader.readFieldEnd();
+  reader.readMapBegin(type, type, size);
+  reader.readMapEnd();
+  reader.readListBegin(type, size);
+  reader.readListEnd();
+  reader.readSetBegin(type, size);
+  reader.readSetEnd();
+  reader.readBool(boolValue);
+  reader.readByte(byteValue);
+  reader.readI16(i16Value);
+  reader.readI32(i32Value);
+  reader.readI64(i64Value);
+  reader.readFloat(floatValue);
+  reader.readDouble(doubleValue);
+  reader.readString(stringValue);
+  reader.readBinary(binaryValue);
+  reader.skip(type);
+};
+
+template <typename T>
+concept ThriftProtocolWriter = requires(
+    T& writer,
+    const char* name,
+    TType type,
+    int16_t fieldId,
+    uint32_t size,
+    bool boolValue,
+    int8_t byteValue,
+    int16_t i16Value,
+    int32_t i32Value,
+    int64_t i64Value,
+    float floatValue,
+    double doubleValue,
+    folly::StringPiece stringValue,
+    const folly::IOBuf& binaryValue) {
+  { writer.writeStructBegin(name) } -> std::convertible_to<uint32_t>;
+  { writer.writeStructEnd() } -> std::convertible_to<uint32_t>;
+  {
+    writer.writeFieldBegin(name, type, fieldId)
+  } -> std::convertible_to<uint32_t>;
+  { writer.writeFieldEnd() } -> std::convertible_to<uint32_t>;
+  { writer.writeFieldStop() } -> std::convertible_to<uint32_t>;
+  {
+    writer.writeMapBegin(type, type, size, false)
+  } -> std::convertible_to<uint32_t>;
+  { writer.writeMapEnd() } -> std::convertible_to<uint32_t>;
+  { writer.writeListBegin(type, size) } -> std::convertible_to<uint32_t>;
+  { writer.writeListEnd() } -> std::convertible_to<uint32_t>;
+  { writer.writeSetBegin(type, size) } -> std::convertible_to<uint32_t>;
+  { writer.writeSetEnd() } -> std::convertible_to<uint32_t>;
+  { writer.writeBool(boolValue) } -> std::convertible_to<uint32_t>;
+  { writer.writeByte(byteValue) } -> std::convertible_to<uint32_t>;
+  { writer.writeI16(i16Value) } -> std::convertible_to<uint32_t>;
+  { writer.writeI32(i32Value) } -> std::convertible_to<uint32_t>;
+  { writer.writeI64(i64Value) } -> std::convertible_to<uint32_t>;
+  { writer.writeFloat(floatValue) } -> std::convertible_to<uint32_t>;
+  { writer.writeDouble(doubleValue) } -> std::convertible_to<uint32_t>;
+  { writer.writeString(stringValue) } -> std::convertible_to<uint32_t>;
+  { writer.writeBinary(binaryValue) } -> std::convertible_to<uint32_t>;
+};
+
+template <typename T>
+concept ThriftSerializer = requires {
+  typename T::ProtocolReader;
+  typename T::ProtocolWriter;
+  requires ThriftProtocolReader<typename T::ProtocolReader>;
+  requires ThriftProtocolWriter<typename T::ProtocolWriter>;
 };
 
 namespace detail {

@@ -205,6 +205,8 @@ struct SimpleJSONProtocolReader::StructReadState {
 
 static_assert(usesFieldNames<SimpleJSONProtocolReader>());
 static_assert(usesFieldNames<SimpleJSONProtocolWriter>());
+static_assert(ThriftProtocolReader<SimpleJSONProtocolReader>);
+static_assert(ThriftProtocolWriter<SimpleJSONProtocolWriter>);
 
 } // namespace apache::thrift
 
