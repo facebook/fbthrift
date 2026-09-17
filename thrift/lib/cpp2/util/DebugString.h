@@ -46,9 +46,6 @@ namespace apache::thrift {
 // are wanted (or if putting the data in one line is better), and the
 // indent level.
 //
-// We also provide a reverse fromDebugString() method, to convert from this
-// text format to a serialized data stream.
-//
 // WARNING: you should not store data persistently in this text string format,
 // since it's subject to change. Instead prefer the standard Compact/Binary/etc.
 // Protocol formats.
@@ -68,17 +65,5 @@ struct DebugStringParams {
 template <ThriftProtocolReader ProtocolReader>
 std::string toDebugString(
     ProtocolReader& inProtoReader, DebugStringParams p = {});
-
-// Converts text format -> serialized protocol data
-//
-// Usage example:
-//   folly::IOBufQueue outputQueue;
-//   apache::thrift::CompactProtocolWriter writer;
-//   writer.setOutput(&outputQueue);
-//   apache::thrift::fromDebugString(debugString, writer);
-//   auto outputIOBufWithData = outputQueue.move();
-//
-template <ThriftProtocolWriter ProtocolWriter>
-void fromDebugString(folly::StringPiece text, ProtocolWriter& outProtoWriter);
 
 } // namespace apache::thrift
