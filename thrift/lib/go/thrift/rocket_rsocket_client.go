@@ -626,3 +626,34 @@ func recvStreamNext(ctx context.Context, streamPayloadChan <-chan payload.Payloa
 	// (nil, nil) indicates completion - i.e. both channels confirmed closed.
 	return nil, nil
 }
+
+func encodeRequest(protoID rpcmetadata.ProtocolId, request WritableStruct) ([]byte, error) {
+	switch protoID {
+	case rpcmetadata.ProtocolId_BINARY:
+		return EncodeBinary(request)
+	case rpcmetadata.ProtocolId_COMPACT:
+		return EncodeCompact(request)
+	default:
+		return nil, types.NewProtocolException(fmt.Errorf("Unknown protocol id: %d", protoID))
+	}
+}
+
+func decodeResultOrException(protoID rpcmetadata.ProtocolId, data []byte, result ReadableResult) error {
+	var err error
+	switch protoID {
+	case rpcmetadata.ProtocolId_BINARY:
+		err = DecodeBinary(data, result)
+	case rpcmetadata.ProtocolId_COMPACT:
+		err = DecodeCompact(data, result)
+	default:
+		err = types.NewProtocolException(fmt.Errorf("Unknown protocol id: %d", protoID))
+	}
+	if err != nil {
+		return err
+	}
+	// Declared exception (inside the response)
+	if exception := result.Exception(); exception != nil {
+		return exception
+	}
+	return nil
+}
