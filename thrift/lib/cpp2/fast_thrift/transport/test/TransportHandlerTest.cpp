@@ -19,6 +19,8 @@
 
 #include <gtest/gtest.h>
 
+#include <array>
+#include <cstdint>
 #include <cstring>
 #include <memory>
 
@@ -59,6 +61,34 @@ std::unique_ptr<folly::IOBuf> buildTestData(size_t size) {
   buf->append(size);
   return buf;
 }
+
+// Frames nothing. Exists only to be a Parser without consumeBuffer.
+class NonMovableParser {
+ public:
+  void getReadBuffer(void** bufReturn, size_t* lenReturn) noexcept {
+    *bufReturn = buffer_.data();
+    *lenReturn = buffer_.size();
+  }
+
+  template <typename Sink>
+  Result consume(size_t, Sink&&) noexcept {
+    return Result::Success;
+  }
+
+  // NOLINTNEXTLINE(clang-diagnostic-unneeded-member-function)
+  void setIOBufFactory(folly::IOBufFactory*) noexcept {}
+
+  void reset() noexcept {}
+
+ private:
+  std::array<uint8_t, 256> buffer_{};
+};
+
+static_assert(Parser<NonMovableParser>);
+static_assert(!MovableBufferParser<NonMovableParser>);
+
+using NonMovableTransportHandler =
+    TransportHandlerT<NoOpWriteCompleteEventFactory, NonMovableParser>;
 } // namespace
 
 HANDLER_TAG(exception_handler);
@@ -724,11 +754,44 @@ TEST_F(TransportHandlerTest, WriteWithNullBytesDeath) {
       "bytes");
 }
 
-// Test: isBufferMovable returns true
-TEST_F(TransportHandlerTest, IsBufferMovableReturnsTrue) {
+TEST_F(TransportHandlerTest, IsBufferMovableFollowsAMovableParser) {
   auto [handler, pipeline] = createHandlerAndPipeline();
 
-  EXPECT_TRUE(handler->isBufferMovable());
+  EXPECT_THAT(handler->isBufferMovable(), IsTrue());
+}
+
+// createWithParser, not create: NonMovableParser has no min/max read size for
+// create() to take its defaults from.
+TEST_F(TransportHandlerTest, IsBufferMovableFollowsANonMovableParser) {
+  auto socket = folly::AsyncTransport::UniquePtr(
+      new NiceMock<folly::test::MockAsyncTransport>());
+  ON_CALL(
+      *static_cast<folly::test::MockAsyncTransport*>(socket.get()),
+      getEventBase())
+      .WillByDefault(Return(&evb_));
+
+  auto handler = NonMovableTransportHandler::createWithParser(
+      std::move(socket), NonMovableParser());
+
+  EXPECT_THAT(handler->isBufferMovable(), IsFalse());
+}
+
+TEST_F(TransportHandlerTest, ReadBufferAvailableOnANonMovableParserDeath) {
+#ifdef NDEBUG
+  return;
+#endif
+  auto socket = folly::AsyncTransport::UniquePtr(
+      new NiceMock<folly::test::MockAsyncTransport>());
+  ON_CALL(
+      *static_cast<folly::test::MockAsyncTransport*>(socket.get()),
+      getEventBase())
+      .WillByDefault(Return(&evb_));
+
+  auto handler = NonMovableTransportHandler::createWithParser(
+      std::move(socket), NonMovableParser());
+
+  EXPECT_DEBUG_DEATH(
+      handler->readBufferAvailable(buildTestData(16)), "without consumeBuffer");
 }
 
 // Test: setPipeline is a pure setter and does not fire onConnect, even when

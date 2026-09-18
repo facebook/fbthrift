@@ -47,10 +47,10 @@ struct ConceptSink {
  * A parser is per-connection, is only touched on that connection's EventBase,
  * and never throws — errors come back as Result::Error.
  *
- * `consume`/`consumeBuffer` return the sink's first non-Success result. Bytes
- * not yet emitted stay buffered for the next call, so Backpressure is
- * resumable. The sink may close the connection re-entrantly, so a parser must
- * not touch itself after a sink call returns non-Success.
+ * `consume` returns the sink's first non-Success result. Bytes not yet emitted
+ * stay buffered for the next call, so Backpressure is resumable. The sink may
+ * close the connection re-entrantly, so a parser must not touch itself after a
+ * sink call returns non-Success.
  *
  * `setIOBufFactory` is called once, when the transport is given its pipeline,
  * to route buffer allocation through the pipeline's allocator. The factory
@@ -62,18 +62,29 @@ concept Parser = requires(
     void** bufReturn,
     size_t* lenReturn,
     size_t len,
-    channel_pipeline::BytesPtr buf,
     folly::IOBufFactory* factory,
     detail::ConceptSink sink) {
   { parser.getReadBuffer(bufReturn, lenReturn) } noexcept;
   {
     parser.consume(len, sink)
   } noexcept -> std::same_as<channel_pipeline::Result>;
-  {
-    parser.consumeBuffer(std::move(buf), sink)
-  } noexcept -> std::same_as<channel_pipeline::Result>;
   { parser.setIOBufFactory(factory) } noexcept;
   { parser.reset() } noexcept;
 };
+
+/**
+ * A Parser that also accepts bytes someone else allocated — io_uring zero-copy
+ * receive, or replayed data. `consumeBuffer` carries the same contract as
+ * `consume`.
+ */
+template <typename P>
+concept MovableBufferParser =
+    Parser<P> &&
+    requires(
+        P parser, channel_pipeline::BytesPtr buf, detail::ConceptSink sink) {
+      {
+        parser.consumeBuffer(std::move(buf), sink)
+      } noexcept -> std::same_as<channel_pipeline::Result>;
+    };
 
 } // namespace apache::thrift::fast_thrift::transport

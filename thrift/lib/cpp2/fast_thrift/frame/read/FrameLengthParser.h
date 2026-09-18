@@ -192,6 +192,6 @@ class FrameLengthParser {
   folly::IOBufQueue readBufQueue_{folly::IOBufQueue::cacheChainLength()};
 };
 
-static_assert(transport::Parser<FrameLengthParser>);
+static_assert(transport::MovableBufferParser<FrameLengthParser>);
 
 } // namespace apache::thrift::fast_thrift::frame::read

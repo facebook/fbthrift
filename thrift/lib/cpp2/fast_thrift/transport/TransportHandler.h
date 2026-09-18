@@ -178,9 +178,14 @@ class TransportHandlerT : public folly::DelayedDestruction,
 
   void readBufferAvailable(
       std::unique_ptr<folly::IOBuf> buf) noexcept override {
-    folly::DelayedDestruction::DestructorGuard dg(this);
-    DCHECK(pipeline_);
-    handleReadResult(parser_.consumeBuffer(std::move(buf), messageSink()));
+    if constexpr (MovableBufferParser<ParserT>) {
+      folly::DelayedDestruction::DestructorGuard dg(this);
+      DCHECK(pipeline_);
+      handleReadResult(parser_.consumeBuffer(std::move(buf), messageSink()));
+    } else {
+      DCHECK(false) << "readBufferAvailable on a parser without consumeBuffer";
+      (void)buf;
+    }
   }
 
   void readEOF() noexcept override {
@@ -197,7 +202,9 @@ class TransportHandlerT : public folly::DelayedDestruction,
     closeGracefully(apache::thrift::transport::TTransportException(ex));
   }
 
-  bool isBufferMovable() noexcept override { return true; }
+  bool isBufferMovable() noexcept override {
+    return MovableBufferParser<ParserT>;
+  }
 
   // --- TailEndpointHandler lifecycle ---
 

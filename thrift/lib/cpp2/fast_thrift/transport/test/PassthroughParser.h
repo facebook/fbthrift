@@ -73,7 +73,7 @@ class PassthroughParser {
   folly::IOBufQueue readBufQueue_{folly::IOBufQueue::cacheChainLength()};
 };
 
-static_assert(Parser<PassthroughParser>);
+static_assert(MovableBufferParser<PassthroughParser>);
 
 /**
  * The unframed transport used by tests and benchmarks, standing in for the
