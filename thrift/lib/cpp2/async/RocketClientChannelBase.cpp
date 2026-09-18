@@ -253,6 +253,7 @@ template <class Handler>
     std::unique_ptr<folly::IOBuf>& payload,
     Handler& handler) {
   (void)protocolId;
+  static const std::string kEmptyExceptionWhat;
   if (auto payloadMetadataRef = metadata.payloadMetadata()) {
     const auto isProxiedResponse =
         metadata.proxiedPayloadMetadata().has_value();
@@ -372,8 +373,10 @@ template <class Handler>
                                        : detail::kHeaderUexw] =
                         detail::clampExceptionWhatForHeader(*exceptionWhatRef);
               }
-              payload = handler.handleException(
-                  TApplicationException(exceptionWhatRef.value_or("")));
+              const std::string& exceptionWhat =
+                  exceptionWhatRef ? *exceptionWhatRef : kEmptyExceptionWhat;
+              payload =
+                  handler.handleException(TApplicationException(exceptionWhat));
           }
         } else {
           return TApplicationException("Missing payload exception metadata");
