@@ -131,12 +131,16 @@ TEST(Cpp2ContextAdapterTest, SecurityProtocolSurvivesADowngradedTransport) {
   folly::EventBase evb;
   // Plaintext, exactly as StopTLS leaves it.
   auto socket = folly::AsyncSocket::newSocket(&evb);
-  auto conn = makeConnContext(nullptr);
+  auto cert = std::make_shared<folly::ssl::BasicTransportCertificate>(
+      "peer.identity", nullptr);
+  auto conn = makeConnContext(cert);
   conn->setTransport(socket.get());
   ASSERT_TRUE(socket->getSecurityProtocol().empty());
 
   Cpp2ConnContextAdapter adapter(conn, /*resolver=*/nullptr);
 
+  EXPECT_TRUE(conn->peerCertReceived());
+  EXPECT_TRUE(adapter.get().peerCertReceived());
   EXPECT_EQ(adapter.get().getSecurityProtocol(), "TLS1.3");
 }
 

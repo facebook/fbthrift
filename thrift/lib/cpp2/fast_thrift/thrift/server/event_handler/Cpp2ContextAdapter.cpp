@@ -89,6 +89,7 @@ Cpp2ConnContextAdapter::Cpp2ConnContextAdapter(
       *cpp2ConnContext_);
   internalAPI.setSecurityProtocol(
       std::string(ftConnContext_->getSecurityProtocol()));
+  internalAPI.setPeerCertReceived(ftConnContext_->peerCertReceived());
   // The setup handler latched this off the client's setup; a handler reading
   // it goes to the classic context, so it has to be carried across.
   if (const auto* metadata = ftConnContext_->getClientMetadata()) {

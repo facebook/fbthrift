@@ -80,6 +80,8 @@ class ThriftConnContext : public boost::intrusive_ref_counter<
     return peerCertificate_.get();
   }
 
+  bool peerCertReceived() const noexcept { return peerCertificate_ != nullptr; }
+
   // The connection's transport. Non-owning, and valid only while the
   // connection is open — the transport outlives this context, but neither
   // outlives the connection, so nothing may retain it.

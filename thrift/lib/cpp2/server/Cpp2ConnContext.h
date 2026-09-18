@@ -670,6 +670,10 @@ class Cpp2ConnContextInternalAPI {
     connContext_.transportInfo_.securityProtocol = std::move(protocol);
   }
 
+  void setPeerCertReceived(bool received) {
+    connContext_.transportInfo_.receivedCert = received;
+  }
+
   /**
    * What the client said about itself, for a transport that reads the setup
    * itself rather than handing it to readSetupMetadata.
