@@ -115,10 +115,6 @@ func (p *rocketClient) SendRequestStream(
 ) (StreamingHandle[ReadableStruct], error) {
 	// See SendRequestNoResponse: p must stay alive across the blocking call.
 	defer runtime.KeepAlive(p)
-	if ctx.Done() == nil {
-		// We require that the context is cancellable, to prevent goroutine leaks.
-		return nil, errors.New("context does not support cancellation")
-	}
 
 	headers := p.getWriteHeaders(ctx)
 	return p.client.RequestStream(ctx, messageName, headers, request, response, newStreamElemFn)

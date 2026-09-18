@@ -61,7 +61,9 @@ type WritableResult = types.WritableResult
 
 type ReadableResult = types.ReadableResult
 
-type StreamingHandle[T types.ReadableStruct] = types.StreamingHandle[T]
+type StreamingHandle[T any] = types.StreamingHandle[T]
+
+type ChanResult[T any] = types.ChanResult[T]
 
 type TransportException = types.TransportException
 
@@ -128,6 +130,14 @@ var FLOAT Type = types.FLOAT
 // Pointerize returns a pointer to the given value.
 func Pointerize[T types.ThriftPointerizable](v T) *T {
 	return types.Pointerize(v)
+}
+
+func NewStreamingHandle[T any](ch <-chan types.ChanResult[T], cancel func()) types.StreamingHandle[T] {
+	return types.NewStreamingHandle(ch, cancel)
+}
+
+func AdaptStreamingHandle[From, To any](src types.StreamingHandle[From], convert func(From) (To, error)) types.StreamingHandle[To] {
+	return types.AdaptStreamingHandle(src, convert)
 }
 
 func NewCompactFormat(readWriter types.ReadWriteSizer) types.Format {

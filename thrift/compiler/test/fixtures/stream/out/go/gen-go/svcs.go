@@ -44,15 +44,15 @@ type PubSubStreamingService interface {
 
 type PubSubStreamingServiceClient interface {
     io.Closer
-    Returnstream(ctx context.Context, i32From int32, i32To int32) (iter.Seq2[int32, error], error)
-    Streamthrows(ctx context.Context, foo int32) (iter.Seq2[int32, error], error)
-    Servicethrows(ctx context.Context, foo int32) (iter.Seq2[int32, error], error)
-    Servicethrows2(ctx context.Context, foo int32) (iter.Seq2[int32, error], error)
-    Boththrows(ctx context.Context, foo int32) (iter.Seq2[int32, error], error)
-    Responseandstreamstreamthrows(ctx context.Context, foo int32) (int32, iter.Seq2[int32, error], error)
-    Responseandstreamservicethrows(ctx context.Context, foo int32) (int32, iter.Seq2[int32, error], error)
-    Responseandstreamboththrows(ctx context.Context, foo int32) (int32, iter.Seq2[int32, error], error)
-    ReturnstreamFast(ctx context.Context, i32From int32, i32To int32) (iter.Seq2[int32, error], error)
+    Returnstream(ctx context.Context, i32From int32, i32To int32) (thrift.StreamingHandle[int32], error)
+    Streamthrows(ctx context.Context, foo int32) (thrift.StreamingHandle[int32], error)
+    Servicethrows(ctx context.Context, foo int32) (thrift.StreamingHandle[int32], error)
+    Servicethrows2(ctx context.Context, foo int32) (thrift.StreamingHandle[int32], error)
+    Boththrows(ctx context.Context, foo int32) (thrift.StreamingHandle[int32], error)
+    Responseandstreamstreamthrows(ctx context.Context, foo int32) (int32, thrift.StreamingHandle[int32], error)
+    Responseandstreamservicethrows(ctx context.Context, foo int32) (int32, thrift.StreamingHandle[int32], error)
+    Responseandstreamboththrows(ctx context.Context, foo int32) (int32, thrift.StreamingHandle[int32], error)
+    ReturnstreamFast(ctx context.Context, i32From int32, i32To int32) (thrift.StreamingHandle[int32], error)
 }
 
 type pubSubStreamingServiceClientImpl struct {
@@ -75,13 +75,7 @@ func (c *pubSubStreamingServiceClientImpl) Close() error {
     return c.ch.Close()
 }
 
-func (c *pubSubStreamingServiceClientImpl) Returnstream(ctx context.Context, i32From int32, i32To int32) (iter.Seq2[int32, error], error) {
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
+func (c *pubSubStreamingServiceClientImpl) Returnstream(ctx context.Context, i32From int32, i32To int32) (thrift.StreamingHandle[int32], error) {
     fbthriftReq := &reqPubSubStreamingServiceReturnstream{
         I32From: i32From,
         I32To: i32To,
@@ -94,39 +88,27 @@ func (c *pubSubStreamingServiceClientImpl) Returnstream(ctx context.Context, i32
         return newStreamPubSubStreamingServiceReturnstream()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "returnstream",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(int32, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamPubSubStreamingServiceReturnstream)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamPubSubStreamingServiceReturnstream)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftHandle, nil
 }
 
-func (c *pubSubStreamingServiceClientImpl) Streamthrows(ctx context.Context, foo int32) (iter.Seq2[int32, error], error) {
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
+func (c *pubSubStreamingServiceClientImpl) Streamthrows(ctx context.Context, foo int32) (thrift.StreamingHandle[int32], error) {
     fbthriftReq := &reqPubSubStreamingServiceStreamthrows{
         Foo: foo,
     }
@@ -138,39 +120,27 @@ func (c *pubSubStreamingServiceClientImpl) Streamthrows(ctx context.Context, foo
         return newStreamPubSubStreamingServiceStreamthrows()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "streamthrows",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(int32, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamPubSubStreamingServiceStreamthrows)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamPubSubStreamingServiceStreamthrows)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftHandle, nil
 }
 
-func (c *pubSubStreamingServiceClientImpl) Servicethrows(ctx context.Context, foo int32) (iter.Seq2[int32, error], error) {
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
+func (c *pubSubStreamingServiceClientImpl) Servicethrows(ctx context.Context, foo int32) (thrift.StreamingHandle[int32], error) {
     fbthriftReq := &reqPubSubStreamingServiceServicethrows{
         Foo: foo,
     }
@@ -182,39 +152,27 @@ func (c *pubSubStreamingServiceClientImpl) Servicethrows(ctx context.Context, fo
         return newStreamPubSubStreamingServiceServicethrows()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "servicethrows",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(int32, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamPubSubStreamingServiceServicethrows)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamPubSubStreamingServiceServicethrows)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftHandle, nil
 }
 
-func (c *pubSubStreamingServiceClientImpl) Servicethrows2(ctx context.Context, foo int32) (iter.Seq2[int32, error], error) {
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
+func (c *pubSubStreamingServiceClientImpl) Servicethrows2(ctx context.Context, foo int32) (thrift.StreamingHandle[int32], error) {
     fbthriftReq := &reqPubSubStreamingServiceServicethrows2{
         Foo: foo,
     }
@@ -226,39 +184,27 @@ func (c *pubSubStreamingServiceClientImpl) Servicethrows2(ctx context.Context, f
         return newStreamPubSubStreamingServiceServicethrows2()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "servicethrows2",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(int32, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamPubSubStreamingServiceServicethrows2)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamPubSubStreamingServiceServicethrows2)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftHandle, nil
 }
 
-func (c *pubSubStreamingServiceClientImpl) Boththrows(ctx context.Context, foo int32) (iter.Seq2[int32, error], error) {
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
+func (c *pubSubStreamingServiceClientImpl) Boththrows(ctx context.Context, foo int32) (thrift.StreamingHandle[int32], error) {
     fbthriftReq := &reqPubSubStreamingServiceBoththrows{
         Foo: foo,
     }
@@ -270,40 +216,28 @@ func (c *pubSubStreamingServiceClientImpl) Boththrows(ctx context.Context, foo i
         return newStreamPubSubStreamingServiceBoththrows()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "boththrows",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(int32, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamPubSubStreamingServiceBoththrows)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamPubSubStreamingServiceBoththrows)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftHandle, nil
 }
 
-func (c *pubSubStreamingServiceClientImpl) Responseandstreamstreamthrows(ctx context.Context, foo int32) (int32, iter.Seq2[int32, error], error) {
+func (c *pubSubStreamingServiceClientImpl) Responseandstreamstreamthrows(ctx context.Context, foo int32) (int32, thrift.StreamingHandle[int32], error) {
     var fbthriftRespZero int32
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return fbthriftRespZero, nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
     fbthriftReq := &reqPubSubStreamingServiceResponseandstreamstreamthrows{
         Foo: foo,
     }
@@ -315,40 +249,28 @@ func (c *pubSubStreamingServiceClientImpl) Responseandstreamstreamthrows(ctx con
         return newStreamPubSubStreamingServiceResponseandstreamstreamthrows()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "responseandstreamstreamthrows",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return fbthriftRespZero, nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(int32, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamPubSubStreamingServiceResponseandstreamstreamthrows)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamPubSubStreamingServiceResponseandstreamstreamthrows)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftResp.GetSuccess(), fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftResp.GetSuccess(), fbthriftHandle, nil
 }
 
-func (c *pubSubStreamingServiceClientImpl) Responseandstreamservicethrows(ctx context.Context, foo int32) (int32, iter.Seq2[int32, error], error) {
+func (c *pubSubStreamingServiceClientImpl) Responseandstreamservicethrows(ctx context.Context, foo int32) (int32, thrift.StreamingHandle[int32], error) {
     var fbthriftRespZero int32
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return fbthriftRespZero, nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
     fbthriftReq := &reqPubSubStreamingServiceResponseandstreamservicethrows{
         Foo: foo,
     }
@@ -360,40 +282,28 @@ func (c *pubSubStreamingServiceClientImpl) Responseandstreamservicethrows(ctx co
         return newStreamPubSubStreamingServiceResponseandstreamservicethrows()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "responseandstreamservicethrows",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return fbthriftRespZero, nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(int32, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamPubSubStreamingServiceResponseandstreamservicethrows)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamPubSubStreamingServiceResponseandstreamservicethrows)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftResp.GetSuccess(), fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftResp.GetSuccess(), fbthriftHandle, nil
 }
 
-func (c *pubSubStreamingServiceClientImpl) Responseandstreamboththrows(ctx context.Context, foo int32) (int32, iter.Seq2[int32, error], error) {
+func (c *pubSubStreamingServiceClientImpl) Responseandstreamboththrows(ctx context.Context, foo int32) (int32, thrift.StreamingHandle[int32], error) {
     var fbthriftRespZero int32
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return fbthriftRespZero, nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
     fbthriftReq := &reqPubSubStreamingServiceResponseandstreamboththrows{
         Foo: foo,
     }
@@ -405,39 +315,27 @@ func (c *pubSubStreamingServiceClientImpl) Responseandstreamboththrows(ctx conte
         return newStreamPubSubStreamingServiceResponseandstreamboththrows()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "responseandstreamboththrows",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return fbthriftRespZero, nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(int32, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamPubSubStreamingServiceResponseandstreamboththrows)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamPubSubStreamingServiceResponseandstreamboththrows)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftResp.GetSuccess(), fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftResp.GetSuccess(), fbthriftHandle, nil
 }
 
-func (c *pubSubStreamingServiceClientImpl) ReturnstreamFast(ctx context.Context, i32From int32, i32To int32) (iter.Seq2[int32, error], error) {
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
+func (c *pubSubStreamingServiceClientImpl) ReturnstreamFast(ctx context.Context, i32From int32, i32To int32) (thrift.StreamingHandle[int32], error) {
     fbthriftReq := &reqPubSubStreamingServiceReturnstreamFast{
         I32From: i32From,
         I32To: i32To,
@@ -450,30 +348,24 @@ func (c *pubSubStreamingServiceClientImpl) ReturnstreamFast(ctx context.Context,
         return newStreamPubSubStreamingServiceReturnstreamFast()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "returnstreamFast",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(int32, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamPubSubStreamingServiceReturnstreamFast)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamPubSubStreamingServiceReturnstreamFast)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftHandle, nil
 }
 
 

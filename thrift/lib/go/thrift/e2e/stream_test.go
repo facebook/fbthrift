@@ -17,7 +17,6 @@
 package e2e
 
 import (
-	"context"
 	"net"
 	"testing"
 	"time"
@@ -55,17 +54,16 @@ func TestEchoHeadersStream(t *testing.T) {
 
 	rpcOpts := thrift.RPCOptions{}
 	rpcOpts.SetWriteHeaders(map[string]string{rpcHeaderKey: rpcHeaderValue})
-	ctx := thrift.WithRPCOptions(context.Background(), &rpcOpts)
+	ctx := thrift.WithRPCOptions(t.Context(), &rpcOpts)
 
-	streamCtx, streamCancel := context.WithCancel(ctx)
-	defer streamCancel()
-	echoedHeaders, streamSeq, err := client.EchoHeadersStream(streamCtx)
+	echoedHeaders, streamHandle, err := client.EchoHeadersStream(ctx)
 	require.NoError(t, err)
+	defer streamHandle.Cancel()
 	require.Equal(t, persistentHeaderValue, echoedHeaders[persistentHeaderKey])
 	require.Equal(t, rpcHeaderValue, echoedHeaders[rpcHeaderKey])
 
 	// The stream is empty; draining it should yield no elements and no error.
-	for _, err := range streamSeq {
+	for _, err := range streamHandle.Iter() {
 		require.NoError(t, err)
 	}
 }
@@ -88,14 +86,13 @@ func TestEchoConnInfoStream(t *testing.T) {
 	client := service.NewE2EChannelClient(channel)
 	defer client.Close()
 
-	streamCtx, streamCancel := context.WithCancel(context.Background())
-	defer streamCancel()
-	connInfo, streamSeq, err := client.EchoConnInfoStream(streamCtx)
+	connInfo, streamHandle, err := client.EchoConnInfoStream(t.Context())
 	require.NoError(t, err)
+	defer streamHandle.Cancel()
 	require.NotEmpty(t, connInfo["remote_address"])
 
 	// The stream is empty; draining it should yield no elements and no error.
-	for _, err := range streamSeq {
+	for _, err := range streamHandle.Iter() {
 		require.NoError(t, err)
 	}
 }

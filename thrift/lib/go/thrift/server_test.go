@@ -772,13 +772,13 @@ func TestProcessorScenarios(t *testing.T) {
 	t.Run("stream", func(t *testing.T) {
 		client := dummyif.NewDummyChannelClient(channel)
 
-		streamCtx, streamCancel := context.WithCancel(context.Background())
-		defer streamCancel()
-		streamSeq, err := client.StreamOnly(streamCtx, 1, 10)
+		streamHandle, err := client.StreamOnly(t.Context(), 1, 10)
 		require.NoError(t, err)
+		require.NotNil(t, streamHandle)
+		defer streamHandle.Cancel()
 
 		responses := make([]int32, 0)
-		for elem, err := range streamSeq {
+		for elem, err := range streamHandle.Iter() {
 			require.NoError(t, err)
 			responses = append(responses, elem)
 		}
@@ -787,14 +787,14 @@ func TestProcessorScenarios(t *testing.T) {
 	t.Run("response_and_stream", func(t *testing.T) {
 		client := dummyif.NewDummyChannelClient(channel)
 
-		streamCtx, streamCancel := context.WithCancel(context.Background())
-		defer streamCancel()
-		firstResponse, streamSeq, err := client.ResponseAndStream(streamCtx, 1, 10)
+		firstResponse, streamHandle, err := client.ResponseAndStream(t.Context(), 1, 10)
 		require.NoError(t, err)
 		assert.EqualValues(t, 9, firstResponse)
+		require.NotNil(t, streamHandle)
+		defer streamHandle.Cancel()
 
 		responses := make([]int32, 0)
-		for elem, err := range streamSeq {
+		for elem, err := range streamHandle.Iter() {
 			require.NoError(t, err)
 			responses = append(responses, elem)
 		}
@@ -803,14 +803,14 @@ func TestProcessorScenarios(t *testing.T) {
 	t.Run("stream_with_declared_exception", func(t *testing.T) {
 		client := dummyif.NewDummyChannelClient(channel)
 
-		streamCtx, streamCancel := context.WithCancel(context.Background())
-		defer streamCancel()
-		streamSeq, err := client.StreamWithDeclaredException(streamCtx)
+		streamHandle, err := client.StreamWithDeclaredException(t.Context())
 		require.NoError(t, err)
+		require.NotNil(t, streamHandle)
+		defer streamHandle.Cancel()
 
 		responses := make([]int32, 0)
 		var streamErr error
-		for elem, err := range streamSeq {
+		for elem, err := range streamHandle.Iter() {
 			if err != nil {
 				streamErr = err
 				break
@@ -825,14 +825,14 @@ func TestProcessorScenarios(t *testing.T) {
 	t.Run("stream_with_undeclared_exception", func(t *testing.T) {
 		client := dummyif.NewDummyChannelClient(channel)
 
-		streamCtx, streamCancel := context.WithCancel(context.Background())
-		defer streamCancel()
-		streamSeq, err := client.StreamWithUndeclaredException(streamCtx)
+		streamHandle, err := client.StreamWithUndeclaredException(t.Context())
 		require.NoError(t, err)
+		require.NotNil(t, streamHandle)
+		defer streamHandle.Cancel()
 
 		responses := make([]int32, 0)
 		var streamErr error
-		for elem, err := range streamSeq {
+		for elem, err := range streamHandle.Iter() {
 			if err != nil {
 				streamErr = err
 				break
@@ -846,9 +846,7 @@ func TestProcessorScenarios(t *testing.T) {
 	t.Run("response_and_stream_with_declared_exception", func(t *testing.T) {
 		client := dummyif.NewDummyChannelClient(channel)
 
-		streamCtx, streamCancel := context.WithCancel(context.Background())
-		defer streamCancel()
-		_, _, err := client.ResponseAndStreamWithDeclaredException(streamCtx)
+		_, _, err := client.ResponseAndStreamWithDeclaredException(t.Context())
 		require.Error(t, err)
 		var dummyEx *dummyif.DummyException
 		require.ErrorAs(t, err, &dummyEx)
@@ -856,9 +854,7 @@ func TestProcessorScenarios(t *testing.T) {
 	t.Run("response_and_stream_with_undeclared_exception", func(t *testing.T) {
 		client := dummyif.NewDummyChannelClient(channel)
 
-		streamCtx, streamCancel := context.WithCancel(context.Background())
-		defer streamCancel()
-		_, _, err := client.ResponseAndStreamWithUndeclaredException(streamCtx)
+		_, _, err := client.ResponseAndStreamWithUndeclaredException(t.Context())
 		require.Error(t, err)
 		require.ErrorContains(t, err, "undeclared exception")
 	})
@@ -1231,9 +1227,10 @@ func TestStreamingSinkExceptionObserver(t *testing.T) {
 			rpcCall: func(t *testing.T, client dummyif.DummyClient) {
 				ctx, cancel := context.WithCancel(context.Background())
 				defer cancel()
-				streamSeq, err := client.StreamWithUndeclaredException(ctx)
+				streamHandle, err := client.StreamWithUndeclaredException(ctx)
 				require.NoError(t, err)
-				for _, err := range streamSeq {
+				defer streamHandle.Cancel()
+				for _, err := range streamHandle.Iter() {
 					if err != nil {
 						break
 					}
@@ -1247,9 +1244,10 @@ func TestStreamingSinkExceptionObserver(t *testing.T) {
 			rpcCall: func(t *testing.T, client dummyif.DummyClient) {
 				ctx, cancel := context.WithCancel(context.Background())
 				defer cancel()
-				streamSeq, err := client.StreamWithDeclaredException(ctx)
+				streamHandle, err := client.StreamWithDeclaredException(ctx)
 				require.NoError(t, err)
-				for _, err := range streamSeq {
+				defer streamHandle.Cancel()
+				for _, err := range streamHandle.Iter() {
 					if err != nil {
 						break
 					}

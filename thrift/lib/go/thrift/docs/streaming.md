@@ -51,16 +51,16 @@ service FileService {
 
 ### API Signature
 
-The generated client API returns an `iter.Seq2[ElemType, error]` iterator,
-which allows you to iterate over stream elements using Go's range-over-function
-syntax. The values returned depend on whether the stream has an initial response:
+The generated client API returns a `thrift.StreamingHandle[ElemType]`
+interface value. The values returned depend on whether the stream
+has an initial response:
 
 **Stream-only (no initial response):**
 
 ```go
 func (c *Client) StreamMethod(ctx context.Context, args...) (
-    iter.Seq2[ElemType, error], // Stream iterator
-    error,                      // Initial error
+    thrift.StreamingHandle[ElemType], // Stream handle
+    error,                            // Initial error
 )
 ```
 
@@ -68,31 +68,52 @@ func (c *Client) StreamMethod(ctx context.Context, args...) (
 
 ```go
 func (c *Client) StreamMethod(ctx context.Context, args...) (
-    *InitialResponse,           // First response
-    iter.Seq2[ElemType, error], // Stream iterator
-    error,                      // Initial error
+    *InitialResponse,                 // First response
+    thrift.StreamingHandle[ElemType], // Stream handle
+    error,                            // Initial error
 )
+```
+
+The handle exposes three methods:
+
+```go
+type StreamingHandle[T any] interface {
+    // Range-over-func iterator over stream elements.
+    Iter() func(yield func(T, error) bool)
+    // Channel of stream elements; each value carries Elem or Err.
+    Chan() <-chan ChanResult[T]
+    // Release stream resources. Safe to call multiple times.
+    Cancel()
+}
+
+type ChanResult[T any] struct {
+    Elem T
+    Err  error
+}
 ```
 
 ### Usage Guidelines
 
-1. **Context is Required**: The API REQUIRES a context with a timeout, deadline,
-   or manual cancel to ensure background goroutines are terminated (avoid
-   leaks).
+1. **Context Bounds the Initial Response**: The `ctx` passed to the RPC bounds
+   only the initial response — it does not bound the stream lifetime. Any
+   context is accepted, `context.Background()` included.
 
 2. **Check Initial Error**: Always check the initial error first. If non-nil, no
-   stream follows.
+   stream follows and there is nothing to cancel.
 
-3. **Iterate with Range**: Use Go's `for elem, err := range streamSeq` syntax
-   to iterate over stream elements.
+3. **Cancel Owns the Stream**: After a successful call, `defer streamHandle.Cancel()`
+   immediately. `Cancel` owns stream cleanup; the `ctx` alone does not stop the
+   stream. A GC finalizer exists only as a backstop — do not rely on it.
 
-4. **Handle Stream Errors**: The error is returned as the second value in each
-   iteration. If an error is returned, handle it as appropriate and note that
-   the iterator will be exhausted (no more elements). Successful completion is
-   indicated when the for-loop exits naturally with no errors received.
+4. **Iter or Chan, Not Both**: `Iter()` and `Chan()` are mutually
+   exclusive and single-use. Pick one consumption style per stream; calling the
+   other afterwards is undefined.
 
-5. **Cleanup**: You should NOT worry about cleaning up resources besides
-   providing a reasonable context timeout/cancellation.
+5. **Handle Stream Errors**: With `Iter()`, the error is returned as the second
+   value in each iteration. With `Chan()`, check `result.Err` on each received
+   value. If an error is returned, the stream is exhausted (no more elements).
+   Successful completion is indicated when the loop/channel exits naturally
+   with no errors received.
 
 ### Example: Stream-Only Response
 
@@ -101,12 +122,13 @@ func main() {
     ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
     defer cancel()
 
-    streamSeq, err := client.NumberRange(ctx, 1, 100)
+    streamHandle, err := client.NumberRange(ctx, 1, 100)
     if err != nil {
         log.Fatalf("request failed: %v", err)
     }
+    defer streamHandle.Cancel()
 
-    for elem, err := range streamSeq {
+    for elem, err := range streamHandle.Iter() {
         // Check if streaming encountered an error
         if err != nil {
             log.Fatalf("error during stream: %v", err)
@@ -124,20 +146,76 @@ func main() {
     ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
     defer cancel()
 
-    firstResponse, streamSeq, err := client.GetFile(ctx, "/path/to/file.txt")
+    firstResponse, streamHandle, err := client.GetFile(ctx, "/path/to/file.txt")
     if err != nil {
         log.Fatalf("request failed: %v", err)
     }
+    defer streamHandle.Cancel()
 
     fmt.Printf("File size: %d bytes\n", firstResponse.GetFileSize())
 
-    for fileChunk, err := range streamSeq {
+    for fileChunk, err := range streamHandle.Iter() {
         // Check if streaming encountered an error
         if err != nil {
             log.Fatalf("error during stream: %v", err)
         }
         // Process each file chunk
         fmt.Printf("Received chunk: %d bytes\n", len(fileChunk.GetData()))
+    }
+}
+```
+
+### Example: Channel-Based Consumption
+
+```go
+func main() {
+    ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+    defer cancel()
+
+    streamHandle, err := client.NumberRange(ctx, 1, 100)
+    if err != nil {
+        log.Fatalf("request failed: %v", err)
+    }
+    defer streamHandle.Cancel()
+
+    for result := range streamHandle.Chan() {
+        if result.Err != nil {
+            log.Fatalf("error during stream: %v", result.Err)
+        }
+        fmt.Printf("Received: %d\n", result.Elem)
+    }
+}
+```
+
+### Example: Early Return via select
+
+```go
+func main() {
+    streamHandle, err := client.NumberRange(context.Background(), 1, 100)
+    if err != nil {
+        log.Fatalf("request failed: %v", err)
+    }
+    defer streamHandle.Cancel()
+
+    // stopCtx is independent of the RPC context: it fires 60 seconds in,
+    // interrupting the loop below without touching the initial request.
+    stopCtx, stop := context.WithTimeout(context.Background(), 60*time.Second)
+    defer stop()
+
+    ch := streamHandle.Chan() // single-use: bind once, then select on it
+    for {
+        select {
+        case <-stopCtx.Done():
+            return // self-interrupted; deferred Cancel stops the stream
+        case result, ok := <-ch:
+            if !ok {
+                return // stream completed successfully
+            }
+            if result.Err != nil {
+                log.Fatalf("error during stream: %v", result.Err)
+            }
+            fmt.Printf("Received: %d\n", result.Elem)
+        }
     }
 }
 ```

@@ -22,6 +22,7 @@ import (
 	"iter"
 	"math"
 	"net"
+	"runtime"
 	"time"
 
 	"golang.org/x/sync/singleflight"
@@ -238,10 +239,12 @@ func (r *rsocketClient) RequestStream(
 
 	flux := r.client.RequestStream(reqPayload)
 
-	streamCtx, streamCancel := context.WithCancel(ctx)
+	// Split semantics: ctx governs the initial response only. The stream
+	// phase is detached and owned by the handle's Cancel/cleanup.
+	streamCtx, streamCancel := context.WithCancel(context.WithoutCancel(ctx))
 	streamPayloadChan, streamErrChan := flux.ToChan(streamCtx, types.DefaultStreamBufferSize)
 
-	firstPayload, err := recvStreamNext(streamCtx, streamPayloadChan, streamErrChan)
+	firstPayload, err := recvStreamNext(ctx, streamPayloadChan, streamErrChan)
 	if err != nil {
 		streamCancel()
 		return nil, err
@@ -252,29 +255,42 @@ func (r *rsocketClient) RequestStream(
 		return nil, err
 	}
 
-	streamSeq := func(yield func(ReadableStruct, error) bool) {
-		defer streamCancel()
+	ch := make(chan types.ChanResult[types.ReadableStruct], types.DefaultStreamBufferSize)
+	go func() {
+		defer runtime.KeepAlive(r)
+		defer close(ch)
+		// send delivers one stream element or terminal error, mirroring
+		// yield's (elem, err) shape. It returns false if the stream was
+		// cancelled before the value could be delivered.
+		send := func(elem types.ReadableStruct, err error) bool {
+			select {
+			case ch <- types.ChanResult[types.ReadableStruct]{Elem: elem, Err: err}:
+				return true
+			case <-streamCtx.Done():
+				return false
+			}
+		}
 
 		for {
 			streamPayload, streamErr := recvStreamNext(streamCtx, streamPayloadChan, streamErrChan)
 			if streamErr != nil {
-				yield(nil, streamErr)
+				send(nil, streamErr)
 				return
 			} else if streamPayload != nil {
 				streamResponse, err := rocket.DecodeStreamPayload(streamPayload)
 				if err != nil {
-					yield(nil, err)
+					send(nil, err)
 					return
 				}
 				data := streamResponse.Data()
 				destStruct := newStreamElemFn()
 				err = decodeResultOrException(r.protoID, data, destStruct)
 				if err != nil {
-					yield(nil, err)
+					send(nil, err)
 					return
 				}
 
-				if !yield(destStruct, nil) {
+				if !send(destStruct, nil) {
 					return
 				}
 			} else {
@@ -282,9 +298,9 @@ func (r *rsocketClient) RequestStream(
 				return
 			}
 		}
-	}
+	}()
 
-	return streamSeq, nil
+	return types.NewStreamingHandle(ch, streamCancel), nil
 }
 
 func (r *rsocketClient) MetadataPush(_ context.Context, metadata *rpcmetadata.ClientPushMetadata) error {

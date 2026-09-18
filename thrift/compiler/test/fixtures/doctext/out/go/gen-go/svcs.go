@@ -41,7 +41,7 @@ type C interface {
 type CClient interface {
     io.Closer
     F(ctx context.Context) (error)
-    Numbers(ctx context.Context) (iter.Seq2[Number, error], error)
+    Numbers(ctx context.Context) (thrift.StreamingHandle[Number], error)
     Thing(ctx context.Context, a int32, b string, c []int32) (string, error)
 }
 
@@ -82,13 +82,7 @@ func (c *cClientImpl) F(ctx context.Context) (error) {
     return nil
 }
 
-func (c *cClientImpl) Numbers(ctx context.Context) (iter.Seq2[Number, error], error) {
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
+func (c *cClientImpl) Numbers(ctx context.Context) (thrift.StreamingHandle[Number], error) {
     fbthriftReq := &reqCNumbers{
     }
     fbthriftResp := newRespCNumbers()
@@ -99,30 +93,24 @@ func (c *cClientImpl) Numbers(ctx context.Context) (iter.Seq2[Number, error], er
         return newStreamCNumbers()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "numbers",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(Number, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamCNumbers)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (Number, error) {
+        fbthriftRes, ok := elem.(*streamCNumbers)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftHandle, nil
 }
 
 func (c *cClientImpl) Thing(ctx context.Context, a int32, b string, c []int32) (string, error) {

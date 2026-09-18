@@ -42,7 +42,7 @@ type MyInteractionClient interface {
     io.Closer
     Frobnicate(ctx context.Context) (int32, error)
     Ping(ctx context.Context) (error)
-    Truthify(ctx context.Context) (iter.Seq2[bool, error], error)
+    Truthify(ctx context.Context) (thrift.StreamingHandle[bool], error)
     Encode(ctx context.Context) ([]int32, func(iter.Seq2[string, error]) ([]byte, error), error)
 }
 
@@ -89,13 +89,7 @@ func (c *myInteractionClientImpl) Ping(ctx context.Context) (error) {
     return c.ch.SendRequestNoResponse(ctx, "MyInteraction.ping", fbthriftReq)
 }
 
-func (c *myInteractionClientImpl) Truthify(ctx context.Context) (iter.Seq2[bool, error], error) {
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
+func (c *myInteractionClientImpl) Truthify(ctx context.Context) (thrift.StreamingHandle[bool], error) {
     fbthriftReq := &reqMyInteractionTruthify{
     }
     fbthriftResp := newRespMyInteractionTruthify()
@@ -106,30 +100,24 @@ func (c *myInteractionClientImpl) Truthify(ctx context.Context) (iter.Seq2[bool,
         return newStreamMyInteractionTruthify()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "MyInteraction.truthify",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(bool, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(false, err)
-                return
-            }
-            fbthriftRes := elem.(*streamMyInteractionTruthify)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (bool, error) {
+        fbthriftRes, ok := elem.(*streamMyInteractionTruthify)
+        if !ok {
+            return false, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftHandle, nil
 }
 
 func (c *myInteractionClientImpl) Encode(ctx context.Context) ([]int32, func(iter.Seq2[string, error]) ([]byte, error), error) {
@@ -410,7 +398,7 @@ type MyInteractionFastClient interface {
     io.Closer
     Frobnicate(ctx context.Context) (int32, error)
     Ping(ctx context.Context) (error)
-    Truthify(ctx context.Context) (iter.Seq2[bool, error], error)
+    Truthify(ctx context.Context) (thrift.StreamingHandle[bool], error)
     Encode(ctx context.Context) ([]int32, func(iter.Seq2[string, error]) ([]byte, error), error)
 }
 
@@ -457,13 +445,7 @@ func (c *myInteractionFastClientImpl) Ping(ctx context.Context) (error) {
     return c.ch.SendRequestNoResponse(ctx, "MyInteractionFast.ping", fbthriftReq)
 }
 
-func (c *myInteractionFastClientImpl) Truthify(ctx context.Context) (iter.Seq2[bool, error], error) {
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
+func (c *myInteractionFastClientImpl) Truthify(ctx context.Context) (thrift.StreamingHandle[bool], error) {
     fbthriftReq := &reqMyInteractionFastTruthify{
     }
     fbthriftResp := newRespMyInteractionFastTruthify()
@@ -474,30 +456,24 @@ func (c *myInteractionFastClientImpl) Truthify(ctx context.Context) (iter.Seq2[b
         return newStreamMyInteractionFastTruthify()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "MyInteractionFast.truthify",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(bool, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(false, err)
-                return
-            }
-            fbthriftRes := elem.(*streamMyInteractionFastTruthify)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (bool, error) {
+        fbthriftRes, ok := elem.(*streamMyInteractionFastTruthify)
+        if !ok {
+            return false, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftHandle, nil
 }
 
 func (c *myInteractionFastClientImpl) Encode(ctx context.Context) ([]int32, func(iter.Seq2[string, error]) ([]byte, error), error) {
@@ -1019,7 +995,7 @@ type MyServiceClient interface {
     Foo(ctx context.Context) (error)
     Interact(ctx context.Context, arg int32) (MyInteractionClient, error)
     InteractFast(ctx context.Context) (MyInteractionFastClient, int32, error)
-    Serialize(ctx context.Context) (SerialInteractionClient, int32, iter.Seq2[int32, error], error)
+    Serialize(ctx context.Context) (SerialInteractionClient, int32, thrift.StreamingHandle[int32], error)
 }
 
 type myServiceClientImpl struct {
@@ -1096,14 +1072,8 @@ func (c *myServiceClientImpl) InteractFast(ctx context.Context) (MyInteractionFa
     return fbthriftInteractionClient, fbthriftResp.GetSuccess(), nil
 }
 
-func (c *myServiceClientImpl) Serialize(ctx context.Context) (SerialInteractionClient, int32, iter.Seq2[int32, error], error) {
+func (c *myServiceClientImpl) Serialize(ctx context.Context) (SerialInteractionClient, int32, thrift.StreamingHandle[int32], error) {
     var fbthriftRespZero int32
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return nil, fbthriftRespZero, nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
     fbthriftReq := &reqMyServiceSerialize{
     }
     fbthriftResp := newRespMyServiceSerialize()
@@ -1115,30 +1085,24 @@ func (c *myServiceClientImpl) Serialize(ctx context.Context) (SerialInteractionC
         return newStreamMyServiceSerialize()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "serialize",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return nil, fbthriftRespZero, nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(int32, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamMyServiceSerialize)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamMyServiceSerialize)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftInteractionClient, fbthriftResp.GetSuccess(), fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftInteractionClient, fbthriftResp.GetSuccess(), fbthriftHandle, nil
 }
 
 
@@ -1332,7 +1296,7 @@ type FactoriesClient interface {
     Foo(ctx context.Context) (error)
     Interact(ctx context.Context, arg int32) (MyInteractionClient, error)
     InteractFast(ctx context.Context) (MyInteractionFastClient, int32, error)
-    Serialize(ctx context.Context) (SerialInteractionClient, int32, iter.Seq2[int32, error], error)
+    Serialize(ctx context.Context) (SerialInteractionClient, int32, thrift.StreamingHandle[int32], error)
 }
 
 type factoriesClientImpl struct {
@@ -1409,14 +1373,8 @@ func (c *factoriesClientImpl) InteractFast(ctx context.Context) (MyInteractionFa
     return fbthriftInteractionClient, fbthriftResp.GetSuccess(), nil
 }
 
-func (c *factoriesClientImpl) Serialize(ctx context.Context) (SerialInteractionClient, int32, iter.Seq2[int32, error], error) {
+func (c *factoriesClientImpl) Serialize(ctx context.Context) (SerialInteractionClient, int32, thrift.StreamingHandle[int32], error) {
     var fbthriftRespZero int32
-    // Must be a cancellable context to prevent goroutine leaks
-    if ctx.Done() == nil {
-		return nil, fbthriftRespZero, nil, errors.New("context does not support cancellation")
-	}
-    fbthriftStreamCtx, fbthriftStreamCancel := context.WithCancel(ctx)
-
     fbthriftReq := &reqFactoriesSerialize{
     }
     fbthriftResp := newRespFactoriesSerialize()
@@ -1428,30 +1386,24 @@ func (c *factoriesClientImpl) Serialize(ctx context.Context) (SerialInteractionC
         return newStreamFactoriesSerialize()
     }
 
-    fbthriftStreamSeq, fbthriftErr := fbthriftChannel.SendRequestStream(
-        fbthriftStreamCtx,
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
         "serialize",
         fbthriftReq,
         fbthriftResp,
         fbthriftNewStreamElemFn,
     )
     if fbthriftErr != nil {
-        fbthriftStreamCancel()
         return nil, fbthriftRespZero, nil, fbthriftErr
     }
-    fbthriftStreamSeqAdapter := func(yield func(int32, error) bool) {
-        for elem, err := range fbthriftStreamSeq {
-            if err != nil {
-                yield(0, err)
-                return
-            }
-            fbthriftRes := elem.(*streamFactoriesSerialize)
-            if !yield(fbthriftRes.GetSuccess(), nil) {
-                return
-            }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamFactoriesSerialize)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
         }
-    }
-    return fbthriftInteractionClient, fbthriftResp.GetSuccess(), fbthriftStreamSeqAdapter, nil
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftInteractionClient, fbthriftResp.GetSuccess(), fbthriftHandle, nil
 }
 
 

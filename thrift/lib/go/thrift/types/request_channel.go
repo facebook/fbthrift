@@ -27,12 +27,6 @@ import (
 // DefaultStreamBufferSize is the default size of the buffered channel used for streaming.
 const DefaultStreamBufferSize = 100
 
-// StreamingHandle is the handle for a server-to-client stream returned by
-// SendRequestStream. It is a sequence of stream elements (or a terminal
-// error) decoded as ReadableStruct; generated code adapts it to the
-// concrete element type.
-type StreamingHandle[T ReadableStruct] iter.Seq2[T, error]
-
 // RequestChannel is an API that implements the most minimal surface for
 // generated client code. An implementation:
 //   - Must be thread-safe
