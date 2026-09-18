@@ -41,7 +41,7 @@ interface IThriftShapishSyncStruct extends IThriftShapishSyncWritePropsStruct {
 
   <<__Override>>
   public function __toShape()[]: this::TShape;
-  <<__Override>>
+  <<__Override, __NeedsConcrete>>
   public static function __fromShape(this::TShape $shape)[]: this;
 
 }

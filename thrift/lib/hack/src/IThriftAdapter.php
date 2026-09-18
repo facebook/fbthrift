@@ -23,6 +23,7 @@ interface IThriftAdapter {
   public static function toThrift(
     this::THackType $hack_obj,
   )[write_props]: this::TThriftType;
+  <<__NeedsConcrete>>
   public static function fromThrift(
     this::TThriftType $thrift_obj,
   )[write_props]: this::THackType;

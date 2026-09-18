@@ -37,6 +37,7 @@ interface IThriftStruct extends \HH\IMemoizeParam {
   abstract const type TConstructorShape;
 
   public function __construct()[];
+  <<__NeedsConcrete>>
   public static function withDefaultValues()[]: this;
   public function getName()[]: string;
   public function read(
@@ -58,6 +59,7 @@ interface IThriftStructWithObjectKeyContainers extends IThriftStruct {}
 // @oss-disable: <<__ConsistentConstruct, Oncalls('thrift')>>
 // @oss-enable <<__ConsistentConstruct>>
 interface IThriftSyncStruct extends IThriftStruct {
+  <<__NeedsConcrete>>
   public static function fromShape(this::TConstructorShape $shape)[]: this;
 }
 
