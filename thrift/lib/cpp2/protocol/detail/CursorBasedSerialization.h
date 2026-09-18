@@ -245,7 +245,7 @@ class BaseCursorWriter {
   BaseCursorWriter(const BaseCursorWriter&) = delete;
   BaseCursorWriter& operator=(const BaseCursorWriter&) = delete;
 
-  template <typename T>
+  template <typename T, typename Writer>
   friend class StructuredCursorWriter;
 };
 
