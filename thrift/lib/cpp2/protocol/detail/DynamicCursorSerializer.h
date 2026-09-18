@@ -70,7 +70,7 @@ class StructuredDynamicCursorReader : detail::BaseCursorReader<ProtocolReader> {
           // It isn't possible to read json strings as string_view due to escape
           // sequences.
           ProtocolReader::kCanReadStringView()>;
-  using ContainerDynamicCursorReader =
+  using ContainerReader =
       ContainerDynamicCursorReader<ProtocolReader, Contiguous>;
 
  public:
@@ -178,20 +178,20 @@ class StructuredDynamicCursorReader : detail::BaseCursorReader<ProtocolReader> {
     state_ = State::Abandoned;
   }
 
-  ContainerDynamicCursorReader beginReadContainer() {
+  ContainerReader beginReadContainer() {
     beforeReadField();
     auto fieldType = fieldTypeRef();
     state_ = State::Child;
-    return ContainerDynamicCursorReader(
+    return ContainerReader(
         protocol_, readState_.fieldType, std::move(fieldType));
   }
-  void endRead(ContainerDynamicCursorReader&& reader) {
+  void endRead(ContainerReader&& reader) {
     checkState(State::Child);
     reader.finalize();
     afterReadField();
     state_ = State::Active;
   }
-  void abandonRead(ContainerDynamicCursorReader&& reader) {
+  void abandonRead(ContainerReader&& reader) {
     checkState(State::Child);
     reader.abandon();
     state_ = State::Abandoned;
@@ -275,7 +275,7 @@ class StructuredDynamicCursorReader : detail::BaseCursorReader<ProtocolReader> {
   typename ProtocolReader::StructReadState readState_{};
   const type_system::StructuredNode* structuredNode_{};
 
-  friend ContainerDynamicCursorReader;
+  friend ContainerReader;
   template <typename Reader, typename Writer>
   friend class DynamicCursorSerializationWrapper;
 };
@@ -289,7 +289,7 @@ class ContainerDynamicCursorReader : detail::BaseCursorReader<ProtocolReader> {
   using Base::state_;
   template <typename Tag>
   using view_type = detail::lift_view_t<type::native_type<Tag>, Contiguous>;
-  using StructuredDynamicCursorReader =
+  using StructuredReader =
       StructuredDynamicCursorReader<ProtocolReader, Contiguous>;
   template <typename Tag>
   static constexpr bool vectorize =
@@ -410,7 +410,7 @@ class ContainerDynamicCursorReader : detail::BaseCursorReader<ProtocolReader> {
         begin.getPositionInCurrentBuffer();
   }
 
-  StructuredDynamicCursorReader beginReadStructured() {
+  StructuredReader beginReadStructured() {
     checkRemaining();
     if (nextTType() != protocol::TType::T_STRUCT) {
       folly::throw_exception<std::runtime_error>(
@@ -426,15 +426,15 @@ class ContainerDynamicCursorReader : detail::BaseCursorReader<ProtocolReader> {
       childNode = &elementType->asStructured();
     }
     state_ = State::Child;
-    return StructuredDynamicCursorReader(protocol_, childNode);
+    return StructuredReader(protocol_, childNode);
   }
-  void endRead(StructuredDynamicCursorReader&& reader) {
+  void endRead(StructuredReader&& reader) {
     checkState(State::Child);
     reader.finalize();
     advance();
     state_ = State::Active;
   }
-  void abandonRead(StructuredDynamicCursorReader&& reader) {
+  void abandonRead(StructuredReader&& reader) {
     checkState(State::Child);
     reader.abandon();
     state_ = State::Abandoned;
@@ -543,7 +543,7 @@ class ContainerDynamicCursorReader : detail::BaseCursorReader<ProtocolReader> {
     state_ = State::Done;
   }
 
-  friend StructuredDynamicCursorReader;
+  friend StructuredReader;
 };
 
 template <typename ProtocolWriter>
@@ -555,8 +555,7 @@ class StructuredDynamicCursorWriter : detail::BaseCursorWriter<ProtocolWriter> {
   using Base::state_;
   template <typename Tag>
   using view_type = detail::lift_view_t<type::native_type<Tag>, true>;
-  using ContainerDynamicCursorWriter =
-      ContainerDynamicCursorWriter<ProtocolWriter>;
+  using ContainerWriter = ContainerDynamicCursorWriter<ProtocolWriter>;
 
  public:
   // Get the TypeRef for a field (if available)
@@ -644,8 +643,7 @@ class StructuredDynamicCursorWriter : detail::BaseCursorWriter<ProtocolWriter> {
   }
 
   template <typename Tag>
-  ContainerDynamicCursorWriter beginWriteContainer(
-      int16_t fieldId, Tag, uint32_t size) {
+  ContainerWriter beginWriteContainer(int16_t fieldId, Tag, uint32_t size) {
     std::optional<protocol::TType> keyTypeForMap;
     if constexpr (type::is_a_v<Tag, type::map_c>) {
       keyTypeForMap = op::typeTagToTType<typename Tag::key_tag>;
@@ -657,7 +655,7 @@ class StructuredDynamicCursorWriter : detail::BaseCursorWriter<ProtocolWriter> {
         op::typeTagToTType<typename Tag::value_tag>,
         keyTypeForMap);
   }
-  ContainerDynamicCursorWriter beginWriteContainer(
+  ContainerWriter beginWriteContainer(
       int16_t fieldId,
       protocol::TType containerType,
       uint32_t size,
@@ -666,7 +664,7 @@ class StructuredDynamicCursorWriter : detail::BaseCursorWriter<ProtocolWriter> {
     beforeWriteField(fieldId, containerType);
     auto fieldType = getFieldTypeRef(fieldId);
     state_ = State::Child;
-    return ContainerDynamicCursorWriter(
+    return ContainerWriter(
         protocol_,
         containerType,
         size,
@@ -674,13 +672,13 @@ class StructuredDynamicCursorWriter : detail::BaseCursorWriter<ProtocolWriter> {
         keyTypeForMap,
         std::move(fieldType));
   }
-  void endWrite(ContainerDynamicCursorWriter&& writer) {
+  void endWrite(ContainerWriter&& writer) {
     checkState(State::Child);
     writer.finalize();
     afterWriteField();
     state_ = State::Active;
   }
-  void abandonWrite(ContainerDynamicCursorWriter&& writer) {
+  void abandonWrite(ContainerWriter&& writer) {
     checkState(State::Child);
     writer.abandon();
     state_ = State::Abandoned;
@@ -725,7 +723,7 @@ class StructuredDynamicCursorWriter : detail::BaseCursorWriter<ProtocolWriter> {
 
   const type_system::StructuredNode* structuredNode_;
 
-  friend ContainerDynamicCursorWriter;
+  friend ContainerWriter;
   template <typename Reader, typename Writer>
   friend class DynamicCursorSerializationWrapper;
 };
@@ -739,8 +737,7 @@ class ContainerDynamicCursorWriter : detail::BaseCursorWriter<ProtocolWriter> {
   using Base::state_;
   template <typename Tag>
   using view_type = detail::lift_view_t<type::native_type<Tag>, true>;
-  using StructuredDynamicCursorWriter =
-      StructuredDynamicCursorWriter<ProtocolWriter>;
+  using StructuredWriter = StructuredDynamicCursorWriter<ProtocolWriter>;
   template <typename Tag>
   static constexpr bool vectorize =
       ProtocolWriter::kSupportsArithmeticVectors() &&
@@ -827,7 +824,7 @@ class ContainerDynamicCursorWriter : detail::BaseCursorWriter<ProtocolWriter> {
     advance();
   }
 
-  StructuredDynamicCursorWriter beginWriteStructured() {
+  StructuredWriter beginWriteStructured() {
     checkRemaining();
     auto elementType = nextTypeRef();
     const type_system::StructuredNode* childNode = nullptr;
@@ -839,15 +836,15 @@ class ContainerDynamicCursorWriter : detail::BaseCursorWriter<ProtocolWriter> {
       childNode = &elementType->asStructured();
     }
     state_ = State::Child;
-    return StructuredDynamicCursorWriter(protocol_, childNode);
+    return StructuredWriter(protocol_, childNode);
   }
-  void endWrite(StructuredDynamicCursorWriter&& writer) {
+  void endWrite(StructuredWriter&& writer) {
     checkState(State::Child);
     writer.finalize();
     advance();
     state_ = State::Active;
   }
-  void abandonWrite(StructuredDynamicCursorWriter&& writer) {
+  void abandonWrite(StructuredWriter&& writer) {
     checkState(State::Child);
     writer.abandon();
     state_ = State::Abandoned;
@@ -958,12 +955,12 @@ class ContainerDynamicCursorWriter : detail::BaseCursorWriter<ProtocolWriter> {
     state_ = State::Done;
   }
 
-  friend StructuredDynamicCursorWriter;
+  friend StructuredWriter;
 };
 
 template <typename ProtocolReader, typename ProtocolWriter>
 class DynamicCursorSerializationWrapper {
-  using Serializer = Serializer<ProtocolReader, ProtocolWriter>;
+  using ProtocolSerializer = Serializer<ProtocolReader, ProtocolWriter>;
 
  public:
   DynamicCursorSerializationWrapper() = default;
@@ -1032,7 +1029,7 @@ class DynamicCursorSerializationWrapper {
           "Concurrent reads/writes not supported");
     }
     checkHasData();
-    return Serializer::template deserialize<T>(serializedData_.get());
+    return ProtocolSerializer::template deserialize<T>(serializedData_.get());
   }
 
   /**

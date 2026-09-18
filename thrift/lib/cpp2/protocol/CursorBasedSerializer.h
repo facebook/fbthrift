@@ -87,7 +87,7 @@ class CursorSerializationWrapper {
   static_assert(
       std::is_same_v<ProtocolWriter, BinaryProtocolWriter>,
       "ProtocolWriter must be BinaryProtocolWriter");
-  using Serializer = Serializer<ProtocolReader, ProtocolWriter>;
+  using ProtocolSerializer = Serializer<ProtocolReader, ProtocolWriter>;
 
  public:
   CursorSerializationWrapper() = default;
@@ -135,7 +135,7 @@ class CursorSerializationWrapper {
           "Concurrent reads/writes not supported");
     }
     checkHasData();
-    return Serializer::template deserialize<T>(serializedData_.get());
+    return ProtocolSerializer::template deserialize<T>(serializedData_.get());
   }
 
   /**
