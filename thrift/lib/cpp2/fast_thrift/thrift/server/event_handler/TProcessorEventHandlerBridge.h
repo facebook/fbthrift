@@ -94,6 +94,23 @@ inline std::uint32_t payloadBytes(
       : static_cast<std::uint32_t>(data->computeChainDataLength());
 }
 
+inline bool isAppUnknownException(
+    const ThriftInitialResponsePayload& reply) noexcept {
+  if (reply.metadata == nullptr ||
+      !reply.metadata->payloadMetadata().has_value()) {
+    return false;
+  }
+  const auto& payloadMetadata = *reply.metadata->payloadMetadata();
+  if (payloadMetadata.getType() !=
+      apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
+    return false;
+  }
+  const auto& exceptionMetadata = *payloadMetadata.exceptionMetadata();
+  return !exceptionMetadata.metadata().has_value() ||
+      exceptionMetadata.metadata()->getType() ==
+      apache::thrift::PayloadExceptionMetadata::Type::appUnknownException;
+}
+
 // Moves what the handlers wrote onto the outgoing reply. Only the normal reply
 // carries metadata; an error frame has nowhere to put them.
 inline void stampWriteHeaders(
@@ -307,22 +324,26 @@ class TProcessorEventHandlerBridge {
     auto state = std::move(it->second);
     requests_.erase(it);
 
-    // The write-side callbacks bracket the serialization of a reply body, so
-    // a frame that carries none does not get them — the handlers' contexts are
-    // still returned below, which is the pairing they are promised.
+    // The write-side callbacks bracket a successful reply body. Classic
+    // handlers do not receive them when the service or a downstream
+    // interceptor rejects the request. The handlers' contexts are still
+    // returned below, which is the pairing they are promised.
     if (reply != nullptr) {
-      // A response that resolved inline is still under the read side's guard,
-      // which installed this same context; re-installing swaps for nothing.
-      const auto& ambient = state->context->ambientContext();
-      std::optional<folly::RequestContextScopeGuard> guard;
-      if (folly::RequestContext::try_get() != ambient.get()) {
-        guard.emplace(ambient);
+      if (!event_handler_detail::isAppUnknownException(*reply)) {
+        // A response that resolved inline is still under the read side's
+        // guard, which installed this same context; re-installing swaps for
+        // nothing.
+        const auto& ambient = state->context->ambientContext();
+        std::optional<folly::RequestContextScopeGuard> guard;
+        if (folly::RequestContext::try_get() != ambient.get()) {
+          guard.emplace(ambient);
+        }
+        // Deliberately not caught: these run after the request has been served,
+        // so there is no verdict left to honour and swallowing would hide a
+        // handler bug. An escape terminates, as it would on a classic server.
+        state->chain.preWrite();
+        state->chain.postWrite(event_handler_detail::payloadBytes(reply->data));
       }
-      // Deliberately not caught: these run after the request has been served,
-      // so there is no verdict left to honour and swallowing would hide a
-      // handler bug. An escape terminates, as it would on a classic server.
-      state->chain.preWrite();
-      state->chain.postWrite(event_handler_detail::payloadBytes(reply->data));
 
       // After postWrite: handlers write response headers there, and the reply
       // has not been serialized yet.

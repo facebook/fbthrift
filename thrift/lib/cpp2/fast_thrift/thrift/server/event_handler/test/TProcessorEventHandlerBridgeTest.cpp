@@ -554,6 +554,68 @@ TEST(TProcessorEventHandlerBridgeTest, ErrorFrameSkipsWriteCallbacksButFrees) {
       log.calls.end());
 }
 
+// An application error produced before the service reply skips write-side
+// callbacks, matching classic ServiceInterceptor behavior.
+TEST(
+    TProcessorEventHandlerBridgeTest,
+    ApplicationExceptionSkipsWriteCallbacksButFrees) {
+  CallLog log;
+  Bridge bridge(makeConfig(&log));
+  FakeContext ctx;
+  auto conn = makeConn();
+  establish(bridge, ctx, conn);
+
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 5, "ping")));
+  (void)bridge.onWrite(
+      ctx,
+      erase_and_box(makeUnknownExceptionMessage(
+          5,
+          folly::make_exception_wrapper<apache::thrift::TApplicationException>(
+              "denied"))));
+
+  EXPECT_EQ(
+      std::find(log.calls.begin(), log.calls.end(), "preWrite"),
+      log.calls.end());
+  EXPECT_EQ(
+      std::find(log.calls.begin(), log.calls.end(), "postWrite"),
+      log.calls.end());
+  EXPECT_NE(
+      std::find(log.calls.begin(), log.calls.end(), "freeContext"),
+      log.calls.end());
+}
+
+// Declared exceptions are service replies, so classic runs write-side
+// callbacks for them just as it does for successful replies.
+TEST(
+    TProcessorEventHandlerBridgeTest,
+    DeclaredExceptionRunsWriteCallbacksAndFrees) {
+  CallLog log;
+  Bridge bridge(makeConfig(&log));
+  FakeContext ctx;
+  auto conn = makeConn();
+  establish(bridge, ctx, conn);
+
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 5, "ping")));
+  auto metadata = std::make_unique<apache::thrift::ResponseRpcMetadata>();
+  fillDeclaredExceptionMetadata(*metadata, "Busy", "busy");
+  (void)bridge.onWrite(
+      ctx,
+      erase_and_box(makeResponseMessage(
+          5, folly::IOBuf::copyBuffer("declared"), std::move(metadata))));
+
+  EXPECT_NE(
+      std::find(log.calls.begin(), log.calls.end(), "preWrite"),
+      log.calls.end());
+  EXPECT_NE(
+      std::find(log.calls.begin(), log.calls.end(), "postWrite"),
+      log.calls.end());
+  EXPECT_NE(
+      std::find(log.calls.begin(), log.calls.end(), "freeContext"),
+      log.calls.end());
+}
+
 // A response the bridge never saw a request for — a connection-level frame, or
 // the answer to a request it refused — passes through untouched.
 TEST(TProcessorEventHandlerBridgeTest, UnmatchedResponsePassesThrough) {
