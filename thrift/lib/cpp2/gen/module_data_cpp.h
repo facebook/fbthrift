@@ -32,7 +32,7 @@
 // is then unable to remove unused data without also removing used data.
 // This has a similar effect to the "retain" attribute, but works with older
 // toolchains.
-#define THRIFT_DATA_MEMBER [[gnu::used]] [[gnu::section(".rodata.thrift.data")]]
+#define THRIFT_DATA_MEMBER [[gnu::used]] [[gnu::section(".data.rel.ro.thrift.data")]]
 #else
 #define THRIFT_DATA_MEMBER
 #endif
