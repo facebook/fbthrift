@@ -31,6 +31,7 @@ interface IThriftShapishSyncWritePropsStruct extends IThriftShapishStruct {
   abstract const type TShape as shape(...);
 
   public function __toShape()[write_props]: this::TShape;
+  <<__NeedsConcrete>>
   public static function __fromShape(this::TShape $shape)[write_props]: this;
 
 }
