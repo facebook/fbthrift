@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <map>
+
 #include <folly/Exception.h>
 #include <folly/container/F14Map.h>
 #include <thrift/lib/thrift/gen-cpp2/type_types.h>
@@ -29,7 +31,7 @@ std::string debugFormatType(const type::Type& type);
 template <typename Mask>
 class ValidatingTypeMap {
  public:
-#if FOLLY_F14_VECTOR_INTRINSICS_AVAILABLE
+#if FOLLY_F14_VECTOR_INTRINSICS_AVAILABLE && !defined(_MSC_VER)
   using map_type = folly::F14VectorMap<type::Type, Mask>;
   void reserve(std::size_t n) { map_.reserve(n); }
   template <typename V>
@@ -37,8 +39,8 @@ class ValidatingTypeMap {
     return map_.visitAllocationClasses(std::forward<V>(visitor));
   }
 #else
-  // f14 map is not available in some platforms. Default to std::map which is
-  // able to handle incomplete types
+  // Default to std::map when F14 is unavailable or cannot handle incomplete
+  // types.
   using map_type = std::map<type::Type, Mask>;
   // std::map doesn't support reserve :(
   void reserve(std::size_t) {}
