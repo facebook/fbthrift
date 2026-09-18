@@ -1911,8 +1911,9 @@ void t_hack_generator::init_generator() {
     init_codegen_file(
         f_consts_, get_out_dir() + get_program()->name() + "_constants.php");
     constants_values_.clear();
-    f_consts_ << "class " << get_constants_class_name()
-              << " implements \\IThriftConstants {\n";
+    f_consts_ << "class " << get_constants_class_name() << "\n"
+              << "  implements\n"
+              << "    \\IThriftConstants {\n\n\n";
   }
 
   if (!program_->structs_and_unions().empty()) {
@@ -1969,12 +1970,11 @@ void t_hack_generator::close_generator() {
   if (!skip_constants_codegen()) {
     // write out the values array
     indent_up();
-    f_consts_ << "\n";
     // write structured annotations
     f_consts_
+        << indent() << "public static function getAllStructuredAnnotations(\n"
         << indent()
-        << "public static function getAllStructuredAnnotations()[write_props]: "
-           "dict<string, dict<string, \\IThriftStruct>> {\n";
+        << ")[write_props]: dict<string, dict<string, \\IThriftStruct>> {\n";
     indent_up();
 
     std::stringstream annotations_out;
@@ -2004,7 +2004,7 @@ void t_hack_generator::close_generator() {
     f_consts_ << indent() << "}\n";
     indent_down();
     // close constants class
-    f_consts_ << "}\n\n";
+    f_consts_ << "}\n";
     f_consts_.close();
   }
   if (f_adapted_types_.is_open()) {
@@ -8214,8 +8214,9 @@ void t_hack_generator::generate_php_docstring(
         "", // comment_start
         " * ", // line_prefix
         tconst->doc(),
-        ""); // comment_end
-    indent(out) << " * \n";
+        "", // comment_end
+        true); // trim_trailing_whitespace
+    indent(out) << " *\n";
   }
   indent(out) << " * " << "Original thrift constant:-\n";
   indent(out) << " * " << tconst->type()->get_full_name() << " "

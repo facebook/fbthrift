@@ -8,17 +8,20 @@
 
 namespace facebook\thrift\test\fixtures\service_schema;
 
-class module_CONSTANTS implements \IThriftConstants {
+class module_CONSTANTS
+  implements
+    \IThriftConstants {
+
+
   /**
    * Original thrift constant:-
    * binary _fbthrift_schema_db27c1f89cb27d2
    */
   const string _fbthrift_schema_db27c1f89cb27d2 = /*<truncated>*/;
 
-
-  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations(
+  )[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
     ];
   }
 }
-

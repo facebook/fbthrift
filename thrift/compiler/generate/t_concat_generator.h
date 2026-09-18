@@ -39,12 +39,18 @@ class t_concat_generator : public t_generator {
    */
   void generate_program() override;
 
+  /**
+   * @param trim_trailing_whitespace strips trailing whitespace from each
+   *     emitted line, so that a blank line in `contents` yields a bare
+   *     `line_prefix` rather than one padded to its full width.
+   */
   void generate_docstring_comment(
       std::ofstream& out,
       const std::string& comment_start,
       const std::string& line_prefix,
       const std::string& contents,
-      const std::string& comment_end);
+      const std::string& comment_end,
+      bool trim_trailing_whitespace = false);
 
   /**
    * Escape string to use one in generated sources.

@@ -8,7 +8,11 @@
 
 namespace facebook\thrift\test\fixtures\adapter;
 
-class module_CONSTANTS implements \IThriftConstants {
+class module_CONSTANTS
+  implements
+    \IThriftConstants {
+
+
   /**
    * Original thrift constant:-
    * i32 var1
@@ -136,8 +140,8 @@ class module_CONSTANTS implements \IThriftConstants {
     };
   }
 
-
-  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations(
+  )[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
       'var1' => dict[
         '\facebook\thrift\test\fixtures\adapter\Config' => \facebook\thrift\test\fixtures\adapter\Config::fromShape(
@@ -226,4 +230,3 @@ class module_CONSTANTS implements \IThriftConstants {
     ];
   }
 }
-

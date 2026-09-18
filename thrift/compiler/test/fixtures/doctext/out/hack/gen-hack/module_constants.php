@@ -6,10 +6,14 @@
  *  @generated
  */
 
-class module_CONSTANTS implements \IThriftConstants {
+class module_CONSTANTS
+  implements
+    \IThriftConstants {
+
+
   /**
    * Constant foo
-   * 
+   *
    * Original thrift constant:-
    * string FOO
    */
@@ -19,7 +23,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * Multi-
    * line
    * slash comment
-   * 
+   *
    * Original thrift constant:-
    * i32 BAR
    */
@@ -27,7 +31,7 @@ class module_CONSTANTS implements \IThriftConstants {
 
   /**
    * BIFF has your mail
-   * 
+   *
    * Original thrift constant:-
    * i32 BIFF
    */
@@ -39,10 +43,9 @@ class module_CONSTANTS implements \IThriftConstants {
    */
   const int SHOUTY = 11;
 
-
-  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations(
+  )[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
     ];
   }
 }
-

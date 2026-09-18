@@ -6,7 +6,11 @@
  *  @generated
  */
 
-class annotations_CONSTANTS implements \IThriftConstants {
+class annotations_CONSTANTS
+  implements
+    \IThriftConstants {
+
+
   /**
    * Original thrift constant:-
    * map<string, string> MyConst
@@ -16,8 +20,8 @@ class annotations_CONSTANTS implements \IThriftConstants {
     "CONST" => "const",
   ];
 
-
-  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations(
+  )[write_props]: dict<string, dict<string, \IThriftStruct>> {
     $structured_annotation_recursive0 = structured_annotation_recursive::withDefaultValues();
     $structured_annotation_recursive0->name = "abc_constants";
 
@@ -60,4 +64,3 @@ class annotations_CONSTANTS implements \IThriftConstants {
     ];
   }
 }
-

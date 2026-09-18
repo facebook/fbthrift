@@ -6,7 +6,11 @@
  *  @generated
  */
 
-class module_CONSTANTS implements \IThriftConstants {
+class module_CONSTANTS
+  implements
+    \IThriftConstants {
+
+
   /**
    * Original thrift constant:-
    * i64 max_i64_const
@@ -55,10 +59,9 @@ class module_CONSTANTS implements \IThriftConstants {
    */
   const int min_byte_const = -128;
 
-
-  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations(
+  )[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
     ];
   }
 }
-

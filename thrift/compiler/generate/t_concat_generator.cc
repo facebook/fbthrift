@@ -107,14 +107,19 @@ void t_concat_generator::generate_docstring_comment(
     const string& comment_start,
     const string& line_prefix,
     const string& contents,
-    const string& comment_end) {
+    const string& comment_end,
+    bool trim_trailing_whitespace) {
   if (comment_start != "") {
     indent(out) << comment_start;
   }
   stringstream docs(contents, ios_base::in);
   std::string line;
   while (std::getline(docs, line)) {
-    indent(out) << line_prefix << line << std::endl;
+    string text = line_prefix + line;
+    if (trim_trailing_whitespace) {
+      text.erase(text.find_last_not_of(" \t") + 1);
+    }
+    indent(out) << text << std::endl;
   }
   if (comment_end != "") {
     indent(out) << comment_end;

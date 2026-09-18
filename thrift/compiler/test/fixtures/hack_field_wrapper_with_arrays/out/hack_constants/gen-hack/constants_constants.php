@@ -6,7 +6,11 @@
  *  @generated
  */
 
-class constants_CONSTANTS implements \IThriftConstants {
+class constants_CONSTANTS
+  implements
+    \IThriftConstants {
+
+
   /**
    * Original thrift constant:-
    * constants.MyCompany my_company
@@ -131,8 +135,8 @@ class constants_CONSTANTS implements \IThriftConstants {
     ];
   }
 
-
-  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations(
+  )[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
       'engineers' => dict[
         'AnnotationStruct' => AnnotationStruct::withDefaultValues(),
@@ -140,4 +144,3 @@ class constants_CONSTANTS implements \IThriftConstants {
     ];
   }
 }
-

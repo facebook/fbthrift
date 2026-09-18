@@ -8,17 +8,20 @@
 
 namespace test\foo\php\ns;
 
-class AnnotatedPhpConstants implements \IThriftConstants {
+class AnnotatedPhpConstants
+  implements
+    \IThriftConstants {
+
+
   /**
    * Original thrift constant:-
    * i32 ANSWER
    */
   const int ANSWER = 42;
 
-
-  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations(
+  )[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
     ];
   }
 }
-

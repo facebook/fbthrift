@@ -8,7 +8,11 @@
 
 namespace test\fixtures\basic_structured_annotations;
 
-class module_CONSTANTS implements \IThriftConstants {
+class module_CONSTANTS
+  implements
+    \IThriftConstants {
+
+
   /**
    * Original thrift constant:-
    * map<string, string> MyConst
@@ -21,8 +25,8 @@ class module_CONSTANTS implements \IThriftConstants {
     };
   }
 
-
-  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations(
+  )[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
       'MyConst' => dict[
         '\test\fixtures\basic_structured_annotations\structured_annotation_inline' => \test\fixtures\basic_structured_annotations\structured_annotation_inline::fromShape(
@@ -34,4 +38,3 @@ class module_CONSTANTS implements \IThriftConstants {
     ];
   }
 }
-
