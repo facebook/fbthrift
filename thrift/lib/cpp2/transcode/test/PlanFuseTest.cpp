@@ -282,6 +282,52 @@ TEST(PlanFuseTest, FuseStructOps_TakesFieldWritePresenceFromTarget) {
   EXPECT_TRUE(fused.fields[0].required);
 }
 
+TEST(PlanFuseTest, FuseStructOps_KeepsUnionTaggingDirection) {
+  StructOp source;
+  source.fieldIdent = FieldIdent::ByName;
+  source.writeTaggedUnion =
+      TaggedUnion{.tag = "ignoredSourceTag", .content = {}};
+  source.fields.push_back(scalarField(
+      1,
+      "a",
+      ValueKind::I32,
+      ReadFn::ParseDecimalInt,
+      WriteFn::IntToDecimalText,
+      0));
+
+  StructOp target;
+  target.fieldIdent = FieldIdent::ByName;
+  target.writeFieldIdent = FieldIdent::ByName;
+  target.readTaggedUnion =
+      TaggedUnion{.tag = "ignoredTargetTag", .content = {}};
+  target.writeTaggedUnion = TaggedUnion{.tag = "kind", .content = {}};
+  target.fields.push_back(scalarField(
+      1,
+      "a",
+      ValueKind::I32,
+      ReadFn::ParseDecimalInt,
+      WriteFn::IntToDecimalText,
+      0));
+
+  auto result = fuseStructOps(source, target);
+  ASSERT_FALSE(result.hasError()) << result.error().message;
+  const auto& fused = std::get<StructOp>(*result);
+
+  EXPECT_FALSE(fused.readTaggedUnion.has_value());
+  ASSERT_TRUE(fused.writeTaggedUnion.has_value());
+  EXPECT_EQ(fused.writeTaggedUnion->tag, "kind");
+
+  source.readTaggedUnion = TaggedUnion{.tag = "kind", .content = {}};
+  target.writeTaggedUnion.reset();
+  auto reverseResult = fuseStructOps(source, target);
+  ASSERT_FALSE(reverseResult.hasError()) << reverseResult.error().message;
+  const auto& reverse = std::get<StructOp>(*reverseResult);
+
+  ASSERT_TRUE(reverse.readTaggedUnion.has_value());
+  EXPECT_EQ(reverse.readTaggedUnion->tag, "kind");
+  EXPECT_FALSE(reverse.writeTaggedUnion.has_value());
+}
+
 TEST(PlanFuseTest, FuseStructOps_PreservesSourceRepeatedInGeneralPath) {
   StructOp source;
   source.fieldIdent = FieldIdent::ById;

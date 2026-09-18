@@ -364,6 +364,11 @@ enum class StructOutputMode : uint8_t {
   Flattened,
 };
 
+struct TaggedUnion {
+  std::string tag;
+  std::optional<std::string> content;
+};
+
 /**
  * Transcode a struct: read field headers → dispatch by ID/name → per-field
  * commands.
@@ -403,6 +408,11 @@ struct StructOp {
   // known, and emit its value without writing the enclosing struct's field
   // header or end marker.
   StructOutputMode outputMode = StructOutputMode::Normal;
+
+  // When set on a union, `tag` identifies the active arm. `content` optionally
+  // names a separate location for the arm's value.
+  std::optional<TaggedUnion> readTaggedUnion;
+  std::optional<TaggedUnion> writeTaggedUnion;
 
   // For struct memory target: isset management
   using SetIssetFn = void (*)(void*, ptrdiff_t, bool);
