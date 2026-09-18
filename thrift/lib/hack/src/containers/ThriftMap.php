@@ -11,7 +11,7 @@
  * traversal, `getKeys()`, `getValues()`, or `toShape()` returning a stable
  * order.
  */
-final class ThriftMap<reify TKey, reify TValue>
+final class ThriftMap<TKey, TValue>
   implements Countable, KeyedIterable<TKey, TValue> {
   use StrictKeyedIterable<TKey, TValue>;
 
@@ -31,7 +31,7 @@ final class ThriftMap<reify TKey, reify TValue>
     $this->entries = $entries;
   }
 
-  public static function forStruct<reify TK as IThriftStruct, reify TV>(
+  public static function forStruct<reify TK as IThriftStruct, TV>(
   )[]: ThriftMap<TK, TV> {
     return new ThriftMap<TK, TV>(
       TType::STRUCT,
@@ -42,11 +42,11 @@ final class ThriftMap<reify TKey, reify TValue>
     );
   }
 
-  public static function forBool<reify TV>()[]: ThriftMap<bool, TV> {
+  public static function forBool<TV>()[]: ThriftMap<bool, TV> {
     return new ThriftMap<bool, TV>(TType::BOOL, shape('type' => TType::BOOL));
   }
 
-  public static function forFloat<reify TV>()[]: ThriftMap<float, TV> {
+  public static function forFloat<TV>()[]: ThriftMap<float, TV> {
     return
       new ThriftMap<float, TV>(TType::DOUBLE, shape('type' => TType::DOUBLE));
   }
@@ -156,7 +156,7 @@ final class ThriftMap<reify TKey, reify TValue>
     );
   }
 
-  public static function fromShape<reify TK, reify TV>(
+  public static function fromShape<TK, TV>(
     vec<(TK, TV)> $entries,
     TType $key_type,
     ThriftStructTypes::TGenericSpec $key_spec,

@@ -322,11 +322,18 @@ final class ThriftObjectKeyContainerIntegrationTest extends WWWTest {
       ->add(self::newValueWithString('nested'))
       ->add(self::newValueWithInt(3));
 
+    $nested_map = ThriftMap::forStruct<ObjectKeyValue, ObjectKeyValue>();
+    $nested_map->set(
+      self::newValueWithInt(4),
+      self::newValueWithString('four'),
+    );
+
     $value_set = ThriftSet::forStruct<ObjectKeyValue>();
     $value_set
       ->add(self::newValueWithString('alpha'))
       ->add(self::newValueWithInt(7))
-      ->add(ObjectKeyValue::fromShape(shape('set_value' => $nested_set)));
+      ->add(ObjectKeyValue::fromShape(shape('set_value' => $nested_set)))
+      ->add(ObjectKeyValue::fromShape(shape('map_value' => $nested_map)));
 
     $value_map = ThriftMap::forStruct<ObjectKeyValue, int>();
     $value_map
@@ -461,6 +468,7 @@ final class ThriftObjectKeyContainerIntegrationTest extends WWWTest {
       ],
       'value_set' => vec[
         'int:7',
+        'map:{int:4=>string:four}',
         'set:{int:3,string:nested}',
         'string:alpha',
       ],
