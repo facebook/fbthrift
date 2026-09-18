@@ -581,8 +581,7 @@ class BasicServiceAppAdapter
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
       ::apache::thrift::ProtocolId protocolId,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Builds the FastHandlerCallback and decides where the method body runs:
@@ -593,8 +592,7 @@ class BasicServiceAppAdapter
   void process_ping_impl(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU
@@ -611,8 +609,7 @@ class BasicServiceAppAdapter
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
       ::apache::thrift::ProtocolId protocolId,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Builds the FastHandlerCallback and decides where the method body runs:
@@ -623,8 +620,7 @@ class BasicServiceAppAdapter
   void process_add_impl(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU
@@ -641,8 +637,7 @@ class BasicServiceAppAdapter
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
       ::apache::thrift::ProtocolId protocolId,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Builds the FastHandlerCallback and decides where the method body runs:
@@ -653,8 +648,7 @@ class BasicServiceAppAdapter
   void process_buildItem_impl(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU
@@ -671,8 +665,7 @@ class BasicServiceAppAdapter
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
       ::apache::thrift::ProtocolId protocolId,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Builds the FastHandlerCallback and decides where the method body runs:
@@ -683,8 +676,7 @@ class BasicServiceAppAdapter
   void process_lookup_impl(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU
@@ -701,8 +693,7 @@ class BasicServiceAppAdapter
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
       ::apache::thrift::ProtocolId protocolId,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Builds the FastHandlerCallback and decides where the method body runs:
@@ -713,8 +704,7 @@ class BasicServiceAppAdapter
   void process_secureLookup_impl(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU
@@ -731,8 +721,7 @@ class BasicServiceAppAdapter
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
       ::apache::thrift::ProtocolId protocolId,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Builds the FastHandlerCallback and decides where the method body runs:
@@ -743,8 +732,7 @@ class BasicServiceAppAdapter
   void process_ebLookup_impl(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
-      std::unique_ptr<
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
           requestContext) noexcept;
 
   // Deserializes arguments and invokes the user handler. Runs on a CPU

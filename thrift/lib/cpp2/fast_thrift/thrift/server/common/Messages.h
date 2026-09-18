@@ -45,7 +45,7 @@ namespace apache::thrift::fast_thrift::thrift {
 // per-request context (which itself holds a handle to the connection
 // context) without the tail adapter having to look it up.
 struct ThriftServerRequestMessage {
-  std::unique_ptr<ThriftRequestContext> requestContext;
+  ThriftRequestContextPtr requestContext;
   ThriftServerInboundPayloadVariant payload;
   uint32_t streamId{0};
 };
@@ -67,7 +67,7 @@ static_assert(
  * have no per-request context.
  */
 struct ThriftServerResponseMessage {
-  std::unique_ptr<ThriftRequestContext> requestContext{};
+  ThriftRequestContextPtr requestContext{};
   ThriftServerOutboundPayloadVariant payload;
 };
 

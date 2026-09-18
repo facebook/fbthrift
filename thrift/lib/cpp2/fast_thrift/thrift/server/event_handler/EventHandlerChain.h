@@ -25,6 +25,7 @@
 #include <glog/logging.h>
 
 #include <folly/CPortability.h>
+#include <folly/small_vector.h>
 #include <folly/tracing/StaticTracepoint.h>
 
 #include <thrift/lib/cpp/TProcessorEventHandler.h>
@@ -36,12 +37,10 @@ namespace apache::thrift::fast_thrift::thrift::server {
 /**
  * Drives a fixed list of `TProcessorEventHandler`s across one request.
  *
- * The list is fixed for the server's life, so a chain resolves it once and
- * thereafter walks a flat array of handler/context pairs. Only the context
- * half is per-request: `bind` takes one from every handler and `unbind`
- * returns it, which is the pairing `getServiceContext` / `freeContext`
- * define. `unbind` leaves the chain as `bind` found it, so one chain can
- * serve request after request, for any method, without rebuilding.
+ * The list is fixed for the server's life. A request's chain resolves it to
+ * a flat array of handler/context pairs. `bind` takes one context from every
+ * handler and `unbind` returns it, which is the pairing
+ * `getServiceContext` / `freeContext` define.
  *
  * Only the callbacks the bridge can honour are driven. Streams, sinks,
  * interactions and the serialized-message callbacks have no fast_thrift
@@ -167,7 +166,7 @@ class EventHandlerChain {
 
   std::string_view serviceName_;
   std::string_view method_;
-  std::vector<Callee> callees_;
+  folly::small_vector<Callee, 8> callees_;
   bool bound_{false};
 };
 

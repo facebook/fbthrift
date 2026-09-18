@@ -1707,8 +1707,7 @@ BasicServiceAppAdapter::BasicServiceAppAdapter(
           uint32_t streamId,
           std::unique_ptr<folly::IOBuf> data,
           ::apache::thrift::ProtocolId p,
-          std::unique_ptr<
-              ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
               requestContext) noexcept {
         static_cast<BasicServiceAppAdapter*>(a)
             ->process_ping(
@@ -1720,8 +1719,7 @@ BasicServiceAppAdapter::BasicServiceAppAdapter(
           uint32_t streamId,
           std::unique_ptr<folly::IOBuf> data,
           ::apache::thrift::ProtocolId p,
-          std::unique_ptr<
-              ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
               requestContext) noexcept {
         static_cast<BasicServiceAppAdapter*>(a)
             ->process_add(
@@ -1733,8 +1731,7 @@ BasicServiceAppAdapter::BasicServiceAppAdapter(
           uint32_t streamId,
           std::unique_ptr<folly::IOBuf> data,
           ::apache::thrift::ProtocolId p,
-          std::unique_ptr<
-              ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
               requestContext) noexcept {
         static_cast<BasicServiceAppAdapter*>(a)
             ->process_buildItem(
@@ -1746,8 +1743,7 @@ BasicServiceAppAdapter::BasicServiceAppAdapter(
           uint32_t streamId,
           std::unique_ptr<folly::IOBuf> data,
           ::apache::thrift::ProtocolId p,
-          std::unique_ptr<
-              ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
               requestContext) noexcept {
         static_cast<BasicServiceAppAdapter*>(a)
             ->process_lookup(
@@ -1759,8 +1755,7 @@ BasicServiceAppAdapter::BasicServiceAppAdapter(
           uint32_t streamId,
           std::unique_ptr<folly::IOBuf> data,
           ::apache::thrift::ProtocolId p,
-          std::unique_ptr<
-              ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
               requestContext) noexcept {
         static_cast<BasicServiceAppAdapter*>(a)
             ->process_secureLookup(
@@ -1772,8 +1767,7 @@ BasicServiceAppAdapter::BasicServiceAppAdapter(
           uint32_t streamId,
           std::unique_ptr<folly::IOBuf> data,
           ::apache::thrift::ProtocolId p,
-          std::unique_ptr<
-              ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
               requestContext) noexcept {
         static_cast<BasicServiceAppAdapter*>(a)
             ->process_ebLookup(
@@ -1785,7 +1779,7 @@ void BasicServiceAppAdapter::process_ping(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
     ::apache::thrift::ProtocolId protocolId,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   switch (protocolId) {
     case ::apache::thrift::ProtocolId::COMPACT:
@@ -1815,21 +1809,19 @@ template void BasicServiceAppAdapter::process_ping_impl<
     ::apache::thrift::CompactProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 template void BasicServiceAppAdapter::process_ping_impl<
     ::apache::thrift::BinaryProtocolReader,
     ::apache::thrift::BinaryProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 
 void BasicServiceAppAdapter::process_add(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
     ::apache::thrift::ProtocolId protocolId,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   switch (protocolId) {
     case ::apache::thrift::ProtocolId::COMPACT:
@@ -1859,21 +1851,19 @@ template void BasicServiceAppAdapter::process_add_impl<
     ::apache::thrift::CompactProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 template void BasicServiceAppAdapter::process_add_impl<
     ::apache::thrift::BinaryProtocolReader,
     ::apache::thrift::BinaryProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 
 void BasicServiceAppAdapter::process_buildItem(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
     ::apache::thrift::ProtocolId protocolId,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   switch (protocolId) {
     case ::apache::thrift::ProtocolId::COMPACT:
@@ -1903,21 +1893,19 @@ template void BasicServiceAppAdapter::process_buildItem_impl<
     ::apache::thrift::CompactProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 template void BasicServiceAppAdapter::process_buildItem_impl<
     ::apache::thrift::BinaryProtocolReader,
     ::apache::thrift::BinaryProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 
 void BasicServiceAppAdapter::process_lookup(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
     ::apache::thrift::ProtocolId protocolId,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   switch (protocolId) {
     case ::apache::thrift::ProtocolId::COMPACT:
@@ -1947,21 +1935,19 @@ template void BasicServiceAppAdapter::process_lookup_impl<
     ::apache::thrift::CompactProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 template void BasicServiceAppAdapter::process_lookup_impl<
     ::apache::thrift::BinaryProtocolReader,
     ::apache::thrift::BinaryProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 
 void BasicServiceAppAdapter::process_secureLookup(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
     ::apache::thrift::ProtocolId protocolId,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   switch (protocolId) {
     case ::apache::thrift::ProtocolId::COMPACT:
@@ -1991,21 +1977,19 @@ template void BasicServiceAppAdapter::process_secureLookup_impl<
     ::apache::thrift::CompactProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 template void BasicServiceAppAdapter::process_secureLookup_impl<
     ::apache::thrift::BinaryProtocolReader,
     ::apache::thrift::BinaryProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 
 void BasicServiceAppAdapter::process_ebLookup(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
     ::apache::thrift::ProtocolId protocolId,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   switch (protocolId) {
     case ::apache::thrift::ProtocolId::COMPACT:
@@ -2035,15 +2019,13 @@ template void BasicServiceAppAdapter::process_ebLookup_impl<
     ::apache::thrift::CompactProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 template void BasicServiceAppAdapter::process_ebLookup_impl<
     ::apache::thrift::BinaryProtocolReader,
     ::apache::thrift::BinaryProtocolWriter>(
     uint32_t,
     std::unique_ptr<folly::IOBuf>,
-    std::unique_ptr<
-        ::apache::thrift::fast_thrift::thrift::ThriftRequestContext>) noexcept;
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 
 
 } // namespace cpp2::test

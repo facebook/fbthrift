@@ -52,8 +52,15 @@ using channel_pipeline::TypeErasedBox;
 constexpr uint32_t kStreamId = 7;
 constexpr std::string_view kRequestBody = "request payload bytes";
 
+folly::EventBase& requestContextEventBase() {
+  static folly::EventBase eventBase;
+  return eventBase;
+}
+
 class FakeContext {
  public:
+  folly::EventBase* eventBase() noexcept { return &eventBase_; }
+
   Result fireRead(TypeErasedBox&& msg) noexcept {
     forwarded.push_back(std::move(msg));
     return Result::Success;
@@ -68,6 +75,7 @@ class FakeContext {
     exception = std::move(e);
   }
 
+  folly::EventBase eventBase_;
   std::vector<TypeErasedBox> forwarded;
   std::vector<TypeErasedBox> written;
   folly::exception_wrapper exception;
@@ -178,7 +186,7 @@ ThriftServerRequestMessage makeRequest(
     std::unique_ptr<folly::IOBuf> data =
         folly::IOBuf::copyBuffer(kRequestBody)) {
   return ThriftServerRequestMessage{
-      .requestContext = nullptr,
+      .requestContext = ThriftRequestContextPtr{},
       .payload =
           ThriftRequestResponsePayload{
               .data = std::move(data),
@@ -650,7 +658,7 @@ TEST(ThriftServerCompressionHandlerTest, DecompressesBeforeChecksumValidation) {
       std::move(metadata),
       compressForTest(
           std::move(uncompressed), apache::thrift::CompressionAlgorithm::ZLIB));
-  request.requestContext = std::make_unique<ThriftRequestContext>();
+  request.requestContext = makeThriftRequestContext(requestContextEventBase());
 
   ThriftServerCompressionHandler<FakeContext> compressionHandler;
   ThriftServerChecksumHandler<FakeContext> checksumHandler;

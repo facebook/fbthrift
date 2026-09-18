@@ -21,6 +21,7 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
@@ -50,6 +51,7 @@ class BenchContext {
   };
 
   MockPipeline* pipeline() noexcept { return &pipeline_; }
+  folly::EventBase* eventBase() noexcept { return &eventBase_; }
 
   Result fireRead(TypeErasedBox&& msg) noexcept {
     lastReadMsg_ = std::move(msg);
@@ -90,6 +92,7 @@ class BenchContext {
   }
 
  private:
+  folly::EventBase eventBase_;
   TypeErasedBox lastReadMsg_;
   TypeErasedBox lastWriteMsg_;
   TypeErasedBox lastEvent_;

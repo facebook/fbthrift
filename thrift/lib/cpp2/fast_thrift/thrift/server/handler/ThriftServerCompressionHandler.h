@@ -91,7 +91,7 @@ class ThriftServerCompressionHandler {
         auto responseCompressionConfig = std::move(*config);
         payload.metadata->compressionConfig().reset();
         if (request.requestContext == nullptr) {
-          request.requestContext = std::make_unique<ThriftRequestContext>();
+          request.requestContext = makeThriftRequestContext(*ctx.eventBase());
         }
         request.requestContext->setResponseCompressionConfig(
             std::move(responseCompressionConfig));

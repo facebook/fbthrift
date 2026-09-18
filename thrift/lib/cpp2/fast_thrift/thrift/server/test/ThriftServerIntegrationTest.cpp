@@ -1036,7 +1036,7 @@ TEST_F(
           uint32_t streamId,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         auto* t = static_cast<TestServerAppAdapter*>(self);
         t->handlerCalled = true;
         t->capturedStreamId = streamId;
@@ -1060,7 +1060,7 @@ TEST_F(ThriftServerAppAdapterIntegrationTest, MultipleRequestsDispatched) {
           uint32_t,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         static_cast<TestServerAppAdapter*>(self)->method1Count++;
       });
 
@@ -1070,7 +1070,7 @@ TEST_F(ThriftServerAppAdapterIntegrationTest, MultipleRequestsDispatched) {
           uint32_t,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         static_cast<TestServerAppAdapter*>(self)->method2Count++;
       });
 
@@ -1116,7 +1116,7 @@ TEST_F(ThriftServerAppAdapterIntegrationTest, SetupFrameConsumed) {
           uint32_t,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         static_cast<TestServerAppAdapter*>(self)->handlerCalled = true;
       });
 
@@ -1139,7 +1139,7 @@ TEST_F(
           uint32_t streamId,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         auto md = std::make_unique<apache::thrift::ResponseRpcMetadata>();
         fillSuccessResponseMetadata(*md);
         self->writeResponse(makeResponseMessage(
@@ -1174,7 +1174,7 @@ TEST_F(
           uint32_t streamId,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         auto md = std::make_unique<apache::thrift::ResponseRpcMetadata>();
         fillSuccessResponseMetadata(*md);
         self->writeResponse(makeResponseMessage(
@@ -1236,7 +1236,7 @@ TEST_F(ThriftServerAppAdapterIntegrationTest, ProtocolIdPassedToHandler) {
           uint32_t,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId protocol,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         static_cast<TestServerAppAdapter*>(self)->capturedProtocol = protocol;
       });
 
@@ -1350,7 +1350,7 @@ TEST_F(
           uint32_t,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext> requestContext) noexcept {
+          ThriftRequestContextPtr requestContext) noexcept {
         auto* t = static_cast<TestServerAppAdapter*>(self);
         t->capturedRequestContextNonNull = requestContext != nullptr;
         t->capturedConnContext =

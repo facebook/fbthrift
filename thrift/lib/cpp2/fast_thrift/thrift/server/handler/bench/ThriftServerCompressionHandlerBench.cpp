@@ -63,7 +63,7 @@ ThriftServerRequestMessage makeRequest(
                ->compress(data.get());
   }
   return ThriftServerRequestMessage{
-      .requestContext = nullptr,
+      .requestContext = ThriftRequestContextPtr{},
       .payload =
           ThriftRequestResponsePayload{
               .data = std::move(data),
@@ -74,10 +74,12 @@ ThriftServerRequestMessage makeRequest(
 }
 
 ThriftServerResponseMessage makeResponse(
-    uint32_t streamId, bool enableCompression = false) {
-  std::unique_ptr<ThriftRequestContext> requestContext;
+    folly::EventBase& eventBase,
+    uint32_t streamId,
+    bool enableCompression = false) {
+  ThriftRequestContextPtr requestContext;
   if (enableCompression) {
-    requestContext = std::make_unique<ThriftRequestContext>();
+    requestContext = makeThriftRequestContext(eventBase);
     requestContext->setResponseCompressionConfig(zlibCompressionConfig());
   }
   return ThriftServerResponseMessage{
@@ -132,8 +134,8 @@ BENCHMARK(OnWrite_NoCompression, iters) {
   std::vector<TypeErasedBox> responses;
   responses.reserve(iters);
   for (size_t i = 0; i < iters; ++i) {
-    responses.push_back(
-        erase_and_box(makeResponse(static_cast<uint32_t>(i + 1))));
+    responses.push_back(erase_and_box(
+        makeResponse(*ctx.eventBase(), static_cast<uint32_t>(i + 1))));
   }
   suspender.dismiss();
 
@@ -151,8 +153,8 @@ BENCHMARK(OnWrite_ZlibCompression, iters) {
   responses.reserve(iters);
   for (size_t i = 0; i < iters; ++i) {
     const auto streamId = static_cast<uint32_t>(i + 1);
-    responses.push_back(
-        erase_and_box(makeResponse(streamId, /*enableCompression=*/true)));
+    responses.push_back(erase_and_box(
+        makeResponse(*ctx.eventBase(), streamId, /*enableCompression=*/true)));
   }
   suspender.dismiss();
 

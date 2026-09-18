@@ -173,7 +173,7 @@ void completeOnHandlerExecutorNothrow(
     HandlerState& state,
     ThriftServerAppAdapter* handler,
     uint32_t streamId,
-    std::unique_ptr<ThriftRequestContext>& requestContext,
+    ThriftRequestContextPtr& requestContext,
     folly::DelayedDestruction::DestructorGuard& adapterGuard,
     const folly::Executor::KeepAlive<folly::EventBase>& evb,
     folly::Executor* executor,
@@ -206,7 +206,7 @@ void completeOnHandlerExecutor(
     HandlerState& state,
     ThriftServerAppAdapter* handler,
     uint32_t streamId,
-    std::unique_ptr<ThriftRequestContext>& requestContext,
+    ThriftRequestContextPtr& requestContext,
     folly::DelayedDestruction::DestructorGuard& adapterGuard,
     const folly::Executor::KeepAlive<folly::EventBase>& evb,
     folly::Executor* executor,
@@ -238,7 +238,7 @@ void completeOnHandlerExecutor(
         [boxed = std::move(boxed)](
             ThriftServerAppAdapter* handler,
             uint32_t streamId,
-            std::unique_ptr<ThriftRequestContext> requestContext,
+            ThriftRequestContextPtr requestContext,
             folly::DelayedDestruction::DestructorGuard&&
                 adapterGuard) mutable noexcept {
           (*boxed)(
@@ -324,7 +324,7 @@ inline std::string exceptionMessage(
 inline void writeAppError(
     ThriftServerAppAdapter* handler,
     uint32_t streamId,
-    std::unique_ptr<ThriftRequestContext> requestContext,
+    ThriftRequestContextPtr requestContext,
     folly::DelayedDestruction::DestructorGuard&& adapterGuard,
     const folly::exception_wrapper& ew) noexcept {
   auto message = makeAppErrorMessage(
@@ -346,7 +346,7 @@ template <typename Presult, typename ProtocolWriter, bool HasReturnType>
 inline void writeExceptionCascade(
     ThriftServerAppAdapter* a,
     uint32_t sid,
-    std::unique_ptr<ThriftRequestContext> requestContext,
+    ThriftRequestContextPtr requestContext,
     folly::DelayedDestruction::DestructorGuard&& adapterGuard,
     folly::exception_wrapper ew) noexcept {
   Presult presult;
@@ -391,13 +391,13 @@ class FastHandlerCallback {
   using ResultFn = void (*)(
       ThriftServerAppAdapter*,
       uint32_t,
-      std::unique_ptr<ThriftRequestContext>,
+      ThriftRequestContextPtr,
       folly::DelayedDestruction::DestructorGuard&&,
       T&&) noexcept;
   using ExceptionFn = void (*)(
       ThriftServerAppAdapter*,
       uint32_t,
-      std::unique_ptr<ThriftRequestContext>,
+      ThriftRequestContextPtr,
       folly::DelayedDestruction::DestructorGuard&&,
       folly::exception_wrapper) noexcept;
 
@@ -410,7 +410,7 @@ class FastHandlerCallback {
       uint32_t streamId,
       folly::EventBase& evb,
       folly::Executor* executor,
-      std::unique_ptr<ThriftRequestContext> requestContext)
+      ThriftRequestContextPtr requestContext)
       : resultFn_(resultFn),
         exceptionFn_(exceptionFn),
         handler_(handler),
@@ -422,6 +422,23 @@ class FastHandlerCallback {
         state_(
             executor == nullptr ? detail::HandlerState::Running
                                 : detail::HandlerState::AwaitingDispatch) {}
+
+  FastHandlerCallback(
+      ResultFn resultFn,
+      ExceptionFn exceptionFn,
+      ThriftServerAppAdapter* handler,
+      uint32_t streamId,
+      folly::EventBase& evb,
+      folly::Executor* executor,
+      std::nullptr_t)
+      : FastHandlerCallback(
+            resultFn,
+            exceptionFn,
+            handler,
+            streamId,
+            evb,
+            executor,
+            ThriftRequestContextPtr{}) {}
 
   FastHandlerCallback(const FastHandlerCallback&) = delete;
   FastHandlerCallback& operator=(const FastHandlerCallback&) = delete;
@@ -450,7 +467,7 @@ class FastHandlerCallback {
     complete([resultFn = resultFn_, value = std::move(value)](
                  ThriftServerAppAdapter* handler,
                  uint32_t streamId,
-                 std::unique_ptr<ThriftRequestContext> requestContext,
+                 ThriftRequestContextPtr requestContext,
                  folly::DelayedDestruction::DestructorGuard&&
                      adapterGuard) mutable noexcept {
       resultFn(
@@ -479,7 +496,7 @@ class FastHandlerCallback {
     complete([exceptionFn = exceptionFn_, ew = std::move(ew)](
                  ThriftServerAppAdapter* handler,
                  uint32_t streamId,
-                 std::unique_ptr<ThriftRequestContext> requestContext,
+                 ThriftRequestContextPtr requestContext,
                  folly::DelayedDestruction::DestructorGuard&&
                      adapterGuard) mutable noexcept {
       exceptionFn(
@@ -510,7 +527,7 @@ class FastHandlerCallback {
       complete([ew = ew](
                    ThriftServerAppAdapter* handler,
                    uint32_t streamId,
-                   std::unique_ptr<ThriftRequestContext> requestContext,
+                   ThriftRequestContextPtr requestContext,
                    folly::DelayedDestruction::DestructorGuard&&
                        adapterGuard) mutable noexcept {
         detail::writeAppError(
@@ -575,7 +592,7 @@ class FastHandlerCallback {
   static void writeSuccess(
       ThriftServerAppAdapter* a,
       uint32_t sid,
-      std::unique_ptr<ThriftRequestContext> requestContext,
+      ThriftRequestContextPtr requestContext,
       folly::DelayedDestruction::DestructorGuard&& adapterGuard,
       T&& value) noexcept {
     Presult presult;
@@ -594,7 +611,7 @@ class FastHandlerCallback {
   static void writeException(
       ThriftServerAppAdapter* a,
       uint32_t sid,
-      std::unique_ptr<ThriftRequestContext> requestContext,
+      ThriftRequestContextPtr requestContext,
       folly::DelayedDestruction::DestructorGuard&& adapterGuard,
       folly::exception_wrapper ew) noexcept {
     detail::
@@ -683,7 +700,7 @@ class FastHandlerCallback {
   folly::Executor::KeepAlive<folly::EventBase> evb_;
   // Non-owning; see getHandlerExecutor().
   folly::Executor* executor_{nullptr};
-  std::unique_ptr<ThriftRequestContext> requestContext_;
+  ThriftRequestContextPtr requestContext_;
   detail::HandlerState state_;
 };
 
@@ -693,12 +710,12 @@ class FastHandlerCallback<void> {
   using DoneFn = void (*)(
       ThriftServerAppAdapter*,
       uint32_t,
-      std::unique_ptr<ThriftRequestContext>,
+      ThriftRequestContextPtr,
       folly::DelayedDestruction::DestructorGuard&&) noexcept;
   using ExceptionFn = void (*)(
       ThriftServerAppAdapter*,
       uint32_t,
-      std::unique_ptr<ThriftRequestContext>,
+      ThriftRequestContextPtr,
       folly::DelayedDestruction::DestructorGuard&&,
       folly::exception_wrapper) noexcept;
 
@@ -710,7 +727,7 @@ class FastHandlerCallback<void> {
       uint32_t streamId,
       folly::EventBase& evb,
       folly::Executor* executor,
-      std::unique_ptr<ThriftRequestContext> requestContext)
+      ThriftRequestContextPtr requestContext)
       : doneFn_(doneFn),
         exceptionFn_(exceptionFn),
         handler_(handler),
@@ -722,6 +739,23 @@ class FastHandlerCallback<void> {
         state_(
             executor == nullptr ? detail::HandlerState::Running
                                 : detail::HandlerState::AwaitingDispatch) {}
+
+  FastHandlerCallback(
+      DoneFn doneFn,
+      ExceptionFn exceptionFn,
+      ThriftServerAppAdapter* handler,
+      uint32_t streamId,
+      folly::EventBase& evb,
+      folly::Executor* executor,
+      std::nullptr_t)
+      : FastHandlerCallback(
+            doneFn,
+            exceptionFn,
+            handler,
+            streamId,
+            evb,
+            executor,
+            ThriftRequestContextPtr{}) {}
 
   FastHandlerCallback(const FastHandlerCallback&) = delete;
   FastHandlerCallback& operator=(const FastHandlerCallback&) = delete;
@@ -742,7 +776,7 @@ class FastHandlerCallback<void> {
     complete([doneFn = doneFn_](
                  ThriftServerAppAdapter* handler,
                  uint32_t streamId,
-                 std::unique_ptr<ThriftRequestContext> requestContext,
+                 ThriftRequestContextPtr requestContext,
                  folly::DelayedDestruction::DestructorGuard&&
                      adapterGuard) mutable noexcept {
       doneFn(
@@ -768,7 +802,7 @@ class FastHandlerCallback<void> {
     complete([exceptionFn = exceptionFn_, ew = std::move(ew)](
                  ThriftServerAppAdapter* handler,
                  uint32_t streamId,
-                 std::unique_ptr<ThriftRequestContext> requestContext,
+                 ThriftRequestContextPtr requestContext,
                  folly::DelayedDestruction::DestructorGuard&&
                      adapterGuard) mutable noexcept {
       exceptionFn(
@@ -796,7 +830,7 @@ class FastHandlerCallback<void> {
       complete([ew = ew](
                    ThriftServerAppAdapter* handler,
                    uint32_t streamId,
-                   std::unique_ptr<ThriftRequestContext> requestContext,
+                   ThriftRequestContextPtr requestContext,
                    folly::DelayedDestruction::DestructorGuard&&
                        adapterGuard) mutable noexcept {
         detail::writeAppError(
@@ -848,7 +882,7 @@ class FastHandlerCallback<void> {
   static void writeDone(
       ThriftServerAppAdapter* a,
       uint32_t sid,
-      std::unique_ptr<ThriftRequestContext> requestContext,
+      ThriftRequestContextPtr requestContext,
       folly::DelayedDestruction::DestructorGuard&& adapterGuard) noexcept {
     Presult presult;
     auto message = makeSuccessResponseMessage<ProtocolWriter>(sid, presult);
@@ -860,7 +894,7 @@ class FastHandlerCallback<void> {
   static void writeException(
       ThriftServerAppAdapter* a,
       uint32_t sid,
-      std::unique_ptr<ThriftRequestContext> requestContext,
+      ThriftRequestContextPtr requestContext,
       folly::DelayedDestruction::DestructorGuard&& adapterGuard,
       folly::exception_wrapper ew) noexcept {
     detail::
@@ -943,7 +977,7 @@ class FastHandlerCallback<void> {
   folly::Executor::KeepAlive<folly::EventBase> evb_;
   // Non-owning; see getHandlerExecutor().
   folly::Executor* executor_{nullptr};
-  std::unique_ptr<ThriftRequestContext> requestContext_;
+  ThriftRequestContextPtr requestContext_;
   detail::HandlerState state_;
 };
 

@@ -266,7 +266,7 @@ TEST_F(ThriftServerAppAdapterTest, OnReadDispatchesToRegisteredHandler) {
           uint32_t streamId,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         auto* t = static_cast<TestServerAppAdapter*>(self);
         t->handlerCalled = true;
         t->capturedStreamId = streamId;
@@ -353,7 +353,7 @@ TEST_F(ThriftServerAppAdapterTest, OnReadPassesProtocolId) {
           uint32_t,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId protocol,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         static_cast<TestServerAppAdapter*>(self)->capturedProtocol = protocol;
       });
 
@@ -377,16 +377,17 @@ TEST_F(ThriftServerAppAdapterTest, OnReadForwardsRequestContextToHandler) {
           uint32_t,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext> requestContext) noexcept {
+          ThriftRequestContextPtr requestContext) noexcept {
         static_cast<TestServerAppAdapter*>(self)->capturedRequestContext =
             requestContext.get();
       });
 
   auto built = buildPipeline(adapter.get());
 
+  folly::EventBase requestEventBase;
   auto msg = makeRequestMessage(1, "testMethod");
-  auto* stampedContext = new ThriftRequestContext();
-  msg.requestContext.reset(stampedContext);
+  msg.requestContext = makeThriftRequestContext(requestEventBase);
+  auto* stampedContext = msg.requestContext.get();
 
   auto result = adapter->onRead(
       channel_pipeline::test::inertEndpointContext(),
@@ -405,7 +406,7 @@ TEST_F(ThriftServerAppAdapterTest, OnReadMultipleMethodsDispatched) {
           uint32_t,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         static_cast<TestServerAppAdapter*>(self)->method1Count++;
       });
 
@@ -415,7 +416,7 @@ TEST_F(ThriftServerAppAdapterTest, OnReadMultipleMethodsDispatched) {
           uint32_t,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         static_cast<TestServerAppAdapter*>(self)->method2Count++;
       });
 
@@ -449,7 +450,7 @@ TEST_F(
           uint32_t,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         static_cast<TestServerAppAdapter*>(self)->handlerCalled = true;
       });
 
@@ -600,10 +601,9 @@ TEST_F(ThriftServerAppAdapterTest, WriteResponseForwardsHeaderBearingContext) {
         return Result::Success;
       });
 
-  auto requestContext = std::make_unique<ThriftRequestContext>();
-  requestContext->setResponseHeader("shard", "42");
-
   evb_->runInEventBaseThreadAndWait([&] {
+    auto requestContext = makeThriftRequestContext(*evb_);
+    requestContext->setResponseHeader("shard", "42");
     auto message = makeResponseMessage(
         /*streamId=*/42,
         folly::IOBuf::copyBuffer("response"),
@@ -842,7 +842,7 @@ TEST_F(ThriftServerAppAdapterTest, OnReadRejectsRegisteredUnsupportedRpcKind) {
           uint32_t,
           std::unique_ptr<folly::IOBuf>,
           apache::thrift::ProtocolId,
-          std::unique_ptr<ThriftRequestContext>) noexcept {
+          ThriftRequestContextPtr) noexcept {
         static_cast<TestServerAppAdapter*>(self)->handlerCalled = true;
       });
 

@@ -27,6 +27,7 @@
 
 #include <folly/CppAttributes.h>
 
+#include <thrift/lib/cpp2/fast_thrift/common/allocator/EvbAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -177,5 +178,14 @@ class ThriftRequestContext {
   ExtensionSlots extensionSlots_;
   std::optional<apache::thrift::CompressionConfig> responseCompressionConfig_;
 };
+
+using ThriftRequestContextPtr =
+    apache::thrift::fast_thrift::mem::evb_local_ptr<ThriftRequestContext>;
+
+inline ThriftRequestContextPtr makeThriftRequestContext(
+    folly::EventBase& eventBase) {
+  return apache::thrift::fast_thrift::mem::evb_make_local<ThriftRequestContext>(
+      eventBase);
+}
 
 } // namespace apache::thrift::fast_thrift::thrift

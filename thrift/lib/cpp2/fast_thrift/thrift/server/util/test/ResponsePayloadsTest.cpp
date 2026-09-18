@@ -31,10 +31,15 @@ namespace {
 
 constexpr uint32_t kStreamId = 7;
 
+folly::EventBase& requestContextEventBase() {
+  static folly::EventBase eventBase;
+  return eventBase;
+}
+
 // An initial-response message carrying a request context, as the completion
 // thunks hand it to the adapter's write funnel.
 ThriftServerResponseMessage makeResponseWithContext(
-    std::unique_ptr<ThriftRequestContext> requestContext) {
+    ThriftRequestContextPtr requestContext) {
   auto message = makeResponseMessage(
       kStreamId,
       folly::IOBuf::copyBuffer("response"),
@@ -51,7 +56,7 @@ const apache::thrift::ResponseRpcMetadata& metadataOf(
 } // namespace
 
 TEST(ResponsePayloadsTest, HandlerSetHeadersLandOnResponseMetadata) {
-  auto requestContext = std::make_unique<ThriftRequestContext>();
+  auto requestContext = makeThriftRequestContext(requestContextEventBase());
   requestContext->setResponseHeader("shard", "42");
   requestContext->setResponseHeader("tier", "primary");
   auto message = makeResponseWithContext(std::move(requestContext));
@@ -67,8 +72,8 @@ TEST(ResponsePayloadsTest, HandlerSetHeadersLandOnResponseMetadata) {
 // The common case must not materialize the optional field at all: an empty
 // otherMetadata would still cost a map entry on the wire.
 TEST(ResponsePayloadsTest, NoHandlerHeadersLeavesOtherMetadataUnset) {
-  auto message =
-      makeResponseWithContext(std::make_unique<ThriftRequestContext>());
+  auto message = makeResponseWithContext(
+      makeThriftRequestContext(requestContextEventBase()));
 
   attachResponseHeaders(message);
 
@@ -78,7 +83,7 @@ TEST(ResponsePayloadsTest, NoHandlerHeadersLeavesOtherMetadataUnset) {
 // The context's headers join what a metadata producer already put there rather
 // than replacing the field wholesale, and win on a shared key.
 TEST(ResponsePayloadsTest, HandlerSetHeadersMergeWithExistingMetadata) {
-  auto requestContext = std::make_unique<ThriftRequestContext>();
+  auto requestContext = makeThriftRequestContext(requestContextEventBase());
   requestContext->setResponseHeader("shard", "42");
   requestContext->setResponseHeader("tier", "primary");
   auto message = makeResponseWithContext(std::move(requestContext));
@@ -98,7 +103,7 @@ TEST(ResponsePayloadsTest, HandlerSetHeadersMergeWithExistingMetadata) {
 // context (there is none in practice, but the contract should be explicit)
 // must not resend them.
 TEST(ResponsePayloadsTest, HeadersAreExtractedFromTheContext) {
-  auto requestContext = std::make_unique<ThriftRequestContext>();
+  auto requestContext = makeThriftRequestContext(requestContextEventBase());
   requestContext->setResponseHeader("shard", "42");
   auto* requestContextPtr = requestContext.get();
   auto message = makeResponseWithContext(std::move(requestContext));
@@ -122,7 +127,7 @@ TEST(ResponsePayloadsTest, MissingRequestContextIsIgnored) {
 
 // Rocket ERROR frames have no ResponseRpcMetadata to carry headers on.
 TEST(ResponsePayloadsTest, ErrorPayloadIsSkipped) {
-  auto requestContext = std::make_unique<ThriftRequestContext>();
+  auto requestContext = makeThriftRequestContext(requestContextEventBase());
   requestContext->setResponseHeader("shard", "42");
   auto message = makeFrameworkErrorMessage(
       kStreamId,

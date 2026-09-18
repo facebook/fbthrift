@@ -126,7 +126,7 @@ class RecordingAppAdapter : public ThriftServerAppAdapter {
             uint32_t streamId,
             std::unique_ptr<folly::IOBuf> data,
             apache::thrift::ProtocolId protocol,
-            std::unique_ptr<ThriftRequestContext>) noexcept {
+            ThriftRequestContextPtr) noexcept {
           auto* t = static_cast<RecordingAppAdapter*>(self);
           Recorded r;
           r.streamId = streamId;
@@ -148,7 +148,7 @@ class RecordingAppAdapter : public ThriftServerAppAdapter {
             uint32_t streamId,
             std::unique_ptr<folly::IOBuf> data,
             apache::thrift::ProtocolId protocol,
-            std::unique_ptr<ThriftRequestContext>) noexcept {
+            ThriftRequestContextPtr) noexcept {
           auto* t = static_cast<RecordingAppAdapter*>(self);
           Recorded r;
           r.streamId = streamId;

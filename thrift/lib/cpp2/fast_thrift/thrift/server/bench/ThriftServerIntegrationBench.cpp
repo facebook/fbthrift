@@ -452,7 +452,7 @@ struct AppAdapterBenchFixture {
               uint32_t streamId,
               std::unique_ptr<folly::IOBuf> data,
               apache::thrift::ProtocolId,
-              std::unique_ptr<thrift::ThriftRequestContext>) noexcept {
+              thrift::ThriftRequestContextPtr) noexcept {
             auto md = std::make_unique<apache::thrift::ResponseRpcMetadata>();
             thrift::fillSuccessResponseMetadata(*md);
             self->writeResponse(
@@ -466,7 +466,7 @@ struct AppAdapterBenchFixture {
               uint32_t,
               std::unique_ptr<folly::IOBuf>,
               apache::thrift::ProtocolId,
-              std::unique_ptr<thrift::ThriftRequestContext>) noexcept {});
+              thrift::ThriftRequestContextPtr) noexcept {});
     }
 
     transportAdapter =

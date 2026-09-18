@@ -41,6 +41,8 @@ using channel_pipeline::TypeErasedBox;
 
 class FakeContext {
  public:
+  folly::EventBase* eventBase() noexcept { return &eventBase_; }
+
   Result fireRead(TypeErasedBox&& msg) noexcept {
     forwarded.push_back(std::move(msg));
     return Result::Success;
@@ -55,6 +57,7 @@ class FakeContext {
     exception = std::move(e);
   }
 
+  folly::EventBase eventBase_;
   std::vector<TypeErasedBox> forwarded;
   std::vector<TypeErasedBox> written;
   folly::exception_wrapper exception;
@@ -82,7 +85,7 @@ ThriftServerRequestMessage makeRequestWithMetadata(
 // Outbound message as the tail adapter emits it: typed metadata plus the
 // originating context, whose response headers are still on the context.
 ThriftServerResponseMessage makeResponseWithHeaders(
-    std::unique_ptr<ThriftRequestContext> requestContext) {
+    ThriftRequestContextPtr requestContext) {
   ThriftServerResponseMessage resp;
   resp.requestContext = std::move(requestContext);
   resp.payload =
@@ -251,11 +254,10 @@ TEST(
 // context reach the outgoing metadata on the way out. Everything upstream of
 // here writes them to the context and nowhere else.
 TEST(ThriftServerRequestContextHandlerTest, DrainsResponseHeadersOnWrite) {
-  auto requestContext = std::make_unique<ThriftRequestContext>();
-  requestContext->setResponseHeader("shard", "42");
-
   ThriftServerRequestContextHandler<FakeContext> handler{nullptr};
   FakeContext ctx;
+  auto requestContext = makeThriftRequestContext(*ctx.eventBase());
+  requestContext->setResponseHeader("shard", "42");
 
   EXPECT_EQ(
       handler.onWrite(
@@ -277,7 +279,7 @@ TEST(ThriftServerRequestContextHandlerTest, WriteWithoutContextIsPassThrough) {
   FakeContext ctx;
 
   EXPECT_EQ(
-      handler.onWrite(ctx, erase_and_box(makeResponseWithHeaders(nullptr))),
+      handler.onWrite(ctx, erase_and_box(makeResponseWithHeaders({}))),
       Result::Success);
 
   ASSERT_EQ(ctx.written.size(), 1);

@@ -40,7 +40,9 @@ class evb_shared_ptr;
 /// - Size: 8 bytes (just a pointer)
 /// - No KeepAlive token overhead
 /// - Fast destruction: just decrement outstanding count
-/// - NOT safe to pass across threads
+/// - Ownership may cross threads through a synchronized handoff, but reset
+///   and destruction must return to the EventBase thread
+/// - The caller must keep the EventBase alive
 /// - Can be upgraded to evb_shared_ptr via upgrade()
 ///
 /// Usage:
@@ -51,6 +53,7 @@ template <typename T>
 class evb_local_ptr {
  public:
   evb_local_ptr() noexcept : ptr_(nullptr) {}
+  explicit evb_local_ptr(std::nullptr_t) noexcept : ptr_(nullptr) {}
   explicit evb_local_ptr(T* ptr) noexcept : ptr_(ptr) {}
 
   ~evb_local_ptr() { reset(); }
@@ -76,6 +79,19 @@ class evb_local_ptr {
   T& operator*() const noexcept { return *ptr_; }
   T* operator->() const noexcept { return ptr_; }
   explicit operator bool() const noexcept { return ptr_ != nullptr; }
+
+  friend bool operator==(const evb_local_ptr& ptr, std::nullptr_t) noexcept {
+    return ptr.ptr_ == nullptr;
+  }
+  friend bool operator==(std::nullptr_t, const evb_local_ptr& ptr) noexcept {
+    return ptr.ptr_ == nullptr;
+  }
+  friend bool operator!=(const evb_local_ptr& ptr, std::nullptr_t) noexcept {
+    return ptr.ptr_ != nullptr;
+  }
+  friend bool operator!=(std::nullptr_t, const evb_local_ptr& ptr) noexcept {
+    return ptr.ptr_ != nullptr;
+  }
 
   /// Release ownership without destroying.
   /// Returns the raw pointer and sets this to nullptr.

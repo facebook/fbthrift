@@ -38,6 +38,11 @@ using channel_pipeline::erase_and_box;
 using channel_pipeline::Result;
 using channel_pipeline::TypeErasedBox;
 
+folly::EventBase& requestContextEventBase() {
+  static folly::EventBase eventBase;
+  return eventBase;
+}
+
 class FakeContext {
  public:
   Result fireRead(TypeErasedBox&& msg) noexcept {
@@ -60,7 +65,7 @@ ThriftServerRequestMessage makeRequest(
     std::unique_ptr<apache::thrift::RequestRpcMetadata> metadata) {
   ThriftServerRequestMessage req;
   req.streamId = streamId;
-  req.requestContext = std::make_unique<ThriftRequestContext>();
+  req.requestContext = makeThriftRequestContext(requestContextEventBase());
   req.payload = ThriftServerInboundPayloadVariant{ThriftRequestResponsePayload{
       .data = folly::IOBuf::copyBuffer("body"),
       .metadata = std::move(metadata)}};

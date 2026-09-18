@@ -73,7 +73,7 @@ class ThriftServerRequestContextHandler {
             request.payload.template is<ThriftConnectionSetupPayload>())) {
       return ctx.fireRead(std::move(msg));
     }
-    request.requestContext = std::make_unique<ThriftRequestContext>();
+    request.requestContext = makeThriftRequestContext(*ctx.eventBase());
     if (requestExtensionLayout_ != nullptr) {
       request.requestContext->installExtensions(*requestExtensionLayout_);
     }

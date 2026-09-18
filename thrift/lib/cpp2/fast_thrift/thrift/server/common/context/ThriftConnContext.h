@@ -47,9 +47,10 @@ namespace apache::thrift::fast_thrift::thrift {
 // That is not automatic once user handlers run on a CPU pool. It holds
 // because the only reference outside the pipeline lives in
 // ThriftRequestContext, which is owned by FastHandlerCallback, and the
-// callback defers its own destruction to the EventBase. Moving a context —
-// as the response path does — never touches the refcount, so building a
-// response off-EventBase stays safe.
+// callback defers its own destruction to the EventBase. On completion,
+// ownership moves into the response and writeResponse returns it to the
+// EventBase before destruction. Moving a context never touches the refcount,
+// so building a response off-EventBase stays safe.
 //
 // Handler code must therefore not copy a boost::intrusive_ptr to this object
 // off the EventBase. getConnectionContext() hands back a raw pointer

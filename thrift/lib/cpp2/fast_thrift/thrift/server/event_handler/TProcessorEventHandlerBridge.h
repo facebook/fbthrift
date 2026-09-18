@@ -39,6 +39,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
+#include <thrift/lib/cpp2/fast_thrift/common/allocator/EvbAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ConnectionPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
@@ -170,7 +171,6 @@ class TProcessorEventHandlerBridge {
       // carries these by the hundred thousand, so headroom costs more memory
       // than the rehashes it saves.
       requests_.reserve(kInitialInFlight);
-      idleStates_.reserve(kInitialInFlight);
     }
   }
 
@@ -239,7 +239,7 @@ class TProcessorEventHandlerBridge {
               "required")));
     }
 
-    auto state = acquireState();
+    auto state = acquireState(*ctx.eventBase());
     state->cpp2Request.emplace(&connectionContext_->get(), &state->header);
     state->context.emplace(
         *state->cpp2Request, state->header, *request.requestContext);
@@ -392,8 +392,7 @@ class TProcessorEventHandlerBridge {
  private:
   static constexpr std::size_t kInitialInFlight = 8;
   // One request's adapted state, from the point it enters the pipeline until
-  // its response leaves. Only the context is per-request; the chain resolves
-  // the handler list once and is rebound for whatever request holds this next.
+  // its response leaves.
   struct RequestState {
     // The two small members every acquire and release touches, kept at the
     // head so the bookkeeping does not reach past the bulk of the state.
@@ -401,12 +400,8 @@ class TProcessorEventHandlerBridge {
     // Engaged only while a request is in flight.
     std::optional<Cpp2RequestContextAdapter> context;
     // Pointed at by the classic context below, so it is declared ahead of it
-    // and outlives it. Kept across requests: only its read headers are
-    // per-request, and a binding context replaces those.
+    // and outlives it.
     apache::thrift::transport::THeader header;
-    // Pooled rather than allocated per request: this is the largest thing a
-    // request builds, and recycling the storage keeps it warm. Reconstructed
-    // for each request so the security layer's fields never carry over.
     std::optional<apache::thrift::Cpp2RequestContext> cpp2Request;
     explicit RequestState(const EventHandlerChain::HandlerList& handlers)
         : chain(handlers) {}
@@ -418,19 +413,15 @@ class TProcessorEventHandlerBridge {
     }
   };
 
-  std::unique_ptr<RequestState> acquireState() {
-    if (idleStates_.empty()) {
-      return std::make_unique<RequestState>(handlers_->processor);
-    }
-    auto state = std::move(idleStates_.back());
-    idleStates_.pop_back();
-    return state;
+  using RequestStatePtr =
+      apache::thrift::fast_thrift::mem::evb_local_ptr<RequestState>;
+
+  RequestStatePtr acquireState(folly::EventBase& eventBase) {
+    return apache::thrift::fast_thrift::mem::evb_make_local<RequestState>(
+        eventBase, handlers_->processor);
   }
 
-  // Returns the handlers' contexts and drops the request's, leaving the
-  // resolved handler list and the header for the next request to rebind. The
-  // idle list grows to the connection's peak concurrency and no further.
-  void releaseState(std::unique_ptr<RequestState> state) {
+  void releaseState(RequestStatePtr state) {
     state->chain.unbind();
     // Emptied rather than left pointing at storage the next request rebuilds:
     // a reader that outlives the response finds nothing, which is what a
@@ -438,10 +429,6 @@ class TProcessorEventHandlerBridge {
     state->context->ftContext().template setState<Cpp2BridgeExtension>(nullptr);
     state->context.reset();
     state->cpp2Request.reset();
-    // The header outlives the request: anything left in its write map would
-    // otherwise reach the next response this state serves.
-    state->header.clearHeaders();
-    idleStates_.push_back(std::move(state));
   }
 
   const TProcessorEventHandlerBridgeConfig config_;
@@ -464,12 +451,7 @@ class TProcessorEventHandlerBridge {
 
   // Keyed by stream id rather than by the request context, because a
   // framework-generated error response carries no context to key on.
-  folly::F14FastMap<uint32_t, std::unique_ptr<RequestState>> requests_;
-
-  // Contiguous spine: acquiring pops a pointer without dereferencing the state
-  // it names, so the state's own cache miss overlaps the work that follows.
-  // Grows to the connection's peak concurrency and no further.
-  std::vector<std::unique_ptr<RequestState>> idleStates_;
+  folly::F14FastMap<uint32_t, RequestStatePtr> requests_;
 };
 
 } // namespace apache::thrift::fast_thrift::thrift::server

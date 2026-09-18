@@ -23,6 +23,7 @@
 
 #include <folly/Benchmark.h>
 #include <folly/init/Init.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 
 namespace apache::thrift::fast_thrift::thrift::server {
 namespace {
@@ -42,6 +43,38 @@ constexpr std::array<std::string_view, 8> kQualifiedMethods{
 
 constexpr std::string_view kLongMethod{
     "taoMultiShardTransactionReserveRequest"};
+
+folly::EventBase* benchmarkEventBase() {
+  static folly::ScopedEventBaseThread eventBaseThread;
+  return eventBaseThread.getEventBase();
+}
+
+BENCHMARK(ThriftRequestContext_EvbBump, iters) {
+  auto* eventBase = benchmarkEventBase();
+  folly::BenchmarkSuspender suspender;
+  eventBase->runInEventBaseThreadAndWait([&] {
+    (void)apache::thrift::fast_thrift::mem::EvbAllocator::getOrCreate(
+        *eventBase);
+  });
+  suspender.dismiss();
+
+  eventBase->runInEventBaseThreadAndWait([&] {
+    for (std::size_t i = 0; i < iters; ++i) {
+      auto context = makeThriftRequestContext(*eventBase);
+      folly::doNotOptimizeAway(context.get());
+    }
+  });
+}
+
+BENCHMARK_RELATIVE(ThriftRequestContext_Heap, iters) {
+  auto* eventBase = benchmarkEventBase();
+  eventBase->runInEventBaseThreadAndWait([&] {
+    for (std::size_t i = 0; i < iters; ++i) {
+      auto context = std::make_unique<ThriftRequestContext>();
+      folly::doNotOptimizeAway(context.get());
+    }
+  });
+}
 
 BENCHMARK(Cpp2RequestContext_LongMethod, iters) {
   const std::string method(kLongMethod);

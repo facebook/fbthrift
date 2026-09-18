@@ -63,6 +63,11 @@ class MockHandlerContext {
 
 constexpr uint32_t kStreamId = 7;
 
+folly::EventBase& requestContextEventBase() {
+  static folly::EventBase eventBase;
+  return eventBase;
+}
+
 std::unique_ptr<apache::thrift::RequestRpcMetadata> requestMetadata(
     apache::thrift::ChecksumAlgorithm algo, int64_t checksum, int64_t salt) {
   auto md = std::make_unique<apache::thrift::RequestRpcMetadata>();
@@ -78,7 +83,7 @@ ThriftServerRequestMessage makeRequest(
     std::unique_ptr<apache::thrift::RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> data) {
   return ThriftServerRequestMessage{
-      .requestContext = std::make_unique<ThriftRequestContext>(),
+      .requestContext = makeThriftRequestContext(requestContextEventBase()),
       .payload =
           ThriftRequestResponsePayload{
               .data = std::move(data),
@@ -94,7 +99,7 @@ ThriftServerRequestMessage makeRequest(
 ThriftServerResponseMessage makeResponseWithContext(
     apache::thrift::ChecksumAlgorithm algo,
     std::unique_ptr<folly::IOBuf> data) {
-  auto requestContext = std::make_unique<ThriftRequestContext>();
+  auto requestContext = makeThriftRequestContext(requestContextEventBase());
   requestContext->setChecksumAlgorithm(algo);
   return ThriftServerResponseMessage{
       .requestContext = std::move(requestContext),

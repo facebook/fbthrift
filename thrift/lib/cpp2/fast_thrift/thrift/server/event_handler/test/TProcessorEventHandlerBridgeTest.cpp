@@ -39,6 +39,8 @@ using channel_pipeline::TypeErasedBox;
 
 class FakeContext {
  public:
+  folly::EventBase* eventBase() noexcept { return &eventBase_; }
+
   Result fireRead(TypeErasedBox&& msg) noexcept {
     read.push_back(std::move(msg));
     return Result::Success;
@@ -48,6 +50,7 @@ class FakeContext {
     return Result::Success;
   }
 
+  folly::EventBase eventBase_;
   std::vector<TypeErasedBox> read;
   std::vector<TypeErasedBox> written;
 };
@@ -224,13 +227,14 @@ const ExtensionLayout& bridgeLayout() {
 }
 
 ThriftServerRequestMessage makeRequest(
+    folly::EventBase& eventBase,
     const boost::intrusive_ptr<ThriftConnContext>& conn,
     uint32_t streamId,
     std::string_view method,
     ThriftRequestContext::HeaderMap headers = {}) {
   ThriftServerRequestMessage req;
   req.streamId = streamId;
-  req.requestContext = std::make_unique<ThriftRequestContext>();
+  req.requestContext = makeThriftRequestContext(eventBase);
   req.requestContext->installExtensions(bridgeLayout());
   req.requestContext->setConnectionContext(conn);
   req.requestContext->setHeaders(std::move(headers));
@@ -314,7 +318,8 @@ TEST(TProcessorEventHandlerBridgeTest, DrivesTheClassicCallbackOrder) {
   establish(bridge, ctx, conn);
 
   EXPECT_EQ(
-      bridge.onRead(ctx, erase_and_box(makeRequest(conn, 7, "ping"))),
+      bridge.onRead(
+          ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 7, "ping"))),
       Result::Success);
   EXPECT_EQ(ctx.read.size(), 2); // setup + request
   EXPECT_EQ(
@@ -350,7 +355,9 @@ TEST(TProcessorEventHandlerBridgeTest, HeadersCrossInBothDirections) {
   establish(bridge, ctx, conn);
 
   (void)bridge.onRead(
-      ctx, erase_and_box(makeRequest(conn, 1, "ping", {{"cat", "token"}})));
+      ctx,
+      erase_and_box(
+          makeRequest(*ctx.eventBase(), conn, 1, "ping", {{"cat", "token"}})));
   (void)bridge.onWrite(ctx, erase_and_box(makeResponse(1)));
 
   EXPECT_NE(
@@ -375,10 +382,13 @@ TEST(TProcessorEventHandlerBridgeTest, ReusedStateDropsThePriorRequestHeaders) {
   establish(bridge, ctx, conn);
 
   (void)bridge.onRead(
-      ctx, erase_and_box(makeRequest(conn, 1, "ping", {{"cat", "token"}})));
+      ctx,
+      erase_and_box(
+          makeRequest(*ctx.eventBase(), conn, 1, "ping", {{"cat", "token"}})));
   (void)bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 1)));
 
-  (void)bridge.onRead(ctx, erase_and_box(makeRequest(conn, 3, "ping")));
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 3, "ping")));
   (void)bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 3)));
 
   EXPECT_EQ(std::count(log.calls.begin(), log.calls.end(), "sawCatHeader"), 1);
@@ -394,7 +404,8 @@ TEST(TProcessorEventHandlerBridgeTest, AmbientContextSpansBothDirections) {
   auto conn = makeConn();
   establish(bridge, ctx, conn);
 
-  (void)bridge.onRead(ctx, erase_and_box(makeRequest(conn, 1, "ping")));
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 1, "ping")));
   (void)bridge.onWrite(ctx, erase_and_box(makeResponse(1)));
 
   EXPECT_EQ(log.ambientMarker, "stamped");
@@ -416,7 +427,8 @@ TEST(
   establish(bridge, ctx, conn);
 
   EXPECT_EQ(
-      bridge.onRead(ctx, erase_and_box(makeRequest(conn, 3, "ping"))),
+      bridge.onRead(
+          ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 3, "ping"))),
       Result::Success);
 
   // Only the setup message went downstream; the request did not.
@@ -446,7 +458,8 @@ TEST(TProcessorEventHandlerBridgeTest, GetServiceContextRefusalIsCaught) {
   establish(bridge, ctx, conn);
 
   EXPECT_EQ(
-      bridge.onRead(ctx, erase_and_box(makeRequest(conn, 3, "ping"))),
+      bridge.onRead(
+          ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 3, "ping"))),
       Result::Success);
 
   // Only the setup message went downstream; the request did not.
@@ -469,7 +482,8 @@ TEST(TProcessorEventHandlerBridgeTest, UsesResolvedInheritedMethodNames) {
   auto conn = makeConn();
   establish(bridge, ctx, conn);
 
-  (void)bridge.onRead(ctx, erase_and_box(makeRequest(conn, 1, "baseMethod")));
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 1, "baseMethod")));
   (void)bridge.onWrite(ctx, erase_and_box(makeResponse(1)));
 
   EXPECT_EQ(log.serviceName, "LeafService");
@@ -485,7 +499,9 @@ TEST(TProcessorEventHandlerBridgeTest, UnknownMethodSkipsCallbacks) {
   log.calls.clear();
 
   EXPECT_EQ(
-      bridge.onRead(ctx, erase_and_box(makeRequest(conn, 1, "unknown"))),
+      bridge.onRead(
+          ctx,
+          erase_and_box(makeRequest(*ctx.eventBase(), conn, 1, "unknown"))),
       Result::Success);
 
   EXPECT_EQ(ctx.read.size(), 2);
@@ -500,7 +516,7 @@ TEST(TProcessorEventHandlerBridgeTest, UnsupportedRpcKindSkipsCallbacks) {
   auto conn = makeConn();
   establish(bridge, ctx, conn);
   log.calls.clear();
-  auto request = makeRequest(conn, 1, "ping");
+  auto request = makeRequest(*ctx.eventBase(), conn, 1, "ping");
   request.payload.get<ThriftRequestResponsePayload>().metadata->kind() =
       apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE;
 
@@ -523,7 +539,8 @@ TEST(TProcessorEventHandlerBridgeTest, ErrorFrameSkipsWriteCallbacksButFrees) {
   auto conn = makeConn();
   establish(bridge, ctx, conn);
 
-  (void)bridge.onRead(ctx, erase_and_box(makeRequest(conn, 5, "ping")));
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 5, "ping")));
   (void)bridge.onWrite(ctx, erase_and_box(makeErrorResponse(5)));
 
   EXPECT_EQ(
@@ -563,9 +580,11 @@ TEST(TProcessorEventHandlerBridgeTest, ConcurrentRequestsAreTrackedSeparately) {
   auto conn = makeConn();
   establish(bridge, ctx, conn);
 
-  (void)bridge.onRead(ctx, erase_and_box(makeRequest(conn, 1, "ping")));
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 1, "ping")));
   const auto* first = log.readContext;
-  (void)bridge.onRead(ctx, erase_and_box(makeRequest(conn, 2, "echo")));
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 2, "echo")));
   const auto* second = log.readContext;
 
   EXPECT_NE(first, second);
@@ -587,7 +606,7 @@ TEST(TProcessorEventHandlerBridgeTest, RequestWithoutContextIsRefused) {
   auto conn = makeConn();
   establish(bridge, ctx, conn);
 
-  auto request = makeRequest(conn, 5, "ping");
+  auto request = makeRequest(*ctx.eventBase(), conn, 5, "ping");
   request.requestContext.reset();
   EXPECT_EQ(
       bridge.onRead(ctx, erase_and_box(std::move(request))), Result::Success);
@@ -629,7 +648,8 @@ TEST(
     EXPECT_EQ(
         bridge.onRead(
             ctx,
-            erase_and_box(makeRequest(conn, 1, "ping", {{"cat", "native"}}))),
+            erase_and_box(makeRequest(
+                *ctx.eventBase(), conn, 1, "ping", {{"cat", "native"}}))),
         Result::Success);
 
     ASSERT_NE(log.readContext, nullptr);
@@ -655,7 +675,8 @@ TEST(TProcessorEventHandlerBridgeTest, NoHandlersForwardsUntouched) {
   establish(bridge, ctx, conn);
 
   EXPECT_EQ(
-      bridge.onRead(ctx, erase_and_box(makeRequest(conn, 1, "ping"))),
+      bridge.onRead(
+          ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 1, "ping"))),
       Result::Success);
 
   EXPECT_EQ(ctx.read.size(), 2);

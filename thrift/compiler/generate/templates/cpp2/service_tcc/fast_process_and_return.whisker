@@ -28,7 +28,7 @@ template <typename ProtocolReader, typename ProtocolWriter>
 void {{interface.cpp_name}}AppAdapter::process_{{function.cpp_name}}_impl(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   using PresultT = ::{{interface.cpp_qualified_namespace}}::{{interface.cpp_name}}_{{function.prefixed_name}}_presult;
 

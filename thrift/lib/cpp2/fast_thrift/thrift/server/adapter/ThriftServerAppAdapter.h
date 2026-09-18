@@ -78,10 +78,11 @@ namespace apache::thrift::fast_thrift::thrift {
  * refactoring together —
  *   1. FastHandlerCallback is constructed on the EventBase, before any
  *      offload, so acquiring the adapter guard happens there.
- *   2. FastHandlerCallback releases on the EventBase, hopping if needed,
- *      which covers both its adapter guard and its request context.
- *   3. Moving a request context never touches the refcount, so building a
- *      response off-EventBase is safe.
+ *   2. FastHandlerCallback destruction returns to the EventBase, so an
+ *      abandoned request destroys its EventBase-local request context there.
+ *   3. A completed callback moves the request context into the response
+ *      without destroying it. writeResponse moves that response back to the
+ *      EventBase before pipeline processing or destruction.
  * Serialized responses return through writeResponse, which performs the hop
  * back to the EventBase.
  */
@@ -112,7 +113,7 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
       apache::thrift::ProtocolId protocol,
-      std::unique_ptr<ThriftRequestContext> requestContext) noexcept;
+      ThriftRequestContextPtr requestContext) noexcept;
 
   class ResolvedMethod {
    public:

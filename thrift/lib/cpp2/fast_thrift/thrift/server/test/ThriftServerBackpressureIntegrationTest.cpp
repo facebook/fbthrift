@@ -82,7 +82,10 @@ using WriteBufferHandler = ft::WriteBufferBackpressureHandler<Ctx>;
 
 ft::ThriftServerRequestMessage makeRequest(uint32_t streamId) {
   return ft::ThriftServerRequestMessage{
-      .requestContext = nullptr, .payload = {}, .streamId = streamId};
+      .requestContext = ft::ThriftRequestContextPtr{},
+      .payload = {},
+      .streamId = streamId,
+  };
 }
 
 ft::ThriftServerResponseMessage makeResponse(uint32_t streamId) {

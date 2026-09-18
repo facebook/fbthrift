@@ -1310,7 +1310,7 @@ template <typename ProtocolReader, typename ProtocolWriter>
 void BasicServiceAppAdapter::process_ping_impl(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   using PresultT = ::cpp2::test::BasicService_ping_presult;
 
@@ -1432,7 +1432,7 @@ template <typename ProtocolReader, typename ProtocolWriter>
 void BasicServiceAppAdapter::process_add_impl(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   using PresultT = ::cpp2::test::BasicService_add_presult;
 
@@ -1558,7 +1558,7 @@ template <typename ProtocolReader, typename ProtocolWriter>
 void BasicServiceAppAdapter::process_buildItem_impl(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   using PresultT = ::cpp2::test::BasicService_buildItem_presult;
 
@@ -1685,7 +1685,7 @@ template <typename ProtocolReader, typename ProtocolWriter>
 void BasicServiceAppAdapter::process_lookup_impl(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   using PresultT = ::cpp2::test::BasicService_lookup_presult;
 
@@ -1809,7 +1809,7 @@ template <typename ProtocolReader, typename ProtocolWriter>
 void BasicServiceAppAdapter::process_secureLookup_impl(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   using PresultT = ::cpp2::test::BasicService_secureLookup_presult;
 
@@ -1936,7 +1936,7 @@ template <typename ProtocolReader, typename ProtocolWriter>
 void BasicServiceAppAdapter::process_ebLookup_impl(
     uint32_t streamId,
     std::unique_ptr<folly::IOBuf> data,
-    std::unique_ptr<::apache::thrift::fast_thrift::thrift::ThriftRequestContext>
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
   using PresultT = ::cpp2::test::BasicService_ebLookup_presult;
 

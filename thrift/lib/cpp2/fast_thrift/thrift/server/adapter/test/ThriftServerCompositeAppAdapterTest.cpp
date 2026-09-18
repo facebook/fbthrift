@@ -96,7 +96,7 @@ class TestChildAdapter : public ThriftServerAppAdapter {
             uint32_t streamId,
             std::unique_ptr<folly::IOBuf>,
             apache::thrift::ProtocolId protocol,
-            std::unique_ptr<ThriftRequestContext>) noexcept {
+            ThriftRequestContextPtr) noexcept {
           auto* t = static_cast<TestChildAdapter*>(self);
           t->dispatchedTo = t->id_;
           t->capturedStreamId = streamId;
@@ -156,7 +156,7 @@ class OtherChildAdapter : public ThriftServerAppAdapter {
             uint32_t streamId,
             std::unique_ptr<folly::IOBuf>,
             apache::thrift::ProtocolId,
-            std::unique_ptr<ThriftRequestContext>) noexcept {
+            ThriftRequestContextPtr) noexcept {
           auto* t = static_cast<OtherChildAdapter*>(self);
           t->dispatchedTo = t->id_;
           t->capturedStreamId = streamId;

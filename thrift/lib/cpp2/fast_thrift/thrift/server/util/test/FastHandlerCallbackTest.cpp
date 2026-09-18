@@ -23,6 +23,7 @@
 #include <folly/executors/ManualExecutor.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
@@ -78,7 +79,7 @@ RecordingAdapter& asRecorder(ThriftServerAppAdapter* p) {
 void onResult(
     ThriftServerAppAdapter* a,
     uint32_t streamId,
-    std::unique_ptr<ThriftRequestContext> requestContext,
+    ThriftRequestContextPtr requestContext,
     folly::DelayedDestruction::DestructorGuard&& /*adapterGuard*/,
     int&& value) noexcept {
   auto& r = asRecorder(a);
@@ -95,7 +96,7 @@ void onResult(
 void onException(
     ThriftServerAppAdapter* a,
     uint32_t streamId,
-    std::unique_ptr<ThriftRequestContext> requestContext,
+    ThriftRequestContextPtr requestContext,
     folly::DelayedDestruction::DestructorGuard&& /*adapterGuard*/,
     // NOLINTNEXTLINE(performance-unnecessary-value-param)
     folly::exception_wrapper ew) noexcept {
@@ -127,7 +128,7 @@ struct ThrowingMoveValue {
 void onThrowingMoveResult(
     ThriftServerAppAdapter* a,
     uint32_t streamId,
-    std::unique_ptr<ThriftRequestContext> requestContext,
+    ThriftRequestContextPtr requestContext,
     folly::DelayedDestruction::DestructorGuard&& /*adapterGuard*/,
     ThrowingMoveValue&& value) noexcept {
   auto& r = asRecorder(a);
@@ -140,7 +141,7 @@ void onThrowingMoveResult(
 void onDone(
     ThriftServerAppAdapter* a,
     uint32_t streamId,
-    std::unique_ptr<ThriftRequestContext> requestContext,
+    ThriftRequestContextPtr requestContext,
     folly::DelayedDestruction::DestructorGuard&& /*adapterGuard*/) noexcept {
   auto& r = asRecorder(a);
   r.doneCount++;
@@ -577,7 +578,7 @@ TEST(FastHandlerCallbackTest, GetEventBaseReturnsConfiguredEventBase) {
 TEST(FastHandlerCallbackTest, RequestContextAccessorReturnsStoredPointer) {
   auto rec = makeRecorder();
   folly::EventBase evb;
-  auto requestContext = std::make_unique<ThriftRequestContext>();
+  auto requestContext = makeThriftRequestContext(evb);
   auto* requestContextPtr = requestContext.get();
   auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
       &onResult,
@@ -597,7 +598,7 @@ TEST(FastHandlerCallbackTest, RequestContextAccessorReturnsStoredPointer) {
 TEST(FastHandlerCallbackTest, ExceptionForwardsRequestContextToThunk) {
   auto rec = makeRecorder();
   folly::EventBase evb;
-  auto requestContext = std::make_unique<ThriftRequestContext>();
+  auto requestContext = makeThriftRequestContext(evb);
   auto* requestContextPtr = requestContext.get();
   {
     auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
@@ -621,7 +622,7 @@ TEST(FastHandlerCallbackTest, ExceptionForwardsRequestContextToThunk) {
 TEST(FastHandlerCallbackTest, UncompletedDestructorForwardsRequestContext) {
   auto rec = makeRecorder();
   folly::EventBase evb;
-  auto requestContext = std::make_unique<ThriftRequestContext>();
+  auto requestContext = makeThriftRequestContext(evb);
   auto* requestContextPtr = requestContext.get();
   {
     auto cb = makeFastHandlerCallback<FastHandlerCallback<void>>(
@@ -633,6 +634,35 @@ TEST(FastHandlerCallbackTest, UncompletedDestructorForwardsRequestContext) {
         nullptr,
         std::move(requestContext));
   }
+  EXPECT_EQ(rec->exceptionCount, 1);
+  EXPECT_EQ(rec->lastRequestContext, requestContextPtr);
+}
+
+TEST(
+    FastHandlerCallbackTest,
+    OffThreadCallbackDropDestroysRequestContextOnEventBase) {
+  auto rec = makeRecorder();
+  folly::ScopedEventBaseThread evbThread;
+  auto* evb = evbThread.getEventBase();
+  FastHandlerCallbackPtr<int> cb;
+  const ThriftRequestContext* requestContextPtr{nullptr};
+  evb->runInEventBaseThreadAndWait([&] {
+    auto requestContext = makeThriftRequestContext(*evb);
+    requestContextPtr = requestContext.get();
+    cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
+        &onResult,
+        &onException,
+        rec.get(),
+        kStreamId,
+        *evb,
+        nullptr,
+        std::move(requestContext));
+  });
+
+  cb->markHandlerStarted();
+  cb.reset();
+  evb->runInEventBaseThreadAndWait([] {});
+
   EXPECT_EQ(rec->exceptionCount, 1);
   EXPECT_EQ(rec->lastRequestContext, requestContextPtr);
 }
