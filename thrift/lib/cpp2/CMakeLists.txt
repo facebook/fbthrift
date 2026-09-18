@@ -444,6 +444,7 @@ if (THRIFT_RPC)
     ${thrift_catalog_service-cpp2-SOURCES})
   add_dependencies(
     thriftcpp2
+    field_mask-cpp2-target
     rpcmetadata
     RocketUpgrade-cpp2-target
     thrift_catalog_service-cpp2-target
