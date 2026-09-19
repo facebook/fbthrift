@@ -119,7 +119,8 @@ Cpp2RequestContextAdapter::Cpp2RequestContextAdapter(
   // Published on the request for its whole lifetime. Missing registration is a
   // wiring error, so setState aborts instead of silently exposing a null
   // classic context.
-  requestContext_.setState<Cpp2BridgeExtension>(cpp2RequestContext_);
+  bridgeState_.context = cpp2RequestContext_;
+  requestContext_.setState<Cpp2BridgeExtension>(&bridgeState_);
 
   // The native request owns these for longer than this adapter lives. A
   // classic handler that mutates them makes the THeader detach its own copy,
@@ -128,6 +129,7 @@ Cpp2RequestContextAdapter::Cpp2RequestContextAdapter(
 }
 
 Cpp2RequestContextAdapter::~Cpp2RequestContextAdapter() {
+  requestContext_.setState<Cpp2BridgeExtension>(nullptr);
   header_.clearReadHeaders();
 }
 

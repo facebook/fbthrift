@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -83,6 +84,13 @@ struct CallLog {
   std::vector<std::string> calls;
   std::string serviceName;
   std::string methodName;
+  std::string readMethodName;
+  std::size_t readBytes{0};
+  apache::thrift::protocol::PROTOCOL_TYPES readProtocol{};
+  std::string writeMethodName;
+  std::size_t writeBytes{0};
+  apache::thrift::protocol::PROTOCOL_TYPES writeProtocol{};
+  bool declaredException{false};
   // Only valid until the request's response is written — the bridge destroys
   // the per-request contexts there.
   const apache::thrift::Cpp2RequestContext* readContext{nullptr};
@@ -143,6 +151,18 @@ class RecordingEventHandler : public apache::thrift::TProcessorEventHandler {
     }
   }
 
+  void onReadData(
+      void* /*ctx*/,
+      std::string_view /*fnName*/,
+      const apache::thrift::SerializedMessage& message) override {
+    log_->calls.emplace_back("onReadData");
+    log_->readMethodName = message.methodName.str();
+    log_->readBytes = message.buffer == nullptr
+        ? 0
+        : message.buffer->computeChainDataLength();
+    log_->readProtocol = message.protocolType;
+  }
+
   void postRead(
       void* /*ctx*/,
       std::string_view /*fnName*/,
@@ -156,8 +176,36 @@ class RecordingEventHandler : public apache::thrift::TProcessorEventHandler {
     }
   }
 
+  void userExceptionWrapped(
+      void* /*ctx*/,
+      std::string_view /*fnName*/,
+      bool declared,
+      const folly::exception_wrapper& /*exception*/) override {
+    log_->calls.emplace_back("userExceptionWrapped");
+    log_->declaredException = declared;
+  }
+
+  void handlerErrorWrapped(
+      void* /*ctx*/,
+      std::string_view /*fnName*/,
+      const folly::exception_wrapper& /*exception*/) override {
+    log_->calls.emplace_back("handlerErrorWrapped");
+  }
+
   void preWrite(void* /*ctx*/, std::string_view /*fnName*/) override {
     log_->calls.emplace_back("preWrite");
+  }
+
+  void onWriteData(
+      void* /*ctx*/,
+      std::string_view /*fnName*/,
+      const apache::thrift::SerializedMessage& message) override {
+    log_->calls.emplace_back("onWriteData");
+    log_->writeMethodName = message.methodName.str();
+    log_->writeBytes = message.buffer == nullptr
+        ? 0
+        : message.buffer->computeChainDataLength();
+    log_->writeProtocol = message.protocolType;
   }
 
   void postWrite(
@@ -241,6 +289,7 @@ ThriftServerRequestMessage makeRequest(
   auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
   metadata->name() = std::string(method);
   metadata->kind() = apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+  metadata->protocol() = apache::thrift::ProtocolId::BINARY;
   req.payload = ThriftRequestResponsePayload{
       .data = folly::IOBuf::copyBuffer("0123456789"),
       .metadata = std::move(metadata)};
@@ -280,6 +329,20 @@ ThriftServerResponseMessage makeResponseFor(
     }
   }
   return response;
+}
+
+void recordExceptionFor(FakeContext& ctx, uint32_t streamId, bool declared) {
+  for (auto& box : ctx.read) {
+    auto& request = box.get<ThriftServerRequestMessage>();
+    if (request.streamId == streamId && request.requestContext != nullptr) {
+      recordCpp2BridgeException(
+          request.requestContext.get(),
+          folly::make_exception_wrapper<std::runtime_error>("boom"),
+          declared);
+      return;
+    }
+  }
+  FAIL() << "request not found";
 }
 
 // Drives the connection to the point where it can carry requests: the bridge
@@ -331,18 +394,80 @@ TEST(TProcessorEventHandlerBridgeTest, DrivesTheClassicCallbackOrder) {
           "newConnection",
           "getServiceContext",
           "preRead",
+          "onReadData",
           "postRead",
           "preWrite",
+          "onWriteData",
           "postWrite",
           "freeContext"}));
   EXPECT_EQ(log.serviceName, "TestService");
   EXPECT_EQ(log.methodName, "TestService.ping");
+  EXPECT_EQ(log.readMethodName, "TestService.ping");
+  EXPECT_EQ(log.readBytes, 10);
+  EXPECT_EQ(log.readProtocol, apache::thrift::protocol::T_BINARY_PROTOCOL);
+  EXPECT_EQ(log.writeMethodName, "TestService.ping");
+  EXPECT_EQ(log.writeBytes, 5);
+  EXPECT_EQ(log.writeProtocol, apache::thrift::protocol::T_BINARY_PROTOCOL);
   // The connection the server event handler was told about is the one every
   // request on it reports.
   ASSERT_NE(log.connFromNewConnection, nullptr);
   EXPECT_EQ(log.connFromNewConnection, log.connFromRequest);
   EXPECT_EQ(log.postReadBytes, 10);
   EXPECT_EQ(log.postWriteBytes, 5);
+}
+
+TEST(TProcessorEventHandlerBridgeTest, DeclaredExceptionRunsWriteCallbacks) {
+  CallLog log;
+  Bridge bridge(makeConfig(&log));
+  FakeContext ctx;
+  auto conn = makeConn();
+  establish(bridge, ctx, conn);
+
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 7, "ping")));
+  recordExceptionFor(ctx, 7, true);
+  (void)bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 7)));
+
+  EXPECT_TRUE(log.declaredException);
+  EXPECT_EQ(
+      log.calls,
+      (std::vector<std::string>{
+          "newConnection",
+          "getServiceContext",
+          "preRead",
+          "onReadData",
+          "postRead",
+          "userExceptionWrapped",
+          "preWrite",
+          "onWriteData",
+          "postWrite",
+          "freeContext"}));
+}
+
+TEST(TProcessorEventHandlerBridgeTest, UndeclaredExceptionRunsErrorCallback) {
+  CallLog log;
+  Bridge bridge(makeConfig(&log));
+  FakeContext ctx;
+  auto conn = makeConn();
+  establish(bridge, ctx, conn);
+
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 7, "ping")));
+  recordExceptionFor(ctx, 7, false);
+  (void)bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 7)));
+
+  EXPECT_FALSE(log.declaredException);
+  EXPECT_EQ(
+      log.calls,
+      (std::vector<std::string>{
+          "newConnection",
+          "getServiceContext",
+          "preRead",
+          "onReadData",
+          "postRead",
+          "userExceptionWrapped",
+          "handlerErrorWrapped",
+          "freeContext"}));
 }
 
 // Request headers reach the THeader handlers read, and response headers they

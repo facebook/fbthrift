@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/event_handler/Cpp2BridgeExtension.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace apache::thrift::fast_thrift::thrift::server {
@@ -83,12 +84,6 @@ using PeerIdentityResolver = std::unique_ptr<void, void (*)(void*)> (*)(
  * every lookup below reading null, which is the answer a server with no bridge
  * should give.
  */
-struct Cpp2BridgeExtension {
-  EXTENSION_ID(cpp2_bridge);
-  using ConnState = apache::thrift::Cpp2ConnContext;
-  using RequestState = apache::thrift::Cpp2RequestContext;
-};
-
 /**
  * The classic context for this connection, or null on a server that installed
  * no event-handler bridge.
@@ -105,9 +100,11 @@ tryGetCpp2ConnContext(const ThriftConnContext& connContext) noexcept {
  * The only place fast_thrift names the classic type on behalf of a consumer:
  * reaching it means depending on this library, not on the context headers.
  */
+template <typename Request>
 inline apache::thrift::Cpp2RequestContext* FOLLY_NULLABLE
-tryGetCpp2RequestContext(const ThriftRequestContext& requestContext) noexcept {
-  return requestContext.tryState<Cpp2BridgeExtension>();
+tryGetCpp2RequestContext(const Request& request) noexcept {
+  const auto* state = request.template tryState<Cpp2BridgeExtension>();
+  return state == nullptr ? nullptr : state->context;
 }
 
 /**
@@ -209,12 +206,17 @@ class Cpp2RequestContextAdapter {
 
   ThriftRequestContext& ftContext() noexcept { return requestContext_; }
 
+  const Cpp2BridgeRequestException* exception() const noexcept {
+    return bridgeState_.exception.get();
+  }
+
  private:
   apache::thrift::transport::THeader& header_;
   ThriftRequestContext& requestContext_;
   // Owned by the request context, which outlives this; this only reaches it.
   apache::thrift::Cpp2RequestContext* cpp2RequestContext_;
   std::shared_ptr<folly::RequestContext> ambientContext_;
+  Cpp2BridgeRequestState bridgeState_;
 };
 
 } // namespace apache::thrift::fast_thrift::thrift::server

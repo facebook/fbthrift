@@ -337,8 +337,8 @@ TEST(Cpp2ContextAdapterTest, ClassicContextIsReachableThroughTheConnection) {
   EXPECT_EQ(tryGetCpp2ConnContext(*conn), nullptr);
 }
 
-// The classic context is reachable from the request for as long as its storage
-// lasts, which is what lets a consumer read it after the bridge has moved on.
+// The classic context is reachable while the bridge owns its adapter and is
+// revoked before that adapter's extension state is destroyed.
 TEST(Cpp2ContextAdapterTest, ClassicContextIsReachableThroughTheRequest) {
   auto conn = makeConnContext(nullptr);
   Cpp2ConnContextAdapter connAdapter(conn, /*resolver=*/nullptr);
@@ -354,10 +354,7 @@ TEST(Cpp2ContextAdapterTest, ClassicContextIsReachableThroughTheRequest) {
     Cpp2RequestContextAdapter requestAdapter(cpp2Request, header, request);
     EXPECT_EQ(tryGetCpp2RequestContext(request), &requestAdapter.get());
   }
-  // Borrowed, not owned: the slot outlives the adapter and still names the
-  // caller's context, which nothing has reclaimed yet.
-  ASSERT_EQ(tryGetCpp2RequestContext(request), &cpp2Request);
-  EXPECT_EQ(tryGetCpp2RequestContext(request)->getMethodName(), "ping");
+  EXPECT_EQ(tryGetCpp2RequestContext(request), nullptr);
 }
 
 // Releasing a state empties the slot rather than leaving it pointing at

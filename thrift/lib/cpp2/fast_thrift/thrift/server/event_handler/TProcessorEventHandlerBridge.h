@@ -143,8 +143,9 @@ inline void stampWriteHeaders(
  *   ConnectionClosed -> TServerEventHandler::connectionDestroyed
  *
  * and per request:
- *   onRead   -> preRead, postRead across the chain, then forward
- *   onWrite  -> preWrite, postWrite across the chain, then forward
+ *   onRead   -> preRead, onReadData, postRead across the chain, then forward
+ *   onWrite  -> exception callbacks when applicable, then preWrite,
+ *               onWriteData, postWrite, and forward
  *
  * A `preRead`/`postRead` that throws is the handler refusing the request: the
  * request is dropped, an application error carrying the exception's name and
@@ -153,13 +154,12 @@ inline void stampWriteHeaders(
  * `postWrite` never fires. Any response headers the handler set before
  * throwing still reach the client.
  *
- * A `preWrite`/`postWrite` that throws terminates the process. The request has
+ * A write-side callback that throws terminates the process. The request has
  * been served by then, so there is no verdict left to honour and nothing to
  * turn the exception into; swallowing it would only hide the handler's bug.
  *
- * NOT supported, because fast_thrift has no equivalent: streams, sinks and
- * interactions (`onInteractionTerminate`), the serialized-message callbacks
- * (`onReadData` / `onWriteData`), and the server-lifecycle callbacks
+ * NOT supported, because fast_thrift has no equivalent: streams, sinks,
+ * interactions (`onInteractionTerminate`), and the server-lifecycle callbacks
  * (`preStart` / `preServe` / `postStop`). A handler relying on any of those
  * will not see them.
  *
@@ -257,6 +257,10 @@ class TProcessorEventHandlerBridge {
     }
 
     auto state = acquireState(*ctx.eventBase());
+    const auto& requestResponse =
+        request.payload.get<ThriftRequestResponsePayload>();
+    state->protocolType = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
+        requestResponse.metadata->protocol().value_or(0));
     state->cpp2Request.emplace(&connectionContext_->get(), &state->header);
     state->context.emplace(
         *state->cpp2Request, state->header, *request.requestContext);
@@ -275,6 +279,12 @@ class TProcessorEventHandlerBridge {
               method->serviceName,
               method->qualifiedMethodName);
           state->chain.preRead();
+          state->chain.onReadData(
+              apache::thrift::SerializedMessage{
+                  .protocolType = state->protocolType,
+                  .buffer = requestResponse.data.get(),
+                  .methodName = method->qualifiedMethodName,
+              });
           state->chain.postRead(
               state->context->header(),
               event_handler_detail::requestBytes(request));
@@ -338,11 +348,24 @@ class TProcessorEventHandlerBridge {
         if (folly::RequestContext::try_get() != ambient.get()) {
           guard.emplace(ambient);
         }
+        const auto* exception = state->context->exception();
+        if (exception != nullptr) {
+          state->chain.userExceptionWrapped(
+              exception->declared, exception->exception);
+          if (!exception->declared) {
+            state->chain.handlerErrorWrapped(exception->exception);
+          }
+        }
+
         // Deliberately not caught: these run after the request has been served,
         // so there is no verdict left to honour and swallowing would hide a
         // handler bug. An escape terminates, as it would on a classic server.
-        state->chain.preWrite();
-        state->chain.postWrite(event_handler_detail::payloadBytes(reply->data));
+        if (exception == nullptr || exception->declared) {
+          state->chain.preWrite();
+          state->chain.onWriteData(state->protocolType, reply->data.get());
+          state->chain.postWrite(
+              event_handler_detail::payloadBytes(reply->data));
+        }
       }
 
       // After postWrite: handlers write response headers there, and the reply
@@ -424,6 +447,7 @@ class TProcessorEventHandlerBridge {
     // and outlives it.
     apache::thrift::transport::THeader header;
     std::optional<apache::thrift::Cpp2RequestContext> cpp2Request;
+    apache::thrift::protocol::PROTOCOL_TYPES protocolType{};
     explicit RequestState(const EventHandlerChain::HandlerList& handlers)
         : chain(handlers) {}
 
@@ -444,10 +468,8 @@ class TProcessorEventHandlerBridge {
 
   void releaseState(RequestStatePtr state) {
     state->chain.unbind();
-    // Emptied rather than left pointing at storage the next request rebuilds:
-    // a reader that outlives the response finds nothing, which is what a
-    // server that installed no bridge would give it.
-    state->context->ftContext().template setState<Cpp2BridgeExtension>(nullptr);
+    // Destroying the adapter empties the request's extension slot rather than
+    // leaving it pointing at storage the next request rebuilds.
     state->context.reset();
     state->cpp2Request.reset();
   }

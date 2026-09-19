@@ -139,6 +139,13 @@ class ObservingEventHandler : public apache::thrift::TProcessorEventHandler {
         reqCtx->getPeerAddress()->isInitialized();
   }
 
+  void onReadData(
+      void* /*ctx*/,
+      std::string_view /*fnName*/,
+      const apache::thrift::SerializedMessage& /*message*/) override {
+    observed_->wlock()->calls.emplace_back("onReadData");
+  }
+
   void postRead(
       void* /*ctx*/,
       std::string_view /*fnName*/,
@@ -149,6 +156,13 @@ class ObservingEventHandler : public apache::thrift::TProcessorEventHandler {
 
   void preWrite(void* /*ctx*/, std::string_view /*fnName*/) override {
     observed_->wlock()->calls.emplace_back("preWrite");
+  }
+
+  void onWriteData(
+      void* /*ctx*/,
+      std::string_view /*fnName*/,
+      const apache::thrift::SerializedMessage& /*message*/) override {
+    observed_->wlock()->calls.emplace_back("onWriteData");
   }
 
   void postWrite(
@@ -309,8 +323,8 @@ class TProcessorEventHandlerBridgeE2ETest : public ::testing::Test {
 };
 
 // The whole chain over a real connection: the pipeline delivers the setup
-// event, the bridge announces the connection, and one RPC drives the four
-// request callbacks in classic order.
+// event, the bridge announces the connection, and one RPC drives the request
+// callbacks in classic order.
 TEST_F(TProcessorEventHandlerBridgeE2ETest, RealRequestDrivesEveryCallback) {
   connect();
 
@@ -326,8 +340,10 @@ TEST_F(TProcessorEventHandlerBridgeE2ETest, RealRequestDrivesEveryCallback) {
           "newConnection",
           "getServiceContext",
           "preRead",
+          "onReadData",
           "postRead",
           "preWrite",
+          "onWriteData",
           "postWrite"}));
   // Qualified with the service the bridge was configured for.
   EXPECT_EQ(locked->methodName, "FastThriftServer.echo");

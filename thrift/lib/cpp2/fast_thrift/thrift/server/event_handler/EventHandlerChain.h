@@ -42,9 +42,9 @@ namespace apache::thrift::fast_thrift::thrift::server {
  * handler and `unbind` returns it, which is the pairing
  * `getServiceContext` / `freeContext` define.
  *
- * Only the callbacks the bridge can honour are driven. Streams, sinks,
- * interactions and the serialized-message callbacks have no fast_thrift
- * equivalent, and client interceptors are not a server concern.
+ * Only the callbacks the bridge can honour are driven. Streams, sinks, and
+ * interactions have no fast_thrift equivalent, and client interceptors are
+ * not a server concern.
  */
 class EventHandlerChain {
  public:
@@ -117,6 +117,14 @@ class EventHandlerChain {
     });
   }
 
+  void onReadData(const apache::thrift::SerializedMessage& message) {
+    DCHECK(bound_);
+    const auto method = method_;
+    forEachCallee([&](Callee& callee) {
+      callee.handler->onReadData(callee.context, method, message);
+    });
+  }
+
   void postRead(
       apache::thrift::transport::THeader& header, std::uint32_t bytes) {
     DCHECK(bound_);
@@ -128,12 +136,45 @@ class EventHandlerChain {
     });
   }
 
+  void userExceptionWrapped(
+      bool declared, const folly::exception_wrapper& exception) {
+    DCHECK(bound_);
+    const auto method = method_;
+    forEachCallee([&](Callee& callee) {
+      callee.handler->userExceptionWrapped(
+          callee.context, method, declared, exception);
+    });
+  }
+
+  void handlerErrorWrapped(const folly::exception_wrapper& exception) {
+    DCHECK(bound_);
+    const auto method = method_;
+    forEachCallee([&](Callee& callee) {
+      callee.handler->handlerErrorWrapped(callee.context, method, exception);
+    });
+  }
+
   void preWrite() {
     DCHECK(bound_);
     const auto method = method_;
     FOLLY_SDT(thrift, thrift_context_stack_pre_write, serviceName_, method);
     forEachCallee([&](Callee& callee) {
       callee.handler->preWrite(callee.context, method);
+    });
+  }
+
+  void onWriteData(
+      apache::thrift::protocol::PROTOCOL_TYPES protocolType,
+      const folly::IOBuf* buffer) {
+    DCHECK(bound_);
+    const auto method = method_;
+    const apache::thrift::SerializedMessage message{
+        .protocolType = protocolType,
+        .buffer = buffer,
+        .methodName = method,
+    };
+    forEachCallee([&](Callee& callee) {
+      callee.handler->onWriteData(callee.context, method, message);
     });
   }
 

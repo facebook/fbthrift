@@ -34,6 +34,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/event_handler/Cpp2BridgeExtension.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponseError.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -355,6 +356,7 @@ inline void writeExceptionCascade(
       presult, ew, [&]<typename Ex>(Ex&) {
         classification = getDeclaredExceptionClassification<Ex>(ew);
       });
+  server::recordCpp2BridgeException(requestContext.get(), ew, handled);
   auto message = handled ? makeDeclaredExceptionMessage<ProtocolWriter>(
                                sid, presult, ew, classification)
                          : makeUnknownExceptionMessage(
