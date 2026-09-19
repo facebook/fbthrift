@@ -133,6 +133,16 @@ class ConnectionListener : public folly::DelayedDestruction,
     XLOG(DBG3) << "Connection accepted from " << clientAddr.describe();
     auto socket = folly::AsyncSocket::newSocket(evb_, fd);
     socket->setMaxReadsPerEvent(socketOptions_.maxReadsPerEvent);
+    if (socketOptions_.tcpNoDelay) {
+      socket->setNoDelay(true);
+    }
+    if (socketOptions_.trafficClass > 0 && clientAddr.getFamily() == AF_INET6 &&
+        socket->setSockOpt(
+            IPPROTO_IPV6, IPV6_TCLASS, &socketOptions_.trafficClass) != 0) {
+      XLOG_EVERY_MS(ERR, 1000)
+          << "Failed to set IPV6_TCLASS=" << socketOptions_.trafficClass
+          << " on accepted socket";
+    }
     folly::AsyncTransport::UniquePtr transport(socket.release());
     ConnectionMessage msg{
         .transport = std::move(transport),

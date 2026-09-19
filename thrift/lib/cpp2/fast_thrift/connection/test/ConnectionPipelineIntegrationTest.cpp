@@ -20,14 +20,14 @@
  * End-to-end exercise of the acceptance pipeline head:
  *   ConnectionListener (head) → MockTailHandler
  *
- * Drives connectionAccepted() directly with a socketpair fd and asserts
- * the mock tail receives a ConnectionMessage carrying a plain
- * AsyncSocket. Bypasses the bind/listen path so the test doesn't need a
- * real listening port.
+ * Drives connectionAccepted() directly with an accepted IPv6 TCP fd and
+ * asserts the mock tail receives a configured AsyncSocket. Bypasses the
+ * listener's bind/listen path.
  */
 
+#include <netinet/in.h>
+#include <netinet/tcp.h>
 #include <sys/socket.h>
-#include <array>
 #include <memory>
 
 #include <gtest/gtest.h>
@@ -56,10 +56,41 @@ using channel_pipeline::test::MockTailHandler;
 
 namespace {
 
-std::pair<folly::NetworkSocket, folly::NetworkSocket> makeSocketPair() {
-  std::array<int, 2> fds{};
-  PCHECK(::socketpair(AF_UNIX, SOCK_STREAM, 0, fds.data()) == 0);
-  return {folly::NetworkSocket(fds[0]), folly::NetworkSocket(fds[1])};
+std::pair<folly::NetworkSocket, folly::NetworkSocket> makeTcpSocketPair() {
+  const auto listener =
+      folly::NetworkSocket(::socket(AF_INET6, SOCK_STREAM, 0));
+  PCHECK(listener.toFd() >= 0);
+
+  sockaddr_in6 address{};
+  address.sin6_family = AF_INET6;
+  address.sin6_addr = in6addr_loopback;
+  PCHECK(
+      ::bind(
+          listener.toFd(),
+          reinterpret_cast<const sockaddr*>(&address),
+          sizeof(address)) == 0);
+  PCHECK(::listen(listener.toFd(), 1) == 0);
+
+  socklen_t addressLength = sizeof(address);
+  PCHECK(
+      ::getsockname(
+          listener.toFd(),
+          reinterpret_cast<sockaddr*>(&address),
+          &addressLength) == 0);
+
+  const auto client = folly::NetworkSocket(::socket(AF_INET6, SOCK_STREAM, 0));
+  PCHECK(client.toFd() >= 0);
+  PCHECK(
+      ::connect(
+          client.toFd(),
+          reinterpret_cast<const sockaddr*>(&address),
+          sizeof(address)) == 0);
+
+  const auto server =
+      folly::NetworkSocket(::accept(listener.toFd(), nullptr, nullptr));
+  PCHECK(server.toFd() >= 0);
+  folly::netops::close(listener);
+  return {client, server};
 }
 
 } // namespace
@@ -77,8 +108,8 @@ class AcceptancePipelineIntegrationTest : public ::testing::Test {
   SimpleBufferAllocator allocator_;
 };
 
-// Listener → tail delivers the raw AsyncSocket transport synchronously.
-TEST_F(AcceptancePipelineIntegrationTest, DeliversRawSocket) {
+// Listener → tail delivers the configured AsyncSocket synchronously.
+TEST_F(AcceptancePipelineIntegrationTest, DeliversConfiguredSocket) {
   MockTailHandler tail;
   ConnectionMessage captured;
   tail.setOnReadCallback([&captured](TypeErasedBox&& msg) {
@@ -86,10 +117,13 @@ TEST_F(AcceptancePipelineIntegrationTest, DeliversRawSocket) {
     return Result::Success;
   });
 
+  SocketOptions socketOptions;
+  socketOptions.tcpNoDelay = true;
+  socketOptions.trafficClass = 72;
   ConnectionListener::Ptr listener(new ConnectionListener(
       evb_,
       folly::SocketAddress("::1", 0),
-      SocketOptions{},
+      socketOptions,
       /*enableReusePortBpfSpread=*/false));
   auto pipeline = PipelineBuilder<
                       ConnectionListener,
@@ -105,8 +139,8 @@ TEST_F(AcceptancePipelineIntegrationTest, DeliversRawSocket) {
   // bind a real listening socket for this test.
   evb_->runInEventBaseThreadAndWait([&] { pipeline->activate(); });
 
-  auto sp = makeSocketPair();
-  folly::SocketAddress clientAddr("127.0.0.1", 4001);
+  auto sp = makeTcpSocketPair();
+  folly::SocketAddress clientAddr("::1", 4001);
   evb_->runInEventBaseThreadAndWait([&] {
     listener->connectionAccepted(
         sp.second,
@@ -116,8 +150,32 @@ TEST_F(AcceptancePipelineIntegrationTest, DeliversRawSocket) {
 
   EXPECT_EQ(tail.readCount(), 1);
   EXPECT_EQ(captured.clientAddr, clientAddr);
-  EXPECT_NE(
-      dynamic_cast<folly::AsyncSocket*>(captured.transport.get()), nullptr);
+  auto* socket = dynamic_cast<folly::AsyncSocket*>(captured.transport.get());
+  ASSERT_NE(socket, nullptr);
+
+  int tcpNoDelay = 0;
+  socklen_t optionLength = sizeof(tcpNoDelay);
+  ASSERT_EQ(
+      ::getsockopt(
+          socket->getNetworkSocket().toFd(),
+          IPPROTO_TCP,
+          TCP_NODELAY,
+          &tcpNoDelay,
+          &optionLength),
+      0);
+  EXPECT_NE(tcpNoDelay, 0);
+
+  int trafficClass = 0;
+  optionLength = sizeof(trafficClass);
+  ASSERT_EQ(
+      ::getsockopt(
+          socket->getNetworkSocket().toFd(),
+          IPPROTO_IPV6,
+          IPV6_TCLASS,
+          &trafficClass,
+          &optionLength),
+      0);
+  EXPECT_EQ(trafficClass, socketOptions.trafficClass);
 
   evb_->runInEventBaseThreadAndWait([&] {
     captured.transport.reset();
@@ -125,7 +183,7 @@ TEST_F(AcceptancePipelineIntegrationTest, DeliversRawSocket) {
     pipeline.reset();
     listener.reset();
   });
-  ::close(sp.first.toFd());
+  folly::netops::close(sp.first);
 }
 
 } // namespace apache::thrift::fast_thrift::connection

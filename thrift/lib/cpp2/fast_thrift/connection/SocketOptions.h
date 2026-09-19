@@ -43,6 +43,11 @@ struct SocketOptions {
   // Matches legacy ThriftServer's socketMaxReadsPerEvent_ default.
   uint32_t maxReadsPerEvent{16};
 
+  // Options applied to each accepted socket before it enters the connection
+  // pipeline. A zero traffic class leaves IPV6_TCLASS unchanged.
+  bool tcpNoDelay{false};
+  int trafficClass{0};
+
   // Cap on the connections an IO thread will hold parked in a TLS stage —
   // accepted, but not yet resolved to an established connection: awaiting
   // peek classification, the fizz handshake, or a StopTLS V1 downgrade. Past
