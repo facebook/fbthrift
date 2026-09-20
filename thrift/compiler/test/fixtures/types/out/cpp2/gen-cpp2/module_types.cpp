@@ -2513,7 +2513,7 @@ std::string_view AllocatorAware::__fbthrift_get_class_name() {
 }
 
 AllocatorAware::AllocatorAware(const AllocatorAware& srcObj) :
-    __fbthrift_alloc(srcObj.__fbthrift_alloc),
+    __fbthrift_alloc(::std::allocator_traits<allocator_type>::select_on_container_copy_construction(srcObj.__fbthrift_alloc)),
     __fbthrift_field_aa_list(srcObj.__fbthrift_field_aa_list),
     __fbthrift_field_aa_set(srcObj.__fbthrift_field_aa_set),
     __fbthrift_field_aa_map(srcObj.__fbthrift_field_aa_map),
@@ -2705,7 +2705,7 @@ std::string_view AllocatorAware2::__fbthrift_get_class_name() {
 }
 
 AllocatorAware2::AllocatorAware2(const AllocatorAware2& srcObj) :
-    __fbthrift_alloc(srcObj.__fbthrift_alloc),
+    __fbthrift_alloc(::std::allocator_traits<allocator_type>::select_on_container_copy_construction(srcObj.__fbthrift_alloc)),
     __fbthrift_field_not_a_container(srcObj.__fbthrift_field_not_a_container),
     __fbthrift_field_box_field(srcObj.__fbthrift_field_box_field),
     __isset(srcObj.__isset) {

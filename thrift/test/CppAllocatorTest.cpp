@@ -622,6 +622,27 @@ TEST(CppAllocatorTest, CopyConstructorPropagatesAllocator) {
   EXPECT_EQ(alloc, s2.get_allocator());
 }
 
+// A copy may outlive the source's resource, so pmr hands it the default one.
+TEST(CppAllocatorTest, CopyConstructorSelectsAllocatorPmr) {
+  std::pmr::monotonic_buffer_resource res;
+  PmrByteAlloc alloc(&res);
+
+  ChildPmr src(alloc);
+  ChildPmr copy(src);
+
+  std::pmr::vector<int> stlSrc(alloc);
+  std::pmr::vector<int> stlCopy(stlSrc);
+
+  // Both sources keep the resource they were given.
+  EXPECT_EQ(src.get_allocator().resource(), &res);
+  EXPECT_EQ(stlSrc.get_allocator().resource(), &res);
+
+  // Neither copy inherits it.
+  EXPECT_EQ(copy.get_allocator().resource(), std::pmr::get_default_resource());
+  EXPECT_EQ(
+      stlCopy.get_allocator().resource(), std::pmr::get_default_resource());
+}
+
 TEST(CppAllocatorTest, MoveConstructorPropagatesAllocator) {
   ScopedStatefulAlloc<> alloc(42);
   AAStruct s1(alloc);

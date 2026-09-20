@@ -18,7 +18,7 @@
 {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const {{struct.cpp_underlying_name}}& srcObj){{!
 }}{{#if struct.fields?}} :
   {{#if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}}
-    __fbthrift_alloc(srcObj.__fbthrift_alloc),
+    __fbthrift_alloc(::std::allocator_traits<allocator_type>::select_on_container_copy_construction(srcObj.__fbthrift_alloc)),
   {{/if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}}
   {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field is_last?|}}
     {{#if field.transitively_refers_to_unique?}}
