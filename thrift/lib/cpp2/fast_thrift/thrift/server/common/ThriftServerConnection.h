@@ -92,8 +92,8 @@ struct ThriftServerConnection {
   // Thrift pipeline. Destroyed first among the owned fields here.
   channel_pipeline::PipelineImpl::Ptr thriftPipeline;
 
-  // Per-connection thrift context. Null when the factory's
-  // enableRequestContext is false. Co-owned with the pipeline's
+  // Per-connection thrift context. Set by the factory for every accepted
+  // connection and co-owned with the pipeline's
   // ThriftServerConnectionContextHandler via refcount.
   boost::intrusive_ptr<ThriftConnContext> connContext;
 

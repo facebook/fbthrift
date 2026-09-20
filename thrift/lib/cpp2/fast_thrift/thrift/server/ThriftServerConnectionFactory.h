@@ -87,21 +87,20 @@ struct ThriftServerConnectionFactoryConfig {
   // registered, in which case contexts carry no slots and allocate nothing.
   std::shared_ptr<const ExtensionLayout> connExtensionLayout;
   std::shared_ptr<const ExtensionLayout> requestExtensionLayout;
-  // When true, build a per-connection ThriftConnContext on accept and wire
-  // the ThriftServerRequestContextHandler +
-  // ThriftServerConnectionContextHandler into the thrift pipeline so each
-  // request's ThriftRequestContext is populated with the ThriftConnContext.
+
+  // Compatibility no-op retained while the public configuration migrates.
+  // The factory always constructs and wires request and connection contexts.
   bool enableRequestContext{false};
 
   // When true, insert ThriftServerRequestHeadersHandler so each request's
   // ThriftRequestContext is populated with the inbound custom headers
-  // (RequestRpcMetadata.otherMetadata). Requires enableRequestContext.
+  // (RequestRpcMetadata.otherMetadata).
   bool enableRequestHeaders{false};
 
   // When true, insert ThriftServerChecksumHandler to validate the inbound
   // request checksum and, when the request carried one, fill a matching
-  // checksum on the response. Requires enableRequestContext (the response
-  // algorithm is carried on the per-request ThriftRequestContext).
+  // checksum on the response. The response algorithm is carried on the
+  // per-request ThriftRequestContext.
   bool enableChecksum{false};
 
   // When true, insert WriteBufferBackpressureHandler into the thrift
@@ -168,9 +167,8 @@ class ThriftServerConnectionFactory {
   /**
    * Build a connection for `socket`, whose peer was at `clientAddr` when the
    * socket was accepted and proved `peerSecurity` (null if it proved nothing).
-   * Constructs the per-connection ThriftConnContext (when enableRequestContext
-   * is set), builds the rocket + thrift pipelines, and fires `onConnect()`
-   * before returning.
+   * Constructs the per-connection ThriftConnContext, builds the rocket +
+   * thrift pipelines, and fires `onConnect()` before returning.
    *
    * Satisfies the connection::ConnectionFactory concept.
    */

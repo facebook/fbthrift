@@ -144,27 +144,20 @@ ThriftServerConnection ThriftServerConnectionFactory::getConnection(
     folly::AsyncTransport::UniquePtr socket,
     const folly::SocketAddress& clientAddr,
     const std::shared_ptr<const connection::PeerSecurityInfo>& peerSecurity) {
-  // Per-connection context — only built when enableRequestContext is set.
-  // When unset, the thrift pipeline below skips the context-propagation
-  // handlers and the embedder accept hook (wired at the connection-layer
-  // ConnectionAcceptCallbackHandler) receives a null connContext.
-  boost::intrusive_ptr<ThriftConnContext> connContext;
-  if (config_.enableRequestContext) {
-    connContext.reset(new ThriftConnContext());
-    if (config_.connExtensionLayout != nullptr) {
-      connContext->installExtensions(*config_.connExtensionLayout);
-    }
-    connContext->setPeerAddress(clientAddr);
-    // Non-owning. The transport is owned by the transport adapter, which
-    // ThriftServerConnection tears down after the pipeline that reads this —
-    // so it outlives every handler holding the context. Security is
-    // snapshotted separately because this is already the post-StopTLS
-    // transport when one was negotiated, and reports nothing about the peer.
-    connContext->setTransport(socket.get());
-    if (peerSecurity != nullptr) {
-      connContext->setPeerCertificate(peerSecurity->peerCertificate);
-      connContext->setSecurityProtocol(peerSecurity->securityProtocol);
-    }
+  boost::intrusive_ptr<ThriftConnContext> connContext{new ThriftConnContext()};
+  if (config_.connExtensionLayout != nullptr) {
+    connContext->installExtensions(*config_.connExtensionLayout);
+  }
+  connContext->setPeerAddress(clientAddr);
+  // Non-owning. The transport is owned by the transport adapter, which
+  // ThriftServerConnection tears down after the pipeline that reads this —
+  // so it outlives every handler holding the context. Security is snapshotted
+  // separately because this is already the post-StopTLS transport when one was
+  // negotiated, and reports nothing about the peer.
+  connContext->setTransport(socket.get());
+  if (peerSecurity != nullptr) {
+    connContext->setPeerCertificate(peerSecurity->peerCertificate);
+    connContext->setSecurityProtocol(peerSecurity->securityProtocol);
   }
 
   auto conn = needsComposite_
@@ -318,9 +311,7 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   // this works because generated FastSvAppAdapter subclasses only populate
   // dispatch_ via addMethodHandler in their ctor and don't override base
   // methods; for the composite case the typed tail also fans setPipeline
-  // out to every child. When enableRequestContext is set, wire the
-  // per-connection context handlers so each request's ThriftRequestContext
-  // is populated with the ThriftConnContext.
+  // out to every child.
   using ReqCtxHandler =
       ThriftServerRequestContextHandler<channel_pipeline::detail::ContextImpl>;
   using ConnCtxHandler = ThriftServerConnectionContextHandler<
@@ -353,28 +344,21 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
         ThriftMetricsHandler<Direction::Server, ServerStatsShard>>(
         thrift_metrics_handler_tag, statsShard);
   }
-  DCHECK(!config_.enableRequestHeaders || config_.enableRequestContext)
-      << "enableRequestHeaders requires enableRequestContext; the request "
-         "headers handler is skipped while enableRequestContext is off";
-  if (config_.enableRequestContext) {
-    // Duplex: inbound it creates the per-request context, outbound it hands
-    // that context's response headers to the outgoing metadata. Sitting
-    // closest to the head on the write path makes it the last contributor
-    // downstream of every handler and extension that can add one.
-    thriftPipelineBuilder
-        .template addNextDuplex<ReqCtxHandler>(
-            thrift_server_request_context_handler_tag,
-            config_.requestExtensionLayout.get())
-        .template addNextInbound<ConnCtxHandler>(
-            thrift_server_connection_context_handler_tag,
-            std::move(connContext));
-    // Stamps RequestRpcMetadata.otherMetadata onto each request's
-    // ThriftRequestContext. Requires the context handlers above, so it is
-    // nested under enableRequestContext.
-    if (config_.enableRequestHeaders) {
-      thriftPipelineBuilder.template addNextInbound<ReqHeadersHandler>(
-          thrift_server_request_headers_handler_tag);
-    }
+  // Duplex: inbound it creates the per-request context, outbound it hands
+  // that context's response headers to the outgoing metadata. Sitting
+  // closest to the head on the write path makes it the last contributor
+  // downstream of every handler and extension that can add one.
+  thriftPipelineBuilder
+      .template addNextDuplex<ReqCtxHandler>(
+          thrift_server_request_context_handler_tag,
+          config_.requestExtensionLayout.get())
+      .template addNextInbound<ConnCtxHandler>(
+          thrift_server_connection_context_handler_tag, std::move(connContext));
+  // Stamps RequestRpcMetadata.otherMetadata onto each request's
+  // ThriftRequestContext.
+  if (config_.enableRequestHeaders) {
+    thriftPipelineBuilder.template addNextInbound<ReqHeadersHandler>(
+        thrift_server_request_headers_handler_tag);
   }
   // Inbound decompression precedes checksum verification. Outbound traverses
   // the handlers in reverse, so the checksum is computed on the uncompressed
@@ -384,9 +368,6 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   // The checksum handler is added after the context handlers so inbound it
   // runs once the per-request ThriftRequestContext exists (it records the
   // algorithm there for the response to echo).
-  CHECK(!config_.enableChecksum || config_.enableRequestContext)
-      << "enableChecksum requires enableRequestContext; the checksum handler "
-         "records the response algorithm on the per-request context";
   if (config_.enableChecksum) {
     thriftPipelineBuilder.template addNextDuplex<ChecksumHandler>(
         thrift_server_checksum_handler_tag);

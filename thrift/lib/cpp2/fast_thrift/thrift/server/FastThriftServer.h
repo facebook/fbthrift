@@ -387,17 +387,13 @@ class FastThriftServer {
    * destroy that state when the connection (and any in-flight requests
    * holding the ThriftConnContext via intrusive_ptr) tear down.
    *
-   * The pointer is non-null only when `FastThriftServerConfig::
-   * enableRequestContext` is true. When the flag is off, the callback still
-   * fires with `nullptr` so embedders can react to accept without context
-   * propagation; any `setUserData` call is impossible in that case.
+   * The pointer is always non-null.
    *
    * The callback runs on the IO event base that owns the connection. Must
    * be set before start()/serve(). Optional — if unset, no per-connection
    * hook runs and the connection goes straight into the pipeline as-is.
    *
-   * Peer address is reachable via `connContext->getPeerAddress()` when the
-   * pointer is non-null.
+   * Peer address is reachable via `connContext->getPeerAddress()`.
    */
   using OnConnectionAcceptedFn =
       std::function<void(ThriftConnContext* connContext)>;

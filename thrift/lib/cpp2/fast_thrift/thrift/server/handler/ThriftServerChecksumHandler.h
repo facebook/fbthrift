@@ -95,10 +95,7 @@ class ThriftServerChecksumHandler {
               std::move(*error))));
     }
 
-    if (request.requestContext != nullptr) {
-      request.requestContext->setChecksumAlgorithm(
-          checksum.algorithm().value());
-    }
+    request.requestContext->setChecksumAlgorithm(checksum.algorithm().value());
     return ctx.fireRead(std::move(msg));
   }
 

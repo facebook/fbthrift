@@ -159,13 +159,10 @@ class TestFastServiceHandler
   }
 
   // Every reply carries a known response header so tests can assert header
-  // propagation on both the success and the declared-exception shape. No-op
-  // when the server runs without enableRequestContext.
+  // propagation on both the success and the declared-exception shape.
   static void stampResponseHeader(ftt::ThriftRequestContext* requestContext) {
-    if (requestContext != nullptr) {
-      requestContext->setResponseHeader(
-          std::string(kResponseHeaderKey), std::string(kResponseHeaderValue));
-    }
+    requestContext->setResponseHeader(
+        std::string(kResponseHeaderKey), std::string(kResponseHeaderValue));
   }
 
   void async_tm_throwDeclared(
@@ -264,10 +261,7 @@ class FastThriftE2ETest : public ::testing::TestWithParam<uint32_t> {
     config.address = folly::SocketAddress("::1", 0);
     config.numIOThreads = 1;
     config.numCPUThreads = GetParam();
-    // Validate request checksums and echo a response checksum. enableChecksum
-    // requires enableRequestContext (the response algorithm rides the
-    // per-request ThriftRequestContext).
-    config.enableRequestContext = true;
+    // Validate request checksums and echo a response checksum.
     config.enableChecksum = true;
 
     server_ = std::make_unique<ftt::FastThriftServer>(std::move(config));

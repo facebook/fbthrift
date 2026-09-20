@@ -61,26 +61,20 @@ struct FastThriftServerConfig {
   // the underlying thrift_library must be built with `with_schema = True`.
   bool enableMetadataService{false};
 
-  // When true, construct a per-connection ThriftConnContext on accept and
-  // wire the ThriftServerRequestContextHandler +
-  // ThriftServerConnectionContextHandler into the thrift pipeline, so each
-  // request's ThriftRequestContext is populated with the ThriftConnContext.
-  // The setOnConnectionAccepted callback receives a pointer to the
-  // ThriftConnContext (or nullptr when this flag is off).
+  // Compatibility no-op retained while callers migrate. FastThriftServer
+  // always constructs request and connection contexts.
   bool enableRequestContext{false};
 
   // When true, populate each request's ThriftRequestContext with the inbound
   // custom headers (RequestRpcMetadata.otherMetadata) so handlers can read
   // them via getHeaders()/getHeader(). The context is the only place headers
   // are readable, so an extension declaring kUsesHeaders is refused at
-  // addModule while this is off. Requires enableRequestContext; ignored when
-  // that flag is off. Only takes effect on FastThriftServer.
+  // addModule while this is off. Only takes effect on FastThriftServer.
   bool enableRequestHeaders{false};
 
   // When true, insert ThriftServerChecksumHandler to validate the inbound
-  // request checksum and echo a matching checksum on the response. Requires
-  // enableRequestContext (the response algorithm is carried on the per-request
-  // ThriftRequestContext); ignored when that flag is off.
+  // request checksum and echo a matching checksum on the response. The
+  // response algorithm is carried on the per-request ThriftRequestContext.
   bool enableChecksum{false};
 
   // When true, insert WriteBufferBackpressureHandler into the thrift

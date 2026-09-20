@@ -208,9 +208,7 @@ class TProcessorEventHandlerBridgeE2ETest : public ::testing::Test {
     FastThriftServerConfig config;
     config.address = folly::SocketAddress("::1", 0);
     config.numIOThreads = 1;
-    // Both required by the bridge: the first so a per-request context exists
-    // at all, the second so the handlers see the request's headers.
-    config.enableRequestContext = true;
+    // The bridge needs inbound headers populated for its classic context.
     config.enableRequestHeaders = true;
 
     server_ = std::make_unique<FastThriftServer>(std::move(config));

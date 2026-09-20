@@ -174,13 +174,10 @@ class ThriftRequestView {
   // Value of custom request header `key`, or nullptr if absent.
   //
   // The per-request context is the only place headers live. Declaring
-  // kUsesHeaders is what guarantees one is there: without it a server may be
-  // configured with no header support and this reads empty. The lookup is free
-  // of temporaries — the context's map is searchable by string_view.
+  // kUsesHeaders requires the server to populate it with inbound headers;
+  // otherwise this reads empty. The lookup is free of temporaries — the
+  // context's map is searchable by string_view.
   const std::string* header(std::string_view key) const noexcept {
-    if (request_.requestContext == nullptr) {
-      return nullptr;
-    }
     return request_.requestContext->getHeader(key);
   }
 
@@ -190,9 +187,7 @@ class ThriftRequestView {
   // State published on this request by another installed extension.
   template <class Ext>
   typename Ext::RequestState* tryState() const noexcept {
-    return request_.requestContext == nullptr
-        ? nullptr
-        : request_.requestContext->template tryState<Ext>();
+    return request_.requestContext->template tryState<Ext>();
   }
 
  private:
@@ -213,17 +208,10 @@ class ThriftRequestMutator final : public ThriftRequestView {
   // Set (or overwrite) a custom request header seen by downstream extensions
   // and the service.
   //
-  // Writes to the per-request context, the one place headers are read from.
-  // Dropped on a server with no request context — see header() for why
-  // kUsesHeaders is what keeps that from happening.
-  //
   // noexcept despite allocating: extension callbacks are themselves noexcept,
   // so an escaping bad_alloc terminates either way. OOM ⇒ terminate is the
   // pipeline-wide contract, not a hazard introduced here.
   void setHeader(std::string key, std::string value) noexcept {
-    if (request_.requestContext == nullptr) {
-      return;
-    }
     request_.requestContext->setHeader(std::move(key), std::move(value));
   }
 
@@ -345,14 +333,10 @@ concept HasResponseCallback =
  *
  *   static constexpr bool kUsesHeaders = true;
  *
- * Headers live only on the per-request context, and a server populates that
- * context only when configured to. FastThriftServer::addModule refuses a module
- * carrying such an extension unless enableRequestHeaders is set, so a
- * misconfigured server fails at startup rather than handing the extension
- * silently empty headers.
- *
- * One declaration covers both directions: enableRequestHeaders implies
- * enableRequestContext, which is all the response side needs.
+ * Headers live only on the per-request context. FastThriftServer::addModule
+ * refuses a module carrying such an extension unless enableRequestHeaders is
+ * set, so a misconfigured server fails at startup rather than handing the
+ * extension silently empty headers.
  */
 template <typename H>
 concept UsesHeaders = requires {

@@ -229,16 +229,6 @@ void FastThriftServer::addModule(FastServerModule module) {
             "FastThriftServer::addModule: duplicate module name: {}",
             module.name()));
   }
-  // Refuse rather than degrade: without a per-connection context the
-  // connection events carry nothing, and an extension that gates on what it
-  // reads there would silently see an empty connection.
-  if (module.requiresConnectionContext() && !config_.enableRequestContext) {
-    throw std::logic_error(
-        fmt::format(
-            "FastThriftServer::addModule: module '{}' registers a connection "
-            "extension, which requires enableRequestContext",
-            module.name()));
-  }
   // Same posture for headers: they are reachable only through the per-request
   // context, and only this setting puts them there. An extension that gates on
   // a header it never receives would admit everything.

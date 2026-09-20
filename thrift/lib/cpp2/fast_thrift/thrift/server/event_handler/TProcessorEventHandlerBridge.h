@@ -163,8 +163,8 @@ inline void stampWriteHeaders(
  * (`preStart` / `preServe` / `postStop`). A handler relying on any of those
  * will not see them.
  *
- * Requires the server's `enableRequestContext`, and `enableRequestHeaders` if
- * any handler reads request headers. A request arriving without a context is
+ * Requires `enableRequestHeaders` if any handler reads request headers. A
+ * request arriving without a context from a manually composed pipeline is
  * refused rather than forwarded: the bridge cannot tell an authorization
  * handler from a logging one, so quietly skipping them is not safe.
  *
@@ -251,9 +251,8 @@ class TProcessorEventHandlerBridge {
           channel_pipeline::erase_and_box(makeAppErrorMessage(
               streamId,
               "TProcessorEventHandlerBridgeMisconfigured",
-              "event handlers are installed but the server built no "
-              "request context for this request; enableRequestContext is "
-              "required")));
+              "event handlers are installed but the pipeline provided no "
+              "request or connection context")));
     }
 
     auto state = acquireState(*ctx.eventBase());

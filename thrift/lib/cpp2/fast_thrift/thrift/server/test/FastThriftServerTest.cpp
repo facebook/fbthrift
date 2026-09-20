@@ -305,9 +305,6 @@ class FastThriftServerTest : public ::testing::Test {
     config.address = folly::SocketAddress("::1", 0);
     config.numIOThreads = 1;
     if (enableChecksum_) {
-      // The checksum handler records the response algorithm on the per-request
-      // context, so it requires request-context wiring.
-      config.enableRequestContext = true;
       config.enableChecksum = true;
     }
 
@@ -615,9 +612,6 @@ class FastThriftServerTlsTest : public ::testing::Test {
     ftt::FastThriftServerConfig config;
     config.address = folly::SocketAddress("::1", 0);
     config.numIOThreads = 1;
-    // The peer-security assertions read the per-connection context.
-    config.enableRequestContext = true;
-
     server_ = std::make_unique<ftt::FastThriftServer>(std::move(config));
 
     security::FizzServerCertConfig sslConfig;
@@ -772,9 +766,6 @@ class FastThriftServerStopTlsTest : public ::testing::Test {
     ftt::FastThriftServerConfig config;
     config.address = folly::SocketAddress("::1", 0);
     config.numIOThreads = 1;
-    // The peer-security assertions read the per-connection context.
-    config.enableRequestContext = true;
-
     server_ = std::make_unique<ftt::FastThriftServer>(std::move(config));
 
     security::FizzServerCertConfig sslConfig;
@@ -1154,19 +1145,10 @@ bool addRoundTripFails(const folly::SocketAddress& addr) {
   return failed;
 }
 
-ftt::FastThriftServerConfig makeConnectionContextConfig() {
-  auto config = makeLoopbackConfig();
-  // Connection extensions observe the per-connection context, so the server
-  // must be building one.
-  config.enableRequestContext = true;
-  return config;
-}
-
 ftt::FastThriftServerConfig makeHeadersConfig() {
-  auto config = makeConnectionContextConfig();
-  // Headers are readable only off the per-request context, which only this
-  // setting populates; an extension declaring kUsesHeaders is refused without
-  // it.
+  auto config = makeLoopbackConfig();
+  // Inbound headers are populated on the per-request context only under this
+  // setting; an extension declaring kUsesHeaders is refused without it.
   config.enableRequestHeaders = true;
   return config;
 }
@@ -1495,10 +1477,7 @@ TEST(FastThriftServerConnContextTest, PeerAddressReachesConnContext) {
   THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
 
   auto handler = std::make_shared<TestHandler>();
-  auto config = makeLoopbackConfig();
-  config.enableRequestContext = true;
-
-  ftt::FastThriftServer server(std::move(config));
+  ftt::FastThriftServer server(makeLoopbackConfig());
   server.setInterface(handler);
 
   folly::Baton<> accepted;
@@ -1873,7 +1852,7 @@ TEST(FastThriftServerConnectionExtensionTest, LifecycleBracketsSetupExchange) {
   auto handler = std::make_shared<TestHandler>();
   ConnectionRecorder rec;
 
-  ftt::FastThriftServer server(makeConnectionContextConfig());
+  ftt::FastThriftServer server(makeLoopbackConfig());
   server.setInterface(handler);
   server.addModule(
       ftt::FastServerModule("lifecycle")
@@ -1897,7 +1876,7 @@ TEST(FastThriftServerConnectionExtensionTest, AttemptedRejectionRefusesSetup) {
   auto handler = std::make_shared<TestHandler>();
   ConnectionRecorder rec;
 
-  ftt::FastThriftServer server(makeConnectionContextConfig());
+  ftt::FastThriftServer server(makeLoopbackConfig());
   server.setInterface(handler);
   server.addModule(
       ftt::FastServerModule("reject-attempt")
@@ -1918,7 +1897,7 @@ TEST(FastThriftServerConnectionExtensionTest, ClosedFiresForSettledConnection) {
   auto handler = std::make_shared<TestHandler>();
   ConnectionRecorder rec;
 
-  ftt::FastThriftServer server(makeConnectionContextConfig());
+  ftt::FastThriftServer server(makeLoopbackConfig());
   server.setInterface(handler);
   server.addModule(
       ftt::FastServerModule("closed-only")
@@ -1951,7 +1930,7 @@ TEST(FastThriftServerConnectionExtensionTest, ContributesToSetupResponse) {
   auto handler = std::make_shared<TestHandler>();
   ConnectionRecorder rec;
 
-  ftt::FastThriftServer server(makeConnectionContextConfig());
+  ftt::FastThriftServer server(makeLoopbackConfig());
   server.setInterface(handler);
   server.addModule(
       ftt::FastServerModule("policy")
@@ -1961,19 +1940,6 @@ TEST(FastThriftServerConnectionExtensionTest, ContributesToSetupResponse) {
   // The contribution must not disturb the exchange: the RPC still completes.
   EXPECT_EQ(addRoundTrip(server.getAddress()), 42);
   EXPECT_GE(rec.attempted.load(), 0);
-}
-
-// A connection extension observes the per-connection context, so registering
-// one against a server that builds none is refused outright rather than
-// silently handing the extension an empty connection.
-TEST(FastThriftServerConnectionExtensionTest, RequiresRequestContext) {
-  ConnectionRecorder rec;
-  ftt::FastThriftServer server(makeLoopbackConfig());
-  EXPECT_THROW(
-      server.addModule(
-          ftt::FastServerModule("needs-context")
-              .addThriftExtension<ConnectionLifecycleExtension>(&rec)),
-      std::logic_error);
 }
 
 // Callback families are independent: a teardown-only extension is a valid
@@ -2007,7 +1973,7 @@ TEST(FastThriftServerBackpressureExtensionTest, EgressDrainedSeesUserData) {
   BackpressureRecorder rec;
   auto handler = std::make_shared<TestHandler>();
 
-  ftt::FastThriftServer server(makeConnectionContextConfig());
+  ftt::FastThriftServer server(makeLoopbackConfig());
   server.setInterface(handler);
   server.setOnConnectionAccepted([&](ftt::ThriftConnContext* conn) {
     conn->setUserData(
@@ -2041,7 +2007,7 @@ TEST(
   // The connection is deliberately left wedged, so shut the terminal-phase
   // deadlines right down — otherwise teardown waits out the full drain and
   // reap before the test can finish.
-  auto config = makeConnectionContextConfig();
+  auto config = makeLoopbackConfig();
   config.drainTimeout = std::chrono::milliseconds{100};
   config.reapTimeout = std::chrono::milliseconds{200};
 
@@ -2068,7 +2034,7 @@ TEST(FastThriftServerBackpressureExtensionTest, PauseThenResumeKeepsServing) {
   rec.pauseOnce.store(true, std::memory_order_relaxed);
   auto handler = std::make_shared<TestHandler>();
 
-  ftt::FastThriftServer server(makeConnectionContextConfig());
+  ftt::FastThriftServer server(makeLoopbackConfig());
   server.setInterface(handler);
   server.setIOThreadPool(makeFixedSizePool(1));
   server.addModule(
@@ -2092,7 +2058,7 @@ TEST(FastThriftServerBackpressureExtensionTest, ResumerIsInertAfterClose) {
   BackpressureRecorder rec;
   auto handler = std::make_shared<TestHandler>();
 
-  ftt::FastThriftServer server(makeConnectionContextConfig());
+  ftt::FastThriftServer server(makeLoopbackConfig());
   server.setInterface(handler);
   server.addModule(
       ftt::FastServerModule("backpressure")
@@ -2123,7 +2089,7 @@ TEST(FastThriftServerBackpressureExtensionTest, OneInstanceServesBothFamilies) {
   BackpressureRecorder rec;
   auto handler = std::make_shared<TestHandler>();
 
-  ftt::FastThriftServer server(makeConnectionContextConfig());
+  ftt::FastThriftServer server(makeLoopbackConfig());
   server.setInterface(handler);
   server.addModule(
       ftt::FastServerModule("both")
@@ -2155,26 +2121,13 @@ TEST(FastThriftServerBackpressureExtensionTest, ConceptsAreIndependent) {
       "one extension may implement both families");
 }
 
-// An admission-control extension decides against per-connection state, so a
-// server that builds no connection context is refused rather than handing it
-// an empty connection.
-TEST(FastThriftServerBackpressureExtensionTest, RequiresRequestContext) {
-  BackpressureRecorder rec;
-  ftt::FastThriftServer server(makeLoopbackConfig());
-  EXPECT_THROW(
-      server.addModule(
-          ftt::FastServerModule("backpressure")
-              .addThriftExtension<BackpressureExtension>(&rec)),
-      std::logic_error);
-}
-
 // WriteBufferBackpressureHandler resumes reads the moment its own buffer
 // drains, with nothing arbitrating against the extension's pause. Refuse the
 // combination outright instead of letting it lift the pause intermittently.
 TEST(
     FastThriftServerBackpressureExtensionTest, RejectsWriteBufferBackpressure) {
   BackpressureRecorder rec;
-  auto config = makeConnectionContextConfig();
+  auto config = makeLoopbackConfig();
   config.enableWriteBufferBackpressure = true;
 
   ftt::FastThriftServer server(std::move(config));

@@ -93,8 +93,6 @@ class FastServerModule {
    */
   template <typename H, typename... Args>
   FastServerModule& addThriftExtension(Args... args) {
-    requiresConnectionContext_ |= ThriftConnectionExtensionHandler<H> ||
-        ThriftBackpressureExtensionHandler<H>;
     controlsReads_ |= ThriftBackpressureExtensionHandler<H>;
     requiresHeaders_ |= UsesHeaders<H>;
     return addFactory([&](channel_pipeline::HandlerId id) {
@@ -102,15 +100,6 @@ class FastServerModule {
           id, std::move(args)...);
     });
   }
-
-  /**
-   * Whether any extension in this module hooks the connection lifecycle, and so
-   * needs the server to build a per-connection context. Checked by
-   * FastThriftServer::addModule against the server's enableRequestContext
-   * setting: without it there is no ThriftConnContext to observe, and a
-   * connection extension would silently see nothing.
-   */
-  bool requiresConnectionContext() const { return requiresConnectionContext_; }
 
   /**
    * Whether any extension in this module pauses and resumes reads on a
@@ -124,8 +113,8 @@ class FastServerModule {
   /**
    * Whether any extension in this module declares kUsesHeaders. Checked by
    * FastThriftServer::addModule against enableRequestHeaders: headers are
-   * reachable only through the per-request context, which the server populates
-   * only under that setting, so without it the extension would read empty.
+   * populated on the per-request context only under that setting, so without
+   * it the extension would read empty.
    */
   bool requiresHeaders() const { return requiresHeaders_; }
 
@@ -158,7 +147,6 @@ class FastServerModule {
 
   std::string name_;
   std::vector<server::ThriftPipelineHandlerFactory> factories_;
-  bool requiresConnectionContext_{false};
   bool controlsReads_{false};
   bool requiresHeaders_{false};
 };

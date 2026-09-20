@@ -282,9 +282,7 @@ concept HasConnectionClosedCallback =
     };
 
 /**
- * True iff H hooks the connection lifecycle at all. Such an extension observes
- * per-connection state, so the server requires enableRequestContext when one is
- * registered.
+ * True iff H hooks the connection lifecycle at all.
  */
 template <typename H>
 concept ThriftConnectionExtensionHandler =

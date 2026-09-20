@@ -154,9 +154,7 @@ concept HasBackpressureAttachedCallback = requires(H& h, ReadResumer resumer) {
 };
 
 /**
- * True iff H does per-connection admission control. Such an extension observes
- * per-connection state, so the server requires enableRequestContext when one is
- * registered.
+ * True iff H does per-connection admission control.
  */
 template <typename H>
 concept ThriftBackpressureExtensionHandler = HasEgressDrainedCallback<H>;
