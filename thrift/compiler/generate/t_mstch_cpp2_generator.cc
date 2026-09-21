@@ -2685,6 +2685,29 @@ void forbid_allocator_via_on_union(sema_context& ctx, const t_union& node) {
   }
 }
 
+// The allocator-extended copy and move constructors carry over the fields and
+// __isset and nothing else. The lazy deserialization state is only handled by
+// the constructors that take no allocator, so a lazy field reads back empty
+// after a copy that carries an allocator.
+void forbid_lazy_fields_on_allocator_aware(
+    sema_context& ctx, const t_structured& strct) {
+  if (!strct.has_unstructured_annotation("cpp.allocator")) {
+    return;
+  }
+  for (const auto& field : strct.fields()) {
+    if (cpp2::is_lazy(&field)) {
+      ctx.report(
+          field,
+          diagnostic_level::error,
+          "`@cpp.Lazy` is not supported on field `{}` of allocator-aware struct "
+          "`{}`: the allocator-extended copy and move constructors drop the "
+          "field's serialized data.",
+          field.name(),
+          strct.name());
+    }
+  }
+}
+
 void validate_lazy_fields(sema_context& ctx, const t_field& field) {
   if (cpp2::is_lazy(&field)) {
     auto t = field.type()->get_true_type();
@@ -2721,6 +2744,8 @@ void t_mstch_cpp2_generator::fill_validator_visitors(
   validator.add_program_visitor(validate_splits(
       get_split_count(compiler_options()), client_name_to_split_count_));
   validator.add_field_visitor(validate_lazy_fields);
+  validator.add_structured_definition_visitor(
+      forbid_lazy_fields_on_allocator_aware);
 }
 
 THRIFT_REGISTER_GENERATOR(

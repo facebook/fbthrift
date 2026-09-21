@@ -3211,6 +3211,29 @@ TEST(CompilerTest, cpp_allocator_via_on_union) {
   )");
 }
 
+TEST(CompilerTest, cpp_lazy_on_allocator_aware_struct) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/cpp.thrift"
+    include "thrift/annotation/thrift.thrift"
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    struct Bad {
+      @cpp.Lazy
+      1: list<i32> lazy_field;
+        # expected-error@-2: `@cpp.Lazy` is not supported on field `lazy_field` of allocator-aware struct `Bad`: the allocator-extended copy and move constructors drop the field's serialized data.
+    }
+
+    # Lazy on its own is fine.
+    struct Good {
+      @cpp.Lazy
+      1: list<i32> lazy_field;
+    }
+  )");
+}
+
 TEST(CompilerTest, base_service_defined_after_use) {
   check_compile(R"(
     package "facebook.com/thrift/test"
