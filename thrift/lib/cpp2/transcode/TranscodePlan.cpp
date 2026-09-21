@@ -174,7 +174,9 @@ folly::Expected<Command, CompileError> fuseStructOps(
 
       FieldEntry entry;
       entry.fieldId = srcField.fieldId;
-      entry.fieldName = srcField.fieldName;
+      entry.fieldName = source.fieldIdent == FieldIdent::ByName
+          ? srcField.fieldName
+          : tgtField.fieldName;
       entry.readTypeInfo = srcField.readTypeInfo;
       entry.writeTypeInfo = tgtField.writeTypeInfo;
       entry.isRepeated = true;
@@ -208,7 +210,9 @@ folly::Expected<Command, CompileError> fuseStructOps(
 
     FieldEntry entry;
     entry.fieldId = srcField.fieldId;
-    entry.fieldName = srcField.fieldName;
+    entry.fieldName = source.fieldIdent == FieldIdent::ByName
+        ? srcField.fieldName
+        : tgtField.fieldName;
     entry.readTypeInfo = srcField.readTypeInfo; // from source codec
     entry.writeTypeInfo = tgtField.writeTypeInfo; // from target codec
     entry.isRepeated = srcField.isRepeated;

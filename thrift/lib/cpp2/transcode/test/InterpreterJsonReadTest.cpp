@@ -362,6 +362,115 @@ TEST_F(InterpreterJsonReadTest, JsonUnionRequiresExactlyOneMember) {
   EXPECT_TRUE(compact2.hasError());
 }
 
+TEST_F(InterpreterJsonReadTest, TaggedJsonUnionUsesDirectionalConfiguration) {
+  type_system::TypeSystemBuilder builder;
+  builder.addType(
+      "test.Payload",
+      def::Struct({
+          def::Field(
+              def::Identity(1, "message"), def::AlwaysPresent, TypeIds::String),
+      }));
+  builder.addType(
+      "test.Event",
+      def::Union({
+          def::Field(
+              def::Identity(1, "message"),
+              def::Optional,
+              TypeIds::uri("test.Payload")),
+      }));
+  auto ts = std::move(builder).build();
+  const auto& node = ts->getUserDefinedTypeOrThrow("test.Event").asUnion();
+
+  auto json = makeCodec(WireProtocol::Json, node);
+  auto& jsonRoot = std::get<StructOp>(json.root);
+  jsonRoot.readTaggedUnion = TaggedUnion{.tag = "input_kind", .content = {}};
+  jsonRoot.writeTaggedUnion = TaggedUnion{.tag = "output_kind", .content = {}};
+  jsonRoot.fields.front().fieldName = "response.message.delta";
+  auto compact = makeCodec(WireProtocol::ThriftCompact, node);
+
+  TranscodeInterpreter jsonToCompact{fuse(json, compact)};
+  auto compactValue = jsonToCompact.transcode(
+      wrap(R"({"message":"hello","input_kind":"response.message.delta"})"));
+  ASSERT_FALSE(compactValue.hasError()) << compactValue.error().message;
+
+  TranscodeInterpreter compactToJson{fuse(compact, json)};
+  auto jsonValue = compactToJson.transcode(**compactValue);
+  ASSERT_FALSE(jsonValue.hasError()) << jsonValue.error().message;
+  EXPECT_EQ(
+      toStr(**jsonValue),
+      R"({"output_kind":"response.message.delta","message":"hello"})");
+}
+
+TEST_F(InterpreterJsonReadTest, InternallyTaggedJsonUnionRejectsBadTags) {
+  type_system::TypeSystemBuilder builder;
+  builder.addType(
+      "test.Payload",
+      def::Struct({
+          def::Field(
+              def::Identity(1, "message"), def::AlwaysPresent, TypeIds::String),
+      }));
+  builder.addType(
+      "test.Event",
+      def::Union({
+          def::Field(
+              def::Identity(1, "message"),
+              def::Optional,
+              TypeIds::uri("test.Payload")),
+      }));
+  auto ts = std::move(builder).build();
+  const auto& node = ts->getUserDefinedTypeOrThrow("test.Event").asUnion();
+
+  auto json = makeCodec(WireProtocol::Json, node);
+  std::get<StructOp>(json.root).readTaggedUnion =
+      TaggedUnion{.tag = "type", .content = {}};
+  auto compact = makeCodec(WireProtocol::ThriftCompact, node);
+  TranscodeInterpreter jsonToCompact{fuse(json, compact)};
+
+  EXPECT_TRUE(
+      jsonToCompact.transcode(wrap(R"({"message":"hello"})")).hasError());
+  EXPECT_TRUE(
+      jsonToCompact.transcode(wrap(R"({"type":"unknown","message":"hello"})"))
+          .hasError());
+  EXPECT_TRUE(
+      jsonToCompact
+          .transcode(
+              wrap(R"({"type":"message","message":"hello","type":"message"})"))
+          .hasError());
+}
+
+TEST_F(InterpreterJsonReadTest, AdjacentlyTaggedJsonUnionRoundTripsScalar) {
+  type_system::TypeSystemBuilder builder;
+  builder.addType(
+      "test.Result",
+      def::Union({
+          def::Field(def::Identity(1, "flag"), def::Optional, TypeIds::Bool),
+      }));
+  auto ts = std::move(builder).build();
+  const auto& node = ts->getUserDefinedTypeOrThrow("test.Result").asUnion();
+
+  auto json = makeCodec(WireProtocol::Json, node);
+  auto& jsonRoot = std::get<StructOp>(json.root);
+  jsonRoot.readTaggedUnion = TaggedUnion{
+      .tag = "type",
+      .content = "value",
+  };
+  jsonRoot.writeTaggedUnion = TaggedUnion{
+      .tag = "type",
+      .content = "value",
+  };
+  auto compact = makeCodec(WireProtocol::ThriftCompact, node);
+
+  TranscodeInterpreter jsonToCompact{fuse(json, compact)};
+  auto compactValue =
+      jsonToCompact.transcode(wrap(R"({"value":true,"type":"flag"})"));
+  ASSERT_FALSE(compactValue.hasError()) << compactValue.error().message;
+
+  TranscodeInterpreter compactToJson{fuse(compact, json)};
+  auto jsonValue = compactToJson.transcode(**compactValue);
+  ASSERT_FALSE(jsonValue.hasError()) << jsonValue.error().message;
+  EXPECT_EQ(toStr(**jsonValue), R"({"type":"flag","value":true})");
+}
+
 TEST_F(InterpreterJsonReadTest, JsonMapSourceTranscodesWithOptIn) {
   type_system::TypeSystemBuilder builder;
   builder.addType(

@@ -422,6 +422,80 @@ TEST_F(TranscoderTest, JsonToJsonRejected) {
       << transcoder.error().message;
 }
 
+TEST_F(TranscoderTest, TaggedUnionRejectsNonJsonProtocols) {
+  type_system::TypeSystemBuilder builder;
+  builder.addType(
+      "test.Choice",
+      def::Union({
+          def::Field(def::Identity(1, "id"), def::Optional, TypeIds::I32),
+      }));
+  auto ts = std::move(builder).build();
+  const auto& node = ts->getUserDefinedTypeOrThrow("test.Choice").asUnion();
+
+  auto compact = makeCodec(WireProtocol::ThriftCompact, node);
+  std::get<StructOp>(compact.root).readTaggedUnion =
+      TaggedUnion{.tag = "type", .content = {}};
+  auto binary = makeCodec(WireProtocol::ThriftBinary, node);
+
+  auto transcoder = makeTranscoder(fuse(compact, binary), Engine::Interpreter);
+  ASSERT_TRUE(transcoder.hasError());
+  EXPECT_NE(transcoder.error().message.find("JSON"), std::string::npos)
+      << transcoder.error().message;
+}
+
+TEST_F(TranscoderTest, TaggedUnionRejectsMissingProtocolFraming) {
+  type_system::TypeSystemBuilder builder;
+  builder.addType(
+      "test.Choice",
+      def::Union({
+          def::Field(def::Identity(1, "id"), def::Optional, TypeIds::I32),
+      }));
+  auto ts = std::move(builder).build();
+  const auto& node = ts->getUserDefinedTypeOrThrow("test.Choice").asUnion();
+
+  auto json = makeCodec(WireProtocol::Json, node);
+  std::get<StructOp>(json.root).readTaggedUnion = TaggedUnion{
+      .tag = "type",
+      .content = "value",
+  };
+  auto compact = makeCodec(WireProtocol::ThriftCompact, node);
+  auto plan = fuse(json, compact);
+  std::get<StructOp>(plan.root).writeFieldProto = FieldProto::Unsupported;
+
+  auto transcoder = makeTranscoder(std::move(plan), Engine::Interpreter);
+  ASSERT_TRUE(transcoder.hasError());
+  EXPECT_NE(
+      transcoder.error().message.find("supported non-JSON"), std::string::npos)
+      << transcoder.error().message;
+}
+
+TEST_F(TranscoderTest, InternallyTaggedUnionRequiresStructArms) {
+  type_system::TypeSystemBuilder builder;
+  builder.addType(
+      "test.Choice",
+      def::Union({
+          def::Field(def::Identity(1, "id"), def::Optional, TypeIds::I32),
+      }));
+  auto ts = std::move(builder).build();
+  const auto& node = ts->getUserDefinedTypeOrThrow("test.Choice").asUnion();
+
+  auto json = makeCodec(WireProtocol::Json, node);
+  auto& jsonRoot = std::get<StructOp>(json.root);
+  jsonRoot.readTaggedUnion = TaggedUnion{.tag = "type", .content = {}};
+  jsonRoot.writeTaggedUnion = TaggedUnion{.tag = "type", .content = {}};
+  auto compact = makeCodec(WireProtocol::ThriftCompact, node);
+
+  auto jsonInput = makeTranscoder(fuse(json, compact), Engine::Interpreter);
+  ASSERT_TRUE(jsonInput.hasError());
+  EXPECT_NE(jsonInput.error().message.find("struct arms"), std::string::npos)
+      << jsonInput.error().message;
+
+  auto jsonOutput = makeTranscoder(fuse(compact, json), Engine::Interpreter);
+  ASSERT_TRUE(jsonOutput.hasError());
+  EXPECT_NE(jsonOutput.error().message.find("struct arms"), std::string::npos)
+      << jsonOutput.error().message;
+}
+
 TEST_F(TranscoderTest, ProtobufRequiresIncompleteProtocolOptIn) {
   auto protobuf = makeCodec(WireProtocol::ProtobufBinary, sampleNode());
   auto compact = makeCodec(WireProtocol::ThriftCompact, sampleNode());

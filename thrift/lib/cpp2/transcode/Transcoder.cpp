@@ -83,6 +83,81 @@ bool hasJsonMapSourceAndTarget(const Command& cmd) {
   return false;
 }
 
+std::optional<std::string> unsupportedTaggedUnionReason(
+    const StructOp& op, const TaggedUnion& taggedUnion, bool read) {
+  const bool json = read ? op.fieldIdent == FieldIdent::ByName
+                         : op.writeFieldIdent == FieldIdent::ByName;
+  if (!json) {
+    return read
+        ? "interpreter only supports read-tagged unions for JSON input"
+        : "interpreter only supports write-tagged unions for JSON output";
+  }
+  const auto protocol = read ? op.writeFieldProto : op.readFieldProto;
+  if (protocol == FieldProto::Unsupported) {
+    return "interpreter tagged unions require a supported non-JSON protocol";
+  }
+  for (const auto& field : op.fields) {
+    if (field.command == nullptr) {
+      return "interpreter tagged unions require arm commands";
+    }
+    if (!taggedUnion.content.has_value()) {
+      if (!std::holds_alternative<StructOp>(*field.command)) {
+        return "interpreter internally tagged unions require struct arms";
+      }
+      const auto& member = std::get<StructOp>(*field.command);
+      const auto memberProtocol =
+          read ? member.writeFieldProto : member.readFieldProto;
+      if (memberProtocol == FieldProto::Unsupported) {
+        return "interpreter internally tagged unions require supported "
+               "struct arm protocols";
+      }
+    }
+  }
+  return std::nullopt;
+}
+
+std::optional<std::string> unsupportedTaggedUnionReason(const Command& cmd) {
+  if (const auto* st = std::get_if<StructOp>(&cmd)) {
+    if (st->readTaggedUnion.has_value()) {
+      if (auto reason =
+              unsupportedTaggedUnionReason(*st, *st->readTaggedUnion, true)) {
+        return reason;
+      }
+    }
+    if (st->writeTaggedUnion.has_value()) {
+      if (auto reason =
+              unsupportedTaggedUnionReason(*st, *st->writeTaggedUnion, false)) {
+        return reason;
+      }
+    }
+    for (const auto& field : st->fields) {
+      if (field.command != nullptr) {
+        if (auto reason = unsupportedTaggedUnionReason(*field.command)) {
+          return reason;
+        }
+      }
+    }
+    return std::nullopt;
+  }
+  if (const auto* sq = std::get_if<SeqOp>(&cmd)) {
+    if (sq->element != nullptr) {
+      return unsupportedTaggedUnionReason(*sq->element);
+    }
+    return std::nullopt;
+  }
+  if (const auto* mp = std::get_if<MapOp>(&cmd)) {
+    if (mp->key != nullptr) {
+      if (auto reason = unsupportedTaggedUnionReason(*mp->key)) {
+        return reason;
+      }
+    }
+    if (mp->value != nullptr) {
+      return unsupportedTaggedUnionReason(*mp->value);
+    }
+  }
+  return std::nullopt;
+}
+
 std::optional<std::string> missingProtocolReason(const TranscodePlan& plan) {
   if (plan.sourceProtocol == WireProtocol::Unknown ||
       plan.targetProtocol == WireProtocol::Unknown) {
@@ -114,6 +189,9 @@ std::optional<std::string> interpreterSupports(const TranscodePlan& plan) {
   }
   if (hasJsonMapSourceAndTarget(plan.root)) {
     return "interpreter does not support JSON-to-JSON map transcodes";
+  }
+  if (auto reason = unsupportedTaggedUnionReason(plan.root)) {
+    return reason;
   }
   return std::nullopt;
 }
