@@ -987,7 +987,6 @@ struct Decode<type::enum_t<T>> {
   }
 };
 
-// TODO: add optimization used in protocol_methods.h
 template <TType ElemType>
 struct ListDecodeImpl {
   template <typename Protocol, typename ListType, typename ElementRead>
@@ -1006,8 +1005,8 @@ struct ListDecodeImpl {
         elementRead(elem);
       }
     };
-    TType t;
-    uint32_t s;
+    TType t = TType::T_STOP;
+    uint32_t s = -1;
     prot.readListBegin(t, s);
     list.clear();
     if (prot.kOmitsContainerSizes()) {

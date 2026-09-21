@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <algorithm>
 #include <bitset>
 #include <iostream>
 #include <iterator>
@@ -27,14 +26,11 @@
 #include <vector>
 
 #include <folly/Traits.h>
-#include <folly/Utility.h>
-#include <folly/container/Reserve.h>
 #include <folly/container/View.h>
 #include <folly/container/range_traits.h>
 #include <folly/functional/Invoke.h>
 #include <folly/io/IOBuf.h>
 #include <folly/lang/VectorTraits.h>
-#include <folly/memory/UninitializedMemoryHacks.h>
 
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TType.h>
@@ -91,9 +87,7 @@ using op::detail::deserialize_key_val_into_map;
 using op::detail::deserialize_known_length_map;
 using op::detail::deserialize_known_length_set;
 using op::detail::detect_key_compare;
-using op::detail::detect_resize;
-using op::detail::detect_resize_without_initialization;
-using op::detail::emplace_back_default;
+using op::detail::ListDecodeImpl;
 using op::detail::map_emplace_hint_is_invocable_v;
 using op::detail::set_emplace_hint_is_invocable_v;
 using op::detail::sorted_unique_constructible_v;
@@ -354,101 +348,10 @@ struct protocol_methods<type_class::list<ElemClass>, Type, ExpectedTag> {
       expected_value_tag_or_void_t<ExpectedTag>>;
   using elem_ttype = protocol_type<ElemClass, elem_type>;
 
- private:
-  template <typename Protocol>
-  FOLLY_ERASE static void read_one(Protocol& protocol, Type& out) {
-    if constexpr ( //
-        std::is_const_v<std::remove_reference_t<typename Type::reference>>) {
-      out.emplace_back(folly::invocable_to([&] {
-        elem_type elem;
-        elem_methods::read(protocol, elem);
-        return elem;
-      }));
-    } else {
-      elem_methods::read(protocol, emplace_back_default(out));
-    }
-  }
-
- public:
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
-    std::uint32_t list_size = -1;
-    using WireTypeInfo = ProtocolReaderWireTypeInfo<Protocol>;
-    using WireType = typename WireTypeInfo::WireType;
-
-    WireType reported_type = WireTypeInfo::defaultValue();
-
-    protocol.readListBegin(reported_type, list_size);
-    out.clear();
-    if (protocol.kOmitsContainerSizes()) {
-      // list size unknown, SimpleJSON protocol won't know type, either
-      // so let's just hope that it spits out something that makes sense
-      while (protocol.peekList()) {
-        read_one(protocol, out);
-      }
-    } else {
-      if (reported_type != WireTypeInfo::fromTType(elem_ttype::value)) {
-        apache::thrift::skip_n(protocol, list_size, {reported_type});
-      } else {
-        if (!canReadNElements(protocol, list_size, {reported_type})) {
-          protocol::TProtocolException::throwTruncatedData();
-        }
-
-#ifndef _MSC_VER
-        constexpr auto should_resize_without_initialization = std::is_trivial_v<
-                                                                  elem_type> &&
-            folly::is_detected_v<detect_resize_without_initialization,
-                                 Type,
-                                 decltype(list_size)>;
-#else
-        // For MSVC, vector layout is not fixed, so resizeWithoutInitialization
-        // is not supported yet
-        constexpr auto should_resize_without_initialization = false;
-#endif
-        constexpr auto should_resize = std::is_trivial_v<elem_type> &&
-            folly::is_detected_v<detect_resize, Type, decltype(list_size)>;
-
-        // For performance, do special treatments for trivial value list. Try to
-        // resizeWithoutInitialization first, then resize.
-        if constexpr (should_resize_without_initialization) {
-          folly::resizeWithoutInitialization(out, list_size);
-          // Check if we can do a fast path (memcpy that reverses byte order)
-          // instead of processing elements sequentially
-          if constexpr (should_process_as_arithmetic_vector_v<
-                            Protocol,
-                            elem_ttype,
-                            Type>) {
-            protocol.template readArithmeticVector<elem_type>(
-                out.data(), out.size());
-          } else {
-            // fallback: process element by element
-            auto outIt = out.begin();
-            const auto outEnd = out.end();
-            try {
-              for (; outIt != outEnd; ++outIt) {
-                elem_methods::read(protocol, *outIt);
-              }
-            } catch (...) {
-              // For behaviour parity, initialize the leftover elements when
-              // exceptions happen
-              std::fill(outIt, outEnd, elem_type());
-              throw;
-            }
-          }
-        } else if constexpr (should_resize) {
-          out.resize(list_size);
-          for (auto&& elem : out) {
-            elem_methods::read(protocol, elem);
-          }
-        } else {
-          folly::reserve_if_available(out, list_size);
-          while (list_size--) {
-            read_one(protocol, out);
-          }
-        }
-      }
-    }
-    protocol.readListEnd();
+    ListDecodeImpl<elem_ttype::value>{}(
+        protocol, out, [&](auto& elem) { elem_methods::read(protocol, elem); });
   }
 
   template <typename Protocol>
