@@ -32,7 +32,15 @@
 // is then unable to remove unused data without also removing used data.
 // This has a similar effect to the "retain" attribute, but works with older
 // toolchains.
-#define THRIFT_DATA_MEMBER [[gnu::used]] [[gnu::section(".rodata.thrift.data")]]
+//
+// The section must live in RELRO (.data.rel.ro), not .rodata: some members
+// hold string_views (pointers needing relocations), so in -fPIC/-fPIE builds
+// the compiler would make a .rodata section writable, and the linker would
+// merge it into the text segment - producing a single RWX LOAD segment.
+// That breaks aarch64 with BTI notes (SIGSEGV in _dl_setup_hash) and trips
+// linkers with --error-rwx-segments (Fedora default).
+#define THRIFT_DATA_MEMBER \
+  [[gnu::used]] [[gnu::section(".data.rel.ro.thrift.data")]]
 #else
 #define THRIFT_DATA_MEMBER
 #endif
