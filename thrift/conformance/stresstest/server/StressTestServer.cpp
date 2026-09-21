@@ -36,6 +36,7 @@
 #include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/thread_factory/InitThreadFactory.h>
 #include <thrift/conformance/stresstest/server/StressTestServerModule.h>
+#include <thrift/lib/cpp/server/TServerEventHandler.h>
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/server/ParallelConcurrencyController.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -200,6 +201,28 @@ std::shared_ptr<folly::IOThreadPoolExecutor> getIOThreadPool(
   }
 }
 
+class IoUringStatsInitHandler
+    : public apache::thrift::server::TServerEventHandler {
+ public:
+  IoUringStatsInitHandler(
+      std::shared_ptr<folly::IOThreadPoolExecutor> ioThreadPool,
+      std::shared_ptr<StressTestServerStats> serverStats,
+      uint32_t dumpStatInterval)
+      : ioThreadPool_{std::move(ioThreadPool)},
+        serverStats_{std::move(serverStats)},
+        dumpStatInterval_{dumpStatInterval} {}
+
+  void preServe(const folly::SocketAddress* /*address*/) override {
+    auto evbs = ioThreadPool_->getAllEventBases();
+    serverStats_->init(evbs, dumpStatInterval_);
+  }
+
+ private:
+  std::shared_ptr<folly::IOThreadPoolExecutor> ioThreadPool_;
+  std::shared_ptr<StressTestServerStats> serverStats_;
+  uint32_t dumpStatInterval_;
+};
+
 std::shared_ptr<ThriftServer> createStressTestServer(
     std::shared_ptr<apache::thrift::ServiceHandler<StressTest>> handler,
     std::shared_ptr<StressTestServerStats> serverStats) {
@@ -263,9 +286,14 @@ std::shared_ptr<ThriftServer> createStressTestServer(
   auto stressTestServerModule =
       std::make_unique<StressTestServerModule>(serverStats);
   if (collectIoUringStats) {
-    auto evbs = ioThreadPool->getAllEventBases();
-    stressTestServerModule->initIoUringStatsLogging(
-        evbs, static_cast<uint32_t>(FLAGS_io_uring_dump_stat_interval));
+    // Defer stats-timer registration until preServe: the IOThreadPoolExecutor
+    // has not created its EventBases yet at this point, so getAllEventBases()
+    // would return an empty list here.
+    server->addServerEventHandler(
+        std::make_shared<IoUringStatsInitHandler>(
+            ioThreadPool,
+            serverStats,
+            static_cast<uint32_t>(FLAGS_io_uring_dump_stat_interval)));
   }
   if (FLAGS_io_uring && FLAGS_io_uring_dump_stat_interval > 0) {
     LOG(INFO) << "IO Uring statistics dump enabled every "
