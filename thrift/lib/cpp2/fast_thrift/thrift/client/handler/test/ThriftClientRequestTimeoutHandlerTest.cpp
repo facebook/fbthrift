@@ -165,6 +165,31 @@ TEST_F(ThriftClientRequestTimeoutHandlerTest, FiresTimedOutWhenNoResponse) {
   EXPECT_TRUE(isTimedOut(caller.ew));
 }
 
+TEST_F(ThriftClientRequestTimeoutHandlerTest, TimeoutRetiresTransportRequest) {
+  CallerResult caller;
+  ThriftRequestContext* rc = nullptr;
+  auto request = makeRequest(/*timeoutMs=*/5, &caller, &rc);
+  int cancelCalls = 0;
+  void* cancelledContext = nullptr;
+  struct Capture {
+    int* calls;
+    void** context;
+  } capture{&cancelCalls, &cancelledContext};
+  rc->cancelRequestOwner = &capture;
+  rc->cancelRequest = [](void* owner, void* requestContext) noexcept {
+    auto* capture = static_cast<Capture*>(owner);
+    ++*capture->calls;
+    *capture->context = requestContext;
+  };
+
+  (void)handler_.onWrite(*ctx_, erase_and_box(std::move(request)));
+  evb_->loop();
+
+  EXPECT_EQ(cancelCalls, 1);
+  EXPECT_EQ(cancelledContext, rc);
+  EXPECT_EQ(caller.calls, 1);
+}
+
 TEST_F(ThriftClientRequestTimeoutHandlerTest, ResponseDisarmsTimeout) {
   CallerResult caller;
   ThriftRequestContext* rc = nullptr;

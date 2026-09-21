@@ -46,10 +46,10 @@ namespace apache::thrift::fast_thrift::thrift::client::handler {
  * The default is opt-in: leave it unset and such a request stays unbounded,
  * exactly as before.
  *
- * On expiry the caller is failed in-process with a TIMED_OUT
- * TTransportException; nothing is sent on the wire and the connection stays
- * healthy. A late server response for a timed-out request is dropped locally,
- * matching classic client behavior.
+ * On expiry the transport is asked to retire the request before the caller is
+ * failed in-process with a TIMED_OUT TTransportException. A Rocket transport
+ * sends CANCEL and removes its stream state; transports without cancellation
+ * support still drop a late response locally.
  *
  * Duplex handler: arms a timer on the outbound request and disarms it on the
  * matching inbound response. The timer lives on the per-request
@@ -135,16 +135,22 @@ class ThriftClientRequestTimeoutHandler {
   }
 
  private:
-  // Timer callback owned by ThriftRequestContext. On expiry it fails the caller
-  // with TIMED_OUT (mirroring ThriftClientAppAdapter's error delivery). It does
-  // not touch ThriftRequestContext::timeout: a callback must not free itself
-  // from within timeoutExpired(); the fired callback is reclaimed when the late
-  // response arrives (onRead) or when the context is destroyed.
+  // Timer callback owned by ThriftRequestContext. It takes ownership of itself
+  // before asking the transport to retire the request, because that operation
+  // may synchronously destroy the context that used to own the callback.
   struct Timeout : folly::HHWheelTimer::Callback {
     explicit Timeout(ThriftRequestContext* rc) noexcept : rc_(rc) {}
 
     void timeoutExpired() noexcept override {
+      std::unique_ptr<folly::HHWheelTimer::Callback> self(
+          rc_->timeout.release());
       auto handler = std::move(rc_->handler);
+      const auto cancelRequest = rc_->cancelRequest;
+      void* const cancelRequestOwner = rc_->cancelRequestOwner;
+      void* const requestContext = rc_;
+      if (cancelRequest != nullptr) {
+        cancelRequest(cancelRequestOwner, requestContext);
+      }
       handler(
           folly::makeUnexpected(
               folly::make_exception_wrapper<

@@ -74,6 +74,23 @@ TEST(DirectStreamMapTest, FindMissing) {
   EXPECT_FALSE(map.contains(2));
 }
 
+TEST(DirectStreamMapTest, FindIfStopsAtFirstMatch) {
+  DirectStreamMap<int> map;
+  map.emplace(1, 10);
+  map.emplace(3, 30);
+  map.emplace(5, 50);
+
+  size_t visited = 0;
+  auto it = map.findIf([&](uint32_t, int value) {
+    ++visited;
+    return value == 30;
+  });
+
+  ASSERT_NE(it, map.end());
+  EXPECT_EQ(it->first, 3);
+  EXPECT_EQ(visited, 2);
+}
+
 TEST(DirectStreamMapTest, EraseByIterator) {
   DirectStreamMap<int> map;
   map.emplace(1, 42);

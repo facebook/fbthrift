@@ -1517,12 +1517,14 @@ TEST_F(
   ASSERT_TRUE(hadValue);
   // The rocket stats handler stamps the response wire sizes off the parsed
   // frame; the bridge forwards them to the callback as RpcTransportStats.
+  EXPECT_EQ(capturedStats.responseSerializedSizeBytes, dataLen);
   EXPECT_EQ(capturedStats.responseWireSizeBytes, dataLen);
   EXPECT_EQ(
       capturedStats.responseMetadataAndPayloadSizeBytes, metadataLen + dataLen);
   // The request sizes are parked on the stream's entry in the shared context
   // map. Compared against the frame that actually went out rather than a
   // literal, so the expectation cannot drift with the metadata encoding.
+  EXPECT_EQ(capturedStats.requestSerializedSizeBytes, parsedRequest.dataSize());
   EXPECT_EQ(capturedStats.requestWireSizeBytes, parsedRequest.dataSize());
   EXPECT_EQ(
       capturedStats.requestMetadataAndPayloadSizeBytes,

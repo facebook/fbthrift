@@ -72,19 +72,25 @@ static_assert(
 
 namespace {
 
-TypeErasedBox makeThriftRequestBox() {
+TypeErasedBox makeThriftRequestBox(
+    ThriftRequestContext** requestContextOut = nullptr) {
   auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
   metadata->protocol() = apache::thrift::ProtocolId::BINARY;
   metadata->kind() = apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
   metadata->name() = apache::thrift::ManagedStringViewWithConversions(
       apache::thrift::ManagedStringView::from_static(std::string_view{"test"}));
+  auto requestContext =
+      std::make_unique<ThriftRequestContext>(RequestResponseHandler{});
+  if (requestContextOut != nullptr) {
+    *requestContextOut = requestContext.get();
+  }
   ThriftRequestMessage msg{
       .payload =
           ThriftRequestResponsePayload{
               .data = folly::IOBuf::copyBuffer("data"),
               .metadata = std::move(metadata),
           },
-      .requestContext = rocket::borrow(reinterpret_cast<void*>(0x42)),
+      .requestContext = rocket::from_unique_ptr(std::move(requestContext)),
   };
   return erase_and_box(std::move(msg));
 }
@@ -172,6 +178,7 @@ TEST(ThriftClientTransportAdapterTest, OnWriteConvertsAndWritesToRocket) {
 TEST(ThriftClientTransportAdapterTest, OnWriteConvertsRpcKindToFrameType) {
   AdapterWithRocketPipeline fixture;
   TypeErasedBox capturedMsg;
+  ThriftRequestContext* requestContext = nullptr;
 
   fixture.rocketHead.setOnWriteCallback([&](TypeErasedBox&& msg) {
     capturedMsg = std::move(msg);
@@ -179,12 +186,13 @@ TEST(ThriftClientTransportAdapterTest, OnWriteConvertsRpcKindToFrameType) {
   });
 
   auto result = fixture.adapter->onWrite(
-      channel_pipeline::test::inertEndpointContext(), makeThriftRequestBox());
+      channel_pipeline::test::inertEndpointContext(),
+      makeThriftRequestBox(&requestContext));
   EXPECT_EQ(result, Result::Success);
 
   auto& rocketMsg = capturedMsg.get<rocket::RocketRequestMessage>();
   EXPECT_EQ(rocketMsg.streamType, frame::FrameType::REQUEST_RESPONSE);
-  EXPECT_EQ(rocketMsg.requestContext.get(), reinterpret_cast<void*>(0x42));
+  EXPECT_EQ(rocketMsg.requestContext.get(), requestContext);
 }
 
 TEST(ThriftClientTransportAdapterTest, InboundResponseConvertedToThrift) {

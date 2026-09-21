@@ -482,6 +482,31 @@ TEST_F(ClientStreamStateHandlerTest, ResponseErrorForUnknownStreamIsDropped) {
   EXPECT_EQ(ctx_.readMessages().size(), 0);
 }
 
+TEST_F(ClientStreamStateHandlerTest, CancelEventRetiresStreamAndWritesCancel) {
+  int testHook;
+  void* const kTestHandle = &testHook;
+  auto request = makeClientRequest(
+      folly::IOBuf::copyBuffer("request"),
+      folly::IOBuf::copyBuffer("metadata"),
+      kTestHandle);
+  ASSERT_EQ(
+      handler_.onWrite(ctx_, erase_and_box(std::move(request))),
+      Result::Success);
+  ctx_.reset();
+
+  handler_.on<RocketCancelRequestEvent>(
+      ctx_, RocketCancelRequestEvent{.requestContext = kTestHandle});
+
+  ASSERT_FALSE(handler_.hasActiveStream(1));
+  ASSERT_EQ(ctx_.writeMessages().size(), 1);
+  const auto& cancel = ctx_.writeMessages()[0].get<RocketRequestMessage>();
+  ASSERT_EQ(
+      cancel.frame.frameType,
+      apache::thrift::fast_thrift::frame::FrameType::CANCEL);
+  ASSERT_EQ(cancel.frame.streamId, 1);
+  ASSERT_EQ(cancel.requestContext.get(), nullptr);
+}
+
 // =============================================================================
 // Non-Terminal Frame Handling
 // =============================================================================

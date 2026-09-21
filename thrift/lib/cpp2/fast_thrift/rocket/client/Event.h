@@ -84,6 +84,12 @@ struct RocketWriteCompleteEvent
   apache::thrift::fast_thrift::transport::WriteCompletionStatus status;
 };
 
+/** Requests cancellation of the stream carrying an opaque request context. */
+struct RocketCancelRequestEvent
+    : channel_pipeline::EventTag<RocketCancelRequestEvent> {
+  void* requestContext;
+};
+
 /**
  * `FirstResponseFrameEvent` reports when the first wire
  * frame of a fragmented response for `streamId` was parsed by the client.

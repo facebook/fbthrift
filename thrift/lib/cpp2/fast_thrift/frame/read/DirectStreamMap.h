@@ -166,6 +166,18 @@ class DirectStreamMap {
     }
   }
 
+  /// Return the first live entry matching the predicate.
+  /// Predicate signature: bool(Key key, Value& val)
+  template <typename F>
+  iterator findIf(F&& fn) noexcept {
+    for (auto& s : slots_) {
+      if (s.tag == Tag::Live && fn(s.first, s.second)) {
+        return &s;
+      }
+    }
+    return end();
+  }
+
   bool contains(Key key) const noexcept { return find(key) != nullptr; }
 
   bool empty() const noexcept { return size_ == 0; }

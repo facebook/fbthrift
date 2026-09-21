@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/common/RocketClientConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/common/Event.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/client/common/ThriftRequestContext.h>
 
 namespace apache::thrift::fast_thrift::thrift::client {
 
@@ -255,6 +256,14 @@ class ThriftClientTransportAdapterT {
       channel_pipeline::detail::ContextImpl&,
       channel_pipeline::TypeErasedBox&& msg) noexcept {
     auto request = msg.take<ThriftRequestMessage>();
+    if (auto* requestContext =
+            static_cast<ThriftRequestContext*>(request.requestContext.get())) {
+      requestContext->cancelRequestOwner = this;
+      requestContext->cancelRequest = [](void* owner, void* context) noexcept {
+        static_cast<ThriftClientTransportAdapterT*>(owner)->cancelRequest(
+            context);
+      };
+    }
     // toRocketFrame() serializes the request metadata and can throw on
     // serializer/allocator failure. Catch and deliver inbound as a
     // per-request ThriftClientResponseError so the AppAdapter fails just this
@@ -327,15 +336,23 @@ class ThriftClientTransportAdapterT {
   }
 
  private:
+  void cancelRequest(void* requestContext) noexcept {
+    if (connection_ != nullptr && connection_->appAdapter != nullptr) {
+      connection_->appAdapter->cancelRequest(requestContext);
+    }
+  }
+
   // Translate the rocket layer's transport stats into the thrift-layer
-  // RpcTransportStats. The uncompressed *SerializedSizeBytes fields are a
-  // thrift-layer concept the rocket layer cannot observe; they stay zero.
+  // RpcTransportStats. This client pipeline does not negotiate compression, so
+  // the wire data size is also the uncompressed serialized payload size.
   static apache::thrift::RpcTransportStats toRpcTransportStats(
       const rocket::RocketStats& s) noexcept {
     apache::thrift::RpcTransportStats out;
+    out.requestSerializedSizeBytes = s.requestWireSizeBytes;
     out.requestWireSizeBytes = s.requestWireSizeBytes;
     out.requestMetadataAndPayloadSizeBytes =
         s.requestMetadataAndPayloadSizeBytes;
+    out.responseSerializedSizeBytes = s.responseWireSizeBytes;
     out.responseWireSizeBytes = s.responseWireSizeBytes;
     out.responseMetadataAndPayloadSizeBytes =
         s.responseMetadataAndPayloadSizeBytes;

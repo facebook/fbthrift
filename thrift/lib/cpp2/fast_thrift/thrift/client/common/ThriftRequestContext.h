@@ -24,12 +24,14 @@
 namespace apache::thrift::fast_thrift::thrift::client {
 
 /**
- * Per-request context. Travels through the pipeline opaquely as a
- * TypeErasedPtr; only the AppAdapter knows the concrete type. Extend
- * with new fields (transport stats, retry tracking, etc.) rather than
- * adding parallel per-request maps.
+ * Per-request context. Travels through the pipeline as a TypeErasedPtr; client
+ * components that manage per-request state share this concrete type. Extend
+ * with new fields (transport stats, retry tracking, etc.) rather than adding
+ * parallel per-request maps.
  */
 struct ThriftRequestContext {
+  using CancelRequestFn = void (*)(void*, void*) noexcept;
+
   RequestResponseHandler handler;
 
   // Per-request client-timeout callback, armed and disarmed by
@@ -38,6 +40,13 @@ struct ThriftRequestContext {
   // no correlation map is needed since the context round-trips with the
   // request/response.
   std::unique_ptr<folly::HHWheelTimer::Callback> timeout;
+
+  // Installed by the transport adapter before the request enters the Rocket
+  // pipeline. The timeout handler invokes it with this context's stable
+  // address so the transport can retire the corresponding stream. Kept as a
+  // function pointer plus opaque owner to avoid a per-request allocation.
+  void* cancelRequestOwner{nullptr};
+  CancelRequestFn cancelRequest{nullptr};
 
   explicit ThriftRequestContext(RequestResponseHandler handler)
       : handler(std::move(handler)) {}

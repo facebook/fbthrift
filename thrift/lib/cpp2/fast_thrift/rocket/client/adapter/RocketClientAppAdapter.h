@@ -113,6 +113,7 @@ class RocketClientAppAdapter : public folly::DelayedDestruction {
       XLOG(FATAL) << "must reset pipeline before setting a new one";
     }
     pipeline_ = pipeline;
+    eventPublisher_ = pipeline->template bindEvents<PublishedEvents>();
     pipelineGuard_ =
         std::make_unique<folly::DelayedDestruction::DestructorGuard>(pipeline);
   }
@@ -123,6 +124,7 @@ class RocketClientAppAdapter : public folly::DelayedDestruction {
    * not be called.
    */
   void resetPipeline() noexcept {
+    eventPublisher_ = {};
     pipeline_ = nullptr;
     pipelineGuard_.reset();
   }
@@ -172,6 +174,13 @@ class RocketClientAppAdapter : public folly::DelayedDestruction {
     DCHECK(pipeline_);
     return pipeline_->fireWrite(
         channel_pipeline::erase_and_box(std::move(msg)));
+  }
+
+  void cancelRequest(void* requestContext) noexcept {
+    if (pipeline_ != nullptr) {
+      eventPublisher_.template fire<RocketCancelRequestEvent>(
+          RocketCancelRequestEvent{.requestContext = requestContext});
+    }
   }
 
   // === TailEndpointHandler interface ===
@@ -271,7 +280,12 @@ class RocketClientAppAdapter : public folly::DelayedDestruction {
   }
 
  private:
+  using PublishedEvents = channel_pipeline::Events<RocketCancelRequestEvent>;
+  using EventPublisher =
+      channel_pipeline::EventPublisherHandle<PublishedEvents>;
+
   channel_pipeline::PipelineImpl* pipeline_{nullptr};
+  EventPublisher eventPublisher_;
   std::unique_ptr<folly::DelayedDestruction::DestructorGuard> pipelineGuard_;
   OnResponseFn onResponse_;
   OnErrorFn onError_;

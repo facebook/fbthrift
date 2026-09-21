@@ -81,7 +81,8 @@ class RocketClientStreamStateHandler {
   RocketClientStreamStateHandler() = default;
 
   using PublishedEvents = channel_pipeline::Events<RocketWriteCompleteEvent>;
-  using SubscribedEvents = channel_pipeline::Events<FrameWriteCompleteEvent>;
+  using SubscribedEvents = channel_pipeline::
+      Events<FrameWriteCompleteEvent, RocketCancelRequestEvent>;
 
   // === HandlerLifecycle ===
 
@@ -293,6 +294,37 @@ class RocketClientStreamStateHandler {
             .requestContext = it->second.requestContext.get(),
             .status = event.status,
         });
+  }
+
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::same_as<E, RocketCancelRequestEvent>
+  void on(Context& ctx, const RocketCancelRequestEvent& event) noexcept {
+    auto it = streams().findIf(
+        [&](uint32_t /*id*/, RocketClientStreamContext& stream) {
+          return stream.requestContext.get() == event.requestContext;
+        });
+    if (it == streams().end()) {
+      return;
+    }
+
+    const uint32_t streamId = it->first;
+    auto requestContext = std::move(it->second.requestContext);
+    streams().erase(it);
+
+    RocketRequestMessage cancel{
+        .frame =
+            apache::thrift::fast_thrift::frame::ComposedFrame{
+                .frameType =
+                    apache::thrift::fast_thrift::frame::FrameType::CANCEL,
+                .streamId = streamId,
+            },
+        .requestContext = {},
+        .streamType =
+            apache::thrift::fast_thrift::frame::FrameType::REQUEST_RESPONSE,
+    };
+    (void)ctx.fireWrite(
+        apache::thrift::fast_thrift::channel_pipeline::erase_and_box(
+            std::move(cancel)));
   }
 
   // === Stream ID Generation ===
