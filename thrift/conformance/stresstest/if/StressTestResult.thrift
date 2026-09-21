@@ -44,6 +44,13 @@ struct ZcrxCounters {
   5: i64 noBufferCount;
 }
 
+struct ProvidedBufferCounters {
+  1: i64 eventBaseCount;
+  2: i64 enobufCount;
+  3: i64 maxUtilPct;
+  4: i64 maxAreaCount;
+}
+
 struct ClientResult {
   1: ResultMetadata metadata;
   2: RequestCounters requests;
@@ -53,4 +60,5 @@ struct ServerResult {
   1: ResultMetadata metadata;
   2: map<ConnectionMode, i64> connections;
   3: ZcrxCounters zcrx;
+  4: ProvidedBufferCounters providedBuffer;
 }

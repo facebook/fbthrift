@@ -16,6 +16,7 @@
 
 #include <thrift/conformance/stresstest/server/StressTestServerStats.h>
 
+#include <algorithm>
 #include <optional>
 #include <set>
 #include <utility>
@@ -89,6 +90,14 @@ class StressTestServerStats::IoUringStatsTimer : public folly::AsyncTimeout {
     return stats_.zcrx;
   }
 
+  std::optional<folly::IoUringBufferProvider::Stats> providedBufferStats()
+      const noexcept {
+    if (backend_->zcBufferPool()) {
+      return std::nullopt;
+    }
+    return stats_.providedBuffer;
+  }
+
  private:
   folly::IoUringBackend* backend_;
   size_t evbIdx_;
@@ -128,31 +137,45 @@ void StressTestServerStats::init(
 }
 
 void StressTestServerStats::collectFinal() {
-  int64_t eventBaseCount = 0;
+  int64_t zcrxEventBaseCount = 0;
   std::set<int64_t> ioThreadIds;
   folly::IoUringZeroCopyBufferPool::Stats zcrxStats;
+  int64_t providedBufferEventBaseCount = 0;
+  int64_t enobufCount = 0;
+  int maxUtilPct = -1;
+  int maxAreaCount = 0;
   for (const auto& [eventBase, timer] : timers_) {
     eventBase->runInEventBaseThreadAndWait([&] {
       timer->cancelTimeout();
       timer->collect();
-      const auto stats = timer->zcrxStats();
-      if (!stats) {
-        return;
+      if (const auto stats = timer->zcrxStats()) {
+        ++zcrxEventBaseCount;
+        ioThreadIds.insert(static_cast<int64_t>(folly::getOSThreadID()));
+        zcrxStats.copyFallbackCount += stats->copyFallbackCount;
+        zcrxStats.copyFallbackBytes += stats->copyFallbackBytes;
+        zcrxStats.noBufferCount += stats->noBufferCount;
       }
-      ++eventBaseCount;
-      ioThreadIds.insert(static_cast<int64_t>(folly::getOSThreadID()));
-      zcrxStats.copyFallbackCount += stats->copyFallbackCount;
-      zcrxStats.copyFallbackBytes += stats->copyFallbackBytes;
-      zcrxStats.noBufferCount += stats->noBufferCount;
+      if (const auto stats = timer->providedBufferStats()) {
+        ++providedBufferEventBaseCount;
+        enobufCount += stats->enobufCount;
+        maxUtilPct = std::max(maxUtilPct, stats->utilPct);
+        maxAreaCount =
+            std::max(maxAreaCount, static_cast<int>(stats->areaCount));
+      }
     });
   }
-  zcrxCounters_.eventBaseCount() = eventBaseCount;
+  zcrxCounters_.eventBaseCount() = zcrxEventBaseCount;
   zcrxCounters_.ioThreadIds() = std::move(ioThreadIds);
   zcrxCounters_.copyFallbackCount() =
       static_cast<int64_t>(zcrxStats.copyFallbackCount);
   zcrxCounters_.copyFallbackBytes() =
       static_cast<int64_t>(zcrxStats.copyFallbackBytes);
   zcrxCounters_.noBufferCount() = static_cast<int64_t>(zcrxStats.noBufferCount);
+
+  providedBufferCounters_.eventBaseCount() = providedBufferEventBaseCount;
+  providedBufferCounters_.enobufCount() = enobufCount;
+  providedBufferCounters_.maxUtilPct() = maxUtilPct;
+  providedBufferCounters_.maxAreaCount() = maxAreaCount;
 }
 #else
 void StressTestServerStats::init(
@@ -191,6 +214,7 @@ ServerResult StressTestServerStats::publish(ResultMetadata metadata) const {
       {ConnectionMode::StopTlsV2, connectionState->stopTlsV2Connections},
   };
   result.zcrx() = zcrxCounters_;
+  result.providedBuffer() = providedBufferCounters_;
   return result;
 }
 

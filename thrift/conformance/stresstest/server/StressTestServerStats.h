@@ -54,6 +54,7 @@ class StressTestServerStats {
 
   folly::Synchronized<ConnectionState> connectionState_;
   ZcrxCounters zcrxCounters_;
+  ProvidedBufferCounters providedBufferCounters_;
   std::vector<IoUringStatsTimerRegistration> timers_;
 };
 
