@@ -61,10 +61,6 @@ struct FastThriftServerConfig {
   // the underlying thrift_library must be built with `with_schema = True`.
   bool enableMetadataService{false};
 
-  // Compatibility no-op retained while callers migrate. FastThriftServer
-  // always constructs request and connection contexts.
-  bool enableRequestContext{false};
-
   // When true, populate each request's ThriftRequestContext with the inbound
   // custom headers (RequestRpcMetadata.otherMetadata) so handlers can read
   // them via getHeaders()/getHeader(). The context is the only place headers

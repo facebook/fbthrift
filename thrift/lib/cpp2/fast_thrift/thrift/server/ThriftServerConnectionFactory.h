@@ -88,10 +88,6 @@ struct ThriftServerConnectionFactoryConfig {
   std::shared_ptr<const ExtensionLayout> connExtensionLayout;
   std::shared_ptr<const ExtensionLayout> requestExtensionLayout;
 
-  // Compatibility no-op retained while the public configuration migrates.
-  // The factory always constructs and wires request and connection contexts.
-  bool enableRequestContext{false};
-
   // When true, insert ThriftServerRequestHeadersHandler so each request's
   // ThriftRequestContext is populated with the inbound custom headers
   // (RequestRpcMetadata.otherMetadata).

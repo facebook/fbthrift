@@ -500,7 +500,6 @@ void FastThriftServer::start() {
       .zeroCopyThreshold = config_.zeroCopyThreshold,
       .connExtensionLayout = connExtensionLayout_,
       .requestExtensionLayout = requestExtensionLayout_,
-      .enableRequestContext = config_.enableRequestContext,
       .enableRequestHeaders = config_.enableRequestHeaders,
       .enableChecksum = config_.enableChecksum,
       .enableWriteBufferBackpressure = config_.enableWriteBufferBackpressure,

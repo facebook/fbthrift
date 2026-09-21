@@ -68,11 +68,6 @@ struct FastThriftServerConfig {
   // Fiddle will report no functions for the service. Default off.
   bool enableMetadataService{false};
 
-  // Compatibility no-op retained while callers migrate. FastThriftServer
-  // always constructs request and connection contexts; this remains ignored
-  // by FastThriftChannelServer.
-  bool enableRequestContext{false};
-
   // When true, the outbound write-path handlers (batching, fragmentation)
   // participate in pipeline write backpressure: they buffer while the
   // transport's write buffer is saturated and drain when it reports ready.
