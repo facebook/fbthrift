@@ -157,11 +157,12 @@ class Cpp2ConnContextAdapter {
  * as the owner left it, so an owner that hands the same one to a second
  * request carries over whatever a handler wrote outside the header maps.
  *
- * The `folly::RequestContext` is owned rather than borrowed because
- * fast_thrift installs none: without it, handlers that stamp ambient state
- * write into the process-global default context, which serializes every
- * request in the server behind one mutex and lets them read each other's
- * state.
+ * The `folly::RequestContext` starts as the request's bridge-owned base
+ * context. A classic handler may install a nested context while binding; in
+ * that case `captureAmbientContext()` retains the effective top context for
+ * downstream dispatch and the response path. The handlers' scope guards own
+ * the links below that top, so one shared pointer retains an arbitrary-depth
+ * chain without a second stack allocation.
  */
 class Cpp2RequestContextAdapter {
  public:
@@ -196,6 +197,9 @@ class Cpp2RequestContextAdapter {
       const noexcept {
     return ambientContext_;
   }
+
+  /** Retains a nested context installed by a classic handler, if any. */
+  void captureAmbientContext() noexcept;
 
   /**
    * The response headers handlers have written so far, moved out. Called once

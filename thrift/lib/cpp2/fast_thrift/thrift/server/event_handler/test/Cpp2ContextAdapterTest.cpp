@@ -306,6 +306,28 @@ TEST(Cpp2ContextAdapterTest, EachRequestOwnsADistinctAmbientContext) {
   EXPECT_NE(first.ambientContext().get(), folly::RequestContext::try_get());
 }
 
+TEST(Cpp2ContextAdapterTest, ClearedAmbientContextFallsBackToRequestContext) {
+  auto conn = makeConnContext(nullptr);
+  Cpp2ConnContextAdapter connAdapter(conn, /*resolver=*/nullptr);
+  ThriftRequestContext request;
+  request.installExtensions(bridgeLayout());
+  request.setConnectionContext(conn);
+
+  transport::THeader header;
+  Cpp2RequestContext cpp2Request(&connAdapter.get(), &header, "ping");
+  Cpp2RequestContextAdapter requestAdapter(cpp2Request, header, request);
+  const auto ambient = requestAdapter.ambientContext();
+
+  folly::RequestContextSaverScopeGuard guard;
+  folly::RequestContext::setContext(nullptr);
+  ASSERT_EQ(folly::RequestContext::try_get(), nullptr);
+
+  requestAdapter.captureAmbientContext();
+
+  EXPECT_EQ(requestAdapter.ambientContext(), ambient);
+  EXPECT_EQ(folly::RequestContext::try_get(), ambient.get());
+}
+
 // The identities the resolver produced are reachable natively, so a reader
 // does not need the classic context to find out who the peer is.
 TEST(Cpp2ContextAdapterTest, PeerIdentitiesAreReachableFromTheConnection) {

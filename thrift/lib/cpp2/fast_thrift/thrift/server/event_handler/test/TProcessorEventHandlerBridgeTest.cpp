@@ -43,10 +43,12 @@ class FakeContext {
   folly::EventBase* eventBase() noexcept { return &eventBase_; }
 
   Result fireRead(TypeErasedBox&& msg) noexcept {
+    forwardedAmbientContext = folly::RequestContext::saveContext();
     read.push_back(std::move(msg));
     return Result::Success;
   }
   Result fireWrite(TypeErasedBox&& msg) noexcept {
+    forwardedWriteAmbientContext = folly::RequestContext::saveContext();
     written.push_back(std::move(msg));
     return Result::Success;
   }
@@ -54,6 +56,8 @@ class FakeContext {
   folly::EventBase eventBase_;
   std::vector<TypeErasedBox> read;
   std::vector<TypeErasedBox> written;
+  std::shared_ptr<folly::RequestContext> forwardedAmbientContext;
+  std::shared_ptr<folly::RequestContext> forwardedWriteAmbientContext;
 };
 
 using Bridge = TProcessorEventHandlerBridge<FakeContext>;
@@ -117,6 +121,75 @@ const folly::RequestToken& markerToken() {
       "processor_event_handler_bridge_test_marker"};
   return token;
 }
+
+struct AmbientDepth : folly::RequestData {
+  explicit AmbientDepth(int value) : value(value) {}
+  bool hasCallback() override { return false; }
+  int value;
+};
+
+const folly::RequestToken& depthToken() {
+  static const folly::RequestToken token{
+      "processor_event_handler_bridge_test_depth"};
+  return token;
+}
+
+int currentAmbientDepth() {
+  auto* const data = folly::RequestContext::get()->getContextData(depthToken());
+  return data == nullptr ? -1 : static_cast<AmbientDepth*>(data)->value;
+}
+
+std::shared_ptr<folly::RequestContext> makeAmbientContext(int depth) {
+  auto context = std::make_shared<folly::RequestContext>();
+  context->setContextData(depthToken(), std::make_unique<AmbientDepth>(depth));
+  return context;
+}
+
+struct NestedAmbientContext {
+  explicit NestedAmbientContext(int depth) : guard(makeAmbientContext(depth)) {}
+
+  folly::RequestContextScopeGuard guard;
+};
+
+class ContextPushingEventHandler
+    : public apache::thrift::TProcessorEventHandler {
+ public:
+  ContextPushingEventHandler(
+      int depth,
+      std::vector<int>* readDepths,
+      std::vector<int>* writeDepths,
+      std::vector<int>* freeDepths)
+      : depth_(depth),
+        readDepths_(readDepths),
+        writeDepths_(writeDepths),
+        freeDepths_(freeDepths) {}
+
+  void* getServiceContext(
+      std::string_view,
+      std::string_view,
+      apache::thrift::TConnectionContext*) override {
+    return new NestedAmbientContext(depth_);
+  }
+
+  void preRead(void*, std::string_view) override {
+    readDepths_->push_back(currentAmbientDepth());
+  }
+
+  void postWrite(void*, std::string_view, uint32_t) override {
+    writeDepths_->push_back(currentAmbientDepth());
+  }
+
+  void freeContext(void* context, std::string_view) override {
+    freeDepths_->push_back(currentAmbientDepth());
+    delete static_cast<NestedAmbientContext*>(context);
+  }
+
+ private:
+  int depth_;
+  std::vector<int>* readDepths_;
+  std::vector<int>* writeDepths_;
+  std::vector<int>* freeDepths_;
+};
 
 class RecordingEventHandler : public apache::thrift::TProcessorEventHandler {
  public:
@@ -257,6 +330,24 @@ TProcessorEventHandlerBridgeConfig makeConfig(CallLog* log) {
   methodMetadata->add(kPingMethod);
   methodMetadata->add(kEchoMethod);
   methodMetadata->add(kInheritedMethod);
+  return TProcessorEventHandlerBridgeConfig{
+      .handlers = std::move(handlers),
+      .methodMetadata = std::move(methodMetadata),
+      .identityResolver = nullptr};
+}
+
+TProcessorEventHandlerBridgeConfig makeNestedContextConfig(
+    std::vector<int>* readDepths,
+    std::vector<int>* writeDepths,
+    std::vector<int>* freeDepths) {
+  auto handlers = std::make_shared<TProcessorEventHandlers>();
+  for (int depth = 1; depth <= 3; ++depth) {
+    handlers->processor.push_back(
+        std::make_shared<ContextPushingEventHandler>(
+            depth, readDepths, writeDepths, freeDepths));
+  }
+  auto methodMetadata = std::make_shared<ThriftServerMethodMetadataRegistry>();
+  methodMetadata->add(kPingMethod);
   return TProcessorEventHandlerBridgeConfig{
       .handlers = std::move(handlers),
       .methodMetadata = std::move(methodMetadata),
@@ -534,6 +625,71 @@ TEST(TProcessorEventHandlerBridgeTest, AmbientContextSpansBothDirections) {
   // Nothing leaked into the caller's context.
   EXPECT_EQ(
       folly::RequestContext::get()->getContextData(markerToken()), nullptr);
+}
+
+TEST(
+    TProcessorEventHandlerBridgeTest,
+    NestedAmbientContextsReachDispatchAndResponseCallbacks) {
+  std::vector<int> readDepths;
+  std::vector<int> writeDepths;
+  std::vector<int> freeDepths;
+  Bridge bridge(
+      makeNestedContextConfig(&readDepths, &writeDepths, &freeDepths));
+  FakeContext ctx;
+  auto conn = makeConn();
+
+  folly::RequestContextScopeGuard callerGuard;
+  folly::RequestContext::get()->setContextData(
+      depthToken(), std::make_unique<AmbientDepth>(99));
+  establish(bridge, ctx, conn);
+
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 1, "ping")));
+
+  EXPECT_EQ(currentAmbientDepth(), 99);
+  ASSERT_NE(ctx.forwardedAmbientContext, nullptr);
+  {
+    folly::RequestContextScopeGuard forwardedGuard(ctx.forwardedAmbientContext);
+    EXPECT_EQ(currentAmbientDepth(), 3);
+  }
+
+  (void)bridge.onWrite(ctx, erase_and_box(makeResponse(1)));
+
+  EXPECT_EQ(readDepths, (std::vector<int>{3, 3, 3}));
+  EXPECT_EQ(writeDepths, (std::vector<int>{3, 3, 3}));
+  EXPECT_EQ(freeDepths, (std::vector<int>{3, 3, 3}));
+  EXPECT_EQ(currentAmbientDepth(), 99);
+  ASSERT_NE(ctx.forwardedWriteAmbientContext, nullptr);
+  {
+    folly::RequestContextScopeGuard forwardedGuard(
+        ctx.forwardedWriteAmbientContext);
+    EXPECT_EQ(currentAmbientDepth(), 99);
+  }
+}
+
+TEST(
+    TProcessorEventHandlerBridgeTest,
+    DestructionOfNestedInFlightContextsRestoresCallerContext) {
+  std::vector<int> readDepths;
+  std::vector<int> writeDepths;
+  std::vector<int> freeDepths;
+  FakeContext ctx;
+  auto conn = makeConn();
+
+  folly::RequestContextScopeGuard callerGuard;
+  folly::RequestContext::get()->setContextData(
+      depthToken(), std::make_unique<AmbientDepth>(99));
+  {
+    Bridge bridge(
+        makeNestedContextConfig(&readDepths, &writeDepths, &freeDepths));
+    establish(bridge, ctx, conn);
+    (void)bridge.onRead(
+        ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 1, "ping")));
+    EXPECT_EQ(currentAmbientDepth(), 99);
+  }
+
+  EXPECT_EQ(freeDepths, (std::vector<int>{3, 3, 3}));
+  EXPECT_EQ(currentAmbientDepth(), 99);
 }
 
 // A handler throwing from preRead is refusing the request: it is dropped

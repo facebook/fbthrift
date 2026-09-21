@@ -198,7 +198,12 @@ class TProcessorEventHandlerBridge {
   TProcessorEventHandlerBridge& operator=(TProcessorEventHandlerBridge&&) =
       delete;
 
-  ~TProcessorEventHandlerBridge() = default;
+  ~TProcessorEventHandlerBridge() {
+    for (auto& [streamId, state] : requests_) {
+      (void)streamId;
+      releaseState(std::move(state));
+    }
+  }
 
   channel_pipeline::Result onRead(
       Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
@@ -285,22 +290,27 @@ class TProcessorEventHandlerBridge {
     // Binding is inside the refusal path with the callbacks: it runs
     // getServiceContext, which is handler code like any other, and an escape
     // out of a noexcept pipeline callback would take the process with it.
-    if (auto refusal = folly::try_and_catch([&] {
-          state->chain.bind(
-              state->context->get(),
-              method->serviceName,
-              method->qualifiedMethodName);
-          state->chain.preRead();
-          state->chain.onReadData(
-              apache::thrift::SerializedMessage{
-                  .protocolType = state->protocolType,
-                  .buffer = requestResponse.data.get(),
-                  .methodName = method->qualifiedMethodName,
-              });
-          state->chain.postRead(
-              state->context->header(),
-              event_handler_detail::requestBytes(request));
-        })) {
+    auto refusal = folly::try_and_catch([&] {
+      state->chain.bind(
+          state->context->get(),
+          method->serviceName,
+          method->qualifiedMethodName);
+      state->chain.preRead();
+      state->chain.onReadData(
+          apache::thrift::SerializedMessage{
+              .protocolType = state->protocolType,
+              .buffer = requestResponse.data.get(),
+              .methodName = method->qualifiedMethodName,
+          });
+      state->chain.postRead(
+          state->context->header(),
+          event_handler_detail::requestBytes(request));
+    });
+    // A handler may have installed a private child RequestContext while
+    // binding. Retain the effective top before the read-side scope unwinds;
+    // its guards retain every predecessor below it.
+    state->context->captureAmbientContext();
+    if (refusal) {
       auto response = makeRejectionMessage(streamId, refusal);
       // A handler that set a response header before refusing meant it for the
       // client; the refusal is the only response there will be. A rejection is
@@ -346,46 +356,48 @@ class TProcessorEventHandlerBridge {
     auto state = std::move(it->second);
     requests_.erase(it);
 
-    // The write-side callbacks bracket a successful reply body. Classic
-    // handlers do not receive them when the service or a downstream
-    // interceptor rejects the request. The handlers' contexts are still
-    // returned below, which is the pairing they are promised.
-    if (reply != nullptr) {
-      if (!event_handler_detail::isAppUnknownException(*reply)) {
-        // A response that resolved inline is still under the read side's
-        // guard, which installed this same context; re-installing swaps for
-        // nothing.
-        const auto& ambient = state->context->ambientContext();
-        std::optional<folly::RequestContextScopeGuard> guard;
-        if (folly::RequestContext::try_get() != ambient.get()) {
-          guard.emplace(ambient);
-        }
-        const auto* exception = state->context->exception();
-        if (exception != nullptr) {
-          state->chain.userExceptionWrapped(
-              exception->declared, exception->exception);
-          if (!exception->declared) {
-            state->chain.handlerErrorWrapped(exception->exception);
+    {
+      // Responses may arrive after an executor hop, on an EventBase carrying
+      // a different request. Reinstall the effective context captured after
+      // all read-side handlers bound for the callbacks and cleanup only;
+      // downstream forwarding resumes under the caller's context.
+      const auto ambient = state->context->ambientContext();
+      folly::RequestContextScopeGuard guard(ambient);
+
+      // The write-side callbacks bracket a successful reply body. Classic
+      // handlers do not receive them when the service or a downstream
+      // interceptor rejects the request. The handlers' contexts are still
+      // returned below, which is the pairing they are promised.
+      if (reply != nullptr) {
+        if (!event_handler_detail::isAppUnknownException(*reply)) {
+          const auto* exception = state->context->exception();
+          if (exception != nullptr) {
+            state->chain.userExceptionWrapped(
+                exception->declared, exception->exception);
+            if (!exception->declared) {
+              state->chain.handlerErrorWrapped(exception->exception);
+            }
+          }
+
+          // Deliberately not caught: these run after the request has been
+          // served, so there is no verdict left to honour and swallowing would
+          // hide a handler bug. An escape terminates, as it would on a classic
+          // server.
+          if (exception == nullptr || exception->declared) {
+            state->chain.preWrite();
+            state->chain.onWriteData(state->protocolType, reply->data.get());
+            state->chain.postWrite(
+                event_handler_detail::payloadBytes(reply->data));
           }
         }
 
-        // Deliberately not caught: these run after the request has been served,
-        // so there is no verdict left to honour and swallowing would hide a
-        // handler bug. An escape terminates, as it would on a classic server.
-        if (exception == nullptr || exception->declared) {
-          state->chain.preWrite();
-          state->chain.onWriteData(state->protocolType, reply->data.get());
-          state->chain.postWrite(
-              event_handler_detail::payloadBytes(reply->data));
-        }
+        // After postWrite: handlers write response headers there, and the reply
+        // has not been serialized yet.
+        event_handler_detail::stampWriteHeaders(
+            *reply, state->context->takeWriteHeaders());
       }
-
-      // After postWrite: handlers write response headers there, and the reply
-      // has not been serialized yet.
-      event_handler_detail::stampWriteHeaders(
-          *reply, state->context->takeWriteHeaders());
+      releaseState(std::move(state));
     }
-    releaseState(std::move(state));
 
     return ctx.fireWrite(std::move(msg));
   }
@@ -457,7 +469,13 @@ class TProcessorEventHandlerBridge {
   }
 
   void releaseState(RequestStatePtr state) {
-    state->chain.unbind();
+    const auto ambient = state->context->ambientContext();
+    folly::RequestContextSaverScopeGuard guard;
+    state->chain.unbind([&] {
+      if (folly::RequestContext::try_get() != ambient.get()) {
+        folly::RequestContext::setContext(ambient);
+      }
+    });
     // Destroying the adapter empties the request's extension slot rather than
     // leaving it pointing at storage the next request rebuilds.
     state->context.reset();

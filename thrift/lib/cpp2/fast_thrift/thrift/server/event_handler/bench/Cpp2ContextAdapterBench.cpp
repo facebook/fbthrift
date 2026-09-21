@@ -77,6 +77,20 @@ void runAdapterBenchmark(std::size_t iters, std::size_t headerCount) {
   }
 }
 
+BENCHMARK(CaptureAmbientContext_Unchanged, iters) {
+  ThriftRequestContext request;
+  request.installExtensions(bridgeLayout());
+  apache::thrift::Cpp2ConnContext connection;
+  apache::thrift::transport::THeader header;
+  apache::thrift::Cpp2RequestContext cpp2Request(&connection, &header, "get");
+  Cpp2RequestContextAdapter adapter(cpp2Request, header, request);
+  folly::RequestContextScopeGuard guard(adapter.ambientContext());
+
+  while (iters-- > 0) {
+    adapter.captureAmbientContext();
+  }
+}
+
 BENCHMARK(Adapter_NoHeaders, iters) {
   runAdapterBenchmark(iters, 0);
 }

@@ -95,6 +95,11 @@ class EventHandlerChain {
 
   /** Returns the contexts `bind` took. Idempotent. */
   void unbind() noexcept {
+    unbind([] {});
+  }
+
+  template <typename BeforeFree>
+  void unbind(BeforeFree&& beforeFree) noexcept {
     if (!bound_) {
       return;
     }
@@ -102,6 +107,7 @@ class EventHandlerChain {
     serviceName_ = {};
     const auto method = method_;
     forEachCallee([&](Callee& callee) {
+      beforeFree();
       callee.handler->freeContext(callee.context, method);
       callee.context = nullptr;
     });

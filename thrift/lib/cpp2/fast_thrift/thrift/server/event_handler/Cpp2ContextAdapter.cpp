@@ -133,6 +133,17 @@ Cpp2RequestContextAdapter::~Cpp2RequestContextAdapter() {
   header_.clearReadHeaders();
 }
 
+void Cpp2RequestContextAdapter::captureAmbientContext() noexcept {
+  auto* const current = folly::RequestContext::try_get();
+  if (FOLLY_UNLIKELY(current == nullptr)) {
+    folly::RequestContext::setContext(ambientContext_);
+    return;
+  }
+  if (FOLLY_UNLIKELY(current != ambientContext_.get())) {
+    ambientContext_ = folly::RequestContext::saveContext();
+  }
+}
+
 apache::thrift::transport::THeader::StringToStringMap
 Cpp2RequestContextAdapter::takeWriteHeaders() {
   return header_.releaseWriteHeaders();
