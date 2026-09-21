@@ -58,6 +58,7 @@ class StressTestServerStats::IoUringStatsTimer : public folly::AsyncTimeout {
       auto prov = stats.providedBuffer;
       stats_.providedBuffer.enobufCount += prov.enobufCount;
       stats_.providedBuffer.utilPct = prov.utilPct;
+      stats_.providedBuffer.areaCount = prov.areaCount;
     }
   }
 
@@ -75,7 +76,8 @@ class StressTestServerStats::IoUringStatsTimer : public folly::AsyncTimeout {
       LOG(INFO) << "Provided buffer stats for evb " << evbIdx_ << ":"
                 << std::endl
                 << " - enobufCount: " << providedBuffer.enobufCount << std::endl
-                << " - utilPct: " << providedBuffer.utilPct;
+                << " - utilPct: " << providedBuffer.utilPct << std::endl
+                << " - areaCount: " << providedBuffer.areaCount;
     }
   }
 
