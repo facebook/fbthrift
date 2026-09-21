@@ -45,6 +45,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapterFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ExtensionSlots.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/event_handler/TProcessorEventHandlerBridge.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/framework/FastServerModule.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/framework/ThriftPipelineHandler.h>
 
@@ -266,6 +267,40 @@ class FastThriftServer {
       std::vector<server::ThriftPipelineHandlerFactory> factories);
 
   /**
+   * Adds a classic processor event handler. All handlers added through this
+   * API share one Cpp2 context adapter and one bridge in every connection.
+   * The server owns bridge and extension registration; callers must not add
+   * either themselves. Must be called before start()/serve().
+   * @throws std::logic_error if called after start()/serve() or with a null
+   *     handler.
+   */
+  void addProcessorEventHandler(
+      std::shared_ptr<apache::thrift::TProcessorEventHandler> eventHandler);
+
+  /**
+   * Adds a classic server event handler to the same server-owned bridge.
+   * The connection context and identity resolver are shared with processor
+   * event handlers. Must be called before start()/serve().
+   * @throws std::logic_error if called after start()/serve() or with a null
+   *     handler.
+   */
+  void addServerEventHandler(
+      std::shared_ptr<apache::thrift::server::TServerEventHandler>
+          eventHandler);
+
+  /**
+   * Sets the resolver used to cache peer identities on the shared Cpp2
+   * connection context. Must be called before start()/serve().
+   * @throws std::logic_error if called after start()/serve() or if a different
+   *     resolver is already installed.
+   */
+  void setPeerIdentityResolver(server::PeerIdentityResolver resolver);
+
+  server::PeerIdentityResolver getPeerIdentityResolver() const noexcept {
+    return peerIdentityResolver_;
+  }
+
+  /**
    * Reserves per-connection and per-request storage for `Ext`, so that its
    * handlers reach it through `tryState<Ext>()` on either context.
    *
@@ -287,9 +322,9 @@ class FastThriftServer {
    * Register a module — a named, ordered bundle of thrift pipeline handlers.
    * The module's handlers are appended to the pipeline in call order relative
    * to other addModule / addNativeThriftPipelineHandlers calls, preserving
-   * intra-module order. Module names must be non-empty and unique; a duplicate
-   * or empty name throws std::logic_error. Must be called before
-   * start()/serve().
+   * intra-module order. Module names must be non-empty, unique, and not
+   * reserved by the server; violating any of those constraints throws
+   * std::logic_error. Must be called before start()/serve().
    */
   void addModule(FastServerModule module);
 
@@ -518,6 +553,8 @@ class FastThriftServer {
   // order. Copied into the per-connection factory config at start().
   std::vector<server::ThriftPipelineHandlerFactory>
       thriftPipelineHandlerFactories_;
+  server::TProcessorEventHandlers eventHandlers_;
+  server::PeerIdentityResolver peerIdentityResolver_{nullptr};
   // Consumed into the layouts below at start(); untouched after.
   ExtensionLayoutBuilder connExtensionBuilder_;
   ExtensionLayoutBuilder requestExtensionBuilder_;

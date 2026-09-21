@@ -39,12 +39,18 @@
 #include <thrift/lib/cpp2/fast_thrift/security/FizzServerContextBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/ThriftServerConnectionFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/MetadataAppAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/event_handler/TProcessorEventHandlerBridge.h>
 
 namespace apache::thrift::fast_thrift::thrift {
 
 using channel_pipeline::PipelineBuilder;
 using channel_pipeline::PipelineImpl;
 using channel_pipeline::SimpleBufferAllocator;
+
+namespace {
+constexpr std::string_view kEventHandlerBridgeName{
+    "__cpp2_event_handler_bridge"};
+}
 
 FastThriftServer::FastThriftServer(FastThriftServerConfig config)
     : config_(std::move(config)),
@@ -212,6 +218,52 @@ void FastThriftServer::addNativeThriftPipelineHandlers(
   }
 }
 
+void FastThriftServer::setPeerIdentityResolver(
+    server::PeerIdentityResolver resolver) {
+  std::lock_guard<std::mutex> lock(lifecycleMutex_);
+  if (state_ != State::kNotStarted) {
+    throw std::logic_error(
+        "FastThriftServer::setPeerIdentityResolver must be called before "
+        "start()/serve()");
+  }
+  if (peerIdentityResolver_ != nullptr && peerIdentityResolver_ != resolver) {
+    throw std::logic_error(
+        "FastThriftServer already has a different peer identity resolver");
+  }
+  peerIdentityResolver_ = resolver;
+}
+
+void FastThriftServer::addProcessorEventHandler(
+    std::shared_ptr<apache::thrift::TProcessorEventHandler> eventHandler) {
+  std::lock_guard<std::mutex> lock(lifecycleMutex_);
+  if (state_ != State::kNotStarted) {
+    throw std::logic_error(
+        "FastThriftServer::addProcessorEventHandler must be called before "
+        "start()/serve()");
+  }
+  if (!eventHandler) {
+    throw std::logic_error(
+        "FastThriftServer::addProcessorEventHandler requires a non-null "
+        "handler");
+  }
+  eventHandlers_.processor.push_back(std::move(eventHandler));
+}
+
+void FastThriftServer::addServerEventHandler(
+    std::shared_ptr<apache::thrift::server::TServerEventHandler> eventHandler) {
+  std::lock_guard<std::mutex> lock(lifecycleMutex_);
+  if (state_ != State::kNotStarted) {
+    throw std::logic_error(
+        "FastThriftServer::addServerEventHandler must be called before "
+        "start()/serve()");
+  }
+  if (!eventHandler) {
+    throw std::logic_error(
+        "FastThriftServer::addServerEventHandler requires a non-null handler");
+  }
+  eventHandlers_.server.push_back(std::move(eventHandler));
+}
+
 void FastThriftServer::addModule(FastServerModule module) {
   std::lock_guard<std::mutex> lock(lifecycleMutex_);
   CHECK(state_ == State::kNotStarted)
@@ -222,6 +274,10 @@ void FastThriftServer::addModule(FastServerModule module) {
     // module and top-level id streams disjoint.
     throw std::logic_error(
         "FastThriftServer::addModule: module name must be non-empty");
+  }
+  if (module.name() == kEventHandlerBridgeName) {
+    throw std::logic_error(
+        "FastThriftServer::addModule: module name is reserved by the server");
   }
   if (moduleNames_.contains(module.name())) {
     throw std::logic_error(
@@ -475,6 +531,25 @@ void FastThriftServer::start() {
   connectionManager_->setEnableReusePortBpfSpread(enableReusePortBpfSpread_);
   connectionManager_->setConnectionStats(connectionStats_.get());
   connectionManager_->setTLSStats(tlsStats_.get());
+
+  const bool hasClassicEventHandlers =
+      !eventHandlers_.processor.empty() || !eventHandlers_.server.empty();
+  if (hasClassicEventHandlers) {
+    registerExtension<server::Cpp2BridgeExtension>();
+    auto handlers = std::make_shared<const server::TProcessorEventHandlers>(
+        std::move(eventHandlers_));
+    thriftPipelineHandlerFactories_.insert(
+        thriftPipelineHandlerFactories_.begin(),
+        server::makeThriftPipelineHandlerFactory<
+            server::TProcessorEventHandlerBridge<
+                channel_pipeline::detail::ContextImpl>>(
+            server::deriveThriftPipelineHandlerId(
+                kEventHandlerBridgeName, /*index=*/0),
+            server::TProcessorEventHandlerBridgeConfig{
+                .handlers = std::move(handlers),
+                .methodMetadata = methodMetadataRegistry_,
+                .identityResolver = peerIdentityResolver_}));
+  }
 
   // Wire the per-connection factory. The factory carries all per-EVB-handler
   // config (user handler, aux interfaces, metadata, zero-copy threshold,

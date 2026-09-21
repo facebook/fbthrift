@@ -1153,6 +1153,135 @@ ftt::FastThriftServerConfig makeHeadersConfig() {
   return config;
 }
 
+std::unique_ptr<void, void (*)(void*)> resolveFirstPeerIdentity(
+    const folly::AsyncTransportCertificate*, const folly::SocketAddress&) {
+  return {nullptr, +[](void*) noexcept {}};
+}
+
+std::unique_ptr<void, void (*)(void*)> resolveSecondPeerIdentity(
+    const folly::AsyncTransportCertificate*, const folly::SocketAddress&) {
+  return {nullptr, +[](void*) noexcept {}};
+}
+
+class CountingLegacyEventHandler final
+    : public apache::thrift::TProcessorEventHandler,
+      public apache::thrift::server::TServerEventHandler {
+ public:
+  explicit CountingLegacyEventHandler(
+      std::atomic<int>& requests, std::atomic<int>& connections)
+      : requests_(requests), connections_(connections) {}
+
+  void* getServiceContext(
+      std::string_view,
+      std::string_view,
+      apache::thrift::TConnectionContext*) override {
+    requests_.fetch_add(1, std::memory_order_relaxed);
+    return nullptr;
+  }
+
+  void newConnection(
+      apache::thrift::server::TConnectionContext* context) override {
+    if (context != nullptr) {
+      connections_.fetch_add(1, std::memory_order_relaxed);
+    }
+  }
+
+ private:
+  std::atomic<int>& requests_;
+  std::atomic<int>& connections_;
+};
+
+struct ClassicContextCheckingExtension {
+  std::atomic<int>* connections{nullptr};
+  std::atomic<bool>* connectionReady{nullptr};
+  std::atomic<bool>* requestReady{nullptr};
+
+  ftt::ConnectionVerdict onConnectionAttempted(
+      const ftt::ThriftSetupConnectionView& connection) noexcept {
+    connectionReady->store(
+        connection.tryState<ftt::server::Cpp2BridgeExtension>() != nullptr &&
+            connections->load(std::memory_order_relaxed) == 2,
+        std::memory_order_relaxed);
+    return ftt::ConnectionVerdict::proceed();
+  }
+
+  ftt::RequestVerdict onRequest(
+      const ftt::ThriftRequestView& request) noexcept {
+    requestReady->store(
+        ftt::server::tryGetCpp2RequestContext(request) != nullptr,
+        std::memory_order_relaxed);
+    return ftt::RequestVerdict::proceed();
+  }
+};
+
+TEST(FastThriftServerExtensionTest, RejectsConflictingPeerIdentityResolvers) {
+  ftt::FastThriftServer server(makeLoopbackConfig());
+
+  server.setPeerIdentityResolver(&resolveFirstPeerIdentity);
+  EXPECT_NO_THROW(server.setPeerIdentityResolver(&resolveFirstPeerIdentity));
+  EXPECT_THROW(
+      server.setPeerIdentityResolver(&resolveSecondPeerIdentity),
+      std::logic_error);
+  EXPECT_EQ(server.getPeerIdentityResolver(), &resolveFirstPeerIdentity);
+}
+
+TEST(FastThriftServerExtensionTest, RejectsNullClassicEventHandlers) {
+  ftt::FastThriftServer server(makeLoopbackConfig());
+
+  EXPECT_THROW(server.addProcessorEventHandler(nullptr), std::logic_error);
+  EXPECT_THROW(server.addServerEventHandler(nullptr), std::logic_error);
+}
+
+TEST(FastThriftServerExtensionTest, RejectsClassicRegistrationAfterStart) {
+  auto handler = std::make_shared<TestHandler>();
+  std::atomic<int> requests{0};
+  std::atomic<int> connections{0};
+  auto eventHandler =
+      std::make_shared<CountingLegacyEventHandler>(requests, connections);
+
+  ftt::FastThriftServer server(makeLoopbackConfig());
+  server.setInterface(handler);
+  server.start();
+
+  EXPECT_THROW(
+      server.setPeerIdentityResolver(&resolveFirstPeerIdentity),
+      std::logic_error);
+  EXPECT_THROW(server.addProcessorEventHandler(eventHandler), std::logic_error);
+  EXPECT_THROW(server.addServerEventHandler(eventHandler), std::logic_error);
+}
+
+TEST(FastThriftServerExtensionTest, CoalescesClassicEventHandlers) {
+  THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
+
+  auto handler = std::make_shared<TestHandler>();
+  std::atomic<int> requests{0};
+  std::atomic<int> connections{0};
+  std::atomic<bool> connectionReady{false};
+  std::atomic<bool> requestReady{false};
+  auto first =
+      std::make_shared<CountingLegacyEventHandler>(requests, connections);
+  auto second =
+      std::make_shared<CountingLegacyEventHandler>(requests, connections);
+
+  ftt::FastThriftServer server(makeLoopbackConfig());
+  server.setInterface(handler);
+  server.addProcessorEventHandler(first);
+  server.addServerEventHandler(first);
+  server.addProcessorEventHandler(second);
+  server.addServerEventHandler(second);
+  server.addModule(
+      ftt::FastServerModule("classic_context_checker")
+          .addThriftExtension<ClassicContextCheckingExtension>(
+              &connections, &connectionReady, &requestReady));
+  server.start();
+
+  EXPECT_EQ(addRoundTrip(server.getAddress()), 42);
+  EXPECT_EQ(requests.load(), 2);
+  EXPECT_EQ(connections.load(), 2);
+  EXPECT_TRUE(connectionReady.load());
+  EXPECT_TRUE(requestReady.load());
+}
+
 // Shared sink for what a connection extension observed. A fresh extension is
 // constructed per connection, so the recorder lives in the test and every
 // instance points at it.
@@ -2146,11 +2275,13 @@ TEST(FastThriftServerPipelineHandlerTest, DuplicateModuleNameThrows) {
       server.addModule(ftt::FastServerModule("dup")), std::logic_error);
 }
 
-// Empty module name is rejected — the empty namespace is reserved for
-// loose-handler ids.
-TEST(FastThriftServerPipelineHandlerTest, EmptyModuleNameThrows) {
+TEST(FastThriftServerPipelineHandlerTest, InvalidModuleNamesThrow) {
   ftt::FastThriftServer server(makeLoopbackConfig());
+
   EXPECT_THROW(server.addModule(ftt::FastServerModule("")), std::logic_error);
+  EXPECT_THROW(
+      server.addModule(ftt::FastServerModule("__cpp2_event_handler_bridge")),
+      std::logic_error);
 }
 
 // The two-level id derivation yields a distinct id for every (namespace,

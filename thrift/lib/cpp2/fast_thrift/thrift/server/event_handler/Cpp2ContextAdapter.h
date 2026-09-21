@@ -109,9 +109,9 @@ tryGetCpp2RequestContext(const Request& request) noexcept {
 
 /**
  * Owns the `Cpp2ConnContext` for one connection, built from that connection's
- * `ThriftConnContext`. Construct once, when the connection is established, and
- * keep it for the connection's life: per-connection state a handler writes
- * (identity, authorization decision) lives inside it.
+ * `ThriftConnContext`. Construct once, when the setup request enters the
+ * Thrift pipeline, and keep it for the connection's life: per-connection state
+ * a handler writes (identity, authorization decision) lives inside it.
  */
 class Cpp2ConnContextAdapter {
  public:

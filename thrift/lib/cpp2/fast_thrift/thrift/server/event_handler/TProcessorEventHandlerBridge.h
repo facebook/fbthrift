@@ -139,7 +139,7 @@ inline void stampWriteHeaders(
  * translatable.
  *
  * Mapping, per connection:
- *   SetupComplete    -> TServerEventHandler::newConnection
+ *   Setup request    -> TServerEventHandler::newConnection
  *   ConnectionClosed -> TServerEventHandler::connectionDestroyed
  *
  * and per request:
@@ -205,10 +205,23 @@ class TProcessorEventHandlerBridge {
     auto& request = msg.get<ThriftServerRequestMessage>();
 
     // The setup exchange is not a request. Latch the connection context it
-    // carries — the only place the pipeline offers one — and forward.
+    // carries — the only place the pipeline offers one — and publish the
+    // classic context before downstream connection extensions run.
     if (FOLLY_UNLIKELY(request.payload.is<ThriftConnectionSetupPayload>())) {
-      ftConnContext_ = request.payload.get<ThriftConnectionSetupPayload>()
-                           .setup->connContext;
+      auto& setup = *request.payload.get<ThriftConnectionSetupPayload>().setup;
+      ftConnContext_ = setup.connContext;
+      if (handlers_ != nullptr && ftConnContext_ != nullptr &&
+          connectionContext_ == nullptr) {
+        if (auto metadata = setup.clientSetup.clientMetadata()) {
+          ftConnContext_->setClientMetadata(*metadata);
+        }
+        connectionContext_ = std::make_unique<Cpp2ConnContextAdapter>(
+            boost::intrusive_ptr<ThriftConnContext>(ftConnContext_),
+            config_.identityResolver);
+        for (const auto& handler : handlers_->server) {
+          handler->newConnection(&connectionContext_->get());
+        }
+      }
       return ctx.fireRead(std::move(msg));
     }
 
@@ -377,30 +390,8 @@ class TProcessorEventHandlerBridge {
     return ctx.fireWrite(std::move(msg));
   }
 
-  using SubscribedEvents = channel_pipeline::
-      Events<ThriftServerSetupCompleteEvent, ThriftServerConnectionClosedEvent>;
-
-  template <channel_pipeline::PipelineEvent E>
-    requires std::same_as<E, ThriftServerSetupCompleteEvent>
-  void on(Context&, ThriftServerSetupCompleteEvent*) noexcept {
-    // Nothing installed: the connection context exists only to be handed to
-    // handlers, so there is none to build and nobody to tell about it.
-    if (handlers_ == nullptr) {
-      return;
-    }
-    // The connection is answered and about to carry requests. Build the
-    // context now so per-connection handler state exists before the first
-    // request needs it.
-    if (ftConnContext_ == nullptr || connectionContext_ != nullptr) {
-      return;
-    }
-    connectionContext_ = std::make_unique<Cpp2ConnContextAdapter>(
-        boost::intrusive_ptr<ThriftConnContext>(ftConnContext_),
-        config_.identityResolver);
-    for (const auto& handler : handlers_->server) {
-      handler->newConnection(&connectionContext_->get());
-    }
-  }
+  using SubscribedEvents =
+      channel_pipeline::Events<ThriftServerConnectionClosedEvent>;
 
   template <channel_pipeline::PipelineEvent E>
     requires std::same_as<E, ThriftServerConnectionClosedEvent>

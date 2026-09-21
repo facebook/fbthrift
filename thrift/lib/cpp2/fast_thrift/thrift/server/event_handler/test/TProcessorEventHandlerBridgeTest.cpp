@@ -346,8 +346,8 @@ void recordExceptionFor(FakeContext& ctx, uint32_t streamId, bool declared) {
 }
 
 // Drives the connection to the point where it can carry requests: the bridge
-// latches the context off the setup message, then SetupComplete builds the
-// Cpp2 context and announces the connection.
+// latches the context off the setup message, builds the Cpp2 context, and
+// announces the connection before forwarding setup downstream.
 void establish(
     Bridge& bridge,
     FakeContext& ctx,
@@ -357,9 +357,6 @@ void establish(
   ThriftServerRequestMessage setupMsg;
   setupMsg.payload = ThriftConnectionSetupPayload{.setup = std::move(setup)};
   (void)bridge.onRead(ctx, erase_and_box(std::move(setupMsg)));
-
-  ThriftServerSetupCompleteEvent event{};
-  bridge.on<ThriftServerSetupCompleteEvent>(ctx, &event);
 }
 
 boost::intrusive_ptr<ThriftConnContext> makeConn() {
