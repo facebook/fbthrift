@@ -55,11 +55,6 @@ DEFINE_int32(
     0,
     "Number of HW queues for ZC Rx. If 0, assumes nr of io_threads == HW queues and skips buffer pool import/export.");
 DEFINE_bool(
-    io_prov_buffs_use_bundles,
-    false,
-    "Enable IORING_RECVSEND_BUNDLE on IoUringBackend multishot recv operations "
-    "(requires kernel support for IORING_FEAT_RECVSEND_BUNDLE). Off by default.");
-DEFINE_bool(
     io_prov_buffs_use_incremental,
     false,
     "Enable the use of incremental buffers usage for recv operations. false by default.");
@@ -139,10 +134,6 @@ void setIoUringCommonOptionsFromFlags(folly::IoUringOptions& options) {
 
   if (FLAGS_timeout_us > 0) {
     options.setTimeout(std::chrono::microseconds(FLAGS_timeout_us));
-  }
-
-  if (FLAGS_io_prov_buffs_use_bundles) {
-    options.setProvidedBufUseBundles(true);
   }
 
   if (FLAGS_io_prov_buffs_use_incremental) {
