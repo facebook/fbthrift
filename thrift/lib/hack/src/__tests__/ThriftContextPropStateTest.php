@@ -26,6 +26,16 @@ final class ThriftContextPropStateTest extends WWWTest {
       'negative user id' => tuple(-123),
     ];
   }
+
+  private static function makeRoutingOverride(
+    int $override_id,
+  ): ContextProp\RequestRoutingOverride {
+    $routing_override = ContextProp\RequestRoutingOverride::withDefaultValues();
+    $routing_override->request_routing_override =
+      ContextProp\RoutingOverrideUsecase::SANDBOX_V1;
+    $routing_override->override_id = $override_id;
+    return $routing_override;
+  }
   <<DataProvider('dataProviderForInvalidUserIds')>>
   public function testUpdateIGUserIdWithInvalidId___DPRS_ACH_TEST(
     int $invalid_id,
@@ -953,6 +963,56 @@ final class ThriftContextPropStateTest extends WWWTest {
     ThriftContextPropState::initFromString($e);
     $tcps = ThriftContextPropState::get();
     expect($tcps->getAgentId())->toEqual('AGENT:devmate');
+  }
+
+  public function testRoutingOverrideNullable(): void {
+    $tcps = ThriftContextPropState::get();
+    $tcps->clear();
+
+    expect($tcps->getRoutingOverride())->toBeNull();
+
+    $tcps->setRoutingOverride(self::makeRoutingOverride(123));
+    expect($tcps->getRoutingOverride()?->request_routing_override)
+      ->toEqual(ContextProp\RoutingOverrideUsecase::SANDBOX_V1);
+    expect($tcps->getRoutingOverride()?->override_id)->toEqual(123);
+
+    $tcps->setRoutingOverride(self::makeRoutingOverride(456));
+    expect($tcps->getRoutingOverride()?->override_id)->toEqual(456);
+
+    $immutable = new ImmutableThriftContextPropState($tcps);
+    expect($immutable->getRoutingOverride()?->override_id)->toEqual(456);
+
+    $tcps->setRoutingOverride(null);
+    expect($tcps->getRoutingOverride())->toBeNull();
+  }
+
+  public function testRoutingOverrideDirtiesCache(): void {
+    $tcps = ThriftContextPropState::get();
+    $tcps->clear();
+    $serialized_before = $tcps->getSerialized();
+
+    $tcps->setRoutingOverride(self::makeRoutingOverride(123));
+    $serialized_after = $tcps->getSerialized();
+
+    expect($serialized_before)->toNotEqual($serialized_after);
+  }
+
+  public function testRoutingOverrideRoundTrip()[defaults]: void {
+    $tfm = ThriftFrameworkMetadata::withDefaultValues();
+    $baggage = ContextProp\Baggage::withDefaultValues();
+    $baggage->routing_override = self::makeRoutingOverride(789);
+    $tfm->baggage = $baggage;
+
+    $buf = new TMemoryBuffer();
+    $prot = new TCompactProtocolAccelerated($buf);
+    $tfm->write($prot);
+    $encoded = Base64::encode($buf->getBuffer());
+
+    ThriftContextPropState::initFromString($encoded);
+    $tcps = ThriftContextPropState::get();
+    expect($tcps->getRoutingOverride()?->request_routing_override)
+      ->toEqual(ContextProp\RoutingOverrideUsecase::SANDBOX_V1);
+    expect($tcps->getRoutingOverride()?->override_id)->toEqual(789);
   }
 
   public function testTraceSizeEstimationDirtiesCache(): void {

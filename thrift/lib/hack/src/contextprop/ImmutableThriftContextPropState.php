@@ -75,6 +75,10 @@ final class ImmutableThriftContextPropState {
     return $this->getBaggage()?->agent_id;
   }
 
+  public function getRoutingOverride()[]: ?ContextProp\RequestRoutingOverride {
+    return $this->getBaggage()?->routing_override;
+  }
+
   public function getTraceContext()[]: ?ContextProp\TraceContext {
     return $this->state->getTraceContext();
   }

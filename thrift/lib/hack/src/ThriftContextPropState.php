@@ -942,6 +942,21 @@ final class ThriftContextPropState {
     $this->dirty();
   }
 
+  public function getRoutingOverride()[]: ?ContextProp\RequestRoutingOverride {
+    return $this->storage->baggage?->routing_override;
+  }
+
+  public function setRoutingOverride(
+    ?ContextProp\RequestRoutingOverride $routing_override,
+  )[write_props]: void {
+    $this->storage->baggage =
+      $this->storage->baggage ?? ContextProp\Baggage::withDefaultValues();
+
+    $baggage = $this->storage->baggage as nonnull;
+    $baggage->routing_override = $routing_override;
+    $this->dirty();
+  }
+
   // Getters for the root_product_id
   public readonly function getRootProductId()[leak_safe]: ?int {
     if ($this->storage->baggage is null) {
