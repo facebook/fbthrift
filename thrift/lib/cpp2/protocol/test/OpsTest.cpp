@@ -447,3 +447,36 @@ TEST(OpsTest, transcodeFieldIdProtocolPreservesUnknownFields) {
   EXPECT_EQ(fieldType, TType::T_STOP);
   reader.readStructEnd();
 }
+
+TEST(OpsTest, transcodePreservesFieldIdZero) {
+  folly::IOBufQueue queue;
+  CompactProtocolWriter writer;
+  writer.setOutput(&queue);
+  writer.writeStructBegin("");
+  writer.writeFieldBegin("", TType::T_I32, 0);
+  writer.writeI32(42);
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+
+  auto compactBuf = queue.move();
+  auto binaryBuf = transcodeSerialized<CompactSerializer, BinarySerializer>(
+      compactBuf, std::nullopt, UnknownFieldIdPolicy::Throw);
+
+  BinaryProtocolReader reader;
+  reader.setInput(binaryBuf.get());
+  std::string name;
+  TType fieldType;
+  int16_t fieldId;
+  reader.readStructBegin(name);
+  reader.readFieldBegin(name, fieldType, fieldId);
+  EXPECT_EQ(fieldId, 0);
+  EXPECT_EQ(fieldType, TType::T_I32);
+  int32_t value;
+  reader.readI32(value);
+  EXPECT_EQ(value, 42);
+  reader.readFieldEnd();
+  reader.readFieldBegin(name, fieldType, fieldId);
+  EXPECT_EQ(fieldType, TType::T_STOP);
+  reader.readStructEnd();
+}

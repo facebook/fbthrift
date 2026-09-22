@@ -429,14 +429,15 @@ struct TranscodeVisitor {
   void onField(
       StructuredDynamicCursorReader<ProtocolReader, InnerContiguous>& reader,
       StructuredDynamicCursorWriter<ProtocolWriter>& writer) {
-    // Check for unknown field (field ID == 0)
-    if (reader.fieldId() == 0) {
-      if (unknownFieldIdPolicy_ == UnknownFieldIdPolicy::Throw) {
-        throw std::runtime_error("Unknown field encountered during transcode");
+    if constexpr (ProtocolReader::kUsesFieldNames()) {
+      if (reader.fieldId() == 0) {
+        if (unknownFieldIdPolicy_ == UnknownFieldIdPolicy::Throw) {
+          throw std::runtime_error(
+              "Unknown field encountered during transcode");
+        }
+        reader.skip();
+        return;
       }
-      // Drop the field - skip uses the protocol's field type
-      reader.skip();
-      return;
     }
 
     // Get field type - use TypeRef if protocol doesn't encode types (e.g.,
