@@ -57,6 +57,8 @@ class MigrateCppContainerTypesTest(unittest.TestCase):
 
             namespace cpp2 example
 
+            struct Item {}
+
             @cpp.Type{name = "std::vector<int32_t>"}
             typedef list<i32> Ints
 
@@ -71,6 +73,9 @@ class MigrateCppContainerTypesTest(unittest.TestCase):
 
             @cpp.Type{name = "std::vector<mystd::int32_t>"}
             typedef list<i32> IdentifierBoundary
+
+            @cpp.Type{name = "std::vector<vector<int32_t>>"}
+            typedef list<list<i32>> UnqualifiedCustomInnerContainer
 
             @cpp.Type{
               name = "std::vector<int32_t>",
@@ -92,6 +97,10 @@ class MigrateCppContainerTypesTest(unittest.TestCase):
                 name = "std::map<std::string, double, CustomComparator>"
               }
               4: map<string, double> sorted_values;
+
+              @cpp.Type{name = "std::vector<Item>"}
+              5: list<Item> items;
+
             }
             """
         )
@@ -118,6 +127,9 @@ class MigrateCppContainerTypesTest(unittest.TestCase):
             "2: list<uint32> unsigned_values;",
         ).replace(
             '@cpp.Type{name = "std::vector<uint32_t>"}',
+            '@cpp.Type{template = "std::vector"}',
+        ).replace(
+            '@cpp.Type{name = "std::vector<Item>"}',
             '@cpp.Type{template = "std::vector"}',
         ) + textwrap.dedent(
             """\

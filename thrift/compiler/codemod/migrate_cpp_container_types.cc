@@ -174,6 +174,18 @@ std::string normalize_cpp_type(std::string_view value) {
   return result;
 }
 
+bool equivalent_cpp_type(std::string_view lhs, std::string_view rhs) {
+  const std::string normalized_lhs = normalize_cpp_type(lhs);
+  const std::string normalized_rhs = normalize_cpp_type(rhs);
+  if (normalized_lhs == normalized_rhs) {
+    return true;
+  }
+  return (lhs.find("::") == std::string_view::npos &&
+          normalized_rhs.ends_with("::" + normalized_lhs)) ||
+      (rhs.find("::") == std::string_view::npos &&
+       normalized_lhs.ends_with("::" + normalized_rhs));
+}
+
 std::optional<size_t> find_closing_quote(
     std::string_view value, size_t opening_quote) {
   bool escaped = false;
@@ -243,8 +255,9 @@ bool collect_primitive_extractions(
     cpp_name_resolver& resolver,
     std::vector<extracted_primitive>& extractions) {
   const t_type& type = *type_ref;
-  if (normalize_cpp_type(cpp_type) ==
-      normalize_cpp_type(resolver.get_native_type(type))) {
+  const auto* container = type.try_as<t_container>();
+  if (container == nullptr &&
+      equivalent_cpp_type(cpp_type, resolver.get_native_type(type))) {
     return true;
   }
 
@@ -256,7 +269,6 @@ bool collect_primitive_extractions(
     return true;
   }
 
-  const auto* container = type.try_as<t_container>();
   const auto parsed = parse_template_instantiation(cpp_type);
   if (container == nullptr || !parsed) {
     return false;
