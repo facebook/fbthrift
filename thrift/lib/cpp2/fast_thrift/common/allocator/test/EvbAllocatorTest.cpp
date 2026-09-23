@@ -61,6 +61,25 @@ TEST(EvbAllocator, FixedPageSize) {
   EvbAllocator alloc(&evb);
   EXPECT_EQ(alloc.pageSize(), EvbAllocator::kPageSize);
 }
+TEST(EvbAllocator, SnapshotStats) {
+  folly::EventBase evb;
+  EvbAllocator alloc(&evb);
+
+  auto stats = alloc.snapshotStats();
+  EXPECT_EQ(stats.bumpBytes, 0);
+  EXPECT_EQ(
+      stats.mappedBytes,
+      (1 + EvbAllocator::kPrewarmedFreePages) * EvbAllocator::kPageSize);
+  EXPECT_EQ(stats.pageCount, 1 + EvbAllocator::kPrewarmedFreePages);
+  EXPECT_EQ(stats.retiredPageCount, 0);
+  EXPECT_EQ(stats.freePageCount, EvbAllocator::kPrewarmedFreePages);
+  EXPECT_EQ(stats.outstandingAllocations, 0);
+
+  auto value = alloc.make_local<int>(42);
+  stats = alloc.snapshotStats();
+  EXPECT_GE(stats.bumpBytes, sizeof(int));
+  EXPECT_EQ(stats.outstandingAllocations, 1);
+}
 
 // ============================================================
 // Group 2: Allocation
@@ -348,9 +367,11 @@ TEST(EvbAllocator, GetOrCreate) {
   folly::ScopedEventBaseThread evbThread;
   auto* evb = evbThread.getEventBase();
   evb->runInEventBaseThreadAndWait([&] {
+    EXPECT_EQ(EvbAllocator::tryGet(*evb), nullptr);
     auto& a = EvbAllocator::getOrCreate(*evb);
     auto& b = EvbAllocator::getOrCreate(*evb);
     EXPECT_EQ(&a, &b);
+    EXPECT_EQ(EvbAllocator::tryGet(*evb), &a);
   });
 }
 

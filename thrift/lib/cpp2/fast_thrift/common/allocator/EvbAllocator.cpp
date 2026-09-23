@@ -18,6 +18,15 @@
 
 namespace apache::thrift::fast_thrift::mem {
 
+namespace {
+
+folly::EventBaseLocal<EvbAllocator>& allocatorLocal() {
+  static folly::EventBaseLocal<EvbAllocator> local;
+  return local;
+}
+
+} // namespace
+
 EvbAllocator::EvbAllocator(folly::EventBase* evb) : evb_(evb) {
   activePage_ = Page::create(evb_);
   prewarmFreePages();
@@ -77,9 +86,33 @@ void EvbAllocator::allocateNewPage() {
   }
 }
 
+EvbAllocator::Stats EvbAllocator::snapshotStats() const {
+  Stats stats;
+  stats.bumpBytes =
+      static_cast<size_t>(activePage_->ptr - activePage_->bumpStart());
+  stats.pageCount = 1;
+  stats.outstandingAllocations = activePage_->outstanding;
+
+  for (auto* page = retiredHead_; page; page = page->next) {
+    stats.bumpBytes += static_cast<size_t>(page->ptr - page->bumpStart());
+    ++stats.pageCount;
+    ++stats.retiredPageCount;
+    stats.outstandingAllocations += page->outstanding;
+  }
+  for (auto* page = freeHead_; page; page = page->nextFree) {
+    ++stats.pageCount;
+    ++stats.freePageCount;
+  }
+  stats.mappedBytes = stats.pageCount * kPageSize;
+  return stats;
+}
+
+EvbAllocator* EvbAllocator::tryGet(folly::EventBase& evb) {
+  return allocatorLocal().get(evb);
+}
+
 EvbAllocator& EvbAllocator::getOrCreate(folly::EventBase& evb) {
-  static folly::EventBaseLocal<EvbAllocator> local;
-  return local.try_emplace(evb, &evb);
+  return allocatorLocal().try_emplace(evb, &evb);
 }
 
 void EvbAllocator::PageRecycler::runLoopCallback() noexcept {

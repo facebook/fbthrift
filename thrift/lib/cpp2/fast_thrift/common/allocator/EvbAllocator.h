@@ -171,6 +171,14 @@ class evb_shared_ptr;
 
 class EvbAllocator {
  public:
+  struct Stats {
+    size_t bumpBytes{0};
+    size_t mappedBytes{0};
+    size_t pageCount{0};
+    size_t retiredPageCount{0};
+    size_t freePageCount{0};
+    size_t outstandingAllocations{0};
+  };
   static constexpr size_t kMaxObjectSize = Page::kMaxObjectSize;
   static constexpr size_t kMaxObjectAlignment = Page::kMaxObjectAlignment;
   static constexpr size_t kMinPageSize = Page::kMinPageSize;
@@ -201,12 +209,14 @@ class EvbAllocator {
 
   [[nodiscard]] size_t bytesUsed() const;
 
+  [[nodiscard]] Stats snapshotStats() const;
   [[nodiscard]] size_t pageCount() const;
   [[nodiscard]] size_t pageSize() const { return kPageSize; }
   [[nodiscard]] Page* activePage() const { return activePage_; }
 
   [[nodiscard]] folly::EventBase* evb() const { return evb_; }
 
+  static EvbAllocator* tryGet(folly::EventBase& evb);
   static EvbAllocator& getOrCreate(folly::EventBase& evb);
 
  private:

@@ -107,6 +107,11 @@ struct FastThriftServerConfig {
   // through its Stats template parameter.
   bool enableStats{false};
 
+  // When true, FastThriftStatsRegistryPublisher samples the EvbAllocator on
+  // each IO EventBase and exports its memory gauges to fb303. Collection is
+  // off the allocation path and does not create allocators that do not exist.
+  bool enableEvbAllocatorStats{false};
+
   // Outbound write batching. Default zero-interval flushes via LoopCallback
   // at end of each event loop iteration. Set batchingInterval > 0 to use
   // an HHWheelTimer-driven flush instead.
