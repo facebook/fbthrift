@@ -71,10 +71,13 @@ inline void fillSuccessResponseMetadata(
   md.payloadMetadata() = std::move(payloadMetadata);
 }
 
-inline void fillAppErrorResponseMetadata(
-    apache::thrift::ResponseRpcMetadata& md,
+/**
+ * Build the inner PayloadMetadata for an undeclared/application exception
+ * (surfaced to the client as a TApplicationException via appUnknownException).
+ */
+inline apache::thrift::PayloadMetadata buildAppUnknownExceptionPayloadMetadata(
     std::string exName,
-    std::string errorMessage,
+    std::string exWhat,
     apache::thrift::ErrorBlame blame = apache::thrift::ErrorBlame::SERVER) {
   apache::thrift::PayloadMetadata payloadMetadata;
   apache::thrift::PayloadExceptionMetadataBase exBase;
@@ -89,10 +92,19 @@ inline void fillAppErrorResponseMetadata(
   if (!exName.empty()) {
     exBase.name_utf8() = std::move(exName);
   }
-  exBase.what_utf8() = std::move(errorMessage);
+  exBase.what_utf8() = std::move(exWhat);
   exBase.metadata() = std::move(exMeta);
   payloadMetadata.exceptionMetadata() = std::move(exBase);
-  md.payloadMetadata() = std::move(payloadMetadata);
+  return payloadMetadata;
+}
+
+inline void fillAppErrorResponseMetadata(
+    apache::thrift::ResponseRpcMetadata& md,
+    std::string exName,
+    std::string errorMessage,
+    apache::thrift::ErrorBlame blame = apache::thrift::ErrorBlame::SERVER) {
+  md.payloadMetadata() = buildAppUnknownExceptionPayloadMetadata(
+      std::move(exName), std::move(errorMessage), blame);
 }
 
 inline void fillDeclaredExceptionMetadata(
