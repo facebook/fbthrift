@@ -94,11 +94,11 @@ class Handler : public apache::thrift::ServiceHandler<test::TestService> {
 
   ServerStream<int8_t> echoIOBufAsByteStream(
       std::unique_ptr<folly::IOBuf> iobuf, int32_t delayMs) final {
-    auto [stream, publisher] = ServerStream<int8_t>::createPublisher();
+    auto [stream, streamPublisher] = ServerStream<int8_t>::createPublisher();
     std::ignore = folly::makeSemiFuture()
                       .delayed(std::chrono::milliseconds(delayMs))
                       .via(getThreadManager())
-                      .thenValue([publisher = std::move(publisher),
+                      .thenValue([publisher = std::move(streamPublisher),
                                   iobuf = std::move(iobuf)](auto&&) mutable {
                         folly::io::Cursor cursor(iobuf.get());
                         int8_t byte;
