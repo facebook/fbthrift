@@ -16,12 +16,17 @@
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/rust/RustTailEndpoint.h>
 
+#include <algorithm>
 #include <memory>
+#include <tuple>
+#include <utility>
 #include <vector>
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/logging/LoggerDB.h>
+#include <folly/logging/test/TestLogHandler.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
@@ -35,6 +40,41 @@ namespace {
 namespace cp = apache::thrift::fast_thrift::channel_pipeline;
 
 HANDLER_TAG(tail_write_inner);
+
+constexpr uint64_t kCloseOnReadToken = UINT64_MAX;
+constexpr uint64_t kCloseOnReadyToken = UINT64_MAX - 1;
+constexpr uint64_t kFeedbackWriteToken = UINT64_MAX - 2;
+constexpr uint64_t kActivationWriteToken = UINT64_MAX - 3;
+
+class ScopedLogCapture {
+ public:
+  ScopedLogCapture()
+      : category_{folly::LoggerDB::get().getCategory("")},
+        originalHandlers_{category_->getHandlers()},
+        handler_{std::make_shared<folly::TestLogHandler>()} {
+    auto handlers = originalHandlers_;
+    handlers.push_back(handler_);
+    category_->replaceHandlers(std::move(handlers));
+  }
+
+  ~ScopedLogCapture() {
+    category_->replaceHandlers(std::move(originalHandlers_));
+  }
+
+  size_t rustTailEndpointErrorCount() const {
+    const auto& messages = handler_->getMessages();
+    return std::count_if(
+        messages.begin(), messages.end(), [](const auto& entry) {
+          return entry.first.getLevel() == folly::LogLevel::ERR &&
+              entry.first.getFileName().endsWith("RustTailEndpoint.h");
+        });
+  }
+
+ private:
+  folly::LogCategory* category_;
+  std::vector<std::shared_ptr<folly::LogHandler>> originalHandlers_;
+  std::shared_ptr<folly::TestLogHandler> handler_;
+};
 
 class OrderedHead {
  public:
@@ -90,6 +130,157 @@ class ObservedTail {
   RustTailEndpoint endpoint_;
   std::vector<uint32_t>& order_;
 };
+
+enum class ReentrantAction {
+  None,
+  WriteReady,
+  Exception,
+  ExceptionAndClose,
+  Inactive,
+  Close,
+  DeactivateActivate,
+  DeactivateActivateWriteReady,
+  DeactivateActivateClose,
+};
+
+class ReentrantHead {
+ public:
+  ReentrantHead(
+      std::vector<cp::Result> results, std::vector<ReentrantAction> actions)
+      : results_{std::move(results)}, actions_{std::move(actions)} {}
+
+  cp::Result onWrite(
+      cp::detail::ContextImpl& context, cp::TypeErasedBox&& message) noexcept {
+    writtenBytes_.push_back(std::move(message.get<cp::BytesPtr>()));
+    const auto index = writtenBytes_.size() - 1;
+    const auto action =
+        index < actions_.size() ? actions_[index] : ReentrantAction::None;
+    switch (action) {
+      case ReentrantAction::None:
+        break;
+      case ReentrantAction::WriteReady:
+        context.pipeline()->onWriteReady();
+        break;
+      case ReentrantAction::Exception:
+        context.pipeline()->fireException(
+            folly::make_exception_wrapper<std::runtime_error>("write error"));
+        break;
+      case ReentrantAction::ExceptionAndClose:
+        context.pipeline()->fireException(
+            folly::make_exception_wrapper<std::runtime_error>("write error"));
+        context.pipeline()->close();
+        break;
+      case ReentrantAction::Inactive:
+        context.pipeline()->deactivate();
+        break;
+      case ReentrantAction::Close:
+        context.pipeline()->close();
+        break;
+      case ReentrantAction::DeactivateActivate:
+        context.pipeline()->deactivate();
+        context.pipeline()->activate();
+        break;
+      case ReentrantAction::DeactivateActivateWriteReady:
+        context.pipeline()->deactivate();
+        context.pipeline()->activate();
+        context.pipeline()->onWriteReady();
+        break;
+      case ReentrantAction::DeactivateActivateClose:
+        context.pipeline()->deactivate();
+        context.pipeline()->activate();
+        context.pipeline()->close();
+        break;
+    }
+    return index < results_.size() ? results_[index] : cp::Result::Success;
+  }
+
+  void onWriteReady(cp::detail::ContextImpl&) noexcept {}
+  void onReadReady() noexcept {}
+  void handlerAdded() noexcept {}
+  void handlerRemoved() noexcept { ++removedCount_; }
+  void onPipelineActive() noexcept { ++activeCount_; }
+  void onPipelineInactive() noexcept { ++inactiveCount_; }
+
+  const std::vector<cp::BytesPtr>& writtenBytes() const noexcept {
+    return writtenBytes_;
+  }
+  uint32_t activeCount() const noexcept { return activeCount_; }
+  uint32_t inactiveCount() const noexcept { return inactiveCount_; }
+  uint32_t removedCount() const noexcept { return removedCount_; }
+
+ private:
+  std::vector<cp::Result> results_;
+  std::vector<ReentrantAction> actions_;
+  std::vector<cp::BytesPtr> writtenBytes_;
+  uint32_t activeCount_{0};
+  uint32_t inactiveCount_{0};
+  uint32_t removedCount_{0};
+};
+
+TailOutcomeTestConfig outcomeConfig(
+    cp::Result result,
+    std::unique_ptr<folly::IOBuf> readMessage,
+    uint64_t readToken = 0,
+    std::unique_ptr<folly::IOBuf> readyMessage = nullptr,
+    uint64_t readyToken = 0,
+    std::unique_ptr<folly::IOBuf> secondReadyMessage = nullptr,
+    uint64_t secondReadyToken = 0,
+    bool closeOnFeedback = false) {
+  TailOutcomeTestConfig config;
+  config.result = static_cast<int32_t>(result);
+  config.read_message = std::move(readMessage);
+  config.read_token = readToken;
+  config.ready_message = std::move(readyMessage);
+  config.ready_token = readyToken;
+  config.second_ready_message = std::move(secondReadyMessage);
+  config.second_ready_token = secondReadyToken;
+  config.close_on_feedback = closeOnFeedback;
+  return config;
+}
+
+template <typename Head>
+auto buildOutcomePipeline(
+    folly::EventBase& eventBase,
+    Head& head,
+    cp::SimpleBufferAllocator& allocator,
+    RustTailEndpoint& tail) {
+  auto pipeline =
+      cp::PipelineBuilder<Head, RustTailEndpoint, cp::SimpleBufferAllocator>()
+          .setEventBase(&eventBase)
+          .setHead(&head)
+          .setTail(&tail)
+          .setAllocator(&allocator)
+          .build();
+  EXPECT_TRUE(tail.setPipeline(pipeline.get()));
+  pipeline->activate();
+  return pipeline;
+}
+
+void expectReadWriteFeedback(cp::Result writeResult, size_t feedbackIndex) {
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  folly::EventBase eventBase;
+  ReentrantHead head{{writeResult}, {ReentrantAction::None}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success, folly::IOBuf::copyBuffer("response"), 17))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      writeResult);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  EXPECT_EQ(counts[feedbackIndex], 1);
+  EXPECT_EQ(counts[9], 17);
+  EXPECT_EQ(counts[8], 0);
+  ASSERT_EQ(head.writtenBytes().size(), 1);
+  EXPECT_EQ(
+      head.writtenBytes().front()->cloneCoalesced()->moveToFbString(),
+      "response");
+  pipeline->close();
+}
 
 void expectLifecycleWriteResult(
     cp::Result result, bool onActivation, bool expectClosed) {
@@ -266,10 +457,12 @@ TEST(RustTailEndpointTest, WriteReadyReturnsPendingBytes) {
 }
 
 TEST(RustTailEndpointTest, UnattachedLifecycleWriteIsDropped) {
+  ScopedLogCapture logs;
   RustTailEndpoint tail{rust_tail_endpoint_new_lifecycle_write_test(
       folly::IOBuf::copyBuffer("unattached"), true)};
 
   EXPECT_NO_FATAL_FAILURE(tail.onPipelineActive());
+  EXPECT_EQ(logs.rustTailEndpointErrorCount(), 1);
 }
 
 TEST(RustTailEndpointTest, LifecycleWriteAfterRemovalIsDropped) {
@@ -495,6 +688,525 @@ TEST(RustTailEndpointTest, ActivationBackpressureDoesNotCloseOrRetry) {
 
 TEST(RustTailEndpointTest, WriteReadyBackpressureDoesNotCloseOrRetry) {
   expectLifecycleWriteResult(cp::Result::Backpressure, false, false);
+}
+
+class ReturnedReadWriteFeedbackTest
+    : public testing::TestWithParam<std::tuple<cp::Result, size_t>> {};
+
+TEST_P(ReturnedReadWriteFeedbackTest, ReportsTransportResult) {
+  const auto [result, feedbackIndex] = GetParam();
+  expectReadWriteFeedback(result, feedbackIndex);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ReturnedReadWrite,
+    ReturnedReadWriteFeedbackTest,
+    testing::Values(
+        std::tuple{cp::Result::Success, 1},
+        std::tuple{cp::Result::Backpressure, 2},
+        std::tuple{cp::Result::Error, 3}));
+
+TEST(RustTailEndpointTest, FeedbackWithoutOutputReportsSuccess) {
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  folly::EventBase eventBase;
+  ReentrantHead head{{}, {}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(
+      outcomeConfig(cp::Result::Success, nullptr, 19))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Success);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  EXPECT_EQ(head.writtenBytes().size(), 0);
+  EXPECT_EQ(counts[1], 1);
+  EXPECT_EQ(counts[9], 19);
+  pipeline->close();
+}
+
+TEST(RustTailEndpointTest, WriteReadyFeedbackWithoutOutputReportsSuccess) {
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  folly::EventBase eventBase;
+  ReentrantHead head{{}, {}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(
+      outcomeConfig(cp::Result::Success, nullptr, 0, nullptr, 23))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+  ASSERT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Success);
+  pipeline->onWriteReady();
+
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  EXPECT_EQ(head.writtenBytes().size(), 0);
+  EXPECT_EQ(counts[1], 1);
+  EXPECT_EQ(counts[4], 1);
+  EXPECT_EQ(counts[9], 23);
+  pipeline->close();
+}
+
+TEST(RustTailEndpointTest, ComposesErrorOverBackpressureOverSuccess) {
+  for (const auto& [semantic, transport, expected] :
+       std::vector<std::tuple<cp::Result, cp::Result, cp::Result>>{
+           {cp::Result::Error, cp::Result::Backpressure, cp::Result::Error},
+           {cp::Result::Backpressure,
+            cp::Result::Success,
+            cp::Result::Backpressure},
+           {cp::Result::Success, cp::Result::Success, cp::Result::Success}}) {
+    folly::EventBase eventBase;
+    ReentrantHead head{{transport}, {ReentrantAction::None}};
+    cp::SimpleBufferAllocator allocator;
+    RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(
+        outcomeConfig(semantic, folly::IOBuf::copyBuffer("response")))};
+    auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+    EXPECT_EQ(
+        pipeline->fireRead(
+            cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+        expected);
+    pipeline->close();
+  }
+}
+
+TEST(RustTailEndpointTest, SynchronousWriteReadyReplaysAfterFeedback) {
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  folly::EventBase eventBase;
+  ReentrantHead head{
+      {cp::Result::Backpressure, cp::Result::Backpressure, cp::Result::Success},
+      {ReentrantAction::WriteReady,
+       ReentrantAction::WriteReady,
+       ReentrantAction::None}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success,
+      folly::IOBuf::copyBuffer("read"),
+      11,
+      folly::IOBuf::copyBuffer("ready-one"),
+      22,
+      folly::IOBuf::copyBuffer("ready-two"),
+      33))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Backpressure);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  EXPECT_EQ(head.writtenBytes().size(), 3);
+  EXPECT_EQ(head.writtenBytes()[0]->cloneCoalesced()->moveToFbString(), "read");
+  EXPECT_EQ(
+      head.writtenBytes()[1]->cloneCoalesced()->moveToFbString(), "ready-one");
+  EXPECT_EQ(
+      head.writtenBytes()[2]->cloneCoalesced()->moveToFbString(), "ready-two");
+  EXPECT_EQ(counts[1], 1);
+  EXPECT_EQ(counts[2], 2);
+  EXPECT_EQ(counts[4], 2);
+  EXPECT_EQ(counts[8], 0);
+  EXPECT_EQ(counts[9], 33);
+  EXPECT_LT(counts[10], counts[11]);
+  EXPECT_LT(counts[11], counts[12]);
+  EXPECT_LT(counts[12], counts[13]);
+  EXPECT_LT(counts[13], counts[14]);
+  pipeline->close();
+}
+
+TEST(
+    RustTailEndpointTest,
+    SynchronousExceptionReplaysAfterFeedbackWithoutAliasing) {
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  folly::EventBase eventBase;
+  ReentrantHead head{{cp::Result::Success}, {ReentrantAction::Exception}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success, folly::IOBuf::copyBuffer("response"), 41))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Success);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  EXPECT_EQ(counts[5], 1);
+  EXPECT_EQ(counts[1], 1);
+  EXPECT_LT(counts[10], counts[15]);
+  EXPECT_EQ(counts[8], 0);
+  pipeline->close();
+}
+
+TEST(RustTailEndpointTest, SynchronousInactiveSkipsStaleFeedback) {
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  folly::EventBase eventBase;
+  ReentrantHead head{{cp::Result::Success}, {ReentrantAction::Inactive}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success, folly::IOBuf::copyBuffer("response"), 51))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Success);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  EXPECT_EQ(counts[6], 1);
+  EXPECT_EQ(counts[1] + counts[2] + counts[3], 0);
+  EXPECT_EQ(counts[8], 0);
+  pipeline->close();
+}
+
+TEST(RustTailEndpointTest, SynchronousRemovalSkipsStaleFeedback) {
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  folly::EventBase eventBase;
+  ReentrantHead head{{cp::Result::Success}, {ReentrantAction::Close}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success, folly::IOBuf::copyBuffer("response"), 61))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Error);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  EXPECT_EQ(counts[6], 1);
+  EXPECT_EQ(counts[7], 1);
+  EXPECT_EQ(counts[1] + counts[2] + counts[3], 0);
+  EXPECT_EQ(counts[8], 0);
+  EXPECT_LT(counts[16], counts[17]);
+}
+
+TEST(RustTailEndpointTest, FeedbackCloseDefersLifecycleUntilBorrowEnds) {
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  folly::EventBase eventBase;
+  ReentrantHead head{{cp::Result::Success}, {ReentrantAction::None}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success,
+      folly::IOBuf::copyBuffer("response"),
+      71,
+      nullptr,
+      0,
+      nullptr,
+      0,
+      true))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Error);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  EXPECT_EQ(counts[1], 1);
+  EXPECT_EQ(counts[6], 1);
+  EXPECT_EQ(counts[7], 1);
+  EXPECT_EQ(counts[8], 0);
+  EXPECT_LT(counts[10], counts[16]);
+  EXPECT_LT(counts[16], counts[17]);
+}
+
+TEST(RustTailEndpointTest, ReadCloseDiscardsReturnedWriteAndFeedback) {
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+  ScopedLogCapture logs;
+
+  folly::EventBase eventBase;
+  ReentrantHead head{{cp::Result::Success}, {ReentrantAction::None}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success,
+      folly::IOBuf::copyBuffer("stale-read"),
+      kCloseOnReadToken))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Error);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  EXPECT_TRUE(pipeline->isClosed());
+  EXPECT_TRUE(head.writtenBytes().empty());
+  EXPECT_EQ(counts[1] + counts[2] + counts[3], 0);
+  EXPECT_EQ(counts[6], 1);
+  EXPECT_EQ(counts[7], 1);
+  EXPECT_EQ(counts[8], 0);
+  EXPECT_EQ(counts[16], 1);
+  EXPECT_EQ(counts[17], 2);
+  EXPECT_EQ(logs.rustTailEndpointErrorCount(), 1);
+}
+
+TEST(RustTailEndpointTest, WriteReadyCloseDiscardsReturnedWriteAndFeedback) {
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+  ScopedLogCapture logs;
+
+  folly::EventBase eventBase;
+  ReentrantHead head{{cp::Result::Success}, {ReentrantAction::None}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success,
+      nullptr,
+      0,
+      folly::IOBuf::copyBuffer("stale-ready"),
+      kCloseOnReadyToken))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+  ASSERT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Success);
+  pipeline->onWriteReady();
+
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  EXPECT_TRUE(pipeline->isClosed());
+  EXPECT_TRUE(head.writtenBytes().empty());
+  EXPECT_EQ(counts[1] + counts[2] + counts[3], 0);
+  EXPECT_EQ(counts[4], 1);
+  EXPECT_EQ(counts[6], 1);
+  EXPECT_EQ(counts[7], 1);
+  EXPECT_EQ(counts[8], 0);
+  EXPECT_EQ(counts[11], 1);
+  EXPECT_EQ(counts[16], 2);
+  EXPECT_EQ(counts[17], 3);
+  EXPECT_EQ(logs.rustTailEndpointErrorCount(), 1);
+}
+
+TEST(RustTailEndpointTest, FeedbackExceptionIsDeferredWithoutLosingPayload) {
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  folly::EventBase eventBase;
+  ReentrantHead head{
+      {cp::Result::Success, cp::Result::Error},
+      {ReentrantAction::None, ReentrantAction::ExceptionAndClose}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success,
+      folly::IOBuf::copyBuffer("response"),
+      91,
+      nullptr,
+      0,
+      folly::IOBuf::copyBuffer("feedback-write"),
+      kFeedbackWriteToken))};
+  std::vector<std::string> exceptions;
+  tail.setOnException([&](folly::exception_wrapper&& error) noexcept {
+    exceptions.push_back(error.what().toStdString());
+  });
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Error);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  ASSERT_EQ(head.writtenBytes().size(), 2);
+  EXPECT_EQ(
+      head.writtenBytes()[0]->cloneCoalesced()->moveToFbString(), "response");
+  EXPECT_EQ(
+      head.writtenBytes()[1]->cloneCoalesced()->moveToFbString(),
+      "feedback-write");
+  ASSERT_EQ(exceptions.size(), 1);
+  EXPECT_EQ(exceptions.front(), "std::runtime_error: write error");
+  EXPECT_EQ(counts[1], 1);
+  EXPECT_EQ(counts[5], 1);
+  EXPECT_EQ(counts[6], 1);
+  EXPECT_EQ(counts[7], 1);
+  EXPECT_EQ(counts[8], 0);
+  EXPECT_LT(counts[10], counts[15]);
+  EXPECT_LT(counts[15], counts[16]);
+  EXPECT_LT(counts[16], counts[17]);
+}
+
+TEST(RustTailEndpointTest, ReturnedWriteReplaysInactiveThenActiveWithOutput) {
+  folly::EventBase eventBase;
+  ReentrantHead head{
+      {cp::Result::Success, cp::Result::Success},
+      {ReentrantAction::DeactivateActivate, ReentrantAction::None}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success,
+      folly::IOBuf::copyBuffer("response"),
+      101,
+      folly::IOBuf::copyBuffer("activation"),
+      kActivationWriteToken))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Success);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  ASSERT_EQ(head.writtenBytes().size(), 2);
+  EXPECT_EQ(
+      head.writtenBytes()[0]->cloneCoalesced()->moveToFbString(), "response");
+  EXPECT_EQ(
+      head.writtenBytes()[1]->cloneCoalesced()->moveToFbString(), "activation");
+  EXPECT_EQ(counts[1] + counts[2] + counts[3], 0);
+  EXPECT_EQ(counts[6], 1);
+  EXPECT_EQ(counts[7], 0);
+  EXPECT_EQ(counts[8], 0);
+  EXPECT_EQ(counts[18], 1);
+  EXPECT_EQ(counts[16], 1);
+  EXPECT_EQ(counts[19], 2);
+  EXPECT_EQ(head.activeCount(), 2);
+  EXPECT_EQ(head.inactiveCount(), 1);
+  EXPECT_EQ(head.removedCount(), 0);
+  EXPECT_FALSE(pipeline->isClosed());
+  pipeline->close();
+}
+
+TEST(RustTailEndpointTest, FeedbackReplaysInactiveThenActiveWithOutput) {
+  folly::EventBase eventBase;
+  ReentrantHead head{
+      {cp::Result::Success, cp::Result::Success, cp::Result::Success},
+      {ReentrantAction::None,
+       ReentrantAction::DeactivateActivate,
+       ReentrantAction::None}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success,
+      folly::IOBuf::copyBuffer("response"),
+      102,
+      folly::IOBuf::copyBuffer("activation"),
+      kActivationWriteToken,
+      folly::IOBuf::copyBuffer("feedback-write"),
+      kFeedbackWriteToken))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Success);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  ASSERT_EQ(head.writtenBytes().size(), 3);
+  EXPECT_EQ(
+      head.writtenBytes()[0]->cloneCoalesced()->moveToFbString(), "response");
+  EXPECT_EQ(
+      head.writtenBytes()[1]->cloneCoalesced()->moveToFbString(),
+      "feedback-write");
+  EXPECT_EQ(
+      head.writtenBytes()[2]->cloneCoalesced()->moveToFbString(), "activation");
+  EXPECT_EQ(counts[1], 1);
+  EXPECT_EQ(counts[6], 1);
+  EXPECT_EQ(counts[7], 0);
+  EXPECT_EQ(counts[8], 0);
+  EXPECT_EQ(counts[18], 1);
+  EXPECT_LT(counts[10], counts[16]);
+  EXPECT_LT(counts[16], counts[19]);
+  EXPECT_EQ(head.activeCount(), 2);
+  EXPECT_EQ(head.inactiveCount(), 1);
+  EXPECT_EQ(head.removedCount(), 0);
+  EXPECT_FALSE(pipeline->isClosed());
+  pipeline->close();
+}
+
+TEST(RustTailEndpointTest, LifecycleAndActivationReplayBeforeRelatchedReady) {
+  folly::EventBase eventBase;
+  ReentrantHead head{
+      {cp::Result::Success, cp::Result::Success, cp::Result::Success},
+      {ReentrantAction::DeactivateActivateWriteReady,
+       ReentrantAction::None,
+       ReentrantAction::None}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success,
+      folly::IOBuf::copyBuffer("activation"),
+      kActivationWriteToken,
+      folly::IOBuf::copyBuffer("ready-one"),
+      201,
+      folly::IOBuf::copyBuffer("ready-two"),
+      202))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+  ASSERT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Success);
+  ASSERT_TRUE(head.writtenBytes().empty());
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  pipeline->onWriteReady();
+
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  ASSERT_EQ(head.writtenBytes().size(), 3);
+  EXPECT_EQ(
+      head.writtenBytes()[0]->cloneCoalesced()->moveToFbString(), "ready-one");
+  EXPECT_EQ(
+      head.writtenBytes()[1]->cloneCoalesced()->moveToFbString(), "activation");
+  EXPECT_EQ(
+      head.writtenBytes()[2]->cloneCoalesced()->moveToFbString(), "ready-two");
+  EXPECT_EQ(counts[1], 1);
+  EXPECT_EQ(counts[4], 2);
+  EXPECT_EQ(counts[6], 1);
+  EXPECT_EQ(counts[7], 0);
+  EXPECT_EQ(counts[8], 0);
+  EXPECT_EQ(counts[9], 202);
+  EXPECT_EQ(counts[11], 1);
+  EXPECT_EQ(counts[16], 2);
+  EXPECT_EQ(counts[19], 3);
+  EXPECT_EQ(counts[13], 4);
+  EXPECT_EQ(counts[10], 5);
+  EXPECT_EQ(head.activeCount(), 2);
+  EXPECT_EQ(head.inactiveCount(), 1);
+  EXPECT_EQ(head.removedCount(), 0);
+  EXPECT_FALSE(pipeline->isClosed());
+  pipeline->close();
+}
+
+TEST(RustTailEndpointTest, RemovalSuppressesPendingActivationOutput) {
+  folly::EventBase eventBase;
+  ReentrantHead head{
+      {cp::Result::Success}, {ReentrantAction::DeactivateActivateClose}};
+  cp::SimpleBufferAllocator allocator;
+  RustTailEndpoint tail{rust_tail_endpoint_new_read_outcome_test(outcomeConfig(
+      cp::Result::Success,
+      folly::IOBuf::copyBuffer("response"),
+      103,
+      folly::IOBuf::copyBuffer("stale-activation"),
+      kActivationWriteToken))};
+  auto pipeline = buildOutcomePipeline(eventBase, head, allocator, tail);
+  rust_tail_endpoint_reset_read_outcome_test_counts();
+
+  EXPECT_EQ(
+      pipeline->fireRead(
+          cp::erase_and_box(folly::IOBuf::copyBuffer("request"))),
+      cp::Result::Error);
+  const auto counts = rust_tail_endpoint_read_outcome_test_counts();
+  ASSERT_EQ(counts.size(), 20);
+  ASSERT_EQ(head.writtenBytes().size(), 1);
+  EXPECT_EQ(
+      head.writtenBytes()[0]->cloneCoalesced()->moveToFbString(), "response");
+  EXPECT_EQ(counts[1] + counts[2] + counts[3], 0);
+  EXPECT_EQ(counts[6], 1);
+  EXPECT_EQ(counts[7], 1);
+  EXPECT_EQ(counts[8], 0);
+  EXPECT_EQ(counts[18], 0);
+  EXPECT_EQ(counts[16], 1);
+  EXPECT_EQ(counts[17], 2);
+  EXPECT_EQ(head.activeCount(), 2);
+  EXPECT_EQ(head.inactiveCount(), 2);
+  EXPECT_EQ(head.removedCount(), 1);
+  EXPECT_TRUE(pipeline->isClosed());
 }
 
 } // namespace

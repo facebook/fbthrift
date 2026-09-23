@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <utility>
 
 #include <rust/cxx.h>
@@ -35,9 +36,10 @@ namespace channel_pipeline_rust {
  *
  * The borrowed context and erased message are valid only for `onRead`. A Rust
  * endpoint that suspends must move the message and continuation into
- * `DeferredRead`. Activation and write-ready may each return one IOBuf chain;
- * the shim writes it only after the Rust callback has released its `&mut`
- * endpoint borrow. Other lifecycle methods retain their no-context contract.
+ * `DeferredRead`. Read, activation, and write-ready may each return one IOBuf
+ * chain; the shim writes it only after the Rust callback has released its
+ * `&mut` endpoint borrow. Other lifecycle methods retain their no-context
+ * contract.
  */
 class RustTailEndpoint final {
  public:
@@ -74,19 +76,63 @@ class RustTailEndpoint final {
       if (message.empty()) {
         return Result::Error;
       }
-      CallbackContext context{ctx, message};
-      return static_cast<Result>(
-          rust_tail_endpoint_on_read(*endpoint_, context, message));
+      if (pipeline_ == nullptr) {
+        pipeline_ = ctx.pipeline();
+        pipelineAttached_ = true;
+      } else if (pipeline_ != ctx.pipeline()) {
+        return Result::Error;
+      }
+      if (rustCallbackActive_) {
+        return Result::Error;
+      }
+      const auto lifecycleGeneration = lifecycleGeneration_;
+      rustCallbackActive_ = true;
+      auto outcome = [&] {
+        CallbackContext context{ctx, message};
+        return rust_tail_endpoint_on_read(*endpoint_, context, message);
+      }();
+      auto result = Result::Error;
+      const bool current = isCurrent(lifecycleGeneration);
+      if (outcome.message && !current) {
+        logDroppedWrite(lifecycleGeneration);
+      }
+      if (current) {
+        result = applyOutcome(
+            std::move(outcome),
+            lifecycleGeneration,
+            [this](auto&& write) noexcept {
+              return pipeline_->fireWrite(
+                  apache::thrift::fast_thrift::channel_pipeline::erase_and_box(
+                      std::forward<decltype(write)>(write)));
+            });
+      }
+      rustCallbackActive_ = false;
+      replayLatched();
+      return removed_ || pipeline_ == nullptr || pipeline_->isClosed()
+          ? Result::Error
+          : result;
     } catch (...) {
+      rustCallbackActive_ = false;
+      replayLatched();
       return Result::Error;
     }
   }
 
   void onException(folly::exception_wrapper&& error) noexcept {
-    rust_tail_endpoint_on_exception(*endpoint_);
+    if (rustCallbackActive_) {
+      exceptionLatched_ = true;
+      // Rust's hook is payload-free; the owning C++ callback still consumes
+      // every exception payload synchronously, so no payload queue is needed.
+      if (onException_) {
+        onException_(std::move(error));
+      }
+      return;
+    }
+    invokeRust([this] { rust_tail_endpoint_on_exception(*endpoint_); });
     if (onException_) {
       onException_(std::move(error));
     }
+    replayLatched();
   }
 
   void setOnException(
@@ -95,45 +141,241 @@ class RustTailEndpoint final {
   }
 
   void onWriteReady() noexcept {
-    applyWrite(rust_tail_endpoint_on_write_ready(*endpoint_));
+    if (!canCallRust()) {
+      return;
+    }
+    if (rustCallbackActive_) {
+      writeReadyLatched_ = true;
+      return;
+    }
+    dispatchWriteReady();
+    replayLatched();
   }
 
   void onPipelineActive() noexcept {
-    applyWrite(rust_tail_endpoint_on_pipeline_active(*endpoint_));
+    if (rustCallbackActive_) {
+      activeLatched_ = true;
+      return;
+    }
+    dispatchPipelineActive();
+    replayLatched();
   }
 
   void onPipelineInactive() noexcept {
-    rust_tail_endpoint_on_pipeline_inactive(*endpoint_);
+    ++lifecycleGeneration_;
+    activeLatched_ = false;
+    writeReadyLatched_ = false;
+    if (rustCallbackActive_) {
+      inactiveLatched_ = true;
+      return;
+    }
+    invokeRust([this] { rust_tail_endpoint_on_pipeline_inactive(*endpoint_); });
+    replayLatched();
   }
 
-  void handlerAdded() noexcept { rust_tail_endpoint_handler_added(*endpoint_); }
+  void handlerAdded() noexcept {
+    if (rustCallbackActive_) {
+      addedLatched_ = true;
+      return;
+    }
+    invokeRust([this] { rust_tail_endpoint_handler_added(*endpoint_); });
+    replayLatched();
+  }
 
   void handlerRemoved() noexcept {
-    rust_tail_endpoint_handler_removed(*endpoint_);
+    ++lifecycleGeneration_;
+    removed_ = true;
+    activeLatched_ = false;
+    writeReadyLatched_ = false;
+    if (rustCallbackActive_) {
+      removedLatched_ = true;
+      pipeline_ = nullptr;
+      return;
+    }
+    invokeRust([this] { rust_tail_endpoint_handler_removed(*endpoint_); });
     pipeline_ = nullptr;
+    replayLatched();
   }
 
  private:
-  void applyWrite(std::unique_ptr<folly::IOBuf> message) noexcept {
-    if (!message) {
+  using Result = apache::thrift::fast_thrift::channel_pipeline::Result;
+
+  void dispatchPipelineActive() noexcept {
+    activeLatched_ = false;
+    if (!canCallRust()) {
       return;
     }
+    const auto lifecycleGeneration = lifecycleGeneration_;
+    rustCallbackActive_ = true;
+    auto message = rust_tail_endpoint_on_pipeline_active(*endpoint_);
+    const bool current = isCurrent(lifecycleGeneration);
+    if (message && !current) {
+      logDroppedWrite(lifecycleGeneration);
+    } else if (message) {
+      auto& pipeline = *pipeline_;
+      const auto result = pipeline.fireWrite(
+          apache::thrift::fast_thrift::channel_pipeline::erase_and_box(
+              std::move(message)));
+      if (result == Result::Error && isCurrent(lifecycleGeneration)) {
+        pipeline.close();
+      }
+    }
+    rustCallbackActive_ = false;
+  }
+
+  static Result decodeResult(int32_t result) noexcept {
+    switch (result) {
+      case static_cast<int32_t>(Result::Success):
+        return Result::Success;
+      case static_cast<int32_t>(Result::Backpressure):
+        return Result::Backpressure;
+      default:
+        return Result::Error;
+    }
+  }
+
+  static Result compose(Result first, Result second) noexcept {
+    if (first == Result::Error || second == Result::Error) {
+      return Result::Error;
+    }
+    if (first == Result::Backpressure || second == Result::Backpressure) {
+      return Result::Backpressure;
+    }
+    return Result::Success;
+  }
+
+  bool canCallRust() const noexcept {
+    return !removed_ && (pipeline_ == nullptr || !pipeline_->isClosed());
+  }
+
+  void logDroppedWrite(uint64_t lifecycleGeneration) const noexcept {
     if (pipeline_ == nullptr) {
-      XLOG(ERR) << "dropping Rust tail lifecycle write "
+      XLOG(ERR) << "dropping Rust tail write "
                 << (pipelineAttached_ ? "after handler removal"
                                       : "before pipeline attachment");
-      return;
+    } else if (pipeline_->isClosed()) {
+      XLOG(ERR) << "dropping Rust tail write after pipeline closure";
+    } else if (lifecycleGeneration_ != lifecycleGeneration) {
+      XLOG(ERR) << "dropping Rust tail write after pipeline lifecycle changed";
+    } else {
+      XLOG(ERR) << "dropping Rust tail write after endpoint removal";
     }
-    auto& pipeline = *pipeline_;
-    if (pipeline.isClosed()) {
-      return;
+  }
+
+  bool isCurrent(uint64_t lifecycleGeneration) const noexcept {
+    return lifecycleGeneration_ == lifecycleGeneration && !removed_ &&
+        pipeline_ != nullptr && !pipeline_->isClosed();
+  }
+
+  template <typename Callback>
+  void invokeRust(Callback&& callback) noexcept {
+    const bool wasRustCallbackActive = rustCallbackActive_;
+    rustCallbackActive_ = true;
+    callback();
+    rustCallbackActive_ = wasRustCallbackActive;
+  }
+
+  template <typename Write>
+  Result applyOutcome(
+      FfiTailOutcome outcome,
+      uint64_t lifecycleGeneration,
+      Write&& write) noexcept {
+    auto writeResult = Result::Success;
+    if (outcome.message) {
+      writeResult = write(std::move(outcome.message));
     }
-    const auto result = pipeline.fireWrite(
-        apache::thrift::fast_thrift::channel_pipeline::erase_and_box(
-            std::move(message)));
-    if (result ==
-        apache::thrift::fast_thrift::channel_pipeline::Result::Error) {
-      pipeline.close();
+    if (outcome.feedback_token != 0 && isCurrent(lifecycleGeneration)) {
+      deliverFeedback(outcome.feedback_token, writeResult);
+    }
+    return compose(decodeResult(outcome.result), writeResult);
+  }
+
+  void deliverFeedback(uint64_t token, Result result) noexcept {
+    rust_tail_endpoint_on_write_result(
+        *endpoint_, token, static_cast<int32_t>(result));
+  }
+
+  void replayLifecycle() noexcept {
+    // Each payload-free notification coalesces while Rust is borrowed. Replay
+    // in pipeline order, with readiness handled only after terminal events.
+    while (addedLatched_ || exceptionLatched_ || inactiveLatched_ ||
+           removedLatched_) {
+      if (addedLatched_) {
+        addedLatched_ = false;
+        invokeRust([this] { rust_tail_endpoint_handler_added(*endpoint_); });
+        continue;
+      }
+      if (exceptionLatched_) {
+        exceptionLatched_ = false;
+        invokeRust([this] { rust_tail_endpoint_on_exception(*endpoint_); });
+        continue;
+      }
+      if (inactiveLatched_) {
+        inactiveLatched_ = false;
+        invokeRust(
+            [this] { rust_tail_endpoint_on_pipeline_inactive(*endpoint_); });
+        continue;
+      }
+      removedLatched_ = false;
+      activeLatched_ = false;
+      invokeRust([this] { rust_tail_endpoint_handler_removed(*endpoint_); });
+    }
+  }
+
+  void dispatchWriteReady() noexcept {
+    do {
+      writeReadyLatched_ = false;
+      if (!canCallRust()) {
+        return;
+      }
+      const auto lifecycleGeneration = lifecycleGeneration_;
+      rustCallbackActive_ = true;
+      auto outcome = rust_tail_endpoint_on_write_ready(*endpoint_);
+      auto result = Result::Error;
+      const bool current = isCurrent(lifecycleGeneration);
+      if (outcome.message && !current) {
+        logDroppedWrite(lifecycleGeneration);
+      }
+      if (current) {
+        result = applyOutcome(
+            std::move(outcome),
+            lifecycleGeneration,
+            [this](auto&& write) noexcept {
+              return pipeline_->fireWrite(
+                  apache::thrift::fast_thrift::channel_pipeline::erase_and_box(
+                      std::forward<decltype(write)>(write)));
+            });
+      }
+      if (result == Result::Error && isCurrent(lifecycleGeneration)) {
+        pipeline_->close();
+      }
+      rustCallbackActive_ = false;
+      const bool lifecyclePending = addedLatched_ || exceptionLatched_ ||
+          inactiveLatched_ || removedLatched_ || activeLatched_;
+      replayLifecycle();
+      if (lifecyclePending || activeLatched_) {
+        return;
+      }
+    } while (writeReadyLatched_);
+  }
+
+  void replayLatched() noexcept {
+    while (true) {
+      replayLifecycle();
+      if (!canCallRust()) {
+        activeLatched_ = false;
+        writeReadyLatched_ = false;
+        return;
+      }
+      if (activeLatched_) {
+        dispatchPipelineActive();
+        continue;
+      }
+      if (writeReadyLatched_) {
+        dispatchWriteReady();
+        continue;
+      }
+      return;
     }
   }
 
@@ -142,6 +384,17 @@ class RustTailEndpoint final {
   apache::thrift::fast_thrift::channel_pipeline::PipelineImpl* pipeline_{
       nullptr};
   bool pipelineAttached_{false};
+  bool removed_{false};
+  // Coalesce notifications while Rust is borrowed or its returned write and
+  // feedback are applied. A lifecycle edge invalidates that callback's output.
+  bool rustCallbackActive_{false};
+  bool writeReadyLatched_{false};
+  bool activeLatched_{false};
+  bool addedLatched_{false};
+  bool exceptionLatched_{false};
+  bool inactiveLatched_{false};
+  bool removedLatched_{false};
+  uint64_t lifecycleGeneration_{0};
 };
 
 static_assert(

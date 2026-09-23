@@ -38,6 +38,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/rust/RustHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/rust/RustMessageAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/rust/RustTailEndpoint.h>
 
 namespace channel_pipeline_rust::bench {
 namespace {
@@ -403,6 +404,53 @@ BenchResult run_bench_with_watchdog(uint64_t iterations, uint64_t timeoutMs) {
   requireCount(rustApp.readCount, iterations, "Rust read tail");
   requireCount(rustTransport.writeCount, iterations, "Rust write head");
 
+  BenchTransport legacyTailTransport;
+  RustTailEndpoint legacyTail{rust_tail_endpoint_new_legacy_write_bench()};
+  auto legacyTailPipeline =
+      PipelineBuilder<BenchTransport, RustTailEndpoint, BenchAllocator>()
+          .setEventBase(&eventBase)
+          .setHead(&legacyTailTransport)
+          .setTail(&legacyTail)
+          .setAllocator(&allocator)
+          .build();
+  if (!legacyTailPipeline) {
+    throw std::runtime_error("legacy Rust tail pipeline build failed");
+  }
+  if (!legacyTail.setPipeline(legacyTailPipeline.get())) {
+    throw std::runtime_error("legacy Rust tail pipeline attachment failed");
+  }
+  legacyTailPipeline->activate();
+  watchdog.operation("legacy Rust tail read/write");
+  const auto rustTailLegacyRead = measureRead(*legacyTailPipeline, iterations);
+  requireCount(
+      legacyTailTransport.writeCount,
+      iterations,
+      "legacy Rust tail read/write");
+
+  BenchTransport returnedTailTransport;
+  RustTailEndpoint returnedTail{rust_tail_endpoint_new_returned_write_bench()};
+  auto returnedTailPipeline =
+      PipelineBuilder<BenchTransport, RustTailEndpoint, BenchAllocator>()
+          .setEventBase(&eventBase)
+          .setHead(&returnedTailTransport)
+          .setTail(&returnedTail)
+          .setAllocator(&allocator)
+          .build();
+  if (!returnedTailPipeline) {
+    throw std::runtime_error("returned Rust tail pipeline build failed");
+  }
+  if (!returnedTail.setPipeline(returnedTailPipeline.get())) {
+    throw std::runtime_error("returned Rust tail pipeline attachment failed");
+  }
+  returnedTailPipeline->activate();
+  watchdog.operation("returned Rust tail read/write");
+  const auto rustTailReturnedRead =
+      measureRead(*returnedTailPipeline, iterations);
+  requireCount(
+      returnedTailTransport.writeCount,
+      iterations,
+      "returned Rust tail read/write");
+
   folly::ScopedEventBaseThread contextHandleEventBaseThread;
   auto* contextHandleEventBase = contextHandleEventBaseThread.getEventBase();
   BenchTransport contextHandleReadTransport;
@@ -681,6 +729,19 @@ BenchResult run_bench_with_watchdog(uint64_t iterations, uint64_t timeoutMs) {
   const uint64_t forwardAllocBytes = threadAllocatedBytes() - forwardBefore;
   const uint64_t forwardLoopCallbacks = forwardEvidenceEb.getNumLoopCallbacks();
 
+  watchdog.operation("returned tail path allocation/enqueue evidence");
+  auto returnedTailMessages = makeMessages(iterations);
+  const auto returnedTailCallbacksBefore = eventBase.getNumLoopCallbacks();
+  const auto returnedTailBefore = threadAllocatedBytes();
+  for (auto& message : returnedTailMessages) {
+    folly::doNotOptimizeAway(
+        returnedTailPipeline->fireRead(std::move(message)));
+  }
+  const uint64_t returnedTailPathAllocBytes =
+      threadAllocatedBytes() - returnedTailBefore;
+  const uint64_t returnedTailPathLoopCallbacks =
+      eventBase.getNumLoopCallbacks() - returnedTailCallbacksBefore;
+
   watchdog.operation("ContextHandle type erasure allocation evidence");
   auto typeErasureMessages = makeMessages(iterations);
   const auto typeErasureBefore = threadAllocatedBytes();
@@ -737,12 +798,16 @@ BenchResult run_bench_with_watchdog(uint64_t iterations, uint64_t timeoutMs) {
   requireZero(readyLoopCallbacks, "ready path EventBase enqueue");
   requireZero(forwardLoopCallbacks, "forward path EventBase enqueue");
   requireZero(
+      returnedTailPathLoopCallbacks, "returned tail path EventBase enqueue");
+  requireZero(
       contextHandlePathLoopCallbacks, "ContextHandle EventBase-local enqueue");
   requireZero(
       readyCoroPathLoopCallbacks, "ready coroutine EventBase-local enqueue");
   if (jemalloc) {
     requireZero(readyAllocBytes, "ready path heap allocation");
     requireZero(forwardAllocBytes, "forward path heap allocation");
+    requireZero(
+        returnedTailPathAllocBytes, "returned tail path heap allocation");
     requireZero(
         contextHandleTypeErasureAllocBytes,
         "ContextHandle inline type erasure heap allocation");
@@ -766,6 +831,8 @@ BenchResult run_bench_with_watchdog(uint64_t iterations, uint64_t timeoutMs) {
       adapterRoundTrip / static_cast<double>(iterations),
       nativeRead,
       rustRead,
+      rustTailLegacyRead,
+      rustTailReturnedRead,
       nativeWrite,
       rustWrite,
       contextHandleRead,
@@ -783,12 +850,14 @@ BenchResult run_bench_with_watchdog(uint64_t iterations, uint64_t timeoutMs) {
       rustWriteRecovery,
       readyAllocBytes,
       forwardAllocBytes,
+      returnedTailPathAllocBytes,
       contextHandleTypeErasureAllocBytes,
       contextHandlePathAllocBytes,
       readyCoroPathAllocBytes,
       pendingCoroSubmitAllocBytes,
       readyLoopCallbacks,
       forwardLoopCallbacks,
+      returnedTailPathLoopCallbacks,
       contextHandlePathLoopCallbacks,
       readyCoroPathLoopCallbacks,
       jemalloc,
