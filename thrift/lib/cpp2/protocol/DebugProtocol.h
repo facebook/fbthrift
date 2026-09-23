@@ -191,15 +191,19 @@ static_assert(ThriftProtocolWriter<DebugProtocolWriter>);
 template <class T>
 std::string debugString(
     const T& obj, DebugProtocolWriter::Options options = {}) {
-  folly::IOBufQueue queue;
-  DebugProtocolWriter proto(
-      COPY_EXTERNAL_BUFFER, // Ignored by constructor.
-      options);
-  proto.setOutput(&queue);
-  Cpp2Ops<T>::write(&proto, &obj);
-  std::string ret;
-  queue.appendToString(ret);
-  return ret;
+  if constexpr (requires { typename type::infer_tag<T, true>; }) {
+    return debugStringViaEncode(obj, options);
+  } else { // Custom types aren't supported by infer_tag
+    folly::IOBufQueue queue;
+    DebugProtocolWriter proto(
+        COPY_EXTERNAL_BUFFER, // Ignored by constructor.
+        options);
+    proto.setOutput(&queue);
+    Cpp2Ops<T>::write(&proto, &obj);
+    std::string ret;
+    queue.appendToString(ret);
+    return ret;
+  }
 }
 
 // TODO: Replace `debugString()` with this function
@@ -224,7 +228,7 @@ template <class T, class..., template <class> class Encode = op::detail::Encode>
   requires(!type::ThriftTypeTag<T>)
 std::string debugStringViaEncode(
     const T& obj, DebugProtocolWriter::Options options = {}) {
-  return debugStringViaEncode<type::infer_tag<T>>(obj, options);
+  return debugStringViaEncode<type::infer_tag<T, true>>(obj, options);
 }
 
 template <ThriftClass T>
