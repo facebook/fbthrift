@@ -23,21 +23,9 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/write/FrameLength.h>
 
 namespace apache::thrift::fast_thrift::frame::write::handler {
-
-namespace detail {
-
-/**
- * Write a 3-byte big-endian length value to a buffer.
- */
-inline void writeFrameLength(uint8_t* buf, size_t length) noexcept {
-  buf[0] = static_cast<uint8_t>((length >> 16) & 0xFF);
-  buf[1] = static_cast<uint8_t>((length >> 8) & 0xFF);
-  buf[2] = static_cast<uint8_t>(length & 0xFF);
-}
-
-} // namespace detail
 
 /**
  * FrameLengthEncoderHandler - Pipeline handler that prepends the 3-byte
@@ -99,7 +87,7 @@ class FrameLengthEncoderHandler {
     // Optimization: if we have enough headroom, write length prefix in-place
     if (frame->headroom() >= kMetadataLengthSize && !frame->isSharedOne()) {
       frame->prepend(kMetadataLengthSize);
-      detail::writeFrameLength(frame->writableData(), frameLength);
+      writeFrameLength(frame->writableData(), frameLength);
       return ctx.fireWrite(
           apache::thrift::fast_thrift::channel_pipeline::erase_and_box(
               std::move(frame)));
@@ -107,7 +95,7 @@ class FrameLengthEncoderHandler {
 
     // Fallback: create new buffer for length prefix
     auto lengthPrefix = ctx.allocate(kMetadataLengthSize);
-    detail::writeFrameLength(lengthPrefix->writableData(), frameLength);
+    writeFrameLength(lengthPrefix->writableData(), frameLength);
     lengthPrefix->append(kMetadataLengthSize);
 
     // Chain the frame after the length prefix

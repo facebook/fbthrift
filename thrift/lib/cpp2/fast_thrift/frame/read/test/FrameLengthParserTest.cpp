@@ -24,27 +24,18 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/write/FrameLength.h>
 
 namespace apache::thrift::fast_thrift::frame::read {
 
 using apache::thrift::fast_thrift::channel_pipeline::BytesPtr;
 using apache::thrift::fast_thrift::channel_pipeline::Result;
 
-namespace {
-
-void writeFrameLength(uint8_t* buf, size_t length) {
-  buf[0] = static_cast<uint8_t>((length >> 16) & 0xFF);
-  buf[1] = static_cast<uint8_t>((length >> 8) & 0xFF);
-  buf[2] = static_cast<uint8_t>(length & 0xFF);
-}
-
-} // namespace
-
 class FrameLengthParserTest : public ::testing::Test {
  protected:
   static BytesPtr buildFrame(size_t payloadSize) {
     auto buf = folly::IOBuf::create(kMetadataLengthSize + payloadSize);
-    writeFrameLength(buf->writableData(), payloadSize);
+    write::writeFrameLength(buf->writableData(), payloadSize);
     std::memset(buf->writableData() + kMetadataLengthSize, 'x', payloadSize);
     buf->append(kMetadataLengthSize + payloadSize);
     return buf;
@@ -52,7 +43,7 @@ class FrameLengthParserTest : public ::testing::Test {
 
   static BytesPtr buildHeader(size_t payloadSize) {
     auto buf = folly::IOBuf::create(kMetadataLengthSize);
-    writeFrameLength(buf->writableData(), payloadSize);
+    write::writeFrameLength(buf->writableData(), payloadSize);
     buf->append(kMetadataLengthSize);
     return buf;
   }

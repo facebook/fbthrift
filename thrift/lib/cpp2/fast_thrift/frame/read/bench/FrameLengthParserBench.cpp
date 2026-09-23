@@ -25,12 +25,14 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/write/FrameLength.h>
 
 using namespace folly;
 using apache::thrift::fast_thrift::channel_pipeline::BytesPtr;
 using apache::thrift::fast_thrift::channel_pipeline::Result;
 using apache::thrift::fast_thrift::frame::kMetadataLengthSize;
 using apache::thrift::fast_thrift::frame::read::FrameLengthParser;
+using apache::thrift::fast_thrift::frame::write::writeFrameLength;
 
 namespace {
 
@@ -38,12 +40,6 @@ constexpr size_t kSmallPayloadSize = 100;
 constexpr size_t kMediumPayloadSize = 1024;
 constexpr size_t kLargePayloadSize = 64 * 1024;
 constexpr size_t kMultipleFrameCount = 10;
-
-void writeFrameLength(uint8_t* buf, size_t length) {
-  buf[0] = static_cast<uint8_t>((length >> 16) & 0xFF);
-  buf[1] = static_cast<uint8_t>((length >> 8) & 0xFF);
-  buf[2] = static_cast<uint8_t>(length & 0xFF);
-}
 
 std::unique_ptr<IOBuf> buildFrame(size_t payloadSize) {
   auto buf = IOBuf::create(kMetadataLengthSize + payloadSize);

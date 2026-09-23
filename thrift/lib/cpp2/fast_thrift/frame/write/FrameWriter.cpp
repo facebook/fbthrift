@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/fast_thrift/frame/write/FrameLength.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/FrameWriter.h>
 
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameDescriptor.h>
@@ -35,10 +36,8 @@ using namespace apache::thrift::fast_thrift::frame::detail;
 
 // Write 3-byte big-endian size (for frame length and metadata length fields)
 void writeMetadataLengthBE(folly::io::QueueAppender& appender, uint32_t value) {
-  std::array<uint8_t, kMetadataLengthSize> bytes = {
-      static_cast<uint8_t>(value >> 16),
-      static_cast<uint8_t>(value >> 8),
-      static_cast<uint8_t>(value)};
+  std::array<uint8_t, kMetadataLengthSize> bytes{};
+  writeFrameLength(bytes.data(), value);
   appender.push(bytes.data(), bytes.size());
 }
 
@@ -54,13 +53,6 @@ void writeTypeAndFlags(
   uint16_t typeAndFlags =
       (static_cast<uint16_t>(type) << kFlagsBits) | (flags & kFlagsMask);
   appender.writeBE<uint16_t>(typeAndFlags);
-}
-
-// Write 3-byte metadata length directly into a byte buffer
-void writeMetadataLengthBE(uint8_t* dest, uint32_t value) {
-  dest[0] = static_cast<uint8_t>(value >> 16);
-  dest[1] = static_cast<uint8_t>(value >> 8);
-  dest[2] = static_cast<uint8_t>(value);
 }
 
 // Write frame header directly into the metadata buffer's headroom.
@@ -98,8 +90,7 @@ std::unique_ptr<folly::IOBuf> serializeFrameIntoHeadroom(
   }
 
   // Metadata length (3 bytes BE)
-  writeMetadataLengthBE(
-      headerStart + offset, static_cast<uint32_t>(metadataLen));
+  writeFrameLength(headerStart + offset, metadataLen);
 
   // Prepend to expose the header bytes
   metadata->prepend(headerSize);
