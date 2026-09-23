@@ -3196,6 +3196,30 @@ TEST(CompilerTest, cpp_deprecated_terse_write_ref) {
   )");
 }
 
+TEST(CompilerTest, cpp_allocator_on_union) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/cpp.thrift"
+    include "thrift/annotation/thrift.thrift"
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    union Bad {
+      1: i32 field1;
+    }
+      # expected-error@-6: `cpp.allocator` does not support union `Bad`
+
+    # Structs are unaffected.
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    struct Good {
+      1: i32 field1;
+    }
+  )");
+}
+
 TEST(CompilerTest, cpp_allocator_via_on_union) {
   check_compile(R"(
     package "facebook.com/thrift/test"
@@ -3208,6 +3232,7 @@ TEST(CompilerTest, cpp_allocator_via_on_union) {
       1: i32 field1;
     }
       # expected-error@-6: `cpp.allocator_via` is not supported on union `Bad`.
+      # expected-error@-7: `cpp.allocator` does not support union `Bad`
   )");
 }
 

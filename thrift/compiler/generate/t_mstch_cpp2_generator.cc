@@ -2685,6 +2685,17 @@ void forbid_allocator_via_on_union(sema_context& ctx, const t_union& node) {
   }
 }
 
+void forbid_allocator_on_union(sema_context& ctx, const t_union& node) {
+  if (!node.has_unstructured_annotation("cpp.allocator")) {
+    return;
+  }
+  ctx.report(
+      node,
+      diagnostic_level::error,
+      "`cpp.allocator` does not support union `{}`",
+      node.name());
+}
+
 // The allocator-extended copy and move constructors carry over the fields and
 // __isset and nothing else. The lazy deserialization state is only handled by
 // the constructors that take no allocator, so a lazy field reads back empty
@@ -2741,6 +2752,7 @@ void t_mstch_cpp2_generator::fill_validator_visitors(
           compiler_options()));
   validator.add_struct_visitor(forbid_deprecated_terse_writes_ref);
   validator.add_union_visitor(forbid_allocator_via_on_union);
+  validator.add_union_visitor(forbid_allocator_on_union);
   validator.add_program_visitor(validate_splits(
       get_split_count(compiler_options()), client_name_to_split_count_));
   validator.add_field_visitor(validate_lazy_fields);
