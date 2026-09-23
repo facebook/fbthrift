@@ -917,7 +917,14 @@ bool CompactProtocolReader::advanceToNextField(
 }
 
 inline void CompactProtocolReader::readStructBeginWithState(
-    StructReadState& /* state */) {}
+    StructReadState& /* state */) {
+  descend();
+}
+
+inline void CompactProtocolReader::StructReadState::readStructEnd(
+    CompactProtocolReader* iprot) {
+  iprot->ascend();
+}
 
 inline void CompactProtocolReader::readFieldBeginWithState(
     StructReadState& state) {

@@ -18,6 +18,7 @@
 
 #include <string.h>
 #include <array>
+#include <exception>
 #include <utility>
 
 #include <folly/lang/Bits.h>
@@ -150,7 +151,8 @@ class BaseCursorReader {
   BaseCursorReader() = default;
 
   ~BaseCursorReader() {
-    DCHECK(state_ == State::Done) << "Reader must be passed to endRead";
+    DCHECK(state_ == State::Done || std::uncaught_exceptions() > 0)
+        << "Reader must be passed to endRead";
   }
 
   BaseCursorReader(BaseCursorReader&& other) noexcept {
@@ -213,7 +215,9 @@ class BaseCursorWriter {
   }
 
   ~BaseCursorWriter() {
-    DCHECK(state_ == State::Done || state_ == State::Abandoned)
+    DCHECK(
+        state_ == State::Done || state_ == State::Abandoned ||
+        std::uncaught_exceptions() > 0)
         << "Writer must be passed to endWrite";
   }
 

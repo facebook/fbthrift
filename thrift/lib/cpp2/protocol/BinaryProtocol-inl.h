@@ -459,6 +459,16 @@ inline void BinaryProtocolReader::readStructEnd() {
   ascend();
 }
 
+inline void BinaryProtocolReader::StructReadState::readStructBegin(
+    BinaryProtocolReader* iprot) {
+  iprot->descend();
+}
+
+inline void BinaryProtocolReader::StructReadState::readStructEnd(
+    BinaryProtocolReader* iprot) {
+  iprot->ascend();
+}
+
 inline void BinaryProtocolReader::readFieldBegin(
     std::string& /*name*/, TType& fieldType, int16_t& fieldId) {
   int8_t type;

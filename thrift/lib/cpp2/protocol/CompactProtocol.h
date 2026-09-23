@@ -409,7 +409,7 @@ struct CompactProtocolReader::StructReadState {
     iprot->readStructBeginWithState(*this);
   }
 
-  void readStructEnd(CompactProtocolReader* /*iprot*/) {}
+  void readStructEnd(CompactProtocolReader* iprot);
 
   void readFieldBegin(CompactProtocolReader* iprot) {
     iprot->readFieldBeginWithState(*this);

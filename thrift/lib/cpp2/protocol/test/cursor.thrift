@@ -133,6 +133,12 @@ struct Types {
 }
 
 struct Empty {}
+
+struct Recursive {
+  @thrift.Box
+  1: optional Recursive child;
+}
+
 @cpp.UseCursorSerialization
 typedef Empty EmptyWrapper
 

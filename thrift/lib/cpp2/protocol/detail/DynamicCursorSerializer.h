@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <exception>
+
 #include <fmt/format.h>
 #include <thrift/lib/cpp2/dynamic/TypeSystem.h>
 #include <thrift/lib/cpp2/protocol/CursorBasedSerializer.h>
@@ -975,7 +977,8 @@ class DynamicCursorSerializationWrapper {
       : typeRef_(typeRef) {}
 
   ~DynamicCursorSerializationWrapper() {
-    DCHECK(!isActive()) << "Destroying wrapper with active read or write";
+    DCHECK(!isActive() || std::uncaught_exceptions() > 0)
+        << "Destroying wrapper with active read or write";
   }
 
   // Moving wrapper during reads/writes will throw.

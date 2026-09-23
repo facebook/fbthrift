@@ -23,10 +23,12 @@
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/detail/protocol_methods.h>
+#include <thrift/lib/cpp2/protocol/test/gen-cpp2/cursor_types.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::detail::pm;
+using namespace apache::thrift::test;
 
 namespace {
 
@@ -184,6 +186,57 @@ void testAdvanceToNextFieldFail() {
   EXPECT_TRUE(reader.getCursor().isAtEnd());
 }
 
+template <class ProtocolReader>
+void testStructDepth() {
+  typename ProtocolReader::StructReadState state{};
+  ProtocolReader reader;
+  reader.setHeight(1);
+  state.readStructBegin(&reader);
+  EXPECT_EQ(reader.getHeight(), 0);
+  state.readStructEnd(&reader);
+  EXPECT_EQ(reader.getHeight(), 1);
+
+  reader.setHeight(0);
+  EXPECT_THROW(state.readStructBegin(&reader), TProtocolException);
+}
+
+template <class ProtocolWriter>
+std::unique_ptr<folly::IOBuf> makeRecursiveStruct(size_t depth) {
+  folly::IOBufQueue queue;
+  ProtocolWriter writer;
+  writer.setOutput(&queue);
+  auto write = [&](auto& self, size_t remaining) -> void {
+    writer.writeStructBegin("");
+    if (remaining > 1) {
+      writer.writeFieldBegin("", T_STRUCT, 1);
+      self(self, remaining - 1);
+      writer.writeFieldEnd();
+    }
+    writer.writeFieldStop();
+    writer.writeStructEnd();
+  };
+  write(write, depth);
+  return queue.move();
+}
+
+template <class ProtocolReader>
+void testGeneratedReadDepthLimit() {
+  constexpr size_t kDepthLimit = 4;
+  for (const auto depth : {kDepthLimit, kDepthLimit + 1}) {
+    auto input =
+        makeRecursiveStruct<typename ProtocolReader::ProtocolWriter>(depth);
+    ProtocolReader reader;
+    reader.setHeight(kDepthLimit);
+    reader.setInput(input.get());
+    Recursive value;
+    if (depth == kDepthLimit) {
+      EXPECT_NO_THROW(value.read(&reader));
+    } else {
+      EXPECT_THROW(value.read(&reader), TProtocolException);
+    }
+  }
+}
+
 TEST(BinaryProtocol, advanceToNextFieldSuccess) {
   testAdvanceToNextFieldSuccess<BinaryProtocolReader>();
 }
@@ -198,6 +251,19 @@ TEST(BinaryProtocol, advanceToNextFieldFail) {
 
 TEST(CompactProtocol, advanceToNextFieldFail) {
   testAdvanceToNextFieldSuccess<CompactProtocolReader>();
+}
+
+TEST(BinaryProtocol, structReadStateTracksDepth) {
+  testStructDepth<BinaryProtocolReader>();
+}
+
+TEST(CompactProtocol, structReadStateTracksDepth) {
+  testStructDepth<CompactProtocolReader>();
+}
+
+TEST(ProtocolReaderStructReadState, generatedReadEnforcesDepthLimit) {
+  testGeneratedReadDepthLimit<BinaryProtocolReader>();
+  testGeneratedReadDepthLimit<CompactProtocolReader>();
 }
 
 // SimpleJSON uses field names and cannot optimize field skipping,

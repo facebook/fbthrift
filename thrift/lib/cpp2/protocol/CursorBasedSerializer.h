@@ -17,6 +17,7 @@
 #pragma once
 
 #include <algorithm>
+#include <exception>
 #include <variant>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBufQueue.h>
@@ -49,6 +50,8 @@
  * endRead() as it does not skip to the position of the next valid read.
  * Once a child reader has been abandoned, abandonRead is the only method that
  * can be called on its parents.
+ * Abandoning a cursor, or an exception during cursor serialization,
+ * invalidates the underlying protocol reader or writer.
  *
  * test/CursorBasedSerializerTest.cpp has several complete examples of usage.
  */
@@ -96,7 +99,8 @@ class CursorSerializationWrapper {
       : serializedData_(std::move(serialized)) {}
 
   ~CursorSerializationWrapper() {
-    DCHECK(!isActive()) << "Destroying wrapper with active read or write";
+    DCHECK(!isActive() || std::uncaught_exceptions() > 0)
+        << "Destroying wrapper with active read or write";
   }
   // Moving wrapper during reads/writes will throw.
   CursorSerializationWrapper(CursorSerializationWrapper&& other) noexcept(
