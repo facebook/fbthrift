@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftControlPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftPayloadVariant.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftRequestPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftResponsePayloads.h>
@@ -29,27 +30,41 @@ namespace apache::thrift::fast_thrift::thrift {
 // they continue to take the same wrapper variant type).
 
 // Server-side inbound — what the server pipeline reads from the wire.
-// Today: REQUEST_RESPONSE only.
+// Unary REQUEST_RESPONSE, connection setup, and the established-stream
+// flow-control frames (REQUEST_N / CANCEL) the stream mux routes by streamId.
 using ThriftServerInboundPayloadVariant = ThriftPayloadVariant<
     ThriftRequestResponsePayload,
-    ThriftConnectionSetupPayload>;
+    ThriftConnectionSetupPayload,
+    ThriftRequestNPayload,
+    ThriftCancelPayload>;
 
 // Server-side outbound — what the server pipeline writes to the wire.
-// Today: initial response (RR/Sink terminal) + error.
+// Unary initial response + error, plus the established-stream response chunks
+// (first chunk + continuing chunks) the stream mux emits for a producing
+// stream.
 using ThriftServerOutboundPayloadVariant = ThriftPayloadVariant<
     ThriftInitialResponsePayload,
+    ThriftStreamInitialResponsePayload,
+    ThriftStreamPayload,
     ThriftErrorPayload,
     ThriftSetupResponsePayload,
     ThriftSetupRejectionPayload>;
 
 // The variant is inline storage sized by its largest alternative, and the
-// inbound one sits on every request message. The setup payload therefore holds
-// its state behind a pointer; this pins that, so a field added by value fails
-// here rather than silently widening the request path.
+// inbound one sits on every request message. The setup and stream-control
+// payloads therefore stay no larger than the RR payload; this pins that, so a
+// field added by value fails here rather than silently widening the request
+// path.
 static_assert(
     sizeof(ThriftConnectionSetupPayload) <=
         sizeof(ThriftRequestResponsePayload),
     "connection-lifecycle payloads must not grow the per-request inbound "
     "message; put new state in ConnectionSetupData instead");
+
+static_assert(
+    sizeof(ThriftRequestNPayload) <= sizeof(ThriftRequestResponsePayload) &&
+        sizeof(ThriftCancelPayload) <= sizeof(ThriftRequestResponsePayload),
+    "stream flow-control payloads must not grow the per-request inbound "
+    "message");
 
 } // namespace apache::thrift::fast_thrift::thrift

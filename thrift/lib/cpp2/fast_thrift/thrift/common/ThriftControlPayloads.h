@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/fast_thrift/frame/write/ComposedFrame.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/MetadataProtocol.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 #include <folly/io/IOBuf.h>
 
@@ -59,6 +60,15 @@ struct ThriftCancelPayload {
         .data = nullptr,
     };
   }
+
+  // Control frames open no exchange, so they carry no request metadata. Present
+  // (returning null) so an inbound request variant that admits this alternative
+  // keeps satisfying ThriftRequestPayloadConcept and exposing
+  // getRequestRpcMetadata().
+  const apache::thrift::RequestRpcMetadata* getRequestRpcMetadata()
+      const noexcept {
+    return nullptr;
+  }
 };
 
 /**
@@ -81,6 +91,15 @@ struct ThriftRequestNPayload {
         .data = nullptr,
         .requestN = requestN,
     };
+  }
+
+  // Control frames open no exchange, so they carry no request metadata. Present
+  // (returning null) so an inbound request variant that admits this alternative
+  // keeps satisfying ThriftRequestPayloadConcept and exposing
+  // getRequestRpcMetadata().
+  const apache::thrift::RequestRpcMetadata* getRequestRpcMetadata()
+      const noexcept {
+    return nullptr;
   }
 };
 
