@@ -94,31 +94,31 @@ ServerStream<std::string> TestStreamServiceMock::customBuffers(
 
 ServerStream<int32_t> TestStreamServiceMock::slowRange(
     int32_t from, int32_t to, int32_t millis) {
-  auto [stream, publisher] = ServerStream<int32_t>::createPublisher();
+  auto [stream, streamPublisher] = ServerStream<int32_t>::createPublisher();
   auto eb = folly::getEventBase();
-  std::shared_ptr<std::function<void(decltype(publisher), int32_t)>> schedule =
-      std::make_shared<std::function<void(decltype(publisher), int32_t)>>();
-  *schedule =
-      [=,
-       weakSchedule =
-           std::weak_ptr<std::function<void(decltype(publisher), int32_t)>>(
-               schedule)](auto publisher, int32_t from) {
-        publisher.next(from);
-        if (++from < to) {
-          folly::futures::sleep(std::chrono::milliseconds(millis))
-              .via(eb)
-              .thenValue([=,
-                          publisher = std::move(publisher),
-                          schedule = weakSchedule.lock()](auto) mutable {
-                (*schedule)(std::move(publisher), from);
-              });
-        } else {
-          std::move(publisher).complete();
-        }
-      };
+  std::shared_ptr<std::function<void(decltype(streamPublisher), int32_t)>>
+      schedule = std::make_shared<
+          std::function<void(decltype(streamPublisher), int32_t)>>();
+  *schedule = [=,
+               weakSchedule = std::weak_ptr<
+                   std::function<void(decltype(streamPublisher), int32_t)>>(
+                   schedule)](auto publisher, int32_t from) {
+    publisher.next(from);
+    if (++from < to) {
+      folly::futures::sleep(std::chrono::milliseconds(millis))
+          .via(eb)
+          .thenValue([=,
+                      publisher = std::move(publisher),
+                      schedule = weakSchedule.lock()](auto) mutable {
+            (*schedule)(std::move(publisher), from);
+          });
+    } else {
+      std::move(publisher).complete();
+    }
+  };
   folly::futures::sleep(std::chrono::milliseconds(millis))
       .via(eb)
-      .thenValue([=, publisher = std::move(publisher)](auto) mutable {
+      .thenValue([=, publisher = std::move(streamPublisher)](auto) mutable {
         (*schedule)(std::move(publisher), from);
       });
   return std::move(stream);
