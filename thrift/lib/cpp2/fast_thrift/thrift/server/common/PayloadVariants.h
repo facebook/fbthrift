@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftRequestPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftResponsePayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ConnectionPayloads.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/StreamResponsePayloads.h>
 
 namespace apache::thrift::fast_thrift::thrift {
 
@@ -44,6 +45,7 @@ using ThriftServerInboundPayloadVariant = ThriftPayloadVariant<
 // stream.
 using ThriftServerOutboundPayloadVariant = ThriftPayloadVariant<
     ThriftInitialResponsePayload,
+    ThriftServerStreamOpenPayload,
     ThriftStreamInitialResponsePayload,
     ThriftStreamPayload,
     ThriftErrorPayload,
