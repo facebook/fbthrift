@@ -1104,6 +1104,13 @@ FastServiceHandler<::cpp2::test::BasicService>::getAppAdapter(
       new ::cpp2::test::BasicServiceAppAdapter(
           std::move(typed)));
 }
+std::shared_ptr<const
+    ::apache::thrift::fast_thrift::thrift::ThriftServerMethodDispatchTable>
+
+FastServiceHandler<::cpp2::test::BasicService>::getMethodDispatchTable() const {
+  return ::cpp2::test::BasicServiceAppAdapter::
+      methodDispatchTable();
+}
 
 void FastServiceHandler<::cpp2::test::BasicService>::populateMethodMetadata(
     ::apache::thrift::fast_thrift::thrift::ThriftServerMethodMetadataRegistry&
@@ -1691,89 +1698,47 @@ determineInvocationType:
         ::folly::exception_wrapper(std::current_exception()));
   }
 }
-
 } // namespace apache::thrift
-
 namespace cpp2::test {
+const std::shared_ptr<const
+    ::apache::thrift::fast_thrift::thrift::ThriftServerMethodDispatchTable>&
+BasicServiceAppAdapter::methodDispatchTable() {
+  using Adapter = BasicServiceAppAdapter;
+  using Base =
+      ::apache::thrift::fast_thrift::thrift::ThriftServerAppAdapter;
+  using Table = ::apache::thrift::fast_thrift::thrift::
+      ThriftServerMethodDispatchTable;
+  static const auto table = std::make_shared<const Table>(
+      std::initializer_list<Table::Method>{
+          Base::makeRequestResponseMethod<
+              Adapter,
+              &Adapter::process_ping>("ping"),
+          Base::makeRequestResponseMethod<
+              Adapter,
+              &Adapter::process_add>("add"),
+          Base::makeRequestResponseMethod<
+              Adapter,
+              &Adapter::process_buildItem>("buildItem"),
+          Base::makeRequestResponseMethod<
+              Adapter,
+              &Adapter::process_lookup>("lookup"),
+          Base::makeRequestResponseMethod<
+              Adapter,
+              &Adapter::process_secureLookup>("secureLookup"),
+          Base::makeRequestResponseMethod<
+              Adapter,
+              &Adapter::process_ebLookup>("ebLookup"),
+      });
+  return table;
+}
+
 
 BasicServiceAppAdapter::BasicServiceAppAdapter(
     std::shared_ptr<
         ::apache::thrift::FastServiceHandler<::cpp2::test::BasicService>>
         handler)
-    : handler_(std::move(handler)) {
-  addMethodHandler(
-      "ping",
-      +[](::apache::thrift::fast_thrift::thrift::ThriftServerAppAdapter* a,
-          uint32_t streamId,
-          std::unique_ptr<folly::IOBuf> data,
-          ::apache::thrift::ProtocolId p,
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
-              requestContext) noexcept {
-        static_cast<BasicServiceAppAdapter*>(a)
-            ->process_ping(
-                streamId, std::move(data), p, std::move(requestContext));
-      });
-  addMethodHandler(
-      "add",
-      +[](::apache::thrift::fast_thrift::thrift::ThriftServerAppAdapter* a,
-          uint32_t streamId,
-          std::unique_ptr<folly::IOBuf> data,
-          ::apache::thrift::ProtocolId p,
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
-              requestContext) noexcept {
-        static_cast<BasicServiceAppAdapter*>(a)
-            ->process_add(
-                streamId, std::move(data), p, std::move(requestContext));
-      });
-  addMethodHandler(
-      "buildItem",
-      +[](::apache::thrift::fast_thrift::thrift::ThriftServerAppAdapter* a,
-          uint32_t streamId,
-          std::unique_ptr<folly::IOBuf> data,
-          ::apache::thrift::ProtocolId p,
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
-              requestContext) noexcept {
-        static_cast<BasicServiceAppAdapter*>(a)
-            ->process_buildItem(
-                streamId, std::move(data), p, std::move(requestContext));
-      });
-  addMethodHandler(
-      "lookup",
-      +[](::apache::thrift::fast_thrift::thrift::ThriftServerAppAdapter* a,
-          uint32_t streamId,
-          std::unique_ptr<folly::IOBuf> data,
-          ::apache::thrift::ProtocolId p,
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
-              requestContext) noexcept {
-        static_cast<BasicServiceAppAdapter*>(a)
-            ->process_lookup(
-                streamId, std::move(data), p, std::move(requestContext));
-      });
-  addMethodHandler(
-      "secureLookup",
-      +[](::apache::thrift::fast_thrift::thrift::ThriftServerAppAdapter* a,
-          uint32_t streamId,
-          std::unique_ptr<folly::IOBuf> data,
-          ::apache::thrift::ProtocolId p,
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
-              requestContext) noexcept {
-        static_cast<BasicServiceAppAdapter*>(a)
-            ->process_secureLookup(
-                streamId, std::move(data), p, std::move(requestContext));
-      });
-  addMethodHandler(
-      "ebLookup",
-      +[](::apache::thrift::fast_thrift::thrift::ThriftServerAppAdapter* a,
-          uint32_t streamId,
-          std::unique_ptr<folly::IOBuf> data,
-          ::apache::thrift::ProtocolId p,
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
-              requestContext) noexcept {
-        static_cast<BasicServiceAppAdapter*>(a)
-            ->process_ebLookup(
-                streamId, std::move(data), p, std::move(requestContext));
-      });
-}
+    : ThriftServerAppAdapter(methodDispatchTable()),
+      handler_(std::move(handler)) {}
 
 void BasicServiceAppAdapter::process_ping(
     uint32_t streamId,

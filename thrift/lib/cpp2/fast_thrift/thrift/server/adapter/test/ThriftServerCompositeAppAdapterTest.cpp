@@ -32,6 +32,8 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftResponsePayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerCompositeAppAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerCompositeRoutingTable.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerMethodDispatchTable.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ThriftServerConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
@@ -168,6 +170,36 @@ class OtherChildAdapter : public ThriftServerAppAdapter {
   uint32_t capturedStreamId{0};
 };
 
+class SharedTableChildAdapter : public ThriftServerAppAdapter {
+ public:
+  using Ptr = std::unique_ptr<SharedTableChildAdapter, Destructor>;
+
+  SharedTableChildAdapter(
+      std::string id,
+      std::shared_ptr<const ThriftServerMethodDispatchTable> dispatchTable)
+      : ThriftServerAppAdapter(std::move(dispatchTable)), id_(std::move(id)) {}
+
+  static ThriftServerMethodDispatchTable::Method method(std::string_view name) {
+    return makeRequestResponseMethod<
+        SharedTableChildAdapter,
+        &SharedTableChildAdapter::process>(name);
+  }
+
+  std::string id_;
+  std::string dispatchedTo;
+  uint32_t capturedStreamId{0};
+
+ private:
+  void process(
+      uint32_t streamId,
+      std::unique_ptr<folly::IOBuf>,
+      apache::thrift::ProtocolId,
+      ThriftRequestContextPtr) noexcept {
+    dispatchedTo = id_;
+    capturedStreamId = streamId;
+  }
+};
+
 // Construct a request in the post-pipeline shape: metadata is already
 // deserialized into the typed RequestRpcMetadata struct, data is its own
 // IOBuf. Mirrors what the pipeline's transport adapter hands the composite.
@@ -276,21 +308,30 @@ class ThriftServerCompositeAppAdapterTest : public ::testing::Test {
 // Routing Tests
 // =============================================================================
 
-TEST_F(ThriftServerCompositeAppAdapterTest, RoutesByMethodNameToOwningChild) {
-  TestChildAdapter::Ptr userChild{new TestChildAdapter("user")};
-  TestChildAdapter::Ptr monitoringChild{new TestChildAdapter("monitoring")};
+TEST_F(
+    ThriftServerCompositeAppAdapterTest,
+    SharedRoutingTableRoutesToConnectionLocalChild) {
+  using Table = ThriftServerMethodDispatchTable;
+  auto userTable =
+      std::make_shared<const Table>(std::initializer_list<Table::Method>{
+          SharedTableChildAdapter::method("userMethod")});
+  auto monitoringTable =
+      std::make_shared<const Table>(std::initializer_list<Table::Method>{
+          SharedTableChildAdapter::method("getStatus")});
+  auto routes =
+      ThriftServerCompositeRoutingTable::create({userTable, monitoringTable});
 
-  userChild->registerMethod("userMethod");
-  monitoringChild->registerMethod("getStatus");
-
+  SharedTableChildAdapter::Ptr userChild{
+      new SharedTableChildAdapter("user", userTable)};
+  SharedTableChildAdapter::Ptr monitoringChild{
+      new SharedTableChildAdapter("monitoring", monitoringTable)};
   ThriftServerCompositeAppAdapter::Ptr composite{
-      new ThriftServerCompositeAppAdapter()};
+      new ThriftServerCompositeAppAdapter(std::move(routes))};
   composite->addChild(userChild.get());
   composite->addChild(monitoringChild.get());
 
   auto built = buildPipeline(composite.get());
 
-  // userMethod → user
   auto userMsg = makeRequestMessage(1, "userMethod");
   EXPECT_EQ(
       composite->onRead(
@@ -299,38 +340,36 @@ TEST_F(ThriftServerCompositeAppAdapterTest, RoutesByMethodNameToOwningChild) {
       Result::Success);
   EXPECT_EQ(userChild->dispatchedTo, "user");
   EXPECT_EQ(userChild->capturedStreamId, 1u);
-  EXPECT_EQ(monitoringChild->dispatchedTo, "")
-      << "monitoring child must not be invoked for a user-only method";
+  EXPECT_TRUE(monitoringChild->dispatchedTo.empty());
 
-  // getStatus → monitoring
-  auto monMsg = makeRequestMessage(3, "getStatus");
+  auto monitoringMsg = makeRequestMessage(3, "getStatus");
   EXPECT_EQ(
       composite->onRead(
           channel_pipeline::test::inertEndpointContext(),
-          erase_and_box(std::move(monMsg))),
+          erase_and_box(std::move(monitoringMsg))),
       Result::Success);
   EXPECT_EQ(monitoringChild->dispatchedTo, "monitoring");
   EXPECT_EQ(monitoringChild->capturedStreamId, 3u);
-  // Symmetric cross-pollination check: monitoring's request must not have
-  // also been delivered to user. (TestChildAdapter records the last
-  // dispatch, so a leak would surface as user's captured streamId moving
-  // to 3 or dispatchedTo flipping.)
-  EXPECT_EQ(userChild->capturedStreamId, 1u)
-      << "user child must not see monitoring's request";
-  EXPECT_EQ(userChild->dispatchedTo, "user");
+  EXPECT_EQ(userChild->capturedStreamId, 1u);
 }
 
 TEST_F(ThriftServerCompositeAppAdapterTest, UserWinsOnMethodNameConflict) {
-  TestChildAdapter::Ptr userChild{new TestChildAdapter("user")};
-  TestChildAdapter::Ptr monitoringChild{new TestChildAdapter("monitoring")};
+  using Table = ThriftServerMethodDispatchTable;
+  auto userTable =
+      std::make_shared<const Table>(std::initializer_list<Table::Method>{
+          SharedTableChildAdapter::method("ping")});
+  auto monitoringTable =
+      std::make_shared<const Table>(std::initializer_list<Table::Method>{
+          SharedTableChildAdapter::method("ping")});
+  auto routes =
+      ThriftServerCompositeRoutingTable::create({userTable, monitoringTable});
 
-  // Both register the same method name; user is added first to the
-  // composite, so user must win.
-  userChild->registerMethod("ping");
-  monitoringChild->registerMethod("ping");
-
+  SharedTableChildAdapter::Ptr userChild{
+      new SharedTableChildAdapter("user", userTable)};
+  SharedTableChildAdapter::Ptr monitoringChild{
+      new SharedTableChildAdapter("monitoring", monitoringTable)};
   ThriftServerCompositeAppAdapter::Ptr composite{
-      new ThriftServerCompositeAppAdapter()};
+      new ThriftServerCompositeAppAdapter(std::move(routes))};
   composite->addChild(userChild.get());
   composite->addChild(monitoringChild.get());
 
@@ -344,7 +383,7 @@ TEST_F(ThriftServerCompositeAppAdapterTest, UserWinsOnMethodNameConflict) {
       Result::Success);
 
   EXPECT_EQ(userChild->dispatchedTo, "user");
-  EXPECT_EQ(monitoringChild->dispatchedTo, "");
+  EXPECT_TRUE(monitoringChild->dispatchedTo.empty());
 }
 
 TEST_F(ThriftServerCompositeAppAdapterTest, UnknownMethodEmitsFrameworkError) {

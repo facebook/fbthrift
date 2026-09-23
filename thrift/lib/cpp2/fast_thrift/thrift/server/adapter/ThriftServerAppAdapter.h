@@ -27,7 +27,6 @@
 #include <folly/Executor.h>
 #include <folly/Portability.h>
 #include <folly/Synchronized.h>
-#include <folly/container/F14Map.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
@@ -35,6 +34,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerMethodDispatchTable.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -115,24 +115,10 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
       apache::thrift::ProtocolId protocol,
       ThriftRequestContextPtr requestContext) noexcept;
 
-  class ResolvedMethod {
-   public:
-    FOLLY_ALWAYS_INLINE channel_pipeline::Result onRead(
-        channel_pipeline::detail::ContextImpl&,
-        channel_pipeline::TypeErasedBox&& msg) const noexcept;
-
-   private:
-    ResolvedMethod(
-        ThriftServerAppAdapter* owner, RequestResponseProcessFn method) noexcept
-        : owner_(owner), method_(method) {}
-
-    ThriftServerAppAdapter* owner_;
-    RequestResponseProcessFn method_;
-
-    friend class ThriftServerAppAdapter;
-  };
-
   ThriftServerAppAdapter() = default;
+  explicit ThriftServerAppAdapter(
+      std::shared_ptr<const ThriftServerMethodDispatchTable> dispatchTable)
+      : dispatchTable_(std::move(dispatchTable)) {}
   ThriftServerAppAdapter(ThriftServerAppAdapter&&) = delete;
   ThriftServerAppAdapter& operator=(ThriftServerAppAdapter&&) = delete;
 
@@ -164,8 +150,8 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   // === TailEndpointHandler interface ===
 
   // Unresolved entry point, used when this adapter is the pipeline tail on
-  // its own. Resolves the method against dispatch_ and forwards to the
-  // resolved overload below.
+  // its own. Resolves the method against the shared immutable dispatch table
+  // and invokes its unbound dispatch thunk with this connection's adapter.
   channel_pipeline::Result onRead(
       channel_pipeline::detail::ContextImpl&,
       channel_pipeline::TypeErasedBox&& msg) noexcept;
@@ -219,11 +205,44 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   // fully settled. No-op if the pipeline is not yet wired.
   void close() noexcept;
 
-  // Methods registered via addMethodHandler, each paired with a resolved method
-  // that binds this adapter to its typed process function. The composite copies
-  // that two-pointer value so the child does not repeat the method-name lookup.
-  std::vector<std::pair<std::string_view, ResolvedMethod>>
-  methodTable() noexcept;
+  const std::shared_ptr<const ThriftServerMethodDispatchTable>&
+  methodDispatchTable() const noexcept {
+    return dispatchTable_;
+  }
+
+  bool hasMethod(std::string_view name) const noexcept;
+
+  static FOLLY_ALWAYS_INLINE channel_pipeline::Result dispatchRequestResponse(
+      ThriftServerAppAdapter* owner,
+      RequestResponseProcessFn method,
+      channel_pipeline::detail::ContextImpl&,
+      channel_pipeline::TypeErasedBox&& msg) noexcept;
+
+  template <typename Adapter, auto Process>
+  static constexpr ThriftServerMethodDispatchTable::Method
+  makeRequestResponseMethod(std::string_view name) noexcept {
+    return {
+        name,
+        +[](ThriftServerAppAdapter* owner,
+            channel_pipeline::detail::ContextImpl& ctx,
+            channel_pipeline::TypeErasedBox&& msg) noexcept {
+          return dispatchRequestResponse(
+              owner,
+              +[](ThriftServerAppAdapter* adapter,
+                  uint32_t streamId,
+                  std::unique_ptr<folly::IOBuf> data,
+                  apache::thrift::ProtocolId protocol,
+                  ThriftRequestContextPtr requestContext) noexcept {
+                (static_cast<Adapter*>(adapter)->*Process)(
+                    streamId,
+                    std::move(data),
+                    protocol,
+                    std::move(requestContext));
+              },
+              ctx,
+              std::move(msg));
+        }};
+  }
 
  protected:
   void addMethodHandler(
@@ -265,20 +284,26 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   // Null unless the server was configured with a CPU executor. Written once
   // at wiring time, read on every dispatch.
   folly::Executor::KeepAlive<> cpuExecutor_{};
-  folly::F14FastMap<std::string, RequestResponseProcessFn> dispatch_;
+  std::shared_ptr<const ThriftServerMethodDispatchTable> dispatchTable_;
+  // Compatibility path for hand-written adapters. Generated adapters use a
+  // shared immutable table and leave this vector empty.
+  std::unique_ptr<std::vector<std::pair<std::string, RequestResponseProcessFn>>>
+      localMethods_;
   folly::Synchronized<std::function<void()>> closeCallback_;
 
   void fireCloseCallback() noexcept;
 };
 
 FOLLY_ALWAYS_INLINE channel_pipeline::Result
-ThriftServerAppAdapter::ResolvedMethod::onRead(
+ThriftServerAppAdapter::dispatchRequestResponse(
+    ThriftServerAppAdapter* owner,
+    RequestResponseProcessFn method,
     channel_pipeline::detail::ContextImpl&,
-    channel_pipeline::TypeErasedBox&& msg) const noexcept {
+    channel_pipeline::TypeErasedBox&& msg) noexcept {
   auto request = msg.take<ThriftServerRequestMessage>();
   DCHECK(request.streamId != 0) << "Invalid stream ID";
-  DCHECK(owner_ != nullptr);
-  DCHECK(method_ != nullptr);
+  DCHECK(owner != nullptr);
+  DCHECK(method != nullptr);
 
   auto& inbound = request.payload;
   if (FOLLY_UNLIKELY(!inbound.is<ThriftRequestResponsePayload>())) {
@@ -289,8 +314,8 @@ ThriftServerAppAdapter::ResolvedMethod::onRead(
   auto& requestResponse = inbound.get<ThriftRequestResponsePayload>();
   DCHECK(requestResponse.metadata != nullptr);
   const auto protocol = requestResponse.metadata->protocol().value_or(0);
-  method_(
-      owner_,
+  method(
+      owner,
       request.streamId,
       std::move(requestResponse.data),
       protocol,

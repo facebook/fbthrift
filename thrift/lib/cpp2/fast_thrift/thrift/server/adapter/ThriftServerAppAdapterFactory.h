@@ -37,9 +37,9 @@ namespace apache::thrift::fast_thrift::thrift {
 
 /**
  * Polymorphic base for every generated FastServiceHandler<Service>. Provides
- * a single virtual hook that FastThriftServer calls per accepted connection
- * to obtain a fresh per-connection app adapter. The override knows the
- * concrete <Service>AppAdapter type and constructs it; the server sees only
+ * hooks for the immutable method table and for constructing a fresh
+ * per-connection app adapter. The adapter override knows the concrete
+ * <Service>AppAdapter type and constructs it; the server sees only
  * the type-erased base ThriftServerAppAdapter and is responsible for placing
  * it in a pipeline.
  *
@@ -56,6 +56,13 @@ class ThriftServerAppAdapterFactory {
   // generated <Service>AppAdapter ctor without enable_shared_from_this.
   virtual ThriftServerAppAdapter::Ptr getAppAdapter(
       std::shared_ptr<ThriftServerAppAdapterFactory> self) = 0;
+
+  // Immutable dispatch shared by every adapter created by this factory.
+  // Hand-written factories may return null and use addMethodHandler().
+  virtual std::shared_ptr<const ThriftServerMethodDispatchTable>
+  getMethodDispatchTable() const {
+    return {};
+  }
 
   virtual void populateMethodMetadata(
       ThriftServerMethodMetadataRegistry& registry) const = 0;

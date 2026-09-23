@@ -19,20 +19,19 @@
 #include <concepts>
 #include <functional>
 #include <memory>
-#include <string>
 #include <string_view>
 #include <vector>
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Portability.h>
 #include <folly/Synchronized.h>
-#include <folly/container/F14Map.h>
 #include <folly/io/async/DelayedDestruction.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerCompositeRoutingTable.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ServerAppAdapter.h>
 
@@ -48,11 +47,10 @@ namespace apache::thrift::fast_thrift::thrift {
  * the composite is destroyed. The composite stores each child as its common
  * ThriftServerAppAdapter base plus type-erased lifecycle hooks.
  *
- * Routing is method-name only. addChild merges each child's method table
- * into a flat map (first-wins on duplicates). Each entry carries a two-pointer
- * resolved method binding the child to its typed process function, so dispatch
- * needs neither a second lookup nor an untyped function-pointer cast. Unknown
- * methods are answered with a
+ * Routing is method-name only. The factory supplies an immutable flat routing
+ * table shared by every connection. Each entry identifies the child and an
+ * unbound dispatch thunk, so dispatch needs one lookup and one indirect call.
+ * Unknown methods are answered with a
  * ResponseRpcErrorCode::UNKNOWN_METHOD framework error
  * fired through the composite's own pipeline reference.
  *
@@ -65,7 +63,10 @@ class ThriftServerCompositeAppAdapter final : public folly::DelayedDestruction {
       ThriftServerCompositeAppAdapter,
       folly::DelayedDestruction::Destructor>;
 
-  ThriftServerCompositeAppAdapter() = default;
+  explicit ThriftServerCompositeAppAdapter(
+      std::shared_ptr<const ThriftServerCompositeRoutingTable> routingTable =
+          {})
+      : routingTable_(std::move(routingTable)) {}
 
   ThriftServerCompositeAppAdapter(const ThriftServerCompositeAppAdapter&) =
       delete;
@@ -83,26 +84,15 @@ class ThriftServerCompositeAppAdapter final : public folly::DelayedDestruction {
 
   // Register a child. Caller retains ownership.
   //
-  // Snapshots the child's method table, so it must be final before this call.
-  // New method names registered afterwards are absent and answer
-  // UNKNOWN_METHOD; re-registering an existing name leaves the snapshotted
-  // handler unchanged.
-  // Request dispatch invokes the snapshotted ResolvedMethod directly and
-  // intentionally bypasses child->onRead(). ServerInboundAppAdapter remains
-  // required for the lifecycle hooks forwarded through kLifecycleVTable.
+  // Request dispatch uses the shared routing table when available. The
+  // compatibility path for hand-written factories scans children and calls
+  // child->onRead(). Lifecycle hooks are forwarded through kLifecycleVTable.
   template <typename T>
     requires ServerInboundAppAdapter<T> && ServerComposableAppAdapter<T> &&
       std::derived_from<T, ThriftServerAppAdapter>
   void addChild(T* child) {
     DCHECK(child != nullptr);
-    for (auto [name, method] : child->methodTable()) {
-      auto [_, inserted] =
-          methodMap_.try_emplace(std::string(name), Entry{method});
-      if (!inserted) {
-        warnDuplicateMethod(name);
-      }
-    }
-    children_.push_back(ChildHook{child, &kLifecycleVTable<T>});
+    children_.push_back(ChildHook{child, child, &kLifecycleVTable<T>});
   }
 
   // === TailEndpointHandler ===
@@ -146,8 +136,6 @@ class ThriftServerCompositeAppAdapter final : public folly::DelayedDestruction {
  private:
   void onConnectionClosed() noexcept;
 
-  // Only lifecycle fan-out remains type-erased; request dispatch uses the
-  // bound, typed ResolvedMethod stored directly in Entry.
   struct LifecycleVTable {
     void (*setPipeline)(void*, channel_pipeline::PipelineImpl*) noexcept;
     void (*resetPipeline)(void*) noexcept;
@@ -175,7 +163,6 @@ class ThriftServerCompositeAppAdapter final : public folly::DelayedDestruction {
       +[](void* p) noexcept { static_cast<T*>(p)->onWriteReady(); },
   };
 
-  void warnDuplicateMethod(std::string_view name) const;
   FOLLY_NOINLINE channel_pipeline::Result writeUnknownMethodError(
       uint32_t streamId, std::string_view methodName) noexcept;
   FOLLY_NOINLINE channel_pipeline::Result writeWrongRpcKindError(
@@ -183,16 +170,14 @@ class ThriftServerCompositeAppAdapter final : public folly::DelayedDestruction {
   channel_pipeline::Result writeFrameworkError(
       ThriftServerResponseMessage&& message) noexcept;
 
-  struct Entry {
-    ThriftServerAppAdapter::ResolvedMethod method;
-  };
   struct ChildHook {
+    ThriftServerAppAdapter* adapter;
     void* owner;
     const LifecycleVTable* vtable;
   };
 
   std::vector<ChildHook> children_;
-  folly::F14FastMap<std::string, Entry> methodMap_;
+  std::shared_ptr<const ThriftServerCompositeRoutingTable> routingTable_;
   channel_pipeline::PipelineImpl* pipeline_{nullptr};
   // Keeps pipeline_ alive for the composite's lifetime so late writes
   // (writeUnknownMethodError, startDrain) and onPipelineInactive's EVB

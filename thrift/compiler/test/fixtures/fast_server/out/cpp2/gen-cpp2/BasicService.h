@@ -448,6 +448,9 @@ class FastServiceHandler<::cpp2::test::BasicService>
               ::apache::thrift::fast_thrift::thrift::ThriftServerAppAdapterFactory>
               self) override;
 
+  std::shared_ptr<const
+      ::apache::thrift::fast_thrift::thrift::ThriftServerMethodDispatchTable>
+  getMethodDispatchTable() const override;
   void populateMethodMetadata(
       ::apache::thrift::fast_thrift::thrift::ThriftServerMethodMetadataRegistry&
           registry) const override;
@@ -563,6 +566,10 @@ class BasicServiceAppAdapter
           ::apache::thrift::FastServiceHandler<::cpp2::test::BasicService>>
           handler);
 
+  static const std::shared_ptr<const
+      ::apache::thrift::fast_thrift::thrift::ThriftServerMethodDispatchTable>&
+  methodDispatchTable();
+
   const std::shared_ptr<
       ::apache::thrift::FastServiceHandler<::cpp2::test::BasicService>>&
   getHandler() const {
@@ -574,9 +581,8 @@ class BasicServiceAppAdapter
       ::apache::thrift::FastServiceHandler<::cpp2::test::BasicService>>
       handler_;
 
-  // Per-method dispatcher: switches on protocolId into the templated impl.
-  // Wrapped by a captureless-lambda thunk in the ctor when registered with
-  // the base's dispatch table.
+  // Per-method dispatcher referenced by the shared dispatch table.
+  // Switches on protocolId into the templated implementation.
   void process_ping(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
@@ -602,9 +608,8 @@ class BasicServiceAppAdapter
   void process_ping_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<void> callback,
       std::unique_ptr<folly::IOBuf> data) noexcept;
-  // Per-method dispatcher: switches on protocolId into the templated impl.
-  // Wrapped by a captureless-lambda thunk in the ctor when registered with
-  // the base's dispatch table.
+  // Per-method dispatcher referenced by the shared dispatch table.
+  // Switches on protocolId into the templated implementation.
   void process_add(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
@@ -630,9 +635,8 @@ class BasicServiceAppAdapter
   void process_add_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<::std::int32_t> callback,
       std::unique_ptr<folly::IOBuf> data) noexcept;
-  // Per-method dispatcher: switches on protocolId into the templated impl.
-  // Wrapped by a captureless-lambda thunk in the ctor when registered with
-  // the base's dispatch table.
+  // Per-method dispatcher referenced by the shared dispatch table.
+  // Switches on protocolId into the templated implementation.
   void process_buildItem(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
@@ -658,9 +662,8 @@ class BasicServiceAppAdapter
   void process_buildItem_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<std::unique_ptr<::cpp2::test::DataItem>> callback,
       std::unique_ptr<folly::IOBuf> data) noexcept;
-  // Per-method dispatcher: switches on protocolId into the templated impl.
-  // Wrapped by a captureless-lambda thunk in the ctor when registered with
-  // the base's dispatch table.
+  // Per-method dispatcher referenced by the shared dispatch table.
+  // Switches on protocolId into the templated implementation.
   void process_lookup(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
@@ -686,9 +689,8 @@ class BasicServiceAppAdapter
   void process_lookup_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<std::unique_ptr<::cpp2::test::DataItem>> callback,
       std::unique_ptr<folly::IOBuf> data) noexcept;
-  // Per-method dispatcher: switches on protocolId into the templated impl.
-  // Wrapped by a captureless-lambda thunk in the ctor when registered with
-  // the base's dispatch table.
+  // Per-method dispatcher referenced by the shared dispatch table.
+  // Switches on protocolId into the templated implementation.
   void process_secureLookup(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,
@@ -714,9 +716,8 @@ class BasicServiceAppAdapter
   void process_secureLookup_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<std::unique_ptr<::cpp2::test::DataItem>> callback,
       std::unique_ptr<folly::IOBuf> data) noexcept;
-  // Per-method dispatcher: switches on protocolId into the templated impl.
-  // Wrapped by a captureless-lambda thunk in the ctor when registered with
-  // the base's dispatch table.
+  // Per-method dispatcher referenced by the shared dispatch table.
+  // Switches on protocolId into the templated implementation.
   void process_ebLookup(
       uint32_t streamId,
       std::unique_ptr<folly::IOBuf> data,

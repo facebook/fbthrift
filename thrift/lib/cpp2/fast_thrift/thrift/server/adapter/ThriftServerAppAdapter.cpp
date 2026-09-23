@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 
+#include <algorithm>
 #include <utility>
 
 #include <folly/logging/xlog.h>
@@ -102,12 +103,19 @@ channel_pipeline::Result ThriftServerAppAdapter::onRead(
     return channel_pipeline::Result::Success;
   }
 
-  auto it = dispatch_.find(routing.methodName);
-  if (FOLLY_UNLIKELY(it == dispatch_.end())) {
-    handleUnknownMethod(request.streamId, routing.methodName);
-    return channel_pipeline::Result::Success;
+  if (dispatchTable_) {
+    if (auto dispatch = dispatchTable_->find(routing.methodName)) {
+      return dispatch(this, ctx, std::move(msg));
+    }
+  } else if (localMethods_) {
+    for (const auto& [name, process] : *localMethods_) {
+      if (name == routing.methodName) {
+        return dispatchRequestResponse(this, process, ctx, std::move(msg));
+      }
+    }
   }
-  return ResolvedMethod(this, it->second).onRead(ctx, std::move(msg));
+  handleUnknownMethod(request.streamId, routing.methodName);
+  return channel_pipeline::Result::Success;
 }
 
 void ThriftServerAppAdapter::onException(
@@ -126,17 +134,33 @@ void ThriftServerAppAdapter::onException(
 
 void ThriftServerAppAdapter::addMethodHandler(
     std::string_view name, RequestResponseProcessFn handler) {
-  dispatch_[std::string(name)] = handler;
+  if (dispatchTable_) {
+    XLOG(DFATAL)
+        << "Cannot add a method to an adapter backed by an immutable dispatch table";
+    return;
+  }
+  if (!localMethods_) {
+    localMethods_ = std::make_unique<
+        std::vector<std::pair<std::string, RequestResponseProcessFn>>>();
+  }
+  for (auto& [existingName, existingHandler] : *localMethods_) {
+    if (existingName == name) {
+      existingHandler = handler;
+      return;
+    }
+  }
+  localMethods_->emplace_back(name, handler);
 }
 
-std::vector<std::pair<std::string_view, ThriftServerAppAdapter::ResolvedMethod>>
-ThriftServerAppAdapter::methodTable() noexcept {
-  std::vector<std::pair<std::string_view, ResolvedMethod>> table;
-  table.reserve(dispatch_.size());
-  for (const auto& [name, handler] : dispatch_) {
-    table.emplace_back(name, ResolvedMethod(this, handler));
+bool ThriftServerAppAdapter::hasMethod(std::string_view name) const noexcept {
+  if (dispatchTable_) {
+    return dispatchTable_->find(name) != nullptr;
   }
-  return table;
+  return localMethods_ &&
+      std::any_of(
+             localMethods_->begin(),
+             localMethods_->end(),
+             [&](const auto& method) { return method.first == name; });
 }
 
 void ThriftServerAppAdapter::handleWrongRpcKind(

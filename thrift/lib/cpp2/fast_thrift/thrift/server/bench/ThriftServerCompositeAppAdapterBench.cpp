@@ -18,7 +18,7 @@
  * ThriftServerCompositeAppAdapter routing microbenchmark.
  *
  * Isolates the per-request cost the composite adds over a bare adapter:
- * the F14 methodMap probe + direct invocation of the resolved child method.
+ * one F14 route lookup + direct invocation of an unbound child thunk.
  * The child's method handler is a no-op that does not touch the pipeline,
  * so each iter measures only the routing decision
  * (no rocket framing, no protocol parsing, no wire I/O).
@@ -34,7 +34,7 @@
  *   - Composite_NChildren_*   : composite over 2 / 4 children, hitting the
  *                               first vs the last child. F14 is O(1), so
  *                               first/last should be flat — these are
- *                               regression guards in case methodMap ever
+ *                               regression guards in case routing ever
  *                               grows non-trivial.
  */
 
@@ -49,10 +49,14 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftRequestPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerCompositeAppAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerCompositeRoutingTable.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerMethodDispatchTable.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace {
@@ -63,8 +67,11 @@ using apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr;
 using apache::thrift::fast_thrift::thrift::ThriftRequestResponsePayload;
 using apache::thrift::fast_thrift::thrift::ThriftServerAppAdapter;
 using apache::thrift::fast_thrift::thrift::ThriftServerCompositeAppAdapter;
+using apache::thrift::fast_thrift::thrift::ThriftServerCompositeRoutingTable;
 using apache::thrift::fast_thrift::thrift::ThriftServerInboundPayloadVariant;
+using apache::thrift::fast_thrift::thrift::ThriftServerMethodDispatchTable;
 using apache::thrift::fast_thrift::thrift::ThriftServerRequestMessage;
+constexpr int kMethodsPerAdapter = 4;
 
 apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl&
 endpointContext() noexcept {
@@ -73,23 +80,40 @@ endpointContext() noexcept {
   return context;
 }
 
-// Adapter whose registered methods are no-op handlers. Lets us bench routing
-// in isolation: addMethodHandler inserts into dispatch_, and the handler does
-// not write to a pipeline (so no pipeline wiring is needed).
+// Adapter whose shared-table methods are no-op handlers. This isolates routing
+// without pipeline writes, protocol decoding, or wire I/O.
 class NoOpAdapter : public ThriftServerAppAdapter {
  public:
   using Ptr = std::unique_ptr<NoOpAdapter, Destructor>;
 
-  void registerMethod(std::string_view name) {
-    addMethodHandler(
-        name,
-        +[](ThriftServerAppAdapter* /*self*/,
-            uint32_t /*streamId*/,
-            std::unique_ptr<folly::IOBuf> /*data*/,
-            apache::thrift::ProtocolId /*protocol*/,
-            ThriftRequestContextPtr /*requestContext*/) noexcept {});
-  }
+  explicit NoOpAdapter(
+      std::shared_ptr<const ThriftServerMethodDispatchTable> dispatchTable)
+      : ThriftServerAppAdapter(std::move(dispatchTable)) {}
+
+  void process(
+      uint32_t,
+      std::unique_ptr<folly::IOBuf>,
+      apache::thrift::ProtocolId,
+      ThriftRequestContextPtr) noexcept {}
 };
+
+template <typename Adapter>
+std::shared_ptr<const ThriftServerMethodDispatchTable> makeDispatchTable(
+    const std::string& prefix) {
+  std::vector<std::string> names;
+  std::vector<ThriftServerMethodDispatchTable::Method> methods;
+  names.reserve(kMethodsPerAdapter);
+  methods.reserve(kMethodsPerAdapter);
+  for (int methodIndex = 0; methodIndex < kMethodsPerAdapter; ++methodIndex) {
+    names.push_back(prefix + std::to_string(methodIndex));
+    methods.push_back(
+        ThriftServerAppAdapter::
+            makeRequestResponseMethod<Adapter, &Adapter::process>(
+                names.back()));
+  }
+  return std::make_shared<const ThriftServerMethodDispatchTable>(
+      std::move(methods));
+}
 
 ThriftServerRequestMessage makeRequest(
     std::string_view methodName, uint32_t streamId) {
@@ -117,32 +141,32 @@ struct CompositeFixture {
 
 CompositeFixture makeComposite(size_t numChildren) {
   CompositeFixture fixture;
-  fixture.composite = ThriftServerCompositeAppAdapter::Ptr{
-      new ThriftServerCompositeAppAdapter()};
+  std::vector<std::shared_ptr<const ThriftServerMethodDispatchTable>>
+      childTables;
   fixture.children.reserve(numChildren);
   fixture.methodNames.reserve(numChildren);
+  childTables.reserve(numChildren);
 
-  for (size_t i = 0; i < numChildren; ++i) {
-    NoOpAdapter::Ptr child{new NoOpAdapter()};
-    // Pad each child with extra methods so methodMap_ holds 4 entries per
-    // child — closer to a realistic service shape than 1.
-    for (int m = 0; m < 4; ++m) {
-      child->registerMethod(
-          "child" + std::to_string(i) + "_method" + std::to_string(m));
-    }
-    fixture.methodNames.push_back("child" + std::to_string(i) + "_method0");
+  for (size_t childIndex = 0; childIndex < numChildren; ++childIndex) {
+    auto prefix = "child" + std::to_string(childIndex) + "_method";
+    auto table = makeDispatchTable<NoOpAdapter>(prefix);
+    fixture.methodNames.push_back(prefix + "0");
+    fixture.children.push_back(NoOpAdapter::Ptr{new NoOpAdapter(table)});
+    childTables.push_back(std::move(table));
+  }
+
+  fixture.composite =
+      ThriftServerCompositeAppAdapter::Ptr{new ThriftServerCompositeAppAdapter(
+          ThriftServerCompositeRoutingTable::create(std::move(childTables)))};
+  for (const auto& child : fixture.children) {
     fixture.composite->addChild(child.get());
-    fixture.children.push_back(std::move(child));
   }
   return fixture;
 }
 
 NoOpAdapter::Ptr FOLLY_NONNULL makeBareAdapter() {
-  NoOpAdapter::Ptr adapter{new NoOpAdapter()};
-  for (int m = 0; m < 4; ++m) {
-    adapter->registerMethod("bare_method" + std::to_string(m));
-  }
-  return adapter;
+  return NoOpAdapter::Ptr{
+      new NoOpAdapter(makeDispatchTable<NoOpAdapter>("bare_method"))};
 }
 
 // Pre-build `iters` request messages for `methodName`. Each iter consumes
@@ -312,15 +336,15 @@ class OtherNoOpAdapter : public ThriftServerAppAdapter {
  public:
   using Ptr = std::unique_ptr<OtherNoOpAdapter, Destructor>;
 
-  void registerMethod(std::string_view name) {
-    addMethodHandler(
-        name,
-        +[](ThriftServerAppAdapter* /*self*/,
-            uint32_t /*streamId*/,
-            std::unique_ptr<folly::IOBuf> /*data*/,
-            apache::thrift::ProtocolId /*protocol*/,
-            ThriftRequestContextPtr /*requestContext*/) noexcept {});
-  }
+  explicit OtherNoOpAdapter(
+      std::shared_ptr<const ThriftServerMethodDispatchTable> dispatchTable)
+      : ThriftServerAppAdapter(std::move(dispatchTable)) {}
+
+  void process(
+      uint32_t,
+      std::unique_ptr<folly::IOBuf>,
+      apache::thrift::ProtocolId,
+      ThriftRequestContextPtr) noexcept {}
 };
 
 struct HeterogeneousFixture {
@@ -333,14 +357,16 @@ struct HeterogeneousFixture {
 
 HeterogeneousFixture makeHeterogeneousComposite() {
   HeterogeneousFixture fixture;
+  auto firstTable = makeDispatchTable<NoOpAdapter>("first_method");
+  auto secondTable = makeDispatchTable<OtherNoOpAdapter>("second_method");
+  auto routes =
+      ThriftServerCompositeRoutingTable::create({firstTable, secondTable});
+
   fixture.composite = ThriftServerCompositeAppAdapter::Ptr{
-      new ThriftServerCompositeAppAdapter()};
-  fixture.firstChild = NoOpAdapter::Ptr{new NoOpAdapter()};
-  fixture.secondChild = OtherNoOpAdapter::Ptr{new OtherNoOpAdapter()};
-  for (int m = 0; m < 4; ++m) {
-    fixture.firstChild->registerMethod("first_method" + std::to_string(m));
-    fixture.secondChild->registerMethod("second_method" + std::to_string(m));
-  }
+      new ThriftServerCompositeAppAdapter(std::move(routes))};
+  fixture.firstChild = NoOpAdapter::Ptr{new NoOpAdapter(firstTable)};
+  fixture.secondChild =
+      OtherNoOpAdapter::Ptr{new OtherNoOpAdapter(secondTable)};
   fixture.firstMethod = "first_method0";
   fixture.secondMethod = "second_method0";
   fixture.composite->addChild(fixture.firstChild.get());
@@ -391,7 +417,7 @@ BENCHMARK(Composite_UnknownMethod, iters) {
   // Use a method name no child registered. Cannot share buildPipeline here
   // (bench has no pipeline wiring); composite's writeUnknownMethodError
   // returns Result::Error early when pipeline_ is unset. The hot work
-  // exercised here is still the methodMap miss probe.
+  // exercised here is still the shared routing-table miss probe.
   auto requests = prebuildRequests(iters, "nobody_owns_this");
   suspender.dismiss();
 

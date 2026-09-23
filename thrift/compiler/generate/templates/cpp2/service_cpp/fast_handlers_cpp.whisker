@@ -37,6 +37,13 @@ FastServiceHandler<{{service.qualified_name}}>::getAppAdapter(
       new ::{{service.cpp_qualified_namespace}}::{{service.cpp_name}}AppAdapter(
           std::move(typed)));
 }
+std::shared_ptr<const
+    ::apache::thrift::fast_thrift::thrift::ThriftServerMethodDispatchTable>
+
+FastServiceHandler<{{service.qualified_name}}>::getMethodDispatchTable() const {
+  return ::{{service.cpp_qualified_namespace}}::{{service.cpp_name}}AppAdapter::
+      methodDispatchTable();
+}
 
 void FastServiceHandler<{{service.qualified_name}}>::populateMethodMetadata(
     ::apache::thrift::fast_thrift::thrift::ThriftServerMethodMetadataRegistry&
@@ -200,33 +207,36 @@ determineInvocationType:
 }
   {{/if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?) (not function.event_based?))}}
   {{/each}}
-
 } // namespace apache::thrift
-
 namespace {{service.cpp_qualified_namespace}} {
+const std::shared_ptr<const
+    ::apache::thrift::fast_thrift::thrift::ThriftServerMethodDispatchTable>&
+{{service.cpp_name}}AppAdapter::methodDispatchTable() {
+  using Adapter = {{service.cpp_name}}AppAdapter;
+  using Base =
+      ::apache::thrift::fast_thrift::thrift::ThriftServerAppAdapter;
+  using Table = ::apache::thrift::fast_thrift::thrift::
+      ThriftServerMethodDispatchTable;
+  static const auto table = std::make_shared<const Table>(
+      std::initializer_list<Table::Method>{
+  {{#each service.functions as |function|}}
+  {{#if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}
+          Base::makeRequestResponseMethod<
+              Adapter,
+              &Adapter::process_{{function.cpp_name}}>("{{function.name}}"),
+  {{/if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}
+  {{/each}}
+      });
+  return table;
+}
+
 
 {{service.cpp_name}}AppAdapter::{{service.cpp_name}}AppAdapter(
     std::shared_ptr<
         ::apache::thrift::FastServiceHandler<{{service.qualified_name}}>>
         handler)
-    : handler_(std::move(handler)) {
-  {{#each service.functions as |function|}}
-  {{#if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}
-  addMethodHandler(
-      "{{function.name}}",
-      +[](::apache::thrift::fast_thrift::thrift::ThriftServerAppAdapter* a,
-          uint32_t streamId,
-          std::unique_ptr<folly::IOBuf> data,
-          ::apache::thrift::ProtocolId p,
-          ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
-              requestContext) noexcept {
-        static_cast<{{service.cpp_name}}AppAdapter*>(a)
-            ->process_{{function.cpp_name}}(
-                streamId, std::move(data), p, std::move(requestContext));
-      });
-  {{/if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}
-  {{/each}}
-}
+    : ThriftServerAppAdapter(methodDispatchTable()),
+      handler_(std::move(handler)) {}
 
 {{#each service.functions as |function|}}
 {{#if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}

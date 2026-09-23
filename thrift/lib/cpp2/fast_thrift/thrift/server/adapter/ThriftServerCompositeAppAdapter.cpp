@@ -60,11 +60,22 @@ channel_pipeline::Result ThriftServerCompositeAppAdapter::onRead(
     return writeWrongRpcKindError(request.streamId, routing.kind);
   }
 
-  auto it = methodMap_.find(routing.methodName);
-  if (FOLLY_UNLIKELY(it == methodMap_.end())) {
-    return writeUnknownMethodError(request.streamId, routing.methodName);
+  if (routingTable_) {
+    const auto* route = routingTable_->find(routing.methodName);
+    if (FOLLY_UNLIKELY(route == nullptr)) {
+      return writeUnknownMethodError(request.streamId, routing.methodName);
+    }
+    DCHECK_LT(route->childIndex, children_.size());
+    return route->dispatch(
+        children_[route->childIndex].adapter, ctx, std::move(msg));
   }
-  return it->second.method.onRead(ctx, std::move(msg));
+
+  for (const auto& child : children_) {
+    if (child.adapter->hasMethod(routing.methodName)) {
+      return child.adapter->onRead(ctx, std::move(msg));
+    }
+  }
+  return writeUnknownMethodError(request.streamId, routing.methodName);
 }
 
 void ThriftServerCompositeAppAdapter::onException(
@@ -151,14 +162,6 @@ void ThriftServerCompositeAppAdapter::onWriteReady() noexcept {
   for (auto& child : children_) {
     child.vtable->onWriteReady(child.owner);
   }
-}
-
-void ThriftServerCompositeAppAdapter::warnDuplicateMethod(
-    std::string_view name) const {
-  XLOG(WARN) << "ThriftServerCompositeAppAdapter: method '" << name
-             << "' already claimed by an earlier child; dropping from new "
-                "child (index "
-             << children_.size() << ")";
 }
 
 channel_pipeline::Result

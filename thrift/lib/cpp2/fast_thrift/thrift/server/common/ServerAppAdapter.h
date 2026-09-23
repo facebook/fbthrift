@@ -17,7 +17,6 @@
 #pragma once
 
 #include <concepts>
-#include <ranges>
 #include <string_view>
 #include <utility>
 
@@ -91,28 +90,15 @@ concept ServerOutboundAppAdapter =
  * and accepts a pipeline pointer at setup time. Orthogonal to
  * inbound/outbound data flow — purely about composition wiring.
  *
- * methodTable() pairs each owned method name with a resolved method containing
- * the owning adapter and its typed process function. The routing fabric stores
- * that value beside the name, so the name is hashed once for the whole request
- * instead of once per layer.
- *
- * Each resolved method binds its owning adapter to the process function and
- * exposes the resolved-dispatch entry point. This is deliberately distinct
- * from the adapter's unresolved onRead required by channel_pipeline's
- * TailEndpointHandler.
+ * Generated adapters expose immutable shared dispatch tables to the routing
+ * fabric. hasMethod() supports hand-written adapters that use the compatibility
+ * registration path.
  */
 template <typename T>
-concept ServerComposableAppAdapter = requires(
-    T& t,
-    channel_pipeline::detail::ContextImpl& ctx,
-    channel_pipeline::TypeErasedBox&& msg,
-    typename T::ResolvedMethod method,
-    channel_pipeline::PipelineImpl* pipe) {
-  { t.methodTable() } -> std::ranges::range;
-  {
-    method.onRead(ctx, std::move(msg))
-  } noexcept -> std::same_as<channel_pipeline::Result>;
-  { t.setPipeline(pipe) } noexcept;
-};
+concept ServerComposableAppAdapter =
+    requires(T& t, channel_pipeline::PipelineImpl* pipe) {
+      { t.hasMethod(std::string_view{}) } noexcept -> std::same_as<bool>;
+      { t.setPipeline(pipe) } noexcept;
+    };
 
 } // namespace apache::thrift::fast_thrift::thrift

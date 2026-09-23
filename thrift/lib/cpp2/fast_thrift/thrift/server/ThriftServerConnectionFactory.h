@@ -44,6 +44,7 @@
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerSetupFrameHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapterFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerTransportAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerCompositeRoutingTable.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ThriftServerConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/framework/ThriftPipelineHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
@@ -216,6 +217,9 @@ class ThriftServerConnectionFactory {
   // Computed once from config_ in the ctor: true iff any aux interface or
   // metadata response is wired (i.e. the thrift tail must be a composite).
   bool needsComposite_;
+  // Shared by every composite connection. Null only when a hand-written
+  // adapter factory does not expose an immutable method table.
+  std::shared_ptr<const ThriftServerCompositeRoutingTable> compositeRoutes_;
   // Shared across all rocket pipelines built by this factory, matching the
   // pre-refactor behavior where FastThriftServer held a single
   // rocketAllocator_.

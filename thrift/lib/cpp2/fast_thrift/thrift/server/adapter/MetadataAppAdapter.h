@@ -52,6 +52,9 @@ class MetadataAppAdapter final : public ThriftServerAppAdapter {
           const apache::thrift::metadata::ThriftServiceMetadataResponse>
           response);
 
+  static const std::shared_ptr<const ThriftServerMethodDispatchTable>&
+  methodDispatchTable();
+
   static constexpr ThriftServerMethodMetadata methodMetadata() noexcept {
     return {
         .serviceName = "ThriftMetadataService",
@@ -70,9 +73,8 @@ class MetadataAppAdapter final : public ThriftServerAppAdapter {
   std::shared_ptr<const apache::thrift::metadata::ThriftServiceMetadataResponse>
       response_;
 
-  // Static thunk registered via addMethodHandler. Switches on protocol id and
-  // dispatches to the templated impl that fills the presult and writes the
-  // success response.
+  // Static thunk referenced by the shared method table. It dispatches to the
+  // protocol-specific response implementation.
   static void handleGetThriftServiceMetadata(
       ThriftServerAppAdapter* self,
       uint32_t streamId,

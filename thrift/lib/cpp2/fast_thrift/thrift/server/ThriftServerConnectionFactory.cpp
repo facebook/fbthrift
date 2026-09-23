@@ -138,6 +138,36 @@ ThriftServerConnectionFactory::ThriftServerConnectionFactory(
           static_cast<bool>(config_.metadataResponse)) {
   CHECK(config_.handler)
       << "ThriftServerConnectionFactory requires a non-null handler";
+  if (!needsComposite_) {
+    return;
+  }
+
+  std::vector<std::shared_ptr<const ThriftServerMethodDispatchTable>> tables;
+  bool allTablesAvailable = true;
+  auto appendTable = [&](const auto& factory) {
+    if (!factory) {
+      return;
+    }
+    auto table = factory->getMethodDispatchTable();
+    if (!table) {
+      allTablesAvailable = false;
+      return;
+    }
+    tables.push_back(std::move(table));
+  };
+  appendTable(config_.handler);
+  appendTable(config_.monitoringHandler);
+  appendTable(config_.statusHandler);
+  appendTable(config_.debugHandler);
+  appendTable(config_.controlHandler);
+  appendTable(config_.securityHandler);
+  if (config_.metadataResponse) {
+    tables.push_back(MetadataAppAdapter::methodDispatchTable());
+  }
+  if (allTablesAvailable) {
+    compositeRoutes_ =
+        ThriftServerCompositeRoutingTable::create(std::move(tables));
+  }
 }
 
 ThriftServerConnection ThriftServerConnectionFactory::getConnection(
@@ -245,7 +275,7 @@ ThriftServerConnection ThriftServerConnectionFactory::buildCompositeConnection(
             new MetadataAppAdapter(config_.metadataResponse)});
   }
   tail.adapter = ThriftServerCompositeAppAdapter::Ptr{
-      new ThriftServerCompositeAppAdapter()};
+      new ThriftServerCompositeAppAdapter(compositeRoutes_)};
   for (auto& child : tail.children) {
     tail.adapter->addChild(child.get());
   }
@@ -308,10 +338,9 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   rocketConn.pipeline = std::move(rocketPipeline);
 
   // Thrift pipeline templated on the tail adapter type. For the simple case
-  // this works because generated FastSvAppAdapter subclasses only populate
-  // dispatch_ via addMethodHandler in their ctor and don't override base
-  // methods; for the composite case the typed tail also fans setPipeline
-  // out to every child.
+  // this works because generated adapters use the base adapter's shared
+  // dispatch implementation; the composite tail also fans setPipeline out to
+  // every child.
   using ReqCtxHandler =
       ThriftServerRequestContextHandler<channel_pipeline::detail::ContextImpl>;
   using ConnCtxHandler = ThriftServerConnectionContextHandler<

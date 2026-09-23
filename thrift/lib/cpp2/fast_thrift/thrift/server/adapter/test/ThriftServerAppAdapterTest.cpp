@@ -442,25 +442,23 @@ TEST_F(ThriftServerAppAdapterTest, OnReadMultipleMethodsDispatched) {
 }
 
 TEST_F(
-    ThriftServerAppAdapterTest, ResolvedMethodOnReadRejectsUnexpectedPayload) {
+    ThriftServerAppAdapterTest,
+    RequestResponseDispatchRejectsUnexpectedPayload) {
   TestServerAppAdapter::Ptr adapter{new TestServerAppAdapter()};
-  adapter->registerMethod(
-      "testMethod",
-      +[](ThriftServerAppAdapter* self,
-          uint32_t,
-          std::unique_ptr<folly::IOBuf>,
-          apache::thrift::ProtocolId,
-          ThriftRequestContextPtr) noexcept {
-        static_cast<TestServerAppAdapter*>(self)->handlerCalled = true;
-      });
-
-  auto methods = adapter->methodTable();
-  ASSERT_EQ(methods.size(), 1);
+  auto process = +[](ThriftServerAppAdapter* self,
+                     uint32_t,
+                     std::unique_ptr<folly::IOBuf>,
+                     apache::thrift::ProtocolId,
+                     ThriftRequestContextPtr) noexcept {
+    static_cast<TestServerAppAdapter*>(self)->handlerCalled = true;
+  };
 
   ThriftServerRequestMessage msg;
   msg.streamId = 1;
   EXPECT_EQ(
-      methods.front().second.onRead(
+      ThriftServerAppAdapter::dispatchRequestResponse(
+          adapter.get(),
+          process,
           channel_pipeline::test::inertEndpointContext(),
           erase_and_box(std::move(msg))),
       Result::Error);

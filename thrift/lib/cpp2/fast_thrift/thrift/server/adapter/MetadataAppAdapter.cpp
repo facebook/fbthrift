@@ -42,13 +42,30 @@ constexpr std::string_view kMethodName = "getThriftServiceMetadata";
 
 } // namespace
 
+const std::shared_ptr<const ThriftServerMethodDispatchTable>&
+MetadataAppAdapter::methodDispatchTable() {
+  static const auto table =
+      std::make_shared<const ThriftServerMethodDispatchTable>(
+          std::initializer_list<ThriftServerMethodDispatchTable::Method>{
+              {kMethodName,
+               +[](ThriftServerAppAdapter* adapter,
+                   channel_pipeline::detail::ContextImpl& ctx,
+                   channel_pipeline::TypeErasedBox&& msg) noexcept {
+                 return dispatchRequestResponse(
+                     adapter,
+                     &MetadataAppAdapter::handleGetThriftServiceMetadata,
+                     ctx,
+                     std::move(msg));
+               }}});
+  return table;
+}
+
 MetadataAppAdapter::MetadataAppAdapter(
     std::shared_ptr<
         const apache::thrift::metadata::ThriftServiceMetadataResponse> response)
-    : response_(std::move(response)) {
+    : ThriftServerAppAdapter(methodDispatchTable()),
+      response_(std::move(response)) {
   CHECK(response_) << "MetadataAppAdapter requires a non-null response";
-  addMethodHandler(
-      kMethodName, &MetadataAppAdapter::handleGetThriftServiceMetadata);
 }
 
 template <typename Writer>
