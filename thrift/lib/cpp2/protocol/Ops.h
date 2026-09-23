@@ -48,6 +48,13 @@ std::unique_ptr<folly::IOBuf> transcodeSerialized(
     std::optional<type_system::TypeRef> typeRef = std::nullopt,
     UnknownFieldIdPolicy unknownFieldIdPolicy = UnknownFieldIdPolicy::Drop);
 
+// Transcodes one structured value from the reader's current position.
+template <ThriftSerializer ToSerializer, ThriftProtocolReader ProtocolReader>
+std::unique_ptr<folly::IOBuf> transcode(
+    ProtocolReader& input,
+    std::optional<type_system::TypeRef> typeRef = std::nullopt,
+    UnknownFieldIdPolicy unknownFieldIdPolicy = UnknownFieldIdPolicy::Drop);
+
 // Returns a serialized buffer containing a new object that contains only the
 // masked fields present in the input serialized object (which must be a
 // structured type).
@@ -422,6 +429,18 @@ struct TranscodeVisitor {
     return std::move(outputWrapper).serializedData();
   }
 
+  std::unique_ptr<folly::IOBuf> operator()(Reader& input) {
+    DynamicCursorSerializationWrapper<Reader, Writer> inputWrapper(typeRef_);
+    DynamicCursorSerializationWrapper<Reader, Writer> outputWrapper(typeRef_);
+
+    auto reader = inputWrapper.template beginRead<Contiguous>(input);
+    auto writer = outputWrapper.beginWrite();
+    onStruct(reader, writer);
+    inputWrapper.endRead(std::move(reader));
+    outputWrapper.endWrite(std::move(writer));
+    return std::move(outputWrapper).serializedData();
+  }
+
   template <
       typename ProtocolReader,
       typename ProtocolWriter,
@@ -664,6 +683,18 @@ std::unique_ptr<folly::IOBuf> transcodeSerialized(
     std::optional<type_system::TypeRef> typeRef,
     UnknownFieldIdPolicy unknownFieldIdPolicy) {
   detail::TranscodeVisitor<FromSerializer, ToSerializer, Contiguous> visitor(
+      unknownFieldIdPolicy, typeRef);
+  return visitor(input);
+}
+
+template <ThriftSerializer ToSerializer, ThriftProtocolReader ProtocolReader>
+std::unique_ptr<folly::IOBuf> transcode(
+    ProtocolReader& input,
+    std::optional<type_system::TypeRef> typeRef,
+    UnknownFieldIdPolicy unknownFieldIdPolicy) {
+  using FromSerializer =
+      Serializer<ProtocolReader, typename ProtocolReader::ProtocolWriter>;
+  detail::TranscodeVisitor<FromSerializer, ToSerializer, false> visitor(
       unknownFieldIdPolicy, typeRef);
   return visitor(input);
 }

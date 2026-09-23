@@ -26,7 +26,8 @@ using apache::thrift::BinaryProtocolReader;
 using apache::thrift::BinaryProtocolWriter;
 using apache::thrift::CompactProtocolReader;
 using apache::thrift::CompactProtocolWriter;
-using apache::thrift::DebugStringParams;
+using apache::thrift::protocol::TProtocolException;
+using apache::thrift::protocol::TType;
 using apache::thrift::test::MixedStruct;
 using apache::thrift::test::Struct1;
 using apache::thrift::test::Struct2;
@@ -41,76 +42,45 @@ std::unique_ptr<folly::IOBuf> serialize(Struct& ms) {
 }
 
 template <class Writer, class Reader, class Struct>
-std::string serializeThenToDebugString(Struct& ms, DebugStringParams p = {}) {
+std::string serializeThenToDebugString(Struct& ms) {
   auto buf = serialize<Writer>(ms);
   Reader r;
   r.setInput(buf.get());
-  return apache::thrift::toDebugString(r, p);
+  return apache::thrift::toDebugString(r);
 }
 
 template <class Struct>
-std::string serializeThenToDebugStringBinaryAndCompact(
-    Struct& ms, DebugStringParams p = {}) {
+std::string serializeThenToDebugStringBinaryAndCompact(Struct& ms) {
   auto res1 =
       serializeThenToDebugString<CompactProtocolWriter, CompactProtocolReader>(
-          ms, p);
+          ms);
   auto res2 =
       serializeThenToDebugString<BinaryProtocolWriter, BinaryProtocolReader>(
-          ms, p);
+          ms);
   EXPECT_EQ(res1, res2);
   return res1;
 }
 
 template <class Writer, class Reader, class Struct>
-void toDebugStringAndBackSingle(Struct& ms, DebugStringParams p = {}) {
+void toDebugStringAndBackSingle(Struct& ms) {
   // Serialize the struct, convert serialized data to text format
   std::unique_ptr<folly::IOBuf> serializedFormat1 = serialize<Writer>(ms);
   Reader r;
   r.setInput(serializedFormat1.get());
-  std::string debugString = apache::thrift::toDebugString(r, p);
+  std::string debugString = apache::thrift::toDebugString(r);
   EXPECT_GT(debugString.length(), 0);
 }
 
 template <class Struct>
 void toDebugStringAndBack(Struct& ms) {
-  DebugStringParams defaultp, oneLinep;
-  oneLinep.oneLine = true;
-  toDebugStringAndBackSingle<CompactProtocolWriter, CompactProtocolReader>(
-      ms, defaultp);
-  toDebugStringAndBackSingle<CompactProtocolWriter, CompactProtocolReader>(
-      ms, oneLinep);
-  toDebugStringAndBackSingle<BinaryProtocolWriter, BinaryProtocolReader>(
-      ms, defaultp);
-  toDebugStringAndBackSingle<BinaryProtocolWriter, BinaryProtocolReader>(
-      ms, oneLinep);
-}
-
-std::string stripNewLinesAndSpace(const std::string& input) {
-  std::string ret;
-  char last = 0;
-  for (char x : input) {
-    if (x == '\n') {
-      x = ' ';
-    }
-    if (x == ' ' && last == x) {
-      continue;
-    }
-    ret += x;
-    last = x;
-  }
-  return ret;
+  toDebugStringAndBackSingle<CompactProtocolWriter, CompactProtocolReader>(ms);
+  toDebugStringAndBackSingle<BinaryProtocolWriter, BinaryProtocolReader>(ms);
 }
 
 TEST(DebugString, SimpleTypes) {
-  DebugStringParams defaultp, oneLinep;
-  oneLinep.oneLine = true;
-
   MixedStruct ms;
   // empty
-  EXPECT_EQ(
-      "struct {\n}", serializeThenToDebugStringBinaryAndCompact(ms, defaultp));
-  EXPECT_EQ(
-      "struct { }", serializeThenToDebugStringBinaryAndCompact(ms, oneLinep));
+  EXPECT_EQ("struct {\n}", serializeThenToDebugStringBinaryAndCompact(ms));
   toDebugStringAndBack(ms);
 
   // A couple of simple values
@@ -122,10 +92,7 @@ TEST(DebugString, SimpleTypes) {
         3: i16 = 123
         4: i32 = 456789
       })"),
-      serializeThenToDebugStringBinaryAndCompact(ms, defaultp));
-  EXPECT_EQ(
-      "struct { 3: i16 = 123 4: i32 = 456789 }",
-      serializeThenToDebugStringBinaryAndCompact(ms, oneLinep));
+      serializeThenToDebugStringBinaryAndCompact(ms));
   toDebugStringAndBack(ms);
 
   // Add string/binary
@@ -138,10 +105,7 @@ TEST(DebugString, SimpleTypes) {
         8: string = "thrift"
         9: string = "fb\xff"
       })");
-  EXPECT_EQ(expected, serializeThenToDebugStringBinaryAndCompact(ms, defaultp));
-  EXPECT_EQ(
-      stripNewLinesAndSpace(expected),
-      serializeThenToDebugStringBinaryAndCompact(ms, oneLinep));
+  EXPECT_EQ(expected, serializeThenToDebugStringBinaryAndCompact(ms));
   toDebugStringAndBack(ms);
 
   // Set all the simple fields
@@ -167,17 +131,11 @@ TEST(DebugString, SimpleTypes) {
         8: string = "hi"
         9: string = "bin"
       })");
-  EXPECT_EQ(expected, serializeThenToDebugStringBinaryAndCompact(ms, defaultp));
-  EXPECT_EQ(
-      stripNewLinesAndSpace(expected),
-      serializeThenToDebugStringBinaryAndCompact(ms, oneLinep));
+  EXPECT_EQ(expected, serializeThenToDebugStringBinaryAndCompact(ms));
   toDebugStringAndBack(ms);
 }
 
 TEST(DebugString, Containers) {
-  DebugStringParams defaultp, oneLinep;
-  oneLinep.oneLine = true;
-
   MixedStruct ms;
   ms.myMap() = {{123, "onetwothree"}, {456, "fourfivesix"}};
   ms.myList() = {"item1", "item2", "item3"};
@@ -195,10 +153,7 @@ TEST(DebugString, Containers) {
         12: set<i64> = {
         }
       })");
-  EXPECT_EQ(expected, serializeThenToDebugStringBinaryAndCompact(ms, defaultp));
-  EXPECT_EQ(
-      stripNewLinesAndSpace(expected),
-      serializeThenToDebugStringBinaryAndCompact(ms, oneLinep));
+  EXPECT_EQ(expected, serializeThenToDebugStringBinaryAndCompact(ms));
   toDebugStringAndBack(ms);
 
   // Wrap-around with list.
@@ -223,18 +178,11 @@ TEST(DebugString, Containers) {
           "item9", "item10", "item11", "item12",
         ]
       })");
-  EXPECT_EQ(
-      expected, serializeThenToDebugStringBinaryAndCompact(ms2, defaultp));
-  EXPECT_EQ(
-      stripNewLinesAndSpace(expected),
-      serializeThenToDebugStringBinaryAndCompact(ms2, oneLinep));
+  EXPECT_EQ(expected, serializeThenToDebugStringBinaryAndCompact(ms2));
   toDebugStringAndBack(ms);
 }
 
 TEST(DebugString, Structs) {
-  DebugStringParams defaultp, oneLinep;
-  oneLinep.oneLine = true;
-
   // Simple struct
   MixedStruct ms;
   Struct1 s1;
@@ -247,10 +195,7 @@ TEST(DebugString, Structs) {
           1: string = "hi"
         }
       })");
-  EXPECT_EQ(expected, serializeThenToDebugStringBinaryAndCompact(ms, defaultp));
-  EXPECT_EQ(
-      stripNewLinesAndSpace(expected),
-      serializeThenToDebugStringBinaryAndCompact(ms, oneLinep));
+  EXPECT_EQ(expected, serializeThenToDebugStringBinaryAndCompact(ms));
   toDebugStringAndBack(ms);
 
   // Nested struct
@@ -282,9 +227,75 @@ TEST(DebugString, Structs) {
           ]
         }
       })");
-  EXPECT_EQ(expected, serializeThenToDebugStringBinaryAndCompact(ms, defaultp));
-  EXPECT_EQ(
-      stripNewLinesAndSpace(expected),
-      serializeThenToDebugStringBinaryAndCompact(ms, oneLinep));
+  EXPECT_EQ(expected, serializeThenToDebugStringBinaryAndCompact(ms));
   toDebugStringAndBack(ms);
+}
+
+template <class Writer, class Reader>
+void testReaderLimits() {
+  {
+    MixedStruct value;
+    value.myString() = "too long";
+    auto buf = serialize<Writer>(value);
+    Reader reader;
+    reader.setStringSizeLimit(1);
+    reader.setInput(buf.get());
+    EXPECT_THROW(apache::thrift::toDebugString(reader), TProtocolException);
+  }
+  {
+    MixedStruct value;
+    value.myList() = {"first", "second"};
+    auto buf = serialize<Writer>(value);
+    Reader reader;
+    reader.setContainerSizeLimit(1);
+    reader.setInput(buf.get());
+    EXPECT_THROW(apache::thrift::toDebugString(reader), TProtocolException);
+  }
+  {
+    MixedStruct value;
+    value.struct1() = Struct1{};
+    auto buf = serialize<Writer>(value);
+    Reader reader;
+    reader.setHeight(1);
+    reader.setInput(buf.get());
+    EXPECT_THROW(apache::thrift::toDebugString(reader), TProtocolException);
+  }
+}
+
+TEST(DebugString, PreservesReaderLimits) {
+  testReaderLimits<BinaryProtocolWriter, BinaryProtocolReader>();
+  testReaderLimits<CompactProtocolWriter, CompactProtocolReader>();
+}
+
+TEST(DebugString, ConsumesOneStruct) {
+  folly::IOBufQueue queue;
+  BinaryProtocolWriter writer;
+  writer.setOutput(&queue);
+  MixedStruct first;
+  first.myI32() = 1;
+  first.write(&writer);
+  MixedStruct second;
+  second.myI32() = 2;
+  second.write(&writer);
+
+  auto buf = queue.move();
+  BinaryProtocolReader reader;
+  reader.setInput(buf.get());
+  EXPECT_EQ("struct {\n  4: i32 = 1\n}", apache::thrift::toDebugString(reader));
+  EXPECT_EQ("struct {\n  4: i32 = 2\n}", apache::thrift::toDebugString(reader));
+  EXPECT_TRUE(reader.getCursor().isAtEnd());
+}
+
+TEST(DebugString, MalformedNestedValueThrows) {
+  folly::IOBufQueue queue;
+  BinaryProtocolWriter writer;
+  writer.setOutput(&queue);
+  writer.writeStructBegin("");
+  writer.writeFieldBegin("", TType::T_LIST, 1);
+  writer.writeListBegin(TType::T_I32, 1);
+
+  auto buf = queue.move();
+  BinaryProtocolReader reader;
+  reader.setInput(buf.get());
+  EXPECT_ANY_THROW(apache::thrift::toDebugString(reader));
 }

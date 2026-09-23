@@ -1055,8 +1055,34 @@ class DynamicCursorSerializationWrapper {
     }
     const type_system::StructuredNode* structuredNode =
         typeRef_ ? &typeRef_->asStructUnchecked() : nullptr;
-    return StructuredDynamicCursorReader<ProtocolReader, Contiguous>(
-        reader(), structuredNode);
+    auto* protocol = reader();
+    try {
+      return StructuredDynamicCursorReader<ProtocolReader, Contiguous>(
+          protocol, structuredNode);
+    } catch (...) {
+      done();
+      throw;
+    }
+  }
+
+  template <bool Contiguous = false>
+  StructuredDynamicCursorReader<ProtocolReader, Contiguous> beginRead(
+      ProtocolReader& protocol) {
+    checkInactive("Concurrent reads/writes not supported");
+    if (typeRef_ && !typeRef_->isStructured()) {
+      folly::throw_exception<std::runtime_error>(
+          "TypeRef is not a structured type");
+    }
+    const type_system::StructuredNode* structuredNode =
+        typeRef_ ? &typeRef_->asStructUnchecked() : nullptr;
+    borrowedReader_ = &protocol;
+    try {
+      return StructuredDynamicCursorReader<ProtocolReader, Contiguous>(
+          borrowedReader_, structuredNode);
+    } catch (...) {
+      borrowedReader_ = nullptr;
+      throw;
+    }
   }
   template <bool Contiguous>
   void endRead(
@@ -1145,10 +1171,14 @@ class DynamicCursorSerializationWrapper {
     return &writer;
   }
 
-  void done() { protocol_.template emplace<std::monostate>(); }
+  void done() {
+    borrowedReader_ = nullptr;
+    protocol_.template emplace<std::monostate>();
+  }
 
   bool isActive() const {
-    return !std::holds_alternative<std::monostate>(protocol_);
+    return borrowedReader_ != nullptr ||
+        !std::holds_alternative<std::monostate>(protocol_);
   }
   void checkInactive(const char* message) const {
     if (isActive()) {
@@ -1164,6 +1194,7 @@ class DynamicCursorSerializationWrapper {
   std::unique_ptr<folly::IOBuf> serializedData_;
   folly::IOBufQueue queue_;
   std::variant<std::monostate, ProtocolReader, ProtocolWriter> protocol_;
+  ProtocolReader* borrowedReader_ = nullptr;
   std::optional<type_system::TypeRef> typeRef_;
 };
 

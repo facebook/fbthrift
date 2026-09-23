@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include <string>
-#include <folly/Range.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+
+#include <string>
 
 namespace apache::thrift {
 
@@ -42,18 +42,9 @@ namespace apache::thrift {
 //      ]
 //    }
 //
-// We provide a few simple rendering options, such as whether newlines
-// are wanted (or if putting the data in one line is better), and the
-// indent level.
-//
 // WARNING: you should not store data persistently in this text string format,
 // since it's subject to change. Instead prefer the standard Compact/Binary/etc.
 // Protocol formats.
-
-struct DebugStringParams {
-  bool oneLine{false};
-  uint16_t indentAmount{2};
-};
 
 // Converts serialized protocol data -> text format
 //
@@ -63,7 +54,6 @@ struct DebugStringParams {
 //   std::cout << apache::thrift::toDebugString(reader);
 //
 template <ThriftProtocolReader ProtocolReader>
-std::string toDebugString(
-    ProtocolReader& inProtoReader, DebugStringParams p = {});
+std::string toDebugString(ProtocolReader& inProtoReader);
 
 } // namespace apache::thrift
