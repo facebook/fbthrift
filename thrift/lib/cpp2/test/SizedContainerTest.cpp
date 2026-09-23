@@ -15,6 +15,10 @@
  */
 
 #include <cstdint>
+#include <functional>
+#include <map>
+#include <string>
+#include <type_traits>
 #include <gtest/gtest.h>
 #include <folly/container/small_vector.h>
 #include <folly/container/sorted_vector_types.h>
@@ -29,6 +33,15 @@ TEST(SizedContainerTest, CurriesContainerSize) {
   EXPECT_EQ(
       test::SmallIntSet({3, 1}),
       (folly::small_sorted_vector_set<int32_t, 3>{1, 3}));
+}
+
+TEST(SizedContainerTest, CurriesContainerComparator) {
+  static_assert(std::is_same_v<
+                test::TransparentLessMap,
+                std::map<std::string, int32_t, std::less<>>>);
+  static_assert(std::is_same_v<
+                test::GreaterMap,
+                std::map<std::string, int32_t, std::greater<std::string>>>);
 }
 
 } // namespace

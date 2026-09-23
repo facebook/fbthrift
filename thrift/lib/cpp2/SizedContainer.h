@@ -29,4 +29,10 @@ struct SizedContainer {
   using type = Container<T, Size, Args...>;
 };
 
+template <template <typename...> class Container, typename Compare>
+struct ComparedContainer {
+  template <typename... Args>
+  using type = Container<Args..., Compare>;
+};
+
 } // namespace apache::thrift
