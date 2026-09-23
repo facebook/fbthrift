@@ -168,46 +168,74 @@ LocalPipelineContext::~LocalPipelineContext() {
 int32_t LocalPipelineContext::fireWriteBox(
     apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox
         message) noexcept {
-  auto& context = *CHECK_NOTNULL(context_);
   eventBase_.dcheckIsInEventBaseThread();
-  auto* pipeline = context.pipeline();
+  auto* context = context_;
+  if (context == nullptr) {
+    return toInt(Result::Error);
+  }
+  auto* pipeline = context->pipeline();
   if (message.empty() || pipeline == nullptr || pipeline->isClosed()) {
     return toInt(Result::Error);
   }
-  return toInt(context.fireWrite(std::move(message)));
+  return toInt(context->fireWrite(std::move(message)));
+}
+
+void LocalPipelineContext::close() noexcept {
+  eventBase_.dcheckIsInEventBaseThread();
+  auto* context = std::exchange(context_, nullptr);
+  if (context == nullptr) {
+    return;
+  }
+  auto* pipeline = context->pipeline();
+  if (pipeline == nullptr || pipeline->isClosed()) {
+    return;
+  }
+  context->close();
 }
 
 void LocalPipelineContext::notifyReadReady() noexcept {
-  auto& context = *CHECK_NOTNULL(context_);
   eventBase_.dcheckIsInEventBaseThread();
-  if (auto* pipeline = context.pipeline();
+  auto* context = context_;
+  if (context == nullptr) {
+    return;
+  }
+  if (auto* pipeline = context->pipeline();
       pipeline != nullptr && !pipeline->isClosed()) {
     pipeline->onReadReady();
   }
 }
 
 void LocalPipelineContext::awaitWriteReady() noexcept {
-  auto& context = *CHECK_NOTNULL(context_);
   eventBase_.dcheckIsInEventBaseThread();
-  if (auto* pipeline = context.pipeline();
+  auto* context = context_;
+  if (context == nullptr) {
+    return;
+  }
+  if (auto* pipeline = context->pipeline();
       pipeline != nullptr && !pipeline->isClosed()) {
-    context.awaitWriteReady();
+    context->awaitWriteReady();
   }
 }
 
 void LocalPipelineContext::cancelWriteReady() noexcept {
-  auto& context = *CHECK_NOTNULL(context_);
   eventBase_.dcheckIsInEventBaseThread();
-  if (auto* pipeline = context.pipeline();
+  auto* context = context_;
+  if (context == nullptr) {
+    return;
+  }
+  if (auto* pipeline = context->pipeline();
       pipeline != nullptr && !pipeline->isClosed()) {
-    context.cancelAwaitWriteReady();
+    context->cancelAwaitWriteReady();
   }
 }
 
 bool LocalPipelineContext::isClosed() const noexcept {
-  auto& context = *CHECK_NOTNULL(context_);
   eventBase_.dcheckIsInEventBaseThread();
-  auto* pipeline = context.pipeline();
+  auto* context = context_;
+  if (context == nullptr) {
+    return true;
+  }
+  auto* pipeline = context->pipeline();
   return pipeline == nullptr || pipeline->isClosed();
 }
 

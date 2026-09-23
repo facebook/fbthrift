@@ -23,6 +23,7 @@
 #include <condition_variable>
 #include <cstdio>
 #include <cstdlib>
+#include <functional>
 #include <future>
 #include <mutex>
 #include <thread>
@@ -44,6 +45,7 @@ using apache::thrift::fast_thrift::channel_pipeline::BytesPtr;
 using apache::thrift::fast_thrift::channel_pipeline::erase_and_box;
 using apache::thrift::fast_thrift::channel_pipeline::PipelineBuilder;
 using apache::thrift::fast_thrift::channel_pipeline::PipelineImpl;
+using apache::thrift::fast_thrift::channel_pipeline::Result;
 using apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox;
 using apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl;
 using apache::thrift::fast_thrift::channel_pipeline::test::MockHandler;
@@ -56,8 +58,14 @@ HANDLER_TAG(context_handle_safety);
 struct ContextFixture {
   ContextFixture() {
     auto handler = std::make_unique<MockHandler>();
+    handler->setOnPipelineDeactivated([this](ContextImpl&) {
+      inactive.fetch_add(1, std::memory_order_relaxed);
+    });
     handler->setHandlerRemoved([this](ContextImpl&) {
       removed.fetch_add(1, std::memory_order_relaxed);
+      if (onRemoved) {
+        onRemoved();
+      }
     });
     eventBase->runInEventBaseThreadAndWait([&] {
       pipeline =
@@ -77,7 +85,9 @@ struct ContextFixture {
   MockHeadHandler head;
   MockTailHandler tail;
   TestAllocator allocator;
+  std::atomic<uint32_t> inactive{0};
   std::atomic<uint32_t> removed{0};
+  std::function<void()> onRemoved;
   PipelineImpl::Ptr pipeline;
 
   ContextImpl& context() {
@@ -245,6 +255,60 @@ TEST(LocalPipelineContextTest, DestructionDoesNotAccessDestroyedContext) {
     context.reset();
   });
 
+  EXPECT_EQ(fixture.removed.load(std::memory_order_relaxed), 1);
+}
+
+TEST(LocalPipelineContextTest, CloseCausesOneLifecycleCascade) {
+  TestWatchdog watchdog{"LocalPipelineContext close lifecycle cascade"};
+  ContextFixture fixture;
+
+  fixture.eventBase->runInEventBaseThreadAndWait([&] {
+    LocalPipelineContext context{fixture.context()};
+    fixture.pipeline->activate();
+
+    context.close();
+    context.close();
+
+    EXPECT_TRUE(context.isClosed());
+  });
+
+  EXPECT_EQ(fixture.inactive.load(std::memory_order_relaxed), 1);
+  EXPECT_EQ(fixture.removed.load(std::memory_order_relaxed), 1);
+}
+
+TEST(LocalPipelineContextTest, DetachedOperationsAreNoOps) {
+  TestWatchdog watchdog{"detached LocalPipelineContext operations"};
+  ContextFixture fixture;
+
+  fixture.eventBase->runInEventBaseThreadAndWait([&] {
+    LocalPipelineContext context{fixture.context()};
+    context.close();
+
+    context.awaitWriteReady();
+    context.cancelWriteReady();
+    context.notifyReadReady();
+    EXPECT_EQ(
+        context.fireWriteBox(erase_and_box(BytesPtr{folly::IOBuf::create(1)})),
+        static_cast<int32_t>(Result::Error));
+    EXPECT_EQ(fixture.head.writeCount(), 0);
+  });
+}
+
+TEST(LocalPipelineContextTest, CloseSurvivesReentrantDestruction) {
+  TestWatchdog watchdog{"LocalPipelineContext reentrant destruction"};
+  ContextFixture fixture;
+
+  fixture.eventBase->runInEventBaseThreadAndWait([&] {
+    fixture.pipeline->activate();
+    auto context = std::make_unique<LocalPipelineContext>(fixture.context());
+    fixture.onRemoved = [&] { context.reset(); };
+
+    context->close();
+
+    EXPECT_EQ(context, nullptr);
+  });
+
+  EXPECT_EQ(fixture.inactive.load(std::memory_order_relaxed), 1);
   EXPECT_EQ(fixture.removed.load(std::memory_order_relaxed), 1);
 }
 

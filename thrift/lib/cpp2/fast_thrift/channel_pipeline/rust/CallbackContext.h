@@ -34,6 +34,7 @@ class LocalPipelineContext final {
  public:
   // The owning Rust endpoint must drop this context from handlerRemoved().
   // Pipeline teardown invalidates ContextImpl after that callback returns.
+  // close() detaches ContextImpl before starting that teardown.
   explicit LocalPipelineContext(
       apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl&
           context) noexcept;
@@ -47,6 +48,7 @@ class LocalPipelineContext final {
   int32_t fireWriteBox(
       apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox
           message) noexcept;
+  void close() noexcept;
   void notifyReadReady() noexcept;
   void awaitWriteReady() noexcept;
   void cancelWriteReady() noexcept;
@@ -54,7 +56,8 @@ class LocalPipelineContext final {
   folly::EventBase* eventBase() const noexcept;
 
  private:
-  apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl* context_;
+  apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl*
+      FOLLY_NULLABLE context_;
   folly::EventBase& eventBase_;
 };
 
