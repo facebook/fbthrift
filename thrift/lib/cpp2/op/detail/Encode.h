@@ -25,6 +25,7 @@
 #include <folly/container/Reserve.h>
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/FieldRef.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/gen/tcc_struct_traits.h>
 #include <thrift/lib/cpp2/op/Clear.h>
@@ -244,6 +245,10 @@ struct SerializedSize<false, type::binary_t> {
   uint32_t operator()(Protocol& prot, const folly::IOBuf& s) const {
     return prot.serializedSizeBinary(s);
   }
+  template <typename Protocol>
+  uint32_t operator()(Protocol& prot, const IOBufChain& s) const {
+    return prot.serializedSizeBinary(s);
+  }
 
   template <typename Protocol>
   uint32_t operator()(
@@ -260,6 +265,10 @@ struct SerializedSize<true, type::binary_t> {
   }
   template <typename Protocol>
   uint32_t operator()(Protocol& prot, const folly::IOBuf& s) const {
+    return prot.serializedSizeZCBinary(s);
+  }
+  template <typename Protocol>
+  uint32_t operator()(Protocol& prot, const IOBufChain& s) const {
     return prot.serializedSizeZCBinary(s);
   }
   template <typename Protocol>
@@ -501,6 +510,10 @@ template <>
 struct Encode<type::binary_t> {
   template <typename Protocol>
   uint32_t operator()(Protocol& prot, const folly::IOBuf& s) const {
+    return prot.writeBinary(s);
+  }
+  template <typename Protocol>
+  uint32_t operator()(Protocol& prot, const IOBufChain& s) const {
     return prot.writeBinary(s);
   }
   template <typename Protocol>

@@ -21,6 +21,7 @@
 #include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 
 namespace apache {
 namespace thrift {
@@ -804,6 +805,29 @@ template <>
 class Cpp2Ops<folly::IOBuf> {
  public:
   using Type = folly::IOBuf;
+  static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
+  template <class Protocol>
+  static uint32_t write(Protocol* prot, const Type* value) {
+    return prot->writeBinary(*value);
+  }
+  template <class Protocol>
+  static void read(Protocol* prot, Type* value) {
+    prot->readBinary(*value);
+  }
+  template <class Protocol>
+  static uint32_t serializedSize(Protocol* prot, const Type* value) {
+    return prot->serializedSizeBinary(*value);
+  }
+  template <class Protocol>
+  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
+    return prot->serializedSizeZCBinary(*value);
+  }
+};
+
+template <>
+class Cpp2Ops<IOBufChain> {
+ public:
+  using Type = IOBufChain;
   static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {

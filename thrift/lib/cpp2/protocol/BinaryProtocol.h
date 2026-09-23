@@ -23,6 +23,7 @@
 #include <folly/lang/Bits.h>
 #include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 FOLLY_GFLAGS_DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 FOLLY_GFLAGS_DECLARE_int32(thrift_cpp2_protocol_reader_container_limit);
@@ -110,6 +111,7 @@ class BinaryProtocolWriter : public detail::ProtocolBase {
   uint32_t writeBinary(
       const std::unique_ptr<folly::IOBuf>& str, bool pack = true);
   uint32_t writeBinary(const folly::IOBuf& str, bool pack = true);
+  uint32_t writeBinary(const IOBufChain& str, bool pack = true);
   uint32_t writeRaw(const IOBuf& buf);
   uint32_t writeRaw(folly::io::Cursor cursor, uint32_t size);
 
@@ -149,12 +151,14 @@ class BinaryProtocolWriter : public detail::ProtocolBase {
   uint32_t serializedSizeBinary(
       const std::unique_ptr<folly::IOBuf>& v, bool pack = true) const;
   uint32_t serializedSizeBinary(const folly::IOBuf& v, bool pack = true) const;
+  uint32_t serializedSizeBinary(const IOBufChain& v, bool pack = true) const;
   uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
   uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
   uint32_t serializedSizeZCBinary(
       const std::unique_ptr<folly::IOBuf>& v, bool pack = true) const;
   uint32_t serializedSizeZCBinary(
       const folly::IOBuf& v, bool pack = true) const;
+  uint32_t serializedSizeZCBinary(const IOBufChain& v, bool pack = true) const;
 
   void rewriteDouble(double dub, int64_t offset);
 
@@ -166,6 +170,8 @@ class BinaryProtocolWriter : public detail::ProtocolBase {
 
  private:
   static void checkBinarySize(uint64_t size);
+  uint32_t serializedSizeBinaryImpl(size_t size, bool pack) const;
+  uint32_t serializedSizeZCBinaryImpl(size_t size, bool pack) const;
   template <bool kWriteSize>
   FOLLY_ERASE uint32_t writeBinaryImpl(const folly::IOBuf& str, bool pack);
 
@@ -268,6 +274,7 @@ class BinaryProtocolReader : public detail::ProtocolBase {
   void readBinary(StrType& str);
   void readBinary(std::unique_ptr<folly::IOBuf>& str);
   void readBinary(folly::IOBuf& str);
+  void readBinary(IOBufChain& str);
   void readStringSize(int32_t& size) {
     readI32(size);
     checkStringSize(size);

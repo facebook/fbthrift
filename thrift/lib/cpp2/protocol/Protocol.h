@@ -36,6 +36,7 @@
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
 
 FOLLY_GFLAGS_DECLARE_int32(thrift_protocol_max_depth);
@@ -462,6 +463,26 @@ struct StringTraits<folly::IOBuf> {
 
   static bool isLess(const folly::IOBuf& lhs, const folly::IOBuf& rhs) {
     return folly::IOBufLess{}(lhs, rhs);
+  }
+};
+
+template <>
+struct StringTraits<IOBufChain> {
+  // Use with string literals only!
+  static IOBufChain fromStringLiteral(const char* str) {
+    return str[0] == '\0'
+        ? IOBufChain{}
+        : IOBufChain{folly::IOBuf::wrapBuffer(str, strlen(str))};
+  }
+
+  static bool isEmpty(const IOBufChain& str) { return str.chainLength() == 0; }
+
+  static bool isEqual(const IOBufChain& lhs, const IOBufChain& rhs) {
+    return lhs == rhs;
+  }
+
+  static bool isLess(const IOBufChain& lhs, const IOBufChain& rhs) {
+    return lhs < rhs;
   }
 };
 

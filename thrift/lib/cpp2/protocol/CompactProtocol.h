@@ -28,6 +28,7 @@
 #include <folly/small_vector.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/util/VarintUtils.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 FOLLY_GFLAGS_DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
@@ -135,6 +136,7 @@ class CompactProtocolWriter : public detail::ProtocolBase {
   uint32_t writeBinary(folly::ByteRange str);
   uint32_t writeBinary(const std::unique_ptr<IOBuf>& str);
   uint32_t writeBinary(const IOBuf& str);
+  uint32_t writeBinary(const IOBufChain& str);
   uint32_t writeRaw(const IOBuf& buf);
   uint32_t writeRaw(folly::io::Cursor cursor, uint32_t size);
 
@@ -177,10 +179,12 @@ class CompactProtocolWriter : public detail::ProtocolBase {
   uint32_t serializedSizeBinary(folly::ByteRange v) const;
   uint32_t serializedSizeBinary(const std::unique_ptr<IOBuf>& v) const;
   uint32_t serializedSizeBinary(const IOBuf& v) const;
+  uint32_t serializedSizeBinary(const IOBufChain& v) const;
   uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
   uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
-  uint32_t serializedSizeZCBinary(const std::unique_ptr<IOBuf>& /*v*/) const;
-  uint32_t serializedSizeZCBinary(const IOBuf& /*v*/) const;
+  uint32_t serializedSizeZCBinary(const std::unique_ptr<IOBuf>& v) const;
+  uint32_t serializedSizeZCBinary(const IOBuf& v) const;
+  uint32_t serializedSizeZCBinary(const IOBufChain& v) const;
 
   void rewriteDouble(double dub, int64_t offset);
 
@@ -210,8 +214,11 @@ class CompactProtocolWriter : public detail::ProtocolBase {
 
   uint32_t writeCollectionBegin(int8_t elemType, int32_t size);
   static void checkBinarySize(uint64_t size);
+  uint32_t serializedSizeBinaryImpl(size_t size) const;
+  uint32_t serializedSizeZCBinaryImpl(size_t size) const;
   template <bool kWriteSize>
-  FOLLY_ERASE uint32_t writeBinaryImpl(const folly::IOBuf& str);
+  FOLLY_ERASE uint32_t
+  writeBinaryImpl(const folly::IOBuf& str, bool pack = true);
 
   uint32_t writeFieldBeginInternal(
       const char* name,
@@ -318,6 +325,7 @@ class CompactProtocolReader : public detail::ProtocolBase {
   void readBinary(StrType& str);
   void readBinary(std::unique_ptr<IOBuf>& str);
   void readBinary(IOBuf& str);
+  void readBinary(IOBufChain& str);
   void readStringSize(int32_t& size) {
     apache::thrift::util::readVarint(in_, size);
     checkStringSize(size);

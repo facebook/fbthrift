@@ -189,6 +189,25 @@ inline uint32_t BinaryProtocolWriter::writeBinary(
   return writeBinaryImpl<true>(str, pack);
 }
 
+inline uint32_t BinaryProtocolWriter::writeBinary(
+    const IOBufChain& str, bool pack) {
+  const auto size = str.chainLength();
+  checkBinarySize(size);
+  uint32_t result = writeI32(static_cast<int32_t>(size));
+  size_t packRemaining = folly::IOBufQueue::kMaxPackCopy;
+  for (const auto& buffer : str) {
+    const auto length = buffer.length();
+    if (length > packRemaining) {
+      pack = false;
+    }
+    result += writeBinaryImpl<false>(buffer, pack);
+    if (pack) {
+      packRemaining -= length;
+    }
+  }
+  return result;
+}
+
 inline uint32_t BinaryProtocolWriter::writeRaw(const folly::IOBuf& str) {
   return writeBinaryImpl<false>(str, /* pack */ true);
 }
@@ -344,16 +363,25 @@ inline uint32_t BinaryProtocolWriter::serializedSizeBinary(
   return v ? serializedSizeBinary(*v, pack) : 0;
 }
 
-inline uint32_t BinaryProtocolWriter::serializedSizeBinary(
-    const folly::IOBuf& v, bool pack) const {
-  size_t size = v.computeChainDataLength();
-  uint32_t limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
+inline uint32_t BinaryProtocolWriter::serializedSizeBinaryImpl(
+    size_t size, bool pack) const {
+  const auto limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
   if (size > limit) {
     TProtocolException::throwExceededSizeLimit(size, limit);
   }
   return !pack
       ? serializedSizeI32() // size only
       : static_cast<uint32_t>(size) + serializedSizeI32(); // size + packed data
+}
+
+inline uint32_t BinaryProtocolWriter::serializedSizeBinary(
+    const folly::IOBuf& v, bool pack) const {
+  return serializedSizeBinaryImpl(v.computeChainDataLength(), pack);
+}
+
+inline uint32_t BinaryProtocolWriter::serializedSizeBinary(
+    const IOBufChain& v, bool pack) const {
+  return serializedSizeBinaryImpl(v.chainLength(), pack);
 }
 
 inline uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
@@ -369,12 +397,21 @@ inline uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
   return v ? serializedSizeZCBinary(*v, pack) : 0;
 }
 
-inline uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
-    const folly::IOBuf& v, bool pack) const {
-  size_t size = v.computeChainDataLength();
+inline uint32_t BinaryProtocolWriter::serializedSizeZCBinaryImpl(
+    size_t size, bool pack) const {
   return (!pack || (size > folly::IOBufQueue::kMaxPackCopy))
       ? serializedSizeI32() // too big to pack: size only
       : static_cast<uint32_t>(size) + serializedSizeI32(); // size + packed data
+}
+
+inline uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
+    const folly::IOBuf& v, bool pack) const {
+  return serializedSizeZCBinaryImpl(v.computeChainDataLength(), pack);
+}
+
+inline uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
+    const IOBufChain& v, bool pack) const {
+  return serializedSizeZCBinaryImpl(v.chainLength(), pack);
 }
 
 /**
@@ -575,6 +612,12 @@ inline void BinaryProtocolReader::readBinary(folly::IOBuf& str) {
   readI32(size);
   checkStringSize(size);
   in_.clone(str, size, apache::thrift::detail::cloneOwnership(sharing_));
+}
+
+inline void BinaryProtocolReader::readBinary(IOBufChain& str) {
+  std::unique_ptr<folly::IOBuf> data;
+  readBinary(data);
+  str = IOBufChain{std::move(data)};
 }
 
 template <typename StrType>
