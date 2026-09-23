@@ -20,6 +20,7 @@
 
 #include <rust/cxx.h>
 #include <folly/Function.h>
+#include <folly/logging/xlog.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
@@ -34,8 +35,9 @@ namespace channel_pipeline_rust {
  *
  * The borrowed context and erased message are valid only for `onRead`. A Rust
  * endpoint that suspends must move the message and continuation into
- * `DeferredRead`; lifecycle methods intentionally receive no context, matching
- * the native TailEndpointHandler contract.
+ * `DeferredRead`. Activation and write-ready may each return one IOBuf chain;
+ * the shim writes it only after the Rust callback has released its `&mut`
+ * endpoint borrow. Other lifecycle methods retain their no-context contract.
  */
 class RustTailEndpoint final {
  public:
@@ -48,6 +50,20 @@ class RustTailEndpoint final {
   RustTailEndpoint& operator=(const RustTailEndpoint&) = delete;
   RustTailEndpoint(RustTailEndpoint&&) = delete;
   RustTailEndpoint& operator=(RustTailEndpoint&&) = delete;
+
+  // Attachment is one-shot for this endpoint's lifetime. The owner attaches
+  // the completed pipeline before activation; removal clears the non-owning
+  // pointer without permitting attachment to a different pipeline.
+  [[nodiscard]] bool setPipeline(
+      apache::thrift::fast_thrift::channel_pipeline::PipelineImpl*
+          pipeline) noexcept {
+    if (pipeline == nullptr || pipelineAttached_) {
+      return false;
+    }
+    pipeline_ = pipeline;
+    pipelineAttached_ = true;
+    return true;
+  }
 
   apache::thrift::fast_thrift::channel_pipeline::Result onRead(
       apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl& ctx,
@@ -79,11 +95,11 @@ class RustTailEndpoint final {
   }
 
   void onWriteReady() noexcept {
-    rust_tail_endpoint_on_write_ready(*endpoint_);
+    applyWrite(rust_tail_endpoint_on_write_ready(*endpoint_));
   }
 
   void onPipelineActive() noexcept {
-    rust_tail_endpoint_on_pipeline_active(*endpoint_);
+    applyWrite(rust_tail_endpoint_on_pipeline_active(*endpoint_));
   }
 
   void onPipelineInactive() noexcept {
@@ -94,11 +110,38 @@ class RustTailEndpoint final {
 
   void handlerRemoved() noexcept {
     rust_tail_endpoint_handler_removed(*endpoint_);
+    pipeline_ = nullptr;
   }
 
  private:
+  void applyWrite(std::unique_ptr<folly::IOBuf> message) noexcept {
+    if (!message) {
+      return;
+    }
+    if (pipeline_ == nullptr) {
+      XLOG(ERR) << "dropping Rust tail lifecycle write "
+                << (pipelineAttached_ ? "after handler removal"
+                                      : "before pipeline attachment");
+      return;
+    }
+    auto& pipeline = *pipeline_;
+    if (pipeline.isClosed()) {
+      return;
+    }
+    const auto result = pipeline.fireWrite(
+        apache::thrift::fast_thrift::channel_pipeline::erase_and_box(
+            std::move(message)));
+    if (result ==
+        apache::thrift::fast_thrift::channel_pipeline::Result::Error) {
+      pipeline.close();
+    }
+  }
+
   rust::Box<RustTailEndpointOpaque> endpoint_;
   folly::Function<void(folly::exception_wrapper&&) noexcept> onException_;
+  apache::thrift::fast_thrift::channel_pipeline::PipelineImpl* pipeline_{
+      nullptr};
+  bool pipelineAttached_{false};
 };
 
 static_assert(
