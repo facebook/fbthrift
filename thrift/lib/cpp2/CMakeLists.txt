@@ -247,6 +247,10 @@ add_library(
   ../cpp/protocol/TProtocolException.cpp
   ../cpp/protocol/TType.cpp
   ../cpp/util/VarintUtils.cpp
+  # Required by protocol/BinaryProtocol.cpp, which instantiates
+  # BinaryProtocolReaderBase<io::IOBufChainCursor>.
+  IOBufChain.cpp
+  IOBufChainCursor.cpp
   # Required by protocol/detail/Json5ProtocolReader.cpp, which calls
   # enum_find<Int>::find_name; the explicit instantiation for `int` only
   # exists in this translation unit.
