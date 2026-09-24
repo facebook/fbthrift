@@ -26,7 +26,9 @@
 #include <gtest/gtest.h>
 
 #include <folly/Range.h>
+#include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
+#include <folly/portability/GMock.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 
 namespace apache::thrift::fast_thrift::frame::read {
@@ -122,12 +124,12 @@ struct ConsumeBufferChainDriver {
  * driver runs it.
  */
 template <typename T>
-concept ParserTraits =
-    std::default_initializable<typename T::Parser> && requires(size_t payload) {
+concept ParserTraits = std::default_initializable<typename T::Parser> &&
+    requires(size_t payload, uint8_t fill) {
       typename T::Driver;
       // The bytes of one frame as they arrive on the wire: this parser's
-      // header, then `payload` bytes of body.
-      { T::makeFrame(payload) } -> std::same_as<std::vector<uint8_t>>;
+      // header, then `payload` bytes, all equal to `fill`.
+      { T::makeFrame(payload, fill) } -> std::same_as<std::vector<uint8_t>>;
       // Can be larger than payload: a parser may keep part of the header in
       // the frame it emits.
       { T::emittedSize(payload) } -> std::same_as<size_t>;
@@ -156,13 +158,48 @@ class ParserContractTest : public ::testing::Test {
     return feed(folly::ByteRange{bytes.data(), bytes.size()});
   }
 
+  // A different byte per frame, so a test can tell which frame is which.
+  static uint8_t fillFor(size_t index) {
+    return static_cast<uint8_t>('a' + index);
+  }
+
   static std::vector<uint8_t> concatFrames(size_t count, size_t payloadSize) {
     std::vector<uint8_t> bytes;
     for (size_t i = 0; i < count; ++i) {
-      const auto frame = Traits::makeFrame(payloadSize);
+      const auto frame = Traits::makeFrame(payloadSize, fillFor(i));
       bytes.insert(bytes.end(), frame.begin(), frame.end());
     }
     return bytes;
+  }
+
+  // The payload is always at the end of a frame, so check the last bytes.
+  static void expectPayload(
+      const folly::IOBuf& frame, size_t payloadSize, uint8_t fill) {
+    const size_t frameSize = frame.computeChainDataLength();
+    EXPECT_THAT(frameSize, ::testing::Ge(payloadSize));
+    if (frameSize < payloadSize) {
+      return;
+    }
+
+    folly::io::Cursor cursor{&frame};
+    cursor.skip(frameSize - payloadSize);
+    size_t remaining = payloadSize;
+    while (remaining > 0) {
+      const folly::ByteRange bytes = cursor.peekBytes();
+      EXPECT_THAT(bytes.empty(), ::testing::IsFalse());
+      if (bytes.empty()) {
+        return;
+      }
+      const size_t length = std::min(bytes.size(), remaining);
+      EXPECT_THAT(
+          std::all_of(
+              bytes.begin(),
+              bytes.begin() + length,
+              [fill](uint8_t byte) { return byte == fill; }),
+          ::testing::IsTrue());
+      cursor.skip(length);
+      remaining -= length;
+    }
   }
 
   std::vector<channel_pipeline::BytesPtr> frames_;

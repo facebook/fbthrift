@@ -24,6 +24,7 @@
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/portability/GMock.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
@@ -31,10 +32,12 @@
 
 namespace apache::thrift::fast_thrift::frame::read {
 
+using namespace testing;
+
 using apache::thrift::fast_thrift::channel_pipeline::BytesPtr;
 using apache::thrift::fast_thrift::channel_pipeline::Result;
 
-class FrameLengthParserTest : public ::testing::Test {
+class FrameLengthParserTest : public Test {
  protected:
   static BytesPtr buildFrame(size_t payloadSize) {
     auto buf = folly::IOBuf::create(kMetadataLengthSize + payloadSize);
@@ -160,6 +163,29 @@ TEST_F(FrameLengthParserTest, BackpressureThenResume) {
   EXPECT_EQ(parser_.size(), 0);
 }
 
+// Same as BackpressureThenResume, but through consume. Bytes the parser has
+// already taken must survive the refusal and come out when the sink recovers.
+TEST_F(FrameLengthParserTest, BackpressureThenResumeOnTheConsumePath) {
+  sinkResult_ = Result::Backpressure;
+
+  folly::IOBufQueue queue{folly::IOBufQueue::cacheChainLength()};
+  queue.append(buildFrame(20));
+  queue.append(buildFrame(30));
+
+  EXPECT_THAT(feedViaReadBuffer(queue.move()), Eq(Result::Backpressure));
+  ASSERT_THAT(frames_, SizeIs(1));
+  EXPECT_THAT(frames_[0]->computeChainDataLength(), Eq(20));
+  EXPECT_THAT(parser_.size(), Gt(0));
+
+  sinkResult_ = Result::Success;
+  EXPECT_THAT(feedViaReadBuffer(buildFrame(40)), Eq(Result::Success));
+
+  ASSERT_THAT(frames_, SizeIs(3));
+  EXPECT_THAT(frames_[1]->computeChainDataLength(), Eq(30));
+  EXPECT_THAT(frames_[2]->computeChainDataLength(), Eq(40));
+  EXPECT_THAT(parser_.size(), Eq(0));
+}
+
 TEST_F(FrameLengthParserTest, ResetDropsBufferedState) {
   EXPECT_EQ(feed(buildHeader(20)), Result::Success);
   EXPECT_GT(parser_.size(), 0);
@@ -235,6 +261,54 @@ TEST_F(FrameLengthParserTest, RejectsFrameOverMaxFrameSize) {
 
   EXPECT_EQ(result, Result::Error);
   EXPECT_EQ(frames_.size(), 0);
+}
+
+// An oversized frame must be refused before the parser grows a buffer for it.
+// Only consume can reach tryResize; consumeBuffer compiles it out.
+TEST_F(FrameLengthParserTest, RejectsFrameOverMaxFrameSizeBeforeGrowing) {
+  constexpr size_t kBufferSize = 4096;
+  constexpr size_t kMaxFrameSize = 1024 * 1024;
+
+  struct Outcome {
+    Result result;
+    size_t allocations;
+  };
+
+  // Feeds one length prefix to a fresh parser and counts what it allocated
+  // after the first read.
+  const auto announce = [this](size_t frameLength) {
+    size_t allocations = 0;
+    folly::IOBufFactory factory = [&allocations](size_t capacity) {
+      ++allocations;
+      return folly::IOBuf::create(capacity);
+    };
+    // Declared after the factory it borrows, so it is destroyed first.
+    FrameLengthParser parser{kBufferSize, kBufferSize, kMaxFrameSize};
+    parser.setIOBufFactory(&factory);
+
+    void* buf = nullptr;
+    size_t avail = 0;
+    parser.getReadBuffer(&buf, &avail);
+
+    const auto header = buildHeader(frameLength);
+    std::memcpy(buf, header->data(), header->length());
+
+    const auto before = allocations;
+    const auto result = parser.consume(header->length(), sink());
+    return Outcome{result, allocations - before};
+  };
+
+  // Control: a frame the parser accepts does make it grow. Without this, a tail
+  // long enough to reuse would let the check below pass for the wrong reason.
+  const auto accepted = announce(kMaxFrameSize / 2);
+  ASSERT_THAT(accepted.result, Eq(Result::Success));
+  ASSERT_THAT(accepted.allocations, Gt(0));
+
+  // No allocation means the frame was refused before tryResize ran.
+  const auto refused = announce(kMaxFrameSize + 1);
+  EXPECT_THAT(refused.result, Eq(Result::Error));
+  EXPECT_THAT(refused.allocations, Eq(0));
+  EXPECT_THAT(frames_, IsEmpty());
 }
 
 TEST_F(FrameLengthParserTest, AllocationsGoThroughTheInstalledFactory) {

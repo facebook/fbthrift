@@ -53,10 +53,11 @@ TYPED_TEST_SUITE_P(ParserContractTest);
 TYPED_TEST_P(ParserContractTest, SingleCompleteFrame) {
   using Traits = typename TestFixture::Traits;
 
-  EXPECT_EQ(this->feed(Traits::makeFrame(20)), Result::Success);
+  EXPECT_EQ(this->feed(Traits::makeFrame(20, 'a')), Result::Success);
   ASSERT_EQ(this->frames_.size(), 1);
   EXPECT_EQ(
       this->frames_[0]->computeChainDataLength(), Traits::emittedSize(20));
+  TestFixture::expectPayload(*this->frames_[0], 20, 'a');
 }
 
 TYPED_TEST_P(ParserContractTest, PartialHeaderEmitsNothing) {
@@ -66,7 +67,7 @@ TYPED_TEST_P(ParserContractTest, PartialHeaderEmitsNothing) {
   // pass without checking anything.
   ASSERT_GT(Traits::headerSize(), 1);
 
-  auto bytes = Traits::makeFrame(20);
+  auto bytes = Traits::makeFrame(20, 'a');
   bytes.resize(Traits::headerSize() - 1);
 
   EXPECT_EQ(this->feed(bytes), Result::Success);
@@ -76,7 +77,7 @@ TYPED_TEST_P(ParserContractTest, PartialHeaderEmitsNothing) {
 TYPED_TEST_P(ParserContractTest, HeaderThenBody) {
   using Traits = typename TestFixture::Traits;
 
-  const auto bytes = Traits::makeFrame(20);
+  const auto bytes = Traits::makeFrame(20, 'a');
   const auto header = Traits::headerSize();
 
   EXPECT_EQ(
@@ -90,6 +91,7 @@ TYPED_TEST_P(ParserContractTest, HeaderThenBody) {
   ASSERT_EQ(this->frames_.size(), 1);
   EXPECT_EQ(
       this->frames_[0]->computeChainDataLength(), Traits::emittedSize(20));
+  TestFixture::expectPayload(*this->frames_[0], 20, 'a');
 }
 
 TYPED_TEST_P(ParserContractTest, MultipleFramesInOneStream) {
@@ -97,17 +99,24 @@ TYPED_TEST_P(ParserContractTest, MultipleFramesInOneStream) {
 
   EXPECT_EQ(this->feed(TestFixture::concatFrames(3, 20)), Result::Success);
   ASSERT_EQ(this->frames_.size(), 3);
-  for (const auto& frame : this->frames_) {
-    EXPECT_EQ(frame->computeChainDataLength(), Traits::emittedSize(20));
+  for (size_t i = 0; i < this->frames_.size(); ++i) {
+    EXPECT_EQ(
+        this->frames_[i]->computeChainDataLength(), Traits::emittedSize(20));
+    TestFixture::expectPayload(*this->frames_[i], 20, TestFixture::fillFor(i));
   }
 }
 
 TYPED_TEST_P(ParserContractTest, MultipleFramesSeparately) {
   using Traits = typename TestFixture::Traits;
 
-  for (int i = 0; i < 3; ++i) {
-    EXPECT_EQ(this->feed(Traits::makeFrame(20)), Result::Success);
-    EXPECT_EQ(this->frames_.size(), static_cast<size_t>(i + 1));
+  for (size_t i = 0; i < 3; ++i) {
+    EXPECT_EQ(
+        this->feed(Traits::makeFrame(20, TestFixture::fillFor(i))),
+        Result::Success);
+    ASSERT_EQ(this->frames_.size(), i + 1);
+    EXPECT_EQ(
+        this->frames_[i]->computeChainDataLength(), Traits::emittedSize(20));
+    TestFixture::expectPayload(*this->frames_[i], 20, TestFixture::fillFor(i));
   }
 }
 
@@ -115,11 +124,12 @@ TYPED_TEST_P(ParserContractTest, LargeFrame) {
   using Traits = typename TestFixture::Traits;
   constexpr size_t kPayload = 65536;
 
-  EXPECT_EQ(this->feed(Traits::makeFrame(kPayload)), Result::Success);
+  EXPECT_EQ(this->feed(Traits::makeFrame(kPayload, 'a')), Result::Success);
   ASSERT_EQ(this->frames_.size(), 1);
   EXPECT_EQ(
       this->frames_[0]->computeChainDataLength(),
       Traits::emittedSize(kPayload));
+  TestFixture::expectPayload(*this->frames_[0], kPayload, 'a');
 }
 
 TYPED_TEST_P(ParserContractTest, LargeFrameInChunks) {
@@ -127,7 +137,7 @@ TYPED_TEST_P(ParserContractTest, LargeFrameInChunks) {
   constexpr size_t kPayload = 65536;
   constexpr size_t kChunk = 4096;
 
-  const auto bytes = Traits::makeFrame(kPayload);
+  const auto bytes = Traits::makeFrame(kPayload, 'a');
   for (size_t offset = 0; offset < bytes.size(); offset += kChunk) {
     const auto len = std::min(kChunk, bytes.size() - offset);
     EXPECT_EQ(
@@ -139,6 +149,7 @@ TYPED_TEST_P(ParserContractTest, LargeFrameInChunks) {
   EXPECT_EQ(
       this->frames_[0]->computeChainDataLength(),
       Traits::emittedSize(kPayload));
+  TestFixture::expectPayload(*this->frames_[0], kPayload, 'a');
 }
 
 TYPED_TEST_P(ParserContractTest, BackpressureStopsAfterFirstFrame) {
@@ -146,35 +157,42 @@ TYPED_TEST_P(ParserContractTest, BackpressureStopsAfterFirstFrame) {
   this->sinkResult_ = Result::Backpressure;
 
   EXPECT_EQ(this->feed(TestFixture::concatFrames(3, 20)), Result::Backpressure);
-  // Backpressure means "accepted, but slow down": the first frame landed.
+  // Backpressure means "accepted, but slow down". The first frame arrived, and
+  // its fill byte proves it is the first one and not a later one.
   ASSERT_EQ(this->frames_.size(), 1);
   EXPECT_EQ(
       this->frames_[0]->computeChainDataLength(), Traits::emittedSize(20));
+  TestFixture::expectPayload(*this->frames_[0], 20, TestFixture::fillFor(0));
 }
 
 TYPED_TEST_P(ParserContractTest, ErrorStopsProcessing) {
   using Traits = typename TestFixture::Traits;
   this->sinkResult_ = Result::Error;
 
-  EXPECT_EQ(this->feed(Traits::makeFrame(20)), Result::Error);
+  // Three frames, so that ignoring the refusal shows up as a second frame.
+  EXPECT_EQ(this->feed(TestFixture::concatFrames(3, 20)), Result::Error);
   // The frame was handed over before the sink refused it.
-  EXPECT_EQ(this->frames_.size(), 1);
+  ASSERT_EQ(this->frames_.size(), 1);
+  EXPECT_EQ(
+      this->frames_[0]->computeChainDataLength(), Traits::emittedSize(20));
+  TestFixture::expectPayload(*this->frames_[0], 20, TestFixture::fillFor(0));
 }
 
 TYPED_TEST_P(ParserContractTest, ResetDropsPartialFrame) {
   using Traits = typename TestFixture::Traits;
 
-  auto partial = Traits::makeFrame(20);
+  auto partial = Traits::makeFrame(20, 'a');
   partial.resize(Traits::headerSize());
   EXPECT_EQ(this->feed(partial), Result::Success);
   EXPECT_EQ(this->frames_.size(), 0);
 
   this->parser_.reset();
 
-  EXPECT_EQ(this->feed(Traits::makeFrame(30)), Result::Success);
+  EXPECT_EQ(this->feed(Traits::makeFrame(30, 'b')), Result::Success);
   ASSERT_EQ(this->frames_.size(), 1);
   EXPECT_EQ(
       this->frames_[0]->computeChainDataLength(), Traits::emittedSize(30));
+  TestFixture::expectPayload(*this->frames_[0], 30, 'b');
 }
 
 REGISTER_TYPED_TEST_SUITE_P(
@@ -204,8 +222,8 @@ struct FrameLengthParserTraits {
   // The length prefix is stripped, so only the payload reaches the sink.
   static size_t emittedSize(size_t payloadSize) { return payloadSize; }
 
-  static std::vector<uint8_t> makeFrame(size_t payloadSize) {
-    std::vector<uint8_t> bytes(kMetadataLengthSize + payloadSize, 'x');
+  static std::vector<uint8_t> makeFrame(size_t payloadSize, uint8_t fill) {
+    std::vector<uint8_t> bytes(kMetadataLengthSize + payloadSize, fill);
     write::writeFrameLength(bytes.data(), payloadSize);
     return bytes;
   }
