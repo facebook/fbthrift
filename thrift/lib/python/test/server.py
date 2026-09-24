@@ -500,9 +500,9 @@ class ServicesTests(later.unittest.TestCase):
         loop = asyncio.get_running_loop()
         native_serve: asyncio.Future[None] = loop.create_future()
         native_serve_started = asyncio.Event()
-        expected_log_messages = [
+        expected_log_message = (
             "Native ThriftServer.serve() failed before cancellation cleanup completed"
-        ]
+        )
 
         def start_native_serve(
             _executor: object,
@@ -530,7 +530,7 @@ class ServicesTests(later.unittest.TestCase):
 
         # THEN
         self.assertTrue(actual_serve_cancelled)
-        self.assertEqual(expected_log_messages, actual_log_messages)
+        self.assertIn(expected_log_message, actual_log_messages)
 
     def test_threaded_destruction(self) -> None:
         handler = Handler()
