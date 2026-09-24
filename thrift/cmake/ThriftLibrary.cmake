@@ -41,158 +41,6 @@ endif ()
 include(GNUInstallDirs)
 
 #
-# thrift_object
-# This creates a object that will contain the source files and all the proper
-# dependencies to generate and compile thrift generated files
-#
-# Params:
-#   @file_name - The name of the thrift file
-#   @services  - A list of services that are declared in the thrift file
-#   @language  - The generator to use (cpp, cpp2, or python)
-#   @options   - Extra options to pass to the generator
-#   @file_path - The directory where the thrift file lives
-#   @output_path - The directory where the thrift objects will be built
-#   @include_prefix - The last part of output_path, relative include prefix
-#
-# Output:
-#  A object file named `${file-name}-${language}-obj` to include into your
-#  project's library
-#
-# Notes:
-# If any of the fields is empty, it is still required to provide an empty string
-#
-# Usage:
-#   thrift_object(
-#     #file_name
-#     #services
-#     #language
-#     #options
-#     #file_path
-#     #output_path
-#     #include_prefix
-#   )
-#   add_library(somelib $<TARGET_OBJECTS:${file_name}-${language}-obj> ...)
-#
-
-macro (
-  thrift_object
-  file_name
-  services
-  language
-  options
-  file_path
-  output_path
-  include_prefix)
-  thrift_generate(
-    "${file_name}"
-    "${services}"
-    "${language}"
-    "${options}"
-    "${file_path}"
-    "${output_path}"
-    "${include_prefix}"
-    ${ARGN})
-  if ("${language}" STREQUAL "python")
-    # Python: generated .py files are the artifacts
-    message("Thrift will generate Python files for : ${file_name}-${language}")
-  else ()
-    bypass_source_check(${${file_name}-${language}-SOURCES})
-    add_library("${file_name}-${language}-obj" OBJECT
-                ${${file_name}-${language}-SOURCES})
-    # $<TARGET_OBJECTS:...> and add_dependencies() carry no usage
-    # requirements, so the generated sources need the roots directly.
-    target_include_directories(
-      "${file_name}-${language}-obj"
-      PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
-             $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>)
-    add_dependencies("${file_name}-${language}-obj"
-                     "${file_name}-${language}-target")
-    message("Thrift will create the Object file : ${file_name}-${language}-obj")
-  endif ()
-endmacro ()
-
-# thrift_library
-# Same as thrift object in terms of usage but creates the library instead of
-# object so that you can use to link against your library instead of including
-# all symbols into your library
-#
-# Params:
-#   @file_name - The name of the thrift file
-#   @services  - A list of services that are declared in the thrift file
-#   @language  - The generator to use (cpp, cpp2, or python)
-#   @options   - Extra options to pass to the generator
-#   @file_path - The directory where the thrift file lives
-#   @output_path - The directory where the thrift objects will be built
-#   @include_prefix - The last part of output_path, relative include prefix
-#
-# Output:
-#  A library file named `${file-name}-${language}` to link against your
-#  project's library
-#
-# Notes:
-# If any of the fields is empty, it is still required to provide an empty string
-#
-# Usage:
-#   thrift_library(
-#     #file_name
-#     #services
-#     #language
-#     #options
-#     #file_path
-#     #output_path
-#     #include_prefix
-#   )
-#   add_library(somelib ...)
-#   target_link_libraries(somelib ${file_name}-${language} ...)
-#
-
-macro (
-  thrift_library
-  file_name
-  services
-  language
-  options
-  file_path
-  output_path
-  include_prefix)
-  thrift_object(
-    "${file_name}"
-    "${services}"
-    "${language}"
-    "${options}"
-    "${file_path}"
-    "${output_path}"
-    "${include_prefix}"
-    ${ARGN})
-  if ("${language}" STREQUAL "python")
-    # Python: create an alias target so users can depend on <name>-python
-    add_custom_target("${file_name}-${language}" ALL)
-    add_dependencies("${file_name}-${language}"
-                     "${file_name}-${language}-target")
-    message("Thrift will create the Python library : ${file_name}-${language}")
-  else ()
-    add_library("${file_name}-${language}"
-                $<TARGET_OBJECTS:${file_name}-${language}-obj>)
-    target_link_libraries("${file_name}-${language}" ${THRIFTCPP2})
-    message("Thrift will create the Library file : ${file_name}-${language}")
-  endif ()
-endmacro ()
-
-#
-# bypass_source_check
-# This tells cmake to ignore if it doesn't see the following sources in
-# the library that will be installed. Thrift files are generated at compile
-# time so they do not exist at source check time
-#
-# Params:
-#   @sources - The list of files to ignore in source check
-#
-
-macro (bypass_source_check sources)
-  set_source_files_properties(${sources} PROPERTIES GENERATED TRUE)
-endmacro ()
-
-#
 # thrift_generate
 # This is used to codegen thrift files using the thrift compiler
 # Supports library names that differ from the file name (to handle two libraries
@@ -380,4 +228,156 @@ macro (
       FILES_MATCHING
       PATTERN "*.tcc")
   endif ()
+endmacro ()
+
+#
+# thrift_object
+# This creates a object that will contain the source files and all the proper
+# dependencies to generate and compile thrift generated files
+#
+# Params:
+#   @file_name - The name of the thrift file
+#   @services  - A list of services that are declared in the thrift file
+#   @language  - The generator to use (cpp, cpp2, or python)
+#   @options   - Extra options to pass to the generator
+#   @file_path - The directory where the thrift file lives
+#   @output_path - The directory where the thrift objects will be built
+#   @include_prefix - The last part of output_path, relative include prefix
+#
+# Output:
+#  A object file named `${file-name}-${language}-obj` to include into your
+#  project's library
+#
+# Notes:
+# If any of the fields is empty, it is still required to provide an empty string
+#
+# Usage:
+#   thrift_object(
+#     #file_name
+#     #services
+#     #language
+#     #options
+#     #file_path
+#     #output_path
+#     #include_prefix
+#   )
+#   add_library(somelib $<TARGET_OBJECTS:${file_name}-${language}-obj> ...)
+#
+
+macro (
+  thrift_object
+  file_name
+  services
+  language
+  options
+  file_path
+  output_path
+  include_prefix)
+  thrift_generate(
+    "${file_name}"
+    "${services}"
+    "${language}"
+    "${options}"
+    "${file_path}"
+    "${output_path}"
+    "${include_prefix}"
+    ${ARGN})
+  if ("${language}" STREQUAL "python")
+    # Python: generated .py files are the artifacts
+    message("Thrift will generate Python files for : ${file_name}-${language}")
+  else ()
+    bypass_source_check(${${file_name}-${language}-SOURCES})
+    add_library("${file_name}-${language}-obj" OBJECT
+                ${${file_name}-${language}-SOURCES})
+    # $<TARGET_OBJECTS:...> and add_dependencies() carry no usage
+    # requirements, so the generated sources need the roots directly.
+    target_include_directories(
+      "${file_name}-${language}-obj"
+      PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+             $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>)
+    add_dependencies("${file_name}-${language}-obj"
+                     "${file_name}-${language}-target")
+    message("Thrift will create the Object file : ${file_name}-${language}-obj")
+  endif ()
+endmacro ()
+
+# thrift_library
+# Same as thrift object in terms of usage but creates the library instead of
+# object so that you can use to link against your library instead of including
+# all symbols into your library
+#
+# Params:
+#   @file_name - The name of the thrift file
+#   @services  - A list of services that are declared in the thrift file
+#   @language  - The generator to use (cpp, cpp2, or python)
+#   @options   - Extra options to pass to the generator
+#   @file_path - The directory where the thrift file lives
+#   @output_path - The directory where the thrift objects will be built
+#   @include_prefix - The last part of output_path, relative include prefix
+#
+# Output:
+#  A library file named `${file-name}-${language}` to link against your
+#  project's library
+#
+# Notes:
+# If any of the fields is empty, it is still required to provide an empty string
+#
+# Usage:
+#   thrift_library(
+#     #file_name
+#     #services
+#     #language
+#     #options
+#     #file_path
+#     #output_path
+#     #include_prefix
+#   )
+#   add_library(somelib ...)
+#   target_link_libraries(somelib ${file_name}-${language} ...)
+#
+
+macro (
+  thrift_library
+  file_name
+  services
+  language
+  options
+  file_path
+  output_path
+  include_prefix)
+  thrift_object(
+    "${file_name}"
+    "${services}"
+    "${language}"
+    "${options}"
+    "${file_path}"
+    "${output_path}"
+    "${include_prefix}"
+    ${ARGN})
+  if ("${language}" STREQUAL "python")
+    # Python: create an alias target so users can depend on <name>-python
+    add_custom_target("${file_name}-${language}" ALL)
+    add_dependencies("${file_name}-${language}"
+                     "${file_name}-${language}-target")
+    message("Thrift will create the Python library : ${file_name}-${language}")
+  else ()
+    add_library("${file_name}-${language}"
+                $<TARGET_OBJECTS:${file_name}-${language}-obj>)
+    target_link_libraries("${file_name}-${language}" ${THRIFTCPP2})
+    message("Thrift will create the Library file : ${file_name}-${language}")
+  endif ()
+endmacro ()
+
+#
+# bypass_source_check
+# This tells cmake to ignore if it doesn't see the following sources in
+# the library that will be installed. Thrift files are generated at compile
+# time so they do not exist at source check time
+#
+# Params:
+#   @sources - The list of files to ignore in source check
+#
+
+macro (bypass_source_check sources)
+  set_source_files_properties(${sources} PROPERTIES GENERATED TRUE)
 endmacro ()
