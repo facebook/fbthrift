@@ -38,7 +38,7 @@ inline size_t readFrameOrMetadataSize(folly::io::Cursor& cursor) {
 
 struct SetupPayloadMetadata {
   uint32_t offset;
-  uint16_t size;
+  uint32_t size;
 };
 
 inline SetupPayloadMetadata parseSetupPayloadMetadata(
@@ -50,9 +50,9 @@ inline SetupPayloadMetadata parseSetupPayloadMetadata(
   cursor.skip(cursor.read<uint8_t>()); // metadata MIME
   cursor.skip(cursor.read<uint8_t>()); // data MIME
 
-  uint16_t metadataSize = 0;
+  uint32_t metadataSize = 0;
   if (flags & ::apache::thrift::fast_thrift::frame::detail::kMetadataBit) {
-    metadataSize = static_cast<uint16_t>(readFrameOrMetadataSize(cursor));
+    metadataSize = static_cast<uint32_t>(readFrameOrMetadataSize(cursor));
   }
 
   return SetupPayloadMetadata{
@@ -131,7 +131,7 @@ inline ParsedFrame parseFrame(
   size_t extraHeaderBytes = desc.headerSize - kBaseHeaderSize;
   cursor.skip(extraHeaderBytes);
 
-  uint16_t metadataSize = 0;
+  uint32_t metadataSize = 0;
   uint32_t payloadOffset;
   if (frameType == FrameType::SETUP) {
     const auto metadata = detail::parseSetupPayloadMetadata(cursor, flags);
@@ -142,7 +142,7 @@ inline ParsedFrame parseFrame(
     if ((flags & ::apache::thrift::fast_thrift::frame::detail::kMetadataBit) &&
         frameType != FrameType::METADATA_PUSH) {
       metadataSize =
-          static_cast<uint16_t>(detail::readFrameOrMetadataSize(cursor));
+          static_cast<uint32_t>(detail::readFrameOrMetadataSize(cursor));
     }
     payloadOffset = static_cast<uint32_t>(cursor.getCurrentPosition());
   }
@@ -150,7 +150,7 @@ inline ParsedFrame parseFrame(
 
   // For METADATA_PUSH frames, the entire payload is metadata (no data portion)
   if (frameType == FrameType::METADATA_PUSH) {
-    metadataSize = static_cast<uint16_t>(payloadSize);
+    metadataSize = payloadSize;
   }
 
   return ParsedFrame{

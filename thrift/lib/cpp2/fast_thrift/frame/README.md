@@ -222,11 +222,11 @@ struct FrameMetadata {
   const FrameDescriptor* descriptor;  // 8 bytes - flyweight pointer
   uint32_t streamId;                  // 4 bytes - cached
   Flags flags;                        // 2 bytes - cached
-  uint16_t metadataSize;              // 2 bytes - cached
+  uint32_t metadataSize;              // 4 bytes - cached
   uint32_t payloadOffset;             // 4 bytes - cached
   uint32_t payloadSize;               // 4 bytes - cached
-  uint64_t reserved_;                 // 8 bytes - alignment/future use
-};  // Total: 32 bytes
+  uint32_t reserved_;                 // 4 bytes - future use
+};  // Total: 32 bytes, including 2 bytes of padding
 ```
 
 ### Why Flyweight Pattern for FrameDescriptor?
