@@ -26,6 +26,9 @@ TEST(GetStandardProtocolTest, Binary) {
       get_standard_protocol<BinaryProtocolReader>,
       type::StandardProtocol::Binary);
   EXPECT_EQ(
+      get_standard_protocol<BinaryProtocolChainReader>,
+      type::StandardProtocol::Binary);
+  EXPECT_EQ(
       get_standard_protocol<BinaryProtocolWriter>,
       type::StandardProtocol::Binary);
 }

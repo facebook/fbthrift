@@ -31,14 +31,17 @@ FOLLY_GFLAGS_DEFINE_int32(
 
 namespace apache::thrift {
 
-[[noreturn]] void BinaryProtocolReader::throwBadVersionIdentifier(int32_t sz) {
+template <typename Cursor>
+[[noreturn]] void BinaryProtocolReaderBase<Cursor>::throwBadVersionIdentifier(
+    int32_t sz) {
   throw TProtocolException(
       TProtocolException::BAD_VERSION,
       folly::to<std::string>("Bad version identifier, sz=", sz));
 }
 
-[[noreturn]] void BinaryProtocolReader::throwMissingVersionIdentifier(
-    int32_t sz) {
+template <typename Cursor>
+[[noreturn]] void
+BinaryProtocolReaderBase<Cursor>::throwMissingVersionIdentifier(int32_t sz) {
   throw TProtocolException(
       TProtocolException::BAD_VERSION,
       folly::to<std::string>(
@@ -46,8 +49,18 @@ namespace apache::thrift {
           sz));
 }
 
+template void
+BinaryProtocolReaderBase<folly::io::Cursor>::throwBadVersionIdentifier(int32_t);
+template void BinaryProtocolReaderBase<
+    folly::io::Cursor>::throwMissingVersionIdentifier(int32_t);
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::throwBadVersionIdentifier(int32_t);
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::throwMissingVersionIdentifier(int32_t);
+
+template <typename Cursor>
 template <typename T>
-void BinaryProtocolReader::readArithmeticVector(
+void BinaryProtocolReaderBase<Cursor>::readArithmeticVector(
     T* outputPtr, size_t numElements) {
   constexpr size_t size = sizeof(T);
   for (;;) {
@@ -66,31 +79,52 @@ void BinaryProtocolReader::readArithmeticVector(
       // read in the current buffer. readBE to handle elements that straddle
       // buffer boundaries, skip over empty buffers, and throw on underflow.
       numElements--;
-      *outputPtr++ = in_.readBE<T>();
+      *outputPtr++ = in_.template readBE<T>();
     }
   }
 }
 
-template void BinaryProtocolReader::readArithmeticVector<int64_t>(
-    int64_t* outputPtr, size_t numElements);
-template void BinaryProtocolReader::readArithmeticVector<uint64_t>(
-    uint64_t* outputPtr, size_t numElements);
-template void BinaryProtocolReader::readArithmeticVector<int32_t>(
-    int32_t* outputPtr, size_t numElements);
-template void BinaryProtocolReader::readArithmeticVector<uint32_t>(
-    uint32_t* outputPtr, size_t numElements);
-template void BinaryProtocolReader::readArithmeticVector<int16_t>(
-    int16_t* outputPtr, size_t numElements);
-template void BinaryProtocolReader::readArithmeticVector<uint16_t>(
-    uint16_t* outputPtr, size_t numElements);
-template void BinaryProtocolReader::readArithmeticVector<int8_t>(
-    int8_t* outputPtr, size_t numElements);
-template void BinaryProtocolReader::readArithmeticVector<uint8_t>(
-    uint8_t* outputPtr, size_t numElements);
-template void BinaryProtocolReader::readArithmeticVector<float>(
-    float* outputPtr, size_t numElements);
-template void BinaryProtocolReader::readArithmeticVector<double>(
-    double* outputPtr, size_t numElements);
+template void BinaryProtocolReaderBase<folly::io::Cursor>::readArithmeticVector<
+    int64_t>(int64_t*, size_t);
+template void BinaryProtocolReaderBase<folly::io::Cursor>::readArithmeticVector<
+    uint64_t>(uint64_t*, size_t);
+template void BinaryProtocolReaderBase<folly::io::Cursor>::readArithmeticVector<
+    int32_t>(int32_t*, size_t);
+template void BinaryProtocolReaderBase<folly::io::Cursor>::readArithmeticVector<
+    uint32_t>(uint32_t*, size_t);
+template void BinaryProtocolReaderBase<folly::io::Cursor>::readArithmeticVector<
+    int16_t>(int16_t*, size_t);
+template void BinaryProtocolReaderBase<folly::io::Cursor>::readArithmeticVector<
+    uint16_t>(uint16_t*, size_t);
+template void BinaryProtocolReaderBase<folly::io::Cursor>::readArithmeticVector<
+    int8_t>(int8_t*, size_t);
+template void BinaryProtocolReaderBase<folly::io::Cursor>::readArithmeticVector<
+    uint8_t>(uint8_t*, size_t);
+template void BinaryProtocolReaderBase<folly::io::Cursor>::readArithmeticVector<
+    float>(float*, size_t);
+template void BinaryProtocolReaderBase<folly::io::Cursor>::readArithmeticVector<
+    double>(double*, size_t);
+
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::readArithmeticVector<int64_t>(int64_t*, size_t);
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::readArithmeticVector<uint64_t>(uint64_t*, size_t);
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::readArithmeticVector<int32_t>(int32_t*, size_t);
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::readArithmeticVector<uint32_t>(uint32_t*, size_t);
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::readArithmeticVector<int16_t>(int16_t*, size_t);
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::readArithmeticVector<uint16_t>(uint16_t*, size_t);
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::readArithmeticVector<int8_t>(int8_t*, size_t);
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::readArithmeticVector<uint8_t>(uint8_t*, size_t);
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::readArithmeticVector<float>(float*, size_t);
+template void BinaryProtocolReaderBase<
+    io::IOBufChainCursor>::readArithmeticVector<double>(double*, size_t);
 
 template <typename T>
 inline size_t BinaryProtocolWriter::writeArithmeticVector(
@@ -137,7 +171,8 @@ template size_t BinaryProtocolWriter::writeArithmeticVector<float>(
 template size_t BinaryProtocolWriter::writeArithmeticVector<double>(
     const double* inputPtr, size_t numElements);
 
-void BinaryProtocolReader::skip(TType type, int depth) {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::skip(TType type, int depth) {
   if (depth >= FLAGS_thrift_protocol_max_depth) {
     protocol::TProtocolException::throwExceededDepthLimit();
   }
@@ -223,5 +258,8 @@ void BinaryProtocolReader::skip(TType type, int depth) {
   }
   skipBytes(bytesToSkip);
 }
+
+template void BinaryProtocolReaderBase<folly::io::Cursor>::skip(TType, int);
+template void BinaryProtocolReaderBase<io::IOBufChainCursor>::skip(TType, int);
 
 } // namespace apache::thrift

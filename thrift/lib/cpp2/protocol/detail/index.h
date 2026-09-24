@@ -219,10 +219,14 @@ class IndexWriterImpl {
 template <class Protocol>
 constexpr bool hasIndexSupport = [] {
   bool has = false;
-  if constexpr (requires { Protocol::ProtocolWriter::kHasIndexSupport(); }) {
-    has = Protocol::ProtocolWriter::kHasIndexSupport();
-  } else if constexpr (requires { Protocol::kHasIndexSupport(); }) {
+  // BinaryProtocolChainReader doesn't have index support yet, but its protocol
+  // writer BinaryProtocolWriter does. Check reader first.
+  if constexpr (requires { Protocol::kHasIndexSupport(); }) {
     has = Protocol::kHasIndexSupport();
+  } else if constexpr (requires {
+                         Protocol::ProtocolWriter::kHasIndexSupport();
+                       }) {
+    has = Protocol::ProtocolWriter::kHasIndexSupport();
   }
   return has && !std::is_base_of_v<VirtualReaderBase, Protocol>;
 }();

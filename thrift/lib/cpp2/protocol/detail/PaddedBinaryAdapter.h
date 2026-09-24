@@ -131,9 +131,9 @@ struct PaddedBinaryAdapter {
     prot.readBinary(data.buf);
 
     // Padding is only supported for binary protocol.
-    if constexpr (std::is_same_v<
-                      std::remove_cv_t<Protocol>,
-                      BinaryProtocolReader>) {
+    if constexpr (
+        std::is_same_v<std::remove_cv_t<Protocol>, BinaryProtocolReader> ||
+        std::is_same_v<std::remove_cv_t<Protocol>, BinaryProtocolChainReader>) {
       FB_LOG_ONCE(INFO) << "Using PaddedBinaryAdapter with binary protocol";
 
       // Not enough data to read the padding header.

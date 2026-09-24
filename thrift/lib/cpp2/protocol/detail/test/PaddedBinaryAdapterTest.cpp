@@ -85,6 +85,44 @@ TEST_F(PaddedBinaryAdapterTest, SinglePaddedField) {
   EXPECT_EQ(deserializedData, testData);
 }
 
+TEST_F(PaddedBinaryAdapterTest, ChainReaderDecodesPaddedField) {
+  const std::string testData = "chain reader padded data";
+  PaddedBinaryData original(16, folly::IOBuf::copyBuffer(testData));
+  BinaryProtocolWriter writer;
+  folly::IOBufQueue queue;
+  writer.setOutput(&queue);
+  PaddedBinaryAdapter::encode<apache::thrift::type::binary_t>(writer, original);
+  IOBufChain chain{queue.move()};
+
+  BinaryProtocolChainReader reader;
+  reader.setInput(&chain);
+  PaddedBinaryData deserialized;
+  PaddedBinaryAdapter::decode<apache::thrift::type::binary_t>(
+      reader, deserialized);
+
+  EXPECT_EQ(16, deserialized.paddingBytes);
+  EXPECT_EQ(testData, deserialized.buf->to<std::string>());
+}
+
+TEST_F(PaddedBinaryAdapterTest, ChainReaderDecodesEmptyField) {
+  PaddedBinaryData original(16, nullptr);
+  BinaryProtocolWriter writer;
+  folly::IOBufQueue queue;
+  writer.setOutput(&queue);
+  PaddedBinaryAdapter::encode<apache::thrift::type::binary_t>(writer, original);
+  IOBufChain chain{queue.move()};
+
+  BinaryProtocolChainReader reader;
+  reader.setInput(&chain);
+  PaddedBinaryData deserialized;
+  PaddedBinaryAdapter::decode<apache::thrift::type::binary_t>(
+      reader, deserialized);
+
+  EXPECT_EQ(0, deserialized.paddingBytes);
+  ASSERT_NE(nullptr, deserialized.buf);
+  EXPECT_EQ(0, deserialized.buf->computeChainDataLength());
+}
+
 TEST_F(PaddedBinaryAdapterTest, MultiplePaddedFields) {
   MultipleAlignedBinary original;
   original.data()->emplace_back(8, folly::IOBuf::copyBuffer("First field"));

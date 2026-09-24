@@ -33,6 +33,8 @@ namespace apache::thrift::io {
 
 class IOBufChainCursor {
  public:
+  using Buffer = apache::thrift::IOBufChain;
+
   IOBufChainCursor() noexcept = default;
   explicit IOBufChainCursor(const apache::thrift::IOBufChain& chain) noexcept;
 

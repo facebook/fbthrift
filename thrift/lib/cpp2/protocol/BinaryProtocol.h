@@ -17,6 +17,7 @@
 #ifndef CPP2_PROTOCOL_TBINARYPROTOCOL_H_
 #define CPP2_PROTOCOL_TBINARYPROTOCOL_H_ 1
 
+#include <utility>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
@@ -24,6 +25,7 @@
 #include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp2/IOBufChain.h>
+#include <thrift/lib/cpp2/IOBufChainCursor.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 FOLLY_GFLAGS_DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 FOLLY_GFLAGS_DECLARE_int32(thrift_cpp2_protocol_reader_container_limit);
@@ -182,22 +184,26 @@ class BinaryProtocolWriter : public detail::ProtocolBase {
   ExternalBufferSharing sharing_;
 };
 
-class BinaryProtocolReader : public detail::ProtocolBase {
+template <typename Cursor>
+class BinaryProtocolReaderBase : public detail::ProtocolBase {
  public:
+  using Buffer = typename Cursor::Buffer;
   static const int32_t VERSION_MASK = 0xffff0000;
   static const int32_t VERSION_1 = 0x80010000;
 
   using ProtocolWriter = BinaryProtocolWriter;
 
-  explicit BinaryProtocolReader(
-      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
+ protected:
+  explicit BinaryProtocolReaderBase(
+      Cursor cursor, ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
       : string_limit_(FLAGS_thrift_cpp2_protocol_reader_string_limit),
         container_limit_(FLAGS_thrift_cpp2_protocol_reader_container_limit),
         sharing_(sharing),
         strict_read_(true),
-        in_(nullptr) {}
+        in_(std::move(cursor)) {}
 
-  BinaryProtocolReader(
+  BinaryProtocolReaderBase(
+      Cursor cursor,
       int32_t string_limit,
       int32_t container_limit,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
@@ -205,8 +211,9 @@ class BinaryProtocolReader : public detail::ProtocolBase {
         container_limit_(container_limit),
         sharing_(sharing),
         strict_read_(true),
-        in_(nullptr) {}
+        in_(std::move(cursor)) {}
 
+ public:
   static constexpr ProtocolType protocolType() {
     return ProtocolType::T_BINARY_PROTOCOL;
   }
@@ -218,8 +225,6 @@ class BinaryProtocolReader : public detail::ProtocolBase {
   static constexpr bool kOmitsStringSizes() { return false; }
 
   static constexpr bool kHasDeferredRead() { return false; }
-
-  static constexpr bool kCanReadStringView() { return true; }
 
   static constexpr bool kSupportsArithmeticVectors() { return true; }
 
@@ -234,13 +239,13 @@ class BinaryProtocolReader : public detail::ProtocolBase {
   void setStrict(bool strict_read = true) { strict_read_ = strict_read; }
 
   /**
-   * The IOBuf itself is managed by the caller.
+   * The input buffer is managed by the caller.
    * It must exist for the life of the BinaryProtocol as well,
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other buffer.
    */
   void setInput(const Cursor& cursor) { in_ = cursor; }
-  void setInput(const IOBuf* buf) { in_.reset(buf); }
+  void setInput(const Buffer* buf) { in_.reset(buf); }
 
   /**
    * Reading functions
@@ -273,8 +278,7 @@ class BinaryProtocolReader : public detail::ProtocolBase {
   template <typename StrType>
   void readBinary(StrType& str);
   void readBinary(std::unique_ptr<folly::IOBuf>& str);
-  void readBinary(folly::IOBuf& str);
-  void readBinary(IOBufChain& str);
+  void readBinary(Buffer& str);
   void readStringSize(int32_t& size) {
     readI32(size);
     checkStringSize(size);
@@ -324,33 +328,31 @@ class BinaryProtocolReader : public detail::ProtocolBase {
   template <typename T>
   friend class ProtocolReaderWithRefill;
   friend class BinaryProtocolReaderWithRefill;
-
- private:
-  bool readBoolSafe();
 };
 
-struct BinaryProtocolReader::StructReadState {
+template <typename Cursor>
+struct BinaryProtocolReaderBase<Cursor>::StructReadState {
   int16_t fieldId;
   apache::thrift::protocol::TType fieldType;
 
   constexpr static bool kAcceptsContext = false;
 
-  void readStructBegin(BinaryProtocolReader* iprot);
+  void readStructBegin(BinaryProtocolReaderBase* iprot);
 
-  void readStructEnd(BinaryProtocolReader* iprot);
+  void readStructEnd(BinaryProtocolReaderBase* iprot);
 
-  void readFieldBegin(BinaryProtocolReader* iprot) {
+  void readFieldBegin(BinaryProtocolReaderBase* iprot) {
     iprot->readFieldBeginWithState(*this);
   }
 
-  FOLLY_NOINLINE void readFieldBeginNoInline(BinaryProtocolReader* iprot) {
+  FOLLY_NOINLINE void readFieldBeginNoInline(BinaryProtocolReaderBase* iprot) {
     iprot->readFieldBeginWithState(*this);
   }
 
-  void readFieldEnd(BinaryProtocolReader* /*iprot*/) {}
+  void readFieldEnd(BinaryProtocolReaderBase* /*iprot*/) {}
 
   FOLLY_ALWAYS_INLINE bool advanceToNextField(
-      BinaryProtocolReader* iprot,
+      BinaryProtocolReaderBase* iprot,
       int16_t /*currFieldId*/,
       int16_t nextFieldId,
       TType nextFieldType) {
@@ -363,20 +365,20 @@ struct BinaryProtocolReader::StructReadState {
    * each protocol since some protocol may not encode type information.
    */
   FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
-      BinaryProtocolReader* /*iprot*/, TType expectedFieldType) {
+      BinaryProtocolReaderBase* /*iprot*/, TType expectedFieldType) {
     return fieldType == expectedFieldType;
   }
 
-  void skip(BinaryProtocolReader* iprot) { iprot->skip(fieldType); }
+  void skip(BinaryProtocolReaderBase* iprot) { iprot->skip(fieldType); }
 
   std::string& fieldName() {
     throw std::logic_error("BinaryProtocol doesn't support field names");
   }
 
-  void afterAdvanceFailure(BinaryProtocolReader* /*iprot*/) {}
+  void afterAdvanceFailure(BinaryProtocolReaderBase* /*iprot*/) {}
 
-  void beforeSubobject(BinaryProtocolReader* /* iprot */) {}
-  void afterSubobject(BinaryProtocolReader* /* iprot */) {}
+  void beforeSubobject(BinaryProtocolReaderBase* /* iprot */) {}
+  void afterSubobject(BinaryProtocolReaderBase* /* iprot */) {}
 
   bool atStop() { return fieldType == apache::thrift::protocol::T_STOP; }
 
@@ -386,9 +388,64 @@ struct BinaryProtocolReader::StructReadState {
   }
 };
 
+class BinaryProtocolReader
+    : public BinaryProtocolReaderBase<folly::io::Cursor> {
+  using Base = BinaryProtocolReaderBase<folly::io::Cursor>;
+
+ public:
+  explicit BinaryProtocolReader(
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
+      : Base(folly::io::Cursor{nullptr}, sharing) {}
+
+  BinaryProtocolReader(
+      int32_t string_limit,
+      int32_t container_limit,
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
+      : Base(
+            folly::io::Cursor{nullptr},
+            string_limit,
+            container_limit,
+            sharing) {}
+
+  static constexpr bool kCanReadStringView() { return true; }
+
+  using Base::readBinary;
+  void readBinary(IOBufChain& str);
+
+ private:
+  bool readBoolSafe();
+
+  friend class BinaryProtocolReaderWithRefill;
+};
+
+class BinaryProtocolChainReader
+    : public BinaryProtocolReaderBase<io::IOBufChainCursor> {
+  using Base = BinaryProtocolReaderBase<io::IOBufChainCursor>;
+
+ public:
+  explicit BinaryProtocolChainReader(
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
+      : Base(io::IOBufChainCursor{}, sharing) {}
+
+  BinaryProtocolChainReader(
+      int32_t string_limit,
+      int32_t container_limit,
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
+      : Base(io::IOBufChainCursor{}, string_limit, container_limit, sharing) {}
+
+  static constexpr bool kCanReadStringView() { return false; }
+
+  static constexpr bool kHasIndexSupport() { return false; }
+
+  using Base::readBinary;
+  void readBinary(folly::IOBuf& str);
+};
+
 static_assert(!usesFieldNames<BinaryProtocolReader>());
+static_assert(!usesFieldNames<BinaryProtocolChainReader>());
 static_assert(!usesFieldNames<BinaryProtocolWriter>());
 static_assert(ThriftProtocolReader<BinaryProtocolReader>);
+static_assert(ThriftProtocolReader<BinaryProtocolChainReader>);
 static_assert(ThriftProtocolWriter<BinaryProtocolWriter>);
 
 namespace detail {
@@ -399,6 +456,10 @@ struct ProtocolReaderStructReadState;
 template <>
 struct ProtocolReaderStructReadState<BinaryProtocolReader>
     : BinaryProtocolReader::StructReadState {};
+
+template <>
+struct ProtocolReaderStructReadState<BinaryProtocolChainReader>
+    : BinaryProtocolChainReader::StructReadState {};
 
 } // namespace detail
 } // namespace apache::thrift

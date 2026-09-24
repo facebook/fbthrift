@@ -513,8 +513,8 @@ struct StringTraits<std::unique_ptr<folly::IOBuf>> {
 
 namespace detail {
 
-template <typename StrType>
-inline void readStringBody(StrType& str, folly::io::Cursor& in, size_t size) {
+template <typename StrType, typename CursorType>
+void readStringBody(StrType& str, CursorType& in, size_t size) {
   // Catch empty string case
   if (size == 0) {
     str.clear();
@@ -542,8 +542,8 @@ inline void readStringBody(StrType& str, folly::io::Cursor& in, size_t size) {
   }
 }
 
-inline void readStringBody(
-    std::string& str, folly::io::Cursor& in, size_t size) {
+template <typename CursorType>
+void readStringBody(std::string& str, CursorType& in, size_t size) {
   // Check if buffer has enough data before allocating memory.
   // This prevents memory exhaustion attacks where a small packet can claim
   // a large string size, causing massive memory allocation.

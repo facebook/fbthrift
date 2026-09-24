@@ -418,7 +418,8 @@ inline uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
  * Reading functions
  */
 
-inline void BinaryProtocolReader::readMessageBegin(
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readMessageBegin(
     std::string& name, MessageType& messageType, int32_t& seqid) {
   int32_t sz;
   readI32(sz);
@@ -446,30 +447,36 @@ inline void BinaryProtocolReader::readMessageBegin(
   }
 }
 
-inline void BinaryProtocolReader::readMessageEnd() {}
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readMessageEnd() {}
 
-inline void BinaryProtocolReader::readStructBegin(std::string& name) {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readStructBegin(std::string& name) {
   descend();
   if (!name.empty()) {
     name.clear();
   }
 }
 
-inline void BinaryProtocolReader::readStructEnd() {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readStructEnd() {
   ascend();
 }
 
-inline void BinaryProtocolReader::StructReadState::readStructBegin(
-    BinaryProtocolReader* iprot) {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::StructReadState::readStructBegin(
+    BinaryProtocolReaderBase* iprot) {
   iprot->descend();
 }
 
-inline void BinaryProtocolReader::StructReadState::readStructEnd(
-    BinaryProtocolReader* iprot) {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::StructReadState::readStructEnd(
+    BinaryProtocolReaderBase* iprot) {
   iprot->ascend();
 }
 
-inline void BinaryProtocolReader::readFieldBegin(
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readFieldBegin(
     std::string& /*name*/, TType& fieldType, int16_t& fieldId) {
   int8_t type;
   readByte(type);
@@ -481,9 +488,11 @@ inline void BinaryProtocolReader::readFieldBegin(
   readI16(fieldId);
 }
 
-inline void BinaryProtocolReader::readFieldEnd() {}
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readFieldEnd() {}
 
-inline void BinaryProtocolReader::readMapBegin(
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readMapBegin(
     TType& keyType, TType& valType, uint32_t& size) {
   descend();
   int8_t k, v;
@@ -497,11 +506,13 @@ inline void BinaryProtocolReader::readMapBegin(
   size = (uint32_t)sizei;
 }
 
-inline void BinaryProtocolReader::readMapEnd() {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readMapEnd() {
   ascend();
 }
 
-inline void BinaryProtocolReader::readListBegin(
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readListBegin(
     TType& elemType, uint32_t& size) {
   descend();
   int8_t e;
@@ -513,11 +524,13 @@ inline void BinaryProtocolReader::readListBegin(
   size = (uint32_t)sizei;
 }
 
-inline void BinaryProtocolReader::readListEnd() {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readListEnd() {
   ascend();
 }
 
-inline void BinaryProtocolReader::readSetBegin(
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readSetBegin(
     TType& elemType, uint32_t& size) {
   descend();
   int8_t e;
@@ -529,57 +542,68 @@ inline void BinaryProtocolReader::readSetBegin(
   size = (uint32_t)sizei;
 }
 
-inline void BinaryProtocolReader::readSetEnd() {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readSetEnd() {
   ascend();
 }
 
-inline void BinaryProtocolReader::readBool(bool& value) {
-  auto byte = in_.read<uint8_t>();
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readBool(bool& value) {
+  auto byte = in_.template read<uint8_t>();
   if (byte >= 2) {
     TProtocolException::throwBoolValueOutOfRange(byte);
   }
   value = static_cast<bool>(byte);
 }
 
-inline void BinaryProtocolReader::readBool(std::vector<bool>::reference value) {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readBool(
+    std::vector<bool>::reference value) {
   bool ret = false;
   readBool(ret);
   value = ret;
 }
 
-inline void BinaryProtocolReader::readByte(int8_t& byte) {
-  byte = in_.read<int8_t>();
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readByte(int8_t& byte) {
+  byte = in_.template read<int8_t>();
 }
 
-inline void BinaryProtocolReader::readI16(int16_t& i16) {
-  i16 = in_.readBE<int16_t>();
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readI16(int16_t& i16) {
+  i16 = in_.template readBE<int16_t>();
 }
 
-inline void BinaryProtocolReader::readI32(int32_t& i32) {
-  i32 = in_.readBE<int32_t>();
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readI32(int32_t& i32) {
+  i32 = in_.template readBE<int32_t>();
 }
 
-inline void BinaryProtocolReader::readI64(int64_t& i64) {
-  i64 = in_.readBE<int64_t>();
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readI64(int64_t& i64) {
+  i64 = in_.template readBE<int64_t>();
 }
 
-inline void BinaryProtocolReader::readDouble(double& dub) {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readDouble(double& dub) {
   static_assert(sizeof(double) == sizeof(uint64_t));
   static_assert(std::numeric_limits<double>::is_iec559);
 
-  uint64_t bits = in_.readBE<int64_t>();
+  uint64_t bits = in_.template readBE<int64_t>();
   dub = std::bit_cast<double>(bits);
 }
 
-inline void BinaryProtocolReader::readFloat(float& flt) {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readFloat(float& flt) {
   static_assert(sizeof(float) == sizeof(uint32_t));
   static_assert(std::numeric_limits<double>::is_iec559);
 
-  uint32_t bits = in_.readBE<int32_t>();
+  uint32_t bits = in_.template readBE<int32_t>();
   flt = std::bit_cast<float>(bits);
 }
 
-inline void BinaryProtocolReader::checkStringSize(int32_t size) {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::checkStringSize(int32_t size) {
   // Catch error cases
   if (size < 0) {
     TProtocolException::throwNegativeSize();
@@ -589,7 +613,8 @@ inline void BinaryProtocolReader::checkStringSize(int32_t size) {
   }
 }
 
-inline void BinaryProtocolReader::checkContainerSize(int32_t size) {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::checkContainerSize(int32_t size) {
   if (size < 0) {
     TProtocolException::throwNegativeSize();
   } else if (container_limit_ && size > container_limit_) {
@@ -597,27 +622,38 @@ inline void BinaryProtocolReader::checkContainerSize(int32_t size) {
   }
 }
 
+template <typename Cursor>
 template <typename StrType>
-inline void BinaryProtocolReader::readString(StrType& str) {
+void BinaryProtocolReaderBase<Cursor>::readString(StrType& str) {
   int32_t size;
   readI32(size);
   readStringBody(str, size);
 }
 
+template <typename Cursor>
 template <typename StrType>
-inline void BinaryProtocolReader::readBinary(StrType& str) {
+void BinaryProtocolReaderBase<Cursor>::readBinary(StrType& str) {
   readString(str);
 }
 
-inline void BinaryProtocolReader::readBinary(
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readBinary(
     std::unique_ptr<folly::IOBuf>& str) {
-  if (!str) {
-    str = std::make_unique<folly::IOBuf>();
-  }
-  readBinary(*str);
+  int32_t size;
+  readI32(size);
+  checkStringSize(size);
+  in_.clone(str, size, apache::thrift::detail::cloneOwnership(sharing_));
 }
 
-inline void BinaryProtocolReader::readBinary(folly::IOBuf& str) {
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readBinary(Buffer& str) {
+  int32_t size;
+  readI32(size);
+  checkStringSize(size);
+  in_.clone(str, size, apache::thrift::detail::cloneOwnership(sharing_));
+}
+
+inline void BinaryProtocolChainReader::readBinary(folly::IOBuf& str) {
   int32_t size;
   readI32(size);
   checkStringSize(size);
@@ -630,13 +666,16 @@ inline void BinaryProtocolReader::readBinary(IOBufChain& str) {
   str = IOBufChain{std::move(data)};
 }
 
+template <typename Cursor>
 template <typename StrType>
-inline void BinaryProtocolReader::readStringBody(StrType& str, int32_t size) {
+void BinaryProtocolReaderBase<Cursor>::readStringBody(
+    StrType& str, int32_t size) {
   checkStringSize(size);
   apache::thrift::detail::readStringBody(str, in_, size);
 }
 
-inline bool BinaryProtocolReader::advanceToNextField(
+template <typename Cursor>
+bool BinaryProtocolReaderBase<Cursor>::advanceToNextField(
     int16_t nextFieldId, TType nextFieldType, StructReadState& state) {
   if (nextFieldType == TType::T_STOP) {
     if (in_.length() && *in_.data() == TType::T_STOP) {
@@ -673,7 +712,8 @@ inline bool BinaryProtocolReader::advanceToNextField(
   return false;
 }
 
-inline void BinaryProtocolReader::readFieldBeginWithState(
+template <typename Cursor>
+void BinaryProtocolReaderBase<Cursor>::readFieldBeginWithState(
     StructReadState& state) {
   int8_t type;
   readByte(type);
@@ -684,7 +724,9 @@ inline void BinaryProtocolReader::readFieldBeginWithState(
   readI16(state.fieldId);
 }
 
-constexpr std::size_t BinaryProtocolReader::fixedSizeInContainer(TType type) {
+template <typename Cursor>
+constexpr std::size_t BinaryProtocolReaderBase<Cursor>::fixedSizeInContainer(
+    TType type) {
   switch (type) {
     case TType::T_BOOL:
     case TType::T_BYTE:

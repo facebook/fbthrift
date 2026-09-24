@@ -34,6 +34,8 @@ template <typename T>
 consteval type::StandardProtocol standardProtocolFor() {
   if constexpr (std::same_as<T, BinaryProtocolReader>) {
     return type::StandardProtocol::Binary;
+  } else if constexpr (std::same_as<T, BinaryProtocolChainReader>) {
+    return type::StandardProtocol::Binary;
   } else if constexpr (std::same_as<T, BinaryProtocolWriter>) {
     return type::StandardProtocol::Binary;
   } else if constexpr (std::same_as<T, CompactProtocolReader>) {
