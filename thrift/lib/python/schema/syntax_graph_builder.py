@@ -459,6 +459,9 @@ class _GraphBuilder:
         return ExceptionNode(
             uri=e.attrs.uri or "",
             fields=self._create_fields(e.fields),
+            safety=e.safety,
+            kind=e.kind,
+            blame=e.blame,
             **self._common_kwargs(key, e.attrs),
         )
 
@@ -501,39 +504,63 @@ class _GraphBuilder:
                     id=exc.id,
                     name=exc.attrs.name,
                     type=self._type_of(exc.type),
+                    annotations=self._create_annotations(exc.attrs),
                 )
             )
         return result
 
-    def _create_function(self, func: _schema_types.Function) -> FunctionNode:
-        # Return type
-        response_type = self._type_of_or_none(func.returnType)
-
-        # Stream or sink
-        stream = None
-        sink = None
-        if func.streamOrSink and func.streamOrSink.value is not None:
-            _RT = _schema_types.ReturnType.Type
-            if func.streamOrSink.type == _RT.streamType:
-                s = func.streamOrSink.streamType
-                stream = FunctionStream(
-                    payload_type=self._type_of(s.payload),
-                    exceptions=self._create_function_exceptions(s.exceptions),
-                )
-            elif func.streamOrSink.type == _RT.sinkType:
-                s = func.streamOrSink.sinkType
-                sink = FunctionSink(
-                    payload_type=self._type_of(s.payload),
-                    final_response_type=self._type_of(s.finalResponse),
+    def _create_stream_and_sink(
+        self, return_type: _schema_types.ReturnType | None
+    ) -> tuple[FunctionStream | None, FunctionSink | None]:
+        if return_type is None or return_type.value is None:
+            return None, None
+        _RT = _schema_types.ReturnType.Type
+        if return_type.type == _RT.streamType:
+            stream = return_type.streamType
+            return (
+                FunctionStream(
+                    payload_type=self._type_of(stream.payload),
+                    exceptions=self._create_function_exceptions(stream.exceptions),
+                ),
+                None,
+            )
+        if return_type.type == _RT.sinkType:
+            sink = return_type.sinkType
+            return (
+                None,
+                FunctionSink(
+                    payload_type=self._type_of(sink.payload),
+                    final_response_type=self._type_of(sink.finalResponse),
                     client_exceptions=self._create_function_exceptions(
-                        s.clientExceptions
+                        sink.clientExceptions
                     ),
                     server_exceptions=self._create_function_exceptions(
-                        s.serverExceptions
+                        sink.serverExceptions
                     ),
-                )
+                ),
+            )
+        if return_type.type == _RT.bidirectionalStream:
+            bidi = return_type.bidirectionalStream
+            return (
+                FunctionStream(
+                    payload_type=self._type_of(bidi.streamPayload),
+                    exceptions=self._create_function_exceptions(bidi.streamExceptions),
+                ),
+                FunctionSink(
+                    payload_type=self._type_of(bidi.sinkPayload),
+                    final_response_type=None,
+                    client_exceptions=self._create_function_exceptions(
+                        bidi.sinkExceptions
+                    ),
+                    server_exceptions=[],
+                ),
+            )
+        return None, None
 
-        # Interaction
+    def _create_function(self, func: _schema_types.Function) -> FunctionNode:
+        response_type = self._type_of_or_none(func.returnType)
+        stream, sink = self._create_stream_and_sink(func.streamOrSink)
+
         interaction_lazy: _Lazy[InteractionNode] | None = None
         if (
             func.interactionType
@@ -559,6 +586,7 @@ class _GraphBuilder:
                         id=p.id,
                         name=p.attrs.name,
                         type=self._type_of(p.type),
+                        annotations=self._create_annotations(p.attrs),
                     )
                 )
 
@@ -568,6 +596,9 @@ class _GraphBuilder:
             response=response,
             params=params,
             exceptions=self._create_function_exceptions(func.exceptions),
+            qualifier=func.qualifier,
+            is_performs=func.isPerforms,
+            annotations=self._create_annotations(func.attrs),
         )
 
     def _create_service(self, key: bytes, svc: _schema_types.Service) -> ServiceNode:

@@ -16,6 +16,9 @@ import pathlib
 import unittest
 
 from apache.thrift.protocol.detail.protocol_detail.thrift_types import Value
+from apache.thrift.type.schema.thrift_types import BidirectionalStream, ReturnType
+from apache.thrift.type.standard.thrift_types import TypeName, Void
+from apache.thrift.type.type.thrift_types import Type
 from thrift.lib.python.schema.syntax_graph import (
     Annotation,
     ConstantNode,
@@ -23,11 +26,15 @@ from thrift.lib.python.schema.syntax_graph import (
     EnumNode,
     EnumTypeRef,
     EnumValue,
+    ErrorBlame,
+    ErrorKind,
+    ErrorSafety,
     ExceptionNode,
     ExceptionTypeRef,
     FieldNode,
     FieldQualifier,
     FunctionNode,
+    FunctionQualifier,
     InteractionNode,
     ListTypeRef,
     MapTypeRef,
@@ -46,6 +53,7 @@ from thrift.lib.python.schema.syntax_graph import (
     UnionNode,
     UnionTypeRef,
 )
+from thrift.lib.python.schema.syntax_graph_builder import _GraphBuilder
 
 
 class SyntaxGraphTest(unittest.TestCase):
@@ -246,6 +254,15 @@ class SyntaxGraphTest(unittest.TestCase):
         self.assertEqual(fields[1].name, "s")
         self.assertIsInstance(fields[1].type, StructTypeRef)
         self.assertEqual(fields[1].type.node.name, "TestRecursiveStruct")
+
+    def test_exception_classification(self) -> None:
+        prog = self.graph.get_program_by_name("syntax_graph")
+        exc = prog["TestException"]
+        self.assertIsInstance(exc, ExceptionNode)
+
+        self.assertEqual(exc.safety, ErrorSafety.Safe)
+        self.assertEqual(exc.kind, ErrorKind.Permanent)
+        self.assertEqual(exc.blame, ErrorBlame.Client)
 
     def test_exception_as_type(self) -> None:
         prog = self.graph.get_program_by_name("syntax_graph")
@@ -573,6 +590,23 @@ class SyntaxGraphTest(unittest.TestCase):
         self.assertIsNotNone(stream)
         self.assertEqual(stream.payload_type, PrimitiveTypeRef(Primitive.I32))
 
+    def test_bidirectional_stream(self) -> None:
+        builder = _GraphBuilder({}, [])
+        response = ReturnType(
+            bidirectionalStream=BidirectionalStream(
+                sinkPayload=Type(name=TypeName(stringType=Void.Unused)),
+                streamPayload=Type(name=TypeName(i32Type=Void.Unused)),
+            )
+        )
+
+        stream, sink = builder._create_stream_and_sink(response)
+
+        self.assertIsNotNone(stream)
+        self.assertEqual(stream.payload_type, PrimitiveTypeRef(Primitive.I32))
+        self.assertIsNotNone(sink)
+        self.assertEqual(sink.payload_type, PrimitiveTypeRef(Primitive.STRING))
+        self.assertIsNone(sink.final_response_type)
+
     def test_service_interaction(self) -> None:
         prog = self.graph.get_program_by_name("syntax_graph")
         svc = prog["TestService"]
@@ -634,6 +668,47 @@ class SyntaxGraphTest(unittest.TestCase):
         self.assertEqual(len(foo.exceptions), 1)
         self.assertIsInstance(foo.exceptions[0].type, ExceptionTypeRef)
         self.assertEqual(foo.exceptions[0].type.node.name, "TestException")
+
+    def test_function_qualifier_and_performs(self) -> None:
+        prog = self.graph.get_program_by_name("syntax_graph")
+        svc = prog["TestService"]
+        self.assertIsInstance(svc, ServiceNode)
+
+        foo = svc.functions[0]
+        self.assertEqual(foo.qualifier, FunctionQualifier.Unspecified)
+        self.assertFalse(foo.is_performs)
+
+        no_return = svc.functions[5]
+        self.assertEqual(no_return.name, "noReturn")
+        self.assertEqual(no_return.qualifier, FunctionQualifier.OneWay)
+
+        performs = svc.functions[4]
+        self.assertTrue(performs.is_performs)
+        self.assertIs(performs.response.interaction, prog["TestInteraction"])
+
+    def test_function_annotations(self) -> None:
+        prog = self.graph.get_program_by_name("syntax_graph")
+        svc = prog["TestService"]
+        self.assertIsInstance(svc, ServiceNode)
+
+        foo = svc.functions[0]
+        function_annotation = self._find_annotation_by_type_name(
+            foo.annotations, "TestStructuredAnnotation"
+        )
+        self.assertIsNotNone(function_annotation)
+        self.assertEqual(function_annotation.value["field1"], 3)
+
+        param_annotation = self._find_annotation_by_type_name(
+            foo.params[0].annotations, "TestStructuredAnnotation"
+        )
+        self.assertIsNotNone(param_annotation)
+        self.assertEqual(param_annotation.value["field1"], 4)
+
+        exception_annotation = self._find_annotation_by_type_name(
+            foo.exceptions[0].annotations, "TestStructuredAnnotation"
+        )
+        self.assertIsNotNone(exception_annotation)
+        self.assertEqual(exception_annotation.value["field1"], 5)
 
     # -- Doc Blocks & repr ------------------------------------
 

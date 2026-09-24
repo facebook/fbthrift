@@ -27,7 +27,13 @@ from typing import Any, Generic, TypeVar
 from apache.thrift.protocol.detail.protocol_detail.thrift_types import Value
 from apache.thrift.syntax_graph.syntax_graph.thrift_types import Primitive
 from apache.thrift.type.schema import thrift_types as _schema_types
-from apache.thrift.type.schema.thrift_types import FieldQualifier
+from apache.thrift.type.schema.thrift_types import (
+    ErrorBlame,
+    ErrorKind,
+    ErrorSafety,
+    FieldQualifier,
+    FunctionQualifier,
+)
 from thrift.python.serializer import deserialize, Protocol
 
 
@@ -626,7 +632,35 @@ class UnionNode(StructuredDefinition):
 class ExceptionNode(StructuredDefinition):
     """A Thrift exception definition."""
 
-    __slots__ = ()
+    __slots__ = ("_safety", "_kind", "_blame")
+    _safety: ErrorSafety
+    _kind: ErrorKind
+    _blame: ErrorBlame
+
+    def __init__(
+        self,
+        *,
+        safety: ErrorSafety = ErrorSafety.Unspecified,
+        kind: ErrorKind = ErrorKind.Unspecified,
+        blame: ErrorBlame = ErrorBlame.Unspecified,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(**kwargs)
+        self._safety = safety
+        self._kind = kind
+        self._blame = blame
+
+    @property
+    def safety(self) -> ErrorSafety:
+        return self._safety
+
+    @property
+    def kind(self) -> ErrorKind:
+        return self._kind
+
+    @property
+    def blame(self) -> ErrorBlame:
+        return self._blame
 
     def as_type(self) -> ExceptionTypeRef:
         return ExceptionTypeRef(_Lazy(self._resolver, self._definition_key))
@@ -705,15 +739,24 @@ class ConstantNode(Definition):
 class FunctionException:
     """A declared exception in a function or stream/sink."""
 
-    __slots__ = ("_id", "_name", "_type")
+    __slots__ = ("_id", "_name", "_type", "_annotations")
     _id: int
     _name: str
     _type: TypeRef
+    _annotations: list[Annotation]
 
-    def __init__(self, *, id: int, name: str, type: TypeRef) -> None:
+    def __init__(
+        self,
+        *,
+        id: int,
+        name: str,
+        type: TypeRef,
+        annotations: list[Annotation] | None = None,
+    ) -> None:
         self._id = id
         self._name = name
         self._type = type
+        self._annotations = [] if annotations is None else annotations
 
     @property
     def id(self) -> int:
@@ -726,6 +769,10 @@ class FunctionException:
     @property
     def type(self) -> TypeRef:
         return self._type
+
+    @property
+    def annotations(self) -> list[Annotation]:
+        return self._annotations
 
     def __repr__(self) -> str:
         return f"FunctionException({self._id}, {self._name!r})"
@@ -763,14 +810,14 @@ class FunctionSink:
         "_server_exceptions",
     )
     _payload_type: TypeRef
-    _final_response_type: TypeRef
+    _final_response_type: TypeRef | None
     _client_exceptions: list[FunctionException]
     _server_exceptions: list[FunctionException]
 
     def __init__(
         self,
         payload_type: TypeRef,
-        final_response_type: TypeRef,
+        final_response_type: TypeRef | None,
         client_exceptions: list[FunctionException],
         server_exceptions: list[FunctionException],
     ) -> None:
@@ -784,7 +831,7 @@ class FunctionSink:
         return self._payload_type
 
     @property
-    def final_response_type(self) -> TypeRef:
+    def final_response_type(self) -> TypeRef | None:
         return self._final_response_type
 
     @property
@@ -842,15 +889,24 @@ class FunctionResponse:
 class FunctionParam:
     """A parameter in a function's parameter list."""
 
-    __slots__ = ("_id", "_name", "_type")
+    __slots__ = ("_id", "_name", "_type", "_annotations")
     _id: int
     _name: str
     _type: TypeRef
+    _annotations: list[Annotation]
 
-    def __init__(self, *, id: int, name: str, type: TypeRef) -> None:
+    def __init__(
+        self,
+        *,
+        id: int,
+        name: str,
+        type: TypeRef,
+        annotations: list[Annotation] | None = None,
+    ) -> None:
         self._id = id
         self._name = name
         self._type = type
+        self._annotations = [] if annotations is None else annotations
 
     @property
     def id(self) -> int:
@@ -863,6 +919,10 @@ class FunctionParam:
     @property
     def type(self) -> TypeRef:
         return self._type
+
+    @property
+    def annotations(self) -> list[Annotation]:
+        return self._annotations
 
     def __repr__(self) -> str:
         return f"FunctionParam({self._id}, {self._name!r})"
@@ -878,6 +938,9 @@ class FunctionNode:
         "_response",
         "_params",
         "_exceptions",
+        "_qualifier",
+        "_is_performs",
+        "_annotations",
     )
     _name: str
     _doc_block: str | None
@@ -885,6 +948,9 @@ class FunctionNode:
     _response: FunctionResponse
     _params: list[FunctionParam]
     _exceptions: list[FunctionException]
+    _qualifier: FunctionQualifier
+    _is_performs: bool
+    _annotations: list[Annotation]
 
     def __init__(
         self,
@@ -894,12 +960,18 @@ class FunctionNode:
         response: FunctionResponse,
         params: list[FunctionParam],
         exceptions: list[FunctionException],
+        qualifier: FunctionQualifier = FunctionQualifier.Unspecified,
+        is_performs: bool = False,
+        annotations: list[Annotation] | None = None,
     ) -> None:
         self._name = name
         self._doc_block = doc_block
         self._response = response
         self._params = params
         self._exceptions = exceptions
+        self._qualifier = qualifier
+        self._is_performs = is_performs
+        self._annotations = [] if annotations is None else annotations
         self._parent = None
 
     @property
@@ -926,6 +998,18 @@ class FunctionNode:
     @property
     def exceptions(self) -> list[FunctionException]:
         return self._exceptions
+
+    @property
+    def qualifier(self) -> FunctionQualifier:
+        return self._qualifier
+
+    @property
+    def is_performs(self) -> bool:
+        return self._is_performs
+
+    @property
+    def annotations(self) -> list[Annotation]:
+        return self._annotations
 
     def __repr__(self) -> str:
         return f"FunctionNode({self._name!r})"
