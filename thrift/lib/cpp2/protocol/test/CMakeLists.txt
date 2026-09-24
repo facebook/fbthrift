@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Generate required Thrift dependencies.
-foreach (thrift_file Module CompactProtocolTestStructs)
+foreach (thrift_file Module CompactProtocolTestStructs cursor)
   thrift_generate(
     "${thrift_file}" #file_name
     "" #services
