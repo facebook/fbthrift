@@ -259,10 +259,10 @@ struct ServiceInterceptorCountWithRequestState
     co_return;
   }
 
-  int onConnectionCount = 0;
-  int onConnectionClosedCount = 0;
-  int onRequestCount = 0;
-  int onResponseCount = 0;
+  std::atomic<int> onConnectionCount{0};
+  std::atomic<int> onConnectionClosedCount{0};
+  std::atomic<int> onRequestCount{0};
+  std::atomic<int> onResponseCount{0};
 };
 
 struct ServiceInterceptorThrowOnRequest
@@ -2280,11 +2280,11 @@ CO_TEST_P(ServiceInterceptorTestP, OnConnectionAttempt) {
       co_return;
     }
 
-    int onConnectionAttemptedCount = 0;
-    int onConnectionEstablishedCount = 0;
-    int onConnectionClosedCount = 0;
-    int onRequestCount = 0;
-    int onResponseCount = 0;
+    std::atomic<int> onConnectionAttemptedCount{0};
+    std::atomic<int> onConnectionEstablishedCount{0};
+    std::atomic<int> onConnectionClosedCount{0};
+    std::atomic<int> onRequestCount{0};
+    std::atomic<int> onResponseCount{0};
   };
 
   auto interceptor =
