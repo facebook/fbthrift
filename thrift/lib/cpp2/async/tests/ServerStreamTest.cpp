@@ -297,15 +297,15 @@ TEST(ServerStreamTest, CancelPublisher) {
     clientCallback.started.wait();
     std::ignore = clientCallback.cb->onStreamRequestN(11); // complete costs 1
   });
-  std::thread([&, publisher = std::move(publisher)]() mutable {
+  std::thread([&, threadPublisher = std::move(publisher)]() mutable {
     for (int i = 0; i < 10; i++) {
       if (i == 1) {
         clientEb.getEventBase()->runInEventBaseThreadAndWait(
             [&] { clientCallback.cb->onStreamCancel(); });
       }
-      publisher.next(i);
+      threadPublisher.next(i);
     }
-    std::move(publisher).complete();
+    std::move(threadPublisher).complete();
   }).join();
   EXPECT_LT(clientCallback.i, 10);
   EXPECT_TRUE(closed);
