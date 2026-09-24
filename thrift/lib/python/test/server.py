@@ -501,7 +501,7 @@ class ServicesTests(later.unittest.TestCase):
         native_serve: asyncio.Future[None] = loop.create_future()
         native_serve_started = asyncio.Event()
         expected_log_message = (
-            "Native ThriftServer.serve() failed before cancellation cleanup completed"
+            "Native server execution for ThriftServer failed before shutdown completed"
         )
 
         def start_native_serve(

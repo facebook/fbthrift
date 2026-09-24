@@ -64,6 +64,40 @@ AsyncProcessorFactory = AsyncProcessorFactory_
 logger: logging.Logger = logging.getLogger(__name__)
 
 
+async def _shutdown_native_service(
+    native_serve, address_future, stop_server, server_kind
+):
+    # If native serving finishes first, stop is unnecessary but harmless.
+    # Otherwise, address publication proves startup can honor stop.
+    await asyncio.wait(
+        (address_future, native_serve),
+        return_when=asyncio.FIRST_COMPLETED,
+    )
+    stop_server()
+    try:
+        await native_serve
+    except Exception:
+        logger.exception(
+            "Native server execution for %s failed before shutdown completed",
+            server_kind,
+        )
+
+
+async def run_server(native_serve, address_future, stop_server, server_kind):
+    """Wait for an already-submitted native server and stop it on cancellation."""
+    try:
+        # asyncio.wait() leaves native_serve active when the caller is canceled
+        # without propagating native_serve's own outcome into this await.
+        await asyncio.wait((native_serve,))
+    except asyncio.CancelledError:
+        await _shutdown_native_service(
+            native_serve, address_future, stop_server, server_kind
+        )
+        raise
+
+    await native_serve
+
+
 class SSLPolicy(Enum):
     DISABLED = <int> (SSLPolicy__DISABLED)
     PERMITTED = <int> (SSLPolicy__PERMITTED)
@@ -177,22 +211,12 @@ cdef class ThriftServer:
                 if ownership_context is not None:
                     await ownership_stack.enter_async_context(ownership_context)
                 native_serve = self.loop.run_in_executor(None, _serve)
-                try:
-                    await asyncio.wait((native_serve,))
-                    await native_serve
-                except asyncio.CancelledError:
-                    await asyncio.wait(
-                        (self.address_future, native_serve),
-                        return_when=asyncio.FIRST_COMPLETED,
-                    )
-                    self.server.get().stop()
-                    try:
-                        await native_serve
-                    except Exception:
-                        logger.exception(
-                            "Native ThriftServer.serve() failed before cancellation cleanup completed"
-                        )
-                    raise
+                await run_server(
+                    native_serve,
+                    self.address_future,
+                    self.stop,
+                    "ThriftServer",
+                )
             self.address_future.cancel()
         except asyncio.CancelledError:
             self.address_future.cancel()
