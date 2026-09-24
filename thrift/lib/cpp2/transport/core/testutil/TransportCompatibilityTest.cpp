@@ -334,7 +334,10 @@ void TransportCompatibilityTest::TestConnectionStats() {
       dynamic_cast<ClientChannel*>(client->getChannel())->closeNow();
     });
 
-    ASSERT_TRUE(connCloseBaton.try_wait_for(std::chrono::seconds(10)));
+    auto connClosedNotified =
+        connCloseBaton.try_wait_for(std::chrono::seconds(10));
+    server_->observer_->connClosedNotifBaton = nullptr;
+    ASSERT_TRUE(connClosedNotified);
 
     if (upgradeToRocketExpected_) {
       // for transport upgrade there are both header and rocket connections

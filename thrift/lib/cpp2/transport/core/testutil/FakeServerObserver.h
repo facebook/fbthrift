@@ -42,7 +42,7 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
   std::atomic<size_t> callCompleted_{0};
   std::atomic<size_t> protocolError_{0};
 
-  folly::Baton<>* connClosedNotifBaton{nullptr};
+  std::atomic<folly::Baton<>*> connClosedNotifBaton{nullptr};
 
   FakeServerObserver() : TServerObserver(1) {}
 
@@ -55,8 +55,8 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
   void connClosed(
       const TServerObserver::ConnectionInfo& /* connInfo */) override {
     ++connClosed_;
-    if (connClosedNotifBaton) {
-      connClosedNotifBaton->post();
+    if (auto* baton = connClosedNotifBaton.exchange(nullptr)) {
+      baton->post();
     }
   }
 
