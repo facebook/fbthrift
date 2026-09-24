@@ -128,6 +128,7 @@ find_package(Zstd REQUIRED)
 # install interface either. The property is global, so it is readable here even
 # though folly set it in the scope FetchContent added it in.
 get_property(thrift_folly_build_local GLOBAL PROPERTY FOLLY_BUILD_LOCAL_TARGETS)
+set(thrift_openssl_crypto OpenSSL::Crypto)
 if ("OpenSSL::Crypto" IN_LIST thrift_folly_build_local)
   if (NOT CMAKE_SKIP_INSTALL_RULES)
     message(
@@ -144,8 +145,10 @@ if ("OpenSSL::Crypto" IN_LIST thrift_folly_build_local)
         "CMake 3.26 $<BUILD_LOCAL_INTERFACE:> generator expression. Install "
         "OpenSSL, or use CMake 3.26 or newer.")
   endif ()
-  set(thrift_localize_openssl ON)
+  # Still linked; it just stops being something an installed thrift asks for.
+  set(thrift_openssl_crypto "$<BUILD_LOCAL_INTERFACE:OpenSSL::Crypto>")
 endif ()
+
 if (THRIFT_RPC)
   find_package(fizz CONFIG REQUIRED)
   find_package(wangle CONFIG REQUIRED)
@@ -160,31 +163,6 @@ if (THRIFT_TESTS)
 endif ()
 
 add_subdirectory(thrift)
-
-# Confine folly's build-tree OpenSSL to the build interface, rather than
-# spelling the generator expression at each target_link_libraries() call.
-# Rewriting the interface leaves the private link line alone, so these still
-# link it; it just stops being something an installed thrift asks for.
-if (thrift_localize_openssl)
-  foreach (target transport async thrifttype)
-    if (NOT TARGET ${target})
-      continue()
-    endif ()
-    get_target_property(link ${target} INTERFACE_LINK_LIBRARIES)
-    if (NOT link)
-      continue()
-    endif ()
-    set(patched "")
-    foreach (dep IN LISTS link)
-      if (dep STREQUAL "OpenSSL::Crypto")
-        list(APPEND patched "$<BUILD_LOCAL_INTERFACE:OpenSSL::Crypto>")
-      else ()
-        list(APPEND patched "${dep}")
-      endif ()
-    endforeach ()
-    set_property(TARGET ${target} PROPERTY INTERFACE_LINK_LIBRARIES ${patched})
-  endforeach ()
-endif ()
 
 # include(CPack) snapshots the CPACK_* variables where it is called, so keep it
 # after every target, install rule and CPACK_* setting.

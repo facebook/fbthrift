@@ -60,7 +60,7 @@ if (THRIFT_RPC)
            rpcmetadata
            Folly::folly
            ZLIB::ZLIB
-           OpenSSL::Crypto
+           ${thrift_openssl_crypto}
            zstd::zstd)
 
   add_library(
@@ -86,7 +86,7 @@ if (THRIFT_RPC)
            Folly::folly
            wangle::wangle
            glog::glog
-           OpenSSL::Crypto)
+           ${thrift_openssl_crypto})
 
   add_library(thrift-cpp INTERFACE)
   target_link_libraries(
