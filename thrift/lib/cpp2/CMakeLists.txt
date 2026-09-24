@@ -211,8 +211,7 @@ add_library(thriftanyrep "${CMAKE_CURRENT_BINARY_DIR}/thriftanyrep_stub.cpp")
 target_link_libraries(thriftanyrep PUBLIC thrifttype)
 
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
-add_library(rpcmetadata ${RpcMetadata-cpp2-SOURCES} gen/module_types_cpp.cpp
-                        detail/Enum.cpp)
+add_library(rpcmetadata ${RpcMetadata-cpp2-SOURCES})
 add_dependencies(rpcmetadata RpcMetadata-cpp2-target)
 target_link_libraries(rpcmetadata PUBLIC Folly::folly thriftprotocol)
 
@@ -247,7 +246,14 @@ add_library(
   ../cpp/protocol/TBase64Utils.cpp
   ../cpp/protocol/TProtocolException.cpp
   ../cpp/protocol/TType.cpp
-  ../cpp/util/VarintUtils.cpp)
+  ../cpp/util/VarintUtils.cpp
+  # Required by protocol/detail/Json5ProtocolReader.cpp, which calls
+  # enum_find<Int>::find_name; the explicit instantiation for `int` only
+  # exists in this translation unit.
+  detail/Enum.cpp
+  # Required by protocol/TableBasedSerializerImpl.h's field-name lookup
+  # path (used by the JSON5 protocol), which calls checkFieldIdConflict.
+  gen/module_types_cpp.cpp)
 target_link_libraries(thriftprotocol PUBLIC fmt::fmt Folly::folly glog::glog
                                             thrift-core)
 
