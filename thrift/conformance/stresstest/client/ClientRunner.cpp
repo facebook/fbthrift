@@ -327,7 +327,8 @@ ClientRunner::ClientRunner(const ClientConfig& config)
       rocket_client_set_eor_flag, config.enableRocketFrameRelativeAlignment);
   auto configCopy = config;
   configCopy.connConfig.connectCb = this;
-  auto targetQpsPerClient = config.targetQps / config.numClientThreads;
+  const double targetQpsPerClient =
+      static_cast<double>(config.targetQps) / config.numClientThreads;
   for (size_t i = 0; i < config.numClientThreads; i++) {
     loadGenerator_.emplace_back(
         std::make_unique<PoissonLoadGenerator>(

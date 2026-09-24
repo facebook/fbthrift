@@ -28,10 +28,14 @@ namespace apache::thrift::stress {
 
 class PoissonLoadGenerator : public BaseLoadGenerator {
  public:
+  // targetQps is fractional because callers split an aggregate rate across
+  // client threads. Rounding it to a whole number of requests per bucket
+  // rounds any rate below one request per bucket down to zero, and a zero mean
+  // breaks std::poisson_distribution's precondition.
   explicit PoissonLoadGenerator(
-      uint32_t targetQps, std::chrono::duration<int64_t, std::milli> interval)
+      double targetQps, std::chrono::duration<int64_t, std::milli> interval)
       : interval_(interval),
-        meanRequestsPerBucket_(targetQps * interval_.count() / 1000),
+        meanRequestsPerBucket_(targetQps * interval_.count() / 1000.0),
         gen_(std::random_device{}()) {}
 
   ~PoissonLoadGenerator() override;
@@ -41,7 +45,7 @@ class PoissonLoadGenerator : public BaseLoadGenerator {
 
  private:
   const std::chrono::duration<int64_t, std::milli> interval_;
-  const uint32_t meanRequestsPerBucket_;
+  const double meanRequestsPerBucket_;
   std::atomic<bool> running_{true};
   std::atomic<bool> started_{false};
   folly::coro::SmallUnboundedQueue<Count> queue_;

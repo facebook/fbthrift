@@ -27,6 +27,11 @@ PoissonLoadGenerator::getRequestCount() {
 }
 
 void PoissonLoadGenerator::generateRequestSignal() {
+  // A rate of zero is a valid way to ask for no load, and it reaches here as a
+  // mean of zero, which std::poisson_distribution does not accept.
+  if (meanRequestsPerBucket_ <= 0.0) {
+    return;
+  }
   std::poisson_distribution<int32_t> poissonDistribution(
       meanRequestsPerBucket_);
   uint32_t intervalQps = static_cast<int32_t>(poissonDistribution(gen_));
