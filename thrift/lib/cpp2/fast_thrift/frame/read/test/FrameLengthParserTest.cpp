@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// What is particular to FrameLengthParser. The framing behaviour it shares
+// with every other parser is covered by ParserContractTest.cpp.
+
 #include <cstring>
 #include <vector>
 
@@ -67,14 +70,17 @@ class FrameLengthParserTest : public ::testing::Test {
     return parser_.consumeBuffer(std::move(buf), sink());
   }
 
-  // Drives the socket-facing path: ask for a buffer, fill it, hand back the
-  // length, exactly as AsyncSocket would.
+  // getReadBuffer + consume, where feed() above goes through consumeBuffer.
   Result feedViaReadBuffer(const BytesPtr& bytes) {
-    auto len = bytes->computeChainDataLength();
+    const auto len = bytes->computeChainDataLength();
     void* buf = nullptr;
     size_t avail = 0;
     parser_.getReadBuffer(&buf, &avail);
-    EXPECT_GE(avail, len);
+    if (avail < len) {
+      ADD_FAILURE() << "parser offered " << avail << " bytes of room for "
+                    << len << " bytes";
+      return Result::Error;
+    }
     size_t offset = 0;
     for (const auto& range : *bytes) {
       std::memcpy(
@@ -89,61 +95,31 @@ class FrameLengthParserTest : public ::testing::Test {
   FrameLengthParser parser_;
 };
 
-TEST_F(FrameLengthParserTest, SingleCompleteFrame) {
-  EXPECT_EQ(feed(buildFrame(20)), Result::Success);
+// The framing accessors are this parser's own surface; the shared contract
+// suite cannot see them.
+TEST_F(FrameLengthParserTest, TracksFramingStateAcrossAFrame) {
+  auto partial = folly::IOBuf::create(2);
+  partial->writableData()[0] = 0x00;
+  partial->writableData()[1] = 0x00;
+  partial->append(2);
+
+  EXPECT_EQ(feed(std::move(partial)), Result::Success);
+  EXPECT_EQ(parser_.size(), 2);
+  EXPECT_EQ(parser_.frameLength(), 0);
+
+  parser_.reset();
+
+  EXPECT_EQ(feed(buildHeader(20)), Result::Success);
+  EXPECT_EQ(parser_.size(), 3);
+  EXPECT_EQ(parser_.frameLength(), 20);
+  EXPECT_EQ(parser_.frameLengthAndFieldSize(), 23);
+
+  EXPECT_EQ(feed(buildPayload(20)), Result::Success);
   EXPECT_EQ(parser_.size(), 0);
   EXPECT_EQ(parser_.frameLength(), 0);
   EXPECT_EQ(parser_.frameLengthAndFieldSize(), 0);
   ASSERT_EQ(frames_.size(), 1);
   EXPECT_EQ(frames_[0]->computeChainDataLength(), 20);
-}
-
-TEST_F(FrameLengthParserTest, PartialHeader) {
-  auto buf = folly::IOBuf::create(2);
-  buf->writableData()[0] = 0x00;
-  buf->writableData()[1] = 0x00;
-  buf->append(2);
-
-  EXPECT_EQ(feed(std::move(buf)), Result::Success);
-  EXPECT_EQ(parser_.size(), 2);
-  EXPECT_EQ(parser_.frameLength(), 0);
-  EXPECT_EQ(frames_.size(), 0);
-}
-
-TEST_F(FrameLengthParserTest, HeaderThenPayload) {
-  EXPECT_EQ(feed(buildHeader(20)), Result::Success);
-  EXPECT_EQ(parser_.size(), 3);
-  EXPECT_EQ(parser_.frameLength(), 20);
-  EXPECT_EQ(parser_.frameLengthAndFieldSize(), 23);
-  EXPECT_EQ(frames_.size(), 0);
-
-  EXPECT_EQ(feed(buildPayload(20)), Result::Success);
-  EXPECT_EQ(parser_.size(), 0);
-  EXPECT_EQ(parser_.frameLength(), 0);
-  ASSERT_EQ(frames_.size(), 1);
-  EXPECT_EQ(frames_[0]->computeChainDataLength(), 20);
-}
-
-TEST_F(FrameLengthParserTest, MultipleFramesInOneBuffer) {
-  folly::IOBufQueue queue{folly::IOBufQueue::cacheChainLength()};
-  for (int i = 0; i < 3; ++i) {
-    queue.append(buildFrame(20));
-  }
-
-  EXPECT_EQ(feed(queue.move()), Result::Success);
-  EXPECT_EQ(parser_.size(), 0);
-  ASSERT_EQ(frames_.size(), 3);
-  for (const auto& frame : frames_) {
-    EXPECT_EQ(frame->computeChainDataLength(), 20);
-  }
-}
-
-TEST_F(FrameLengthParserTest, MultipleFramesSeparately) {
-  for (int i = 0; i < 3; ++i) {
-    EXPECT_EQ(feed(buildFrame(20)), Result::Success);
-    EXPECT_EQ(parser_.size(), 0);
-    EXPECT_EQ(frames_.size(), static_cast<size_t>(i + 1));
-  }
 }
 
 TEST_F(FrameLengthParserTest, ChainedIOBuf) {
@@ -157,59 +133,10 @@ TEST_F(FrameLengthParserTest, ChainedIOBuf) {
   EXPECT_EQ(frames_[0]->computeChainDataLength(), 20);
 }
 
-TEST_F(FrameLengthParserTest, BackpressureStopsProcessing) {
-  sinkResult_ = Result::Backpressure;
-
-  folly::IOBufQueue queue{folly::IOBufQueue::cacheChainLength()};
-  for (int i = 0; i < 3; ++i) {
-    queue.append(buildFrame(20));
-  }
-
-  EXPECT_EQ(feed(queue.move()), Result::Backpressure);
-  // Backpressure means "accepted, but slow down": the first frame landed.
-  ASSERT_EQ(frames_.size(), 1);
-  EXPECT_EQ(frames_[0]->computeChainDataLength(), 20);
-  EXPECT_GT(parser_.size(), 0);
-}
-
-TEST_F(FrameLengthParserTest, ErrorStopsProcessing) {
-  sinkResult_ = Result::Error;
-
-  EXPECT_EQ(feed(buildFrame(20)), Result::Error);
-  // The frame was handed over before the sink refused it.
-  EXPECT_EQ(frames_.size(), 1);
-}
-
 TEST_F(FrameLengthParserTest, EmptyFrame) {
   EXPECT_EQ(feed(buildFrame(0)), Result::Success);
   ASSERT_EQ(frames_.size(), 1);
   EXPECT_EQ(frames_[0]->computeChainDataLength(), 0);
-}
-
-TEST_F(FrameLengthParserTest, LargeFrame) {
-  constexpr size_t kFrameSize = 65536;
-
-  EXPECT_EQ(feed(buildFrame(kFrameSize)), Result::Success);
-  ASSERT_EQ(frames_.size(), 1);
-  EXPECT_EQ(frames_[0]->computeChainDataLength(), kFrameSize);
-}
-
-TEST_F(FrameLengthParserTest, IncrementalLargeFrame) {
-  constexpr size_t kFrameSize = 65536;
-  constexpr size_t kChunkSize = 4096;
-
-  EXPECT_EQ(feed(buildHeader(kFrameSize)), Result::Success);
-  EXPECT_EQ(parser_.frameLength(), kFrameSize);
-  EXPECT_EQ(frames_.size(), 0);
-
-  for (size_t remaining = kFrameSize; remaining > 0;) {
-    size_t toSend = std::min(kChunkSize, remaining);
-    EXPECT_EQ(feed(buildPayload(toSend)), Result::Success);
-    remaining -= toSend;
-  }
-
-  ASSERT_EQ(frames_.size(), 1);
-  EXPECT_EQ(frames_[0]->computeChainDataLength(), kFrameSize);
 }
 
 TEST_F(FrameLengthParserTest, BackpressureThenResume) {
@@ -244,7 +171,7 @@ TEST_F(FrameLengthParserTest, ResetDropsBufferedState) {
   EXPECT_EQ(parser_.frameLengthAndFieldSize(), 0);
 }
 
-// --- Socket-facing buffer management ---
+// --- Buffer management ---
 
 TEST_F(FrameLengthParserTest, ReadBufferIsReusedWhileTailroomRemains) {
   void* first = nullptr;
