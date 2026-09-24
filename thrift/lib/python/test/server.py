@@ -17,8 +17,10 @@
 from __future__ import annotations
 
 import asyncio
+import concurrent.futures
 import gc
 import threading
+from collections.abc import Callable
 from contextlib import contextmanager
 from types import TracebackType
 from typing import Iterator, Optional, Sequence
@@ -422,6 +424,71 @@ class ServicesTests(later.unittest.TestCase):
         self.assertTrue(actual_serve_cancelled)
         self.assertFalse(actual_serving_started)
         self.assertEqual(expected_events, actual_events)
+
+    async def test_cancellation_after_native_submission_waits_for_startup(
+        self,
+    ) -> None:
+        # Regression: cancellation after native submission but before native setup
+        # must wait until stop can take effect.
+        # GIVEN
+        loop = asyncio.get_running_loop()
+        executor_occupied = asyncio.Event()
+        release_executor = threading.Event()
+        native_serve_submitted = asyncio.Event()
+        native_executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        # Cleanups run last-in, first-out: release the blocked worker before
+        # shutdown waits for the executor to drain.
+        self.addCleanup(native_executor.shutdown)
+        self.addCleanup(release_executor.set)
+        # pyrefly: ignore [bad-specialization]
+        server = ThriftServer(Handler(), ip="::1", port=0)
+
+        def occupy_executor() -> None:
+            loop.call_soon_threadsafe(executor_occupied.set)
+            release_executor.wait()
+
+        native_executor.submit(occupy_executor)
+        await asyncio.wait_for(executor_occupied.wait(), timeout=5.0)
+        original_run_in_executor = loop.run_in_executor
+
+        # Preserve production's request for the loop default, but send every
+        # intercepted submission to this one-worker pool. Its occupied worker
+        # holds that work until after cancellation with no change to loop state.
+        def observe_native_serve_submission(
+            executor: concurrent.futures.Executor | None,
+            native_serve: Callable[[], None],
+        ) -> asyncio.Future[None]:
+            self.assertIsNone(executor)
+            native_future = original_run_in_executor(native_executor, native_serve)
+            native_serve_submitted.set()
+            return native_future
+
+        # WHEN
+        with mock.patch.object(
+            loop,
+            "run_in_executor",
+            autospec=True,
+            side_effect=observe_native_serve_submission,
+        ):
+            serve_task = asyncio.create_task(server.serve())
+            try:
+                await asyncio.wait_for(native_serve_submitted.wait(), timeout=5.0)
+                serve_task.cancel()
+                loop.call_soon(release_executor.set)
+                serve_result = await asyncio.wait_for(
+                    asyncio.shield(asyncio.gather(serve_task, return_exceptions=True)),
+                    timeout=5.0,
+                )
+            finally:
+                release_executor.set()
+                if not serve_task.done():
+                    await asyncio.wait_for(server.get_address(), timeout=5.0)
+                    server.stop()
+                    await asyncio.gather(serve_task, return_exceptions=True)
+        actual_serve_cancelled = isinstance(serve_result[0], asyncio.CancelledError)
+
+        # THEN
+        self.assertTrue(actual_serve_cancelled)
 
     async def test_native_failure_during_cancellation_preserves_cancellation(
         self,
