@@ -40,11 +40,10 @@ namespace apache::thrift::fast_thrift::frame::read {
  *   descriptor:     8 bytes (pointer to flyweight)
  *   streamId:       4 bytes
  *   flags_:         2 bytes (internal - use bool accessors)
- *   padding:        2 bytes
- *   metadataSize:   4 bytes
+ *   metadataSize:   2 bytes
  *   payloadOffset:  4 bytes
  *   payloadSize:    4 bytes
- *   reserved:       4 bytes (future use)
+ *   reserved:       8 bytes (padding/future use)
  */
 struct FrameMetadata {
   // Flyweight pointer to frame type descriptor (8 bytes)
@@ -60,10 +59,10 @@ struct FrameMetadata {
   // Use bool accessors below instead of accessing directly
   uint16_t flags_{0};
 
-  // Stores the full value from the 3-byte wire field.
+  // Metadata size in bytes (2 bytes)
   // 0 if no metadata present (hasMetadata() == false)
   // Otherwise, the size of the metadata portion of the payload
-  uint32_t metadataSize{0};
+  uint16_t metadataSize{0};
 
   // Offset in buffer where payload starts (4 bytes)
   // This is the position after the frame header and metadata size field
@@ -73,9 +72,9 @@ struct FrameMetadata {
   // Includes both metadata and data portions
   uint32_t payloadSize{0};
 
-  // Reserved for future use (4 bytes)
+  // Reserved for future use / padding (8 bytes)
   // Ensures struct is exactly 32 bytes for TypeErasedBox inline storage
-  uint32_t reserved_{0};
+  uint64_t reserved_{0};
 
   // Convenience accessors
   FrameType type() const noexcept {

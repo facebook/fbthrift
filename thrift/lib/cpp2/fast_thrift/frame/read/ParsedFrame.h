@@ -90,7 +90,7 @@ struct ParsedFrame {
 
   uint32_t payloadSize() const noexcept { return metadata.payloadSize; }
 
-  uint32_t metadataSize() const noexcept { return metadata.metadataSize; }
+  uint16_t metadataSize() const noexcept { return metadata.metadataSize; }
 
   uint32_t dataSize() const noexcept { return metadata.dataSize(); }
 
