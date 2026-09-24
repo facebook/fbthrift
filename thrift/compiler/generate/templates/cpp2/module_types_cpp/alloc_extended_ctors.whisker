@@ -43,7 +43,7 @@
   {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field last?|}}
     {{field.cpp_storage_name}}({{!
 }}{{#if field.cpp_ref_not_boxed?}}{{#partial alloc_smart_ptr_fn field=field}}({{#if field.type.cpp_use_allocator?}}alloc, {{/if}}*other.{{field.cpp_storage_name}}){{!
-}}{{#else if (not field.cpp_ref?)}}other.{{field.cpp_storage_name}}{{#if field.cpp_use_allocator?}}, alloc{{/if}}{{/if field.cpp_ref_not_boxed?}}{{!
+}}{{#else}}other.{{field.cpp_storage_name}}{{#if (and (not field.cpp_ref?) field.cpp_use_allocator?)}}, alloc{{/if}}{{/if field.cpp_ref_not_boxed?}}{{!
     }}){{#if last?}}{{#if struct.isset_fields?}},{{/if}}{{#else}},{{/if}}
   {{/each}}
 {{#if struct.isset_fields?}}    __isset(other.__isset){{/if}} {}
@@ -56,7 +56,7 @@
   {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field last?|}}
     {{field.cpp_storage_name}}({{!
 }}{{#if field.cpp_ref_not_boxed?}}{{#partial alloc_smart_ptr_fn field=field}}({{#if field.type.cpp_use_allocator?}}alloc, {{/if}}std::move(*other.{{field.cpp_storage_name}})){{!
-}}{{#else if (not field.cpp_ref?)}}std::move(other.{{field.cpp_storage_name}}){{#if field.cpp_use_allocator?}}, alloc{{/if}}{{/if field.cpp_ref_not_boxed?}}{{!
+}}{{#else}}std::move(other.{{field.cpp_storage_name}}){{#if (and (not field.cpp_ref?) field.cpp_use_allocator?)}}, alloc{{/if}}{{/if field.cpp_ref_not_boxed?}}{{!
     }}){{#if last?}}{{#if struct.isset_fields?}},{{/if}}{{#else}},{{/if}}
   {{/each}}
 {{#if struct.isset_fields?}}    __isset(other.__isset){{/if}} {}

@@ -273,6 +273,38 @@ TEST(CppAllocatorTest, DeserializeNestedPmr) {
   EXPECT_EQ(s2.aa_map_of_set()->at(42).get_allocator(), alloc);
 }
 
+TEST(CppAllocatorTest, AllocatorExtendedCtorsKeepBoxedField) {
+  std::pmr::monotonic_buffer_resource res;
+  PmrByteAlloc alloc(&res);
+
+  BoxedPayload payload;
+  payload.value() = 13;
+
+  HasBoxedField src;
+  src.boxed() = 42;
+  src.intern_boxed() = payload;
+  src.not_boxed() = 7;
+  ASSERT_TRUE(
+      is_non_optional_field_set_manually_or_by_serializer(src.intern_boxed()));
+
+  // `__isset` is copied wholesale, so the intern-boxed bit stays true even when
+  // the ctor drops the value. Assert the bit first: if the value is gone, the
+  // read below dereferences a null box rather than reporting a mismatch.
+  HasBoxedField copied(src, alloc);
+  EXPECT_EQ(copied.boxed(), 42);
+  EXPECT_EQ(copied.not_boxed(), 7);
+  EXPECT_TRUE(is_non_optional_field_set_manually_or_by_serializer(
+      copied.intern_boxed()));
+  EXPECT_EQ(copied.intern_boxed()->value(), 13);
+
+  HasBoxedField moved(std::move(src), alloc);
+  EXPECT_EQ(moved.boxed(), 42);
+  EXPECT_EQ(moved.not_boxed(), 7);
+  EXPECT_TRUE(is_non_optional_field_set_manually_or_by_serializer(
+      moved.intern_boxed()));
+  EXPECT_EQ(moved.intern_boxed()->value(), 13);
+}
+
 TEST(CppAllocatorTest, DeserializeSortedUniqueConstructible) {
   using serializer = apache::thrift::CompactSerializer;
 

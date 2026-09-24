@@ -248,6 +248,23 @@ struct HasAllocatorAwareSortedVectorMapValue {
   1: map<i32, string_8090> field;
 }
 
+struct BoxedPayload {
+  1: i32 value;
+}
+
+// Boxed fields are not allocator-backed. Only `intern_boxed` carries an isset
+// bit: `field_has_isset` excludes `@thrift.Box` but not `@thrift.InternBox`.
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "PmrByteAlloc"},
+}
+struct HasBoxedField {
+  @thrift.Box
+  1: optional i32 boxed;
+  @thrift.InternBox
+  2: BoxedPayload intern_boxed;
+  3: i32 not_boxed;
+}
+
 @thrift.DeprecatedUnvalidatedAnnotations{
   items = {"cpp.allocator": "::ScopedStatefulAlloc<>"},
 }

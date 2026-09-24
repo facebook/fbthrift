@@ -2736,13 +2736,13 @@ AllocatorAware2::AllocatorAware2(const allocator_type& alloc) noexcept :
 AllocatorAware2::AllocatorAware2(const AllocatorAware2& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
     __fbthrift_field_not_a_container(other.__fbthrift_field_not_a_container),
-    __fbthrift_field_box_field(),
+    __fbthrift_field_box_field(other.__fbthrift_field_box_field),
     __isset(other.__isset) {}
 
 AllocatorAware2::AllocatorAware2(AllocatorAware2&& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
     __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),
-    __fbthrift_field_box_field(),
+    __fbthrift_field_box_field(std::move(other.__fbthrift_field_box_field)),
     __isset(other.__isset) {}
 AllocatorAware2::AllocatorAware2([[maybe_unused]] AllocatorAware2&& other) noexcept :
     __fbthrift_alloc(std::move(other.__fbthrift_alloc)),
