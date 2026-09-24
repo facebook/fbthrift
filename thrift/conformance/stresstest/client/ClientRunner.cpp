@@ -331,8 +331,7 @@ ClientRunner::ClientRunner(const ClientConfig& config)
       static_cast<double>(config.targetQps) / config.numClientThreads;
   for (size_t i = 0; i < config.numClientThreads; i++) {
     loadGenerator_.emplace_back(
-        std::make_unique<PoissonLoadGenerator>(
-            targetQpsPerClient, config.gen_load_interval));
+        std::make_unique<PoissonLoadGenerator>(targetQpsPerClient));
     auto driver = createClientThreadDriver(i, configCopy);
     if (driver) {
       clientThreads_.emplace_back(

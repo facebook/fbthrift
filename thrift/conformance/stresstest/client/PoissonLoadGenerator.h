@@ -20,23 +20,28 @@
 #include <chrono>
 #include <cmath>
 #include <random>
+#include <thread>
 #include <folly/coro/SmallUnboundedQueue.h>
-#include <folly/executors/FunctionScheduler.h>
 #include <thrift/conformance/stresstest/client/BaseLoadGenerator.h>
 
 namespace apache::thrift::stress {
 
+/**
+ * Offers load as a Poisson process: each signal is one request, and the gaps
+ * between them are drawn from an exponential distribution.
+ *
+ * targetQps is fractional because callers split an aggregate rate across
+ * client threads, so a single generator often runs well below one request per
+ * millisecond.
+ *
+ * Timing runs on a thread of its own and the signals reach the caller through
+ * a queue. It has to stay that way: the last stretch before each arrival is
+ * spun rather than slept, and spinning on the caller's EventBase would stall
+ * the requests being measured.
+ */
 class PoissonLoadGenerator : public BaseLoadGenerator {
  public:
-  // targetQps is fractional because callers split an aggregate rate across
-  // client threads. Rounding it to a whole number of requests per bucket
-  // rounds any rate below one request per bucket down to zero, and a zero mean
-  // breaks std::poisson_distribution's precondition.
-  explicit PoissonLoadGenerator(
-      double targetQps, std::chrono::duration<int64_t, std::milli> interval)
-      : interval_(interval),
-        meanRequestsPerBucket_(targetQps * interval_.count() / 1000.0),
-        gen_(std::random_device{}()) {}
+  explicit PoissonLoadGenerator(double targetQps);
 
   ~PoissonLoadGenerator() override;
 
@@ -44,15 +49,14 @@ class PoissonLoadGenerator : public BaseLoadGenerator {
   void start() override;
 
  private:
-  const std::chrono::duration<int64_t, std::milli> interval_;
-  const double meanRequestsPerBucket_;
+  const double targetQps_;
   std::atomic<bool> running_{true};
   std::atomic<bool> started_{false};
   folly::coro::SmallUnboundedQueue<Count> queue_;
   std::mt19937_64 gen_{std::random_device()()};
-  folly::FunctionScheduler scheduler_;
+  std::thread thread_;
 
-  void generateRequestSignal();
+  void generateRequestSignals();
 };
 
 } // namespace apache::thrift::stress
