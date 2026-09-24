@@ -94,9 +94,10 @@ function (
   add_custom_command(
     OUTPUT ${_sources}
     COMMAND
-      ${THRIFT1} --gen "${gen_language}${_gen_options}" -o ${output_path}
-      ${thrift_include_directories} "${file_path}/${source_file_name}.thrift"
-    DEPENDS ${THRIFT1} "${file_path}/${source_file_name}.thrift"
+      ${THRIFT_COMPILER} --gen "${gen_language}${_gen_options}" -o
+      ${output_path} ${thrift_include_directories}
+      "${file_path}/${source_file_name}.thrift"
+    DEPENDS ${THRIFT_COMPILER} "${file_path}/${source_file_name}.thrift"
     COMMENT "Generating ${target_file_name} thrift-python files")
 
   add_custom_target(${target_file_name}-python-target ALL DEPENDS ${_sources})

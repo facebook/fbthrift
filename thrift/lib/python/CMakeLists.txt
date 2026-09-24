@@ -331,7 +331,7 @@ endif ()
 add_custom_target(
   generate_apache_thrift_metadata_python
   COMMAND
-    ${THRIFT1} -I ${CMAKE_SOURCE_DIR} --out . --gen
+    ${THRIFT_COMPILER} -I ${CMAKE_SOURCE_DIR} --out . --gen
     "mstch_python:include_prefix=thrift" ${_lib_dir}/thrift/metadata.thrift
   COMMAND ${CMAKE_COMMAND} -E make_directory ${_cybld}/apache/thrift/metadata
   WORKING_DIRECTORY ${_cybld}
@@ -353,7 +353,7 @@ add_custom_target(
 ###
 add_custom_target(
   generate_apache_thrift_metadata_py3
-  COMMAND ${THRIFT1} -I ${CMAKE_SOURCE_DIR} --out . --gen
+  COMMAND ${THRIFT_COMPILER} -I ${CMAKE_SOURCE_DIR} --out . --gen
           "mstch_py3:include_prefix=thrift" ${_lib_dir}/thrift/metadata.thrift
   WORKING_DIRECTORY ${_cybld}
   BYPRODUCTS ${_cybld}/apache/thrift/metadata/cbindings.pxd
@@ -361,8 +361,8 @@ add_custom_target(
              ${_cybld}/apache/thrift/metadata/metadata.pxd
              ${_cybld}/apache/thrift/metadata/metadata.pyx)
 
-add_dependencies(generate_apache_thrift_metadata_python ${THRIFT1})
-add_dependencies(generate_apache_thrift_metadata_py3 ${THRIFT1})
+add_dependencies(generate_apache_thrift_metadata_python ${THRIFT_COMPILER})
+add_dependencies(generate_apache_thrift_metadata_py3 ${THRIFT_COMPILER})
 
 ####
 # Next, prepare for building cython extensions by creating the necessary

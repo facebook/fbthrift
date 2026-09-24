@@ -13,19 +13,24 @@
 # limitations under the License.
 
 #
-# ${THRIFT1} goes to COMMAND as-is rather than through $<TARGET_FILE:...>.
-# CMake substitutes an imported target's location and adds the dependency, and
-# when cross-compiling an in-tree compiler it falls back to a host thrift on
-# PATH -- which a baked-in path to the unrunnable target-architecture binary
-# would defeat.
+# ${THRIFT_COMPILER} goes to COMMAND as-is rather than through
+# $<TARGET_FILE:...>. CMake substitutes an imported target's location and adds
+# the dependency, and when cross-compiling an in-tree compiler it falls back to
+# a host thrift on PATH -- which a baked-in path to the unrunnable
+# target-architecture binary would defeat.
 #
 
 # The in-tree target names. A project building against an installed Thrift
-# overrides these before including this file: its exported targets are
-# namespaced (FBThrift::thrift, FBThrift::thriftcpp2), and some such projects
-# point THRIFT1 at a thrift binary found on PATH instead.
-if (NOT DEFINED THRIFT1)
-  set(THRIFT1 thrift)
+# overrides these before including this file: its exported targets carry a
+# namespace prefix, and some such projects point THRIFT_COMPILER at a thrift
+# binary found on PATH instead. THRIFT1, its former name, is still honored for
+# projects that set that.
+if (NOT DEFINED THRIFT_COMPILER)
+  if (DEFINED THRIFT1)
+    set(THRIFT_COMPILER "${THRIFT1}")
+  else ()
+    set(THRIFT_COMPILER thrift)
+  endif ()
 endif ()
 if (NOT DEFINED THRIFTCPP2)
   set(THRIFTCPP2 thriftcpp2)
@@ -340,10 +345,10 @@ macro (
     add_custom_command(
       OUTPUT ${${target_file_name}-${language}-SOURCES}
       COMMAND
-        ${THRIFT1} --gen "${gen_language}${_python_gen_options}" -o
+        ${THRIFT_COMPILER} --gen "${gen_language}${_python_gen_options}" -o
         ${output_path} ${thrift_include_directories}
         "${file_path}/${source_file_name}.thrift"
-      DEPENDS ${THRIFT1} "${file_path}/${source_file_name}.thrift"
+      DEPENDS ${THRIFT_COMPILER} "${file_path}/${source_file_name}.thrift"
       COMMENT
         "Generating ${target_file_name} thrift-python files. Output: ${output_path}"
     )
@@ -355,10 +360,10 @@ macro (
       OUTPUT ${${target_file_name}-${language}-HEADERS}
              ${${target_file_name}-${language}-SOURCES}
       COMMAND
-        ${THRIFT1} --gen "${gen_language}:${options}${include_prefix_text}" -o
-        ${output_path} ${thrift_include_directories}
-        "${file_path}/${source_file_name}.thrift"
-      DEPENDS ${THRIFT1} "${file_path}/${source_file_name}.thrift"
+        ${THRIFT_COMPILER} --gen
+        "${gen_language}:${options}${include_prefix_text}" -o ${output_path}
+        ${thrift_include_directories} "${file_path}/${source_file_name}.thrift"
+      DEPENDS ${THRIFT_COMPILER} "${file_path}/${source_file_name}.thrift"
       COMMENT "Generating ${target_file_name} files. Output: ${output_path}")
     add_custom_target(
       ${target_file_name}-${language}-target ALL
