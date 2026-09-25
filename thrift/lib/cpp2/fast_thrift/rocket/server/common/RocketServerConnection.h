@@ -18,7 +18,7 @@
 
 #include <folly/Function.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/RocketServerEventFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/adapter/RocketServerAppAdapter.h>
@@ -72,7 +72,7 @@ struct RocketServerConnection {
   rocket::server::RocketServerAppAdapter::Ptr appAdapter{
       new rocket::server::RocketServerAppAdapter()};
   RocketServerTransportHandler::Ptr transportHandler;
-  channel_pipeline::PipelineImpl::Ptr pipeline;
+  channel_pipeline::PipelineOwner pipeline;
   channel_pipeline::SimpleBufferAllocator allocator;
 
   bool disconnected_{false};
@@ -110,8 +110,9 @@ struct RocketServerConnection {
     // the FIN. A pipeline that is already closed, or a batcher with nothing
     // buffered, makes this a no-op.
     if (pipeline) {
-      channel_pipeline::Events<FlushWritesEvent>::fire<FlushWritesEvent>(
-          *pipeline);
+      pipeline.ref()
+          .bindEvents<channel_pipeline::Events<FlushWritesEvent>>()
+          .template fire<FlushWritesEvent>();
     }
     if (transportHandler) {
       transportHandler->close(std::move(ew));

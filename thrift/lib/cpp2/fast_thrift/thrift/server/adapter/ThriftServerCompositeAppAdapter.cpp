@@ -44,8 +44,7 @@ void ThriftServerCompositeAppAdapter::setCloseCallback(
   closeCallback_.withWLock([&](auto& fn) { fn = std::move(cb); });
 }
 
-channel_pipeline::Result ThriftServerCompositeAppAdapter::onRead(
-    channel_pipeline::detail::ContextImpl& ctx,
+channel_pipeline::Result ThriftServerCompositeAppAdapter::onReadImpl(
     channel_pipeline::TypeErasedBox&& msg) noexcept {
   const auto& request = msg.get<ThriftServerRequestMessage>();
   DCHECK(request.streamId != 0) << "Invalid stream ID";
@@ -67,12 +66,12 @@ channel_pipeline::Result ThriftServerCompositeAppAdapter::onRead(
     }
     DCHECK_LT(route->childIndex, children_.size());
     return route->dispatch(
-        children_[route->childIndex].adapter, ctx, std::move(msg));
+        children_[route->childIndex].adapter, std::move(msg));
   }
 
   for (const auto& child : children_) {
     if (child.adapter->hasMethod(routing.methodName)) {
-      return child.adapter->onRead(ctx, std::move(msg));
+      return child.adapter->dispatchRequest(std::move(msg));
     }
   }
   return writeUnknownMethodError(request.streamId, routing.methodName);
@@ -90,15 +89,14 @@ void ThriftServerCompositeAppAdapter::onException(
     child.vtable->onException(child.owner, folly::exception_wrapper{e});
   }
   if (pipeline_) {
-    pipeline_->deactivate();
+    pipeline_.deactivate();
   }
 }
 
 void ThriftServerCompositeAppAdapter::setPipeline(
-    channel_pipeline::PipelineImpl* pipeline) noexcept {
+    channel_pipeline::PipelineRef pipeline) noexcept {
   pipeline_ = pipeline;
-  pipelineGuard_ =
-      std::make_unique<folly::DelayedDestruction::DestructorGuard>(pipeline_);
+  pipelineGuard_ = pipeline_.guard();
   for (auto& child : children_) {
     child.vtable->setPipeline(child.owner, pipeline);
   }
@@ -112,7 +110,7 @@ void ThriftServerCompositeAppAdapter::resetPipeline() noexcept {
   for (auto& child : children_) {
     child.vtable->resetPipeline(child.owner);
   }
-  pipeline_ = nullptr;
+  pipeline_.reset();
   pipelineGuard_.reset();
 }
 
@@ -154,7 +152,7 @@ void ThriftServerCompositeAppAdapter::onConnectionClosed() noexcept {
   }
   auto cb = closeCallback_.withWLock([](auto& fn) { return std::move(fn); });
   if (cb) {
-    pipeline_->eventBase()->runInEventBaseThread(std::move(cb));
+    pipeline_.eventBase()->runInEventBaseThread(std::move(cb));
   }
 }
 
@@ -185,9 +183,9 @@ channel_pipeline::Result ThriftServerCompositeAppAdapter::writeFrameworkError(
     return channel_pipeline::Result::Error;
   }
   auto result =
-      pipeline_->fireWrite(channel_pipeline::erase_and_box(std::move(message)));
+      pipeline_.fireWrite(channel_pipeline::erase_and_box(std::move(message)));
   if (FOLLY_UNLIKELY(result == channel_pipeline::Result::Error)) {
-    pipeline_->deactivate();
+    pipeline_.deactivate();
   }
   return result;
 }
@@ -196,8 +194,9 @@ void ThriftServerCompositeAppAdapter::close() noexcept {
   if (FOLLY_UNLIKELY(!pipeline_)) {
     return;
   }
-  PublishedEvents::template fire<ThriftServerCloseConnectionEvent>(
-      *pipeline_, ThriftServerCloseConnectionEvent{});
+  pipeline_.bindEvents<PublishedEvents>()
+      .template fire<ThriftServerCloseConnectionEvent>(
+          ThriftServerCloseConnectionEvent{});
 }
 
 } // namespace apache::thrift::fast_thrift::thrift

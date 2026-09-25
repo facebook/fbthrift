@@ -28,7 +28,7 @@
 #include <folly/io/async/DelayedDestruction.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerCompositeRoutingTable.h>
@@ -96,17 +96,22 @@ class ThriftServerCompositeAppAdapter final : public folly::DelayedDestruction {
   }
 
   // === TailEndpointHandler ===
+  template <typename Context>
   channel_pipeline::Result onRead(
-      channel_pipeline::detail::ContextImpl&,
-      channel_pipeline::TypeErasedBox&& msg) noexcept;
+      Context&, channel_pipeline::TypeErasedBox&& msg) noexcept {
+    return onReadImpl(std::move(msg));
+  }
   void onException(folly::exception_wrapper&& e) noexcept;
-  void setPipeline(channel_pipeline::PipelineImpl* pipeline) noexcept;
+  template <channel_pipeline::PipelineRefTarget P>
+  void setPipeline(P* pipeline) noexcept {
+    DCHECK(pipeline != nullptr);
+    setPipeline(channel_pipeline::PipelineRef(*pipeline));
+  }
+  void setPipeline(channel_pipeline::PipelineRef pipeline) noexcept;
   // Drops the pipeline reference and releases the DestructorGuard taken in
   // setPipeline. Must be called before the adapter is destroyed.
   void resetPipeline() noexcept;
-  channel_pipeline::PipelineImpl* pipeline() const noexcept {
-    return pipeline_;
-  }
+  channel_pipeline::PipelineRef pipeline() const noexcept { return pipeline_; }
   void handlerAdded() noexcept;
   void handlerRemoved() noexcept;
   void onPipelineActive() noexcept;
@@ -135,9 +140,11 @@ class ThriftServerCompositeAppAdapter final : public folly::DelayedDestruction {
 
  private:
   void onConnectionClosed() noexcept;
+  channel_pipeline::Result onReadImpl(
+      channel_pipeline::TypeErasedBox&& msg) noexcept;
 
   struct LifecycleVTable {
-    void (*setPipeline)(void*, channel_pipeline::PipelineImpl*) noexcept;
+    void (*setPipeline)(void*, channel_pipeline::PipelineRef) noexcept;
     void (*resetPipeline)(void*) noexcept;
     void (*onException)(void*, folly::exception_wrapper&&) noexcept;
     void (*handlerAdded)(void*) noexcept;
@@ -149,7 +156,7 @@ class ThriftServerCompositeAppAdapter final : public folly::DelayedDestruction {
 
   template <typename T>
   static constexpr LifecycleVTable kLifecycleVTable{
-      +[](void* p, channel_pipeline::PipelineImpl* pipe) noexcept {
+      +[](void* p, channel_pipeline::PipelineRef pipe) noexcept {
         static_cast<T*>(p)->setPipeline(pipe);
       },
       +[](void* p) noexcept { static_cast<T*>(p)->resetPipeline(); },
@@ -178,11 +185,11 @@ class ThriftServerCompositeAppAdapter final : public folly::DelayedDestruction {
 
   std::vector<ChildHook> children_;
   std::shared_ptr<const ThriftServerCompositeRoutingTable> routingTable_;
-  channel_pipeline::PipelineImpl* pipeline_{nullptr};
+  channel_pipeline::PipelineRef pipeline_;
   // Keeps pipeline_ alive for the composite's lifetime so late writes
   // (writeUnknownMethodError, startDrain) and onPipelineInactive's EVB
   // hop cannot dereference a freed pipeline. Released by resetPipeline().
-  std::unique_ptr<folly::DelayedDestruction::DestructorGuard> pipelineGuard_;
+  channel_pipeline::PipelineGuard pipelineGuard_;
   folly::Synchronized<std::function<void()>> closeCallback_;
 };
 

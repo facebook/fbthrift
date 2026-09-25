@@ -437,7 +437,9 @@ class ThriftServerCompositeIntegrationTest : public ::testing::Test {
   RocketServerAppAdapter* appAdapter_() {
     return rocketConn_().appAdapter.get();
   }
-  PipelineImpl* rocketPipeline_() { return rocketConn_().pipeline.get(); }
+  channel_pipeline::PipelineRef rocketPipeline_() {
+    return rocketConn_().pipeline.get();
+  }
 };
 
 // =============================================================================

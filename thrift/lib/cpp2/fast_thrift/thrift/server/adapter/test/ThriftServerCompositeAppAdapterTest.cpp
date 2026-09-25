@@ -741,7 +741,6 @@ TEST_F(
   ThriftServerCompositeAppAdapter::Ptr composite{
       new ThriftServerCompositeAppAdapter()};
   // No children. None of these should crash.
-  composite->setPipeline(nullptr);
   composite->handlerAdded();
   composite->onPipelineActive();
   composite->onWriteReady();

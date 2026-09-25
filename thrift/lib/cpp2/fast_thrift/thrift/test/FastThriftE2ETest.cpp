@@ -241,15 +241,18 @@ class TestFastServiceHandler
  *   Thrift pipeline: ThriftClientAppAdapter → ThriftClientMetadataPushHandler
  *     → ThriftClientChecksumHandler → ThriftClientTransportAdapter
  */
-// Parameterized on numCPUThreads so every case below runs twice: once with
-// handlers inline on the IO thread, once dispatched to a CPU pool. The two
-// configurations must be indistinguishable from the client's side.
-class FastThriftE2ETest : public ::testing::TestWithParam<uint32_t> {
+struct ServerPipelineConfig {
+  uint32_t numCPUThreads;
+  ftt::ChannelPipelineMode pipelineMode;
+};
+
+class FastThriftE2ETest
+    : public ::testing::TestWithParam<ServerPipelineConfig> {
  protected:
   using FastClientType = apache::thrift::
       FastClient<TestFastService, thrift::ThriftClientAppAdapter>;
 
-  bool usingCPUPool() const { return GetParam() > 0; }
+  bool usingCPUPool() const { return GetParam().numCPUThreads > 0; }
 
   // Adjust the server between setInterface() and start().
   virtual void configureServer(ftt::FastThriftServer&) {}
@@ -260,7 +263,8 @@ class FastThriftE2ETest : public ::testing::TestWithParam<uint32_t> {
     ftt::FastThriftServerConfig config;
     config.address = folly::SocketAddress("::1", 0);
     config.numIOThreads = 1;
-    config.numCPUThreads = GetParam();
+    config.numCPUThreads = GetParam().numCPUThreads;
+    config.channelPipelineMode = GetParam().pipelineMode;
     // Validate request checksums and echo a response checksum.
     config.enableChecksum = true;
 
@@ -830,18 +834,37 @@ TEST_P(FastThriftRejectedDispatchTest, RejectedEnqueueReportsOverload) {
 INSTANTIATE_TEST_SUITE_P(
     RejectingCPUExecutor,
     FastThriftRejectedDispatchTest,
-    ::testing::Values(uint32_t{0}),
+    ::testing::Values(
+        ServerPipelineConfig{
+            .numCPUThreads = 0,
+            .pipelineMode = ftt::ChannelPipelineMode::Dynamic}),
     [](const auto&) { return "RejectingCPUExecutor"; });
 
 INSTANTIATE_TEST_SUITE_P(
-    Inline, FastThriftE2ETest, ::testing::Values(uint32_t{0}), [](const auto&) {
-      return "InlineOnIOThread";
-    });
+    Inline,
+    FastThriftE2ETest,
+    ::testing::Values(
+        ServerPipelineConfig{
+            .numCPUThreads = 0,
+            .pipelineMode = ftt::ChannelPipelineMode::Dynamic}),
+    [](const auto&) { return "InlineOnIOThread"; });
 
 INSTANTIATE_TEST_SUITE_P(
     CPUPool,
     FastThriftE2ETest,
-    ::testing::Values(uint32_t{4}),
+    ::testing::Values(
+        ServerPipelineConfig{
+            .numCPUThreads = 4,
+            .pipelineMode = ftt::ChannelPipelineMode::Dynamic}),
     [](const auto&) { return "CPUThreadPool"; });
+
+INSTANTIATE_TEST_SUITE_P(
+    StaticPipeline,
+    FastThriftE2ETest,
+    ::testing::Values(
+        ServerPipelineConfig{
+            .numCPUThreads = 0,
+            .pipelineMode = ftt::ChannelPipelineMode::Static}),
+    [](const auto&) { return "StaticPipeline"; });
 
 } // namespace apache::thrift::fast_thrift::thrift::test

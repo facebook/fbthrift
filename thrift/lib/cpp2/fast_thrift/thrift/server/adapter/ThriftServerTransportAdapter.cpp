@@ -46,7 +46,7 @@ ThriftServerTransportAdapter::ThriftServerTransportAdapter(
   // walks the thrift pipeline's writeReadyList and notifies its tail.
   rocketConn_->appAdapter->setOnWriteReady([this]() noexcept {
     if (pipeline_) {
-      pipeline_->onWriteReady();
+      pipeline_.onWriteReady();
     }
   });
   // Bridge rocket-pipeline write-completion notifications into the thrift
@@ -105,7 +105,7 @@ channel_pipeline::Result ThriftServerTransportAdapter::onSetupFrame(
   // The traversal is synchronous, so by the time it returns the answer — the
   // SETUP response, or a refusal from a handler that declined to forward — is
   // already on the write path.
-  return pipeline_->fireRead(
+  return pipeline_.fireRead(
       channel_pipeline::erase_and_box(std::move(message)));
 }
 
@@ -166,7 +166,7 @@ void ThriftServerTransportAdapter::onConnect() noexcept {
   }
   connected_ = true;
   if (pipeline_) {
-    pipeline_->activate();
+    pipeline_.activate();
   }
 }
 
@@ -176,7 +176,7 @@ void ThriftServerTransportAdapter::onDisconnect() noexcept {
   }
   connected_ = false;
   if (pipeline_) {
-    pipeline_->deactivate();
+    pipeline_.deactivate();
   }
 }
 

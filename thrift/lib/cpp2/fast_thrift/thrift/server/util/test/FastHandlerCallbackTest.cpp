@@ -54,7 +54,7 @@ class RecordingAdapter : public ThriftServerAppAdapter {
   const ThriftRequestContext* lastRequestContext{nullptr};
   void markPipelineClosed() {
     pipelineActive_ = false;
-    pipeline_ = nullptr;
+    pipeline_.reset();
     pipelineGuard_.reset();
   }
 

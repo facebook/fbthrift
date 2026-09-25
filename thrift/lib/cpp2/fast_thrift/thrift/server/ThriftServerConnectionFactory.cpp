@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticPipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/handler/FrameCodecHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/handler/FrameDefragmentationHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/BackpressurePolicy.h>
@@ -63,6 +64,7 @@ namespace apache::thrift::fast_thrift::thrift::server {
 namespace {
 using channel_pipeline::PipelineBuilder;
 using channel_pipeline::PipelineImpl;
+using channel_pipeline::PipelineOwner;
 using channel_pipeline::SimpleBufferAllocator;
 
 // Both write-path handlers always carry their completion tracker; backpressure
@@ -124,6 +126,407 @@ HANDLER_TAG(thrift_server_checksum_handler);
 HANDLER_TAG(thrift_server_connection_close_handler);
 HANDLER_TAG(write_buffer_backpressure_handler);
 HANDLER_TAG(thrift_server_setup_handler);
+
+template <bool Backpressure, bool WithStats>
+PipelineOwner buildStaticRocketPipeline(
+    const ThriftServerConnectionFactoryConfig& config,
+    SimpleBufferAllocator* allocator,
+    folly::EventBase* evb,
+    rocket::server::RocketServerTransportHandler* transportHandler,
+    rocket::server::RocketServerAppAdapter* appAdapter,
+    ServerStatsShard* FOLLY_NULLABLE statsShard) {
+  using BatchingHandler = std::conditional_t<
+      Backpressure,
+      ServerBatchingFrameHandler,
+      ServerBatchingFrameHandlerNoBackpressure>;
+  using FragmentationHandler = std::conditional_t<
+      Backpressure,
+      ServerFragmentationFrameHandler,
+      ServerFragmentationFrameHandlerNoBackpressure>;
+
+  auto builder =
+      channel_pipeline::StaticPipelineBuilder<
+          rocket::server::RocketServerTransportHandler,
+          rocket::server::RocketServerAppAdapter,
+          SimpleBufferAllocator>()
+          .setEventBase(evb)
+          .setHead(transportHandler)
+          .setTail(appAdapter)
+          .setAllocator(allocator)
+          .addState<rocket::RocketStreamContexts>()
+          .template addNextOutbound<BatchingHandler>(
+              batching_frame_handler_tag, config.batchingConfig)
+          .template addNextOutbound<
+              frame::write::handler::FrameLengthEncoderHandler>(
+              frame_length_encoder_handler_tag)
+          .template addNextDuplex<frame::handler::FrameCodecHandler>(
+              frame_codec_handler_tag)
+          .template addNextInbound<
+              frame::read::handler::FrameDefragmentationHandler>(
+              frame_defragmentation_handler_tag)
+          .template addNextOutbound<FragmentationHandler>(
+              frame_fragmentation_handler_tag, config.fragmentationConfig)
+          .template addNextDuplex<
+              rocket::server::handler::RocketServerWriteCompletionHandler>(
+              server_write_completion_handler_tag)
+          .template addNextDuplex<
+              rocket::server::handler::RocketServerMessageMarshalHandler>(
+              rocket_server_message_marshal_handler_tag)
+          .template addNextDuplex<
+              rocket::server::handler::RocketServerSetupFrameHandler>(
+              server_setup_frame_handler_tag)
+          .template addNextDuplex<
+              rocket::server::handler::RocketServerKeepAliveHandler>(
+              server_keepalive_handler_tag)
+          .template addNextDuplex<
+              rocket::server::handler::RocketServerRequestResponseHandler>(
+              server_request_response_frame_handler_tag)
+          .template addNextDuplex<
+              rocket::server::handler::RocketServerStreamStateHandler>(
+              server_stream_state_handler_tag);
+  if constexpr (WithStats) {
+    return PipelineOwner(
+        std::move(builder)
+            .template addNextDuplex<
+                RocketMetricsHandler<Direction::Server, ServerStatsShard>>(
+                rocket_metrics_handler_tag, CHECK_NOTNULL(statsShard))
+            .build());
+  } else {
+    return PipelineOwner(std::move(builder).build());
+  }
+}
+
+template <bool Backpressure>
+PipelineOwner selectStaticRocketStats(
+    const ThriftServerConnectionFactoryConfig& config,
+    SimpleBufferAllocator* allocator,
+    folly::EventBase* evb,
+    rocket::server::RocketServerTransportHandler* transportHandler,
+    rocket::server::RocketServerAppAdapter* appAdapter,
+    ServerStatsShard* FOLLY_NULLABLE statsShard) {
+  if (statsShard != nullptr) {
+    return buildStaticRocketPipeline<Backpressure, true>(
+        config, allocator, evb, transportHandler, appAdapter, statsShard);
+  }
+  return buildStaticRocketPipeline<Backpressure, false>(
+      config, allocator, evb, transportHandler, appAdapter, statsShard);
+}
+
+template <typename Builder>
+PipelineOwner finishStaticThriftPipeline(Builder&& builder) {
+  return PipelineOwner(
+      std::forward<Builder>(builder)
+          .template addNextDuplexTemplate<ThriftServerSetupHandler>(
+              thrift_server_setup_handler_tag)
+          .build());
+}
+
+template <bool WithWriteBuffer, bool WithExtensions, typename Builder>
+PipelineOwner addStaticWriteBuffer(
+    Builder&& builder,
+    const ThriftServerConnectionFactoryConfig&,
+    ExtensionStateStore&) {
+  if constexpr (WithWriteBuffer) {
+    return finishStaticThriftPipeline(
+        std::forward<Builder>(builder)
+            .template addNextDuplexTemplate<WriteBufferBackpressureHandler>(
+                write_buffer_backpressure_handler_tag));
+  } else {
+    return finishStaticThriftPipeline(std::forward<Builder>(builder));
+  }
+}
+
+template <
+    bool WithChecksum,
+    bool WithWriteBuffer,
+    bool WithExtensions,
+    typename Builder>
+PipelineOwner addStaticChecksum(
+    Builder&& builder,
+    const ThriftServerConnectionFactoryConfig& config,
+    ExtensionStateStore& extensionStates) {
+  if constexpr (WithChecksum) {
+    return addStaticWriteBuffer<WithWriteBuffer, WithExtensions>(
+        std::forward<Builder>(builder)
+            .template addNextDuplexTemplate<ThriftServerChecksumHandler>(
+                thrift_server_checksum_handler_tag)
+            .template addNextDuplexTemplate<ThriftServerConnectionCloseHandler>(
+                thrift_server_connection_close_handler_tag,
+                config.drainTimeout,
+                config.reapTimeout),
+        config,
+        extensionStates);
+  } else {
+    return addStaticWriteBuffer<WithWriteBuffer, WithExtensions>(
+        std::forward<Builder>(builder)
+            .template addNextDuplexTemplate<ThriftServerConnectionCloseHandler>(
+                thrift_server_connection_close_handler_tag,
+                config.drainTimeout,
+                config.reapTimeout),
+        config,
+        extensionStates);
+  }
+}
+
+template <
+    bool WithHeaders,
+    bool WithChecksum,
+    bool WithWriteBuffer,
+    bool WithExtensions,
+    typename Builder>
+PipelineOwner addStaticHeaders(
+    Builder&& builder,
+    const ThriftServerConnectionFactoryConfig& config,
+    ExtensionStateStore& extensionStates) {
+  if constexpr (WithHeaders) {
+    return addStaticChecksum<WithChecksum, WithWriteBuffer, WithExtensions>(
+        std::forward<Builder>(builder)
+            .template addNextInboundTemplate<ThriftServerRequestHeadersHandler>(
+                thrift_server_request_headers_handler_tag)
+            .template addNextDuplexTemplate<ThriftServerCompressionHandler>(
+                thrift_server_compression_handler_tag),
+        config,
+        extensionStates);
+  } else {
+    return addStaticChecksum<WithChecksum, WithWriteBuffer, WithExtensions>(
+        std::forward<Builder>(builder)
+            .template addNextDuplexTemplate<ThriftServerCompressionHandler>(
+                thrift_server_compression_handler_tag),
+        config,
+        extensionStates);
+  }
+}
+
+template <
+    bool WithStats,
+    bool WithHeaders,
+    bool WithChecksum,
+    bool WithWriteBuffer,
+    bool WithExtensions,
+    typename TailAdapter>
+PipelineOwner buildStaticThriftPipeline(
+    folly::EventBase* evb,
+    ThriftServerTransportAdapter* transportAdapter,
+    TailAdapter* tailAdapter,
+    SimpleBufferAllocator* allocator,
+    boost::intrusive_ptr<ThriftConnContext> connContext,
+    ExtensionStateStore& extensionStates,
+    const ThriftServerConnectionFactoryConfig& config,
+    ServerStatsShard* statsShard) {
+  channel_pipeline::StaticPipelineBuilder<
+      ThriftServerTransportAdapter,
+      TailAdapter,
+      SimpleBufferAllocator>
+      builder;
+  builder.setEventBase(evb)
+      .setHead(transportAdapter)
+      .setTail(tailAdapter)
+      .setAllocator(allocator);
+  if constexpr (WithStats) {
+    return addStaticHeaders<
+        WithHeaders,
+        WithChecksum,
+        WithWriteBuffer,
+        WithExtensions>(
+        std::move(builder)
+            .template addNextDuplex<
+                ThriftMetricsHandler<Direction::Server, ServerStatsShard>>(
+                thrift_metrics_handler_tag, statsShard)
+            .template addNextDuplexTemplate<ThriftServerRequestContextHandler>(
+                thrift_server_request_context_handler_tag,
+                config.requestExtensionLayout.get())
+            .template addNextInboundTemplate<
+                ThriftServerConnectionContextHandler>(
+                thrift_server_connection_context_handler_tag,
+                std::move(connContext)),
+        config,
+        extensionStates);
+  } else {
+    return addStaticHeaders<
+        WithHeaders,
+        WithChecksum,
+        WithWriteBuffer,
+        WithExtensions>(
+        std::move(builder)
+            .template addNextDuplexTemplate<ThriftServerRequestContextHandler>(
+                thrift_server_request_context_handler_tag,
+                config.requestExtensionLayout.get())
+            .template addNextInboundTemplate<
+                ThriftServerConnectionContextHandler>(
+                thrift_server_connection_context_handler_tag,
+                std::move(connContext)),
+        config,
+        extensionStates);
+  }
+}
+
+template <
+    bool WithStats,
+    bool WithHeaders,
+    bool WithChecksum,
+    bool WithWriteBuffer,
+    typename TailAdapter>
+PipelineOwner selectStaticExtensions(
+    bool withExtensions,
+    folly::EventBase* evb,
+    ThriftServerTransportAdapter* transportAdapter,
+    TailAdapter* tailAdapter,
+    SimpleBufferAllocator* allocator,
+    boost::intrusive_ptr<ThriftConnContext> connContext,
+    ExtensionStateStore& extensionStates,
+    const ThriftServerConnectionFactoryConfig& config,
+    ServerStatsShard* statsShard) {
+  DCHECK(!withExtensions);
+  return buildStaticThriftPipeline<
+      WithStats,
+      WithHeaders,
+      WithChecksum,
+      WithWriteBuffer,
+      false>(
+      evb,
+      transportAdapter,
+      tailAdapter,
+      allocator,
+      std::move(connContext),
+      extensionStates,
+      config,
+      statsShard);
+}
+
+template <
+    bool WithStats,
+    bool WithHeaders,
+    bool WithChecksum,
+    typename TailAdapter>
+PipelineOwner selectStaticWriteBuffer(
+    const ThriftServerConnectionFactoryConfig& config,
+    folly::EventBase* evb,
+    ThriftServerTransportAdapter* transportAdapter,
+    TailAdapter* tailAdapter,
+    SimpleBufferAllocator* allocator,
+    boost::intrusive_ptr<ThriftConnContext> connContext,
+    ExtensionStateStore& extensionStates,
+    ServerStatsShard* statsShard) {
+  const bool withExtensions = !config.thriftPipelineHandlerFactories.empty();
+  if (config.enableWriteBufferBackpressure) {
+    return selectStaticExtensions<WithStats, WithHeaders, WithChecksum, true>(
+        withExtensions,
+        evb,
+        transportAdapter,
+        tailAdapter,
+        allocator,
+        std::move(connContext),
+        extensionStates,
+        config,
+        statsShard);
+  }
+  return selectStaticExtensions<WithStats, WithHeaders, WithChecksum, false>(
+      withExtensions,
+      evb,
+      transportAdapter,
+      tailAdapter,
+      allocator,
+      std::move(connContext),
+      extensionStates,
+      config,
+      statsShard);
+}
+
+template <bool WithStats, bool WithHeaders, typename TailAdapter>
+PipelineOwner selectStaticChecksum(
+    const ThriftServerConnectionFactoryConfig& config,
+    folly::EventBase* evb,
+    ThriftServerTransportAdapter* transportAdapter,
+    TailAdapter* tailAdapter,
+    SimpleBufferAllocator* allocator,
+    boost::intrusive_ptr<ThriftConnContext> connContext,
+    ExtensionStateStore& extensionStates,
+    ServerStatsShard* statsShard) {
+  if (config.enableChecksum) {
+    return selectStaticWriteBuffer<WithStats, WithHeaders, true>(
+        config,
+        evb,
+        transportAdapter,
+        tailAdapter,
+        allocator,
+        std::move(connContext),
+        extensionStates,
+        statsShard);
+  }
+  return selectStaticWriteBuffer<WithStats, WithHeaders, false>(
+      config,
+      evb,
+      transportAdapter,
+      tailAdapter,
+      allocator,
+      std::move(connContext),
+      extensionStates,
+      statsShard);
+}
+
+template <bool WithStats, typename TailAdapter>
+PipelineOwner selectStaticHeaders(
+    const ThriftServerConnectionFactoryConfig& config,
+    folly::EventBase* evb,
+    ThriftServerTransportAdapter* transportAdapter,
+    TailAdapter* tailAdapter,
+    SimpleBufferAllocator* allocator,
+    boost::intrusive_ptr<ThriftConnContext> connContext,
+    ExtensionStateStore& extensionStates,
+    ServerStatsShard* statsShard) {
+  if (config.enableRequestHeaders) {
+    return selectStaticChecksum<WithStats, true>(
+        config,
+        evb,
+        transportAdapter,
+        tailAdapter,
+        allocator,
+        std::move(connContext),
+        extensionStates,
+        statsShard);
+  }
+  return selectStaticChecksum<WithStats, false>(
+      config,
+      evb,
+      transportAdapter,
+      tailAdapter,
+      allocator,
+      std::move(connContext),
+      extensionStates,
+      statsShard);
+}
+
+template <typename TailAdapter>
+PipelineOwner selectStaticThriftStats(
+    const ThriftServerConnectionFactoryConfig& config,
+    folly::EventBase* evb,
+    ThriftServerTransportAdapter* transportAdapter,
+    TailAdapter* tailAdapter,
+    SimpleBufferAllocator* allocator,
+    boost::intrusive_ptr<ThriftConnContext> connContext,
+    ExtensionStateStore& extensionStates,
+    ServerStatsShard* statsShard) {
+  if (statsShard != nullptr) {
+    return selectStaticHeaders<true>(
+        config,
+        evb,
+        transportAdapter,
+        tailAdapter,
+        allocator,
+        std::move(connContext),
+        extensionStates,
+        statsShard);
+  }
+  return selectStaticHeaders<false>(
+      config,
+      evb,
+      transportAdapter,
+      tailAdapter,
+      allocator,
+      std::move(connContext),
+      extensionStates,
+      statsShard);
+}
 } // namespace
 
 ThriftServerConnectionFactory::ThriftServerConnectionFactory(
@@ -357,81 +760,97 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
       WriteBufferBackpressureHandler<channel_pipeline::detail::ContextImpl>;
   using SetupHandler =
       ThriftServerSetupHandler<channel_pipeline::detail::ContextImpl>;
-  PipelineBuilder<
-      ThriftServerTransportAdapter,
-      TailAdapter,
-      SimpleBufferAllocator>
-      thriftPipelineBuilder;
-  thriftPipelineBuilder.setEventBase(evb)
-      .setHead(transportAdapterPtr)
-      .setTail(tailAdapter)
-      .setAllocator(&conn.thriftAllocator);
-  // Sits closest to the head so it sees every message crossing the thrift
-  // layer, before any handler below can absorb or synthesize one.
-  if (statsShard != nullptr) {
-    thriftPipelineBuilder.template addNextDuplex<
-        ThriftMetricsHandler<Direction::Server, ServerStatsShard>>(
-        thrift_metrics_handler_tag, statsShard);
+  PipelineOwner thriftPipeline;
+  if (config_.channelPipelineMode == ChannelPipelineMode::Static &&
+      config_.thriftPipelineHandlerFactories.empty()) {
+    thriftPipeline = selectStaticThriftStats(
+        config_,
+        evb,
+        transportAdapterPtr,
+        tailAdapter,
+        &conn.thriftAllocator,
+        std::move(connContext),
+        conn.extensionStates,
+        statsShard);
+  } else {
+    PipelineBuilder<
+        ThriftServerTransportAdapter,
+        TailAdapter,
+        SimpleBufferAllocator>
+        thriftPipelineBuilder;
+    thriftPipelineBuilder.setEventBase(evb)
+        .setHead(transportAdapterPtr)
+        .setTail(tailAdapter)
+        .setAllocator(&conn.thriftAllocator);
+    // Sits closest to the head so it sees every message crossing the thrift
+    // layer, before any handler below can absorb or synthesize one.
+    if (statsShard != nullptr) {
+      thriftPipelineBuilder.template addNextDuplex<
+          ThriftMetricsHandler<Direction::Server, ServerStatsShard>>(
+          thrift_metrics_handler_tag, statsShard);
+    }
+    // Duplex: inbound it creates the per-request context, outbound it hands
+    // that context's response headers to the outgoing metadata. Sitting
+    // closest to the head on the write path makes it the last contributor
+    // downstream of every handler and extension that can add one.
+    thriftPipelineBuilder
+        .template addNextDuplex<ReqCtxHandler>(
+            thrift_server_request_context_handler_tag,
+            config_.requestExtensionLayout.get())
+        .template addNextInbound<ConnCtxHandler>(
+            thrift_server_connection_context_handler_tag,
+            std::move(connContext));
+    // Stamps RequestRpcMetadata.otherMetadata onto each request's
+    // ThriftRequestContext.
+    if (config_.enableRequestHeaders) {
+      thriftPipelineBuilder.template addNextInbound<ReqHeadersHandler>(
+          thrift_server_request_headers_handler_tag);
+    }
+    // Inbound decompression precedes checksum verification. Outbound traverses
+    // the handlers in reverse, so the checksum is computed on the uncompressed
+    // response before compression.
+    thriftPipelineBuilder.template addNextDuplex<CompressionHandler>(
+        thrift_server_compression_handler_tag);
+    // The checksum handler is added after the context handlers so inbound it
+    // runs once the per-request ThriftRequestContext exists (it records the
+    // algorithm there for the response to echo).
+    if (config_.enableChecksum) {
+      thriftPipelineBuilder.template addNextDuplex<ChecksumHandler>(
+          thrift_server_checksum_handler_tag);
+    }
+    // Connection-close handler sits immediately upstream of the tail.
+    // ThriftServerConnection::close() fires
+    // ThriftServerCloseConnectionEvent through the pipeline; the handler
+    // handles it through its typed callback and drives the terminal state
+    // machine.
+    thriftPipelineBuilder.template addNextDuplex<CloseHandler>(
+        thrift_server_connection_close_handler_tag,
+        config_.drainTimeout,
+        config_.reapTimeout);
+    // Write-buffer handler sits between the context handlers and the drain
+    // handler. Placed above drain (closer to head) so its inbound
+    // Backpressure signal propagates upstream toward the transport, and
+    // outbound responses from the tail traverse drain → write-buffer →
+    // head.
+    if (config_.enableWriteBufferBackpressure) {
+      thriftPipelineBuilder.template addNextDuplex<WriteBufferHandler>(
+          write_buffer_backpressure_handler_tag);
+    }
+    // Embedder-registered handlers go after all built-ins, in registration
+    // order — the first sits closest to the head, the last immediately above
+    // the tail adapter. Each factory constructs a fresh per-connection
+    // instance.
+    for (const auto& factory : config_.thriftPipelineHandlerFactories) {
+      thriftPipelineBuilder.addErasedHandler(factory(conn.extensionStates));
+    }
+    // Last before the tail, and deliberately after the embedder handlers: this
+    // terminates the connection-lifecycle messages, so everything that might
+    // answer one has to run first. The application tail then only ever sees
+    // requests.
+    thriftPipelineBuilder.template addNextDuplex<SetupHandler>(
+        thrift_server_setup_handler_tag);
+    thriftPipeline = thriftPipelineBuilder.build();
   }
-  // Duplex: inbound it creates the per-request context, outbound it hands
-  // that context's response headers to the outgoing metadata. Sitting
-  // closest to the head on the write path makes it the last contributor
-  // downstream of every handler and extension that can add one.
-  thriftPipelineBuilder
-      .template addNextDuplex<ReqCtxHandler>(
-          thrift_server_request_context_handler_tag,
-          config_.requestExtensionLayout.get())
-      .template addNextInbound<ConnCtxHandler>(
-          thrift_server_connection_context_handler_tag, std::move(connContext));
-  // Stamps RequestRpcMetadata.otherMetadata onto each request's
-  // ThriftRequestContext.
-  if (config_.enableRequestHeaders) {
-    thriftPipelineBuilder.template addNextInbound<ReqHeadersHandler>(
-        thrift_server_request_headers_handler_tag);
-  }
-  // Inbound decompression precedes checksum verification. Outbound traverses
-  // the handlers in reverse, so the checksum is computed on the uncompressed
-  // response before compression.
-  thriftPipelineBuilder.template addNextDuplex<CompressionHandler>(
-      thrift_server_compression_handler_tag);
-  // The checksum handler is added after the context handlers so inbound it
-  // runs once the per-request ThriftRequestContext exists (it records the
-  // algorithm there for the response to echo).
-  if (config_.enableChecksum) {
-    thriftPipelineBuilder.template addNextDuplex<ChecksumHandler>(
-        thrift_server_checksum_handler_tag);
-  }
-  // Connection-close handler sits immediately upstream of the tail.
-  // ThriftServerConnection::close() fires
-  // ThriftServerCloseConnectionEvent through the pipeline; the handler
-  // handles it through its typed callback and drives the terminal state
-  // machine.
-  thriftPipelineBuilder.template addNextDuplex<CloseHandler>(
-      thrift_server_connection_close_handler_tag,
-      config_.drainTimeout,
-      config_.reapTimeout);
-  // Write-buffer handler sits between the context handlers and the drain
-  // handler. Placed above drain (closer to head) so its inbound
-  // Backpressure signal propagates upstream toward the transport, and
-  // outbound responses from the tail traverse drain → write-buffer →
-  // head.
-  if (config_.enableWriteBufferBackpressure) {
-    thriftPipelineBuilder.template addNextDuplex<WriteBufferHandler>(
-        write_buffer_backpressure_handler_tag);
-  }
-  // Embedder-registered handlers go after all built-ins, in registration
-  // order — the first sits closest to the head, the last immediately above
-  // the tail adapter. Each factory constructs a fresh per-connection instance.
-  for (const auto& factory : config_.thriftPipelineHandlerFactories) {
-    thriftPipelineBuilder.addErasedHandler(factory(conn.extensionStates));
-  }
-  // Last before the tail, and deliberately after the embedder handlers: this
-  // terminates the connection-lifecycle messages, so everything that might
-  // answer one has to run first. The application tail then only ever sees
-  // requests.
-  thriftPipelineBuilder.template addNextDuplex<SetupHandler>(
-      thrift_server_setup_handler_tag);
-  auto thriftPipeline = thriftPipelineBuilder.build();
   transportAdapterPtr->setPipeline(thriftPipeline.get());
   tailAdapter->setPipeline(thriftPipeline.get());
   conn.thriftPipeline = std::move(thriftPipeline);
@@ -439,11 +858,30 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   return conn;
 }
 
-PipelineImpl::Ptr ThriftServerConnectionFactory::buildRocketPipeline(
+PipelineOwner ThriftServerConnectionFactory::buildRocketPipeline(
     folly::EventBase* evb,
     rocket::server::RocketServerTransportHandler* transportHandler,
     rocket::server::RocketServerAppAdapter* appAdapter,
     ServerStatsShard* FOLLY_NULLABLE statsShard) {
+  if (config_.channelPipelineMode == ChannelPipelineMode::Static) {
+    if (config_.enableBackpressure) {
+      return selectStaticRocketStats<true>(
+          config_,
+          &rocketAllocator_,
+          evb,
+          transportHandler,
+          appAdapter,
+          statsShard);
+    }
+    return selectStaticRocketStats<false>(
+        config_,
+        &rocketAllocator_,
+        evb,
+        transportHandler,
+        appAdapter,
+        statsShard);
+  }
+
   // addState rebinds: it returns a builder of an extended type and leaves the
   // original moved-from, so the chain up to and including it must be bound
   // here rather than continued on a pre-declared builder.
@@ -519,7 +957,7 @@ PipelineImpl::Ptr ThriftServerConnectionFactory::buildRocketPipeline(
         RocketMetricsHandler<Direction::Server, ServerStatsShard>>(
         rocket_metrics_handler_tag, statsShard);
   }
-  return builder.build();
+  return PipelineOwner(builder.build());
 }
 
 } // namespace apache::thrift::fast_thrift::thrift::server

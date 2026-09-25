@@ -1788,17 +1788,20 @@ TEST(FastThriftServerExtensionTest, ExtensionResponseHeaderReachesClient) {
   EXPECT_EQ(readBack, "xyz");
 }
 
-// An observer extension registered via addThriftExtension is spliced into every
-// per-connection thrift pipeline and sees the inbound request and the outbound
-// response of a real RPC without disturbing it.
-TEST(FastThriftServerExtensionTest, ObserverExtensionObservesTraffic) {
+// Runtime-registered handlers preserve their dynamic topology until a static
+// registration path is selected, even when static mode is requested.
+TEST(
+    FastThriftServerExtensionTest,
+    StaticModeSupportsObserverExtensionViaDynamicFallback) {
   THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
 
   auto handler = std::make_shared<TestHandler>();
   std::atomic<int> requests{0};
   std::atomic<int> responses{0};
+  auto config = makeLoopbackConfig();
+  config.channelPipelineMode = ftt::ChannelPipelineMode::Static;
 
-  ftt::FastThriftServer server(makeLoopbackConfig());
+  ftt::FastThriftServer server(std::move(config));
   server.setInterface(handler);
   server.addModule(
       ftt::FastServerModule("observer")

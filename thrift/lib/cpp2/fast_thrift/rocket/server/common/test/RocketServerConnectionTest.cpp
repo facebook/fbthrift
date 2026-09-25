@@ -124,7 +124,7 @@ TEST(RocketServerConnectionTest, DestroyAfterDisconnectReleasesEverything) {
 
   // All owning unique_ptrs are released after destroy().
   EXPECT_EQ(f.conn.transportHandler, nullptr);
-  EXPECT_EQ(f.conn.pipeline, nullptr);
+  EXPECT_FALSE(f.conn.pipeline);
   EXPECT_EQ(f.conn.appAdapter, nullptr);
 }
 
@@ -137,7 +137,7 @@ TEST(RocketServerConnectionTest, DestroyImpliesDisconnect) {
 
   EXPECT_TRUE(f.conn.disconnected_);
   EXPECT_EQ(f.conn.transportHandler, nullptr);
-  EXPECT_EQ(f.conn.pipeline, nullptr);
+  EXPECT_FALSE(f.conn.pipeline);
   EXPECT_EQ(f.conn.appAdapter, nullptr);
 }
 
@@ -165,7 +165,7 @@ TEST(RocketServerConnectionTest, DestroyDeactivatesPipelineBeforeClose) {
   f.conn.destroy();
 
   EXPECT_EQ(f.conn.appAdapter, nullptr);
-  EXPECT_EQ(f.conn.pipeline, nullptr);
+  EXPECT_FALSE(f.conn.pipeline);
 }
 
 TEST(RocketServerConnectionTest, LegacyCloseComposesDisconnectAndDestroy) {
@@ -176,7 +176,7 @@ TEST(RocketServerConnectionTest, LegacyCloseComposesDisconnectAndDestroy) {
 
   EXPECT_TRUE(f.conn.disconnected_);
   EXPECT_EQ(f.conn.transportHandler, nullptr);
-  EXPECT_EQ(f.conn.pipeline, nullptr);
+  EXPECT_FALSE(f.conn.pipeline);
   EXPECT_EQ(f.conn.appAdapter, nullptr);
 }
 

@@ -50,19 +50,18 @@ void ThriftServerAppAdapter::setCloseCallback(std::function<void()> cb) {
 }
 
 void ThriftServerAppAdapter::setPipeline(
-    channel_pipeline::PipelineImpl* pipeline) noexcept {
+    channel_pipeline::PipelineRef pipeline) noexcept {
   DCHECK(pipeline);
   pipeline_ = pipeline;
-  pipelineGuard_ =
-      std::make_unique<folly::DelayedDestruction::DestructorGuard>(pipeline_);
+  pipelineGuard_ = pipeline_.guard();
   pipelineActive_ = true;
-  evb_ = folly::getKeepAliveToken(pipeline_->eventBase());
+  evb_ = folly::getKeepAliveToken(pipeline_.eventBase());
 }
 
 void ThriftServerAppAdapter::resetPipeline() noexcept {
   folly::DelayedDestruction::DestructorGuard dg(this);
   pipelineActive_ = false;
-  pipeline_ = nullptr;
+  pipeline_.reset();
   pipelineGuard_.reset();
   evb_ = {};
 }
@@ -85,8 +84,7 @@ void ThriftServerAppAdapter::fireCloseCallback() noexcept {
   }
 }
 
-channel_pipeline::Result ThriftServerAppAdapter::onRead(
-    channel_pipeline::detail::ContextImpl& ctx,
+channel_pipeline::Result ThriftServerAppAdapter::dispatchRequest(
     channel_pipeline::TypeErasedBox&& msg) noexcept {
   const auto& request = msg.get<ThriftServerRequestMessage>();
   DCHECK(request.streamId != 0) << "Invalid stream ID";
@@ -105,12 +103,12 @@ channel_pipeline::Result ThriftServerAppAdapter::onRead(
 
   if (dispatchTable_) {
     if (auto dispatch = dispatchTable_->find(routing.methodName)) {
-      return dispatch(this, ctx, std::move(msg));
+      return dispatch(this, std::move(msg));
     }
   } else if (localMethods_) {
     for (const auto& [name, process] : *localMethods_) {
       if (name == routing.methodName) {
-        return dispatchRequestResponse(this, process, ctx, std::move(msg));
+        return dispatchRequestResponse(this, process, std::move(msg));
       }
     }
   }
@@ -128,7 +126,7 @@ void ThriftServerAppAdapter::onException(
   // cascades; the close handler's onPipelineInactive does the rest.
   XLOG_EVERY_MS(ERR, 60'000) << "Pipeline exception: " << e.what();
   if (pipeline_) {
-    pipeline_->deactivate();
+    pipeline_.deactivate();
   }
 }
 
@@ -212,12 +210,12 @@ void ThriftServerAppAdapter::writeResponseOnEventBase(
     return;
   }
   auto result =
-      pipeline_->fireWrite(channel_pipeline::erase_and_box(std::move(message)));
+      pipeline_.fireWrite(channel_pipeline::erase_and_box(std::move(message)));
   // A failed write means the response can't reach the wire — pipeline
   // is in a broken or torn-down state. Tear down immediately rather
   // than wait for a graceful drain. Idempotent at the pipeline level.
   if (FOLLY_UNLIKELY(result == channel_pipeline::Result::Error)) {
-    pipeline_->deactivate();
+    pipeline_.deactivate();
   }
 }
 
@@ -229,8 +227,9 @@ void ThriftServerAppAdapter::close() noexcept {
   if (!pipeline_) {
     return;
   }
-  PublishedEvents::template fire<ThriftServerCloseConnectionEvent>(
-      *pipeline_, ThriftServerCloseConnectionEvent{});
+  pipeline_.bindEvents<PublishedEvents>()
+      .template fire<ThriftServerCloseConnectionEvent>(
+          ThriftServerCloseConnectionEvent{});
 }
 
 } // namespace apache::thrift::fast_thrift::thrift

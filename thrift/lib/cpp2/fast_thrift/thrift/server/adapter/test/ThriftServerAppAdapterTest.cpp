@@ -457,10 +457,7 @@ TEST_F(
   msg.streamId = 1;
   EXPECT_EQ(
       ThriftServerAppAdapter::dispatchRequestResponse(
-          adapter.get(),
-          process,
-          channel_pipeline::test::inertEndpointContext(),
-          erase_and_box(std::move(msg))),
+          adapter.get(), process, erase_and_box(std::move(msg))),
       Result::Error);
   EXPECT_FALSE(adapter->handlerCalled);
 }

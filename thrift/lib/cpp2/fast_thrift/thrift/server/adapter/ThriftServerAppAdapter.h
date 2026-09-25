@@ -32,7 +32,7 @@
 #include <folly/io/async/EventBase.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerMethodDispatchTable.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
@@ -124,7 +124,13 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
 
   void setCloseCallback(std::function<void()> cb);
 
-  void setPipeline(channel_pipeline::PipelineImpl* pipeline) noexcept;
+  template <channel_pipeline::PipelineRefTarget P>
+  void setPipeline(P* pipeline) noexcept {
+    DCHECK(pipeline != nullptr);
+    setPipeline(channel_pipeline::PipelineRef(*pipeline));
+  }
+
+  void setPipeline(channel_pipeline::PipelineRef pipeline) noexcept;
 
   // Attach the executor that generated dispatchers use for request
   // deserialization, method execution, and response serialization. When
@@ -143,18 +149,21 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   // in-flight off-EventBase work depends on. See the threading note above.
   void resetPipeline() noexcept;
 
-  channel_pipeline::PipelineImpl* pipeline() const noexcept {
-    return pipeline_;
-  }
+  channel_pipeline::PipelineRef pipeline() const noexcept { return pipeline_; }
 
   // === TailEndpointHandler interface ===
 
   // Unresolved entry point, used when this adapter is the pipeline tail on
   // its own. Resolves the method against the shared immutable dispatch table
   // and invokes its unbound dispatch thunk with this connection's adapter.
-  channel_pipeline::Result onRead(
-      channel_pipeline::detail::ContextImpl&,
+  channel_pipeline::Result dispatchRequest(
       channel_pipeline::TypeErasedBox&& msg) noexcept;
+
+  template <typename Context>
+  channel_pipeline::Result onRead(
+      Context&, channel_pipeline::TypeErasedBox&& msg) noexcept {
+    return dispatchRequest(std::move(msg));
+  }
 
   void onException(folly::exception_wrapper&& e) noexcept;
 
@@ -215,7 +224,6 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   static FOLLY_ALWAYS_INLINE channel_pipeline::Result dispatchRequestResponse(
       ThriftServerAppAdapter* owner,
       RequestResponseProcessFn method,
-      channel_pipeline::detail::ContextImpl&,
       channel_pipeline::TypeErasedBox&& msg) noexcept;
 
   template <typename Adapter, auto Process>
@@ -224,7 +232,6 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
     return {
         name,
         +[](ThriftServerAppAdapter* owner,
-            channel_pipeline::detail::ContextImpl& ctx,
             channel_pipeline::TypeErasedBox&& msg) noexcept {
           return dispatchRequestResponse(
               owner,
@@ -239,7 +246,6 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
                     protocol,
                     std::move(requestContext));
               },
-              ctx,
               std::move(msg));
         }};
   }
@@ -248,13 +254,13 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   void addMethodHandler(
       std::string_view name, RequestResponseProcessFn handler);
 
-  channel_pipeline::PipelineImpl* pipeline_{nullptr};
+  channel_pipeline::PipelineRef pipeline_;
   // Keeps pipeline_ alive while pipelineActive_ is true. Released on
   // ConnectionClosed (or in resetPipeline) so the pipeline can die
   // independently of any straggler FastHandlerCallbacks. Straggler
   // writes are gated by pipelineActive_ and never touch pipeline_
   // after release.
-  std::unique_ptr<folly::DelayedDestruction::DestructorGuard> pipelineGuard_;
+  channel_pipeline::PipelineGuard pipelineGuard_;
   // EVB-only. Set true in setPipeline(), cleared on ConnectionClosed
   // (and on adapter destruction via resetPipeline). When false,
   // writeResponseOnEventBase drops without touching pipeline_.
@@ -298,7 +304,6 @@ FOLLY_ALWAYS_INLINE channel_pipeline::Result
 ThriftServerAppAdapter::dispatchRequestResponse(
     ThriftServerAppAdapter* owner,
     RequestResponseProcessFn method,
-    channel_pipeline::detail::ContextImpl&,
     channel_pipeline::TypeErasedBox&& msg) noexcept {
   auto request = msg.take<ThriftServerRequestMessage>();
   DCHECK(request.streamId != 0) << "Invalid stream ID";

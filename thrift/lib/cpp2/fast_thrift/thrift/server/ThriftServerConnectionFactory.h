@@ -31,7 +31,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/common/ServerStats.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/FragmentationHandlerConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/IntervalBatchingHandlerConfig.h>
@@ -42,6 +42,7 @@
 #include <thrift/lib/cpp2/fast_thrift/interface/status/StatusServerInterface.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/adapter/RocketServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerSetupFrameHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServerConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapterFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerTransportAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerCompositeRoutingTable.h>
@@ -82,6 +83,8 @@ struct ThriftServerConnectionFactoryConfig {
       metadataResponse;
   // Per-connection MSG_ZEROCOPY threshold; 0 disables zero-copy.
   std::size_t zeroCopyThreshold{0};
+
+  ChannelPipelineMode channelPipelineMode{ChannelPipelineMode::Dynamic};
 
   // Slot plans for the extensions installed on this server, built once before
   // it accepts anything and shared by every context. Null when nothing
@@ -180,7 +183,7 @@ class ThriftServerConnectionFactory {
   // here because the factory owns the shared rocket allocator.
   // `statsShard` is null when config_.stats is unset, in which case no
   // metrics handler is added.
-  channel_pipeline::PipelineImpl::Ptr buildRocketPipeline(
+  channel_pipeline::PipelineOwner buildRocketPipeline(
       folly::EventBase* evb,
       rocket::server::RocketServerTransportHandler* transportHandler,
       rocket::server::RocketServerAppAdapter* appAdapter,

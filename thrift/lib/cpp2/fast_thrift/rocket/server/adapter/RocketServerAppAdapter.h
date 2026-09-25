@@ -24,7 +24,7 @@
 #include <folly/lang/Assume.h>
 #include <folly/logging/xlog.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/Messages.h>
 
@@ -106,14 +106,19 @@ class RocketServerAppAdapter : public folly::DelayedDestruction {
   RocketServerAppAdapter(RocketServerAppAdapter&&) = delete;
   RocketServerAppAdapter& operator=(RocketServerAppAdapter&&) = delete;
 
-  void setPipeline(channel_pipeline::PipelineImpl* pipeline) noexcept {
+  template <channel_pipeline::PipelineRefTarget P>
+  void setPipeline(P* pipeline) noexcept {
+    DCHECK(pipeline != nullptr);
+    setPipeline(channel_pipeline::PipelineRef(*pipeline));
+  }
+
+  void setPipeline(channel_pipeline::PipelineRef pipeline) noexcept {
     DCHECK(pipeline);
     if (pipeline_) {
       XLOG(FATAL) << "must reset pipeline before setting a new one";
     }
     pipeline_ = pipeline;
-    pipelineGuard_ =
-        std::make_unique<folly::DelayedDestruction::DestructorGuard>(pipeline);
+    pipelineGuard_ = pipeline_.guard();
   }
 
   /**
@@ -122,14 +127,14 @@ class RocketServerAppAdapter : public folly::DelayedDestruction {
    * not be called.
    */
   void resetPipeline() noexcept {
-    pipeline_ = nullptr;
+    pipeline_.reset();
     pipelineGuard_.reset();
   }
 
   // Test-only observer: returns the adapter's current pipeline pointer
   // (nullptr after resetPipeline). Used to verify teardown ordering
   // invariants.
-  channel_pipeline::PipelineImpl* getPipeline() const noexcept {
+  channel_pipeline::PipelineRef getPipeline() const noexcept {
     return pipeline_;
   }
 
@@ -170,7 +175,7 @@ class RocketServerAppAdapter : public folly::DelayedDestruction {
    */
   void notifyReadReady() noexcept {
     if (pipeline_) {
-      pipeline_->onReadReady();
+      pipeline_.onReadReady();
     }
   }
 
@@ -183,8 +188,7 @@ class RocketServerAppAdapter : public folly::DelayedDestruction {
    * alive across calls to write().
    */
   channel_pipeline::Result write(RocketResponseMessage&& msg) noexcept {
-    return pipeline_->fireWrite(
-        channel_pipeline::erase_and_box(std::move(msg)));
+    return pipeline_.fireWrite(channel_pipeline::erase_and_box(std::move(msg)));
   }
 
   // === TailEndpointHandler interface ===
@@ -193,9 +197,9 @@ class RocketServerAppAdapter : public folly::DelayedDestruction {
    * Called by the pipeline when a request message arrives (inbound path).
    * Forwards to the registered onRequest callback.
    */
+  template <typename Context>
   channel_pipeline::Result onRead(
-      channel_pipeline::detail::ContextImpl&,
-      channel_pipeline::TypeErasedBox&& msg) noexcept {
+      Context&, channel_pipeline::TypeErasedBox&& msg) noexcept {
     if (FOLLY_UNLIKELY(!onRequest_)) {
       return channel_pipeline::Result::Error;
     }
@@ -293,8 +297,8 @@ class RocketServerAppAdapter : public folly::DelayedDestruction {
   }
 
  private:
-  channel_pipeline::PipelineImpl* pipeline_{nullptr};
-  std::unique_ptr<folly::DelayedDestruction::DestructorGuard> pipelineGuard_;
+  channel_pipeline::PipelineRef pipeline_;
+  channel_pipeline::PipelineGuard pipelineGuard_;
   OnRequestFn onRequest_;
   OnErrorFn onError_;
   OnConnectFn onConnect_;

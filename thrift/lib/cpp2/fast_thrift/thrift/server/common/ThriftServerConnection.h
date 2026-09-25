@@ -26,7 +26,7 @@
 #include <glog/logging.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerCompositeAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerTransportAdapter.h>
@@ -90,7 +90,7 @@ struct ThriftServerConnection {
   std::unique_ptr<ThriftServerTransportAdapter> thriftTransportAdapter;
 
   // Thrift pipeline. Destroyed first among the owned fields here.
-  channel_pipeline::PipelineImpl::Ptr thriftPipeline;
+  channel_pipeline::PipelineOwner thriftPipeline;
 
   // Per-connection thrift context. Set by the factory for every accepted
   // connection and co-owned with the pipeline's

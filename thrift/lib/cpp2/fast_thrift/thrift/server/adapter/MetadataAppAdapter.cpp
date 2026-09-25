@@ -49,12 +49,10 @@ MetadataAppAdapter::methodDispatchTable() {
           std::initializer_list<ThriftServerMethodDispatchTable::Method>{
               {kMethodName,
                +[](ThriftServerAppAdapter* adapter,
-                   channel_pipeline::detail::ContextImpl& ctx,
                    channel_pipeline::TypeErasedBox&& msg) noexcept {
                  return dispatchRequestResponse(
                      adapter,
                      &MetadataAppAdapter::handleGetThriftServiceMetadata,
-                     ctx,
                      std::move(msg));
                }}});
   return table;

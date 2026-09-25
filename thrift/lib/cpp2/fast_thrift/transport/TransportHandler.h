@@ -32,7 +32,7 @@
 #include <folly/logging/xlog.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/Parser.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/WriteCompletion.h>
 
@@ -81,7 +81,7 @@ class TransportHandlerT : public folly::DelayedDestruction,
       apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox;
   using PublishedEvents = typename Factory::PublishedEvents;
   using EventPublisher =
-      channel_pipeline::EventPublisherHandle<PublishedEvents>;
+      channel_pipeline::PipelineEventPublisherRef<PublishedEvents>;
 
   enum class State : uint8_t {
     Created,
@@ -129,20 +129,23 @@ class TransportHandlerT : public folly::DelayedDestruction,
     onClosed_ = std::move(callback);
   }
 
-  void setPipeline(
-      apache::thrift::fast_thrift::channel_pipeline::PipelineImpl*
-          pipeline) noexcept {
+  template <channel_pipeline::PipelineRefTarget P>
+  void setPipeline(P* pipeline) noexcept {
+    DCHECK(pipeline != nullptr);
+    setPipeline(channel_pipeline::PipelineRef(*pipeline));
+  }
+
+  void setPipeline(channel_pipeline::PipelineRef pipeline) noexcept {
     DCHECK(pipeline);
     DCHECK(state_ == State::Created);
     pipeline_ = pipeline;
-    eventPublisher_ = pipeline->template bindEvents<PublishedEvents>();
-    pipelineGuard_ =
-        std::make_unique<folly::DelayedDestruction::DestructorGuard>(pipeline_);
+    eventPublisher_ = pipeline_.bindEvents<PublishedEvents>();
+    pipelineGuard_ = pipeline_.guard();
     // Read buffers come from the pipeline's allocator, same as every other
     // buffer the pipeline hands around. Wired here rather than at
     // construction because the pipeline is not known until now.
-    bufFactory_ = [pipeline](size_t capacity) noexcept {
-      return pipeline->allocate(capacity);
+    bufFactory_ = [pipeline = pipeline_](size_t capacity) noexcept {
+      return pipeline.allocate(capacity);
     };
     parser_.setIOBufFactory(&bufFactory_);
     state_ = State::Ready;
@@ -161,7 +164,7 @@ class TransportHandlerT : public folly::DelayedDestruction,
     DCHECK(socket_->good());
     state_ = State::Open;
     resumeRead();
-    pipeline_->activate();
+    pipeline_.activate();
   }
 
   // --- AsyncTransport::ReadCallback interface ---
@@ -222,8 +225,8 @@ class TransportHandlerT : public folly::DelayedDestruction,
 
   // --- TailEndpointHandler interface (OutboundTransportHandler refines) ---
 
-  Result onWrite(
-      channel_pipeline::detail::ContextImpl&, TypeErasedBox&& msg) noexcept {
+  template <typename Context>
+  Result onWrite(Context&, TypeErasedBox&& msg) noexcept {
     folly::DelayedDestruction::DestructorGuard dg(this);
     auto bytes = std::move(msg.template get<BytesPtr>());
     DCHECK(bytes);
@@ -290,7 +293,7 @@ class TransportHandlerT : public folly::DelayedDestruction,
     DCHECK(state_ != State::Open);
     onClosed_ = nullptr;
     eventPublisher_ = {};
-    pipeline_ = nullptr;
+    pipeline_.reset();
     pipelineGuard_.reset();
   }
 
@@ -382,7 +385,7 @@ class TransportHandlerT : public folly::DelayedDestruction,
   void maybeSignalWriteReady() noexcept {
     if (writeSaturated_ && writePending_ == 0) {
       writeSaturated_ = false;
-      pipeline_->onWriteReady();
+      pipeline_.onWriteReady();
     }
   }
 
@@ -396,7 +399,7 @@ class TransportHandlerT : public folly::DelayedDestruction,
       if (FOLLY_UNLIKELY(state_ == State::Closing || state_ == State::Closed)) {
         return Result::Error;
       }
-      return pipeline_->fireRead(TypeErasedBox(std::move(bytes)));
+      return pipeline_.fireRead(TypeErasedBox(std::move(bytes)));
     };
   }
 
@@ -442,9 +445,9 @@ class TransportHandlerT : public folly::DelayedDestruction,
     parser_.reset();
     if (pipeline_) {
       if (ex) {
-        pipeline_->fireException(std::move(ex));
+        pipeline_.fireException(std::move(ex));
       }
-      pipeline_->deactivate();
+      pipeline_.deactivate();
     }
     return true;
   }
@@ -533,9 +536,9 @@ class TransportHandlerT : public folly::DelayedDestruction,
   folly::IOBufFactory bufFactory_;
   ParserT parser_;
   std::chrono::milliseconds drainTimeoutDuration_;
-  channel_pipeline::PipelineImpl* pipeline_{nullptr};
+  channel_pipeline::PipelineRef pipeline_;
   EventPublisher eventPublisher_;
-  std::unique_ptr<folly::DelayedDestruction::DestructorGuard> pipelineGuard_;
+  channel_pipeline::PipelineGuard pipelineGuard_;
   folly::Function<void() noexcept> onClosed_;
   State state_{State::Created};
   bool readPaused_{true};

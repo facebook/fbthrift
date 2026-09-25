@@ -23,7 +23,7 @@
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/logging/xlog.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/ErrorCode.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameViews.h>
@@ -81,7 +81,7 @@ class ThriftServerTransportAdapter {
   using PublishedEvents = channel_pipeline::
       Events<ThriftServerWriteCompleteEvent, ThriftServerSetupCompleteEvent>;
   using EventPublisher =
-      channel_pipeline::EventPublisherHandle<PublishedEvents>;
+      channel_pipeline::PipelineEventPublisherRef<PublishedEvents>;
 
   // Takes ownership of the rocket connection. The rocket connection is
   // torn down (disconnect + destroy) when the thrift pipeline tears down
@@ -98,15 +98,20 @@ class ThriftServerTransportAdapter {
   ThriftServerTransportAdapter& operator=(ThriftServerTransportAdapter&&) =
       delete;
 
-  void setPipeline(channel_pipeline::PipelineImpl* pipeline) noexcept {
+  template <channel_pipeline::PipelineRefTarget P>
+  void setPipeline(P* pipeline) noexcept {
+    DCHECK(pipeline != nullptr);
+    setPipeline(channel_pipeline::PipelineRef(*pipeline));
+  }
+
+  void setPipeline(channel_pipeline::PipelineRef pipeline) noexcept {
     DCHECK(pipeline);
     if (pipeline_) {
       XLOG(FATAL) << "must reset pipeline before setting a new one";
     }
     pipeline_ = pipeline;
-    eventPublisher_ = pipeline->template bindEvents<PublishedEvents>();
-    pipelineGuard_ =
-        std::make_unique<folly::DelayedDestruction::DestructorGuard>(pipeline);
+    eventPublisher_ = pipeline_.bindEvents<PublishedEvents>();
+    pipelineGuard_ = pipeline_.guard();
   }
 
   /**
@@ -116,7 +121,7 @@ class ThriftServerTransportAdapter {
    */
   void resetPipeline() noexcept {
     eventPublisher_ = {};
-    pipeline_ = nullptr;
+    pipeline_.reset();
     pipelineGuard_.reset();
   }
 
@@ -156,7 +161,7 @@ class ThriftServerTransportAdapter {
     ThriftServerRequestMessage thriftMsg;
     thriftMsg.streamId = request.streamId;
     thriftMsg.payload = std::move(decoded.value());
-    return pipeline_->fireRead(
+    return pipeline_.fireRead(
         channel_pipeline::erase_and_box(std::move(thriftMsg)));
   }
 
@@ -168,7 +173,7 @@ class ThriftServerTransportAdapter {
    * setPipeline keeps it alive.
    */
   void onTransportError(folly::exception_wrapper&& e) noexcept {
-    pipeline_->fireException(std::move(e));
+    pipeline_.fireException(std::move(e));
   }
 
   // Called when the rocket pipeline reports a completed frame write. Relays it
@@ -199,9 +204,9 @@ class ThriftServerTransportAdapter {
    * App will set `rpcKind` on the variant and we'll map it to streamType
    * here (e.g., via RpcKindMapping::toFrameType).
    */
+  template <typename Context>
   channel_pipeline::Result onWrite(
-      channel_pipeline::detail::ContextImpl&,
-      channel_pipeline::TypeErasedBox&& msg) noexcept {
+      Context&, channel_pipeline::TypeErasedBox&& msg) noexcept {
     return writeToRocket(std::move(msg));
   }
 
@@ -283,9 +288,9 @@ class ThriftServerTransportAdapter {
       apache::thrift::fast_thrift::frame::FrameType streamType,
       const folly::exception_wrapper& error) noexcept;
 
-  channel_pipeline::PipelineImpl* pipeline_{nullptr};
+  channel_pipeline::PipelineRef pipeline_;
   EventPublisher eventPublisher_;
-  std::unique_ptr<folly::DelayedDestruction::DestructorGuard> pipelineGuard_;
+  channel_pipeline::PipelineGuard pipelineGuard_;
   // Owned rocket connection — torn down by handlerRemoved /
   // onPipelineInactive when the thrift pipeline goes away.
   std::unique_ptr<rocket::server::RocketServerConnection> rocketConn_;

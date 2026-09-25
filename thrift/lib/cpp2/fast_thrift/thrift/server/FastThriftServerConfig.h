@@ -26,6 +26,11 @@
 
 namespace apache::thrift::fast_thrift::thrift {
 
+enum class ChannelPipelineMode : uint8_t {
+  Dynamic,
+  Static,
+};
+
 /**
  * Shared configuration for FastThriftServer / FastThriftChannelServer.
  */
@@ -53,6 +58,10 @@ struct FastThriftServerConfig {
 
   // Minimum payload size in bytes for MSG_ZEROCOPY. 0 disables zero-copy.
   size_t zeroCopyThreshold{0};
+
+  // Static mode fixes handler types and order while the server is running.
+  // Dynamic remains the default for compatibility with runtime-shaped users.
+  ChannelPipelineMode channelPipelineMode{ChannelPipelineMode::Dynamic};
 
   // When true, auto-mount the ThriftMetadataService alongside the user
   // handler so introspection tools (e.g. Thrift Fiddle) can discover the

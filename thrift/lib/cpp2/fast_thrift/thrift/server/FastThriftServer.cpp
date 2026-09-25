@@ -573,6 +573,7 @@ void FastThriftServer::start() {
       .securityHandler = auxInterfaces_.securityHandler,
       .metadataResponse = metadataResponse_,
       .zeroCopyThreshold = config_.zeroCopyThreshold,
+      .channelPipelineMode = config_.channelPipelineMode,
       .connExtensionLayout = connExtensionLayout_,
       .requestExtensionLayout = requestExtensionLayout_,
       .enableRequestHeaders = config_.enableRequestHeaders,

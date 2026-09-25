@@ -28,10 +28,6 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 
-namespace apache::thrift::fast_thrift::channel_pipeline::detail {
-class ContextImpl;
-}
-
 namespace apache::thrift::fast_thrift::thrift {
 
 class ThriftServerAppAdapter;
@@ -44,9 +40,7 @@ class ThriftServerAppAdapter;
 class ThriftServerMethodDispatchTable final {
  public:
   using DispatchFn = channel_pipeline::Result (*)(
-      ThriftServerAppAdapter*,
-      channel_pipeline::detail::ContextImpl&,
-      channel_pipeline::TypeErasedBox&&) noexcept;
+      ThriftServerAppAdapter*, channel_pipeline::TypeErasedBox&&) noexcept;
 
   struct Method {
     std::string_view name;
