@@ -54,14 +54,14 @@ concept EndpointHandlerLifecycle = requires(H h) {
  * onReadReady() to the head so the transport can resume reads.
  *
  * Required methods:
- * - onWrite(detail::ContextImpl&, TypeErasedBox&&): Handle data exiting the
+ * - onWrite(Ctx&, TypeErasedBox&&): Handle data exiting the
  * pipeline
  * - onReadReady(): Handle read-ready notification (resume transport reads)
  * - Plus all EndpointHandlerLifecycle methods
  */
-template <typename H>
+template <typename H, typename Ctx = detail::ContextImpl>
 concept HeadEndpointHandler = EndpointHandlerLifecycle<H> &&
-    requires(H h, detail::ContextImpl& ctx, TypeErasedBox&& msg) {
+    requires(H h, Ctx& ctx, TypeErasedBox&& msg) {
       { h.onWrite(ctx, std::move(msg)) } noexcept -> std::same_as<Result>;
       { h.onReadReady() } noexcept -> std::same_as<void>;
     };
@@ -77,18 +77,17 @@ concept HeadEndpointHandler = EndpointHandlerLifecycle<H> &&
  * to the tail so the app can produce more outbound messages.
  *
  * Required methods:
- * - onRead(detail::ContextImpl&, TypeErasedBox&&): Handle data entering the
+ * - onRead(Ctx&, TypeErasedBox&&): Handle data entering the
  * pipeline
  * - onException(exception_wrapper&&): Handle pipeline exceptions
  * - onWriteReady(): Handle write-ready notification (resume producing writes)
  * - Plus all EndpointHandlerLifecycle methods
  */
-template <typename T>
-concept TailEndpointHandler = EndpointHandlerLifecycle<T> &&
-    requires(T t,
-             detail::ContextImpl& ctx,
-             TypeErasedBox&& msg,
-             folly::exception_wrapper&& ex) {
+template <typename T, typename Ctx = detail::ContextImpl>
+concept TailEndpointHandler =
+    EndpointHandlerLifecycle<T> &&
+    requires(
+        T t, Ctx& ctx, TypeErasedBox&& msg, folly::exception_wrapper&& ex) {
       { t.onRead(ctx, std::move(msg)) } noexcept -> std::same_as<Result>;
       { t.onException(std::move(ex)) } noexcept -> std::same_as<void>;
       { t.onWriteReady() } noexcept -> std::same_as<void>;
@@ -100,8 +99,8 @@ concept TailEndpointHandler = EndpointHandlerLifecycle<T> &&
  * A valid pipeline requires a HeadEndpointHandler at the head and
  * a TailEndpointHandler at the tail.
  */
-template <typename Head, typename Tail>
+template <typename Head, typename Tail, typename Ctx = detail::ContextImpl>
 concept ValidEndpointPair =
-    HeadEndpointHandler<Head> && TailEndpointHandler<Tail>;
+    HeadEndpointHandler<Head, Ctx> && TailEndpointHandler<Tail, Ctx>;
 
 } // namespace apache::thrift::fast_thrift::channel_pipeline

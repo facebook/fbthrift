@@ -98,6 +98,11 @@ inline constexpr bool kIsEventSet<Events<Evs...>> = true;
 struct alignas(8) EventTypeToken {};
 using EventKey = const EventTypeToken*;
 
+/** Opaque pipeline-local route for a bound type event. */
+struct BoundEventRoute {
+  const void* value{nullptr};
+};
+
 template <PipelineEvent E>
 inline constexpr EventTypeToken kEventTypeToken{};
 

@@ -57,7 +57,11 @@ struct FakePipeline {
   void fireEvent(const typename E::Payload&) noexcept {
     static_cast<void>(sizeof(E));
   }
-  template <PipelineEvent E, std::size_t RouteIndex, typename... Args>
+  template <
+      std::size_t,
+      PipelineEvent E,
+      std::size_t RouteIndex,
+      typename... Args>
   void firePublishedEvent(Args&&...) noexcept {
     static_cast<void>(sizeof(E));
     static_cast<void>(RouteIndex);

@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/CppAttributes.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/DelayedDestructionBase.h>
 #include <folly/io/async/EventBase.h>
@@ -59,6 +60,7 @@ class EventPublisherHandle;
 class PipelineImpl : public folly::DelayedDestruction {
  public:
   using Ptr = folly::DelayedDestructionUniquePtr<PipelineImpl>;
+  using Guard = folly::DelayedDestruction::DestructorGuard;
 
   /**
    * Pipeline lifecycle state.
@@ -149,6 +151,8 @@ class PipelineImpl : public folly::DelayedDestruction {
   template <typename EventSet>
     requires kIsEventSet<EventSet>
   EventPublisherHandle<EventSet> bindEvents() noexcept;
+  BoundEventRoute bindEvent(EventKey key) noexcept;
+  void fireBoundEvent(BoundEventRoute route, const void* payload) noexcept;
 
   // === Fire to specific handler ===
 
@@ -358,8 +362,8 @@ class PipelineImpl : public folly::DelayedDestruction {
 
   TypeEventSlot* findTypeEventSlot(EventKey key) noexcept;
   void fireTypeEvent(EventKey key, const void* payload) noexcept;
-  void fireTypeEventSlot(
-      const TypeEventSlot* slot, const void* payload) noexcept;
+  const void* FOLLY_NULLABLE bindTypeEvent(EventKey key) noexcept;
+  void fireBoundTypeEvent(const void* route, const void* payload) noexcept;
   void fireTypeEventFromRoute(
       std::uint32_t routeOffset,
       std::size_t routeIndex,
@@ -489,25 +493,24 @@ class EventPublisherHandle<Events<Evs...>> {
     requires(
         (std::same_as<E, Evs> || ...) && std::is_void_v<typename E::Payload>)
   void fire() const noexcept {
-    pipeline_->fireTypeEventSlot(
-        slots_[Events<Evs...>::template index<E>], nullptr);
+    pipeline_->fireBoundEvent(
+        routes_[Events<Evs...>::template index<E>], nullptr);
   }
 
   template <PipelineEvent E>
     requires(
         (std::same_as<E, Evs> || ...) && (!std::is_void_v<typename E::Payload>))
   void fire(const typename E::Payload& payload) const noexcept {
-    pipeline_->fireTypeEventSlot(
-        slots_[Events<Evs...>::template index<E>], &payload);
+    pipeline_->fireBoundEvent(
+        routes_[Events<Evs...>::template index<E>], &payload);
   }
 
  private:
   explicit EventPublisherHandle(PipelineImpl& pipeline) noexcept
-      : pipeline_(&pipeline),
-        slots_{pipeline.findTypeEventSlot(eventKey<Evs>())...} {}
+      : pipeline_(&pipeline), routes_{pipeline.bindEvent(eventKey<Evs>())...} {}
 
   PipelineImpl* pipeline_{nullptr};
-  std::array<const PipelineImpl::TypeEventSlot*, sizeof...(Evs)> slots_{};
+  std::array<BoundEventRoute, sizeof...(Evs)> routes_{};
 
   friend class PipelineImpl;
 };

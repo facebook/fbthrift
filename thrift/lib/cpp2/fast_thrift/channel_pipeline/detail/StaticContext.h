@@ -80,7 +80,7 @@ class StaticContext {
 
   template <PipelineEvent E, std::size_t RouteIndex, typename... Args>
   void firePublishedEvent(Args&&... args) noexcept {
-    pipeline_->template firePublishedEvent<E, RouteIndex>(
+    pipeline_->template firePublishedEvent<Index, E, RouteIndex>(
         std::forward<Args>(args)...);
   }
 
@@ -133,7 +133,7 @@ class StaticContext {
   template <typename T>
     requires(StaticTupleTypeCount<StateTuple, T>::value == 1)
   const T& state() const noexcept {
-    return pipeline_->template state<T>();
+    return std::as_const(*pipeline_).template state<T>();
   }
 
  private:

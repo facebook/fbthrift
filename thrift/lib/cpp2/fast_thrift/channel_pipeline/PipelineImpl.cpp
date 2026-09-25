@@ -500,8 +500,21 @@ void PipelineImpl::fireTypeEvent(EventKey key, const void* payload) noexcept {
   }
 }
 
-void PipelineImpl::fireTypeEventSlot(
-    const TypeEventSlot* slot, const void* payload) noexcept {
+const void* FOLLY_NULLABLE PipelineImpl::bindTypeEvent(EventKey key) noexcept {
+  return findTypeEventSlot(key);
+}
+BoundEventRoute PipelineImpl::bindEvent(EventKey key) noexcept {
+  return BoundEventRoute{bindTypeEvent(key)};
+}
+
+void PipelineImpl::fireBoundEvent(
+    BoundEventRoute route, const void* payload) noexcept {
+  fireBoundTypeEvent(route.value, payload);
+}
+
+void PipelineImpl::fireBoundTypeEvent(
+    const void* route, const void* payload) noexcept {
+  const auto* slot = static_cast<const TypeEventSlot*>(route);
   RETURN_IF_CLOSED();
   if (FOLLY_UNLIKELY(slot == nullptr || slot->subscriberCount == 0)) {
     return;

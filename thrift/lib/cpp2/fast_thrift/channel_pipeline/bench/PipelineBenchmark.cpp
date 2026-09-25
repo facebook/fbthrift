@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticPipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 
 #include <folly/Benchmark.h>
@@ -62,6 +63,14 @@ HANDLER_TAG(bench_event5);
 HANDLER_TAG(bench_event6);
 HANDLER_TAG(bench_event7);
 HANDLER_TAG(bench_event8);
+HANDLER_TAG(static_bench1);
+HANDLER_TAG(static_bench2);
+HANDLER_TAG(static_bench3);
+HANDLER_TAG(static_bench4);
+HANDLER_TAG(static_bench5);
+HANDLER_TAG(static_bench6);
+HANDLER_TAG(static_bench7);
+HANDLER_TAG(static_bench8);
 
 // Minimal passthrough handler - measures dispatch overhead
 struct PassthroughHandler {
@@ -279,7 +288,8 @@ struct BenchTransportHandler {
   uint64_t write_count{0};
   uint64_t exception_count{0};
 
-  Result onWrite(detail::ContextImpl&, TypeErasedBox&&) noexcept {
+  template <typename Context>
+  Result onWrite(Context&, TypeErasedBox&&) noexcept {
     ++write_count;
     return Result::Success;
   }
@@ -301,7 +311,8 @@ struct BenchAppHandler {
   uint64_t read_count{0};
   uint64_t exception_count{0};
 
-  Result onRead(detail::ContextImpl&, TypeErasedBox&&) noexcept {
+  template <typename Context>
+  Result onRead(Context&, TypeErasedBox&&) noexcept {
     ++read_count;
     return Result::Success;
   }
@@ -369,7 +380,152 @@ auto makePipeline(
       .build();
 }
 
+struct PassthroughDuplexHandler {
+  template <typename Context>
+  Result onRead(Context& ctx, TypeErasedBox&& msg) noexcept {
+    return ctx.fireRead(std::move(msg));
+  }
+  template <typename Context>
+  void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
+    ctx.fireException(std::move(e));
+  }
+  template <typename Context>
+  void onPipelineActive(Context&) noexcept {}
+  template <typename Context>
+  void onReadReady(Context&) noexcept {}
+  template <typename Context>
+  Result onWrite(Context& ctx, TypeErasedBox&& msg) noexcept {
+    return ctx.fireWrite(std::move(msg));
+  }
+  template <typename Context>
+  void onWriteReady(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineInactive(Context&) noexcept {}
+  template <typename Context>
+  void handlerAdded(Context&) noexcept {}
+  template <typename Context>
+  void handlerRemoved(Context&) noexcept {}
+};
+
+auto makeDynamicPipeline8(
+    folly::EventBase& evb,
+    BenchTransportHandler& transport,
+    BenchAppHandler& app,
+    BenchAllocator& allocator) {
+  return PipelineBuilder<
+             BenchTransportHandler,
+             BenchAppHandler,
+             BenchAllocator>()
+      .setEventBase(&evb)
+      .setHead(&transport)
+      .setTail(&app)
+      .setAllocator(&allocator)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench1_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench2_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench3_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench4_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench5_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench6_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench7_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench8_tag)
+      .build();
+}
+
+auto makeStaticPipeline8(
+    folly::EventBase& evb,
+    BenchTransportHandler& transport,
+    BenchAppHandler& app,
+    BenchAllocator& allocator) {
+  return StaticPipelineBuilder<
+             BenchTransportHandler,
+             BenchAppHandler,
+             BenchAllocator>()
+      .setEventBase(&evb)
+      .setHead(&transport)
+      .setTail(&app)
+      .setAllocator(&allocator)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench1_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench2_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench3_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench4_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench5_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench6_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench7_tag)
+      .addNextDuplex<PassthroughDuplexHandler>(static_bench8_tag)
+      .build();
+}
+
 } // namespace
+
+// =============================================================================
+// Static versus runtime-shaped pipeline dispatch
+// =============================================================================
+
+BENCHMARK(DynamicPipeline_FireRead_8Handlers, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+  auto pipeline = makeDynamicPipeline8(evb, transport, app, allocator);
+  auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    (void)concretePipeline.fireRead(
+        TypeErasedBox{static_cast<std::uint64_t>(i)});
+  }
+  folly::doNotOptimizeAway(app.read_count);
+}
+
+BENCHMARK_RELATIVE(StaticPipeline_FireRead_8Handlers, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+  auto pipeline = makeStaticPipeline8(evb, transport, app, allocator);
+  auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    (void)concretePipeline.fireRead(
+        TypeErasedBox{static_cast<std::uint64_t>(i)});
+  }
+  folly::doNotOptimizeAway(app.read_count);
+}
+
+BENCHMARK(DynamicPipeline_FireWrite_8Handlers, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+  auto pipeline = makeDynamicPipeline8(evb, transport, app, allocator);
+  auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    (void)concretePipeline.fireWrite(
+        TypeErasedBox{static_cast<std::uint64_t>(i)});
+  }
+  folly::doNotOptimizeAway(transport.write_count);
+}
+
+BENCHMARK_RELATIVE(StaticPipeline_FireWrite_8Handlers, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+  auto pipeline = makeStaticPipeline8(evb, transport, app, allocator);
+  auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    (void)concretePipeline.fireWrite(
+        TypeErasedBox{static_cast<std::uint64_t>(i)});
+  }
+  folly::doNotOptimizeAway(transport.write_count);
+}
+
+BENCHMARK_DRAW_LINE();
 
 // =============================================================================
 // TypeErasedBox Microbenchmarks
