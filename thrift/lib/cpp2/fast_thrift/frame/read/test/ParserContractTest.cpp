@@ -72,7 +72,7 @@ TYPED_TEST_P(ParserContractTest, PartialHeaderEmitsNothing) {
   // pass without checking anything.
   ASSERT_GT(Traits::headerSize(), 1);
 
-  auto bytes = Traits::makeFrame(20, 'a');
+  std::vector<uint8_t> bytes = Traits::makeFrame(20, 'a');
   bytes.resize(Traits::headerSize() - 1);
 
   EXPECT_EQ(this->feed(bytes), Result::Success);
@@ -82,8 +82,8 @@ TYPED_TEST_P(ParserContractTest, PartialHeaderEmitsNothing) {
 TYPED_TEST_P(ParserContractTest, HeaderThenBody) {
   using Traits = typename TestFixture::Traits;
 
-  const auto bytes = Traits::makeFrame(20, 'a');
-  const auto header = Traits::headerSize();
+  const std::vector<uint8_t> bytes = Traits::makeFrame(20, 'a');
+  const size_t header = Traits::headerSize();
 
   EXPECT_EQ(
       this->feed(folly::ByteRange{bytes.data(), header}), Result::Success);
@@ -142,9 +142,9 @@ TYPED_TEST_P(ParserContractTest, LargeFrameInChunks) {
   constexpr size_t kPayload = 65536;
   constexpr size_t kChunk = 4096;
 
-  const auto bytes = Traits::makeFrame(kPayload, 'a');
+  const std::vector<uint8_t> bytes = Traits::makeFrame(kPayload, 'a');
   for (size_t offset = 0; offset < bytes.size(); offset += kChunk) {
-    const auto len = std::min(kChunk, bytes.size() - offset);
+    const size_t len = std::min(kChunk, bytes.size() - offset);
     EXPECT_EQ(
         this->feed(folly::ByteRange{bytes.data() + offset, len}),
         Result::Success);
@@ -186,7 +186,7 @@ TYPED_TEST_P(ParserContractTest, ErrorStopsProcessing) {
 TYPED_TEST_P(ParserContractTest, ResetDropsPartialFrame) {
   using Traits = typename TestFixture::Traits;
 
-  auto partial = Traits::makeFrame(20, 'a');
+  std::vector<uint8_t> partial = Traits::makeFrame(20, 'a');
   partial.resize(Traits::headerSize());
   EXPECT_EQ(this->feed(partial), Result::Success);
   EXPECT_EQ(this->frames_.size(), 0);
@@ -279,13 +279,8 @@ INSTANTIATE_TYPED_TEST_SUITE_P(
     ConsumeBuffer, ParserContractTest, ViaConsumeBuffer);
 INSTANTIATE_TYPED_TEST_SUITE_P(
     ConsumeBufferChain, ParserContractTest, ViaConsumeBufferChain);
-// The two Aligned prefixes carry DISABLED_ because the parser is still an
-// empty skeleton. It has to sit on the prefix rather than on the tests,
-// because the test bodies are shared with FrameLengthParser, which passes
-// them. Drop it when the parser gets written.
+INSTANTIATE_TYPED_TEST_SUITE_P(Aligned, ParserContractTest, ViaAligned);
 INSTANTIATE_TYPED_TEST_SUITE_P(
-    DISABLED_Aligned, ParserContractTest, ViaAligned);
-INSTANTIATE_TYPED_TEST_SUITE_P(
-    DISABLED_AlignedPlain, ParserContractTest, ViaAlignedPlain);
+    AlignedPlain, ParserContractTest, ViaAlignedPlain);
 
 } // namespace apache::thrift::fast_thrift::frame::read

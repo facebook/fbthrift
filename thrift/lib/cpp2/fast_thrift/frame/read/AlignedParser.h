@@ -19,43 +19,51 @@
 #include <cstddef>
 
 #include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
+#include <folly/lang/Hint.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/Parser.h>
 
 namespace apache::thrift::fast_thrift::frame::read {
 
 /**
- * Parses RSocket frames. A request gets two things the ordinary parser does
- * not give it. None of it is written yet. This is the skeleton, and every test
- * for it is disabled.
+ * Parses RSocket frames and emits each frame without its three-byte length
+ * prefix. Every frame uses the same queue path, so buffer boundaries can fall
+ * anywhere.
  *
- *   struct Request {
- *     1: binary blob;   // alone in its own buffer, on a 16-byte boundary
- *     2: i64 offset;
- *   }
+ * The parser owns its read buffers. It implements Parser and not
+ * MovableBufferParser.
  *
- * Thrift does not copy a binary field, it hands over the bytes that arrived,
- * so keeping `blob` keeps those bytes and nothing else.
+ * The fixed header buffer is allocated before the frame length is known. The
+ * body buffer is allocated when the transport asks for body space. The parser
+ * checks maxFrameSize after allocating the fixed header, but before allocating
+ * the body.
  *
- * The alignment holds under two conditions, and the parser checks neither:
- *   - the blob is the first field of the request;
- *   - the request is serialized with the binary protocol.
- *
- * Break either one and the parser still works, it just stops aligning.
- *
- * A request comes out as a chain with one piece per field. First the header,
- * then the metadata if there is any, then the data. Every other frame type
- * comes out as one run of bytes, and the pieces can break anywhere.
- *
- * To place the bytes the parser has to allocate the buffer itself, so it
- * cannot read into a buffer that someone else allocated. That is why it
- * implements Parser and not MovableBufferParser.
+ * If the queue has less than minBufferSize of tailroom, it requests the full
+ * wire frame size or maxBufferSize, whichever is larger.
  */
 class AlignedParser {
  public:
+  static constexpr size_t kDefaultMinBufferSize = 256;
+  static constexpr size_t kDefaultMaxBufferSize = 4096;
+
+  // No frame on the wire can be bigger, so by default the cap turns nothing
+  // away. A caller that wants a real cap passes the largest frame its service
+  // expects.
+  static constexpr size_t kDefaultMaxFrameSize = kMaxFrameLength;
+
+  explicit AlignedParser(
+      size_t minBufferSize = kDefaultMinBufferSize,
+      size_t maxBufferSize = kDefaultMaxBufferSize,
+      size_t maxFrameSize = kDefaultMaxFrameSize) noexcept;
+
   void getReadBuffer(void** bufReturn, size_t* lenReturn) noexcept;
 
+  // Returns Error when the frame is malformed. After that the parser stays on
+  // the bad frame, and getReadBuffer offers 0 bytes of room. Call reset()
+  // before feeding more bytes, or close the connection.
   template <typename Sink>
   channel_pipeline::Result consume(size_t len, Sink&& sink) noexcept;
 
@@ -64,6 +72,28 @@ class AlignedParser {
   void reset() noexcept;
 
  private:
+  enum class State {
+    AwaitingHeader,
+    AwaitingBody,
+  };
+
+  // What a byte handler tells consume to do next. This exists so the handlers
+  // can live in the .cpp. Only the call to the sink has to be a template.
+  enum class Step {
+    NeedMore,
+    FrameReady,
+    Bad,
+  };
+
+  // One per state, so getReadBuffer is nothing but a switch.
+  void headerReadBuffer(void** bufReturn, size_t* lenReturn) noexcept;
+  void bodyReadBuffer(void** bufReturn, size_t* lenReturn) noexcept;
+
+  Step onHeaderBytes(size_t len) noexcept;
+  Step onBodyBytes(size_t len) noexcept;
+  channel_pipeline::BytesPtr takeFrame() noexcept;
+  void startNextFrame() noexcept;
+
   static constexpr size_t kAlignment = 16;
 
   // Binary protocol puts 10 bytes in front of the blob's own bytes: 3 for the
@@ -74,13 +104,35 @@ class AlignedParser {
   static constexpr size_t kDataBufferPadding =
       kAlignment - kBytesBeforeFirstField;
 
+  const size_t minBufferSize_;
+  const size_t maxBufferSize_;
+  const size_t maxFrameSize_;
+
+  State state_{State::AwaitingHeader};
+  size_t remainingHeader_;
+  size_t remainingBody_{0};
+  size_t frameLength_{0};
+
+  // The parser fills this first, then moves it into body_, so the frame comes
+  // out as one piece.
+  channel_pipeline::BytesPtr header_;
+  folly::IOBufQueue body_{folly::IOBufQueue::cacheChainLength()};
+
   folly::IOBufFactory* bufFactory_{nullptr};
 };
 
 template <typename Sink>
 channel_pipeline::Result AlignedParser::consume(
-    size_t /*len*/, Sink&& /*sink*/) noexcept {
-  return channel_pipeline::Result::Success;
+    size_t len, Sink&& sink) noexcept {
+  const Step step =
+      state_ == State::AwaitingHeader ? onHeaderBytes(len) : onBodyBytes(len);
+  if (step == Step::NeedMore) {
+    return channel_pipeline::Result::Success;
+  }
+  if (FOLLY_UNLIKELY(step == Step::Bad)) {
+    return channel_pipeline::Result::Error;
+  }
+  return sink(takeFrame());
 }
 
 static_assert(transport::Parser<AlignedParser>);

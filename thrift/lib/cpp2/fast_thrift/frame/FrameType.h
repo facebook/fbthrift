@@ -68,6 +68,9 @@ constexpr size_t kBaseHeaderSize = kStreamIdSize + kTypeAndFlagsSize;
 // Metadata/frame length field (3-byte big-endian per RSocket spec)
 constexpr size_t kMetadataLengthSize = 3;
 
+// The length field has no reserved bits, so its width is also its limit.
+constexpr size_t kMaxFrameLength = (size_t{1} << (kMetadataLengthSize * 8)) - 1;
+
 // ============================================================================
 // Internal Flag Constants (Protocol Encoding Details)
 // ============================================================================
