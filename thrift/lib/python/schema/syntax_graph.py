@@ -34,6 +34,10 @@ from apache.thrift.type.schema.thrift_types import (
     FieldQualifier,
     FunctionQualifier,
 )
+from thrift.lib.thrift.service_catalog.thrift_types import (
+    FunctionQualifier as _DescriptorFunctionQualifier,
+    RpcKind as _RpcKind,
+)
 from thrift.python.serializer import deserialize, Protocol
 
 
@@ -774,6 +778,24 @@ class FunctionException:
     def annotations(self) -> list[Annotation]:
         return self._annotations
 
+    @property
+    def safety(self) -> ErrorSafety:
+        exception = self._type.true_type
+        assert isinstance(exception, ExceptionTypeRef)
+        return exception.node.safety
+
+    @property
+    def kind(self) -> ErrorKind:
+        exception = self._type.true_type
+        assert isinstance(exception, ExceptionTypeRef)
+        return exception.node.kind
+
+    @property
+    def blame(self) -> ErrorBlame:
+        exception = self._type.true_type
+        assert isinstance(exception, ExceptionTypeRef)
+        return exception.node.blame
+
     def __repr__(self) -> str:
         return f"FunctionException({self._id}, {self._name!r})"
 
@@ -1002,6 +1024,26 @@ class FunctionNode:
     @property
     def qualifier(self) -> FunctionQualifier:
         return self._qualifier
+
+    @property
+    def descriptor_qualifier(self) -> _DescriptorFunctionQualifier:
+        if self._qualifier == FunctionQualifier.Idempotent:
+            return _DescriptorFunctionQualifier.Idempotent
+        if self._qualifier == FunctionQualifier.ReadOnly:
+            return _DescriptorFunctionQualifier.ReadOnly
+        return _DescriptorFunctionQualifier.Unspecified
+
+    @property
+    def rpc_kind(self) -> _RpcKind:
+        if self._qualifier == FunctionQualifier.OneWay:
+            return _RpcKind.OneWay
+        if self._response.stream is not None and self._response.sink is not None:
+            return _RpcKind.BidirectionalStream
+        if self._response.stream is not None:
+            return _RpcKind.Stream
+        if self._response.sink is not None:
+            return _RpcKind.Sink
+        return _RpcKind.Unary
 
     @property
     def is_performs(self) -> bool:

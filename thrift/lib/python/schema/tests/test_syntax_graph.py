@@ -35,6 +35,7 @@ from thrift.lib.python.schema.syntax_graph import (
     FieldQualifier,
     FunctionNode,
     FunctionQualifier,
+    FunctionResponse,
     InteractionNode,
     ListTypeRef,
     MapTypeRef,
@@ -54,6 +55,10 @@ from thrift.lib.python.schema.syntax_graph import (
     UnionTypeRef,
 )
 from thrift.lib.python.schema.syntax_graph_builder import _GraphBuilder
+from thrift.lib.thrift.service_catalog.thrift_types import (
+    FunctionQualifier as DescriptorFunctionQualifier,
+    RpcKind,
+)
 
 
 class SyntaxGraphTest(unittest.TestCase):
@@ -607,6 +612,34 @@ class SyntaxGraphTest(unittest.TestCase):
         self.assertEqual(sink.payload_type, PrimitiveTypeRef(Primitive.STRING))
         self.assertIsNone(sink.final_response_type)
 
+        function = FunctionNode(
+            name="bidi",
+            doc_block=None,
+            response=FunctionResponse(
+                type=None,
+                interaction_lazy=None,
+                stream=stream,
+                sink=sink,
+            ),
+            params=[],
+            exceptions=[],
+        )
+        self.assertEqual(function.rpc_kind, RpcKind.BidirectionalStream)
+
+        sink_function = FunctionNode(
+            name="sink",
+            doc_block=None,
+            response=FunctionResponse(
+                type=None,
+                interaction_lazy=None,
+                stream=None,
+                sink=sink,
+            ),
+            params=[],
+            exceptions=[],
+        )
+        self.assertEqual(sink_function.rpc_kind, RpcKind.Sink)
+
     def test_service_interaction(self) -> None:
         prog = self.graph.get_program_by_name("syntax_graph")
         svc = prog["TestService"]
@@ -666,8 +699,12 @@ class SyntaxGraphTest(unittest.TestCase):
         foo = svc.functions[0]
         self.assertEqual(foo.name, "foo")
         self.assertEqual(len(foo.exceptions), 1)
-        self.assertIsInstance(foo.exceptions[0].type, ExceptionTypeRef)
-        self.assertEqual(foo.exceptions[0].type.node.name, "TestException")
+        exception = foo.exceptions[0]
+        self.assertIsInstance(exception.type, ExceptionTypeRef)
+        self.assertEqual(exception.type.node.name, "TestException")
+        self.assertEqual(exception.safety, ErrorSafety.Safe)
+        self.assertEqual(exception.kind, ErrorKind.Permanent)
+        self.assertEqual(exception.blame, ErrorBlame.Client)
 
     def test_function_qualifier_and_performs(self) -> None:
         prog = self.graph.get_program_by_name("syntax_graph")
@@ -676,15 +713,58 @@ class SyntaxGraphTest(unittest.TestCase):
 
         foo = svc.functions[0]
         self.assertEqual(foo.qualifier, FunctionQualifier.Unspecified)
+        self.assertEqual(
+            foo.descriptor_qualifier, DescriptorFunctionQualifier.Unspecified
+        )
+        self.assertEqual(foo.rpc_kind, RpcKind.Unary)
         self.assertFalse(foo.is_performs)
+
+        create_stream = svc.functions[2]
+        self.assertEqual(create_stream.rpc_kind, RpcKind.Stream)
 
         no_return = svc.functions[5]
         self.assertEqual(no_return.name, "noReturn")
         self.assertEqual(no_return.qualifier, FunctionQualifier.OneWay)
+        self.assertEqual(
+            no_return.descriptor_qualifier,
+            DescriptorFunctionQualifier.Unspecified,
+        )
+        self.assertEqual(no_return.rpc_kind, RpcKind.OneWay)
 
         performs = svc.functions[4]
         self.assertTrue(performs.is_performs)
         self.assertIs(performs.response.interaction, prog["TestInteraction"])
+
+    def test_descriptor_function_qualifier(self) -> None:
+        response = FunctionResponse(
+            type=None,
+            interaction_lazy=None,
+            stream=None,
+            sink=None,
+        )
+        for syntax_qualifier, descriptor_qualifier in (
+            (
+                FunctionQualifier.Idempotent,
+                DescriptorFunctionQualifier.Idempotent,
+            ),
+            (
+                FunctionQualifier.ReadOnly,
+                DescriptorFunctionQualifier.ReadOnly,
+            ),
+        ):
+            with self.subTest(qualifier=syntax_qualifier):
+                function = FunctionNode(
+                    name="test",
+                    doc_block=None,
+                    response=response,
+                    params=[],
+                    exceptions=[],
+                    qualifier=syntax_qualifier,
+                )
+                self.assertEqual(
+                    function.descriptor_qualifier,
+                    descriptor_qualifier,
+                )
 
     def test_function_annotations(self) -> None:
         prog = self.graph.get_program_by_name("syntax_graph")
