@@ -392,3 +392,101 @@ TEST_F(JSONProtocolCommonTest, isJsonTypeCompatible) {
   // Non-map-key: T_STRING still incompatible with numeric types
   EXPECT_FALSE(isJsonTypeCompatible(TType::T_STRING, TType::T_I32, false));
 }
+
+TEST_F(JSONProtocolCommonTest, readJSONIntegral_fast_path) {
+  // Fast path: the whole integer token *and* its terminating non-number byte
+  // live in a single contiguous peek buffer, so the token is parsed in place
+  // (no std::string allocation) and the cursor is advanced past the digits
+  // only, leaving the delimiter unconsumed.
+  struct Reader : apache::thrift::JSONProtocolReaderCommon {
+    using apache::thrift::JSONProtocolReaderCommon::readJSONIntegral;
+  };
+
+  auto read = [](std::string_view sv) {
+    auto const buf = folly::IOBuf::copyBuffer(sv);
+    Reader r;
+    r.setInput(buf.get());
+    int64_t val = 0;
+    r.readJSONIntegral<int64_t>(val);
+    return std::pair<int64_t, size_t>{val, r.getCursorPosition()};
+  };
+
+  using P = std::pair<int64_t, size_t>;
+  EXPECT_EQ((P{123, 3}), read("123,"));
+  EXPECT_EQ((P{-7, 2}), read("-7}"));
+  EXPECT_EQ((P{0, 1}), read("0 "));
+  EXPECT_EQ((P{-987654321, 10}), read("-987654321]"));
+  // leading whitespace is consumed by readWhitespace before the fast path,
+  // so the final position accounts for both the whitespace and the digits
+  EXPECT_EQ((P{42, 5}), read("   42]"));
+}
+
+TEST_F(JSONProtocolCommonTest, readJSONIntegral_slow_path) {
+  // Slow path: the token reaches the end of the current peek buffer
+  // (size == peek.size()), so the reader falls back to readNumericalChars,
+  // which stitches the number back together across buffer boundaries and also
+  // handles the EOF-terminated case.
+  struct Reader : apache::thrift::JSONProtocolReaderCommon {
+    using apache::thrift::JSONProtocolReaderCommon::readJSONIntegral;
+  };
+
+  auto read = [](auto const& svs) {
+    auto const buf = from_split(svs);
+    Reader r;
+    r.setInput(buf.get());
+    int64_t val = 0;
+    r.readJSONIntegral<int64_t>(val);
+    return std::pair<int64_t, size_t>{val, r.getCursorPosition()};
+  };
+
+  using P = std::pair<int64_t, size_t>;
+  // token split across two buffers, EOF-terminated
+  EXPECT_EQ((P{12345, 5}), read(std::array{"123"sv, "45"sv}));
+  // token split across two buffers, delimiter in the second buffer
+  EXPECT_EQ((P{12345, 5}), read(std::array{"123"sv, "45,"sv}));
+  // negative token split across two buffers
+  EXPECT_EQ((P{-99, 3}), read(std::array{"-9"sv, "9]"sv}));
+  // single buffer, EOF-terminated (the whole buffer is the token)
+  EXPECT_EQ((P{678, 3}), read(std::array{"678"sv}));
+}
+
+TEST_F(JSONProtocolCommonTest, readJSONIntegral_split_combinatorics) {
+  // For every buffer-boundary split of "<number><delimiter>", the parsed value
+  // and final cursor position must match, whether the fast path (delimiter
+  // lands in the peek buffer) or the slow path (token ends at a buffer
+  // boundary) is taken.
+  struct Reader : apache::thrift::JSONProtocolReaderCommon {
+    using apache::thrift::JSONProtocolReaderCommon::readJSONIntegral;
+  };
+
+  auto read = [](auto const& svs) {
+    auto const buf = from_split(svs);
+    Reader r;
+    r.setInput(buf.get());
+    int64_t val = 0;
+    r.readJSONIntegral<int64_t>(val);
+    return std::pair<int64_t, size_t>{val, r.getCursorPosition()};
+  };
+
+  struct Case {
+    std::string_view token;
+    int64_t value;
+  };
+  constexpr Case cases[] = {
+      {"0"sv, 0},
+      {"7"sv, 7},
+      {"-1"sv, -1},
+      {"12345"sv, 12345},
+      {"-987654321"sv, -987654321},
+  };
+  for (auto const& c : cases) {
+    auto const s = std::string(c.token) + ","; // delimiter terminates the token
+    each_split(s, [&](auto const& split, auto const& vec) {
+      auto const [val, pos] = read(vec);
+      EXPECT_EQ(c.value, val) //
+          << "split[" << split << "] input: " << quote(s);
+      EXPECT_EQ(c.token.size(), pos)
+          << "split[" << split << "] input: " << quote(s);
+    });
+  }
+}

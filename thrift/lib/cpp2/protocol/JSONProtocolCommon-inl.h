@@ -74,6 +74,14 @@ inline bool json_ws_alphabet_any(char c) {
   return json_ws_alphabet_any_(c, std::make_index_sequence<size>{});
 }
 
+struct json_num_alphabet_any_fn {
+  constexpr bool operator()(uint8_t ch) const {
+    return (ch >= '0' && ch <= '9') || ch == '+' || ch == '-' || ch == '.' ||
+        ch == 'E' || ch == 'e';
+  }
+};
+inline constexpr auto json_num_alphabet_any = json_num_alphabet_any_fn{};
+
 } // namespace detail::json
 
 // Return the hex character representing the integer val. The value is masked
@@ -743,6 +751,22 @@ void JSONProtocolReaderCommon::readJSONKey(T& key) {
 
 template <typename T>
 void JSONProtocolReaderCommon::readJSONIntegral(T& val) {
+  readWhitespace();
+  // Fast path: parse directly from the peek buffer when the whole token fits,
+  // avoiding a std::string allocation.
+  auto const peek = in_.peek();
+  uint32_t size = 0;
+  while (size < peek.size() &&
+         detail::json::json_num_alphabet_any(peek[size])) {
+    ++size;
+  }
+  if (size < peek.size()) {
+    auto const subpeek = peek.subspan(0, size);
+    val = castIntegral<T>(folly::reinterpret_span_cast<const char>(subpeek));
+    in_.skip(size);
+    return;
+  }
+  // The token may span multiple buffers.
   std::string serialized;
   readNumericalChars(serialized);
   val = castIntegral<T>(serialized);
@@ -750,12 +774,8 @@ void JSONProtocolReaderCommon::readJSONIntegral(T& val) {
 
 inline void JSONProtocolReaderCommon::readNumericalChars(std::string& val) {
   readWhitespace();
-  readWhile(
-      [](uint8_t ch) {
-        return (ch >= '0' && ch <= '9') || ch == '+' || ch == '-' ||
-            ch == '.' || ch == 'E' || ch == 'e';
-      },
-      val);
+  // For perf: pass a function-object or lambda, but not a pointer-to-function.
+  readWhile(detail::json::json_num_alphabet_any, val);
 }
 
 inline void JSONProtocolReaderCommon::readJSONVal(int8_t& val) {
