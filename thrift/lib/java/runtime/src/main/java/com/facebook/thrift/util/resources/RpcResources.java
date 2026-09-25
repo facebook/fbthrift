@@ -22,6 +22,7 @@ import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.EventLoopGroup;
 import io.netty.util.HashedWheelTimer;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,6 +87,26 @@ public final class RpcResources {
     return INSTANCE.doGet().stats();
   }
 
+  /**
+   * Returns a best-effort snapshot without initializing or reopening resources.
+   *
+   * <p>Every value is read from the same local holder reference. If the published holder reference
+   * changes while the snapshot is captured, this method returns empty. This method does not
+   * coordinate with shutdown or pin that holder's lifetime after returning.
+   */
+  public static Optional<ResourceSnapshot> tryGetResourceSnapshot() {
+    final ResourcesHolder currentHolder = INSTANCE.holder;
+    if (INSTANCE.state != State.RUNNING || currentHolder == null) {
+      return Optional.empty();
+    }
+
+    ResourceSnapshot snapshot = new ResourceSnapshot(currentHolder);
+    if (INSTANCE.state != State.RUNNING || INSTANCE.holder != currentHolder) {
+      return Optional.empty();
+    }
+    return Optional.of(snapshot);
+  }
+
   public static ByteBufAllocator getByteBufAllocator() {
     return ByteBufAllocator.DEFAULT;
   }
@@ -139,6 +160,64 @@ public final class RpcResources {
       } catch (Throwable t) {
         LOGGER.error("Error shutting down RpcResources", t);
       }
+    }
+  }
+
+  /**
+   * Instantaneous resource values captured from one {@link ResourcesHolder} instance.
+   *
+   * <p>These values describe queue state and configured capacity at capture time. Interpret them
+   * against per-host baselines and trends rather than as standalone saturation signals.
+   */
+  public static final class ResourceSnapshot {
+    private final int eventLoopGroupPendingTasks;
+    private final int numEventLoopThreads;
+    private final Scheduler offLoopScheduler;
+    private final Scheduler clientOffLoopScheduler;
+
+    private ResourceSnapshot(ResourcesHolder holder) {
+      this.eventLoopGroupPendingTasks = holder.pendingTasksForEventLoop();
+      this.numEventLoopThreads = holder.getNumThreadsForEventLoop();
+      this.offLoopScheduler = holder.getOffLoopScheduler();
+      this.clientOffLoopScheduler = holder.getClientOffLoopScheduler();
+    }
+
+    /**
+     * Total queued, but not currently running, tasks across all Thrift event-loop threads.
+     *
+     * <p>A sustained or rising value indicates event-loop queueing. Zero means no task was queued
+     * at capture time; an event-loop thread can still be stuck executing its current task.
+     */
+    public int getEventLoopGroupPendingTasks() {
+      return eventLoopGroupPendingTasks;
+    }
+
+    /**
+     * Configured event-loop thread count, not a count of busy threads. Use this only as capacity
+     * context for the pending-task count; this value alone does not signal contention.
+     */
+    public int getNumEventLoopThreads() {
+      return numEventLoopThreads;
+    }
+
+    /**
+     * Live scheduler used to run server work away from the event loop. This is a read-only
+     * diagnostic handle; callers do not own its lifecycle. The object itself is not a load
+     * measurement; when supported, inspect its underlying executor's active, queued, capacity, and
+     * completed-work values.
+     */
+    public Scheduler getOffLoopScheduler() {
+      return offLoopScheduler;
+    }
+
+    /**
+     * Live scheduler used to run client work away from the event loop. This is a read-only
+     * diagnostic handle; callers do not own its lifecycle. It may be the same object returned by
+     * {@link #getOffLoopScheduler()}; identity equality means client and server work share the same
+     * queue and capacity.
+     */
+    public Scheduler getClientOffLoopScheduler() {
+      return clientOffLoopScheduler;
     }
   }
 }
