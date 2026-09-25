@@ -27,6 +27,13 @@ struct Foo {
   4: optional bool d = 0;
 }
 
+// Both constants hold a `list<string>` typed `\ConstVector` under this option,
+// but only the top-level one is built immutably: a struct constant's fields are
+// rendered without immutable collections.
+const list<string> names = ["alpha", "beta"];
+
+const Foo foo = Foo{a = ["alpha", "beta"]};
+
 service Bar {
   string baz(
     1: set<i32> a,
