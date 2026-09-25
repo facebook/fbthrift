@@ -21,6 +21,7 @@
 
 #include <folly/io/Cursor.h>
 
+#include <thrift/lib/cpp2/fast_thrift/frame/FrameDescriptor.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameParser.h>
 
@@ -31,8 +32,8 @@ namespace {
 // Length prefix plus the base header. Every frame starts with these.
 constexpr size_t kHeaderSize = kMetadataLengthSize + kBaseHeaderSize;
 
-// An aligned frame that carries metadata has three more header bytes for the
-// metadata length. One buffer holds the header in either case.
+// A frame that carries metadata has three more header bytes for the metadata
+// length. One buffer holds the header in either case.
 constexpr size_t kHeaderBufferSize = kHeaderSize + kMetadataLengthSize;
 
 } // namespace
@@ -49,7 +50,26 @@ channel_pipeline::BytesPtr AlignedParser::newBuffer(size_t capacity) noexcept {
                      : folly::IOBuf::create(capacity);
 }
 
+bool AlignedParser::hasOwnBuffers() const noexcept {
+  // startOwnBuffers and onMetadataLengthBytes both measure from
+  // kBaseHeaderSize. A frame type that carries extra header bytes would push
+  // both by that many, so it stays on the plain path until someone handles it.
+  return (frameType_ == FrameType::REQUEST_RESPONSE ||
+          frameType_ == FrameType::PAYLOAD) &&
+      getDescriptor(frameType_).headerSize == kBaseHeaderSize;
+}
+
+bool AlignedParser::needsAlignment() const noexcept {
+  return frameType_ == FrameType::REQUEST_RESPONSE;
+}
+
 channel_pipeline::BytesPtr AlignedParser::newDataBuffer() noexcept {
+  // Without the shift there is nothing to leave room for, so the buffer is
+  // exactly the size of the data.
+  if (!needsAlignment()) {
+    return newBuffer(remainingData_);
+  }
+
   // Room for the data plus the shift below, which is under kAlignment bytes.
   channel_pipeline::BytesPtr buf = newBuffer(remainingData_ + kAlignment);
 
@@ -163,9 +183,10 @@ AlignedParser::Step AlignedParser::onHeaderBytes(size_t len) noexcept {
   }
 
   cursor.skip(kStreamIdSize);
-  const auto [frameType, flags] = detail::readFrameTypeAndFlags(cursor);
-  if (static_cast<FrameType>(frameType) == FrameType::REQUEST_RESPONSE) {
-    return startAligned(flags);
+  const auto [frameTypeRaw, flags] = detail::readFrameTypeAndFlags(cursor);
+  frameType_ = static_cast<FrameType>(frameTypeRaw);
+  if (hasOwnBuffers()) {
+    return startOwnBuffers(flags);
   }
 
   body_.append(std::move(header_));
@@ -179,9 +200,7 @@ AlignedParser::Step AlignedParser::onHeaderBytes(size_t len) noexcept {
   return Step::NeedMore;
 }
 
-AlignedParser::Step AlignedParser::startAligned(uint16_t flags) noexcept {
-  aligned_ = true;
-
+AlignedParser::Step AlignedParser::startOwnBuffers(uint16_t flags) noexcept {
   if (flags & frame::detail::kMetadataBit) {
     // Three more header bytes hold the metadata length.
     if (FOLLY_UNLIKELY(frameLength_ < kBaseHeaderSize + kMetadataLengthSize)) {
@@ -255,7 +274,7 @@ AlignedParser::Step AlignedParser::onBodyBytes(size_t len) noexcept {
 
 channel_pipeline::BytesPtr AlignedParser::takeFrame() noexcept {
   channel_pipeline::BytesPtr frame;
-  if (aligned_) {
+  if (hasOwnBuffers()) {
     frame = std::move(header_);
     // The length prefix does not go downstream.
     frame->trimStart(kMetadataLengthSize);
@@ -276,7 +295,7 @@ channel_pipeline::BytesPtr AlignedParser::takeFrame() noexcept {
 
 void AlignedParser::startNextFrame() noexcept {
   state_ = State::AwaitingHeader;
-  aligned_ = false;
+  frameType_ = FrameType::RESERVED;
   remainingHeader_ = kHeaderSize;
   remainingMetadata_ = 0;
   remainingData_ = 0;

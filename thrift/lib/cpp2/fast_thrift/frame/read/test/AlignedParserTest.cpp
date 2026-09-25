@@ -16,8 +16,6 @@
 
 // Tests that are only about AlignedParser. The framing it shares with other
 // parsers is tested in ParserContractTest.cpp.
-//
-// The remaining DISABLED_ test covers PAYLOAD, which still uses the plain path.
 
 #include <cstdint>
 #include <cstring>
@@ -209,7 +207,7 @@ TEST_F(AlignedParserTest, EmitsMetadataAndDataInSeparateBuffers) {
 // A binary field of the response must end up in a buffer of its own. Code that
 // keeps that field then keeps only those bytes. If the field pointed into a
 // buffer shared with the header, it would keep the header alive too.
-TEST_F(AlignedParserTest, DISABLED_ResponseBinaryFieldHasItsOwnBuffer) {
+TEST_F(AlignedParserTest, ResponseBinaryFieldHasItsOwnBuffer) {
   constexpr size_t kDataSize = 4096;
 
   ReadChunkResponse response;

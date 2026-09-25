@@ -30,9 +30,9 @@
 namespace apache::thrift::fast_thrift::frame::read {
 
 /**
- * Parses RSocket frames. A REQUEST_RESPONSE frame returns its data in a
- * separate buffer. If the first binary field starts in that data, the binary
- * protocol places it on a 16-byte boundary.
+ * Parses RSocket frames. A REQUEST_RESPONSE or PAYLOAD frame returns its data
+ * in a separate buffer. REQUEST_RESPONSE also places its first binary field on
+ * a 16-byte boundary.
  *
  *   struct Request {
  *     1: binary blob;   // alone in its own buffer, on a 16-byte boundary
@@ -40,7 +40,8 @@ namespace apache::thrift::fast_thrift::frame::read {
  *   }
  *
  * Thrift hands over a binary field without copying it. Code that keeps `blob`
- * therefore keeps only the data buffer.
+ * therefore keeps only the data buffer. PAYLOAD gets the same separation, but
+ * no alignment.
  *
  * A binary field stays in one buffer only when the frame is not fragmented.
  * REQUEST_RESPONSE alignment also requires the blob to be the first field and
@@ -48,16 +49,17 @@ namespace apache::thrift::fast_thrift::frame::read {
  * conditions. Parsing still works if one is false, but the binary field may
  * span buffers or lose alignment.
  *
- * A REQUEST_RESPONSE frame has separate header, metadata and data buffers.
- * Every other frame uses a queue whose node boundaries can fall anywhere.
+ * A REQUEST_RESPONSE or PAYLOAD frame has separate header, metadata and data
+ * buffers. Every other frame uses a queue whose node boundaries can fall
+ * anywhere.
  *
  * The parser controls where data lands, so it implements Parser and not
  * MovableBufferParser.
  *
- * The fixed header buffer is allocated before the frame length is known. A
- * plain body or request data buffer is allocated when the transport asks for
- * that section. The parser checks maxFrameSize after allocating the fixed
- * header, but before allocating the body, metadata or data.
+ * The fixed header buffer is allocated before the frame length is known. The
+ * parser allocates each variable-size buffer when the transport asks for its
+ * space. It checks maxFrameSize after allocating the fixed header, but before
+ * allocating the body, metadata or data.
  */
 class AlignedParser {
  public:
@@ -93,7 +95,7 @@ class AlignedParser {
  private:
   enum class State {
     AwaitingHeader,
-    // The three below run only on the aligned path.
+    // The three below run only for frames that get their own buffers.
     AwaitingMetadataLength,
     AwaitingMetadata,
     AwaitingData,
@@ -122,7 +124,12 @@ class AlignedParser {
   Step onDataBytes(size_t len) noexcept;
   Step onBodyBytes(size_t len) noexcept;
 
-  Step startAligned(uint16_t flags) noexcept;
+  // REQUEST_RESPONSE and PAYLOAD both get their header, metadata and data in
+  // buffers of their own. Only the request also has its data shifted.
+  bool hasOwnBuffers() const noexcept;
+  bool needsAlignment() const noexcept;
+
+  Step startOwnBuffers(uint16_t flags) noexcept;
   channel_pipeline::BytesPtr newBuffer(size_t capacity) noexcept;
   channel_pipeline::BytesPtr newDataBuffer() noexcept;
   channel_pipeline::BytesPtr takeFrame() noexcept;
@@ -140,15 +147,15 @@ class AlignedParser {
   const size_t maxFrameSize_;
 
   State state_{State::AwaitingHeader};
-  bool aligned_{false};
+  FrameType frameType_{FrameType::RESERVED};
   size_t remainingHeader_;
   size_t remainingMetadata_{0};
   size_t remainingData_{0};
   size_t remainingBody_{0};
   size_t frameLength_{0};
 
-  // On the aligned path these three come out as one chain. On the plain path
-  // header_ is moved into body_ and the other two stay empty.
+  // For a frame with its own buffers these three come out as one chain. For
+  // any other frame header_ is moved into body_ and the two below stay empty.
   channel_pipeline::BytesPtr header_;
   channel_pipeline::BytesPtr metadata_;
   channel_pipeline::BytesPtr data_;
