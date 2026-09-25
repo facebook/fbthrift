@@ -940,13 +940,13 @@ uint32_t JSONProtocolReaderCommon::readWhile(
     uint32_t size = 0;
     for (uint8_t ch : peek) {
       if (!pred(ch)) {
-        out.append(peek.begin(), peek.begin() + size);
+        out.append(reinterpret_cast<const char*>(peek.data()), size);
         in_.skip(size);
         return ret + size;
       }
       ++size;
     }
-    out.append(peek.begin(), peek.end());
+    out.append(reinterpret_cast<const char*>(peek.data()), peek.size());
     ret += size;
     in_.skip(size);
   }
