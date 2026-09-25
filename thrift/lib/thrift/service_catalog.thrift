@@ -27,7 +27,7 @@ package "facebook.com/thrift/type_system"
 
 namespace cpp2 apache.thrift.type_system
 namespace go thrift.lib.thrift.service_catalog
-namespace py3 apache.thrift.type_system
+namespace py3 thrift.lib.thrift
 
 /** The retry-safety contract of a function. */
 enum FunctionQualifier {
