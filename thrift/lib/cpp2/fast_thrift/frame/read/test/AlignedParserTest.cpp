@@ -17,9 +17,7 @@
 // Tests that are only about AlignedParser. The framing it shares with other
 // parsers is tested in ParserContractTest.cpp.
 //
-// The tests still marked DISABLED_ describe the two frame types the parser does
-// not treat specially yet, REQUEST_RESPONSE and PAYLOAD. Drop the prefix as
-// those land.
+// The remaining DISABLED_ test covers PAYLOAD, which still uses the plain path.
 
 #include <cstdint>
 #include <cstring>
@@ -194,7 +192,7 @@ class AlignedParserTest : public Test {
 };
 
 // Metadata and data must come back in separate buffers, not merged into one.
-TEST_F(AlignedParserTest, DISABLED_EmitsMetadataAndDataInSeparateBuffers) {
+TEST_F(AlignedParserTest, EmitsMetadataAndDataInSeparateBuffers) {
   EXPECT_THAT(
       feed(serializeFrame(
           write::RequestResponseHeader{.streamId = 1},
@@ -250,8 +248,15 @@ TEST_F(AlignedParserTest, DISABLED_ResponseBinaryFieldHasItsOwnBuffer) {
 }
 
 // The blob inside the request must end up at an address divisible by 16.
-TEST_F(AlignedParserTest, DISABLED_BlobLandsOnAnAlignmentBoundary) {
+TEST_F(AlignedParserTest, BlobLandsOnAnAlignmentBoundary) {
   constexpr size_t kBlobSize = 4096;
+  folly::IOBufFactory factory = [](size_t capacity) {
+    BytesPtr buffer = folly::IOBuf::create(capacity + 1);
+    buffer->advance(1);
+    return buffer;
+  };
+  AlignedParser parser;
+  parser.setIOBufFactory(&factory);
 
   Payload payload;
   payload.blob() = blobOf(kBlobSize, 'd');
@@ -263,11 +268,13 @@ TEST_F(AlignedParserTest, DISABLED_BlobLandsOnAnAlignmentBoundary) {
   // Without this the test would feed an empty frame and prove nothing.
   ASSERT_THAT(channel->request_, NotNull());
 
+  const std::vector<uint8_t> wire = serializeFrame(
+      write::RequestResponseHeader{.streamId = 1},
+      nullptr,
+      std::move(channel->request_));
   EXPECT_THAT(
-      feed(serializeFrame(
-          write::RequestResponseHeader{.streamId = 1},
-          nullptr,
-          std::move(channel->request_))),
+      ConsumeDriver::feed(
+          parser, folly::ByteRange{wire.data(), wire.size()}, sink()),
       Eq(Result::Success));
   ASSERT_THAT(frames_, SizeIs(1));
 
@@ -361,10 +368,15 @@ TEST_F(AlignedParserTest, RejectsFrameOverMaxFrameSize) {
   ASSERT_THAT(accepted.result, Eq(Result::Success));
   ASSERT_THAT(accepted.bytesAllocated, Gt(kHeaderSize));
 
+  // A parser that has read nothing has still allocated one header buffer. The
+  // refused frame must cost that and nothing more.
+  AlignedParser fresh;
+  const size_t headerBufferOnly = drive(fresh, {}).bytesAllocated;
+
   const Run refused = announce(kMaxFrameSize + 1);
   EXPECT_THAT(refused.result, Eq(Result::Error));
   EXPECT_THAT(frames_, IsEmpty());
-  EXPECT_THAT(refused.bytesAllocated, Eq(kHeaderSize));
+  EXPECT_THAT(refused.bytesAllocated, Eq(headerBufferOnly));
 }
 
 // On the plain path, a tail with less room than minBufferSize makes the next
@@ -386,8 +398,27 @@ TEST_F(AlignedParserTest, PlainFrameReservesAnnouncedLengthWithShortTail) {
   EXPECT_THAT(run.bytesAllocated, Ge(kBodySize));
 }
 
+// An aligned frame is the other way round. Its data has to arrive in one
+// buffer, so the parser takes the whole announced size as soon as the header
+// is in, before a single data byte has turned up.
+TEST_F(AlignedParserTest, AlignedFrameReservesTheAnnouncedLength) {
+  constexpr size_t kDataSize = 1 << 20;
+
+  std::vector<uint8_t> headerOnly = serializeFrame(
+      write::RequestResponseHeader{.streamId = 1},
+      nullptr,
+      blobOf(kDataSize, 'd'));
+  headerOnly.resize(kMetadataLengthSize + kBaseHeaderSize);
+
+  AlignedParser parser;
+  const Run run = drive(parser, headerOnly);
+  EXPECT_THAT(run.result, Eq(Result::Success));
+  EXPECT_THAT(frames_, IsEmpty());
+  EXPECT_THAT(run.bytesAllocated, Ge(kDataSize));
+}
+
 // A metadata length that does not fit the frame must give Result::Error too.
-TEST_F(AlignedParserTest, DISABLED_RejectsMetadataLongerThanTheFrame) {
+TEST_F(AlignedParserTest, RejectsMetadataLongerThanTheFrame) {
   std::vector<uint8_t> bytes = serializeFrame(
       write::RequestResponseHeader{.streamId = 1},
       blobOf(4, 'm'),

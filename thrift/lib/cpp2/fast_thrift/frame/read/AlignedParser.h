@@ -17,6 +17,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
@@ -29,20 +30,34 @@
 namespace apache::thrift::fast_thrift::frame::read {
 
 /**
- * Parses RSocket frames and emits each frame without its three-byte length
- * prefix. Every frame uses the same queue path, so buffer boundaries can fall
- * anywhere.
+ * Parses RSocket frames. A REQUEST_RESPONSE frame returns its data in a
+ * separate buffer. If the first binary field starts in that data, the binary
+ * protocol places it on a 16-byte boundary.
  *
- * The parser owns its read buffers. It implements Parser and not
+ *   struct Request {
+ *     1: binary blob;   // alone in its own buffer, on a 16-byte boundary
+ *     2: i64 offset;
+ *   }
+ *
+ * Thrift hands over a binary field without copying it. Code that keeps `blob`
+ * therefore keeps only the data buffer.
+ *
+ * A binary field stays in one buffer only when the frame is not fragmented.
+ * REQUEST_RESPONSE alignment also requires the blob to be the first field and
+ * the request to use the binary protocol. The parser checks none of these
+ * conditions. Parsing still works if one is false, but the binary field may
+ * span buffers or lose alignment.
+ *
+ * A REQUEST_RESPONSE frame has separate header, metadata and data buffers.
+ * Every other frame uses a queue whose node boundaries can fall anywhere.
+ *
+ * The parser controls where data lands, so it implements Parser and not
  * MovableBufferParser.
  *
- * The fixed header buffer is allocated before the frame length is known. The
- * body buffer is allocated when the transport asks for body space. The parser
- * checks maxFrameSize after allocating the fixed header, but before allocating
- * the body.
- *
- * If the queue has less than minBufferSize of tailroom, it requests the full
- * wire frame size or maxBufferSize, whichever is larger.
+ * The fixed header buffer is allocated before the frame length is known. A
+ * plain body or request data buffer is allocated when the transport asks for
+ * that section. The parser checks maxFrameSize after allocating the fixed
+ * header, but before allocating the body, metadata or data.
  */
 class AlignedParser {
  public:
@@ -67,6 +82,10 @@ class AlignedParser {
   template <typename Sink>
   channel_pipeline::Result consume(size_t len, Sink&& sink) noexcept;
 
+  // The factory must return an empty buffer with at least the tailroom asked
+  // for. A short buffer leaves a field the parser cannot finish, and from then
+  // on getReadBuffer offers no room. The parser may also move the start of the
+  // buffer forward by up to 15 bytes.
   void setIOBufFactory(folly::IOBufFactory* factory) noexcept;
 
   void reset() noexcept;
@@ -74,6 +93,11 @@ class AlignedParser {
  private:
   enum class State {
     AwaitingHeader,
+    // The three below run only on the aligned path.
+    AwaitingMetadataLength,
+    AwaitingMetadata,
+    AwaitingData,
+    // Everything else lands here and is read into one queue.
     AwaitingBody,
   };
 
@@ -87,10 +111,20 @@ class AlignedParser {
 
   // One per state, so getReadBuffer is nothing but a switch.
   void headerReadBuffer(void** bufReturn, size_t* lenReturn) noexcept;
+  void metadataReadBuffer(void** bufReturn, size_t* lenReturn) noexcept;
+  void dataReadBuffer(void** bufReturn, size_t* lenReturn) noexcept;
   void bodyReadBuffer(void** bufReturn, size_t* lenReturn) noexcept;
 
+  Step onBytes(size_t len) noexcept;
   Step onHeaderBytes(size_t len) noexcept;
+  Step onMetadataLengthBytes(size_t len) noexcept;
+  Step onMetadataBytes(size_t len) noexcept;
+  Step onDataBytes(size_t len) noexcept;
   Step onBodyBytes(size_t len) noexcept;
+
+  Step startAligned(uint16_t flags) noexcept;
+  channel_pipeline::BytesPtr newBuffer(size_t capacity) noexcept;
+  channel_pipeline::BytesPtr newDataBuffer() noexcept;
   channel_pipeline::BytesPtr takeFrame() noexcept;
   void startNextFrame() noexcept;
 
@@ -101,21 +135,23 @@ class AlignedParser {
   // the field header of the blob, and 4 for the blob length.
   static constexpr size_t kBytesBeforeFirstField = 3 + 3 + 4;
 
-  static constexpr size_t kDataBufferPadding =
-      kAlignment - kBytesBeforeFirstField;
-
   const size_t minBufferSize_;
   const size_t maxBufferSize_;
   const size_t maxFrameSize_;
 
   State state_{State::AwaitingHeader};
+  bool aligned_{false};
   size_t remainingHeader_;
+  size_t remainingMetadata_{0};
+  size_t remainingData_{0};
   size_t remainingBody_{0};
   size_t frameLength_{0};
 
-  // The parser fills this first, then moves it into body_, so the frame comes
-  // out as one piece.
+  // On the aligned path these three come out as one chain. On the plain path
+  // header_ is moved into body_ and the other two stay empty.
   channel_pipeline::BytesPtr header_;
+  channel_pipeline::BytesPtr metadata_;
+  channel_pipeline::BytesPtr data_;
   folly::IOBufQueue body_{folly::IOBufQueue::cacheChainLength()};
 
   folly::IOBufFactory* bufFactory_{nullptr};
@@ -124,8 +160,7 @@ class AlignedParser {
 template <typename Sink>
 channel_pipeline::Result AlignedParser::consume(
     size_t len, Sink&& sink) noexcept {
-  const Step step =
-      state_ == State::AwaitingHeader ? onHeaderBytes(len) : onBodyBytes(len);
+  const Step step = onBytes(len);
   if (step == Step::NeedMore) {
     return channel_pipeline::Result::Success;
   }
