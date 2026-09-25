@@ -31,15 +31,20 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <string>
 #include <vector>
 
 #include <gtest/gtest.h>
 
 #include <folly/Range.h>
+#include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/AlignedParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/test/ParserContractFixture.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/test/WireFrames.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/write/FrameHeaders.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/FrameLength.h>
 
 namespace apache::thrift::fast_thrift::frame::read {
@@ -229,22 +234,58 @@ struct FrameLengthParserTraits {
   }
 };
 
-// One entry per parser and driver pair. Types is gtest's type list. One element
-// each is enough, because each instantiation below has its own name prefix.
+// AlignedParser reads an RSocket frame header, then the payload. It has no
+// consumeBuffer, so it runs with one driver only. The header type is a
+// parameter so that the suite runs twice. One run sends a request, which gets
+// buffers of its own. The other sends a frame type that does not.
+template <typename HeaderT>
+struct AlignedParserTraits {
+  using Parser = AlignedParser;
+  using Driver = ConsumeDriver;
+
+  static size_t headerSize() { return kMetadataLengthSize + kBaseHeaderSize; }
+
+  // The parser removes only the 3 length bytes. The rest of the header stays
+  // in the frame it emits.
+  static size_t emittedSize(size_t payloadSize) {
+    return kBaseHeaderSize + payloadSize;
+  }
+
+  static std::vector<uint8_t> makeFrame(size_t payloadSize, uint8_t fill) {
+    return serializeFrame(
+        HeaderT{.streamId = 1},
+        nullptr,
+        folly::IOBuf::copyBuffer(std::string(payloadSize, fill)));
+  }
+};
+
+// One entry per run of the suite. Types is gtest's type list. One element each
+// is enough, because each instantiation below has its own name prefix.
 using ViaConsume = Types<FrameLengthParserTraits<ConsumeDriver>>;
 using ViaConsumeBuffer = Types<FrameLengthParserTraits<ConsumeBufferDriver>>;
 using ViaConsumeBufferChain =
     Types<FrameLengthParserTraits<ConsumeBufferChainDriver>>;
+using ViaAligned = Types<AlignedParserTraits<write::RequestResponseHeader>>;
+using ViaAlignedPlain = Types<AlignedParserTraits<write::RequestFnfHeader>>;
 
 } // namespace
 
 // Copies the whole suite under the given prefix. The cases above then run as
 // Consume/ParserContractTest/0.SingleCompleteFrame and once more per prefix
-// below. FrameLengthParser supports every driver, so it gets all three.
+// below. FrameLengthParser works with every driver, so it gets all three.
+// AlignedParser has only consume, so it gets one driver and two frame types.
 INSTANTIATE_TYPED_TEST_SUITE_P(Consume, ParserContractTest, ViaConsume);
 INSTANTIATE_TYPED_TEST_SUITE_P(
     ConsumeBuffer, ParserContractTest, ViaConsumeBuffer);
 INSTANTIATE_TYPED_TEST_SUITE_P(
     ConsumeBufferChain, ParserContractTest, ViaConsumeBufferChain);
+// The two Aligned prefixes carry DISABLED_ because the parser is still an
+// empty skeleton. It has to sit on the prefix rather than on the tests,
+// because the test bodies are shared with FrameLengthParser, which passes
+// them. Drop it when the parser gets written.
+INSTANTIATE_TYPED_TEST_SUITE_P(
+    DISABLED_Aligned, ParserContractTest, ViaAligned);
+INSTANTIATE_TYPED_TEST_SUITE_P(
+    DISABLED_AlignedPlain, ParserContractTest, ViaAlignedPlain);
 
 } // namespace apache::thrift::fast_thrift::frame::read

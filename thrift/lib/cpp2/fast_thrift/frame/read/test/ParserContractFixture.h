@@ -133,7 +133,7 @@ concept ParserTraits = std::default_initializable<typename T::Parser> &&
       // Can be larger than payload: a parser may keep part of the header in
       // the frame it emits.
       { T::emittedSize(payload) } -> std::same_as<size_t>;
-      // Bytes the parser must see before it knows the frame length.
+      // Bytes in front of the payload on the wire.
       { T::headerSize() } -> std::same_as<size_t>;
     };
 
