@@ -23,10 +23,10 @@ using apache::thrift::conformance::StandardProtocol;
 using apache::thrift::conformance::data::createRoundTripSuite;
 using apache::thrift::conformance::data::serializeToFile;
 
-// Json5 is only wired into the C++ conformance server, so its round-trip cases
-// live in a dedicated generator referenced solely by the C++ test. Other
-// languages use `gen-round-trip` (Binary/Compact) and would otherwise fail on
-// Json5 cases their servers cannot handle.
+// Json5 round-trip cases live in a dedicated generator so that only the
+// conformance servers implementing Json5 opt in to them. Languages whose
+// servers cannot handle Json5 use `gen-round-trip` (Binary/Compact) and would
+// otherwise fail on these cases.
 int main(int argc, char** argv) {
   folly::Init init(&argc, &argv);
 
