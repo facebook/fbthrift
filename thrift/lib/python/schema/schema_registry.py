@@ -34,10 +34,17 @@ import zstandard  # @manual=fbsource//third-party/pypi/zstandard:zstandard
 from apache.thrift.type.schema import thrift_types as _schema_types
 from apache.thrift.type_system.type_system.thrift_types import SerializableTypeSystem
 from thrift.lib.python.schema._digest_common import DigestMode
-from thrift.lib.python.schema.syntax_graph import Definition, SyntaxGraph
+from thrift.lib.python.schema._record import SerializableRecord
+from thrift.lib.python.schema.syntax_graph import (
+    Annotation,
+    Definition,
+    SyntaxGraph,
+    TypeRef as SyntaxTypeRef,
+)
 from thrift.lib.python.schema.type_system import (
     DefinitionNode,
     PruneOptions,
+    TypeRef,
     TypeSystem,
 )
 from thrift.lib.python.schema.type_system_bridge import SyntaxGraphBridge
@@ -292,6 +299,16 @@ class SchemaRegistry(TypeSystem):
         enumerate the types at a source location up front."""
         del locator
         return {}
+
+    def as_type_system_type_ref(self, type_ref: SyntaxTypeRef) -> TypeRef:
+        """Convert a SyntaxGraph type edge into this registry's TypeSystem."""
+        return self._ts_bridge.as_type_system_type_ref(type_ref)
+
+    def as_type_system_annotations(
+        self, annotations: Sequence[Annotation]
+    ) -> Mapping[str, SerializableRecord]:
+        """Convert SyntaxGraph annotations into runtime annotation records."""
+        return self._ts_bridge.as_type_system_annotations(annotations)
 
     def to_serializable_type_system(
         self,

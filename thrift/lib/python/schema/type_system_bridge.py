@@ -374,6 +374,22 @@ class SyntaxGraphBridge(TypeSystem):
         # Keyed by AST definition_key (always unique; URIs may be empty).
         self._cache: dict[bytes, DefinitionNode] = {}
 
+    def as_type_system_type_ref(self, ast_ref: _ast.TypeRef) -> TypeRef:
+        """Convert a SyntaxGraph type edge into its TypeSystem representation."""
+        added_keys: set[bytes] = set()
+        try:
+            return self._bridge_type(ast_ref, added_keys)
+        except Exception:
+            for key in added_keys:
+                self._cache.pop(key, None)
+            raise
+
+    def as_type_system_annotations(
+        self, annotations: Sequence[_ast.Annotation]
+    ) -> Mapping[str, SerializableRecord]:
+        """Convert structured SyntaxGraph annotations to runtime records."""
+        return _bridge_annotations(annotations)
+
     def get_user_defined_type(self, uri: str) -> DefinitionNode | None:
         ast_def = self._resolver.definition_by_uri(uri)
         if ast_def is None:

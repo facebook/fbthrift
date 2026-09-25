@@ -36,7 +36,7 @@ from apache.thrift.type.schema.thrift_types import (
 )
 from thrift.lib.thrift.service_catalog.thrift_types import (
     FunctionQualifier as _DescriptorFunctionQualifier,
-    RpcKind as _RpcKind,
+    RpcKind as _DescriptorRpcKind,
 )
 from thrift.python.serializer import deserialize, Protocol
 
@@ -1034,16 +1034,16 @@ class FunctionNode:
         return _DescriptorFunctionQualifier.Unspecified
 
     @property
-    def rpc_kind(self) -> _RpcKind:
+    def rpc_kind(self) -> _DescriptorRpcKind:
         if self._qualifier == FunctionQualifier.OneWay:
-            return _RpcKind.OneWay
+            return _DescriptorRpcKind.OneWay
         if self._response.stream is not None and self._response.sink is not None:
-            return _RpcKind.BidirectionalStream
+            return _DescriptorRpcKind.BidirectionalStream
         if self._response.stream is not None:
-            return _RpcKind.Stream
+            return _DescriptorRpcKind.Stream
         if self._response.sink is not None:
-            return _RpcKind.Sink
-        return _RpcKind.Unary
+            return _DescriptorRpcKind.Sink
+        return _DescriptorRpcKind.Unary
 
     @property
     def is_performs(self) -> bool:
