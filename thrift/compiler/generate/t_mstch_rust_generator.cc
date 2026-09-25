@@ -110,6 +110,11 @@ enum class FieldKind { Box, Arc, Inline };
 const std::string_view kRustCratePrefix = "crate::";
 const std::string_view kRustCrateTypesPrefix = "crate::types::";
 
+// The two canonical fb303 base services, matched by scoped name. Nothing in the
+// IDL marks a parent as fb303, so identifying it is name-based.
+const std::string_view kFb303FacebookService = "fb303.FacebookService";
+const std::string_view kFb303CoreBaseService = "fb303_core.BaseService";
+
 std::string quoted_rust_doc(const t_named* named_node) {
   const std::string& doc = named_node->doc();
 
@@ -1562,6 +1567,15 @@ class t_mstch_rust_generator : public t_whisker_generator {
     });
     def.property("requestContext?", [](const t_service& self) {
       return self.has_structured_annotation(kRustRequestContextUri);
+    });
+    def.property("extends_fb303?", [](const t_service& self) {
+      const t_service* parent = self.extends();
+      if (parent == nullptr) {
+        return false;
+      }
+      const std::string scoped_name = parent->get_scoped_name();
+      return scoped_name == kFb303FacebookService ||
+          scoped_name == kFb303CoreBaseService;
     });
     def.property("all_parent_services", [&proto](const t_service& self) {
       whisker::array::raw parents;
