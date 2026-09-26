@@ -20,11 +20,11 @@
 #include <charconv>
 #include <cstdint>
 #include <limits>
-#include <stdexcept>
 
 #include <fmt/core.h>
 #include <folly/Conv.h>
 #include <folly/Unicode.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
 
 namespace apache::thrift::json5::detail {
 
@@ -39,7 +39,17 @@ bool isIdentifierPart(char c) {
 }
 
 [[noreturn]] void throwParseError(const std::string& msg) {
-  throw std::runtime_error("Json5Reader: " + msg);
+  throw protocol::TProtocolException(
+      protocol::TProtocolException::INVALID_DATA, "Json5Reader: " + msg);
+}
+
+template <typename T>
+T parseNumberOrThrow(const std::string& str) {
+  auto result = folly::tryTo<T>(str);
+  if (!result.hasValue()) {
+    throwParseError(folly::makeConversionError(result.error(), str).what());
+  }
+  return *result;
 }
 
 std::int64_t parseHexInteger(std::string_view str, bool isNegative) {
@@ -354,12 +364,12 @@ Json5Reader::Primitive Json5Reader::parseNumber(
   }
 
   if (!isFloating) {
-    return folly::to<std::int64_t>(numStr);
+    return parseNumberOrThrow<std::int64_t>(numStr);
   }
   if (precision == FloatingPointPrecision::Single) {
-    return folly::to<float>(numStr);
+    return parseNumberOrThrow<float>(numStr);
   }
-  return folly::to<double>(numStr);
+  return parseNumberOrThrow<double>(numStr);
 }
 
 // -- values ---------------------------------------------------------------

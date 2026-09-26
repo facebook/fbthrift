@@ -53,7 +53,8 @@ namespace apache::thrift::json5::detail {
  * @section errors Error Handling
  *
  * Json5Reader uses a throw-on-error strategy. All `read*` methods throw
- * exceptions when they encounter unexpected JSON tokens or malformed input.
+ * `protocol::TProtocolException` (INVALID_DATA) when they encounter unexpected
+ * JSON tokens or malformed input.
  * Examples of conditions that trigger exceptions:
  *
  * - Unexpected token type (e.g., expecting `{` but finding `[`)
@@ -90,7 +91,7 @@ class Json5Reader final {
   /**
    * Peeks at the next token without consuming it.
    *
-   * @throws std::runtime_error if the input has ended unexpectedly.
+   * @throws protocol::TProtocolException if the input has ended unexpectedly.
    */
   enum class Token { ListBegin, ListEnd, ObjectBegin, ObjectEnd, Primitive };
   [[nodiscard]] Token peekToken();

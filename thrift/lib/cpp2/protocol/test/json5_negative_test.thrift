@@ -135,6 +135,14 @@ const list<NegativeTestCase> typeValidationNegativeCases = [
     name = "FloatPrecisionLossString",
     json = "{\"floatValue\": \"123456789\"}",
   },
+  NegativeTestCase{
+    name = "IntegerMapKeyNotANumber",
+    json = "{\"i32AsKey\": {\"abc\": 1}}",
+  },
+  NegativeTestCase{
+    name = "IntegerMapKeyOutOfRange",
+    json = "{\"i32AsKey\": {\"3000000000\": 1}}",
+  },
   NegativeTestCase{name = "BoolGotNumber", json = "{\"boolValue\": 1}"},
   NegativeTestCase{
     name = "BoolKeyInvalidString",

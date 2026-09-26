@@ -193,6 +193,10 @@ class Json5ProtocolReader final {
 
   [[noreturn]] static void throwError(std::string_view message);
 
+  // Like folly::to, but reports conversion failures through throwError.
+  template <typename To, typename From>
+  static To convertTo(const From& from);
+
   std::int64_t readIntegralValue();
 
   template <std::floating_point T>

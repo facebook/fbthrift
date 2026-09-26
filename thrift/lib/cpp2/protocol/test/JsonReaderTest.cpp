@@ -19,6 +19,7 @@
 #include <cmath>
 #include <gtest/gtest.h>
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
 
 namespace apache::thrift::json5::detail {
 namespace {
@@ -284,15 +285,15 @@ TEST_F(Json5ReaderTest, HexNumbers) {
   EXPECT_EQ(readInt("+0xDEAD"), 0xDEAD);
   EXPECT_EQ(readInt("-0xDEAD"), -0xDEAD);
 
-  EXPECT_THROW(readInt("0x"), std::exception);
-  EXPECT_THROW(readInt("x0"), std::exception);
-  EXPECT_THROW(readInt("00x0"), std::exception);
-  EXPECT_THROW(readInt("0 x0"), std::exception);
-  EXPECT_THROW(readInt("0x 0"), std::exception);
-  EXPECT_THROW(readInt("0Y0"), std::exception);
-  EXPECT_THROW(readInt("0xfg"), std::exception);
-  EXPECT_THROW(readInt("0x1.0"), std::exception);
-  EXPECT_THROW(readInt("0x1.0p1"), std::exception);
+  EXPECT_THROW(readInt("0x"), protocol::TProtocolException);
+  EXPECT_THROW(readInt("x0"), protocol::TProtocolException);
+  EXPECT_THROW(readInt("00x0"), protocol::TProtocolException);
+  EXPECT_THROW(readInt("0 x0"), protocol::TProtocolException);
+  EXPECT_THROW(readInt("0x 0"), protocol::TProtocolException);
+  EXPECT_THROW(readInt("0Y0"), protocol::TProtocolException);
+  EXPECT_THROW(readInt("0xfg"), protocol::TProtocolException);
+  EXPECT_THROW(readInt("0x1.0"), protocol::TProtocolException);
+  EXPECT_THROW(readInt("0x1.0p1"), protocol::TProtocolException);
 
   {
     // In array/object
@@ -316,8 +317,8 @@ TEST_F(Json5ReaderTest, HexNumbers) {
 
   EXPECT_EQ(readInt(maxHex), std::numeric_limits<std::int64_t>::max());
   EXPECT_EQ(readInt(minHex), std::numeric_limits<std::int64_t>::min());
-  EXPECT_THROW(readInt(maxHexPlusOne), std::exception);
-  EXPECT_THROW(readInt(minHexMinusOne), std::exception);
+  EXPECT_THROW(readInt(maxHexPlusOne), protocol::TProtocolException);
+  EXPECT_THROW(readInt(minHexMinusOne), protocol::TProtocolException);
 }
 
 TEST_F(Json5ReaderTest, ScientificNotation) {
@@ -345,8 +346,9 @@ TEST_F(Json5ReaderTest, UnicodeEscape) {
   EXPECT_EQ(readStr(R"("\u0048\u0065\u006C\u006C\u006F")"), "Hello");
   EXPECT_EQ(readStr("'\\u0041'"), "A"); // single-quoted
 
-  EXPECT_THROW(readStr(R"("\u00")"), std::exception); // truncated
-  EXPECT_THROW(readStr(R"("\u00GZ")"), std::exception); // invalid hex
+  EXPECT_THROW(readStr(R"("\u00")"), protocol::TProtocolException); // truncated
+  EXPECT_THROW(
+      readStr(R"("\u00GZ")"), protocol::TProtocolException); // invalid hex
 }
 
 TEST_F(Json5ReaderTest, UnicodeEscapeSurrogatePairs) {
@@ -358,10 +360,15 @@ TEST_F(Json5ReaderTest, UnicodeEscapeSurrogatePairs) {
   EXPECT_EQ(readStr(R"("\uD83D\uDE00")"), "😀"); // case insensitive
   EXPECT_EQ(readStr(R"("a\ud83d\ude00b")"), "a😀b");
 
-  EXPECT_THROW(readStr(R"("\ud83d")"), std::exception); // no second half
-  EXPECT_THROW(readStr(R"("\ud83dA")"), std::exception); // not an escape
-  EXPECT_THROW(readStr(R"("\ud83d\u0041")"), std::exception); // not a low half
-  EXPECT_THROW(readStr(R"("\ude00")"), std::exception); // lone low half
+  EXPECT_THROW(
+      readStr(R"("\ud83d")"), protocol::TProtocolException); // no second half
+  EXPECT_THROW(
+      readStr(R"("\ud83dA")"), protocol::TProtocolException); // not an escape
+  EXPECT_THROW(
+      readStr(R"("\ud83d\u0041")"),
+      protocol::TProtocolException); // not a low half
+  EXPECT_THROW(
+      readStr(R"("\ude00")"), protocol::TProtocolException); // lone low half
 }
 
 TEST_F(Json5ReaderTest, PeekToken) {
@@ -471,26 +478,37 @@ TEST_F(Json5ReaderTest, CommentsInStringsAndContainers) {
 TEST_F(Json5ReaderTest, PeekTokenAfterEOF) {
   auto r = reader("42");
   EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 42);
-  EXPECT_THROW((void)r.peekToken(), std::runtime_error);
+  EXPECT_THROW((void)r.peekToken(), protocol::TProtocolException);
+}
+
+TEST_F(Json5ReaderTest, MalformedNumbers) {
+  auto read = [this](std::string_view input) {
+    return reader(input).readPrimitive();
+  };
+  EXPECT_THROW(read("99999999999999999999"), protocol::TProtocolException);
+  EXPECT_THROW(read("-99999999999999999999"), protocol::TProtocolException);
+  EXPECT_THROW(read("."), protocol::TProtocolException);
+  EXPECT_THROW(read("1e"), protocol::TProtocolException);
+  EXPECT_THROW(read("1e+"), protocol::TProtocolException);
 }
 
 TEST_F(Json5ReaderTest, ErrorHandling) {
   // Unexpected end of input
   {
     auto r = reader("");
-    EXPECT_THROW((void)r.peekToken(), std::runtime_error);
+    EXPECT_THROW((void)r.peekToken(), protocol::TProtocolException);
   }
 
   // Expected object begin, got something else
   {
     auto r = reader("123");
-    EXPECT_THROW(r.readObjectBegin(), std::runtime_error);
+    EXPECT_THROW(r.readObjectBegin(), protocol::TProtocolException);
   }
 
   // Expected list begin, got something else
   {
     auto r = reader("{}");
-    EXPECT_THROW(r.readListBegin(), std::runtime_error);
+    EXPECT_THROW(r.readListBegin(), protocol::TProtocolException);
   }
 
   // Expected object end, got something else
@@ -499,7 +517,7 @@ TEST_F(Json5ReaderTest, ErrorHandling) {
     r.readObjectBegin();
     r.readObjectName();
     r.readPrimitive();
-    EXPECT_THROW(r.readObjectEnd(), std::runtime_error);
+    EXPECT_THROW(r.readObjectEnd(), protocol::TProtocolException);
   }
 
   // Expected list end, got something else
@@ -508,21 +526,21 @@ TEST_F(Json5ReaderTest, ErrorHandling) {
     r.readListBegin();
     r.readPrimitive();
     r.readPrimitive();
-    EXPECT_THROW(r.readListEnd(), std::runtime_error);
+    EXPECT_THROW(r.readListEnd(), protocol::TProtocolException);
   }
 
   // Consecutive commas
   {
     auto r = reader("[1,,2]");
     r.readListBegin();
-    EXPECT_THROW(r.readPrimitive(), std::runtime_error);
+    EXPECT_THROW(r.readPrimitive(), protocol::TProtocolException);
   }
 
   // Missing comma between elements
   {
     auto r = reader("[1 2]");
     r.readListBegin();
-    EXPECT_THROW(r.readPrimitive(), std::runtime_error);
+    EXPECT_THROW(r.readPrimitive(), protocol::TProtocolException);
   }
 
   // Missing comma between containers
@@ -534,69 +552,69 @@ TEST_F(Json5ReaderTest, ErrorHandling) {
       r.readListEnd();
       r.readListBegin();
     };
-    EXPECT_THROW(f(), std::runtime_error);
+    EXPECT_THROW(f(), protocol::TProtocolException);
   }
 
   // Unknown escape sequence in string
   {
     auto r = reader(R"("\q")");
-    EXPECT_THROW(r.readPrimitive(), std::runtime_error);
+    EXPECT_THROW(r.readPrimitive(), protocol::TProtocolException);
   }
 
   // Unescaped newline in string
   {
     auto r = reader("\"hello\nworld\"");
-    EXPECT_THROW(r.readPrimitive(), std::runtime_error);
+    EXPECT_THROW(r.readPrimitive(), protocol::TProtocolException);
   }
 
   // Unexpected identifier
   {
     auto r = reader("undefined");
-    EXPECT_THROW(r.readPrimitive(), std::runtime_error);
+    EXPECT_THROW(r.readPrimitive(), protocol::TProtocolException);
   }
 
   // Invalid object name (starts with digit)
   {
     auto r = reader("{123: 456}");
     r.readObjectBegin();
-    EXPECT_THROW(r.readObjectName(), std::runtime_error);
+    EXPECT_THROW(r.readObjectName(), protocol::TProtocolException);
   }
 
   // Missing colon after object name
   {
     auto r = reader("{\"key\" 123}");
     r.readObjectBegin();
-    EXPECT_THROW(r.readObjectName(), std::runtime_error);
+    EXPECT_THROW(r.readObjectName(), protocol::TProtocolException);
   }
 
   // Invalid number (just a sign)
   {
     auto r = reader("+");
-    EXPECT_THROW(r.readPrimitive(), std::runtime_error);
+    EXPECT_THROW(r.readPrimitive(), protocol::TProtocolException);
   }
 
   // Invalid Infinity/NaN spelling
   {
     auto r = reader("Inf");
-    EXPECT_THROW(r.readPrimitive(), std::runtime_error);
+    EXPECT_THROW(r.readPrimitive(), protocol::TProtocolException);
   }
 
   // Missing digits after exponent
   {
     auto r = reader("1e");
-    EXPECT_THROW(r.readPrimitive(), std::exception);
+    EXPECT_THROW(r.readPrimitive(), protocol::TProtocolException);
   }
 
   // Missing digits after exponent sign
   {
     auto r = reader("1e+");
-    EXPECT_THROW(r.readPrimitive(), std::exception);
+    EXPECT_THROW(r.readPrimitive(), protocol::TProtocolException);
   }
 
   // Missing digits after negative exponent sign
   {
     auto r = reader("2.5E-");
-    EXPECT_THROW(r.readPrimitive(), std::exception);
+    EXPECT_THROW(r.readPrimitive(), protocol::TProtocolException);
   }
 
   // No cursor set
@@ -608,13 +626,13 @@ TEST_F(Json5ReaderTest, ErrorHandling) {
   // Unterminated block comment
   {
     auto r = reader("42/* unterminated");
-    EXPECT_THROW((void)r.readPrimitive(), std::exception);
+    EXPECT_THROW((void)r.readPrimitive(), protocol::TProtocolException);
   }
 
   // Comment-only input
   {
     auto r = reader("// Comment-only, no value");
-    EXPECT_THROW((void)r.peekToken(), std::exception);
+    EXPECT_THROW((void)r.peekToken(), protocol::TProtocolException);
   }
 
   // Leading zeroes are not valid (not valid JSON or JSON5)

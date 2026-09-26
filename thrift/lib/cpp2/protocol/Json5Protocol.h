@@ -57,6 +57,7 @@
 
 #pragma once
 
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp2/protocol/detail/Json5ProtocolReader.h>
 #include <thrift/lib/cpp2/protocol/detail/Json5ProtocolWriter.h>
 
@@ -164,7 +165,8 @@ class Json5ProtocolUtils final {
     type::native_type<Tag> value;
     op::decode<Tag>(reader, value);
     if (!reader.getCursor().isAtEnd()) {
-      throw std::runtime_error(
+      throw protocol::TProtocolException(
+          protocol::TProtocolException::INVALID_DATA,
           "Json5ProtocolReader: unexpected trailing content after JSON value");
     }
     return value;

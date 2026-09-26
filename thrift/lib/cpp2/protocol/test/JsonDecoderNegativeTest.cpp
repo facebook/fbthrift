@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp2/protocol/Json5Protocol.h>
 
 #include <gtest/gtest.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_negative_test_constants.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_negative_test_types.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_types.h>
@@ -39,6 +40,27 @@ TEST_P(JsonDecoderNegativeTest, RejectsInvalidInput) {
   EXPECT_THROW(
       (void)Json5ProtocolUtils::fromJson5<Example>(*GetParam().json()),
       std::exception);
+}
+
+// Like Binary/Compact, malformed input is reported as TProtocolException
+// INVALID_DATA, whichever layer detects it.
+TEST(JsonDecoderErrorTypeTest, ReportsInvalidDataAsTProtocolException) {
+  for (std::string_view json : {
+           R"({"i64Value": 1)", // syntax error in the lexer
+           R"({"i64Value": 99999999999999999999})", // integer literal overflow
+           R"({"i32Value": 3000000000})", // out of range for the field type
+           R"({"enumValue": "NOT_AN_ENUM"})", // rejected by the protocol reader
+           R"({"binaryValue": {"base64": "!!!!"}})", // invalid base64
+           R"({"i64Value": 1}])", // trailing content after the value
+       }) {
+    try {
+      (void)Json5ProtocolUtils::fromJson5<Example>(json);
+      ADD_FAILURE() << "expected rejection: " << json;
+    } catch (const protocol::TProtocolException& e) {
+      EXPECT_EQ(e.getType(), protocol::TProtocolException::INVALID_DATA)
+          << json;
+    }
+  }
 }
 
 INSTANTIATE_TEST_SUITE_P(

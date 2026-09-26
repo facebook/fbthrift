@@ -29,7 +29,20 @@
 namespace apache::thrift::json5::detail {
 
 [[noreturn]] void Json5ProtocolReader::throwError(std::string_view message) {
-  throw std::runtime_error(fmt::format("Json5ProtocolReader: {}", message));
+  throw protocol::TProtocolException(
+      protocol::TProtocolException::INVALID_DATA,
+      fmt::format("Json5ProtocolReader: {}", message));
+}
+
+template <typename To, typename From>
+To Json5ProtocolReader::convertTo(const From& from) {
+  auto result = folly::tryTo<To>(from);
+  if (!result.hasValue()) {
+    throwError(
+        folly::makeConversionError(result.error(), folly::to<std::string>(from))
+            .what());
+  }
+  return *result;
 }
 
 // ============================================================================
@@ -328,7 +341,7 @@ Json5ProtocolReader::readEnumImpl() {
   endReadValue();
 
   if (auto* i = std::get_if<std::int64_t>(&primitive)) {
-    return {.name = {}, .value = folly::to<std::int32_t>(*i)};
+    return {.name = {}, .value = convertTo<std::int32_t>(*i)};
   }
 
   return parseIdentifierString(std::get<std::string>(primitive));
@@ -426,16 +439,21 @@ std::string Json5ProtocolReader::readBinaryValue() {
 
   if (name == "utf-8") {
     return value;
-  } else if (name == "base64url") {
-    return folly::base64URLDecode(value);
-  } else if (name == "base64") {
-    while (value.size() % 4 != 0) {
-      // We want to support unpadded base64 string. Unfortunately there is no
-      // folly function to support base64 decode without padding. We have to add
-      // padding manually.
-      value += '=';
+  }
+  try {
+    if (name == "base64url") {
+      return folly::base64URLDecode(value);
+    } else if (name == "base64") {
+      while (value.size() % 4 != 0) {
+        // We want to support unpadded base64 string. Unfortunately there is no
+        // folly function to support base64 decode without padding. We have to
+        // add padding manually.
+        value += '=';
+      }
+      return folly::base64Decode(value);
     }
-    return folly::base64Decode(value);
+  } catch (const folly::base64_decode_error& e) {
+    throwError(fmt::format("invalid {} binary value: {}", name, e.what()));
   }
   throwError("Unsupported encoding type for binary object: " + name);
 }
@@ -459,7 +477,7 @@ std::optional<std::int64_t> tryParseI64(
 
 std::int64_t Json5ProtocolReader::readIntegralValue() {
   if (auto key = tryReadObjectMapKey()) {
-    return folly::to<std::int64_t>(*key);
+    return convertTo<std::int64_t>(*key);
   }
 
   beginReadValue();
@@ -479,7 +497,7 @@ T Json5ProtocolReader::readFloatingPointValue() {
       : Json5Reader::FloatingPointPrecision::Double;
 
   if (auto key = tryReadObjectMapKey()) {
-    return folly::to<T>(*key);
+    return convertTo<T>(*key);
   }
 
   beginReadValue();
@@ -496,7 +514,7 @@ T Json5ProtocolReader::readFloatingPointValue() {
     }
     return result;
   }
-  return folly::to<T>(std::get<std::string>(primitive));
+  return convertTo<T>(std::get<std::string>(primitive));
 }
 
 // ============================================================================
@@ -537,15 +555,15 @@ void Json5ProtocolReader::readBool(std::vector<bool>::reference value) {
 }
 
 void Json5ProtocolReader::readByte(std::int8_t& value) {
-  value = folly::to<std::int8_t>(readIntegralValue());
+  value = convertTo<std::int8_t>(readIntegralValue());
 }
 
 void Json5ProtocolReader::readI16(std::int16_t& value) {
-  value = folly::to<std::int16_t>(readIntegralValue());
+  value = convertTo<std::int16_t>(readIntegralValue());
 }
 
 void Json5ProtocolReader::readI32(std::int32_t& value) {
-  value = folly::to<std::int32_t>(readIntegralValue());
+  value = convertTo<std::int32_t>(readIntegralValue());
 }
 
 void Json5ProtocolReader::readI64(std::int64_t& value) {
