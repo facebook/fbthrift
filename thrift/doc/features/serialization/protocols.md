@@ -255,13 +255,13 @@ Rejects:
 
 * JSON5 numeric literals.
 * Special float literals.
-* Integers if and only if converting to the target IEEE 754 type and back to integer yields the original value (bounds: \[-2²⁴, 2²⁴\] (`±16,777,216`) inclusive for float, \[-2⁵³, 2⁵³\] (`±9,007,199,254,740,992`) inclusive for double).
+* Integers if and only if converting to the target IEEE 754 type and back to integer yields the original value (e.g., every integer in \[-2²⁴, 2²⁴\] (`±16,777,216`) for float or \[-2⁵³, 2⁵³\] (`±9,007,199,254,740,992`) for double, and larger ones such as `9223372036854774784`, i.e. 2⁶³ − 1024, for double).
 * Quoted numeric strings (same rules as above, e.g., `"3.14"`).
 
 Rejects:
 
 * Non-numeric strings (e.g., `"abc"`, `""`).
-* Integers with precision loss (e.g., `11122233344455566`).
+* Integers with precision loss (e.g., `9007199254740993` for double, `123456789` for float).
 
 #### STRING
 

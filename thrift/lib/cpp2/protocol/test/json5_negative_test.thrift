@@ -143,6 +143,10 @@ const list<NegativeTestCase> typeValidationNegativeCases = [
     name = "IntegerMapKeyOutOfRange",
     json = "{\"i32AsKey\": {\"3000000000\": 1}}",
   },
+  NegativeTestCase{
+    name = "DoublePrecisionLoss",
+    json = "{\"doubleValue\": 9007199254740993}",
+  },
   NegativeTestCase{name = "BoolGotNumber", json = "{\"boolValue\": 1}"},
   NegativeTestCase{
     name = "BoolKeyInvalidString",

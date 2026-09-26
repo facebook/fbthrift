@@ -280,6 +280,11 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
     inputs = ["{\"doubleValue\": 42}", "{\"doubleValue\": \"42\"}"],
     output = json5_test.Example{doubleValue = 42.0},
   },
+  CompatibilityTestCase{
+    name = "DoubleFromLargestExactIntegerBelow2Pow63",
+    inputs = ["{\"doubleValue\": 9223372036854774784}"],
+    output = json5_test.Example{doubleValue = 9223372036854774784.0},
+  },
   // ── Union Compatibility ─────────────────────────────────────────────────────
   CompatibilityTestCase{
     name = "UnionEmpty",
