@@ -71,6 +71,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <vector>
 
 #include <fmt/core.h>
@@ -150,7 +151,14 @@ class Json5ProtocolReader final {
   }
   template <typename StrType>
   void readBinary(StrType& str) {
-    str = readBinaryValue();
+    if constexpr (std::is_assignable_v<StrType&, std::string>) {
+      str = readBinaryValue();
+    } else {
+      // Custom binary types, which SimpleJSONProtocolReader fills the same way.
+      auto value = readBinaryValue();
+      str.clear();
+      str.append(value.data(), value.size());
+    }
   }
   void readBinary(std::unique_ptr<folly::IOBuf>& str);
   void readBinary(folly::IOBuf& str);

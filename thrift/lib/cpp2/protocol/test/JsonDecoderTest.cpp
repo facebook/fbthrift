@@ -42,4 +42,24 @@ INSTANTIATE_TEST_SUITE_P(
     testing::ValuesIn(testCases()),
     [](const auto& info) { return *info.param.name(); });
 
+// Not assignable from std::string; filled through clear() and append(), like
+// test::Buffer in thrift/lib/py3/test/BinaryTypes.h.
+class AppendOnlyBuffer {
+ public:
+  void clear() { data_.clear(); }
+  void append(const char* data, std::size_t size) { data_.append(data, size); }
+  const std::string& str() const { return data_; }
+
+ private:
+  std::string data_;
+};
+
+TEST(Json5DecoderCustomTypeTest, CustomBinaryType) {
+  using Tag = type::cpp_type<AppendOnlyBuffer, type::binary_t>;
+  EXPECT_EQ(
+      Json5ProtocolUtils::fromJson5<Tag>(R"({"utf-8": "hello"})").str(),
+      "hello");
+  EXPECT_EQ(Json5ProtocolUtils::fromJson5<Tag>(R"("aGVsbG8=")").str(), "hello");
+}
+
 } // namespace apache::thrift
