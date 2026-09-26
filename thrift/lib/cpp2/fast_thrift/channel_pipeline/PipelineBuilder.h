@@ -16,16 +16,20 @@
 
 #pragma once
 
+#include <folly/container/small_vector.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/EndpointAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineStorage.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/HandlerNode.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/TypedContext.h>
 
+#include <cstddef>
 #include <memory>
+#include <stdexcept>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -38,6 +42,31 @@ namespace detail {
 // namespace scope (not nested) so every PipelineBuilder instantiation names the
 // same type — addState constructs a sibling instantiation through it.
 struct PipelineBuilderRebindTag {};
+
+template <typename Storage>
+struct HandlerStorage;
+
+template <>
+struct HandlerStorage<pipeline_storage::Large> {
+  using type = std::vector<HandlerNode>;
+};
+
+template <>
+struct HandlerStorage<pipeline_storage::Automatic> {
+  using type =
+      folly::small_vector<HandlerNode, pipeline_storage::Medium::maxHandlers>;
+};
+
+template <std::size_t MaxHandlers>
+struct HandlerStorage<pipeline_storage::Inline<MaxHandlers>> {
+  using type = folly::small_vector<
+      HandlerNode,
+      MaxHandlers,
+      folly::small_vector_policy::policy_in_situ_only<true>>;
+};
+
+template <typename Storage>
+using HandlerStorageT = typename HandlerStorage<Storage>::type;
 } // namespace detail
 
 /**
@@ -47,6 +76,9 @@ struct PipelineBuilderRebindTag {};
  * - HeadHandler: Type satisfying HeadEndpointHandler concept
  * - TailHandler: Type satisfying TailEndpointHandler concept
  * - Allocator: Type satisfying BufferAllocator concept
+ * - Storage: Per-handler storage flavor. Large is heap-backed; Small and
+ *   Medium inline up to their limits; Custom<N> supplies another limit;
+ *   Automatic selects Small, Medium, or Large from the final handler count.
  *
  * The pipeline has a fixed flow direction:
  * - fireRead() propagates and exits at head's onRead()
@@ -75,6 +107,7 @@ template <
     typename HeadHandler,
     typename TailHandler,
     typename Allocator = SimpleBufferAllocator,
+    typename Storage = pipeline_storage::Large,
     typename StateTuple = std::tuple<>>
 class PipelineBuilder {
   static_assert(
@@ -84,6 +117,9 @@ class PipelineBuilder {
   static_assert(
       BufferAllocator<Allocator>,
       "Allocator must satisfy BufferAllocator concept");
+  static_assert(
+      pipeline_storage::Valid<Storage>,
+      "Storage must be a pipeline_storage flavor");
 
   // The context type handlers receive: bare ContextImpl for a stateless
   // pipeline, otherwise a TypedContext<StateTuple>. Handler concepts are
@@ -93,7 +129,7 @@ class PipelineBuilder {
 
   // Sibling instantiations (produced by addState) construct one another
   // through the private rebind constructor.
-  template <typename, typename, typename, typename>
+  template <typename, typename, typename, typename, typename>
   friend class PipelineBuilder;
 
  public:
@@ -335,7 +371,12 @@ class PipelineBuilder {
     }
     using NewStateTuple = decltype(std::tuple_cat(
         std::declval<StateTuple&&>(), std::declval<std::tuple<T>>()));
-    return PipelineBuilder<HeadHandler, TailHandler, Allocator, NewStateTuple>(
+    return PipelineBuilder<
+        HeadHandler,
+        TailHandler,
+        Allocator,
+        Storage,
+        NewStateTuple>(
         detail::PipelineBuilderRebindTag{},
         eventBase_,
         headHandler_,
@@ -363,6 +404,7 @@ class PipelineBuilder {
    * @return Reference to this builder for chaining
    */
   PipelineBuilder& addErasedHandler(detail::HandlerNode node) {
+    ensureHandlerCapacity();
     handlers_.push_back(std::move(node));
     return *this;
   }
@@ -375,16 +417,17 @@ class PipelineBuilder {
    *
    * @return Unique pointer to the constructed pipeline
    * @throws std::runtime_error if required components are missing
+   * @throws std::length_error if an inline flavor exceeds its capacity
    */
   PipelineImpl::Ptr build() {
     validateRequired();
 
-    auto pipeline = PipelineImpl::Ptr(new PipelineImpl(
+    auto pipeline = PipelineImpl::create<Storage>(
         eventBase_,
         std::move(handlers_),
         static_cast<void*>(headHandler_),
         static_cast<void*>(tailHandler_),
-        static_cast<void*>(allocator_)));
+        static_cast<void*>(allocator_));
 
     wireHeadHandler(pipeline.get());
     wireTailHandler(pipeline.get());
@@ -566,17 +609,35 @@ class PipelineBuilder {
 
   template <typename H, typename... Args>
   PipelineBuilder& addHandler(HandlerId id, Args&&... args) {
-    auto handler = std::make_unique<H>(std::forward<Args>(args)...);
-    handlers_.push_back(
-        detail::makeHandlerNode<H, StateTuple>(id, std::move(handler)));
+    ensureHandlerCapacity();
+    if constexpr (
+        pipeline_storage::kIsInline<Storage> ||
+        std::same_as<Storage, pipeline_storage::Automatic>) {
+      handlers_.push_back(
+          detail::makeInlineHandlerNode<H, StateTuple>(
+              id, std::forward<Args>(args)...));
+    } else {
+      auto handler = std::make_unique<H>(std::forward<Args>(args)...);
+      handlers_.push_back(
+          detail::makeHandlerNode<H, StateTuple>(id, std::move(handler)));
+    }
     return *this;
   }
 
   template <typename H>
   PipelineBuilder& addHandler(HandlerId id, std::unique_ptr<H> handler) {
+    ensureHandlerCapacity();
     handlers_.push_back(
         detail::makeHandlerNode<H, StateTuple>(id, std::move(handler)));
     return *this;
+  }
+
+  void ensureHandlerCapacity() const {
+    if constexpr (pipeline_storage::kIsInline<Storage>) {
+      if (handlers_.size() >= Storage::maxHandlers) {
+        throw std::length_error("inline pipeline handler capacity exceeded");
+      }
+    }
   }
 
   // Private rebind constructor used by addState to transfer the in-progress
@@ -587,7 +648,7 @@ class PipelineBuilder {
       HeadHandler* headHandler,
       TailHandler* tailHandler,
       Allocator* allocator,
-      std::vector<detail::HandlerNode>&& handlers,
+      detail::HandlerStorageT<Storage>&& handlers,
       StateTuple&&
           stateTuple) noexcept(std::is_nothrow_move_constructible_v<StateTuple>)
       : eventBase_(eventBase),
@@ -601,7 +662,7 @@ class PipelineBuilder {
   HeadHandler* headHandler_{nullptr};
   TailHandler* tailHandler_{nullptr};
   Allocator* allocator_{nullptr};
-  std::vector<detail::HandlerNode> handlers_;
+  detail::HandlerStorageT<Storage> handlers_;
   StateTuple stateTuple_{};
 };
 

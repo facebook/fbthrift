@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineStorage.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticPipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 
@@ -455,6 +456,54 @@ auto makeStaticPipeline8(
       .build();
 }
 
+template <typename Storage>
+auto makePipelineWithHandlers(
+    folly::EventBase& evb,
+    BenchTransportHandler& transport,
+    BenchAppHandler& app,
+    BenchAllocator& allocator,
+    std::size_t handlerCount) {
+  PipelineBuilder<
+      BenchTransportHandler,
+      BenchAppHandler,
+      BenchAllocator,
+      Storage>
+      builder;
+  builder.setEventBase(&evb)
+      .setHead(&transport)
+      .setTail(&app)
+      .setAllocator(&allocator);
+  for (std::size_t i = 0; i < handlerCount; ++i) {
+    builder.template addNextDuplex<PassthroughHandler>(
+        static_cast<HandlerId>(i + 1));
+  }
+  return builder.build();
+}
+
+template <typename Storage>
+auto makePipelineWithOwnedHandlers(
+    folly::EventBase& evb,
+    BenchTransportHandler& transport,
+    BenchAppHandler& app,
+    BenchAllocator& allocator,
+    std::size_t handlerCount) {
+  PipelineBuilder<
+      BenchTransportHandler,
+      BenchAppHandler,
+      BenchAllocator,
+      Storage>
+      builder;
+  builder.setEventBase(&evb)
+      .setHead(&transport)
+      .setTail(&app)
+      .setAllocator(&allocator);
+  for (std::size_t i = 0; i < handlerCount; ++i) {
+    builder.template addNextDuplex<PassthroughHandler>(
+        static_cast<HandlerId>(i + 1), std::make_unique<PassthroughHandler>());
+  }
+  return builder.build();
+}
+
 } // namespace
 
 namespace apache::thrift::fast_thrift::channel_pipeline::detail::benchmark {
@@ -873,6 +922,84 @@ BENCHMARK(Pipeline_TypeEvent_Build, iters) {
             .setAllocator(&allocator)
             .addNextDuplex<TypeEventBenchHandler>(bench_passthrough_tag)
             .build();
+    folly::doNotOptimizeAway(pipeline.get());
+  }
+}
+
+BENCHMARK(Pipeline_Build_8Handlers_Large, iters) {
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  for (std::size_t i = 0; i < iters; ++i) {
+    auto pipeline = makePipelineWithHandlers<pipeline_storage::Large>(
+        evb, transport, app, allocator, 8);
+    folly::doNotOptimizeAway(pipeline.get());
+  }
+}
+
+BENCHMARK(Pipeline_Build_8Handlers_Small, iters) {
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  for (std::size_t i = 0; i < iters; ++i) {
+    auto pipeline = makePipelineWithHandlers<pipeline_storage::Small>(
+        evb, transport, app, allocator, 8);
+    folly::doNotOptimizeAway(pipeline.get());
+  }
+}
+
+BENCHMARK(Pipeline_Build_8Handlers_Small_HeapHandlers, iters) {
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  for (std::size_t i = 0; i < iters; ++i) {
+    auto pipeline = makePipelineWithOwnedHandlers<pipeline_storage::Small>(
+        evb, transport, app, allocator, 8);
+    folly::doNotOptimizeAway(pipeline.get());
+  }
+}
+
+BENCHMARK(Pipeline_Build_12Handlers_Large, iters) {
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  for (std::size_t i = 0; i < iters; ++i) {
+    auto pipeline = makePipelineWithHandlers<pipeline_storage::Large>(
+        evb, transport, app, allocator, 12);
+    folly::doNotOptimizeAway(pipeline.get());
+  }
+}
+
+BENCHMARK(Pipeline_Build_12Handlers_Medium, iters) {
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  for (std::size_t i = 0; i < iters; ++i) {
+    auto pipeline = makePipelineWithHandlers<pipeline_storage::Medium>(
+        evb, transport, app, allocator, 12);
+    folly::doNotOptimizeAway(pipeline.get());
+  }
+}
+
+BENCHMARK(Pipeline_Build_12Handlers_Medium_HeapHandlers, iters) {
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+
+  for (std::size_t i = 0; i < iters; ++i) {
+    auto pipeline = makePipelineWithOwnedHandlers<pipeline_storage::Medium>(
+        evb, transport, app, allocator, 12);
     folly::doNotOptimizeAway(pipeline.get());
   }
 }

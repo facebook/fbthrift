@@ -27,11 +27,22 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <tuple>
+#include <type_traits>
 #include <utility>
 
 namespace apache::thrift::fast_thrift::channel_pipeline::detail {
+
+struct HandlerNode;
+
+struct HandlerConstructionOps {
+  std::size_t size;
+  std::size_t alignment;
+  void (*constructInline)(HandlerNode&, void*);
+  void (*constructHeap)(HandlerNode&);
+};
 
 /**
  * HandlerNode stores a type-erased handler with function pointers for dispatch.
@@ -42,8 +53,11 @@ namespace apache::thrift::fast_thrift::channel_pipeline::detail {
  * - Dispatch is a single function pointer call (no vtable lookup)
  *
  * Storage uses two pointers:
- * - `handler_ptr_`: Raw pointer for fast function calls
- * - `owner_`: Owning unique_ptr with type-erased deleter for destruction
+ * - `handlerPtr`: Raw pointer for fast function calls
+ * - `owner`: Owning unique_ptr with type-erased deleter for destruction
+ *
+ * Before build(), a deferred handler stores its construction operations in
+ * `handlerPtr`; a finalized node always has `handlerPtr == owner.get()`.
  */
 struct HandlerNode {
   // Handler identification
@@ -98,6 +112,12 @@ struct HandlerNode {
   HandlerNode() = default;
   ~HandlerNode() = default;
 
+  const HandlerConstructionOps* pendingConstructionOps() const noexcept {
+    if (handlerPtr == owner.get()) {
+      return nullptr;
+    }
+    return static_cast<const HandlerConstructionOps*>(handlerPtr);
+  }
   HandlerNode(HandlerNode&& other) noexcept
       : handlerId(other.handlerId),
         handlerPtr(other.handlerPtr),
@@ -256,11 +276,15 @@ HandlerNode makeHandlerNode(HandlerId handlerId, std::unique_ptr<H> handler) {
 
   // Capture hook pointers at compile time if handler has them.
   if constexpr (requires(H& h) { h.writeReadyHook_; }) {
-    node.writeReadyHook_ = &static_cast<H*>(node.handlerPtr)->writeReadyHook_;
+    if (node.handlerPtr != nullptr) {
+      node.writeReadyHook_ = &static_cast<H*>(node.handlerPtr)->writeReadyHook_;
+    }
   }
 
   if constexpr (requires(H& h) { h.readReadyHook_; }) {
-    node.readReadyHook_ = &static_cast<H*>(node.handlerPtr)->readReadyHook_;
+    if (node.handlerPtr != nullptr) {
+      node.readReadyHook_ = &static_cast<H*>(node.handlerPtr)->readReadyHook_;
+    }
   }
 
   // Lifecycle methods - always present (required by HandlerLifecycle concept)
@@ -374,6 +398,97 @@ HandlerNode makeHandlerNode(HandlerId handlerId, std::unique_ptr<H> handler) {
     }
   }
 
+  return node;
+}
+
+template <typename Arg>
+using StoredHandlerArg = std::decay_t<Arg>;
+
+template <typename Arg>
+StoredHandlerArg<Arg> storeHandlerArg(Arg&& arg) {
+  return std::forward<Arg>(arg);
+}
+
+template <typename Arg>
+decltype(auto) forwardStoredHandlerArg(StoredHandlerArg<Arg>& arg) {
+  return std::move(arg);
+}
+
+template <typename H>
+void setHandlerPointer(HandlerNode& node, H* handler) noexcept {
+  node.handlerPtr = handler;
+  if constexpr (requires(H& h) { h.writeReadyHook_; }) {
+    node.writeReadyHook_ = &handler->writeReadyHook_;
+  }
+  if constexpr (requires(H& h) { h.readReadyHook_; }) {
+    node.readReadyHook_ = &handler->readReadyHook_;
+  }
+}
+
+template <typename H, typename StateTuple = std::tuple<>, typename... Args>
+HandlerNode makeInlineHandlerNode(HandlerId handlerId, Args&&... args) {
+  static_assert(
+      alignof(H) <= alignof(ContextImpl),
+      "Inline pipeline handler alignment exceeds pipeline alignment");
+
+  using ArgsTuple = std::tuple<StoredHandlerArg<Args>...>;
+  // Construction is deferred until build(), so own decay-copied arguments.
+  // Callers requiring reference semantics must pass std::ref/std::cref and
+  // keep the referenced object alive for the pipeline's lifetime.
+  auto node = makeHandlerNode<H, StateTuple>(handlerId, std::unique_ptr<H>{});
+  if constexpr (sizeof...(Args) != 0) {
+    auto storedArgs = std::make_unique<ArgsTuple>(
+        storeHandlerArg<Args>(std::forward<Args>(args))...);
+    node.owner = decltype(node.owner)(
+        storedArgs.release(),
+        +[](void* p) noexcept { delete static_cast<ArgsTuple*>(p); });
+  }
+
+  static constexpr HandlerConstructionOps kConstructionOps{
+      sizeof(H),
+      alignof(H),
+      [](HandlerNode& node, void* storage) {
+        auto* handler = [&] {
+          if constexpr (sizeof...(Args) == 0) {
+            return std::construct_at(static_cast<H*>(storage));
+          } else {
+            auto& storedArgs = *static_cast<ArgsTuple*>(node.owner.get());
+            return std::apply(
+                [storage](auto&... stored) {
+                  return std::construct_at(
+                      static_cast<H*>(storage),
+                      forwardStoredHandlerArg<Args>(stored)...);
+                },
+                storedArgs);
+          }
+        }();
+        auto previousOwner = std::move(node.owner);
+        node.owner = decltype(node.owner)(
+            handler,
+            +[](void* p) noexcept { std::destroy_at(static_cast<H*>(p)); });
+        setHandlerPointer(node, handler);
+      },
+      [](HandlerNode& node) {
+        auto handler = [&] {
+          if constexpr (sizeof...(Args) == 0) {
+            return std::make_unique<H>();
+          } else {
+            auto& storedArgs = *static_cast<ArgsTuple*>(node.owner.get());
+            return std::apply(
+                [](auto&... stored) {
+                  return std::make_unique<H>(
+                      forwardStoredHandlerArg<Args>(stored)...);
+                },
+                storedArgs);
+          }
+        }();
+        auto previousOwner = std::move(node.owner);
+        auto* handlerPtr = handler.release();
+        node.owner = decltype(node.owner)(
+            handlerPtr, +[](void* p) noexcept { delete static_cast<H*>(p); });
+        setHandlerPointer(node, handlerPtr);
+      }};
+  node.handlerPtr = const_cast<HandlerConstructionOps*>(&kConstructionOps);
   return node;
 }
 

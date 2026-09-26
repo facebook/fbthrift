@@ -187,6 +187,7 @@ class ThriftServerConnectionFactory {
   // here because the factory owns the shared rocket allocator.
   // `statsShard` is null when config_.stats is unset, in which case no
   // metrics handler is added.
+  template <typename Storage>
   channel_pipeline::PipelineOwner buildRocketPipeline(
       folly::EventBase* evb,
       rocket::server::RocketServerTransportHandler* transportHandler,
@@ -210,7 +211,7 @@ class ThriftServerConnectionFactory {
   // concrete tail at build time. Defined in the .cpp; implicitly instantiated
   // for ThriftServerAppAdapter and ThriftServerCompositeAppAdapter when
   // buildSimpleConnection / buildCompositeConnection call it from the same TU.
-  template <typename TailAdapter>
+  template <typename TailAdapter, typename Storage>
   ThriftServerConnection buildConnectionImpl(
       folly::AsyncTransport::UniquePtr socket,
       std::variant<

@@ -25,20 +25,30 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/EndpointAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineStorage.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/HandlerNode.h>
 
-#include <folly/sorted_vector_types.h>
-
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <new>
+#include <span>
+#include <stdexcept>
+#include <utility>
 #include <vector>
 
 namespace apache::thrift::fast_thrift::channel_pipeline {
 
 template <typename EventSet>
 class EventPublisherHandle;
+
+namespace detail {
+class HeapPipelineImpl;
+template <std::size_t MaxHandlers>
+class InlinePipelineImpl;
+} // namespace detail
 
 /**
  * PipelineImpl is the concrete implementation of the Pipeline concept.
@@ -57,7 +67,8 @@ class EventPublisherHandle;
  * pipeline is not destroyed while handler callbacks are executing. All methods
  * that invoke callbacks use DestructorGuard to defer destruction.
  */
-class PipelineImpl : public folly::DelayedDestruction {
+class alignas(detail::ContextImpl) PipelineImpl
+    : public folly::DelayedDestruction {
  public:
   using Ptr = folly::DelayedDestructionUniquePtr<PipelineImpl>;
   using Guard = folly::DelayedDestruction::DestructorGuard;
@@ -84,18 +95,13 @@ class PipelineImpl : public folly::DelayedDestruction {
     Closed,
   };
 
-  /**
-   * Creates a new PipelineImpl.
-   * Use PipelineBuilder for construction.
-   *
-   * Direction is fixed: reads flow head→tail, writes flow tail→head.
-   */
-  PipelineImpl(
-      folly::EventBase* event_base,
-      std::vector<detail::HandlerNode> handlers,
+  template <typename Storage, typename HandlerContainer>
+  static Ptr create(
+      folly::EventBase* eventBase,
+      HandlerContainer&& handlers,
       void* headHandler,
       void* tailHandler,
-      void* allocator) noexcept;
+      void* allocator);
 
   // Non-copyable
   PipelineImpl(const PipelineImpl&) = delete;
@@ -325,6 +331,13 @@ class PipelineImpl : public folly::DelayedDestruction {
   ReadReadyList& readReadyList() noexcept { return readReadyList_; }
 
  protected:
+  PipelineImpl(
+      folly::EventBase* eventBase,
+      std::size_t handlerCount,
+      void* headHandler,
+      void* tailHandler,
+      void* allocator) noexcept;
+
   // Protected destructor - must use destroy() or Ptr for cleanup.
   // Called via DelayedDestruction when guardCount reaches zero.
   ~PipelineImpl() override;
@@ -370,14 +383,14 @@ class PipelineImpl : public folly::DelayedDestruction {
       EventKey key,
       const void* payload) noexcept;
 
-  // O(log N) handler lookup using sorted_vector_map - cache-friendly for small
-  // N
+  using HandlerIndexEntry = std::pair<HandlerId, size_t>;
+
   size_t lookupHandler(HandlerId handlerId) const noexcept;
 
-  folly::sorted_vector_map<HandlerId, size_t> handlerMap_;
-
-  // Initialize contexts after construction
-  void initializeContexts() noexcept;
+  void initializeStorageViews(
+      std::span<detail::HandlerNode> handlers,
+      std::span<detail::ContextImpl> contexts,
+      std::span<HandlerIndexEntry> handlerMap) noexcept;
   void linkTypeEventLists() noexcept;
   // Call handlerAdded for all handlers
   void callHandlerAdded() noexcept;
@@ -389,8 +402,9 @@ class PipelineImpl : public folly::DelayedDestruction {
   void propagatePipelineState() noexcept;
 
   folly::EventBase* eventBase_;
-  std::vector<detail::HandlerNode> handlers_;
-  std::vector<detail::ContextImpl> contexts_;
+  std::span<detail::HandlerNode> handlers_;
+  std::span<detail::ContextImpl> contexts_;
+  std::span<HandlerIndexEntry> handlerMap_;
   detail::ContextImpl headCtx_;
   detail::ContextImpl tailCtx_;
 
@@ -476,14 +490,278 @@ class PipelineImpl : public folly::DelayedDestruction {
       typename HeadHandler,
       typename TailHandler,
       typename Allocator,
+      typename Storage,
       typename StateTuple>
   friend class PipelineBuilder;
+  friend class detail::HeapPipelineImpl;
+  template <std::size_t>
+  friend class detail::InlinePipelineImpl;
 
   // ContextImpl needs access to ready lists for registration
   friend class detail::ContextImpl;
   template <typename EventSet>
   friend class EventPublisherHandle;
 };
+
+namespace detail {
+
+class HeapPipelineImpl final : public PipelineImpl {
+ public:
+  HeapPipelineImpl(
+      folly::EventBase* eventBase,
+      std::vector<HandlerNode> handlers,
+      void* headHandler,
+      void* tailHandler,
+      void* allocator)
+      : PipelineImpl(
+            eventBase, handlers.size(), headHandler, tailHandler, allocator),
+        handlerStorage_(std::move(handlers)) {
+    for (auto& handler : handlerStorage_) {
+      if (const auto* constructionOps = handler.pendingConstructionOps()) {
+        constructionOps->constructHeap(handler);
+      }
+    }
+    handlerStorage_.shrink_to_fit();
+    contextStorage_.reserve(handlerStorage_.size());
+    handlerIndexStorage_.reserve(handlerStorage_.size());
+    for (std::size_t i = 0; i < handlerStorage_.size(); ++i) {
+      contextStorage_.emplace_back(
+          this, eventBase, allocator, i, handlerStorage_[i].handlerId);
+      handlerIndexStorage_.emplace_back(handlerStorage_[i].handlerId, i);
+    }
+    contextStorage_.shrink_to_fit();
+    handlerIndexStorage_.shrink_to_fit();
+    std::sort(handlerIndexStorage_.begin(), handlerIndexStorage_.end());
+    initializeStorageViews(
+        handlerStorage_, contextStorage_, handlerIndexStorage_);
+  }
+
+ private:
+  std::vector<HandlerNode> handlerStorage_;
+  std::vector<ContextImpl> contextStorage_;
+  std::vector<HandlerIndexEntry> handlerIndexStorage_;
+};
+
+template <std::size_t MaxHandlers>
+class alignas(ContextImpl) InlinePipelineImpl final : public PipelineImpl {
+  struct Allocation {
+    std::size_t extraBytes;
+  };
+
+  struct Layout {
+    std::size_t handlersOffset;
+    std::size_t contextsOffset;
+    std::size_t handlerIndexOffset;
+    std::size_t inlineHandlersOffset;
+    std::size_t allocationSize;
+  };
+
+ public:
+  template <typename HandlerContainer>
+  static InlinePipelineImpl* create(
+      folly::EventBase* eventBase,
+      HandlerContainer&& handlers,
+      void* headHandler,
+      void* tailHandler,
+      void* allocator) {
+    if (handlers.size() > MaxHandlers) {
+      throw std::length_error("inline pipeline handler capacity exceeded");
+    }
+    const auto layout = makeLayout(std::forward<HandlerContainer>(handlers));
+    return new (Allocation{layout.allocationSize - sizeof(InlinePipelineImpl)})
+        InlinePipelineImpl(
+            eventBase,
+            std::forward<HandlerContainer>(handlers),
+            headHandler,
+            tailHandler,
+            allocator,
+            layout);
+  }
+
+  ~InlinePipelineImpl() override {
+    std::destroy(handlerMap_.begin(), handlerMap_.end());
+    std::destroy(contexts_.begin(), contexts_.end());
+    std::destroy(handlers_.begin(), handlers_.end());
+  }
+
+  InlinePipelineImpl(const InlinePipelineImpl&) = delete;
+  InlinePipelineImpl& operator=(const InlinePipelineImpl&) = delete;
+  InlinePipelineImpl(InlinePipelineImpl&&) = delete;
+  InlinePipelineImpl& operator=(InlinePipelineImpl&&) = delete;
+
+  static void* operator new(std::size_t size, Allocation allocation) {
+    return ::operator new(
+        size + allocation.extraBytes,
+        std::align_val_t{alignof(InlinePipelineImpl)});
+  }
+
+  static void operator delete(void* ptr, Allocation) noexcept {
+    ::operator delete(ptr, std::align_val_t{alignof(InlinePipelineImpl)});
+  }
+
+  static void operator delete(void* ptr) noexcept {
+    ::operator delete(ptr, std::align_val_t{alignof(InlinePipelineImpl)});
+  }
+
+ private:
+  template <typename HandlerContainer>
+  InlinePipelineImpl(
+      folly::EventBase* eventBase,
+      HandlerContainer&& sourceHandlers,
+      void* headHandler,
+      void* tailHandler,
+      void* allocator,
+      Layout layout)
+      : PipelineImpl(
+            eventBase,
+            sourceHandlers.size(),
+            headHandler,
+            tailHandler,
+            allocator) {
+    auto* bytes = reinterpret_cast<std::byte*>(this);
+    auto* handlerData =
+        reinterpret_cast<HandlerNode*>(bytes + layout.handlersOffset);
+    auto* contextData =
+        reinterpret_cast<ContextImpl*>(bytes + layout.contextsOffset);
+    auto* handlerIndexData =
+        reinterpret_cast<HandlerIndexEntry*>(bytes + layout.handlerIndexOffset);
+    const auto count = sourceHandlers.size();
+    auto inlineHandlerOffset = layout.inlineHandlersOffset;
+    std::size_t handlersConstructed = 0;
+    std::size_t contextsConstructed = 0;
+    std::size_t handlerIndexesConstructed = 0;
+
+    try {
+      for (std::size_t i = 0; i < count; ++i) {
+        std::construct_at(
+            handlerData + i,
+            std::move(std::forward<HandlerContainer>(sourceHandlers)[i]));
+        ++handlersConstructed;
+        if (const auto* constructionOps =
+                handlerData[i].pendingConstructionOps()) {
+          inlineHandlerOffset =
+              alignUp(inlineHandlerOffset, constructionOps->alignment);
+          constructionOps->constructInline(
+              handlerData[i], bytes + inlineHandlerOffset);
+          inlineHandlerOffset += constructionOps->size;
+        }
+        std::construct_at(
+            contextData + i,
+            this,
+            eventBase,
+            allocator,
+            i,
+            handlerData[i].handlerId);
+        ++contextsConstructed;
+        std::construct_at(handlerIndexData + i, handlerData[i].handlerId, i);
+        ++handlerIndexesConstructed;
+      }
+      if (count != 0) {
+        std::sort(handlerIndexData, handlerIndexData + count);
+      }
+    } catch (...) {
+      std::destroy_n(handlerIndexData, handlerIndexesConstructed);
+      std::destroy_n(contextData, contextsConstructed);
+      std::destroy_n(handlerData, handlersConstructed);
+      throw;
+    }
+    initializeStorageViews(
+        std::span<HandlerNode>{handlerData, count},
+        std::span<ContextImpl>{contextData, count},
+        std::span<HandlerIndexEntry>{handlerIndexData, count});
+  }
+
+  static constexpr std::size_t alignUp(
+      std::size_t size, std::size_t alignment) noexcept {
+    return (size + alignment - 1) & ~(alignment - 1);
+  }
+
+  template <typename HandlerContainer>
+  static Layout makeLayout(const HandlerContainer& handlers) noexcept {
+    const auto handlerCount = handlers.size();
+    const auto handlersOffset =
+        alignUp(sizeof(InlinePipelineImpl), alignof(HandlerNode));
+    const auto contextsOffset = alignUp(
+        handlersOffset + handlerCount * sizeof(HandlerNode),
+        alignof(ContextImpl));
+    const auto handlerIndexOffset = alignUp(
+        contextsOffset + handlerCount * sizeof(ContextImpl),
+        alignof(HandlerIndexEntry));
+    const auto inlineHandlersOffset =
+        handlerIndexOffset + handlerCount * sizeof(HandlerIndexEntry);
+    auto allocationSize = inlineHandlersOffset;
+    for (const auto& handler : handlers) {
+      if (const auto* storageOps = handler.pendingConstructionOps()) {
+        allocationSize = alignUp(allocationSize, storageOps->alignment);
+        allocationSize += storageOps->size;
+      }
+    }
+    return {
+        handlersOffset,
+        contextsOffset,
+        handlerIndexOffset,
+        inlineHandlersOffset,
+        allocationSize};
+  }
+};
+
+} // namespace detail
+
+template <typename Storage, typename HandlerContainer>
+PipelineImpl::Ptr PipelineImpl::create(
+    folly::EventBase* eventBase,
+    HandlerContainer&& handlers,
+    void* headHandler,
+    void* tailHandler,
+    void* allocator) {
+  static_assert(
+      pipeline_storage::Valid<Storage>,
+      "Storage must be a pipeline_storage flavor");
+  if constexpr (std::same_as<Storage, pipeline_storage::Automatic>) {
+    if (handlers.size() <= pipeline_storage::Small::maxHandlers) {
+      return create<pipeline_storage::Small>(
+          eventBase,
+          std::forward<HandlerContainer>(handlers),
+          headHandler,
+          tailHandler,
+          allocator);
+    }
+    if (handlers.size() <= pipeline_storage::Medium::maxHandlers) {
+      return create<pipeline_storage::Medium>(
+          eventBase,
+          std::forward<HandlerContainer>(handlers),
+          headHandler,
+          tailHandler,
+          allocator);
+    }
+    std::vector<detail::HandlerNode> heapHandlers;
+    heapHandlers.reserve(handlers.size());
+    for (auto& handler : handlers) {
+      heapHandlers.push_back(std::move(handler));
+    }
+    return create<pipeline_storage::Large>(
+        eventBase,
+        std::move(heapHandlers),
+        headHandler,
+        tailHandler,
+        allocator);
+  } else if constexpr (std::same_as<Storage, pipeline_storage::Large>) {
+    return Ptr(new detail::HeapPipelineImpl(
+        eventBase,
+        std::forward<HandlerContainer>(handlers),
+        headHandler,
+        tailHandler,
+        allocator));
+  } else {
+    return Ptr(
+        detail::InlinePipelineImpl<Storage::maxHandlers>::create(
+            eventBase,
+            std::forward<HandlerContainer>(handlers),
+            headHandler,
+            tailHandler,
+            allocator));
+  }
+}
 
 template <PipelineEvent... Evs>
 class EventPublisherHandle<Events<Evs...>> {

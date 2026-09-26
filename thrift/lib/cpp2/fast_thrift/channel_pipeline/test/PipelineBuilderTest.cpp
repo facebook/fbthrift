@@ -16,16 +16,49 @@
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineStorage.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockHandler.h>
 
+#include <cstdint>
 #include <folly/io/async/EventBase.h>
 #include <folly/portability/GTest.h>
 
 #include <memory>
+#include <stdexcept>
 #include <string>
 
 namespace apache::thrift::fast_thrift::channel_pipeline::test {
+
+class alignas(64) InlineStorageTestHandler : public MockHandler {
+ public:
+  InlineStorageTestHandler() noexcept { lastConstructed = this; }
+
+  explicit InlineStorageTestHandler(std::string value) noexcept
+      : value(std::move(value)) {
+    lastConstructed = this;
+  }
+
+  ~InlineStorageTestHandler() { ++destructions; }
+
+  static void* operator new(std::size_t size) {
+    ++heapAllocations;
+    return ::operator new(size);
+  }
+
+  static void operator delete(void* ptr) noexcept { ::operator delete(ptr); }
+
+  static void reset() noexcept {
+    heapAllocations = 0;
+    destructions = 0;
+    lastConstructed = nullptr;
+  }
+
+  static inline std::size_t heapAllocations{0};
+  static inline std::size_t destructions{0};
+  static inline InlineStorageTestHandler* lastConstructed{nullptr};
+  std::string value;
+};
 
 HANDLER_TAG(codec);
 HANDLER_TAG(thrift);
@@ -35,6 +68,7 @@ class PipelineBuilderTest : public ::testing::Test {
  protected:
   void SetUp() override {
     MockHandler::resetOrderCounter();
+    InlineStorageTestHandler::reset();
     transport_.reset();
     app_.reset();
     allocator_.reset();
@@ -353,6 +387,185 @@ TEST_F(PipelineBuilderTest, AddNextDuplexWithInPlaceConstruction) {
     return;
   }
   EXPECT_EQ(pipeline->handlerCount(), 1);
+}
+
+template <typename Storage>
+PipelineImpl::Ptr buildPipelineWithHandlers(
+    folly::EventBase& evb,
+    MockHeadHandler& head,
+    MockTailHandler& tail,
+    TestAllocator& allocator,
+    std::size_t handlerCount) {
+  PipelineBuilder<MockHeadHandler, MockTailHandler, TestAllocator, Storage>
+      builder;
+  builder.setEventBase(&evb).setHead(&head).setTail(&tail).setAllocator(
+      &allocator);
+  for (std::size_t i = 0; i < handlerCount; ++i) {
+    builder.template addNextDuplex<MockHandler>(static_cast<HandlerId>(i + 1));
+  }
+  return builder.build();
+}
+
+TEST_F(PipelineBuilderTest, SmallStorageBuildsEmptyPipeline) {
+  EXPECT_EQ(
+      buildPipelineWithHandlers<pipeline_storage::Small>(
+          evb_, transport_, app_, allocator_, 0)
+          ->handlerCount(),
+      0);
+}
+
+TEST_F(PipelineBuilderTest, SmallStorageAcceptsEightHandlersOnly) {
+  EXPECT_EQ(
+      buildPipelineWithHandlers<pipeline_storage::Small>(
+          evb_, transport_, app_, allocator_, 8)
+          ->handlerCount(),
+      8);
+  EXPECT_THROW(
+      buildPipelineWithHandlers<pipeline_storage::Small>(
+          evb_, transport_, app_, allocator_, 9),
+      std::length_error);
+}
+
+TEST_F(PipelineBuilderTest, SmallStorageRejectsOverflowWhenAdded) {
+  PipelineBuilder<
+      MockHeadHandler,
+      MockTailHandler,
+      TestAllocator,
+      pipeline_storage::Small>
+      builder;
+  builder.setEventBase(&evb_)
+      .setHead(&transport_)
+      .setTail(&app_)
+      .setAllocator(&allocator_);
+  for (std::size_t i = 0; i < pipeline_storage::Small::maxHandlers; ++i) {
+    builder.addNextDuplex<MockHandler>(static_cast<HandlerId>(i + 1));
+  }
+
+  EXPECT_THROW(
+      builder.addNextDuplex<MockHandler>(
+          pipeline_storage::Small::maxHandlers + 1),
+      std::length_error);
+  EXPECT_EQ(builder.build()->handlerCount(), 8);
+}
+
+TEST_F(PipelineBuilderTest, MediumStorageAcceptsSixteenHandlersOnly) {
+  EXPECT_EQ(
+      buildPipelineWithHandlers<pipeline_storage::Medium>(
+          evb_, transport_, app_, allocator_, 16)
+          ->handlerCount(),
+      16);
+  EXPECT_THROW(
+      buildPipelineWithHandlers<pipeline_storage::Medium>(
+          evb_, transport_, app_, allocator_, 17),
+      std::length_error);
+}
+
+TEST_F(PipelineBuilderTest, CustomStorageUsesConfiguredCapacity) {
+  using ThreeHandlers = pipeline_storage::Custom<3>;
+  auto pipeline = buildPipelineWithHandlers<ThreeHandlers>(
+      evb_, transport_, app_, allocator_, 3);
+  EXPECT_EQ(pipeline->handlerCount(), 3);
+  for (HandlerId id = 1; id <= 3; ++id) {
+    EXPECT_NE(pipeline->context(id), nullptr);
+  }
+
+  EXPECT_THROW(
+      buildPipelineWithHandlers<ThreeHandlers>(
+          evb_, transport_, app_, allocator_, 4),
+      std::length_error);
+}
+
+TEST_F(PipelineBuilderTest, LargeStorageHasNoInlineLimit) {
+  EXPECT_EQ(
+      buildPipelineWithHandlers<pipeline_storage::Large>(
+          evb_, transport_, app_, allocator_, 17)
+          ->handlerCount(),
+      17);
+}
+
+TEST_F(
+    PipelineBuilderTest, InlineStorageConstructsHandlerInPipelineAllocation) {
+  {
+    auto pipeline = PipelineBuilder<
+                        MockHeadHandler,
+                        MockTailHandler,
+                        TestAllocator,
+                        pipeline_storage::Small>()
+                        .setEventBase(&evb_)
+                        .setHead(&transport_)
+                        .setTail(&app_)
+                        .setAllocator(&allocator_)
+                        .addNextDuplex<InlineStorageTestHandler>(codec_tag)
+                        .build();
+
+    ASSERT_NE(InlineStorageTestHandler::lastConstructed, nullptr);
+    EXPECT_EQ(InlineStorageTestHandler::heapAllocations, 0);
+    EXPECT_EQ(
+        reinterpret_cast<std::uintptr_t>(
+            InlineStorageTestHandler::lastConstructed) %
+            alignof(InlineStorageTestHandler),
+        0);
+  }
+  EXPECT_EQ(InlineStorageTestHandler::destructions, 1);
+}
+
+TEST_F(PipelineBuilderTest, InlineStorageOwnsDeferredConstructorArguments) {
+  PipelineBuilder<
+      MockHeadHandler,
+      MockTailHandler,
+      TestAllocator,
+      pipeline_storage::Small>
+      builder;
+  builder.setEventBase(&evb_)
+      .setHead(&transport_)
+      .setTail(&app_)
+      .setAllocator(&allocator_);
+
+  {
+    std::string value{"owned"};
+    builder.addNextDuplex<InlineStorageTestHandler>(codec_tag, value);
+    value = "changed";
+  }
+
+  auto pipeline = builder.build();
+  ASSERT_NE(InlineStorageTestHandler::lastConstructed, nullptr);
+  EXPECT_EQ(InlineStorageTestHandler::lastConstructed->value, "owned");
+  EXPECT_EQ(InlineStorageTestHandler::heapAllocations, 0);
+}
+
+TEST_F(PipelineBuilderTest, AutomaticStorageUsesMediumThenLarge) {
+  auto build = [&](std::size_t handlerCount) {
+    PipelineBuilder<
+        MockHeadHandler,
+        MockTailHandler,
+        TestAllocator,
+        pipeline_storage::Automatic>
+        builder;
+    builder.setEventBase(&evb_)
+        .setHead(&transport_)
+        .setTail(&app_)
+        .setAllocator(&allocator_);
+    for (std::size_t i = 0; i < handlerCount; ++i) {
+      builder.addNextDuplex<InlineStorageTestHandler>(
+          static_cast<HandlerId>(i + 1));
+    }
+    return builder.build();
+  };
+
+  {
+    auto pipeline = build(9);
+    EXPECT_EQ(pipeline->handlerCount(), 9);
+    EXPECT_EQ(InlineStorageTestHandler::heapAllocations, 0);
+  }
+  EXPECT_EQ(InlineStorageTestHandler::destructions, 9);
+
+  InlineStorageTestHandler::reset();
+  {
+    auto pipeline = build(17);
+    EXPECT_EQ(pipeline->handlerCount(), 17);
+    EXPECT_EQ(InlineStorageTestHandler::heapAllocations, 17);
+  }
+  EXPECT_EQ(InlineStorageTestHandler::destructions, 17);
 }
 
 } // namespace apache::thrift::fast_thrift::channel_pipeline::test

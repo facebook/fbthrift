@@ -86,31 +86,28 @@ PipelineImpl::~PipelineImpl() {
 
 PipelineImpl::PipelineImpl(
     folly::EventBase* eventBase,
-    std::vector<detail::HandlerNode> handlers,
+    std::size_t handlerCount,
     void* headHandler,
     void* tailHandler,
     void* allocator) noexcept
     : eventBase_(eventBase),
-      handlers_(std::move(handlers)),
-      headCtx_(this, eventBase, allocator, handlers_.size(), 0),
-      tailCtx_(this, eventBase, allocator, handlers_.size(), 0),
+      headCtx_(this, eventBase, allocator, handlerCount, 0),
+      tailCtx_(this, eventBase, allocator, handlerCount, 0),
       headHandler_(headHandler),
       tailHandler_(tailHandler),
-      allocator_(allocator) {
-  initializeContexts();
-}
+      allocator_(allocator) {}
 
-void PipelineImpl::initializeContexts() noexcept {
+void PipelineImpl::initializeStorageViews(
+    std::span<detail::HandlerNode> handlers,
+    std::span<detail::ContextImpl> contexts,
+    std::span<HandlerIndexEntry> handlerMap) noexcept {
+  handlers_ = handlers;
+  contexts_ = contexts;
+  handlerMap_ = handlerMap;
+
   const auto N = handlers_.size();
   headWriteReadyHook_.handlerIndex = N;
-  contexts_.reserve(N);
-  handlerMap_.reserve(N);
-
-  // First pass: create all contexts
   for (size_t i = 0; i < N; ++i) {
-    contexts_.emplace_back(
-        this, eventBase_, allocator_, i, handlers_[i].handlerId);
-    handlerMap_[handlers_[i].handlerId] = i;
     if (handlers_[i].writeReadyHook_) {
       handlers_[i].writeReadyHook_->handlerIndex = i;
     }
@@ -119,7 +116,7 @@ void PipelineImpl::initializeContexts() noexcept {
     }
   }
 
-  // Second pass: wire up cached dispatch pointers.
+  // Wire up cached dispatch pointers.
   // Each context caches direct function pointers to the next/prev handler,
   // eliminating the per-hop round-trip through PipelineImpl on the hot path.
   //
@@ -674,8 +671,17 @@ BytesPtr PipelineImpl::copyBuffer(const void* data, size_t size) noexcept {
 }
 
 size_t PipelineImpl::lookupHandler(HandlerId handlerId) const noexcept {
-  auto it = handlerMap_.find(handlerId);
-  return it != handlerMap_.end() ? it->second : handlers_.size();
+  const auto it = std::upper_bound(
+      handlerMap_.begin(),
+      handlerMap_.end(),
+      handlerId,
+      [](HandlerId id, const HandlerIndexEntry& entry) {
+        return id < entry.first;
+      });
+  if (it == handlerMap_.begin() || std::prev(it)->first != handlerId) {
+    return handlers_.size();
+  }
+  return std::prev(it)->second;
 }
 
 PIPELINE_HOT_PATH void PipelineImpl::onWriteReady() noexcept {
