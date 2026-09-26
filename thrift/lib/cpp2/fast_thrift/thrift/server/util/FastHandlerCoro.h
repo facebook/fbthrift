@@ -24,6 +24,7 @@
 
 #if FOLLY_HAS_COROUTINES
 #include <folly/coro/Task.h>
+#include <folly/coro/WithCancellation.h>
 #endif
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/FastHandlerCallback.h>
@@ -47,14 +48,20 @@ template <typename T>
 void fastRunCoro(
     FastHandlerCallbackPtr<T> callback, folly::coro::Task<T> task) {
   auto* executor = callback->getHandlerExecutor();
+  auto cancellationToken = callback->getCancellationToken();
   folly::coro::co_withExecutor(
       executor != nullptr
           ? folly::Executor::KeepAlive<>(executor)
           : folly::Executor::KeepAlive<>(callback->getEventBase()),
-      std::move(task))
+      folly::coro::co_withCancellation(
+          std::move(cancellationToken), std::move(task)))
       .startInlineUnsafe(
           [cb = std::move(callback), executor](auto&& result) mutable noexcept {
             HandlerExecutorScope scope(executor);
+            if (cb->isCancellationRequested()) {
+              cb->cancelled();
+              return;
+            }
             if (result.hasException()) {
               cb->exception(std::move(result.exception()));
               return;
@@ -70,14 +77,20 @@ void fastRunCoro(
 inline void fastRunCoro(
     FastHandlerCallbackPtr<void> callback, folly::coro::Task<void> task) {
   auto* executor = callback->getHandlerExecutor();
+  auto cancellationToken = callback->getCancellationToken();
   folly::coro::co_withExecutor(
       executor != nullptr
           ? folly::Executor::KeepAlive<>(executor)
           : folly::Executor::KeepAlive<>(callback->getEventBase()),
-      std::move(task))
+      folly::coro::co_withCancellation(
+          std::move(cancellationToken), std::move(task)))
       .startInlineUnsafe(
           [cb = std::move(callback), executor](auto&& result) mutable noexcept {
             HandlerExecutorScope scope(executor);
+            if (cb->isCancellationRequested()) {
+              cb->cancelled();
+              return;
+            }
             if (result.hasException()) {
               cb->exception(std::move(result.exception()));
               return;

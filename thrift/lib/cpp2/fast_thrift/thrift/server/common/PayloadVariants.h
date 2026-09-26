@@ -31,13 +31,15 @@ namespace apache::thrift::fast_thrift::thrift {
 // they continue to take the same wrapper variant type).
 
 // Server-side inbound — what the server pipeline reads from the wire.
-// Unary REQUEST_RESPONSE, connection setup, and the established-stream
-// flow-control frames (REQUEST_N / CANCEL) the stream mux routes by streamId.
+// Unary REQUEST_RESPONSE, connection setup, unary cancellation, and the
+// established-stream flow-control frames (REQUEST_N / CANCEL) the stream mux
+// routes by streamId.
 using ThriftServerInboundPayloadVariant = ThriftPayloadVariant<
     ThriftRequestResponsePayload,
     ThriftConnectionSetupPayload,
     ThriftRequestNPayload,
-    ThriftCancelPayload>;
+    ThriftCancelPayload,
+    ThriftRequestCancellationPayload>;
 
 // Server-side outbound — what the server pipeline writes to the wire.
 // Unary initial response + error, plus the established-stream response chunks

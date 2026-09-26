@@ -145,8 +145,9 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   // Drops the pipeline reference and releases the DestructorGuard taken in
   // setPipeline. Must be called before the adapter is destroyed.
   //
-  // EventBase-only: it mutates guardCount_ and clears evb_, both of which
-  // in-flight off-EventBase work depends on. See the threading note above.
+  // EventBase-only: it mutates guardCount_. The EventBase keepalive remains
+  // until adapter destruction so callbacks surviving a reap timeout can still
+  // return there and observe pipelineActive_ == false.
   void resetPipeline() noexcept;
 
   channel_pipeline::PipelineRef pipeline() const noexcept { return pipeline_; }
@@ -172,8 +173,9 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   void onPipelineActive() noexcept {}
   void onPipelineInactive() noexcept {}
 
-  using PublishedEvents =
-      channel_pipeline::Events<ThriftServerCloseConnectionEvent>;
+  using PublishedEvents = channel_pipeline::Events<
+      ThriftServerCloseConnectionEvent,
+      ThriftServerRequestCompletedEvent>;
   using SubscribedEvents =
       channel_pipeline::Events<ThriftServerConnectionClosedEvent>;
 
@@ -205,6 +207,13 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
   // Write entry point for callers already on the EventBase, which therefore
   // need no guard to survive a hop. DCHECKs the thread.
   void writeResponse(ThriftServerResponseMessage&& message) noexcept;
+
+  // Completes a request after its cancellation token has been observed. No
+  // wire response is produced; pipeline bookkeeping is retired by event.
+  void acknowledgeCancellation(
+      uint32_t streamId,
+      ThriftRequestContextPtr requestContext,
+      folly::DelayedDestruction::DestructorGuard&& adapterGuard) noexcept;
 
   // Initiate connection close. Internally fires a
   // ThriftServerCloseConnectionEvent pipeline event; the
@@ -285,6 +294,8 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
 
   // Must be called on evb_.
   void writeResponseOnEventBase(ThriftServerResponseMessage&& message) noexcept;
+  void acknowledgeCancellationOnEventBase(
+      uint32_t streamId, ThriftRequestContextPtr requestContext) noexcept;
 
   folly::Executor::KeepAlive<folly::EventBase> evb_{};
   // Null unless the server was configured with a CPU executor. Written once

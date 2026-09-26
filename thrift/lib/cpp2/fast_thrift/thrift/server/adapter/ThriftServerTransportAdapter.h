@@ -78,8 +78,10 @@ namespace apache::thrift::fast_thrift::thrift::server {
  */
 class ThriftServerTransportAdapter {
  public:
-  using PublishedEvents = channel_pipeline::
-      Events<ThriftServerWriteCompleteEvent, ThriftServerSetupCompleteEvent>;
+  using PublishedEvents = channel_pipeline::Events<
+      ThriftServerWriteCompleteEvent,
+      ThriftServerSetupCompleteEvent,
+      ThriftServerRequestCancellationEvent>;
   using EventPublisher =
       channel_pipeline::PipelineEventPublisherRef<PublishedEvents>;
 
@@ -156,6 +158,13 @@ class ThriftServerTransportAdapter {
     if (FOLLY_UNLIKELY(!decoded.hasValue())) {
       return handleDecodeFailure(
           request.streamId, request.streamType, decoded.error());
+    }
+
+    if (FOLLY_UNLIKELY(
+            decoded->template is<ThriftRequestCancellationPayload>())) {
+      eventPublisher_.template fire<ThriftServerRequestCancellationEvent>(
+          ThriftServerRequestCancellationEvent{.streamId = request.streamId});
+      return channel_pipeline::Result::Success;
     }
 
     ThriftServerRequestMessage thriftMsg;

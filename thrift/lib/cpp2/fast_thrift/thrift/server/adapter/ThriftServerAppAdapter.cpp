@@ -63,7 +63,6 @@ void ThriftServerAppAdapter::resetPipeline() noexcept {
   pipelineActive_ = false;
   pipeline_.reset();
   pipelineGuard_.reset();
-  evb_ = {};
 }
 
 void ThriftServerAppAdapter::onConnectionClosed() noexcept {
@@ -187,6 +186,34 @@ void ThriftServerAppAdapter::writeResponse(
                               message = std::move(message)]() mutable {
     writeResponseOnEventBase(std::move(message));
   });
+}
+
+void ThriftServerAppAdapter::acknowledgeCancellation(
+    uint32_t streamId,
+    ThriftRequestContextPtr requestContext,
+    folly::DelayedDestruction::DestructorGuard&& adapterGuard) noexcept {
+  // Always defer, even when already on the EventBase. A cancellation-token
+  // callback may acknowledge synchronously from inside
+  // CancellationSource::requestCancellation(); destroying requestContext in
+  // that stack would destroy the source while it is still notifying.
+  evb_->runInEventBaseThread(
+      [this,
+       streamId,
+       requestContext = std::move(requestContext),
+       adapterGuard = std::move(adapterGuard)]() mutable {
+        acknowledgeCancellationOnEventBase(streamId, std::move(requestContext));
+      });
+}
+
+void ThriftServerAppAdapter::acknowledgeCancellationOnEventBase(
+    uint32_t streamId, ThriftRequestContextPtr requestContext) noexcept {
+  if (requestContext == nullptr || !requestContext->tryComplete() ||
+      !pipelineActive_) {
+    return;
+  }
+  pipeline_.bindEvents<PublishedEvents>()
+      .template fire<ThriftServerRequestCompletedEvent>(
+          ThriftServerRequestCompletedEvent{.streamId = streamId});
 }
 
 void ThriftServerAppAdapter::writeResponse(

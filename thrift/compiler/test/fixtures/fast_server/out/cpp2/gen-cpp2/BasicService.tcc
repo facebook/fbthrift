@@ -1347,6 +1347,10 @@ void BasicServiceAppAdapter::process_ping_impl(
                data = std::move(data)]() mutable {
     ::apache::thrift::fast_thrift::thrift::detail::HandlerExecutorScope scope(
         executor);
+    if (callback->isCancellationRequested()) {
+      callback->cancelled();
+      return;
+    }
     callback->markHandlerStarted();
     process_ping_run<ProtocolReader, ProtocolWriter>(
         std::move(callback), std::move(data));
@@ -1469,6 +1473,10 @@ void BasicServiceAppAdapter::process_add_impl(
                data = std::move(data)]() mutable {
     ::apache::thrift::fast_thrift::thrift::detail::HandlerExecutorScope scope(
         executor);
+    if (callback->isCancellationRequested()) {
+      callback->cancelled();
+      return;
+    }
     callback->markHandlerStarted();
     process_add_run<ProtocolReader, ProtocolWriter>(
         std::move(callback), std::move(data));
@@ -1595,6 +1603,10 @@ void BasicServiceAppAdapter::process_buildItem_impl(
                data = std::move(data)]() mutable {
     ::apache::thrift::fast_thrift::thrift::detail::HandlerExecutorScope scope(
         executor);
+    if (callback->isCancellationRequested()) {
+      callback->cancelled();
+      return;
+    }
     callback->markHandlerStarted();
     process_buildItem_run<ProtocolReader, ProtocolWriter>(
         std::move(callback), std::move(data));
@@ -1722,6 +1734,10 @@ void BasicServiceAppAdapter::process_lookup_impl(
                data = std::move(data)]() mutable {
     ::apache::thrift::fast_thrift::thrift::detail::HandlerExecutorScope scope(
         executor);
+    if (callback->isCancellationRequested()) {
+      callback->cancelled();
+      return;
+    }
     callback->markHandlerStarted();
     process_lookup_run<ProtocolReader, ProtocolWriter>(
         std::move(callback), std::move(data));
@@ -1846,6 +1862,10 @@ void BasicServiceAppAdapter::process_secureLookup_impl(
                data = std::move(data)]() mutable {
     ::apache::thrift::fast_thrift::thrift::detail::HandlerExecutorScope scope(
         executor);
+    if (callback->isCancellationRequested()) {
+      callback->cancelled();
+      return;
+    }
     callback->markHandlerStarted();
     process_secureLookup_run<ProtocolReader, ProtocolWriter>(
         std::move(callback), std::move(data));

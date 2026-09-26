@@ -22,6 +22,9 @@
 
 #include <gtest/gtest.h>
 
+#include <optional>
+
+#include <folly/CancellationToken.h>
 #include <folly/Executor.h>
 #include <folly/coro/BlockingWait.h>
 #include <folly/coro/Task.h>
@@ -48,6 +51,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/adapter/ThriftClientTransportAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/handler/ThriftClientChecksumHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/handler/ThriftClientMetadataPushHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/client/handler/ThriftClientRequestTimeoutHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServer.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
@@ -79,6 +83,7 @@ HANDLER_TAG(rocket_client_connection_error_handler);
 HANDLER_TAG(rocket_client_stream_state_handler);
 HANDLER_TAG(thrift_client_metadata_push_handler);
 HANDLER_TAG(thrift_client_checksum_handler);
+HANDLER_TAG(thrift_client_request_timeout_handler);
 
 // Server handler tags
 HANDLER_TAG(thrift_server_setup_handler);
@@ -144,12 +149,17 @@ class TestFastServiceHandler
     return parkedBaton_.try_wait_for(timeout);
   }
 
+  bool waitParkedEchoCancellation(std::chrono::milliseconds timeout) {
+    return parkedCancellationBaton_.try_wait_for(timeout);
+  }
+
   // Completes a parked callback, if any. Returns false when none was parked.
   bool releaseParkedEcho() {
     ftt::FastHandlerCallbackPtr<std::unique_ptr<std::string>> parked;
     {
       std::lock_guard<std::mutex> lock(parkedMutex_);
       parked = std::move(parkedEcho_);
+      parkedCancellation_.reset();
     }
     if (!parked) {
       return false;
@@ -182,6 +192,9 @@ class TestFastServiceHandler
       {
         std::lock_guard<std::mutex> lock(parkedMutex_);
         parkedEcho_ = std::move(cb);
+        parkedCancellation_.emplace(
+            parkedEcho_->getCancellationToken(),
+            [this] { parkedCancellationBaton_.post(); });
       }
       parkedBaton_.post();
       return;
@@ -227,7 +240,9 @@ class TestFastServiceHandler
   std::atomic<bool> parkEcho_{false};
   std::mutex parkedMutex_;
   ftt::FastHandlerCallbackPtr<std::unique_ptr<std::string>> parkedEcho_;
+  std::optional<folly::CancellationCallback> parkedCancellation_;
   folly::Baton<> parkedBaton_;
+  folly::Baton<> parkedCancellationBaton_;
 };
 
 /**
@@ -267,6 +282,7 @@ class FastThriftE2ETest
     config.channelPipelineMode = GetParam().pipelineMode;
     // Validate request checksums and echo a response checksum.
     config.enableChecksum = true;
+    config.enableCancellation = true;
 
     server_ = std::make_unique<ftt::FastThriftServer>(std::move(config));
     server_->setInterface(handler_);
@@ -394,6 +410,9 @@ class FastThriftE2ETest
               .addNextDuplex<
                   thrift::client::handler::ThriftClientChecksumHandler>(
                   thrift_client_checksum_handler_tag)
+              .addNextDuplex<
+                  thrift::client::handler::ThriftClientRequestTimeoutHandler>(
+                  thrift_client_request_timeout_handler_tag)
               .build();
 
       appAdapter->setPipeline(clientPipeline_.get());
@@ -545,6 +564,28 @@ TEST_P(FastThriftE2ETest, Add) {
       3,
       7);
   EXPECT_EQ(std::move(cbFuture).get(), 10);
+
+  destroyFastClientOnEvb(client);
+}
+
+TEST_P(FastThriftE2ETest, TimeoutCancelsRequestAndKeepsConnectionUsable) {
+  auto client = createFastClient();
+  auto* evb = clientThread_->getEventBase();
+  handler_->parkNextEcho();
+
+  apache::thrift::RpcOptions opts;
+  opts.setTimeout(std::chrono::seconds{1});
+  const std::string message = "cancel me";
+  auto request =
+      folly::coro::co_withExecutor(evb, client->co_echo(opts, message)).start();
+  ASSERT_TRUE(handler_->waitParkedEcho(std::chrono::seconds{5}));
+  EXPECT_THROW(
+      std::move(request).get(), apache::thrift::transport::TTransportException);
+  ASSERT_TRUE(handler_->waitParkedEchoCancellation(std::chrono::seconds{5}));
+  EXPECT_EQ(client->sync_add(7, 35), 42);
+
+  EXPECT_TRUE(handler_->releaseParkedEcho());
+  EXPECT_EQ(client->sync_add(20, 22), 42);
 
   destroyFastClientOnEvb(client);
 }
@@ -752,6 +793,7 @@ TEST_P(FastThriftE2ETest, StragglerCompletesAfterConnectionClosed) {
   ASSERT_TRUE(handler_->waitParkedEcho(std::chrono::seconds(10)));
 
   destroyFastClientOnEvb(client);
+  ASSERT_TRUE(handler_->waitParkedEchoCancellation(std::chrono::seconds(10)));
 
   // Straggler completes on a foreign thread with the connection already gone.
   std::thread releaser([&] { EXPECT_TRUE(handler_->releaseParkedEcho()); });

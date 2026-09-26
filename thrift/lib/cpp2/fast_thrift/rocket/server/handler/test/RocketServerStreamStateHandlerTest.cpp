@@ -308,6 +308,41 @@ TEST_F(ServerStreamStateHandlerTest, CancelForUnknownStreamIsDropped) {
   EXPECT_EQ(ctx_.readMessages().size(), 0); // Dropped
 }
 
+TEST_F(
+    ServerStreamStateHandlerTest,
+    DisabledCancellationIgnoresCancelAndForwardsEventualResponse) {
+  handler_ = RocketServerStreamStateHandler(false);
+  ASSERT_EQ(
+      callOnRead(parseTestFrame(
+          apache::thrift::fast_thrift::frame::FrameType::REQUEST_RESPONSE, 1)),
+      Result::Success);
+
+  ctx_.reset();
+  EXPECT_EQ(
+      callOnRead(parseTestFrame(
+          apache::thrift::fast_thrift::frame::FrameType::CANCEL, 1)),
+      Result::Success);
+  EXPECT_TRUE(ctx_.readMessages().empty());
+  EXPECT_TRUE(ctx_.hasActiveStream(1));
+
+  RocketResponseMessage response{
+      .frame =
+          apache::thrift::fast_thrift::frame::ComposedFrame{
+              .frameType =
+                  apache::thrift::fast_thrift::frame::FrameType::PAYLOAD,
+              .streamId = 1,
+              .data = copyBuffer("discarded response"),
+              .complete = true,
+              .next = true,
+          },
+  };
+  EXPECT_EQ(callOnWrite(std::move(response)), Result::Success);
+  ASSERT_EQ(ctx_.writeMessages().size(), 1);
+  EXPECT_EQ(
+      ctx_.writeMessages()[0].get<RocketResponseMessage>().frame.streamId, 1u);
+  EXPECT_FALSE(ctx_.hasActiveStream(1));
+}
+
 // =============================================================================
 // Inbound Non-Terminal Frame Tests
 // =============================================================================

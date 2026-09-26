@@ -54,6 +54,18 @@ struct ThriftServerWriteCompleteEvent
   bool quiesced;
 };
 
+/** Requests cancellation of an active application request. */
+struct ThriftServerRequestCancellationEvent
+    : channel_pipeline::EventTag<ThriftServerRequestCancellationEvent> {
+  uint32_t streamId;
+};
+
+/** Retires a request that completed without an outbound response. */
+struct ThriftServerRequestCompletedEvent
+    : channel_pipeline::EventTag<ThriftServerRequestCompletedEvent> {
+  uint32_t streamId;
+};
+
 /**
  * `ThriftServerSetupCompleteEvent` is fired by pointer so a
  * subscriber can fill the out-slot in place; the emitter reads it back once

@@ -103,6 +103,10 @@ struct ThriftServerConnectionFactoryConfig {
   // per-request ThriftRequestContext.
   bool enableChecksum{false};
 
+  // When true, install request lifecycle arbitration and expose cancellable
+  // tokens to service handlers. Disabled requests retain an invalid source.
+  bool enableCancellation{false};
+
   // When true, insert WriteBufferBackpressureHandler into the thrift
   // pipeline to absorb outbound Backpressure: responses queue in a FIFO
   // when downstream is saturated and drain on onWriteReady; inbound reads

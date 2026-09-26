@@ -71,6 +71,8 @@ static_assert(
 
 namespace {
 
+HANDLER_TAG(cancellation_capture_handler);
+
 TypeErasedBox makeRocketRequestBox(uint32_t streamId = 1) {
   auto data = folly::IOBuf::copyBuffer("request-data");
   auto frameBuf = frame::write::serialize(
@@ -85,6 +87,59 @@ TypeErasedBox makeRocketRequestBox(uint32_t streamId = 1) {
   };
   return erase_and_box(std::move(request));
 }
+
+TypeErasedBox makeRocketCancelBox(uint32_t streamId) {
+  auto frameBuf =
+      frame::write::serialize(frame::write::CancelHeader{.streamId = streamId});
+  rocket::server::RocketRequestMessage request{
+      .frame = frame::read::parseFrame(std::move(frameBuf)),
+      .streamId = streamId,
+      .streamType = frame::FrameType::REQUEST_RESPONSE,
+  };
+  return erase_and_box(std::move(request));
+}
+
+class CancellationCaptureHandler {
+ public:
+  using SubscribedEvents =
+      channel_pipeline::Events<ThriftServerRequestCancellationEvent>;
+
+  template <typename Context>
+  Result onRead(Context& ctx, TypeErasedBox&& msg) noexcept {
+    return ctx.fireRead(std::move(msg));
+  }
+  template <typename Context>
+  Result onWrite(Context& ctx, TypeErasedBox&& msg) noexcept {
+    return ctx.fireWrite(std::move(msg));
+  }
+  template <typename Context>
+  void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
+    ctx.fireException(std::move(e));
+  }
+  template <typename Context>
+  void handlerAdded(Context&) noexcept {}
+  template <typename Context>
+  void handlerRemoved(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineActive(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineInactive(Context&) noexcept {}
+  template <typename Context>
+  void onReadReady(Context&) noexcept {}
+  template <typename Context>
+  void onWriteReady(Context&) noexcept {}
+
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires std::same_as<E, ThriftServerRequestCancellationEvent>
+  void on(
+      Context&, const ThriftServerRequestCancellationEvent& event) noexcept {
+    ++count;
+    streamId = event.streamId;
+  }
+
+  int count{0};
+  uint32_t streamId{0};
+};
 
 // A SETUP frame with no setup metadata — decodes to a default
 // RequestSetupMetadata, which negotiates to the server floor.
@@ -239,6 +294,40 @@ TEST(ThriftServerTransportAdapterTest, InboundRequestConvertedToThrift) {
 
   // Release the bridge's pipeline guard before thriftPipeline goes out
   // of scope so the pipeline can destruct in order.
+  fixture.adapter->resetPipeline();
+}
+
+TEST(ThriftServerTransportAdapterTest, InboundCancelPublishesCancellation) {
+  AdapterWithRocketPipeline fixture;
+  MockTailHandler thriftTail;
+  TestAllocator thriftAllocator;
+  auto capture = std::make_unique<CancellationCaptureHandler>();
+  auto* capturePtr = capture.get();
+
+  auto thriftPipeline =
+      PipelineBuilder<
+          ThriftServerTransportAdapter,
+          MockTailHandler,
+          TestAllocator>()
+          .setEventBase(&fixture.evb)
+          .setHead(fixture.adapter.get())
+          .setTail(&thriftTail)
+          .setAllocator(&thriftAllocator)
+          .addNextDuplex<CancellationCaptureHandler>(
+              cancellation_capture_handler_tag, std::move(capture))
+          .build();
+  fixture.adapter->setPipeline(thriftPipeline.get());
+
+  EXPECT_EQ(
+      fixture.appAdapter->onRead(
+          channel_pipeline::test::inertEndpointContext(),
+          makeRocketCancelBox(17)),
+      Result::Success);
+  EXPECT_EQ(capturePtr->count, 1);
+  EXPECT_EQ(capturePtr->streamId, 17);
+  EXPECT_EQ(thriftTail.readCount(), 0);
+  EXPECT_EQ(fixture.rocketHead.writeCount(), 0);
+
   fixture.adapter->resetPipeline();
 }
 

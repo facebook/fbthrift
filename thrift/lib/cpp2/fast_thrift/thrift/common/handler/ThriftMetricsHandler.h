@@ -16,12 +16,18 @@
 
 #pragma once
 
+#include <concepts>
+#include <cstdint>
+#include <type_traits>
+
 #include <glog/logging.h>
 #include <folly/ExceptionWrapper.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/common/Stats.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 
 namespace apache::thrift::fast_thrift {
@@ -29,13 +35,14 @@ namespace apache::thrift::fast_thrift {
 HANDLER_TAG(thrift_metrics_handler);
 
 // DuplexHandler that observes thrift-layer messages and bumps counters.
-// Completely pass-through — does not inspect or modify message contents.
+// It does not modify message contents.
 //
 // Hot-path cost per direction: one incrementValue() (~0.1ns) + pipeline
 // forward.
 //
 // Template parameter Dir controls active-request gauge semantics:
-//   Server: onRead increments active (incoming request), onWrite decrements
+//   Server: onRead increments active (incoming request); onWrite or a
+//           response-less RequestCompleted event decrements
 //   Client: onWrite increments active (outgoing request), onRead decrements
 //
 // Pipeline placement:
@@ -47,6 +54,11 @@ class ThriftMetricsHandler {
   static_assert(FastThriftStatsConcept<Stats>);
 
  public:
+  using SubscribedEvents = std::conditional_t<
+      Dir == Direction::Server,
+      channel_pipeline::Events<thrift::ThriftServerRequestCompletedEvent>,
+      channel_pipeline::Events<>>;
+
   // Borrowed for the handler's lifetime. The shard belongs to the server,
   // which drains every connection before releasing it.
   explicit ThriftMetricsHandler(Stats* stats) noexcept : stats_(stats) {
@@ -57,7 +69,14 @@ class ThriftMetricsHandler {
   void handlerAdded(Context& /*ctx*/) noexcept {}
 
   template <typename Context>
-  void handlerRemoved(Context& /*ctx*/) noexcept {}
+  void handlerRemoved(Context& /*ctx*/) noexcept {
+    if constexpr (Dir == Direction::Server) {
+      if (active_ != 0) {
+        stats_->thriftActive.incrementValue(-active_);
+        active_ = 0;
+      }
+    }
+  }
 
   template <typename Context>
   void onPipelineActive(Context& /*ctx*/) noexcept {}
@@ -78,6 +97,7 @@ class ThriftMetricsHandler {
     stats_->thriftInbound.incrementValue(1);
     if constexpr (Dir == Direction::Server) {
       stats_->thriftActive.incrementValue(1);
+      ++active_;
     } else {
       stats_->thriftActive.incrementValue(-1);
     }
@@ -104,6 +124,7 @@ class ThriftMetricsHandler {
     stats_->thriftOutbound.incrementValue(1);
     if constexpr (Dir == Direction::Server) {
       stats_->thriftActive.incrementValue(-1);
+      --active_;
     } else {
       stats_->thriftActive.incrementValue(1);
     }
@@ -115,6 +136,15 @@ class ThriftMetricsHandler {
 
   template <typename Context>
   void onPipelineInactive(Context& /*ctx*/) noexcept {}
+
+  template <channel_pipeline::PipelineEvent E, typename Context>
+    requires(
+        Dir == Direction::Server &&
+        std::same_as<E, thrift::ThriftServerRequestCompletedEvent>)
+  void on(Context&, const thrift::ThriftServerRequestCompletedEvent&) noexcept {
+    stats_->thriftActive.incrementValue(-1);
+    --active_;
+  }
 
  private:
   // Not every message crossing this handler is an RPC: the connection setup
@@ -134,6 +164,7 @@ class ThriftMetricsHandler {
   }
 
   Stats* stats_;
+  int64_t active_{0};
 };
 
 } // namespace apache::thrift::fast_thrift

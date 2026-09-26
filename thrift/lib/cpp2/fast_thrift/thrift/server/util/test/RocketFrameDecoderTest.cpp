@@ -76,6 +76,12 @@ frame::read::ParsedFrame makeKeepAliveFrame() {
   return frame::read::parseFrame(std::move(wire));
 }
 
+frame::read::ParsedFrame makeCancelFrame(uint32_t streamId) {
+  frame::ComposedFrame frame{
+      .frameType = frame::FrameType::CANCEL, .streamId = streamId};
+  return frame::read::parseFrame(std::move(frame).serialize());
+}
+
 } // namespace
 
 TEST(FromRocketFrameTest, RequestResponseDecodesToTypedPayload) {
@@ -140,6 +146,14 @@ TEST(FromRocketFrameTest, RequestFnfNotYetWired) {
       makeFnfFrame(/*streamId=*/3),
       apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY);
   EXPECT_FALSE(result.hasValue());
+}
+
+TEST(FromRocketFrameTest, CancelDecodesWithoutMetadata) {
+  auto result = fromRocketFrame(
+      makeCancelFrame(/*streamId=*/9),
+      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY);
+  ASSERT_TRUE(result.hasValue());
+  EXPECT_TRUE(result->is<ThriftRequestCancellationPayload>());
 }
 
 TEST(FromRocketFrameTest, UnexpectedFrameTypeReturnsError) {

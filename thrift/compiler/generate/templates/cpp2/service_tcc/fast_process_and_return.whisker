@@ -71,6 +71,10 @@ void {{interface.cpp_name}}AppAdapter::process_{{function.cpp_name}}_impl(
                data = std::move(data)]() mutable {
     ::apache::thrift::fast_thrift::thrift::detail::HandlerExecutorScope scope(
         executor);
+    if (callback->isCancellationRequested()) {
+      callback->cancelled();
+      return;
+    }
     callback->markHandlerStarted();
     process_{{function.cpp_name}}_run<ProtocolReader, ProtocolWriter>(
         std::move(callback), std::move(data));

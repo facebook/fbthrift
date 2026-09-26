@@ -120,6 +120,32 @@ TEST_F(ThriftMetricsHandlerTest, OnWriteDecrementsThriftActive) {
   EXPECT_EQ(stats_->thriftActive.value(), 0);
 }
 
+TEST_F(ThriftMetricsHandlerTest, CancellationCompletionDecrementsActiveOnly) {
+  ASSERT_EQ(
+      handler_->onRead(ctx_, makeRequestBox()),
+      channel_pipeline::Result::Success);
+
+  handler_->on<thrift::ThriftServerRequestCompletedEvent>(
+      ctx_, thrift::ThriftServerRequestCompletedEvent{.streamId = 1});
+
+  EXPECT_EQ(stats_->thriftActive.value(), 0);
+  EXPECT_EQ(stats_->thriftInbound.value(), 1);
+  EXPECT_EQ(stats_->thriftOutbound.value(), 0);
+}
+
+TEST_F(ThriftMetricsHandlerTest, RemovalClearsOutstandingActiveRequests) {
+  ASSERT_EQ(
+      handler_->onRead(ctx_, makeRequestBox()),
+      channel_pipeline::Result::Success);
+  ASSERT_EQ(
+      handler_->onRead(ctx_, makeRequestBox()),
+      channel_pipeline::Result::Success);
+
+  handler_->handlerRemoved(ctx_);
+
+  EXPECT_EQ(stats_->thriftActive.value(), 0);
+}
+
 TEST_F(ThriftMetricsHandlerTest, OnWriteForwardsMessageUnmodified) {
   auto result = handler_->onWrite(ctx_, makeResponseBox());
   EXPECT_EQ(result, channel_pipeline::Result::Success);

@@ -90,6 +90,10 @@ fromRocketFrame(
           ThriftConnectionSetupPayload{.setup = std::move(setup)}};
     }
 
+    case FrameType::CANCEL:
+      return ThriftServerInboundPayloadVariant{
+          ThriftRequestCancellationPayload{}};
+
     case FrameType::REQUEST_FNF:
     case FrameType::REQUEST_STREAM:
     case FrameType::REQUEST_CHANNEL:

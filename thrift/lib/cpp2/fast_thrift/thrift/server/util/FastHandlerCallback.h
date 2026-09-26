@@ -24,6 +24,7 @@
 #include <type_traits>
 #include <utility>
 
+#include <folly/CancellationToken.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/Executor.h>
 #include <folly/Portability.h>
@@ -35,6 +36,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/event_handler/Cpp2BridgeExtension.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/util/FastHandlerCancellationSlot.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponseError.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -47,12 +49,6 @@ inline constexpr auto kHandlerCallbackNotCompleted =
     "FastHandlerCallback not completed";
 inline constexpr auto kHandlerExecutorUnavailable =
     "Fast handler executor rejected or dropped request";
-
-enum class HandlerState : uint8_t {
-  AwaitingDispatch,
-  Running,
-  Completed,
-};
 
 template <typename U>
 struct IsUniquePtr : std::false_type {};
@@ -98,6 +94,11 @@ class HandlerExecutorTask {
   };
 
  public:
+  explicit HandlerExecutorTask(folly::Executor::KeepAlive<folly::EventBase> evb)
+      : state_(std::make_unique<State>(std::move(evb))) {}
+
+  void emplace(F&& fn) noexcept { state_->fn.emplace(static_cast<F&&>(fn)); }
+
   HandlerExecutorTask(folly::Executor::KeepAlive<folly::EventBase> evb, F&& fn)
       : state_(std::make_unique<State>(std::move(evb))) {
     state_->fn.emplace(static_cast<F&&>(fn));
@@ -120,7 +121,7 @@ class HandlerExecutorTask {
   ~HandlerExecutorTask() {
     static_assert(std::is_nothrow_invocable_v<F&>);
 
-    if (!state_) {
+    if (!state_ || !state_->fn) {
       return;
     }
     auto state = std::move(state_);
@@ -171,7 +172,7 @@ void runOnHandlerExecutor(
 
 template <typename F>
 void completeOnHandlerExecutorNothrow(
-    HandlerState& state,
+    CancellationSlot& slot,
     ThriftServerAppAdapter* handler,
     uint32_t streamId,
     ThriftRequestContextPtr& requestContext,
@@ -180,8 +181,6 @@ void completeOnHandlerExecutorNothrow(
     folly::Executor* executor,
     F&& fn) {
   static_assert(std::is_nothrow_move_constructible_v<std::decay_t<F>>);
-
-  assert(state != HandlerState::Completed);
   assert(!isOnHandlerExecutor(executor));
 
   auto makeTask = [&]() noexcept {
@@ -195,16 +194,19 @@ void completeOnHandlerExecutorNothrow(
   };
   using Task = HandlerExecutorTask<decltype(makeTask())>;
 
-  // State allocation completes before makeTask() moves requestContext and
-  // adapterGuard out of the callback.
-  Task task(evb, std::in_place, makeTask);
-  state = HandlerState::Completed;
+  // Allocate task storage before claiming completion. Once the CPU slot is
+  // claimed, building the closure only performs noexcept moves.
+  Task task(evb);
+  if (!slot.tryComplete()) {
+    return;
+  }
+  task.emplace(makeTask());
   runOnHandlerExecutor(executor, std::move(task));
 }
 
 template <typename F>
 void completeOnHandlerExecutor(
-    HandlerState& state,
+    CancellationSlot& slot,
     ThriftServerAppAdapter* handler,
     uint32_t streamId,
     ThriftRequestContextPtr& requestContext,
@@ -215,7 +217,7 @@ void completeOnHandlerExecutor(
   using Completion = std::decay_t<F>;
   if constexpr (std::is_nothrow_move_constructible_v<Completion>) {
     completeOnHandlerExecutorNothrow(
-        state,
+        slot,
         handler,
         streamId,
         requestContext,
@@ -229,7 +231,7 @@ void completeOnHandlerExecutor(
     // the indirection only when their completion is deferred.
     auto boxed = std::make_unique<Completion>(static_cast<F&&>(fn));
     completeOnHandlerExecutorNothrow(
-        state,
+        slot,
         handler,
         streamId,
         requestContext,
@@ -421,7 +423,9 @@ class FastHandlerCallback {
         evb_(folly::getKeepAliveToken(&evb)),
         executor_(executor),
         requestContext_(std::move(requestContext)),
-        state_(
+        cancellationSlot_(
+            executor != nullptr && requestContext_ != nullptr &&
+                requestContext_->isCancellationEnabled(),
             executor == nullptr ? detail::HandlerState::Running
                                 : detail::HandlerState::AwaitingDispatch) {}
 
@@ -559,12 +563,26 @@ class FastHandlerCallback {
     return requestContext_.get();
   }
 
-  // Distinguishes executor rejection/drop from an abandoned handler callback.
-  void markHandlerStarted() noexcept {
-    if (state_ == detail::HandlerState::AwaitingDispatch) {
-      state_ = detail::HandlerState::Running;
-    }
+  folly::CancellationToken getCancellationToken() const noexcept {
+    return requestContext_ == nullptr ? folly::CancellationToken{}
+                                      : requestContext_->getCancellationToken();
   }
+
+  bool isCancellationRequested() const noexcept {
+    return requestContext_ != nullptr &&
+        requestContext_->isCancellationRequested();
+  }
+
+  void cancelled() noexcept {
+    if (!cancellationSlot_.tryComplete()) {
+      return;
+    }
+    handler_->acknowledgeCancellation(
+        streamId_, std::move(requestContext_), std::move(adapterGuard_));
+  }
+
+  // Distinguishes executor rejection/drop from an abandoned handler callback.
+  void markHandlerStarted() noexcept { cancellationSlot_.markHandlerStarted(); }
 
   // Called by CallbackPtr when the sole owner lets go. Destruction has to land
   // on the adapter's EventBase: it releases adapterGuard_ and, through
@@ -629,13 +647,12 @@ class FastHandlerCallback {
   template <typename F>
   bool tryCompleteInline(F&& fn) noexcept {
     static_assert(std::is_nothrow_invocable_v<F&>);
-    if (state_ == detail::HandlerState::Completed) {
-      return true;
-    }
     if (!detail::isOnHandlerExecutor(executor_)) {
       return false;
     }
-    state_ = detail::HandlerState::Completed;
+    if (!cancellationSlot_.tryComplete()) {
+      return true;
+    }
     fn();
     return true;
   }
@@ -643,7 +660,7 @@ class FastHandlerCallback {
   template <typename F>
   void complete(F&& fn) {
     detail::completeOnHandlerExecutor(
-        state_,
+        cancellationSlot_,
         handler_,
         streamId_,
         requestContext_,
@@ -655,7 +672,9 @@ class FastHandlerCallback {
 
   // Pre-dispatch failures must not retry the executor that rejected the task.
   void completeInline(folly::exception_wrapper ew) noexcept {
-    state_ = detail::HandlerState::Completed;
+    if (!cancellationSlot_.tryComplete()) {
+      return;
+    }
     exceptionFn_(
         handler_,
         streamId_,
@@ -669,10 +688,14 @@ class FastHandlerCallback {
   // overload; destruction after dispatch reports an abandoned callback.
   ~FastHandlerCallback() {
     try {
-      if (state_ == detail::HandlerState::Completed) {
+      if (cancellationSlot_.state() == detail::HandlerState::Completed) {
         return;
       }
-      if (state_ == detail::HandlerState::AwaitingDispatch) {
+      if (isCancellationRequested()) {
+        cancelled();
+        return;
+      }
+      if (cancellationSlot_.state() == detail::HandlerState::AwaitingDispatch) {
         completeInline(
             folly::make_exception_wrapper<TApplicationException>(
                 TApplicationException::LOADSHEDDING,
@@ -703,7 +726,7 @@ class FastHandlerCallback {
   // Non-owning; see getHandlerExecutor().
   folly::Executor* executor_{nullptr};
   ThriftRequestContextPtr requestContext_;
-  detail::HandlerState state_;
+  detail::CancellationSlot cancellationSlot_;
 };
 
 template <>
@@ -738,7 +761,9 @@ class FastHandlerCallback<void> {
         evb_(folly::getKeepAliveToken(&evb)),
         executor_(executor),
         requestContext_(std::move(requestContext)),
-        state_(
+        cancellationSlot_(
+            executor != nullptr && requestContext_ != nullptr &&
+                requestContext_->isCancellationEnabled(),
             executor == nullptr ? detail::HandlerState::Running
                                 : detail::HandlerState::AwaitingDispatch) {}
 
@@ -862,12 +887,26 @@ class FastHandlerCallback<void> {
     return requestContext_.get();
   }
 
-  // Distinguishes executor rejection/drop from an abandoned handler callback.
-  void markHandlerStarted() noexcept {
-    if (state_ == detail::HandlerState::AwaitingDispatch) {
-      state_ = detail::HandlerState::Running;
-    }
+  folly::CancellationToken getCancellationToken() const noexcept {
+    return requestContext_ == nullptr ? folly::CancellationToken{}
+                                      : requestContext_->getCancellationToken();
   }
+
+  bool isCancellationRequested() const noexcept {
+    return requestContext_ != nullptr &&
+        requestContext_->isCancellationRequested();
+  }
+
+  void cancelled() noexcept {
+    if (!cancellationSlot_.tryComplete()) {
+      return;
+    }
+    handler_->acknowledgeCancellation(
+        streamId_, std::move(requestContext_), std::move(adapterGuard_));
+  }
+
+  // Distinguishes executor rejection/drop from an abandoned handler callback.
+  void markHandlerStarted() noexcept { cancellationSlot_.markHandlerStarted(); }
 
   // See FastHandlerCallback<T>::destroyOnEventBase.
   void destroyOnEventBase() noexcept {
@@ -912,13 +951,12 @@ class FastHandlerCallback<void> {
   template <typename F>
   bool tryCompleteInline(F&& fn) noexcept {
     static_assert(std::is_nothrow_invocable_v<F&>);
-    if (state_ == detail::HandlerState::Completed) {
-      return true;
-    }
     if (!detail::isOnHandlerExecutor(executor_)) {
       return false;
     }
-    state_ = detail::HandlerState::Completed;
+    if (!cancellationSlot_.tryComplete()) {
+      return true;
+    }
     fn();
     return true;
   }
@@ -926,7 +964,7 @@ class FastHandlerCallback<void> {
   template <typename F>
   void complete(F&& fn) {
     detail::completeOnHandlerExecutor(
-        state_,
+        cancellationSlot_,
         handler_,
         streamId_,
         requestContext_,
@@ -938,7 +976,9 @@ class FastHandlerCallback<void> {
 
   // Pre-dispatch failures must not retry the executor that rejected the task.
   void completeInline(folly::exception_wrapper ew) noexcept {
-    state_ = detail::HandlerState::Completed;
+    if (!cancellationSlot_.tryComplete()) {
+      return;
+    }
     exceptionFn_(
         handler_,
         streamId_,
@@ -950,10 +990,14 @@ class FastHandlerCallback<void> {
   // See FastHandlerCallback<T>::~FastHandlerCallback.
   ~FastHandlerCallback() {
     try {
-      if (state_ == detail::HandlerState::Completed) {
+      if (cancellationSlot_.state() == detail::HandlerState::Completed) {
         return;
       }
-      if (state_ == detail::HandlerState::AwaitingDispatch) {
+      if (isCancellationRequested()) {
+        cancelled();
+        return;
+      }
+      if (cancellationSlot_.state() == detail::HandlerState::AwaitingDispatch) {
         completeInline(
             folly::make_exception_wrapper<TApplicationException>(
                 TApplicationException::LOADSHEDDING,
@@ -980,7 +1024,7 @@ class FastHandlerCallback<void> {
   // Non-owning; see getHandlerExecutor().
   folly::Executor* executor_{nullptr};
   ThriftRequestContextPtr requestContext_;
-  detail::HandlerState state_;
+  detail::CancellationSlot cancellationSlot_;
 };
 
 template <typename T>

@@ -16,13 +16,13 @@
 
 #pragma once
 
+#include <folly/CancellationToken.h>
 #include <folly/Executor.h>
 #include <folly/Portability.h>
 #include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
 
 namespace apache::thrift::fast_thrift::thrift {
-
-class ThriftRequestContext;
 
 /**
  * Per-request handles a handler can reach without them appearing in its
@@ -56,6 +56,10 @@ class FastRequestParams {
   // server has no CPU pool or because the method is EventBase-pinned.
   folly::Executor* getHandlerExecutor() const noexcept {
     return handlerExecutor_;
+  }
+  folly::CancellationToken getCancellationToken() const noexcept {
+    return requestContext_ == nullptr ? folly::CancellationToken{}
+                                      : requestContext_->getCancellationToken();
   }
 
  private:

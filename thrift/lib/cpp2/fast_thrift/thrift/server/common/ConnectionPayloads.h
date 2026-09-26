@@ -79,7 +79,7 @@ namespace detail {
 // its alternatives, so it has to declare one.
 [[noreturn]] inline apache::thrift::fast_thrift::frame::ComposedFrame
 noRocketFrameForLifecyclePayload() {
-  XLOG(FATAL) << "connection-lifecycle payloads are never serialized outbound";
+  XLOG(FATAL) << "inbound lifecycle payloads are never serialized outbound";
 }
 } // namespace detail
 
@@ -98,6 +98,21 @@ struct ThriftConnectionSetupPayload {
   using RocketFrame = apache::thrift::fast_thrift::frame::ComposedFrame;
 
   std::unique_ptr<ConnectionSetupData> setup;
+
+  RocketFrame toRocketFrame(rocket::server::MetadataProtocol) && {
+    detail::noRocketFrameForLifecyclePayload();
+  }
+  const apache::thrift::RequestRpcMetadata* getRequestRpcMetadata()
+      const noexcept {
+    return nullptr;
+  }
+};
+
+/** Inbound header-only cancellation, consumed by the transport adapter. */
+struct ThriftRequestCancellationPayload {
+  static constexpr apache::thrift::RpcKind kRpcKind =
+      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+  using RocketFrame = apache::thrift::fast_thrift::frame::ComposedFrame;
 
   RocketFrame toRocketFrame(rocket::server::MetadataProtocol) && {
     detail::noRocketFrameForLifecyclePayload();

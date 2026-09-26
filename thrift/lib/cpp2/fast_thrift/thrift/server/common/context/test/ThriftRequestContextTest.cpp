@@ -18,7 +18,10 @@
 
 #include <gtest/gtest.h>
 
+#include <memory>
 #include <utility>
+
+#include <folly/CancellationToken.h>
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 
@@ -27,6 +30,9 @@ namespace apache::thrift::fast_thrift::thrift {
 TEST(ThriftRequestContextTest, DefaultConstructedHasNoConnContext) {
   ThriftRequestContext rc;
   EXPECT_EQ(rc.getConnectionContext(), nullptr);
+  EXPECT_FALSE(rc.isCancellationEnabled());
+  EXPECT_FALSE(rc.getCancellationToken().canBeCancelled());
+  EXPECT_FALSE(rc.requestCancellation());
 }
 
 TEST(ThriftRequestContextTest, SetConnectionContextStoresIt) {
@@ -55,6 +61,17 @@ TEST(ThriftRequestContextTest, KeepsConnContextAliveAfterLocalReset) {
   rc.setConnectionContext(std::move(conn));
   EXPECT_EQ(raw->use_count(), 1);
   EXPECT_EQ(rc.getConnectionContext(), raw);
+}
+
+TEST(ThriftRequestContextTest, CancellationCallbackMayDestroyContext) {
+  auto context = std::make_unique<ThriftRequestContext>();
+  context->enableCancellation();
+  auto* contextPtr = context.get();
+  folly::CancellationCallback callback(
+      context->getCancellationToken(), [&] { context.reset(); });
+
+  EXPECT_TRUE(contextPtr->requestCancellation());
+  EXPECT_EQ(context, nullptr);
 }
 
 } // namespace apache::thrift::fast_thrift::thrift

@@ -17,7 +17,11 @@
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/fast_thrift/common/Stats.h>
 #include <thrift/lib/cpp2/fast_thrift/common/test/MockMetricsContext.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/FrameParser.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/write/ComposedFrame.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/common/handler/RocketMetricsHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/server/Messages.h>
 
 using namespace apache::thrift::fast_thrift;
 using namespace apache::thrift::fast_thrift::test;
@@ -40,6 +44,23 @@ struct MockStats {
   MockCounter thriftActive;
 };
 
+namespace {
+
+channel_pipeline::TypeErasedBox makeServerRequestBox(
+    frame::FrameType frameType = frame::FrameType::REQUEST_RESPONSE,
+    uint32_t streamId = 1) {
+  rocket::server::RocketRequestMessage request;
+  request.frame = frame::read::parseFrame(
+      std::move(
+          frame::ComposedFrame{.frameType = frameType, .streamId = streamId})
+          .serialize());
+  request.streamId = streamId;
+  request.streamType = frame::FrameType::REQUEST_RESPONSE;
+  return channel_pipeline::erase_and_box(std::move(request));
+}
+
+} // namespace
+
 class RocketMetricsHandlerTest : public ::testing::Test {
  protected:
   void SetUp() override {
@@ -59,28 +80,54 @@ class RocketMetricsHandlerTest : public ::testing::Test {
 // =============================================================================
 
 TEST_F(RocketMetricsHandlerTest, OnReadIncrementsRocketInbound) {
-  auto result = handler_->onRead(ctx_, channel_pipeline::TypeErasedBox(42));
+  auto result = handler_->onRead(ctx_, makeServerRequestBox());
   EXPECT_EQ(result, channel_pipeline::Result::Success);
   EXPECT_EQ(stats_->rocketInbound.value(), 1);
 }
 
 TEST_F(RocketMetricsHandlerTest, OnReadIncrementsRocketActive) {
-  auto result = handler_->onRead(ctx_, channel_pipeline::TypeErasedBox(42));
+  auto result = handler_->onRead(ctx_, makeServerRequestBox());
   EXPECT_EQ(result, channel_pipeline::Result::Success);
   EXPECT_EQ(stats_->rocketActive.value(), 1);
 }
 
 TEST_F(RocketMetricsHandlerTest, OnReadForwardsMessageUnmodified) {
-  auto result = handler_->onRead(ctx_, channel_pipeline::TypeErasedBox(42));
+  auto result = handler_->onRead(ctx_, makeServerRequestBox());
   EXPECT_EQ(result, channel_pipeline::Result::Success);
   ASSERT_EQ(ctx_.readMessages().size(), 1);
-  EXPECT_EQ(ctx_.readMessages()[0].get<int>(), 42);
+  EXPECT_EQ(
+      ctx_.readMessages()[0]
+          .get<rocket::server::RocketRequestMessage>()
+          .streamId,
+      1);
 }
 
 TEST_F(RocketMetricsHandlerTest, OnReadReturnsContextResult) {
   ctx_.setReadResult(channel_pipeline::Result::Backpressure);
-  auto result = handler_->onRead(ctx_, channel_pipeline::TypeErasedBox(42));
+  auto result = handler_->onRead(ctx_, makeServerRequestBox());
   EXPECT_EQ(result, channel_pipeline::Result::Backpressure);
+}
+
+TEST_F(RocketMetricsHandlerTest, CancelDecrementsRocketActive) {
+  EXPECT_EQ(
+      handler_->onRead(ctx_, makeServerRequestBox()),
+      channel_pipeline::Result::Success);
+  EXPECT_EQ(
+      handler_->onRead(ctx_, makeServerRequestBox(frame::FrameType::CANCEL)),
+      channel_pipeline::Result::Success);
+
+  EXPECT_EQ(stats_->rocketInbound.value(), 2);
+  EXPECT_EQ(stats_->rocketActive.value(), 0);
+}
+
+TEST_F(RocketMetricsHandlerTest, ConnectionFailureClearsRocketActive) {
+  EXPECT_EQ(
+      handler_->onRead(ctx_, makeServerRequestBox()),
+      channel_pipeline::Result::Success);
+
+  handler_->onPipelineInactive(ctx_);
+
+  EXPECT_EQ(stats_->rocketActive.value(), 0);
 }
 
 // =============================================================================
@@ -136,14 +183,15 @@ TEST_F(RocketMetricsHandlerTest, OnExceptionForwardsException) {
 
 TEST_F(RocketMetricsHandlerTest, MultipleRequestsCountsAccumulate) {
   for (int i = 0; i < 100; ++i) {
-    auto result = handler_->onRead(ctx_, channel_pipeline::TypeErasedBox(i));
+    auto result = handler_->onRead(
+        ctx_, makeServerRequestBox(frame::FrameType::REQUEST_RESPONSE, i + 1));
     EXPECT_EQ(result, channel_pipeline::Result::Success);
   }
   EXPECT_EQ(stats_->rocketInbound.value(), 100);
 }
 
 TEST_F(RocketMetricsHandlerTest, RequestResponseCycleActiveReturnsToZero) {
-  auto r1 = handler_->onRead(ctx_, channel_pipeline::TypeErasedBox(1));
+  auto r1 = handler_->onRead(ctx_, makeServerRequestBox());
   EXPECT_EQ(r1, channel_pipeline::Result::Success);
   EXPECT_EQ(stats_->rocketActive.value(), 1);
   auto r2 = handler_->onWrite(ctx_, channel_pipeline::TypeErasedBox(2));

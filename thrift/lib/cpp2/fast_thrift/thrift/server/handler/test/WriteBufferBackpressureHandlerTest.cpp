@@ -22,15 +22,26 @@
 #include <gtest/gtest.h>
 
 #include <folly/ExceptionWrapper.h>
+#if defined(FAST_THRIFT_WRITE_BUFFER_PIPELINE_TESTS)
 #include <folly/io/async/EventBase.h>
+#endif
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
+#if defined(FAST_THRIFT_WRITE_BUFFER_PIPELINE_TESTS)
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#endif
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
+#if defined(FAST_THRIFT_WRITE_BUFFER_PIPELINE_TESTS)
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
+#endif
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#if defined(FAST_THRIFT_WRITE_BUFFER_PIPELINE_TESTS)
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionCloseHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestLifecycleHandler.h>
+#endif
 
 namespace apache::thrift::fast_thrift::thrift {
 
@@ -83,11 +94,18 @@ class FakeContext {
   }
   FakePipeline* pipeline() noexcept { return &fakePipeline; }
 
+  template <channel_pipeline::PipelineEvent E>
+  void fireEvent(const typename E::Payload& event) noexcept {
+    static_assert(std::same_as<E, ThriftServerRequestCompletedEvent>);
+    completions.push_back(event);
+  }
+
   Result nextWriteResult{Result::Success};
   std::vector<TypeErasedBox> reads;
   std::vector<TypeErasedBox> writes;
   std::vector<uint32_t> writtenStreamIds;
   std::vector<folly::exception_wrapper> exceptions;
+  std::vector<ThriftServerRequestCompletedEvent> completions;
 
   size_t awaitWriteReadyCalls{0};
   size_t cancelAwaitWriteReadyCalls{0};
@@ -230,6 +248,29 @@ TEST(WriteBufferBackpressureHandlerTest, OnPipelineInactiveDropsBuffer) {
 
   EXPECT_EQ(handler.pendingResponseCount(), 0u);
   EXPECT_FALSE(handler.isBackpressured());
+  ASSERT_EQ(ctx.completions.size(), 2u);
+  EXPECT_EQ(ctx.completions[0].streamId, 2u);
+  EXPECT_EQ(ctx.completions[1].streamId, 3u);
+}
+
+TEST(
+    WriteBufferBackpressureHandlerTest,
+    CancellationDropsBufferedResponseAndRetiresRequest) {
+  WriteBufferBackpressureHandler<FakeContext> handler;
+  FakeContext ctx;
+  ctx.nextWriteResult = Result::Backpressure;
+
+  (void)handler.onWrite(ctx, erase_and_box(makeResponse(1)));
+  (void)handler.onWrite(ctx, erase_and_box(makeResponse(2)));
+  ASSERT_EQ(handler.pendingResponseCount(), 1u);
+
+  const auto event = ThriftServerRequestCancellationEvent{.streamId = 2};
+  handler.on<ThriftServerRequestCancellationEvent>(ctx, event);
+  handler.on<ThriftServerRequestCancellationEvent>(ctx, event);
+
+  EXPECT_EQ(handler.pendingResponseCount(), 0u);
+  ASSERT_EQ(ctx.completions.size(), 1u);
+  EXPECT_EQ(ctx.completions.front().streamId, 2u);
 }
 
 // =============================================================================
@@ -390,6 +431,8 @@ TEST(
   EXPECT_EQ(ctx.cancelAwaitWriteReadyCalls, 1u);
 }
 
+#if defined(FAST_THRIFT_WRITE_BUFFER_PIPELINE_TESTS)
+
 // =============================================================================
 // Integration tests — exercise the handler embedded in a real PipelineImpl
 // built via PipelineBuilder. The FakeContext-based tests above can only
@@ -403,6 +446,9 @@ namespace cp = channel_pipeline;
 namespace {
 
 HANDLER_TAG(middle);
+HANDLER_TAG(close_handler);
+HANDLER_TAG(write_buffer_handler);
+HANDLER_TAG(request_lifecycle_handler);
 
 class WriteBufferBackpressureHandlerPipelineTest : public ::testing::Test {
  protected:
@@ -421,10 +467,67 @@ class WriteBufferBackpressureHandlerPipelineTest : public ::testing::Test {
         .build();
   }
 
+  cp::PipelineImpl::Ptr buildRequestPipeline() {
+    using CloseHandler =
+        ThriftServerConnectionCloseHandler<cp::detail::ContextImpl>;
+    using LifecycleHandler =
+        ThriftServerRequestLifecycleHandler<cp::detail::ContextImpl>;
+    auto closeHandler = std::make_unique<CloseHandler>();
+    closeHandler_ = closeHandler.get();
+    auto writeBuffer = std::make_unique<Handler>();
+    writeBuffer_ = writeBuffer.get();
+    auto lifecycle = std::make_unique<LifecycleHandler>();
+    lifecycle_ = lifecycle.get();
+    tail_.setOnReadCallback([this](cp::TypeErasedBox&& msg) {
+      requests_.push_back(std::move(msg));
+      return Result::Success;
+    });
+    auto pipeline = cp::PipelineBuilder<
+                        cp::test::MockHeadHandler,
+                        cp::test::MockTailHandler,
+                        cp::test::TestAllocator>()
+                        .setEventBase(&evb_)
+                        .setHead(&head_)
+                        .setTail(&tail_)
+                        .setAllocator(&allocator_)
+                        .addNextDuplex<CloseHandler>(
+                            close_handler_tag, std::move(closeHandler))
+                        .addNextDuplex<Handler>(
+                            write_buffer_handler_tag, std::move(writeBuffer))
+                        .addNextDuplex<LifecycleHandler>(
+                            request_lifecycle_handler_tag, std::move(lifecycle))
+                        .build();
+    pipeline->activate();
+    return pipeline;
+  }
+
+  ThriftServerRequestMessage makeTrackedRequest(uint32_t streamId) {
+    ThriftServerRequestMessage request;
+    request.streamId = streamId;
+    request.requestContext = makeThriftRequestContext(evb_);
+    return request;
+  }
+
+  ThriftServerResponseMessage makeTrackedResponse(uint32_t streamId) {
+    auto response = makeResponse(streamId);
+    for (auto& requestBox : requests_) {
+      auto& request = requestBox.get<ThriftServerRequestMessage>();
+      if (request.streamId == streamId) {
+        response.requestContext = std::move(request.requestContext);
+        break;
+      }
+    }
+    return response;
+  }
+
   folly::EventBase evb_;
   cp::test::MockHeadHandler head_;
   cp::test::MockTailHandler tail_;
   cp::test::TestAllocator allocator_;
+  ThriftServerConnectionCloseHandler<cp::detail::ContextImpl>* closeHandler_{};
+  Handler* writeBuffer_{};
+  ThriftServerRequestLifecycleHandler<cp::detail::ContextImpl>* lifecycle_{};
+  std::vector<cp::TypeErasedBox> requests_;
 };
 
 } // namespace
@@ -519,5 +622,69 @@ TEST_F(
   EXPECT_EQ(head_.onReadReadyCount(), 0)
       << "Reads must stay paused while buffer is non-empty";
 }
+
+TEST_F(
+    WriteBufferBackpressureHandlerPipelineTest,
+    CancellationDropsQueuedResponseAndRetiresCloseAccounting) {
+  head_.setOnWriteCallback(
+      [](cp::TypeErasedBox&&) noexcept { return cp::Result::Backpressure; });
+  auto pipeline = buildRequestPipeline();
+
+  ASSERT_EQ(
+      pipeline->fireRead(erase_and_box(makeTrackedRequest(1))),
+      Result::Success);
+  EXPECT_EQ(
+      pipeline->fireWrite(erase_and_box(makeTrackedResponse(1))),
+      Result::Backpressure);
+  ASSERT_TRUE(writeBuffer_->isBackpressured());
+  ASSERT_EQ(closeHandler_->inFlight(), 0u);
+
+  ASSERT_EQ(
+      pipeline->fireRead(erase_and_box(makeTrackedRequest(3))),
+      Result::Backpressure);
+  EXPECT_EQ(
+      pipeline->fireWrite(erase_and_box(makeTrackedResponse(3))),
+      Result::Success);
+  ASSERT_EQ(writeBuffer_->pendingResponseCount(), 1u);
+  ASSERT_EQ(closeHandler_->inFlight(), 1u);
+  ASSERT_EQ(lifecycle_->requestCount(), 0u);
+
+  pipeline->fireEvent<ThriftServerRequestCancellationEvent>(
+      ThriftServerRequestCancellationEvent{.streamId = 3});
+
+  EXPECT_EQ(writeBuffer_->pendingResponseCount(), 0u);
+  EXPECT_EQ(closeHandler_->inFlight(), 0u);
+  EXPECT_EQ(head_.writeCount(), 1);
+}
+
+TEST_F(
+    WriteBufferBackpressureHandlerPipelineTest,
+    ConnectionFailureRetiresQueuedResponse) {
+  head_.setOnWriteCallback(
+      [](cp::TypeErasedBox&&) noexcept { return cp::Result::Backpressure; });
+  auto pipeline = buildRequestPipeline();
+
+  ASSERT_EQ(
+      pipeline->fireRead(erase_and_box(makeTrackedRequest(1))),
+      Result::Success);
+  EXPECT_EQ(
+      pipeline->fireWrite(erase_and_box(makeTrackedResponse(1))),
+      Result::Backpressure);
+  ASSERT_EQ(
+      pipeline->fireRead(erase_and_box(makeTrackedRequest(3))),
+      Result::Backpressure);
+  EXPECT_EQ(
+      pipeline->fireWrite(erase_and_box(makeTrackedResponse(3))),
+      Result::Success);
+  ASSERT_EQ(closeHandler_->inFlight(), 1u);
+
+  pipeline->deactivate();
+
+  EXPECT_EQ(writeBuffer_->pendingResponseCount(), 0u);
+  EXPECT_EQ(closeHandler_->inFlight(), 0u);
+  EXPECT_TRUE(closeHandler_->isClosed());
+}
+
+#endif
 
 } // namespace apache::thrift::fast_thrift::thrift

@@ -82,6 +82,13 @@ struct FastThriftServerConfig {
   // response algorithm is carried on the per-request ThriftRequestContext.
   bool enableChecksum{false};
 
+  // When true, propagate client cancellation into the running service
+  // handler. Enabling this installs per-request lifecycle arbitration and
+  // materializes a cancellable token on each request context. When false,
+  // CANCEL is ignored: application work may finish and its response is sent.
+  // Only takes effect on FastThriftServer.
+  bool enableCancellation{false};
+
   // When true, insert WriteBufferBackpressureHandler into the thrift
   // pipeline. The handler buffers outbound responses when the downstream
   // pipeline returns Result::Backpressure (e.g. transport write buffer

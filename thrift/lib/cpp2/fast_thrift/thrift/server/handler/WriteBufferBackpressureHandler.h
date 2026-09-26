@@ -16,7 +16,9 @@
 
 #pragma once
 
+#include <concepts>
 #include <cstddef>
+#include <cstdint>
 #include <deque>
 #include <utility>
 
@@ -24,7 +26,9 @@
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Backpressure.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 
 namespace apache::thrift::fast_thrift::thrift {
@@ -50,17 +54,20 @@ namespace apache::thrift::fast_thrift::thrift {
  *   - `onWriteReady`: clear the flag and drain the FIFO via
  *     `ctx.fireWrite`. If downstream re-asserts `Backpressure` mid-drain,
  *     re-arm the flag and leave the remainder for the next cycle.
- *   - `onPipelineInactive`: clear the deque and reset the flag — once the
- *     wire is gone, buffered responses can't go out anyway.
+ *   - `onPipelineInactive`: retire and clear the deque, then reset the flag —
+ *     once the wire is gone, buffered responses can't go out anyway.
  *
- * The handler does no in-flight bookkeeping. It pairs cleanly with
- * `GracefulDrainHandler` (which tracks in-flight independently): on
- * graceful drain, `ctx.pipeline()->deactivate()` triggers
- * `onPipelineInactive` here and the buffer is dropped.
+ * Dropping a buffered response publishes RequestCompleted so the close
+ * handler can retire the request that never reached its outbound traversal.
  */
 template <typename Context>
 class WriteBufferBackpressureHandler {
  public:
+  using PublishedEvents =
+      channel_pipeline::Events<ThriftServerRequestCompletedEvent>;
+  using SubscribedEvents =
+      channel_pipeline::Events<ThriftServerRequestCancellationEvent>;
+
   WriteBufferBackpressureHandler() = default;
 
   // Detected by makeHandlerNode — registers this handler in the
@@ -114,7 +121,7 @@ class WriteBufferBackpressureHandler {
   // clear the flag on a full drain.
   void onWriteReady(Context& ctx) noexcept {
     while (!pendingResponses_.empty()) {
-      auto response = std::move(pendingResponses_.front());
+      [[maybe_unused]] auto response = std::move(pendingResponses_.front());
       pendingResponses_.pop_front();
       auto result =
           ctx.fireWrite(channel_pipeline::erase_and_box(std::move(response)));
@@ -130,11 +137,37 @@ class WriteBufferBackpressureHandler {
   }
 
   // Pipeline tear-down: the wire is gone, so buffered responses can't go
-  // out. Drop them.
+  // out. Retire and drop them.
   void onPipelineInactive(Context& ctx) noexcept {
-    pendingResponses_.clear();
+    while (!pendingResponses_.empty()) {
+      auto response = std::move(pendingResponses_.front());
+      pendingResponses_.pop_front();
+      const auto streamId = responseStreamId(response);
+      if (streamId != 0) {
+        PublishedEvents::template fire<ThriftServerRequestCompletedEvent>(
+            ctx, ThriftServerRequestCompletedEvent{.streamId = streamId});
+      }
+    }
     backpressured_ = false;
     ctx.cancelAwaitWriteReady();
+  }
+
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerRequestCancellationEvent>
+  void on(
+      Context& ctx,
+      const ThriftServerRequestCancellationEvent& event) noexcept {
+    for (auto it = pendingResponses_.begin(); it != pendingResponses_.end();
+         ++it) {
+      if (responseStreamId(*it) != event.streamId) {
+        continue;
+      }
+      [[maybe_unused]] auto response = std::move(*it);
+      pendingResponses_.erase(it);
+      PublishedEvents::template fire<ThriftServerRequestCompletedEvent>(
+          ctx, ThriftServerRequestCompletedEvent{.streamId = event.streamId});
+      return;
+    }
   }
 
   // === Test accessors ===
@@ -144,6 +177,18 @@ class WriteBufferBackpressureHandler {
   }
 
  private:
+  static uint32_t responseStreamId(
+      const ThriftServerResponseMessage& response) noexcept {
+    if (response.payload.template is<ThriftInitialResponsePayload>()) {
+      return response.payload.template get<ThriftInitialResponsePayload>()
+          .streamId;
+    }
+    if (response.payload.template is<ThriftErrorPayload>()) {
+      return response.payload.template get<ThriftErrorPayload>().streamId;
+    }
+    return 0;
+  }
+
   std::deque<ThriftServerResponseMessage> pendingResponses_;
   bool backpressured_{false};
 };

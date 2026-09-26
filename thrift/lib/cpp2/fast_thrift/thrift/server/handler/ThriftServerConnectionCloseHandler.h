@@ -113,8 +113,9 @@ class ThriftServerConnectionCloseHandler {
       : drainTimeout_(drainTimeout), reapTimeout_(reapTimeout) {}
   using PublishedEvents =
       channel_pipeline::Events<ThriftServerConnectionClosedEvent>;
-  using SubscribedEvents =
-      channel_pipeline::Events<ThriftServerCloseConnectionEvent>;
+  using SubscribedEvents = channel_pipeline::Events<
+      ThriftServerCloseConnectionEvent,
+      ThriftServerRequestCompletedEvent>;
 
   // HandlerLifecycle
   void handlerAdded(Context& ctx) noexcept {
@@ -230,6 +231,14 @@ class ThriftServerConnectionCloseHandler {
   void on(
       Context& ctx, const ThriftServerCloseConnectionEvent& event) noexcept {
     handleCloseConnectionEvent(ctx, event);
+  }
+
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerRequestCompletedEvent>
+  void on(Context& ctx, const ThriftServerRequestCompletedEvent&) noexcept {
+    DCHECK_GT(inFlight_, 0u);
+    --inFlight_;
+    maybeFinalize(ctx);
   }
 
   // === Test accessors ===

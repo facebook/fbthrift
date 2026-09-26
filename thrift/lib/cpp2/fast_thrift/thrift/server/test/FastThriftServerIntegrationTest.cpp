@@ -31,6 +31,7 @@
 #include <memory>
 #include <string>
 
+#include <folly/executors/ManualExecutor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBase.h>
@@ -44,6 +45,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestLifecycleHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/FastThriftServer.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/FastThriftServer.tcc>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
@@ -97,6 +99,8 @@ uint32_t payloadErrorCode(const ThriftServerResponseMessage& msg) {
 }
 
 HANDLER_TAG(test_handler);
+HANDLER_TAG(completion_recorder_handler);
+HANDLER_TAG(request_lifecycle_handler);
 
 using AdapterPtr = std::unique_ptr<
     FastThriftServerAppAdapter,
@@ -207,6 +211,49 @@ class TestHandler
     response->message() = "ok";
     cb->result(std::move(response));
   }
+};
+
+class CompletionRecorderHandler {
+ public:
+  using SubscribedEvents = cp::Events<ft::ThriftServerRequestCompletedEvent>;
+
+  template <typename Context>
+  Result onRead(Context& ctx, TypeErasedBox&& msg) noexcept {
+    return ctx.fireRead(std::move(msg));
+  }
+  template <typename Context>
+  Result onWrite(Context& ctx, TypeErasedBox&& msg) noexcept {
+    ++writeCount;
+    return ctx.fireWrite(std::move(msg));
+  }
+  template <typename Context>
+  void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
+    ctx.fireException(std::move(e));
+  }
+  template <typename Context>
+  void handlerAdded(Context&) noexcept {}
+  template <typename Context>
+  void handlerRemoved(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineActive(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineInactive(Context&) noexcept {}
+  template <typename Context>
+  void onReadReady(Context&) noexcept {}
+  template <typename Context>
+  void onWriteReady(Context&) noexcept {}
+
+  template <cp::PipelineEvent E, typename Context>
+    requires std::same_as<E, ft::ThriftServerRequestCompletedEvent>
+  void on(
+      Context&, const ft::ThriftServerRequestCompletedEvent& event) noexcept {
+    ++completionCount;
+    completedStreamId = event.streamId;
+  }
+
+  int writeCount{0};
+  int completionCount{0};
+  uint32_t completedStreamId{0};
 };
 
 } // namespace
@@ -338,6 +385,56 @@ TEST_F(FastThriftServerIntegrationTest, PingSucceeds) {
   EXPECT_EQ(
       meta->payloadMetadata()->getType(),
       apache::thrift::PayloadMetadata::Type::responseMetadata);
+}
+
+TEST(FastThriftServerGeneratedDispatchTest, CancelledQueuedWorkIsNotRun) {
+  folly::EventBase evb;
+  folly::ManualExecutor executor;
+  TestAllocator allocator;
+  cp::test::MockHeadHandler head;
+  auto handler = std::make_shared<TestHandler>();
+  AdapterPtr adapter(new FastThriftServerAppAdapter(handler));
+  adapter->setCPUExecutor(folly::getKeepAliveToken(&executor));
+  auto recorder = std::make_unique<CompletionRecorderHandler>();
+  auto* recorderPtr = recorder.get();
+
+  auto pipeline =
+      PipelineBuilder<
+          cp::test::MockHeadHandler,
+          FastThriftServerAppAdapter,
+          TestAllocator>()
+          .setEventBase(&evb)
+          .setHead(&head)
+          .setTail(adapter.get())
+          .setAllocator(&allocator)
+          .addNextDuplex<CompletionRecorderHandler>(
+              completion_recorder_handler_tag, std::move(recorder))
+          .addNextDuplex<
+              ft::ThriftServerRequestLifecycleHandler<cp::detail::ContextImpl>>(
+              request_lifecycle_handler_tag)
+          .build();
+  adapter->setPipeline(pipeline.get());
+
+  FastThriftServer_ping_pargs pargs;
+  auto request = makeRequest(
+      31,
+      "ping",
+      apache::thrift::ProtocolId::BINARY,
+      serializePargs<apache::thrift::BinaryProtocolWriter>(pargs));
+  request.requestContext = ft::makeThriftRequestContext(evb);
+  ASSERT_EQ(
+      pipeline->fireRead(erase_and_box(std::move(request))), Result::Success);
+  pipeline->fireEvent<ft::ThriftServerRequestCancellationEvent>(
+      ft::ThriftServerRequestCancellationEvent{.streamId = 31});
+
+  EXPECT_EQ(executor.drain(), 1);
+  evb.loopOnce(EVLOOP_NONBLOCK);
+  EXPECT_FALSE(handler->pingCalled);
+  EXPECT_EQ(recorderPtr->writeCount, 0);
+  EXPECT_EQ(recorderPtr->completionCount, 1);
+  EXPECT_EQ(recorderPtr->completedStreamId, 31);
+
+  adapter->resetPipeline();
 }
 
 TEST_F(FastThriftServerIntegrationTest, AddCapturesArgs) {

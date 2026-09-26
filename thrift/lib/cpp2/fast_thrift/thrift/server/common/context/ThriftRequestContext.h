@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -23,6 +24,7 @@
 
 #include <boost/intrusive_ptr.hpp>
 
+#include <folly/CancellationToken.h>
 #include <folly/container/F14Map.h>
 
 #include <folly/CppAttributes.h>
@@ -61,6 +63,58 @@ class ThriftRequestContext {
 
   ThriftConnContext* getConnectionContext() const noexcept {
     return connContext_.get();
+  }
+
+  folly::CancellationSource enableCancellation() {
+    if (!cancellationSource_.canBeCancelled()) {
+      cancellationSource_ = folly::CancellationSource{};
+    }
+    return cancellationSource_;
+  }
+
+  bool isCancellationEnabled() const noexcept {
+    return cancellationSource_.canBeCancelled();
+  }
+
+  folly::CancellationToken getCancellationToken() const noexcept {
+    return cancellationSource_.getToken();
+  }
+
+  folly::CancellationSource getCancellationSource() const noexcept {
+    return cancellationSource_;
+  }
+
+  // EventBase-only lifecycle transitions. The token itself may be observed
+  // from any handler thread.
+  bool requestCancellation() noexcept {
+    if (!cancellationSource_.canBeCancelled()) {
+      return false;
+    }
+    if (completionState_ == CompletionState::Completed) {
+      return false;
+    }
+    if (completionState_ == CompletionState::Active) {
+      completionState_ = CompletionState::CancellationRequested;
+      // A callback may synchronously complete the request and destroy this
+      // context. Keep the shared cancellation state alive independently until
+      // notification has fully unwound.
+      auto source = cancellationSource_;
+      source.requestCancellation();
+      return true;
+    }
+    return false;
+  }
+
+  bool tryComplete() noexcept {
+    if (completionState_ == CompletionState::Completed) {
+      return false;
+    }
+    completionState_ = CompletionState::Completed;
+    return true;
+  }
+
+  bool isCancellationRequested() const noexcept {
+    return cancellationSource_.getToken().isCancellationRequested();
   }
 
   // Invoked method name (RequestRpcMetadata.name), stamped by
@@ -169,7 +223,15 @@ class ThriftRequestContext {
   }
 
  private:
+  enum class CompletionState : uint8_t {
+    Active,
+    CancellationRequested,
+    Completed,
+  };
+
   boost::intrusive_ptr<ThriftConnContext> connContext_;
+  folly::CancellationSource cancellationSource_{
+      folly::CancellationSource::invalid()};
   std::string methodName_;
   HeaderMap headers_;
   HeaderMap writeHeaders_;
@@ -177,6 +239,7 @@ class ThriftRequestContext {
       apache::thrift::ChecksumAlgorithm::NONE};
   ExtensionSlots extensionSlots_;
   std::optional<apache::thrift::CompressionConfig> responseCompressionConfig_;
+  CompletionState completionState_{CompletionState::Active};
 };
 
 using ThriftRequestContextPtr =

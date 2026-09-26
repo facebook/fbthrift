@@ -56,6 +56,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionContextHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestContextHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestHeadersHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestLifecycleHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/WriteBufferBackpressureHandler.h>
 
@@ -121,6 +122,7 @@ HANDLER_TAG(server_stream_state_handler);
 HANDLER_TAG(thrift_server_request_context_handler);
 HANDLER_TAG(thrift_server_connection_context_handler);
 HANDLER_TAG(thrift_server_request_headers_handler);
+HANDLER_TAG(thrift_server_request_lifecycle_handler);
 HANDLER_TAG(thrift_server_compression_handler);
 HANDLER_TAG(thrift_server_checksum_handler);
 HANDLER_TAG(thrift_server_connection_close_handler);
@@ -183,7 +185,7 @@ PipelineOwner buildStaticRocketPipeline(
               server_request_response_frame_handler_tag)
           .template addNextDuplex<
               rocket::server::handler::RocketServerStreamStateHandler>(
-              server_stream_state_handler_tag);
+              server_stream_state_handler_tag, config.enableCancellation);
   if constexpr (WithStats) {
     return PipelineOwner(
         std::move(builder)
@@ -213,7 +215,18 @@ PipelineOwner selectStaticRocketStats(
 }
 
 template <typename Builder>
-PipelineOwner finishStaticThriftPipeline(Builder&& builder) {
+PipelineOwner finishStaticThriftPipeline(
+    Builder&& builder, bool enableCancellation) {
+  if (enableCancellation) {
+    return PipelineOwner(
+        std::forward<Builder>(builder)
+            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
+                thrift_server_setup_handler_tag)
+            .template addNextDuplexTemplate<
+                ThriftServerRequestLifecycleHandler>(
+                thrift_server_request_lifecycle_handler_tag)
+            .build());
+  }
   return PipelineOwner(
       std::forward<Builder>(builder)
           .template addNextDuplexTemplate<ThriftServerSetupHandler>(
@@ -224,15 +237,17 @@ PipelineOwner finishStaticThriftPipeline(Builder&& builder) {
 template <bool WithWriteBuffer, bool WithExtensions, typename Builder>
 PipelineOwner addStaticWriteBuffer(
     Builder&& builder,
-    const ThriftServerConnectionFactoryConfig&,
+    const ThriftServerConnectionFactoryConfig& config,
     ExtensionStateStore&) {
   if constexpr (WithWriteBuffer) {
     return finishStaticThriftPipeline(
         std::forward<Builder>(builder)
             .template addNextDuplexTemplate<WriteBufferBackpressureHandler>(
-                write_buffer_backpressure_handler_tag));
+                write_buffer_backpressure_handler_tag),
+        config.enableCancellation);
   } else {
-    return finishStaticThriftPipeline(std::forward<Builder>(builder));
+    return finishStaticThriftPipeline(
+        std::forward<Builder>(builder), config.enableCancellation);
   }
 }
 
@@ -756,6 +771,8 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
       ThriftServerChecksumHandler<channel_pipeline::detail::ContextImpl>;
   using CloseHandler =
       ThriftServerConnectionCloseHandler<channel_pipeline::detail::ContextImpl>;
+  using RequestLifecycleHandler = ThriftServerRequestLifecycleHandler<
+      channel_pipeline::detail::ContextImpl>;
   using WriteBufferHandler =
       WriteBufferBackpressureHandler<channel_pipeline::detail::ContextImpl>;
   using SetupHandler =
@@ -849,6 +866,10 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
     // requests.
     thriftPipelineBuilder.template addNextDuplex<SetupHandler>(
         thrift_server_setup_handler_tag);
+    if (config_.enableCancellation) {
+      thriftPipelineBuilder.template addNextDuplex<RequestLifecycleHandler>(
+          thrift_server_request_lifecycle_handler_tag);
+    }
     thriftPipeline = thriftPipelineBuilder.build();
   }
   transportAdapterPtr->setPipeline(thriftPipeline.get());
@@ -948,7 +969,7 @@ PipelineOwner ThriftServerConnectionFactory::buildRocketPipeline(
           rocket::server::handler::RocketServerRequestResponseHandler>(
           server_request_response_frame_handler_tag)
       .addNextDuplex<rocket::server::handler::RocketServerStreamStateHandler>(
-          server_stream_state_handler_tag);
+          server_stream_state_handler_tag, config_.enableCancellation);
   // Sits closest to the tail, so inbound it counts frames that survived
   // parsing/defragmentation and outbound it counts frames as the app emits
   // them, before batching or fragmentation can change the frame count.

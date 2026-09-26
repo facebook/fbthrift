@@ -402,8 +402,9 @@ class TProcessorEventHandlerBridge {
     return ctx.fireWrite(std::move(msg));
   }
 
-  using SubscribedEvents =
-      channel_pipeline::Events<ThriftServerConnectionClosedEvent>;
+  using SubscribedEvents = channel_pipeline::Events<
+      ThriftServerConnectionClosedEvent,
+      ThriftServerRequestCompletedEvent>;
 
   template <channel_pipeline::PipelineEvent E>
     requires std::same_as<E, ThriftServerConnectionClosedEvent>
@@ -422,6 +423,18 @@ class TProcessorEventHandlerBridge {
     for (const auto& handler : handlers_->server) {
       handler->connectionDestroyed(&connectionContext_->get());
     }
+  }
+
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerRequestCompletedEvent>
+  void on(Context&, const ThriftServerRequestCompletedEvent& event) noexcept {
+    auto it = requests_.find(event.streamId);
+    if (it == requests_.end()) {
+      return;
+    }
+    auto state = std::move(it->second);
+    requests_.erase(it);
+    releaseState(std::move(state));
   }
 
   void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {

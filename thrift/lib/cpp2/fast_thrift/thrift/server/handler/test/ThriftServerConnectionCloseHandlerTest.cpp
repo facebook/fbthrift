@@ -200,6 +200,22 @@ TEST(
   EXPECT_EQ(f.handler.inFlight(), 0u);
 }
 
+TEST(
+    ThriftServerConnectionCloseHandlerTest,
+    CancellationCompletionDecrementsWithoutResponse) {
+  Fixture f;
+
+  ASSERT_EQ(
+      f.handler.onRead(f.ctx, erase_and_box(makeRequest(13))), Result::Success);
+  ASSERT_EQ(f.handler.inFlight(), 1u);
+
+  f.handler.on<ThriftServerRequestCompletedEvent>(
+      f.ctx, ThriftServerRequestCompletedEvent{.streamId = 13});
+
+  EXPECT_EQ(f.handler.inFlight(), 0u);
+  EXPECT_TRUE(f.ctx.writes.empty());
+}
+
 // =============================================================================
 // CloseConnection event — graceful path
 // =============================================================================

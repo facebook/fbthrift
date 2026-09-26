@@ -504,6 +504,28 @@ TEST(TProcessorEventHandlerBridgeTest, DrivesTheClassicCallbackOrder) {
   EXPECT_EQ(log.postWriteBytes, 5);
 }
 
+TEST(TProcessorEventHandlerBridgeTest, CancellationFreesContextExactlyOnce) {
+  CallLog log;
+  Bridge bridge(makeConfig(&log));
+  FakeContext ctx;
+  auto conn = makeConn();
+  establish(bridge, ctx, conn);
+  log.calls.clear();
+
+  ASSERT_EQ(
+      bridge.onRead(
+          ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 17, "ping"))),
+      Result::Success);
+  const auto event = ThriftServerRequestCompletedEvent{.streamId = 17};
+  bridge.on<ThriftServerRequestCompletedEvent>(ctx, event);
+  bridge.on<ThriftServerRequestCompletedEvent>(ctx, event);
+
+  EXPECT_EQ(std::count(log.calls.begin(), log.calls.end(), "freeContext"), 1);
+  EXPECT_EQ(
+      std::find(log.calls.begin(), log.calls.end(), "preWrite"),
+      log.calls.end());
+}
+
 TEST(TProcessorEventHandlerBridgeTest, DeclaredExceptionRunsWriteCallbacks) {
   CallLog log;
   Bridge bridge(makeConfig(&log));

@@ -16,25 +16,30 @@
 
 #pragma once
 
+#include <cstdint>
+
 #include <glog/logging.h>
 #include <folly/ExceptionWrapper.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/common/Stats.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/server/Messages.h>
 
 namespace apache::thrift::fast_thrift {
 
 HANDLER_TAG(rocket_metrics_handler);
 
 // DuplexHandler that observes rocket-layer messages and bumps counters.
-// Completely pass-through — does not inspect or modify message contents.
+// It does not modify message contents.
 //
 // Hot-path cost per direction: one incrementValue() (~0.1ns) + pipeline
 // forward.
 //
 // Template parameter Dir controls active-request gauge semantics:
-//   Server: onRead increments active (incoming request), onWrite decrements
+//   Server: request onRead increments active, CANCEL onRead decrements,
+//           onWrite decrements
 //   Client: onWrite increments active (outgoing request), onRead decrements
 //
 // Pipeline placement:
@@ -56,7 +61,9 @@ class RocketMetricsHandler {
   void handlerAdded(Context& /*ctx*/) noexcept {}
 
   template <typename Context>
-  void handlerRemoved(Context& /*ctx*/) noexcept {}
+  void handlerRemoved(Context& /*ctx*/) noexcept {
+    resetServerActive();
+  }
 
   template <typename Context>
   void onPipelineActive(Context& /*ctx*/) noexcept {}
@@ -70,7 +77,15 @@ class RocketMetricsHandler {
     DCHECK(stats_ != nullptr);
     stats_->rocketInbound.incrementValue(1);
     if constexpr (Dir == Direction::Server) {
-      stats_->rocketActive.incrementValue(1);
+      const auto frameType =
+          msg.template get<rocket::server::RocketRequestMessage>().frame.type();
+      if (frameType == frame::FrameType::CANCEL) {
+        stats_->rocketActive.incrementValue(-1);
+        --active_;
+      } else {
+        stats_->rocketActive.incrementValue(1);
+        ++active_;
+      }
     } else {
       stats_->rocketActive.incrementValue(-1);
     }
@@ -91,6 +106,7 @@ class RocketMetricsHandler {
     stats_->rocketOutbound.incrementValue(1);
     if constexpr (Dir == Direction::Server) {
       stats_->rocketActive.incrementValue(-1);
+      --active_;
     } else {
       stats_->rocketActive.incrementValue(1);
     }
@@ -101,10 +117,22 @@ class RocketMetricsHandler {
   void onWriteReady(Context& /*ctx*/) noexcept {}
 
   template <typename Context>
-  void onPipelineInactive(Context& /*ctx*/) noexcept {}
+  void onPipelineInactive(Context& /*ctx*/) noexcept {
+    resetServerActive();
+  }
 
  private:
+  void resetServerActive() noexcept {
+    if constexpr (Dir == Direction::Server) {
+      if (active_ != 0) {
+        stats_->rocketActive.incrementValue(-active_);
+        active_ = 0;
+      }
+    }
+  }
+
   Stats* stats_;
+  int64_t active_{0};
 };
 
 } // namespace apache::thrift::fast_thrift

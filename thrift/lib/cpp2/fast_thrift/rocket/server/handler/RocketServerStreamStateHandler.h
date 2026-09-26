@@ -59,7 +59,8 @@ namespace apache::thrift::fast_thrift::rocket::server::handler {
  */
 class RocketServerStreamStateHandler {
  public:
-  RocketServerStreamStateHandler() = default;
+  explicit RocketServerStreamStateHandler(bool enableCancellation = true)
+      : enableCancellation_(enableCancellation) {}
 
   // === HandlerLifecycle ===
 
@@ -84,7 +85,9 @@ class RocketServerStreamStateHandler {
    *
    * - Connection-level frames (streamId == 0): pass through
    * - Request-initiating frames: register new stream, fire to app
-   * - CANCEL/ERROR: remove active stream (terminal), fire to app
+   * - CANCEL/ERROR: remove active stream (terminal), fire to app. When
+   *   application cancellation is disabled, CANCEL is ignored and the stream
+   *   remains active until its response.
    * - Non-terminal frames (e.g., REQUEST_N): pass through
    * - Unknown streamId: log warning and drop
    */
@@ -201,10 +204,15 @@ class RocketServerStreamStateHandler {
       logUnknownStreamId(desc, streamId);
       return apache::thrift::fast_thrift::channel_pipeline::Result::Success;
     }
+    auto& request = msg.get<RocketRequestMessage>();
+    if (!enableCancellation_ &&
+        request.frame.type() ==
+            apache::thrift::fast_thrift::frame::FrameType::CANCEL) {
+      return apache::thrift::fast_thrift::channel_pipeline::Result::Success;
+    }
     auto streamType = it->second.streamType;
     contexts.streams.erase(it);
 
-    auto& request = msg.get<RocketRequestMessage>();
     request.streamId = streamId;
     request.streamType = streamType;
     return ctx.fireRead(std::move(msg));
@@ -258,6 +266,8 @@ class RocketServerStreamStateHandler {
     request.streamType = streamType;
     return ctx.fireRead(std::move(msg));
   }
+
+  bool enableCancellation_{true};
 };
 
 } // namespace apache::thrift::fast_thrift::rocket::server::handler
