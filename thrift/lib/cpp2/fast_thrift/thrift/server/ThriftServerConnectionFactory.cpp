@@ -965,11 +965,11 @@ PipelineOwner ThriftServerConnectionFactory::buildRocketPipeline(
           server_setup_frame_handler_tag)
       .addNextDuplex<rocket::server::handler::RocketServerKeepAliveHandler>(
           server_keepalive_handler_tag)
+      .addNextDuplex<rocket::server::handler::RocketServerStreamStateHandler>(
+          server_stream_state_handler_tag, config_.enableCancellation)
       .addNextDuplex<
           rocket::server::handler::RocketServerRequestResponseHandler>(
-          server_request_response_frame_handler_tag)
-      .addNextDuplex<rocket::server::handler::RocketServerStreamStateHandler>(
-          server_stream_state_handler_tag, config_.enableCancellation);
+          server_request_response_frame_handler_tag);
   // Sits closest to the tail, so inbound it counts frames that survived
   // parsing/defragmentation and outbound it counts frames as the app emits
   // them, before batching or fragmentation can change the frame count.

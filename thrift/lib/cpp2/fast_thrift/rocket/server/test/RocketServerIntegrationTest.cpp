@@ -19,7 +19,7 @@
  *
  * Exercises the full server-side pipeline end-to-end:
  *   Transport -> FrameLengthParser -> FrameLengthEncoder -> FrameCodec ->
- *   Setup -> RequestResponse -> StreamState -> App
+ *   Setup -> StreamState -> RequestResponse -> App
  *
  * Uses TestAsyncTransport to inject client frames and capture server responses.
  * The test treats the adapter as a black box: injects client frames via
@@ -48,10 +48,12 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/ErrorCode.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/handler/FrameCodecHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameParser.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/FrameViews.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/handler/FrameDefragmentationHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/FragmentationHandlerConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/FrameHeaders.h>
@@ -244,6 +246,13 @@ class RocketServerIntegrationTest : public ::testing::Test {
             .streamId = streamId});
   }
 
+  std::unique_ptr<folly::IOBuf> createRequestNFrame(
+      uint32_t streamId, uint32_t requestN) {
+    return apache::thrift::fast_thrift::frame::write::serialize(
+        apache::thrift::fast_thrift::frame::write::RequestNHeader{
+            .streamId = streamId, .requestN = requestN});
+  }
+
   std::unique_ptr<folly::IOBuf> getWrittenFrame() {
     return testTransport_->getWrittenData();
   }
@@ -352,6 +361,46 @@ TEST_F(RocketServerIntegrationTest, RequestWithDataAndMetadata) {
   EXPECT_TRUE(req.frame.hasMetadata());
   EXPECT_GT(req.frame.metadataSize(), 0u);
   EXPECT_GT(req.frame.dataSize(), 0u);
+}
+
+TEST_F(
+    RocketServerIntegrationTest,
+    InvalidContinuationOnRequestResponseStreamSendsError) {
+  setupPipelineWithSetup();
+
+  injectFrame(
+      createRequestResponseFrame(1, nullptr, folly::IOBuf::copyBuffer("test")));
+  ASSERT_EQ(requestCount_, 1);
+  resetRequestTracking();
+
+  injectFrame(createRequestNFrame(1, 1));
+
+  EXPECT_EQ(requestCount_, 0)
+      << "invalid continuation must not reach the application";
+
+  auto responseFrame = getWrittenFrame();
+  ASSERT_NE(responseFrame, nullptr);
+  auto parsed = parseWrittenFrame(std::move(responseFrame));
+  ASSERT_TRUE(parsed.isValid());
+  ASSERT_EQ(parsed.type(), frame::FrameType::ERROR);
+  EXPECT_EQ(parsed.streamId(), 1u);
+  EXPECT_EQ(
+      static_cast<frame::ErrorCode>(frame::read::ErrorView(parsed).errorCode()),
+      frame::ErrorCode::INVALID);
+
+  RocketResponseMessage lateResponse{
+      .frame =
+          frame::ComposedFrame{
+              .frameType = frame::FrameType::PAYLOAD,
+              .streamId = 1,
+              .data = folly::IOBuf::copyBuffer("late"),
+              .complete = true,
+              .next = true,
+          },
+      .streamType = frame::FrameType::REQUEST_RESPONSE,
+  };
+  EXPECT_EQ(appAdapter_->write(std::move(lateResponse)), Result::Error)
+      << "ERROR(INVALID) must retire the stream";
 }
 
 // =============================================================================
@@ -494,6 +543,23 @@ TEST_F(RocketServerIntegrationTest, CancelFromClientRemovesStream) {
   EXPECT_EQ(req.streamId, 1u);
   EXPECT_EQ(
       req.frame.type(), apache::thrift::fast_thrift::frame::FrameType::CANCEL);
+  EXPECT_EQ(
+      req.streamType,
+      apache::thrift::fast_thrift::frame::FrameType::REQUEST_RESPONSE);
+
+  RocketResponseMessage lateResponse{
+      .frame =
+          frame::ComposedFrame{
+              .frameType = frame::FrameType::PAYLOAD,
+              .streamId = 1,
+              .data = folly::IOBuf::copyBuffer("late"),
+              .complete = true,
+              .next = true,
+          },
+      .streamType = frame::FrameType::REQUEST_RESPONSE,
+  };
+  EXPECT_EQ(appAdapter_->write(std::move(lateResponse)), Result::Error)
+      << "CANCEL must retire the stream";
 }
 
 TEST_F(RocketServerIntegrationTest, ResponseForCompletedStreamFails) {
