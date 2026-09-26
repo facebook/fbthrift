@@ -20,7 +20,11 @@
 
 #include <thrift/lib/cpp2/protocol/Json5Protocol.h>
 
+#include <cstdint>
+#include <string>
+
 #include <gtest/gtest.h>
+#include <folly/lang/Pretty.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_negative_test_constants.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_negative_test_types.h>
@@ -37,9 +41,13 @@ class JsonDecoderNegativeTest
     : public ::testing::TestWithParam<NegativeTestCase> {};
 
 TEST_P(JsonDecoderNegativeTest, RejectsInvalidInput) {
-  EXPECT_THROW(
-      (void)Json5ProtocolUtils::fromJson5<Example>(*GetParam().json()),
-      std::exception);
+  try {
+    (void)Json5ProtocolUtils::fromJson5<Example>(*GetParam().json());
+    ADD_FAILURE() << "expected the reader to reject the input";
+  } catch (const protocol::TProtocolException& e) {
+    EXPECT_EQ(e.getType(), protocol::TProtocolException::INVALID_DATA)
+        << e.what();
+  }
 }
 
 // Like Binary/Compact, malformed input is reported as TProtocolException
@@ -60,6 +68,18 @@ TEST(JsonDecoderErrorTypeTest, ReportsInvalidDataAsTProtocolException) {
       EXPECT_EQ(e.getType(), protocol::TProtocolException::INVALID_DATA)
           << json;
     }
+  }
+}
+
+TEST(JsonDecoderErrorTypeTest, TypeMismatchNamesTheFoundType) {
+  try {
+    (void)Json5ProtocolUtils::fromJson5<Example>(R"({"boolValue": 1})");
+    ADD_FAILURE() << "expected rejection";
+  } catch (const protocol::TProtocolException& e) {
+    auto expected = std::string("cannot parse `") +
+        folly::pretty_name<std::int64_t>() + "` as `bool`";
+    EXPECT_NE(std::string_view(e.what()).find(expected), std::string_view::npos)
+        << e.what();
   }
 }
 

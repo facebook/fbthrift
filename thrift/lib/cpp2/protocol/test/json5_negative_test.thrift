@@ -188,6 +188,14 @@ const list<NegativeTestCase> typeMismatchNegativeCases = [
     name = "IntegerExponentNotationQuoted",
     json = "{\"i64Value\": \"1e3\"}",
   },
+  NegativeTestCase{name = "StringGotInteger", json = "{\"stringValue\": 42}"},
+  NegativeTestCase{name = "StringGotBool", json = "{\"stringValue\": true}"},
+  NegativeTestCase{name = "StringGotFloat", json = "{\"stringValue\": 1.5}"},
+  NegativeTestCase{name = "BinaryGotInteger", json = "{\"binaryValue\": 42}"},
+  NegativeTestCase{
+    name = "BinaryObjectGotInteger",
+    json = "{\"binaryValue\": {\"utf-8\": 42}}",
+  },
 ];
 
 const list<NegativeTestCase> formatValidationNegativeCases = [

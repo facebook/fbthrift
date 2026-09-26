@@ -197,6 +197,11 @@ class Json5ProtocolReader final {
   template <typename To, typename From>
   static To convertTo(const From& from);
 
+  // Returns the string alternative of `primitive`; any other alternative is a
+  // parse error saying it cannot be parsed as `expected`.
+  static std::string takeStringValue(
+      Json5Reader::Primitive&& primitive, std::string_view expected);
+
   std::int64_t readIntegralValue();
 
   template <std::floating_point T>

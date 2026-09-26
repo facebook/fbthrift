@@ -20,10 +20,13 @@
 #include <limits>
 #include <optional>
 #include <stdexcept>
+#include <type_traits>
+#include <variant>
 
 #include <folly/Exception.h>
 #include <folly/String.h>
 #include <folly/base64.h>
+#include <folly/lang/Pretty.h>
 #include <thrift/lib/cpp2/protocol/detail/JsonUtils.h>
 
 namespace apache::thrift::json5::detail {
@@ -43,6 +46,30 @@ To Json5ProtocolReader::convertTo(const From& from) {
             .what());
   }
   return *result;
+}
+
+namespace {
+template <typename Variant>
+const char* getVariantTypePrettyName(const Variant& variant) {
+  return std::visit(
+      [](const auto& value) {
+        return folly::pretty_name<std::remove_cvref_t<decltype(value)>>();
+      },
+      variant);
+}
+} // namespace
+
+std::string Json5ProtocolReader::takeStringValue(
+    Json5Reader::Primitive&& primitive, std::string_view expected) {
+  auto* s = std::get_if<std::string>(&primitive);
+  if (!s) {
+    throwError(
+        fmt::format(
+            "cannot parse `{}` as `{}`",
+            getVariantTypePrettyName(primitive),
+            expected));
+  }
+  return std::move(*s);
 }
 
 // ============================================================================
@@ -344,7 +371,7 @@ Json5ProtocolReader::readEnumImpl() {
     return {.name = {}, .value = convertTo<std::int32_t>(*i)};
   }
 
-  return parseIdentifierString(std::get<std::string>(primitive));
+  return parseIdentifierString(takeStringValue(std::move(primitive), "enum"));
 }
 
 namespace {
@@ -417,7 +444,7 @@ std::string Json5ProtocolReader::readStringValue() {
   auto primitive = reader_.readPrimitive();
   endReadValue();
 
-  return std::get<std::string>(std::move(primitive));
+  return takeStringValue(std::move(primitive), "string");
 }
 
 std::string Json5ProtocolReader::readBinaryValue() {
@@ -427,13 +454,13 @@ std::string Json5ProtocolReader::readBinaryValue() {
     reader_.readObjectBegin();
     name = reader_.readObjectName();
     auto primitive = reader_.readPrimitive();
-    value = std::get<std::string>(std::move(primitive));
+    value = takeStringValue(std::move(primitive), "binary");
     reader_.readObjectEnd();
   } else {
     // folly::base64URLDecode accepts both standard and url-safe base64 string.
     name = "base64url";
     auto primitive = reader_.readPrimitive();
-    value = std::get<std::string>(std::move(primitive));
+    value = takeStringValue(std::move(primitive), "binary");
   }
   endReadValue();
 
@@ -514,7 +541,8 @@ T Json5ProtocolReader::readFloatingPointValue() {
     }
     return result;
   }
-  return convertTo<T>(std::get<std::string>(primitive));
+  return convertTo<T>(
+      takeStringValue(std::move(primitive), folly::pretty_name<T>()));
 }
 
 // ============================================================================
@@ -545,7 +573,7 @@ void Json5ProtocolReader::readBool(bool& value) {
     value = *b;
     return;
   }
-  value = parseBool(std::get<std::string>(primitive));
+  value = parseBool(takeStringValue(std::move(primitive), "bool"));
 }
 
 void Json5ProtocolReader::readBool(std::vector<bool>::reference value) {
