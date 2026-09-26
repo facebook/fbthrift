@@ -138,10 +138,10 @@ struct ThriftServerConnectionFactoryConfig {
   std::chrono::milliseconds reapTimeout{std::chrono::seconds{60}};
 
   // Ordered factories for embedder-registered thrift pipeline handlers. Each
-  // factory produces a fresh handler node per connection; they are spliced
-  // into the thrift pipeline after all built-in handlers, in registration
-  // order — first registered sits closest to the head, last registered sits
-  // immediately above the tail app adapter.
+  // factory produces a fresh dynamic or static handler per connection; they are
+  // spliced into the thrift pipeline after all built-in handlers, in
+  // registration order — first registered sits closest to the head, last
+  // registered sits immediately above the tail app adapter.
   std::vector<ThriftPipelineHandlerFactory> thriftPipelineHandlerFactories;
 
   // When set, insert RocketMetricsHandler / ThriftMetricsHandler into the

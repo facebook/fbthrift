@@ -33,7 +33,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/ErrorCode.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ConnectionPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
@@ -95,7 +95,7 @@ using ConnectionEventSet = ConcatEvents<
  */
 struct BackpressureStateEnabled {
   std::shared_ptr<backpressure_detail::ResumeControl> resumeControl_;
-  channel_pipeline::PipelineImpl* pipeline_{nullptr};
+  channel_pipeline::PipelineRef pipeline_;
   bool paused_{false};
 };
 struct BackpressureStateDisabled {};
@@ -146,7 +146,7 @@ const std::string& extensionName() {
  * that connection's shared state as its first constructor argument, resolved
  * once here so the extension never handles the store itself.
  */
-template <typename H>
+template <typename H, typename Context = ThriftPipelineHandlerContext>
 class ThriftExtensionPipelineHandler {
   static_assert(
       ThriftExtensionHandler<H> || HasResponseCallback<H> ||
@@ -175,8 +175,7 @@ class ThriftExtensionPipelineHandler {
       : handler_(makeHandler(store, std::forward<Args>(args)...)) {}
 
   channel_pipeline::Result onRead(
-      ThriftPipelineHandlerContext& ctx,
-      channel_pipeline::TypeErasedBox&& msg) noexcept {
+      Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
     auto& request = msg.get<ThriftServerRequestMessage>();
 
     // Lifecycle messages never reach the request callbacks, whatever H
@@ -218,25 +217,21 @@ class ThriftExtensionPipelineHandler {
   template <channel_pipeline::PipelineEvent E>
     requires std::same_as<E, ThriftServerWriteCompleteEvent> &&
       ThriftBackpressureExtensionHandler<H>
-  void on(
-      ThriftPipelineHandlerContext&,
-      const ThriftServerWriteCompleteEvent& event) noexcept {
+  void on(Context&, const ThriftServerWriteCompleteEvent& event) noexcept {
     onWriteComplete(event);
   }
 
   template <channel_pipeline::PipelineEvent E>
     requires std::same_as<E, ThriftServerSetupCompleteEvent> &&
       ThriftConnectionExtensionHandler<H>
-  void on(
-      ThriftPipelineHandlerContext&,
-      ThriftServerSetupCompleteEvent* event) noexcept {
+  void on(Context&, ThriftServerSetupCompleteEvent* event) noexcept {
     onSetupComplete(*event);
   }
 
   template <channel_pipeline::PipelineEvent E>
     requires std::same_as<E, ThriftServerConnectionClosedEvent> &&
       HasConnectionClosedCallback<H>
-  void on(ThriftPipelineHandlerContext&) noexcept {
+  void on(Context&) noexcept {
     if (established_ && connContext_ != nullptr) {
       const ThriftConnectionView view(*connContext_);
       handler_.onConnectionClosed(view);
@@ -248,7 +243,7 @@ class ThriftExtensionPipelineHandler {
   // rejected request does. Forwarding otherwise lets the next extension
   // contribute, and finally lets ThriftServerSetupHandler answer.
   channel_pipeline::Result onConnectionAttempted(
-      ThriftPipelineHandlerContext& ctx,
+      Context& ctx,
       channel_pipeline::TypeErasedBox&& msg,
       ConnectionSetupData& setup) noexcept
     requires ThriftConnectionExtensionHandler<H>
@@ -312,7 +307,7 @@ class ThriftExtensionPipelineHandler {
   }
 
   channel_pipeline::Result refuse(
-      ThriftPipelineHandlerContext& ctx,
+      Context& ctx,
       std::string_view callback,
       ConnectionVerdict verdict) noexcept {
     (void)ctx.fireWrite(
@@ -357,14 +352,14 @@ class ThriftExtensionPipelineHandler {
   {
     DCHECK(
         bp_.pipeline_ == nullptr ||
-        bp_.pipeline_->eventBase()->isInEventBaseThread())
+        bp_.pipeline_.eventBase()->isInEventBaseThread())
         << "ReadResumer::resume() must be called on the connection's EventBase";
     if (!bp_.paused_) {
       return;
     }
     bp_.paused_ = false;
     if (FOLLY_LIKELY(bp_.pipeline_ != nullptr)) {
-      bp_.pipeline_->onReadReady();
+      bp_.pipeline_.onReadReady();
     }
   }
 
@@ -374,15 +369,14 @@ class ThriftExtensionPipelineHandler {
     requires ThriftBackpressureExtensionHandler<H>
   {
     bp_.paused_ = false;
-    bp_.pipeline_ = nullptr;
+    bp_.pipeline_.reset();
     if (bp_.resumeControl_ != nullptr) {
       bp_.resumeControl_->owner = nullptr;
     }
   }
 
   channel_pipeline::Result onRequest(
-      ThriftPipelineHandlerContext& ctx,
-      channel_pipeline::TypeErasedBox&& msg) noexcept
+      Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept
     requires ThriftExtensionHandler<H>
   {
     auto& request = msg.get<ThriftServerRequestMessage>();
@@ -423,8 +417,7 @@ class ThriftExtensionPipelineHandler {
 
  public:
   channel_pipeline::Result onWrite(
-      ThriftPipelineHandlerContext& ctx,
-      channel_pipeline::TypeErasedBox&& msg) noexcept {
+      Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
     if constexpr (HasConnectionAnsweringCallback<H>) {
       auto& outbound = msg.get<ThriftServerResponseMessage>();
       if (FOLLY_UNLIKELY(
@@ -455,26 +448,28 @@ class ThriftExtensionPipelineHandler {
     return ctx.fireWrite(std::move(msg));
   }
 
-  void onException(
-      ThriftPipelineHandlerContext& ctx,
-      folly::exception_wrapper&& e) noexcept {
+  void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
     ctx.fireException(std::move(e));
   }
 
-  void onPipelineActive(ThriftPipelineHandlerContext&) noexcept {}
+  void onPipelineActive(Context&) noexcept {}
 
-  void onPipelineInactive(ThriftPipelineHandlerContext&) noexcept {
+  void onPipelineInactive(Context&) noexcept {
     if constexpr (ThriftBackpressureExtensionHandler<H>) {
       detachResumer();
     }
   }
 
-  void onReadReady(ThriftPipelineHandlerContext&) noexcept {}
-  void onWriteReady(ThriftPipelineHandlerContext&) noexcept {}
+  void onReadReady(Context&) noexcept {}
+  void onWriteReady(Context&) noexcept {}
 
-  void handlerAdded(ThriftPipelineHandlerContext& ctx) noexcept {
+  void handlerAdded(Context& ctx) noexcept {
     if constexpr (ThriftBackpressureExtensionHandler<H>) {
-      bp_.pipeline_ = ctx.pipeline();
+      if constexpr (std::is_pointer_v<decltype(ctx.pipeline())>) {
+        bp_.pipeline_ = channel_pipeline::PipelineRef(*ctx.pipeline());
+      } else {
+        bp_.pipeline_ = ctx.pipeline();
+      }
       bp_.resumeControl_ =
           std::make_shared<backpressure_detail::ResumeControl>();
       bp_.resumeControl_->owner = this;
@@ -486,7 +481,7 @@ class ThriftExtensionPipelineHandler {
     }
   }
 
-  void handlerRemoved(ThriftPipelineHandlerContext&) noexcept {
+  void handlerRemoved(Context&) noexcept {
     if constexpr (ThriftBackpressureExtensionHandler<H>) {
       detachResumer();
     }
@@ -534,23 +529,32 @@ class ThriftExtensionPipelineHandler {
 template <typename H, typename... Args>
 ThriftPipelineHandlerFactory makeThriftExtensionHandlerFactory(
     channel_pipeline::HandlerId id, Args... args) {
-  using Adapter = ThriftExtensionPipelineHandler<H>;
-  // The adapter is framework-owned, so this can only fire if the adapter itself
-  // stops being a pipeline handler — the same named diagnostic the native path
-  // gets from makeThriftPipelineHandlerFactory, rather than a failure deep
-  // inside makeHandlerNode.
+  using Adapter =
+      ThriftExtensionPipelineHandler<H, ThriftPipelineHandlerContext>;
+  using StaticAdapter =
+      ThriftExtensionPipelineHandler<H, StaticThriftPipelineHandlerContext>;
   static_assert(
       channel_pipeline::InboundHandler<Adapter, ThriftPipelineHandlerContext> ||
-          channel_pipeline::
-              OutboundHandler<Adapter, ThriftPipelineHandlerContext> ||
-          channel_pipeline::
-              DuplexHandler<Adapter, ThriftPipelineHandlerContext>,
-      "ThriftExtensionPipelineHandler<H> must satisfy the Inbound, Outbound, or "
-      "Duplex handler concept over ThriftPipelineHandlerContext");
-  return [id, args...](ExtensionStateStore& store) {
+      channel_pipeline::
+          OutboundHandler<Adapter, ThriftPipelineHandlerContext> ||
+      channel_pipeline::DuplexHandler<Adapter, ThriftPipelineHandlerContext>);
+  static_assert(
+      channel_pipeline::
+          InboundHandler<StaticAdapter, StaticThriftPipelineHandlerContext> ||
+      channel_pipeline::
+          OutboundHandler<StaticAdapter, StaticThriftPipelineHandlerContext> ||
+      channel_pipeline::
+          DuplexHandler<StaticAdapter, StaticThriftPipelineHandlerContext>);
+  auto dynamicFactory = [id, args...](ExtensionStateStore& store) {
     return channel_pipeline::detail::makeHandlerNode<Adapter>(
         id, std::make_unique<Adapter>(store, args...));
   };
+  auto staticFactory = [id, args...](ExtensionStateStore& store) {
+    return channel_pipeline::detail::makeErasedStaticHandler<StaticAdapter>(
+        id, store, args...);
+  };
+  return ThriftPipelineHandlerFactory(
+      std::move(dynamicFactory), std::move(staticFactory));
 }
 
 } // namespace apache::thrift::fast_thrift::thrift::server

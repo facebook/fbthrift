@@ -542,7 +542,9 @@ void FastThriftServer::start() {
         thriftPipelineHandlerFactories_.begin(),
         server::makeThriftPipelineHandlerFactory<
             server::TProcessorEventHandlerBridge<
-                channel_pipeline::detail::ContextImpl>>(
+                channel_pipeline::detail::ContextImpl>,
+            server::TProcessorEventHandlerBridge<
+                channel_pipeline::detail::StaticHandlerContext>>(
             server::deriveThriftPipelineHandlerId(
                 kEventHandlerBridgeName, /*index=*/0),
             server::TProcessorEventHandlerBridgeConfig{

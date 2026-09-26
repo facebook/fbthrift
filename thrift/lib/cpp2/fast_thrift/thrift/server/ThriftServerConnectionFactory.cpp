@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/ThriftServerConnectionFactory.h>
 
+#include <algorithm>
 #include <memory>
 #include <type_traits>
 #include <utility>
@@ -214,40 +215,73 @@ PipelineOwner selectStaticRocketStats(
       config, allocator, evb, transportHandler, appAdapter, statsShard);
 }
 
-template <typename Builder>
+template <bool WithExtensions, typename Builder>
 PipelineOwner finishStaticThriftPipeline(
-    Builder&& builder, bool enableCancellation) {
-  if (enableCancellation) {
+    Builder&& builder,
+    bool enableCancellation,
+    const ThriftServerConnectionFactoryConfig& config,
+    ExtensionStateStore& extensionStates) {
+  if constexpr (WithExtensions) {
+    std::vector<channel_pipeline::detail::ErasedStaticHandler> handlers;
+    handlers.reserve(config.thriftPipelineHandlerFactories.size());
+    for (const auto& factory : config.thriftPipelineHandlerFactories) {
+      handlers.push_back(factory.makeStatic(extensionStates));
+    }
+    if (enableCancellation) {
+      return PipelineOwner(
+          std::forward<Builder>(builder)
+              .addStaticHandlers(std::move(handlers))
+              .template addNextDuplexTemplate<ThriftServerSetupHandler>(
+                  thrift_server_setup_handler_tag)
+              .template addNextDuplexTemplate<
+                  ThriftServerRequestLifecycleHandler>(
+                  thrift_server_request_lifecycle_handler_tag)
+              .build());
+    }
+    return PipelineOwner(
+        std::forward<Builder>(builder)
+            .addStaticHandlers(std::move(handlers))
+            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
+                thrift_server_setup_handler_tag)
+            .build());
+  } else {
+    if (enableCancellation) {
+      return PipelineOwner(
+          std::forward<Builder>(builder)
+              .template addNextDuplexTemplate<ThriftServerSetupHandler>(
+                  thrift_server_setup_handler_tag)
+              .template addNextDuplexTemplate<
+                  ThriftServerRequestLifecycleHandler>(
+                  thrift_server_request_lifecycle_handler_tag)
+              .build());
+    }
     return PipelineOwner(
         std::forward<Builder>(builder)
             .template addNextDuplexTemplate<ThriftServerSetupHandler>(
                 thrift_server_setup_handler_tag)
-            .template addNextDuplexTemplate<
-                ThriftServerRequestLifecycleHandler>(
-                thrift_server_request_lifecycle_handler_tag)
             .build());
   }
-  return PipelineOwner(
-      std::forward<Builder>(builder)
-          .template addNextDuplexTemplate<ThriftServerSetupHandler>(
-              thrift_server_setup_handler_tag)
-          .build());
 }
 
 template <bool WithWriteBuffer, bool WithExtensions, typename Builder>
 PipelineOwner addStaticWriteBuffer(
     Builder&& builder,
     const ThriftServerConnectionFactoryConfig& config,
-    ExtensionStateStore&) {
+    ExtensionStateStore& extensionStates) {
   if constexpr (WithWriteBuffer) {
-    return finishStaticThriftPipeline(
+    return finishStaticThriftPipeline<WithExtensions>(
         std::forward<Builder>(builder)
             .template addNextDuplexTemplate<WriteBufferBackpressureHandler>(
                 write_buffer_backpressure_handler_tag),
-        config.enableCancellation);
+        config.enableCancellation,
+        config,
+        extensionStates);
   } else {
-    return finishStaticThriftPipeline(
-        std::forward<Builder>(builder), config.enableCancellation);
+    return finishStaticThriftPipeline<WithExtensions>(
+        std::forward<Builder>(builder),
+        config.enableCancellation,
+        config,
+        extensionStates);
   }
 }
 
@@ -391,7 +425,22 @@ PipelineOwner selectStaticExtensions(
     ExtensionStateStore& extensionStates,
     const ThriftServerConnectionFactoryConfig& config,
     ServerStatsShard* statsShard) {
-  DCHECK(!withExtensions);
+  if (withExtensions) {
+    return buildStaticThriftPipeline<
+        WithStats,
+        WithHeaders,
+        WithChecksum,
+        WithWriteBuffer,
+        true>(
+        evb,
+        transportAdapter,
+        tailAdapter,
+        allocator,
+        std::move(connContext),
+        extensionStates,
+        config,
+        statsShard);
+  }
   return buildStaticThriftPipeline<
       WithStats,
       WithHeaders,
@@ -778,8 +827,12 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   using SetupHandler =
       ThriftServerSetupHandler<channel_pipeline::detail::ContextImpl>;
   PipelineOwner thriftPipeline;
+  const bool supportsStaticHandlers = std::all_of(
+      config_.thriftPipelineHandlerFactories.begin(),
+      config_.thriftPipelineHandlerFactories.end(),
+      [](const auto& factory) { return factory.supportsStaticPipeline(); });
   if (config_.channelPipelineMode == ChannelPipelineMode::Static &&
-      config_.thriftPipelineHandlerFactories.empty()) {
+      supportsStaticHandlers) {
     thriftPipeline = selectStaticThriftStats(
         config_,
         evb,

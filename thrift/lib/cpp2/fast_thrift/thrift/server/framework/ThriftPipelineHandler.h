@@ -18,12 +18,14 @@
 
 #include <functional>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ErasedStaticHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/HandlerNode.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ExtensionStateStore.h>
@@ -38,6 +40,9 @@ namespace apache::thrift::fast_thrift::thrift::server {
  */
 // NOLINTNEXTLINE(facebook-hte-DetailCall)
 using ThriftPipelineHandlerContext = channel_pipeline::detail::ContextImpl;
+// NOLINTNEXTLINE(facebook-hte-DetailCall)
+using StaticThriftPipelineHandlerContext =
+    channel_pipeline::detail::StaticHandlerContext;
 
 /**
  * A per-connection factory that produces a fresh, type-erased handler node for
@@ -49,8 +54,41 @@ using ThriftPipelineHandlerContext = channel_pipeline::detail::ContextImpl;
  * connection is passed the same one, which is how cooperating extensions reach
  * a common object; a handler that needs none ignores it.
  */
-using ThriftPipelineHandlerFactory =
-    std::function<channel_pipeline::detail::HandlerNode(ExtensionStateStore&)>;
+class ThriftPipelineHandlerFactory {
+ public:
+  using DynamicFactory = std::function<channel_pipeline::detail::HandlerNode(
+      ExtensionStateStore&)>;
+  using StaticFactory =
+      std::function<channel_pipeline::detail::ErasedStaticHandler(
+          ExtensionStateStore&)>;
+
+  explicit ThriftPipelineHandlerFactory(
+      DynamicFactory dynamicFactory, StaticFactory staticFactory = {})
+      : dynamicFactory_(std::move(dynamicFactory)),
+        staticFactory_(std::move(staticFactory)) {}
+
+  channel_pipeline::detail::HandlerNode operator()(
+      ExtensionStateStore& store) const {
+    return dynamicFactory_(store);
+  }
+
+  bool supportsStaticPipeline() const noexcept {
+    return static_cast<bool>(staticFactory_);
+  }
+
+  channel_pipeline::detail::ErasedStaticHandler makeStatic(
+      ExtensionStateStore& store) const {
+    if (!staticFactory_) {
+      throw std::logic_error(
+          "Thrift pipeline handler factory does not support static pipelines");
+    }
+    return staticFactory_(store);
+  }
+
+ private:
+  DynamicFactory dynamicFactory_;
+  StaticFactory staticFactory_;
+};
 
 /**
  * Derive a pipeline handler id from a namespace (e.g. a module name, or empty
@@ -90,7 +128,7 @@ inline channel_pipeline::HandlerId deriveThriftPipelineHandlerId(
  *           diagnostics.
  * @param args Constructor arguments, copied into every per-connection instance.
  */
-template <typename T, typename... Args>
+template <typename T, typename StaticT = void, typename... Args>
 ThriftPipelineHandlerFactory makeThriftPipelineHandlerFactory(
     channel_pipeline::HandlerId id, Args... args) {
   static_assert(
@@ -106,10 +144,28 @@ ThriftPipelineHandlerFactory makeThriftPipelineHandlerFactory(
       "basis in framework/NativeThriftHandlerAllowlist.h (Thrift-owned). Prefer "
       "the constrained observer/modifier extension API "
       "(FastServerModule::addThriftExtension) for user handlers.");
-  return [id, args...](ExtensionStateStore&) {
+  auto dynamicFactory = [id, args...](ExtensionStateStore&) {
     return channel_pipeline::detail::makeHandlerNode<T>(
         id, std::make_unique<T>(args...));
   };
+  if constexpr (std::is_void_v<StaticT>) {
+    return ThriftPipelineHandlerFactory(std::move(dynamicFactory));
+  } else {
+    static_assert(
+        channel_pipeline::
+            InboundHandler<StaticT, StaticThriftPipelineHandlerContext> ||
+        channel_pipeline::
+            OutboundHandler<StaticT, StaticThriftPipelineHandlerContext> ||
+        channel_pipeline::
+            DuplexHandler<StaticT, StaticThriftPipelineHandlerContext>);
+    static_assert(kIsAllowedNativeThriftHandler<StaticT>);
+    auto staticFactory = [id, args...](ExtensionStateStore&) {
+      return channel_pipeline::detail::makeErasedStaticHandler<StaticT>(
+          id, args...);
+    };
+    return ThriftPipelineHandlerFactory(
+        std::move(dynamicFactory), std::move(staticFactory));
+  }
 }
 
 } // namespace apache::thrift::fast_thrift::thrift::server

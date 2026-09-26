@@ -25,7 +25,7 @@ namespace apache::thrift::fast_thrift::thrift::server {
 // included — so this allowlist can exempt the adapter without framework/ taking
 // a dependency on extension/, and without an include cycle through
 // ThriftPipelineHandler.h.
-template <typename H>
+template <typename H, typename Context>
 class ThriftExtensionPipelineHandler;
 
 // Forward declaration of the framework's TProcessorEventHandler bridge
@@ -77,9 +77,10 @@ template <typename T>
 inline constexpr bool kIsAllowedNativeThriftHandler =
     native_allowlist_detail::contains<T, AllowedNativeThriftHandlers>;
 
-template <typename H>
+template <typename H, typename Context>
 inline constexpr bool
-    kIsAllowedNativeThriftHandler<ThriftExtensionPipelineHandler<H>> = true;
+    kIsAllowedNativeThriftHandler<ThriftExtensionPipelineHandler<H, Context>> =
+        true;
 
 /**
  * The framework's TProcessorEventHandler bridge is likewise always permitted.

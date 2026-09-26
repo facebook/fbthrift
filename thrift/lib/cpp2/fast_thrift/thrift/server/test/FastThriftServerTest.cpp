@@ -1263,7 +1263,9 @@ TEST(FastThriftServerExtensionTest, CoalescesClassicEventHandlers) {
   auto second =
       std::make_shared<CountingLegacyEventHandler>(requests, connections);
 
-  ftt::FastThriftServer server(makeLoopbackConfig());
+  auto config = makeLoopbackConfig();
+  config.channelPipelineMode = ftt::ChannelPipelineMode::Static;
+  ftt::FastThriftServer server(std::move(config));
   server.setInterface(handler);
   server.addProcessorEventHandler(first);
   server.addServerEventHandler(first);
@@ -2166,7 +2168,9 @@ TEST(FastThriftServerBackpressureExtensionTest, PauseThenResumeKeepsServing) {
   rec.pauseOnce.store(true, std::memory_order_relaxed);
   auto handler = std::make_shared<TestHandler>();
 
-  ftt::FastThriftServer server(makeLoopbackConfig());
+  auto config = makeLoopbackConfig();
+  config.channelPipelineMode = ftt::ChannelPipelineMode::Static;
+  ftt::FastThriftServer server(std::move(config));
   server.setInterface(handler);
   server.setIOThreadPool(makeFixedSizePool(1));
   server.addModule(
