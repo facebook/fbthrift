@@ -19,6 +19,8 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/EndpointAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ErasedStaticHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/StaticHandler.h>
 
 #include <cstddef>
@@ -27,6 +29,7 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 namespace apache::thrift::fast_thrift::channel_pipeline::detail {
 
@@ -39,6 +42,56 @@ concept StaticHandlerForDirection =
     (Direction == StaticHandlerDirection::Outbound &&
      OutboundHandler<H, Context>) ||
     (Direction == StaticHandlerDirection::Duplex && DuplexHandler<H, Context>);
+
+struct NoErasedStaticHandlers {
+  static constexpr bool enabled = false;
+  static constexpr std::size_t index = 0;
+};
+
+template <std::size_t Index>
+struct ErasedStaticHandlersAt {
+  static constexpr bool enabled = true;
+  static constexpr std::size_t index = Index;
+};
+
+template <bool Enabled>
+class ErasedStaticHandlerStorage;
+
+template <>
+class ErasedStaticHandlerStorage<true> {
+ public:
+  explicit ErasedStaticHandlerStorage(
+      std::vector<ErasedStaticHandler>&& handlers) noexcept
+      : handlers_(std::move(handlers)) {}
+  std::size_t size() const noexcept { return handlers_.size(); }
+  ErasedStaticHandler* begin() noexcept { return handlers_.data(); }
+  ErasedStaticHandler* end() noexcept {
+    return handlers_.data() + handlers_.size();
+  }
+  ErasedStaticHandler& operator[](std::size_t index) noexcept {
+    return handlers_[index];
+  }
+  const ErasedStaticHandler& operator[](std::size_t index) const noexcept {
+    return handlers_[index];
+  }
+
+ private:
+  std::vector<ErasedStaticHandler> handlers_;
+};
+
+template <>
+class ErasedStaticHandlerStorage<false> {
+ public:
+  explicit ErasedStaticHandlerStorage(
+      std::vector<ErasedStaticHandler>&&) noexcept {}
+  constexpr std::size_t size() const noexcept { return 0; }
+  ErasedStaticHandler* begin() noexcept { return nullptr; }
+  ErasedStaticHandler* end() noexcept { return nullptr; }
+  ErasedStaticHandler& operator[](std::size_t) noexcept { std::terminate(); }
+  const ErasedStaticHandler& operator[](std::size_t) const noexcept {
+    std::terminate();
+  }
+};
 
 template <typename H, HandlerId Id, StaticHandlerDirection Direction>
 struct StaticHandlerSpec {
@@ -240,11 +293,15 @@ template <
     typename TailHandler,
     typename Allocator,
     typename StateTuple,
+    typename StaticHandlerConfig,
     typename... Specs>
 class StaticPipelineImpl final {
  public:
   using Self = StaticPipelineImpl;
   static constexpr std::size_t kHandlerCount = sizeof...(Specs);
+  static constexpr bool kHasStaticHandlers = StaticHandlerConfig::enabled;
+  static constexpr std::size_t kStaticHandlerIndex = StaticHandlerConfig::index;
+  static_assert(!kHasStaticHandlers || kStaticHandlerIndex <= kHandlerCount);
   using EndpointContext = StaticContext<Self, kHandlerCount, 0, StateTuple>;
 
   class Guard {
@@ -286,15 +343,18 @@ class StaticPipelineImpl final {
       TailHandler* tailHandler,
       Allocator* allocator,
       StateTuple&& state,
-      FactoryTuple& factories)
+      FactoryTuple& factories,
+      std::vector<ErasedStaticHandler>&& staticHandlers)
       : eventBase_(eventBase),
         headHandler_(headHandler),
         tailHandler_(tailHandler),
         allocator_(allocator),
         stateStorage_(std::move(state)),
         handlers_(this, factories),
+        staticHandlers_(std::move(staticHandlers)),
         endpointContext_(this) {
     static_assert(ValidEndpointPair<HeadHandler, TailHandler, EndpointContext>);
+    bindStaticHandlerContexts();
     initializeHooks(std::make_index_sequence<kHandlerCount>{});
   }
 
@@ -347,6 +407,15 @@ class StaticPipelineImpl final {
 
   template <std::size_t Index>
   Result fireReadFrom(TypeErasedBox&& msg) noexcept {
+    if constexpr (kHasStaticHandlers && Index == kStaticHandlerIndex) {
+      return fireReadFromStaticHandler(0, std::move(msg));
+    } else {
+      return fireReadTypedAt<Index>(std::move(msg));
+    }
+  }
+
+  template <std::size_t Index>
+  Result fireReadTypedAt(TypeErasedBox&& msg) noexcept {
     if constexpr (Index == kHandlerCount) {
       return tailHandler_->onRead(endpointContext_, std::move(msg));
     } else {
@@ -363,6 +432,15 @@ class StaticPipelineImpl final {
 
   template <std::size_t Count>
   Result fireWriteFrom(TypeErasedBox&& msg) noexcept {
+    if constexpr (kHasStaticHandlers && Count == kStaticHandlerIndex) {
+      return fireWriteFromStaticHandler(staticHandlers_.size(), std::move(msg));
+    } else {
+      return fireWriteTypedAt<Count>(std::move(msg));
+    }
+  }
+
+  template <std::size_t Count>
+  Result fireWriteTypedAt(TypeErasedBox&& msg) noexcept {
     if constexpr (Count == 0) {
       return headHandler_->onWrite(endpointContext_, std::move(msg));
     } else {
@@ -379,6 +457,15 @@ class StaticPipelineImpl final {
 
   template <std::size_t Index>
   void fireExceptionFrom(folly::exception_wrapper&& e) noexcept {
+    if constexpr (kHasStaticHandlers && Index == kStaticHandlerIndex) {
+      fireExceptionFromStaticHandler(0, std::move(e));
+    } else {
+      fireExceptionTypedAt<Index>(std::move(e));
+    }
+  }
+
+  template <std::size_t Index>
+  void fireExceptionTypedAt(folly::exception_wrapper&& e) noexcept {
     if constexpr (Index == kHandlerCount) {
       tailHandler_->onException(std::move(e));
     } else {
@@ -393,9 +480,26 @@ class StaticPipelineImpl final {
     }
   }
 
+  template <std::size_t Index>
+  std::size_t contextHandlerIndex() const noexcept {
+    return logicalHandlerIndex<Index>();
+  }
+
+  template <std::size_t Index>
+  void deactivateFromContext() noexcept {
+    if constexpr (kHasStaticHandlers && Index < kStaticHandlerIndex) {
+      deactivateTypedHandlers<Index + 1>();
+    } else {
+      deactivateFrom<Index + 1>();
+    }
+  }
+
   template <std::size_t Count>
   void deactivateFrom() noexcept {
-    if constexpr (Count > 0) {
+    if constexpr (kHasStaticHandlers && Count == kStaticHandlerIndex) {
+      deactivateStaticHandlersFrom(staticHandlers_.size());
+      deactivateTypedHandlers<Count>();
+    } else if constexpr (Count > 0) {
       auto& slot = handlerAt<Count - 1>();
       using H = typename std::remove_reference_t<decltype(slot)>::Handler;
       using Context = typename std::remove_reference_t<decltype(slot)>::Context;
@@ -412,14 +516,24 @@ class StaticPipelineImpl final {
 
   Result sendRead(HandlerId id, TypeErasedBox&& msg) noexcept {
     Guard guard(this);
+    if (auto* handler = findStaticHandler(id)) {
+      return handler->onRead(std::move(msg));
+    }
     return sendReadAt<0>(id, std::move(msg));
   }
   Result sendWrite(HandlerId id, TypeErasedBox&& msg) noexcept {
     Guard guard(this);
+    if (auto* handler = findStaticHandler(id)) {
+      return handler->onWrite(std::move(msg));
+    }
     return sendWriteAt<0>(id, std::move(msg));
   }
   void sendException(HandlerId id, folly::exception_wrapper&& e) noexcept {
     Guard guard(this);
+    if (auto* handler = findStaticHandler(id)) {
+      handler->onException(std::move(e));
+      return;
+    }
     sendExceptionAt<0>(id, std::move(e));
   }
 
@@ -444,7 +558,9 @@ class StaticPipelineImpl final {
   bool isClosed() const noexcept {
     return state_ == State::Closing || state_ == State::Closed;
   }
-  static constexpr std::size_t handlerCount() noexcept { return kHandlerCount; }
+  std::size_t handlerCount() const noexcept {
+    return kHandlerCount + staticHandlers_.size();
+  }
   bool hasPendingWriteReady() const noexcept {
     return !writeReadyList_.empty();
   }
@@ -599,14 +715,14 @@ class StaticPipelineImpl final {
           break;
         }
         next->lastNotifiedGeneration = generation;
-        if (next->handlerIndex == kHandlerCount) {
+        if (next->handlerIndex == handlerCount()) {
           if constexpr (requires(HeadHandler& h, EndpointContext& ctx) {
                           h.onWriteReady(ctx);
                         }) {
             headHandler_->onWriteReady(endpointContext_);
           }
         } else {
-          dispatchWriteReady<0>(next->handlerIndex);
+          dispatchWriteReadyTarget(next->handlerIndex);
         }
         if (isClosed() || headWriteReadyHook_.hook.is_linked()) {
           blocked = true;
@@ -645,7 +761,7 @@ class StaticPipelineImpl final {
           break;
         }
         next->lastNotifiedGeneration = generation;
-        dispatchReadReady<0>(next->handlerIndex);
+        dispatchReadReadyTarget(next->handlerIndex);
         if (isClosed()) {
           break;
         }
@@ -705,7 +821,7 @@ class StaticPipelineImpl final {
     } else {
       using Spec = std::tuple_element_t<Index, std::tuple<Specs...>>;
       if (id == Spec::id) {
-        return fireReadFrom<Index>(std::move(msg));
+        return fireReadTypedAt<Index>(std::move(msg));
       }
       return sendReadAt<Index + 1>(id, std::move(msg));
     }
@@ -717,7 +833,7 @@ class StaticPipelineImpl final {
     } else {
       using Spec = std::tuple_element_t<Index, std::tuple<Specs...>>;
       if (id == Spec::id) {
-        return fireWriteFrom<Index + 1>(std::move(msg));
+        return fireWriteTypedAt<Index + 1>(std::move(msg));
       }
       return sendWriteAt<Index + 1>(id, std::move(msg));
     }
@@ -727,7 +843,7 @@ class StaticPipelineImpl final {
     if constexpr (Index < kHandlerCount) {
       using Spec = std::tuple_element_t<Index, std::tuple<Specs...>>;
       if (id == Spec::id) {
-        fireExceptionFrom<Index>(std::move(e));
+        fireExceptionTypedAt<Index>(std::move(e));
         return;
       }
       sendExceptionAt<Index + 1>(id, std::move(e));
@@ -737,9 +853,15 @@ class StaticPipelineImpl final {
   template <std::size_t... Index>
   void activateHandlers(std::index_sequence<Index...>) noexcept {
     (activateHandler<Index>(), ...);
+    if constexpr (kHasStaticHandlers && kStaticHandlerIndex == kHandlerCount) {
+      activateStaticHandlers();
+    }
   }
   template <std::size_t Index>
   void activateHandler() noexcept {
+    if constexpr (kHasStaticHandlers && Index == kStaticHandlerIndex) {
+      activateStaticHandlers();
+    }
     auto& slot = handlerAt<Index>();
     using H = typename std::remove_reference_t<decltype(slot)>::Handler;
     using Context = typename std::remove_reference_t<decltype(slot)>::Context;
@@ -752,6 +874,23 @@ class StaticPipelineImpl final {
     }
   }
 
+  template <std::size_t Count>
+  void deactivateTypedHandlers() noexcept {
+    if constexpr (Count > 0) {
+      auto& slot = handlerAt<Count - 1>();
+      using H = typename std::remove_reference_t<decltype(slot)>::Handler;
+      using Context = typename std::remove_reference_t<decltype(slot)>::Context;
+      if constexpr (requires(H& handler, Context& context) {
+                      {
+                        handler.onPipelineInactive(context)
+                      } noexcept -> std::same_as<void>;
+                    }) {
+        slot.handler().onPipelineInactive(slot.context());
+      }
+      deactivateTypedHandlers<Count - 1>();
+    }
+  }
+
   void callHandlerAdded() noexcept {
     Guard guard(this);
     headHandler_->handlerAdded();
@@ -760,8 +899,18 @@ class StaticPipelineImpl final {
   }
   template <std::size_t... Index>
   void callHandlerAddedImpl(std::index_sequence<Index...>) noexcept {
-    (handlerAt<Index>().handler().handlerAdded(handlerAt<Index>().context()),
-     ...);
+    (callHandlerAddedAt<Index>(), ...);
+    if constexpr (kHasStaticHandlers && kStaticHandlerIndex == kHandlerCount) {
+      callStaticHandlersAdded();
+    }
+  }
+
+  template <std::size_t Index>
+  void callHandlerAddedAt() noexcept {
+    if constexpr (kHasStaticHandlers && Index == kStaticHandlerIndex) {
+      callStaticHandlersAdded();
+    }
+    handlerAt<Index>().handler().handlerAdded(handlerAt<Index>().context());
   }
   void callHandlerRemovedImpl() noexcept {
     tailHandler_->handlerRemoved();
@@ -770,26 +919,47 @@ class StaticPipelineImpl final {
   }
   template <std::size_t Count>
   void removeHandlers() noexcept {
-    if constexpr (Count > 0) {
+    if constexpr (kHasStaticHandlers && Count == kStaticHandlerIndex) {
+      callStaticHandlersRemoved();
+      removeTypedHandlers<Count>();
+    } else if constexpr (Count > 0) {
       auto& slot = handlerAt<Count - 1>();
       slot.handler().handlerRemoved(slot.context());
       removeHandlers<Count - 1>();
     }
   }
 
+  template <std::size_t Count>
+  void removeTypedHandlers() noexcept {
+    if constexpr (Count > 0) {
+      auto& slot = handlerAt<Count - 1>();
+      slot.handler().handlerRemoved(slot.context());
+      removeTypedHandlers<Count - 1>();
+    }
+  }
+
   template <std::size_t... Index>
   void initializeHooks(std::index_sequence<Index...>) noexcept {
-    headWriteReadyHook_.handlerIndex = kHandlerCount;
+    headWriteReadyHook_.handlerIndex = handlerCount();
     (initializeHook<Index>(), ...);
+    for (std::size_t i = 0; i < staticHandlers_.size(); ++i) {
+      const auto logicalIndex = kStaticHandlerIndex + i;
+      if (auto* hook = staticHandlers_[i].writeReadyHook()) {
+        hook->handlerIndex = logicalIndex;
+      }
+      if (auto* hook = staticHandlers_[i].readReadyHook()) {
+        hook->handlerIndex = logicalIndex;
+      }
+    }
   }
   template <std::size_t Index>
   void initializeHook() noexcept {
     auto& slot = handlerAt<Index>();
     if (auto* hook = slot.writeReadyHook()) {
-      hook->handlerIndex = Index;
+      hook->handlerIndex = logicalHandlerIndex<Index>();
     }
     if (auto* hook = slot.readReadyHook()) {
-      hook->handlerIndex = Index;
+      hook->handlerIndex = logicalHandlerIndex<Index>();
     }
   }
   template <std::size_t Index>
@@ -809,10 +979,18 @@ class StaticPipelineImpl final {
     }
   }
 
+  void dispatchWriteReadyTarget(std::size_t target) noexcept {
+    if (isStaticHandlerIndex(target)) {
+      staticHandlers_[target - kStaticHandlerIndex].onWriteReady();
+      return;
+    }
+    dispatchWriteReady<0>(target);
+  }
+
   template <std::size_t Index>
   void dispatchWriteReady(std::size_t target) noexcept {
     if constexpr (Index < kHandlerCount) {
-      if (target == Index) {
+      if (target == logicalHandlerIndex<Index>()) {
         auto& slot = handlerAt<Index>();
         using H = typename std::remove_reference_t<decltype(slot)>::Handler;
         using Context =
@@ -825,10 +1003,18 @@ class StaticPipelineImpl final {
       dispatchWriteReady<Index + 1>(target);
     }
   }
+  void dispatchReadReadyTarget(std::size_t target) noexcept {
+    if (isStaticHandlerIndex(target)) {
+      staticHandlers_[target - kStaticHandlerIndex].onReadReady();
+      return;
+    }
+    dispatchReadReady<0>(target);
+  }
+
   template <std::size_t Index>
   void dispatchReadReady(std::size_t target) noexcept {
     if constexpr (Index < kHandlerCount) {
-      if (target == Index) {
+      if (target == logicalHandlerIndex<Index>()) {
         auto& slot = handlerAt<Index>();
         using H = typename std::remove_reference_t<decltype(slot)>::Handler;
         using Context =
@@ -869,6 +1055,14 @@ class StaticPipelineImpl final {
   }
   template <PipelineEvent E, std::size_t Index>
   void dispatchHandlerEvent(const void* payload) noexcept {
+    if constexpr (kHasStaticHandlers && Index + 1 == kStaticHandlerIndex) {
+      dispatchStaticHandlerEvents(eventKey<E>(), payload);
+    }
+    dispatchTypedHandlerEvent<E, Index>(payload);
+  }
+
+  template <PipelineEvent E, std::size_t Index>
+  void dispatchTypedHandlerEvent(const void* payload) noexcept {
     auto& slot = handlerAt<Index>();
     using Slot = std::remove_reference_t<decltype(slot)>;
     using H = typename Slot::Handler;
@@ -890,6 +1084,9 @@ class StaticPipelineImpl final {
   void dispatchHandlerEventsReverse(
       const void* payload, std::index_sequence<Index...>) noexcept {
     (dispatchHandlerEvent<E, kHandlerCount - 1 - Index>(payload), ...);
+    if constexpr (kHasStaticHandlers && kStaticHandlerIndex == 0) {
+      dispatchStaticHandlerEvents(eventKey<E>(), payload);
+    }
   }
   template <typename H, PipelineEvent... Evs>
   static void dispatchEndpointEventSetByKey(
@@ -915,13 +1112,16 @@ class StaticPipelineImpl final {
       EventKey key, const void* payload, Events<Evs...>) noexcept {
     static_cast<void>(
         ((key == eventKey<Evs>()
-              ? (dispatchHandlerEvent<Evs, Index>(payload), true)
+              ? (dispatchTypedHandlerEvent<Evs, Index>(payload), true)
               : false) ||
          ...));
   }
 
   template <std::size_t Index>
   void dispatchHandlerEventByKey(EventKey key, const void* payload) noexcept {
+    if constexpr (kHasStaticHandlers && Index + 1 == kStaticHandlerIndex) {
+      dispatchStaticHandlerEvents(key, payload);
+    }
     auto& slot = handlerAt<Index>();
     using H = typename std::remove_reference_t<decltype(slot)>::Handler;
     if constexpr (requires { typename H::SubscribedEvents; }) {
@@ -936,6 +1136,227 @@ class StaticPipelineImpl final {
       const void* payload,
       std::index_sequence<Index...>) noexcept {
     (dispatchHandlerEventByKey<kHandlerCount - 1 - Index>(key, payload), ...);
+    if constexpr (kHasStaticHandlers && kStaticHandlerIndex == 0) {
+      dispatchStaticHandlerEvents(key, payload);
+    }
+  }
+
+  template <std::size_t TypedIndex>
+  std::size_t logicalHandlerIndex() const noexcept {
+    if constexpr (kHasStaticHandlers && TypedIndex >= kStaticHandlerIndex) {
+      return TypedIndex + staticHandlers_.size();
+    }
+    return TypedIndex;
+  }
+
+  bool isStaticHandlerIndex(std::size_t index) const noexcept {
+    return kHasStaticHandlers && index >= kStaticHandlerIndex &&
+        index < kStaticHandlerIndex + staticHandlers_.size();
+  }
+
+  ErasedStaticHandler* findStaticHandler(HandlerId id) noexcept {
+    for (auto& handler : staticHandlers_) {
+      if (handler.handlerId() == id) {
+        return &handler;
+      }
+    }
+    return nullptr;
+  }
+
+  Result fireReadFromStaticHandler(
+      std::size_t index, TypeErasedBox&& msg) noexcept {
+    if (index == staticHandlers_.size()) {
+      return fireReadTypedAt<kStaticHandlerIndex>(std::move(msg));
+    }
+    return staticHandlers_[index].onRead(std::move(msg));
+  }
+
+  Result fireWriteFromStaticHandler(
+      std::size_t count, TypeErasedBox&& msg) noexcept {
+    if (count == 0) {
+      return fireWriteTypedAt<kStaticHandlerIndex>(std::move(msg));
+    }
+    return staticHandlers_[count - 1].onWrite(std::move(msg));
+  }
+
+  void fireExceptionFromStaticHandler(
+      std::size_t index, folly::exception_wrapper&& e) noexcept {
+    if (index == staticHandlers_.size()) {
+      fireExceptionTypedAt<kStaticHandlerIndex>(std::move(e));
+      return;
+    }
+    staticHandlers_[index].onException(std::move(e));
+  }
+
+  void activateStaticHandlers() noexcept {
+    for (auto& handler : staticHandlers_) {
+      handler.onPipelineActive();
+    }
+  }
+
+  void deactivateStaticHandlersFrom(std::size_t count) noexcept {
+    while (count != 0) {
+      staticHandlers_[--count].onPipelineInactive();
+    }
+  }
+
+  void callStaticHandlersAdded() noexcept {
+    for (auto& handler : staticHandlers_) {
+      handler.handlerAdded();
+    }
+  }
+
+  void callStaticHandlersRemoved() noexcept {
+    for (std::size_t i = staticHandlers_.size(); i != 0; --i) {
+      staticHandlers_[i - 1].handlerRemoved();
+    }
+  }
+
+  void dispatchStaticHandlerEvents(EventKey key, const void* payload) noexcept {
+    for (std::size_t i = staticHandlers_.size(); i != 0; --i) {
+      staticHandlers_[i - 1].fireEvent(key, payload);
+    }
+  }
+
+  void bindStaticHandlerContexts() noexcept {
+    if constexpr (!kHasStaticHandlers) {
+      return;
+    }
+    const auto& ops = staticHandlerContextOps();
+    for (std::size_t i = 0; i < staticHandlers_.size(); ++i) {
+      staticHandlers_[i].bindContext(this, ops, i);
+    }
+  }
+
+  static const StaticHandlerContextOps& staticHandlerContextOps() noexcept {
+    static const StaticHandlerContextOps ops{
+        .handlerId =
+            +[](const void* p, std::size_t index) noexcept {
+              return static_cast<const Self*>(p)
+                  ->staticHandlers_[index]
+                  .handlerId();
+            },
+        .handlerIndex =
+            +[](const void*, std::size_t index) noexcept {
+              return kStaticHandlerIndex + index;
+            },
+        .fireRead =
+            +[](void* p, std::size_t index, TypeErasedBox&& msg) noexcept {
+              return static_cast<Self*>(p)->fireReadFromStaticHandler(
+                  index + 1, std::move(msg));
+            },
+        .fireWrite =
+            +[](void* p, std::size_t index, TypeErasedBox&& msg) noexcept {
+              if (index == 0) {
+                return static_cast<Self*>(p)
+                    ->template fireWriteTypedAt<kStaticHandlerIndex>(
+                        std::move(msg));
+              }
+              return static_cast<Self*>(p)->fireWriteFromStaticHandler(
+                  index, std::move(msg));
+            },
+        .fireException =
+            +[](void* p,
+                std::size_t index,
+                folly::exception_wrapper&& e) noexcept {
+              static_cast<Self*>(p)->fireExceptionFromStaticHandler(
+                  index + 1, std::move(e));
+            },
+        .deactivate =
+            +[](void* p, std::size_t index) noexcept {
+              auto* self = static_cast<Self*>(p);
+              self->deactivateStaticHandlersFrom(index + 1);
+              self->template deactivateTypedHandlers<kStaticHandlerIndex>();
+            },
+        .fireEvent =
+            +[](void* p, EventKey key, const void* payload) noexcept {
+              static_cast<Self*>(p)->fireBoundEvent(
+                  BoundEventRoute{key}, payload);
+            },
+        .allocate =
+            +[](void* p, std::size_t size) noexcept {
+              return static_cast<Self*>(p)->allocate(size);
+            },
+        .copyBuffer =
+            +[](void* p, const void* data, std::size_t size) noexcept {
+              return static_cast<Self*>(p)->copyBuffer(data, size);
+            },
+        .eventBase =
+            +[](void* p) noexcept {
+              return static_cast<Self*>(p)->eventBase();
+            },
+        .pipeline =
+            +[](void* p) noexcept {
+              return PipelineRef(*static_cast<Self*>(p));
+            },
+        .close = +[](void* p) noexcept { static_cast<Self*>(p)->close(); },
+        .awaitWriteReady =
+            +[](void* p, std::size_t index) noexcept {
+              static_cast<Self*>(p)->awaitStaticWriteReady(index);
+            },
+        .cancelAwaitWriteReady =
+            +[](void* p, std::size_t index) noexcept {
+              static_cast<Self*>(p)->cancelStaticWriteReady(index);
+            },
+        .isAwaitingWriteReady =
+            +[](const void* p, std::size_t index) noexcept {
+              return static_cast<const Self*>(p)->isAwaitingStaticWriteReady(
+                  index);
+            },
+        .awaitReadReady =
+            +[](void* p, std::size_t index) noexcept {
+              static_cast<Self*>(p)->awaitStaticReadReady(index);
+            },
+        .cancelAwaitReadReady =
+            +[](void* p, std::size_t index) noexcept {
+              static_cast<Self*>(p)->cancelStaticReadReady(index);
+            },
+        .isAwaitingReadReady =
+            +[](const void* p, std::size_t index) noexcept {
+              return static_cast<const Self*>(p)->isAwaitingStaticReadReady(
+                  index);
+            },
+    };
+    return ops;
+  }
+
+  void awaitStaticWriteReady(std::size_t index) noexcept {
+    if (!isClosed()) {
+      if (auto* hook = staticHandlers_[index].writeReadyHook();
+          hook != nullptr && !hook->hook.is_linked()) {
+        writeReadyList_.push_back(*hook);
+      }
+    }
+  }
+  void cancelStaticWriteReady(std::size_t index) noexcept {
+    if (auto* hook = staticHandlers_[index].writeReadyHook();
+        hook != nullptr && hook->hook.is_linked()) {
+      hook->hook.unlink();
+    }
+  }
+  bool isAwaitingStaticWriteReady(std::size_t index) const noexcept {
+    auto* hook =
+        const_cast<Self*>(this)->staticHandlers_[index].writeReadyHook();
+    return hook != nullptr && hook->hook.is_linked();
+  }
+  void awaitStaticReadReady(std::size_t index) noexcept {
+    if (!isClosed()) {
+      if (auto* hook = staticHandlers_[index].readReadyHook();
+          hook != nullptr && !hook->hook.is_linked()) {
+        readReadyList_.push_back(*hook);
+      }
+    }
+  }
+  void cancelStaticReadReady(std::size_t index) noexcept {
+    if (auto* hook = staticHandlers_[index].readReadyHook();
+        hook != nullptr && hook->hook.is_linked()) {
+      hook->hook.unlink();
+    }
+  }
+  bool isAwaitingStaticReadReady(std::size_t index) const noexcept {
+    auto* hook =
+        const_cast<Self*>(this)->staticHandlers_[index].readReadyHook();
+    return hook != nullptr && hook->hook.is_linked();
   }
 
   template <HandlerId Id, std::size_t Index>
@@ -958,6 +1379,8 @@ class StaticPipelineImpl final {
   Allocator* allocator_;
   StateTuple stateStorage_;
   StaticHandlerStorage<Self, 0, StateTuple, Specs...> handlers_;
+  [[no_unique_address]] ErasedStaticHandlerStorage<kHasStaticHandlers>
+      staticHandlers_;
   EndpointContext endpointContext_;
   State state_{State::Inactive};
   WriteReadyList writeReadyList_;

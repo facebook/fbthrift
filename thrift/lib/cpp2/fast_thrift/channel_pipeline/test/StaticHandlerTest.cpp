@@ -31,6 +31,14 @@ struct State {
 };
 
 struct FakePipeline {
+  template <std::size_t Index>
+  static constexpr std::size_t contextHandlerIndex() noexcept {
+    return Index;
+  }
+  template <std::size_t Index>
+  void deactivateFromContext() noexcept {
+    deactivateFrom<Index + 1>();
+  }
   template <std::size_t>
   Result fireReadFrom(TypeErasedBox&&) noexcept {
     ++reads;

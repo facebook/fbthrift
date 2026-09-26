@@ -457,6 +457,44 @@ auto makeStaticPipeline8(
 
 } // namespace
 
+namespace apache::thrift::fast_thrift::channel_pipeline::detail::benchmark {
+
+auto makeStaticPipelineErased8(
+    folly::EventBase& evb,
+    BenchTransportHandler& transport,
+    BenchAppHandler& app,
+    BenchAllocator& allocator) {
+  std::vector<ErasedStaticHandler> handlers;
+  handlers.reserve(8);
+  handlers.push_back(
+      makeErasedStaticHandler<PassthroughDuplexHandler>(static_bench1_tag.id));
+  handlers.push_back(
+      makeErasedStaticHandler<PassthroughDuplexHandler>(static_bench2_tag.id));
+  handlers.push_back(
+      makeErasedStaticHandler<PassthroughDuplexHandler>(static_bench3_tag.id));
+  handlers.push_back(
+      makeErasedStaticHandler<PassthroughDuplexHandler>(static_bench4_tag.id));
+  handlers.push_back(
+      makeErasedStaticHandler<PassthroughDuplexHandler>(static_bench5_tag.id));
+  handlers.push_back(
+      makeErasedStaticHandler<PassthroughDuplexHandler>(static_bench6_tag.id));
+  handlers.push_back(
+      makeErasedStaticHandler<PassthroughDuplexHandler>(static_bench7_tag.id));
+  handlers.push_back(
+      makeErasedStaticHandler<PassthroughDuplexHandler>(static_bench8_tag.id));
+  auto builder = StaticPipelineBuilder<
+      BenchTransportHandler,
+      BenchAppHandler,
+      BenchAllocator>();
+  builder.setEventBase(&evb)
+      .setHead(&transport)
+      .setTail(&app)
+      .setAllocator(&allocator);
+  return std::move(builder).addStaticHandlers(std::move(handlers)).build();
+}
+
+} // namespace apache::thrift::fast_thrift::channel_pipeline::detail::benchmark
+
 // =============================================================================
 // Static versus runtime-shaped pipeline dispatch
 // =============================================================================
@@ -493,6 +531,26 @@ BENCHMARK_RELATIVE(StaticPipeline_FireRead_8Handlers, iters) {
   folly::doNotOptimizeAway(app.read_count);
 }
 
+namespace apache::thrift::fast_thrift::channel_pipeline::detail::benchmark {
+
+BENCHMARK_RELATIVE(StaticPipelineErased_FireRead_8Handlers, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+  auto pipeline = makeStaticPipelineErased8(evb, transport, app, allocator);
+  auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    (void)concretePipeline.fireRead(
+        TypeErasedBox{static_cast<std::uint64_t>(i)});
+  }
+  folly::doNotOptimizeAway(app.read_count);
+}
+
+} // namespace apache::thrift::fast_thrift::channel_pipeline::detail::benchmark
+
 BENCHMARK(DynamicPipeline_FireWrite_8Handlers, iters) {
   folly::BenchmarkSuspender susp;
   folly::EventBase evb;
@@ -524,6 +582,26 @@ BENCHMARK_RELATIVE(StaticPipeline_FireWrite_8Handlers, iters) {
   }
   folly::doNotOptimizeAway(transport.write_count);
 }
+
+namespace apache::thrift::fast_thrift::channel_pipeline::detail::benchmark {
+
+BENCHMARK_RELATIVE(StaticPipelineErased_FireWrite_8Handlers, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+  auto pipeline = makeStaticPipelineErased8(evb, transport, app, allocator);
+  auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    (void)concretePipeline.fireWrite(
+        TypeErasedBox{static_cast<std::uint64_t>(i)});
+  }
+  folly::doNotOptimizeAway(transport.write_count);
+}
+
+} // namespace apache::thrift::fast_thrift::channel_pipeline::detail::benchmark
 
 BENCHMARK_DRAW_LINE();
 

@@ -49,7 +49,9 @@ class StaticContext {
   explicit StaticContext(Pipeline* pipeline) noexcept : pipeline_(pipeline) {}
 
   static constexpr HandlerId handlerId() noexcept { return Id; }
-  static constexpr std::size_t handlerIndex() noexcept { return Index; }
+  std::size_t handlerIndex() const noexcept {
+    return pipeline_->template contextHandlerIndex<Index>();
+  }
 
   void activate() noexcept {}
 
@@ -85,7 +87,7 @@ class StaticContext {
   }
 
   void deactivate() noexcept {
-    pipeline_->template deactivateFrom<Index + 1>();
+    pipeline_->template deactivateFromContext<Index>();
   }
 
   Pipeline* pipeline() const noexcept { return pipeline_; }

@@ -27,6 +27,8 @@
 namespace apache::thrift::fast_thrift::channel_pipeline::test {
 namespace {
 
+static_assert(!std::is_default_constructible_v<detail::ErasedStaticHandler>);
+
 class StaticHeadHandler {
  public:
   template <typename Context>
@@ -72,6 +74,8 @@ HANDLER_TAG(state_static);
 HANDLER_TAG(ready_static);
 HANDLER_TAG(publisher_static);
 HANDLER_TAG(subscriber_static);
+HANDLER_TAG(first_erased_static);
+HANDLER_TAG(second_erased_static);
 HANDLER_TAG(read_ready_canceller_static);
 HANDLER_TAG(read_ready_target_static);
 HANDLER_TAG(read_ready_reentrant_static);
@@ -114,6 +118,7 @@ class TraceHandler {
   }
   template <typename Context>
   void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
+    trace_->push_back(name_ + ".exception");
     ctx.fireException(std::move(e));
   }
   template <typename Context>
@@ -124,6 +129,40 @@ class TraceHandler {
  private:
   std::vector<std::string>* trace_;
   std::string name_;
+};
+
+class DestructionCountingHandler {
+ public:
+  explicit DestructionCountingHandler(int* destructions)
+      : destructions_(destructions) {}
+  ~DestructionCountingHandler() { ++*destructions_; }
+  DestructionCountingHandler(const DestructionCountingHandler&) = delete;
+  DestructionCountingHandler& operator=(const DestructionCountingHandler&) =
+      delete;
+  DestructionCountingHandler(DestructionCountingHandler&&) = delete;
+  DestructionCountingHandler& operator=(DestructionCountingHandler&&) = delete;
+
+  template <typename Context>
+  void handlerAdded(Context&) noexcept {}
+  template <typename Context>
+  void handlerRemoved(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineActive(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineInactive(Context&) noexcept {}
+  template <typename Context>
+  Result onRead(Context& ctx, TypeErasedBox&& msg) noexcept {
+    return ctx.fireRead(std::move(msg));
+  }
+  template <typename Context>
+  void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
+    ctx.fireException(std::move(e));
+  }
+  template <typename Context>
+  void onReadReady(Context&) noexcept {}
+
+ private:
+  int* destructions_;
 };
 
 struct PipelineState {
@@ -239,6 +278,127 @@ class SubscriberHandler {
 
  private:
   int* value_;
+};
+
+class IndexRecordingHandler {
+ public:
+  explicit IndexRecordingHandler(std::size_t* index) : index_(index) {}
+
+  template <typename Context>
+  void handlerAdded(Context& ctx) noexcept {
+    *index_ = ctx.handlerIndex();
+  }
+  template <typename Context>
+  void handlerRemoved(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineActive(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineInactive(Context&) noexcept {}
+  template <typename Context>
+  Result onRead(Context& ctx, TypeErasedBox&& msg) noexcept {
+    return ctx.fireRead(std::move(msg));
+  }
+  template <typename Context>
+  Result onWrite(Context& ctx, TypeErasedBox&& msg) noexcept {
+    return ctx.fireWrite(std::move(msg));
+  }
+  template <typename Context>
+  void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
+    ctx.fireException(std::move(e));
+  }
+  template <typename Context>
+  void onReadReady(Context&) noexcept {}
+  template <typename Context>
+  void onWriteReady(Context&) noexcept {}
+
+ private:
+  std::size_t* index_;
+};
+
+class IndexRecordingTail {
+ public:
+  explicit IndexRecordingTail(std::size_t* index) : index_(index) {}
+
+  template <typename Context>
+  Result onRead(Context& ctx, TypeErasedBox&&) noexcept {
+    *index_ = ctx.handlerIndex();
+    return Result::Success;
+  }
+  void onException(folly::exception_wrapper&&) noexcept {}
+  void onWriteReady() noexcept {}
+  void handlerAdded() noexcept {}
+  void handlerRemoved() noexcept {}
+  void onPipelineActive() noexcept {}
+  void onPipelineInactive() noexcept {}
+
+ private:
+  std::size_t* index_;
+};
+
+class DeactivateOnReadHandler {
+ public:
+  explicit DeactivateOnReadHandler(std::vector<std::string>* trace)
+      : trace_(trace) {}
+
+  template <typename Context>
+  void handlerAdded(Context&) noexcept {}
+  template <typename Context>
+  void handlerRemoved(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineActive(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineInactive(Context&) noexcept {
+    trace_->emplace_back("typed.inactive");
+  }
+  template <typename Context>
+  Result onRead(Context& ctx, TypeErasedBox&&) noexcept {
+    trace_->emplace_back("typed.read");
+    ctx.deactivate();
+    return Result::Success;
+  }
+  template <typename Context>
+  void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
+    ctx.fireException(std::move(e));
+  }
+  template <typename Context>
+  void onReadReady(Context&) noexcept {}
+
+ private:
+  std::vector<std::string>* trace_;
+};
+
+class CountingSubscriber {
+ public:
+  using SubscribedEvents = Events<ValueEvent>;
+
+  explicit CountingSubscriber(int* calls) : calls_(calls) {}
+
+  template <typename Context>
+  void handlerAdded(Context&) noexcept {}
+  template <typename Context>
+  void handlerRemoved(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineActive(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineInactive(Context&) noexcept {}
+  template <typename Context>
+  Result onRead(Context& ctx, TypeErasedBox&& msg) noexcept {
+    return ctx.fireRead(std::move(msg));
+  }
+  template <typename Context>
+  void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
+    ctx.fireException(std::move(e));
+  }
+  template <typename Context>
+  void onReadReady(Context&) noexcept {}
+  template <PipelineEvent E, typename Context>
+  void on(Context&, const typename E::Payload&) noexcept {
+    static_assert(std::same_as<E, ValueEvent>);
+    ++*calls_;
+  }
+
+ private:
+  int* calls_;
 };
 
 class ReadReadyCanceller {
@@ -426,6 +586,8 @@ TEST(StaticPipelineTest, RoutesAndOwnsNonMovableHandlers) {
           "second.read",
           "second.write",
           "first.write",
+          "first.exception",
+          "second.exception",
           "second.inactive",
           "first.inactive",
           "second.removed",
@@ -544,6 +706,342 @@ TEST(StaticPipelineTest, DefersReentrantReadReadyDispatch) {
 
   EXPECT_EQ(calls, 1);
   EXPECT_FALSE(pipeline->hasPendingReadReady());
+}
+
+TEST(StaticPipelineTest, ErasedHandlersDestroyOwnersExactlyOnce) {
+  int destructions = 0;
+  {
+    std::vector<detail::ErasedStaticHandler> handlers;
+    handlers.reserve(1);
+    handlers.push_back(
+        detail::makeErasedStaticHandler<DestructionCountingHandler>(
+            first_erased_static_tag.id, &destructions));
+    handlers.push_back(
+        detail::makeErasedStaticHandler<DestructionCountingHandler>(
+            second_erased_static_tag.id, &destructions));
+    EXPECT_EQ(destructions, 0);
+
+    auto replacement =
+        detail::makeErasedStaticHandler<DestructionCountingHandler>(
+            first_static_tag.id, &destructions);
+    handlers.front() = std::move(replacement);
+    EXPECT_EQ(destructions, 1);
+  }
+  EXPECT_EQ(destructions, 3);
+}
+
+TEST(StaticPipelineTest, SplicesErasedHandlersInOrder) {
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  StaticTailHandler tail;
+  TestAllocator allocator;
+  std::vector<std::string> trace;
+  std::vector<detail::ErasedStaticHandler> erasedHandlers;
+  erasedHandlers.push_back(
+      detail::makeErasedStaticHandler<TraceHandler>(
+          first_erased_static_tag.id, &trace, "erased-first"));
+  erasedHandlers.push_back(
+      detail::makeErasedStaticHandler<TraceHandler>(
+          second_erased_static_tag.id, &trace, "erased-second"));
+
+  auto pipeline =
+      StaticPipelineBuilder<
+          StaticHeadHandler,
+          StaticTailHandler,
+          TestAllocator>()
+          .setEventBase(&eventBase)
+          .setHead(&head)
+          .setTail(&tail)
+          .setAllocator(&allocator)
+          .addNextDuplex<TraceHandler>(first_static_tag, &trace, "typed-first")
+          .addStaticHandlers(std::move(erasedHandlers))
+          .addNextDuplex<TraceHandler>(
+              second_static_tag, &trace, "typed-second")
+          .build();
+
+  EXPECT_EQ(pipeline->handlerCount(), 4);
+  pipeline->activate();
+  EXPECT_EQ(pipeline->fireRead(TypeErasedBox{1}), Result::Success);
+  EXPECT_EQ(
+      pipeline->fireWrite(erase_and_box(folly::IOBuf::create(0))),
+      Result::Success);
+  pipeline->close();
+
+  EXPECT_EQ(
+      trace,
+      (std::vector<std::string>{
+          "typed-first.added",     "erased-first.added",
+          "erased-second.added",   "typed-second.added",
+          "typed-first.active",    "erased-first.active",
+          "erased-second.active",  "typed-second.active",
+          "typed-first.read",      "erased-first.read",
+          "erased-second.read",    "typed-second.read",
+          "typed-second.write",    "erased-second.write",
+          "erased-first.write",    "typed-first.write",
+          "typed-second.inactive", "erased-second.inactive",
+          "erased-first.inactive", "typed-first.inactive",
+          "typed-second.removed",  "erased-second.removed",
+          "erased-first.removed",  "typed-first.removed"}));
+}
+
+TEST(StaticPipelineTest, TargetsHandlersWithoutCrossingSplice) {
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  StaticTailHandler tail;
+  TestAllocator allocator;
+  std::vector<std::string> trace;
+  std::vector<detail::ErasedStaticHandler> erasedHandlers;
+  erasedHandlers.push_back(
+      detail::makeErasedStaticHandler<TraceHandler>(
+          first_erased_static_tag.id, &trace, "erased-first"));
+  erasedHandlers.push_back(
+      detail::makeErasedStaticHandler<TraceHandler>(
+          second_erased_static_tag.id, &trace, "erased-second"));
+
+  auto pipeline =
+      StaticPipelineBuilder<
+          StaticHeadHandler,
+          StaticTailHandler,
+          TestAllocator>()
+          .setEventBase(&eventBase)
+          .setHead(&head)
+          .setTail(&tail)
+          .setAllocator(&allocator)
+          .addNextDuplex<TraceHandler>(first_static_tag, &trace, "typed-first")
+          .addStaticHandlers(std::move(erasedHandlers))
+          .addNextDuplex<TraceHandler>(
+              second_static_tag, &trace, "typed-second")
+          .build();
+
+  trace.clear();
+  EXPECT_EQ(
+      pipeline->sendRead(second_static_tag, TypeErasedBox{1}), Result::Success);
+  EXPECT_EQ(trace, (std::vector<std::string>{"typed-second.read"}));
+
+  trace.clear();
+  EXPECT_EQ(
+      pipeline->sendWrite(
+          first_static_tag, erase_and_box(folly::IOBuf::create(0))),
+      Result::Success);
+  EXPECT_EQ(trace, (std::vector<std::string>{"typed-first.write"}));
+
+  trace.clear();
+  pipeline->sendException(second_static_tag, {});
+  EXPECT_EQ(trace, (std::vector<std::string>{"typed-second.exception"}));
+
+  trace.clear();
+  EXPECT_EQ(
+      pipeline->sendRead(first_erased_static_tag, TypeErasedBox{1}),
+      Result::Success);
+  EXPECT_EQ(
+      trace,
+      (std::vector<std::string>{
+          "erased-first.read", "erased-second.read", "typed-second.read"}));
+
+  trace.clear();
+  EXPECT_EQ(
+      pipeline->sendWrite(
+          second_erased_static_tag, erase_and_box(folly::IOBuf::create(0))),
+      Result::Success);
+  EXPECT_EQ(
+      trace,
+      (std::vector<std::string>{
+          "erased-second.write", "erased-first.write", "typed-first.write"}));
+
+  trace.clear();
+  pipeline->sendException(first_erased_static_tag, {});
+  EXPECT_EQ(
+      trace,
+      (std::vector<std::string>{
+          "erased-first.exception",
+          "erased-second.exception",
+          "typed-second.exception"}));
+}
+
+TEST(StaticPipelineTest, ReportsLogicalHandlerIndicesAcrossSplice) {
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  std::size_t tailIndex = 0;
+  IndexRecordingTail tail(&tailIndex);
+  TestAllocator allocator;
+  std::size_t firstIndex = 0;
+  std::size_t erasedIndex = 0;
+  std::size_t secondIndex = 0;
+  std::vector<detail::ErasedStaticHandler> erasedHandlers;
+  erasedHandlers.push_back(
+      detail::makeErasedStaticHandler<IndexRecordingHandler>(
+          first_erased_static_tag.id, &erasedIndex));
+
+  auto pipeline =
+      StaticPipelineBuilder<
+          StaticHeadHandler,
+          IndexRecordingTail,
+          TestAllocator>()
+          .setEventBase(&eventBase)
+          .setHead(&head)
+          .setTail(&tail)
+          .setAllocator(&allocator)
+          .addNextDuplex<IndexRecordingHandler>(first_static_tag, &firstIndex)
+          .addStaticHandlers(std::move(erasedHandlers))
+          .addNextDuplex<IndexRecordingHandler>(second_static_tag, &secondIndex)
+          .build();
+
+  EXPECT_EQ(pipeline->fireRead(TypeErasedBox{1}), Result::Success);
+  EXPECT_EQ(firstIndex, 0);
+  EXPECT_EQ(erasedIndex, 1);
+  EXPECT_EQ(secondIndex, 2);
+  EXPECT_EQ(tailIndex, 3);
+}
+
+TEST(StaticPipelineTest, TypedDeactivateDoesNotCrossSplice) {
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  StaticTailHandler tail;
+  TestAllocator allocator;
+  std::vector<std::string> trace;
+  std::vector<detail::ErasedStaticHandler> erasedHandlers;
+  erasedHandlers.push_back(
+      detail::makeErasedStaticHandler<TraceHandler>(
+          first_erased_static_tag.id, &trace, "erased"));
+
+  auto pipeline =
+      StaticPipelineBuilder<
+          StaticHeadHandler,
+          StaticTailHandler,
+          TestAllocator>()
+          .setEventBase(&eventBase)
+          .setHead(&head)
+          .setTail(&tail)
+          .setAllocator(&allocator)
+          .addNextInbound<DeactivateOnReadHandler>(first_static_tag, &trace)
+          .addStaticHandlers(std::move(erasedHandlers))
+          .build();
+
+  pipeline->activate();
+  trace.clear();
+  EXPECT_EQ(pipeline->fireRead(TypeErasedBox{1}), Result::Success);
+  EXPECT_EQ(trace, (std::vector<std::string>{"typed.read", "typed.inactive"}));
+}
+
+TEST(StaticPipelineTest, BoundEventDispatchesErasedSubscribersOnce) {
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  StaticTailHandler tail;
+  TestAllocator allocator;
+  int typedCalls = 0;
+  int erasedCalls = 0;
+  std::vector<detail::ErasedStaticHandler> erasedHandlers;
+  erasedHandlers.push_back(
+      detail::makeErasedStaticHandler<CountingSubscriber>(
+          first_erased_static_tag.id, &erasedCalls));
+
+  auto pipeline =
+      StaticPipelineBuilder<
+          StaticHeadHandler,
+          StaticTailHandler,
+          TestAllocator>()
+          .setEventBase(&eventBase)
+          .setHead(&head)
+          .setTail(&tail)
+          .setAllocator(&allocator)
+          .addNextInbound<CountingSubscriber>(first_static_tag, &typedCalls)
+          .addStaticHandlers(std::move(erasedHandlers))
+          .build();
+
+  auto publisher = pipeline->bindEvents<Events<ValueEvent>>();
+  publisher.fire<ValueEvent>(23);
+  EXPECT_EQ(typedCalls, 1);
+  EXPECT_EQ(erasedCalls, 1);
+}
+
+TEST(StaticPipelineTest, RejectsDuplicateHandlerIds) {
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  StaticTailHandler tail;
+  TestAllocator allocator;
+  std::vector<std::string> trace;
+
+  std::vector<detail::ErasedStaticHandler> duplicateTypedId;
+  duplicateTypedId.push_back(
+      detail::makeErasedStaticHandler<TraceHandler>(
+          first_static_tag.id, &trace, "erased"));
+  EXPECT_THROW(
+      (StaticPipelineBuilder<
+           StaticHeadHandler,
+           StaticTailHandler,
+           TestAllocator>()
+           .setEventBase(&eventBase)
+           .setHead(&head)
+           .setTail(&tail)
+           .setAllocator(&allocator)
+           .addNextDuplex<TraceHandler>(first_static_tag, &trace, "typed")
+           .addStaticHandlers(std::move(duplicateTypedId))
+           .build()),
+      std::invalid_argument);
+
+  std::vector<detail::ErasedStaticHandler> duplicateErasedIds;
+  duplicateErasedIds.push_back(
+      detail::makeErasedStaticHandler<TraceHandler>(
+          first_erased_static_tag.id, &trace, "first"));
+  duplicateErasedIds.push_back(
+      detail::makeErasedStaticHandler<TraceHandler>(
+          first_erased_static_tag.id, &trace, "second"));
+  auto builder = StaticPipelineBuilder<
+      StaticHeadHandler,
+      StaticTailHandler,
+      TestAllocator>();
+  builder.setEventBase(&eventBase)
+      .setHead(&head)
+      .setTail(&tail)
+      .setAllocator(&allocator);
+  EXPECT_THROW(
+      std::move(builder)
+          .addStaticHandlers(std::move(duplicateErasedIds))
+          .build(),
+      std::invalid_argument);
+}
+
+TEST(StaticPipelineTest, StaticHandlersDispatchReadyAndEvents) {
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  StaticTailHandler tail;
+  TestAllocator allocator;
+  int readyCalls = 0;
+  int eventValue = 0;
+  std::vector<detail::ErasedStaticHandler> erasedHandlers;
+  erasedHandlers.push_back(
+      detail::makeErasedStaticHandler<ReadyHandler>(
+          ready_static_tag.id, &readyCalls));
+  erasedHandlers.push_back(
+      detail::makeErasedStaticHandler<SubscriberHandler>(
+          subscriber_static_tag.id, &eventValue));
+
+  auto pipeline = StaticPipelineBuilder<
+                      StaticHeadHandler,
+                      StaticTailHandler,
+                      TestAllocator>()
+                      .setEventBase(&eventBase)
+                      .setHead(&head)
+                      .setTail(&tail)
+                      .setAllocator(&allocator)
+                      .addNextInbound<PublisherHandler>(publisher_static_tag)
+                      .addStaticHandlers(std::move(erasedHandlers))
+                      .build();
+
+  EXPECT_EQ(
+      pipeline->fireWrite(erase_and_box(folly::IOBuf::create(0))),
+      Result::Backpressure);
+  EXPECT_TRUE(pipeline->hasPendingWriteReady());
+  pipeline->onWriteReady();
+  EXPECT_EQ(readyCalls, 1);
+  EXPECT_FALSE(pipeline->hasPendingWriteReady());
+
+  EXPECT_EQ(pipeline->fireRead(TypeErasedBox{17}), Result::Success);
+  EXPECT_EQ(eventValue, 17);
+
+  auto publisher = pipeline->bindEvents<Events<ValueEvent>>();
+  publisher.fire<ValueEvent>(23);
+  EXPECT_EQ(eventValue, 23);
 }
 
 TEST(StaticPipelineTest, ExposesTypedState) {
