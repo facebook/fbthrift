@@ -18,6 +18,7 @@
 
 #include <array>
 #include <cassert>
+#include <exception>
 #include <functional>
 #include <stdexcept>
 #include <type_traits>

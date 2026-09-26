@@ -17,6 +17,7 @@
 #pragma once
 
 #include <iosfwd>
+#include <iterator>
 #include <ostream>
 #include <string>
 #include <string_view>

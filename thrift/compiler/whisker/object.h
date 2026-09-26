@@ -20,6 +20,7 @@
 #include <concepts>
 #include <cstddef>
 #include <cstdint>
+#include <exception>
 #include <functional>
 #include <iosfwd>
 #include <limits>
