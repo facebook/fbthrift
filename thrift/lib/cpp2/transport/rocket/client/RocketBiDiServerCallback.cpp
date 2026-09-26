@@ -122,11 +122,7 @@ bool RocketBiDiServerCallback::onStreamPayload(StreamPayload&& payload) {
 }
 
 bool RocketBiDiServerCallback::onStreamFinalPayload(StreamPayload&& payload) {
-  // Deliver the final payload before closing the stream to avoid the
-  // isStreamOpen() guard in onStreamPayload() dropping it.
-  bool result = clientCallback_->onStreamNext(std::move(payload));
-  state_.onStreamComplete();
-  return result && clientCallback_->onStreamComplete();
+  return onStreamPayload(std::move(payload)) && onStreamComplete();
 }
 
 bool RocketBiDiServerCallback::onStreamComplete() {

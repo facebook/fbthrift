@@ -16,6 +16,10 @@
 
 #include <gtest/gtest.h>
 
+#include <memory>
+#include <folly/Function.h>
+#include <folly/io/async/AsyncSocket.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketBiDiServerCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
@@ -34,7 +38,10 @@ class MockBiDiClientCallback final : public BiDiClientCallback {
   }
   void onFirstResponseError(folly::exception_wrapper) override {}
 
-  bool onStreamNext(StreamPayload&&) override { return true; }
+  bool onStreamNext(StreamPayload&&) override {
+    ++streamNextCount;
+    return streamNextAction ? streamNextAction() : true;
+  }
   bool onStreamError(folly::exception_wrapper) override {
     streamErrorCount_++;
     return true;
@@ -52,12 +59,81 @@ class MockBiDiClientCallback final : public BiDiClientCallback {
   int streamCompleteCount() const { return streamCompleteCount_; }
   int streamErrorCount() const { return streamErrorCount_; }
 
+  folly::Function<bool()> streamNextAction;
+  int streamNextCount{0};
+
  private:
   int streamCompleteCount_{0};
   int streamErrorCount_{0};
 };
 
 } // namespace
+
+TEST(RocketBiDiServerCallbackTest, FinalPayloadMayDestroyCallback) {
+  folly::EventBase eventBase;
+  auto client = RocketClient::create(
+      eventBase,
+      folly::AsyncSocket::UniquePtr(new folly::AsyncSocket(&eventBase)),
+      {});
+  MockBiDiClientCallback clientCallback;
+  auto serverCallback = std::make_unique<RocketBiDiServerCallback>(
+      StreamId{1}, *client, clientCallback, nullptr);
+  serverCallback->state().onFirstResponseSent();
+  clientCallback.streamNextAction = [&] {
+    serverCallback.reset();
+    return false;
+  };
+
+  EXPECT_FALSE(
+      serverCallback->onStreamFinalPayload(StreamPayload{nullptr, {}}));
+  EXPECT_EQ(serverCallback, nullptr);
+  EXPECT_EQ(clientCallback.streamNextCount, 1);
+  EXPECT_EQ(clientCallback.streamCompleteCount(), 0);
+}
+
+TEST(RocketBiDiServerCallbackTest, FinalPayloadMayCancelOnlyStream) {
+  folly::EventBase eventBase;
+  auto client = RocketClient::create(
+      eventBase,
+      folly::AsyncSocket::UniquePtr(new folly::AsyncSocket(&eventBase)),
+      {});
+  MockBiDiClientCallback clientCallback;
+  RocketBiDiServerCallback serverCallback(
+      StreamId{1}, *client, clientCallback, nullptr);
+  serverCallback.state().onFirstResponseSent();
+  clientCallback.streamNextAction = [&] {
+    return serverCallback.onStreamCancel();
+  };
+
+  EXPECT_TRUE(serverCallback.onStreamFinalPayload(StreamPayload{nullptr, {}}));
+  EXPECT_EQ(clientCallback.streamNextCount, 1);
+  EXPECT_EQ(clientCallback.streamCompleteCount(), 0);
+  EXPECT_FALSE(serverCallback.state().isStreamOpen());
+  EXPECT_TRUE(serverCallback.state().isSinkOpen());
+  EXPECT_TRUE(serverCallback.onStreamFinalPayload(StreamPayload{nullptr, {}}));
+  EXPECT_EQ(clientCallback.streamNextCount, 1);
+}
+
+TEST(RocketBiDiServerCallbackTest, FinalPayloadPrecedesCompletionExactlyOnce) {
+  folly::EventBase eventBase;
+  auto client = RocketClient::create(
+      eventBase,
+      folly::AsyncSocket::UniquePtr(new folly::AsyncSocket(&eventBase)),
+      {});
+  MockBiDiClientCallback clientCallback;
+  RocketBiDiServerCallback serverCallback(
+      StreamId{1}, *client, clientCallback, nullptr);
+  serverCallback.state().onFirstResponseSent();
+  clientCallback.streamNextAction = [&] {
+    EXPECT_EQ(clientCallback.streamCompleteCount(), 0);
+    return true;
+  };
+
+  EXPECT_TRUE(serverCallback.onStreamFinalPayload(StreamPayload{nullptr, {}}));
+  EXPECT_TRUE(serverCallback.onStreamFinalPayload(StreamPayload{nullptr, {}}));
+  EXPECT_EQ(clientCallback.streamNextCount, 1);
+  EXPECT_EQ(clientCallback.streamCompleteCount(), 1);
+}
 
 // Verify that calling onStreamComplete() twice (duplicate stream-complete frame
 // from server) does not crash. The first call transitions the state from
