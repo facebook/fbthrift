@@ -34,6 +34,12 @@ union ExampleUnion {
   2: string stringValue;
 }
 
+struct Recursive {
+  1: optional list<Recursive> children;
+  2: optional map<string, Recursive> byName;
+  3: optional set<i32> ids;
+}
+
 enum Enum {
   NEGATIVE_ONE = -1,
   DEFAULT = 0,

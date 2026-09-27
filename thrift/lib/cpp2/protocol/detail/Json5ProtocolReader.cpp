@@ -165,6 +165,7 @@ std::optional<std::string> Json5ProtocolReader::tryReadObjectMapKey() {
 // ============================================================================
 
 void Json5ProtocolReader::readStructBegin(std::string& /*name*/) {
+  descend();
   beginReadValue();
   containerStack_.beginStruct();
   reader_.readObjectBegin();
@@ -174,6 +175,7 @@ void Json5ProtocolReader::readStructEnd() {
   containerStack_.endStruct();
   reader_.readObjectEnd();
   endReadValue();
+  ascend();
 }
 
 void Json5ProtocolReader::readFieldBegin(
@@ -211,6 +213,7 @@ void Json5ProtocolReader::readMapBegin(
     protocol::TType& /*keyType*/,
     protocol::TType& /*valType*/,
     std::uint32_t& size) {
+  descend();
   beginReadValue();
   size = std::numeric_limits<std::uint32_t>::max();
 
@@ -243,6 +246,7 @@ void Json5ProtocolReader::readMapEnd() {
     reader_.readObjectEnd();
   }
   endReadValue();
+  ascend();
 }
 
 // ============================================================================
@@ -251,6 +255,7 @@ void Json5ProtocolReader::readMapEnd() {
 
 void Json5ProtocolReader::readListBegin(
     protocol::TType& /*elemType*/, std::uint32_t& size) {
+  descend();
   beginReadValue();
   size = std::numeric_limits<std::uint32_t>::max();
   containerStack_.beginList();
@@ -261,6 +266,7 @@ void Json5ProtocolReader::readListEnd() {
   containerStack_.endList();
   reader_.readListEnd();
   endReadValue();
+  ascend();
 }
 
 // ============================================================================
@@ -269,6 +275,7 @@ void Json5ProtocolReader::readListEnd() {
 
 void Json5ProtocolReader::readSetBegin(
     protocol::TType& /*elemType*/, std::uint32_t& size) {
+  descend();
   beginReadValue();
   size = std::numeric_limits<std::uint32_t>::max();
   containerStack_.beginSet();
@@ -279,6 +286,7 @@ void Json5ProtocolReader::readSetEnd() {
   containerStack_.endSet();
   reader_.readListEnd();
   endReadValue();
+  ascend();
 }
 
 // ============================================================================
@@ -318,6 +326,7 @@ void Json5ProtocolReader::skip(protocol::TType /*type*/, int depth) {
   auto token = reader_.peekToken();
   switch (token) {
     case Json5Reader::Token::ObjectBegin: {
+      descend();
       reader_.readObjectBegin();
       while (reader_.peekToken() != Json5Reader::Token::ObjectEnd) {
         // Skip key
@@ -326,14 +335,17 @@ void Json5ProtocolReader::skip(protocol::TType /*type*/, int depth) {
         skip(protocol::T_VOID, depth + 1);
       }
       reader_.readObjectEnd();
+      ascend();
       break;
     }
     case Json5Reader::Token::ListBegin: {
+      descend();
       reader_.readListBegin();
       while (reader_.peekToken() != Json5Reader::Token::ListEnd) {
         skip(protocol::T_VOID, depth + 1);
       }
       reader_.readListEnd();
+      ascend();
       break;
     }
     case Json5Reader::Token::Primitive: {

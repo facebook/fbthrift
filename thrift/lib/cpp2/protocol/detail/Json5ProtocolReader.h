@@ -103,7 +103,8 @@ namespace apache::thrift::json5::detail {
  *   - field type: protocol::T_VOID
  *   - container size: std::numeric_limits<std::uint32_t>::max()
  */
-class Json5ProtocolReader final {
+class Json5ProtocolReader final
+    : public ::apache::thrift::detail::ProtocolBase {
  public:
   explicit Json5ProtocolReader(
       ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */) {}

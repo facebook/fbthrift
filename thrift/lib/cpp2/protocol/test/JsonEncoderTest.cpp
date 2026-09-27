@@ -18,12 +18,15 @@
 
 #include <limits>
 #include <gtest/gtest.h>
+#include <folly/portability/GFlags.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_constants.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_types.h>
 
 namespace apache::thrift {
 
 using facebook::thrift::json5::Example;
+using facebook::thrift::json5::Recursive;
 using facebook::thrift::json5::TestCase;
 using namespace facebook::thrift::json5::json5_test_constants;
 
@@ -224,5 +227,38 @@ TEST_P(Json5EncoderTest, NegativeNaNInf) {
   EXPECT_EQ(encode(data), expected);
 }
 
+// Each level nests a struct and a list, i.e. two levels of protocol depth.
+Recursive nested(int levels) {
+  Recursive value;
+  auto& children = value.children().ensure();
+  if (levels > 1) {
+    children.push_back(nested(levels - 1));
+  }
+  return value;
+}
+
+void encode(const Recursive& value) {
+  (void)Json5ProtocolUtils::toJson5(value);
+}
+
+TEST(Json5EncoderDepthLimitTest, BoundsNesting) {
+  const int levels = FLAGS_thrift_protocol_max_depth / 2;
+  EXPECT_NO_THROW(encode(nested(levels)));
+  EXPECT_THROW(encode(nested(levels + 1)), protocol::TProtocolException);
+}
+
+TEST(Json5EncoderDepthLimitTest, SiblingsDoNotAccumulateDepth) {
+  Recursive child;
+  child.children().ensure();
+  child.byName().ensure();
+  child.ids().ensure();
+  // Leaking one level per sibling would exceed the limit.
+  Recursive value;
+  value.children() =
+      std::vector<Recursive>(FLAGS_thrift_protocol_max_depth, child);
+  EXPECT_NO_THROW(encode(value));
+}
+
 } // namespace
+
 } // namespace apache::thrift

@@ -94,6 +94,7 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp2/op/Encode.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/detail/CompoundTypeTracker.h>
 #include <thrift/lib/cpp2/protocol/detail/JsonWriter.h>
 
@@ -110,7 +111,8 @@ namespace apache::thrift::json5::detail {
  * - Takes JsonWriterOptions in constructor
  * - Outputs to folly::io::QueueAppender
  */
-class Json5ProtocolWriter final {
+class Json5ProtocolWriter final
+    : public ::apache::thrift::detail::ProtocolBase {
  public:
   struct Options {
     JsonWriterOptions writer;

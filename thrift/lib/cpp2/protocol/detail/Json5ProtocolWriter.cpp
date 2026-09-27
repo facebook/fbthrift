@@ -120,6 +120,7 @@ std::uint32_t Json5ProtocolWriter::endWriteValue() {
 }
 
 std::uint32_t Json5ProtocolWriter::writeStructBegin(const char* /*name*/) {
+  descend();
   std::uint32_t xfer = beginWriteValue();
   containerStack_.beginStruct();
   return xfer + writer_.writeObjectBegin();
@@ -128,7 +129,9 @@ std::uint32_t Json5ProtocolWriter::writeStructBegin(const char* /*name*/) {
 std::uint32_t Json5ProtocolWriter::writeStructEnd() {
   containerStack_.endStruct();
   std::uint32_t xfer = writer_.writeObjectEnd();
-  return xfer + endWriteValue();
+  xfer += endWriteValue();
+  ascend();
+  return xfer;
 }
 
 std::uint32_t Json5ProtocolWriter::writeFieldBegin(
@@ -145,6 +148,7 @@ std::uint32_t Json5ProtocolWriter::writeFieldStop() {
 }
 
 std::uint32_t Json5ProtocolWriter::writeListBegin(protocol::TType, uint32_t) {
+  descend();
   std::uint32_t xfer = beginWriteValue();
   containerStack_.beginList();
   return xfer + writer_.writeListBegin();
@@ -153,10 +157,13 @@ std::uint32_t Json5ProtocolWriter::writeListBegin(protocol::TType, uint32_t) {
 std::uint32_t Json5ProtocolWriter::writeListEnd() {
   containerStack_.endList();
   std::uint32_t xfer = writer_.writeListEnd();
-  return xfer + endWriteValue();
+  xfer += endWriteValue();
+  ascend();
+  return xfer;
 }
 
 std::uint32_t Json5ProtocolWriter::writeSetBegin(protocol::TType, uint32_t) {
+  descend();
   std::uint32_t xfer = beginWriteValue();
   containerStack_.beginSet();
   return xfer + writer_.writeListBegin();
@@ -165,10 +172,13 @@ std::uint32_t Json5ProtocolWriter::writeSetBegin(protocol::TType, uint32_t) {
 std::uint32_t Json5ProtocolWriter::writeSetEnd() {
   containerStack_.endSet();
   std::uint32_t xfer = writer_.writeListEnd();
-  return xfer + endWriteValue();
+  xfer += endWriteValue();
+  ascend();
+  return xfer;
 }
 
 std::uint32_t Json5ProtocolWriter::writeMapBegin(bool objectForm) {
+  descend();
   std::uint32_t xfer = beginWriteValue();
   auto form = objectForm ? CompoundTypeTracker::MapForm::Object
                          : CompoundTypeTracker::MapForm::KeyValueArray;
@@ -193,7 +203,9 @@ std::uint32_t Json5ProtocolWriter::writeMapEnd() {
   std::uint32_t xfer = encodedAs == CompoundTypeTracker::MapForm::KeyValueArray
       ? writer_.writeListEnd()
       : writer_.writeObjectEnd();
-  return xfer + endWriteValue();
+  xfer += endWriteValue();
+  ascend();
+  return xfer;
 }
 
 template <class Tag, class T>

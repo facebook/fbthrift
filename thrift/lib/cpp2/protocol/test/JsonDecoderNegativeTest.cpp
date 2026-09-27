@@ -25,6 +25,7 @@
 
 #include <gtest/gtest.h>
 #include <folly/lang/Pretty.h>
+#include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_negative_test_constants.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_negative_test_types.h>
@@ -35,6 +36,7 @@ namespace apache::thrift {
 
 using facebook::thrift::json5::Example;
 using facebook::thrift::json5::NegativeTestCase;
+using facebook::thrift::json5::Recursive;
 using namespace facebook::thrift::json5::json5_negative_test_constants;
 
 class JsonDecoderNegativeTest
@@ -81,6 +83,52 @@ TEST(JsonDecoderErrorTypeTest, TypeMismatchNamesTheFoundType) {
     EXPECT_NE(std::string_view(e.what()).find(expected), std::string_view::npos)
         << e.what();
   }
+}
+
+namespace {
+// Each level nests a struct and a list, i.e. two levels of protocol depth.
+std::string nested(int levels, std::string_view innermost = "") {
+  std::string open, close;
+  for (int i = 0; i < levels; ++i) {
+    open += R"({"children": [)";
+    close += "]}";
+  }
+  return open + std::string(innermost) + close;
+}
+
+void decode(std::string_view json) {
+  (void)Json5ProtocolUtils::fromJson5<Recursive>(json);
+}
+} // namespace
+
+TEST(JsonDecoderDepthLimitTest, BoundsTypedNesting) {
+  const int levels = FLAGS_thrift_protocol_max_depth / 2;
+  EXPECT_NO_THROW(decode(nested(levels)));
+  EXPECT_THROW(decode(nested(levels + 1)), protocol::TProtocolException);
+  EXPECT_THROW(decode(nested(100'000)), protocol::TProtocolException);
+}
+
+TEST(JsonDecoderDepthLimitTest, SkippedFieldsShareTheBudget) {
+  // Nesting 20 short of the limit, plus the innermost struct, leaves room for
+  // 19 skipped arrays.
+  auto withSkippedArrays = [](int n) {
+    return nested(
+        FLAGS_thrift_protocol_max_depth / 2 - 10,
+        R"({"unknown": )" + std::string(n, '[') + std::string(n, ']') + "}");
+  };
+  EXPECT_NO_THROW(decode(withSkippedArrays(19)));
+  EXPECT_THROW(decode(withSkippedArrays(20)), protocol::TProtocolException);
+}
+
+TEST(JsonDecoderDepthLimitTest, SiblingsDoNotAccumulateDepth) {
+  // Every kind of container, including a skipped object, gives its depth back.
+  // Leaking one level per sibling would exceed the limit.
+  std::string json = R"({"children": [)";
+  for (int i = 0; i < FLAGS_thrift_protocol_max_depth; ++i) {
+    json +=
+        R"({"children": [], "byName": {}, "ids": [], "unknown": {"a": {}}},)";
+  }
+  EXPECT_NO_THROW(decode(json + "]}"));
 }
 
 INSTANTIATE_TEST_SUITE_P(
