@@ -16,6 +16,11 @@
 
 #include <thrift/test/CppAllocatorTest.h>
 
+#include <map>
+#include <set>
+#include <type_traits>
+#include <vector>
+
 #include <folly/ScopeGuard.h>
 #include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -48,6 +53,22 @@ TEST(CppAllocatorTest, AlwaysThrowAllocator) {
   EXPECT_NO_THROW(s.child()->not_aa_set()->emplace(42));
   EXPECT_NO_THROW(s.child()->not_aa_map()->emplace(42, 42));
   EXPECT_NO_THROW(s.child()->not_aa_string()->assign(kTooLong));
+}
+
+// Giving up noexcept is scoped to the structs that actually apply a default:
+// dropping one allocates nothing, so those constructors keep the guarantee.
+template <typename T>
+inline constexpr bool alloc_ctor_is_noexcept_v =
+    std::is_nothrow_constructible_v<T, const typename T::allocator_type&>;
+
+static_assert(alloc_ctor_is_noexcept_v<HasContainerFields>);
+static_assert(alloc_ctor_is_noexcept_v<HasContainerFieldsWithDefaults>);
+static_assert(!alloc_ctor_is_noexcept_v<HasContainerFieldsWithAppliedDefaults>);
+
+TEST(CppAllocatorTest, AllocCtorAppliedDefaultPropagatesBadAlloc) {
+  ScopedAlwaysThrowAlloc<> alloc;
+  // Without the conditional noexcept this terminates instead of throwing.
+  EXPECT_THROW(AlwaysThrowWithAppliedDefault{alloc}, std::bad_alloc);
 }
 
 TEST(CppAllocatorTest, UsesAllocatorPmr) {
@@ -96,6 +117,82 @@ TEST(CppAllocatorTest, AllocatorViaPmr) {
   NoAllocatorViaPmr s1;
   YesAllocatorViaPmr s2;
   EXPECT_GT(sizeof(s1), sizeof(s2));
+}
+
+TEST(CppAllocatorTest, AllocCtorIgnoresCustomDefaultWhenLegacy) {
+  ScopedStatefulAlloc<> alloc(42);
+
+  // `cpp.allocator` with no `cpp.allocator_via`: the no-argument constructor is
+  // itself allocator-extended, so it ignores the custom defaults too.
+  HasContainerFieldsWithDefaults def;
+  EXPECT_TRUE(def.aa_list()->empty());
+  EXPECT_TRUE(def.aa_set()->empty());
+  EXPECT_TRUE(def.aa_map()->empty());
+  EXPECT_EQ(*def.plain(), 0);
+
+  HasContainerFieldsWithDefaults s(alloc);
+  EXPECT_TRUE(s.aa_list()->empty());
+  EXPECT_TRUE(s.aa_set()->empty());
+  EXPECT_TRUE(s.aa_map()->empty());
+  EXPECT_EQ(*s.plain(), 0);
+
+  // The defaults are ignored, not the allocator.
+  EXPECT_EQ(s.get_allocator(), alloc);
+  EXPECT_EQ(get_allocator(*s.aa_list()), alloc);
+  EXPECT_EQ(get_allocator(*s.aa_set()), alloc);
+  EXPECT_EQ(get_allocator(*s.aa_map()), alloc);
+
+  // With `cpp.allocator_via` the no-argument constructor applies the default
+  // either way; only the allocator-extended one ignores it.
+  HasAllocatorViaWithDefaults viaDef;
+  EXPECT_TRUE(*viaDef.flag());
+
+  HasAllocatorViaWithDefaults via(alloc);
+  EXPECT_FALSE(*via.flag());
+  EXPECT_EQ(get_allocator(*via.aa_list()), alloc);
+}
+
+TEST(CppAllocatorTest, AllocCtorAppliesCustomDefault) {
+  ScopedStatefulAlloc<> alloc(42);
+
+  const std::vector<int32_t> expectedList{1, 2, 3};
+  const std::set<int32_t> expectedSet{4, 5};
+  const std::map<int32_t, int32_t> expectedMap{{6, 7}};
+
+  auto asVector = [](const auto& c) {
+    return std::vector<int32_t>(c.begin(), c.end());
+  };
+  auto asSet = [](const auto& c) {
+    return std::set<int32_t>(c.begin(), c.end());
+  };
+  auto asMap = [](const auto& c) {
+    return std::map<int32_t, int32_t>(c.begin(), c.end());
+  };
+
+  HasContainerFieldsWithAppliedDefaults def;
+  EXPECT_EQ(asVector(*def.aa_list()), expectedList);
+  EXPECT_EQ(asSet(*def.aa_set()), expectedSet);
+  EXPECT_EQ(asMap(*def.aa_map()), expectedMap);
+  EXPECT_EQ(*def.plain(), 8);
+
+  HasContainerFieldsWithAppliedDefaults s(alloc);
+  EXPECT_EQ(asVector(*s.aa_list()), expectedList);
+  EXPECT_EQ(asSet(*s.aa_set()), expectedSet);
+  EXPECT_EQ(asMap(*s.aa_map()), expectedMap);
+  EXPECT_EQ(*s.plain(), 8);
+
+  // The default reaches the field without displacing the allocator.
+  EXPECT_EQ(s.get_allocator(), alloc);
+  EXPECT_EQ(get_allocator(*s.aa_list()), alloc);
+  EXPECT_EQ(get_allocator(*s.aa_set()), alloc);
+  EXPECT_EQ(get_allocator(*s.aa_map()), alloc);
+
+  HasAllocatorViaWithAppliedDefaults viaDef;
+  EXPECT_TRUE(*viaDef.flag());
+
+  HasAllocatorViaWithAppliedDefaults via(alloc);
+  EXPECT_TRUE(*via.flag());
+  EXPECT_EQ(get_allocator(*via.aa_list()), alloc);
 }
 
 TEST(CppAllocatorTest, Deserialize) {

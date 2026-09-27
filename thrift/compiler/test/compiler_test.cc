@@ -3259,6 +3259,53 @@ TEST(CompilerTest, cpp_lazy_on_allocator_aware_struct) {
   )");
 }
 
+TEST(CompilerTest, cpp_alloc_ctor_custom_defaults) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/cpp.thrift"
+    include "thrift/annotation/thrift.thrift"
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    struct Allocated {
+      1: i32 unannotated = 8;
+        # expected-error@-1: Field `unannotated` of allocator-aware struct `Allocated` declares a custom default that its allocator-taking constructors would drop. Remove the default, or annotate the field with `@cpp.AllowCustomDefaultInAllocCtor` to apply it there too.
+
+      @cpp.AllowCustomDefaultInAllocCtor
+      2: i32 applied = 8;
+
+      @cpp.AllowCustomDefaultInAllocCtor{legacy_ignore_custom_default = true}
+      3: i32 ignored = 8;
+
+      4: i32 no_default;
+
+      # A default that happens to match value-initialization still has to say
+      # which behaviour it wants: the rule is on the declaration, not on
+      # whether the two agree for this type.
+      5: bool zero_bool = false;
+        # expected-error@-1: Field `zero_bool` of allocator-aware struct `Allocated` declares a custom default that its allocator-taking constructors would drop. Remove the default, or annotate the field with `@cpp.AllowCustomDefaultInAllocCtor` to apply it there too.
+    }
+
+    # The annotation only means something where a default would otherwise be
+    # dropped.
+    struct NotAllocated {
+      @cpp.AllowCustomDefaultInAllocCtor
+      1: i32 field1 = 8;
+        # expected-error@-2: `@cpp.AllowCustomDefaultInAllocCtor` on field `field1` has no effect: it applies only to a field of a `cpp.allocator` struct that declares a default value.
+    }
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    struct AllocatedRedundant {
+      @cpp.AllowCustomDefaultInAllocCtor
+      1: i32 field1;
+        # expected-error@-2: `@cpp.AllowCustomDefaultInAllocCtor` on field `field1` has no effect: it applies only to a field of a `cpp.allocator` struct that declares a default value.
+    }
+  )");
+}
+
 TEST(CompilerTest, base_service_defined_after_use) {
   check_compile(R"(
     package "facebook.com/thrift/test"

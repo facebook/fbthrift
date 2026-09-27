@@ -826,6 +826,41 @@
           "column" : 39
         }
       }
+    },
+    "AllowCustomDefaultInAllocCtor" : {
+      "lineno" : 509,
+      "is_exception" : false,
+      "is_union" : false,
+      "structured_annotations" : {
+        "scope.Field" : {  }
+      },
+      "fields" : {
+        "legacy_ignore_custom_default" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 511,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 511,
+              "column" : 40
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 509,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 512,
+          "column" : 2
+        }
+      }
     }
   }
 }

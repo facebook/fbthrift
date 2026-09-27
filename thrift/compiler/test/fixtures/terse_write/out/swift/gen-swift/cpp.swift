@@ -1061,3 +1061,43 @@ public struct DeclareEqualToSpecialization: ThriftSerializable, Hashable {
     }
 }
 
+/// Auto-generated from AllowCustomDefaultInAllocCtor
+public struct AllowCustomDefaultInAllocCtor: ThriftSerializable, Hashable {
+    public var legacy_ignore_custom_default: Bool = false
+
+    public init() {}
+
+    /// Resets every field to its intrinsic (standard) default, per the Object
+    /// Model `clear()` (guide 2.1.22). Unlike `init()`, this ignores custom
+    /// IDL defaults: optional fields become nil, others their type's zero value.
+    public mutating func clear() {
+        self.legacy_ignore_custom_default = false
+    }
+
+    public func write<W: ProtocolWriter>(to writer: W) {
+        writer.writeFieldBegin(.bool, 1)
+        self.legacy_ignore_custom_default.thriftWrite(to: writer)
+        writer.writeFieldStop()
+    }
+
+    public init<R: ProtocolReader>(from reader: R) throws {
+        self.init()
+        while true {
+            let (fieldType, fieldId) = try reader.readFieldBegin()
+            if fieldType == .stop {
+                break
+            }
+            switch fieldId {
+            case 1:
+                if fieldType == .bool {
+                    self.legacy_ignore_custom_default = try Bool.thriftRead(from: reader)
+                } else {
+                    try reader.skip(fieldType)
+                }
+            default:
+                try reader.skip(fieldType)
+            }
+        }
+    }
+}
+

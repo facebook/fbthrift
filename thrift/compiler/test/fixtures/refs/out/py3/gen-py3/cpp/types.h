@@ -248,6 +248,16 @@ inline void reset_field<::facebook::thrift::annotation::cpp::DeclareEqualToSpeci
 }
 
 template<>
+inline void reset_field<::facebook::thrift::annotation::cpp::AllowCustomDefaultInAllocCtor>(
+    ::facebook::thrift::annotation::cpp::AllowCustomDefaultInAllocCtor& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.legacy_ignore_custom_default_ref().copy_from(default_inst<::facebook::thrift::annotation::cpp::AllowCustomDefaultInAllocCtor>().legacy_ignore_custom_default_ref());
+      return;
+  }
+}
+
+template<>
 inline const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::cpp::Name>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -510,6 +520,16 @@ inline const std::unordered_map<std::string_view, std::string_view>& PyStructTra
 template<>
 inline const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::cpp::DeclareEqualToSpecialization>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+inline const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::cpp::AllowCustomDefaultInAllocCtor>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

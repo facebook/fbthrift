@@ -2356,3 +2356,99 @@ class DeclareEqualToSpecialization implements \IThriftSyncStruct, \IThriftStruct
 
 }
 
+/**
+ * Allows a field of a `cpp.allocator` struct to declare a custom default, and
+ * applies that default in the allocator-extended constructors.
+ * 
+ * Those constructors value-initialize every field, so without this annotation
+ * a custom default would never reach them; declaring one is an error instead.
+ * 
+ * `legacy_ignore_custom_default = true` keeps the older behavior, where the
+ * allocator-extended constructors value-initialize the field and drop the
+ * default. It exists for the structs written against that behavior, whose
+ * constructed values must not change; do not set it in new code.
+ *
+ * Original thrift struct:-
+ * AllowCustomDefaultInAllocCtor
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/cpp/AllowCustomDefaultInAllocCtor'))>>
+class AllowCustomDefaultInAllocCtor implements \IThriftSyncStruct, \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+    1 => shape(
+      'var' => 'legacy_ignore_custom_default',
+      'type' => \TType::BOOL,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'legacy_ignore_custom_default' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'legacy_ignore_custom_default' => ?bool,
+  );
+
+  const int STRUCTURAL_ID = 1120988774658797665;
+  /**
+   * Original thrift field:-
+   * 1: bool legacy_ignore_custom_default
+   */
+  public bool $legacy_ignore_custom_default;
+
+  public function __construct(?bool $legacy_ignore_custom_default = null)[] {
+    $this->legacy_ignore_custom_default = $legacy_ignore_custom_default ?? false;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'legacy_ignore_custom_default'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'AllowCustomDefaultInAllocCtor';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "cpp.AllowCustomDefaultInAllocCtor",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "legacy_ignore_custom_default",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\facebook\thrift\annotation\Field' => \facebook\thrift\annotation\Field::withDefaultValues(),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+

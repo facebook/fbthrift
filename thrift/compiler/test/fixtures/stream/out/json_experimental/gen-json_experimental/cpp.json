@@ -815,6 +815,32 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 493
+      },
+      "AllowCustomDefaultInAllocCtor" : {
+        "name" : "AllowCustomDefaultInAllocCtor",
+        "structured_annotations": {
+          "scope.Field" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Field",
+            "path" : "thrift/annotation/scope.thrift"
+          },
+            "value" : {}
+          }
+        },
+        "docstring" : "Allows a field of a `cpp.allocator` struct to declare a custom default, and\napplies that default in the allocator-extended constructors.\n\nThose constructors value-initialize every field, so without this annotation\na custom default would never reach them; declaring one is an error instead.\n\n`legacy_ignore_custom_default = true` keeps the older behavior, where the\nallocator-extended constructors value-initialize the field and drop the\ndefault. It exists for the structs written against that behavior, whose\nconstructed values must not change; do not set it in new code.\n",
+        "fields" : {
+          "legacy_ignore_custom_default" : {
+            "name" : "legacy_ignore_custom_default",
+            "key" : 1,
+            "lineno" : 511,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+                  }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 509
       }
   },
   "source_path" : "thrift/annotation/cpp",

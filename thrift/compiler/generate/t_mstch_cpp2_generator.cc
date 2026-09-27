@@ -1356,6 +1356,17 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
       }
       return whisker::make::null;
     });
+    // Applying a default can allocate, so the allocator-extended constructor
+    // that does it cannot be noexcept.
+    def.property(
+        "cpp_alloc_ctor_default_fields?", [](const t_structured& strct) {
+          for (const auto& field : strct.fields()) {
+            if (cpp2::alloc_ctor_applies_custom_default(field)) {
+              return true;
+            }
+          }
+          return false;
+        });
     def.property("lazy_fields?", [](const t_structured& strct) {
       for (const auto& field : strct.fields()) {
         if (cpp2::is_lazy(&field)) {
@@ -1725,6 +1736,9 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
       return field.has_unstructured_annotation("cpp.use_allocator") ||
           !!t_typedef::get_first_unstructured_annotation_or_null(
                  &field.type().deref(), {"cpp.use_allocator"});
+    });
+    def.property("cpp_alloc_ctor_applies_default?", [](const t_field& field) {
+      return cpp2::alloc_ctor_applies_custom_default(field);
     });
     def.property("cpp_storage_name", [this](const t_field& field) {
       const t_structured* strct = context().get_field_parent(&field);
@@ -2719,6 +2733,46 @@ void forbid_lazy_fields_on_allocator_aware(
   }
 }
 
+// The allocator-extended constructors of a `cpp.allocator` struct
+// value-initialize every field, so a custom default only reaches them when the
+// field opts in. Require the opt-in rather than let the default go missing.
+void validate_alloc_ctor_custom_defaults(
+    sema_context& ctx, const t_structured& strct) {
+  const bool allocator_aware =
+      strct.has_unstructured_annotation("cpp.allocator");
+  for (const auto& field : strct.fields()) {
+    // A default that happens to match value-initialization still counts:
+    // whether the two agree is a per-type judgement the annotation should not
+    // depend on.
+    const bool has_custom_default =
+        allocator_aware && field.default_value() != nullptr;
+    const bool opted_in =
+        field.has_structured_annotation(kCppAllowCustomDefaultInAllocCtorUri);
+    if (has_custom_default == opted_in) {
+      continue;
+    }
+    if (has_custom_default) {
+      ctx.report(
+          field,
+          diagnostic_level::error,
+          "Field `{}` of allocator-aware struct `{}` declares a custom default "
+          "that its allocator-taking constructors would drop. Remove the "
+          "default, or annotate the field with "
+          "`@cpp.AllowCustomDefaultInAllocCtor` to apply it there too.",
+          field.name(),
+          strct.name());
+    } else {
+      ctx.report(
+          field,
+          diagnostic_level::error,
+          "`@cpp.AllowCustomDefaultInAllocCtor` on field `{}` has no effect: "
+          "it applies only to a field of a `cpp.allocator` struct that "
+          "declares a default value.",
+          field.name());
+    }
+  }
+}
+
 void validate_lazy_fields(sema_context& ctx, const t_field& field) {
   if (cpp2::is_lazy(&field)) {
     auto t = field.type()->get_true_type();
@@ -2753,6 +2807,8 @@ void t_mstch_cpp2_generator::fill_validator_visitors(
   validator.add_struct_visitor(forbid_deprecated_terse_writes_ref);
   validator.add_union_visitor(forbid_allocator_via_on_union);
   validator.add_union_visitor(forbid_allocator_on_union);
+  validator.add_structured_definition_visitor(
+      validate_alloc_ctor_custom_defaults);
   validator.add_program_visitor(validate_splits(
       get_split_count(compiler_options()), client_name_to_split_count_));
   validator.add_field_visitor(validate_lazy_fields);

@@ -46,6 +46,18 @@ struct AlwaysThrowParent {
   1: AlwaysThrowChild_4275 child;
 }
 
+// Applying a non-empty default allocates, which this allocator always refuses.
+// The allocator-extended constructor therefore cannot be noexcept.
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "::ScopedAlwaysThrowAlloc<>"},
+}
+struct AlwaysThrowWithAppliedDefault {
+  @cpp.AllowCustomDefaultInAllocCtor
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+  @cpp.Type{template = "::AlwaysThrowVector"}
+  1: list<i32> aa_list = [1, 2, 3];
+}
+
 @thrift.DeprecatedUnvalidatedAnnotations{
   items = {"cpp.allocator": "PmrByteAlloc"},
 }
@@ -130,6 +142,86 @@ struct HasContainerFields {
   @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
   @cpp.Type{template = "::StatefulAllocMap"}
   3: map<i32, i32> aa_map;
+}
+
+// HasContainerFields, with a custom default on every allocator-aware field,
+// opted out of applying it: the allocator-taking constructors value-initialize
+// these fields.
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "::ScopedStatefulAlloc<>"},
+}
+struct HasContainerFieldsWithDefaults {
+  @cpp.AllowCustomDefaultInAllocCtor{legacy_ignore_custom_default = true}
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+  @cpp.Type{template = "::StatefulAllocVector"}
+  1: list<i32> aa_list = [1, 2, 3];
+  @cpp.AllowCustomDefaultInAllocCtor{legacy_ignore_custom_default = true}
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+  @cpp.Type{template = "::StatefulAllocSet"}
+  2: set<i32> aa_set = [4, 5];
+  @cpp.AllowCustomDefaultInAllocCtor{legacy_ignore_custom_default = true}
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+  @cpp.Type{template = "::StatefulAllocMap"}
+  3: map<i32, i32> aa_map = {6: 7};
+  // Not allocator-aware: takes the other branch of the field initializer.
+  @cpp.AllowCustomDefaultInAllocCtor{legacy_ignore_custom_default = true}
+  4: i32 plain = 8;
+}
+
+// HasContainerFieldsWithDefaults, applying the custom defaults instead of
+// dropping them. Same shape, so the two structs differ only in the annotation
+// under test.
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "::ScopedStatefulAlloc<>"},
+}
+struct HasContainerFieldsWithAppliedDefaults {
+  @cpp.AllowCustomDefaultInAllocCtor
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+  @cpp.Type{template = "::StatefulAllocVector"}
+  1: list<i32> aa_list = [1, 2, 3];
+  @cpp.AllowCustomDefaultInAllocCtor
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+  @cpp.Type{template = "::StatefulAllocSet"}
+  2: set<i32> aa_set = [4, 5];
+  @cpp.AllowCustomDefaultInAllocCtor
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+  @cpp.Type{template = "::StatefulAllocMap"}
+  3: map<i32, i32> aa_map = {6: 7};
+  // Not allocator-aware: takes the other branch of the field initializer.
+  @cpp.AllowCustomDefaultInAllocCtor
+  4: i32 plain = 8;
+}
+
+// `cpp.allocator_via` routes the no-argument constructor through a path that
+// applies the default either way, so only the allocator-extended constructor
+// is governed by the annotation.
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {
+    "cpp.allocator": "::ScopedStatefulAlloc<>",
+    "cpp.allocator_via": "aa_list",
+  },
+}
+struct HasAllocatorViaWithDefaults {
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+  @cpp.Type{template = "::StatefulAllocVector"}
+  1: list<i32> aa_list;
+  @cpp.AllowCustomDefaultInAllocCtor{legacy_ignore_custom_default = true}
+  2: bool flag = true;
+}
+
+// HasAllocatorViaWithDefaults, applying the custom default instead.
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {
+    "cpp.allocator": "::ScopedStatefulAlloc<>",
+    "cpp.allocator_via": "aa_list",
+  },
+}
+struct HasAllocatorViaWithAppliedDefaults {
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+  @cpp.Type{template = "::StatefulAllocVector"}
+  1: list<i32> aa_list;
+  @cpp.AllowCustomDefaultInAllocCtor
+  2: bool flag = true;
 }
 
 @thrift.DeprecatedUnvalidatedAnnotations{

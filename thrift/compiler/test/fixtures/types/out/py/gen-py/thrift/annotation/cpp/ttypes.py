@@ -53,7 +53,7 @@ class ThriftEnumWrapper(int):
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'RefType', 'EnumUnderlyingType', 'Name', 'Type', 'Ref', 'Lazy', 'DisableLazyChecksum', 'Adapter', 'PackIsset', 'MinimizePadding', 'ScopedEnumAsUnionType', 'FieldInterceptor', 'UseOpEncode', 'EnumType', 'Frozen2Exclude', 'Frozen2RequiresCompleteContainerParams', 'ProcessInEbThreadUnsafe', 'UseCursorSerialization', 'GenerateDeprecatedHeaderClientMethods', 'AllowLegacyNonOptionalRef', 'DeprecatedTerseWrite', 'AllowLegacyDeprecatedTerseWritesRef', 'EnableCustomTypeOrdering', 'GenerateServiceMethodDecorator', 'FastClient', 'FastServer', 'NonOrderable', 'DeclareHashSpecialization', 'DeclareEqualToSpecialization']
+__all__ = ['UTF8STRINGS', 'RefType', 'EnumUnderlyingType', 'Name', 'Type', 'Ref', 'Lazy', 'DisableLazyChecksum', 'Adapter', 'PackIsset', 'MinimizePadding', 'ScopedEnumAsUnionType', 'FieldInterceptor', 'UseOpEncode', 'EnumType', 'Frozen2Exclude', 'Frozen2RequiresCompleteContainerParams', 'ProcessInEbThreadUnsafe', 'UseCursorSerialization', 'GenerateDeprecatedHeaderClientMethods', 'AllowLegacyNonOptionalRef', 'DeprecatedTerseWrite', 'AllowLegacyDeprecatedTerseWritesRef', 'EnableCustomTypeOrdering', 'GenerateServiceMethodDecorator', 'FastClient', 'FastServer', 'NonOrderable', 'DeclareHashSpecialization', 'DeclareEqualToSpecialization', 'AllowCustomDefaultInAllocCtor']
 warn_thrift_py_deprecated(__name__)
 
 class RefType:
@@ -2731,6 +2731,114 @@ class DeclareEqualToSpecialization:
   def _to_py_deprecated(self):
     return self
 
+class AllowCustomDefaultInAllocCtor:
+  r"""
+  Allows a field of a `cpp.allocator` struct to declare a custom default, and
+  applies that default in the allocator-extended constructors.
+  
+  Those constructors value-initialize every field, so without this annotation
+  a custom default would never reach them; declaring one is an error instead.
+  
+  `legacy_ignore_custom_default = true` keeps the older behavior, where the
+  allocator-extended constructors value-initialize the field and drop the
+  default. It exists for the structs written against that behavior, whose
+  constructed values must not change; do not set it in new code.
+  
+  Attributes:
+   - legacy_ignore_custom_default
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.BOOL:
+          self.legacy_ignore_custom_default = iprot.readBool()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('AllowCustomDefaultInAllocCtor')
+    if self.legacy_ignore_custom_default != None:
+      oprot.writeFieldBegin('legacy_ignore_custom_default', TType.BOOL, 1)
+      oprot.writeBool(self.legacy_ignore_custom_default)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.legacy_ignore_custom_default is not None:
+      value = pprint.pformat(self.legacy_ignore_custom_default, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    legacy_ignore_custom_default=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'legacy_ignore_custom_default',
+    )
+
+  __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.cpp.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.AllowCustomDefaultInAllocCtor, self)
+
+  def _to_mutable_python(self):
+    import importlib
+    import thrift.python.mutable_converter
+    python_mutable_types = importlib.import_module("facebook.thrift.annotation.cpp.thrift_mutable_types")
+    return thrift.python.mutable_converter.to_mutable_python_struct_or_union(python_mutable_types.AllowCustomDefaultInAllocCtor, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.cpp.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.AllowCustomDefaultInAllocCtor, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 all_structs.append(Name)
 Name.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'value', True, None, 2, ), # 1
@@ -3092,6 +3200,28 @@ DeclareEqualToSpecialization.thrift_struct_annotations = {
 }
 DeclareEqualToSpecialization.thrift_field_annotations = {
 }
+
+all_structs.append(AllowCustomDefaultInAllocCtor)
+AllowCustomDefaultInAllocCtor.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+  (1, TType.BOOL, 'legacy_ignore_custom_default', None, None, 2, ), # 1
+)))
+
+AllowCustomDefaultInAllocCtor.thrift_struct_annotations = {
+}
+AllowCustomDefaultInAllocCtor.thrift_field_annotations = {
+}
+
+def AllowCustomDefaultInAllocCtor__init__(self, legacy_ignore_custom_default=None,):
+  self.legacy_ignore_custom_default = legacy_ignore_custom_default
+
+AllowCustomDefaultInAllocCtor.__init__ = AllowCustomDefaultInAllocCtor__init__
+
+def AllowCustomDefaultInAllocCtor__setstate__(self, state):
+  state.setdefault('legacy_ignore_custom_default', None)
+  self.__dict__ = state
+
+AllowCustomDefaultInAllocCtor.__getstate__ = lambda self: self.__dict__.copy()
+AllowCustomDefaultInAllocCtor.__setstate__ = AllowCustomDefaultInAllocCtor__setstate__
 
 fix_spec(all_structs)
 del all_structs

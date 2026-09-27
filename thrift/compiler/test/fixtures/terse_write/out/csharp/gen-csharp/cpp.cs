@@ -2294,6 +2294,99 @@ namespace facebook.thrift.annotation.cpp
     }
 
     /// <summary>
+    /// Auto-generated from AllowCustomDefaultInAllocCtor
+    /// </summary>
+    public class @AllowCustomDefaultInAllocCtor : IThriftSerializable
+    {
+        /// <summary>The Thrift URI for this type, used for type registration.</summary>
+        public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/AllowCustomDefaultInAllocCtor";
+        /// <summary>Gets or sets the legacy_ignore_custom_default field.</summary>
+        public bool @legacy_ignore_custom_default { get; set; }
+
+        public @AllowCustomDefaultInAllocCtor()
+        {
+        }
+
+        public void __fbthrift_clear()
+        {
+            @legacy_ignore_custom_default = default;
+        }
+
+        public bool __fbthrift_is_empty()
+        {
+            if (@legacy_ignore_custom_default != default) { return false; }
+            return true;
+        }
+
+        public void __fbthrift_write(IThriftProtocolWriter writer)
+        {
+            // Field 1: legacy_ignore_custom_default (bool)
+            writer.WriteFieldBegin(ThriftWireType.Bool, 1);
+            writer.WriteBool(@legacy_ignore_custom_default);
+            writer.WriteFieldStop();
+        }
+
+        public void __fbthrift_read(IThriftProtocolReader reader)
+        {
+            while (true)
+            {
+                var (fieldType, fieldId) = reader.ReadFieldBegin();
+                if (fieldType == ThriftWireType.Stop)
+                {
+                    break;
+                }
+
+                switch (fieldId)
+                {
+                    case 1: // legacy_ignore_custom_default
+                        if (fieldType == ThriftWireType.Bool)
+                        {
+                            @legacy_ignore_custom_default = reader.ReadBool();
+                        }
+                        else
+                        {
+                            reader.Skip(fieldType);
+                        }
+                        break;
+                    default:
+                        reader.Skip(fieldType);
+                        break;
+                }
+            }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is not @AllowCustomDefaultInAllocCtor other)
+            {
+                return false;
+            }
+            if (!Equals(@legacy_ignore_custom_default, other.@legacy_ignore_custom_default))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = new HashCode();
+            hashCode.Add(@legacy_ignore_custom_default);
+            return hashCode.ToHashCode();
+        }
+
+        public override string ToString()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.Append("AllowCustomDefaultInAllocCtor(");
+            sb.Append("legacy_ignore_custom_default=");
+            sb.Append(@legacy_ignore_custom_default);
+            sb.Append(")");
+            return sb.ToString();
+        }
+    }
+
+    /// <summary>
     /// Registers all generated types from this module that have a thrift_uri.
     /// Each module generates a uniquely-named registry class to avoid
     /// conflicts when multiple modules share the same namespace.
@@ -2329,6 +2422,7 @@ namespace facebook.thrift.annotation.cpp
             register("facebook.com/thrift/annotation/cpp/NonOrderable", () => new @NonOrderable());
             register("facebook.com/thrift/annotation/cpp/DeclareHashSpecialization", () => new @DeclareHashSpecialization());
             register("facebook.com/thrift/annotation/cpp/DeclareEqualToSpecialization", () => new @DeclareEqualToSpecialization());
+            register("facebook.com/thrift/annotation/cpp/AllowCustomDefaultInAllocCtor", () => new @AllowCustomDefaultInAllocCtor());
         }
     }
 }

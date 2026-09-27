@@ -39,8 +39,8 @@
 #include <thrift/compiler/generate/cpp/name_resolver.h>
 
 namespace apache::thrift::compiler::cpp2 {
-namespace {
 
+namespace {
 bool contains(std::string_view s, std::string_view what) {
   return std::search(s.begin(), s.end(), what.begin(), what.end()) != s.end();
 }
