@@ -196,7 +196,7 @@ Reversing this is `(x >> 1) ^ -(x & 1)`.
 
 #### Conventions
 
-* **Encoding:** Input must be UTF-8 encoded; behavior is undefined for non-UTF-8 input.
+* **Encoding:** Input must be UTF-8 encoded; strings (including object names) that are not well-formed UTF-8 are rejected. The contents of comments are not validated.
 * **Format:** Input must be valid JSON5 data; invalid input is rejected.
 * **Whitespace:** Leading/trailing whitespace are accepted; JSON5 comments (`//`, `/* ... */`) allowed anywhere whitespace is permitted (per JSON5 spec). UTF-8 BOM (byte sequence `EF BB BF` at start of input) is rejected.
 * **Case sensitivity:** All matching is case-sensitive (booleans, enum names, field names).
@@ -277,7 +277,7 @@ Rejects:
 | "hello, \\nworld" | hello, <br/>world |
 | "\\u0041" | A |
 
-Rejects any invalid JSON5 strings.
+Rejects any invalid JSON5 strings, as well as strings whose contents are not well-formed UTF-8 (the serializer could not write them back).
 
 #### BINARY
 

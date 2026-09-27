@@ -62,4 +62,23 @@ TEST(Json5DecoderCustomTypeTest, CustomBinaryType) {
   EXPECT_EQ(Json5ProtocolUtils::fromJson5<Tag>(R"("aGVsbG8=")").str(), "hello");
 }
 
+// Binary in base64 form may still carry arbitrary bytes.
+TEST(Json5DecoderUtf8Test, RejectsInvalidUtf8) {
+  auto decode = [](std::string_view json) {
+    return Json5ProtocolUtils::fromJson5<Example>(json);
+  };
+  using protocol::TProtocolException;
+  EXPECT_THROW(
+      decode("{\"stringValue\": \"\x80\x81\x82\"}"), TProtocolException);
+  EXPECT_THROW(
+      decode("{\"binaryValue\": {\"utf-8\": \"\xC3\"}}"), TProtocolException);
+  EXPECT_THROW(
+      decode("{\"stringAsKey\": {\"\xE0\x80\x80\": \"x\"}}"),
+      TProtocolException);
+
+  EXPECT_EQ(
+      decode("{\"binaryValue\": {\"base64url\": \"gIGC\"}}").binaryValue(),
+      "\x80\x81\x82");
+}
+
 } // namespace apache::thrift

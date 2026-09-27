@@ -61,6 +61,7 @@ namespace apache::thrift::json5::detail {
  * - Missing or mismatched delimiters (e.g., unclosed brackets)
  * - Invalid syntax between elements (e.g., missing comma separator)
  * - Malformed primitives (e.g., invalid number format, unterminated strings)
+ * - Strings whose contents are not well-formed UTF-8
  *
  * Callers should wrap parsing operations in try-catch blocks to handle
  * malformed JSON5 input gracefully.

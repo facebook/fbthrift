@@ -245,6 +245,10 @@ class Json5NegativeTest(unittest.TestCase):
                             test_types.Example, tc.json.encode(), Protocol.JSON5
                         )
 
+    def test_invalid_utf8(self) -> None:
+        with self.assertRaises(Error):
+            deserialize(test_types.Example, b'{"stringValue": "\x80"}', Protocol.JSON5)
+
 
 class Json5SerializerOptionTest(unittest.TestCase):
     def test_serialize_json5_trailing_comma(self) -> None:

@@ -481,6 +481,32 @@ TEST_F(Json5ReaderTest, PeekTokenAfterEOF) {
   EXPECT_THROW((void)r.peekToken(), protocol::TProtocolException);
 }
 
+TEST_F(Json5ReaderTest, InvalidUtf8InStrings) {
+  auto readStr = [this](std::string_view input) {
+    return std::get<std::string>(reader(input).readPrimitive());
+  };
+
+  EXPECT_EQ(readStr("\"\xEF\xBF\xBD\""), "\xEF\xBF\xBD"); // U+FFFD is valid
+  EXPECT_EQ(readStr("\"\xF0\x9F\x91\x8B\""), "\xF0\x9F\x91\x8B"); // 4 bytes
+  EXPECT_EQ(readStr("\"\\u00e9\xC3\xA9\""), "\xC3\xA9\xC3\xA9");
+
+  using protocol::TProtocolException;
+  EXPECT_THROW(readStr("\"\x80\x81\x82\""), TProtocolException); // continuation
+  EXPECT_THROW(readStr("\"hello\xDF\""), TProtocolException); // truncated
+  EXPECT_THROW(readStr("\"\xE0\x80\x80\""), TProtocolException); // overlong
+  EXPECT_THROW(readStr("\"\xED\xA0\x80\""), TProtocolException); // U+D800
+  EXPECT_THROW(
+      readStr("\"\xF5\x80\x80\x80\""), TProtocolException); // > U+10FFFF
+  // A raw lead byte followed by an escape does not form a sequence.
+  EXPECT_THROW(readStr("\"\xC3\\u00A9\""), TProtocolException);
+  EXPECT_THROW(readStr("'\x80'"), TProtocolException); // single-quoted
+
+  // Object names are strings too.
+  auto r = reader("{\"\xDF\": 1}");
+  r.readObjectBegin();
+  EXPECT_THROW(r.readObjectName(), TProtocolException);
+}
+
 TEST_F(Json5ReaderTest, NonAsciiBytesOutsideStrings) {
   // Latin-1 NBSP and superscript two are neither whitespace nor digits.
   EXPECT_THROW(

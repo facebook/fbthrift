@@ -102,6 +102,20 @@ std::uint16_t readFourHexDigits(folly::io::Cursor& cursor) {
       parseHexInteger(cursor.readFixedString(4), false));
 }
 
+// The writer escapes strings with folly::json::escapeString's validate_utf8, so
+// accepting invalid UTF-8 would produce values that cannot be written back.
+void validateUtf8(std::string_view str) {
+  auto* p = reinterpret_cast<const unsigned char*>(str.data());
+  auto* const end = p + str.size();
+  while (p != end) {
+    try {
+      folly::utf8ToCodePoint(p, end, /*skipOnError=*/false);
+    } catch (const std::exception& e) {
+      throwParseError(fmt::format("invalid UTF-8 in string: {}", e.what()));
+    }
+  }
+}
+
 // Decodes a `\uXXXX` escape, with the cursor just past the `u`. A code point
 // outside the BMP is written as a UTF-16 surrogate pair, i.e. two escapes.
 void decodeUnicodeEscape(folly::io::Cursor& cursor, std::string& out) {
@@ -245,15 +259,22 @@ Json5Reader::Token Json5Reader::peekToken() {
 
 std::string Json5Reader::parseString(char quote) {
   std::string result;
+  bool hasRawNonAscii = false;
   while (true) {
     char c = readChar();
     if (c == quote) {
+      // Escapes always decode to well-formed UTF-8; only raw bytes need
+      // validation.
+      if (hasRawNonAscii) {
+        validateUtf8(result);
+      }
       return result;
     }
     if (c == '\n' || c == '\r') {
       throwParseError("unescaped newline in string");
     }
     if (c != '\\') {
+      hasRawNonAscii |= (static_cast<unsigned char>(c) & 0x80) != 0;
       result.push_back(c);
       continue;
     }
