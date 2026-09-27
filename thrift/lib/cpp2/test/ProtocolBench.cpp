@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
+#include <thrift/lib/cpp2/protocol/Json5Protocol.h>
 #include <thrift/lib/cpp2/protocol/Object.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/test/Structs.h>
@@ -49,6 +50,53 @@ struct FrozenSerializer {
     auto view = frozen::mapFrozen<T>(iobuf->coalesce());
     t = view.thaw();
     return 0;
+  }
+};
+
+// C++ JSON5 consumers go through `op::encode`/`op::decode` (as
+// `Json5ProtocolUtils` does), not the generated code a `Serializer<>` alias
+// would use.
+template <class OptionsTag>
+struct Json5OpSerializer {
+  template <class T>
+  static void serialize(const T& obj, folly::IOBufQueue* out) {
+    json5::detail::Json5ProtocolWriter writer(
+        COPY_EXTERNAL_BUFFER, OptionsTag::kOptions);
+    writer.setOutput(out);
+    op::encode<type::infer_tag<T>>(writer, obj);
+  }
+  template <class T>
+  static size_t deserialize(folly::IOBuf* iobuf, T& t) {
+    json5::detail::Json5ProtocolReader reader;
+    reader.setInput(iobuf);
+    op::decode<type::infer_tag<T>>(reader, t);
+    return 0;
+  }
+};
+
+struct Json5DefaultOptions {
+  static constexpr json5::detail::Json5ProtocolWriter::Options kOptions{};
+};
+struct Json5CompatOptions {
+  static constexpr json5::detail::Json5ProtocolWriter::Options kOptions{
+      .writer = {},
+      .enumAsInteger = true,
+      .binaryAsBase64String = true,
+      .mapPrimitiveKeysAsMemberNames = true,
+      .keyOrder = KeyOrder::Unspecified,
+  };
+};
+using Json5Serializer = Json5OpSerializer<Json5DefaultOptions>;
+using Json5CompatSerializer = Json5OpSerializer<Json5CompatOptions>;
+
+struct Json5OnSimpleJSONSerializer {
+  template <class T>
+  static void serialize(const T& obj, folly::IOBufQueue* out) {
+    SimpleJSONSerializer::serialize(obj, out);
+  }
+  template <class T>
+  static size_t deserialize(folly::IOBuf* iobuf, T& t) {
+    return Json5Serializer::deserialize(iobuf, t);
   }
 };
 
@@ -189,11 +237,37 @@ constexpr SerializerMethod getSerializerMethod(std::string_view prefix) {
 
 #define OpEncodeX(Prefix, proto) APPLY(OpEncodeX2, Prefix, proto)              
 
+// One struct per shape (scalars, strings, binary, unions, lists, sets, maps,
+// nesting) keeps the run short. BigListFloat is left out: SimpleJSON writes
+// 3499211520.0f as 3499211500, which Json5ProtocolReader rejects as an inexact
+// integer-to-float conversion.
+#define READ_SIMPLE_JSON_X(Prefix, proto) \
+  X1(Prefix, proto, read, SmallInt,)      \
+  X1(Prefix, proto, read, BigInt,)        \
+  X1(Prefix, proto, read, SmallString,)   \
+  X1(Prefix, proto, read, BigString,)     \
+  X1(Prefix, proto, read, BigBinary,)     \
+  X1(Prefix, proto, read, Mixed,)         \
+  X1(Prefix, proto, read, MixedUnion,)    \
+  X1(Prefix, proto, read, LargeMixed,)    \
+  X1(Prefix, proto, read, BigListInt,)    \
+  X1(Prefix, proto, read, BigListDouble,) \
+  X1(Prefix, proto, read, BigListMixed,)  \
+  X1(Prefix, proto, read, LargeSetInt,)   \
+  X1(Prefix, proto, read, LargeMapInt,)   \
+  X1(Prefix, proto, read, LargeMapMixed,) \
+  X1(Prefix, proto, read, NestedMap,)     \
+  X1(Prefix, proto, read, ComplexStruct,) \
+  X1(Prefix, proto, read, ComplexUnion,)
+
 // NOLINTBEGIN(facebook-avoid-non-const-global-variables)
 X(, Binary)
 X(, Compact)
 X(, SimpleJSON)
 X(, JSON)
+X(, Json5)
+X(, Json5Compat)
+READ_SIMPLE_JSON_X(, Json5OnSimpleJSON)
 X(, Frozen)
 X(Object, Binary)
 X(Object, Compact)
