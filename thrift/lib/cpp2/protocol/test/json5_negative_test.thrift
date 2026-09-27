@@ -147,6 +147,22 @@ const list<NegativeTestCase> typeValidationNegativeCases = [
     name = "DoublePrecisionLoss",
     json = "{\"doubleValue\": 9007199254740993}",
   },
+  NegativeTestCase{
+    name = "DoubleFromInt64Max",
+    json = "{\"doubleValue\": 9223372036854775807}",
+  },
+  NegativeTestCase{
+    name = "DoubleFromInt64MaxString",
+    json = "{\"doubleValue\": \"9223372036854775807\"}",
+  },
+  NegativeTestCase{
+    name = "DoubleRoundingUpTo2Pow63",
+    json = "{\"doubleValue\": 9223372036854775296}",
+  },
+  NegativeTestCase{
+    name = "FloatFromInt64Max",
+    json = "{\"floatValue\": 9223372036854775807}",
+  },
   NegativeTestCase{name = "BoolGotNumber", json = "{\"boolValue\": 1}"},
   NegativeTestCase{
     name = "BoolKeyInvalidString",

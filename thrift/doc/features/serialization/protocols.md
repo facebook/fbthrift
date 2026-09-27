@@ -261,7 +261,7 @@ Rejects:
 Rejects:
 
 * Non-numeric strings (e.g., `"abc"`, `""`).
-* Integers with precision loss (e.g., `9007199254740993` for double, `123456789` for float).
+* Integers with precision loss (e.g., `9007199254740993` or `9223372036854775807` for double, `123456789` for float).
 
 #### STRING
 

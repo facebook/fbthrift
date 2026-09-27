@@ -285,6 +285,11 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
     inputs = ["{\"doubleValue\": 9223372036854774784}"],
     output = json5_test.Example{doubleValue = 9223372036854774784.0},
   },
+  CompatibilityTestCase{
+    name = "DoubleFromInt64Min",
+    inputs = ["{\"doubleValue\": -9223372036854775808}"],
+    output = json5_test.Example{doubleValue = -9223372036854775808.0},
+  },
   // ── Union Compatibility ─────────────────────────────────────────────────────
   CompatibilityTestCase{
     name = "UnionEmpty",
