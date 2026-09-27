@@ -118,6 +118,7 @@ class FastThriftServerStatsE2ETest : public ::testing::Test {
     kSetters,
     // Server-materialized, via FastThriftServerConfig::enableStats.
     kConfigFlag,
+    kPerEventBaseConnections,
   };
 
   // Not in SetUp: the mode differs per test.
@@ -130,6 +131,8 @@ class FastThriftServerStatsE2ETest : public ::testing::Test {
     config.address = folly::SocketAddress("::1", 0);
     config.numIOThreads = 1;
     config.enableStats = mode == StatsMode::kConfigFlag;
+    config.enablePerEventBaseConnectionStats =
+        mode == StatsMode::kPerEventBaseConnections;
 
     server_ = std::make_unique<ftt::FastThriftServer>(std::move(config));
     server_->setInterface(handler_);
@@ -140,7 +143,8 @@ class FastThriftServerStatsE2ETest : public ::testing::Test {
       server_->setConnectionStats(connectionStats_);
     }
     server_->start();
-    if (mode == StatsMode::kConfigFlag) {
+    if (mode == StatsMode::kConfigFlag ||
+        mode == StatsMode::kPerEventBaseConnections) {
       // start() is what materializes them, so this is the earliest the
       // fixture can hold them.
       stats_ = server_->getStats();
@@ -386,6 +390,21 @@ TEST_F(FastThriftServerStatsE2ETest, ConfigFlagMaterializesEveryLayer) {
   EXPECT_NE(server_->getStats(), nullptr);
   EXPECT_NE(server_->getConnectionStats(), nullptr);
   EXPECT_NE(server_->getTLSStats(), nullptr);
+}
+
+TEST_F(
+    FastThriftServerStatsE2ETest,
+    PerEventBaseFlagMaterializesOnlyConnectionStats) {
+  startServer(StatsMode::kPerEventBaseConnections);
+  auto client = createClient();
+
+  EXPECT_EQ(syncCall([&] { return client->semifuture_add(10, 20); }), 30);
+  EXPECT_EQ(server_->getStats(), nullptr);
+  EXPECT_NE(server_->getConnectionStats(), nullptr);
+  EXPECT_EQ(server_->getTLSStats(), nullptr);
+  EXPECT_EQ(connectionTotals().connectionsAccepted.value(), 1);
+
+  destroyClientOnEvb(client);
 }
 
 // Allocating the counters is only half the flag's job: it has to reach the

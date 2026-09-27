@@ -123,6 +123,12 @@ struct FastThriftServerConfig {
   // through its Stats template parameter.
   bool enableStats{false};
 
+  // When true, materialize connection counters and allow the fb303 publisher
+  // to export one accepted/active/rejected series per IO EventBase. This is
+  // independent of enableStats so embedders can inspect connection placement
+  // without installing the message- and TLS-layer metrics handlers.
+  bool enablePerEventBaseConnectionStats{false};
+
   // When true, FastThriftStatsRegistryPublisher samples the EvbAllocator on
   // each IO EventBase and exports its memory gauges to fb303. Collection is
   // off the allocation path and does not create allocators that do not exist.

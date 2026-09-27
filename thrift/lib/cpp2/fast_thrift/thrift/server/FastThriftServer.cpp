@@ -514,12 +514,13 @@ void FastThriftServer::start() {
     if (!stats_) {
       stats_ = std::make_shared<ServerStats>();
     }
-    if (!connectionStats_) {
-      connectionStats_ = std::make_shared<connection::ConnectionStats>();
-    }
     if (!tlsStats_) {
       tlsStats_ = std::make_shared<connection::security::TLSStats>();
     }
+  }
+  if ((config_.enableStats || config_.enablePerEventBaseConnectionStats) &&
+      !connectionStats_) {
+    connectionStats_ = std::make_shared<connection::ConnectionStats>();
   }
 
   connectionManager_ = connection::ConnectionManager::create(
