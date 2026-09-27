@@ -481,6 +481,25 @@ TEST_F(Json5ReaderTest, PeekTokenAfterEOF) {
   EXPECT_THROW((void)r.peekToken(), protocol::TProtocolException);
 }
 
+TEST_F(Json5ReaderTest, NonAsciiBytesOutsideStrings) {
+  // Latin-1 NBSP and superscript two are neither whitespace nor digits.
+  EXPECT_THROW(
+      reader(
+          "\xA0"
+          "42")
+          .readPrimitive(),
+      protocol::TProtocolException);
+  EXPECT_THROW(reader("4\xB2").readPrimitive(), protocol::TProtocolException);
+  // Unquoted object names must be ASCII identifiers.
+  auto r = reader("{\xC3\xA9: 1}");
+  r.readObjectBegin();
+  EXPECT_THROW(r.readObjectName(), protocol::TProtocolException);
+  // Non-ASCII bytes inside strings are kept as-is.
+  EXPECT_EQ(
+      std::get<std::string>(reader("\"caf\xC3\xA9\"").readPrimitive()),
+      "caf\xC3\xA9");
+}
+
 TEST_F(Json5ReaderTest, MalformedNumbers) {
   auto read = [this](std::string_view input) {
     return reader(input).readPrimitive();

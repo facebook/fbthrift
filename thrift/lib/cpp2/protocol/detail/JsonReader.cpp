@@ -16,7 +16,6 @@
 
 #include <thrift/lib/cpp2/protocol/detail/JsonReader.h>
 
-#include <cctype>
 #include <charconv>
 #include <cstdint>
 #include <limits>
@@ -30,12 +29,29 @@ namespace apache::thrift::json5::detail {
 
 namespace {
 
+constexpr bool isAsciiDigit(char c) {
+  return c >= '0' && c <= '9';
+}
+
+constexpr bool isAsciiHexDigit(char c) {
+  return isAsciiDigit(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+}
+
+constexpr bool isAsciiAlpha(char c) {
+  return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+}
+
+constexpr bool isAsciiSpace(char c) {
+  return c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' ||
+      c == '\r';
+}
+
 bool isIdentifierStart(char c) {
-  return std::isalpha(c) || c == '_' || c == '$';
+  return isAsciiAlpha(c) || c == '_' || c == '$';
 }
 
 bool isIdentifierPart(char c) {
-  return isIdentifierStart(c) || std::isdigit(c);
+  return isIdentifierStart(c) || isAsciiDigit(c);
 }
 
 [[noreturn]] void throwParseError(const std::string& msg) {
@@ -180,7 +196,7 @@ bool Json5Reader::skipComment() {
 
 void Json5Reader::skipWhitespaceAndComments() {
   do {
-    cursor().skipWhile([](char c) { return std::isspace(c); });
+    cursor().skipWhile(isAsciiSpace);
     // Loop to handle adjacent comments, e.g. `/*a*//*b*/`.
   } while (skipComment());
 }
@@ -332,12 +348,10 @@ Json5Reader::Primitive Json5Reader::parseNumber(
     c = peekChar();
     if (c == 'x' || c == 'X') {
       cursor().skip(1);
-      return parseHexInteger(
-          cursor().readWhile([](char c) { return std::isxdigit(c); }),
-          sign < 0);
+      return parseHexInteger(cursor().readWhile(isAsciiHexDigit), sign < 0);
     }
   } else if (c != '.') {
-    numStr += cursor().readWhile([](char c) { return std::isdigit(c); });
+    numStr += cursor().readWhile(isAsciiDigit);
     c = peekChar();
   }
 
@@ -346,7 +360,7 @@ Json5Reader::Primitive Json5Reader::parseNumber(
   if (c == '.') {
     isFloating = true;
     numStr.push_back(readChar());
-    numStr += cursor().readWhile([](char c) { return std::isdigit(c); });
+    numStr += cursor().readWhile(isAsciiDigit);
     c = peekChar();
   }
 
@@ -356,7 +370,7 @@ Json5Reader::Primitive Json5Reader::parseNumber(
     if (peekChar() == '+' || peekChar() == '-') {
       numStr.push_back(readChar());
     }
-    numStr += cursor().readWhile([](char c) { return std::isdigit(c); });
+    numStr += cursor().readWhile(isAsciiDigit);
   }
 
   if (numStr.empty() || numStr == "+" || numStr == "-") {
@@ -383,7 +397,7 @@ Json5Reader::Primitive Json5Reader::readPrimitive(
     cursor().skip(1);
     result = parseString(c);
   } else if (
-      std::isdigit(c) || c == '-' || c == '+' || c == '.' || c == 'N' ||
+      isAsciiDigit(c) || c == '-' || c == '+' || c == '.' || c == 'N' ||
       c == 'I') {
     result = parseNumber(precision);
   } else if (isIdentifierStart(c)) {
