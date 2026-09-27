@@ -83,6 +83,32 @@ class MinimalMap : private folly::F14FastMap<K, M, H, E, A> {
   }
 };
 
+template <typename K, typename M, typename H, typename E, typename A>
+class HintOnlyMap : private folly::F14FastMap<K, M, H, E, A> {
+  using Super = folly::F14FastMap<K, M, H, E, A>;
+
+ public:
+  using typename Super::allocator_type;
+  using typename Super::iterator;
+  using typename Super::key_type;
+  using typename Super::mapped_type;
+  using typename Super::size_type;
+  using typename Super::value_type;
+
+  HintOnlyMap() = default;
+
+  using Super::operator[];
+  using Super::end;
+  using Super::get_allocator;
+  using Super::size;
+
+  // `HintOnlyMap` has `emplace_hint` method, but not `try_emplace`.
+  template <class... Args>
+  iterator emplace_hint(iterator hint, Args&&... args) {
+    return Super::emplace_hint(hint, std::forward<Args>(args)...);
+  }
+};
+
 } // namespace
 
 namespace folly::test {
@@ -151,13 +177,13 @@ TEST_F(DeserializeKnownLengthMapTest, EmplaceHintConstuctCount) {
   EXPECT_EQ(
       TrackedValue::counts(),
       (folly::test::Counts{/* copyConstruct */ 0,
-                           /* moveConstruct */ 1,
+                           /* moveConstruct */ 0,
                            /* copyConvert */ 0,
                            /* moveConvert */ 0,
                            /* copyAssign */ 0,
                            /* moveAssign */ 0,
                            /* defaultConstruct */ 1,
-                           /* destroyed */ 1}));
+                           /* destroyed */ 0}));
 }
 
 TEST_F(DeserializeKnownLengthMapTest, EmplaceHintConstuctCountVec) {
@@ -193,6 +219,49 @@ TEST_F(DeserializeKnownLengthMapTest, EmplaceHintConstuctCountVec) {
                            /* moveAssign */ 0,
                            /* defaultConstruct */ 1,
                            /* destroyed */ 0}));
+}
+
+TEST_F(
+    DeserializeKnownLengthMapTest, EmplaceHintWithoutTryEmplaceConstuctCount) {
+  using Allocator = std::allocator<std::pair<const TrackedKey, TrackedValue>>;
+  using Map = HintOnlyMap<
+      TrackedKey,
+      TrackedValue,
+      TransparentTrackedKeyHash,
+      TransparentTrackedKeyEqual,
+      Allocator>;
+
+  static_assert(!detail::pm::sorted_unique_constructible_v<Map>);
+  static_assert(detail::pm::map_emplace_hint_is_invocable_v<Map>);
+  static_assert(!detail::pm::map_try_emplace_is_invocable_v<Map>);
+  static_assert(!detail::pm::map_supports_in_place_deserialize_v<Map>);
+  static_assert(!detail::alloc_should_propagate_map<Map>);
+
+  Map map;
+  detail::pm::deserialize_known_length_map(
+      map, 1, deserializeTrackedKey, deserializeTrackedValue);
+
+  EXPECT_EQ(map.size(), 1);
+  EXPECT_EQ(
+      TrackedKey::counts(),
+      (folly::test::Counts{/* copyConstruct */ 0,
+                           /* moveConstruct */ 1,
+                           /* copyConvert */ 0,
+                           /* moveConvert */ 0,
+                           /* copyAssign */ 0,
+                           /* moveAssign */ 0,
+                           /* defaultConstruct */ 1,
+                           /* destroyed */ 1}));
+  EXPECT_EQ(
+      TrackedValue::counts(),
+      (folly::test::Counts{/* copyConstruct */ 0,
+                           /* moveConstruct */ 1,
+                           /* copyConvert */ 0,
+                           /* moveConvert */ 0,
+                           /* copyAssign */ 0,
+                           /* moveAssign */ 0,
+                           /* defaultConstruct */ 1,
+                           /* destroyed */ 1}));
 }
 
 TEST_F(DeserializeKnownLengthMapTest, EmplaceConstuctCount) {

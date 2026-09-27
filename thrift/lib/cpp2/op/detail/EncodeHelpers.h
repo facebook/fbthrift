@@ -163,6 +163,7 @@ inline constexpr bool sorted_unique_constructible_v =
     sorted_unique_constructible_<void, T>;
 
 FOLLY_CREATE_MEMBER_INVOKER(emplace_hint_invoker, emplace_hint);
+FOLLY_CREATE_MEMBER_INVOKER(try_emplace_invoker, try_emplace);
 
 template <typename T>
 using detect_key_compare = typename T::key_compare;
@@ -174,6 +175,18 @@ constexpr bool map_emplace_hint_is_invocable_v = std::is_invocable_v<
     typename T::iterator,
     typename T::key_type,
     typename T::mapped_type>;
+
+template <typename T>
+constexpr bool map_try_emplace_is_invocable_v =
+    std::is_invocable_v<try_emplace_invoker, T, typename T::key_type>;
+
+// Unordered maps that do not propagate their allocator can deserialize the
+// mapped value in place via try_emplace rather than through a temporary.
+template <typename T>
+constexpr bool map_supports_in_place_deserialize_v =
+    !folly::is_detected_v<detect_key_compare, T> &&
+    !apache::thrift::detail::alloc_should_propagate_map<T> &&
+    map_try_emplace_is_invocable_v<T>;
 
 template <typename T>
 constexpr bool set_emplace_hint_is_invocable_v = std::is_invocable_v<
@@ -217,7 +230,33 @@ void deserialize_known_length_map(
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
   requires(
       !sorted_unique_constructible_v<Map> &&
-      map_emplace_hint_is_invocable_v<Map>)
+      map_emplace_hint_is_invocable_v<Map> &&
+      map_supports_in_place_deserialize_v<Map>)
+void deserialize_known_length_map(
+    Map& map,
+    std::uint32_t mapSize,
+    const KeyDeserializer& kr,
+    const MappedDeserializer& mr) {
+  folly::reserve_if_available(map, mapSize);
+  for (auto i = mapSize; i--;) {
+    typename Map::key_type key = apache::thrift::detail::default_map_key(map);
+    kr(key);
+    auto [it, inserted] = map.try_emplace(std::move(key));
+    if (inserted) {
+      mr(it->second);
+    } else {
+      typename Map::mapped_type value =
+          apache::thrift::detail::default_map_value(map);
+      mr(value);
+    }
+  }
+}
+
+template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
+  requires(
+      !sorted_unique_constructible_v<Map> &&
+      map_emplace_hint_is_invocable_v<Map> &&
+      !map_supports_in_place_deserialize_v<Map>)
 void deserialize_known_length_map(
     Map& map,
     std::uint32_t mapSize,

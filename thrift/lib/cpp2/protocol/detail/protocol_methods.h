@@ -89,6 +89,10 @@ using op::detail::deserialize_known_length_set;
 using op::detail::detect_key_compare;
 using op::detail::ListDecodeImpl;
 using op::detail::map_emplace_hint_is_invocable_v;
+// NOLINTNEXTLINE(facebook-hte-DetailCall)
+using op::detail::map_supports_in_place_deserialize_v;
+// NOLINTNEXTLINE(facebook-hte-DetailCall)
+using op::detail::map_try_emplace_is_invocable_v;
 using op::detail::set_emplace_hint_is_invocable_v;
 using op::detail::sorted_unique_constructible_v;
 using op::detail::writeMapValueBegin;
