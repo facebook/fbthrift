@@ -226,6 +226,10 @@ class Json5CompatibilityExtraTest(unittest.TestCase):
 class Json5NegativeTest(unittest.TestCase):
     """Test that JSON5 decoder rejects invalid inputs."""
 
+    def test_error_message_with_non_ascii_byte(self) -> None:
+        with self.assertRaisesRegex(Error, r"expected value, got '\\xa0'"):
+            deserialize(test_types.Example, b'{"i64Value": \xa0}', Protocol.JSON5)
+
     def test_negative(self) -> None:
         cases = [
             ("enum", negative_types.enumValidationNegativeCases),

@@ -22,6 +22,7 @@
 
 #include <fmt/core.h>
 #include <folly/Conv.h>
+#include <folly/String.h>
 #include <folly/Unicode.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 
@@ -54,9 +55,12 @@ bool isIdentifierPart(char c) {
   return isIdentifierStart(c) || isAsciiDigit(c);
 }
 
+// Messages may echo input bytes, but must stay valid UTF-8 (thrift-python
+// decodes them strictly).
 [[noreturn]] void throwParseError(const std::string& msg) {
   throw protocol::TProtocolException(
-      protocol::TProtocolException::INVALID_DATA, "Json5Reader: " + msg);
+      protocol::TProtocolException::INVALID_DATA,
+      "Json5Reader: " + folly::backslashify(msg));
 }
 
 template <typename T>

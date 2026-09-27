@@ -500,6 +500,31 @@ TEST_F(Json5ReaderTest, NonAsciiBytesOutsideStrings) {
       "caf\xC3\xA9");
 }
 
+TEST_F(Json5ReaderTest, ErrorMessagesEscapeInputBytes) {
+  auto message = [this](std::string_view input) -> std::string {
+    try {
+      (void)reader(input).readPrimitive();
+    } catch (const protocol::TProtocolException& e) {
+      return e.what();
+    }
+    return "no error";
+  };
+  EXPECT_NE(
+      message("\xA0").find(R"(expected value, got '\xa0')"), std::string::npos);
+  EXPECT_NE(
+      message(
+          "\"\\u\xA0"
+          "000\"")
+          .find(R"(invalid hex number \xa0000)"),
+      std::string::npos);
+  // Backslashes in messages are escaped too.
+  EXPECT_NE(
+      message(R"("\q")").find(R"(unknown escape '\\q')"), std::string::npos);
+  EXPECT_NE(
+      message("\"\\\xA0\"").find(R"(unknown escape '\\\xa0')"),
+      std::string::npos);
+}
+
 TEST_F(Json5ReaderTest, MalformedNumbers) {
   auto read = [this](std::string_view input) {
     return reader(input).readPrimitive();
