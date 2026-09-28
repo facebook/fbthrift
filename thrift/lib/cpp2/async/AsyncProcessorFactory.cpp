@@ -24,7 +24,7 @@ namespace apache::thrift {
 namespace {
 const std::string kNONE = "NONE";
 
-std::string priorityToString(concurrency::PRIORITY priority) {
+std::string_view priorityToString(concurrency::PRIORITY priority) {
   switch (priority) {
     case concurrency::PRIORITY::HIGH_IMPORTANT:
       return "HIGH_IMPORTANT";
