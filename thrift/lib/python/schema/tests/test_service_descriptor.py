@@ -23,6 +23,7 @@ from thrift.lib.python.schema.schema_registry import SchemaRegistry
 from thrift.lib.python.schema.service_descriptor import (
     FunctionQualifier,
     RpcKind,
+    ServiceCatalog,
     ServiceDescriptor,
 )
 from thrift.lib.python.schema.type_system import (
@@ -235,3 +236,138 @@ class ServiceDescriptorTest(unittest.TestCase):
     def test_rejects_non_service_type(self) -> None:
         with self.assertRaises(TypeError):
             ServiceDescriptor.from_service(TestTypes.Request, SchemaRegistry())
+
+
+class ServiceCatalogTest(unittest.TestCase):
+    def test_catalog_indexes_services_over_their_type_system(self) -> None:
+        registry = SchemaRegistry()
+        registry.get_node(TestServices.TestServiceInterface)
+        catalog = ServiceCatalog.from_schema_registry(registry)
+
+        self.assertIs(catalog.type_system, registry)
+        self.assertCountEqual(
+            catalog.service_uris,
+            [_BASE_SERVICE_URI, _SERVICE_URI],
+        )
+        self.assertEqual(
+            catalog.get_service_or_throw(_SERVICE_URI).service_name,
+            "TestService",
+        )
+        base_service = catalog.get_service_by_name("BaseService")
+        self.assertIsNotNone(base_service)
+        assert base_service is not None
+        self.assertEqual(base_service.service_uri, _BASE_SERVICE_URI)
+        self.assertIsNotNone(catalog.type_system.get_user_defined_type(_REQUEST_URI))
+
+    def test_from_service_uses_an_isolated_registry(self) -> None:
+        shared_registry = SchemaRegistry.get()
+        shared_registry.get_node(LegacyServices.LegacyServiceInterface)
+
+        catalog = ServiceCatalog.from_service(TestServices.TestServiceInterface)
+
+        self.assertCountEqual(
+            catalog.service_uris,
+            [_BASE_SERVICE_URI, _SERVICE_URI],
+        )
+
+        self.assertIsNot(catalog.type_system, shared_registry)
+
+    def test_service_snapshot_does_not_freeze_its_registry(self) -> None:
+        registry = SchemaRegistry()
+        catalog = ServiceCatalog.from_schema_registry(registry)
+
+        registry.get_node(TestServices.TestServiceInterface)
+
+        self.assertEqual(catalog.service_uris, ())
+        self.assertIsNotNone(catalog.type_system.get_user_defined_type(_REQUEST_URI))
+
+    def test_from_service_omits_uri_less_service(self) -> None:
+        catalog = ServiceCatalog.from_service(LegacyServices.LegacyServiceInterface)
+
+        self.assertEqual(catalog.service_uris, ())
+        self.assertEqual(catalog.services, ())
+
+    def test_uri_less_services_are_omitted(self) -> None:
+        registry = SchemaRegistry()
+        registry.get_node(LegacyServices.LegacyServiceInterface)
+
+        catalog = ServiceCatalog.from_schema_registry(registry)
+
+        self.assertEqual(catalog.service_uris, ())
+        self.assertEqual(catalog.services, ())
+
+    def test_uri_less_descriptors_are_omitted(self) -> None:
+        registry = SchemaRegistry()
+        descriptor = ServiceDescriptor.from_service(
+            TestServices.TestServiceInterface,
+            registry,
+        )
+        descriptor = dataclasses.replace(descriptor, service_uri="")
+
+        catalog = ServiceCatalog(registry, (descriptor,))
+
+        self.assertEqual(catalog.service_uris, ())
+        self.assertEqual(catalog.services, ())
+
+    def test_missing_service_lookup(self) -> None:
+        catalog = ServiceCatalog.from_service(TestServices.TestServiceInterface)
+        self.assertIsNone(catalog.get_service("missing"))
+        self.assertIsNone(catalog.get_service_by_name("missing"))
+        with self.assertRaises(KeyError):
+            catalog.get_service_or_throw("missing")
+
+    def test_duplicate_names_keep_first_service(self) -> None:
+        registry = SchemaRegistry()
+        first = ServiceDescriptor(
+            service_name="Duplicate",
+            service_uri="test.dev/first",
+            type_system=registry,
+            functions=(),
+            interactions=(),
+        )
+        second = ServiceDescriptor(
+            service_name="Duplicate",
+            service_uri="test.dev/second",
+            type_system=registry,
+            functions=(),
+            interactions=(),
+        )
+
+        catalog = ServiceCatalog(registry, (first, second))
+
+        self.assertIs(catalog.get_service_by_name("Duplicate"), first)
+
+    def test_duplicate_uris_keep_first_service(self) -> None:
+        registry = SchemaRegistry()
+        service = ServiceDescriptor(
+            service_name="Service",
+            service_uri="test.dev/service",
+            type_system=registry,
+            functions=(),
+            interactions=(),
+        )
+        duplicate = ServiceDescriptor(
+            service_name="Duplicate",
+            service_uri=service.service_uri,
+            type_system=registry,
+            functions=(),
+            interactions=(),
+        )
+
+        catalog = ServiceCatalog(registry, (service, duplicate))
+
+        self.assertIs(catalog.get_service(service.service_uri), service)
+        self.assertEqual(catalog.services, (service,))
+
+    def test_rejects_mixed_type_systems(self) -> None:
+        registry = SchemaRegistry()
+        service = ServiceDescriptor(
+            service_name="Service",
+            service_uri="test.dev/service",
+            type_system=registry,
+            functions=(),
+            interactions=(),
+        )
+
+        with self.assertRaisesRegex(ValueError, "share its TypeSystem"):
+            ServiceCatalog(SchemaRegistry(), (service,))

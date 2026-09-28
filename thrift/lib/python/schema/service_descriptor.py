@@ -47,6 +47,7 @@ __all__ = [
     "Parameter",
     "RpcKind",
     "RpcStruct",
+    "ServiceCatalog",
     "ServiceDescriptor",
     "Sink",
     "Stream",
@@ -310,6 +311,88 @@ class ServiceDescriptor:
             return self._interactions_by_uri[uri]
         except KeyError:
             raise KeyError(f"No interaction with URI {uri!r}") from None
+
+
+class ServiceCatalog:
+    """The services in a Thrift schema, keyed by URI, with their types described
+    by a TypeSystem.
+
+    A service without a URI has no stable name to look it up by, so it is not
+    included.
+    """
+
+    __slots__ = ("_type_system", "_services", "_services_by_name", "_services_by_uri")
+
+    def __init__(
+        self,
+        type_system: TypeSystem,
+        services: Sequence[ServiceDescriptor],
+    ) -> None:
+        self._type_system = type_system
+        self._services_by_uri: dict[str, ServiceDescriptor] = {}
+        indexed_services = []
+        for service in services:
+            if not service.service_uri:
+                continue
+            if service.service_uri in self._services_by_uri:
+                continue
+            if service.type_system is not type_system:
+                raise ValueError("Catalog services must share its TypeSystem")
+            self._services_by_uri[service.service_uri] = service
+            indexed_services.append(service)
+        self._services = tuple(indexed_services)
+        self._services_by_name: dict[str, ServiceDescriptor] = {}
+        for service in self._services:
+            self._services_by_name.setdefault(service.service_name, service)
+
+    @classmethod
+    def from_service(cls, service: type[Any]) -> ServiceCatalog:
+        """Build the catalog contained in one service's embedded schema."""
+        registry = SchemaRegistry()
+        node = registry.get_node(service)
+        if not isinstance(node, _ast.ServiceNode):
+            raise TypeError(f"{service.__name__} is not a Thrift service")
+        return cls.from_schema_registry(registry)
+
+    @classmethod
+    def from_schema_registry(cls, registry: SchemaRegistry) -> ServiceCatalog:
+        """Snapshot every URI-addressable service loaded in registry."""
+        builder = _DescriptorBuilder(registry)
+        services = []
+        seen_uris: set[str] = set()
+        for program in registry.syntax_graph.programs:
+            for definition in program.definitions:
+                if not isinstance(definition, _ast.ServiceNode):
+                    continue
+                if not definition.uri or definition.uri in seen_uris:
+                    continue
+                seen_uris.add(definition.uri)
+                services.append(builder.build_service(definition))
+        return cls(registry, services)
+
+    @property
+    def type_system(self) -> TypeSystem:
+        return self._type_system
+
+    @property
+    def service_uris(self) -> tuple[str, ...]:
+        return tuple(self._services_by_uri)
+
+    @property
+    def services(self) -> tuple[ServiceDescriptor, ...]:
+        return self._services
+
+    def get_service(self, uri: str) -> ServiceDescriptor | None:
+        return self._services_by_uri.get(uri)
+
+    def get_service_by_name(self, name: str) -> ServiceDescriptor | None:
+        return self._services_by_name.get(name)
+
+    def get_service_or_throw(self, uri: str) -> ServiceDescriptor:
+        service = self.get_service(uri)
+        if service is None:
+            raise KeyError(f"No service with URI {uri!r}")
+        return service
 
 
 class _DescriptorBuilder:
