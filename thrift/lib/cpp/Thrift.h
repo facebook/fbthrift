@@ -125,6 +125,9 @@ class FOLLY_EXPORT TLibraryException : public virtual TException {
 
   explicit TLibraryException(const std::string& message) : message_(message) {}
 
+  explicit TLibraryException(std::string&& message)
+      : message_(std::move(message)) {}
+
   TLibraryException(const char* message, int errnoValue);
 
   const char* what() const noexcept override {
