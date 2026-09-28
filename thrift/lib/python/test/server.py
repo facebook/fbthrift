@@ -415,9 +415,20 @@ class ServicesTests(later.unittest.TestCase):
                 server.stop()
                 await asyncio.gather(serve_task, return_exceptions=True)
 
+        # The cancelled serve task keeps the server alive through its traceback
+        # cycle, so only a collection frees it. Collect while the loop still
+        # runs: the C++ server holds the last reference to the address future,
+        # and dropping it after the loop is otherwise unreferenced destroys the
+        # loop's folly executor from inside ~ThriftServer, which then hangs
+        # waiting on keep-alives that same destructor has yet to release.
+        async def inner_and_release_server() -> tuple[bool, bool, list[str]]:
+            result = await inner()
+            gc.collect()
+            return result
+
         # WHEN
         actual_serve_cancelled, actual_serving_started, actual_events = asyncio.run(
-            inner()
+            inner_and_release_server()
         )
 
         # THEN
