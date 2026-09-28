@@ -20,6 +20,8 @@
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/AsyncTransport.h>
 
+#include <thrift/lib/cpp2/fast_thrift/transport/test/ReadDataDelivery.h>
+
 namespace apache::thrift::fast_thrift::transport::bench {
 
 /**
@@ -63,9 +65,7 @@ class BenchAsyncTransport : public folly::AsyncTransport {
   ReadCallback* getReadCallback() const override { return readCallback_; }
 
   void injectReadData(std::unique_ptr<folly::IOBuf> data) {
-    if (readCallback_ && data && readCallback_->isBufferMovable()) {
-      readCallback_->readBufferAvailable(std::move(data));
-    }
+    test::deliverReadData(this, std::move(data));
   }
 
   std::unique_ptr<folly::IOBuf> getWrittenData() { return writtenData_.move(); }

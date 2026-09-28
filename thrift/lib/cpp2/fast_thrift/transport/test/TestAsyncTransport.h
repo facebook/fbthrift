@@ -23,6 +23,8 @@
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 
+#include <thrift/lib/cpp2/fast_thrift/transport/test/ReadDataDelivery.h>
+
 namespace apache::thrift::fast_thrift::transport::test {
 
 /**
@@ -74,19 +76,7 @@ class TestAsyncTransport : public folly::AsyncTransport {
    * The data will be delivered to the ReadCallback.
    */
   void injectReadData(std::unique_ptr<folly::IOBuf> data) {
-    if (readCallback_ && data) {
-      if (readCallback_->isBufferMovable()) {
-        readCallback_->readBufferAvailable(std::move(data));
-      } else {
-        void* buf;
-        size_t len;
-        readCallback_->getReadBuffer(&buf, &len);
-        auto coalesced = data->coalesce();
-        size_t toCopy = std::min(len, coalesced.size());
-        std::memcpy(buf, coalesced.data(), toCopy);
-        readCallback_->readDataAvailable(toCopy);
-      }
-    }
+    deliverReadData(this, std::move(data));
   }
 
   /**
