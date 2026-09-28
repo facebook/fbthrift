@@ -182,14 +182,7 @@ class TProcessorEventHandlerBridge {
         handlers_(config_.handlers.get()),
         methodMetadata_(config_.methodMetadata.get()),
         drivesProcessorHandlers_(
-            handlers_ != nullptr && !handlers_->processor.empty()) {
-    if (drivesProcessorHandlers_) {
-      // A pipelining client's steady-state depth. Deliberately small: a host
-      // carries these by the hundred thousand, so headroom costs more memory
-      // than the rehashes it saves.
-      requests_.reserve(kInitialInFlight);
-    }
-  }
+            handlers_ != nullptr && !handlers_->processor.empty()) {}
 
   TProcessorEventHandlerBridge(const TProcessorEventHandlerBridge&) = delete;
   TProcessorEventHandlerBridge& operator=(const TProcessorEventHandlerBridge&) =
@@ -326,6 +319,12 @@ class TProcessorEventHandlerBridge {
     // Always an insert: the rocket layer errors a stream id that is already in
     // flight, so the bridge never sees the same one twice. Assigning over a
     // live entry would drop a bound chain, so it is not offered.
+    if (FOLLY_UNLIKELY(!requestsInitialized_)) {
+      // Preserve the normal pipelining headroom, but make connections that
+      // never retain a request pay nothing for it.
+      requests_.reserve(kInitialInFlight);
+      requestsInitialized_ = true;
+    }
     [[maybe_unused]] const bool inserted =
         requests_.try_emplace(streamId, std::move(state)).second;
     DCHECK(inserted);
@@ -505,6 +504,7 @@ class TProcessorEventHandlerBridge {
   // Sits here to land in the padding the flag above leaves, rather than widen
   // the connection by a word of its own.
   bool connectionDestroyed_{false};
+  bool requestsInitialized_{false};
 
   // Declared before the requests: their contexts borrow this one, and members
   // are destroyed in reverse.

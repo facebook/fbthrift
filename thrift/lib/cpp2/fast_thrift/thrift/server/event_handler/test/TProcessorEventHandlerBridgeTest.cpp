@@ -146,8 +146,10 @@ std::shared_ptr<folly::RequestContext> makeAmbientContext(int depth) {
 }
 
 struct NestedAmbientContext {
-  explicit NestedAmbientContext(int depth) : guard(makeAmbientContext(depth)) {}
+  explicit NestedAmbientContext(int value)
+      : depth(value), guard(makeAmbientContext(value)) {}
 
+  int depth;
   folly::RequestContextScopeGuard guard;
 };
 
@@ -171,15 +173,19 @@ class ContextPushingEventHandler
     return new NestedAmbientContext(depth_);
   }
 
-  void preRead(void*, std::string_view) override {
+  void preRead(void* context, std::string_view) override {
+    EXPECT_EQ(static_cast<NestedAmbientContext*>(context)->depth, depth_);
     readDepths_->push_back(currentAmbientDepth());
   }
 
-  void postWrite(void*, std::string_view, uint32_t) override {
+  void postWrite(void* context, std::string_view, uint32_t) override {
+    EXPECT_EQ(static_cast<NestedAmbientContext*>(context)->depth, depth_);
     writeDepths_->push_back(currentAmbientDepth());
   }
 
   void freeContext(void* context, std::string_view) override {
+    ASSERT_NE(context, nullptr);
+    EXPECT_EQ(static_cast<NestedAmbientContext*>(context)->depth, depth_);
     freeDepths_->push_back(currentAmbientDepth());
     delete static_cast<NestedAmbientContext*>(context);
   }

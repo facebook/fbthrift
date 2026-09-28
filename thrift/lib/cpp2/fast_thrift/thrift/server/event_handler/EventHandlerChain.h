@@ -37,10 +37,10 @@ namespace apache::thrift::fast_thrift::thrift::server {
 /**
  * Drives a fixed list of `TProcessorEventHandler`s across one request.
  *
- * The list is fixed for the server's life. A request's chain resolves it to
- * a flat array of handler/context pairs. `bind` takes one context from every
- * handler and `unbind` returns it, which is the pairing
- * `getServiceContext` / `freeContext` define.
+ * The list is fixed for the server's life and is borrowed by every request's
+ * chain. `bind` takes one request-local context from every handler and
+ * `unbind` returns it, which is the pairing `getServiceContext` /
+ * `freeContext` define.
  *
  * Only the callbacks the bridge can honour are driven. Streams, sinks, and
  * interactions have no fast_thrift equivalent, and client interceptors are
@@ -51,11 +51,10 @@ class EventHandlerChain {
   using HandlerList =
       std::vector<std::shared_ptr<apache::thrift::TProcessorEventHandler>>;
 
-  explicit EventHandlerChain(const HandlerList& handlers) {
-    callees_.reserve(handlers.size());
+  explicit EventHandlerChain(const HandlerList& handlers)
+      : handlers_(&handlers), contexts_(handlers.size(), nullptr) {
     for (const auto& handler : handlers) {
       CHECK(handler != nullptr);
-      callees_.push_back(Callee{handler.get(), nullptr});
     }
   }
 
@@ -66,7 +65,7 @@ class EventHandlerChain {
 
   ~EventHandlerChain() { unbind(); }
 
-  bool empty() const noexcept { return callees_.empty(); }
+  bool empty() const noexcept { return contexts_.empty(); }
 
   /**
    * Takes each handler's context for one request. `method` is the
@@ -87,9 +86,9 @@ class EventHandlerChain {
     method_ = method;
     bound_ = true;
     const auto boundServiceName = serviceName_;
-    forEachCallee([&](Callee& callee) {
-      callee.context = callee.handler->getServiceContext(
-          boundServiceName, method, &requestContext);
+    forEachCallee([&](auto* handler, void*& context) {
+      context =
+          handler->getServiceContext(boundServiceName, method, &requestContext);
     });
   }
 
@@ -106,10 +105,10 @@ class EventHandlerChain {
     bound_ = false;
     serviceName_ = {};
     const auto method = method_;
-    forEachCallee([&](Callee& callee) {
+    forEachCallee([&](auto* handler, void*& context) {
       beforeFree();
-      callee.handler->freeContext(callee.context, method);
-      callee.context = nullptr;
+      handler->freeContext(context, method);
+      context = nullptr;
     });
     method_ = {};
   }
@@ -118,16 +117,16 @@ class EventHandlerChain {
     DCHECK(bound_);
     const auto method = method_;
     FOLLY_SDT(thrift, thrift_context_stack_pre_read, serviceName_, method);
-    forEachCallee([&](Callee& callee) {
-      callee.handler->preRead(callee.context, method);
+    forEachCallee([&](auto* handler, void*& context) {
+      handler->preRead(context, method);
     });
   }
 
   void onReadData(const apache::thrift::SerializedMessage& message) {
     DCHECK(bound_);
     const auto method = method_;
-    forEachCallee([&](Callee& callee) {
-      callee.handler->onReadData(callee.context, method, message);
+    forEachCallee([&](auto* handler, void*& context) {
+      handler->onReadData(context, method, message);
     });
   }
 
@@ -137,8 +136,8 @@ class EventHandlerChain {
     const auto method = method_;
     FOLLY_SDT(
         thrift, thrift_context_stack_post_read, serviceName_, method, bytes);
-    forEachCallee([&](Callee& callee) {
-      callee.handler->postRead(callee.context, method, &header, bytes);
+    forEachCallee([&](auto* handler, void*& context) {
+      handler->postRead(context, method, &header, bytes);
     });
   }
 
@@ -146,17 +145,16 @@ class EventHandlerChain {
       bool declared, const folly::exception_wrapper& exception) {
     DCHECK(bound_);
     const auto method = method_;
-    forEachCallee([&](Callee& callee) {
-      callee.handler->userExceptionWrapped(
-          callee.context, method, declared, exception);
+    forEachCallee([&](auto* handler, void*& context) {
+      handler->userExceptionWrapped(context, method, declared, exception);
     });
   }
 
   void handlerErrorWrapped(const folly::exception_wrapper& exception) {
     DCHECK(bound_);
     const auto method = method_;
-    forEachCallee([&](Callee& callee) {
-      callee.handler->handlerErrorWrapped(callee.context, method, exception);
+    forEachCallee([&](auto* handler, void*& context) {
+      handler->handlerErrorWrapped(context, method, exception);
     });
   }
 
@@ -164,8 +162,8 @@ class EventHandlerChain {
     DCHECK(bound_);
     const auto method = method_;
     FOLLY_SDT(thrift, thrift_context_stack_pre_write, serviceName_, method);
-    forEachCallee([&](Callee& callee) {
-      callee.handler->preWrite(callee.context, method);
+    forEachCallee([&](auto* handler, void*& context) {
+      handler->preWrite(context, method);
     });
   }
 
@@ -179,8 +177,8 @@ class EventHandlerChain {
         .buffer = buffer,
         .methodName = method,
     };
-    forEachCallee([&](Callee& callee) {
-      callee.handler->onWriteData(callee.context, method, message);
+    forEachCallee([&](auto* handler, void*& context) {
+      handler->onWriteData(context, method, message);
     });
   }
 
@@ -189,31 +187,28 @@ class EventHandlerChain {
     const auto method = method_;
     FOLLY_SDT(
         thrift, thrift_context_stack_post_write, serviceName_, method, bytes);
-    forEachCallee([&](Callee& callee) {
-      callee.handler->postWrite(callee.context, method, bytes);
+    forEachCallee([&](auto* handler, void*& context) {
+      handler->postWrite(context, method, bytes);
     });
   }
 
  private:
-  struct Callee {
-    apache::thrift::TProcessorEventHandler* handler;
-    void* context;
-  };
-
   // The bounds are read into locals before the loop: a handler call is opaque,
   // so leaving them as members costs a reload of each on every iteration.
   template <typename F>
   FOLLY_ALWAYS_INLINE void forEachCallee(F&& fn) {
-    auto* const callees = callees_.data();
-    const auto count = callees_.size();
+    const auto* const handlers = handlers_->data();
+    auto* const contexts = contexts_.data();
+    const auto count = contexts_.size();
     for (std::size_t i = 0; i < count; ++i) {
-      fn(callees[i]);
+      fn(handlers[i].get(), contexts[i]);
     }
   }
 
+  const HandlerList* handlers_;
   std::string_view serviceName_;
   std::string_view method_;
-  folly::small_vector<Callee, 8> callees_;
+  folly::small_vector<void*, 8> contexts_;
   bool bound_{false};
 };
 

@@ -18,8 +18,10 @@
 
 #include <array>
 #include <cstddef>
+#include <memory>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include <folly/Benchmark.h>
 #include <folly/init/Init.h>
@@ -47,6 +49,65 @@ constexpr std::string_view kLongMethod{
 folly::EventBase* benchmarkEventBase() {
   static folly::ScopedEventBaseThread eventBaseThread;
   return eventBaseThread.getEventBase();
+}
+
+class CountingProcessorEventHandler final
+    : public apache::thrift::TProcessorEventHandler {
+ public:
+  FOLLY_NOINLINE void* getServiceContext(
+      std::string_view,
+      std::string_view,
+      apache::thrift::TConnectionContext*) override {
+    ++callbacks_;
+    return this;
+  }
+
+  FOLLY_NOINLINE void preRead(void*, std::string_view) override {
+    ++callbacks_;
+  }
+
+  FOLLY_NOINLINE void preWrite(void*, std::string_view) override {
+    ++callbacks_;
+  }
+
+  FOLLY_NOINLINE void postWrite(void*, std::string_view, uint32_t) override {
+    ++callbacks_;
+  }
+
+  FOLLY_NOINLINE void freeContext(void*, std::string_view) override {
+    ++callbacks_;
+  }
+
+  std::size_t callbacks() const noexcept { return callbacks_; }
+
+ private:
+  std::size_t callbacks_{0};
+};
+
+void runEventHandlerChainLifecycle(std::size_t iters, std::size_t count) {
+  folly::BenchmarkSuspender suspender;
+  auto handler = std::make_shared<CountingProcessorEventHandler>();
+  EventHandlerChain::HandlerList handlers(count, handler);
+  apache::thrift::Cpp2RequestContext requestContext{nullptr};
+  suspender.dismiss();
+
+  for (std::size_t i = 0; i < iters; ++i) {
+    EventHandlerChain chain(handlers);
+    chain.bind(requestContext, "UcacheService", "UcacheService.get");
+    chain.preRead();
+    chain.preWrite();
+    chain.postWrite(0);
+    chain.unbind();
+  }
+  folly::doNotOptimizeAway(handler->callbacks());
+}
+
+BENCHMARK(EventHandlerChainLifecycle_OneHandler, iters) {
+  runEventHandlerChainLifecycle(iters, 1);
+}
+
+BENCHMARK(EventHandlerChainLifecycle_EightHandlers, iters) {
+  runEventHandlerChainLifecycle(iters, 8);
 }
 
 BENCHMARK(ThriftRequestContext_EvbBump, iters) {
