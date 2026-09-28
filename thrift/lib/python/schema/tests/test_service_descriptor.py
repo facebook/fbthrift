@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import dataclasses
 import unittest
 
 import thrift.lib.python.schema.tests.schema_registry_legacy_uri.thrift_services as LegacyServices
@@ -165,12 +166,71 @@ class ServiceDescriptorTest(unittest.TestCase):
         )
         self.assertEqual(performs.created_interaction_uri, _INTERACTION_URI)
 
+    def test_duplicate_lookups_keep_first_definition(self) -> None:
+        function = self.descriptor.get_function_by_name("add")
+        duplicate_name = dataclasses.replace(function, uri="test.dev/duplicate")
+        duplicate_uri = dataclasses.replace(function, name="duplicate")
+        interaction = self.descriptor.get_interaction(_INTERACTION_URI)
+        duplicate_interaction = dataclasses.replace(interaction, name="Duplicate")
+        descriptor = dataclasses.replace(
+            self.descriptor,
+            functions=(function, duplicate_name, duplicate_uri),
+            interactions=(interaction, duplicate_interaction),
+        )
+
+        self.assertIs(descriptor.get_function_by_name(function.name), function)
+        self.assertIs(descriptor.get_function(function.uri), function)
+        self.assertIs(descriptor.get_interaction(interaction.uri), interaction)
+
+    def test_interaction_duplicate_lookups_keep_first_function(self) -> None:
+        interaction = self.descriptor.get_interaction(_INTERACTION_URI)
+        function = interaction.functions[0]
+        duplicate_name = dataclasses.replace(function, uri="test.dev/duplicate")
+        duplicate_uri = dataclasses.replace(function, name="duplicate")
+        interaction = dataclasses.replace(
+            interaction,
+            functions=(function, duplicate_name, duplicate_uri),
+        )
+
+        self.assertIs(interaction.get_function_by_name(function.name), function)
+        self.assertIs(interaction.get_function(function.uri), function)
+
+    def test_uri_less_function_remains_name_addressable(self) -> None:
+        function = self.descriptor.get_function_by_name("add")
+        function = dataclasses.replace(function, uri="")
+        descriptor = dataclasses.replace(self.descriptor, functions=(function,))
+
+        self.assertIs(descriptor.get_function_by_name(function.name), function)
+        with self.assertRaises(KeyError):
+            descriptor.get_function("")
+
+    def test_uri_less_interaction_is_not_indexed(self) -> None:
+        interaction = dataclasses.replace(
+            self.descriptor.get_interaction(_INTERACTION_URI),
+            uri="",
+        )
+        descriptor = dataclasses.replace(
+            self.descriptor,
+            interactions=(interaction,),
+        )
+
+        self.assertEqual(descriptor.interactions, (interaction,))
+        with self.assertRaises(KeyError):
+            descriptor.get_interaction("")
+
     def test_rejects_uri_less_interaction(self) -> None:
         with self.assertRaisesRegex(ValueError, "LegacyInteraction"):
             ServiceDescriptor.from_service(
                 LegacyServices.LegacyServiceInterface,
                 SchemaRegistry(),
             )
+
+    def test_uri_less_service_remains_representable(self) -> None:
+        descriptor = dataclasses.replace(self.descriptor, service_uri="")
+
+        self.assertEqual(descriptor.service_name, "TestService")
+        self.assertEqual(descriptor.service_uri, "")
+        self.assertEqual(descriptor.get_function_by_name("add").name, "add")
 
     def test_rejects_non_service_type(self) -> None:
         with self.assertRaises(TypeError):

@@ -197,17 +197,23 @@ class Interaction:
 
     def __post_init__(self) -> None:
         functions = tuple(self.functions)
+        functions_by_uri: dict[str, Function] = {}
+        functions_by_name: dict[str, Function] = {}
+        for function in functions:
+            if function.uri:
+                functions_by_uri.setdefault(function.uri, function)
+            functions_by_name.setdefault(function.name, function)
         object.__setattr__(self, "functions", functions)
         object.__setattr__(self, "annotations", _annotations(self.annotations))
         object.__setattr__(
             self,
             "_functions_by_uri",
-            MappingProxyType({function.uri: function for function in functions}),
+            MappingProxyType(functions_by_uri),
         )
         object.__setattr__(
             self,
             "_functions_by_name",
-            MappingProxyType({function.name: function for function in functions}),
+            MappingProxyType(functions_by_name),
         )
 
     def get_function(self, uri: str) -> Function:
@@ -246,25 +252,33 @@ class ServiceDescriptor:
     def __post_init__(self) -> None:
         functions = tuple(self.functions)
         interactions = tuple(self.interactions)
+        functions_by_uri: dict[str, Function] = {}
+        functions_by_name: dict[str, Function] = {}
+        interactions_by_uri: dict[str, Interaction] = {}
+        for function in functions:
+            if function.uri:
+                functions_by_uri.setdefault(function.uri, function)
+            functions_by_name.setdefault(function.name, function)
+        for interaction in interactions:
+            if interaction.uri:
+                interactions_by_uri.setdefault(interaction.uri, interaction)
         object.__setattr__(self, "functions", functions)
         object.__setattr__(self, "interactions", interactions)
         object.__setattr__(self, "annotations", _annotations(self.annotations))
         object.__setattr__(
             self,
             "_functions_by_uri",
-            MappingProxyType({function.uri: function for function in functions}),
+            MappingProxyType(functions_by_uri),
         )
         object.__setattr__(
             self,
             "_functions_by_name",
-            MappingProxyType({function.name: function for function in functions}),
+            MappingProxyType(functions_by_name),
         )
         object.__setattr__(
             self,
             "_interactions_by_uri",
-            MappingProxyType(
-                {interaction.uri: interaction for interaction in interactions}
-            ),
+            MappingProxyType(interactions_by_uri),
         )
 
     @classmethod
