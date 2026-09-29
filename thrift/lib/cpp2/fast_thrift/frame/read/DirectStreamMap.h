@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <folly/Portability.h>
+
 #include <glog/logging.h>
 
 #include <cstddef>
@@ -73,6 +75,10 @@ class DirectStreamMap {
   static constexpr size_t kInitialCapacity = 16;
   static constexpr size_t kLoadNum = 7;
   static constexpr size_t kLoadDen = 8;
+  static constexpr uint8_t kShrinkAfterLowUtilizationDrains = 8;
+  static constexpr uint8_t kShrinkProbeBit = 0x80;
+  static constexpr uint8_t kShrinkDrainMask = 0x7f;
+  static constexpr uint8_t kShrinkDisabled = 0xff;
 
   enum class Tag : uint8_t { Empty, Live };
 
@@ -86,7 +92,7 @@ class DirectStreamMap {
   using iterator = Slot*;
   using const_iterator = const Slot*;
 
-  DirectStreamMap() : slots_(kInitialCapacity) {}
+  DirectStreamMap() = default;
 
   explicit DirectStreamMap(size_t cap) : slots_(nextPow2(cap)) {}
 
@@ -98,18 +104,23 @@ class DirectStreamMap {
   DirectStreamMap(DirectStreamMap&& other) noexcept
       : slots_(std::move(other.slots_)),
         size_(std::exchange(other.size_, 0)),
-        displacedCount_(std::exchange(other.displacedCount_, 0)) {}
+        displacedCount_(std::exchange(other.displacedCount_, 0)),
+        shrinkState_(std::exchange(other.shrinkState_, 0)) {}
 
   DirectStreamMap& operator=(DirectStreamMap&& other) noexcept {
     if (this != &other) {
       slots_ = std::move(other.slots_);
       size_ = std::exchange(other.size_, 0);
       displacedCount_ = std::exchange(other.displacedCount_, 0);
+      shrinkState_ = std::exchange(other.shrinkState_, 0);
     }
     return *this;
   }
 
   iterator find(Key key) noexcept {
+    if (slots_.empty()) [[unlikely]] {
+      return end();
+    }
     auto m = mask();
     auto idx = IndexPolicy::apply(key, m);
     for (size_t i = 0; i < slots_.size(); ++i) {
@@ -134,7 +145,7 @@ class DirectStreamMap {
 
   template <typename... Args>
   std::pair<iterator, bool> emplace(Key key, Args&&... args) {
-    if (size_ * kLoadDen > slots_.size() * kLoadNum) {
+    if (size_ * kLoadDen >= slots_.size() * kLoadNum) [[unlikely]] {
       grow();
     }
     return insertInternal(key, std::forward<Args>(args)...);
@@ -185,6 +196,9 @@ class DirectStreamMap {
   size_t capacity() const noexcept { return slots_.size(); }
 
   void clear() noexcept {
+    if (empty()) {
+      return;
+    }
     for (auto& s : slots_) {
       s.tag = Tag::Empty;
       s.first = Key{0};
@@ -192,12 +206,16 @@ class DirectStreamMap {
     }
     size_ = 0;
     displacedCount_ = 0;
+    maybeShrink();
   }
 
  private:
   size_t mask() const noexcept { return slots_.size() - 1; }
 
   static size_t nextPow2(size_t n) noexcept {
+    if (n == 0) {
+      return 0;
+    }
     if (n <= kInitialCapacity) {
       return kInitialCapacity;
     }
@@ -228,6 +246,9 @@ class DirectStreamMap {
     --size_;
 
     if (displacedCount_ == 0) {
+      if (size_ == 0) [[unlikely]] {
+        maybeShrink();
+      }
       return;
     }
 
@@ -251,15 +272,45 @@ class DirectStreamMap {
     }
   }
 
-  void grow() {
+  FOLLY_NOINLINE void grow() {
+    shrinkState_ =
+        shrinkState_ & kShrinkProbeBit ? kShrinkDisabled : uint8_t{0};
     auto old = std::move(slots_);
-    slots_ = std::vector<Slot>(old.size() * 2);
+    const auto newCapacity = old.empty() ? kInitialCapacity : old.size() * 2;
+    slots_ = std::vector<Slot>(newCapacity);
     size_ = 0;
     displacedCount_ = 0;
     for (auto& s : old) {
       if (s.tag == Tag::Live) {
         insertInternal(s.first, std::move(s.second));
       }
+    }
+  }
+
+  void maybeShrink() noexcept {
+    if (slots_.size() <= kInitialCapacity || shrinkState_ == kShrinkDisabled) {
+      return;
+    }
+    const auto drainCount =
+        static_cast<uint8_t>((shrinkState_ & kShrinkDrainMask) + 1);
+    if (drainCount < kShrinkAfterLowUtilizationDrains) {
+      shrinkState_ =
+          static_cast<uint8_t>((shrinkState_ & kShrinkProbeBit) | drainCount);
+      return;
+    }
+    shrink();
+  }
+
+  FOLLY_NOINLINE void shrink() noexcept {
+    // Shrinking only follows a full drain, so there are no entries to rehash.
+    DCHECK(empty());
+    shrinkState_ = 0;
+    try {
+      std::vector<Slot> smaller(slots_.size() / 2);
+      slots_.swap(smaller);
+      shrinkState_ = kShrinkProbeBit;
+    } catch (...) {
+      // Shrinking is best-effort and must not make noexcept erase paths fail.
     }
   }
 
@@ -289,6 +340,7 @@ class DirectStreamMap {
   std::vector<Slot> slots_;
   size_t size_{0};
   size_t displacedCount_{0};
+  uint8_t shrinkState_{0};
 };
 
 // DirectStreamSet — a DirectStreamMap used purely for key membership.

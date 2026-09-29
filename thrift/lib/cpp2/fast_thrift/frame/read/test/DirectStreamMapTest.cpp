@@ -42,8 +42,22 @@ TEST(DirectStreamMapTest, EmptyMap) {
   DirectStreamMap<int> map;
   EXPECT_TRUE(map.empty());
   EXPECT_EQ(map.size(), 0);
+  EXPECT_EQ(map.capacity(), 0);
   EXPECT_EQ(map.find(1), map.end());
   EXPECT_FALSE(map.contains(1));
+  map.erase(1);
+  map.clear();
+  EXPECT_EQ(map.capacity(), 0);
+}
+
+TEST(DirectStreamMapTest, ZeroCapacityConstructionIsLazy) {
+  DirectStreamMap<int> map(0);
+  EXPECT_TRUE(map.empty());
+  EXPECT_EQ(map.capacity(), 0);
+
+  map.emplace(1, 42);
+  EXPECT_EQ(map.capacity(), 16);
+  EXPECT_EQ(map.find(1)->second, 42);
 }
 
 TEST(DirectStreamMapTest, InsertAndFind) {
@@ -55,6 +69,7 @@ TEST(DirectStreamMapTest, InsertAndFind) {
   EXPECT_EQ(it->second, 42);
   EXPECT_EQ(map.size(), 1);
   EXPECT_FALSE(map.empty());
+  EXPECT_EQ(map.capacity(), 16);
 }
 
 TEST(DirectStreamMapTest, InsertDuplicate) {
@@ -313,15 +328,14 @@ TEST(DirectStreamMapTest, ManyErasesDoNotCorrupt) {
 TEST(DirectStreamMapTest, ResizeOnHighLoad) {
   DirectStreamMap<int> map(16);
   EXPECT_EQ(map.capacity(), 16);
-  // Load factor 7/8: resize triggers when size*8 > cap*7.
-  // With cap=16: size=14 -> 112 > 112 false. size=15 -> 120 > 112 true.
-  // So the 16th emplace (size_=15 at check) triggers resize.
-  for (uint32_t i = 1; i <= 16; ++i) {
+  // Load factor 7/8: resize triggers when size*8 >= cap*7.
+  // With cap=16, the 15th emplace grows before exceeding that load.
+  for (uint32_t i = 1; i <= 15; ++i) {
     map.emplace(i, static_cast<int>(i));
   }
   EXPECT_GT(map.capacity(), 16u);
-  EXPECT_EQ(map.size(), 16);
-  for (uint32_t i = 1; i <= 16; ++i) {
+  EXPECT_EQ(map.size(), 15);
+  for (uint32_t i = 1; i <= 15; ++i) {
     ASSERT_TRUE(map.contains(i)) << "Missing key " << i << " after resize";
     EXPECT_EQ(map.find(i)->second, static_cast<int>(i));
   }
@@ -348,6 +362,107 @@ TEST(DirectStreamMapTest, ResizePreservesAllEntries) {
   for (uint32_t i = 100; i <= 112; ++i) {
     EXPECT_TRUE(map.contains(i));
   }
+}
+
+TEST(DirectStreamMapTest, SustainedLowUtilizationShrinksGradually) {
+  DirectStreamMap<int> map;
+  for (uint32_t i = 0; i < 30; ++i) {
+    map.emplace(i * 2 + 1, static_cast<int>(i));
+  }
+  ASSERT_EQ(map.capacity(), 64);
+
+  for (uint32_t i = 0; i < 30; ++i) {
+    map.erase(i * 2 + 1);
+  }
+  EXPECT_EQ(map.capacity(), 64);
+
+  for (uint32_t drain = 0; drain < 7; ++drain) {
+    const uint32_t id = 1000 + drain * 2;
+    map.emplace(id, static_cast<int>(id));
+    map.erase(id);
+  }
+  EXPECT_EQ(map.capacity(), 32);
+
+  for (uint32_t drain = 0; drain < 8; ++drain) {
+    const uint32_t id = 2000 + drain * 2;
+    map.emplace(id, static_cast<int>(id));
+    map.erase(id);
+  }
+  EXPECT_EQ(map.capacity(), 16);
+}
+
+TEST(DirectStreamMapTest, GrowthResetsShrinkStreak) {
+  DirectStreamMap<int> map;
+  for (uint32_t i = 0; i < 30; ++i) {
+    map.emplace(i * 2 + 1, static_cast<int>(i));
+  }
+  ASSERT_EQ(map.capacity(), 64);
+  map.clear();
+
+  for (uint32_t drain = 0; drain < 6; ++drain) {
+    const uint32_t id = 1000 + drain * 2;
+    map.emplace(id, static_cast<int>(id));
+    map.erase(id);
+  }
+  ASSERT_EQ(map.capacity(), 64);
+
+  for (uint32_t i = 0; i < 60; ++i) {
+    map.emplace(2000 + i * 2, static_cast<int>(i));
+  }
+  ASSERT_EQ(map.capacity(), 128);
+  map.clear();
+
+  for (uint32_t drain = 0; drain < 6; ++drain) {
+    const uint32_t id = 3000 + drain * 2;
+    map.emplace(id, static_cast<int>(id));
+    map.erase(id);
+  }
+  EXPECT_EQ(map.capacity(), 128);
+
+  map.emplace(4000, 4000);
+  map.erase(4000);
+  EXPECT_EQ(map.capacity(), 64);
+}
+
+TEST(DirectStreamMapTest, RegrowthAfterShrinkDisablesFurtherShrinking) {
+  DirectStreamMap<int> map;
+  for (uint32_t i = 0; i < 30; ++i) {
+    map.emplace(i * 2 + 1, static_cast<int>(i));
+  }
+  map.clear();
+  for (uint32_t drain = 0; drain < 7; ++drain) {
+    const uint32_t id = 1000 + drain * 2;
+    map.emplace(id, static_cast<int>(id));
+    map.erase(id);
+  }
+  ASSERT_EQ(map.capacity(), 32);
+
+  for (uint32_t i = 0; i < 30; ++i) {
+    map.emplace(2000 + i * 2, static_cast<int>(i));
+  }
+  ASSERT_EQ(map.capacity(), 64);
+  map.clear();
+
+  for (uint32_t drain = 0; drain < 100; ++drain) {
+    const uint32_t id = 3000 + drain * 2;
+    map.emplace(id, static_cast<int>(id));
+    map.erase(id);
+  }
+  EXPECT_EQ(map.capacity(), 64);
+}
+
+TEST(DirectStreamMapTest, ClearingAnEmptyMapDoesNotAdvanceShrinkStreak) {
+  DirectStreamMap<int> map;
+  for (uint32_t i = 0; i < 30; ++i) {
+    map.emplace(i * 2 + 1, static_cast<int>(i));
+  }
+  ASSERT_EQ(map.capacity(), 64);
+  map.clear();
+
+  for (uint32_t i = 0; i < 100; ++i) {
+    map.clear();
+  }
+  EXPECT_EQ(map.capacity(), 64);
 }
 
 // ============================================================================
