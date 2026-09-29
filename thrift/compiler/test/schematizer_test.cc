@@ -90,7 +90,10 @@ void expect_wrapped_value(
     const protocol::Value& wrapped_value,
     std::string_view label,
     T literal_value) {
-  if (label == "i16Value") {
+  if (label == "byteValue") {
+    EXPECT_TRUE(wrapped_value.is_byte());
+    EXPECT_EQ(literal_value, wrapped_value.as_byte());
+  } else if (label == "i16Value") {
     EXPECT_TRUE(wrapped_value.is_i16());
     EXPECT_EQ(literal_value, wrapped_value.as_i16());
   } else if (label == "i32Value") {
@@ -172,6 +175,19 @@ TEST(SchematizerTest, wrap_with_protocol_with_struct_ty) {
       map_at_string(value_no_type_mapping, "baz"), "floatValue", 3.14);
   expect_wrapped_value(
       map_at_string(value_no_type_mapping, "qux"), "doubleValue", 4.2);
+}
+
+TEST(SchematizerTest, wrap_with_protocol_with_byte_ty) {
+  auto program = std::make_unique<t_program>("./", "./");
+  auto struct_ty = std::make_unique<t_struct>(program.get(), "WithByte");
+  struct_ty->append_field(
+      std::make_unique<t_field>(t_primitive_type::t_byte(), "foo", 1));
+  auto strct = t_const_value::make_map();
+  strct->add_map(val("foo"), val(-7));
+
+  auto value = protocol_value_builder{*struct_ty}.wrap(*strct);
+
+  expect_wrapped_value(map_at_string(value, "foo"), "byteValue", -7);
 }
 
 std::unique_ptr<t_struct> make_foo_enum(

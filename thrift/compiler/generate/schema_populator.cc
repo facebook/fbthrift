@@ -948,7 +948,7 @@ protocol::Value protocol_value_builder::to_labeled_value(
 
   switch (protocol_value.kind()) {
     case t_const_value::CV_INTEGER:
-      if (!(ty_->is_any_int() || ty_->is<t_enum>() ||
+      if (!(ty_->is_byte() || ty_->is_any_int() || ty_->is<t_enum>() ||
             ty_->is_floating_point())) {
         raise_exception();
       }

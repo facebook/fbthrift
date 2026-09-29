@@ -1,0 +1,1 @@
+ast: thrift2ast-ast:protocol=debug,root_program_only,use_hash,no_backcompat src/module.thrift
