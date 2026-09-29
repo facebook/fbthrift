@@ -44,6 +44,7 @@ class BinaryProtocolWriter;
 class CompactProtocolWriter;
 class SimpleJSONProtocolWriter;
 class BinaryProtocolReader;
+class BinaryProtocolChainReader;
 class CompactProtocolReader;
 class SimpleJSONProtocolReader;
 
@@ -925,6 +926,37 @@ inline constexpr bool kIsSharedPtrToConst = false;
 template <typename U>
 inline constexpr bool kIsSharedPtrToConst<std::shared_ptr<const U>> = true;
 
+template <bool ClearBeforeDecode = false, typename T, typename Protocol>
+bool decodeStructField(
+    Protocol& prot, T& value, TType fieldType, int16_t fieldId) {
+  return op::invoke_by_field_id<T>(
+      static_cast<FieldId>(fieldId),
+      [&](auto Id) {
+        using IdT = decltype(Id);
+        using ValueTag = op::get_type_tag<T, IdT>;
+        if (fieldType != typeTagToTType<ValueTag>) {
+          return false;
+        }
+
+        if constexpr (ClearBeforeDecode) {
+          apache::thrift::clear(value);
+        }
+
+        using FieldTag = op::get_field_tag<T, IdT>;
+        using FieldRef = folly::remove_cvref_t<decltype(op::get<IdT>(value))>;
+        if constexpr (kIsSharedPtrToConst<FieldRef>) {
+          // `shared_ptr<const T>` field can't be decoded in place.
+          auto fieldValue = std::make_shared<type::native_type<ValueTag>>();
+          Decode<FieldTag>{}(prot, *fieldValue, value);
+          op::get<IdT>(value) = std::move(fieldValue);
+        } else {
+          Decode<FieldTag>{}(prot, op::ensure<IdT>(value), value);
+        }
+        return true;
+      },
+      [] { return false; });
+}
+
 template <typename T>
 struct StructDecode {
   template <typename Protocol>
@@ -940,31 +972,14 @@ struct StructDecode {
         break;
       }
 
-      apache::thrift::detail::TccStructTraits<T>::translateFieldName(
-          name, fieldId, fieldType);
+      if (prot.kUsesFieldNames()) {
+        apache::thrift::detail::TccStructTraits<T>::translateFieldName(
+            name, fieldId, fieldType);
+      }
 
-      const bool handled = op::invoke_by_field_id<T>(
-          static_cast<FieldId>(fieldId),
-          [&](auto Id) {
-            using IdT = decltype(Id);
-            using FieldTag = op::get_field_tag<T, IdT>;
-            using FieldRef = folly::remove_cvref_t<decltype(op::get<IdT>(t))>;
-            if constexpr (kIsSharedPtrToConst<FieldRef>) {
-              // `shared_ptr<const T>` field can't be decoded in place.
-              using ValueTag = op::get_type_tag<T, IdT>;
-              auto value = std::make_shared<type::native_type<ValueTag>>();
-              Decode<FieldTag>{}(prot, *value, t);
-              op::get<IdT>(t) = std::move(value);
-            } else {
-              Decode<FieldTag>{}(prot, op::ensure<IdT>(t), t);
-            }
-            return true;
-          },
-          [] { return false; });
-
-      if (!handled) {
-        // Text protocols report fieldType as T_VOID, which the free
-        // apache::thrift::skip() can't dispatch; use the protocol's own skip().
+      if (!decodeStructField(prot, t, fieldType, fieldId)) {
+        // Unknown Json5 fields retain T_VOID after name translation. Its
+        // skip() implementation determines the value type from the input.
         prot.skip(fieldType);
       }
       prot.readFieldEnd();
@@ -974,11 +989,45 @@ struct StructDecode {
 };
 
 template <typename T>
+struct UnionDecode {
+  template <typename Protocol>
+  void operator()(Protocol& prot, T& value) const {
+    std::string name;
+    TType fieldType;
+    int16_t fieldId;
+
+    prot.readStructBegin(name);
+    prot.readFieldBegin(name, fieldType, fieldId);
+    if (fieldType == TType::T_STOP) {
+      apache::thrift::clear(value);
+    } else {
+      if (prot.kUsesFieldNames()) {
+        apache::thrift::detail::TccStructTraits<T>::translateFieldName(
+            name, fieldId, fieldType);
+      }
+      if (!decodeStructField<true>(prot, value, fieldType, fieldId)) {
+        prot.skip(fieldType);
+      }
+      prot.readFieldEnd();
+      prot.readFieldBegin(name, fieldType, fieldId);
+      if (fieldType != TType::T_STOP) {
+        TProtocolException::throwUnionMissingStop();
+      }
+    }
+    prot.readStructEnd();
+  }
+};
+
+template <typename Protocol>
+inline constexpr bool kUsePrecompiledPath =
+    !std::is_same_v<Protocol, json5::detail::Json5ProtocolReader> &&
+    !std::is_same_v<Protocol, BinaryProtocolChainReader>;
+
+template <typename T>
 struct Decode<type::struct_t<T>> {
   template <typename Protocol>
   void operator()(Protocol& prot, T& s) const {
-    if constexpr (std::
-                      is_same_v<Protocol, json5::detail::Json5ProtocolReader>) {
+    if constexpr (!kUsePrecompiledPath<Protocol>) {
       StructDecode<T>{}(prot, s);
     } else {
       s.read(&prot);
@@ -987,7 +1036,16 @@ struct Decode<type::struct_t<T>> {
 };
 
 template <typename T>
-struct Decode<type::union_t<T>> : Decode<type::struct_t<T>> {};
+struct Decode<type::union_t<T>> {
+  template <typename Protocol>
+  void operator()(Protocol& prot, T& value) const {
+    if constexpr (!kUsePrecompiledPath<Protocol>) {
+      UnionDecode<T>{}(prot, value);
+    } else {
+      Decode<type::struct_t<T>>{}(prot, value);
+    }
+  }
+};
 
 template <typename T>
 struct Decode<type::exception_t<T>> : Decode<type::struct_t<T>> {};

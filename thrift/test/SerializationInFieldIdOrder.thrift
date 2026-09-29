@@ -33,3 +33,7 @@ struct Foo2 {
   1: i32 field2;
   2: i32 field3;
 }
+
+union FooUnion {
+  1: Foo foo;
+}

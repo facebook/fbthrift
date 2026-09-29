@@ -954,6 +954,179 @@ TEST(DecodeTest, DecodeAdapted) {
   testDecodeAdapted<conformance::StandardProtocol::Binary>();
   testDecodeAdapted<conformance::StandardProtocol::Compact>();
 }
+
+template <typename Tag, typename T>
+T binaryChainRoundTrip(const T& value) {
+  BinaryProtocolWriter writer;
+  folly::IOBufQueue queue;
+  writer.setOutput(&queue);
+  op::encode<Tag>(writer, value);
+
+  IOBufChain serialized(queue.move());
+  BinaryProtocolChainReader reader;
+  reader.setInput(&serialized);
+  T result;
+  op::decode<Tag>(reader, result);
+  return result;
+}
+
+template <typename Tag, typename T>
+T binaryDecode(const folly::IOBuf& serialized, T value) {
+  BinaryProtocolReader reader;
+  reader.setInput(&serialized);
+  op::decode<Tag>(reader, value);
+  return value;
+}
+
+template <typename Tag, typename T>
+T binaryChainDecode(const folly::IOBuf& serialized, T value) {
+  IOBufChain input{serialized.clone()};
+  BinaryProtocolChainReader reader;
+  reader.setInput(&input);
+  op::decode<Tag>(reader, value);
+  return value;
+}
+
+TEST(DecodeTest, BinaryChainStruct) {
+  using Struct =
+      test::testset::struct_with<type::map<type::string_t, type::i32_t>>;
+  Struct expected;
+  expected.field_1_ref() = {{"one", 1}, {"two", 2}};
+
+  EXPECT_EQ((binaryChainRoundTrip<type::struct_t<Struct>>(expected)), expected);
+}
+
+TEST(DecodeTest, BinaryChainUnion) {
+  using Union = test::testset::union_with<type::set<type::string_t>>;
+  Union expected;
+  expected.field_1_ref() = {"one", "two"};
+
+  EXPECT_EQ((binaryChainRoundTrip<type::union_t<Union>>(expected)), expected);
+}
+
+TEST(DecodeTest, BinaryChainUnionResetsMatchedFieldBeforeDecode) {
+  BinaryProtocolWriter writer;
+  folly::IOBufQueue queue;
+  writer.setOutput(&queue);
+  writer.writeStructBegin("FooUnion");
+  writer.writeFieldBegin("foo", protocol::T_STRUCT, 1);
+  writer.writeStructBegin("Foo");
+  writer.writeFieldBegin("field2", protocol::T_I32, 1);
+  writer.writeI32(42);
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+
+  test::FooUnion initial;
+  auto& foo = initial.foo_ref().ensure();
+  foo.field1_ref() = 1;
+  foo.field2_ref() = 2;
+  foo.field3_ref() = 3;
+
+  auto serialized = queue.move();
+  auto legacy =
+      binaryDecode<type::union_t<test::FooUnion>>(*serialized, initial);
+  auto chain =
+      binaryChainDecode<type::union_t<test::FooUnion>>(*serialized, initial);
+
+  EXPECT_EQ(chain, legacy);
+  ASSERT_TRUE(chain.foo_ref().has_value());
+  EXPECT_EQ(chain.foo_ref()->field1_ref(), 0);
+  EXPECT_EQ(chain.foo_ref()->field2_ref(), 42);
+  EXPECT_EQ(chain.foo_ref()->field3_ref(), 0);
+}
+
+void expectBinaryChainUnionSkipPreservesValue(int16_t fieldId) {
+  using Union = test::testset::union_i32;
+  using Tag = type::union_t<Union>;
+
+  BinaryProtocolWriter writer;
+  folly::IOBufQueue queue;
+  writer.setOutput(&queue);
+  writer.writeStructBegin("union_i32");
+  writer.writeFieldBegin("field", protocol::T_STRING, fieldId);
+  writer.writeString("skipped");
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+
+  Union initial;
+  initial.field_1_ref() = 42;
+
+  auto serialized = queue.move();
+  auto legacy = binaryDecode<Tag>(*serialized, initial);
+  auto chain = binaryChainDecode<Tag>(*serialized, initial);
+
+  EXPECT_EQ(chain, legacy);
+  ASSERT_TRUE(op::get<type::field_id<1>>(chain).has_value());
+  EXPECT_EQ(*op::get<type::field_id<1>>(chain), 42);
+}
+
+TEST(DecodeTest, BinaryChainUnionWrongWireTypePreservesValueLikeGenerated) {
+  expectBinaryChainUnionSkipPreservesValue(1);
+}
+
+TEST(DecodeTest, BinaryChainUnionUnknownFieldPreservesValueLikeGenerated) {
+  expectBinaryChainUnionSkipPreservesValue(99);
+}
+
+TEST(DecodeTest, BinaryChainException) {
+  using Exception = test::testset::exception_with<type::i64_t>;
+  Exception expected;
+  expected.field_1_ref() = 42;
+
+  EXPECT_EQ(
+      (binaryChainRoundTrip<type::exception_t<Exception>>(expected)), expected);
+}
+
+TEST(DecodeTest, BinaryChainSkipsKnownFieldWithWrongWireType) {
+  BinaryProtocolWriter writer;
+  folly::IOBufQueue queue;
+  writer.setOutput(&queue);
+  writer.writeStructBegin("struct_i32");
+  writer.writeFieldBegin("field_1", protocol::T_STRING, 1);
+  writer.writeString("wrong type");
+  writer.writeFieldEnd();
+  writer.writeFieldBegin("field_1", protocol::T_I32, 1);
+  writer.writeI32(42);
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+
+  IOBufChain serialized(queue.move());
+  BinaryProtocolChainReader reader;
+  reader.setInput(&serialized);
+  test::testset::struct_i32 actual;
+  op::decode<type::struct_t<test::testset::struct_i32>>(reader, actual);
+
+  EXPECT_EQ(*op::get<type::field_id<1>>(actual), 42);
+}
+
+TEST(DecodeTest, BinaryChainRejectsUnionWithMultipleFields) {
+  BinaryProtocolWriter writer;
+  folly::IOBufQueue queue;
+  writer.setOutput(&queue);
+  writer.writeStructBegin("union_i32");
+  writer.writeFieldBegin("field_1", protocol::T_I32, 1);
+  writer.writeI32(1);
+  writer.writeFieldEnd();
+  writer.writeFieldBegin("field_2", protocol::T_I32, 2);
+  writer.writeI32(2);
+  writer.writeFieldEnd();
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+
+  IOBufChain serialized(queue.move());
+  BinaryProtocolChainReader reader;
+  reader.setInput(&serialized);
+  test::testset::union_i32 actual;
+  EXPECT_THROW(
+      op::decode<type::union_t<test::testset::union_i32>>(reader, actual),
+      protocol::TProtocolException);
+}
 } // namespace
 
 enum { UseWrite, UseStructEncode };
