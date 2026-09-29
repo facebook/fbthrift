@@ -51,15 +51,24 @@
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
+#include <thrift/lib/cpp2/type/detail/TypeClassToTypeTag.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift {
 
 class BinaryProtocolReader;
+class BinaryProtocolChainReader;
 class CompactProtocolReader;
 
 namespace detail {
+
+template <typename Protocol, typename Tag>
+inline constexpr bool use_op_decode_for_fields_v = !std::is_void_v<Tag>;
+
+template <typename Tag>
+inline constexpr bool
+    use_op_decode_for_fields_v<BinaryProtocolChainReader, Tag> = true;
 
 THRIFT_PLUGGABLE_FUNC_DECLARE(
     bool, includeInRecentRequestsCount, const std::string_view /*methodName*/);
@@ -181,8 +190,14 @@ struct FieldData {
       return false;
     }
 
-    if constexpr (std::is_void_v<Tag>) {
+    if constexpr (!detail::use_op_decode_for_fields_v<Protocol, Tag>) {
       Ops::read(prot, &ref());
+    } else if constexpr (std::is_void_v<Tag>) {
+      static_assert(::apache::thrift::type_class::detail::
+                        MappableToTypeTag<TC, value_type>);
+      using DecodeTag =
+          apache::thrift::type_class::to_type_tag_t<TC, value_type>;
+      op::decode<DecodeTag>(*prot, ref());
     } else {
       op::decode<Tag>(*prot, ref());
     }

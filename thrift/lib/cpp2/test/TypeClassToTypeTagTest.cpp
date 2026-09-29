@@ -34,6 +34,10 @@ using Enum = test::MyEnum;
 using Struct = test::TestStruct;
 using Union = test::TestUnsignedIntUnion;
 
+static_assert(detail::MappableToTypeTag<integral, std::int32_t>);
+static_assert(!detail::MappableToTypeTag<nothing, std::int32_t>);
+static_assert(!detail::MappableToTypeTag<unknown, std::int32_t>);
+
 TEST(ToTypeTag, IntegralStandard) {
   static_assert(std::is_same_v<to_type_tag_t<integral, bool>, type::bool_t>);
   static_assert(

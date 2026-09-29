@@ -45,6 +45,12 @@ struct to_type_tag;
 template <class... T>
 using to_type_tag_t = typename to_type_tag<T...>::type;
 
+namespace detail {
+template <class TypeClass, class CppType>
+concept MappableToTypeTag =
+    requires { typename to_type_tag<TypeClass, CppType>::type; };
+} // namespace detail
+
 template <>
 struct to_type_tag<integral, bool> {
   using type = type::bool_t;
