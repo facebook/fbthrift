@@ -19,6 +19,7 @@
  *
  * Measures the overhead of server-side stream state management:
  * - Inbound: New stream registration (REQUEST_RESPONSE)
+ * - Inbound/outbound: RR passthrough when cancellation is disabled
  * - Inbound: Terminal event handling (CANCEL for active stream)
  * - Inbound: Connection-level frame passthrough (streamId=0)
  * - Outbound: Response routing with complete (stream cleanup)
@@ -176,6 +177,27 @@ BENCHMARK(Read_StreamState_NewStream, iters) {
   }
 }
 
+BENCHMARK_RELATIVE(Read_StreamState_NewStream_NoCancellation, iters) {
+  BenchmarkSuspender suspender;
+
+  std::vector<RocketRequestMessage> frames;
+  frames.reserve(iters);
+  for (size_t i = 0; i < iters; ++i) {
+    frames.push_back(wrapRequest(
+        makeRequestResponseFrame(static_cast<uint32_t>(2 * i + 1))));
+  }
+
+  suspender.dismiss();
+
+  RocketServerStreamStateHandler handler(/*enableCancellation=*/false);
+  StreamBenchContext ctx;
+
+  for (size_t i = 0; i < iters; ++i) {
+    auto result = handler.onRead(ctx, erase_and_box(std::move(frames[i])));
+    doNotOptimizeAway(result);
+  }
+}
+
 BENCHMARK(Read_StreamState_TerminalCancel, iters) {
   BenchmarkSuspender suspender;
   RocketServerStreamStateHandler handler;
@@ -263,6 +285,39 @@ BENCHMARK(Write_StreamState_CompleteResponse, iters) {
   }
 
   suspender.dismiss();
+
+  for (size_t i = 0; i < iters; ++i) {
+    auto result = handler.onWrite(ctx, erase_and_box(std::move(responses[i])));
+    doNotOptimizeAway(result);
+  }
+}
+
+BENCHMARK_RELATIVE(Write_StreamState_CompleteResponse_NoCancellation, iters) {
+  BenchmarkSuspender suspender;
+
+  std::vector<RocketResponseMessage> responses;
+  responses.reserve(iters);
+  for (size_t i = 0; i < iters; ++i) {
+    responses.push_back(
+        RocketResponseMessage{
+            .frame =
+                apache::thrift::fast_thrift::frame::ComposedFrame{
+                    .frameType =
+                        apache::thrift::fast_thrift::frame::FrameType::PAYLOAD,
+                    .streamId = static_cast<uint32_t>(2 * i + 1),
+                    .metadata = nullptr,
+                    .data = copyBuffer("response data"),
+                    .complete = true,
+                    .next = true,
+                },
+            .streamType = FrameType::REQUEST_RESPONSE,
+        });
+  }
+
+  suspender.dismiss();
+
+  RocketServerStreamStateHandler handler(/*enableCancellation=*/false);
+  StreamBenchContext ctx;
 
   for (size_t i = 0; i < iters; ++i) {
     auto result = handler.onWrite(ctx, erase_and_box(std::move(responses[i])));

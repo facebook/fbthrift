@@ -76,6 +76,8 @@ class MockStreamContext {
 
   size_t activeStreamCount() const { return contexts_.streams.size(); }
 
+  size_t streamCapacity() const { return contexts_.streams.capacity(); }
+
   Result fireRead(TypeErasedBox&& msg) noexcept {
     if (returnError_) {
       return Result::Error;
@@ -308,14 +310,20 @@ TEST_F(ServerStreamStateHandlerTest, CancelForUnknownStreamIsDropped) {
   EXPECT_EQ(ctx_.readMessages().size(), 0); // Dropped
 }
 
-TEST_F(
-    ServerStreamStateHandlerTest,
-    DisabledCancellationIgnoresCancelAndForwardsEventualResponse) {
+TEST_F(ServerStreamStateHandlerTest, DisabledCancellationBypassesStreamState) {
   handler_ = RocketServerStreamStateHandler(false);
   ASSERT_EQ(
       callOnRead(parseTestFrame(
           apache::thrift::fast_thrift::frame::FrameType::REQUEST_RESPONSE, 1)),
       Result::Success);
+  ASSERT_EQ(ctx_.readMessages().size(), 1);
+  auto& request = ctx_.readMessages()[0].get<RocketRequestMessage>();
+  EXPECT_EQ(request.streamId, 1u);
+  EXPECT_EQ(
+      request.streamType,
+      apache::thrift::fast_thrift::frame::FrameType::REQUEST_RESPONSE);
+  EXPECT_EQ(ctx_.activeStreamCount(), 0);
+  EXPECT_EQ(ctx_.streamCapacity(), 0);
 
   ctx_.reset();
   EXPECT_EQ(
@@ -323,7 +331,8 @@ TEST_F(
           apache::thrift::fast_thrift::frame::FrameType::CANCEL, 1)),
       Result::Success);
   EXPECT_TRUE(ctx_.readMessages().empty());
-  EXPECT_TRUE(ctx_.hasActiveStream(1));
+  EXPECT_EQ(ctx_.activeStreamCount(), 0);
+  EXPECT_EQ(ctx_.streamCapacity(), 0);
 
   RocketResponseMessage response{
       .frame =
@@ -331,19 +340,77 @@ TEST_F(
               .frameType =
                   apache::thrift::fast_thrift::frame::FrameType::PAYLOAD,
               .streamId = 1,
-              .data = copyBuffer("discarded response"),
+              .data = copyBuffer("response"),
               .complete = true,
               .next = true,
           },
+      .streamType =
+          apache::thrift::fast_thrift::frame::FrameType::REQUEST_RESPONSE,
   };
   EXPECT_EQ(callOnWrite(std::move(response)), Result::Success);
   ASSERT_EQ(ctx_.writeMessages().size(), 1);
   EXPECT_EQ(
       ctx_.writeMessages()[0].get<RocketResponseMessage>().frame.streamId, 1u);
-  EXPECT_FALSE(ctx_.hasActiveStream(1));
+  EXPECT_EQ(ctx_.activeStreamCount(), 0);
+  EXPECT_EQ(ctx_.streamCapacity(), 0);
 }
 
 // =============================================================================
+TEST_F(
+    ServerStreamStateHandlerTest,
+    DisabledRequestResponseCancellationStillUsesStreamingState) {
+  handler_ = RocketServerStreamStateHandler(false);
+
+  ASSERT_EQ(
+      callOnRead(parseTestFrame(
+          apache::thrift::fast_thrift::frame::FrameType::REQUEST_STREAM, 1)),
+      Result::Success);
+  ASSERT_EQ(
+      callOnRead(parseTestFrame(
+          apache::thrift::fast_thrift::frame::FrameType::REQUEST_STREAM, 3)),
+      Result::Success);
+  EXPECT_TRUE(ctx_.hasActiveStream(1));
+  EXPECT_TRUE(ctx_.hasActiveStream(3));
+
+  ctx_.reset();
+  EXPECT_EQ(
+      callOnRead(parseTestFrame(
+          apache::thrift::fast_thrift::frame::FrameType::REQUEST_N, 1)),
+      Result::Success);
+  ASSERT_EQ(ctx_.readMessages().size(), 1);
+  EXPECT_EQ(
+      ctx_.readMessages()[0].get<RocketRequestMessage>().streamType,
+      apache::thrift::fast_thrift::frame::FrameType::REQUEST_STREAM);
+
+  EXPECT_EQ(
+      callOnRead(parseTestFrame(
+          apache::thrift::fast_thrift::frame::FrameType::CANCEL, 3)),
+      Result::Success);
+  ASSERT_EQ(ctx_.readMessages().size(), 2);
+  EXPECT_EQ(
+      ctx_.readMessages()[1].get<RocketRequestMessage>().streamType,
+      apache::thrift::fast_thrift::frame::FrameType::REQUEST_STREAM);
+  EXPECT_TRUE(ctx_.hasActiveStream(1));
+  EXPECT_FALSE(ctx_.hasActiveStream(3));
+
+  RocketResponseMessage response{
+      .frame =
+          apache::thrift::fast_thrift::frame::ComposedFrame{
+              .frameType =
+                  apache::thrift::fast_thrift::frame::FrameType::PAYLOAD,
+              .streamId = 1,
+              .data = copyBuffer("response"),
+              .complete = true,
+              .next = true,
+          },
+      .streamType =
+          apache::thrift::fast_thrift::frame::FrameType::REQUEST_STREAM,
+  };
+  EXPECT_EQ(callOnWrite(std::move(response)), Result::Success);
+  EXPECT_FALSE(ctx_.hasActiveStream(1));
+}
+
+// ============================================================================
 // Inbound Non-Terminal Frame Tests
 // =============================================================================
 
