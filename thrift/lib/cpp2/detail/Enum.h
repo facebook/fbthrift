@@ -158,12 +158,18 @@ struct alignas(folly::cacheline_align_v) enum_find {
   }
 };
 
+template <typename E, typename U>
+typename enum_find<U>::metadata enum_find_make_metadata() {
+  using traits = TEnumTraits<E>;
+  return {
+      traits::size,
+      reinterpret_cast<const U*>(traits::values.data()),
+      traits::names.data()};
+}
+
 template <typename E, typename U = std::underlying_type_t<E>>
 FOLLY_EXPORT FOLLY_ALWAYS_INLINE enum_find<U>& enum_find_instance() {
-  using traits = TEnumTraits<E>;
-  using metadata = typename enum_find<U>::metadata;
-  const auto values = reinterpret_cast<const U*>(traits::values.data());
-  static const metadata meta{traits::size, values, traits::names.data()};
+  static const auto meta = enum_find_make_metadata<E, U>();
   static enum_find<U> impl{meta};
   return impl;
 }
