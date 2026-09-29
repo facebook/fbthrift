@@ -30,8 +30,11 @@
 #include <thrift/lib/cpp2/dynamic/DynamicValue.h>
 #include <thrift/lib/cpp2/dynamic/ServiceDescriptorBuilder.h>
 #include <thrift/lib/cpp2/dynamic/ServiceDescriptorSerialization.h>
+#include <thrift/lib/cpp2/dynamic/SyntaxGraphServiceDescriptor.h>
 #include <thrift/lib/cpp2/dynamic/TypeSystemBuilder.h>
+#include <thrift/lib/cpp2/dynamic/test/gen-cpp2/Calculator.h>
 #include <thrift/lib/cpp2/dynamic/test/gen-cpp2/service_catalog_digest_expected_values_constants.h>
+#include <thrift/lib/cpp2/schema/SyntaxGraph.h>
 
 namespace apache::thrift::dynamic {
 namespace {
@@ -66,7 +69,7 @@ std::shared_ptr<const type_system::TypeSystem> makeTypeSystem() {
 std::shared_ptr<const type_system::TypeSystem> makeAnnotationTypeSystem() {
   type_system::TypeSystemBuilder builder;
   builder.addType(
-      "test.com/Annotation",
+      "facebook.com/thrift/service_catalog_digest_test/Annotation",
       def::Struct({
           def::Field(
               def::Identity(1, "label"),
@@ -80,7 +83,7 @@ std::shared_ptr<const type_system::TypeSystem> makeAnnotationTypeSystem() {
 std::shared_ptr<const type_system::TypeSystem> makeRichAnnotationTypeSystem() {
   type_system::TypeSystemBuilder builder;
   builder.addType(
-      "test.com/RichAnnotation",
+      "facebook.com/thrift/service_catalog_digest_test/RichAnnotation",
       def::Struct({
           def::Field(
               def::Identity(1, "label"),
@@ -132,25 +135,26 @@ std::shared_ptr<const type_system::TypeSystem> makeRichAnnotationTypeSystem() {
               type_system::TypeIds::map(
                   type_system::TypeIds::String, type_system::TypeIds::I64)),
       }));
+  builder.addType(
+      "facebook.com/thrift/service_catalog_digest_test/AppError",
+      def::Struct({}));
   return std::shared_ptr<const type_system::TypeSystem>(
       std::move(builder).build());
 }
 
 DynamicValue makeAnnotation(
     const type_system::TypeSystem& typeSystem, std::string_view label) {
-  auto value =
-      DynamicValue::makeDefault(typeSystem.UserDefined("test.com/Annotation"));
+  auto value = DynamicValue::makeDefault(typeSystem.UserDefined(
+      "facebook.com/thrift/service_catalog_digest_test/Annotation"));
   value.asStruct().setField("label", DynamicValue::makeString(label));
   return value;
 }
 
 DynamicValue makeRichAnnotation(const type_system::TypeSystem& typeSystem) {
-  auto value = DynamicValue::makeDefault(
-      typeSystem.UserDefined("test.com/RichAnnotation"));
+  auto value = DynamicValue::makeDefault(typeSystem.UserDefined(
+      "facebook.com/thrift/service_catalog_digest_test/RichAnnotation"));
   auto& fields = value.asStruct();
-  fields.setField(
-      "label",
-      DynamicValue::makeString(std::string_view{"runtime\0value", 13}));
+  fields.setField("label", DynamicValue::makeString("runtime value"));
   fields.setField("enabled", DynamicValue::makeBool(true));
   fields.setField("byteValue", DynamicValue::makeByte(-7));
   fields.setField("i16Value", DynamicValue::makeI16(-1234));
@@ -159,9 +163,7 @@ DynamicValue makeRichAnnotation(const type_system::TypeSystem& typeSystem) {
   fields.setField("floatValue", DynamicValue::makeFloat(1.25f));
   fields.setField("doubleValue", DynamicValue::makeDouble(-2.5));
   fields.setField(
-      "data",
-      DynamicValue::makeBinary(
-          folly::IOBuf::copyBuffer(std::string_view{"bin\0data", 8})));
+      "data", DynamicValue::makeBinary(folly::IOBuf::copyBuffer("bin data")));
 
   auto tags = DynamicValue::makeDefault(
       typeSystem.ListOf(type_system::TypeSystem::String()));
@@ -188,7 +190,9 @@ DynamicValue makeRichAnnotation(const type_system::TypeSystem& typeSystem) {
 
 std::unique_ptr<ServiceDescriptor> makeCalculator() {
   ServiceDescriptorBuilder builder(
-      makeTypeSystem(), "Calculator", "test.com/Calculator");
+      makeTypeSystem(),
+      "Calculator",
+      "facebook.com/thrift/service_catalog_digest_test/Calculator");
   builder.addFunction("subtract")
       .addParam("left", FieldId{1}, type_system::TypeSystem::I32())
       .addParam("right", FieldId{2}, type_system::TypeSystem::I32())
@@ -204,7 +208,9 @@ std::unique_ptr<ServiceDescriptor> makeAnnotatedCalculator(
     std::string_view label) {
   auto typeSystem = makeAnnotationTypeSystem();
   ServiceDescriptorBuilder builder(
-      typeSystem, "Calculator", "test.com/Calculator");
+      typeSystem,
+      "Calculator",
+      "facebook.com/thrift/service_catalog_digest_test/Calculator");
   builder.addServiceAnnotation(makeAnnotation(*typeSystem, label));
   builder.addFunction("get")
       .addAnnotation(makeAnnotation(*typeSystem, label))
@@ -216,7 +222,9 @@ std::unique_ptr<ServiceDescriptor> makeAnnotatedSessionCalculator(
     std::string_view label) {
   auto typeSystem = makeAnnotationTypeSystem();
   ServiceDescriptorBuilder builder(
-      typeSystem, "Calculator", "test.com/Calculator");
+      typeSystem,
+      "Calculator",
+      "facebook.com/thrift/service_catalog_digest_test/Calculator");
   builder.addServiceAnnotation(makeAnnotation(*typeSystem, label));
   builder.addFunction("makeSession")
       .addParam(
@@ -225,10 +233,14 @@ std::unique_ptr<ServiceDescriptor> makeAnnotatedSessionCalculator(
           type_system::TypeSystem::I32(),
           {makeAnnotation(*typeSystem, label)})
       .addAnnotation(makeAnnotation(*typeSystem, label))
-      .setCreatedInteractionUri("test.com/CalculatorSession");
+      .setCreatedInteractionUri(
+          "facebook.com/thrift/service_catalog_digest_test/CalculatorSession");
 
   auto& interaction =
-      builder.addInteraction("CalculatorSession", "test.com/CalculatorSession")
+      builder
+          .addInteraction(
+              "CalculatorSession",
+              "facebook.com/thrift/service_catalog_digest_test/CalculatorSession")
           .addAnnotation(makeAnnotation(*typeSystem, label));
   interaction.addFunction("get")
       .addAnnotation(makeAnnotation(*typeSystem, label))
@@ -239,7 +251,9 @@ std::unique_ptr<ServiceDescriptor> makeAnnotatedSessionCalculator(
 std::unique_ptr<ServiceDescriptor> makeRichDescriptor() {
   auto typeSystem = makeRichAnnotationTypeSystem();
   ServiceDescriptorBuilder builder(
-      typeSystem, "CatalogGolden", "test.com/CatalogGolden");
+      typeSystem,
+      "CatalogGolden",
+      "facebook.com/thrift/service_catalog_digest_test/CatalogGolden");
   builder.addServiceAnnotation(makeRichAnnotation(*typeSystem));
   builder.addFunction("makeSession")
       .addParam(
@@ -249,7 +263,8 @@ std::unique_ptr<ServiceDescriptor> makeRichDescriptor() {
           {makeRichAnnotation(*typeSystem)})
       .addAnnotation(makeRichAnnotation(*typeSystem))
       .setQualifier(FunctionQualifier::Idempotent)
-      .setCreatedInteractionUri("test.com/CatalogGoldenSession");
+      .setCreatedInteractionUri(
+          "facebook.com/thrift/service_catalog_digest_test/CatalogGoldenSession");
   builder.addFunction("observe")
       .addAnnotation(makeRichAnnotation(*typeSystem))
       .setBidirectionalStream(
@@ -261,7 +276,8 @@ std::unique_ptr<ServiceDescriptor> makeRichDescriptor() {
           ServiceDescriptor::Exception{
               .name = "appError",
               .id = FieldId{1},
-              .type = type_system::TypeSystem::String(),
+              .type = typeSystem->UserDefined(
+                  "facebook.com/thrift/service_catalog_digest_test/AppError"),
               .annotations = {},
               .safety = type::ErrorSafety::Safe,
               .kind = type::ErrorKind::Transient,
@@ -270,13 +286,37 @@ std::unique_ptr<ServiceDescriptor> makeRichDescriptor() {
   builder.addFunction("notify").setOneWay();
 
   auto& interaction = builder.addInteraction(
-      "CatalogGoldenSession", "test.com/CatalogGoldenSession");
+      "CatalogGoldenSession",
+      "facebook.com/thrift/service_catalog_digest_test/CatalogGoldenSession");
   interaction.addAnnotation(makeRichAnnotation(*typeSystem));
   interaction.addFunction("get")
       .addAnnotation(makeRichAnnotation(*typeSystem))
       .setQualifier(FunctionQualifier::ReadOnly)
       .setResponseType(type_system::TypeSystem::I64());
   return builder.build();
+}
+
+// The fixture services are the IDL the golden values are computed from; each
+// golden is also checked against the equivalent builder-made descriptor.
+std::unique_ptr<ServiceDescriptor> loadFixtureService(std::string_view name) {
+  auto schema = apache::thrift::ServiceHandler<
+                    test::service_catalog_digest_fixture::Calculator>{}
+                    .getServiceSchema();
+  CHECK(schema.has_value());
+  auto graph = std::make_shared<const syntax_graph::SyntaxGraph>(
+      syntax_graph::SyntaxGraph::fromSchema(
+          apache::thrift::type::Schema(schema->schema)));
+  for (const auto program : graph->programs()) {
+    for (const auto definition : program->definitions()) {
+      if (definition->isService() &&
+          definition->asService().definition().name() == name) {
+        return std::make_unique<SyntaxGraphServiceDescriptor>(
+            graph, definition->asService());
+      }
+    }
+  }
+  throw std::invalid_argument(
+      "Fixture service not found: " + std::string(name));
 }
 
 const ServiceDescriptor& requireDescriptor(
@@ -319,7 +359,8 @@ TEST(ServiceCatalogDigestTest, VersionConstantExists) {
 TEST(ServiceCatalogDigestTest, ToSerializableSetsTypeDigest) {
   auto service = makeCalculator();
   const auto& descriptor = requireDescriptor(service);
-  auto catalog = toSerializable(descriptor, "test.com/Calculator");
+  auto catalog = toSerializable(
+      descriptor, "facebook.com/thrift/service_catalog_digest_test/Calculator");
 
   type_system::TypeSystemHasher typeHasher;
   const auto expected = typeHasher(*catalog.types());
@@ -335,10 +376,13 @@ TEST(ServiceCatalogDigestTest, ToSerializableSetsTypeDigest) {
 TEST(ServiceCatalogDigestTest, DescriptorAndSerializedCatalogMatch) {
   auto service = makeCalculator();
   const auto& descriptor = requireDescriptor(service);
-  auto catalog = toSerializable(descriptor, "test.com/Calculator");
+  auto catalog = toSerializable(
+      descriptor, "facebook.com/thrift/service_catalog_digest_test/Calculator");
 
   EXPECT_EQ(
-      ServiceCatalogHasher{}(descriptor, "test.com/Calculator"),
+      ServiceCatalogHasher{}(
+          descriptor,
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"),
       ServiceCatalogHasher{}(catalog));
 }
 
@@ -346,7 +390,7 @@ TEST(ServiceCatalogDigestTest, GoldenCalculatorDigest) {
   auto service = makeCalculator();
   expectGoldenDigest(
       requireDescriptor(service),
-      "test.com/Calculator",
+      "facebook.com/thrift/service_catalog_digest_test/Calculator",
       requireExpectedDigest(expected::DIGEST_CALCULATOR()));
 }
 
@@ -355,10 +399,13 @@ TEST(
     DescriptorAndSerializedCatalogMatchWithAnnotationsAndInteractions) {
   auto service = makeAnnotatedSessionCalculator("runtime");
   const auto& descriptor = requireDescriptor(service);
-  auto catalog = toSerializable(descriptor, "test.com/Calculator");
+  auto catalog = toSerializable(
+      descriptor, "facebook.com/thrift/service_catalog_digest_test/Calculator");
 
   EXPECT_EQ(
-      ServiceCatalogHasher{}(descriptor, "test.com/Calculator"),
+      ServiceCatalogHasher{}(
+          descriptor,
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"),
       ServiceCatalogHasher{}(catalog));
 }
 
@@ -366,7 +413,7 @@ TEST(ServiceCatalogDigestTest, GoldenRichDescriptorDigest) {
   auto service = makeRichDescriptor();
   expectGoldenDigest(
       requireDescriptor(service),
-      "test.com/CatalogGolden",
+      "facebook.com/thrift/service_catalog_digest_test/CatalogGolden",
       requireExpectedDigest(expected::DIGEST_RICH_DESCRIPTOR()));
 }
 
@@ -374,15 +421,37 @@ TEST(ServiceCatalogDigestTest, GoldenRichDescriptorStructuralDigest) {
   auto service = makeRichDescriptor();
   expectGoldenDigest(
       requireDescriptor(service),
-      "test.com/CatalogGolden",
+      "facebook.com/thrift/service_catalog_digest_test/CatalogGolden",
+      requireExpectedDigest(expected::DIGEST_RICH_DESCRIPTOR_STRUCTURAL()),
+      type_system::DigestMode::Structural);
+}
+
+TEST(ServiceCatalogDigestTest, GoldenCalculatorDigestFromSchema) {
+  auto service = loadFixtureService("Calculator");
+  expectGoldenDigest(
+      requireDescriptor(service),
+      "facebook.com/thrift/service_catalog_digest_test/Calculator",
+      requireExpectedDigest(expected::DIGEST_CALCULATOR()));
+}
+
+TEST(ServiceCatalogDigestTest, GoldenRichDescriptorDigestFromSchema) {
+  auto service = loadFixtureService("CatalogGolden");
+  expectGoldenDigest(
+      requireDescriptor(service),
+      "facebook.com/thrift/service_catalog_digest_test/CatalogGolden",
+      requireExpectedDigest(expected::DIGEST_RICH_DESCRIPTOR()));
+  expectGoldenDigest(
+      requireDescriptor(service),
+      "facebook.com/thrift/service_catalog_digest_test/CatalogGolden",
       requireExpectedDigest(expected::DIGEST_RICH_DESCRIPTOR_STRUCTURAL()),
       type_system::DigestMode::Structural);
 }
 
 TEST(ServiceCatalogDigestTest, InlineAndOutOfBandTypesMatch) {
   auto service = makeCalculator();
-  auto inlineCatalog =
-      toSerializable(requireDescriptor(service), "test.com/Calculator");
+  auto inlineCatalog = toSerializable(
+      requireDescriptor(service),
+      "facebook.com/thrift/service_catalog_digest_test/Calculator");
   auto outOfBandCatalog = inlineCatalog;
   outOfBandCatalog.types_ref().reset();
 
@@ -393,14 +462,16 @@ TEST(ServiceCatalogDigestTest, InlineAndOutOfBandTypesMatch) {
 
 TEST(ServiceCatalogDigestTest, IgnoresFunctionAndParameterOrder) {
   auto service = makeCalculator();
-  auto original =
-      toSerializable(requireDescriptor(service), "test.com/Calculator");
+  auto original = toSerializable(
+      requireDescriptor(service),
+      "facebook.com/thrift/service_catalog_digest_test/Calculator");
   auto reordered = original;
 
-  auto& functions = *reordered.interfaces()
-                         ->at("test.com/Calculator")
-                         .serviceDef_ref()
-                         ->functions();
+  auto& functions =
+      *reordered.interfaces()
+           ->at("facebook.com/thrift/service_catalog_digest_test/Calculator")
+           .serviceDef_ref()
+           ->functions();
   std::reverse(functions.begin(), functions.end());
   auto& params = *functions.at(0).params();
   std::reverse(params.begin(), params.end());
@@ -411,36 +482,54 @@ TEST(ServiceCatalogDigestTest, IgnoresFunctionAndParameterOrder) {
 
 TEST(ServiceCatalogDigestTest, ChangesWhenFunctionTypeChanges) {
   ServiceDescriptorBuilder i32Builder(
-      makeTypeSystem(), "Calculator", "test.com/Calculator");
+      makeTypeSystem(),
+      "Calculator",
+      "facebook.com/thrift/service_catalog_digest_test/Calculator");
   i32Builder.addFunction("get").setResponseType(type_system::TypeSystem::I32());
 
   ServiceDescriptorBuilder i64Builder(
-      makeTypeSystem(), "Calculator", "test.com/Calculator");
+      makeTypeSystem(),
+      "Calculator",
+      "facebook.com/thrift/service_catalog_digest_test/Calculator");
   i64Builder.addFunction("get").setResponseType(type_system::TypeSystem::I64());
 
   auto i32Service = i32Builder.build();
   auto i64Service = i64Builder.build();
   EXPECT_NE(
       ServiceCatalogHasher{}(
-          requireDescriptor(i32Service), "test.com/Calculator"),
+          requireDescriptor(i32Service),
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"),
       ServiceCatalogHasher{}(
-          requireDescriptor(i64Service), "test.com/Calculator"));
+          requireDescriptor(i64Service),
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"));
 }
 
 TEST(ServiceCatalogDigestTest, ChangesWhenInteractionChanges) {
   ServiceDescriptorBuilder i32Builder(
-      makeTypeSystem(), "Calculator", "test.com/Calculator");
+      makeTypeSystem(),
+      "Calculator",
+      "facebook.com/thrift/service_catalog_digest_test/Calculator");
   i32Builder.addFunction("makeSession")
-      .setCreatedInteractionUri("test.com/CalculatorSession");
-  i32Builder.addInteraction("CalculatorSession", "test.com/CalculatorSession")
+      .setCreatedInteractionUri(
+          "facebook.com/thrift/service_catalog_digest_test/CalculatorSession");
+  i32Builder
+      .addInteraction(
+          "CalculatorSession",
+          "facebook.com/thrift/service_catalog_digest_test/CalculatorSession")
       .addFunction("get")
       .setResponseType(type_system::TypeSystem::I32());
 
   ServiceDescriptorBuilder i64Builder(
-      makeTypeSystem(), "Calculator", "test.com/Calculator");
+      makeTypeSystem(),
+      "Calculator",
+      "facebook.com/thrift/service_catalog_digest_test/Calculator");
   i64Builder.addFunction("makeSession")
-      .setCreatedInteractionUri("test.com/CalculatorSession");
-  i64Builder.addInteraction("CalculatorSession", "test.com/CalculatorSession")
+      .setCreatedInteractionUri(
+          "facebook.com/thrift/service_catalog_digest_test/CalculatorSession");
+  i64Builder
+      .addInteraction(
+          "CalculatorSession",
+          "facebook.com/thrift/service_catalog_digest_test/CalculatorSession")
       .addFunction("get")
       .setResponseType(type_system::TypeSystem::I64());
 
@@ -448,9 +537,11 @@ TEST(ServiceCatalogDigestTest, ChangesWhenInteractionChanges) {
   auto i64Service = i64Builder.build();
   EXPECT_NE(
       ServiceCatalogHasher{}(
-          requireDescriptor(i32Service), "test.com/Calculator"),
+          requireDescriptor(i32Service),
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"),
       ServiceCatalogHasher{}(
-          requireDescriptor(i64Service), "test.com/Calculator"));
+          requireDescriptor(i64Service),
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"));
 }
 
 TEST(ServiceCatalogDigestTest, StructuralModeIgnoresAnnotations) {
@@ -458,8 +549,12 @@ TEST(ServiceCatalogDigestTest, StructuralModeIgnoresAnnotations) {
   auto secondDescriptor = makeAnnotatedCalculator("second");
   const auto& firstService = requireDescriptor(firstDescriptor);
   const auto& secondService = requireDescriptor(secondDescriptor);
-  auto first = toSerializable(firstService, "test.com/Calculator");
-  auto second = toSerializable(secondService, "test.com/Calculator");
+  auto first = toSerializable(
+      firstService,
+      "facebook.com/thrift/service_catalog_digest_test/Calculator");
+  auto second = toSerializable(
+      secondService,
+      "facebook.com/thrift/service_catalog_digest_test/Calculator");
 
   ServiceCatalogHasher full;
   ServiceCatalogHasher structural{type_system::DigestMode::Structural};
@@ -467,11 +562,19 @@ TEST(ServiceCatalogDigestTest, StructuralModeIgnoresAnnotations) {
   EXPECT_NE(full(first), full(second));
   EXPECT_EQ(structural(first), structural(second));
   EXPECT_NE(
-      full(firstService, "test.com/Calculator"),
-      full(secondService, "test.com/Calculator"));
+      full(
+          firstService,
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"),
+      full(
+          secondService,
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"));
   EXPECT_EQ(
-      structural(firstService, "test.com/Calculator"),
-      structural(secondService, "test.com/Calculator"));
+      structural(
+          firstService,
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"),
+      structural(
+          secondService,
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"));
 }
 
 } // namespace
