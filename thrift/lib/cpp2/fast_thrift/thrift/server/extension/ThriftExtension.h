@@ -135,10 +135,13 @@ class ThriftRequestView {
 
   // Invoked method name, or empty if the request carries no method metadata.
   std::string_view methodName() const noexcept {
+    if (request_.requestContext != nullptr &&
+        !request_.requestContext->getMethodName().empty()) {
+      return request_.requestContext->getMethodName();
+    }
     const auto* md = request_.payload.getRequestRpcMetadata();
     if (md != nullptr && md->name().has_value()) {
-      const auto sp = md->name()->view();
-      return std::string_view(sp.data(), sp.size());
+      return md->name()->view();
     }
     return {};
   }
@@ -162,8 +165,9 @@ class ThriftRequestView {
 
   // Size in bytes of the serialized request arguments (0 if absent).
   std::size_t serializedSize() const noexcept {
-    if (request_.payload.is<ThriftRequestResponsePayload>()) {
-      const auto& rr = request_.payload.get<ThriftRequestResponsePayload>();
+    if (request_.payload.is<ThriftServerRequestResponsePayload>()) {
+      const auto& rr =
+          request_.payload.get<ThriftServerRequestResponsePayload>();
       if (rr.data != nullptr) {
         return rr.data->computeChainDataLength();
       }

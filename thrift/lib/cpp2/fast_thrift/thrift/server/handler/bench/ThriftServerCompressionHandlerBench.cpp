@@ -44,6 +44,11 @@ using apache::thrift::fast_thrift::rocket::bench::BenchContext;
 
 const std::string kRequestBody(1024, 'a');
 
+folly::EventBase& requestMetadataEventBase() {
+  static folly::EventBase eventBase;
+  return eventBase;
+}
+
 apache::thrift::CompressionConfig zlibCompressionConfig() {
   apache::thrift::CompressionConfig config;
   config.codecConfig().ensure().zlibConfig().ensure();
@@ -65,9 +70,10 @@ ThriftServerRequestMessage makeRequest(
   return ThriftServerRequestMessage{
       .requestContext = ThriftRequestContextPtr{},
       .payload =
-          ThriftRequestResponsePayload{
+          ThriftServerRequestResponsePayload{
               .data = std::move(data),
-              .metadata = std::move(metadata),
+              .metadata = makeServerRequestMetadata(
+                  requestMetadataEventBase(), std::move(*metadata)),
           },
       .streamId = streamId,
   };

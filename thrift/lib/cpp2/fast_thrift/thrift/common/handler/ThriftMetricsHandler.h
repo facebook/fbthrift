@@ -153,7 +153,7 @@ class ThriftMetricsHandler {
   // sees connection-level traffic at all.
   static bool shouldCount(
       const thrift::ThriftServerInboundPayloadVariant& payload) noexcept {
-    return payload.template is<thrift::ThriftRequestResponsePayload>();
+    return payload.template is<thrift::ThriftServerRequestResponsePayload>();
   }
   static bool shouldCount(
       const thrift::ThriftServerOutboundPayloadVariant& payload) noexcept {

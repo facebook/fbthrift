@@ -322,12 +322,12 @@ ThriftServerAppAdapter::dispatchRequestResponse(
   DCHECK(method != nullptr);
 
   auto& inbound = request.payload;
-  if (FOLLY_UNLIKELY(!inbound.is<ThriftRequestResponsePayload>())) {
+  if (FOLLY_UNLIKELY(!inbound.is<ThriftServerRequestResponsePayload>())) {
     // Result::Error propagates to TransportHandler, which closes the
     // connection.
     return channel_pipeline::Result::Error;
   }
-  auto& requestResponse = inbound.get<ThriftRequestResponsePayload>();
+  auto& requestResponse = inbound.get<ThriftServerRequestResponsePayload>();
   DCHECK(requestResponse.metadata != nullptr);
   const auto protocol = requestResponse.metadata->protocol().value_or(0);
   method(

@@ -73,11 +73,13 @@ class ThriftServerChecksumHandler {
     auto& request = msg.get<ThriftServerRequestMessage>();
 
     if (FOLLY_UNLIKELY(
-            !request.payload.template is<ThriftRequestResponsePayload>())) {
+            !request.payload
+                 .template is<ThriftServerRequestResponsePayload>())) {
       return ctx.fireRead(std::move(msg));
     }
 
-    auto& rr = request.payload.template get<ThriftRequestResponsePayload>();
+    auto& rr =
+        request.payload.template get<ThriftServerRequestResponsePayload>();
     if (rr.metadata == nullptr || !rr.metadata->checksum().has_value()) {
       return ctx.fireRead(std::move(msg));
     }

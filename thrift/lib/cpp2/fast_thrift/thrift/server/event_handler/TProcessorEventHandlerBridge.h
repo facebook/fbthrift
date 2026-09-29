@@ -78,10 +78,10 @@ namespace event_handler_detail {
 
 inline std::uint32_t requestBytes(
     const ThriftServerRequestMessage& request) noexcept {
-  if (!request.payload.is<ThriftRequestResponsePayload>()) {
+  if (!request.payload.is<ThriftServerRequestResponsePayload>()) {
     return 0;
   }
-  const auto& rr = request.payload.get<ThriftRequestResponsePayload>();
+  const auto& rr = request.payload.get<ThriftServerRequestResponsePayload>();
   return rr.data == nullptr
       ? 0
       : static_cast<std::uint32_t>(rr.data->computeChainDataLength());
@@ -268,7 +268,7 @@ class TProcessorEventHandlerBridge {
 
     auto state = acquireState(*ctx.eventBase());
     const auto& requestResponse =
-        request.payload.get<ThriftRequestResponsePayload>();
+        request.payload.get<ThriftServerRequestResponsePayload>();
     state->protocolType = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
         requestResponse.metadata->protocol().value_or(0));
     state->cpp2Request.emplace(&connectionContext_->get(), &state->header);

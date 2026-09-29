@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/fast_thrift/common/allocator/EvbAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftControlPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftPayloadVariant.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftRequestPayloads.h>
@@ -34,8 +35,23 @@ namespace apache::thrift::fast_thrift::thrift {
 // Unary REQUEST_RESPONSE, connection setup, unary cancellation, and the
 // established-stream flow-control frames (REQUEST_N / CANCEL) the stream mux
 // routes by streamId.
+using ThriftServerRequestResponsePayload = BasicThriftRequestResponsePayload<
+    mem::evb_local_ptr<apache::thrift::RequestRpcMetadata>>;
+
+inline mem::evb_local_ptr<apache::thrift::RequestRpcMetadata>
+makeServerRequestMetadata(folly::EventBase& eventBase) {
+  return mem::evb_make_local<apache::thrift::RequestRpcMetadata>(eventBase);
+}
+
+inline mem::evb_local_ptr<apache::thrift::RequestRpcMetadata>
+makeServerRequestMetadata(
+    folly::EventBase& eventBase, apache::thrift::RequestRpcMetadata metadata) {
+  return mem::evb_make_local<apache::thrift::RequestRpcMetadata>(
+      eventBase, std::move(metadata));
+}
+
 using ThriftServerInboundPayloadVariant = ThriftPayloadVariant<
-    ThriftRequestResponsePayload,
+    ThriftServerRequestResponsePayload,
     ThriftConnectionSetupPayload,
     ThriftRequestNPayload,
     ThriftCancelPayload,
@@ -61,13 +77,15 @@ using ThriftServerOutboundPayloadVariant = ThriftPayloadVariant<
 // path.
 static_assert(
     sizeof(ThriftConnectionSetupPayload) <=
-        sizeof(ThriftRequestResponsePayload),
+        sizeof(ThriftServerRequestResponsePayload),
     "connection-lifecycle payloads must not grow the per-request inbound "
     "message; put new state in ConnectionSetupData instead");
 
 static_assert(
-    sizeof(ThriftRequestNPayload) <= sizeof(ThriftRequestResponsePayload) &&
-        sizeof(ThriftCancelPayload) <= sizeof(ThriftRequestResponsePayload),
+    sizeof(ThriftRequestNPayload) <=
+            sizeof(ThriftServerRequestResponsePayload) &&
+        sizeof(ThriftCancelPayload) <=
+            sizeof(ThriftServerRequestResponsePayload),
     "stream flow-control payloads must not grow the per-request inbound "
     "message");
 

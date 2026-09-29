@@ -63,15 +63,21 @@ namespace {
 
 using apache::thrift::fast_thrift::channel_pipeline::erase_and_box;
 using apache::thrift::fast_thrift::channel_pipeline::Result;
+using apache::thrift::fast_thrift::thrift::makeServerRequestMetadata;
 using apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr;
-using apache::thrift::fast_thrift::thrift::ThriftRequestResponsePayload;
 using apache::thrift::fast_thrift::thrift::ThriftServerAppAdapter;
 using apache::thrift::fast_thrift::thrift::ThriftServerCompositeAppAdapter;
 using apache::thrift::fast_thrift::thrift::ThriftServerCompositeRoutingTable;
 using apache::thrift::fast_thrift::thrift::ThriftServerInboundPayloadVariant;
 using apache::thrift::fast_thrift::thrift::ThriftServerMethodDispatchTable;
 using apache::thrift::fast_thrift::thrift::ThriftServerRequestMessage;
+using apache::thrift::fast_thrift::thrift::ThriftServerRequestResponsePayload;
 constexpr int kMethodsPerAdapter = 4;
+
+folly::EventBase& requestMetadataEventBase() {
+  static folly::EventBase eventBase;
+  return eventBase;
+}
 
 apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl&
 endpointContext() noexcept {
@@ -123,9 +129,11 @@ ThriftServerRequestMessage makeRequest(
   metadata->protocol() = apache::thrift::ProtocolId::BINARY;
 
   ThriftServerRequestMessage msg;
-  msg.payload = ThriftServerInboundPayloadVariant{ThriftRequestResponsePayload{
-      .data = folly::IOBuf::copyBuffer("payload"),
-      .metadata = std::move(metadata)}};
+  msg.payload =
+      ThriftServerInboundPayloadVariant{ThriftServerRequestResponsePayload{
+          .data = folly::IOBuf::copyBuffer("payload"),
+          .metadata = makeServerRequestMetadata(
+              requestMetadataEventBase(), std::move(*metadata))}};
   msg.streamId = streamId;
   return msg;
 }

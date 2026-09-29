@@ -77,14 +77,14 @@ class ThriftServerRequestContextHandler {
     if (requestExtensionLayout_ != nullptr) {
       request.requestContext->installExtensions(*requestExtensionLayout_);
     }
-    // Copied, not moved: the context outlives the payload the name came from,
-    // and the tail adapter still dispatches on RequestRpcMetadata.name, so
-    // emptying it here would break routing.
-    if (const auto* metadata = request.payload.getRequestRpcMetadata();
-        metadata != nullptr && metadata->name().has_value()) {
-      const auto name = metadata->name()->view();
-      request.requestContext->setMethodName(
-          std::string(name.data(), name.size()));
+    if (request.payload.template is<ThriftServerRequestResponsePayload>()) {
+      auto& metadata =
+          request.payload.template get<ThriftServerRequestResponsePayload>()
+              .metadata;
+      if (metadata != nullptr && metadata->name().has_value()) {
+        request.requestContext->setMethodName(
+            std::move(*metadata->name()).str());
+      }
     }
     return ctx.fireRead(std::move(msg));
   }

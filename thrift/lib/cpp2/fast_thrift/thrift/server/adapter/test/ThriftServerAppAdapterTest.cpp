@@ -54,6 +54,11 @@ HANDLER_TAG(test_handler);
 
 namespace {
 
+folly::EventBase& requestMetadataEventBase() {
+  static folly::EventBase eventBase;
+  return eventBase;
+}
+
 // Test helpers — extract data/metadata/streamId/errorCode from
 // ThriftServerResponseMessage's variant payload regardless of held alternative.
 inline const std::unique_ptr<folly::IOBuf>& payloadData(
@@ -128,8 +133,11 @@ ThriftServerRequestMessage makeTypedRequestMessage(
 
   ThriftServerRequestMessage msg;
   msg.streamId = streamId;
-  msg.payload = ThriftServerInboundPayloadVariant{ThriftRequestResponsePayload{
-      .data = std::move(payloadData), .metadata = std::move(metadata)}};
+  msg.payload =
+      ThriftServerInboundPayloadVariant{ThriftServerRequestResponsePayload{
+          .data = std::move(payloadData),
+          .metadata = makeServerRequestMetadata(
+              requestMetadataEventBase(), std::move(*metadata))}};
   return msg;
 }
 

@@ -60,19 +60,21 @@ folly::exception_wrapper deserializeRequestMetadata(
 folly::Expected<ThriftServerInboundPayloadVariant, folly::exception_wrapper>
 fromRocketFrame(
     frame::read::ParsedFrame&& frame,
-    rocket::server::MetadataProtocol metadataProtocol) {
+    rocket::server::MetadataProtocol metadataProtocol,
+    folly::EventBase& eventBase) {
   using frame::FrameType;
 
   switch (frame.type()) {
     case FrameType::REQUEST_RESPONSE: {
-      auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
+      auto metadata = makeServerRequestMetadata(eventBase);
       if (auto ew =
               deserializeRequestMetadata(frame, *metadata, metadataProtocol)) {
         return folly::makeUnexpected(std::move(ew));
       }
       auto data = std::move(frame).extractData();
-      return ThriftServerInboundPayloadVariant{ThriftRequestResponsePayload{
-          .data = std::move(data), .metadata = std::move(metadata)}};
+      return ThriftServerInboundPayloadVariant{
+          ThriftServerRequestResponsePayload{
+              .data = std::move(data), .metadata = std::move(metadata)}};
     }
 
     case FrameType::SETUP: {

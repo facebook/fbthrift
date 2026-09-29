@@ -17,6 +17,8 @@
 #include <gtest/gtest.h>
 
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp2/fast_thrift/common/allocator/EvbAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/ComposedFrame.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/RequestMetadata.h>
@@ -26,6 +28,11 @@
 namespace apache::thrift::fast_thrift::thrift {
 
 namespace {
+
+folly::EventBase& decoderEventBase() {
+  static folly::EventBase eventBase;
+  return eventBase;
+}
 
 apache::thrift::RequestRpcMetadata makePopulatedRequestMetadata(
     const std::string& method) {
@@ -92,16 +99,36 @@ TEST(FromRocketFrameTest, RequestResponseDecodesToTypedPayload) {
 
   auto result = fromRocketFrame(
       std::move(frame),
-      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY);
+      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
+      decoderEventBase());
   ASSERT_TRUE(result.hasValue());
-  ASSERT_TRUE(result->is<ThriftRequestResponsePayload>());
+  ASSERT_TRUE(result->is<ThriftServerRequestResponsePayload>());
 
-  auto& rr = result->get<ThriftRequestResponsePayload>();
+  auto& rr = result->get<ThriftServerRequestResponsePayload>();
   ASSERT_NE(rr.metadata, nullptr);
   ASSERT_TRUE(rr.metadata->name().has_value());
   EXPECT_EQ(rr.metadata->name()->view(), "Service.method");
   ASSERT_NE(rr.data, nullptr);
   EXPECT_EQ(rr.data->moveToFbString().toStdString(), "hello");
+}
+
+TEST(FromRocketFrameTest, RequestMetadataUsesEventBaseAllocator) {
+  auto& allocator = mem::EvbAllocator::getOrCreate(decoderEventBase());
+  const auto baseline = allocator.snapshotStats().outstandingAllocations;
+
+  {
+    auto result = fromRocketFrame(
+        makeRequestResponseFrame(
+            /*streamId=*/7,
+            makePopulatedRequestMetadata("Service.method"),
+            folly::IOBuf::copyBuffer("hello")),
+        apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
+        decoderEventBase());
+    ASSERT_TRUE(result.hasValue());
+    EXPECT_EQ(allocator.snapshotStats().outstandingAllocations, baseline + 1);
+  }
+
+  EXPECT_EQ(allocator.snapshotStats().outstandingAllocations, baseline);
 }
 
 TEST(FromRocketFrameTest, RequestResponseWithNoMetadataYieldsEmptyMetadata) {
@@ -117,9 +144,10 @@ TEST(FromRocketFrameTest, RequestResponseWithNoMetadataYieldsEmptyMetadata) {
 
   auto result = fromRocketFrame(
       std::move(parsed),
-      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY);
+      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
+      decoderEventBase());
   ASSERT_TRUE(result.hasValue());
-  auto& rr = result->get<ThriftRequestResponsePayload>();
+  auto& rr = result->get<ThriftServerRequestResponsePayload>();
   ASSERT_NE(rr.metadata, nullptr);
   EXPECT_FALSE(rr.metadata->name().has_value());
 }
@@ -137,21 +165,24 @@ TEST(FromRocketFrameTest, MalformedMetadataReturnsError) {
 
   auto result = fromRocketFrame(
       std::move(parsed),
-      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY);
+      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
+      decoderEventBase());
   EXPECT_FALSE(result.hasValue());
 }
 
 TEST(FromRocketFrameTest, RequestFnfNotYetWired) {
   auto result = fromRocketFrame(
       makeFnfFrame(/*streamId=*/3),
-      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY);
+      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
+      decoderEventBase());
   EXPECT_FALSE(result.hasValue());
 }
 
 TEST(FromRocketFrameTest, CancelDecodesWithoutMetadata) {
   auto result = fromRocketFrame(
       makeCancelFrame(/*streamId=*/9),
-      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY);
+      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
+      decoderEventBase());
   ASSERT_TRUE(result.hasValue());
   EXPECT_TRUE(result->is<ThriftRequestCancellationPayload>());
 }
@@ -159,7 +190,8 @@ TEST(FromRocketFrameTest, CancelDecodesWithoutMetadata) {
 TEST(FromRocketFrameTest, UnexpectedFrameTypeReturnsError) {
   auto result = fromRocketFrame(
       makeKeepAliveFrame(),
-      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY);
+      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
+      decoderEventBase());
   EXPECT_FALSE(result.hasValue());
 }
 

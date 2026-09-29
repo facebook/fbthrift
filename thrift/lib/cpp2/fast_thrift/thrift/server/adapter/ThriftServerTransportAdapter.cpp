@@ -94,7 +94,8 @@ channel_pipeline::Result ThriftServerTransportAdapter::onSetupFrame(
   // what this SETUP negotiated.
   metadataProtocol_ = request.metadataProtocol;
 
-  auto decoded = fromRocketFrame(std::move(request.frame), metadataProtocol_);
+  auto decoded = fromRocketFrame(
+      std::move(request.frame), metadataProtocol_, *pipeline_.eventBase());
   if (FOLLY_UNLIKELY(!decoded.hasValue())) {
     return rejectSetup(
         ErrorCode::INVALID_SETUP, "Could not read the client's SETUP metadata");

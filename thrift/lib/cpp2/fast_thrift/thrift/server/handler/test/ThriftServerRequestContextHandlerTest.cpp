@@ -72,13 +72,16 @@ ThriftServerRequestMessage makeRequest(uint32_t streamId = 1) {
 // Request-response message carrying real metadata, as the transport adapter
 // would hand it over.
 ThriftServerRequestMessage makeRequestWithMetadata(
+    folly::EventBase& eventBase,
     uint32_t streamId,
     std::unique_ptr<apache::thrift::RequestRpcMetadata> metadata) {
   ThriftServerRequestMessage req;
   req.streamId = streamId;
-  req.payload = ThriftServerInboundPayloadVariant{ThriftRequestResponsePayload{
-      .data = folly::IOBuf::copyBuffer("body"),
-      .metadata = std::move(metadata)}};
+  req.payload =
+      ThriftServerInboundPayloadVariant{ThriftServerRequestResponsePayload{
+          .data = folly::IOBuf::copyBuffer("body"),
+          .metadata = mem::evb_make_local<apache::thrift::RequestRpcMetadata>(
+              eventBase, std::move(*metadata))}};
   return req;
 }
 
@@ -113,10 +116,8 @@ TEST(ThriftServerRequestContextHandlerTest, StampsTheMethodName) {
 
   auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
   metadata->name() = "Service.method";
-  ThriftServerRequestMessage req;
-  req.payload = ThriftRequestResponsePayload{
-      .data = folly::IOBuf::copyBuffer("body"),
-      .metadata = std::move(metadata)};
+  auto req = makeRequestWithMetadata(
+      *ctx.eventBase(), /*streamId=*/1, std::move(metadata));
 
   EXPECT_EQ(
       handler.onRead(ctx, erase_and_box(std::move(req))), Result::Success);
@@ -133,10 +134,10 @@ TEST(ThriftServerRequestContextHandlerTest, NoMethodNameLeavesItEmpty) {
   ThriftServerRequestContextHandler<FakeContext> handler{nullptr};
   FakeContext ctx;
 
-  ThriftServerRequestMessage req;
-  req.payload = ThriftRequestResponsePayload{
-      .data = folly::IOBuf::copyBuffer("body"),
-      .metadata = std::make_unique<apache::thrift::RequestRpcMetadata>()};
+  auto req = makeRequestWithMetadata(
+      *ctx.eventBase(),
+      /*streamId=*/1,
+      std::make_unique<apache::thrift::RequestRpcMetadata>());
 
   EXPECT_EQ(
       handler.onRead(ctx, erase_and_box(std::move(req))), Result::Success);
@@ -195,8 +196,8 @@ TEST(
   EXPECT_EQ(
       handler.onRead(
           ctx,
-          erase_and_box(
-              makeRequestWithMetadata(/*streamId=*/7, std::move(metadata)))),
+          erase_and_box(makeRequestWithMetadata(
+              *ctx.eventBase(), /*streamId=*/7, std::move(metadata)))),
       Result::Success);
 
   ASSERT_EQ(ctx.forwarded.size(), 1);
@@ -205,9 +206,9 @@ TEST(
   EXPECT_EQ(forwarded.requestContext->getMethodName(), "Service.method");
 }
 
-// The name is copied, not moved out: the tail adapter dispatches on it, so
-// emptying the metadata here would break routing.
-TEST(ThriftServerRequestContextHandlerTest, LeavesMethodNameOnTheMetadata) {
+// Routing reads the context-owned name after this handler, so the metadata no
+// longer retains a second allocation.
+TEST(ThriftServerRequestContextHandlerTest, MovesMethodNameOutOfMetadata) {
   auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
   metadata->name() = "Service.method";
 
@@ -217,8 +218,8 @@ TEST(ThriftServerRequestContextHandlerTest, LeavesMethodNameOnTheMetadata) {
   EXPECT_EQ(
       handler.onRead(
           ctx,
-          erase_and_box(
-              makeRequestWithMetadata(/*streamId=*/7, std::move(metadata)))),
+          erase_and_box(makeRequestWithMetadata(
+              *ctx.eventBase(), /*streamId=*/7, std::move(metadata)))),
       Result::Success);
 
   ASSERT_EQ(ctx.forwarded.size(), 1);
@@ -226,7 +227,7 @@ TEST(ThriftServerRequestContextHandlerTest, LeavesMethodNameOnTheMetadata) {
   const auto* stamped = forwarded.payload.getRequestRpcMetadata();
   ASSERT_NE(stamped, nullptr);
   ASSERT_TRUE(stamped->name().has_value());
-  EXPECT_EQ(stamped->name()->view(), "Service.method");
+  EXPECT_TRUE(stamped->name()->view().empty());
 }
 
 // A request whose metadata carries no name still gets a context; the name is
@@ -240,6 +241,7 @@ TEST(
       handler.onRead(
           ctx,
           erase_and_box(makeRequestWithMetadata(
+              *ctx.eventBase(),
               /*streamId=*/7,
               std::make_unique<apache::thrift::RequestRpcMetadata>()))),
       Result::Success);

@@ -66,9 +66,13 @@ ThriftServerRequestMessage makeRequest(
   ThriftServerRequestMessage req;
   req.streamId = streamId;
   req.requestContext = makeThriftRequestContext(requestContextEventBase());
-  req.payload = ThriftServerInboundPayloadVariant{ThriftRequestResponsePayload{
-      .data = folly::IOBuf::copyBuffer("body"),
-      .metadata = std::move(metadata)}};
+  req.payload =
+      ThriftServerInboundPayloadVariant{ThriftServerRequestResponsePayload{
+          .data = folly::IOBuf::copyBuffer("body"),
+          .metadata = metadata == nullptr
+              ? mem::evb_local_ptr<apache::thrift::RequestRpcMetadata>{}
+              : makeServerRequestMetadata(
+                    requestContextEventBase(), std::move(*metadata))}};
   return req;
 }
 

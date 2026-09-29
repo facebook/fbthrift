@@ -264,9 +264,11 @@ class ThriftServerChannelTest : public ::testing::Test {
     msg.streamId = streamId;
     msg.payload =
         apache::thrift::fast_thrift::thrift::ThriftServerInboundPayloadVariant{
-            apache::thrift::fast_thrift::thrift::ThriftRequestResponsePayload{
-                .data = std::move(dataBuffer),
-                .metadata = std::move(metadata)}};
+            apache::thrift::fast_thrift::thrift::
+                ThriftServerRequestResponsePayload{
+                    .data = std::move(dataBuffer),
+                    .metadata = makeServerRequestMetadata(
+                        *evb_, std::move(*metadata))}};
     return msg;
   }
 

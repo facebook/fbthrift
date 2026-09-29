@@ -298,8 +298,8 @@ ThriftServerChannel::onRead(
   auto& payload = request.payload;
 
   // Today only RR is wired; FNF / Stream / Sink / Bidi will add arms here.
-  DCHECK(payload.is<ThriftRequestResponsePayload>());
-  auto& rr = payload.get<ThriftRequestResponsePayload>();
+  DCHECK(payload.is<ThriftServerRequestResponsePayload>());
+  auto& rr = payload.get<ThriftServerRequestResponsePayload>();
   DCHECK(rr.metadata != nullptr);
   auto& metadata = *rr.metadata;
 

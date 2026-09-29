@@ -58,6 +58,11 @@ namespace apache::thrift::fast_thrift::thrift::test::integration {
 
 namespace {
 
+folly::EventBase& requestMetadataEventBase() {
+  static folly::EventBase eventBase;
+  return eventBase;
+}
+
 namespace cp = ::apache::thrift::fast_thrift::channel_pipeline;
 namespace ft = ::apache::thrift::fast_thrift::thrift;
 using cp::erase_and_box;
@@ -127,9 +132,11 @@ ThriftServerRequestMessage makeRequest(
 
   ThriftServerRequestMessage msg;
   msg.streamId = streamId;
-  msg.payload =
-      ft::ThriftServerInboundPayloadVariant{ft::ThriftRequestResponsePayload{
-          .data = std::move(data), .metadata = std::move(metadata)}};
+  msg.payload = ft::ThriftServerInboundPayloadVariant{
+      ft::ThriftServerRequestResponsePayload{
+          .data = std::move(data),
+          .metadata = ft::makeServerRequestMetadata(
+              requestMetadataEventBase(), std::move(*metadata))}};
   return msg;
 }
 

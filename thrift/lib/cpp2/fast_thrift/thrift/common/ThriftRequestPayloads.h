@@ -48,13 +48,14 @@ namespace apache::thrift::fast_thrift::thrift {
  * delivers the error inbound.
  */
 
-struct ThriftRequestResponsePayload {
+template <typename MetadataPtr>
+struct BasicThriftRequestResponsePayload {
   static constexpr apache::thrift::RpcKind kRpcKind =
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
   using RocketFrame = apache::thrift::fast_thrift::frame::ComposedFrame;
 
   std::unique_ptr<folly::IOBuf> data{nullptr};
-  std::unique_ptr<apache::thrift::RequestRpcMetadata> metadata{nullptr};
+  MetadataPtr metadata{nullptr};
 
   // Serializes metadata as part of frame composition. Throws on
   // serializer/allocator failure; the transport adapter catches and
@@ -79,6 +80,9 @@ struct ThriftRequestResponsePayload {
     return metadata.get();
   }
 };
+
+using ThriftRequestResponsePayload = BasicThriftRequestResponsePayload<
+    std::unique_ptr<apache::thrift::RequestRpcMetadata>>;
 
 struct ThriftRequestFnfPayload {
   static constexpr apache::thrift::RpcKind kRpcKind =

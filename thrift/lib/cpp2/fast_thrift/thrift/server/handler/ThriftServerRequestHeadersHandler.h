@@ -61,8 +61,9 @@ class ThriftServerRequestHeadersHandler {
     DCHECK(request.requestContext)
         << "request.requestContext not found; "
            "ThriftServerRequestContextHandler must run upstream";
-    if (request.payload.template is<ThriftRequestResponsePayload>()) {
-      auto& rr = request.payload.template get<ThriftRequestResponsePayload>();
+    if (request.payload.template is<ThriftServerRequestResponsePayload>()) {
+      auto& rr =
+          request.payload.template get<ThriftServerRequestResponsePayload>();
       if (rr.metadata && rr.metadata->otherMetadata().has_value()) {
         request.requestContext->setHeaders(
             std::move(*rr.metadata->otherMetadata()));

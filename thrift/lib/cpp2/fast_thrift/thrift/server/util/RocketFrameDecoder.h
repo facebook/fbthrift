@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/Expected.h>
+#include <folly/io/async/EventBase.h>
 #include <folly/lang/Exception.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/ParsedFrame.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/MetadataProtocol.h>
@@ -36,6 +37,7 @@ namespace apache::thrift::fast_thrift::thrift {
 folly::Expected<ThriftServerInboundPayloadVariant, folly::exception_wrapper>
 fromRocketFrame(
     frame::read::ParsedFrame&& frame,
-    rocket::server::MetadataProtocol metadataProtocol);
+    rocket::server::MetadataProtocol metadataProtocol,
+    folly::EventBase& eventBase);
 
 } // namespace apache::thrift::fast_thrift::thrift

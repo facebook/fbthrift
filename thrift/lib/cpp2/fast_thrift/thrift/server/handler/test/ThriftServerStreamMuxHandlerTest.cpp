@@ -415,7 +415,7 @@ TEST_F(ThriftServerStreamMuxHandlerTest, UnaryTrafficPassesThrough) {
 
   // Unary request reaches the app (tail); the mux does not intercept it.
   ThriftServerRequestMessage req;
-  req.payload = ThriftRequestResponsePayload{};
+  req.payload = ThriftServerRequestResponsePayload{};
   (void)pipeline->fireRead(cp::erase_and_box(std::move(req)));
   EXPECT_EQ(tail_.readCount(), 1);
 

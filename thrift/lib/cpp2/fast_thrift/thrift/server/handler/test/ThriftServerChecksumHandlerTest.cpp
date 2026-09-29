@@ -85,9 +85,10 @@ ThriftServerRequestMessage makeRequest(
   return ThriftServerRequestMessage{
       .requestContext = makeThriftRequestContext(requestContextEventBase()),
       .payload =
-          ThriftRequestResponsePayload{
+          ThriftServerRequestResponsePayload{
               .data = std::move(data),
-              .metadata = std::move(metadata),
+              .metadata = makeServerRequestMetadata(
+                  requestContextEventBase(), std::move(*metadata)),
           },
       .streamId = kStreamId,
   };

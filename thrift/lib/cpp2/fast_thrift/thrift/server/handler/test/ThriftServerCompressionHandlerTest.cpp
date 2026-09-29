@@ -185,9 +185,12 @@ ThriftServerRequestMessage makeRequest(
   return ThriftServerRequestMessage{
       .requestContext = makeThriftRequestContext(requestContextEventBase()),
       .payload =
-          ThriftRequestResponsePayload{
+          ThriftServerRequestResponsePayload{
               .data = std::move(data),
-              .metadata = std::move(metadata),
+              .metadata = metadata == nullptr
+                  ? mem::evb_local_ptr<apache::thrift::RequestRpcMetadata>{}
+                  : makeServerRequestMetadata(
+                        requestContextEventBase(), std::move(*metadata)),
           },
       .streamId = kStreamId,
   };
@@ -210,10 +213,11 @@ const ThriftInitialResponsePayload& writtenResponsePayload(
       .payload.get<ThriftInitialResponsePayload>();
 }
 
-const ThriftRequestResponsePayload& forwardedPayload(const FakeContext& ctx) {
+const ThriftServerRequestResponsePayload& forwardedPayload(
+    const FakeContext& ctx) {
   return ctx.forwarded.front()
       .get<ThriftServerRequestMessage>()
-      .payload.get<ThriftRequestResponsePayload>();
+      .payload.get<ThriftServerRequestResponsePayload>();
 }
 
 ThriftServerResponseMessage makeResponseForForwardedRequest(FakeContext& ctx) {

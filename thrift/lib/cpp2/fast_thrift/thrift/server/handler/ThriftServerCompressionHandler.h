@@ -75,13 +75,14 @@ class ThriftServerCompressionHandler {
       Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
     auto& request = msg.get<ThriftServerRequestMessage>();
     if (FOLLY_UNLIKELY(
-            !request.payload.template is<ThriftRequestResponsePayload>())) {
+            !request.payload
+                 .template is<ThriftServerRequestResponsePayload>())) {
       return ctx.fireRead(std::move(msg));
     }
 
     const auto streamId = request.streamId;
     auto& payload =
-        request.payload.template get<ThriftRequestResponsePayload>();
+        request.payload.template get<ThriftServerRequestResponsePayload>();
     if (auto error = decompressRequest(payload)) {
       return writeParsingFailure(ctx, streamId, std::move(*error));
     }
@@ -189,7 +190,7 @@ class ThriftServerCompressionHandler {
   }
 
   std::optional<std::string> decompressRequest(
-      ThriftRequestResponsePayload& payload) noexcept {
+      ThriftServerRequestResponsePayload& payload) noexcept {
     if (payload.metadata == nullptr ||
         !payload.metadata->compression().has_value()) {
       return std::nullopt;

@@ -52,11 +52,14 @@ inline ServerRequestRoutingMetadata getServerRequestRoutingMetadata(
   if (kind != apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
     return {{}, kind, ServerRequestRoutingStatus::UnsupportedRpcKind};
   }
-  auto name = metadata->name();
-  return {
-      name.has_value() ? name->view() : std::string_view{},
-      kind,
-      ServerRequestRoutingStatus::Ready};
+  std::string_view methodName;
+  if (request.requestContext != nullptr &&
+      !request.requestContext->getMethodName().empty()) {
+    methodName = request.requestContext->getMethodName();
+  } else if (auto name = metadata->name(); name.has_value()) {
+    methodName = name->view();
+  }
+  return {methodName, kind, ServerRequestRoutingStatus::Ready};
 }
 
 /**

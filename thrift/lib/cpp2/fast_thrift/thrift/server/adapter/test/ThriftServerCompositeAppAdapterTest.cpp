@@ -55,6 +55,11 @@ HANDLER_TAG(test_handler);
 
 namespace {
 
+folly::EventBase& requestMetadataEventBase() {
+  static folly::EventBase eventBase;
+  return eventBase;
+}
+
 inline const std::unique_ptr<folly::IOBuf>& payloadData(
     const ThriftServerResponseMessage& msg) {
   if (msg.payload.is<ThriftInitialResponsePayload>()) {
@@ -215,9 +220,11 @@ ThriftServerRequestMessage makeRequestMessage(
   metadata->protocol() = protocol;
 
   ThriftServerRequestMessage msg;
-  msg.payload = ThriftServerInboundPayloadVariant{ThriftRequestResponsePayload{
-      .data = folly::IOBuf::copyBuffer("payload"),
-      .metadata = std::move(metadata)}};
+  msg.payload =
+      ThriftServerInboundPayloadVariant{ThriftServerRequestResponsePayload{
+          .data = folly::IOBuf::copyBuffer("payload"),
+          .metadata = makeServerRequestMetadata(
+              requestMetadataEventBase(), std::move(*metadata))}};
   msg.streamId = streamId;
   return msg;
 }

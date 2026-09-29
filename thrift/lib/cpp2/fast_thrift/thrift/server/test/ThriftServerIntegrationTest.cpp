@@ -799,7 +799,8 @@ class RocketThriftServerInterfaceHandler {
 
     auto decoded = apache::thrift::fast_thrift::thrift::fromRocketFrame(
         std::move(rocketMsg.frame),
-        apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY);
+        apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
+        *ctx.eventBase());
 
     ThriftServerRequestMessage thriftMsg;
     thriftMsg.streamId = rocketMsg.streamId;

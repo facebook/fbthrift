@@ -153,7 +153,8 @@ class ThriftServerTransportAdapter {
       return onConnectionFrame(std::move(request));
     }
 
-    auto decoded = fromRocketFrame(std::move(request.frame), metadataProtocol_);
+    auto decoded = fromRocketFrame(
+        std::move(request.frame), metadataProtocol_, *pipeline_.eventBase());
 
     if (FOLLY_UNLIKELY(!decoded.hasValue())) {
       return handleDecodeFailure(

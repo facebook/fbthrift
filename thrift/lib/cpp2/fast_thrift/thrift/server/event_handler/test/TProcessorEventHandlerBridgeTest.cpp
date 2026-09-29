@@ -387,9 +387,9 @@ ThriftServerRequestMessage makeRequest(
   metadata->name() = std::string(method);
   metadata->kind() = apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
   metadata->protocol() = apache::thrift::ProtocolId::BINARY;
-  req.payload = ThriftRequestResponsePayload{
+  req.payload = ThriftServerRequestResponsePayload{
       .data = folly::IOBuf::copyBuffer("0123456789"),
-      .metadata = std::move(metadata)};
+      .metadata = makeServerRequestMetadata(eventBase, std::move(*metadata))};
   return req;
 }
 
@@ -823,7 +823,7 @@ TEST(TProcessorEventHandlerBridgeTest, UnsupportedRpcKindSkipsCallbacks) {
   establish(bridge, ctx, conn);
   log.calls.clear();
   auto request = makeRequest(*ctx.eventBase(), conn, 1, "ping");
-  request.payload.get<ThriftRequestResponsePayload>().metadata->kind() =
+  request.payload.get<ThriftServerRequestResponsePayload>().metadata->kind() =
       apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE;
 
   EXPECT_EQ(

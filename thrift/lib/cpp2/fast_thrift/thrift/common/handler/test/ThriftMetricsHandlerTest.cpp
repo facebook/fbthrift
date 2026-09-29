@@ -65,7 +65,7 @@ namespace {
 channel_pipeline::TypeErasedBox makeRequestBox() {
   thrift::ThriftServerRequestMessage req;
   req.streamId = 1;
-  req.payload.emplace<thrift::ThriftRequestResponsePayload>();
+  req.payload.emplace<thrift::ThriftServerRequestResponsePayload>();
   return channel_pipeline::erase_and_box(std::move(req));
 }
 
@@ -94,7 +94,7 @@ TEST_F(ThriftMetricsHandlerTest, OnReadForwardsMessageUnmodified) {
   ASSERT_EQ(ctx_.readMessages().size(), 1);
   EXPECT_TRUE(ctx_.readMessages()[0]
                   .get<thrift::ThriftServerRequestMessage>()
-                  .payload.is<thrift::ThriftRequestResponsePayload>());
+                  .payload.is<thrift::ThriftServerRequestResponsePayload>());
 }
 
 TEST_F(ThriftMetricsHandlerTest, OnReadReturnsContextResult) {
