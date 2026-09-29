@@ -21,6 +21,14 @@ struct ByteAnnotation {
 }
 
 const byte kNegativeByte = -7;
+const byte kMaxByte = 127;
+const byte kMinByte = -128;
+const ByteAnnotation kStructConst = ByteAnnotation{value = -7};
+const list<byte> kByteList = [-128, 0, 127];
+const map<byte, byte> kByteMap = {-1: 1};
 
 @ByteAnnotation{value = -7}
-struct Annotated {}
+struct Annotated {
+  @ByteAnnotation{value = -128}
+  1: byte field = 127;
+}

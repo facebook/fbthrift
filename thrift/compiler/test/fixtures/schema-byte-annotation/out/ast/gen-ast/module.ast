@@ -5,22 +5,88 @@ Schema {
         1: name (string) = "module",
         2: uri (string) = "facebook.com/thrift/test/fixtures/schema_byte_annotation",
       },
-      2: id (i64) = -1206154152735528390,
-      8: definitionKeys (list) = list<string>[3] {
-        [0] = "\304R\312\255\007\215zY\321TO\262\022\364\224j",
-        [1] = "\331\200\316\256\n\237!\235<j\217\337e\371l\325",
-        [2] = "E\206\201\245\305&\375\256\330\371o\307\030\366j\356",
+      2: id (i64) = -5475300307635082100,
+      8: definitionKeys (list) = list<string>[8] {
+        [0] = "*\032\001c\225\322\234w\257\257G\360._\306\342",
+        [1] = "a\222\346\t\215}\317\000\314\t\014.\\\032\215\332",
+        [2] = "\njO\337\271\014\3669\216\344$^`\232\345\224",
+        [3] = ":\351\363\?_~\252\222\027\253j;\357\303\373\236",
+        [4] = "\272*\023\332\3710!j5XC\265\220\234\276s",
+        [5] = "\341e\024\036\326\"up]n\252\240\003\240\234\277",
+        [6] = "[\212\216mH\207e\215HW\245rjU[&",
+        [7] = "\035 \r\200\343\036}\374'\344\035\033*\374\306\210",
       },
       5: path (string) = "thrift/compiler/test/fixtures/schema-byte-annotation/src/module.thrift",
     },
   },
-  3: valuesMap (map) = map<i64,struct>[1] {
+  3: valuesMap (map) = map<i64,struct>[6] {
+    -4682541372412674323 -> Value {
+      2: byteValue (byte) = 0x80,
+    },
+    -3837768745295918495 -> Value {
+      14: listValue (list) = list<struct>[3] {
+        [0] = Value {
+          2: byteValue (byte) = 0x80,
+        },
+        [1] = Value {
+          2: byteValue (byte) = 0x0,
+        },
+        [2] = Value {
+          2: byteValue (byte) = 0x7f,
+        },
+      },
+    },
+    -1073861800619901088 -> Value {
+      2: byteValue (byte) = 0x7f,
+    },
     2805226474282473901 -> Value {
       2: byteValue (byte) = 0xf9,
     },
+    3135156555387067948 -> Value {
+      16: mapValue (map) = map<struct,struct>[1] {
+        Value {
+          2: byteValue (byte) = 0xff,
+        } -> Value {
+          2: byteValue (byte) = 0x1,
+        },
+      },
+    },
+    5787260507223708122 -> Value {
+      11: objectValue (struct) = Object {
+        1: type (string) = "facebook.com/thrift/test/fixtures/schema_byte_annotation/ByteAnnotation",
+        2: members (map) = map<i16,struct>[1] {
+          1 -> Value {
+            2: byteValue (byte) = 0xf9,
+          },
+        },
+      },
+    },
   },
-  8: definitionsMap (map) = map<string,struct>[3] {
-    "E\206\201\245\305&\375\256\330\371o\307\030\366j\356" -> Definition {
+  8: definitionsMap (map) = map<string,struct>[8] {
+    "\njO\337\271\014\3669\216\344$^`\232\345\224" -> Definition {
+      6: constDef (struct) = Const {
+        1: attrs (struct) = DefinitionAttrs {
+          1: name (string) = "kMaxByte",
+          2: uri (string) = "facebook.com/thrift/test/fixtures/schema_byte_annotation/kMaxByte",
+          7: sourceRange (struct) = SourceRange {
+            1: programId (i64) = -5475300307635082100,
+            2: beginLine (i32) = 24,
+            3: beginColumn (i32) = 1,
+            4: endLine (i32) = 24,
+            5: endColumn (i32) = 27,
+          },
+        },
+        2: type (struct) = TypeStruct {
+          1: name (struct) = TypeName {
+            2: byteType (i32) = 0,
+          },
+          2: params (list) = list<struct>[0] {
+          },
+        },
+        3: value (i64) = -1073861800619901088,
+      },
+    },
+    "\035 \r\200\343\036}\374'\344\035\033*\374\306\210" -> Definition {
       1: structDef (struct) = Struct {
         1: attrs (struct) = DefinitionAttrs {
           1: name (string) = "Annotated",
@@ -35,7 +101,7 @@ Schema {
             },
           },
           9: annotationsByKey (map) = map<string,struct>[1] {
-            "\304R\312\255\007\215zY\321TO\262\022\364\224j" -> Annotation {
+            "*\032\001c\225\322\234w\257\257G\360._\306\342" -> Annotation {
               1: fields (map) = map<string,struct>[1] {
                 "value" -> Value {
                   2: byteValue (byte) = 0xf9,
@@ -44,22 +110,63 @@ Schema {
             },
           },
           7: sourceRange (struct) = SourceRange {
-            1: programId (i64) = -1206154152735528390,
-            2: beginLine (i32) = 25,
+            1: programId (i64) = -5475300307635082100,
+            2: beginLine (i32) = 30,
             3: beginColumn (i32) = 1,
-            4: endLine (i32) = 26,
-            5: endColumn (i32) = 20,
+            4: endLine (i32) = 34,
+            5: endColumn (i32) = 2,
+          },
+        },
+        2: fields (list) = list<struct>[1] {
+          [0] = Field {
+            1: id (i16) = 1,
+            3: type (struct) = TypeStruct {
+              1: name (struct) = TypeName {
+                2: byteType (i32) = 0,
+              },
+              2: params (list) = list<struct>[0] {
+              },
+            },
+            4: attrs (struct) = DefinitionAttrs {
+              1: name (string) = "field",
+              8: annotations (map) = map<string,struct>[1] {
+                "facebook.com/thrift/test/fixtures/schema_byte_annotation/ByteAnnotation" -> Annotation {
+                  1: fields (map) = map<string,struct>[1] {
+                    "value" -> Value {
+                      2: byteValue (byte) = 0x80,
+                    },
+                  },
+                },
+              },
+              9: annotationsByKey (map) = map<string,struct>[1] {
+                "*\032\001c\225\322\234w\257\257G\360._\306\342" -> Annotation {
+                  1: fields (map) = map<string,struct>[1] {
+                    "value" -> Value {
+                      2: byteValue (byte) = 0x80,
+                    },
+                  },
+                },
+              },
+              7: sourceRange (struct) = SourceRange {
+                1: programId (i64) = -5475300307635082100,
+                2: beginLine (i32) = 32,
+                3: beginColumn (i32) = 3,
+                4: endLine (i32) = 33,
+                5: endColumn (i32) = 23,
+              },
+            },
+            5: customDefault (i64) = -1073861800619901088,
           },
         },
       },
     },
-    "\304R\312\255\007\215zY\321TO\262\022\364\224j" -> Definition {
+    "*\032\001c\225\322\234w\257\257G\360._\306\342" -> Definition {
       1: structDef (struct) = Struct {
         1: attrs (struct) = DefinitionAttrs {
           1: name (string) = "ByteAnnotation",
           2: uri (string) = "facebook.com/thrift/test/fixtures/schema_byte_annotation/ByteAnnotation",
           7: sourceRange (struct) = SourceRange {
-            1: programId (i64) = -1206154152735528390,
+            1: programId (i64) = -5475300307635082100,
             2: beginLine (i32) = 19,
             3: beginColumn (i32) = 1,
             4: endLine (i32) = 21,
@@ -79,7 +186,7 @@ Schema {
             4: attrs (struct) = DefinitionAttrs {
               1: name (string) = "value",
               7: sourceRange (struct) = SourceRange {
-                1: programId (i64) = -1206154152735528390,
+                1: programId (i64) = -5475300307635082100,
                 2: beginLine (i32) = 20,
                 3: beginColumn (i32) = 3,
                 4: endLine (i32) = 20,
@@ -90,13 +197,73 @@ Schema {
         },
       },
     },
-    "\331\200\316\256\n\237!\235<j\217\337e\371l\325" -> Definition {
+    ":\351\363\?_~\252\222\027\253j;\357\303\373\236" -> Definition {
+      6: constDef (struct) = Const {
+        1: attrs (struct) = DefinitionAttrs {
+          1: name (string) = "kMinByte",
+          2: uri (string) = "facebook.com/thrift/test/fixtures/schema_byte_annotation/kMinByte",
+          7: sourceRange (struct) = SourceRange {
+            1: programId (i64) = -5475300307635082100,
+            2: beginLine (i32) = 25,
+            3: beginColumn (i32) = 1,
+            4: endLine (i32) = 25,
+            5: endColumn (i32) = 28,
+          },
+        },
+        2: type (struct) = TypeStruct {
+          1: name (struct) = TypeName {
+            2: byteType (i32) = 0,
+          },
+          2: params (list) = list<struct>[0] {
+          },
+        },
+        3: value (i64) = -4682541372412674323,
+      },
+    },
+    "[\212\216mH\207e\215HW\245rjU[&" -> Definition {
+      6: constDef (struct) = Const {
+        1: attrs (struct) = DefinitionAttrs {
+          1: name (string) = "kByteMap",
+          2: uri (string) = "facebook.com/thrift/test/fixtures/schema_byte_annotation/kByteMap",
+          7: sourceRange (struct) = SourceRange {
+            1: programId (i64) = -5475300307635082100,
+            2: beginLine (i32) = 28,
+            3: beginColumn (i32) = 1,
+            4: endLine (i32) = 28,
+            5: endColumn (i32) = 42,
+          },
+        },
+        2: type (struct) = TypeStruct {
+          1: name (struct) = TypeName {
+            16: mapType (i32) = 0,
+          },
+          2: params (list) = list<struct>[2] {
+            [0] = TypeStruct {
+              1: name (struct) = TypeName {
+                2: byteType (i32) = 0,
+              },
+              2: params (list) = list<struct>[0] {
+              },
+            },
+            [1] = TypeStruct {
+              1: name (struct) = TypeName {
+                2: byteType (i32) = 0,
+              },
+              2: params (list) = list<struct>[0] {
+              },
+            },
+          },
+        },
+        3: value (i64) = 3135156555387067948,
+      },
+    },
+    "a\222\346\t\215}\317\000\314\t\014.\\\032\215\332" -> Definition {
       6: constDef (struct) = Const {
         1: attrs (struct) = DefinitionAttrs {
           1: name (string) = "kNegativeByte",
           2: uri (string) = "facebook.com/thrift/test/fixtures/schema_byte_annotation/kNegativeByte",
           7: sourceRange (struct) = SourceRange {
-            1: programId (i64) = -1206154152735528390,
+            1: programId (i64) = -5475300307635082100,
             2: beginLine (i32) = 23,
             3: beginColumn (i32) = 1,
             4: endLine (i32) = 23,
@@ -111,6 +278,61 @@ Schema {
           },
         },
         3: value (i64) = 2805226474282473901,
+      },
+    },
+    "\272*\023\332\3710!j5XC\265\220\234\276s" -> Definition {
+      6: constDef (struct) = Const {
+        1: attrs (struct) = DefinitionAttrs {
+          1: name (string) = "kStructConst",
+          2: uri (string) = "facebook.com/thrift/test/fixtures/schema_byte_annotation/kStructConst",
+          7: sourceRange (struct) = SourceRange {
+            1: programId (i64) = -5475300307635082100,
+            2: beginLine (i32) = 26,
+            3: beginColumn (i32) = 1,
+            4: endLine (i32) = 26,
+            5: endColumn (i32) = 64,
+          },
+        },
+        2: type (struct) = TypeStruct {
+          1: name (struct) = TypeName {
+            11: structType (struct) = TypeUri {
+              4: definitionKey (string) = "*\032\001c\225\322\234w\257\257G\360._\306\342",
+            },
+          },
+          2: params (list) = list<struct>[0] {
+          },
+        },
+        3: value (i64) = 5787260507223708122,
+      },
+    },
+    "\341e\024\036\326\"up]n\252\240\003\240\234\277" -> Definition {
+      6: constDef (struct) = Const {
+        1: attrs (struct) = DefinitionAttrs {
+          1: name (string) = "kByteList",
+          2: uri (string) = "facebook.com/thrift/test/fixtures/schema_byte_annotation/kByteList",
+          7: sourceRange (struct) = SourceRange {
+            1: programId (i64) = -5475300307635082100,
+            2: beginLine (i32) = 27,
+            3: beginColumn (i32) = 1,
+            4: endLine (i32) = 27,
+            5: endColumn (i32) = 45,
+          },
+        },
+        2: type (struct) = TypeStruct {
+          1: name (struct) = TypeName {
+            14: listType (i32) = 0,
+          },
+          2: params (list) = list<struct>[1] {
+            [0] = TypeStruct {
+              1: name (struct) = TypeName {
+                2: byteType (i32) = 0,
+              },
+              2: params (list) = list<struct>[0] {
+              },
+            },
+          },
+        },
+        3: value (i64) = -3837768745295918495,
       },
     },
   },
