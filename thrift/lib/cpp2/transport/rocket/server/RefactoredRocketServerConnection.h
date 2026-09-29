@@ -346,14 +346,7 @@ class RefactoredRocketServerConnection final : public IRocketServerConnection {
     explicit SocketDrainer(RefactoredRocketServerConnection& connection)
         : connection_(connection) {}
 
-    void activate() {
-      if (!drainComplete_) {
-        // Make sure the EventBase doesn't get destroyed until the timer
-        // expires.
-        evbKA_ = folly::getKeepAliveToken(connection_.evb_);
-        connection_.evb_.timer().scheduleTimeout(this, kTimeout);
-      }
-    }
+    void activate();
 
     void drainComplete() {
       if (!drainComplete_) {
@@ -375,7 +368,6 @@ class RefactoredRocketServerConnection final : public IRocketServerConnection {
     RefactoredRocketServerConnection& connection_;
     bool drainComplete_{false};
     folly::Executor::KeepAlive<> evbKA_;
-    static constexpr std::chrono::seconds kTimeout{1};
   };
   SocketDrainer socketDrainer_;
   size_t activePausedHandlers_{0};

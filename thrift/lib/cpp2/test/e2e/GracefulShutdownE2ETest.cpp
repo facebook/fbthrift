@@ -17,12 +17,14 @@
 #include <atomic>
 
 #include <fmt/core.h>
+#include <folly/ScopeGuard.h>
 #include <folly/coro/Collect.h>
 #include <folly/coro/GtestHelpers.h>
 #include <folly/coro/Sleep.h>
 #include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/test/e2e/gen-cpp2/TestGracefulShutdownService.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace ::testing;
@@ -130,6 +132,42 @@ CO_TEST_F(GracefulShutdownE2ETest, NewStreamRejectedAfterShutdown) {
   stopServer();
 
   EXPECT_THROW(co_await client->co_range(0, 5), transport::TTransportException);
+}
+
+// ==================== Socket drain + Shutdown ====================
+
+CO_TEST_F(GracefulShutdownE2ETest, OpenStreamConnectionDrainHonorsTimeoutFlag) {
+  // A publisher stream is not cancelled by server shutdown, so its client keeps
+  // the connection open and the server waits the socket drain timeout before
+  // closing the socket.
+  constexpr auto kDefaultDrainTimeout = std::chrono::milliseconds{1000};
+  THRIFT_FLAG_SET_MOCK(rocket_server_socket_drain_timeout_ms, 10);
+  SCOPE_EXIT {
+    THRIFT_FLAG_UNMOCK(rocket_server_socket_drain_timeout_ms);
+  };
+
+  struct Handler : public ServiceHandler_ {
+    ServerStream<int32_t> range(int32_t, int32_t) override {
+      auto [stream, publisher] = ServerStream<int32_t>::createPublisher();
+      publisher_.emplace(std::move(publisher));
+      return std::move(stream);
+    }
+
+    std::optional<ServerStreamPublisher<int32_t>> publisher_;
+  };
+
+  auto handler = std::make_shared<Handler>();
+  startServer(handler);
+  auto client = makeClient<detail::test::TestGracefulShutdownService>();
+  auto gen = (co_await client->co_range(0, 1)).toAsyncGenerator();
+
+  const auto start = std::chrono::steady_clock::now();
+  stopServer();
+  // Ignoring the flag makes the drain timer hold stop for the full default
+  // every time, so any time under it proves the flag was honored while leaving
+  // the most headroom for a slow runner.
+  EXPECT_LT(std::chrono::steady_clock::now() - start, kDefaultDrainTimeout);
+  std::move(*handler->publisher_).complete();
 }
 
 // ==================== Sink + Shutdown ====================

@@ -56,6 +56,7 @@
 
 THRIFT_FLAG_DECLARE_bool(enable_rocket_connection_observers);
 THRIFT_FLAG_DECLARE_bool(thrift_check_free_stream_thread);
+THRIFT_FLAG_DECLARE_int64(rocket_server_socket_drain_timeout_ms);
 THRIFT_FLAG_DEFINE_bool(rocket_use_outgoing_frame_handler, false);
 
 namespace apache::thrift::rocket {
@@ -305,6 +306,18 @@ RefactoredRocketServerConnection::~RefactoredRocketServerConnection() {
     egressMemoryTracker_.decrement(egressBufferSize_);
     DVLOG(10) << "buffered: 0 (-" << egressBufferSize_ << ") B";
     egressBufferSize_ = 0;
+  }
+}
+
+void RefactoredRocketServerConnection::SocketDrainer::activate() {
+  if (!drainComplete_) {
+    // Make sure the EventBase doesn't get destroyed until the timer
+    // expires.
+    evbKA_ = folly::getKeepAliveToken(connection_.evb_);
+    connection_.evb_.timer().scheduleTimeout(
+        this,
+        std::chrono::milliseconds(
+            THRIFT_FLAG(rocket_server_socket_drain_timeout_ms)));
   }
 }
 

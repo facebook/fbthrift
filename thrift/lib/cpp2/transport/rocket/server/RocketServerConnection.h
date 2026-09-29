@@ -39,6 +39,7 @@
 
 #include <wangle/acceptor/ManagedConnection.h>
 
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/server/MemoryTracker.h>
 #include <thrift/lib/cpp2/transport/core/ManagedConnectionIf.h>
@@ -55,6 +56,10 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/detail/WriteBatchTypes.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
+
+// How long a draining connection waits for the client to close its end of the
+// socket before the server closes it.
+THRIFT_FLAG_DECLARE_int64(rocket_server_socket_drain_timeout_ms);
 
 namespace apache::thrift::rocket {
 
@@ -406,14 +411,7 @@ class RocketServerConnection final : public IRocketServerConnection {
     explicit SocketDrainer(RocketServerConnection& connection)
         : connection_(connection) {}
 
-    void activate() {
-      if (!drainComplete_) {
-        // Make sure the EventBase doesn't get destroyed until the timer
-        // expires.
-        evbKA_ = folly::getKeepAliveToken(connection_.evb_);
-        connection_.evb_.timer().scheduleTimeout(this, kTimeout);
-      }
-    }
+    void activate();
 
     void drainComplete() {
       if (!drainComplete_) {
@@ -435,7 +433,6 @@ class RocketServerConnection final : public IRocketServerConnection {
     RocketServerConnection& connection_;
     bool drainComplete_{false};
     folly::Executor::KeepAlive<> evbKA_;
-    static constexpr std::chrono::seconds kTimeout{1};
   };
   SocketDrainer socketDrainer_;
   size_t activePausedHandlers_{0};
