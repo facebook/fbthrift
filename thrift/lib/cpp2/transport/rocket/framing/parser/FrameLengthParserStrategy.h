@@ -16,6 +16,13 @@
 
 #pragma once
 
+#include <algorithm>
+#include <array>
+#include <cstdint>
+#include <memory>
+#include <type_traits>
+#include <utility>
+
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
@@ -26,36 +33,153 @@
 
 namespace apache::thrift::rocket {
 
-template <class T>
-class FrameLengthParserStrategy {
+namespace detail {
+
+template <typename Buffer>
+struct FrameBufferTraits;
+
+template <>
+struct FrameBufferTraits<folly::IOBuf> {
+  using Storage = folly::IOBufQueue;
+
+  static FOLLY_ALWAYS_INLINE const folly::IOBuf* cursorBuffer(
+      const Storage& storage) {
+    return storage.front();
+  }
+};
+
+} // namespace detail
+
+template <class T, class Frame = std::unique_ptr<folly::IOBuf>>
+class FrameLengthParserStrategy;
+
+template <class T, class Cursor>
+class FrameLengthParserStrategyBase {
  public:
-  explicit FrameLengthParserStrategy(
-      T& owner, size_t minBufferSize = 256, size_t maxBufferSize = 4096)
+  size_t getFrameLength() const noexcept { return frameLength_; }
+  size_t getFrameLengthAndFieldSize() const noexcept {
+    return frameLengthAndFieldSize_;
+  }
+  size_t getSize() const noexcept { return size_; }
+
+ protected:
+  using Buffer = typename Cursor::Buffer;
+  using Traits = detail::FrameBufferTraits<Buffer>;
+  using Storage = typename Traits::Storage;
+
+  FrameLengthParserStrategyBase(const FrameLengthParserStrategyBase&) = delete;
+  FrameLengthParserStrategyBase& operator=(
+      const FrameLengthParserStrategyBase&) = delete;
+  FrameLengthParserStrategyBase(FrameLengthParserStrategyBase&&) = delete;
+  FrameLengthParserStrategyBase& operator=(FrameLengthParserStrategyBase&&) =
+      delete;
+
+  explicit FrameLengthParserStrategyBase(
+      T& owner, size_t minBufferSize, size_t maxBufferSize)
       : owner_(owner),
         minBufferSize_(minBufferSize),
-        maxBufferSize_(maxBufferSize) {}
-  ~FrameLengthParserStrategy();
+        maxBufferSize_(maxBufferSize),
+        readBuffer_(makeReadBuffer()),
+        cursor_(makeCursor(readBuffer_)) {}
 
-  void getReadBuffer(void** bufReturn, size_t* lenReturn);
-  void readDataAvailable(size_t len);
-  void readBufferAvailable(std::unique_ptr<folly::IOBuf> buf);
-  void setBuffersScarce(bool scarce) { copyFrames_ |= scarce; }
-  bool isBufferMovable();
+  ~FrameLengthParserStrategyBase() {
+    if (frameLengthAndFieldSize_) {
+      owner_.decMemoryUsage(static_cast<uint32_t>(frameLengthAndFieldSize_));
+    }
+  }
 
-  // Functions for testing
-  size_t getFrameLength() { return frameLength_; }
-  size_t getFrameLengthAndFieldSize() { return frameLengthAndFieldSize_; }
-  size_t getSize() { return size_; }
+  template <bool resize>
+  FOLLY_ALWAYS_INLINE void drainReadBuffer() {
+    while (size_ >= Serializer::kBytesForFrameOrMetadataLength) {
+      if (!frameLength_) {
+        computeFrameLength();
+
+        if (UNLIKELY(!owner_.incMemoryUsage(
+                static_cast<uint32_t>(frameLengthAndFieldSize_)))) {
+          // A rejecting owner is responsible for stopping further reads.
+          frameLengthAndFieldSize_ = 0;
+          return;
+        }
+
+        if constexpr (resize) {
+          tryResize();
+        }
+      }
+
+      if (size_ < frameLengthAndFieldSize_) {
+        return;
+      }
+
+      readBuffer_.trimStart(Serializer::kBytesForFrameOrMetadataLength);
+      auto frame = readBuffer_.split(frameLength_);
+
+      SCOPE_EXIT {
+        resetFrameLength();
+      };
+
+      if constexpr (std::is_same_v<Buffer, folly::IOBuf>) {
+        if (UNLIKELY(copyFrames_)) {
+          auto copy = folly::IOBuf::create(frameLength_);
+          folly::io::Cursor(frame.get())
+              .pull(copy->writableTail(), frameLength_);
+          copy->append(frameLength_);
+          frame = std::move(copy);
+        }
+      }
+
+      owner_.handleFrame(std::move(frame));
+    }
+  }
 
  private:
-  template <bool resize>
-  FOLLY_ALWAYS_INLINE void drainReadBufQueue();
+  static Storage makeReadBuffer() {
+    if constexpr (std::is_same_v<Buffer, folly::IOBuf>) {
+      return Storage{folly::IOBufQueue::cacheChainLength()};
+    } else {
+      return Storage{};
+    }
+  }
 
-  FOLLY_ALWAYS_INLINE void computeFrameLength();
-  FOLLY_ALWAYS_INLINE void resetFrameLength();
-  FOLLY_ALWAYS_INLINE void incrSize(size_t delta) { size_ += delta; }
-  FOLLY_ALWAYS_INLINE void tryResize();
+  static Cursor makeCursor(Storage& storage) {
+    if constexpr (std::is_same_v<Cursor, folly::io::Cursor>) {
+      return Cursor{Traits::cursorBuffer(storage)};
+    } else {
+      return Cursor{*Traits::cursorBuffer(storage)};
+    }
+  }
 
+  FOLLY_ALWAYS_INLINE void computeFrameLength() {
+    cursor_.reset(Traits::cursorBuffer(readBuffer_));
+    if constexpr (std::is_same_v<Cursor, folly::io::Cursor>) {
+      frameLength_ = readFrameOrMetadataSize(cursor_);
+    } else {
+      // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init)
+      std::array<uint8_t, Serializer::kBytesForFrameOrMetadataLength> bytes;
+      cursor_.pull(bytes.data(), bytes.size());
+      frameLength_ = readFrameOrMetadataSize(bytes);
+    }
+    frameLengthAndFieldSize_ =
+        frameLength_ + Serializer::kBytesForFrameOrMetadataLength;
+  }
+
+  FOLLY_ALWAYS_INLINE void resetFrameLength() {
+    owner_.decMemoryUsage(static_cast<uint32_t>(frameLengthAndFieldSize_));
+    size_ -= frameLengthAndFieldSize_;
+    if (size_ == 0) {
+      copyFrames_ = false;
+    }
+    frameLength_ = 0;
+    frameLengthAndFieldSize_ = 0;
+  }
+
+  FOLLY_ALWAYS_INLINE void tryResize() {
+    if (readBuffer_.tailroom() < frameLength_) {
+      const auto max = std::max(frameLengthAndFieldSize_, maxBufferSize_);
+      readBuffer_.preallocate(minBufferSize_, max, max);
+    }
+  }
+
+ protected:
   T& owner_;
   size_t size_{0};
   size_t frameLength_{0};
@@ -63,120 +187,54 @@ class FrameLengthParserStrategy {
   size_t minBufferSize_;
   size_t maxBufferSize_;
   bool copyFrames_{false};
-  folly::IOBufQueue readBufQueue_{folly::IOBufQueue::cacheChainLength()};
-  folly::io::Cursor cursor_{readBufQueue_.front()};
+  Storage readBuffer_;
+  Cursor cursor_;
 };
 
 template <class T>
-FrameLengthParserStrategy<T>::~FrameLengthParserStrategy() {
-  if (frameLengthAndFieldSize_) {
-    owner_.decMemoryUsage(frameLengthAndFieldSize_);
-  }
-}
+class FrameLengthParserStrategy<T, std::unique_ptr<folly::IOBuf>>
+    : public FrameLengthParserStrategyBase<T, folly::io::Cursor> {
+ public:
+  using Base = FrameLengthParserStrategyBase<T, folly::io::Cursor>;
 
-template <class T>
-void FrameLengthParserStrategy<T>::getReadBuffer(
-    void** bufReturn, size_t* lenReturn) {
-  auto tail = readBufQueue_.tailroom();
-  if (tail < Serializer::kBytesForFrameOrMetadataLength) {
-    const auto ret = readBufQueue_.preallocate(minBufferSize_, maxBufferSize_);
-    *bufReturn = ret.first;
-    *lenReturn = ret.second;
-  } else {
-    *bufReturn = readBufQueue_.writableTail();
-    *lenReturn = tail;
-  }
-}
+  explicit FrameLengthParserStrategy(
+      T& owner, size_t minBufferSize = 256, size_t maxBufferSize = 4096)
+      : Base(owner, minBufferSize, maxBufferSize) {}
 
-template <class T>
-void FrameLengthParserStrategy<T>::readDataAvailable(size_t len) {
-  incrSize(len);
-  readBufQueue_.postallocate(len);
-  drainReadBufQueue<true>();
-}
-
-template <class T>
-void FrameLengthParserStrategy<T>::readBufferAvailable(
-    std::unique_ptr<folly::IOBuf> buf) {
-  incrSize(buf->computeChainDataLength());
-  readBufQueue_.append(std::move(buf), true, true);
-  drainReadBufQueue<false>();
-}
-
-template <class T>
-bool FrameLengthParserStrategy<T>::isBufferMovable() {
-  return true;
-}
-
-template <class T>
-template <bool resize>
-void FrameLengthParserStrategy<T>::drainReadBufQueue() {
-  while (size_ >= Serializer::kBytesForFrameOrMetadataLength) {
-    if (!frameLength_) {
-      computeFrameLength();
-
-      if (UNLIKELY(!owner_.incMemoryUsage(frameLengthAndFieldSize_))) {
-        frameLengthAndFieldSize_ = 0;
-        return;
-      }
-
-      if (resize) {
-        tryResize();
-      }
+  void getReadBuffer(void** bufReturn, size_t* lenReturn) {
+    auto& readBuffer = readBuffer_;
+    const auto tail = readBuffer.tailroom();
+    if (tail < Serializer::kBytesForFrameOrMetadataLength) {
+      const auto ret = readBuffer.preallocate(minBufferSize_, maxBufferSize_);
+      *bufReturn = ret.first;
+      *lenReturn = ret.second;
+    } else {
+      *bufReturn = readBuffer.writableTail();
+      *lenReturn = tail;
     }
-
-    if (size_ < frameLengthAndFieldSize_) {
-      return;
-    }
-
-    // skip frame length field
-    readBufQueue_.trimStart(Serializer::kBytesForFrameOrMetadataLength);
-
-    // split out frame
-    auto frame = readBufQueue_.split(frameLength_);
-
-    SCOPE_EXIT {
-      // reset the frame length fields
-      resetFrameLength();
-    };
-
-    if (UNLIKELY(copyFrames_)) {
-      auto copy = folly::IOBuf::create(frameLength_);
-      folly::io::Cursor(frame.get()).pull(copy->writableTail(), frameLength_);
-      copy->append(frameLength_);
-      frame = std::move(copy);
-    }
-
-    // hand frame off
-    owner_.handleFrame(std::move(frame));
   }
-}
 
-template <class T>
-void FrameLengthParserStrategy<T>::computeFrameLength() {
-  cursor_.reset(readBufQueue_.front());
-  frameLength_ = readFrameOrMetadataSize(cursor_);
-  frameLengthAndFieldSize_ =
-      frameLength_ + Serializer::kBytesForFrameOrMetadataLength;
-}
-
-template <class T>
-void FrameLengthParserStrategy<T>::resetFrameLength() {
-  owner_.decMemoryUsage(frameLengthAndFieldSize_);
-  size_ -= frameLengthAndFieldSize_;
-  if (size_ == 0) {
-    copyFrames_ = false;
+  void readDataAvailable(size_t len) {
+    size_ += len;
+    readBuffer_.postallocate(len);
+    this->template drainReadBuffer<true>();
   }
-  frameLength_ = 0;
-  frameLengthAndFieldSize_ = 0;
-}
 
-template <class T>
-void FrameLengthParserStrategy<T>::tryResize() {
-  if (readBufQueue_.tailroom() < frameLength_) {
-    auto max = std::max(frameLengthAndFieldSize_, maxBufferSize_);
-    readBufQueue_.preallocate(minBufferSize_, max, max);
+  void readBufferAvailable(std::unique_ptr<folly::IOBuf> buffer) {
+    size_ += buffer->computeChainDataLength();
+    readBuffer_.append(std::move(buffer), true, true);
+    this->template drainReadBuffer<false>();
   }
-}
+
+  void setBuffersScarce(bool scarce) { copyFrames_ |= scarce; }
+  bool isBufferMovable() { return true; }
+
+ private:
+  using Base::copyFrames_;
+  using Base::maxBufferSize_;
+  using Base::minBufferSize_;
+  using Base::readBuffer_;
+  using Base::size_;
+};
 
 } // namespace apache::thrift::rocket
