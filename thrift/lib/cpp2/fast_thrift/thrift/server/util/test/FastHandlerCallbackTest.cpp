@@ -337,6 +337,22 @@ TEST(FastHandlerCallbackTest, ResultInvokesResultFnAndSuppressesDestructor) {
   EXPECT_EQ(rec->lastValue, 123);
 }
 
+TEST(FastHandlerCallbackTest, StorageComesFromEventBaseAllocator) {
+  auto rec = makeRecorder();
+  folly::EventBase evb;
+  auto& allocator = mem::EvbAllocator::getOrCreate(evb);
+  const auto baseline = allocator.snapshotStats().outstandingAllocations;
+
+  {
+    auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
+        &onResult, &onException, rec.get(), kStreamId, evb, nullptr, nullptr);
+    EXPECT_EQ(allocator.snapshotStats().outstandingAllocations, baseline + 1);
+    cb->result(123);
+  }
+
+  EXPECT_EQ(allocator.snapshotStats().outstandingAllocations, baseline);
+}
+
 TEST(FastHandlerCallbackTest, CancellationAcknowledgementCompletesOnce) {
   folly::EventBase evb;
   channel_pipeline::test::MockHeadHandler head;

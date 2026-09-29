@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
+#include <thrift/lib/cpp2/fast_thrift/common/allocator/EvbAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/event_handler/Cpp2BridgeExtension.h>
@@ -584,22 +585,16 @@ class FastHandlerCallback {
   // Distinguishes executor rejection/drop from an abandoned handler callback.
   void markHandlerStarted() noexcept { cancellationSlot_.markHandlerStarted(); }
 
-  // Called by CallbackPtr when the sole owner lets go. Destruction has to land
-  // on the adapter's EventBase: it releases adapterGuard_ and, through
-  // requestContext_, a ThriftConnContext reference, and neither of those
-  // counts is atomic.
-  //
-  // isInEventBaseThread answers "true" for a stopped loop, which is fine here:
-  // we hold a KeepAlive on the EventBase, so its loop cannot have finished
-  // while this object is alive. The stopped-loop case is only reachable from
-  // tests driving an EventBase by hand, where deleting inline is what's
-  // wanted.
+  // Called by CallbackPtr when the sole owner lets go. The object came from
+  // the EventBase allocator, so destruction and page accounting both return
+  // to that EventBase.
   void destroyOnEventBase() noexcept {
     if (!evb_ || evb_->isInEventBaseThread()) {
-      delete this;
+      mem::evb_local_ptr<FastHandlerCallback<T>>(this).reset();
       return;
     }
-    evb_->runInEventBaseThread([this] { delete this; });
+    evb_->runInEventBaseThread(
+        [this] { mem::evb_local_ptr<FastHandlerCallback<T>>(this).reset(); });
   }
 
   // ---- Codegen-targeted static helpers ----
@@ -644,6 +639,8 @@ class FastHandlerCallback {
   }
 
  private:
+  friend class mem::evb_local_ptr<FastHandlerCallback<T>>;
+
   template <typename F>
   bool tryCompleteInline(F&& fn) noexcept {
     static_assert(std::is_nothrow_invocable_v<F&>);
@@ -683,9 +680,9 @@ class FastHandlerCallback {
         std::move(ew));
   }
 
-  // Non-virtual and private: the only caller is destroyOnEventBase, so there
-  // is no vtable on this type. Destruction before dispatch reports executor
-  // overload; destruction after dispatch reports an abandoned callback.
+  // Non-virtual and private: only the EVB-local owning handle destroys this
+  // object. Destruction before dispatch reports executor overload; destruction
+  // after dispatch reports an abandoned callback.
   ~FastHandlerCallback() {
     try {
       if (cancellationSlot_.state() == detail::HandlerState::Completed) {
@@ -911,10 +908,12 @@ class FastHandlerCallback<void> {
   // See FastHandlerCallback<T>::destroyOnEventBase.
   void destroyOnEventBase() noexcept {
     if (!evb_ || evb_->isInEventBaseThread()) {
-      delete this;
+      mem::evb_local_ptr<FastHandlerCallback<void>>(this).reset();
       return;
     }
-    evb_->runInEventBaseThread([this] { delete this; });
+    evb_->runInEventBaseThread([this] {
+      mem::evb_local_ptr<FastHandlerCallback<void>>(this).reset();
+    });
   }
 
   // ---- Codegen-targeted static helpers (void return) ----
@@ -948,6 +947,8 @@ class FastHandlerCallback<void> {
   }
 
  private:
+  friend class mem::evb_local_ptr<FastHandlerCallback<void>>;
+
   template <typename F>
   bool tryCompleteInline(F&& fn) noexcept {
     static_assert(std::is_nothrow_invocable_v<F&>);
@@ -1051,9 +1052,29 @@ static_assert(
 
 // Constructs a callback and returns the owning handle. Must be called on the
 // adapter's EventBase — see FastHandlerCallback's constructor.
-template <typename Cb, typename... Args>
-detail::CallbackPtr<Cb> makeFastHandlerCallback(Args&&... args) {
-  return detail::CallbackPtr<Cb>(new Cb(static_cast<Args&&>(args)...));
+template <
+    typename Cb,
+    typename ResultFn,
+    typename ExceptionFn,
+    typename Context>
+detail::CallbackPtr<Cb> makeFastHandlerCallback(
+    ResultFn resultFn,
+    ExceptionFn exceptionFn,
+    ThriftServerAppAdapter* handler,
+    uint32_t streamId,
+    folly::EventBase& evb,
+    folly::Executor* executor,
+    Context&& requestContext) {
+  auto callback = mem::evb_make_local<Cb>(
+      evb,
+      resultFn,
+      exceptionFn,
+      handler,
+      streamId,
+      evb,
+      executor,
+      static_cast<Context&&>(requestContext));
+  return detail::CallbackPtr<Cb>(callback.release());
 }
 
 } // namespace apache::thrift::fast_thrift::thrift
