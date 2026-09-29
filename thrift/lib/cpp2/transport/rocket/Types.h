@@ -20,10 +20,12 @@
 #include <iosfwd>
 #include <memory>
 #include <utility>
+#include <variant>
 
 #include <folly/Range.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/fdsock/SocketFds.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 namespace apache::thrift::rocket {
@@ -87,6 +89,9 @@ class Payload {
       std::unique_ptr<folly::IOBuf> buffer, size_t metadataSize) {
     return Payload(std::move(buffer), metadataSize);
   }
+  static Payload makeCombined(IOBufChain buffer, size_t metadataSize) {
+    return Payload(std::move(buffer), metadataSize);
+  }
 
   Payload clone() const {
     if (!hasData()) {
@@ -94,16 +99,19 @@ class Payload {
       p.buffer_ = std::make_unique<folly::IOBuf>();
       return p;
     }
-    return makeCombined(buffer_->clone(), metadataSize_);
+    if (usesIOBufChain()) {
+      return makeCombined(chainBuffer().clone(), metadataSize_);
+    }
+    return makeCombined(buffer()->clone(), metadataSize_);
   }
 
   std::unique_ptr<folly::IOBuf> data() && {
-    DCHECK(buffer_ != nullptr);
+    DCHECK(!usesIOBufChain());
     DCHECK_LE(metadataSize_, metadataAndDataSize_);
-    DCHECK_LE(metadataSize_, buffer_->computeChainDataLength());
+    DCHECK_LE(metadataSize_, buffer()->computeChainDataLength());
 
     auto toTrim = metadataSize_;
-    auto data = std::move(buffer_);
+    auto data = std::move(std::get<std::unique_ptr<folly::IOBuf>>(buffer_));
     while (toTrim > 0) {
       if (data->length() >= toTrim) {
         data->trimStart(toTrim);
@@ -116,6 +124,15 @@ class Payload {
     return data;
   }
 
+  IOBufChain chainData() && {
+    DCHECK(usesIOBufChain());
+    DCHECK_LE(metadataSize_, metadataAndDataSize_);
+    auto data = std::move(std::get<IOBufChain>(buffer_));
+    DCHECK_LE(metadataSize_, data.chainLength());
+    data.trimStart(metadataSize_);
+    return data;
+  }
+
   bool hasNonemptyMetadata() const noexcept { return metadataSize_; }
 
   size_t metadataSize() const noexcept { return metadataSize_; }
@@ -125,9 +142,27 @@ class Payload {
     return metadataAndDataSize_ - metadataSize_;
   }
 
-  const folly::IOBuf* buffer() const& { return buffer_.get(); }
+  const folly::IOBuf* buffer() const& {
+    const auto* const buffer =
+        std::get_if<std::unique_ptr<folly::IOBuf>>(&buffer_);
+    return buffer ? buffer->get() : nullptr;
+  }
 
-  std::unique_ptr<folly::IOBuf> buffer() && { return std::move(buffer_); }
+  std::unique_ptr<folly::IOBuf> buffer() && {
+    DCHECK(!usesIOBufChain());
+    auto* const buffer = std::get_if<std::unique_ptr<folly::IOBuf>>(&buffer_);
+    return buffer ? std::move(*buffer) : nullptr;
+  }
+
+  const IOBufChain& chainBuffer() const& {
+    return std::get<IOBufChain>(buffer_);
+  }
+
+  IOBufChain chainBuffer() && {
+    return std::move(std::get<IOBufChain>(buffer_));
+  }
+
+  std::unique_ptr<folly::IOBuf> copyMetadataToIOBuf() const;
 
   size_t metadataAndDataSize() const { return metadataAndDataSize_; }
 
@@ -153,12 +188,23 @@ class Payload {
 
   void append(Payload&& other);
 
-  bool hasData() const { return buffer_ != nullptr; }
+  bool hasData() const {
+    if (const auto* buffer =
+            std::get_if<std::unique_ptr<folly::IOBuf>>(&buffer_)) {
+      return static_cast<bool>(*buffer);
+    }
+    return std::holds_alternative<IOBufChain>(buffer_);
+  }
+
+  bool usesIOBufChain() const {
+    return std::holds_alternative<IOBufChain>(buffer_);
+  }
 
   folly::SocketFds fds;
 
  private:
-  std::unique_ptr<folly::IOBuf> buffer_;
+  std::variant<std::monostate, std::unique_ptr<folly::IOBuf>, IOBufChain>
+      buffer_;
   size_t metadataSize_{0};
   size_t metadataAndDataSize_{0};
   uint32_t dataFirstFieldAlignment_{0};
@@ -166,7 +212,7 @@ class Payload {
 
   explicit Payload(std::unique_ptr<folly::IOBuf> data)
       : buffer_(data ? std::move(data) : std::make_unique<folly::IOBuf>()),
-        metadataAndDataSize_(buffer_->computeChainDataLength()) {}
+        metadataAndDataSize_(buffer()->computeChainDataLength()) {}
 
   Payload(
       std::unique_ptr<folly::IOBuf> metadata,
@@ -181,7 +227,7 @@ class Payload {
       buffer_ = std::move(metadata);
     } else if (data) {
       buffer_ = std::move(data);
-      metadataAndDataSize_ = buffer_->computeChainDataLength();
+      metadataAndDataSize_ = buffer()->computeChainDataLength();
     } else {
       buffer_ = std::make_unique<folly::IOBuf>();
     }
@@ -190,17 +236,23 @@ class Payload {
   Payload(std::unique_ptr<folly::IOBuf> buffer, size_t metadataSize)
       : buffer_(buffer ? std::move(buffer) : std::make_unique<folly::IOBuf>()),
         metadataSize_(metadataSize),
-        metadataAndDataSize_(buffer_->computeChainDataLength()) {}
+        metadataAndDataSize_(this->buffer()->computeChainDataLength()) {}
+
+  Payload(IOBufChain buffer, size_t metadataSize)
+      : buffer_(std::move(buffer)),
+        metadataSize_(metadataSize),
+        metadataAndDataSize_(chainBuffer().chainLength()) {}
 
   explicit Payload(folly::ByteRange data)
       : buffer_(folly::IOBuf::copyBuffer(data)),
-        metadataAndDataSize_(buffer_->computeChainDataLength()) {}
+        metadataAndDataSize_(buffer()->computeChainDataLength()) {}
 
   Payload(folly::ByteRange metadata, folly::ByteRange data)
       : buffer_(folly::IOBuf::copyBuffer(metadata)),
         metadataSize_(metadata.size()),
         metadataAndDataSize_(metadata.size() + data.size()) {
-    buffer_->prependChain(folly::IOBuf::copyBuffer(data));
+    std::get<std::unique_ptr<folly::IOBuf>>(buffer_)->prependChain(
+        folly::IOBuf::copyBuffer(data));
   }
 };
 
