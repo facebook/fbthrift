@@ -26,6 +26,9 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/logging/xlog.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
+#include <thrift/lib/cpp2/IOBufChainCursor.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/FrameType.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Serializer.h>
@@ -45,6 +48,16 @@ struct FrameBufferTraits<folly::IOBuf> {
   static FOLLY_ALWAYS_INLINE const folly::IOBuf* cursorBuffer(
       const Storage& storage) {
     return storage.front();
+  }
+};
+
+template <>
+struct FrameBufferTraits<IOBufChain> {
+  using Storage = IOBufChain;
+
+  static FOLLY_ALWAYS_INLINE const IOBufChain* cursorBuffer(
+      const Storage& storage) {
+    return &storage;
   }
 };
 
@@ -235,6 +248,86 @@ class FrameLengthParserStrategy<T, std::unique_ptr<folly::IOBuf>>
   using Base::minBufferSize_;
   using Base::readBuffer_;
   using Base::size_;
+};
+
+template <class T>
+class FrameLengthParserStrategy<T, IOBufChain>
+    : public FrameLengthParserStrategyBase<T, io::IOBufChainCursor> {
+ public:
+  using Base = FrameLengthParserStrategyBase<T, io::IOBufChainCursor>;
+
+  explicit FrameLengthParserStrategy(
+      T& owner, size_t minBufferSize = 256, size_t maxBufferSize = 4096)
+      : Base(owner, minBufferSize, maxBufferSize),
+        estimatedBufLength_(
+            std::min(maxBufferSize, Serializer::kMaxFrameOrMetadataLength)) {}
+
+  /*
+   * All users of the IOBufChain specialization will only use the
+   * readBufferAvailable API. The readDataAvailable API will not be implemented.
+   */
+  void getReadBuffer(void**, size_t*) {
+    XLOG(FATAL) << "getReadBuffer() not supported";
+  }
+
+  void readDataAvailable(size_t) {
+    XLOG(FATAL) << "readDataAvailable() not supported";
+  }
+
+  void readBufferAvailable(std::unique_ptr<folly::IOBuf> buffer) {
+    const auto length = buffer->computeChainDataLength();
+    recordBufLength(*buffer);
+    const auto remaining =
+        frameLengthAndFieldSize_ > size_ ? frameLengthAndFieldSize_ - size_ : 0;
+    size_ += length;
+    if (remaining == 0) {
+      readBuffer_.append(std::move(buffer));
+    } else {
+      readBuffer_.append(std::move(buffer), estimateFrameBufCount(remaining));
+    }
+    this->template drainReadBuffer<false>();
+    frameBufCountEstimate_ =
+        frameLengthAndFieldSize_ == 0 ? 0 : estimateFrameBufCount(frameLength_);
+  }
+
+  bool isBufferMovable() const noexcept { return true; }
+
+  size_t getFrameCapacity() const noexcept { return readBuffer_.capacity(); }
+  size_t getFrameBufCountEstimate() const noexcept {
+    return frameBufCountEstimate_;
+  }
+
+ private:
+  using Base::frameLength_;
+  using Base::frameLengthAndFieldSize_;
+  using Base::readBuffer_;
+  using Base::size_;
+
+  size_t estimateFrameBufCount(size_t remainingBytes) const noexcept {
+    constexpr size_t kMinBufCount = 10;
+    constexpr size_t kMaxBufCount = 4096;
+    const auto expectedBufLength = std::max<size_t>(1, estimatedBufLength_);
+    const auto estimate = remainingBytes / expectedBufLength +
+        static_cast<size_t>(remainingBytes % expectedBufLength != 0);
+    return std::clamp(estimate, kMinBufCount, kMaxBufCount);
+  }
+
+  void recordBufLength(size_t length) noexcept {
+    constexpr size_t kWeightDenominator = 8;
+    const auto sample = std::min(length, Serializer::kMaxFrameOrMetadataLength);
+    estimatedBufLength_ =
+        (estimatedBufLength_ * (kWeightDenominator - 1) + sample) /
+        kWeightDenominator;
+  }
+
+  void recordBufLength(const folly::IOBuf& buf) noexcept {
+    for (const auto range : buf) {
+      recordBufLength(range.size());
+    }
+  }
+
+  size_t estimatedBufLength_;
+  size_t frameBufCountEstimate_{0};
 };
 
 } // namespace apache::thrift::rocket

@@ -72,6 +72,7 @@ class IOBufChain {
   IOBufChain() = default;
   ~IOBufChain();
 
+  explicit IOBufChain(size_t initialBlockCapacity);
   explicit IOBufChain(std::unique_ptr<folly::IOBuf> buf);
 
   IOBufChain(IOBufChain&& other) noexcept;
@@ -82,14 +83,16 @@ class IOBufChain {
 
   size_t chainLength() const noexcept { return byteLength_; }
   size_t chainElements() const noexcept { return elementCount_; }
+  size_t capacity() const noexcept;
   bool empty() const noexcept { return elementCount_ == 0; }
   void clear() noexcept;
 
   void append(std::unique_ptr<folly::IOBuf> buf);
+  void append(std::unique_ptr<folly::IOBuf> buf, size_t nextBlockCapacity);
   void append(IOBufChain&& other);
 
   std::unique_ptr<folly::IOBuf> pop();
-  IOBufChain splitAt(size_t offset);
+  IOBufChain split(size_t offset);
   void trimStart(size_t amount);
 
   const_iterator begin() const noexcept;
@@ -103,8 +106,6 @@ class IOBufChain {
 
   static constexpr size_t kDefaultBlockCapacity = 10;
 
-  explicit IOBufChain(size_t initialBlockCapacity);
-  void append(std::unique_ptr<folly::IOBuf> buf, size_t nextBlockCapacity);
   void appendClonedRange(
       const folly::IOBuf& source,
       size_t offset,

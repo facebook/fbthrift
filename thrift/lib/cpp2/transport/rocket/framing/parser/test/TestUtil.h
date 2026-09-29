@@ -16,12 +16,15 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/IOBufChain.h>
+
 namespace apache::thrift::rocket {
 class FakeOwner {
  public:
   void handleFrame(std::unique_ptr<folly::IOBuf> buf) {
     frames_.push_back(std::move(buf));
   }
+  void handleFrame(IOBufChain buf) { chainFrames_.push_back(std::move(buf)); }
   bool incMemoryUsage(uint32_t n) {
     memoryCounter_ += n;
     return true;
@@ -29,6 +32,7 @@ class FakeOwner {
   void decMemoryUsage(uint32_t n) { memoryCounter_ -= n; }
 
   std::vector<std::unique_ptr<folly::IOBuf>> frames_{};
+  std::vector<IOBufChain> chainFrames_{};
 
   uint32_t memoryCounter_ = 0;
 };

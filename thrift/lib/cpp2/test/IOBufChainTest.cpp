@@ -218,6 +218,48 @@ TEST(IOBufChain, AppendBuf) {
   checkConsistency(std::move(chain), "Hello, World");
 }
 
+TEST(IOBufChain, RejectsBlockCapacityThatOverflowsAllocation) {
+  EXPECT_THROW(
+      IOBufChain{std::numeric_limits<size_t>::max()},
+      std::bad_array_new_length);
+}
+
+TEST(IOBufChain, BlockAllocationFailureReleasesInputOwnership) {
+  std::array<uint8_t, 8> data{};
+  BufferReleaseTracker tracker;
+
+  {
+    auto buffer = makeOwnedBuffer(data.data(), data.size(), tracker);
+    IOBufChain chain;
+    EXPECT_THROW(
+        chain.append(std::move(buffer), std::numeric_limits<size_t>::max()),
+        std::bad_array_new_length);
+    EXPECT_EQ(1, tracker.count);
+  }
+
+  EXPECT_EQ(1, tracker.count);
+}
+
+TEST(IOBufChain, BlockAllocationFailurePreservesExistingElements) {
+  std::array<uint8_t, 8> data{};
+  BufferReleaseTracker tracker;
+  {
+    IOBufChain chain{1};
+    chain.append(IOBuf::copyBuffer("existing"));
+    auto buffer = makeOwnedBuffer(data.data(), data.size(), tracker);
+
+    EXPECT_THROW(
+        chain.append(std::move(buffer), std::numeric_limits<size_t>::max()),
+        std::bad_array_new_length);
+
+    EXPECT_EQ("existing", chainString(chain));
+    EXPECT_EQ(1, chain.chainElements());
+    EXPECT_EQ(1, tracker.count);
+    checkConsistency(chain);
+  }
+  EXPECT_EQ(1, tracker.count);
+}
+
 TEST(IOBufChain, AppendOwnedBufferMovesMetadataIntoBlock) {
   std::array<uint8_t, 8> data{};
   BufferReleaseTracker tracker;
@@ -743,7 +785,7 @@ TEST(IOBufChain, SplitAndTrimStartAcrossBlocks) {
   chain.append(makeSlice(allocation, 6, 2));
   chain.append(makeSlice(allocation, 9, 2));
 
-  auto prefix = chain.splitAt(5);
+  auto prefix = chain.split(5);
   EXPECT_EQ(5, prefix.chainLength());
   EXPECT_EQ(3, chain.chainLength());
   EXPECT_EQ(3, prefix.chainElements());
@@ -756,21 +798,21 @@ TEST(IOBufChain, SplitAndTrimStartAcrossBlocks) {
   checkConsistency(chain);
 }
 
-TEST(IOBufChain, SplitAtBoundariesAndRejectsOutOfRange) {
+TEST(IOBufChain, SplitBoundariesAndRejectsOutOfRange) {
   IOBufChain chain = chainOf({"ab", "cde", "f"});
 
-  auto emptyPrefix = chain.splitAt(0);
+  auto emptyPrefix = chain.split(0);
   EXPECT_TRUE(emptyPrefix.empty());
   EXPECT_EQ("abcdef", chainString(chain));
 
-  auto prefix = chain.splitAt(3);
+  auto prefix = chain.split(3);
   EXPECT_EQ("abc", chainString(prefix));
   EXPECT_EQ("def", chainString(chain));
 
-  auto remainder = chain.splitAt(chain.chainLength());
+  auto remainder = chain.split(chain.chainLength());
   EXPECT_EQ("def", chainString(remainder));
   EXPECT_TRUE(chain.empty());
-  EXPECT_THROW(chain.splitAt(1), std::out_of_range);
+  EXPECT_THROW(chain.split(1), std::out_of_range);
 }
 
 TEST(IOBufChain, TrimStartHandlesBoundariesAndRejectsOutOfRange) {
@@ -793,7 +835,7 @@ TEST(IOBufChain, SplitBufferSharesOwnership) {
   chain.append(makeOwnedBuffer(data.data(), data.size(), tracker));
   ASSERT_EQ(1, chain.chainElements());
 
-  auto prefix = chain.splitAt(4);
+  auto prefix = chain.split(4);
   prefix.clear();
 
   EXPECT_EQ(0, tracker.count);

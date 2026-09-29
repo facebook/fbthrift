@@ -36,6 +36,8 @@ namespace apache::thrift::rocket {
 class Serializer {
  public:
   static constexpr size_t kBytesForFrameOrMetadataLength = 3;
+  static constexpr size_t kMaxFrameOrMetadataLength =
+      (size_t{1} << (kBytesForFrameOrMetadataLength * 8)) - 1;
   static constexpr size_t kMinimumFrameHeaderLength = 9;
 
   Serializer() : Serializer(nullptr) {}
@@ -86,7 +88,7 @@ class Serializer {
 
   size_t writeFrameOrMetadataSize(size_t nbytes) {
     // Frame and metadata lengths are BE-encoded in 3 bytes
-    DCHECK_LT(nbytes, (1ull << (kBytesForFrameOrMetadataLength * 8)));
+    DCHECK_LE(nbytes, kMaxFrameOrMetadataLength);
 
     const size_t beSize = folly::Endian::big(nbytes);
     const uint8_t* start = reinterpret_cast<const uint8_t*>(&beSize) +
@@ -167,7 +169,7 @@ class HeaderSerializer {
   FOLLY_ALWAYS_INLINE void incrementPosition(size_t size) { pos_ += size; }
 
   FOLLY_ALWAYS_INLINE void writeInt24BE(size_t nbytes) {
-    DCHECK_LT(nbytes, (1ull << (kBytesForFrameOrMetadataLength * 8)));
+    DCHECK_LE(nbytes, Serializer::kMaxFrameOrMetadataLength);
     buf_[pos_] = (nbytes >> 16) & 0xFF;
     buf_[pos_ + 1] = (nbytes >> 8) & 0xFF;
     buf_[pos_ + 2] = nbytes & 0xFF;

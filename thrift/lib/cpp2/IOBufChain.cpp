@@ -256,6 +256,14 @@ void IOBufChain::clear() noexcept {
   Block::destroyChain(blocks);
 }
 
+size_t IOBufChain::capacity() const noexcept {
+  size_t result = 0;
+  for (auto* block = head_; block; block = block->next) {
+    result += block->capacity;
+  }
+  return result;
+}
+
 void IOBufChain::append(std::unique_ptr<folly::IOBuf> buf) {
   append(std::move(buf), kDefaultBlockCapacity);
 }
@@ -320,7 +328,7 @@ void IOBufChain::extractFront(folly::IOBuf& result) noexcept {
   }
 }
 
-IOBufChain IOBufChain::splitAt(size_t offset) {
+IOBufChain IOBufChain::split(size_t offset) {
   if (offset > byteLength_) {
     folly::throw_exception<std::out_of_range>(
         "IOBufChain split offset exceeds chain length");
