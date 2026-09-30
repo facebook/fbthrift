@@ -252,6 +252,22 @@ const list<NegativeTestCase> formatValidationNegativeCases = [
     name = "FieldIdOverflowI16Negative",
     json = "{\"(-32769)\": true}",
   },
+  NegativeTestCase{
+    name = "UnionMultipleFields",
+    json = "{\"unionValue\": {\"intValue\": 1, \"stringValue\": \"a\"}}",
+  },
+  NegativeTestCase{
+    name = "UnionDuplicateField",
+    json = "{\"unionValue\": {\"intValue\": 1, \"intValue\": 2}}",
+  },
+  NegativeTestCase{
+    name = "UnionKnownThenUnknownField",
+    json = "{\"unionValue\": {\"intValue\": 1, \"unknown\": 2}}",
+  },
+  NegativeTestCase{
+    name = "UnionUnknownThenKnownField",
+    json = "{\"unionValue\": {\"unknown\": 1, \"intValue\": 2}}",
+  },
 ];
 
 const list<NegativeTestCase> overflowValidationNegativeCases = [
