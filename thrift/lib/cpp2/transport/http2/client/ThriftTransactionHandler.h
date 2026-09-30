@@ -77,9 +77,6 @@ class ThriftTransactionHandler
     // it won't immediately causing any problem
   }
 
-  void onPushedTransaction(
-      proxygen::HTTPTransaction* /*txn*/) noexcept override {}
-
   /**
    * HTTPTransaction::TransportCallback interface
    */
