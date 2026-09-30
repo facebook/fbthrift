@@ -744,34 +744,6 @@ final class ThriftContextPropStateTest extends WWWTest {
       ->toBeFalse();
   }
 
-  public function testIGAgentAsUserSandboxRequestFlag(): void {
-    $tcps = ThriftContextPropState::get();
-    $tcps->clear();
-
-    expect($tcps->isIGAgentAsUserSandboxRequest())->toBeFalse();
-    expect(
-      $tcps->isBaggageFlags1Set(
-        ContextProp\BaggageFlags1::IG_AGENT_AS_USER_SANDBOX_REQUEST,
-      ),
-    )->toBeFalse();
-
-    $tcps->setIGAgentAsUserSandboxRequest();
-    expect($tcps->isIGAgentAsUserSandboxRequest())->toBeTrue();
-    expect(
-      $tcps->isBaggageFlags1Set(
-        ContextProp\BaggageFlags1::IG_AGENT_AS_USER_SANDBOX_REQUEST,
-      ),
-    )->toBeTrue();
-
-    $tcps->clearIGAgentAsUserSandboxRequest();
-    expect($tcps->isIGAgentAsUserSandboxRequest())->toBeFalse();
-    expect(
-      $tcps->isBaggageFlags1Set(
-        ContextProp\BaggageFlags1::IG_AGENT_AS_USER_SANDBOX_REQUEST,
-      ),
-    )->toBeFalse();
-  }
-
   public function testIGAgentTestingPlatformRequestFlag(): void {
     $tcps = ThriftContextPropState::get();
     $tcps->clear();
@@ -790,8 +762,12 @@ final class ThriftContextPropStateTest extends WWWTest {
         ContextProp\BaggageFlags1::IG_AGENT_TESTING_PLATFORM_REQUEST,
       ),
     )->toBeTrue();
-    // Independent of the isolated-session sandbox flag.
-    expect($tcps->isIGAgentAsUserSandboxRequest())->toBeFalse();
+    // Independent of the deprecated agent-as-user sandbox bit.
+    expect(
+      $tcps->isBaggageFlags1Set(
+        ContextProp\BaggageFlags1::IG_AGENT_AS_USER_SANDBOX_REQUEST,
+      ),
+    )->toBeFalse();
 
     $tcps->clearIGAgentTestingPlatformRequest();
     expect($tcps->isIGAgentTestingPlatformRequest())->toBeFalse();
