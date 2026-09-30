@@ -296,4 +296,32 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
     inputs = ["{\"unionValue\": {}}"],
     output = json5_test.Example{unionValue = json5_test.ExampleUnion{}},
   },
+  // A repeated union field is reset, as in Binary and Compact: an empty object
+  // clears it and a known field replaces it.
+  CompatibilityTestCase{
+    name = "RepeatedUnionFieldEmptyObjectClears",
+    inputs = [
+      "{\"unionValue\": {\"intValue\": 1}, \"unionValue\": {}}",
+      "{\"unionValue\": {\"intValue\": 1}, \"unionValue\": {\"intValue\": null}}",
+    ],
+    output = json5_test.Example{unionValue = json5_test.ExampleUnion{}},
+  },
+  CompatibilityTestCase{
+    name = "RepeatedUnionFieldOtherMemberReplaces",
+    inputs = [
+      "{\"unionValue\": {\"stringValue\": \"a\"}, \"unionValue\": {\"intValue\": 2}}",
+    ],
+    output = json5_test.Example{
+      unionValue = json5_test.ExampleUnion{intValue = 2},
+    },
+  },
+  CompatibilityTestCase{
+    name = "RepeatedUnionFieldSameMemberReplaces",
+    inputs = [
+      "{\"unionValue\": {\"nestedValue\": {\"nested\": \"a\"}}, \"unionValue\": {\"nestedValue\": {}}}",
+    ],
+    output = json5_test.Example{
+      unionValue = json5_test.ExampleUnion{nestedValue = json5_test.Nested{}},
+    },
+  },
 ];

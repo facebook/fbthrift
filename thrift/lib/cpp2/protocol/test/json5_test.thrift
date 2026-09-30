@@ -32,6 +32,7 @@ struct OutOfOrderFields {
 union ExampleUnion {
   1: i64 intValue;
   2: string stringValue;
+  3: Nested nestedValue;
 }
 
 struct Recursive {
