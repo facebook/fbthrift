@@ -542,8 +542,14 @@ void readStringBody(StrType& str, CursorType& in, size_t size) {
   }
 }
 
-template <typename CursorType>
-void readStringBody(std::string& str, CursorType& in, size_t size) {
+// Preferred over the generic overload above for any string type that can be
+// sized without value-initializing the newly exposed bytes (std::string, and
+// types exposing a resize_without_initialization member).
+template <typename StrType, typename CursorType>
+  requires requires(StrType& s, std::size_t n) {
+    folly::resizeWithoutInitialization(s, n);
+  }
+void readStringBody(StrType& str, CursorType& in, size_t size) {
   // Check if buffer has enough data before allocating memory.
   // This prevents memory exhaustion attacks where a small packet can claim
   // a large string size, causing massive memory allocation.
