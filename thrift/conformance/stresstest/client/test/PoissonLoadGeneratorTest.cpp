@@ -15,6 +15,7 @@
  */
 
 #include <chrono>
+#include <future>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -24,9 +25,8 @@
 
 using namespace apache::thrift;
 using namespace apache::thrift::stress;
-using ::testing::Gt;
-using ::testing::IsTrue;
-using ::testing::Lt;
+using namespace testing;
+using namespace std::chrono_literals;
 
 using Signals = folly::coro::AsyncGenerator<PoissonLoadGenerator::Count>;
 
@@ -79,4 +79,21 @@ TEST(PoissonLoadGeneratorTest, SpreadsArrivalsOverTime) {
   // Measured: 7 to 23 back-to-back arrivals with gaps drawn per request, 149
   // when a bucket is released at once.
   EXPECT_THAT(backToBack, Lt(75));
+}
+
+TEST(PoissonLoadGeneratorTest, StopWakesAWaitingConsumer) {
+  PoissonLoadGenerator generator(0);
+  generator.start();
+
+  std::future<Signals::NextResult> next =
+      std::async(std::launch::async, [&generator]() {
+        Signals signals = generator.getRequestCount();
+        return folly::coro::blockingWait(signals.next());
+      });
+  EXPECT_THAT(next.wait_for(50ms), Eq(std::future_status::timeout));
+
+  generator.stop();
+
+  EXPECT_THAT(next.wait_for(5s), Eq(std::future_status::ready));
+  EXPECT_THAT(next.get().has_value(), IsFalse());
 }

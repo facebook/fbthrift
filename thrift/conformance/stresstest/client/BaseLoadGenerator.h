@@ -31,6 +31,7 @@ class BaseLoadGenerator {
 
   virtual folly::coro::AsyncGenerator<Count> getRequestCount() = 0;
   virtual void start() = 0;
+  virtual void stop() = 0;
 };
 
 } // namespace apache::thrift::stress

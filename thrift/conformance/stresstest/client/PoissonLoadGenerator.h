@@ -47,6 +47,7 @@ class PoissonLoadGenerator : public BaseLoadGenerator {
 
   folly::coro::AsyncGenerator<Count> getRequestCount() override;
   void start() override;
+  void stop() override;
 
  private:
   const double targetQps_;
