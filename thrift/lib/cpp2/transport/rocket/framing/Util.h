@@ -24,6 +24,7 @@
 #include <folly/Memory.h>
 #include <folly/io/Cursor.h>
 
+#include <thrift/lib/cpp2/IOBufChainCursor.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/FrameType.h>
@@ -36,8 +37,10 @@ namespace detail {
 } // namespace detail
 
 StreamId readStreamId(folly::io::Cursor& cursor);
+StreamId readStreamId(io::IOBufChainCursor& cursor);
 
 size_t readFrameOrMetadataSize(folly::io::Cursor& cursor);
+size_t readFrameOrMetadataSize(io::IOBufChainCursor& cursor);
 
 size_t readFrameOrMetadataSize(std::array<uint8_t, 3> bytes);
 
@@ -45,10 +48,14 @@ size_t readFrameOrMetadataSize(const uint8_t* bytes);
 
 std::pair<uint8_t, Flags> readFrameTypeAndFlagsUnsafe(
     folly::io::Cursor& cursor);
+std::pair<uint8_t, Flags> readFrameTypeAndFlagsUnsafe(
+    io::IOBufChainCursor& cursor);
 
 std::pair<FrameType, Flags> readFrameTypeAndFlags(folly::io::Cursor& cursor);
+std::pair<FrameType, Flags> readFrameTypeAndFlags(io::IOBufChainCursor& cursor);
 
 ExtFrameType readExtFrameType(folly::io::Cursor& cursor);
+ExtFrameType readExtFrameType(io::IOBufChainCursor& cursor);
 
 // Has both false positives and false negatives
 bool isMaybeRocketFrame(const folly::IOBuf& data);

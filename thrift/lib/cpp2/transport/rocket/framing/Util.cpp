@@ -31,38 +31,31 @@ namespace detail {
 
 } // namespace detail
 
-StreamId readStreamId(folly::io::Cursor& cursor) {
-  return StreamId{cursor.readBE<StreamId::underlying_type>()};
+namespace {
+
+template <typename Cursor>
+StreamId readStreamIdImpl(Cursor& cursor) {
+  return StreamId{cursor.template readBE<StreamId::underlying_type>()};
 }
 
-size_t readFrameOrMetadataSize(folly::io::Cursor& cursor) {
+template <typename Cursor>
+size_t readFrameOrMetadataSizeImpl(Cursor& cursor) {
   std::array<uint8_t, 3> bytes;
   cursor.pull(bytes.data(), bytes.size());
-
   return readFrameOrMetadataSize(bytes);
 }
 
-// Rsocket frame is 24-bits (3 bytes)
-size_t readFrameOrMetadataSize(std::array<uint8_t, 3> bytes) {
-  return (static_cast<size_t>(bytes[0]) << 16) |
-      (static_cast<size_t>(bytes[1]) << 8) | static_cast<size_t>(bytes[2]);
-}
-
-size_t readFrameOrMetadataSize(const uint8_t* bytes) {
-  return (static_cast<size_t>(bytes[0]) << 16) |
-      (static_cast<size_t>(bytes[1]) << 8) | static_cast<size_t>(bytes[2]);
-}
-
-std::pair<uint8_t, Flags> readFrameTypeAndFlagsUnsafe(
-    folly::io::Cursor& cursor) {
-  const uint16_t frameTypeAndFlags = cursor.readBE<uint16_t>();
+template <typename Cursor>
+std::pair<uint8_t, Flags> readFrameTypeAndFlagsUnsafeImpl(Cursor& cursor) {
+  const uint16_t frameTypeAndFlags = cursor.template readBE<uint16_t>();
   const uint8_t frameType = frameTypeAndFlags >> Flags::kBits;
   const Flags flags(frameTypeAndFlags & Flags::kMask);
   return {frameType, flags};
 }
 
-std::pair<FrameType, Flags> readFrameTypeAndFlags(folly::io::Cursor& cursor) {
-  const auto pair = readFrameTypeAndFlagsUnsafe(cursor);
+template <typename Cursor>
+std::pair<FrameType, Flags> readFrameTypeAndFlagsImpl(Cursor& cursor) {
+  const auto pair = readFrameTypeAndFlagsUnsafeImpl(cursor);
   switch (static_cast<FrameType>(pair.first)) {
     case FrameType::SETUP:
     case FrameType::REQUEST_RESPONSE:
@@ -83,9 +76,66 @@ std::pair<FrameType, Flags> readFrameTypeAndFlags(folly::io::Cursor& cursor) {
   }
 }
 
-ExtFrameType readExtFrameType(folly::io::Cursor& cursor) {
-  cursor.readBE<uint32_t>();
+template <typename Cursor>
+ExtFrameType readExtFrameTypeImpl(Cursor& cursor) {
+  cursor.template readBE<uint32_t>();
   return ExtFrameType::UNKNOWN;
+}
+
+} // namespace
+
+StreamId readStreamId(folly::io::Cursor& cursor) {
+  return readStreamIdImpl(cursor);
+}
+
+StreamId readStreamId(io::IOBufChainCursor& cursor) {
+  return readStreamIdImpl(cursor);
+}
+
+size_t readFrameOrMetadataSize(folly::io::Cursor& cursor) {
+  return readFrameOrMetadataSizeImpl(cursor);
+}
+
+size_t readFrameOrMetadataSize(io::IOBufChainCursor& cursor) {
+  return readFrameOrMetadataSizeImpl(cursor);
+}
+
+// Rsocket frame is 24-bits (3 bytes)
+size_t readFrameOrMetadataSize(std::array<uint8_t, 3> bytes) {
+  return (static_cast<size_t>(bytes[0]) << 16) |
+      (static_cast<size_t>(bytes[1]) << 8) | static_cast<size_t>(bytes[2]);
+}
+
+size_t readFrameOrMetadataSize(const uint8_t* bytes) {
+  return (static_cast<size_t>(bytes[0]) << 16) |
+      (static_cast<size_t>(bytes[1]) << 8) | static_cast<size_t>(bytes[2]);
+}
+
+std::pair<uint8_t, Flags> readFrameTypeAndFlagsUnsafe(
+    folly::io::Cursor& cursor) {
+  return readFrameTypeAndFlagsUnsafeImpl(cursor);
+}
+
+std::pair<uint8_t, Flags> readFrameTypeAndFlagsUnsafe(
+    io::IOBufChainCursor& cursor) {
+  return readFrameTypeAndFlagsUnsafeImpl(cursor);
+}
+
+std::pair<FrameType, Flags> readFrameTypeAndFlags(folly::io::Cursor& cursor) {
+  return readFrameTypeAndFlagsImpl(cursor);
+}
+
+std::pair<FrameType, Flags> readFrameTypeAndFlags(
+    io::IOBufChainCursor& cursor) {
+  return readFrameTypeAndFlagsImpl(cursor);
+}
+
+ExtFrameType readExtFrameType(folly::io::Cursor& cursor) {
+  return readExtFrameTypeImpl(cursor);
+}
+
+ExtFrameType readExtFrameType(io::IOBufChainCursor& cursor) {
+  return readExtFrameTypeImpl(cursor);
 }
 
 // Has both false positives and false negatives

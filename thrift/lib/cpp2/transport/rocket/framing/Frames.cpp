@@ -31,6 +31,8 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 
+#include <thrift/lib/cpp2/IOBufChain.h>
+#include <thrift/lib/cpp2/IOBufChainCursor.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/FrameDataFirstFieldAligner.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/FrameType.h>
@@ -52,16 +54,20 @@ std::unique_ptr<folly::IOBuf> trimBuffer(
   return bufQueue.move();
 }
 
-Payload readPayload(
-    bool expectingMetadata,
-    folly::io::Cursor& cursor,
-    std::unique_ptr<folly::IOBuf> buffer) {
+IOBufChain trimBuffer(IOBufChain buffer, size_t toTrim) {
+  buffer.trimStart(toTrim);
+  return buffer;
+}
+
+template <typename Cursor, typename Buffer>
+Payload readPayload(bool expectingMetadata, Cursor& cursor, Buffer&& buffer) {
   size_t metadataSize = 0;
   if (expectingMetadata) {
     metadataSize = readFrameOrMetadataSize(cursor);
   }
-  buffer = trimBuffer(std::move(buffer), cursor.getCurrentPosition());
-  return Payload::makeCombined(std::move(buffer), metadataSize);
+  return Payload::makeCombined(
+      trimBuffer(std::forward<Buffer>(buffer), cursor.getCurrentPosition()),
+      metadataSize);
 }
 
 template <class Frame>
@@ -702,8 +708,8 @@ FOLLY_NOINLINE void PayloadFrame::serializeInFragmentsSlow(
       writer);
 }
 
-SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> frame) {
-  folly::io::Cursor cursor(frame.get());
+template <typename Cursor>
+void SetupFrame::readFrameFields(Cursor& cursor) {
   const StreamId zero(readStreamId(cursor));
   if (zero != StreamId{0}) {
     throw std::runtime_error(
@@ -715,8 +721,8 @@ SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> frame) {
   FrameType type;
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
 
-  const auto majorVersion = cursor.readBE<uint16_t>();
-  const auto minorVersion = cursor.readBE<uint16_t>();
+  const auto majorVersion = cursor.template readBE<uint16_t>();
+  const auto minorVersion = cursor.template readBE<uint16_t>();
 
   if (majorVersion != 1 || minorVersion != 0) {
     throw std::runtime_error(
@@ -733,13 +739,13 @@ SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> frame) {
   // Resumption is not currently supported, but we handle the resume
   // identification token properly in case remote end sends a token.
   if (hasResumeIdentificationToken()) {
-    const auto tokenLength = cursor.readBE<uint16_t>();
+    const auto tokenLength = cursor.template readBE<uint16_t>();
     cursor.skip(tokenLength);
   }
 
-  const auto metadataMimeLength = cursor.read<uint8_t>();
+  const auto metadataMimeLength = cursor.template read<uint8_t>();
   auto metadataMimeType = cursor.readFixedString(metadataMimeLength);
-  const auto dataMimeLength = cursor.read<uint8_t>();
+  const auto dataMimeLength = cursor.template read<uint8_t>();
   auto dataMimeType = cursor.readFixedString(dataMimeLength);
 
   encodeMetadataUsingBinary_ =
@@ -747,19 +753,42 @@ SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> frame) {
   rocketMimeTypes_ = (metadataMimeType == kRocketMetadataBinaryMimeType ||
                       metadataMimeType == kRocketMetadataCompactMimeType) &&
       (dataMimeType == kRocketPayloadMimeType);
+}
+
+SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
+  readFrameFields(cursor);
 
   payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
 
-RequestResponseFrame::RequestResponseFrame(
-    std::unique_ptr<folly::IOBuf> frame) {
-  folly::io::Cursor cursor(frame.get());
+SetupFrame::SetupFrame(IOBufChain frame) {
+  io::IOBufChainCursor cursor(frame);
+  readFrameFields(cursor);
 
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
+}
+
+template <typename Cursor>
+void RequestResponseFrame::readFrameFields(Cursor& cursor) {
   streamId_ = readStreamId(cursor);
 
   FrameType type;
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
+}
+
+RequestResponseFrame::RequestResponseFrame(
+    std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
+  readFrameFields(cursor);
+
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
+}
+
+RequestResponseFrame::RequestResponseFrame(IOBufChain frame) {
+  io::IOBufChainCursor cursor(frame);
+  readFrameFields(cursor);
 
   payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
@@ -774,14 +803,35 @@ RequestResponseFrame::RequestResponseFrame(
       readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
 }
 
-RequestFnfFrame::RequestFnfFrame(std::unique_ptr<folly::IOBuf> frame) {
-  folly::io::Cursor cursor(frame.get());
+RequestResponseFrame::RequestResponseFrame(
+    StreamId streamId,
+    Flags flags,
+    io::IOBufChainCursor& cursor,
+    IOBufChain&& underlyingBuffer)
+    : streamId_(streamId), flags_(flags) {
+  payload_ =
+      readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
+}
 
+template <typename Cursor>
+void RequestFnfFrame::readFrameFields(Cursor& cursor) {
   streamId_ = readStreamId(cursor);
 
   FrameType type;
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
+}
+
+RequestFnfFrame::RequestFnfFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
+  readFrameFields(cursor);
+
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
+}
+
+RequestFnfFrame::RequestFnfFrame(IOBufChain frame) {
+  io::IOBufChainCursor cursor(frame);
+  readFrameFields(cursor);
 
   payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
@@ -796,16 +846,37 @@ RequestFnfFrame::RequestFnfFrame(
       readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
 }
 
-RequestStreamFrame::RequestStreamFrame(std::unique_ptr<folly::IOBuf> frame) {
-  folly::io::Cursor cursor(frame.get());
+RequestFnfFrame::RequestFnfFrame(
+    StreamId streamId,
+    Flags flags,
+    io::IOBufChainCursor& cursor,
+    IOBufChain&& underlyingBuffer)
+    : streamId_(streamId), flags_(flags) {
+  payload_ =
+      readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
+}
 
+template <typename Cursor>
+void RequestStreamFrame::readFrameFields(Cursor& cursor) {
   streamId_ = readStreamId(cursor);
 
   FrameType type;
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
 
-  initialRequestN_ = cursor.readBE<int32_t>();
+  initialRequestN_ = cursor.template readBE<int32_t>();
+}
+
+RequestStreamFrame::RequestStreamFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
+  readFrameFields(cursor);
+
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
+}
+
+RequestStreamFrame::RequestStreamFrame(IOBufChain frame) {
+  io::IOBufChainCursor cursor(frame);
+  readFrameFields(cursor);
 
   payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
@@ -821,16 +892,38 @@ RequestStreamFrame::RequestStreamFrame(
       readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
 }
 
-RequestChannelFrame::RequestChannelFrame(std::unique_ptr<folly::IOBuf> frame) {
-  folly::io::Cursor cursor(frame.get());
+RequestStreamFrame::RequestStreamFrame(
+    StreamId streamId,
+    Flags flags,
+    io::IOBufChainCursor& cursor,
+    IOBufChain&& underlyingBuffer)
+    : streamId_(streamId), flags_(flags) {
+  initialRequestN_ = cursor.readBE<int32_t>();
+  payload_ =
+      readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
+}
 
+template <typename Cursor>
+void RequestChannelFrame::readFrameFields(Cursor& cursor) {
   streamId_ = readStreamId(cursor);
 
   FrameType type;
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
 
-  initialRequestN_ = cursor.readBE<int32_t>();
+  initialRequestN_ = cursor.template readBE<int32_t>();
+}
+
+RequestChannelFrame::RequestChannelFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
+  readFrameFields(cursor);
+
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
+}
+
+RequestChannelFrame::RequestChannelFrame(IOBufChain frame) {
+  io::IOBufChainCursor cursor(frame);
+  readFrameFields(cursor);
 
   payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
@@ -846,9 +939,19 @@ RequestChannelFrame::RequestChannelFrame(
       readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
 }
 
-RequestNFrame::RequestNFrame(std::unique_ptr<folly::IOBuf> frame) {
-  folly::io::Cursor cursor(frame.get());
+RequestChannelFrame::RequestChannelFrame(
+    StreamId streamId,
+    Flags flags,
+    io::IOBufChainCursor& cursor,
+    IOBufChain&& underlyingBuffer)
+    : streamId_(streamId), flags_(flags) {
+  initialRequestN_ = cursor.readBE<int32_t>();
+  payload_ =
+      readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
+}
 
+template <typename Cursor>
+void RequestNFrame::readFrameFields(Cursor& cursor) {
   streamId_ = readStreamId(cursor);
 
   // RequestN frame has no flags, but we need to skip over the two bytes.
@@ -858,7 +961,18 @@ RequestNFrame::RequestNFrame(std::unique_ptr<folly::IOBuf> frame) {
   DCHECK(frameType() == type);
   DCHECK(Flags() == flags);
 
-  requestN_ = cursor.readBE<int32_t>();
+  requestN_ = cursor.template readBE<int32_t>();
+}
+
+RequestNFrame::RequestNFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
+  readFrameFields(cursor);
+}
+
+RequestNFrame::RequestNFrame(
+    IOBufChain frame) { // NOLINT(performance-unnecessary-value-param)
+  io::IOBufChainCursor cursor(frame);
+  readFrameFields(cursor);
 }
 
 RequestNFrame::RequestNFrame(
@@ -868,9 +982,15 @@ RequestNFrame::RequestNFrame(
   requestN_ = cursor.readBE<int32_t>();
 }
 
-CancelFrame::CancelFrame(std::unique_ptr<folly::IOBuf> frame) {
-  folly::io::Cursor cursor(frame.get());
+RequestNFrame::RequestNFrame(
+    StreamId streamId, Flags flags, io::IOBufChainCursor& cursor)
+    : streamId_(streamId) {
+  DCHECK(Flags() == flags);
+  requestN_ = cursor.readBE<int32_t>();
+}
 
+template <typename Cursor>
+void CancelFrame::readFrameFields(Cursor& cursor) {
   streamId_ = readStreamId(cursor);
 
   // Cancel frame has no flags.
@@ -881,14 +1001,36 @@ CancelFrame::CancelFrame(std::unique_ptr<folly::IOBuf> frame) {
   DCHECK(Flags() == flags);
 }
 
-PayloadFrame::PayloadFrame(std::unique_ptr<folly::IOBuf> frame) {
+CancelFrame::CancelFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());
+  readFrameFields(cursor);
+}
 
+CancelFrame::CancelFrame(
+    IOBufChain frame) { // NOLINT(performance-unnecessary-value-param)
+  io::IOBufChainCursor cursor(frame);
+  readFrameFields(cursor);
+}
+
+template <typename Cursor>
+void PayloadFrame::readFrameFields(Cursor& cursor) {
   streamId_ = readStreamId(cursor);
 
   FrameType type;
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
+}
+
+PayloadFrame::PayloadFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
+  readFrameFields(cursor);
+
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
+}
+
+PayloadFrame::PayloadFrame(IOBufChain frame) {
+  io::IOBufChainCursor cursor(frame);
+  readFrameFields(cursor);
 
   payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
@@ -903,10 +1045,18 @@ PayloadFrame::PayloadFrame(
       payload_(readPayload(
           flags_.metadata(), cursor, std::move(underlyingBuffer))) {}
 
-ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> frame) {
-  folly::io::Cursor cursor(frame.get());
-  DCHECK_GE(frame->computeChainDataLength(), frameHeaderSize());
+PayloadFrame::PayloadFrame(
+    StreamId streamId,
+    Flags flags,
+    io::IOBufChainCursor& cursor,
+    IOBufChain&& underlyingBuffer)
+    : streamId_(streamId),
+      flags_(flags),
+      payload_(readPayload(
+          flags_.metadata(), cursor, std::move(underlyingBuffer))) {}
 
+template <typename Cursor>
+void ErrorFrame::readFrameFields(Cursor& cursor) {
   streamId_ = readStreamId(cursor);
 
   // Error frame has no flags, but we still need to skip the two bytes.
@@ -916,17 +1066,30 @@ ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> frame) {
   DCHECK(frameType() == type);
   DCHECK(Flags() == flags);
 
-  errorCode_ = static_cast<ErrorCode>(cursor.readBE<uint32_t>());
+  errorCode_ = static_cast<ErrorCode>(cursor.template readBE<uint32_t>());
+}
+
+ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
+  DCHECK_GE(frame->computeChainDataLength(), frameHeaderSize());
+  readFrameFields(cursor);
 
   // Finally, adjust the data portion of frame.
   frame = trimBuffer(std::move(frame), frameHeaderSize());
   payload_ = Payload::makeFromData(std::move(frame));
 }
 
-MetadataPushFrame::MetadataPushFrame(std::unique_ptr<folly::IOBuf> frame) {
-  DCHECK_GE(frame->computeChainDataLength(), frameHeaderSize());
+ErrorFrame::ErrorFrame(IOBufChain frame) {
+  io::IOBufChainCursor cursor(frame);
+  DCHECK_GE(frame.chainLength(), frameHeaderSize());
+  readFrameFields(cursor);
 
-  folly::io::Cursor cursor(frame.get());
+  frame = trimBuffer(std::move(frame), frameHeaderSize());
+  payload_ = Payload::makeFromData(std::move(frame).moveToIOBuf());
+}
+
+template <typename Cursor>
+void MetadataPushFrame::readFrameFields(Cursor& cursor) {
   const StreamId zero(readStreamId(cursor));
   DCHECK_EQ(StreamId{0}, zero);
 
@@ -936,15 +1099,30 @@ MetadataPushFrame::MetadataPushFrame(std::unique_ptr<folly::IOBuf> frame) {
   std::tie(type, flags) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
   DCHECK(flags.metadata());
+}
+
+MetadataPushFrame::MetadataPushFrame(std::unique_ptr<folly::IOBuf> frame) {
+  DCHECK_GE(frame->computeChainDataLength(), frameHeaderSize());
+
+  folly::io::Cursor cursor(frame.get());
+  readFrameFields(cursor);
 
   frame = trimBuffer(std::move(frame), frameHeaderSize());
   metadata_ = std::move(frame);
 }
 
-KeepAliveFrame::KeepAliveFrame(std::unique_ptr<folly::IOBuf> frame) {
-  DCHECK_GE(frame->computeChainDataLength(), frameHeaderSize());
+MetadataPushFrame::MetadataPushFrame(IOBufChain frame) {
+  DCHECK_GE(frame.chainLength(), frameHeaderSize());
 
-  folly::io::Cursor cursor(frame.get());
+  io::IOBufChainCursor cursor(frame);
+  readFrameFields(cursor);
+
+  frame = trimBuffer(std::move(frame), frameHeaderSize());
+  metadata_ = std::move(frame).moveToIOBuf();
+}
+
+template <typename Cursor>
+void KeepAliveFrame::readFrameFields(Cursor& cursor) {
   const StreamId zero(readStreamId(cursor));
   DCHECK_EQ(StreamId{0}, zero);
   streamId_ = zero;
@@ -954,14 +1132,30 @@ KeepAliveFrame::KeepAliveFrame(std::unique_ptr<folly::IOBuf> frame) {
   DCHECK(frameType() == type);
 
   cursor.skip(sizeof(uint64_t)); // Skip 'last received position'
+}
+
+KeepAliveFrame::KeepAliveFrame(std::unique_ptr<folly::IOBuf> frame) {
+  DCHECK_GE(frame->computeChainDataLength(), frameHeaderSize());
+
+  folly::io::Cursor cursor(frame.get());
+  readFrameFields(cursor);
 
   frame = trimBuffer(std::move(frame), cursor.getCurrentPosition());
   data_ = std::move(frame);
 }
 
-ExtFrame::ExtFrame(std::unique_ptr<folly::IOBuf> frame) {
-  folly::io::Cursor cursor(frame.get());
+KeepAliveFrame::KeepAliveFrame(IOBufChain frame) {
+  DCHECK_GE(frame.chainLength(), frameHeaderSize());
 
+  io::IOBufChainCursor cursor(frame);
+  readFrameFields(cursor);
+
+  frame = trimBuffer(std::move(frame), cursor.getCurrentPosition());
+  data_ = std::move(frame).moveToIOBuf();
+}
+
+template <typename Cursor>
+void ExtFrame::readFrameFields(Cursor& cursor) {
   streamId_ = readStreamId(cursor);
 
   FrameType type;
@@ -969,6 +1163,18 @@ ExtFrame::ExtFrame(std::unique_ptr<folly::IOBuf> frame) {
   DCHECK(frameType() == type);
 
   extFrameType_ = readExtFrameType(cursor);
+}
+
+ExtFrame::ExtFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
+  readFrameFields(cursor);
+
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
+}
+
+ExtFrame::ExtFrame(IOBufChain frame) {
+  io::IOBufChainCursor cursor(frame);
+  readFrameFields(cursor);
 
   payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
@@ -978,6 +1184,18 @@ ExtFrame::ExtFrame(
     Flags flags,
     folly::io::Cursor& cursor,
     std::unique_ptr<folly::IOBuf> underlyingBuffer)
+    : streamId_(streamId), flags_(flags) {
+  extFrameType_ = readExtFrameType(cursor);
+
+  payload_ =
+      readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
+}
+
+ExtFrame::ExtFrame(
+    StreamId streamId,
+    Flags flags,
+    io::IOBufChainCursor& cursor,
+    IOBufChain&& underlyingBuffer)
     : streamId_(streamId), flags_(flags) {
   extFrameType_ = readExtFrameType(cursor);
 

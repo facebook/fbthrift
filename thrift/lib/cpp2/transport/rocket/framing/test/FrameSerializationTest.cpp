@@ -15,6 +15,7 @@
  */
 
 #include <algorithm>
+#include <cstring>
 #include <utility>
 
 #include <gtest/gtest.h>
@@ -24,6 +25,8 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 
+#include <thrift/lib/cpp2/IOBufChain.h>
+#include <thrift/lib/cpp2/IOBufChainCursor.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
@@ -56,6 +59,23 @@ Frame serializeAndDeserialize(Frame frame) {
   // Skip past frame length
   serializedFrameData->trimStart(Serializer::kBytesForFrameOrMetadataLength);
   return Frame(std::move(serializedFrameData));
+}
+
+template <class Frame>
+Frame serializeAndDeserializeAsChain(Frame frame) {
+  auto serializedFrameData = serialize(std::move(frame));
+  serializedFrameData->trimStart(Serializer::kBytesForFrameOrMetadataLength);
+  const auto bytes = serializedFrameData->coalesce();
+  apache::thrift::IOBufChain chain;
+  size_t offset = 0;
+  size_t chunkSize = 1;
+  while (offset < bytes.size()) {
+    const auto length = std::min(chunkSize, bytes.size() - offset);
+    chain.append(folly::IOBuf::copyBuffer(bytes.data() + offset, length));
+    offset += length;
+    chunkSize = chunkSize % 5 + 1;
+  }
+  return Frame(std::move(chain));
 }
 
 template <class Frame>
@@ -106,6 +126,14 @@ void validateMetadataAndData(const Payload& p) {
   EXPECT_EQ(kMetadata, getRange(*dataAndMetadata.first));
   EXPECT_EQ(kData, getRange(*dataAndMetadata.second));
 }
+
+void validateChainMetadataAndData(const Payload& payload) {
+  ASSERT_TRUE(payload.usesIOBufChain());
+  apache::thrift::io::IOBufChainCursor cursor(payload.chainBuffer());
+  EXPECT_EQ(kMetadata, cursor.readFixedString(kMetadata.size()));
+  EXPECT_EQ(kData, cursor.readFixedString(kData.size()));
+  EXPECT_TRUE(cursor.isAtEnd());
+}
 } // namespace
 
 namespace apache::thrift::rocket {
@@ -136,6 +164,100 @@ TEST(FrameSerialization, RequestResponseSanity) {
 
   validate(frame);
   validate(serializeAndDeserialize(std::move(frame)));
+}
+
+TEST(FrameSerialization, ChainBackedPayloadFrames) {
+  {
+    auto frame = serializeAndDeserializeAsChain(
+        SetupFrame(Payload::makeFromMetadataAndData(kMetadata, kData), false));
+    EXPECT_TRUE(frame.rocketMimeTypes());
+    validateChainMetadataAndData(frame.payload());
+  }
+  {
+    auto frame = serializeAndDeserializeAsChain(RequestResponseFrame(
+        kTestStreamId, Payload::makeFromMetadataAndData(kMetadata, kData)));
+    EXPECT_EQ(kTestStreamId, frame.streamId());
+    validateChainMetadataAndData(frame.payload());
+  }
+  {
+    auto frame = serializeAndDeserializeAsChain(RequestFnfFrame(
+        kTestStreamId, Payload::makeFromMetadataAndData(kMetadata, kData)));
+    EXPECT_EQ(kTestStreamId, frame.streamId());
+    validateChainMetadataAndData(frame.payload());
+  }
+  {
+    auto frame = serializeAndDeserializeAsChain(RequestStreamFrame(
+        kTestStreamId, Payload::makeFromMetadataAndData(kMetadata, kData), 7));
+    EXPECT_EQ(7, frame.initialRequestN());
+    validateChainMetadataAndData(frame.payload());
+  }
+  {
+    auto frame = serializeAndDeserializeAsChain(RequestChannelFrame(
+        kTestStreamId, Payload::makeFromMetadataAndData(kMetadata, kData), 9));
+    EXPECT_EQ(9, frame.initialRequestN());
+    validateChainMetadataAndData(frame.payload());
+  }
+  {
+    auto frame =
+        serializeAndDeserializeAsChain(RequestNFrame(kTestStreamId, 5));
+    EXPECT_EQ(kTestStreamId, frame.streamId());
+    EXPECT_EQ(5, frame.requestN());
+  }
+  {
+    auto frame = serializeAndDeserializeAsChain(CancelFrame(kTestStreamId));
+    EXPECT_EQ(kTestStreamId, frame.streamId());
+  }
+  {
+    auto frame = serializeAndDeserializeAsChain(PayloadFrame(
+        kTestStreamId,
+        Payload::makeFromMetadataAndData(kMetadata, kData),
+        Flags().complete(true).next(true)));
+    EXPECT_TRUE(frame.hasComplete());
+    EXPECT_TRUE(frame.hasNext());
+    validateChainMetadataAndData(frame.payload());
+  }
+  {
+    auto frame = serializeAndDeserializeAsChain(ErrorFrame(
+        kTestStreamId, ErrorCode::CANCELED, Payload::makeFromData(kData)));
+    EXPECT_EQ(ErrorCode::CANCELED, frame.errorCode());
+    ASSERT_NE(nullptr, frame.payload().buffer());
+    EXPECT_EQ(kData, getRange(*frame.payload().buffer()));
+  }
+  {
+    auto frame = serializeAndDeserializeAsChain(
+        MetadataPushFrame::makeFromMetadata(folly::IOBuf::copyBuffer(kData)));
+    EXPECT_EQ(kData, getRange(*std::move(frame).metadata()));
+  }
+  {
+    auto frame = serializeAndDeserializeAsChain(
+        KeepAliveFrame(Flags().respond(true), folly::IOBuf::copyBuffer(kData)));
+    EXPECT_TRUE(frame.hasRespondFlag());
+    EXPECT_EQ(kData, getRange(*std::move(frame).data()));
+  }
+  {
+    auto frame = serializeAndDeserializeAsChain(ExtFrame(
+        kTestStreamId,
+        Payload::makeFromMetadataAndData(kMetadata, kData),
+        Flags().ignore(true),
+        ExtFrameType::UNKNOWN));
+    EXPECT_TRUE(frame.hasIgnore());
+    validateChainMetadataAndData(frame.payload());
+  }
+}
+
+TEST(FrameSerialization, RequestResponseFromChainCursor) {
+  auto serialized = serialize(RequestResponseFrame(
+      kTestStreamId, Payload::makeFromMetadataAndData(kMetadata, kData)));
+  serialized->trimStart(Serializer::kBytesForFrameOrMetadataLength);
+  IOBufChain chain(std::move(serialized));
+  io::IOBufChainCursor cursor(chain);
+  const auto streamId = readStreamId(cursor);
+  const auto [frameType, flags] = readFrameTypeAndFlags(cursor);
+
+  EXPECT_EQ(FrameType::REQUEST_RESPONSE, frameType);
+  RequestResponseFrame frame(streamId, flags, cursor, std::move(chain));
+  EXPECT_EQ(kTestStreamId, frame.streamId());
+  validateChainMetadataAndData(frame.payload());
 }
 
 TEST(FrameSerialization, RequestResponseNoHeadroomWriteForSharedBuf) {
@@ -252,6 +374,39 @@ TEST(FrameSerialization, PayloadSanity) {
 
   validate(frame);
   validate(serializeAndDeserialize(std::move(frame)));
+}
+
+TEST(FrameSerialization, ChainPayloadFinalizationPreservesAdjacentBuffers) {
+  const std::string storage{"abcdefgh"};
+  IOBufChain first;
+  first.append(folly::IOBuf::wrapBuffer(storage.data(), 4));
+  IOBufChain second;
+  second.append(folly::IOBuf::wrapBuffer(storage.data() + 4, 4));
+
+  auto payload = Payload::makeCombined(std::move(first), 0);
+  payload.append(Payload::makeCombined(std::move(second), 0));
+
+  EXPECT_EQ(2, payload.chainBuffer().chainElements());
+  auto data = std::move(payload).chainData();
+  EXPECT_EQ(2, data.chainElements());
+  io::IOBufChainCursor cursor(data);
+  EXPECT_EQ(storage, cursor.readFixedString(storage.size()));
+}
+
+TEST(FrameSerialization, ChainPayloadFinalizationPreservesGaps) {
+  const std::string storage{"abcdefghi"};
+  IOBufChain first;
+  first.append(folly::IOBuf::wrapBuffer(storage.data(), 4));
+  IOBufChain second;
+  second.append(folly::IOBuf::wrapBuffer(storage.data() + 5, 4));
+
+  auto payload = Payload::makeCombined(std::move(first), 0);
+  payload.append(Payload::makeCombined(std::move(second), 0));
+
+  auto data = std::move(payload).chainData();
+  EXPECT_EQ(2, data.chainElements());
+  io::IOBufChainCursor cursor(data);
+  EXPECT_EQ("abcdfghi", cursor.readFixedString(data.chainLength()));
 }
 
 TEST(FrameSerialization, PayloadEmptyMetadataSanity) {

@@ -18,6 +18,7 @@
 
 #include <folly/SingletonThreadLocal.h>
 #include <folly/Traits.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/FrameType.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 
@@ -85,6 +86,9 @@ struct FrameTraitsImpl {
     return serialize(std::get<Frame>(u));
   }
   static Framing deserialize(std::unique_ptr<folly::IOBuf> frame) {
+    return Framing(std::move(frame));
+  }
+  static Framing deserialize(IOBufChain frame) {
     return Framing(std::move(frame));
   }
 };

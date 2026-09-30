@@ -25,6 +25,8 @@
 #include <folly/lang/Exception.h>
 
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
+#include <thrift/lib/cpp2/IOBufChainCursor.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
@@ -41,6 +43,7 @@ class Serializer;
 class SetupFrame {
  public:
   explicit SetupFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit SetupFrame(IOBufChain frame);
 
   explicit SetupFrame(Payload&& payload, bool encodeMetadataUsingBinary)
       : payload_(std::move(payload)),
@@ -89,23 +92,32 @@ class SetupFrame {
   static constexpr std::string_view kRocketPayloadMimeType{
       "application/x-rocket-payload"};
 
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   // Resume ID token and Lease flags are not currently supported/used.
   Flags flags_;
   std::string resumeIdentificationToken_;
   Payload payload_;
-  bool rocketMimeTypes_;
-  bool encodeMetadataUsingBinary_;
+  bool rocketMimeTypes_{};
+  bool encodeMetadataUsingBinary_{};
 };
 
 class RequestResponseFrame {
  public:
   explicit RequestResponseFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit RequestResponseFrame(IOBufChain frame);
 
   RequestResponseFrame(
       StreamId streamId,
       Flags flags,
       folly::io::Cursor& cursor,
       std::unique_ptr<folly::IOBuf> underlyingBuffer);
+  RequestResponseFrame(
+      StreamId streamId,
+      Flags flags,
+      io::IOBufChainCursor& cursor,
+      IOBufChain&& underlyingBuffer);
 
   RequestResponseFrame(StreamId streamId, Payload&& payload)
       : streamId_(streamId), payload_(std::move(payload)) {}
@@ -131,6 +143,9 @@ class RequestResponseFrame {
   void serialize(Serializer& writer) &&;
 
  private:
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   StreamId streamId_;
   Flags flags_;
   Payload payload_;
@@ -142,12 +157,18 @@ class RequestResponseFrame {
 class RequestFnfFrame {
  public:
   explicit RequestFnfFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit RequestFnfFrame(IOBufChain frame);
 
   RequestFnfFrame(
       StreamId streamId,
       Flags flags,
       folly::io::Cursor& cursor,
       std::unique_ptr<folly::IOBuf> underlyingBuffer);
+  RequestFnfFrame(
+      StreamId streamId,
+      Flags flags,
+      io::IOBufChainCursor& cursor,
+      IOBufChain&& underlyingBuffer);
 
   RequestFnfFrame(StreamId streamId, Payload&& payload)
       : streamId_(streamId), payload_(std::move(payload)) {}
@@ -173,6 +194,9 @@ class RequestFnfFrame {
   void serialize(Serializer& writer) &&;
 
  private:
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   StreamId streamId_;
   Flags flags_;
   Payload payload_;
@@ -184,12 +208,18 @@ class RequestFnfFrame {
 class RequestStreamFrame {
  public:
   explicit RequestStreamFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit RequestStreamFrame(IOBufChain frame);
 
   RequestStreamFrame(
       StreamId streamId,
       Flags flags,
       folly::io::Cursor& cursor,
       std::unique_ptr<folly::IOBuf> underlyingBuffer);
+  RequestStreamFrame(
+      StreamId streamId,
+      Flags flags,
+      io::IOBufChainCursor& cursor,
+      IOBufChain&& underlyingBuffer);
 
   RequestStreamFrame(
       StreamId streamId, Payload&& payload, int32_t initialRequestN)
@@ -225,8 +255,11 @@ class RequestStreamFrame {
   void serialize(Serializer& writer) &&;
 
  private:
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   StreamId streamId_;
-  int32_t initialRequestN_;
+  int32_t initialRequestN_{};
   Flags flags_;
   Payload payload_;
 
@@ -237,12 +270,18 @@ class RequestStreamFrame {
 class RequestChannelFrame {
  public:
   explicit RequestChannelFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit RequestChannelFrame(IOBufChain frame);
 
   RequestChannelFrame(
       StreamId streamId,
       Flags flags,
       folly::io::Cursor& cursor,
       std::unique_ptr<folly::IOBuf> underlyingBuffer);
+  RequestChannelFrame(
+      StreamId streamId,
+      Flags flags,
+      io::IOBufChainCursor& cursor,
+      IOBufChain&& underlyingBuffer);
 
   RequestChannelFrame(
       StreamId streamId, Payload&& payload, int32_t initialRequestN)
@@ -285,8 +324,11 @@ class RequestChannelFrame {
   void serialize(Serializer& writer) &&;
 
  private:
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   StreamId streamId_;
-  int32_t initialRequestN_;
+  int32_t initialRequestN_{};
   Flags flags_;
   Payload payload_;
 
@@ -297,8 +339,11 @@ class RequestChannelFrame {
 class RequestNFrame {
  public:
   explicit RequestNFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit RequestNFrame(
+      IOBufChain frame); // NOLINT(performance-unnecessary-value-param)
 
   RequestNFrame(StreamId streamId, Flags flags, folly::io::Cursor& cursor);
+  RequestNFrame(StreamId streamId, Flags flags, io::IOBufChainCursor& cursor);
 
   RequestNFrame(StreamId streamId, int32_t n)
       : streamId_(streamId), requestN_(n) {
@@ -320,13 +365,18 @@ class RequestNFrame {
   void serialize(Serializer& writer) &&;
 
  private:
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   StreamId streamId_;
-  int32_t requestN_;
+  int32_t requestN_{};
 };
 
 class CancelFrame {
  public:
   explicit CancelFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit CancelFrame(
+      IOBufChain frame); // NOLINT(performance-unnecessary-value-param)
 
   explicit CancelFrame(StreamId streamId) : streamId_(streamId) {}
 
@@ -341,18 +391,27 @@ class CancelFrame {
   void serialize(Serializer& writer) &&;
 
  private:
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   StreamId streamId_;
 };
 
 class PayloadFrame {
  public:
   explicit PayloadFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit PayloadFrame(IOBufChain frame);
 
   PayloadFrame(
       StreamId streamId,
       Flags flags,
       folly::io::Cursor& cursor,
       std::unique_ptr<folly::IOBuf> underlyingBuffer);
+  PayloadFrame(
+      StreamId streamId,
+      Flags flags,
+      io::IOBufChainCursor& cursor,
+      IOBufChain&& underlyingBuffer);
 
   PayloadFrame(StreamId streamId, Payload&& payload, Flags flags)
       : streamId_(streamId), flags_(flags), payload_(std::move(payload)) {}
@@ -383,6 +442,9 @@ class PayloadFrame {
   void serialize(Serializer& writer) &&;
 
  private:
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   StreamId streamId_;
   Flags flags_;
   Payload payload_;
@@ -395,6 +457,7 @@ class PayloadFrame {
 class ErrorFrame {
  public:
   explicit ErrorFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit ErrorFrame(IOBufChain frame);
 
   ErrorFrame(StreamId streamId, ErrorCode errorCode, Payload&& payload)
       : streamId_(streamId),
@@ -423,14 +486,18 @@ class ErrorFrame {
   void serialize(Serializer& writer) &&;
 
  private:
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   StreamId streamId_;
-  ErrorCode errorCode_;
+  ErrorCode errorCode_{};
   Payload payload_;
 };
 
 class MetadataPushFrame {
  public:
   explicit MetadataPushFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit MetadataPushFrame(IOBufChain frame);
   static MetadataPushFrame makeFromMetadata(
       std::unique_ptr<folly::IOBuf> metadata) {
     return MetadataPushFrame(std::move(metadata), FromMetadata{});
@@ -451,6 +518,9 @@ class MetadataPushFrame {
       folly::IOBufFactory* ioBufFactory = nullptr) &&;
 
  private:
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   struct FromMetadata {};
   MetadataPushFrame(std::unique_ptr<folly::IOBuf> metadata, FromMetadata)
       : metadata_(std::move(metadata)) {}
@@ -460,6 +530,7 @@ class MetadataPushFrame {
 class KeepAliveFrame {
  public:
   explicit KeepAliveFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit KeepAliveFrame(IOBufChain frame);
   KeepAliveFrame(Flags flags, std::unique_ptr<folly::IOBuf> data)
       : flags_(flags), data_(std::move(data)) {}
 
@@ -478,6 +549,9 @@ class KeepAliveFrame {
   StreamId streamId() const noexcept { return streamId_; }
 
  private:
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   StreamId streamId_{0};
   Flags flags_;
   std::unique_ptr<folly::IOBuf> data_;
@@ -486,11 +560,17 @@ class KeepAliveFrame {
 class ExtFrame {
  public:
   explicit ExtFrame(std::unique_ptr<folly::IOBuf> frame);
+  explicit ExtFrame(IOBufChain frame);
   ExtFrame(
       StreamId streamId,
       Flags flags,
       folly::io::Cursor& cursor,
       std::unique_ptr<folly::IOBuf> underlyingBuffer);
+  ExtFrame(
+      StreamId streamId,
+      Flags flags,
+      io::IOBufChainCursor& cursor,
+      IOBufChain&& underlyingBuffer);
   ExtFrame(
       StreamId streamId,
       Payload&& payload,
@@ -523,9 +603,12 @@ class ExtFrame {
       folly::IOBufFactory* ioBufFactory = nullptr) &&;
 
  private:
+  template <typename Cursor>
+  void readFrameFields(Cursor& cursor);
+
   StreamId streamId_;
   Flags flags_;
-  ExtFrameType extFrameType_;
+  ExtFrameType extFrameType_{};
   Payload payload_;
 };
 
