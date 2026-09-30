@@ -20,11 +20,14 @@ namespace cpp2 apache.thrift.test
 
 include "thrift/annotation/cpp.thrift"
 
+cpp_include "folly/Utility.h"
+cpp_include "folly/container/F14Map.h"
 cpp_include "folly/container/small_vector.h"
 cpp_include "folly/container/sorted_vector_types.h"
 cpp_include "thrift/lib/cpp2/SizedContainer.h"
 cpp_include "functional"
 cpp_include "map"
+cpp_include "string_view"
 
 @cpp.Type{
   template = "::apache::thrift::SizedContainer<::folly::small_vector, 3>::type",
@@ -45,3 +48,8 @@ typedef map<string, i32> TransparentLessMap
   template = "::apache::thrift::ComparedContainer<::std::map, ::std::greater<std::string>>::type",
 }
 typedef map<string, i32> GreaterMap
+
+@cpp.Type{
+  template = "::apache::thrift::ComparedContainer<::folly::F14FastMap, ::folly::transparent<::folly::hasher<::std::string_view>>, ::folly::transparent<::std::equal_to<::std::string_view>>>::type",
+}
+typedef map<string, i32> TransparentHashMap

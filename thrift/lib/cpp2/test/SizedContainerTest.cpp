@@ -18,8 +18,11 @@
 #include <functional>
 #include <map>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <gtest/gtest.h>
+#include <folly/Utility.h>
+#include <folly/container/F14Map.h>
 #include <folly/container/small_vector.h>
 #include <folly/container/sorted_vector_types.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/SizedContainerTest_types.h>
@@ -42,6 +45,13 @@ TEST(SizedContainerTest, CurriesContainerComparator) {
   static_assert(std::is_same_v<
                 test::GreaterMap,
                 std::map<std::string, int32_t, std::greater<std::string>>>);
+  static_assert(std::is_same_v<
+                test::TransparentHashMap,
+                folly::F14FastMap<
+                    std::string,
+                    int32_t,
+                    folly::transparent<folly::hasher<std::string_view>>,
+                    folly::transparent<std::equal_to<std::string_view>>>>);
 }
 
 } // namespace
