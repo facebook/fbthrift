@@ -319,6 +319,26 @@ std::unique_ptr<ServiceDescriptor> loadFixtureService(std::string_view name) {
       "Fixture service not found: " + std::string(name));
 }
 
+std::unique_ptr<ServiceDescriptor> makePerformedInteractionDescriptor() {
+  ServiceDescriptorBuilder builder(
+      makeTypeSystem(),
+      "SessionService",
+      "facebook.com/thrift/service_catalog_digest_test/SessionService");
+  builder.addFunction("openSession")
+      .setCreatedInteractionUri(
+          "facebook.com/thrift/service_catalog_digest_test/Session");
+  builder.addFunction("createSession")
+      .setCreatedInteractionUri(
+          "facebook.com/thrift/service_catalog_digest_test/Session")
+      .setIsPerforms(true);
+  builder
+      .addInteraction(
+          "Session", "facebook.com/thrift/service_catalog_digest_test/Session")
+      .addFunction("get")
+      .setResponseType(type_system::TypeSystem::I32());
+  return builder.build();
+}
+
 const ServiceDescriptor& requireDescriptor(
     const std::unique_ptr<ServiceDescriptor>& descriptor) {
   return *CHECK_NOTNULL(descriptor.get());
@@ -354,6 +374,31 @@ void expectGoldenDigest(
 
 TEST(ServiceCatalogDigestTest, VersionConstantExists) {
   EXPECT_EQ(kServiceCatalogDigestVersion, 2);
+}
+
+TEST(ServiceCatalogDigestTest, DistinguishesInteractionConstructorFromFactory) {
+  auto makeService = [](bool isPerforms) {
+    ServiceDescriptorBuilder builder(
+        makeTypeSystem(),
+        "Calculator",
+        "facebook.com/thrift/service_catalog_digest_test/Calculator");
+    builder.addFunction("createCalculatorSession")
+        .setCreatedInteractionUri(
+            "facebook.com/thrift/service_catalog_digest_test/CalculatorSession")
+        .setIsPerforms(isPerforms);
+    builder.addInteraction(
+        "CalculatorSession",
+        "facebook.com/thrift/service_catalog_digest_test/CalculatorSession");
+    return builder.build();
+  };
+
+  EXPECT_NE(
+      ServiceCatalogHasher{}(
+          *makeService(true),
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"),
+      ServiceCatalogHasher{}(
+          *makeService(false),
+          "facebook.com/thrift/service_catalog_digest_test/Calculator"));
 }
 
 TEST(ServiceCatalogDigestTest, ToSerializableSetsTypeDigest) {
@@ -445,6 +490,55 @@ TEST(ServiceCatalogDigestTest, GoldenRichDescriptorDigestFromSchema) {
       "facebook.com/thrift/service_catalog_digest_test/CatalogGolden",
       requireExpectedDigest(expected::DIGEST_RICH_DESCRIPTOR_STRUCTURAL()),
       type_system::DigestMode::Structural);
+}
+
+TEST(ServiceCatalogDigestTest, GoldenPerformedInteractionDigest) {
+  auto service = makePerformedInteractionDescriptor();
+  expectGoldenDigest(
+      requireDescriptor(service),
+      "facebook.com/thrift/service_catalog_digest_test/SessionService",
+      requireExpectedDigest(expected::DIGEST_PERFORMED_INTERACTION()));
+}
+
+TEST(ServiceCatalogDigestTest, GoldenPerformedInteractionDigestFromSchema) {
+  auto service = loadFixtureService("SessionService");
+  expectGoldenDigest(
+      requireDescriptor(service),
+      "facebook.com/thrift/service_catalog_digest_test/SessionService",
+      requireExpectedDigest(expected::DIGEST_PERFORMED_INTERACTION()));
+}
+
+TEST(
+    ServiceCatalogDigestTest, RebuiltInteractionConstructorsDigestLikeCatalog) {
+  ServiceDescriptorBuilder builder(
+      makeTypeSystem(),
+      "SessionService",
+      "facebook.com/thrift/service_catalog_digest_test/SessionService");
+  builder.addFunction("createFirst")
+      .setCreatedInteractionUri(
+          "facebook.com/thrift/service_catalog_digest_test/First")
+      .setIsPerforms(true);
+  builder.addFunction("createSecond")
+      .setCreatedInteractionUri(
+          "facebook.com/thrift/service_catalog_digest_test/Second")
+      .setIsPerforms(true);
+  builder.addInteraction(
+      "First", "facebook.com/thrift/service_catalog_digest_test/First");
+  builder.addInteraction(
+      "Second", "facebook.com/thrift/service_catalog_digest_test/Second");
+  auto catalog = toSerializable(
+      *builder.build(),
+      "facebook.com/thrift/service_catalog_digest_test/SessionService");
+
+  auto rebuilt = fromSerializable(
+      catalog,
+      "facebook.com/thrift/service_catalog_digest_test/SessionService");
+
+  EXPECT_EQ(
+      ServiceCatalogHasher{}(
+          *rebuilt,
+          "facebook.com/thrift/service_catalog_digest_test/SessionService"),
+      ServiceCatalogHasher{}(catalog));
 }
 
 TEST(ServiceCatalogDigestTest, InlineAndOutOfBandTypesMatch) {

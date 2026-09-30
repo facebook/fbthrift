@@ -18,6 +18,11 @@
 #include <thrift/lib/cpp2/dynamic/ServiceDescriptorSerialization.h>
 #include <thrift/lib/cpp2/dynamic/SyntaxGraphServiceDescriptor.h>
 
+#include <algorithm>
+#include <optional>
+#include <set>
+#include <string>
+
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/dynamic/test/gen-cpp2/ServiceDescriptorTestService.h>
 
@@ -201,6 +206,59 @@ TEST_F(ServiceDescriptorSerializationTest, MissingInteractionDefinitionThrows) {
   auto catalog = builder.build();
   EXPECT_THROW(
       toSerializable(*catalog, "test.com/TestService"), std::invalid_argument);
+}
+
+TEST_F(ServiceDescriptorSerializationTest, PerformsRoundTrip) {
+  ServiceDescriptorBuilder builder(
+      typeSystem_, "TestService", "test.com/TestService");
+  builder.addFunction("makeInteraction")
+      .setCreatedInteractionUri("test.com/TestInteraction");
+  builder.addFunction("createTestInteraction")
+      .setCreatedInteractionUri("test.com/TestInteraction")
+      .setIsPerforms(true);
+  builder.addInteraction("TestInteraction", "test.com/TestInteraction")
+      .addFunction("getValue")
+      .setResponseType(type_system::TypeSystem::I32());
+
+  auto serialized = toSerializable(*builder.build(), "test.com/TestService");
+  const auto& serviceDef =
+      *serialized.interfaces()->at("test.com/TestService").serviceDef_ref();
+  ASSERT_EQ(serviceDef.functions()->size(), 1);
+  EXPECT_EQ(*serviceDef.functions()->at(0).name(), "makeInteraction");
+  EXPECT_EQ(
+      *serviceDef.performedInteractions(),
+      std::set<std::string>{"test.com/TestInteraction"});
+
+  auto deserialized =
+      fromSerializable(std::move(serialized), "test.com/TestService");
+  EXPECT_FALSE(deserialized->getFunctionByName("makeInteraction").isPerforms);
+  const auto functions = deserialized->functions();
+  const auto constructor =
+      std::find_if(functions.begin(), functions.end(), [](const auto& fn) {
+        return fn.isPerforms;
+      });
+  ASSERT_NE(constructor, functions.end());
+  EXPECT_EQ(constructor->name, "");
+  EXPECT_EQ(constructor->uri, "");
+  EXPECT_EQ(
+      constructor->createdInteractionUri,
+      std::optional<std::string>{"test.com/TestInteraction"});
+  EXPECT_TRUE(constructor->params.empty());
+  EXPECT_FALSE(constructor->responseType.has_value());
+}
+
+TEST_F(ServiceDescriptorSerializationTest, PerformsUnknownInteractionThrows) {
+  ServiceDescriptorBuilder builder(typeSystem_, "Svc");
+  auto serialized = toSerializable(*builder.build(), "test.com/Svc");
+  serialized.interfaces()
+      ->at("test.com/Svc")
+      .serviceDef_ref()
+      ->performedInteractions()
+      ->insert("test.com/MissingInteraction");
+
+  EXPECT_THROW(
+      fromSerializable(std::move(serialized), "test.com/Svc"),
+      std::invalid_argument);
 }
 
 TEST_F(ServiceDescriptorSerializationTest, SyntaxGraphRoundTrip) {

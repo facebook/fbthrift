@@ -140,3 +140,12 @@ service CatalogGolden {
   # @lint-ignore THRIFTCHECKS avoid-oneway-method
   oneway void notify();
 }
+
+interaction Session {
+  i32 get();
+}
+
+service SessionService {
+  Session openSession();
+  performs Session;
+}

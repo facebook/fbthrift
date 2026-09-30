@@ -466,6 +466,15 @@ void validateCreatedInteractions(
   }
 }
 
+// The empty name marks the constructor as rebuilt rather than declared in IDL.
+ServiceDescriptor::Function makeInteractionConstructor(
+    std::string_view interactionUri) {
+  ServiceDescriptor::Function fn;
+  fn.createdInteractionUri = std::string(interactionUri);
+  fn.isPerforms = true;
+  return fn;
+}
+
 type_system::SerializableInteractionDefinition toSerializableInteraction(
     const ServiceDescriptor::Interaction& interaction) {
   type_system::SerializableInteractionDefinition result;
@@ -506,7 +515,15 @@ type_system::SerializableServiceCatalog toSerializable(
 
   type_system::SerializableServiceDefinition serviceDef;
   for (const auto& fn : descriptor.functions()) {
-    serviceDef.functions()->push_back(toSerializableFunction(fn));
+    if (!fn.isPerforms) {
+      serviceDef.functions()->push_back(toSerializableFunction(fn));
+      continue;
+    }
+    if (!fn.createdInteractionUri.has_value()) {
+      throw std::invalid_argument(
+          "Interaction constructor does not name its interaction: " + fn.name);
+    }
+    serviceDef.performedInteractions()->insert(*fn.createdInteractionUri);
   }
   serviceDef.annotations() = serializeAnnotations(descriptor.annotations());
 
@@ -578,6 +595,15 @@ std::unique_ptr<ServiceDescriptor> fromSerializable(
           fromSerializableFunction(serFn, uri, *typeSystem));
     }
     interactions.push_back(std::move(interaction));
+  }
+
+  for (const auto& interactionUri : *serviceDef.performedInteractions()) {
+    if (!containsInteractionUri(interactions, interactionUri)) {
+      throw std::invalid_argument(
+          "Service performs an interaction that is not in the catalog: " +
+          interactionUri);
+    }
+    functions.push_back(makeInteractionConstructor(interactionUri));
   }
 
   auto annotations =

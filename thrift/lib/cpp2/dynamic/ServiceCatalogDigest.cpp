@@ -22,11 +22,15 @@
 #include <cstring>
 #include <iterator>
 #include <map>
+#include <ranges>
 #include <span>
 #include <stdexcept>
+#include <string>
 #include <string_view>
 #include <type_traits>
 #include <vector>
+
+#include <folly/lang/SafeAssert.h>
 
 #include <thrift/lib/cpp2/dynamic/Binary.h>
 #include <thrift/lib/cpp2/dynamic/List.h>
@@ -304,6 +308,17 @@ class Hasher : private ::apache::thrift::detail::Sha256DigestHasher<
   void hash(const ServiceDescriptor::Interaction& interaction);
   void hashAnnotations(std::span<const DynamicValue> annotations);
   void hashRecord(DynamicConstRef value);
+
+  template <std::ranges::forward_range Range>
+    requires std::ranges::sized_range<Range>
+  void hashPresorted(const Range& values) {
+    FOLLY_SAFE_DCHECK(
+        std::ranges::is_sorted(values), "values must be presorted");
+    hash(static_cast<std::uint32_t>(std::ranges::size(values)));
+    for (const auto& value : values) {
+      hash(std::string_view{value});
+    }
+  }
 
   template <typename Range, typename HashFn>
   void hashUnorderedByDigest(const Range& range, HashFn&& hashFn) {
@@ -856,15 +871,40 @@ void Hasher::hash(
   if (serviceDef.baseService().has_value()) {
     hash(std::string_view{*serviceDef.baseService()});
   }
+  if (!serviceDef.performedInteractions()->empty()) {
+    hashPresorted(*serviceDef.performedInteractions());
+  }
   hash(*serviceDef.annotations());
 }
 
 void Hasher::hashServiceDefinition(const ServiceDescriptor& descriptor) {
+  // Collected separately: rebuilt constructors all share the empty name, which
+  // the name-keyed walk below would deduplicate.
+  std::vector<std::string_view> performs;
+  for (const auto& fn : descriptor.functions()) {
+    if (!fn.isPerforms) {
+      continue;
+    }
+    if (!fn.createdInteractionUri.has_value()) {
+      throw std::invalid_argument(
+          "Interaction constructor does not name its interaction: " + fn.name);
+    }
+    performs.emplace_back(*fn.createdInteractionUri);
+  }
+
   forEachSortedByKey(
       descriptor.functions(),
       [](const auto& fn) -> std::string_view { return fn.name; },
-      [this](auto, const auto& fn) { hash(fn); });
+      [this](auto, const auto& fn) {
+        if (!fn.isPerforms) {
+          hash(fn);
+        }
+      });
   hash(false);
+  if (!performs.empty()) {
+    std::sort(performs.begin(), performs.end());
+    hashPresorted(performs);
+  }
   hashAnnotations(descriptor.annotations());
 }
 

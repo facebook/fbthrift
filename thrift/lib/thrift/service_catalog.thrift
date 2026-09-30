@@ -168,6 +168,12 @@ struct SerializableServiceDefinition {
    */
   @cpp.Type{template = "folly::F14FastMap"}
   3: map<type_id.Uri, record.SerializableRecord> annotations;
+  /**
+   * The interactions this service constructs with `performs`. Their
+   * constructors are not RPCs and do not appear in `functions`. Each URI must
+   * resolve to an interaction definition in the catalog.
+   */
+  4: set<type_id.Uri> performedInteractions;
 }
 
 /**
