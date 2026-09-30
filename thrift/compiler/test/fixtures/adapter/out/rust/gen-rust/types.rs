@@ -1071,43 +1071,65 @@ where
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_struct_begin("Foo");
         p.write_field_begin("intField", ::fbthrift::TType::I32, 1);
-        ::fbthrift::Serialize::rs_thrift_write(&<::my::Adapter1 as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Foo>(&self.intField, 1), p);
+        <::my::Adapter1 as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Foo, _>(&self.intField, 1, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.optionalIntField {
             p.write_field_begin("optionalIntField", ::fbthrift::TType::I32, 2);
-            ::fbthrift::Serialize::rs_thrift_write(&<::my::Adapter1 as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Foo>(some, 2), p);
+            <::my::Adapter1 as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Foo, _>(some, 2, |value| {
+                ::fbthrift::Serialize::rs_thrift_write(value, p);
+            });
             p.write_field_end();
         }
         p.write_field_begin("intFieldWithDefault", ::fbthrift::TType::I32, 3);
-        ::fbthrift::Serialize::rs_thrift_write(&<::my::Adapter1 as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Foo>(&self.intFieldWithDefault, 3), p);
+        <::my::Adapter1 as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Foo, _>(&self.intFieldWithDefault, 3, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         p.write_field_begin("setField", ::fbthrift::TType::Set, 4);
-        ::fbthrift::Serialize::rs_thrift_write(&<crate::types::adapters::SetWithAdapter as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Foo>(&self.setField, 4), p);
+        <crate::types::adapters::SetWithAdapter as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Foo, _>(&self.setField, 4, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.optionalSetField {
             p.write_field_begin("optionalSetField", ::fbthrift::TType::Set, 5);
-            ::fbthrift::Serialize::rs_thrift_write(&<crate::types::adapters::SetWithAdapter as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Foo>(some, 5), p);
+            <crate::types::adapters::SetWithAdapter as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Foo, _>(some, 5, |value| {
+                ::fbthrift::Serialize::rs_thrift_write(value, p);
+            });
             p.write_field_end();
         }
         p.write_field_begin("mapField", ::fbthrift::TType::Map, 6);
-        ::fbthrift::Serialize::rs_thrift_write(&<::fbthrift::adapter::LayeredThriftAdapter<::my::Adapter3, ::fbthrift::adapter::MapMapAdapter<::fbthrift::adapter::IdentityAdapter<::std::string::String>, crate::types::adapters::ListWithElemAdapter_withAdapter>> as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Foo>(&self.mapField, 6), p);
+        <::fbthrift::adapter::LayeredThriftAdapter<::my::Adapter3, ::fbthrift::adapter::MapMapAdapter<::fbthrift::adapter::IdentityAdapter<::std::string::String>, crate::types::adapters::ListWithElemAdapter_withAdapter>> as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Foo, _>(&self.mapField, 6, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.optionalMapField {
             p.write_field_begin("optionalMapField", ::fbthrift::TType::Map, 7);
-            ::fbthrift::Serialize::rs_thrift_write(&<::fbthrift::adapter::LayeredThriftAdapter<::my::Adapter3, ::fbthrift::adapter::MapMapAdapter<::fbthrift::adapter::IdentityAdapter<::std::string::String>, crate::types::adapters::ListWithElemAdapter_withAdapter>> as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Foo>(some, 7), p);
+            <::fbthrift::adapter::LayeredThriftAdapter<::my::Adapter3, ::fbthrift::adapter::MapMapAdapter<::fbthrift::adapter::IdentityAdapter<::std::string::String>, crate::types::adapters::ListWithElemAdapter_withAdapter>> as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Foo, _>(some, 7, |value| {
+                ::fbthrift::Serialize::rs_thrift_write(value, p);
+            });
             p.write_field_end();
         }
         p.write_field_begin("binaryField", ::fbthrift::TType::String, 8);
-        ::fbthrift::Serialize::rs_thrift_write(&<::my::Adapter3 as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Foo>(&self.binaryField, 8), p);
+        <::my::Adapter3 as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Foo, _>(&self.binaryField, 8, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         p.write_field_begin("longField", ::fbthrift::TType::I64, 9);
-        ::fbthrift::Serialize::rs_thrift_write(&<crate::types::adapters::MyI64 as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Foo>(&self.longField, 9), p);
+        <crate::types::adapters::MyI64 as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Foo, _>(&self.longField, 9, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         p.write_field_begin("adaptedLongField", ::fbthrift::TType::I64, 10);
-        ::fbthrift::Serialize::rs_thrift_write(&<::fbthrift::adapter::LayeredThriftAdapter<::my::Adapter2, crate::types::adapters::MyI64> as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Foo>(&self.adaptedLongField, 10), p);
+        <::fbthrift::adapter::LayeredThriftAdapter<::my::Adapter2, crate::types::adapters::MyI64> as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Foo, _>(&self.adaptedLongField, 10, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         p.write_field_begin("doubleAdaptedField", ::fbthrift::TType::I64, 11);
-        ::fbthrift::Serialize::rs_thrift_write(&<crate::types::adapters::MyI64 as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Foo>(&self.doubleAdaptedField, 11), p);
+        <crate::types::adapters::MyI64 as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Foo, _>(&self.doubleAdaptedField, 11, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         p.write_field_begin("adapted_list", ::fbthrift::TType::List, 12);
         ::fbthrift::Serialize::rs_thrift_write(&self.adapted_list, p);
@@ -2301,11 +2323,15 @@ where
             p.write_field_end();
         }
         p.write_field_begin("structListField", ::fbthrift::TType::List, 3);
-        ::fbthrift::Serialize::rs_thrift_write(&<::fbthrift::adapter::ListMapAdapter<crate::types::adapters::FooWithAdapter> as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Bar>(&self.structListField, 3), p);
+        <::fbthrift::adapter::ListMapAdapter<crate::types::adapters::FooWithAdapter> as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Bar, _>(&self.structListField, 3, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.optionalStructListField {
             p.write_field_begin("optionalStructListField", ::fbthrift::TType::List, 4);
-            ::fbthrift::Serialize::rs_thrift_write(&<::fbthrift::adapter::ListMapAdapter<crate::types::adapters::FooWithAdapter> as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<Bar>(some, 4), p);
+            <::fbthrift::adapter::ListMapAdapter<crate::types::adapters::FooWithAdapter> as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<Bar, _>(some, 4, |value| {
+                ::fbthrift::Serialize::rs_thrift_write(value, p);
+            });
             p.write_field_end();
         }
         p.write_field_begin("unionField", ::fbthrift::TType::Struct, 5);
@@ -2965,14 +2991,18 @@ where
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_struct_begin("StructWithFieldAdapter");
         p.write_field_begin("field", ::fbthrift::TType::I32, 1);
-        ::fbthrift::Serialize::rs_thrift_write(&<::my::Adapter1<::std::primitive::i32> as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<StructWithFieldAdapter>(&self.field, 1), p);
+        <::my::Adapter1<::std::primitive::i32> as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<StructWithFieldAdapter, _>(&self.field, 1, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         p.write_field_begin("shared_field", ::fbthrift::TType::I32, 2);
         ::fbthrift::Serialize::rs_thrift_write(&self.shared_field, p);
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.opt_shared_field {
             p.write_field_begin("opt_shared_field", ::fbthrift::TType::I32, 3);
-            ::fbthrift::Serialize::rs_thrift_write(&<::my::Adapter1<::std::primitive::i32> as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<StructWithFieldAdapter>(some, 3), p);
+            <::my::Adapter1<::std::primitive::i32> as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<StructWithFieldAdapter, _>(some, 3, |value| {
+                ::fbthrift::Serialize::rs_thrift_write(value, p);
+            });
             p.write_field_end();
         }
         if let ::std::option::Option::Some(some) = &self.opt_boxed_field {
@@ -4034,7 +4064,9 @@ where
         ::fbthrift::Serialize::rs_thrift_write(&self.field, p);
         p.write_field_end();
         p.write_field_begin("set_string", ::fbthrift::TType::Set, 2);
-        ::fbthrift::Serialize::rs_thrift_write(&<crate::types::adapters::SetWithAdapter as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<MyStruct>(&self.set_string, 2), p);
+        <crate::types::adapters::SetWithAdapter as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<MyStruct, _>(&self.set_string, 2, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         p.write_field_stop();
         p.write_struct_end();
@@ -4728,13 +4760,19 @@ where
         ::fbthrift::Serialize::rs_thrift_write(&self.adaptedEnum, p);
         p.write_field_end();
         p.write_field_begin("adaptedListDefault", ::fbthrift::TType::List, 19);
-        ::fbthrift::Serialize::rs_thrift_write(&<::fbthrift_adapters::test::TestAdapter as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<AdaptTemplatedTestStruct>(&self.adaptedListDefault, 19), p);
+        <::fbthrift_adapters::test::TestAdapter as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<AdaptTemplatedTestStruct, _>(&self.adaptedListDefault, 19, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         p.write_field_begin("adaptedSetDefault", ::fbthrift::TType::Set, 20);
-        ::fbthrift::Serialize::rs_thrift_write(&<::fbthrift_adapters::test::TestAdapter as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<AdaptTemplatedTestStruct>(&self.adaptedSetDefault, 20), p);
+        <::fbthrift_adapters::test::TestAdapter as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<AdaptTemplatedTestStruct, _>(&self.adaptedSetDefault, 20, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         p.write_field_begin("adaptedMapDefault", ::fbthrift::TType::Map, 21);
-        ::fbthrift::Serialize::rs_thrift_write(&<::fbthrift_adapters::test::TestAdapter as ::fbthrift::adapter::ThriftAdapter>::to_thrift_field::<AdaptTemplatedTestStruct>(&self.adaptedMapDefault, 21), p);
+        <::fbthrift_adapters::test::TestAdapter as ::fbthrift::adapter::ThriftAdapter>::with_thrift_field::<AdaptTemplatedTestStruct, _>(&self.adaptedMapDefault, 21, |value| {
+            ::fbthrift::Serialize::rs_thrift_write(value, p);
+        });
         p.write_field_end();
         p.write_field_begin("doubleTypedefBool", ::fbthrift::TType::Bool, 22);
         ::fbthrift::Serialize::rs_thrift_write(&self.doubleTypedefBool, p);
