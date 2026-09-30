@@ -87,7 +87,7 @@ struct OneOfEach3 {
 
 @cpp.EnableCustomTypeOrdering
 struct DebugHashedAssociative {
-  @cpp.Type{name = "std::map<int64_t, std::set<int64_t>>"}
+  @cpp.Type{template = "std::map"}
   1: map<i64, set<i64>> value;
 }
 

@@ -62,7 +62,7 @@ struct StructWithRef {
 }
 
 struct StructWithCppType {
-  @cpp.Type{name = "std::unordered_map<std::string, StructA>"}
+  @cpp.Type{template = "std::unordered_map"}
   1: optional map<string, StructA> field;
 }
 
