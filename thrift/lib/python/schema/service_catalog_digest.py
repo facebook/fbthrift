@@ -23,7 +23,7 @@ compatible.
 from __future__ import annotations
 
 from collections.abc import Callable, Iterable, Mapping, Sequence
-from typing import TypeVar
+from typing import Any, TypeVar
 
 from apache.thrift.type.schema.thrift_types import ErrorBlame, ErrorKind, ErrorSafety
 from apache.thrift.type_system.type_id.thrift_types import TypeId
@@ -126,25 +126,55 @@ _BLAME_TO_WIRE: dict[ErrorBlame, ExceptionBlame] = {
 }
 
 
-def service_catalog_digest(
-    value: SerializableServiceCatalog | ServiceCatalog | ServiceDescriptor,
-    mode: DigestMode = DigestMode.FULL,
-) -> bytes:
-    """The canonical 32-byte SHA-256 digest of a service catalog.
+_Node = (
+    SerializableServiceCatalog
+    | SerializableRpcInterfaceDefinition
+    | SerializableServiceDefinition
+    | SerializableInteractionDefinition
+    | SerializableFunction
+    | SerializableFunctionResponse
+    | SerializableStreamingResponse
+    | SerializableStream
+    | SerializableSink
+    | SerializableBidirectionalStream
+    | SerializableParameter
+    | SerializableException
+    | ServiceCatalog
+    | ServiceDescriptor
+    | Interaction
+    | Function
+    | Parameter
+    | DeclaredException
+    | Stream
+    | Sink
+)
 
-    A ``ServiceDescriptor`` hashes as the catalog of its service and the
-    interactions it creates. The serialized and runtime representations of the
-    same catalog hash equally, and inline ``types`` and an out-of-band
-    ``typesDigest`` hash equivalently.
+
+def service_catalog_digest(value: _Node, mode: DigestMode = DigestMode.FULL) -> bytes:
+    """The canonical 32-byte SHA-256 digest of a service catalog or one of its
+    nodes.
+
+    Catalogs are versioned and cover their type universe; a ``ServiceDescriptor``
+    hashes as the catalog of its service and the interactions it creates, and
+    inline ``types`` and an out-of-band ``typesDigest`` hash equivalently. Any
+    other node hashes as what it contributes to its parent, as in Rust. The
+    serialized and runtime representations of the same node hash equally.
     """
     h = _Hasher(mode)
-    h.hash_u8(SERVICE_CATALOG_DIGEST_VERSION)
     if isinstance(value, SerializableServiceCatalog):
+        h.hash_u8(SERVICE_CATALOG_DIGEST_VERSION)
         _hash_serialized_catalog(h, value, mode)
     elif isinstance(value, ServiceCatalog):
+        h.hash_u8(SERVICE_CATALOG_DIGEST_VERSION)
         _hash_runtime_services(h, value.type_system, value.services, mode)
-    else:
+    elif isinstance(value, ServiceDescriptor):
+        h.hash_u8(SERVICE_CATALOG_DIGEST_VERSION)
         _hash_runtime_services(h, value.type_system, (value,), mode)
+    else:
+        hash_node = _NODE_HASHERS.get(type(value))
+        if hash_node is None:
+            raise TypeError(f"Cannot digest {type(value).__name__}")
+        hash_node(h, value)
     return h.finalize()
 
 
@@ -206,34 +236,43 @@ def _hash_serialized_function(h: _Hasher, function: SerializableFunction) -> Non
     h.hash_str(function.name)
     h.hash_i32(function.qualifier.value)
     for parameter in _first_by_key(function.params, _serialized_parameter_id):
-        h.hash_i16(parameter.identity.id)
-        h.hash_str(parameter.identity.name)
-        _hash_type_id(h, parameter.type)
-        _hash_annotations(h, parameter.annotations)
+        _hash_serialized_parameter(h, parameter)
     _hash_serialized_response(h, function.response)
     _hash_serialized_exceptions(h, function.exceptions)
     h.hash_i32(function.rpcKind.value)
     _hash_annotations(h, function.annotations)
 
 
+def _hash_serialized_parameter(h: _Hasher, parameter: SerializableParameter) -> None:
+    h.hash_i16(parameter.identity.id)
+    h.hash_str(parameter.identity.name)
+    _hash_type_id(h, parameter.type)
+    _hash_annotations(h, parameter.annotations)
+
+
 def _hash_serialized_response(
     h: _Hasher, response: SerializableFunctionResponse
 ) -> None:
     _hash_optional_type_id(h, response.initialResponseType)
-    streaming = response.streaming
-    h.hash_bool(streaming is not None)
-    if streaming is not None:
-        field_id = _STREAMING_FIELD_ID.get(streaming.type)
-        if field_id is None:
-            raise ValueError("Cannot digest an empty streaming response")
-        h.hash_i32(field_id)
-        if streaming.type == SerializableStreamingResponse.Type.serverStream:
-            _hash_serialized_stream(h, streaming.serverStream)
-        elif streaming.type == SerializableStreamingResponse.Type.clientSink:
-            _hash_serialized_sink(h, streaming.clientSink)
-        else:
-            _hash_serialized_bidirectional_stream(h, streaming.bidirectionalStream)
+    h.hash_bool(response.streaming is not None)
+    if response.streaming is not None:
+        _hash_serialized_streaming(h, response.streaming)
     _hash_optional_str(h, response.createsInteraction)
+
+
+def _hash_serialized_streaming(
+    h: _Hasher, streaming: SerializableStreamingResponse
+) -> None:
+    field_id = _STREAMING_FIELD_ID.get(streaming.type)
+    if field_id is None:
+        raise ValueError("Cannot digest an empty streaming response")
+    h.hash_i32(field_id)
+    if streaming.type == SerializableStreamingResponse.Type.serverStream:
+        _hash_serialized_stream(h, streaming.serverStream)
+    elif streaming.type == SerializableStreamingResponse.Type.clientSink:
+        _hash_serialized_sink(h, streaming.clientSink)
+    else:
+        _hash_serialized_bidirectional_stream(h, streaming.bidirectionalStream)
 
 
 def _hash_serialized_stream(h: _Hasher, stream: SerializableStream) -> None:
@@ -261,13 +300,17 @@ def _hash_serialized_exceptions(
     h: _Hasher, exceptions: Iterable[SerializableException]
 ) -> None:
     for exception in _first_by_key(exceptions, _serialized_exception_id):
-        h.hash_i16(exception.identity.id)
-        h.hash_str(exception.identity.name)
-        _hash_type_id(h, exception.type)
-        _hash_annotations(h, exception.annotations)
-        h.hash_i32(exception.safety.value)
-        h.hash_i32(exception.kind.value)
-        h.hash_i32(exception.blame.value)
+        _hash_serialized_exception(h, exception)
+
+
+def _hash_serialized_exception(h: _Hasher, exception: SerializableException) -> None:
+    h.hash_i16(exception.identity.id)
+    h.hash_str(exception.identity.name)
+    _hash_type_id(h, exception.type)
+    _hash_annotations(h, exception.annotations)
+    h.hash_i32(exception.safety.value)
+    h.hash_i32(exception.kind.value)
+    h.hash_i32(exception.blame.value)
 
 
 def _hash_optional_type_id(h: _Hasher, type_id: TypeId | None) -> None:
@@ -300,14 +343,18 @@ def _hash_runtime_services(
     interfaces.update(interactions)
     for uri in sorted(interfaces, key=_utf8):
         h.hash_str(uri)
-        interface = interfaces[uri]
-        if isinstance(interface, ServiceDescriptor):
-            h.hash_i32(_SERVICE_DEF_FIELD_ID)
-            _hash_runtime_service(h, interface)
-        else:
-            h.hash_i32(_INTERACTION_DEF_FIELD_ID)
-            _hash_runtime_functions(h, interface.functions)
-            _hash_annotations_native(h, interface.annotations)
+        _hash_runtime_interface(h, interfaces[uri])
+
+
+def _hash_runtime_interface(
+    h: _Hasher, interface: ServiceDescriptor | Interaction
+) -> None:
+    if isinstance(interface, ServiceDescriptor):
+        h.hash_i32(_SERVICE_DEF_FIELD_ID)
+        _hash_runtime_service(h, interface)
+    else:
+        h.hash_i32(_INTERACTION_DEF_FIELD_ID)
+        _hash_runtime_interaction(h, interface)
 
 
 def _validate_created_interactions(
@@ -366,6 +413,11 @@ def _performed_interaction(constructor: Function) -> str:
     return constructor.created_interaction_uri
 
 
+def _hash_runtime_interaction(h: _Hasher, interaction: Interaction) -> None:
+    _hash_runtime_functions(h, interaction.functions)
+    _hash_annotations_native(h, interaction.annotations)
+
+
 def _hash_runtime_functions(h: _Hasher, functions: Iterable[Function]) -> None:
     for function in _first_by_key(functions, _runtime_function_name):
         _hash_runtime_function(h, function)
@@ -375,33 +427,61 @@ def _hash_runtime_function(h: _Hasher, function: Function) -> None:
     h.hash_str(function.name)
     h.hash_i32(function.qualifier.value)
     for parameter in _first_by_key(function.params, _runtime_parameter_id):
-        h.hash_i16(parameter.id)
-        h.hash_str(parameter.name)
-        _hash_type_id_native(h, parameter.type)
-        _hash_annotations_native(h, parameter.annotations)
+        _hash_runtime_parameter(h, parameter)
     _hash_runtime_response(h, function)
     _hash_runtime_exceptions(h, function.exceptions)
     h.hash_i32(function.rpc_kind.value)
     _hash_annotations_native(h, function.annotations)
 
 
+# A `performs` constructor contributes only its interaction URI to its service,
+# so it has no digest of its own.
+def _hash_runtime_function_node(h: _Hasher, function: Function) -> None:
+    if function.is_performs:
+        raise ValueError(
+            f"Interaction constructor {function.name!r} is digested as part of "
+            "its service"
+        )
+    _hash_runtime_function(h, function)
+
+
+def _hash_runtime_parameter(h: _Hasher, parameter: Parameter) -> None:
+    h.hash_i16(parameter.id)
+    h.hash_str(parameter.name)
+    _hash_type_id_native(h, parameter.type)
+    _hash_annotations_native(h, parameter.annotations)
+
+
 def _hash_runtime_response(h: _Hasher, function: Function) -> None:
     _hash_optional_type_ref(h, function.response_type)
-    stream, sink = function.stream, function.sink
-    h.hash_bool(stream is not None or sink is not None)
+    streams = function.stream is not None or function.sink is not None
+    h.hash_bool(streams)
+    if streams:
+        _hash_runtime_streaming(h, function.stream, function.sink)
+    _hash_optional_str(h, function.created_interaction_uri)
+
+
+def _hash_runtime_streaming(
+    h: _Hasher, stream: Stream | None, sink: Sink | None
+) -> None:
     if stream is not None and sink is not None:
         h.hash_i32(_BIDIRECTIONAL_STREAM_FIELD_ID)
-        _hash_type_id_native(h, sink.payload_type)
-        _hash_type_id_native(h, stream.payload_type)
-        _hash_runtime_exceptions(h, sink.client_exceptions)
-        _hash_runtime_exceptions(h, stream.exceptions)
+        _hash_runtime_bidirectional_stream(h, stream, sink)
     elif stream is not None:
         h.hash_i32(_SERVER_STREAM_FIELD_ID)
         _hash_runtime_stream(h, stream)
     elif sink is not None:
         h.hash_i32(_CLIENT_SINK_FIELD_ID)
         _hash_runtime_sink(h, sink)
-    _hash_optional_str(h, function.created_interaction_uri)
+    else:
+        raise ValueError("Cannot digest an empty streaming response")
+
+
+def _hash_runtime_bidirectional_stream(h: _Hasher, stream: Stream, sink: Sink) -> None:
+    _hash_type_id_native(h, sink.payload_type)
+    _hash_type_id_native(h, stream.payload_type)
+    _hash_runtime_exceptions(h, sink.client_exceptions)
+    _hash_runtime_exceptions(h, stream.exceptions)
 
 
 def _hash_runtime_stream(h: _Hasher, stream: Stream) -> None:
@@ -420,13 +500,17 @@ def _hash_runtime_exceptions(
     h: _Hasher, exceptions: Iterable[DeclaredException]
 ) -> None:
     for exception in _first_by_key(exceptions, _runtime_exception_id):
-        h.hash_i16(exception.id)
-        h.hash_str(exception.name)
-        _hash_type_id_native(h, exception.type)
-        _hash_annotations_native(h, exception.annotations)
-        h.hash_i32(_SAFETY_TO_WIRE[exception.safety].value)
-        h.hash_i32(_KIND_TO_WIRE[exception.kind].value)
-        h.hash_i32(_BLAME_TO_WIRE[exception.blame].value)
+        _hash_runtime_exception(h, exception)
+
+
+def _hash_runtime_exception(h: _Hasher, exception: DeclaredException) -> None:
+    h.hash_i16(exception.id)
+    h.hash_str(exception.name)
+    _hash_type_id_native(h, exception.type)
+    _hash_annotations_native(h, exception.annotations)
+    h.hash_i32(_SAFETY_TO_WIRE[exception.safety].value)
+    h.hash_i32(_KIND_TO_WIRE[exception.kind].value)
+    h.hash_i32(_BLAME_TO_WIRE[exception.blame].value)
 
 
 def _hash_optional_type_ref(h: _Hasher, type_ref: TypeRef | None) -> None:
@@ -524,3 +608,24 @@ def _runtime_parameter_id(parameter: Parameter) -> int:
 
 def _runtime_exception_id(exception: DeclaredException) -> int:
     return exception.id
+
+
+_NODE_HASHERS: dict[type[Any], Callable[[_Hasher, Any], None]] = {
+    SerializableRpcInterfaceDefinition: _hash_serialized_interface,
+    SerializableServiceDefinition: _hash_serialized_service,
+    SerializableInteractionDefinition: _hash_serialized_interaction,
+    SerializableFunction: _hash_serialized_function,
+    SerializableFunctionResponse: _hash_serialized_response,
+    SerializableStreamingResponse: _hash_serialized_streaming,
+    SerializableStream: _hash_serialized_stream,
+    SerializableSink: _hash_serialized_sink,
+    SerializableBidirectionalStream: _hash_serialized_bidirectional_stream,
+    SerializableParameter: _hash_serialized_parameter,
+    SerializableException: _hash_serialized_exception,
+    Interaction: _hash_runtime_interaction,
+    Function: _hash_runtime_function_node,
+    Parameter: _hash_runtime_parameter,
+    DeclaredException: _hash_runtime_exception,
+    Stream: _hash_runtime_stream,
+    Sink: _hash_runtime_sink,
+}
