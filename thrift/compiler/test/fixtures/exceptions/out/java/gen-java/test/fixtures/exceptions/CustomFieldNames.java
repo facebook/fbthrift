@@ -106,6 +106,21 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
       return internalGreatMessage;
     }
 
+    @java.lang.Override
+    public org.apache.thrift.ExceptionBlame getExceptionBlame() {
+        return org.apache.thrift.ExceptionBlame.UNSPECIFIED;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionKind getExceptionKind() {
+        return org.apache.thrift.ExceptionKind.UNSPECIFIED;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionSafety getExceptionSafety() {
+        return org.apache.thrift.ExceptionSafety.UNSPECIFIED;
+    }
+
     public static com.facebook.thrift.payload.Reader<CustomFieldNames> asReader() {
       return CustomFieldNames::read0;
     }

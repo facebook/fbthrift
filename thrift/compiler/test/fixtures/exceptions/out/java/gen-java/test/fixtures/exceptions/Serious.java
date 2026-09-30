@@ -84,6 +84,21 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
       return sonnet;
     }
 
+    @java.lang.Override
+    public org.apache.thrift.ExceptionBlame getExceptionBlame() {
+        return org.apache.thrift.ExceptionBlame.UNSPECIFIED;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionKind getExceptionKind() {
+        return org.apache.thrift.ExceptionKind.STATEFUL;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionSafety getExceptionSafety() {
+        return org.apache.thrift.ExceptionSafety.SAFE;
+    }
+
     public static com.facebook.thrift.payload.Reader<Serious> asReader() {
       return Serious::read0;
     }

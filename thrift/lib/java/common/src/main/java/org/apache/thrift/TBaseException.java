@@ -41,6 +41,20 @@ public abstract class TBaseException extends RuntimeException {
     super(message, cause);
   }
 
+  // IDL error classification. Generated exceptions override these with the
+  // qualifiers from their definition; the server encodes them into RPC metadata.
+  public ExceptionBlame getExceptionBlame() {
+    return ExceptionBlame.UNSPECIFIED;
+  }
+
+  public ExceptionKind getExceptionKind() {
+    return ExceptionKind.UNSPECIFIED;
+  }
+
+  public ExceptionSafety getExceptionSafety() {
+    return ExceptionSafety.UNSPECIFIED;
+  }
+
   public void setHeaders(Map<String, String> headers) {
     this.headers = headers;
   }

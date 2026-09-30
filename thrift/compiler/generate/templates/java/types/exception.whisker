@@ -78,6 +78,21 @@ public final class {{struct.javaCapitalName}} extends org.apache.thrift.TBaseExc
     {{#partial struct_partials.exception_message struct=struct}}
     {{/if struct.needsExceptionMessage?}}
 
+    @java.lang.Override
+    public org.apache.thrift.ExceptionBlame getExceptionBlame() {
+        return org.apache.thrift.ExceptionBlame.{{struct.blame}};
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionKind getExceptionKind() {
+        return org.apache.thrift.ExceptionKind.{{struct.kind}};
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionSafety getExceptionSafety() {
+        return org.apache.thrift.ExceptionSafety.{{struct.safety}};
+    }
+
     {{#partial struct_partials.struct_read struct=struct}}
 
     {{#partial struct_partials.struct_write struct=struct}}

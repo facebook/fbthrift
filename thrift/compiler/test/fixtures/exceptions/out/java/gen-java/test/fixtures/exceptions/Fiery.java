@@ -79,6 +79,21 @@ public final class Fiery extends org.apache.thrift.TBaseException implements com
     @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
     public String getMessage() { return message; }
 
+    @java.lang.Override
+    public org.apache.thrift.ExceptionBlame getExceptionBlame() {
+        return org.apache.thrift.ExceptionBlame.SERVER;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionKind getExceptionKind() {
+        return org.apache.thrift.ExceptionKind.TRANSIENT;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionSafety getExceptionSafety() {
+        return org.apache.thrift.ExceptionSafety.UNSPECIFIED;
+    }
+
     public static com.facebook.thrift.payload.Reader<Fiery> asReader() {
       return Fiery::read0;
     }

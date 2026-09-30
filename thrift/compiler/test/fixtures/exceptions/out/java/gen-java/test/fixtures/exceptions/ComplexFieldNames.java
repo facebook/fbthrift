@@ -106,6 +106,21 @@ public final class ComplexFieldNames extends org.apache.thrift.TBaseException im
       return internalErrorMessage;
     }
 
+    @java.lang.Override
+    public org.apache.thrift.ExceptionBlame getExceptionBlame() {
+        return org.apache.thrift.ExceptionBlame.CLIENT;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionKind getExceptionKind() {
+        return org.apache.thrift.ExceptionKind.UNSPECIFIED;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionSafety getExceptionSafety() {
+        return org.apache.thrift.ExceptionSafety.UNSPECIFIED;
+    }
+
     public static com.facebook.thrift.payload.Reader<ComplexFieldNames> asReader() {
       return ComplexFieldNames::read0;
     }

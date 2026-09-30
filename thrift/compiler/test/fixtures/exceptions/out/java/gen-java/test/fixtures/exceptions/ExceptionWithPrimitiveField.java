@@ -101,6 +101,21 @@ public final class ExceptionWithPrimitiveField extends org.apache.thrift.TBaseEx
     @com.facebook.swift.codec.ThriftField(value=2, name="error_code", requiredness=Requiredness.NONE)
     public int getErrorCode() { return errorCode; }
 
+    @java.lang.Override
+    public org.apache.thrift.ExceptionBlame getExceptionBlame() {
+        return org.apache.thrift.ExceptionBlame.UNSPECIFIED;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionKind getExceptionKind() {
+        return org.apache.thrift.ExceptionKind.UNSPECIFIED;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionSafety getExceptionSafety() {
+        return org.apache.thrift.ExceptionSafety.UNSPECIFIED;
+    }
+
     public static com.facebook.thrift.payload.Reader<ExceptionWithPrimitiveField> asReader() {
       return ExceptionWithPrimitiveField::read0;
     }

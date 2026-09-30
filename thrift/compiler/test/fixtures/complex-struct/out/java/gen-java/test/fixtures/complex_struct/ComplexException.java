@@ -188,6 +188,21 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
     @com.facebook.swift.codec.ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
 
+    @java.lang.Override
+    public org.apache.thrift.ExceptionBlame getExceptionBlame() {
+        return org.apache.thrift.ExceptionBlame.UNSPECIFIED;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionKind getExceptionKind() {
+        return org.apache.thrift.ExceptionKind.UNSPECIFIED;
+    }
+
+    @java.lang.Override
+    public org.apache.thrift.ExceptionSafety getExceptionSafety() {
+        return org.apache.thrift.ExceptionSafety.UNSPECIFIED;
+    }
+
     public static com.facebook.thrift.payload.Reader<ComplexException> asReader() {
       return ComplexException::read0;
     }
