@@ -56,6 +56,14 @@ exception TestAnnotatedMessageException {
   1: string msg;
 }
 
+safe permanent client exception TestClientException {
+  1: string msg;
+}
+
+transient server exception TestServerException {
+  1: string msg;
+}
+
 service TestService {
   void requestResponseVoid(1: TestRequest request);
   TestResponse requestResponse(1: TestRequest request);
@@ -69,6 +77,12 @@ service TestService {
   TestResponse requestResponseDeclaredAnnotatedMessageException(
     1: TestRequest request,
   ) throws (1: TestAnnotatedMessageException e);
+  TestResponse requestResponseDeclaredClientException(
+    1: TestRequest request,
+  ) throws (1: TestClientException e);
+  TestResponse requestResponseDeclaredServerException(
+    1: TestRequest request,
+  ) throws (1: TestServerException e);
 
   stream<TestResponse> streamResponse(1: TestRequest request);
   InitialTestResponse, stream<TestResponse> streamInitialResponse(

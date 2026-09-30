@@ -22,6 +22,11 @@ import com.facebook.thrift.payload.ServerResponsePayload;
 import com.facebook.thrift.payload.Writer;
 import org.apache.thrift.ErrorBlame;
 import org.apache.thrift.ErrorClassification;
+import org.apache.thrift.ErrorKind;
+import org.apache.thrift.ErrorSafety;
+import org.apache.thrift.ExceptionBlame;
+import org.apache.thrift.ExceptionKind;
+import org.apache.thrift.ExceptionSafety;
 import org.apache.thrift.PayloadAppUnknownExceptionMetdata;
 import org.apache.thrift.PayloadDeclaredExceptionMetadata;
 import org.apache.thrift.PayloadExceptionMetadata;
@@ -31,6 +36,7 @@ import org.apache.thrift.PayloadResponseMetadata;
 import org.apache.thrift.RequestRpcMetadata;
 import org.apache.thrift.ResponseRpcMetadata;
 import org.apache.thrift.TApplicationException;
+import org.apache.thrift.TBaseException;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TField;
 import org.apache.thrift.protocol.TStruct;
@@ -137,14 +143,70 @@ public final class RpcPayloadUtil {
 
   public static ServerResponsePayload createServerResponsePayload(
       final ServerRequestPayload payload, final Writer writer) {
-    return createServerResponsePayload(payload, writer, null);
+    return createServerResponsePayload(payload, writer, (String) null);
+  }
+
+  // Maps the IDL classification carried by a declared exception to the wire
+  // ErrorClassification, mirroring the C++ fromExceptionBlame/Kind/Safety
+  // converters. Non-Thrift throwables have no IDL classification.
+  public static ErrorClassification errorClassificationFor(Throwable t) {
+    ExceptionBlame blame = ExceptionBlame.UNSPECIFIED;
+    ExceptionKind kind = ExceptionKind.UNSPECIFIED;
+    ExceptionSafety safety = ExceptionSafety.UNSPECIFIED;
+    if (t instanceof TBaseException) {
+      TBaseException e = (TBaseException) t;
+      blame = e.getExceptionBlame();
+      kind = e.getExceptionKind();
+      safety = e.getExceptionSafety();
+    }
+    return new ErrorClassification.Builder()
+        .setBlame(toWireBlame(blame))
+        .setKind(toWireKind(kind))
+        .setSafety(toWireSafety(safety))
+        .build();
+  }
+
+  private static ErrorBlame toWireBlame(ExceptionBlame blame) {
+    switch (blame) {
+      case SERVER:
+        return ErrorBlame.SERVER;
+      case CLIENT:
+        return ErrorBlame.CLIENT;
+      default:
+        return ErrorBlame.UNSPECIFIED;
+    }
+  }
+
+  private static ErrorKind toWireKind(ExceptionKind kind) {
+    switch (kind) {
+      case TRANSIENT:
+        return ErrorKind.TRANSIENT;
+      case STATEFUL:
+        return ErrorKind.STATEFUL;
+      case PERMANENT:
+        return ErrorKind.PERMANENT;
+      default:
+        return ErrorKind.UNSPECIFIED;
+    }
+  }
+
+  private static ErrorSafety toWireSafety(ExceptionSafety safety) {
+    switch (safety) {
+      case SAFE:
+        return ErrorSafety.SAFE;
+      default:
+        return ErrorSafety.UNSPECIFIED;
+    }
   }
 
   public static PayloadExceptionMetadata createDeclaredPayloadException() {
+    return createDeclaredPayloadException((Throwable) null);
+  }
+
+  public static PayloadExceptionMetadata createDeclaredPayloadException(Throwable t) {
     PayloadDeclaredExceptionMetadata metadata =
         new PayloadDeclaredExceptionMetadata.Builder()
-            .setErrorClassification(
-                new ErrorClassification.Builder().setBlame(ErrorBlame.SERVER).build())
+            .setErrorClassification(errorClassificationFor(t))
             .build();
 
     return PayloadExceptionMetadata.fromDeclaredException(metadata);
@@ -165,6 +227,41 @@ public final class RpcPayloadUtil {
               .setNameUtf8(name)
               .setWhatUtf8(what)
               .setMetadata(createDeclaredPayloadException())
+              .build();
+    }
+
+    return ServerResponsePayload.create(
+        writer, createResponseRpcMetadata(payload.getRequestRpcMetadata(), base), null, false);
+  }
+
+  public static ServerResponsePayload createServerResponsePayload(
+      final ServerRequestPayload payload, final Writer writer, final Throwable t) {
+    return createServerResponsePayload(
+        payload,
+        writer,
+        t == null ? null : t.getClass().getName(),
+        t == null ? null : t.getMessage(),
+        errorClassificationFor(t));
+  }
+
+  private static ServerResponsePayload createServerResponsePayload(
+      final ServerRequestPayload payload,
+      final Writer writer,
+      String name,
+      String what,
+      ErrorClassification errorClassification) {
+
+    PayloadExceptionMetadataBase base = null;
+    if (name != null || what != null) {
+      base =
+          new PayloadExceptionMetadataBase.Builder()
+              .setNameUtf8(name)
+              .setWhatUtf8(what)
+              .setMetadata(
+                  PayloadExceptionMetadata.fromDeclaredException(
+                      new PayloadDeclaredExceptionMetadata.Builder()
+                          .setErrorClassification(errorClassification)
+                          .build()))
               .build();
     }
 

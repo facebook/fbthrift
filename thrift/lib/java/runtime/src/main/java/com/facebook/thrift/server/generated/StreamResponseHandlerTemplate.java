@@ -186,21 +186,18 @@ abstract class StreamResponseHandlerTemplate<T> {
       int fieldId,
       boolean streamException) {
     Writer knownExceptionWriter = createKnownExceptionWriter(throwable, chain, fieldId);
-    String exceptionName = throwable.getClass().getName();
-    String exceptionMessage = throwable.getMessage();
     if (streamException) {
       return Flux.just(
           ServerResponsePayload.createWithTApplicationException(
               knownExceptionWriter,
               null,
-              createStreamMetadataDeclaredException(
-                  requestPayload, exceptionName, exceptionMessage),
+              createStreamMetadataDeclaredException(requestPayload, throwable),
               true));
     }
     return Flux.just(
         ServerResponsePayload.createWithTApplicationException(
             knownExceptionWriter,
-            createRpcMetadataDeclaredException(requestPayload, exceptionName, exceptionMessage),
+            createRpcMetadataDeclaredException(requestPayload, throwable),
             null,
             false));
   }
@@ -296,7 +293,9 @@ abstract class StreamResponseHandlerTemplate<T> {
   }
 
   private static StreamPayloadMetadata createStreamMetadataDeclaredException(
-      ServerRequestPayload requestPayload, String name, String msg) {
+      ServerRequestPayload requestPayload, Throwable throwable) {
+    String name = throwable.getClass().getName();
+    String msg = throwable.getMessage();
     return new StreamPayloadMetadata.Builder()
         .setOtherMetadata(
             convertOtherData(requestPayload.getRequestRpcMetadata().getOtherMetadata()))
@@ -309,9 +308,7 @@ abstract class StreamResponseHandlerTemplate<T> {
                         PayloadExceptionMetadata.fromDeclaredException(
                             new PayloadDeclaredExceptionMetadata.Builder()
                                 .setErrorClassification(
-                                    new ErrorClassification.Builder()
-                                        .setBlame(ErrorBlame.SERVER)
-                                        .build())
+                                    RpcPayloadUtil.errorClassificationFor(throwable))
                                 .build()))
                     .build()))
         .build();
@@ -340,7 +337,9 @@ abstract class StreamResponseHandlerTemplate<T> {
   }
 
   private static ResponseRpcMetadata createRpcMetadataDeclaredException(
-      ServerRequestPayload requestPayload, String name, String msg) {
+      ServerRequestPayload requestPayload, Throwable throwable) {
+    String name = throwable.getClass().getName();
+    String msg = throwable.getMessage();
     return new ResponseRpcMetadata.Builder()
         .setOtherMetadata(requestPayload.getRequestRpcMetadata().getOtherMetadata())
         .setPayloadMetadata(
@@ -352,9 +351,7 @@ abstract class StreamResponseHandlerTemplate<T> {
                         PayloadExceptionMetadata.fromDeclaredException(
                             new PayloadDeclaredExceptionMetadata.Builder()
                                 .setErrorClassification(
-                                    new ErrorClassification.Builder()
-                                        .setBlame(ErrorBlame.SERVER)
-                                        .build())
+                                    RpcPayloadUtil.errorClassificationFor(throwable))
                                 .build()))
                     .build()))
         .build();

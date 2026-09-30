@@ -28,12 +28,14 @@ import com.facebook.thrift.rsocket.util.PayloadUtil;
 import com.facebook.thrift.server.RpcServerHandler;
 import com.facebook.thrift.test.rocket.InitialTestResponse;
 import com.facebook.thrift.test.rocket.TestAnnotatedMessageException;
+import com.facebook.thrift.test.rocket.TestClientException;
 import com.facebook.thrift.test.rocket.TestException;
 import com.facebook.thrift.test.rocket.TestFunctionException;
 import com.facebook.thrift.test.rocket.TestMessageException;
 import com.facebook.thrift.test.rocket.TestRequest;
 import com.facebook.thrift.test.rocket.TestRequest2;
 import com.facebook.thrift.test.rocket.TestResponse;
+import com.facebook.thrift.test.rocket.TestServerException;
 import com.facebook.thrift.test.rocket.TestService;
 import com.facebook.thrift.util.RpcPayloadUtil;
 import com.facebook.thrift.util.resources.RpcResources;
@@ -49,6 +51,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import org.apache.thrift.ErrorBlame;
+import org.apache.thrift.ErrorClassification;
+import org.apache.thrift.ErrorKind;
+import org.apache.thrift.ErrorSafety;
 import org.apache.thrift.PayloadExceptionMetadataBase;
 import org.apache.thrift.PayloadResponseMetadata;
 import org.apache.thrift.ProtocolId;
@@ -325,6 +330,52 @@ public class ThriftServerRSocketTest {
         TestAnnotatedMessageException.class.getName(),
         "exc",
         (protocol, payload) -> assertDataIsAnnotatedMessageException(protocol, payload, 1));
+  }
+
+  @ParameterizedTest
+  @MethodSource("data")
+  public void testRequestResponseDeclaredClientException(ProtocolId protocolId) {
+    this.protocolId = protocolId;
+    RequestRpcMetadata requestMetadata =
+        createRequestRpcMetadata(
+            "requestResponseDeclaredClientException", RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE);
+    Payload request = createPayload(requestMetadata, 0, "foo");
+
+    StepVerifier.create(rocket.requestResponse(request))
+        .assertNext(
+            response -> {
+              assertRpcMedatadataHasDeclaredException(
+                  response,
+                  TestClientException.class.getName(),
+                  TestClientException.class.getName(),
+                  ErrorBlame.CLIENT,
+                  ErrorKind.PERMANENT,
+                  ErrorSafety.SAFE);
+            })
+        .verifyComplete();
+  }
+
+  @ParameterizedTest
+  @MethodSource("data")
+  public void testRequestResponseDeclaredServerException(ProtocolId protocolId) {
+    this.protocolId = protocolId;
+    RequestRpcMetadata requestMetadata =
+        createRequestRpcMetadata(
+            "requestResponseDeclaredServerException", RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE);
+    Payload request = createPayload(requestMetadata, 0, "foo");
+
+    StepVerifier.create(rocket.requestResponse(request))
+        .assertNext(
+            response -> {
+              assertRpcMedatadataHasDeclaredException(
+                  response,
+                  TestServerException.class.getName(),
+                  TestServerException.class.getName(),
+                  ErrorBlame.SERVER,
+                  ErrorKind.TRANSIENT,
+                  ErrorSafety.UNSPECIFIED);
+            })
+        .verifyComplete();
   }
 
   @ParameterizedTest
@@ -626,12 +677,30 @@ public class ThriftServerRSocketTest {
 
   private void assertRpcMedatadataHasDeclaredException(
       Payload payload, String expectedName, String expectedWhat) {
+    assertRpcMedatadataHasDeclaredException(
+        payload,
+        expectedName,
+        expectedWhat,
+        ErrorBlame.UNSPECIFIED,
+        ErrorKind.UNSPECIFIED,
+        ErrorSafety.UNSPECIFIED);
+  }
+
+  private void assertRpcMedatadataHasDeclaredException(
+      Payload payload,
+      String expectedName,
+      String expectedWhat,
+      ErrorBlame expectedBlame,
+      ErrorKind expectedKind,
+      ErrorSafety expectedSafety) {
     ResponseRpcMetadata responseMetadata = getResponseMetadata(payload);
     PayloadExceptionMetadataBase expMetadata =
         responseMetadata.getPayloadMetadata().getExceptionMetadata();
-    assertEquals(
-        ErrorBlame.SERVER,
-        expMetadata.getMetadata().getDeclaredException().getErrorClassification().getBlame());
+    ErrorClassification classification =
+        expMetadata.getMetadata().getDeclaredException().getErrorClassification();
+    assertEquals(expectedBlame, classification.getBlame());
+    assertEquals(expectedKind, classification.getKind());
+    assertEquals(expectedSafety, classification.getSafety());
     assertEquals(expectedName, expMetadata.getNameUtf8());
     assertEquals(expectedWhat, expMetadata.getWhatUtf8());
   }
@@ -641,9 +710,11 @@ public class ThriftServerRSocketTest {
     StreamPayloadMetadata responseMetadata = getStreamMetadata(payload);
     PayloadExceptionMetadataBase expMetadata =
         responseMetadata.getPayloadMetadata().getExceptionMetadata();
-    assertEquals(
-        ErrorBlame.SERVER,
-        expMetadata.getMetadata().getDeclaredException().getErrorClassification().getBlame());
+    ErrorClassification classification =
+        expMetadata.getMetadata().getDeclaredException().getErrorClassification();
+    assertEquals(ErrorBlame.UNSPECIFIED, classification.getBlame());
+    assertEquals(ErrorKind.UNSPECIFIED, classification.getKind());
+    assertEquals(ErrorSafety.UNSPECIFIED, classification.getSafety());
     assertEquals(expectedName, expMetadata.getNameUtf8());
     assertEquals(expectedWhat, expMetadata.getWhatUtf8());
   }

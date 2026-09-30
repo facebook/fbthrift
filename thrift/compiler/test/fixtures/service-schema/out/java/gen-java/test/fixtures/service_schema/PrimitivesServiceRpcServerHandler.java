@@ -261,8 +261,7 @@ public class PrimitivesServiceRpcServerHandler
                       com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                           _payload,
                           _exceptionWriter,
-                          _t.getClass().getName(),
-                          _t.getMessage());
+                          _t);
 
                     return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }

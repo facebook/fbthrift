@@ -19,12 +19,14 @@ package com.facebook.thrift.rsocket.server;
 import com.facebook.thrift.model.StreamResponse;
 import com.facebook.thrift.test.rocket.InitialTestResponse;
 import com.facebook.thrift.test.rocket.TestAnnotatedMessageException;
+import com.facebook.thrift.test.rocket.TestClientException;
 import com.facebook.thrift.test.rocket.TestException;
 import com.facebook.thrift.test.rocket.TestFunctionException;
 import com.facebook.thrift.test.rocket.TestMessageException;
 import com.facebook.thrift.test.rocket.TestRequest;
 import com.facebook.thrift.test.rocket.TestRequest2;
 import com.facebook.thrift.test.rocket.TestResponse;
+import com.facebook.thrift.test.rocket.TestServerException;
 import com.facebook.thrift.test.rocket.TestService;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -77,6 +79,16 @@ public class TestServiceHandler implements TestService.Reactive {
   public Mono<TestResponse> requestResponseDeclaredAnnotatedMessageException(
       TestRequest testRequest) {
     return Mono.error(new TestAnnotatedMessageException("exc"));
+  }
+
+  @Override
+  public Mono<TestResponse> requestResponseDeclaredClientException(TestRequest testRequest) {
+    return Mono.error(new TestClientException("exc"));
+  }
+
+  @Override
+  public Mono<TestResponse> requestResponseDeclaredServerException(TestRequest testRequest) {
+    return Mono.error(new TestServerException("exc"));
   }
 
   @Override
