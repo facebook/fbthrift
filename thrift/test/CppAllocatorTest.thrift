@@ -130,6 +130,14 @@ struct YesAllocatorViaPmr {
 }
 
 @thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "::std::allocator<char>"},
+}
+@thrift.TerseWrite
+struct HasEmptyAllocator {
+  1: byte foo;
+}
+
+@thrift.DeprecatedUnvalidatedAnnotations{
   items = {"cpp.allocator": "::ScopedStatefulAlloc<>"},
 }
 struct HasContainerFields {

@@ -16,6 +16,7 @@
 
 #include <thrift/test/CppAllocatorTest.h>
 
+#include <cstdint>
 #include <map>
 #include <set>
 #include <type_traits>
@@ -117,6 +118,11 @@ TEST(CppAllocatorTest, AllocatorViaPmr) {
   NoAllocatorViaPmr s1;
   YesAllocatorViaPmr s2;
   EXPECT_GT(sizeof(s1), sizeof(s2));
+}
+
+TEST(CppAllocatorTest, EmptyAllocatorTakesNoSpace) {
+  static_assert(std::is_empty_v<HasEmptyAllocator::allocator_type>);
+  EXPECT_EQ(sizeof(HasEmptyAllocator), sizeof(std::int8_t));
 }
 
 TEST(CppAllocatorTest, AllocCtorIgnoresCustomDefaultWhenLegacy) {
