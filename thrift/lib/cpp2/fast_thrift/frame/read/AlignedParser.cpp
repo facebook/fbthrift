@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <cstring>
 
 #include <folly/io/Cursor.h>
 
@@ -27,27 +28,46 @@
 
 namespace apache::thrift::fast_thrift::frame::read {
 
-namespace {
-
-// Length prefix plus the base header. Every frame starts with these.
-constexpr size_t kHeaderSize = kMetadataLengthSize + kBaseHeaderSize;
-
-// A frame that carries metadata has three more header bytes for the metadata
-// length. One buffer holds the header in either case.
-constexpr size_t kHeaderBufferSize = kHeaderSize + kMetadataLengthSize;
-
-} // namespace
-
-AlignedParser::AlignedParser(
-    size_t minBufferSize, size_t maxBufferSize, size_t maxFrameSize) noexcept
-    : minBufferSize_(minBufferSize),
-      maxBufferSize_(maxBufferSize),
-      maxFrameSize_(maxFrameSize),
-      remainingHeader_(kHeaderSize) {}
+AlignedParser::AlignedParser(size_t maxFrameSize) noexcept
+    : maxFrameSize_(maxFrameSize), remainingHeader_(kHeaderSize) {}
 
 channel_pipeline::BytesPtr AlignedParser::newBuffer(size_t capacity) noexcept {
-  return bufFactory_ ? (*bufFactory_)(capacity)
-                     : folly::IOBuf::create(capacity);
+  channel_pipeline::BytesPtr buffer =
+      bufFactory_ ? (*bufFactory_)(capacity) : folly::IOBuf::create(capacity);
+  if (FOLLY_UNLIKELY(
+          !buffer || buffer->isChained() || buffer->isSharedOne() ||
+          !buffer->empty() || buffer->tailroom() < capacity)) {
+    return nullptr;
+  }
+  return buffer;
+}
+
+bool AlignedParser::startHeaderAndMetadata() noexcept {
+  const size_t frameHeaderSize = headerBytesRead_ - kMetadataLengthSize;
+  headerAndMetadata_ = newBuffer(frameHeaderSize + remainingMetadata_);
+  if (!headerAndMetadata_) {
+    return false;
+  }
+  std::memcpy(
+      headerAndMetadata_->writableTail(),
+      headerBytes_.data() + kMetadataLengthSize,
+      frameHeaderSize);
+  headerAndMetadata_->append(frameHeaderSize);
+  return true;
+}
+
+bool AlignedParser::startBody() noexcept {
+  channel_pipeline::BytesPtr body = newBuffer(frameLength_);
+  if (!body) {
+    return false;
+  }
+  std::memcpy(
+      body->writableTail(),
+      headerBytes_.data() + kMetadataLengthSize,
+      kBaseHeaderSize);
+  body->append(kBaseHeaderSize);
+  body_.append(std::move(body));
+  return true;
 }
 
 bool AlignedParser::hasOwnBuffers() const noexcept {
@@ -72,6 +92,9 @@ channel_pipeline::BytesPtr AlignedParser::newDataBuffer() noexcept {
 
   // Room for the data plus the shift below, which is under kAlignment bytes.
   channel_pipeline::BytesPtr buf = newBuffer(remainingData_ + kAlignment);
+  if (!buf) {
+    return nullptr;
+  }
 
   // The blob sits kBytesBeforeFirstField into the data field, so move the
   // start until the blob lands on a kAlignment boundary. A buffer that already
@@ -101,32 +124,35 @@ void AlignedParser::getReadBuffer(
     case State::AwaitingBody:
       bodyReadBuffer(bufReturn, lenReturn);
       return;
+    case State::Error:
+      *bufReturn = nullptr;
+      *lenReturn = 0;
+      return;
   }
 }
 
 void AlignedParser::headerReadBuffer(
     void** bufReturn, size_t* lenReturn) noexcept {
-  if (!header_) {
-    header_ = newBuffer(kHeaderBufferSize);
-  }
-  *bufReturn = header_->writableTail();
-  // The factory decides the real size, so offer what the buffer can take.
-  *lenReturn = std::min(header_->tailroom(), remainingHeader_);
+  *bufReturn = headerBytes_.data() + headerBytesRead_;
+  *lenReturn = remainingHeader_;
 }
 
 void AlignedParser::metadataReadBuffer(
     void** bufReturn, size_t* lenReturn) noexcept {
-  if (!metadata_) {
-    metadata_ = newBuffer(remainingMetadata_);
-  }
-  *bufReturn = metadata_->writableTail();
-  *lenReturn = std::min(metadata_->tailroom(), remainingMetadata_);
+  *bufReturn = headerAndMetadata_->writableTail();
+  *lenReturn = std::min(headerAndMetadata_->tailroom(), remainingMetadata_);
 }
 
 void AlignedParser::dataReadBuffer(
     void** bufReturn, size_t* lenReturn) noexcept {
   if (!data_) {
     data_ = newDataBuffer();
+    if (!data_) {
+      state_ = State::Error;
+      *bufReturn = nullptr;
+      *lenReturn = 0;
+      return;
+    }
   }
   *bufReturn = data_->writableTail();
   *lenReturn = std::min(data_->tailroom(), remainingData_);
@@ -134,16 +160,14 @@ void AlignedParser::dataReadBuffer(
 
 void AlignedParser::bodyReadBuffer(
     void** bufReturn, size_t* lenReturn) noexcept {
-  // preallocate keeps the current tail when it has minBufferSize_ bytes of
-  // room. A shorter tail gets allocationSize bytes.
-  const size_t allocationSize =
-      std::max(frameLength_ + kMetadataLengthSize, maxBufferSize_);
-  const auto [buf, room] =
-      body_.preallocate(minBufferSize_, allocationSize, allocationSize);
-  *bufReturn = buf;
-  // Do not offer room past the end of this frame. We do not know how big the
-  // next frame is until we have read its header.
-  *lenReturn = std::min(room, remainingBody_);
+  if (body_.empty() && !startBody()) {
+    state_ = State::Error;
+    *bufReturn = nullptr;
+    *lenReturn = 0;
+    return;
+  }
+  *bufReturn = body_.writableTail();
+  *lenReturn = std::min(body_.tailroom(), remainingBody_);
 }
 
 AlignedParser::Step AlignedParser::onBytes(size_t len) noexcept {
@@ -158,18 +182,22 @@ AlignedParser::Step AlignedParser::onBytes(size_t len) noexcept {
       return onDataBytes(len);
     case State::AwaitingBody:
       return onBodyBytes(len);
+    case State::Error:
+      return Step::Bad;
   }
   return Step::Bad;
 }
 
 AlignedParser::Step AlignedParser::onHeaderBytes(size_t len) noexcept {
-  header_->append(len);
+  headerBytesRead_ += len;
   remainingHeader_ -= len;
   if (remainingHeader_ > 0) {
     return Step::NeedMore;
   }
 
-  folly::io::Cursor cursor{header_.get()};
+  folly::IOBuf header =
+      folly::IOBuf::wrapBufferAsValue(headerBytes_.data(), headerBytesRead_);
+  folly::io::Cursor cursor{&header};
   frameLength_ = detail::readFrameOrMetadataSize(cursor);
 
   // The length a frame gives must at least cover the header itself.
@@ -189,11 +217,10 @@ AlignedParser::Step AlignedParser::onHeaderBytes(size_t len) noexcept {
     return startOwnBuffers(flags);
   }
 
-  body_.append(std::move(header_));
   remainingBody_ = frameLength_ - kBaseHeaderSize;
   if (remainingBody_ == 0) {
     // Nothing after the header. A CANCEL frame looks like this.
-    return Step::FrameReady;
+    return startBody() ? Step::FrameReady : Step::Bad;
   }
 
   state_ = State::AwaitingBody;
@@ -211,6 +238,9 @@ AlignedParser::Step AlignedParser::startOwnBuffers(uint16_t flags) noexcept {
     return Step::NeedMore;
   }
 
+  if (!startHeaderAndMetadata()) {
+    return Step::Bad;
+  }
   remainingData_ = frameLength_ - kBaseHeaderSize;
   if (remainingData_ == 0) {
     return Step::FrameReady;
@@ -220,13 +250,15 @@ AlignedParser::Step AlignedParser::startOwnBuffers(uint16_t flags) noexcept {
 }
 
 AlignedParser::Step AlignedParser::onMetadataLengthBytes(size_t len) noexcept {
-  header_->append(len);
+  headerBytesRead_ += len;
   remainingHeader_ -= len;
   if (remainingHeader_ > 0) {
     return Step::NeedMore;
   }
 
-  folly::io::Cursor cursor{header_.get()};
+  folly::IOBuf header =
+      folly::IOBuf::wrapBufferAsValue(headerBytes_.data(), headerBytesRead_);
+  folly::io::Cursor cursor{&header};
   cursor.skip(kHeaderSize);
   remainingMetadata_ = detail::readFrameOrMetadataSize(cursor);
 
@@ -235,6 +267,9 @@ AlignedParser::Step AlignedParser::onMetadataLengthBytes(size_t len) noexcept {
     return Step::Bad;
   }
   remainingData_ = budget - remainingMetadata_;
+  if (!startHeaderAndMetadata()) {
+    return Step::Bad;
+  }
 
   if (remainingMetadata_ > 0) {
     state_ = State::AwaitingMetadata;
@@ -248,7 +283,7 @@ AlignedParser::Step AlignedParser::onMetadataLengthBytes(size_t len) noexcept {
 }
 
 AlignedParser::Step AlignedParser::onMetadataBytes(size_t len) noexcept {
-  metadata_->append(len);
+  headerAndMetadata_->append(len);
   remainingMetadata_ -= len;
   if (remainingMetadata_ > 0) {
     return Step::NeedMore;
@@ -274,18 +309,12 @@ AlignedParser::Step AlignedParser::onBodyBytes(size_t len) noexcept {
 
 channel_pipeline::BytesPtr AlignedParser::takeFrame() noexcept {
   channel_pipeline::BytesPtr frame;
-  if (hasOwnBuffers()) {
-    frame = std::move(header_);
-    // The length prefix does not go downstream.
-    frame->trimStart(kMetadataLengthSize);
-    if (metadata_) {
-      frame->appendToChain(std::move(metadata_));
-    }
+  if (headerAndMetadata_) {
+    frame = std::move(headerAndMetadata_);
     if (data_) {
       frame->appendToChain(std::move(data_));
     }
   } else {
-    body_.trimStart(kMetadataLengthSize);
     frame = body_.split(frameLength_);
   }
   // Clear the framing state before the sink runs, because it may re-enter.
@@ -297,6 +326,7 @@ void AlignedParser::startNextFrame() noexcept {
   state_ = State::AwaitingHeader;
   frameType_ = FrameType::RESERVED;
   remainingHeader_ = kHeaderSize;
+  headerBytesRead_ = 0;
   remainingMetadata_ = 0;
   remainingData_ = 0;
   remainingBody_ = 0;
@@ -305,12 +335,10 @@ void AlignedParser::startNextFrame() noexcept {
 
 void AlignedParser::setIOBufFactory(folly::IOBufFactory* factory) noexcept {
   bufFactory_ = factory;
-  body_.setIOBufFactory(factory);
 }
 
 void AlignedParser::reset() noexcept {
-  header_.reset();
-  metadata_.reset();
+  headerAndMetadata_.reset();
   data_.reset();
   body_.reset();
   startNextFrame();

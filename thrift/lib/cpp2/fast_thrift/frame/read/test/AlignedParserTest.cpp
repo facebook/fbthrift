@@ -134,7 +134,7 @@ class AlignedParserTest : public Test {
         parser_, folly::ByteRange{bytes.data(), bytes.size()}, sink());
   }
 
-  // Data is always the last buffer. The order is header, metadata, data.
+  // Data is always the last buffer.
   const folly::IOBuf& dataNode(const folly::IOBuf& frame) const {
     return *frame.prev();
   }
@@ -145,23 +145,34 @@ class AlignedParserTest : public Test {
         b.buffer() < a.buffer() + a.capacity();
   }
 
+  static void expectFrameMatchesWire(
+      const folly::IOBuf& frame, const std::vector<uint8_t>& wire) {
+    EXPECT_THAT(wire.size(), Ge(kMetadataLengthSize));
+    if (wire.size() < kMetadataLengthSize) {
+      return;
+    }
+    const folly::IOBuf expected = folly::IOBuf::wrapBufferAsValue(
+        wire.data() + kMetadataLengthSize, wire.size() - kMetadataLengthSize);
+    EXPECT_THAT(folly::IOBufEqualTo{}(frame, expected), IsTrue());
+  }
+
   // The body of factory_. A test that wants to see what the parser allocated
   // calls parser_.setIOBufFactory(&factory_) and then reads allocations_.
   BytesPtr recordAllocation(size_t capacity) {
-    const size_t allocationSize = capacity + extraTailroom_;
-    allocations_.push_back(allocationSize);
-    return folly::IOBuf::create(allocationSize);
+    allocations_.push_back(capacity);
+    return folly::IOBuf::create(capacity);
   }
 
   struct Run {
     Result result;
+    size_t allocationCount;
     size_t bytesAllocated;
   };
 
   // Ends with a getReadBuffer call, the way a socket asks for the next buffer
-  // before it knows more bytes are coming. That call is where the parser
-  // allocates, so a test that stops at the last consume sees nothing. frames_
-  // and allocations_ hold only what this pass produced.
+  // before it knows more bytes are coming. Some states allocate the next
+  // output buffer there, so a run that stops at the last consume would miss
+  // that allocation. frames_ and allocations_ hold only this pass's results.
   Run drive(AlignedParser& parser, const std::vector<uint8_t>& bytes) {
     frames_.clear();
     allocations_.clear();
@@ -173,13 +184,13 @@ class AlignedParserTest : public Test {
     parser.getReadBuffer(&buf, &room);
     return Run{
         result,
+        allocations_.size(),
         std::accumulate(allocations_.begin(), allocations_.end(), size_t{0})};
   }
 
   std::vector<BytesPtr> frames_;
   Result sinkResult_{Result::Success};
   std::vector<size_t> allocations_;
-  size_t extraTailroom_{0};
 
   // parser_ holds a raw pointer to factory_, so factory_ has to outlive it.
   // Members die in reverse order of declaration, so factory_ is declared
@@ -189,19 +200,23 @@ class AlignedParserTest : public Test {
   AlignedParser parser_;
 };
 
-// Metadata and data must come back in separate buffers, not merged into one.
-TEST_F(AlignedParserTest, EmitsMetadataAndDataInSeparateBuffers) {
+// Data must come back separately from the header and metadata.
+TEST_F(AlignedParserTest, EmitsDataInItsOwnBuffer) {
+  const std::vector<uint8_t> wire = serializeFrame(
+      write::RequestResponseHeader{.streamId = 1},
+      blobOf(40, 'm'),
+      blobOf(100, 'd'));
+  parser_.setIOBufFactory(&factory_);
+  EXPECT_THAT(feed(wire), Eq(Result::Success));
   EXPECT_THAT(
-      feed(serializeFrame(
-          write::RequestResponseHeader{.streamId = 1},
-          blobOf(40, 'm'),
-          blobOf(100, 'd'))),
-      Eq(Result::Success));
+      allocations_,
+      ElementsAre(kBaseHeaderSize + kMetadataLengthSize + 40, 100 + 16));
   ASSERT_THAT(frames_, SizeIs(1));
-  ASSERT_THAT(frames_[0]->countChainElements(), Eq(3));
-  EXPECT_THAT(frames_[0]->length(), Eq(kBaseHeaderSize + kMetadataLengthSize));
-  EXPECT_THAT(frames_[0]->next()->length(), Eq(40));
+  ASSERT_THAT(frames_[0]->countChainElements(), Eq(2));
+  EXPECT_THAT(
+      frames_[0]->length(), Eq(kBaseHeaderSize + kMetadataLengthSize + 40));
   EXPECT_THAT(frames_[0]->prev()->length(), Eq(100));
+  expectFrameMatchesWire(*frames_[0], wire);
 }
 
 // A binary field of the response must end up in a buffer of its own. Code that
@@ -294,12 +309,14 @@ TEST_F(AlignedParserTest, BlobLandsOnAnAlignmentBoundary) {
 
 // PAYLOAD frame gets no shift, only REQUEST_RESPONSE needs one.
 TEST_F(AlignedParserTest, PayloadDataIsNotShifted) {
+  parser_.setIOBufFactory(&factory_);
   EXPECT_THAT(
       feed(serializeFrame(
           write::PayloadHeader{.streamId = 1, .next = true},
           nullptr,
           blobOf(100, 'd'))),
       Eq(Result::Success));
+  EXPECT_THAT(allocations_, ElementsAre(kBaseHeaderSize, 100));
   ASSERT_THAT(frames_, SizeIs(1));
   EXPECT_THAT(dataNode(*frames_[0]).headroom(), Eq(0));
 }
@@ -307,12 +324,36 @@ TEST_F(AlignedParserTest, PayloadDataIsNotShifted) {
 // Other frame types go down a different path inside the parser. They must
 // still come out whole.
 TEST_F(AlignedParserTest, UnalignedFrameTypesAreEmittedWhole) {
-  EXPECT_THAT(
-      feed(serializeFrame(
-          write::RequestFnfHeader{.streamId = 1}, nullptr, blobOf(50, 'd'))),
-      Eq(Result::Success));
+  const std::vector<uint8_t> wire = serializeFrame(
+      write::RequestFnfHeader{.streamId = 1}, nullptr, blobOf(50, 'd'));
+  EXPECT_THAT(feed(wire), Eq(Result::Success));
   ASSERT_THAT(frames_, SizeIs(1));
   EXPECT_THAT(frames_[0]->computeChainDataLength(), Eq(kBaseHeaderSize + 50));
+  expectFrameMatchesWire(*frames_[0], wire);
+}
+
+// The test sends one byte per consume call. This splits the wire header,
+// metadata length, metadata and data across separate calls.
+TEST_F(AlignedParserTest, ReassemblesAFrameOneByteAtATime) {
+  const std::vector<uint8_t> wire = serializeFrame(
+      write::RequestResponseHeader{.streamId = 1},
+      blobOf(4, 'm'),
+      blobOf(8, 'd'));
+
+  for (size_t offset = 0; offset < wire.size(); ++offset) {
+    const Result result = ConsumeDriver::feed(
+        parser_, folly::ByteRange{wire.data() + offset, 1}, sink());
+    EXPECT_THAT(result, Eq(Result::Success));
+    if (result != Result::Success) {
+      return;
+    }
+  }
+
+  EXPECT_THAT(frames_, SizeIs(1));
+  if (frames_.size() != 1) {
+    return;
+  }
+  expectFrameMatchesWire(*frames_[0], wire);
 }
 
 // A CANCEL frame is a header and nothing else. It must still be emitted.
@@ -343,6 +384,25 @@ TEST_F(AlignedParserTest, RejectsFrameShorterThanItsHeader) {
   EXPECT_THAT(frames_, IsEmpty());
 }
 
+TEST_F(AlignedParserTest, ErrorPersistsUntilReset) {
+  std::vector<uint8_t> bytes(kMetadataLengthSize + kBaseHeaderSize, 0);
+  bytes[2] = static_cast<uint8_t>(kBaseHeaderSize - 1);
+
+  EXPECT_THAT(feed(bytes), Eq(Result::Error));
+
+  void* buffer = nullptr;
+  size_t room = 1;
+  parser_.getReadBuffer(&buffer, &room);
+  EXPECT_THAT(buffer, IsNull());
+  EXPECT_THAT(room, Eq(0));
+  EXPECT_THAT(parser_.consume(0, sink()), Eq(Result::Error));
+
+  parser_.reset();
+  parser_.getReadBuffer(&buffer, &room);
+  EXPECT_THAT(buffer, NotNull());
+  EXPECT_THAT(room, Eq(kMetadataLengthSize + kBaseHeaderSize));
+}
+
 // A frame bigger than the cap must be refused, and refused before any room is
 // reserved for it.
 TEST_F(AlignedParserTest, RejectsFrameOverMaxFrameSize) {
@@ -350,55 +410,218 @@ TEST_F(AlignedParserTest, RejectsFrameOverMaxFrameSize) {
   constexpr size_t kHeaderSize = kMetadataLengthSize + kBaseHeaderSize;
 
   const auto announce = [this](size_t frameLength) {
-    AlignedParser parser{
-        AlignedParser::kDefaultMinBufferSize,
-        AlignedParser::kDefaultMaxBufferSize,
-        kMaxFrameSize};
-    std::vector<uint8_t> bytes(kHeaderSize, 0);
-    write::writeFrameLength(bytes.data(), frameLength);
+    AlignedParser parser{kMaxFrameSize};
+    std::vector<uint8_t> bytes = serializeFrame(
+        write::RequestResponseHeader{.streamId = 1},
+        nullptr,
+        blobOf(frameLength - kBaseHeaderSize, 'd'));
+    bytes.resize(kHeaderSize);
     return drive(parser, bytes);
   };
 
-  // Control: a frame under the cap is taken, and taking it reserves room past
-  // the header. Without this the check below would also pass on a parser that
-  // never reserves anything.
+  // Control: an accepted request reserves its output buffers after the header.
   const Run accepted = announce(kMaxFrameSize / 2);
   ASSERT_THAT(accepted.result, Eq(Result::Success));
   ASSERT_THAT(accepted.bytesAllocated, Gt(kHeaderSize));
 
-  // A parser that has read nothing has still allocated one header buffer. The
-  // refused frame must cost that and nothing more.
-  AlignedParser fresh;
-  const size_t headerBufferOnly = drive(fresh, {}).bytesAllocated;
-
   const Run refused = announce(kMaxFrameSize + 1);
   EXPECT_THAT(refused.result, Eq(Result::Error));
   EXPECT_THAT(frames_, IsEmpty());
-  EXPECT_THAT(refused.bytesAllocated, Eq(headerBufferOnly));
+  EXPECT_THAT(refused.bytesAllocated, Eq(0));
 }
 
-// On the plain path, a tail with less room than minBufferSize makes the next
-// read ask for the whole wire frame size.
-TEST_F(AlignedParserTest, PlainFrameReservesAnnouncedLengthWithShortTail) {
-  constexpr size_t kBodySize = 1 << 20;
-
-  // Leave one byte after the header, below minBufferSize.
-  extraTailroom_ = 1;
-
-  std::vector<uint8_t> headerOnly = serializeFrame(
-      write::RequestFnfHeader{.streamId = 1}, nullptr, blobOf(kBodySize, 'd'));
-  headerOnly.resize(kMetadataLengthSize + kBaseHeaderSize);
+// A factory can return less room than requested. The parser must stop before
+// it copies either form of the frame header into that buffer.
+TEST_F(AlignedParserTest, RejectsShortHeaderBuffers) {
+  folly::IOBufFactory factory = [](size_t capacity) {
+    BytesPtr buffer = folly::IOBuf::create(capacity);
+    buffer->advance(buffer->tailroom());
+    return buffer;
+  };
+  {
+    AlignedParser parser;
+    parser.setIOBufFactory(&factory);
+    const std::vector<uint8_t> wire = serializeFrame(
+        write::RequestResponseHeader{.streamId = 1},
+        blobOf(4, 'm'),
+        blobOf(8, 'd'));
+    EXPECT_THAT(
+        ConsumeDriver::feed(
+            parser, folly::ByteRange{wire.data(), wire.size()}, sink()),
+        Eq(Result::Error));
+    EXPECT_THAT(frames_, IsEmpty());
+  }
 
   AlignedParser parser;
-  const Run run = drive(parser, headerOnly);
-  EXPECT_THAT(run.result, Eq(Result::Success));
+  parser.setIOBufFactory(&factory);
+  std::vector<uint8_t> headerOnly = serializeFrame(
+      write::RequestFnfHeader{.streamId = 1}, nullptr, blobOf(8, 'd'));
+  headerOnly.resize(kMetadataLengthSize + kBaseHeaderSize);
+  EXPECT_THAT(
+      ConsumeDriver::feed(
+          parser,
+          folly::ByteRange{headerOnly.data(), headerOnly.size()},
+          sink()),
+      Eq(Result::Success));
+
+  void* buffer = nullptr;
+  size_t room = 0;
+  parser.getReadBuffer(&buffer, &room);
+  EXPECT_THAT(buffer, IsNull());
+  EXPECT_THAT(room, Eq(0));
+  EXPECT_THAT(parser.consume(0, sink()), Eq(Result::Error));
   EXPECT_THAT(frames_, IsEmpty());
-  EXPECT_THAT(run.bytesAllocated, Ge(kBodySize));
 }
 
-// An aligned frame is the other way round. Its data has to arrive in one
-// buffer, so the parser takes the whole announced size as soon as the header
-// is in, before a single data byte has turned up.
+TEST_F(AlignedParserTest, RejectsNonEmptyPlainBuffer) {
+  folly::IOBufFactory factory = [](size_t capacity) {
+    BytesPtr buffer = folly::IOBuf::create(capacity);
+    if (capacity > kBaseHeaderSize + 2 * kMetadataLengthSize) {
+      buffer->append(1);
+    }
+    return buffer;
+  };
+  AlignedParser parser;
+  parser.setIOBufFactory(&factory);
+
+  std::vector<uint8_t> headerOnly = serializeFrame(
+      write::RequestFnfHeader{.streamId = 1}, nullptr, blobOf(8, 'd'));
+  headerOnly.resize(kMetadataLengthSize + kBaseHeaderSize);
+  EXPECT_THAT(
+      ConsumeDriver::feed(
+          parser,
+          folly::ByteRange{headerOnly.data(), headerOnly.size()},
+          sink()),
+      Eq(Result::Success));
+
+  void* buffer = nullptr;
+  size_t room = 0;
+  parser.getReadBuffer(&buffer, &room);
+  EXPECT_THAT(buffer, IsNull());
+  EXPECT_THAT(room, Eq(0));
+  EXPECT_THAT(parser.consume(0, sink()), Eq(Result::Error));
+  EXPECT_THAT(frames_, IsEmpty());
+}
+
+// The data buffer also needs all the room the parser requested. A short buffer
+// must not be shifted or exposed to the socket.
+TEST_F(AlignedParserTest, ShortDataBufferOffersNoRoom) {
+  size_t allocation = 0;
+  folly::IOBufFactory factory = [&allocation](size_t capacity) {
+    ++allocation;
+    return folly::IOBuf::create(allocation == 1 ? capacity : capacity / 2);
+  };
+  AlignedParser parser;
+  parser.setIOBufFactory(&factory);
+
+  const std::vector<uint8_t> wire = serializeFrame(
+      write::RequestResponseHeader{.streamId = 1}, nullptr, blobOf(100, 'd'));
+  constexpr size_t kHeaderSize = kMetadataLengthSize + kBaseHeaderSize;
+  EXPECT_THAT(
+      ConsumeDriver::feed(
+          parser, folly::ByteRange{wire.data(), kHeaderSize}, sink()),
+      Eq(Result::Success));
+
+  void* buffer = nullptr;
+  size_t room = 0;
+  parser.getReadBuffer(&buffer, &room);
+  EXPECT_THAT(buffer, IsNull());
+  EXPECT_THAT(room, Eq(0));
+}
+
+// A plain frame waits for the next read before it allocates one exact-size
+// buffer for the emitted frame.
+TEST_F(AlignedParserTest, PlainFrameAllocatesOneExactBufferWhenReadStarts) {
+  constexpr size_t kBodySize = 1 << 20;
+  constexpr size_t kWireHeaderSize = kMetadataLengthSize + kBaseHeaderSize;
+
+  const std::vector<uint8_t> wire = serializeFrame(
+      write::RequestFnfHeader{.streamId = 1}, nullptr, blobOf(kBodySize, 'd'));
+
+  parser_.setIOBufFactory(&factory_);
+  EXPECT_THAT(
+      ConsumeDriver::feed(
+          parser_, folly::ByteRange{wire.data(), kWireHeaderSize}, sink()),
+      Eq(Result::Success));
+  EXPECT_THAT(frames_, IsEmpty());
+  EXPECT_THAT(allocations_, IsEmpty());
+
+  size_t offset = kWireHeaderSize;
+  while (offset < wire.size()) {
+    void* buffer = nullptr;
+    size_t room = 0;
+    parser_.getReadBuffer(&buffer, &room);
+    const size_t length = std::min<size_t>(4096, wire.size() - offset);
+    ASSERT_THAT(buffer, NotNull());
+    ASSERT_THAT(room, Ge(length));
+    std::memcpy(buffer, wire.data() + offset, length);
+    ASSERT_THAT(parser_.consume(length, sink()), Eq(Result::Success));
+    offset += length;
+  }
+
+  EXPECT_THAT(allocations_, ElementsAre(wire.size() - kMetadataLengthSize));
+  ASSERT_THAT(frames_, SizeIs(1));
+  EXPECT_THAT(frames_[0]->countChainElements(), Eq(1));
+  expectFrameMatchesWire(*frames_[0], wire);
+}
+
+TEST_F(AlignedParserTest, RejectsChainedPlainBuffer) {
+  folly::IOBufFactory factory = [](size_t capacity) {
+    BytesPtr buffer = folly::IOBuf::create(capacity);
+    buffer->appendToChain(folly::IOBuf::create(1));
+    return buffer;
+  };
+  AlignedParser parser;
+  parser.setIOBufFactory(&factory);
+
+  std::vector<uint8_t> headerOnly = serializeFrame(
+      write::RequestFnfHeader{.streamId = 1}, nullptr, blobOf(100, 'd'));
+  headerOnly.resize(kMetadataLengthSize + kBaseHeaderSize);
+  EXPECT_THAT(
+      ConsumeDriver::feed(
+          parser,
+          folly::ByteRange{headerOnly.data(), headerOnly.size()},
+          sink()),
+      Eq(Result::Success));
+
+  void* buffer = nullptr;
+  size_t room = 0;
+  parser.getReadBuffer(&buffer, &room);
+  EXPECT_THAT(buffer, IsNull());
+  EXPECT_THAT(room, Eq(0));
+  EXPECT_THAT(parser.consume(0, sink()), Eq(Result::Error));
+}
+
+TEST_F(AlignedParserTest, RejectsSharedPlainBuffer) {
+  BytesPtr sharedOwner;
+  folly::IOBufFactory factory = [&sharedOwner](size_t capacity) {
+    BytesPtr buffer = folly::IOBuf::create(capacity);
+    sharedOwner = buffer->cloneOne();
+    return buffer;
+  };
+  AlignedParser parser;
+  parser.setIOBufFactory(&factory);
+
+  std::vector<uint8_t> headerOnly = serializeFrame(
+      write::RequestFnfHeader{.streamId = 1}, nullptr, blobOf(100, 'd'));
+  headerOnly.resize(kMetadataLengthSize + kBaseHeaderSize);
+  EXPECT_THAT(
+      ConsumeDriver::feed(
+          parser,
+          folly::ByteRange{headerOnly.data(), headerOnly.size()},
+          sink()),
+      Eq(Result::Success));
+
+  void* buffer = nullptr;
+  size_t room = 0;
+  parser.getReadBuffer(&buffer, &room);
+  EXPECT_THAT(buffer, IsNull());
+  EXPECT_THAT(room, Eq(0));
+  EXPECT_THAT(parser.consume(0, sink()), Eq(Result::Error));
+}
+
+// A REQUEST_RESPONSE frame reserves its announced data before any data
+// arrives. A peer can hold a megabyte by sending only the nine-byte header.
 TEST_F(AlignedParserTest, AlignedFrameReservesTheAnnouncedLength) {
   constexpr size_t kDataSize = 1 << 20;
 

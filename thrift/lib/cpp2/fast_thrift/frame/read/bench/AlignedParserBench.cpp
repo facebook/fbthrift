@@ -20,18 +20,19 @@
  * by memcpy.
  *
  * The median of three @fbcode//mode/opt-clang-lto runs on 2026-09-25 was:
- *   - REQUEST_RESPONSE with metadata, 100 B: 36.38 ns for FrameLengthParser
- *     and 112.14 ns for AlignedParser;
- *   - REQUEST_RESPONSE with metadata, 1 KiB: 62.75 ns and 148.08 ns;
- *   - REQUEST_RESPONSE with metadata, 64 KiB: 2.02 us and 2.25 us;
- *   - REQUEST_RESPONSE without metadata, 100 B: 33.95 ns and 65.34 ns;
- *   - PAYLOAD, 1 KiB: 60.70 ns and 95.65 ns;
- *   - REQUEST_FNF, 100 B: 33.81 ns and 100.72 ns;
- *   - REQUEST_FNF, 64 KiB: 1.96 us for both parsers.
+ *   - REQUEST_RESPONSE with metadata, 100 B: 36.80 ns for FrameLengthParser
+ *     and 95.79 ns for AlignedParser;
+ *   - REQUEST_RESPONSE with metadata, 1 KiB: 61.23 ns and 121.75 ns;
+ *   - REQUEST_RESPONSE with metadata, 64 KiB: 1.96 us and 2.04 us;
+ *   - REQUEST_RESPONSE without metadata, 100 B: 34.13 ns and 70.77 ns;
+ *   - PAYLOAD, 1 KiB: 60.71 ns and 98.34 ns;
+ *   - REQUEST_FNF, 100 B: 34.08 ns and 56.18 ns;
+ *   - REQUEST_FNF, 64 KiB: 1.95 us for both parsers.
  *
- * AlignedParser uses separate header, metadata and data buffers for a
- * REQUEST_RESPONSE with metadata. PAYLOAD uses separate header and data
- * buffers. REQUEST_FNF uses the plain queue path.
+ * AlignedParser takes two buffers for a REQUEST_RESPONSE or PAYLOAD frame that
+ * carries data. One holds the header and metadata, and the other holds the
+ * data. REQUEST_FNF takes one exact-size buffer. The 64 KiB cases are near
+ * parity.
  */
 
 #include <algorithm>

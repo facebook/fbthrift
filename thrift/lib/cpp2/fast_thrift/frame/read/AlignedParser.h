@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 
@@ -49,33 +50,32 @@ namespace apache::thrift::fast_thrift::frame::read {
  * conditions. Parsing still works if one is false, but the binary field may
  * span buffers or lose alignment.
  *
- * A REQUEST_RESPONSE or PAYLOAD frame has separate header, metadata and data
- * buffers. Every other frame uses a queue whose node boundaries can fall
- * anywhere.
+ * A REQUEST_RESPONSE or PAYLOAD frame keeps its header and metadata in one
+ * buffer. Its data, when present, is a second buffer. Every other frame type
+ * uses one buffer for the whole frame.
  *
- * The parser controls where data lands, so it implements Parser and not
- * MovableBufferParser.
+ * The parser controls where data lands. A buffer from the caller would remove
+ * that control. The class implements Parser and not MovableBufferParser.
+ * Native io_uring receive needs a movable read callback. If this parser is
+ * installed directly on an io_uring EventBase, folly aborts the process.
  *
- * The fixed header buffer is allocated before the frame length is known. The
- * parser allocates each variable-size buffer when the transport asks for its
- * space. It checks maxFrameSize after allocating the fixed header, but before
- * allocating the body, metadata or data.
+ * The parser may reserve an announced section before its bytes arrive. A peer
+ * can keep about maxFrameSize bytes allocated after sending only a header.
+ * maxFrameSize limits what a frame may claim, and the parser checks it before
+ * it allocates anything.
  */
 class AlignedParser {
  public:
-  static constexpr size_t kDefaultMinBufferSize = 256;
-  static constexpr size_t kDefaultMaxBufferSize = 4096;
-
   // No frame on the wire can be bigger, so by default the cap turns nothing
   // away. A caller that wants a real cap passes the largest frame its service
   // expects.
   static constexpr size_t kDefaultMaxFrameSize = kMaxFrameLength;
 
-  explicit AlignedParser(
-      size_t minBufferSize = kDefaultMinBufferSize,
-      size_t maxBufferSize = kDefaultMaxBufferSize,
-      size_t maxFrameSize = kDefaultMaxFrameSize) noexcept;
+  explicit AlignedParser(size_t maxFrameSize = kDefaultMaxFrameSize) noexcept;
 
+  // Offers room through the end of the current frame section, never into the
+  // next section or frame. One consume call sends at most one frame to the
+  // sink.
   void getReadBuffer(void** bufReturn, size_t* lenReturn) noexcept;
 
   // Returns Error when the frame is malformed. After that the parser stays on
@@ -84,10 +84,10 @@ class AlignedParser {
   template <typename Sink>
   channel_pipeline::Result consume(size_t len, Sink&& sink) noexcept;
 
-  // The factory must return an empty buffer with at least the tailroom asked
-  // for. A short buffer leaves a field the parser cannot finish, and from then
-  // on getReadBuffer offers no room. The parser may also move the start of the
-  // buffer forward by up to 15 bytes.
+  // The factory must return one unshared, empty buffer with at least the
+  // requested tailroom. Any other result makes the current frame unreadable,
+  // and getReadBuffer then offers no room. An aligned request may use up to 15
+  // bytes of that room as headroom.
   void setIOBufFactory(folly::IOBufFactory* factory) noexcept;
 
   void reset() noexcept;
@@ -101,6 +101,8 @@ class AlignedParser {
     AwaitingData,
     // Everything else lands here and is read into one queue.
     AwaitingBody,
+    // No more input is accepted until reset.
+    Error,
   };
 
   // What a byte handler tells consume to do next. This exists so the handlers
@@ -124,26 +126,30 @@ class AlignedParser {
   Step onDataBytes(size_t len) noexcept;
   Step onBodyBytes(size_t len) noexcept;
 
-  // REQUEST_RESPONSE and PAYLOAD both get their header, metadata and data in
-  // buffers of their own. Only the request also has its data shifted.
   bool hasOwnBuffers() const noexcept;
   bool needsAlignment() const noexcept;
 
   Step startOwnBuffers(uint16_t flags) noexcept;
   channel_pipeline::BytesPtr newBuffer(size_t capacity) noexcept;
+  bool startHeaderAndMetadata() noexcept;
+  bool startBody() noexcept;
   channel_pipeline::BytesPtr newDataBuffer() noexcept;
   channel_pipeline::BytesPtr takeFrame() noexcept;
   void startNextFrame() noexcept;
 
   static constexpr size_t kAlignment = 16;
+  // The 3-byte wire length prefix plus the base header. Every frame starts
+  // with these, and only the base header goes downstream.
+  static constexpr size_t kHeaderSize = kMetadataLengthSize + kBaseHeaderSize;
+  // Three more bytes for the metadata length when a frame carries metadata.
+  static constexpr size_t kHeaderWithMetadataSize =
+      kHeaderSize + kMetadataLengthSize;
 
   // Binary protocol puts 10 bytes in front of the blob's own bytes: 3 for the
   // field header of the struct Thrift builds around the RPC arguments, 3 for
   // the field header of the blob, and 4 for the blob length.
   static constexpr size_t kBytesBeforeFirstField = 3 + 3 + 4;
 
-  const size_t minBufferSize_;
-  const size_t maxBufferSize_;
   const size_t maxFrameSize_;
 
   State state_{State::AwaitingHeader};
@@ -154,10 +160,14 @@ class AlignedParser {
   size_t remainingBody_{0};
   size_t frameLength_{0};
 
-  // For a frame with its own buffers these three come out as one chain. For
-  // any other frame header_ is moved into body_ and the two below stay empty.
-  channel_pipeline::BytesPtr header_;
-  channel_pipeline::BytesPtr metadata_;
+  // The wire length prefix and base header arrive here. If metadata is present,
+  // the next three bytes hold its length.
+  std::array<uint8_t, kHeaderWithMetadataSize> headerBytes_{};
+  size_t headerBytesRead_{0};
+
+  // REQUEST_RESPONSE and PAYLOAD keep their header and metadata together. Data
+  // is the second node. Every other frame is read into one buffer in body_.
+  channel_pipeline::BytesPtr headerAndMetadata_;
   channel_pipeline::BytesPtr data_;
   folly::IOBufQueue body_{folly::IOBufQueue::cacheChainLength()};
 
@@ -172,6 +182,7 @@ channel_pipeline::Result AlignedParser::consume(
     return channel_pipeline::Result::Success;
   }
   if (FOLLY_UNLIKELY(step == Step::Bad)) {
+    state_ = State::Error;
     return channel_pipeline::Result::Error;
   }
   return sink(takeFrame());
