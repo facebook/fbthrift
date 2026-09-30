@@ -19,6 +19,7 @@
 #include <xxhash.h>
 #include <folly/Random.h>
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 
 namespace apache::thrift::rocket {
 
@@ -36,19 +37,27 @@ struct XXH3Logic {
   int64_t operator()(folly::IOBuf& buffer, int64_t salt) {
     return xxh3(buffer, salt);
   }
+  int64_t operator()(IOBufChain& buffer, int64_t salt) {
+    return xxh3(buffer, salt);
+  }
 
  private:
   XXH3_state_t* getXXH3State();
   int64_t xxh3(folly::IOBuf& buffer, int64_t salt);
+  int64_t xxh3(IOBufChain& buffer, int64_t salt);
 };
 
 struct CRC32Logic {
   int64_t operator()(folly::IOBuf& buffer, int64_t salt) {
     return crc32c(buffer, salt);
   }
+  int64_t operator()(IOBufChain& buffer, int64_t salt) {
+    return crc32c(buffer, salt);
+  }
 
  private:
   int64_t crc32c(folly::IOBuf& buffer, int64_t salt);
+  int64_t crc32c(IOBufChain& buffer, int64_t salt);
 };
 
 template <typename Algorithm>
@@ -60,7 +69,8 @@ using ChecksumLogic = std::conditional_t<
 template <typename Algorithm>
 struct ChecksumCalculator {
   using Logic = ChecksumLogic<Algorithm>;
-  CheckSumResponse operator()(folly::IOBuf& buffer, int64_t salt) {
+  template <typename Buffer>
+  CheckSumResponse operator()(Buffer& buffer, int64_t salt) {
     auto checksum = Logic()(buffer, salt);
     return CheckSumResponse{checksum, salt};
   }
@@ -70,16 +80,26 @@ struct ChecksumCalculator {
 
 template <typename Algorithm>
 struct ChecksumGenerator {
-  CheckSumResponse calculateChecksumFromIOBuf(
-      folly::IOBuf& buffer, int64_t salt = folly::Random::rand64()) {
+  template <typename Buffer>
+  CheckSumResponse calculateChecksum(
+      Buffer& buffer, int64_t salt = folly::Random::rand64()) {
     detail::ChecksumCalculator<Algorithm> calculator;
     return calculator(buffer, salt);
   }
 
+  template <typename Buffer>
+  bool validateChecksum(int64_t checksum, int64_t salt, Buffer& buffer) {
+    return calculateChecksum(buffer, salt).checksum == checksum;
+  }
+
+  CheckSumResponse calculateChecksumFromIOBuf(
+      folly::IOBuf& buffer, int64_t salt = folly::Random::rand64()) {
+    return calculateChecksum(buffer, salt);
+  }
+
   bool validateChecksumFromIOBuf(
       int64_t checksum, int64_t salt, folly::IOBuf& buffer) {
-    auto response = calculateChecksumFromIOBuf(buffer, salt);
-    return response.checksum == checksum;
+    return validateChecksum(checksum, salt, buffer);
   }
 };
 

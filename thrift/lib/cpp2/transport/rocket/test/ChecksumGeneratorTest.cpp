@@ -76,8 +76,12 @@ void doChecksumTest(std::vector<std::unique_ptr<folly::IOBuf>>& buffers) {
     auto resp = generator.calculateChecksumFromIOBuf(bufRef);
     auto verify =
         generator.validateChecksumFromIOBuf(resp.checksum, resp.salt, bufRef);
+    apache::thrift::IOBufChain chain(buf->clone());
+    auto chainResp = generator.calculateChecksum(chain, resp.salt);
+    auto chainVerify =
+        generator.validateChecksum(resp.checksum, resp.salt, chain);
 
-    if (!verify) {
+    if (!verify || !chainVerify || chainResp.checksum != resp.checksum) {
       LOG(ERROR) << "Checksum failed for buffer of size " << buf->length();
       FAIL();
     }
