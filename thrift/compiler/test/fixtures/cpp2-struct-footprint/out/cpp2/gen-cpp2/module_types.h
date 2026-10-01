@@ -1017,8 +1017,8 @@ class TestUnion final  {
     using T0 = ::std::int32_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::int_value);
     ::new (std::addressof(value_.int_value)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::int_value);
     return value_.int_value;
   }
 
@@ -1029,8 +1029,8 @@ class TestUnion final  {
     using T0 = ::cpp2_struct_footprint::SimpleStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::struct_value);
     ::new (std::addressof(value_.struct_value)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::struct_value);
     return value_.struct_value;
   }
 
@@ -1040,16 +1040,16 @@ class TestUnion final  {
     using T0 = ::cpp2_struct_footprint::SimpleStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::struct_value);
     ::new (std::addressof(value_.struct_value)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::struct_value);
     return value_.struct_value;
   }
 
   /** Glean { "field": "struct_value" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2_struct_footprint::SimpleStruct, T...>> ::cpp2_struct_footprint::SimpleStruct& set_struct_value(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::struct_value);
     ::new (std::addressof(value_.struct_value)) ::cpp2_struct_footprint::SimpleStruct(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::struct_value);
     return value_.struct_value;
   }
 

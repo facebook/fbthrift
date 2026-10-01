@@ -566,8 +566,8 @@ class SerializedUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::s);
     ::new (std::addressof(value_.s)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::s);
     return value_.s;
   }
 
@@ -577,16 +577,16 @@ class SerializedUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::s);
     ::new (std::addressof(value_.s)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::s);
     return value_.s;
   }
 
   /** Glean { "field": "s" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_s(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::s);
     ::new (std::addressof(value_.s)) ::std::string(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::s);
     return value_.s;
   }
 
@@ -597,8 +597,8 @@ class SerializedUnion final  {
     using T0 = ::std::int32_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::i);
     ::new (std::addressof(value_.i)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::i);
     return value_.i;
   }
 
@@ -1444,8 +1444,8 @@ class MarshalUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::s);
     ::new (std::addressof(value_.s)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::s);
     return value_.s;
   }
 
@@ -1455,16 +1455,16 @@ class MarshalUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::s);
     ::new (std::addressof(value_.s)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::s);
     return value_.s;
   }
 
   /** Glean { "field": "s" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_s(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::s);
     ::new (std::addressof(value_.s)) ::std::string(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::s);
     return value_.s;
   }
 
@@ -1475,8 +1475,8 @@ class MarshalUnion final  {
     using T0 = ::std::int32_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::i);
     ::new (std::addressof(value_.i)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::i);
     return value_.i;
   }
 

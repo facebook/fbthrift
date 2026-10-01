@@ -31,12 +31,12 @@
     using T0 = {{field.cpp_storage_type}};
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
       {{#if field.cpp_ref?}}
     ::new (std::addressof(value_.{{field.cpp_name}})) T({{#if (not field.boxed_ref?)}}new {{/if}}typename T::element_type(t));
       {{#else}}
     ::new (std::addressof(value_.{{field.cpp_name}})) T(t);
       {{/if field.cpp_ref?}}
+    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     return value_.{{field.cpp_name}};
   }
     {{#else}}
@@ -46,12 +46,12 @@
     using T0 = {{field.cpp_storage_type}};
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
       {{#if field.cpp_ref?}}
     ::new (std::addressof(value_.{{field.cpp_name}})) T({{#if (not field.boxed_ref?)}}new {{/if}}typename T::element_type(t));
       {{#else}}
     ::new (std::addressof(value_.{{field.cpp_name}})) T(t);
       {{/if field.cpp_ref?}}
+    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     return value_.{{field.cpp_name}};
   }
 
@@ -61,12 +61,12 @@
     using T0 = {{field.cpp_storage_type}};
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
       {{#if field.cpp_ref?}}
     ::new (std::addressof(value_.{{field.cpp_name}})) T({{#if (not field.boxed_ref?)}}new {{/if}}typename T::element_type(std::move(t)));
       {{#else}}
     ::new (std::addressof(value_.{{field.cpp_name}})) T(std::move(t));
       {{/if field.cpp_ref?}}
+    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     return value_.{{field.cpp_name}};
   }
 
@@ -74,12 +74,12 @@
   {{#partial glean.field_docblock field=field}}
   template<typename... T, typename = ::apache::thrift::safe_overload_t<{{field.cpp_type}}, T...>> {{field.cpp_storage_type}}& set_{{field.cpp_name}}(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
       {{#if field.cpp_ref?}}
     ::new (std::addressof(value_.{{field.cpp_name}})) {{field.cpp_storage_type}}({{#if (not field.boxed_ref?)}}new {{/if}}{{field.cpp_storage_type}}::element_type(std::forward<T>(t)...));
       {{#else}}
     ::new (std::addressof(value_.{{field.cpp_name}})) {{field.cpp_type}}(std::forward<T>(t)...);
       {{/if field.cpp_ref?}}
+    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     return value_.{{field.cpp_name}};
   }
     {{/if (not field.type.string_or_binary?)}}
@@ -88,8 +88,8 @@
   {{#partial glean.field_docblock field=field}}
   {{!deprecated}}{{field.cpp_storage_type}}& set_{{field.cpp_name}}({{field.cpp_storage_type}} t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     ::new (std::addressof(value_.{{field.cpp_name}})) {{field.cpp_storage_type}}(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     return value_.{{field.cpp_name}};
   }
     {{/if field.cpp_ref?}}
@@ -105,8 +105,8 @@
     using T0 = {{field.cpp_storage_type}};
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     ::new (std::addressof(value_.{{field.cpp_name}})) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     return value_.{{field.cpp_name}};
   }
       {{/if (not field.cpp_noncopyable?)}}
@@ -117,8 +117,8 @@
     using T0 = {{field.cpp_storage_type}};
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     ::new (std::addressof(value_.{{field.cpp_name}})) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     return value_.{{field.cpp_name}};
   }
 
@@ -126,8 +126,8 @@
   {{#partial glean.field_docblock field=field}}
   template<typename... T, typename = ::apache::thrift::safe_overload_t<{{field.cpp_type}}, T...>> {{field.cpp_storage_type}}& set_{{field.cpp_name}}(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     ::new (std::addressof(value_.{{field.cpp_name}})) {{field.cpp_type}}(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     return value_.{{field.cpp_name}};
   }
     {{#else}}
@@ -140,8 +140,8 @@
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
     using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), {{field.cpp_storage_type}}, void>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     ::new (std::addressof(value_.{{field.cpp_name}})) ref_({{#if (not field.boxed_ref?)}}new {{/if}}typename ref_::element_type(std::forward<T>(t)...));
+    fbthrift_type_ = folly::to_underlying(Type::{{field.cpp_name}});
     return value_.{{field.cpp_name}};
   }
     {{/if (not field.cpp_ref?)}}

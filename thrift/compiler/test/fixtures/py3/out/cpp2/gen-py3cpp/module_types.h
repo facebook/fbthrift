@@ -1309,8 +1309,8 @@ class AdaptedUnion final  {
     using T0 = ::std::int16_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::best);
     ::new (std::addressof(value_.best)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::best);
     return value_.best;
   }
 
@@ -3325,8 +3325,8 @@ class BinaryUnion final  {
     using T0 = ::py3::simple::IOBuf;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobuf_val);
     ::new (std::addressof(value_.iobuf_val)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::iobuf_val);
     return value_.iobuf_val;
   }
 
@@ -3336,16 +3336,16 @@ class BinaryUnion final  {
     using T0 = ::py3::simple::IOBuf;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobuf_val);
     ::new (std::addressof(value_.iobuf_val)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::iobuf_val);
     return value_.iobuf_val;
   }
 
   /** Glean { "field": "iobuf_val" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::py3::simple::IOBuf, T...>> ::py3::simple::IOBuf& set_iobuf_val(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobuf_val);
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::iobuf_val);
     return value_.iobuf_val;
   }
 

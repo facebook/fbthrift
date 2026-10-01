@@ -2263,8 +2263,8 @@ class SimpleUnion  {
     using T0 = ::std::int64_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::intValue);
     ::new (std::addressof(value_.intValue)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::intValue);
     return value_.intValue;
   }
 
@@ -2275,8 +2275,8 @@ class SimpleUnion  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     ::new (std::addressof(value_.stringValue)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     return value_.stringValue;
   }
 
@@ -2286,16 +2286,16 @@ class SimpleUnion  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     ::new (std::addressof(value_.stringValue)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     return value_.stringValue;
   }
 
   /** Glean { "field": "stringValue" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_stringValue(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     ::new (std::addressof(value_.stringValue)) ::std::string(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     return value_.stringValue;
   }
 
@@ -3920,8 +3920,8 @@ class ComplexUnion final  {
     using T0 = ::std::int64_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::intValue);
     ::new (std::addressof(value_.intValue)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::intValue);
     return value_.intValue;
   }
 
@@ -3932,8 +3932,8 @@ class ComplexUnion final  {
     using T0 = ::std::int64_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::opt_intValue);
     ::new (std::addressof(value_.opt_intValue)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::opt_intValue);
     return value_.opt_intValue;
   }
 
@@ -3944,8 +3944,8 @@ class ComplexUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     ::new (std::addressof(value_.stringValue)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     return value_.stringValue;
   }
 
@@ -3955,16 +3955,16 @@ class ComplexUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     ::new (std::addressof(value_.stringValue)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     return value_.stringValue;
   }
 
   /** Glean { "field": "stringValue" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_stringValue(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     ::new (std::addressof(value_.stringValue)) ::std::string(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::stringValue);
     return value_.stringValue;
   }
 
@@ -3975,8 +3975,8 @@ class ComplexUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::opt_stringValue);
     ::new (std::addressof(value_.opt_stringValue)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::opt_stringValue);
     return value_.opt_stringValue;
   }
 
@@ -3986,16 +3986,16 @@ class ComplexUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::opt_stringValue);
     ::new (std::addressof(value_.opt_stringValue)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::opt_stringValue);
     return value_.opt_stringValue;
   }
 
   /** Glean { "field": "opt_stringValue" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_opt_stringValue(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::opt_stringValue);
     ::new (std::addressof(value_.opt_stringValue)) ::std::string(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::opt_stringValue);
     return value_.opt_stringValue;
   }
 
@@ -4006,8 +4006,8 @@ class ComplexUnion final  {
     using T0 = ::std::int16_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::intValue2);
     ::new (std::addressof(value_.intValue2)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::intValue2);
     return value_.intValue2;
   }
 
@@ -4018,8 +4018,8 @@ class ComplexUnion final  {
     using T0 = ::std::int32_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::intValue3);
     ::new (std::addressof(value_.intValue3)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::intValue3);
     return value_.intValue3;
   }
 
@@ -4030,8 +4030,8 @@ class ComplexUnion final  {
     using T0 = double;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::doubelValue);
     ::new (std::addressof(value_.doubelValue)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::doubelValue);
     return value_.doubelValue;
   }
 
@@ -4042,8 +4042,8 @@ class ComplexUnion final  {
     using T0 = bool;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::boolValue);
     ::new (std::addressof(value_.boolValue)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::boolValue);
     return value_.boolValue;
   }
 
@@ -4054,8 +4054,8 @@ class ComplexUnion final  {
     using T0 = ::std::vector<::std::int32_t>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::union_list);
     ::new (std::addressof(value_.union_list)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::union_list);
     return value_.union_list;
   }
 
@@ -4065,16 +4065,16 @@ class ComplexUnion final  {
     using T0 = ::std::vector<::std::int32_t>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::union_list);
     ::new (std::addressof(value_.union_list)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::union_list);
     return value_.union_list;
   }
 
   /** Glean { "field": "union_list" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::int32_t>, T...>> ::std::vector<::std::int32_t>& set_union_list(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::union_list);
     ::new (std::addressof(value_.union_list)) ::std::vector<::std::int32_t>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::union_list);
     return value_.union_list;
   }
 
@@ -4084,8 +4084,8 @@ class ComplexUnion final  {
     using T0 = ::std::set<::std::int64_t>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::union_set);
     ::new (std::addressof(value_.union_set)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::union_set);
     return value_.union_set;
   }
 
@@ -4095,16 +4095,16 @@ class ComplexUnion final  {
     using T0 = ::std::set<::std::int64_t>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::union_set);
     ::new (std::addressof(value_.union_set)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::union_set);
     return value_.union_set;
   }
 
   /** Glean { "field": "union_set" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<::std::int64_t>, T...>> ::std::set<::std::int64_t>& set_union_set(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::union_set);
     ::new (std::addressof(value_.union_set)) ::std::set<::std::int64_t>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::union_set);
     return value_.union_set;
   }
 
@@ -4114,8 +4114,8 @@ class ComplexUnion final  {
     using T0 = ::std::map<::std::string, ::std::int32_t>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::union_map);
     ::new (std::addressof(value_.union_map)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::union_map);
     return value_.union_map;
   }
 
@@ -4125,16 +4125,16 @@ class ComplexUnion final  {
     using T0 = ::std::map<::std::string, ::std::int32_t>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::union_map);
     ::new (std::addressof(value_.union_map)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::union_map);
     return value_.union_map;
   }
 
   /** Glean { "field": "union_map" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, ::std::int32_t>, T...>> ::std::map<::std::string, ::std::int32_t>& set_union_map(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::union_map);
     ::new (std::addressof(value_.union_map)) ::std::map<::std::string, ::std::int32_t>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::union_map);
     return value_.union_map;
   }
 
@@ -4144,8 +4144,8 @@ class ComplexUnion final  {
     using T0 = ::std::map<::std::string, ::std::int32_t>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::opt_union_map);
     ::new (std::addressof(value_.opt_union_map)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::opt_union_map);
     return value_.opt_union_map;
   }
 
@@ -4155,16 +4155,16 @@ class ComplexUnion final  {
     using T0 = ::std::map<::std::string, ::std::int32_t>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::opt_union_map);
     ::new (std::addressof(value_.opt_union_map)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::opt_union_map);
     return value_.opt_union_map;
   }
 
   /** Glean { "field": "opt_union_map" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, ::std::int32_t>, T...>> ::std::map<::std::string, ::std::int32_t>& set_opt_union_map(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::opt_union_map);
     ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, ::std::int32_t>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::opt_union_map);
     return value_.opt_union_map;
   }
 
@@ -4174,8 +4174,8 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::MyEnumA;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::enum_field);
     ::new (std::addressof(value_.enum_field)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::enum_field);
     return value_.enum_field;
   }
 
@@ -4186,8 +4186,8 @@ class ComplexUnion final  {
     using T0 = ::std::vector<::some::valid::ns::MyEnumA>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::enum_container);
     ::new (std::addressof(value_.enum_container)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::enum_container);
     return value_.enum_container;
   }
 
@@ -4197,16 +4197,16 @@ class ComplexUnion final  {
     using T0 = ::std::vector<::some::valid::ns::MyEnumA>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::enum_container);
     ::new (std::addressof(value_.enum_container)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::enum_container);
     return value_.enum_container;
   }
 
   /** Glean { "field": "enum_container" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::MyEnumA>, T...>> ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::enum_container);
     ::new (std::addressof(value_.enum_container)) ::std::vector<::some::valid::ns::MyEnumA>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::enum_container);
     return value_.enum_container;
   }
 
@@ -4216,8 +4216,8 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::MyStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_struct);
     ::new (std::addressof(value_.a_struct)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::a_struct);
     return value_.a_struct;
   }
 
@@ -4227,16 +4227,16 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::MyStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_struct);
     ::new (std::addressof(value_.a_struct)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::a_struct);
     return value_.a_struct;
   }
 
   /** Glean { "field": "a_struct" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::some::valid::ns::MyStruct& set_a_struct(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_struct);
     ::new (std::addressof(value_.a_struct)) ::some::valid::ns::MyStruct(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::a_struct);
     return value_.a_struct;
   }
 
@@ -4246,8 +4246,8 @@ class ComplexUnion final  {
     using T0 = ::std::set<::some::valid::ns::MyStruct>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_set_struct);
     ::new (std::addressof(value_.a_set_struct)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::a_set_struct);
     return value_.a_set_struct;
   }
 
@@ -4257,16 +4257,16 @@ class ComplexUnion final  {
     using T0 = ::std::set<::some::valid::ns::MyStruct>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_set_struct);
     ::new (std::addressof(value_.a_set_struct)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::a_set_struct);
     return value_.a_set_struct;
   }
 
   /** Glean { "field": "a_set_struct" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<::some::valid::ns::MyStruct>, T...>> ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_set_struct);
     ::new (std::addressof(value_.a_set_struct)) ::std::set<::some::valid::ns::MyStruct>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::a_set_struct);
     return value_.a_set_struct;
   }
 
@@ -4276,8 +4276,8 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::SimpleUnion;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union);
     ::new (std::addressof(value_.a_union)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::a_union);
     return value_.a_union;
   }
 
@@ -4287,16 +4287,16 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::SimpleUnion;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union);
     ::new (std::addressof(value_.a_union)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::a_union);
     return value_.a_union;
   }
 
   /** Glean { "field": "a_union" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::SimpleUnion, T...>> ::some::valid::ns::SimpleUnion& set_a_union(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union);
     ::new (std::addressof(value_.a_union)) ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::a_union);
     return value_.a_union;
   }
 
@@ -4306,8 +4306,8 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::SimpleUnion;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::opt_a_union);
     ::new (std::addressof(value_.opt_a_union)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::opt_a_union);
     return value_.opt_a_union;
   }
 
@@ -4317,16 +4317,16 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::SimpleUnion;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::opt_a_union);
     ::new (std::addressof(value_.opt_a_union)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::opt_a_union);
     return value_.opt_a_union;
   }
 
   /** Glean { "field": "opt_a_union" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::SimpleUnion, T...>> ::some::valid::ns::SimpleUnion& set_opt_a_union(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::opt_a_union);
     ::new (std::addressof(value_.opt_a_union)) ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::opt_a_union);
     return value_.opt_a_union;
   }
 
@@ -4336,8 +4336,8 @@ class ComplexUnion final  {
     using T0 = ::std::vector<::some::valid::ns::SimpleUnion>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union_list);
     ::new (std::addressof(value_.a_union_list)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::a_union_list);
     return value_.a_union_list;
   }
 
@@ -4347,16 +4347,16 @@ class ComplexUnion final  {
     using T0 = ::std::vector<::some::valid::ns::SimpleUnion>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union_list);
     ::new (std::addressof(value_.a_union_list)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::a_union_list);
     return value_.a_union_list;
   }
 
   /** Glean { "field": "a_union_list" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::SimpleUnion>, T...>> ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union_list);
     ::new (std::addressof(value_.a_union_list)) ::std::vector<::some::valid::ns::SimpleUnion>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::a_union_list);
     return value_.a_union_list;
   }
 
@@ -4366,8 +4366,8 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::unionTypeDef;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef);
     ::new (std::addressof(value_.a_union_typedef)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef);
     return value_.a_union_typedef;
   }
 
@@ -4377,16 +4377,16 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::unionTypeDef;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef);
     ::new (std::addressof(value_.a_union_typedef)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef);
     return value_.a_union_typedef;
   }
 
   /** Glean { "field": "a_union_typedef" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::unionTypeDef, T...>> ::some::valid::ns::unionTypeDef& set_a_union_typedef(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef);
     ::new (std::addressof(value_.a_union_typedef)) ::some::valid::ns::unionTypeDef(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef);
     return value_.a_union_typedef;
   }
 
@@ -4396,8 +4396,8 @@ class ComplexUnion final  {
     using T0 = ::std::vector<::some::valid::ns::unionTypeDef>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef_list);
     ::new (std::addressof(value_.a_union_typedef_list)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef_list);
     return value_.a_union_typedef_list;
   }
 
@@ -4407,16 +4407,16 @@ class ComplexUnion final  {
     using T0 = ::std::vector<::some::valid::ns::unionTypeDef>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef_list);
     ::new (std::addressof(value_.a_union_typedef_list)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef_list);
     return value_.a_union_typedef_list;
   }
 
   /** Glean { "field": "a_union_typedef_list" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::unionTypeDef>, T...>> ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef_list);
     ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector<::some::valid::ns::unionTypeDef>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::a_union_typedef_list);
     return value_.a_union_typedef_list;
   }
 
@@ -4426,8 +4426,8 @@ class ComplexUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField);
     ::new (std::addressof(value_.MyBinaryField)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField);
     return value_.MyBinaryField;
   }
 
@@ -4437,16 +4437,16 @@ class ComplexUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField);
     ::new (std::addressof(value_.MyBinaryField)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField);
     return value_.MyBinaryField;
   }
 
   /** Glean { "field": "MyBinaryField" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_MyBinaryField(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField);
     ::new (std::addressof(value_.MyBinaryField)) ::std::string(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField);
     return value_.MyBinaryField;
   }
 
@@ -4457,8 +4457,8 @@ class ComplexUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField2);
     ::new (std::addressof(value_.MyBinaryField2)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField2);
     return value_.MyBinaryField2;
   }
 
@@ -4468,16 +4468,16 @@ class ComplexUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField2);
     ::new (std::addressof(value_.MyBinaryField2)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField2);
     return value_.MyBinaryField2;
   }
 
   /** Glean { "field": "MyBinaryField2" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_MyBinaryField2(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField2);
     ::new (std::addressof(value_.MyBinaryField2)) ::std::string(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::MyBinaryField2);
     return value_.MyBinaryField2;
   }
 
@@ -4488,8 +4488,8 @@ class ComplexUnion final  {
     using T0 = ::std::vector<::std::string>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyBinaryListField4);
     ::new (std::addressof(value_.MyBinaryListField4)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::MyBinaryListField4);
     return value_.MyBinaryListField4;
   }
 
@@ -4499,16 +4499,16 @@ class ComplexUnion final  {
     using T0 = ::std::vector<::std::string>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyBinaryListField4);
     ::new (std::addressof(value_.MyBinaryListField4)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::MyBinaryListField4);
     return value_.MyBinaryListField4;
   }
 
   /** Glean { "field": "MyBinaryListField4" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::string>, T...>> ::std::vector<::std::string>& set_MyBinaryListField4(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyBinaryListField4);
     ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::MyBinaryListField4);
     return value_.MyBinaryListField4;
   }
   ::std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(::std::unique_ptr<::some::valid::ns::MyStruct> t);
@@ -4519,8 +4519,8 @@ class ComplexUnion final  {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
     using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::unique_ptr<::some::valid::ns::MyStruct>, void>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::ref_field);
     ::new (std::addressof(value_.ref_field)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
+    fbthrift_type_ = folly::to_underlying(Type::ref_field);
     return value_.ref_field;
   }
   ::std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(::std::shared_ptr<const ::some::valid::ns::MyStruct> t);
@@ -4531,8 +4531,8 @@ class ComplexUnion final  {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
     using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::shared_ptr<const ::some::valid::ns::MyStruct>, void>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::ref_field2);
     ::new (std::addressof(value_.ref_field2)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
+    fbthrift_type_ = folly::to_underlying(Type::ref_field2);
     return value_.ref_field2;
   }
 
@@ -4542,8 +4542,8 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::AnException;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::excp_field);
     ::new (std::addressof(value_.excp_field)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::excp_field);
     return value_.excp_field;
   }
 
@@ -4553,16 +4553,16 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::AnException;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::excp_field);
     ::new (std::addressof(value_.excp_field)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::excp_field);
     return value_.excp_field;
   }
 
   /** Glean { "field": "excp_field" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::AnException, T...>> ::some::valid::ns::AnException& set_excp_field(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::excp_field);
     ::new (std::addressof(value_.excp_field)) ::some::valid::ns::AnException(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::excp_field);
     return value_.excp_field;
   }
 
@@ -4572,8 +4572,8 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::CustomProtocolType;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyCustomField);
     ::new (std::addressof(value_.MyCustomField)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::MyCustomField);
     return value_.MyCustomField;
   }
 
@@ -4583,16 +4583,16 @@ class ComplexUnion final  {
     using T0 = ::some::valid::ns::CustomProtocolType;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyCustomField);
     ::new (std::addressof(value_.MyCustomField)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::MyCustomField);
     return value_.MyCustomField;
   }
 
   /** Glean { "field": "MyCustomField" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::CustomProtocolType, T...>> ::some::valid::ns::CustomProtocolType& set_MyCustomField(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::MyCustomField);
     ::new (std::addressof(value_.MyCustomField)) ::some::valid::ns::CustomProtocolType(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::MyCustomField);
     return value_.MyCustomField;
   }
 
@@ -11496,8 +11496,8 @@ class FloatUnion final  {
     using T0 = float;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::floatSide);
     ::new (std::addressof(value_.floatSide)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::floatSide);
     return value_.floatSide;
   }
 
@@ -11508,8 +11508,8 @@ class FloatUnion final  {
     using T0 = double;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::doubleSide);
     ::new (std::addressof(value_.doubleSide)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::doubleSide);
     return value_.doubleSide;
   }
 

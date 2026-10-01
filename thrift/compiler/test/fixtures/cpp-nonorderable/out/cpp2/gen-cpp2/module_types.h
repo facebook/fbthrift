@@ -394,8 +394,8 @@ class NonOrderableUnion final  {
     using T0 = ::std::int32_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::int_value);
     ::new (std::addressof(value_.int_value)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::int_value);
     return value_.int_value;
   }
 
@@ -406,8 +406,8 @@ class NonOrderableUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::string_value);
     ::new (std::addressof(value_.string_value)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::string_value);
     return value_.string_value;
   }
 
@@ -417,16 +417,16 @@ class NonOrderableUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::string_value);
     ::new (std::addressof(value_.string_value)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::string_value);
     return value_.string_value;
   }
 
   /** Glean { "field": "string_value" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_string_value(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::string_value);
     ::new (std::addressof(value_.string_value)) ::std::string(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::string_value);
     return value_.string_value;
   }
 
@@ -880,8 +880,8 @@ class OrderableUnion final  {
     using T0 = ::std::int32_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::int_value);
     ::new (std::addressof(value_.int_value)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::int_value);
     return value_.int_value;
   }
 
@@ -892,8 +892,8 @@ class OrderableUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::string_value);
     ::new (std::addressof(value_.string_value)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::string_value);
     return value_.string_value;
   }
 
@@ -903,16 +903,16 @@ class OrderableUnion final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::string_value);
     ::new (std::addressof(value_.string_value)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::string_value);
     return value_.string_value;
   }
 
   /** Glean { "field": "string_value" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_string_value(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::string_value);
     ::new (std::addressof(value_.string_value)) ::std::string(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::string_value);
     return value_.string_value;
   }
 

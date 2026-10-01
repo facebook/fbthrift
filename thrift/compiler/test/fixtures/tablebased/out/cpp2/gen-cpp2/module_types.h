@@ -1182,8 +1182,8 @@ class ExampleUnion final  {
     using T0 = ::test::fixtures::tablebased::ContainerStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::fieldA);
     ::new (std::addressof(value_.fieldA)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::fieldA);
     return value_.fieldA;
   }
 
@@ -1193,16 +1193,16 @@ class ExampleUnion final  {
     using T0 = ::test::fixtures::tablebased::ContainerStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::fieldA);
     ::new (std::addressof(value_.fieldA)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::fieldA);
     return value_.fieldA;
   }
 
   /** Glean { "field": "fieldA" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::tablebased::ContainerStruct, T...>> ::test::fixtures::tablebased::ContainerStruct& set_fieldA(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::fieldA);
     ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::fieldA);
     return value_.fieldA;
   }
 
@@ -1212,8 +1212,8 @@ class ExampleUnion final  {
     using T0 = ::test::fixtures::tablebased::TrivialTypesStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::fieldB);
     ::new (std::addressof(value_.fieldB)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::fieldB);
     return value_.fieldB;
   }
 
@@ -1223,16 +1223,16 @@ class ExampleUnion final  {
     using T0 = ::test::fixtures::tablebased::TrivialTypesStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::fieldB);
     ::new (std::addressof(value_.fieldB)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::fieldB);
     return value_.fieldB;
   }
 
   /** Glean { "field": "fieldB" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::tablebased::TrivialTypesStruct, T...>> ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::fieldB);
     ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::fieldB);
     return value_.fieldB;
   }
 

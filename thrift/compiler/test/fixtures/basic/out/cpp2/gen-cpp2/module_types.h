@@ -1307,8 +1307,8 @@ class MyUnion final  {
     using T0 = ::test::fixtures::basic::MyEnumAlias;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myEnum);
     ::new (std::addressof(value_.myEnum)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::myEnum);
     return value_.myEnum;
   }
 
@@ -1319,8 +1319,8 @@ class MyUnion final  {
     using T0 = ::test::fixtures::basic::MyStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     return value_.myStruct;
   }
 
@@ -1330,16 +1330,16 @@ class MyUnion final  {
     using T0 = ::test::fixtures::basic::MyStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     return value_.myStruct;
   }
 
   /** Glean { "field": "myStruct" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::basic::MyStruct, T...>> ::test::fixtures::basic::MyStruct& set_myStruct(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) ::test::fixtures::basic::MyStruct(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     return value_.myStruct;
   }
 
@@ -1349,8 +1349,8 @@ class MyUnion final  {
     using T0 = ::test::fixtures::basic::MyDataItem;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     return value_.myDataItem;
   }
 
@@ -1360,16 +1360,16 @@ class MyUnion final  {
     using T0 = ::test::fixtures::basic::MyDataItem;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     return value_.myDataItem;
   }
 
   /** Glean { "field": "myDataItem" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::basic::MyDataItem, T...>> ::test::fixtures::basic::MyDataItem& set_myDataItem(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) ::test::fixtures::basic::MyDataItem(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     return value_.myDataItem;
   }
 
@@ -1379,8 +1379,8 @@ class MyUnion final  {
     using T0 = ::std::set<float>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::floatSet);
     ::new (std::addressof(value_.floatSet)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::floatSet);
     return value_.floatSet;
   }
 
@@ -1390,16 +1390,16 @@ class MyUnion final  {
     using T0 = ::std::set<float>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::floatSet);
     ::new (std::addressof(value_.floatSet)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::floatSet);
     return value_.floatSet;
   }
 
   /** Glean { "field": "floatSet" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<float>, T...>> ::std::set<float>& set_floatSet(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::floatSet);
     ::new (std::addressof(value_.floatSet)) ::std::set<float>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::floatSet);
     return value_.floatSet;
   }
 
@@ -2506,8 +2506,8 @@ class UnionToBeRenamed final  {
     using T0 = ::std::int32_t;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::reserved_field);
     ::new (std::addressof(value_.reserved_field)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::reserved_field);
     return value_.reserved_field;
   }
 

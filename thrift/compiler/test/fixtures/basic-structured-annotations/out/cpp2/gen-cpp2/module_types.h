@@ -1765,8 +1765,8 @@ class MyUnion final  {
     using T0 = ::test::fixtures::basic_structured_annotations::annotated_inline_string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::first);
     ::new (std::addressof(value_.first)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::first);
     return value_.first;
   }
 
@@ -1776,16 +1776,16 @@ class MyUnion final  {
     using T0 = ::test::fixtures::basic_structured_annotations::annotated_inline_string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::first);
     ::new (std::addressof(value_.first)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::first);
     return value_.first;
   }
 
   /** Glean { "field": "first" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::basic_structured_annotations::annotated_inline_string, T...>> ::test::fixtures::basic_structured_annotations::annotated_inline_string& set_first(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::first);
     ::new (std::addressof(value_.first)) ::test::fixtures::basic_structured_annotations::annotated_inline_string(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::first);
     return value_.first;
   }
 
@@ -1796,8 +1796,8 @@ class MyUnion final  {
     using T0 = ::test::fixtures::basic_structured_annotations::annotated_inline_i64;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::second);
     ::new (std::addressof(value_.second)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::second);
     return value_.second;
   }
 

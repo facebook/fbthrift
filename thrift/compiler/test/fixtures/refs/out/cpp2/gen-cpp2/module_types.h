@@ -582,16 +582,16 @@ class MyUnion final  {
     using T0 = ::std::unique_ptr<::std::int32_t>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::anInteger);
     ::new (std::addressof(value_.anInteger)) T(new typename T::element_type(t));
+    fbthrift_type_ = folly::to_underlying(Type::anInteger);
     return value_.anInteger;
   }
 
   /** Glean { "field": "anInteger" } */
   ::std::unique_ptr<::std::int32_t>& set_anInteger(::std::unique_ptr<::std::int32_t> t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::anInteger);
     ::new (std::addressof(value_.anInteger)) ::std::unique_ptr<::std::int32_t>(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::anInteger);
     return value_.anInteger;
   }
 
@@ -601,8 +601,8 @@ class MyUnion final  {
     using T0 = ::std::unique_ptr<::std::string>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::aString);
     ::new (std::addressof(value_.aString)) T(new typename T::element_type(t));
+    fbthrift_type_ = folly::to_underlying(Type::aString);
     return value_.aString;
   }
 
@@ -612,24 +612,24 @@ class MyUnion final  {
     using T0 = ::std::unique_ptr<::std::string>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::aString);
     ::new (std::addressof(value_.aString)) T(new typename T::element_type(std::move(t)));
+    fbthrift_type_ = folly::to_underlying(Type::aString);
     return value_.aString;
   }
 
   /** Glean { "field": "aString" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::unique_ptr<::std::string>& set_aString(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::aString);
     ::new (std::addressof(value_.aString)) ::std::unique_ptr<::std::string>(new ::std::unique_ptr<::std::string>::element_type(std::forward<T>(t)...));
+    fbthrift_type_ = folly::to_underlying(Type::aString);
     return value_.aString;
   }
 
   /** Glean { "field": "aString" } */
   ::std::unique_ptr<::std::string>& set_aString(::std::unique_ptr<::std::string> t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::aString);
     ::new (std::addressof(value_.aString)) ::std::unique_ptr<::std::string>(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::aString);
     return value_.aString;
   }
 
@@ -877,16 +877,16 @@ class NonTriviallyDestructibleUnion final  {
     using T0 = ::std::shared_ptr<::std::int32_t>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::int_field);
     ::new (std::addressof(value_.int_field)) T(new typename T::element_type(t));
+    fbthrift_type_ = folly::to_underlying(Type::int_field);
     return value_.int_field;
   }
 
   /** Glean { "field": "int_field" } */
   ::std::shared_ptr<::std::int32_t>& set_int_field(::std::shared_ptr<::std::int32_t> t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::int_field);
     ::new (std::addressof(value_.int_field)) ::std::shared_ptr<::std::int32_t>(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::int_field);
     return value_.int_field;
   }
 

@@ -5429,8 +5429,8 @@ class Shallot final  {
     using T0 = ::test::fixtures::python_capi::MyEnum;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myEnum);
     ::new (std::addressof(value_.myEnum)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::myEnum);
     return value_.myEnum;
   }
 
@@ -5441,8 +5441,8 @@ class Shallot final  {
     using T0 = ::test::fixtures::python_capi::PrimitiveStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     return value_.myStruct;
   }
 
@@ -5452,16 +5452,16 @@ class Shallot final  {
     using T0 = ::test::fixtures::python_capi::PrimitiveStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     return value_.myStruct;
   }
 
   /** Glean { "field": "myStruct" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::python_capi::PrimitiveStruct, T...>> ::test::fixtures::python_capi::PrimitiveStruct& set_myStruct(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) ::test::fixtures::python_capi::PrimitiveStruct(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     return value_.myStruct;
   }
  private:
@@ -5473,8 +5473,8 @@ class Shallot final  {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
     using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::apache::thrift::detail::boxed_value_ptr<::std::set<::std::int64_t>>, void>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::intSet);
     ::new (std::addressof(value_.intSet)) ref_(typename ref_::element_type(std::forward<T>(t)...));
+    fbthrift_type_ = folly::to_underlying(Type::intSet);
     return value_.intSet;
   }
  public:
@@ -5485,8 +5485,8 @@ class Shallot final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myString);
     ::new (std::addressof(value_.myString)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::myString);
     return value_.myString;
   }
 
@@ -5496,16 +5496,16 @@ class Shallot final  {
     using T0 = ::std::string;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myString);
     ::new (std::addressof(value_.myString)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::myString);
     return value_.myString;
   }
 
   /** Glean { "field": "myString" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_myString(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myString);
     ::new (std::addressof(value_.myString)) ::std::string(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::myString);
     return value_.myString;
   }
 
@@ -5517,8 +5517,8 @@ class Shallot final  {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
     using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::shared_ptr<const ::std::vector<double>>, void>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::doubleList);
     ::new (std::addressof(value_.doubleList)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
+    fbthrift_type_ = folly::to_underlying(Type::doubleList);
     return value_.doubleList;
   }
   ::std::unique_ptr<::std::map<::std::string, ::std::string>>& set_strMap(::std::unique_ptr<::std::map<::std::string, ::std::string>> t);
@@ -5529,8 +5529,8 @@ class Shallot final  {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
     using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::unique_ptr<::std::map<::std::string, ::std::string>>, void>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::strMap);
     ::new (std::addressof(value_.strMap)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
+    fbthrift_type_ = folly::to_underlying(Type::strMap);
     return value_.strMap;
   }
 
@@ -5540,8 +5540,8 @@ class Shallot final  {
     using T0 = ::apache::thrift::type::ProtocolId;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::adapted_int);
     ::new (std::addressof(value_.adapted_int)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::adapted_int);
     return value_.adapted_int;
   }
 
@@ -6074,8 +6074,8 @@ class SomeBinary final  {
     using T0 = ::test::fixtures::python_capi::IOBuf;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobuf);
     ::new (std::addressof(value_.iobuf)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::iobuf);
     return value_.iobuf;
   }
 
@@ -6085,16 +6085,16 @@ class SomeBinary final  {
     using T0 = ::test::fixtures::python_capi::IOBuf;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobuf);
     ::new (std::addressof(value_.iobuf)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::iobuf);
     return value_.iobuf;
   }
 
   /** Glean { "field": "iobuf" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::python_capi::IOBuf, T...>> ::test::fixtures::python_capi::IOBuf& set_iobuf(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobuf);
     ::new (std::addressof(value_.iobuf)) ::test::fixtures::python_capi::IOBuf(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::iobuf);
     return value_.iobuf;
   }
 
@@ -6105,8 +6105,8 @@ class SomeBinary final  {
     using T0 = ::test::fixtures::python_capi::IOBufPtr;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobuf_ptr);
     ::new (std::addressof(value_.iobuf_ptr)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::iobuf_ptr);
     return value_.iobuf_ptr;
   }
 
@@ -6116,16 +6116,16 @@ class SomeBinary final  {
     using T0 = ::test::fixtures::python_capi::IOBufPtr;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobuf_ptr);
     ::new (std::addressof(value_.iobuf_ptr)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::iobuf_ptr);
     return value_.iobuf_ptr;
   }
 
   /** Glean { "field": "iobuf_ptr" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::python_capi::IOBufPtr, T...>> ::test::fixtures::python_capi::IOBufPtr& set_iobuf_ptr(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobuf_ptr);
     ::new (std::addressof(value_.iobuf_ptr)) ::test::fixtures::python_capi::IOBufPtr(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::iobuf_ptr);
     return value_.iobuf_ptr;
   }
 
@@ -6136,8 +6136,8 @@ class SomeBinary final  {
     using T0 = ::std::unique_ptr<::test::fixtures::python_capi::IOBuf>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobufRef);
     ::new (std::addressof(value_.iobufRef)) T(new typename T::element_type(t));
+    fbthrift_type_ = folly::to_underlying(Type::iobufRef);
     return value_.iobufRef;
   }
 
@@ -6147,24 +6147,24 @@ class SomeBinary final  {
     using T0 = ::std::unique_ptr<::test::fixtures::python_capi::IOBuf>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobufRef);
     ::new (std::addressof(value_.iobufRef)) T(new typename T::element_type(std::move(t)));
+    fbthrift_type_ = folly::to_underlying(Type::iobufRef);
     return value_.iobufRef;
   }
 
   /** Glean { "field": "iobufRef" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::python_capi::IOBuf, T...>> ::std::unique_ptr<::test::fixtures::python_capi::IOBuf>& set_iobufRef(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobufRef);
     ::new (std::addressof(value_.iobufRef)) ::std::unique_ptr<::test::fixtures::python_capi::IOBuf>(new ::std::unique_ptr<::test::fixtures::python_capi::IOBuf>::element_type(std::forward<T>(t)...));
+    fbthrift_type_ = folly::to_underlying(Type::iobufRef);
     return value_.iobufRef;
   }
 
   /** Glean { "field": "iobufRef" } */
   ::std::unique_ptr<::test::fixtures::python_capi::IOBuf>& set_iobufRef(::std::unique_ptr<::test::fixtures::python_capi::IOBuf> t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::iobufRef);
     ::new (std::addressof(value_.iobufRef)) ::std::unique_ptr<::test::fixtures::python_capi::IOBuf>(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::iobufRef);
     return value_.iobufRef;
   }
 

@@ -152,8 +152,8 @@ class RefUnion final  {
     using T0 = ::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 1, ::std::string, RefUnion>>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::field1);
     ::new (std::addressof(value_.field1)) T(new typename T::element_type(t));
+    fbthrift_type_ = folly::to_underlying(Type::field1);
     return value_.field1;
   }
 
@@ -163,24 +163,24 @@ class RefUnion final  {
     using T0 = ::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 1, ::std::string, RefUnion>>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::field1);
     ::new (std::addressof(value_.field1)) T(new typename T::element_type(std::move(t)));
+    fbthrift_type_ = folly::to_underlying(Type::field1);
     return value_.field1;
   }
 
   /** Glean { "field": "field1" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 1, ::std::string, RefUnion>, T...>> ::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 1, ::std::string, RefUnion>>& set_field1(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::field1);
     ::new (std::addressof(value_.field1)) ::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 1, ::std::string, RefUnion>>(new ::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 1, ::std::string, RefUnion>>::element_type(std::forward<T>(t)...));
+    fbthrift_type_ = folly::to_underlying(Type::field1);
     return value_.field1;
   }
 
   /** Glean { "field": "field1" } */
   ::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 1, ::std::string, RefUnion>>& set_field1(::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 1, ::std::string, RefUnion>> t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::field1);
     ::new (std::addressof(value_.field1)) ::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 1, ::std::string, RefUnion>>(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::field1);
     return value_.field1;
   }
 

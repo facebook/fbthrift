@@ -790,8 +790,8 @@ class MyUnion final  {
     using T0 = ::cpp2::MyEnum;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myEnum);
     ::new (std::addressof(value_.myEnum)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::myEnum);
     return value_.myEnum;
   }
 
@@ -802,8 +802,8 @@ class MyUnion final  {
     using T0 = ::cpp2::MyStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     return value_.myStruct;
   }
 
@@ -813,16 +813,16 @@ class MyUnion final  {
     using T0 = ::cpp2::MyStruct;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     return value_.myStruct;
   }
 
   /** Glean { "field": "myStruct" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyStruct, T...>> ::cpp2::MyStruct& set_myStruct(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::myStruct);
     return value_.myStruct;
   }
 
@@ -832,8 +832,8 @@ class MyUnion final  {
     using T0 = ::cpp2::MyDataItem;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     return value_.myDataItem;
   }
 
@@ -843,16 +843,16 @@ class MyUnion final  {
     using T0 = ::cpp2::MyDataItem;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     return value_.myDataItem;
   }
 
   /** Glean { "field": "myDataItem" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyDataItem, T...>> ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::myDataItem);
     return value_.myDataItem;
   }
 

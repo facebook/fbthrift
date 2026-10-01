@@ -1592,8 +1592,8 @@ class Baz final  {
     using T0 = ::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 1, ::facebook::thrift::test::fixtures::adapter::i32_5137, Baz>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::intField);
     ::new (std::addressof(value_.intField)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::intField);
     return value_.intField;
   }
 
@@ -1604,8 +1604,8 @@ class Baz final  {
     using T0 = ::facebook::thrift::test::fixtures::adapter::SetWithAdapter;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::setField);
     ::new (std::addressof(value_.setField)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::setField);
     return value_.setField;
   }
 
@@ -1615,16 +1615,16 @@ class Baz final  {
     using T0 = ::facebook::thrift::test::fixtures::adapter::SetWithAdapter;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::setField);
     ::new (std::addressof(value_.setField)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::setField);
     return value_.setField;
   }
 
   /** Glean { "field": "setField" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::facebook::thrift::test::fixtures::adapter::SetWithAdapter, T...>> ::facebook::thrift::test::fixtures::adapter::SetWithAdapter& set_setField(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::setField);
     ::new (std::addressof(value_.setField)) ::facebook::thrift::test::fixtures::adapter::SetWithAdapter(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::setField);
     return value_.setField;
   }
 
@@ -1634,8 +1634,8 @@ class Baz final  {
     using T0 = ::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter3, 6, ::facebook::thrift::test::fixtures::adapter::map_string_ListWithElemAdapter_withAdapter_8454, Baz>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::mapField);
     ::new (std::addressof(value_.mapField)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::mapField);
     return value_.mapField;
   }
 
@@ -1645,16 +1645,16 @@ class Baz final  {
     using T0 = ::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter3, 6, ::facebook::thrift::test::fixtures::adapter::map_string_ListWithElemAdapter_withAdapter_8454, Baz>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::mapField);
     ::new (std::addressof(value_.mapField)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::mapField);
     return value_.mapField;
   }
 
   /** Glean { "field": "mapField" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter3, 6, ::facebook::thrift::test::fixtures::adapter::map_string_ListWithElemAdapter_withAdapter_8454, Baz>, T...>> ::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter3, 6, ::facebook::thrift::test::fixtures::adapter::map_string_ListWithElemAdapter_withAdapter_8454, Baz>& set_mapField(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::mapField);
     ::new (std::addressof(value_.mapField)) ::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter3, 6, ::facebook::thrift::test::fixtures::adapter::map_string_ListWithElemAdapter_withAdapter_8454, Baz>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::mapField);
     return value_.mapField;
   }
 
@@ -1664,8 +1664,8 @@ class Baz final  {
     using T0 = ::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 8, ::facebook::thrift::test::fixtures::adapter::binary_5673, Baz>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::binaryField);
     ::new (std::addressof(value_.binaryField)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::binaryField);
     return value_.binaryField;
   }
 
@@ -1675,16 +1675,16 @@ class Baz final  {
     using T0 = ::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 8, ::facebook::thrift::test::fixtures::adapter::binary_5673, Baz>;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::binaryField);
     ::new (std::addressof(value_.binaryField)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::binaryField);
     return value_.binaryField;
   }
 
   /** Glean { "field": "binaryField" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 8, ::facebook::thrift::test::fixtures::adapter::binary_5673, Baz>, T...>> ::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 8, ::facebook::thrift::test::fixtures::adapter::binary_5673, Baz>& set_binaryField(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::binaryField);
     ::new (std::addressof(value_.binaryField)) ::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 8, ::facebook::thrift::test::fixtures::adapter::binary_5673, Baz>(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::binaryField);
     return value_.binaryField;
   }
 
@@ -1695,8 +1695,8 @@ class Baz final  {
     using T0 = ::facebook::thrift::test::fixtures::adapter::MyI64;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::longField);
     ::new (std::addressof(value_.longField)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::longField);
     return value_.longField;
   }
 
@@ -5917,8 +5917,8 @@ class ThriftAdaptTestUnion final  {
     using T0 = ::facebook::thrift::test::fixtures::adapter::DurationMs;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::delay);
     ::new (std::addressof(value_.delay)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::delay);
     return value_.delay;
   }
 
@@ -5929,8 +5929,8 @@ class ThriftAdaptTestUnion final  {
     using T0 = ::facebook::thrift::test::fixtures::adapter::CustomProtocolType;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::custom);
     ::new (std::addressof(value_.custom)) T(t);
+    fbthrift_type_ = folly::to_underlying(Type::custom);
     return value_.custom;
   }
 
@@ -5940,16 +5940,16 @@ class ThriftAdaptTestUnion final  {
     using T0 = ::facebook::thrift::test::fixtures::adapter::CustomProtocolType;
     using T = folly::type_t<T0, A...>;
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::custom);
     ::new (std::addressof(value_.custom)) T(std::move(t));
+    fbthrift_type_ = folly::to_underlying(Type::custom);
     return value_.custom;
   }
 
   /** Glean { "field": "custom" } */
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::facebook::thrift::test::fixtures::adapter::CustomProtocolType, T...>> ::facebook::thrift::test::fixtures::adapter::CustomProtocolType& set_custom(T&&... t) {
     __fbthrift_clear();
-    fbthrift_type_ = folly::to_underlying(Type::custom);
     ::new (std::addressof(value_.custom)) ::facebook::thrift::test::fixtures::adapter::CustomProtocolType(std::forward<T>(t)...);
+    fbthrift_type_ = folly::to_underlying(Type::custom);
     return value_.custom;
   }
 
