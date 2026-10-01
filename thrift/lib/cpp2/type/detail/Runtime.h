@@ -152,9 +152,6 @@ class Dyn {
   }
 
   [[nodiscard]] bool empty() const { return type_->empty(ptr_); }
-  [[nodiscard]] bool identical(const Dyn& rhs) const {
-    return type() == rhs.type() && type_->identical(ptr_, rhs);
-  }
   [[nodiscard]] bool contains(const Dyn& key) const;
 
   // TODO(dokwon): Only use op::isEmpty after migrating TypeStruct to terse
@@ -585,8 +582,6 @@ class BaseDyn : public Dyn, public BaseDerived<Derived> {
 
   using Base::Base;
   explicit BaseDyn(const Base& other) : Base(other) {}
-
-  bool identical(const ConstT& rhs) const { return Base::identical(rhs); }
 
   size_t size() const { return type_->size(ptr_); }
 

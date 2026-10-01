@@ -336,25 +336,22 @@ TEST(RuntimeTest, Struct) {
   EXPECT_THROW(ref.put("bad", ""), std::out_of_range);
 }
 
-TEST(RuntimeTest, IdenticalRef) {
+TEST(RuntimeTest, ClearRef) {
   float value = 1.0f;
   auto ref = Ref::to(value);
   EXPECT_FALSE(ref.empty());
   ref.clear();
-  float zero = 0.0;
-  float negZero = -0.0;
-  double dblZero = 0.0;
   EXPECT_TRUE(ref.empty());
-  EXPECT_TRUE(ref.identical(zero));
-  EXPECT_FALSE(ref.identical(negZero));
-  EXPECT_FALSE(ref.identical(dblZero));
+  EXPECT_EQ(ref.as<float_t>(), 0.0f);
+  value = -0.0f;
+  EXPECT_FALSE(ref.empty());
 }
 
 TEST(RuntimeTest, ConstRef) {
   constexpr int32_t one = 1;
   auto ref = Ref::to(one);
   EXPECT_FALSE(ref.empty());
-  EXPECT_TRUE(ref.identical(1));
+  EXPECT_EQ(ref.as<i32_t>(), 1);
   // Cannot be modified.
   EXPECT_THROW(ref.clear(), std::logic_error);
 }
@@ -373,15 +370,15 @@ TEST(RuntimeTest, BinaryRef) {
   EXPECT_THROW(++ref, std::runtime_error);
 }
 
-TEST(RuntimeTest, IdenticalValue) {
+TEST(RuntimeTest, ClearValue) {
   Value value;
   value = Value::of<float_t>(1.0f);
   EXPECT_FALSE(value.empty());
   value.clear();
   EXPECT_TRUE(value.empty());
-  EXPECT_TRUE(value.identical(0.0f));
-  EXPECT_FALSE(value.identical(-0.0f));
-  EXPECT_FALSE(value.identical(0.0));
+  EXPECT_EQ(value.as<float_t>(), 0.0f);
+  value = Value::of<float_t>(-0.0f);
+  EXPECT_FALSE(value.empty());
 }
 
 TEST(RuntimeTest, VoidValue) {
