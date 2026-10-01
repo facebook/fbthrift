@@ -68,7 +68,6 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerCompressionHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionCloseHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionContextHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestContextHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
@@ -107,7 +106,6 @@ HANDLER_TAG(server_setup_frame_handler);
 HANDLER_TAG(server_request_response_frame_handler);
 HANDLER_TAG(server_stream_state_handler);
 HANDLER_TAG(thrift_server_request_context_handler);
-HANDLER_TAG(thrift_server_connection_context_handler);
 HANDLER_TAG(thrift_server_compression_handler);
 HANDLER_TAG(thrift_server_connection_close_handler);
 HANDLER_TAG(thrift_server_setup_handler);
@@ -475,8 +473,6 @@ struct AppAdapterBenchFixture {
 
     using ReqCtxHandler = thrift::ThriftServerRequestContextHandler<
         apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>;
-    using ConnCtxHandler = thrift::ThriftServerConnectionContextHandler<
-        apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>;
     using CompressionHandler = thrift::ThriftServerCompressionHandler<
         apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>;
     using ConnectionCloseHandler = thrift::ThriftServerConnectionCloseHandler<
@@ -488,24 +484,23 @@ struct AppAdapterBenchFixture {
 
     if (withContextHandlers) {
       connContext = new thrift::ThriftConnContext();
-      thriftPipeline =
-          Builder()
-              .setEventBase(&evb)
-              .setHead(transportAdapter.get())
-              .setTail(adapter.get())
-              .setAllocator(&thriftAllocator)
-              .addNextDuplex<CompressionHandler>(
-                  thrift_server_compression_handler_tag)
-              .addNextDuplex<ConnectionCloseHandler>(
-                  thrift_server_connection_close_handler_tag)
-              .addNextDuplex<ReqCtxHandler>(
-                  thrift_server_request_context_handler_tag,
-                  /*requestExtensionLayout=*/nullptr)
-              .addNextDuplex<ConnCtxHandler>(
-                  thrift_server_connection_context_handler_tag, connContext)
-              .addNextDuplex<ServerSetupHandler>(
-                  thrift_server_setup_handler_tag)
-              .build();
+      thriftPipeline = Builder()
+                           .setEventBase(&evb)
+                           .setHead(transportAdapter.get())
+                           .setTail(adapter.get())
+                           .setAllocator(&thriftAllocator)
+                           .addNextDuplex<CompressionHandler>(
+                               thrift_server_compression_handler_tag)
+                           .addNextDuplex<ConnectionCloseHandler>(
+                               thrift_server_connection_close_handler_tag)
+                           .addNextDuplex<ReqCtxHandler>(
+                               thrift_server_request_context_handler_tag,
+                               /*requestExtensionLayout=*/nullptr,
+                               connContext,
+                               /*enableRequestHeaders=*/false)
+                           .addNextDuplex<ServerSetupHandler>(
+                               thrift_server_setup_handler_tag)
+                           .build();
     } else {
       thriftPipeline = Builder()
                            .setEventBase(&evb)

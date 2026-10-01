@@ -94,7 +94,7 @@ struct ThriftServerConnection {
 
   // Per-connection thrift context. Set by the factory for every accepted
   // connection and co-owned with the pipeline's
-  // ThriftServerConnectionContextHandler via refcount.
+  // ThriftServerRequestContextHandler via refcount.
   boost::intrusive_ptr<ThriftConnContext> connContext;
 
   // Begin reading. May synchronously drain pre-received bytes (e.g. the

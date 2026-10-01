@@ -70,7 +70,6 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionContextHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestContextHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
@@ -751,7 +750,6 @@ HANDLER_TAG(server_request_response_frame_handler);
 HANDLER_TAG(server_stream_state_handler);
 HANDLER_TAG(rocket_thrift_interface_handler);
 HANDLER_TAG(thrift_server_request_context_handler);
-HANDLER_TAG(thrift_server_connection_context_handler);
 
 namespace {
 
@@ -1256,10 +1254,9 @@ TEST_F(ThriftServerAppAdapterIntegrationTest, ProtocolIdPassedToHandler) {
 //
 // Exercises the per-request context flow end-to-end: a real wire frame
 // traverses the rocket pipeline, hits ThriftServerRequestContextHandler
-// (which stamps a fresh ThriftRequestContext on the message), then
-// ThriftServerConnectionContextHandler (which writes the per-connection
-// context into it), and finally arrives at the app adapter's registered
-// thunk — which must receive that exact context with its conn context
+// (which creates and populates a fresh ThriftRequestContext), and finally
+// arrives at the app adapter's registered thunk — which must receive that
+// exact context with its conn context
 // field populated.
 //
 // Production FastThriftServer.cpp does not yet wire these handlers in;
@@ -1284,8 +1281,6 @@ class ThriftRequestContextIntegrationTest
         RocketServerTransportHandler::create(std::move(transport));
 
     using ReqCtxHandler = ThriftServerRequestContextHandler<
-        apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>;
-    using ConnCtxHandler = ThriftServerConnectionContextHandler<
         apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>;
 
     pipeline_ =
@@ -1331,9 +1326,9 @@ class ThriftRequestContextIntegrationTest
                 rocket_thrift_interface_handler_tag)
             .addNextDuplex<ReqCtxHandler>(
                 thrift_server_request_context_handler_tag,
-                /*requestExtensionLayout=*/nullptr)
-            .addNextDuplex<ConnCtxHandler>(
-                thrift_server_connection_context_handler_tag, connContext_)
+                /*requestExtensionLayout=*/nullptr,
+                connContext_,
+                /*enableRequestHeaders=*/false)
             .build();
 
     adapter_->setPipeline(pipeline_.get());

@@ -55,9 +55,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerChecksumHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerCompressionHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionCloseHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionContextHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestContextHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestHeadersHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestLifecycleHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/WriteBufferBackpressureHandler.h>
@@ -122,8 +120,6 @@ HANDLER_TAG(server_keepalive_handler);
 HANDLER_TAG(server_request_response_frame_handler);
 HANDLER_TAG(server_stream_state_handler);
 HANDLER_TAG(thrift_server_request_context_handler);
-HANDLER_TAG(thrift_server_connection_context_handler);
-HANDLER_TAG(thrift_server_request_headers_handler);
 HANDLER_TAG(thrift_server_request_lifecycle_handler);
 HANDLER_TAG(thrift_server_compression_handler);
 HANDLER_TAG(thrift_server_checksum_handler);
@@ -319,32 +315,20 @@ PipelineOwner addStaticChecksum(
 }
 
 template <
-    bool WithHeaders,
     bool WithChecksum,
     bool WithWriteBuffer,
     bool WithExtensions,
     typename Builder>
-PipelineOwner addStaticHeaders(
+PipelineOwner addStaticCompression(
     Builder&& builder,
     const ThriftServerConnectionFactoryConfig& config,
     ExtensionStateStore& extensionStates) {
-  if constexpr (WithHeaders) {
-    return addStaticChecksum<WithChecksum, WithWriteBuffer, WithExtensions>(
-        std::forward<Builder>(builder)
-            .template addNextInboundTemplate<ThriftServerRequestHeadersHandler>(
-                thrift_server_request_headers_handler_tag)
-            .template addNextDuplexTemplate<ThriftServerCompressionHandler>(
-                thrift_server_compression_handler_tag),
-        config,
-        extensionStates);
-  } else {
-    return addStaticChecksum<WithChecksum, WithWriteBuffer, WithExtensions>(
-        std::forward<Builder>(builder)
-            .template addNextDuplexTemplate<ThriftServerCompressionHandler>(
-                thrift_server_compression_handler_tag),
-        config,
-        extensionStates);
-  }
+  return addStaticChecksum<WithChecksum, WithWriteBuffer, WithExtensions>(
+      std::forward<Builder>(builder)
+          .template addNextDuplexTemplate<ThriftServerCompressionHandler>(
+              thrift_server_compression_handler_tag),
+      config,
+      extensionStates);
 }
 
 template <
@@ -373,38 +357,26 @@ PipelineOwner buildStaticThriftPipeline(
       .setTail(tailAdapter)
       .setAllocator(allocator);
   if constexpr (WithStats) {
-    return addStaticHeaders<
-        WithHeaders,
-        WithChecksum,
-        WithWriteBuffer,
-        WithExtensions>(
+    return addStaticCompression<WithChecksum, WithWriteBuffer, WithExtensions>(
         std::move(builder)
             .template addNextDuplex<
                 ThriftMetricsHandler<Direction::Server, ServerStatsShard>>(
                 thrift_metrics_handler_tag, statsShard)
             .template addNextDuplexTemplate<ThriftServerRequestContextHandler>(
                 thrift_server_request_context_handler_tag,
-                config.requestExtensionLayout.get())
-            .template addNextInboundTemplate<
-                ThriftServerConnectionContextHandler>(
-                thrift_server_connection_context_handler_tag,
-                std::move(connContext)),
+                config.requestExtensionLayout.get(),
+                std::move(connContext),
+                WithHeaders),
         config,
         extensionStates);
   } else {
-    return addStaticHeaders<
-        WithHeaders,
-        WithChecksum,
-        WithWriteBuffer,
-        WithExtensions>(
+    return addStaticCompression<WithChecksum, WithWriteBuffer, WithExtensions>(
         std::move(builder)
             .template addNextDuplexTemplate<ThriftServerRequestContextHandler>(
                 thrift_server_request_context_handler_tag,
-                config.requestExtensionLayout.get())
-            .template addNextInboundTemplate<
-                ThriftServerConnectionContextHandler>(
-                thrift_server_connection_context_handler_tag,
-                std::move(connContext)),
+                config.requestExtensionLayout.get(),
+                std::move(connContext),
+                WithHeaders),
         config,
         extensionStates);
   }
@@ -816,10 +788,6 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   // every child.
   using ReqCtxHandler =
       ThriftServerRequestContextHandler<channel_pipeline::detail::ContextImpl>;
-  using ConnCtxHandler = ThriftServerConnectionContextHandler<
-      channel_pipeline::detail::ContextImpl>;
-  using ReqHeadersHandler =
-      ThriftServerRequestHeadersHandler<channel_pipeline::detail::ContextImpl>;
   using CompressionHandler =
       ThriftServerCompressionHandler<channel_pipeline::detail::ContextImpl>;
   using ChecksumHandler =
@@ -866,29 +834,21 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
           ThriftMetricsHandler<Direction::Server, ServerStatsShard>>(
           thrift_metrics_handler_tag, statsShard);
     }
-    // Duplex: inbound it creates the per-request context, outbound it hands
-    // that context's response headers to the outgoing metadata. Sitting
-    // closest to the head on the write path makes it the last contributor
-    // downstream of every handler and extension that can add one.
-    thriftPipelineBuilder
-        .template addNextDuplex<ReqCtxHandler>(
-            thrift_server_request_context_handler_tag,
-            config_.requestExtensionLayout.get())
-        .template addNextInbound<ConnCtxHandler>(
-            thrift_server_connection_context_handler_tag,
-            std::move(connContext));
-    // Stamps RequestRpcMetadata.otherMetadata onto each request's
-    // ThriftRequestContext.
-    if (config_.enableRequestHeaders) {
-      thriftPipelineBuilder.template addNextInbound<ReqHeadersHandler>(
-          thrift_server_request_headers_handler_tag);
-    }
+    // Duplex: inbound it creates and populates the per-request context;
+    // outbound it hands that context's response headers to the outgoing
+    // metadata. Sitting closest to the head on the write path makes it the
+    // last contributor downstream of every handler and extension.
+    thriftPipelineBuilder.template addNextDuplex<ReqCtxHandler>(
+        thrift_server_request_context_handler_tag,
+        config_.requestExtensionLayout.get(),
+        std::move(connContext),
+        config_.enableRequestHeaders);
     // Inbound decompression precedes checksum verification. Outbound traverses
     // the handlers in reverse, so the checksum is computed on the uncompressed
     // response before compression.
     thriftPipelineBuilder.template addNextDuplex<CompressionHandler>(
         thrift_server_compression_handler_tag);
-    // The checksum handler is added after the context handlers so inbound it
+    // The checksum handler is added after the context handler so inbound it
     // runs once the per-request ThriftRequestContext exists (it records the
     // algorithm there for the response to echo).
     if (config_.enableChecksum) {
@@ -904,7 +864,7 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
         thrift_server_connection_close_handler_tag,
         config_.drainTimeout,
         config_.reapTimeout);
-    // Write-buffer handler sits between the context handlers and the drain
+    // Write-buffer handler sits between the context handler and the drain
     // handler. Placed above drain (closer to head) so its inbound
     // Backpressure signal propagates upstream toward the transport, and
     // outbound responses from the tail traverse drain → write-buffer →

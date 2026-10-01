@@ -126,9 +126,8 @@ class ThriftRequestContext {
 
   const std::string& getMethodName() const noexcept { return methodName_; }
 
-  // Inbound custom request headers (RequestRpcMetadata.otherMetadata),
-  // stamped by ThriftServerRequestHeadersHandler. Empty when the handler is
-  // not wired or the request carried no custom headers.
+  // Inbound custom request headers (RequestRpcMetadata.otherMetadata), moved
+  // into the request context when request headers are enabled. Empty otherwise.
   void setHeaders(HeaderMap headers) noexcept { headers_ = std::move(headers); }
 
   // Adds to (or overwrites) a single inbound header. Used by extensions

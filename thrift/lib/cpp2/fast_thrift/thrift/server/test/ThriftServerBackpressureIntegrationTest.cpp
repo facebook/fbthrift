@@ -23,7 +23,6 @@
  *
  *   MockHeadHandler (mock socket)
  *     -> ThriftServerRequestContextHandler
- *     -> ThriftServerConnectionContextHandler
  *     -> ThriftServerConnectionCloseHandler
  *     -> WriteBufferBackpressureHandler
  *     -> MockTailHandler (mock app)
@@ -58,7 +57,6 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionCloseHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionContextHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestContextHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/WriteBufferBackpressureHandler.h>
 
@@ -70,13 +68,11 @@ namespace ft = ::apache::thrift::fast_thrift::thrift;
 namespace {
 
 HANDLER_TAG(req_ctx);
-HANDLER_TAG(conn_ctx);
 HANDLER_TAG(close);
 HANDLER_TAG(write_buffer);
 
 using Ctx = cp::detail::ContextImpl;
 using ReqCtxHandler = ft::ThriftServerRequestContextHandler<Ctx>;
-using ConnCtxHandler = ft::ThriftServerConnectionContextHandler<Ctx>;
 using CloseHandler = ft::ThriftServerConnectionCloseHandler<Ctx>;
 using WriteBufferHandler = ft::WriteBufferBackpressureHandler<Ctx>;
 
@@ -106,11 +102,11 @@ class ThriftServerBackpressureIntegrationTest : public ::testing::Test {
     tail_.reset();
     allocator_.reset();
 
-    auto reqCtx =
-        std::make_unique<ReqCtxHandler>(/*requestExtensionLayout=*/nullptr);
-    auto connCtx = std::make_unique<ConnCtxHandler>(
+    auto reqCtx = std::make_unique<ReqCtxHandler>(
+        /*requestExtensionLayout=*/nullptr,
         boost::intrusive_ptr<ft::ThriftConnContext>(
-            new ft::ThriftConnContext{}));
+            new ft::ThriftConnContext{}),
+        /*enableRequestHeaders=*/false);
     auto closeHandler = std::make_unique<CloseHandler>();
     auto writeBuffer = std::make_unique<WriteBufferHandler>();
 
@@ -127,7 +123,6 @@ class ThriftServerBackpressureIntegrationTest : public ::testing::Test {
             .setTail(&tail_)
             .setAllocator(&allocator_)
             .addNextInbound<ReqCtxHandler>(req_ctx_tag, std::move(reqCtx))
-            .addNextInbound<ConnCtxHandler>(conn_ctx_tag, std::move(connCtx))
             .addNextDuplex<CloseHandler>(close_tag, std::move(closeHandler))
             .addNextDuplex<WriteBufferHandler>(
                 write_buffer_tag, std::move(writeBuffer))

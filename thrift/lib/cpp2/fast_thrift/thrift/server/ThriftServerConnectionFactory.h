@@ -92,9 +92,8 @@ struct ThriftServerConnectionFactoryConfig {
   std::shared_ptr<const ExtensionLayout> connExtensionLayout;
   std::shared_ptr<const ExtensionLayout> requestExtensionLayout;
 
-  // When true, insert ThriftServerRequestHeadersHandler so each request's
-  // ThriftRequestContext is populated with the inbound custom headers
-  // (RequestRpcMetadata.otherMetadata).
+  // When true, populate each request's ThriftRequestContext with the inbound
+  // custom headers (RequestRpcMetadata.otherMetadata).
   bool enableRequestHeaders{false};
 
   // When true, insert ThriftServerChecksumHandler to validate the inbound

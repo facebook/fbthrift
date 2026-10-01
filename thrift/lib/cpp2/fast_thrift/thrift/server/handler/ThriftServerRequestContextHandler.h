@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include <memory>
-#include <string>
 #include <utility>
+
+#include <boost/intrusive_ptr.hpp>
 
 #include <folly/ExceptionWrapper.h>
 
@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
 
@@ -34,10 +35,8 @@ namespace apache::thrift::fast_thrift::thrift {
 
 /**
  * ThriftServerRequestContextHandler — duplex pipeline handler that creates a
- * fresh ThriftRequestContext for every inbound request, stamps it onto the
- * message, and fills in the invoked method name. Subsequent handlers
- * (ConnectionContextHandler, headers handler, etc.) populate the remaining
- * fields on the per-request context.
+ * fresh ThriftRequestContext for every inbound request and populates all
+ * context fields derived from the connection and request metadata.
  *
  * Outbound it does the closing half: hands the response headers accumulated on
  * that context to the outgoing metadata. The handler that opens the context
@@ -58,6 +57,14 @@ class ThriftServerRequestContextHandler {
       const ExtensionLayout* FOLLY_NULLABLE requestExtensionLayout) noexcept
       : requestExtensionLayout_(requestExtensionLayout) {}
 
+  ThriftServerRequestContextHandler(
+      const ExtensionLayout* FOLLY_NULLABLE requestExtensionLayout,
+      boost::intrusive_ptr<ThriftConnContext> connContext,
+      bool enableRequestHeaders) noexcept
+      : requestExtensionLayout_(requestExtensionLayout),
+        connContext_(std::move(connContext)),
+        enableRequestHeaders_(enableRequestHeaders) {}
+
   // HandlerLifecycle
   void handlerAdded(Context& /*ctx*/) noexcept {}
   void handlerRemoved(Context& /*ctx*/) noexcept {}
@@ -71,9 +78,12 @@ class ThriftServerRequestContextHandler {
     // is not a setup message and must still be handled.
     if (FOLLY_UNLIKELY(
             request.payload.template is<ThriftConnectionSetupPayload>())) {
+      request.payload.template get<ThriftConnectionSetupPayload>()
+          .setup->connContext = connContext_.get();
       return ctx.fireRead(std::move(msg));
     }
     request.requestContext = makeThriftRequestContext(*ctx.eventBase());
+    request.requestContext->setConnectionContext(connContext_);
     if (requestExtensionLayout_ != nullptr) {
       request.requestContext->installExtensions(*requestExtensionLayout_);
     }
@@ -84,6 +94,11 @@ class ThriftServerRequestContextHandler {
       if (metadata != nullptr && metadata->name().has_value()) {
         request.requestContext->setMethodName(
             std::move(*metadata->name()).str());
+      }
+      if (enableRequestHeaders_ && metadata != nullptr &&
+          metadata->otherMetadata().has_value()) {
+        request.requestContext->setHeaders(
+            std::move(*metadata->otherMetadata()));
       }
     }
     return ctx.fireRead(std::move(msg));
@@ -110,6 +125,8 @@ class ThriftServerRequestContextHandler {
 
  private:
   const ExtensionLayout* FOLLY_NULLABLE requestExtensionLayout_{nullptr};
+  boost::intrusive_ptr<ThriftConnContext> connContext_;
+  bool enableRequestHeaders_{false};
 };
 
 } // namespace apache::thrift::fast_thrift::thrift

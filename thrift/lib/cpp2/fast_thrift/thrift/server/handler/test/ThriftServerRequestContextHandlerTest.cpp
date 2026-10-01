@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -162,9 +163,63 @@ TEST(
   auto& forwarded = ctx.forwarded.front().get<ThriftServerRequestMessage>();
   EXPECT_EQ(forwarded.streamId, 42);
   ASSERT_NE(forwarded.requestContext, nullptr);
-  // Default-constructed: no conn context yet — that's a downstream handler's
-  // job.
+  // The one-argument constructor remains useful where no connection exists.
   EXPECT_EQ(forwarded.requestContext->getConnectionContext(), nullptr);
+}
+
+TEST(ThriftServerRequestContextHandlerTest, PopulatesConnectionAndHeaders) {
+  boost::intrusive_ptr<ThriftConnContext> connContext{new ThriftConnContext()};
+  connContext->setSecurityProtocol("TLS1.3");
+  ThriftServerRequestContextHandler<FakeContext> handler{
+      nullptr, connContext, true};
+  FakeContext ctx;
+
+  auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
+  auto& headers = metadata->otherMetadata().ensure();
+  headers["kcb_identity"] = "svc:foo";
+  headers["client_identifier"] = "client-123";
+
+  EXPECT_EQ(
+      handler.onRead(
+          ctx,
+          erase_and_box(makeRequestWithMetadata(
+              *ctx.eventBase(), /*streamId=*/42, std::move(metadata)))),
+      Result::Success);
+
+  ASSERT_EQ(ctx.forwarded.size(), 1);
+  auto& forwarded = ctx.forwarded.front().get<ThriftServerRequestMessage>();
+  ASSERT_NE(forwarded.requestContext, nullptr);
+  EXPECT_EQ(
+      forwarded.requestContext->getConnectionContext(), connContext.get());
+  EXPECT_EQ(forwarded.requestContext->getHeaders().size(), 2);
+  ASSERT_NE(forwarded.requestContext->getHeader("kcb_identity"), nullptr);
+  EXPECT_EQ(*forwarded.requestContext->getHeader("kcb_identity"), "svc:foo");
+}
+
+TEST(ThriftServerRequestContextHandlerTest, DisabledHeadersStayInMetadata) {
+  ThriftServerRequestContextHandler<FakeContext> handler{
+      nullptr,
+      boost::intrusive_ptr<ThriftConnContext>{new ThriftConnContext()},
+      false};
+  FakeContext ctx;
+
+  auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
+  metadata->otherMetadata().ensure()["present"] = "yes";
+
+  EXPECT_EQ(
+      handler.onRead(
+          ctx,
+          erase_and_box(makeRequestWithMetadata(
+              *ctx.eventBase(), /*streamId=*/1, std::move(metadata)))),
+      Result::Success);
+
+  ASSERT_EQ(ctx.forwarded.size(), 1);
+  auto& forwarded = ctx.forwarded.front().get<ThriftServerRequestMessage>();
+  EXPECT_TRUE(forwarded.requestContext->getHeaders().empty());
+  const auto* forwardedMetadata = forwarded.payload.getRequestRpcMetadata();
+  ASSERT_NE(forwardedMetadata, nullptr);
+  ASSERT_TRUE(forwardedMetadata->otherMetadata().has_value());
+  EXPECT_EQ(forwardedMetadata->otherMetadata()->at("present"), "yes");
 }
 
 TEST(ThriftServerRequestContextHandlerTest, EachRequestGetsItsOwnContext) {
