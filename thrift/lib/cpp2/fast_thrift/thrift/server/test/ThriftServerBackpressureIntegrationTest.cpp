@@ -79,7 +79,10 @@ using WriteBufferHandler = ft::WriteBufferBackpressureHandler<Ctx>;
 ft::ThriftServerRequestMessage makeRequest(uint32_t streamId) {
   return ft::ThriftServerRequestMessage{
       .requestContext = ft::ThriftRequestContextPtr{},
-      .payload = {},
+      // A request-opening payload so ThriftServerConnectionCloseHandler counts
+      // it as in-flight work (isRequestWork admits only REQUEST_RESPONSE /
+      // REQUEST_STREAM); otherwise the paired response underflows the count.
+      .payload = ft::ThriftServerRequestResponsePayload{},
       .streamId = streamId,
   };
 }

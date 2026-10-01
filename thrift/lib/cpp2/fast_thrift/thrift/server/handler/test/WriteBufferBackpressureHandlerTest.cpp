@@ -505,6 +505,10 @@ class WriteBufferBackpressureHandlerPipelineTest : public ::testing::Test {
     ThriftServerRequestMessage request;
     request.streamId = streamId;
     request.requestContext = makeThriftRequestContext(evb_);
+    // A request-opening payload so ThriftServerConnectionCloseHandler counts it
+    // as in-flight work (isRequestWork admits only REQUEST_RESPONSE /
+    // REQUEST_STREAM); otherwise the paired response underflows the count.
+    request.payload = ThriftServerRequestResponsePayload{};
     return request;
   }
 
