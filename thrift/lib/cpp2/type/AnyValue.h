@@ -70,18 +70,6 @@ class AnyValue : public detail::AnyValueBase {
   //
   using Base::empty;
 
-  // Determines if the give AnyValue is identical to this one.
-  //
-  // Two AnyValues are 'identical' if they have the same `type()` and
-  // the values stored are also identical. See `op::identical`.
-  //
-  // Throws folly::BadPolyCast if the underlying Tags are different, but have
-  // the same Type.
-  //
-  //   bool identical(const AnyValue& other);
-  //
-  using Base::identical;
-
   // Clears the underlying value, leaving it equal it to it's intrinsic default.
   //
   // See `op::clear`
