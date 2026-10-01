@@ -42,20 +42,17 @@ static_assert(ThriftPayloadConcept<ThriftInitialResponsePayload>);
 static_assert(ThriftPayloadConcept<ThriftStreamInitialResponsePayload>);
 static_assert(ThriftPayloadConcept<ThriftStreamPayload>);
 static_assert(ThriftPayloadConcept<ThriftErrorPayload>);
-static_assert(ThriftPayloadConcept<ThriftCancelPayload>);
 static_assert(ThriftPayloadConcept<ThriftRequestNPayload>);
 
 // Request concept: the 5 initial-request alternatives, plus the inbound
-// control frames (REQUEST_N / CANCEL) that share
-// ThriftServerInboundPayloadVariant. Those carry a null
-// getRequestRpcMetadata() so the variant's constrained accessor stays
-// well-formed — they satisfy the concept but expose no routing metadata.
+// REQUEST_N control frame that shares ThriftServerInboundPayloadVariant. It
+// carries a null getRequestRpcMetadata() so the variant's constrained accessor
+// stays well-formed — it satisfies the concept but exposes no routing metadata.
 static_assert(ThriftRequestPayloadConcept<ThriftRequestResponsePayload>);
 static_assert(ThriftRequestPayloadConcept<ThriftRequestFnfPayload>);
 static_assert(ThriftRequestPayloadConcept<ThriftRequestStreamPayload>);
 static_assert(ThriftRequestPayloadConcept<ThriftRequestSinkPayload>);
 static_assert(ThriftRequestPayloadConcept<ThriftRequestBidiPayload>);
-static_assert(ThriftRequestPayloadConcept<ThriftCancelPayload>);
 static_assert(ThriftRequestPayloadConcept<ThriftRequestNPayload>);
 
 static_assert(!ThriftRequestPayloadConcept<ThriftInitialResponsePayload>);
@@ -72,7 +69,6 @@ static_assert(
     !ThriftInitialResponsePayloadConcept<ThriftRequestResponsePayload>);
 static_assert(!ThriftInitialResponsePayloadConcept<ThriftStreamPayload>);
 static_assert(!ThriftInitialResponsePayloadConcept<ThriftErrorPayload>);
-static_assert(!ThriftInitialResponsePayloadConcept<ThriftCancelPayload>);
 
 // =============================================================================
 // Variant accessor availability (compile-time)

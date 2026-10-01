@@ -32,9 +32,11 @@ namespace apache::thrift::fast_thrift::thrift {
 // they continue to take the same wrapper variant type).
 
 // Server-side inbound — what the server pipeline reads from the wire.
-// Unary REQUEST_RESPONSE, connection setup, unary cancellation, and the
-// established-stream flow-control frames (REQUEST_N / CANCEL) the stream mux
-// routes by streamId.
+// Unary REQUEST_RESPONSE, connection setup, the established-stream REQUEST_N
+// flow-control frame the stream mux routes by streamId, and the header-only
+// cancellation (CANCEL) that the transport adapter turns into a
+// ThriftServerRequestCancellationEvent — routed by streamId to the mux (stream
+// cancel) or the request-lifecycle handler (unary cancel).
 using ThriftServerRequestResponsePayload = BasicThriftRequestResponsePayload<
     mem::evb_local_ptr<apache::thrift::RequestRpcMetadata>>;
 
@@ -54,7 +56,6 @@ using ThriftServerInboundPayloadVariant = ThriftPayloadVariant<
     ThriftServerRequestResponsePayload,
     ThriftConnectionSetupPayload,
     ThriftRequestNPayload,
-    ThriftCancelPayload,
     ThriftRequestCancellationPayload>;
 
 // Server-side outbound — what the server pipeline writes to the wire.
@@ -82,10 +83,7 @@ static_assert(
     "message; put new state in ConnectionSetupData instead");
 
 static_assert(
-    sizeof(ThriftRequestNPayload) <=
-            sizeof(ThriftServerRequestResponsePayload) &&
-        sizeof(ThriftCancelPayload) <=
-            sizeof(ThriftServerRequestResponsePayload),
+    sizeof(ThriftRequestNPayload) <= sizeof(ThriftServerRequestResponsePayload),
     "stream flow-control payloads must not grow the per-request inbound "
     "message");
 

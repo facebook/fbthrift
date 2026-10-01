@@ -16,11 +16,11 @@
 
 // Unit tests for ThriftServerStreamMuxHandler. A real main pipeline
 // (MockHead <- mux <- MockTail) stands in for the thrift server pipeline: an
-// outbound ThriftServerStreamOpenPayload opens a stream, inbound
-// RequestN/Cancel drive/terminate it, and everything reaching the wire
-// (MockHead) is recorded. The per-stream producer is a synchronous sample
-// FiniteProducer supplied via a ProducerPipeline::ConfigFunc, exactly as an
-// application would.
+// outbound ThriftServerStreamOpenPayload opens a stream, an inbound RequestN
+// drives it, a broadcast ThriftServerRequestCancellationEvent terminates it,
+// and everything reaching the wire (MockHead) is recorded. The per-stream
+// producer is a synchronous sample FiniteProducer supplied via a
+// ProducerPipeline::ConfigFunc, exactly as an application would.
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerStreamMuxHandler.h>
 
@@ -45,6 +45,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftControlPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftRequestPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftResponsePayloads.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/StreamResponsePayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/stream/ProducerPipeline.h>
@@ -221,13 +222,6 @@ ThriftServerRequestMessage makeRequestN(uint32_t streamId, uint32_t n) {
   return msg;
 }
 
-ThriftServerRequestMessage makeCancel(uint32_t streamId) {
-  ThriftServerRequestMessage msg;
-  msg.payload = ThriftCancelPayload{.streamId = streamId};
-  msg.streamId = streamId;
-  return msg;
-}
-
 class ThriftServerStreamMuxHandlerTest : public ::testing::Test {
  protected:
   cp::PipelineImpl::Ptr build() {
@@ -356,11 +350,16 @@ TEST_F(ThriftServerStreamMuxHandlerTest, ConcurrentStreamsRoutedIndependently) {
 
 TEST_F(ThriftServerStreamMuxHandlerTest, CancelStopsAndTearsDownStream) {
   auto pipeline = build();
+  pipeline->activate();
   (void)pipeline->fireWrite(cp::erase_and_box(makeOpen(/*streamId=*/2, 100)));
   (void)pipeline->fireRead(cp::erase_and_box(makeRequestN(2, /*n=*/2)));
   const size_t afterGrant = recorded_.size(); // 1 initial + 2 payloads
 
-  (void)pipeline->fireRead(cp::erase_and_box(makeCancel(2)));
+  // A CANCEL for this stream arrives as a broadcast cancellation event; the mux
+  // claims it (the streamId names one of its streams) and tears the stream
+  // down.
+  pipeline->fireEvent<ThriftServerRequestCancellationEvent>(
+      ThriftServerRequestCancellationEvent{.streamId = 2});
   // After cancel the stream is torn down; further demand produces nothing and
   // surfaces an exception (the stream is no longer known).
   (void)pipeline->fireRead(cp::erase_and_box(makeRequestN(2, /*n=*/10)));
@@ -391,7 +390,7 @@ TEST_F(
   EXPECT_EQ(exceptions_.size(), 1u);
 }
 
-TEST_F(ThriftServerStreamMuxHandlerTest, UnknownStreamFiresException) {
+TEST_F(ThriftServerStreamMuxHandlerTest, UnknownStreamRequestNFiresException) {
   auto pipeline = build();
 
   // No stream was ever opened for this id. A RequestN for it is surfaced as an
@@ -403,11 +402,19 @@ TEST_F(ThriftServerStreamMuxHandlerTest, UnknownStreamFiresException) {
   EXPECT_NE(
       exceptions_[0].what().toStdString().find("unknown stream"),
       std::string::npos);
+}
 
-  // A CANCEL for an unknown stream is surfaced the same way.
-  (void)pipeline->fireRead(cp::erase_and_box(makeCancel(/*streamId=*/9)));
+TEST_F(ThriftServerStreamMuxHandlerTest, CancellationForUnownedStreamIgnored) {
+  auto pipeline = build();
+  pipeline->activate();
+
+  // A cancellation event whose streamId names no stream this mux owns targets a
+  // unary request (handled by the request-lifecycle handler), not a stream. The
+  // mux ignores it: nothing on the wire, no exception surfaced.
+  pipeline->fireEvent<ThriftServerRequestCancellationEvent>(
+      ThriftServerRequestCancellationEvent{.streamId = 9});
   EXPECT_TRUE(recorded_.empty());
-  EXPECT_EQ(exceptions_.size(), 2u);
+  EXPECT_TRUE(exceptions_.empty());
 }
 
 TEST_F(ThriftServerStreamMuxHandlerTest, UnaryTrafficPassesThrough) {

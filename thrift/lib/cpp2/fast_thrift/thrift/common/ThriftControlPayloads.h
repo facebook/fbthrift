@@ -30,7 +30,7 @@ namespace apache::thrift::fast_thrift::thrift {
 
 /**
  * Control payloads — flow-control and connection-level signals that don't
- * carry application data. Cancel and RequestN are per-stream control;
+ * carry application data. RequestN is per-stream control;
  * MetadataPush is connection-level (streamId=0). All `toRocketFrame()`
  * implementations are `noexcept` — no serialization, just header
  * construction.
@@ -39,37 +39,6 @@ namespace apache::thrift::fast_thrift::thrift {
  * `frame::ComposedFrame`. The `RocketFrame` typedef on each struct names
  * the return type for variant-level dispatch (see ThriftPayloadVariant).
  */
-
-/**
- * ThriftCancelPayload — App's "cancel this stream" operation.
- *
- * Header-only on the wire — no data, no metadata, no fields. The streamId
- * comes from the enclosing message wrapper.
- */
-struct ThriftCancelPayload {
-  using RocketFrame = apache::thrift::fast_thrift::frame::ComposedFrame;
-
-  uint32_t streamId{apache::thrift::fast_thrift::rocket::kInvalidStreamId};
-
-  RocketFrame toRocketFrame(
-      rocket::server::MetadataProtocol /*metadataProtocol*/) && noexcept {
-    return {
-        .frameType = apache::thrift::fast_thrift::frame::FrameType::CANCEL,
-        .streamId = streamId,
-        .metadata = nullptr,
-        .data = nullptr,
-    };
-  }
-
-  // Control frames open no exchange, so they carry no request metadata. Present
-  // (returning null) so an inbound request variant that admits this alternative
-  // keeps satisfying ThriftRequestPayloadConcept and exposing
-  // getRequestRpcMetadata().
-  const apache::thrift::RequestRpcMetadata* getRequestRpcMetadata()
-      const noexcept {
-    return nullptr;
-  }
-};
 
 /**
  * ThriftRequestNPayload — App's "request more" operation (flow control).

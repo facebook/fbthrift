@@ -79,11 +79,6 @@ fromRocketFrame(
           kind};
     }
 
-    case FrameType::CANCEL: {
-      return ThriftClientInboundPayloadVariant{
-          ThriftCancelPayload{.streamId = streamId}, kind};
-    }
-
     case FrameType::REQUEST_N: {
       apache::thrift::fast_thrift::frame::read::RequestNView view(frame);
       return ThriftClientInboundPayloadVariant{
@@ -122,6 +117,7 @@ fromRocketFrame(
     case FrameType::REQUEST_FNF:
     case FrameType::REQUEST_STREAM:
     case FrameType::REQUEST_CHANNEL:
+    case FrameType::CANCEL:
     case FrameType::RESUME:
     case FrameType::RESUME_OK:
     case FrameType::EXT:

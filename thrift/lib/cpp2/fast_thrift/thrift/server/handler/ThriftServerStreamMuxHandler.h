@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <concepts>
 #include <cstdint>
 #include <memory>
 #include <optional>
@@ -28,12 +29,14 @@
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/DirectStreamMap.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/StreamPayloadMetadata.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftControlPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftResponsePayloads.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/StreamResponsePayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponseMetadata.h>
@@ -48,8 +51,8 @@ namespace apache::thrift::fast_thrift::thrift {
  *
  * Placement: just head-ward of the tail app adapter. Outbound stream chunks it
  * injects then traverse every outbound handler (checksum/compression/transport)
- * like a unary response; inbound RequestN/Cancel reach it after the upper
- * handlers and are routed here rather than forwarded to the app.
+ * like a unary response; inbound RequestN reaches it after the upper handlers
+ * and is routed here rather than forwarded to the app.
  *
  * Outbound (onWrite): a `ThriftServerStreamOpenPayload` opens a stream — the
  * mux runs its `ProducerPipeline::ConfigFunc` to build and own a sub-pipeline
@@ -57,9 +60,17 @@ namespace apache::thrift::fast_thrift::thrift {
  * pipeline's write path, and forwards the initial response chunk upward. Every
  * other outbound message passes through.
  *
- * Inbound (onRead): `RequestN`/`Cancel` are looked up by streamId and injected
- * into the matching sub-pipeline (not forwarded to the app); unknown/terminated
- * streams drop the frame. Unary requests pass through.
+ * Inbound (onRead): `RequestN` is looked up by streamId and injected into the
+ * matching sub-pipeline (not forwarded to the app); an unknown/terminated
+ * stream surfaces a protocol error. Unary requests pass through.
+ *
+ * Cancellation: a wire CANCEL frame is indistinguishable from a unary request
+ * cancel (same rocket frame), so the transport adapter decodes it to a
+ * broadcast `ThriftServerRequestCancellationEvent`. The mux subscribes and
+ * claims the event only when its streamId names a stream it owns — injecting a
+ * `stream::Cancel` and tearing the stream down. A streamId it doesn't own is a
+ * unary cancel handled by the request-lifecycle handler, so the mux ignores it;
+ * the two streamId spaces are disjoint.
  *
  * Teardown: a terminal (`Complete`/`Error` out, or `Cancel` in) surfaces while
  * we are executing inside the sub-pipeline's `fireRead` —
@@ -73,6 +84,9 @@ namespace apache::thrift::fast_thrift::thrift {
 template <typename Context>
 class ThriftServerStreamMuxHandler {
  public:
+  using SubscribedEvents =
+      channel_pipeline::Events<ThriftServerRequestCancellationEvent>;
+
   void handlerAdded(Context& ctx) noexcept {
     channel_pipeline::detail::ContextImpl& base = ctx;
     mainCtx_ = &base;
@@ -122,18 +136,26 @@ class ThriftServerStreamMuxHandler {
       }
       return channel_pipeline::Result::Success;
     }
-    if (request.payload.is<ThriftCancelPayload>()) {
-      const bool routed = routeInbound(
-          request.streamId,
-          stream::ThriftStreamMessage{.payload = stream::Cancel{}});
-      markTerminated(request.streamId);
-      drainPendingRemoval();
-      if (FOLLY_UNLIKELY(!routed)) {
-        return fireUnknownStream(ctx, request.streamId);
-      }
-      return channel_pipeline::Result::Success;
-    }
     return ctx.fireRead(std::move(msg));
+  }
+
+  // Stream cancel. The event is broadcast to every subscriber (the transport
+  // adapter can't tell a stream cancel from a unary one — same CANCEL frame),
+  // so claim it only when streamId names a stream this mux owns. A streamId it
+  // does not own is a unary request cancel handled by the request-lifecycle
+  // handler; ignore it. routeInbound already reports false for
+  // unknown/terminated streams, so no explicit ownership check is needed.
+  template <channel_pipeline::PipelineEvent E>
+    requires std::same_as<E, ThriftServerRequestCancellationEvent>
+  void on(
+      Context&, const ThriftServerRequestCancellationEvent& event) noexcept {
+    const bool routed = routeInbound(
+        event.streamId,
+        stream::ThriftStreamMessage{.payload = stream::Cancel{}});
+    if (routed) {
+      markTerminated(event.streamId);
+      drainPendingRemoval();
+    }
   }
 
  private:
@@ -191,7 +213,7 @@ class ThriftServerStreamMuxHandler {
     return true;
   }
 
-  // A RequestN/Cancel arrived for a streamId this mux has no active stream for
+  // A RequestN arrived for a streamId this mux has no active stream for
   // (never opened, or already torn down). Rather than drop it silently, surface
   // it up the pipeline so the connection sees the protocol violation.
   channel_pipeline::Result fireUnknownStream(

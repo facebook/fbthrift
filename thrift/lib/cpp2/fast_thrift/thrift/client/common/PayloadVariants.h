@@ -37,7 +37,6 @@ using ThriftClientOutboundPayloadVariant =
 using ThriftClientInboundPayloadVariant = ThriftPayloadVariant<
     ThriftInitialResponsePayload,
     ThriftErrorPayload,
-    ThriftCancelPayload,
     ThriftRequestNPayload,
     ThriftMetadataPushPayload>;
 

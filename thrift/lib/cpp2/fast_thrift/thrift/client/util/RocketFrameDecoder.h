@@ -47,7 +47,6 @@ namespace apache::thrift::fast_thrift::thrift {
  *   - PAYLOAD on REQUEST_RESPONSE → `ThriftInitialResponsePayload`
  *     (deserializes `ResponseRpcMetadata` from the metadata IOBuf).
  *   - ERROR  → `ThriftErrorPayload` (errorCode + remaining payload).
- *   - CANCEL → `ThriftCancelPayload` (header-only).
  *   - REQUEST_N → `ThriftRequestNPayload`.
  *   - METADATA_PUSH → `ThriftMetadataPushPayload` (connection-level,
  *     metadata-only). `kind` is ignored for this frame type.

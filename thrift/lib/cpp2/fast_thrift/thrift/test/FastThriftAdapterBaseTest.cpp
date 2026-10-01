@@ -74,10 +74,10 @@ ThriftResponseMessage makeErrorResponse(
   return response;
 }
 
-ThriftResponseMessage makeCancelResponse() {
+ThriftResponseMessage makeUnexpectedControlResponse() {
   ThriftResponseMessage response;
   response.payload = ThriftClientInboundPayloadVariant{
-      ThriftCancelPayload{.streamId = 1},
+      ThriftRequestNPayload{.streamId = 1},
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE};
   return response;
 }
@@ -121,7 +121,7 @@ TEST(FastThriftAdapterBaseTest, ErrorFrameReturnsDecodedException) {
 }
 
 TEST(FastThriftAdapterBaseTest, UnexpectedFrameTypeReturnsProtocolError) {
-  auto response = makeCancelResponse();
+  auto response = makeUnexpectedControlResponse();
 
   auto result = TestAdapter::handleRequestResponse(
       std::move(response), apache::thrift::protocol::T_COMPACT_PROTOCOL);

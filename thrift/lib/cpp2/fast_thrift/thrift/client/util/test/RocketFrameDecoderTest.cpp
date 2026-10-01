@@ -130,15 +130,15 @@ TEST(FromRocketFrameTest, ErrorFrameDeserializesAsErrorPayload) {
   EXPECT_EQ(err.data->moveToFbString().toStdString(), "err-payload");
 }
 
-TEST(FromRocketFrameTest, CancelFrameDeserializesAsCancelPayload) {
+TEST(FromRocketFrameTest, CancelFrameReturnsError) {
+  // The client never receives CANCEL — RSocket CANCEL flows client->server
+  // only. An inbound CANCEL on the client is an unsupported frame.
   auto frame = makeCancelFrame(/*streamId=*/9);
 
   auto result = fromRocketFrame(
       std::move(frame),
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
-  ASSERT_TRUE(result.hasValue());
-  ASSERT_TRUE(result->is<ThriftCancelPayload>());
-  EXPECT_EQ(result->get<ThriftCancelPayload>().streamId, 9u);
+  EXPECT_FALSE(result.hasValue());
 }
 
 TEST(FromRocketFrameTest, RequestNFrameDeserializesAsRequestNPayload) {
