@@ -34,7 +34,7 @@ the rocket↔frame boundary that wraps/unwraps `RocketRequestMessage` /
 SETUP and consumes it (does not forward downstream), then becomes a near-zero-cost
 passthrough. `RocketServerRequestResponseHandler` tracks REQUEST_RESPONSE streams
 and serializes their response frames. `RocketServerStreamStateHandler` manages active
-stream state for all stream types and consumes connection-level frames (streamId == 0).
+stream state and consumes connection-level frames (streamId == 0).
 
 ---
 
@@ -153,9 +153,9 @@ buck2 test fbcode//thrift/lib/cpp2/fast_thrift/rocket/server/handler/test:rocket
 
 ## Overview
 
-The `RocketServerStreamStateHandler` is a **duplex handler** that manages server-side
-RSocket stream state. It tracks active streams initiated by clients and routes
-responses back through the pipeline.
+The `RocketServerStreamStateHandler` is a **duplex handler** that manages server-side RSocket stream state.
+It tracks active streams initiated by clients and routes responses back through the pipeline;
+RR without cancellation bypasses `RocketStreamContexts`.
 
 ## Key Responsibilities
 
