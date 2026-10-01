@@ -691,7 +691,9 @@ void PythonAsyncProcessor::executeRequest(
            ctx,
            serializedRequest = std::move(serializedRequest),
            rpcKind = kind.value(),
-           function = &function](PyObject* handlerFunction) mutable {
+           function = &function](
+              PyObject* handlerFunction,
+              execution::RequestExecution requestExecution) mutable {
             RequestDispatchParameters requestDispatchParameters{
                 .protocol = protocol,
                 .requestContext = ctx,
@@ -699,6 +701,7 @@ void PythonAsyncProcessor::executeRequest(
                 .rpcKind = rpcKind,
                 .function = function,
                 .handlerFunction = handlerFunction,
+                .requestExecution = std::move(requestExecution),
             };
             return dispatchRequest(
                 eb,

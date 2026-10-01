@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import functools
 import sys
 import traceback
 
@@ -387,6 +388,10 @@ async def lifecycle_coro(object func, str funcName, Promise_Py promise):
     else:
         promise.complete(c_unit)
 
+cdef api int launchControlTask(object coroutine_factory) except -1:
+    asyncio.get_running_loop().create_task(coroutine_factory())
+    return 0
+
 cdef int combinedHandler(
     object func,
     object interaction_self,
@@ -402,20 +407,22 @@ cdef int combinedHandler(
     # the two here. For ordinary service methods `interaction_self` is None and
     # `func` is already a bound method.
     cdef object call_func = func if interaction_self is None else func.__get__(interaction_self)
+    cdef object rpc_coroutine_factory
     reset_token = PyContextVar_Set(THRIFT_REQUEST_CONTEXT, RequestContext._fbthrift_create(ctx))
 
     try:
-        asyncio.get_running_loop().create_task(
-            serverCallback_coro(
-                call_func,
-                funcName.decode('UTF-8'),
-                promise,
-                from_unique_ptr(cmove(requestDispatchParameters.serializedRequest.buffer)),
-                prot,
-                kind,
-            )
+        rpc_coroutine_factory = functools.partial(
+            serverCallback_coro,
+            call_func,
+            funcName.decode('UTF-8'),
+            promise,
+            from_unique_ptr(cmove(requestDispatchParameters.serializedRequest.buffer)),
+            prot,
+            kind,
         )
-        return 0
+        return cmove(requestDispatchParameters.requestExecution)(
+            <PyObject*>rpc_coroutine_factory
+        )
     finally:
         PyContextVar_Reset(THRIFT_REQUEST_CONTEXT, reset_token)
 
@@ -671,7 +678,7 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
 
         cdef cAsyncioExecutor* controlExecutor = get_executor()
         cdef shared_ptr[cExecutionSystem] executionSystem = make_shared[cExecutionSystem](
-            controlExecutor
+            controlExecutor, launchControlTask
         )
         cdef PythonAsyncProcessorFactory inst = PythonAsyncProcessorFactory.__new__(PythonAsyncProcessorFactory)
         inst.funcMap = funcMap

@@ -27,8 +27,17 @@ void ExecutionSystem::execute(
   folly::makeSemiFuture()
       .deferValue(
           [selectedHandlerFunction,
-           requestDispatch = std::move(requestDispatch)](folly::Unit) mutable {
-            return std::move(requestDispatch)(selectedHandlerFunction);
+           requestDispatch = std::move(requestDispatch),
+           requestExecution = RequestExecution(
+               [controlExecutor = controlExecutor_,
+                startRequest = startRequest_](_object* coroutineFactory) {
+                 // Retain the selected destination until Cython starts
+                 // the request.
+                 (void)controlExecutor;
+                 return startRequest(coroutineFactory);
+               })](folly::Unit) mutable {
+            return std::move(requestDispatch)(
+                selectedHandlerFunction, std::move(requestExecution));
           })
       .via(controlExecutor_);
 }

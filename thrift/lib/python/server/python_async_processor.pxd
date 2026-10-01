@@ -35,6 +35,14 @@ from folly.executor cimport cAsyncioExecutor
 # cython doesn't support * in template parameters
 # Make a typedef to workaround this.
 ctypedef PyObject* PyObjPtr
+# Keep the exported Cython callback as a function pointer. C++ converts it to
+# StartControlRequest at the ExecutionSystem constructor boundary.
+ctypedef int (*cStartControlRequest)(PyObject*) except -1
+
+
+cdef extern from "thrift/lib/python/server/execution/RequestExecution.h" namespace "::apache::thrift::python::execution":
+    cdef cppclass cRequestExecution "::apache::thrift::python::execution::RequestExecution":
+        int operator()(PyObject* coroutineFactory) except -1
 
 
 cdef extern from "thrift/lib/cpp2/async/AsyncProcessorFactory.h" namespace "::apache::thrift::AsyncProcessorFactory::MethodMetadata":
@@ -76,7 +84,10 @@ cdef extern from "thrift/lib/python/server/PythonAsyncProcessor.h" namespace "::
 
 cdef extern from "thrift/lib/python/server/execution/ExecutionSystem.h" namespace "::apache::thrift::python::execution":
     cdef cppclass cExecutionSystem "::apache::thrift::python::execution::ExecutionSystem":
-        cExecutionSystem(cAsyncioExecutor* controlExecutor) except +
+        cExecutionSystem(
+            cAsyncioExecutor* controlExecutor,
+            cStartControlRequest startRequest,
+        ) except +
 
 cdef extern from "thrift/lib/python/server/PythonAsyncProcessorFactory.h" namespace "::apache::thrift::python":
     cdef cppclass cPythonAsyncProcessorFactory "::apache::thrift::python::PythonAsyncProcessorFactory"(cAsyncProcessorFactory):
@@ -105,6 +116,7 @@ cdef extern from "thrift/lib/python/server/PythonAsyncProcessor.h" namespace "::
         RpcKind rpcKind
         const HandlerFunc* function
         PyObjPtr handlerFunction
+        cRequestExecution requestExecution
 
 cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
     cdef dict funcMap

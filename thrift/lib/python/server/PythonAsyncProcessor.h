@@ -55,6 +55,7 @@ struct RequestDispatchParameters final {
   // Carries the selected callable, which may come from another handler. The
   // processor factory retains the Python function map that owns this reference.
   PyObject* handlerFunction;
+  execution::RequestExecution requestExecution;
 };
 
 static_assert(!std::is_copy_constructible_v<RequestDispatchParameters>);

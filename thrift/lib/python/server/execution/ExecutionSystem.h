@@ -20,14 +20,12 @@
 #include <memory>
 #include <utility>
 
-#include <Python.h>
 #include <folly/Executor.h>
-#include <folly/futures/Future.h>
+#include <thrift/lib/python/server/execution/RequestExecution.h>
 
 namespace apache::thrift::python::execution {
 
-using RequestDispatch = folly::Function<folly::SemiFuture<folly::Unit>(
-    PyObject* selectedHandlerFunction)>;
+using StartControlRequest = folly::Function<int(_object*) const>;
 
 /**
  * Owns the resources that dispatch Python requests and releases those
@@ -51,8 +49,10 @@ class ExecutionSystem final {
     return std::shared_ptr<ExecutionSystem>(new ExecutionSystem());
   }
 
-  explicit ExecutionSystem(folly::Executor* controlExecutor)
-      : controlExecutor_(folly::Executor::getKeepAliveToken(controlExecutor)) {}
+  ExecutionSystem(
+      folly::Executor* controlExecutor, StartControlRequest startRequest)
+      : controlExecutor_(folly::Executor::getKeepAliveToken(controlExecutor)),
+        startRequest_(std::move(startRequest).asSharedProxy()) {}
 
   ~ExecutionSystem() = default;
   ExecutionSystem(const ExecutionSystem&) = delete;
@@ -72,6 +72,7 @@ class ExecutionSystem final {
   ExecutionSystem() = default;
 
   folly::Executor::KeepAlive<> controlExecutor_;
+  StartControlRequest::SharedProxy startRequest_{nullptr};
 };
 
 } // namespace apache::thrift::python::execution

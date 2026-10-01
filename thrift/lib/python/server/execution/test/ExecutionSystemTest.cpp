@@ -16,6 +16,7 @@
 
 #include <thrift/lib/python/server/execution/ExecutionSystem.h>
 
+#include <cstddef>
 #include <optional>
 #include <ostream>
 #include <stdexcept>
@@ -70,7 +71,14 @@ struct SynchronousDispatchFailureTrace {
 };
 
 struct ResponseTrace {
-  PyObject* handlerFunction{nullptr};
+  PyObject* handlerFunctionBeforeControlDrain = nullptr;
+  bool requestDispatchExecutedBeforeControlDrain = false;
+  PyObject* startedCoroutineFactoryBeforeControlDrain = nullptr;
+  std::size_t requestStartCountBeforeControlDrain = 0;
+  PyObject* handlerFunctionAfterControlDrain = nullptr;
+  bool requestDispatchExecutedAfterControlDrain = false;
+  PyObject* startedCoroutineFactoryAfterControlDrain = nullptr;
+  std::size_t requestStartCountAfterControlDrain = 0;
   std::optional<int> responseBeforeControlDrain;
   std::optional<int> responseBeforeHandlerCompletion;
   std::optional<int> responseBeforeFinalControlDrain;
@@ -86,7 +94,22 @@ struct ResponseTrace {
         *out << "none";
       }
     };
-    *out << "{handlerFunction: " << trace.handlerFunction
+    *out << "{handlerFunctionBeforeControlDrain: "
+         << trace.handlerFunctionBeforeControlDrain
+         << ", requestDispatchExecutedBeforeControlDrain: "
+         << trace.requestDispatchExecutedBeforeControlDrain
+         << ", startedCoroutineFactoryBeforeControlDrain: "
+         << trace.startedCoroutineFactoryBeforeControlDrain
+         << ", requestStartCountBeforeControlDrain: "
+         << trace.requestStartCountBeforeControlDrain
+         << ", handlerFunctionAfterControlDrain: "
+         << trace.handlerFunctionAfterControlDrain
+         << ", requestDispatchExecutedAfterControlDrain: "
+         << trace.requestDispatchExecutedAfterControlDrain
+         << ", startedCoroutineFactoryAfterControlDrain: "
+         << trace.startedCoroutineFactoryAfterControlDrain
+         << ", requestStartCountAfterControlDrain: "
+         << trace.requestStartCountAfterControlDrain
          << ", responseBeforeControlDrain: ";
     printResponse(trace.responseBeforeControlDrain);
     *out << ", responseBeforeHandlerCompletion: ";
@@ -99,18 +122,33 @@ struct ResponseTrace {
   }
 };
 
-TEST(
-    ExecutionSystemTest,
-    ExecuteSuppliesSelectedHandlerFunctionOnControlExecutor) {
+TEST(ExecutionSystemTest, ExecuteStartsSelectedRequestOnControlExecutor) {
   // GIVEN
   folly::ManualExecutor controlExecutor;
-  ExecutionSystem executionSystem(&controlExecutor);
+  PyObject* startedCoroutineFactory = nullptr;
+  std::size_t requestStartCount = 0;
+  ExecutionSystem executionSystem(
+      &controlExecutor,
+      [&startedCoroutineFactory,
+       &requestStartCount](PyObject* coroutineFactory) {
+        startedCoroutineFactory = coroutineFactory;
+        ++requestStartCount;
+        return 0;
+      });
   auto [handlerPromise, handlerResultFuture] =
       folly::makePromiseContract<int>();
   ResponseCallback responseCallback;
   auto* const selectedHandlerFunction = reinterpret_cast<PyObject*>(42);
+  auto* const coroutineFactory = reinterpret_cast<PyObject*>(84);
   const ResponseTrace expected{
-      .handlerFunction = selectedHandlerFunction,
+      .handlerFunctionBeforeControlDrain = nullptr,
+      .requestDispatchExecutedBeforeControlDrain = false,
+      .startedCoroutineFactoryBeforeControlDrain = nullptr,
+      .requestStartCountBeforeControlDrain = 0,
+      .handlerFunctionAfterControlDrain = selectedHandlerFunction,
+      .requestDispatchExecutedAfterControlDrain = true,
+      .startedCoroutineFactoryAfterControlDrain = coroutineFactory,
+      .requestStartCountAfterControlDrain = 1,
       .responseBeforeControlDrain = std::nullopt,
       .responseBeforeHandlerCompletion = std::nullopt,
       .responseBeforeFinalControlDrain = std::nullopt,
@@ -119,25 +157,54 @@ TEST(
 
   // WHEN
   PyObject* handlerFunction = nullptr;
+  bool requestDispatchExecuted = false;
   executionSystem.execute(
       selectedHandlerFunction,
       RequestDispatch([pendingHandlerFuture = std::move(handlerResultFuture),
                        &handlerFunction,
-                       &responseCallback](PyObject* selectedFunction) mutable {
+                       &requestDispatchExecuted,
+                       &responseCallback,
+                       coroutineFactory = coroutineFactory](
+                          PyObject* selectedFunction,
+                          RequestExecution requestExecution) mutable {
         handlerFunction = selectedFunction;
+        requestDispatchExecuted = true;
+        std::move(requestExecution)(coroutineFactory);
         return std::move(pendingHandlerFuture)
             .defer([&responseCallback](auto&& result) {
               responseCallback.complete(std::move(result));
             });
       }));
+  const auto handlerFunctionBeforeControlDrain = handlerFunction;
+  const auto requestDispatchExecutedBeforeControlDrain =
+      requestDispatchExecuted;
+  const auto startedCoroutineFactoryBeforeControlDrain =
+      startedCoroutineFactory;
+  const auto requestStartCountBeforeControlDrain = requestStartCount;
   const auto responseBeforeControlDrain = responseCallback.response();
   controlExecutor.drain();
+  const auto handlerFunctionAfterControlDrain = handlerFunction;
+  const auto requestDispatchExecutedAfterControlDrain = requestDispatchExecuted;
+  const auto startedCoroutineFactoryAfterControlDrain = startedCoroutineFactory;
+  const auto requestStartCountAfterControlDrain = requestStartCount;
   const auto responseBeforeHandlerCompletion = responseCallback.response();
   handlerPromise.setValue(42);
   const auto responseBeforeFinalControlDrain = responseCallback.response();
   controlExecutor.drain();
   const ResponseTrace actual{
-      .handlerFunction = handlerFunction,
+      .handlerFunctionBeforeControlDrain = handlerFunctionBeforeControlDrain,
+      .requestDispatchExecutedBeforeControlDrain =
+          requestDispatchExecutedBeforeControlDrain,
+      .startedCoroutineFactoryBeforeControlDrain =
+          startedCoroutineFactoryBeforeControlDrain,
+      .requestStartCountBeforeControlDrain =
+          requestStartCountBeforeControlDrain,
+      .handlerFunctionAfterControlDrain = handlerFunctionAfterControlDrain,
+      .requestDispatchExecutedAfterControlDrain =
+          requestDispatchExecutedAfterControlDrain,
+      .startedCoroutineFactoryAfterControlDrain =
+          startedCoroutineFactoryAfterControlDrain,
+      .requestStartCountAfterControlDrain = requestStartCountAfterControlDrain,
       .responseBeforeControlDrain = responseBeforeControlDrain,
       .responseBeforeHandlerCompletion = responseBeforeHandlerCompletion,
       .responseBeforeFinalControlDrain = responseBeforeFinalControlDrain,
@@ -151,7 +218,8 @@ TEST(
 TEST(ExecutionSystemTest, AcceptedWorkCompletesAfterShutdown) {
   // GIVEN
   folly::ManualExecutor controlExecutor;
-  ExecutionSystem executionSystem(&controlExecutor);
+  ExecutionSystem executionSystem(
+      &controlExecutor, [](PyObject*) { return 0; });
   auto [handlerPromise, handlerResultFuture] =
       folly::makePromiseContract<int>();
   ResponseCallback responseCallback;
@@ -161,13 +229,13 @@ TEST(ExecutionSystemTest, AcceptedWorkCompletesAfterShutdown) {
   // WHEN
   executionSystem.execute(
       dummySelectedHandlerFunction,
-      [pendingHandlerFuture = std::move(handlerResultFuture),
-       &responseCallback](PyObject*) mutable {
+      RequestDispatch([pendingHandlerFuture = std::move(handlerResultFuture),
+                       &responseCallback](PyObject*, RequestExecution) mutable {
         return std::move(pendingHandlerFuture)
             .defer([&responseCallback](auto&& result) {
               responseCallback.complete(std::move(result));
             });
-      });
+      }));
   executionSystem.shutdown();
   // The first drain starts the request. The handler result queues the callback,
   // and the second drain runs it.
@@ -185,7 +253,8 @@ TEST(
     AsynchronousDispatchFailureDoesNotEscapeControlExecutor) {
   // GIVEN
   folly::ManualExecutor controlExecutor;
-  ExecutionSystem executionSystem(&controlExecutor);
+  ExecutionSystem executionSystem(
+      &controlExecutor, [](PyObject*) { return 0; });
   auto* const dummySelectedHandlerFunction = reinterpret_cast<PyObject*>(42);
   const DispatchFailureTrace expected{
       .exceptionEscaped = false,
@@ -193,17 +262,20 @@ TEST(
   };
 
   // WHEN
-  executionSystem.execute(dummySelectedHandlerFunction, [](PyObject*) {
-    return folly::makeSemiFuture<folly::Unit>(
-        folly::make_exception_wrapper<std::runtime_error>(
-            "request dispatch test failure"));
-  });
+  executionSystem.execute(
+      dummySelectedHandlerFunction,
+      RequestDispatch([](PyObject*, RequestExecution) {
+        return folly::makeSemiFuture<folly::Unit>(
+            folly::make_exception_wrapper<std::runtime_error>(
+                "request dispatch test failure"));
+      }));
   bool nextWorkExecuted = false;
   executionSystem.execute(
-      dummySelectedHandlerFunction, [&nextWorkExecuted](PyObject*) {
+      dummySelectedHandlerFunction,
+      RequestDispatch([&nextWorkExecuted](PyObject*, RequestExecution) {
         nextWorkExecuted = true;
         return folly::makeSemiFuture();
-      });
+      }));
   bool exceptionEscaped = false;
   try {
     controlExecutor.drain();
@@ -222,7 +294,8 @@ TEST(
 TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
   // GIVEN
   folly::ManualExecutor controlExecutor;
-  ExecutionSystem executionSystem(&controlExecutor);
+  ExecutionSystem executionSystem(
+      &controlExecutor, [](PyObject*) { return 0; });
   auto* const dummySelectedHandlerFunction = reinterpret_cast<PyObject*>(42);
   bool shouldThrow = true;
   const SynchronousDispatchFailureTrace expected{
@@ -234,18 +307,22 @@ TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
   // WHEN
   executionSystem.execute(
       dummySelectedHandlerFunction,
-      [&shouldThrow](PyObject*) -> folly::SemiFuture<folly::Unit> {
-        if (std::exchange(shouldThrow, false)) {
-          throw std::runtime_error("synchronous request dispatch test failure");
-        }
-        return folly::makeSemiFuture();
-      });
+      RequestDispatch(
+          [&shouldThrow](
+              PyObject*, RequestExecution) -> folly::SemiFuture<folly::Unit> {
+            if (std::exchange(shouldThrow, false)) {
+              throw std::runtime_error(
+                  "synchronous request dispatch test failure");
+            }
+            return folly::makeSemiFuture();
+          }));
   bool nextWorkExecuted = false;
   executionSystem.execute(
-      dummySelectedHandlerFunction, [&nextWorkExecuted](PyObject*) {
+      dummySelectedHandlerFunction,
+      RequestDispatch([&nextWorkExecuted](PyObject*, RequestExecution) {
         nextWorkExecuted = true;
         return folly::makeSemiFuture();
-      });
+      }));
   bool exceptionEscaped = false;
   try {
     controlExecutor.drain();

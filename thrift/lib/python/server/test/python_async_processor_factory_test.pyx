@@ -12,12 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
+
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport make_shared, shared_ptr
 from libcpp.utility cimport move as cmove
 from folly.executor cimport get_executor
 from thrift.python.server_impl.python_async_processor cimport makeHandlerFunc
 from thrift.python.std_libcpp cimport bytes_to_string_view
+
+
+cdef int launchControlTask(object coroutine_factory) except -1:
+    asyncio.get_running_loop().create_task(coroutine_factory())
+    return 0
+
 
 cdef cCreateMethodMetadataResult create(bytes function_name, RpcKind rpc_kind):
     cdef cmap[string_view, HandlerFunc] funcs
@@ -35,7 +43,7 @@ cdef cCreateMethodMetadataResult create(bytes function_name, RpcKind rpc_kind):
 
     cdef cAsyncioExecutor* controlExecutor = get_executor()
     cdef shared_ptr[cExecutionSystem] executionSystem = make_shared[cExecutionSystem](
-        controlExecutor
+        controlExecutor, launchControlTask
     )
     cdef shared_ptr[cPythonAsyncProcessorFactory] obj = cCreatePythonAsyncProcessorFactory(
         <PyObject*>server,

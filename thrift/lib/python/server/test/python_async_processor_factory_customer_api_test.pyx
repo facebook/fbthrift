@@ -34,6 +34,7 @@ from thrift.python.server_impl.async_processor cimport (
     AsyncProcessorFactory,
 )
 from thrift.python.server_impl.python_async_processor cimport (
+    cStartControlRequest,
     cPythonAsyncProcessorFactory,
     HandlerFunc,
     makeHandlerFunc,
@@ -56,6 +57,7 @@ cdef extern from "thrift/lib/python/server/test/PythonAsyncProcessorFactoryLifec
         cmap[string_view, HandlerFunc] functions,
         cvector[PyObjPtr] lifecycle_functions,
         cForwardingKeepAliveTrackingExecutor& control_executor,
+        cStartControlRequest start_request,
     ) except +
 
     bint isFreeThreadedBuild() noexcept
@@ -71,6 +73,11 @@ cdef extern from "thrift/lib/cpp2/async/MultiplexAsyncProcessor.h" namespace "ap
         cMultiplexAsyncProcessorFactory(
             cvector[shared_ptr[cAsyncProcessorFactory]] processorFactories,
         ) except +
+
+
+cdef int launchTestControlTask(PyObject* coroutine_factory) except -1:
+    asyncio.get_running_loop().create_task((<object>coroutine_factory)())
+    return 0
 
 
 cdef class ExecutorKeepAliveProbe:
@@ -212,6 +219,7 @@ cdef PythonAsyncProcessorFactory create_hosted_factory(
             cmove(cpp_functions),
             cmove(cpp_lifecycle_functions),
             deref(executor_probe.executor),
+            launchTestControlTask,
         )
     )
     return factory
