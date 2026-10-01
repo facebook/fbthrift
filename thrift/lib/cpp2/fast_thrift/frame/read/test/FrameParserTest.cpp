@@ -17,10 +17,12 @@
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameParser.h>
 
 #include <folly/io/IOBuf.h>
+#include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
 using namespace apache::thrift::fast_thrift::frame;
 using namespace apache::thrift::fast_thrift::frame::read;
+using namespace testing;
 
 namespace {
 
@@ -361,6 +363,43 @@ TEST(FrameParserTest, ParseFrameWithMetadata) {
   EXPECT_EQ(frame.metadataSize(), 12);
   EXPECT_EQ(frame.payloadSize(), 23); // 12 + 11
   EXPECT_EQ(frame.dataSize(), 11);
+}
+
+// The metadata length field is 24 bits, so values above uint16_t must survive
+// parsing and data extraction.
+TEST(FrameParserTest, PreservesMetadataLengthAboveUint16Max) {
+  constexpr uint32_t kMetadataSize = 70'000;
+  const std::string payload = "data";
+  std::vector<uint8_t> bytes;
+  bytes.reserve(
+      kBaseHeaderSize + kMetadataLengthSize + kMetadataSize + payload.size());
+
+  writeU32BE(bytes, 10);
+  writeU16BE(
+      bytes,
+      makeTypeAndFlags(
+          FrameType::REQUEST_RESPONSE,
+          ::apache::thrift::fast_thrift::frame::detail::kMetadataBit));
+  writeU24BE(bytes, kMetadataSize);
+  bytes.insert(bytes.end(), kMetadataSize, static_cast<uint8_t>('m'));
+  bytes.insert(bytes.end(), payload.begin(), payload.end());
+
+  ParsedFrame frame = parseFrame(makeFrameBuffer(std::move(bytes)));
+  EXPECT_THAT(frame.isValid(), IsTrue());
+  EXPECT_THAT(frame.metadataSize(), Eq(kMetadataSize));
+  EXPECT_THAT(
+      frame.payloadSize(),
+      Eq(kMetadataSize + static_cast<uint32_t>(payload.size())));
+  EXPECT_THAT(frame.dataSize(), Eq(static_cast<uint32_t>(payload.size())));
+
+  std::unique_ptr<folly::IOBuf> data = std::move(frame).extractData();
+  EXPECT_THAT(data, NotNull());
+  if (!data) {
+    return;
+  }
+  const folly::IOBuf expected =
+      folly::IOBuf::wrapBufferAsValue(payload.data(), payload.size());
+  EXPECT_THAT(folly::IOBufEqualTo{}(*data, expected), IsTrue());
 }
 
 TEST(FrameParserTest, ParseFrameWithoutMetadata) {

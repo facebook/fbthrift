@@ -66,7 +66,7 @@ class FrameView {
 
   // Size accessors
   uint32_t payloadSize() const noexcept { return frame_.payloadSize(); }
-  uint16_t metadataSize() const noexcept { return frame_.metadataSize(); }
+  uint32_t metadataSize() const noexcept { return frame_.metadataSize(); }
   uint32_t dataSize() const noexcept { return frame_.dataSize(); }
 
   // Cursor accessors (creates cursor on demand)

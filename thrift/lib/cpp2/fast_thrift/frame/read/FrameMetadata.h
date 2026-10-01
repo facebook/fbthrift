@@ -26,24 +26,14 @@ namespace apache::thrift::fast_thrift::frame::read {
  * FrameMetadata - Parsed common frame header fields.
  *
  * This struct holds the parsed header information that is common to all frames.
- * It is designed to fit within 32 bytes to enable inline storage in
- * TypeErasedBox for zero-allocation message passing through the pipeline.
+ * It stays within a 32-byte budget and fits in TypeErasedBox inline storage.
  *
  * Design rationale:
- * - 32 bytes: Fits in TypeErasedBox inline storage (no heap allocation)
+ * - Inline storage: TypeErasedBox stores it without a heap allocation
  * - Parse once: Header is parsed once and cached here
  * - Flyweight: Uses pointer to shared FrameDescriptor instead of copying type
  * info
  * - Direct access: All fields are direct reads, no cursor creation needed
- *
- * Layout (32 bytes total):
- *   descriptor:     8 bytes (pointer to flyweight)
- *   streamId:       4 bytes
- *   flags_:         2 bytes (internal - use bool accessors)
- *   metadataSize:   2 bytes
- *   payloadOffset:  4 bytes
- *   payloadSize:    4 bytes
- *   reserved:       8 bytes (padding/future use)
  */
 struct FrameMetadata {
   // Flyweight pointer to frame type descriptor (8 bytes)
@@ -59,10 +49,10 @@ struct FrameMetadata {
   // Use bool accessors below instead of accessing directly
   uint16_t flags_{0};
 
-  // Metadata size in bytes (2 bytes)
+  // Stores the full value from the 3-byte wire field.
   // 0 if no metadata present (hasMetadata() == false)
   // Otherwise, the size of the metadata portion of the payload
-  uint16_t metadataSize{0};
+  uint32_t metadataSize{0};
 
   // Offset in buffer where payload starts (4 bytes)
   // This is the position after the frame header and metadata size field
@@ -71,10 +61,6 @@ struct FrameMetadata {
   // Total payload size in bytes (4 bytes)
   // Includes both metadata and data portions
   uint32_t payloadSize{0};
-
-  // Reserved for future use / padding (8 bytes)
-  // Ensures struct is exactly 32 bytes for TypeErasedBox inline storage
-  uint64_t reserved_{0};
 
   // Convenience accessors
   FrameType type() const noexcept {
@@ -127,13 +113,10 @@ struct FrameMetadata {
   }
 };
 
-// Compile-time size verification. The precise byte count depends on the ABI
-// (uint64_t alignment + sizeof(void*)): 32 bytes on 64-bit, 28 bytes on LP32
-// x86_32, 32 bytes again on arm32 if uint64_t is 8-aligned. The design
-// intent is just "fits comfortably in TypeErasedBox inline storage", so we
-// assert the upper bound rather than an exact value.
+// The precise byte count depends on the ABI. FrameMetadata has a 32-byte size
+// budget.
 static_assert(
     sizeof(FrameMetadata) <= 32,
-    "FrameMetadata must fit within 32 bytes for TypeErasedBox inline storage");
+    "FrameMetadata must stay within its 32-byte size budget");
 
 } // namespace apache::thrift::fast_thrift::frame::read

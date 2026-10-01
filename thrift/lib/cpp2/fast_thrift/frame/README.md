@@ -211,22 +211,20 @@ void handleRead(Context& ctx, TypeErasedBox msg) {
 
 ## Design Decisions
 
-### Why 32-byte FrameMetadata?
+### Why keep FrameMetadata small?
 
-`TypeErasedBox` in Channel Pipeline has 32 bytes of inline storage. By keeping
-`FrameMetadata` at exactly 32 bytes, frames flow through the pipeline without
-heap allocation:
+`FrameMetadata` has a 32-byte size budget and fits in `TypeErasedBox` inline
+storage:
 
 ```cpp
 struct FrameMetadata {
   const FrameDescriptor* descriptor;  // 8 bytes - flyweight pointer
   uint32_t streamId;                  // 4 bytes - cached
   Flags flags;                        // 2 bytes - cached
-  uint16_t metadataSize;              // 2 bytes - cached
+  uint32_t metadataSize;              // 4 bytes - cached
   uint32_t payloadOffset;             // 4 bytes - cached
   uint32_t payloadSize;               // 4 bytes - cached
-  uint64_t reserved_;                 // 8 bytes - alignment/future use
-};  // Total: 32 bytes
+};  // 32-byte size budget
 ```
 
 ### Why Flyweight Pattern for FrameDescriptor?

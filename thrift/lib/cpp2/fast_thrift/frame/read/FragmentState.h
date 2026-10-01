@@ -50,7 +50,7 @@ struct FragmentState {
   uint32_t streamId{0};
 
   // Metadata size from first fragment (only first fragment has metadata)
-  uint16_t metadataSize{0};
+  uint32_t metadataSize{0};
 
   // Accumulated payload chain (metadata + data from all fragments)
   // Zero-copy: buffers are chained, not copied
