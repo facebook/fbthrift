@@ -10,13 +10,12 @@ class module_CONSTANTS
   implements
     \IThriftConstants {
 
-
   /**
    * Original thrift constant:-
    * list<string> names
    */
   <<__Memoize>>
-  public static function names()[write_props]: \ConstVector<string>{
+  public static function names()[write_props]: \ConstVector<string> {
     return ImmVector {
       "alpha",
       "beta",
@@ -28,7 +27,7 @@ class module_CONSTANTS
    * module.Foo foo
    */
   <<__Memoize>>
-  public static function foo()[write_props]: Foo{
+  public static function foo()[write_props]: Foo {
     return Foo::fromShape(
       shape(
         "a" => Vector {

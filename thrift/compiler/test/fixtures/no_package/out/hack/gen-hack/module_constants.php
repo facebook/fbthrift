@@ -53,7 +53,7 @@ class module_CONSTANTS
    * list<i32> AList
    */
   <<__Memoize>>
-  public static function AList()[write_props]: \ConstVector<int>{
+  public static function AList()[write_props]: \ConstVector<int> {
     return ImmVector {
       2,
       3,
@@ -67,7 +67,7 @@ class module_CONSTANTS
    * set<string> ASet
    */
   <<__Memoize>>
-  public static function ASet()[write_props]: \ConstSet<string>{
+  public static function ASet()[write_props]: \ConstSet<string> {
     return ImmSet {
       "foo",
       "bar",
@@ -80,7 +80,7 @@ class module_CONSTANTS
    * map<string, list<i32>> AMap
    */
   <<__Memoize>>
-  public static function AMap()[write_props]: \ConstMap<string, \ConstVector<int>>{
+  public static function AMap()[write_props]: \ConstMap<string, \ConstVector<int>> {
     return ImmMap {
       "foo" => ImmVector {
         1,

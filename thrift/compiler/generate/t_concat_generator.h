@@ -45,7 +45,7 @@ class t_concat_generator : public t_generator {
    *     `line_prefix` rather than one padded to its full width.
    */
   void generate_docstring_comment(
-      std::ofstream& out,
+      std::ostream& out,
       const std::string& comment_start,
       const std::string& line_prefix,
       const std::string& contents,

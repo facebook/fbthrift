@@ -1293,7 +1293,7 @@ class t_hack_generator : public t_concat_generator {
   void generate_php_docstring(std::ofstream& out, const t_named* named_node);
   void generate_php_docstring(std::ofstream& out, const t_enum* tenum);
   void generate_php_docstring(std::ofstream& out, const t_service* tservice);
-  void generate_php_docstring(std::ofstream& out, const t_const* tconst);
+  void generate_php_docstring(std::ostream& out, const t_const* tconst);
   void generate_php_docstring(std::ofstream& out, const t_function* tfunction);
   void generate_php_docstring(std::ofstream& out, const t_field* tfield);
   void generate_php_docstring(
@@ -1408,6 +1408,13 @@ class t_hack_generator : public t_concat_generator {
   std::ofstream f_types_;
   std::ofstream f_adapted_types_;
   std::ofstream f_consts_;
+  // `<<__Memoize>>` accessors, held back until every class constant is
+  // written: the constants file matches the www Hack codegen's class builder,
+  // which lists all constants before all methods.
+  std::ostringstream f_const_accessors_;
+  // Whether a class constant has been written yet. The class builder leaves
+  // two blank lines ahead of the first one, and one ahead of a first method.
+  bool wrote_class_constant_ = false;
   std::ofstream f_helpers_;
   std::ofstream f_service_;
 
@@ -1911,9 +1918,11 @@ void t_hack_generator::init_generator() {
     init_codegen_file(
         f_consts_, get_out_dir() + get_program()->name() + "_constants.php");
     constants_values_.clear();
+    f_const_accessors_.str("");
+    wrote_class_constant_ = false;
     f_consts_ << "class " << get_constants_class_name() << "\n"
               << "  implements\n"
-              << "    \\IThriftConstants {\n\n\n";
+              << "    \\IThriftConstants {\n\n";
   }
 
   if (!program_->structs_and_unions().empty()) {
@@ -1968,6 +1977,7 @@ void t_hack_generator::close_generator() {
   }
 
   if (!skip_constants_codegen()) {
+    f_consts_ << f_const_accessors_.str();
     // write out the values array
     indent_up();
     // write structured annotations
@@ -2205,9 +2215,15 @@ void t_hack_generator::generate_const(const t_const* tconst) {
   const t_const_value* value = tconst->value();
 
   indent_up();
-  generate_php_docstring(f_consts_, tconst);
   bool is_hack_const = is_hack_const_type(type);
-  f_consts_ << indent();
+  std::ostream& out = is_hack_const ? static_cast<std::ostream&>(f_consts_)
+                                    : f_const_accessors_;
+  if (is_hack_const && !wrote_class_constant_) {
+    out << "\n";
+    wrote_class_constant_ = true;
+  }
+  generate_php_docstring(out, tconst);
+  out << indent();
 
   std::stringstream consts_out;
   std::stringstream consts_temp_var_initializations_out;
@@ -2215,16 +2231,14 @@ void t_hack_generator::generate_const(const t_const* tconst) {
 
   // for base hack types, use const (guarantees optimization in hphp)
   if (is_hack_const) {
-    f_consts_ << "const " << type_to_typehint(type) << " " << name << " = ";
+    out << "const " << type_to_typehint(type) << " " << name << " = ";
     // cannot use const for objects (incl arrays). use static
   } else {
-    f_consts_ << "<<__Memoize>>\n"
-              << indent() << "public static function " << name
-              << "()[write_props]: "
-              << type_to_typehint(
-                     type,
-                     {{TypeToTypehintVariations::IMMUTABLE_COLLECTIONS, true}})
-              << "{\n";
+    out << "<<__Memoize>>\n"
+        << indent() << "public static function " << name << "()[write_props]: "
+        << type_to_typehint(
+               type, {{TypeToTypehintVariations::IMMUTABLE_COLLECTIONS, true}})
+        << " {\n";
     indent_up();
     consts_out << indent() << "return ";
   }
@@ -2240,13 +2254,13 @@ void t_hack_generator::generate_const(const t_const* tconst) {
                     /*exclude_from_fixtures*/ tconst->generated())
              << ";\n";
 
-  f_consts_ << consts_temp_var_initializations_out.str();
-  f_consts_ << consts_out.str();
+  out << consts_temp_var_initializations_out.str();
+  out << consts_out.str();
   if (!is_hack_const) {
     indent_down();
-    f_consts_ << indent() << "}\n";
+    out << indent() << "}\n";
   }
-  f_consts_ << "\n";
+  out << "\n";
   indent_down();
 }
 
@@ -8205,7 +8219,7 @@ void t_hack_generator::generate_php_docstring(
  * TYPE NAME
  */
 void t_hack_generator::generate_php_docstring(
-    std::ofstream& out, const t_const* tconst) {
+    std::ostream& out, const t_const* tconst) {
   indent(out) << "/**\n";
   // Copy the doc.
   if (tconst->has_doc()) {

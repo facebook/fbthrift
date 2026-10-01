@@ -33,19 +33,6 @@ class module_CONSTANTS
 
   /**
    * Original thrift constant:-
-   * module.ByteAnnotation kStructConst
-   */
-  <<__Memoize>>
-  public static function kStructConst()[write_props]: \facebook\thrift\test\fixtures\schema_byte_annotation\ByteAnnotation{
-    return \facebook\thrift\test\fixtures\schema_byte_annotation\ByteAnnotation::fromShape(
-      shape(
-        "value" => -7,
-      )
-    );
-  }
-
-  /**
-   * Original thrift constant:-
    * list<byte> kByteList
    */
   const vec<int> kByteList = vec[
@@ -67,6 +54,19 @@ class module_CONSTANTS
    * binary _fbthrift_schema_b403d3612cd2ec8c
    */
   const string _fbthrift_schema_b403d3612cd2ec8c = /*<truncated>*/;
+
+  /**
+   * Original thrift constant:-
+   * module.ByteAnnotation kStructConst
+   */
+  <<__Memoize>>
+  public static function kStructConst()[write_props]: \facebook\thrift\test\fixtures\schema_byte_annotation\ByteAnnotation {
+    return \facebook\thrift\test\fixtures\schema_byte_annotation\ByteAnnotation::fromShape(
+      shape(
+        "value" => -7,
+      )
+    );
+  }
 
   public static function getAllStructuredAnnotations(
   )[write_props]: dict<string, dict<string, \IThriftStruct>> {

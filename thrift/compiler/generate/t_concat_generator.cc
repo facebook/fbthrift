@@ -103,7 +103,7 @@ void t_concat_generator::generate_consts(vector<t_const*> consts) {
 }
 
 void t_concat_generator::generate_docstring_comment(
-    ofstream& out,
+    ostream& out,
     const string& comment_start,
     const string& line_prefix,
     const string& contents,

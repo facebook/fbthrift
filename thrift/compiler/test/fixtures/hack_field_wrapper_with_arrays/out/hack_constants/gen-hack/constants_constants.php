@@ -22,7 +22,7 @@ class constants_CONSTANTS
    * constants.Internship instagram
    */
   <<__Memoize>>
-  public static function instagram()[write_props]: Internship{
+  public static function instagram()[write_props]: Internship {
     $Internship0 = Internship::withDefaultValues();
     $Internship0->weeks = 12;
 
@@ -44,7 +44,7 @@ class constants_CONSTANTS
    * list<constants.Internship> internList
    */
   <<__Memoize>>
-  public static function internList()[write_props]: vec<Internship>{
+  public static function internList()[write_props]: vec<Internship> {
     $Internship0 = Internship::withDefaultValues();
     $Internship0->weeks = 12;
 
@@ -80,7 +80,7 @@ class constants_CONSTANTS
    * list<constants.SWE> engineers
    */
   <<__Memoize>>
-  public static function engineers()[write_props]: vec<SWE>{
+  public static function engineers()[write_props]: vec<SWE> {
     return vec[
       SWE::fromShape(
         shape(
@@ -108,7 +108,7 @@ class constants_CONSTANTS
    * list<include.StructWithWrapper> wrapped_structs
    */
   <<__Memoize>>
-  public static function wrapped_structs()[write_props]: vec<StructWithWrapper>{
+  public static function wrapped_structs()[write_props]: vec<StructWithWrapper> {
     return vec[
       \MyStructWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\thrift_adapted_types\StructWithWrapper>(\thrift_adapted_types\StructWithWrapper::fromShape(
         shape(
@@ -128,7 +128,7 @@ class constants_CONSTANTS
    * list<include.i64WithWrapper> wrapped_ints
    */
   <<__Memoize>>
-  public static function wrapped_ints()[write_props]: vec<i64WithWrapper>{
+  public static function wrapped_ints()[write_props]: vec<i64WithWrapper> {
     return vec[
       \MyTypeIntWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\detail\i64WithWrapper>(1),
       \MyTypeIntWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\detail\i64WithWrapper>(2),

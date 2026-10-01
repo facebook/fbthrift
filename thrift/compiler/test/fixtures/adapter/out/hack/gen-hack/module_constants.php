@@ -27,23 +27,6 @@ class module_CONSTANTS
 
   /**
    * Original thrift constant:-
-   * module.MyStruct var3
-   */
-  <<__Memoize>>
-  public static function var3()[write_props]: \facebook\thrift\test\fixtures\adapter\MyStruct{
-    return \facebook\thrift\test\fixtures\adapter\MyStruct::fromShape(
-      shape(
-        "field" => 30,
-        "set_string" => Set {
-          "10",
-          "20",
-        },
-      )
-    );
-  }
-
-  /**
-   * Original thrift constant:-
    * i32 var4
    */
   const int var4 = 40;
@@ -53,23 +36,6 @@ class module_CONSTANTS
    * string var5
    */
   const string var5 = "50";
-
-  /**
-   * Original thrift constant:-
-   * module.MyStruct var6
-   */
-  <<__Memoize>>
-  public static function var6()[write_props]: \facebook\thrift\test\fixtures\adapter\MyStruct{
-    return \facebook\thrift\test\fixtures\adapter\MyStruct::fromShape(
-      shape(
-        "field" => 60,
-        "set_string" => Set {
-          "30",
-          "40",
-        },
-      )
-    );
-  }
 
   /**
    * Original thrift constant:-
@@ -85,19 +51,6 @@ class module_CONSTANTS
 
   /**
    * Original thrift constant:-
-   * module.Person2 person
-   */
-  <<__Memoize>>
-  public static function person()[write_props]: \facebook\thrift\test\fixtures\adapter\Person2{
-    return \facebook\thrift\test\fixtures\adapter\Person2::fromShape(
-      shape(
-        "name" => "DefaultName",
-      )
-    );
-  }
-
-  /**
-   * Original thrift constant:-
    * i32 timeout_no_transitive
    */
   const int timeout_no_transitive = 420;
@@ -110,10 +63,63 @@ class module_CONSTANTS
 
   /**
    * Original thrift constant:-
+   * module.AdaptedBool type_adapted
+   */
+  const \facebook\thrift\test\fixtures\adapter\AdaptedBool type_adapted = true;
+
+  /**
+   * Original thrift constant:-
+   * module.MyStruct var3
+   */
+  <<__Memoize>>
+  public static function var3()[write_props]: \facebook\thrift\test\fixtures\adapter\MyStruct {
+    return \facebook\thrift\test\fixtures\adapter\MyStruct::fromShape(
+      shape(
+        "field" => 30,
+        "set_string" => Set {
+          "10",
+          "20",
+        },
+      )
+    );
+  }
+
+  /**
+   * Original thrift constant:-
+   * module.MyStruct var6
+   */
+  <<__Memoize>>
+  public static function var6()[write_props]: \facebook\thrift\test\fixtures\adapter\MyStruct {
+    return \facebook\thrift\test\fixtures\adapter\MyStruct::fromShape(
+      shape(
+        "field" => 60,
+        "set_string" => Set {
+          "30",
+          "40",
+        },
+      )
+    );
+  }
+
+  /**
+   * Original thrift constant:-
+   * module.Person2 person
+   */
+  <<__Memoize>>
+  public static function person()[write_props]: \facebook\thrift\test\fixtures\adapter\Person2 {
+    return \facebook\thrift\test\fixtures\adapter\Person2::fromShape(
+      shape(
+        "name" => "DefaultName",
+      )
+    );
+  }
+
+  /**
+   * Original thrift constant:-
    * module.Person2 person_no_transitive
    */
   <<__Memoize>>
-  public static function person_no_transitive()[write_props]: \facebook\thrift\test\fixtures\adapter\Person2{
+  public static function person_no_transitive()[write_props]: \facebook\thrift\test\fixtures\adapter\Person2 {
     return \facebook\thrift\test\fixtures\adapter\Person2::fromShape(
       shape(
         "name" => "DefaultName 2",
@@ -123,16 +129,10 @@ class module_CONSTANTS
 
   /**
    * Original thrift constant:-
-   * module.AdaptedBool type_adapted
-   */
-  const \facebook\thrift\test\fixtures\adapter\AdaptedBool type_adapted = true;
-
-  /**
-   * Original thrift constant:-
    * list<module.AdaptedByte> container_of_adapted
    */
   <<__Memoize>>
-  public static function container_of_adapted()[write_props]: \ConstVector<\facebook\thrift\test\fixtures\adapter\AdaptedByte>{
+  public static function container_of_adapted()[write_props]: \ConstVector<\facebook\thrift\test\fixtures\adapter\AdaptedByte> {
     return ImmVector {
       1,
       2,

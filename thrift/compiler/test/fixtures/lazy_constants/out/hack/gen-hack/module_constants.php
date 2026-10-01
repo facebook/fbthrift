@@ -79,67 +79,6 @@ class module_CONSTANTS
 
   /**
    * Original thrift constant:-
-   * module.Internship instagram
-   */
-  <<__Memoize>>
-  public static function instagram()[write_props]: \test\fixtures\lazy_constants\Internship{
-    return \test\fixtures\lazy_constants\Internship::fromShape(
-      shape(
-        "weeks" => 12,
-        "title" => "Software Engineer",
-        "employer" => \test\fixtures\lazy_constants\Company::INSTAGRAM,
-      )
-    );
-  }
-
-  /**
-   * Original thrift constant:-
-   * list<module.Range> kRanges
-   */
-  <<__Memoize>>
-  public static function kRanges()[write_props]: vec<\test\fixtures\lazy_constants\Range>{
-    return vec[
-      \test\fixtures\lazy_constants\Range::fromShape(
-        shape(
-          "min" => 1,
-          "max" => 2,
-        )
-      ),
-      \test\fixtures\lazy_constants\Range::fromShape(
-        shape(
-          "min" => 5,
-          "max" => 6,
-        )
-      ),
-    ];
-  }
-
-  /**
-   * Original thrift constant:-
-   * list<module.Internship> internList
-   */
-  <<__Memoize>>
-  public static function internList()[write_props]: vec<\test\fixtures\lazy_constants\Internship>{
-    return vec[
-      \test\fixtures\lazy_constants\Internship::fromShape(
-        shape(
-          "weeks" => 12,
-          "title" => "Software Engineer",
-          "employer" => \test\fixtures\lazy_constants\Company::INSTAGRAM,
-        )
-      ),
-      \test\fixtures\lazy_constants\Internship::fromShape(
-        shape(
-          "weeks" => 10,
-          "title" => "Sales Intern",
-          "employer" => \test\fixtures\lazy_constants\Company::FACEBOOK,
-        )
-      ),
-    ];
-  }
-
-  /**
-   * Original thrift constant:-
    * string apostrophe
    */
   const string apostrophe = "'";
@@ -178,6 +117,67 @@ class module_CONSTANTS
     "\\" => 92,
     "a" => 97,
   ];
+
+  /**
+   * Original thrift constant:-
+   * module.Internship instagram
+   */
+  <<__Memoize>>
+  public static function instagram()[write_props]: \test\fixtures\lazy_constants\Internship {
+    return \test\fixtures\lazy_constants\Internship::fromShape(
+      shape(
+        "weeks" => 12,
+        "title" => "Software Engineer",
+        "employer" => \test\fixtures\lazy_constants\Company::INSTAGRAM,
+      )
+    );
+  }
+
+  /**
+   * Original thrift constant:-
+   * list<module.Range> kRanges
+   */
+  <<__Memoize>>
+  public static function kRanges()[write_props]: vec<\test\fixtures\lazy_constants\Range> {
+    return vec[
+      \test\fixtures\lazy_constants\Range::fromShape(
+        shape(
+          "min" => 1,
+          "max" => 2,
+        )
+      ),
+      \test\fixtures\lazy_constants\Range::fromShape(
+        shape(
+          "min" => 5,
+          "max" => 6,
+        )
+      ),
+    ];
+  }
+
+  /**
+   * Original thrift constant:-
+   * list<module.Internship> internList
+   */
+  <<__Memoize>>
+  public static function internList()[write_props]: vec<\test\fixtures\lazy_constants\Internship> {
+    return vec[
+      \test\fixtures\lazy_constants\Internship::fromShape(
+        shape(
+          "weeks" => 12,
+          "title" => "Software Engineer",
+          "employer" => \test\fixtures\lazy_constants\Company::INSTAGRAM,
+        )
+      ),
+      \test\fixtures\lazy_constants\Internship::fromShape(
+        shape(
+          "weeks" => 10,
+          "title" => "Sales Intern",
+          "employer" => \test\fixtures\lazy_constants\Company::FACEBOOK,
+        )
+      ),
+    ];
+  }
 
   public static function getAllStructuredAnnotations(
   )[write_props]: dict<string, dict<string, \IThriftStruct>> {

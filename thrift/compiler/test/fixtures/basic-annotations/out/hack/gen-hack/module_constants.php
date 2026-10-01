@@ -10,13 +10,12 @@ class module_CONSTANTS
   implements
     \IThriftConstants {
 
-
   /**
    * Original thrift constant:-
    * module.MyStruct myStruct
    */
   <<__Memoize>>
-  public static function myStruct()[write_props]: MyStruct{
+  public static function myStruct()[write_props]: MyStruct {
     return MyStruct::fromShape(
       shape(
         "major" => 42,

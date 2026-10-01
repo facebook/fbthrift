@@ -12,13 +12,12 @@ class module_CONSTANTS
   implements
     \IThriftConstants {
 
-
   /**
    * Original thrift constant:-
    * map<string, string> MyConst
    */
   <<__Memoize>>
-  public static function MyConst()[write_props]: \ConstMap<string, string>{
+  public static function MyConst()[write_props]: \ConstMap<string, string> {
     return ImmMap {
       "ENUMERATOR" => "enum",
       "CONST" => "const",
