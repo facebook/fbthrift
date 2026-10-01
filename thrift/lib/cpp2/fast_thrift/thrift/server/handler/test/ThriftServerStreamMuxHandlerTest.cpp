@@ -148,6 +148,53 @@ class ErrorProducer {
   bool failed_{false};
 };
 
+// A producer that emits one Payload carrying per-chunk metadata, then Complete,
+// to prove metadata survives the mux's stream::Payload -> ThriftStreamPayload
+// conversion.
+template <typename Ctx>
+class MetadataProducer {
+ public:
+  void handlerAdded(Ctx& /*ctx*/) noexcept {}
+  void handlerRemoved(Ctx& /*ctx*/) noexcept {}
+  void onPipelineActive(Ctx& /*ctx*/) noexcept {}
+  void onPipelineInactive(Ctx& /*ctx*/) noexcept {}
+  void onReadReady(Ctx& /*ctx*/) noexcept {}
+  void onWriteReady(Ctx& /*ctx*/) noexcept {}
+  void onException(Ctx& ctx, folly::exception_wrapper&& e) noexcept {
+    ctx.fireException(std::move(e));
+  }
+  cp::Result onWrite(Ctx& ctx, cp::TypeErasedBox&& msg) noexcept {
+    return ctx.fireWrite(std::move(msg));
+  }
+  cp::Result onRead(Ctx& ctx, cp::TypeErasedBox&& msg) noexcept {
+    auto& m = msg.get<stream::ThriftStreamMessage>();
+    if (m.payload.is<stream::RequestN>()) {
+      if (!done_) {
+        done_ = true;
+        auto metadata =
+            std::make_unique<apache::thrift::StreamPayloadMetadata>();
+        metadata->compression() = apache::thrift::CompressionAlgorithm::ZSTD;
+        (void)ctx.fireWrite(
+            cp::erase_and_box(
+                stream::ThriftStreamMessage{
+                    .payload =
+                        stream::Payload{.metadata = std::move(metadata)}}));
+        (void)ctx.fireWrite(
+            cp::erase_and_box(
+                stream::ThriftStreamMessage{.payload = stream::Complete{}}));
+      }
+      return cp::Result::Success;
+    }
+    if (m.payload.is<stream::Cancel>()) {
+      return cp::Result::Success;
+    }
+    return ctx.fireRead(std::move(msg));
+  }
+
+ private:
+  bool done_{false};
+};
+
 HANDLER_TAG(mux);
 HANDLER_TAG(producer);
 
@@ -167,6 +214,14 @@ std::unique_ptr<stream::ProducerPipeline::ConfigFunc> makeErrorRecipe() {
       [](stream::ProducerPipeline::Builder& builder) {
         builder.addNextDuplex<ErrorProducer<Context>>(
             producer_tag, std::make_unique<ErrorProducer<Context>>());
+      });
+}
+
+std::unique_ptr<stream::ProducerPipeline::ConfigFunc> makeMetadataRecipe() {
+  return std::make_unique<stream::ProducerPipeline::ConfigFunc>(
+      [](stream::ProducerPipeline::Builder& builder) {
+        builder.addNextDuplex<MetadataProducer<Context>>(
+            producer_tag, std::make_unique<MetadataProducer<Context>>());
       });
 }
 
@@ -195,6 +250,7 @@ struct Recorded {
   uint32_t streamId;
   std::string exName{};
   std::string exWhat{};
+  bool hasMetadata{false};
 };
 
 ThriftServerResponseMessage makeOpen(uint32_t streamId, uint64_t total) {
@@ -212,6 +268,15 @@ ThriftServerResponseMessage makeErrorOpen(uint32_t streamId) {
       .initialResponse =
           ThriftStreamInitialResponsePayload{.streamId = streamId},
       .configFunc = makeErrorRecipe()};
+  return msg;
+}
+
+ThriftServerResponseMessage makeMetadataOpen(uint32_t streamId) {
+  ThriftServerResponseMessage msg;
+  msg.payload = ThriftServerStreamOpenPayload{
+      .initialResponse =
+          ThriftStreamInitialResponsePayload{.streamId = streamId},
+      .configFunc = makeMetadataRecipe()};
   return msg;
 }
 
@@ -244,9 +309,12 @@ class ThriftServerStreamMuxHandlerTest : public ::testing::Test {
                exBase->name_utf8().value_or(""),
                exBase->what_utf8().value_or("")});
         } else {
-          recorded_.push_back(
-              {sp.complete ? Recorded::Kind::Complete : Recorded::Kind::Payload,
-               sp.streamId});
+          Recorded rec;
+          rec.kind =
+              sp.complete ? Recorded::Kind::Complete : Recorded::Kind::Payload;
+          rec.streamId = sp.streamId;
+          rec.hasMetadata = sp.metadata != nullptr;
+          recorded_.push_back(rec);
         }
       } else if (p.is<ThriftErrorPayload>()) {
         recorded_.push_back(
@@ -365,6 +433,21 @@ TEST_F(ThriftServerStreamMuxHandlerTest, CancelStopsAndTearsDownStream) {
   (void)pipeline->fireRead(cp::erase_and_box(makeRequestN(2, /*n=*/10)));
   EXPECT_EQ(recorded_.size(), afterGrant);
   EXPECT_EQ(exceptions_.size(), 1u);
+}
+
+TEST_F(ThriftServerStreamMuxHandlerTest, PayloadMetadataForwardsToWire) {
+  auto pipeline = build();
+  (void)pipeline->fireWrite(
+      cp::erase_and_box(makeMetadataOpen(/*streamId=*/2)));
+  (void)pipeline->fireRead(cp::erase_and_box(makeRequestN(2, /*n=*/1)));
+
+  // Initial response, a data payload carrying per-chunk metadata, then
+  // complete.
+  ASSERT_EQ(recorded_.size(), 3u);
+  EXPECT_EQ(recorded_[0].kind, Recorded::Kind::InitialResponse);
+  EXPECT_EQ(recorded_[1].kind, Recorded::Kind::Payload);
+  EXPECT_TRUE(recorded_[1].hasMetadata);
+  EXPECT_EQ(recorded_[2].kind, Recorded::Kind::Complete);
 }
 
 TEST_F(

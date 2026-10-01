@@ -24,6 +24,7 @@
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/common/CompactVariant.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::fast_thrift::thrift::stream {
 
@@ -36,10 +37,13 @@ struct RequestN {
   uint64_t n{0};
 };
 
-// A stream data item. Holds the item bytes; serialization to a rocket PAYLOAD
-// frame is a downstream concern.
+// A stream data item. Holds the item bytes plus optional per-chunk metadata
+// (compression, checksum, and the payload-kind variant that carries a
+// mid-stream exception); serialization to a rocket PAYLOAD frame is a
+// downstream concern. `metadata` is null for a plain data passthrough.
 struct Payload {
   std::unique_ptr<folly::IOBuf> data{nullptr};
+  std::unique_ptr<apache::thrift::StreamPayloadMetadata> metadata{nullptr};
 };
 
 // End-of-stream: the producer has no more items. Carries no data and is ordered

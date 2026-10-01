@@ -235,8 +235,10 @@ class ThriftServerStreamMuxHandler {
     bool terminal = false;
     auto& payload = msg.payload;
     if (payload.is<stream::Payload>()) {
+      auto& streamPayload = payload.get<stream::Payload>();
       response.payload = ThriftStreamPayload{
-          .data = std::move(payload.get<stream::Payload>().data),
+          .data = std::move(streamPayload.data),
+          .metadata = std::move(streamPayload.metadata),
           .streamId = streamId,
           .complete = false,
           .next = true};
