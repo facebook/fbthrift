@@ -42,7 +42,6 @@ struct TypeInfo {
   void (*delete_)(void*);
   void* (*make)(void*, bool);
   bool (*empty)(const void*);
-  bool (*identical)(const void*, const Dyn&);
   void (*clear)(void*);
   void (*assign)(void*, const Dyn&);
   void (*append)(void*, const Dyn&);
@@ -98,7 +97,6 @@ FOLLY_EXPORT const TypeInfo& getTypeInfo() {
       &Op::delete_,
       &Op::make,
       &Op::empty,
-      &Op::identical,
       &Op::clear,
       &Op::assign,
       &Op::append,

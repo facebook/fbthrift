@@ -832,7 +832,6 @@ struct VoidErasedOp : BaseErasedOp {
     return ptr = nullptr;
   }
   static bool empty(const void*) { return true; }
-  static bool identical(const void*, const Dyn&) { return true; }
   static void clear(void*) {}
   static void assign(void*, const Dyn& val) { check_op(!val.has_value()); }
 };
