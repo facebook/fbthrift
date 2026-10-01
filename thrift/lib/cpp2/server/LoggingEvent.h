@@ -230,6 +230,7 @@ class LoggingEventRegistry {
 enum class CertIPResult {
   SKIPPED_OTHER,
   SKIPPED_TLS_TUNNEL,
+  SKIPPED_TRUSTED_PROXY,
   SKIPPED_EXTENSION_NOT_PRESENT,
   SKIPPED_LOCALHOST,
   //(TODO:T222913836) To be deprecated
@@ -249,6 +250,14 @@ THRIFT_PLUGGABLE_FUNC_DECLARE(
     isCertIPMismatch,
     const ConnectionLoggingContext& ctx,
     const folly::AsyncTransportCertificate* cert);
+
+// Whether the TTLS reverse proxy signaled, via the kernel
+// SO_TTLS_SKIP_IP_BINDING getsockopt hook, that this connection was forwarded
+// by a verified trusted proxy. Pluggable so tests can inject the signal without
+// a BPF/kernel setup; the default reads the socket and fails closed on any
+// error.
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    bool, ttlsSignaledSkipIpBinding, const ConnectionLoggingContext& ctx);
 } // namespace detail
 
 const LoggingEventRegistry& getLoggingEventRegistry();

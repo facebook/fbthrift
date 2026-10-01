@@ -49,6 +49,9 @@ void maybeLogTlsPeerCertEvent(
     case CertIPResult::SKIPPED_TLS_TUNNEL:
       THRIFT_CONNECTION_EVENT(tls.cert_ip_skipped_tls_tunnel).log(context);
       return;
+    case CertIPResult::SKIPPED_TRUSTED_PROXY:
+      THRIFT_CONNECTION_EVENT(tls.cert_ip_skipped_trusted_proxy).log(context);
+      return;
     case CertIPResult::SKIPPED_EXTENSION_NOT_PRESENT:
       THRIFT_CONNECTION_EVENT(tls.cert_ip_skipped_extension_not_present)
           .log(context);

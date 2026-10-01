@@ -65,6 +65,11 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
     const folly::AsyncTransportCertificate*) {
   return CertIPResult::SKIPPED_OTHER;
 }
+
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    bool, ttlsSignaledSkipIpBinding, const ConnectionLoggingContext&) {
+  return false;
+}
 } // namespace detail
 
 namespace {
