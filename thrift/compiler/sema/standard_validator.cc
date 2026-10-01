@@ -1907,6 +1907,13 @@ void validate_cpp_type_annotation(sema_context& ctx, const Node& node) {
             "`@cpp.Type{{template=...}}` can only be used on containers, not on `{}`.",
             node.name());
       }
+    } else if (true_type->is<t_container>()) {
+      ctx.warning(
+          "`@cpp.Type{{name=...}}` should not be used on container `{}` because it can unintentionally change element wire types. "
+          "Use `template=` instead. "
+          "If element types also need custom C++ types, extract them into typedefs in this file with their own `@cpp.Type`. "
+          "Use thrift/lib/cpp2/SizedContainer.h for size or comparator template parameters.",
+          node.name());
     }
   }
 }

@@ -436,6 +436,7 @@ TEST(StandardValidatorTest, CppTypeNonIntegerSkipped) {
 
       @cpp.Type{name = "std::deque<int>"}
       2: list<i32> field2;
+      # expected-warning@-2: `@cpp.Type{name=...}` should not be used on container `field2` because it can unintentionally change element wire types. Use `template=` instead. If element types also need custom C++ types, extract them into typedefs in this file with their own `@cpp.Type`. Use thrift/lib/cpp2/SizedContainer.h for size or comparator template parameters.
     }
   )");
 }
@@ -474,6 +475,32 @@ TEST(StandardValidatorTest, CppTypeCannotReplaceStructuredTypes) {
     service Api {
       void call(@cpp.Type{name = "CustomPayload"} 1: Payload payload)
       # expected-error@-1: `@cpp.Type` cannot be used on `payload` because its Thrift type resolves to structured type `Payload`. Use `@cpp.Adapter` instead.
+    }
+  )");
+}
+
+TEST(StandardValidatorTest, CppTypeNameOnContainer) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/cpp.thrift"
+
+    typedef map<i32, i32> IntMap
+
+    @cpp.Type{name = "std::unordered_set<std::int32_t>"}
+    typedef set<i32> NamedSet
+    # expected-warning@-2: `@cpp.Type{name=...}` should not be used on container `NamedSet` because it can unintentionally change element wire types. Use `template=` instead. If element types also need custom C++ types, extract them into typedefs in this file with their own `@cpp.Type`. Use thrift/lib/cpp2/SizedContainer.h for size or comparator template parameters.
+
+    struct S {
+      @cpp.Type{name = "std::deque<std::int32_t>"}
+      1: list<i32> named_list;
+      # expected-warning@-2: `@cpp.Type{name=...}` should not be used on container `named_list` because it can unintentionally change element wire types. Use `template=` instead. If element types also need custom C++ types, extract them into typedefs in this file with their own `@cpp.Type`. Use thrift/lib/cpp2/SizedContainer.h for size or comparator template parameters.
+
+      @cpp.Type{name = "std::unordered_map<std::int32_t, std::int32_t>"}
+      2: IntMap named_map;
+      # expected-warning@-2: `@cpp.Type{name=...}` should not be used on container `named_map` because it can unintentionally change element wire types. Use `template=` instead. If element types also need custom C++ types, extract them into typedefs in this file with their own `@cpp.Type`. Use thrift/lib/cpp2/SizedContainer.h for size or comparator template parameters.
+
+      @cpp.Type{template = "std::deque"}
+      3: list<i32> templated_list;
     }
   )");
 }
