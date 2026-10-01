@@ -253,15 +253,24 @@ func (s *server) isOverloaded() bool {
 	return countWithNewRequest > s.maxRequests
 }
 
-// getQueueTimeout returns the queue timeout duration from metadata, or max duration if not set
-func getQueueTimeout(metadata *rpcmetadata.RequestRpcMetadata) time.Duration {
+// enforceQueueTimeout records the queue delay and rejects the request with
+// taskExpiredError if it already exceeded its queue timeout.
+func (s *server) enforceQueueTimeout(metadata *rpcmetadata.RequestRpcMetadata, requestReceivedTime time.Time) error {
+	// infiniteTimeout marks an unset timeout: the request waits unbounded.
+	const infiniteTimeout = time.Duration(math.MaxInt64)
+	processDelay := time.Since(requestReceivedTime)
+	s.observer.ProcessDelay(processDelay)
+	queueTimeout := infiniteTimeout
 	if metadata.IsSetQueueTimeoutMs() {
-		queueTimeoutMs := metadata.GetQueueTimeoutMs()
-		if queueTimeoutMs > 0 {
-			return time.Duration(queueTimeoutMs) * time.Millisecond
+		if queueTimeoutMs := metadata.GetQueueTimeoutMs(); queueTimeoutMs > 0 {
+			queueTimeout = time.Duration(queueTimeoutMs) * time.Millisecond
 		}
 	}
-	return time.Duration(math.MaxInt64)
+	if processDelay > queueTimeout {
+		s.observer.TaskTimeout()
+		return taskExpiredError
+	}
+	return nil
 }
 
 // This counter is what powers client side load balancing.
@@ -367,16 +376,13 @@ func (s *rocketServerSocket) requestResponse(msg payload.Payload) mono.Mono {
 		s.incrementActiveRequests()
 		defer s.decrementActiveRequests()
 
-		// Track process delay from request received to processing start
-		processStartTime := time.Now()
-		processDelay := processStartTime.Sub(requestReceivedTime)
-		s.observer.ProcessDelay(processDelay)
-
-		queueTimeout := getQueueTimeout(metadata)
-		if processDelay > queueTimeout {
-			s.observer.TaskTimeout()
-			return nil, taskExpiredError
+		err := s.enforceQueueTimeout(metadata, requestReceivedTime)
+		if err != nil {
+			return nil, err
 		}
+
+		// Processing starts here.
+		processStartTime := time.Now()
 
 		if metadata.InteractionCreate != nil {
 			ctx = types.WithInteractionCreateContext(ctx)
@@ -458,17 +464,14 @@ func (s *rocketServerSocket) fireAndForget(msg payload.Payload) {
 	s.incrementActiveRequests()
 	defer s.decrementActiveRequests()
 
-	// Track process delay from request received to processing start
-	processStartTime := time.Now()
-	processDelay := processStartTime.Sub(requestReceivedTime)
-	s.observer.ProcessDelay(processDelay)
-
-	queueTimeout := getQueueTimeout(metadata)
-	if processDelay > queueTimeout {
-		s.observer.TaskTimeout()
+	err = s.enforceQueueTimeout(metadata, requestReceivedTime)
+	if err != nil {
 		s.log("server fireAndForget: dropping request due to queue timeout")
 		return
 	}
+
+	// Processing starts here.
+	processStartTime := time.Now()
 
 	// Oneway requests have no per-request scheduler context; derive one from the
 	// background context so the handler can access the RequestContext.
@@ -516,6 +519,8 @@ func (s *rocketServerSocket) fireAndForget(msg payload.Payload) {
 }
 
 func (s *rocketServerSocket) requestStream(msg payload.Payload) flux.Flux {
+	requestReceivedTime := time.Now()
+
 	metadata, pfunc, argStruct, reqCtx, err := s.preprocessRequest(msg)
 	if err != nil {
 		return flux.Error(err)
@@ -557,6 +562,13 @@ func (s *rocketServerSocket) requestStream(msg payload.Payload) flux.Flux {
 			}
 			onStreamComplete := func() {
 				sink.Complete()
+			}
+
+			err := s.enforceQueueTimeout(metadata, requestReceivedTime)
+			if err != nil {
+				onFirstResponse(nil, err)
+				onStreamComplete()
+				return
 			}
 
 			// Run OnRequest interceptors before the handler.

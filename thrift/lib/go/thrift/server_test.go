@@ -476,88 +476,102 @@ func TestGoroutinePerRequest(t *testing.T) {
 }
 
 // TestQueueTimeout tests that requests are rejected when queue timeout expires before processing starts.
-// This test simulates queue delay by blocking the server's worker pool with slow requests,
-// causing subsequent requests to wait in queue and eventually timeout.
+// Queue delay is simulated by blocking the server's single worker with a slow
+// request, causing the subsequent request to wait in queue and timeout.
+//
+// Only request-response and stream are covered: the framework runs oneway
+// handlers on a worker (so no queue wait is observable) and subscribes
+// channel handlers on the elastic request scheduler (so they never wait in
+// the bounded worker queue).
 func TestQueueTimeout(t *testing.T) {
-	runQueueTimeoutTest := func(t *testing.T, serverTransport TransportID) {
-		var clientTransportOption ClientOption
-		switch serverTransport {
-		case TransportIDUpgradeToRocket:
-			clientTransportOption = WithUpgradeToRocket()
-		case TransportIDRocket:
-			clientTransportOption = WithRocket()
-		default:
-			panic("unsupported transport!")
-		}
+	listener, err := net.Listen("tcp", "[::]:0")
+	require.NoError(t, err)
+	addr := listener.Addr()
 
-		listener, err := net.Listen("tcp", "[::]:0")
+	processor := dummyif.NewDummyProcessor(&dummy.DummyHandler{})
+	// Use single worker to ensure requests queue up
+	server := NewServer(processor, listener, TransportIDRocket, WithNumWorkers(1))
+
+	serverCtx, serverCancel := context.WithCancel(context.Background())
+	var serverEG errgroup.Group
+	serverEG.Go(func() error {
+		return server.ServeContext(serverCtx)
+	})
+	defer func() {
+		require.ErrorIs(t, serverEG.Wait(), context.Canceled)
+	}()
+	defer serverCancel()
+
+	// Create two clients to send requests concurrently
+	createClient := func() dummyif.DummyClient {
+		channel, err := NewClient(
+			WithRocket(),
+			WithIoTimeout(10*time.Second),
+			WithDialer(func() (net.Conn, error) {
+				return net.DialTimeout(addr.Network(), addr.String(), 5*time.Second)
+			}),
+		)
 		require.NoError(t, err)
-		addr := listener.Addr()
+		return dummyif.NewDummyChannelClient(channel)
+	}
+	blockingClient := createClient()
+	defer func() {
+		require.NoError(t, blockingClient.Close())
+	}()
+	queuedClient := createClient()
+	defer func() {
+		require.NoError(t, queuedClient.Close())
+	}()
 
-		processor := dummyif.NewDummyProcessor(&dummy.DummyHandler{})
-		// Use single worker to ensure requests queue up
-		server := NewServer(processor, listener, serverTransport, WithNumWorkers(1))
-
-		serverCtx, serverCancel := context.WithCancel(context.Background())
-		var serverEG errgroup.Group
-		serverEG.Go(func() error {
-			return server.ServeContext(serverCtx)
-		})
-
-		// Create two clients to send requests concurrently
-		createClient := func() dummyif.DummyClient {
-			channel, err := NewClient(
-				clientTransportOption,
-				WithIoTimeout(10*time.Second),
-				WithDialer(func() (net.Conn, error) {
-					return net.DialTimeout(addr.Network(), addr.String(), 5*time.Second)
-				}),
-			)
-			require.NoError(t, err)
-			return dummyif.NewDummyChannelClient(channel)
-		}
-
-		blockingClient := createClient()
-		queuedClient := createClient()
-
-		// First: Send a slow request that will block the single worker for 500ms
+	t.Run("request_response", func(t *testing.T) {
+		// Send a slow request that blocks the single worker for 500ms
 		var blockingEG errgroup.Group
 		blockingEG.Go(func() error {
 			return blockingClient.Sleep(context.Background(), 500 /* 500ms */)
 		})
-
 		// Give the blocking request time to start processing
 		time.Sleep(50 * time.Millisecond)
 
-		// Second: Send a request with a very short queue timeout (10ms)
-		// This request should fail because it will wait in queue > 10ms
+		// Send a request with a very short queue timeout (10ms). It fails
+		// because it waits in queue > 10ms.
 		ctx := WithRPCOptions(context.Background(), &RPCOptions{QueueTimeout: 10 * time.Millisecond})
-		err = queuedClient.Ping(ctx)
+		err := queuedClient.Ping(ctx)
 
 		// Should get a "Task Expired" error because queue timeout was exceeded
 		require.Error(t, err)
 		require.ErrorContains(t, err, "Task Expired")
 
-		// Wait for blocking request to complete
-		err = blockingEG.Wait()
-		require.NoError(t, err)
-
-		// Cleanup
-		err = blockingClient.Close()
-		require.NoError(t, err)
-		err = queuedClient.Close()
-		require.NoError(t, err)
-
-		serverCancel()
-		err = serverEG.Wait()
-		require.ErrorIs(t, err, context.Canceled)
-	}
-
-	t.Run("NewServer/UpgradeToRocket", func(t *testing.T) {
-		runQueueTimeoutTest(t, TransportIDUpgradeToRocket)
+		require.NoError(t, blockingEG.Wait())
 	})
-	t.Run("NewServer/Rocket", func(t *testing.T) {
-		runQueueTimeoutTest(t, TransportIDRocket)
+
+	t.Run("stream", func(t *testing.T) {
+		// Send a slow request that blocks the single worker for 500ms
+		var blockingEG errgroup.Group
+		blockingEG.Go(func() error {
+			return blockingClient.Sleep(context.Background(), 500 /* 500ms */)
+		})
+		// Give the blocking request time to start processing
+		time.Sleep(50 * time.Millisecond)
+
+		// Send a stream with a very short queue timeout (1ms). It fails
+		// because it waits in queue > 1ms.
+		expiredCtx := WithRPCOptions(context.Background(), &RPCOptions{QueueTimeout: time.Millisecond})
+		streamHandle, err := queuedClient.StreamOnly(expiredCtx, 1, 10)
+		if err != nil {
+			require.ErrorContains(t, err, "Task Expired")
+		} else {
+			defer streamHandle.Cancel()
+			var streamErr error
+			for _, iterErr := range streamHandle.Iter() {
+				if iterErr != nil {
+					streamErr = iterErr
+					break
+				}
+			}
+			require.ErrorContains(t, streamErr, "Task Expired")
+		}
+
+		require.NoError(t, blockingEG.Wait())
 	})
 }
 
