@@ -33,8 +33,12 @@ func TestRequestRPCMetadata(t *testing.T) {
 	wantKind := rpcmetadata.RpcKind_SINGLE_REQUEST_SINGLE_RESPONSE
 	wantHeaders := map[string]string{"header": "1"}
 	wantQueueTimeoutMs := 500
+	wantClientTimeoutMs := 1000
 
-	ctx := types.WithRPCOptions(context.Background(), &types.RPCOptions{QueueTimeout: time.Duration(wantQueueTimeoutMs) * time.Millisecond})
+	ctx := types.WithRPCOptions(context.Background(), &types.RPCOptions{
+		QueueTimeout: time.Duration(wantQueueTimeoutMs) * time.Millisecond,
+		Timeout:      time.Duration(wantClientTimeoutMs) * time.Millisecond,
+	})
 
 	payload, err := EncodeRequestPayload(
 		ctx,
@@ -57,4 +61,32 @@ func TestRequestRPCMetadata(t *testing.T) {
 	assert.EqualValues(t, wantHeaders, metadata.GetOtherMetadata())
 	assert.True(t, metadata.IsSetQueueTimeoutMs())
 	assert.EqualValues(t, wantQueueTimeoutMs, metadata.GetQueueTimeoutMs())
+	assert.True(t, metadata.IsSetClientTimeoutMs())
+	assert.EqualValues(t, wantClientTimeoutMs, metadata.GetClientTimeoutMs())
+}
+
+func TestRequestRPCMetadataClientOnlyTimeouts(t *testing.T) {
+	ctx := types.WithRPCOptions(context.Background(), &types.RPCOptions{
+		QueueTimeout:       500 * time.Millisecond,
+		Timeout:            1000 * time.Millisecond,
+		ClientOnlyTimeouts: true,
+	})
+
+	payload, err := EncodeRequestPayload(
+		ctx,
+		"test123",
+		rpcmetadata.ProtocolId_COMPACT,
+		rpcmetadata.RpcKind_SINGLE_REQUEST_SINGLE_RESPONSE,
+		nil,
+		rpcmetadata.CompressionAlgorithm_NONE,
+		nil,
+	)
+	require.NoError(t, err)
+
+	metadata := rpcmetadata.NewRequestRpcMetadata()
+	err = DecodePayloadMetadata(payload, metadata)
+	require.NoError(t, err)
+
+	assert.False(t, metadata.IsSetQueueTimeoutMs())
+	assert.False(t, metadata.IsSetClientTimeoutMs())
 }

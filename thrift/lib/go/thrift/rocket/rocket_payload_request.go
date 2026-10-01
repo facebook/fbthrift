@@ -48,10 +48,17 @@ func EncodeRequestPayload(
 		metadata.SetFrameworkMetadata(frameworkMetadata)
 	}
 
-	if rpcOpts := types.GetRPCOptions(ctx); rpcOpts != nil && rpcOpts.QueueTimeout > 0 {
-		//nolint:gosec // G115: guarded by max int32
-		queueTimeoutMs := int32(min(rpcOpts.QueueTimeout.Milliseconds(), math.MaxInt32))
-		metadata.SetQueueTimeoutMs(&queueTimeoutMs)
+	if rpcOpts := types.GetRPCOptions(ctx); rpcOpts != nil && !rpcOpts.ClientOnlyTimeouts {
+		if rpcOpts.QueueTimeout > 0 {
+			//nolint:gosec // G115: guarded by max int32
+			queueTimeoutMs := int32(min(rpcOpts.QueueTimeout.Milliseconds(), math.MaxInt32))
+			metadata.SetQueueTimeoutMs(&queueTimeoutMs)
+		}
+		if rpcOpts.Timeout > 0 {
+			//nolint:gosec // G115: guarded by max int32
+			clientTimeoutMs := int32(min(rpcOpts.Timeout.Milliseconds(), math.MaxInt32))
+			metadata.SetClientTimeoutMs(&clientTimeoutMs)
+		}
 	}
 
 	if interactionID, ok := types.GetInteractionIDFromContext(ctx); ok {

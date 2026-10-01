@@ -26,14 +26,17 @@ import (
 // RPCOptions is a mirror of C++ apache::thrift::RPCOptions
 // Not all options are guaranteed to be implemented by a client
 type RPCOptions struct {
-	Timeout            time.Duration
-	ChunkTimeout       time.Duration
-	QueueTimeout       time.Duration
-	OverallTimeout     time.Duration
-	ProcessingTimeout  time.Duration
-	Priority           Priority
+	Timeout           time.Duration
+	ChunkTimeout      time.Duration
+	QueueTimeout      time.Duration
+	OverallTimeout    time.Duration
+	ProcessingTimeout time.Duration
+	Priority          Priority
+	InteractionID     int64
+
+	// When true, timeouts apply client-side only and are not sent to the
+	// server (mirrors C++ RpcOptions::setClientOnlyTimeouts).
 	ClientOnlyTimeouts bool
-	InteractionID      int64
 
 	// For sending and receiving headers.
 	ContextHeaders
