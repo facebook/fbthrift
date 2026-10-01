@@ -575,6 +575,53 @@ func TestQueueTimeout(t *testing.T) {
 	})
 }
 
+// TestTaskTimeout tests that a request running longer than its client timeout
+// gets Task Expired instead of the real response. The handler itself is not
+// interrupted, matching C++.
+func TestTaskTimeout(t *testing.T) {
+	listener, err := net.Listen("tcp", "[::]:0")
+	require.NoError(t, err)
+	addr := listener.Addr()
+
+	processor := dummyif.NewDummyProcessor(&dummy.DummyHandler{})
+	server := NewServer(processor, listener, TransportIDRocket)
+
+	serverCtx, serverCancel := context.WithCancel(context.Background())
+	var serverEG errgroup.Group
+	serverEG.Go(func() error {
+		return server.ServeContext(serverCtx)
+	})
+	defer func() {
+		require.ErrorIs(t, serverEG.Wait(), context.Canceled)
+	}()
+	defer serverCancel()
+
+	channel, err := NewClient(
+		WithRocket(),
+		WithIoTimeout(10*time.Second),
+		WithDialer(func() (net.Conn, error) {
+			return net.DialTimeout(addr.Network(), addr.String(), 5*time.Second)
+		}),
+	)
+	require.NoError(t, err)
+	defer func() {
+		require.NoError(t, channel.Close())
+	}()
+	client := dummyif.NewDummyChannelClient(channel)
+
+	// A 500ms handler with a 50ms client timeout expires: task timeout
+	// is 1.1 * clientTimeoutMs, well under the handler duration.
+	ctx := WithRPCOptions(context.Background(), &RPCOptions{Timeout: 50 * time.Millisecond})
+	err = client.Sleep(ctx, 500 /* 500ms */)
+	require.Error(t, err)
+	require.ErrorContains(t, err, "Task Expired")
+
+	// A fast handler with a generous client timeout succeeds.
+	ctx = WithRPCOptions(context.Background(), &RPCOptions{Timeout: 10 * time.Second})
+	err = client.Sleep(ctx, 10 /* 10ms */)
+	require.NoError(t, err)
+}
+
 func TestLoadHeader(t *testing.T) {
 	listener, err := net.Listen("tcp", "[::]:0")
 	require.NoError(t, err)

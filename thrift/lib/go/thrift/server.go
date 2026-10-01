@@ -253,11 +253,12 @@ func (s *server) isOverloaded() bool {
 	return countWithNewRequest > s.maxRequests
 }
 
+// infiniteTimeout marks an unset timeout: the request waits unbounded.
+const infiniteTimeout = time.Duration(math.MaxInt64)
+
 // enforceQueueTimeout records the queue delay and rejects the request with
 // taskExpiredError if it already exceeded its queue timeout.
 func (s *server) enforceQueueTimeout(metadata *rpcmetadata.RequestRpcMetadata, requestReceivedTime time.Time) error {
-	// infiniteTimeout marks an unset timeout: the request waits unbounded.
-	const infiniteTimeout = time.Duration(math.MaxInt64)
 	processDelay := time.Since(requestReceivedTime)
 	s.observer.ProcessDelay(processDelay)
 	queueTimeout := infiniteTimeout
@@ -271,6 +272,23 @@ func (s *server) enforceQueueTimeout(metadata *rpcmetadata.RequestRpcMetadata, r
 		return taskExpiredError
 	}
 	return nil
+}
+
+// withTaskTimeout derives the task timeout from metadata (1.1 *
+// clientTimeoutMs when set, so the client normally times out first) and wraps
+// ctx with a deadline at the task timeout, recording taskExpiredError as the
+// cause. It always returns a valid cancel func, which the caller must defer.
+func withTaskTimeout(ctx context.Context, requestReceivedTime time.Time, metadata *rpcmetadata.RequestRpcMetadata) (context.Context, context.CancelFunc) {
+	taskTimeout := infiniteTimeout
+	if metadata.IsSetClientTimeoutMs() {
+		if clientTimeoutMs := metadata.GetClientTimeoutMs(); clientTimeoutMs > 0 {
+			taskTimeout = time.Duration(float64(clientTimeoutMs)*1.1) * time.Millisecond
+		}
+	}
+	if taskTimeout < infiniteTimeout {
+		return context.WithDeadlineCause(ctx, requestReceivedTime.Add(taskTimeout), taskExpiredError)
+	}
+	return ctx, func() {}
 }
 
 // This counter is what powers client side load balancing.
@@ -383,6 +401,8 @@ func (s *rocketServerSocket) requestResponse(msg payload.Payload) mono.Mono {
 
 		// Processing starts here.
 		processStartTime := time.Now()
+		ctx, cancel := withTaskTimeout(ctx, requestReceivedTime, metadata)
+		defer cancel()
 
 		if metadata.InteractionCreate != nil {
 			ctx = types.WithInteractionCreateContext(ctx)
@@ -411,6 +431,14 @@ func (s *rocketServerSocket) requestResponse(msg payload.Payload) mono.Mono {
 			result, resErr = pfunc.RunContext(ctx, argStruct)
 			s.observer.TimeProcessUsForFunction(rpcFuncName, time.Since(pfuncStartTime))
 		}()
+
+		// If the task deadline fired while the handler was running, reply
+		// Task Expired instead of the real response. The handler itself is
+		// not interrupted, matching C++.
+		if context.Cause(ctx) == taskExpiredError {
+			s.observer.TaskTimeout()
+			return nil, taskExpiredError
+		}
 
 		// Only register the interaction if the factory call succeeded. A failed
 		// factory (undeclared error or declared exception) must not create an
@@ -475,7 +503,9 @@ func (s *rocketServerSocket) fireAndForget(msg payload.Payload) {
 
 	// Oneway requests have no per-request scheduler context; derive one from the
 	// background context so the handler can access the RequestContext.
-	ctx := s.withRequestContext(context.Background(), reqCtx)
+	ctx, cancel := withTaskTimeout(context.Background(), requestReceivedTime, metadata)
+	defer cancel()
+	ctx = s.withRequestContext(ctx, reqCtx)
 
 	// Run OnRequest interceptors before the handler.
 	ctx, reqIntErr := runOnRequestInterceptors(ctx, argStruct, s.interceptors)
