@@ -123,6 +123,10 @@ class Json5Reader final {
   Primitive readPrimitive(
       FloatingPointPrecision precision = FloatingPointPrecision::Double);
 
+  /** Parses a JSON5 number at `cursor`, leaving trailing characters unread. */
+  static Primitive parseNumber(
+      folly::io::Cursor& cursor, FloatingPointPrecision precision);
+
   /** Reads and returns the next object key name. */
   std::string readObjectName();
 
@@ -148,7 +152,6 @@ class Json5Reader final {
   void consume(char c);
 
   std::string parseString(char quote);
-  Primitive parseNumber(FloatingPointPrecision);
 
   // Consume a comma separator between elements. Throws if neither a comma
   // nor a closing delimiter follows the current position.

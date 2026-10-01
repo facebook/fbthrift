@@ -139,6 +139,17 @@ void decodeUnicodeEscape(folly::io::Cursor& cursor, std::string& out) {
   folly::appendCodePointToUtf8(codePoint, out);
 }
 
+char peekNext(folly::io::Cursor& cursor) {
+  return cursor.isAtEnd() ? '\0' : static_cast<char>(cursor.peek().front());
+}
+
+char readNext(folly::io::Cursor& cursor) {
+  if (cursor.isAtEnd()) {
+    throwParseError("unexpected end of input");
+  }
+  return cursor.read<char>();
+}
+
 } // namespace
 
 // -- cursor operations ----------------------------------------------------
@@ -157,14 +168,11 @@ folly::io::Cursor& Json5Reader::cursor() {
 }
 
 char Json5Reader::peekChar() {
-  return cursor().isAtEnd() ? '\0' : static_cast<char>(cursor().peek().front());
+  return peekNext(cursor());
 }
 
 char Json5Reader::readChar() {
-  if (cursor().isAtEnd()) {
-    throwParseError("unexpected end of input");
-  }
-  return static_cast<char>(cursor().read<char>());
+  return readNext(cursor());
 }
 
 void Json5Reader::consume(char expected) {
@@ -337,19 +345,19 @@ std::string Json5Reader::readObjectName() {
 // -- numbers --------------------------------------------------------------
 
 Json5Reader::Primitive Json5Reader::parseNumber(
-    FloatingPointPrecision precision) {
+    folly::io::Cursor& cursor, FloatingPointPrecision precision) {
   std::string numStr;
-  char c = peekChar();
+  char c = peekNext(cursor);
 
   const int8_t sign = (c == '-' ? -1 : 1);
   if (c == '+' || c == '-') {
-    numStr.push_back(readChar());
-    c = peekChar();
+    numStr.push_back(readNext(cursor));
+    c = peekNext(cursor);
   }
 
   // Infinity or NaN
   if (c == 'I' || c == 'N') {
-    std::string word = cursor().readWhile(isIdentifierPart);
+    std::string word = cursor.readWhile(isIdentifierPart);
     if (word == "Infinity") {
       double d = std::copysign(std::numeric_limits<double>::infinity(), sign);
       if (precision == FloatingPointPrecision::Single) {
@@ -369,33 +377,33 @@ Json5Reader::Primitive Json5Reader::parseNumber(
   }
   // Hex literal: 0x...
   if (c == '0') {
-    numStr.push_back(readChar());
-    c = peekChar();
+    numStr.push_back(readNext(cursor));
+    c = peekNext(cursor);
     if (c == 'x' || c == 'X') {
-      cursor().skip(1);
-      return parseHexInteger(cursor().readWhile(isAsciiHexDigit), sign < 0);
+      cursor.skip(1);
+      return parseHexInteger(cursor.readWhile(isAsciiHexDigit), sign < 0);
     }
   } else if (c != '.') {
-    numStr += cursor().readWhile(isAsciiDigit);
-    c = peekChar();
+    numStr += cursor.readWhile(isAsciiDigit);
+    c = peekNext(cursor);
   }
 
   bool isFloating = false;
 
   if (c == '.') {
     isFloating = true;
-    numStr.push_back(readChar());
-    numStr += cursor().readWhile(isAsciiDigit);
-    c = peekChar();
+    numStr.push_back(readNext(cursor));
+    numStr += cursor.readWhile(isAsciiDigit);
+    c = peekNext(cursor);
   }
 
   if (c == 'e' || c == 'E') {
     isFloating = true;
-    numStr.push_back(readChar());
-    if (peekChar() == '+' || peekChar() == '-') {
-      numStr.push_back(readChar());
+    numStr.push_back(readNext(cursor));
+    if (peekNext(cursor) == '+' || peekNext(cursor) == '-') {
+      numStr.push_back(readNext(cursor));
     }
-    numStr += cursor().readWhile(isAsciiDigit);
+    numStr += cursor.readWhile(isAsciiDigit);
   }
 
   if (numStr.empty() || numStr == "+" || numStr == "-") {
@@ -424,7 +432,7 @@ Json5Reader::Primitive Json5Reader::readPrimitive(
   } else if (
       isAsciiDigit(c) || c == '-' || c == '+' || c == '.' || c == 'N' ||
       c == 'I') {
-    result = parseNumber(precision);
+    result = parseNumber(cursor(), precision);
   } else if (isIdentifierStart(c)) {
     std::string word = cursor().readWhile(isIdentifierPart);
     if (word == "null") {
