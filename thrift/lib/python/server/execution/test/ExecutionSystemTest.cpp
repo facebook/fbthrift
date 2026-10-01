@@ -70,6 +70,7 @@ struct SynchronousDispatchFailureTrace {
 };
 
 struct ResponseTrace {
+  PyObject* handlerFunction{nullptr};
   std::optional<int> responseBeforeControlDrain;
   std::optional<int> responseBeforeHandlerCompletion;
   std::optional<int> responseBeforeFinalControlDrain;
@@ -85,7 +86,8 @@ struct ResponseTrace {
         *out << "none";
       }
     };
-    *out << "{responseBeforeControlDrain: ";
+    *out << "{handlerFunction: " << trace.handlerFunction
+         << ", responseBeforeControlDrain: ";
     printResponse(trace.responseBeforeControlDrain);
     *out << ", responseBeforeHandlerCompletion: ";
     printResponse(trace.responseBeforeHandlerCompletion);
@@ -97,14 +99,18 @@ struct ResponseTrace {
   }
 };
 
-TEST(ExecutionSystemTest, WorkExecutesOnControlExecutor) {
+TEST(
+    ExecutionSystemTest,
+    ExecuteSuppliesSelectedHandlerFunctionOnControlExecutor) {
   // GIVEN
   folly::ManualExecutor controlExecutor;
   ExecutionSystem executionSystem(&controlExecutor);
   auto [handlerPromise, handlerResultFuture] =
       folly::makePromiseContract<int>();
   ResponseCallback responseCallback;
+  auto* const selectedHandlerFunction = reinterpret_cast<PyObject*>(42);
   const ResponseTrace expected{
+      .handlerFunction = selectedHandlerFunction,
       .responseBeforeControlDrain = std::nullopt,
       .responseBeforeHandlerCompletion = std::nullopt,
       .responseBeforeFinalControlDrain = std::nullopt,
@@ -112,14 +118,18 @@ TEST(ExecutionSystemTest, WorkExecutesOnControlExecutor) {
   };
 
   // WHEN
+  PyObject* handlerFunction = nullptr;
   executionSystem.execute(
-      [pendingHandlerFuture = std::move(handlerResultFuture),
-       &responseCallback]() mutable {
+      selectedHandlerFunction,
+      RequestDispatch([pendingHandlerFuture = std::move(handlerResultFuture),
+                       &handlerFunction,
+                       &responseCallback](PyObject* selectedFunction) mutable {
+        handlerFunction = selectedFunction;
         return std::move(pendingHandlerFuture)
             .defer([&responseCallback](auto&& result) {
               responseCallback.complete(std::move(result));
             });
-      });
+      }));
   const auto responseBeforeControlDrain = responseCallback.response();
   controlExecutor.drain();
   const auto responseBeforeHandlerCompletion = responseCallback.response();
@@ -127,6 +137,7 @@ TEST(ExecutionSystemTest, WorkExecutesOnControlExecutor) {
   const auto responseBeforeFinalControlDrain = responseCallback.response();
   controlExecutor.drain();
   const ResponseTrace actual{
+      .handlerFunction = handlerFunction,
       .responseBeforeControlDrain = responseBeforeControlDrain,
       .responseBeforeHandlerCompletion = responseBeforeHandlerCompletion,
       .responseBeforeFinalControlDrain = responseBeforeFinalControlDrain,
@@ -144,12 +155,14 @@ TEST(ExecutionSystemTest, AcceptedWorkCompletesAfterShutdown) {
   auto [handlerPromise, handlerResultFuture] =
       folly::makePromiseContract<int>();
   ResponseCallback responseCallback;
+  auto* const dummySelectedHandlerFunction = reinterpret_cast<PyObject*>(42);
   const std::optional<int> expected = 42;
 
   // WHEN
   executionSystem.execute(
+      dummySelectedHandlerFunction,
       [pendingHandlerFuture = std::move(handlerResultFuture),
-       &responseCallback]() mutable {
+       &responseCallback](PyObject*) mutable {
         return std::move(pendingHandlerFuture)
             .defer([&responseCallback](auto&& result) {
               responseCallback.complete(std::move(result));
@@ -173,22 +186,24 @@ TEST(
   // GIVEN
   folly::ManualExecutor controlExecutor;
   ExecutionSystem executionSystem(&controlExecutor);
+  auto* const dummySelectedHandlerFunction = reinterpret_cast<PyObject*>(42);
   const DispatchFailureTrace expected{
       .exceptionEscaped = false,
       .nextWorkExecuted = true,
   };
 
   // WHEN
-  executionSystem.execute([] {
+  executionSystem.execute(dummySelectedHandlerFunction, [](PyObject*) {
     return folly::makeSemiFuture<folly::Unit>(
         folly::make_exception_wrapper<std::runtime_error>(
             "request dispatch test failure"));
   });
   bool nextWorkExecuted = false;
-  executionSystem.execute([&nextWorkExecuted] {
-    nextWorkExecuted = true;
-    return folly::makeSemiFuture();
-  });
+  executionSystem.execute(
+      dummySelectedHandlerFunction, [&nextWorkExecuted](PyObject*) {
+        nextWorkExecuted = true;
+        return folly::makeSemiFuture();
+      });
   bool exceptionEscaped = false;
   try {
     controlExecutor.drain();
@@ -208,6 +223,7 @@ TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
   // GIVEN
   folly::ManualExecutor controlExecutor;
   ExecutionSystem executionSystem(&controlExecutor);
+  auto* const dummySelectedHandlerFunction = reinterpret_cast<PyObject*>(42);
   bool shouldThrow = true;
   const SynchronousDispatchFailureTrace expected{
       .exceptionEscaped = false,
@@ -216,17 +232,20 @@ TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
   };
 
   // WHEN
-  executionSystem.execute([&shouldThrow]() -> folly::SemiFuture<folly::Unit> {
-    if (std::exchange(shouldThrow, false)) {
-      throw std::runtime_error("synchronous request dispatch test failure");
-    }
-    return folly::makeSemiFuture();
-  });
+  executionSystem.execute(
+      dummySelectedHandlerFunction,
+      [&shouldThrow](PyObject*) -> folly::SemiFuture<folly::Unit> {
+        if (std::exchange(shouldThrow, false)) {
+          throw std::runtime_error("synchronous request dispatch test failure");
+        }
+        return folly::makeSemiFuture();
+      });
   bool nextWorkExecuted = false;
-  executionSystem.execute([&nextWorkExecuted] {
-    nextWorkExecuted = true;
-    return folly::makeSemiFuture();
-  });
+  executionSystem.execute(
+      dummySelectedHandlerFunction, [&nextWorkExecuted](PyObject*) {
+        nextWorkExecuted = true;
+        return folly::makeSemiFuture();
+      });
   bool exceptionEscaped = false;
   try {
     controlExecutor.drain();

@@ -674,37 +674,42 @@ void PythonAsyncProcessor::executeRequest(
     return;
   }
 
-  RequestDispatchParameters requestDispatchParameters{
-      .protocol = protocol,
-      .requestContext = ctx,
-      .serializedRequest = std::move(serializedRequest),
-      .rpcKind = kind.value(),
-      .function = &function,
-      .handlerFunction = function.funcObject,
-  };
-
   // The Cython module import in dispatchRequest requires the Python thread.
   // ExecutionSystem therefore dispatches through the Python Control executor.
-  executionSystem_->execute([this,
-                             eb,
-                             executor,
-                             serviceName,
-                             qualifiedMethodName = function.fullName.c_str(),
-                             requestData = std::move(requestData),
-                             req = std::move(req),
-                             ctxStack = std::move(ctxStack),
-                             requestDispatchParameters = std::move(
-                                 requestDispatchParameters)]() mutable {
-    return dispatchRequest(
-        eb,
-        executor,
-        std::move(requestData),
-        std::move(req),
-        std::move(ctxStack),
-        serviceName,
-        qualifiedMethodName,
-        std::move(requestDispatchParameters));
-  });
+  executionSystem_->execute(
+      function.funcObject,
+      execution::RequestDispatch(
+          [this,
+           eb,
+           executor,
+           serviceName,
+           qualifiedMethodName = function.fullName.c_str(),
+           requestData = std::move(requestData),
+           req = std::move(req),
+           ctxStack = std::move(ctxStack),
+           protocol,
+           ctx,
+           serializedRequest = std::move(serializedRequest),
+           rpcKind = kind.value(),
+           function = &function](PyObject* handlerFunction) mutable {
+            RequestDispatchParameters requestDispatchParameters{
+                .protocol = protocol,
+                .requestContext = ctx,
+                .serializedRequest = std::move(serializedRequest),
+                .rpcKind = rpcKind,
+                .function = function,
+                .handlerFunction = handlerFunction,
+            };
+            return dispatchRequest(
+                eb,
+                executor,
+                std::move(requestData),
+                std::move(req),
+                std::move(ctxStack),
+                serviceName,
+                qualifiedMethodName,
+                std::move(requestDispatchParameters));
+          }));
 }
 
 folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequestOneway(

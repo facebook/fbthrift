@@ -20,12 +20,14 @@
 #include <memory>
 #include <utility>
 
+#include <Python.h>
 #include <folly/Executor.h>
 #include <folly/futures/Future.h>
 
 namespace apache::thrift::python::execution {
 
-using RequestDispatch = folly::Function<folly::SemiFuture<folly::Unit>()>;
+using RequestDispatch = folly::Function<folly::SemiFuture<folly::Unit>(
+    PyObject* selectedHandlerFunction)>;
 
 /**
  * Owns the resources that dispatch Python requests and releases those
@@ -63,7 +65,8 @@ class ExecutionSystem final {
   void shutdown() noexcept;
 
   // Supports concurrent calls while active. Call only before shutdown starts.
-  void execute(RequestDispatch dispatch) const;
+  void execute(
+      PyObject* selectedHandlerFunction, RequestDispatch requestDispatch) const;
 
  private:
   ExecutionSystem() = default;

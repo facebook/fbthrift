@@ -22,11 +22,14 @@ void ExecutionSystem::shutdown() noexcept {
   controlExecutor_.reset();
 }
 
-void ExecutionSystem::execute(RequestDispatch dispatch) const {
+void ExecutionSystem::execute(
+    PyObject* selectedHandlerFunction, RequestDispatch requestDispatch) const {
   folly::makeSemiFuture()
-      .deferValue([dispatch = std::move(dispatch)](folly::Unit) mutable {
-        return dispatch();
-      })
+      .deferValue(
+          [selectedHandlerFunction,
+           requestDispatch = std::move(requestDispatch)](folly::Unit) mutable {
+            return std::move(requestDispatch)(selectedHandlerFunction);
+          })
       .via(controlExecutor_);
 }
 
