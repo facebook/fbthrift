@@ -413,39 +413,28 @@ struct LessThan<type::map<K, V>> {
   }
 };
 
-// Identical for lists.
+// Equality/identity for lists.
 template <
     typename VTag,
-    typename Tag = type::list<VTag>,
-    typename T = type::native_type<Tag>>
-struct ListIdenticalTo {
-  bool operator()(const T& lhs, const T& rhs) const {
-    if (lhs.size() != rhs.size()) {
-      return false;
-    }
-    return std::equal(lhs.begin(), lhs.end(), rhs.begin(), cmp);
-  }
-
- protected:
-  IdenticalTo<VTag> cmp;
-};
-template <typename VTag>
-struct IdenticalTo<type::list<VTag>> : ListIdenticalTo<VTag> {};
-template <typename T, typename VTag>
-struct IdenticalTo<type::cpp_type<T, type::list<VTag>>>
-    : ListIdenticalTo<VTag, type::cpp_type<T, type::list<VTag>>> {};
-
-template <typename VTag>
-struct EqualTo<type::list<VTag>> {
+    template <class...> typename Equality,
+    typename Tag = type::list<VTag>>
+struct ListEquality {
   // TODO: Similar to LessThan version, this should be a non-template function.
-  template <typename T = type::native_type<type::list<VTag>>>
+  template <typename T = type::native_type<Tag>>
   bool operator()(const T& lhs, const T& rhs) const {
     // `std::vector::operator==` has the same implementation as this function.
     // https://github.com/gcc-mirror/gcc/blob/6cb2f2c7f36c999590a949f663d6057cbc67271f/libstdc%2B%2B-v3/include/bits/stl_vector.h#L2037-L2042
     return lhs.size() == rhs.size() &&
-        std::equal(lhs.begin(), lhs.end(), rhs.begin(), EqualTo<VTag>{});
+        std::equal(lhs.begin(), lhs.end(), rhs.begin(), Equality<VTag>{});
   }
 };
+template <typename VTag>
+struct IdenticalTo<type::list<VTag>> : ListEquality<VTag, IdenticalTo> {};
+template <typename T, typename VTag>
+struct IdenticalTo<type::cpp_type<T, type::list<VTag>>>
+    : ListEquality<VTag, IdenticalTo, type::cpp_type<T, type::list<VTag>>> {};
+template <typename VTag>
+struct EqualTo<type::list<VTag>> : ListEquality<VTag, EqualTo> {};
 
 // Identical for sets.
 template <
