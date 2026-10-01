@@ -16,6 +16,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -60,6 +61,20 @@ std::string serialize(const T& val) {
   auto buf = queue.move();
   auto br = buf->coalesce();
   return std::string(reinterpret_cast<const char*>(br.data()), br.size());
+}
+
+// op::hash ignores map and set order, so this hashes the value as written,
+// in container order.
+std::string ordered_value_bytes(const protocol::Value& value) {
+  return CompactSerializer::serialize<std::string>(value.toThrift());
+}
+
+std::array<uint8_t, SHA256_DIGEST_LENGTH> ordered_value_hash(
+    folly::StringPiece bytes) {
+  op::Sha256Hasher hasher;
+  hasher.combine(folly::ByteRange(bytes));
+  hasher.finalize();
+  return hasher.getResult();
 }
 
 protocol::Value make_string_value(std::string value) {
@@ -110,6 +125,8 @@ class t_ast_generator : public t_generator {
         schema_opts_.use_hash = true;
       } else if (pair.first == "root_program_only") {
         schema_opts_.only_root_program_ = true;
+      } else if (pair.first == "ordered_container_values") {
+        schema_opts_.ordered_container_values_ = true;
       } else if (pair.first == "ast") {
       } else {
         throw std::runtime_error(
@@ -155,13 +172,26 @@ type::Schema t_ast_generator::gen_schema(
 
   auto intern_value = [&](protocol::Value value, t_program* = nullptr) {
     if (schema_opts.use_hash) {
-      auto hash = op::hash<
-          type::struct_t<protocol::Value>,
-          apache::thrift::op::Sha256Hasher>(value);
+      // Values differing only in container order must not share a key when
+      // that order is written, since each key carries one order.
+      std::optional<std::string> ordered_bytes;
+      std::array<uint8_t, SHA256_DIGEST_LENGTH> hash;
+      if (schema_opts.ordered_container_values_) {
+        ordered_bytes = ordered_value_bytes(value);
+        hash = ordered_value_hash(*ordered_bytes);
+      } else {
+        hash = op::hash<
+            type::struct_t<protocol::Value>,
+            apache::thrift::op::Sha256Hasher>(value);
+      }
       type::ValueKey key;
       memcpy(&key, hash.data(), sizeof(key));
       if (ast.valuesMap()->count(key)) {
-        if (ast.valuesMap()->at(key) != value) {
+        const auto& existing = ast.valuesMap()->at(key);
+        const bool matches = ordered_bytes
+            ? ordered_value_bytes(existing) == *ordered_bytes
+            : existing == value;
+        if (!matches) {
           throw std::runtime_error(
               fmt::format(
                   "Hash collision on value: {}", debugStringViaEncode(value)));
@@ -519,6 +549,20 @@ template <typename Writer>
 struct SortingProtocolWriter : Writer {
   static constexpr KeyOrder keyOrder() { return KeyOrder::NativeAscending; }
 };
+
+// With ordered container values the plain writer is still deterministic in
+// opt builds, where F14 does not perturb iteration order: protocol.Value's map
+// and set iterate in IDL order, object members in F14NodeMap's hash order, and
+// every other map in the schema is a std::map. Member order carries nothing:
+// codegen writes a struct literal in the struct's declaration order. Debug
+// output remains sorted because F14 iteration order is not portable there.
+template <typename Writer>
+std::string serialize_schema(
+    const type::Schema& ast, const schematizer::options& opts) {
+  return opts.ordered_container_values_
+      ? serialize<Writer>(ast)
+      : serialize<SortingProtocolWriter<Writer>>(ast);
+}
 } // namespace
 
 void t_ast_generator::generate_program() {
@@ -530,16 +574,16 @@ void t_ast_generator::generate_program() {
 
   switch (protocol_) {
     case ast_protocol::json:
-      f_out_ << serialize<SortingProtocolWriter<SimpleJSONProtocolWriter>>(ast);
+      f_out_ << serialize_schema<SimpleJSONProtocolWriter>(ast, schema_opts_);
       break;
     case ast_protocol::debug:
       f_out_ << serialize<SortingProtocolWriter<DebugProtocolWriter>>(ast);
       break;
     case ast_protocol::compact:
-      f_out_ << serialize<SortingProtocolWriter<CompactProtocolWriter>>(ast);
+      f_out_ << serialize_schema<CompactProtocolWriter>(ast, schema_opts_);
       break;
     case ast_protocol::binary:
-      f_out_ << serialize<SortingProtocolWriter<BinaryProtocolWriter>>(ast);
+      f_out_ << serialize_schema<BinaryProtocolWriter>(ast, schema_opts_);
       break;
   }
   f_out_.close();
@@ -554,7 +598,9 @@ source_ranges:     Enables population of the identifier source range map.
 no_backcompat:     Disables double writes (breaking changes possible!).
 use_hash:          Uses definitionKey in typeUri and instead of extern ids.
                    (Required for use with the SyntaxGraph API)
-root_program_only: Only schematize the root program.)");
+root_program_only: Only schematize the root program.
+ordered_container_values: Writes map and set values in IDL order, except in
+                          debug output, which remains sorted.)");
 
 namespace {
 std::string gen_schema(

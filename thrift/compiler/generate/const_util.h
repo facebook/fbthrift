@@ -17,11 +17,14 @@
 #pragma once
 
 #include <concepts>
+#include <ranges>
 #include <stdexcept>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 #include <folly/FBString.h>
+#include <folly/container/F14Set.h>
 #include <thrift/compiler/ast/t_const_value.h>
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_list.h>
@@ -204,10 +207,21 @@ inline protocol::Value const_to_value(
         key_type = map_type->key_type()->get_true_type();
         val_type = map_type->val_type()->get_true_type();
       }
+      // Preserve first occurrences before reversing. F14's vector policy
+      // reverses insertion order once more in optimized compiler builds.
+      std::vector<std::pair<protocol::Value, protocol::Value>> entries;
+      folly::F14FastSet<protocol::Value> seen;
+      entries.reserve(val.get_map().size());
+      seen.reserve(val.get_map().size());
       for (const auto& map_elem : val.get_map()) {
-        map.emplace(
-            const_to_value(*map_elem.first, key_type),
-            const_to_value(*map_elem.second, val_type));
+        auto key = const_to_value(*map_elem.first, key_type);
+        if (seen.insert(key).second) {
+          entries.emplace_back(
+              std::move(key), const_to_value(*map_elem.second, val_type));
+        }
+      }
+      for (auto& [key, value] : entries | std::views::reverse) {
+        map.emplace(std::move(key), std::move(value));
       }
     }
     return ret;
@@ -267,8 +281,20 @@ inline protocol::Value const_to_value(
     auto& set = ret.emplace_set();
     set.reserve(valList.size());
     const auto* elem_type = ttype->as<t_set>().elem_type()->get_true_type();
-    for (const auto& list_elem : val.get_list_or_empty_map()) {
-      set.insert(const_to_value(*list_elem, elem_type));
+    // Preserve the first occurrence of each element before reversing. F14's
+    // vector policy reverses insertion order again in optimized builds.
+    std::vector<protocol::Value> elements;
+    folly::F14FastSet<protocol::Value> seen;
+    elements.reserve(valList.size());
+    seen.reserve(valList.size());
+    for (const auto& list_elem : valList) {
+      auto element = const_to_value(*list_elem, elem_type);
+      if (seen.insert(element).second) {
+        elements.push_back(std::move(element));
+      }
+    }
+    for (auto& element : elements | std::views::reverse) {
+      set.insert(std::move(element));
     }
   } else if (ttype->is<t_enum>()) {
     ret.emplace_i32(val.get_integer());

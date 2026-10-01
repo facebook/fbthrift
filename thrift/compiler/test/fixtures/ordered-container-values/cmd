@@ -1,0 +1,1 @@
+ast: thrift2ast-ast:protocol=json,root_program_only,use_hash,no_backcompat,ordered_container_values src/module.thrift

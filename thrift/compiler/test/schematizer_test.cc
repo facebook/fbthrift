@@ -273,6 +273,10 @@ TEST(SchematizerTest, wrap_with_protocol_set) {
   foo_bar_elem_2->add_map(val("foo"), val(4));
   foo_bar_elem_2->add_map(val("bar"), val(5));
   my_set->add_list(std::move(foo_bar_elem_2));
+  auto duplicate = t_const_value::make_map();
+  duplicate->add_map(val("foo"), val(1));
+  duplicate->add_map(val("bar"), val(2));
+  my_set->add_list(std::move(duplicate));
 
   auto foos = t_const_value::make_map();
   foos->add_map(val("foos"), std::move(my_set));
@@ -296,6 +300,11 @@ TEST(SchematizerTest, wrap_with_protocol_set) {
   }
   EXPECT_TRUE(saw_first);
   EXPECT_TRUE(saw_second);
+
+  auto it = foos_set.begin();
+  EXPECT_EQ(map_at_string(*it++, "foo").as_i32(), 1);
+  EXPECT_EQ(map_at_string(*it++, "foo").as_i32(), 4);
+  EXPECT_EQ(it, foos_set.end());
 }
 
 TEST(SchematizerTest, wrap_with_protocol_typedef) {
@@ -349,6 +358,7 @@ TEST(SchematizerTest, wrap_with_protocol_map) {
   auto submap = t_const_value::make_map();
   submap->add_map(val(444), val(555));
   submap->add_map(val(777), val(888));
+  submap->add_map(val(444), val(999));
   strct->add_map(val("foo_map"), std::move(submap));
 
   auto value_no_type_mapping = protocol_value_builder{*foo_map_ty}.wrap(*strct);

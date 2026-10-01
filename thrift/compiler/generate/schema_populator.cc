@@ -16,10 +16,13 @@
 
 #include <thrift/compiler/generate/schema_populator.h>
 
+#include <ranges>
 #include <string>
 #include <type_traits>
 #include <utility>
+#include <vector>
 #include <fmt/core.h>
+#include <folly/container/F14Set.h>
 #include <folly/io/IOBuf.h>
 
 #include <thrift/compiler/ast/t_const.h>
@@ -1009,8 +1012,20 @@ protocol::Value protocol_value_builder::wrap(
     case t_const_value::CV_MAP: {
       protocol::Value ret;
       auto& map = ret.emplace_map();
+      // Preserve first occurrences before reversing. F14's vector policy
+      // reverses insertion order once more in optimized compiler builds.
+      std::vector<std::pair<protocol::Value, protocol::Value>> entries;
+      folly::F14FastSet<protocol::Value> seen;
+      entries.reserve(protocol_value.get_map().size());
+      seen.reserve(protocol_value.get_map().size());
       for (const auto& [k, v] : protocol_value.get_map()) {
-        map.emplace(key(*k).wrap(*k), property(*k).wrap(*v));
+        auto wrapped_key = key(*k).wrap(*k);
+        if (seen.insert(wrapped_key).second) {
+          entries.emplace_back(std::move(wrapped_key), property(*k).wrap(*v));
+        }
+      }
+      for (auto& [k, v] : entries | std::views::reverse) {
+        map.emplace(std::move(k), std::move(v));
       }
       return ret;
     }
@@ -1019,8 +1034,22 @@ protocol::Value protocol_value_builder::wrap(
       auto list_ty_resolver = container_element(protocol_value);
       if (ty_ != nullptr && ty_->is<t_set>()) {
         auto& set = ret.emplace_set();
+        set.reserve(protocol_value.get_list().size());
+        // Preserve the first occurrence of each element before reversing.
+        // F14's vector policy reverses insertion order again in optimized
+        // builds.
+        std::vector<protocol::Value> elements;
+        folly::F14FastSet<protocol::Value> seen;
+        elements.reserve(protocol_value.get_list().size());
+        seen.reserve(protocol_value.get_list().size());
         for (const auto& list_elem : protocol_value.get_list()) {
-          set.insert(list_ty_resolver.wrap(*list_elem));
+          auto element = list_ty_resolver.wrap(*list_elem);
+          if (seen.insert(element).second) {
+            elements.push_back(std::move(element));
+          }
+        }
+        for (auto& element : elements | std::views::reverse) {
+          set.insert(std::move(element));
         }
       } else {
         auto& list = ret.emplace_list();

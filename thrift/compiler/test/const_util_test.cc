@@ -20,6 +20,8 @@
 #include <thrift/compiler/test/gen-cpp2/const_util_test_types.h>
 
 using apache::thrift::compiler::t_const_value;
+using apache::thrift::compiler::t_primitive_type;
+using apache::thrift::compiler::t_set;
 
 namespace {
 template <typename... Args>
@@ -60,7 +62,23 @@ TEST(ConstUtilTest, ConstToValue) {
   EXPECT_EQ(const_to_value(*str).as_string(), "foo");
 
   auto map = t_const_value::make_map();
-  map->add_map(val("answer"), val(42));
+  map->add_map(val("first"), val(1));
+  map->add_map(val("second"), val(2));
+  map->add_map(val("first"), val(3));
   auto value = const_to_value(*map);
-  EXPECT_EQ(value.as_map().at(const_to_value(*val("answer"))).as_i64(), 42);
+  const auto& converted_map = value.as_map();
+  EXPECT_EQ(converted_map.at(const_to_value(*val("first"))).as_i64(), 1);
+  EXPECT_EQ(converted_map.at(const_to_value(*val("second"))).as_i64(), 2);
+
+  auto set = t_const_value::make_list();
+  set->add_list(val(1));
+  set->add_list(val(2));
+  set->add_list(val(1));
+  t_set set_type(t_primitive_type::t_i32());
+  auto converted = const_to_value(*set, &set_type);
+  const auto& converted_set = converted.as_set();
+  auto it = converted_set.begin();
+  EXPECT_EQ((it++)->as_i32(), 1);
+  EXPECT_EQ((it++)->as_i32(), 2);
+  EXPECT_EQ(it, converted_set.end());
 }
