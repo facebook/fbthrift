@@ -120,6 +120,52 @@ TEST(HashTest, HashDouble) {
       hash<type::double_t>(std::numeric_limits<double>::quiet_NaN()));
 }
 
+TEST(HashTest, NestedContainers) {
+  using ListOfSets = type::list<type::set<type::i64_t>>;
+  const std::vector<std::set<int64_t>> listOfSets = {{1, 2}, {3}};
+  EXPECT_EQ(
+      hash<ListOfSets>(listOfSets),
+      hash<ListOfSets>(std::vector<std::set<int64_t>>{{2, 1}, {3}}));
+  EXPECT_NE(
+      hash<ListOfSets>(listOfSets),
+      hash<ListOfSets>(std::vector<std::set<int64_t>>{{1}, {2, 3}}));
+
+  using ListOfMaps = type::list<type::map<type::string_t, type::i32_t>>;
+  const std::vector<std::map<std::string, int32_t>> listOfMaps = {
+      {{"a", 1}, {"b", 2}}};
+  EXPECT_EQ(
+      hash<ListOfMaps>(listOfMaps),
+      hash<ListOfMaps>(
+          std::vector<std::map<std::string, int32_t>>{{{"b", 2}, {"a", 1}}}));
+  EXPECT_NE(
+      hash<ListOfMaps>(listOfMaps),
+      hash<ListOfMaps>(
+          std::vector<std::map<std::string, int32_t>>{{{"a", 1}, {"b", 3}}}));
+
+  using SetOfMaps = type::set<type::map<type::i64_t, type::i64_t>>;
+  const std::set<std::map<int64_t, int64_t>> setOfMaps = {
+      {{1, 2}}, {{3, 4}, {5, 6}}};
+  EXPECT_EQ(
+      hash<SetOfMaps>(setOfMaps),
+      hash<SetOfMaps>(
+          std::set<std::map<int64_t, int64_t>>{{{5, 6}, {3, 4}}, {{1, 2}}}));
+  EXPECT_NE(
+      hash<SetOfMaps>(setOfMaps),
+      hash<SetOfMaps>(
+          std::set<std::map<int64_t, int64_t>>{{{1, 2}}, {{3, 4}, {5, 7}}}));
+
+  using ListOfStructs = type::list<type::struct_t<test::OneOfEach>>;
+  std::vector<test::OneOfEach> listOfStructs(2);
+  listOfStructs[1].myI32() = 1;
+  std::vector<test::OneOfEach> sameStructs(2);
+  sameStructs[1].myI32() = 1;
+  EXPECT_EQ(
+      hash<ListOfStructs>(listOfStructs), hash<ListOfStructs>(sameStructs));
+  sameStructs[1].myI32() = 2;
+  EXPECT_NE(
+      hash<ListOfStructs>(listOfStructs), hash<ListOfStructs>(sameStructs));
+}
+
 TEST(HashTest, HashAccumulation) {
   test::OneOfEach value;
   EXPECT_EQ((hash<type::i32_t, DebugHasher>(*value.myI32())), "[100017]");

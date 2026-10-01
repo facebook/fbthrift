@@ -39,6 +39,17 @@ void accumulateHash(type::string_c, Accumulator& accumulator, const T& value) {
 }
 
 template <typename VTag, typename Accumulator, typename T>
+void accumulateHash(type::list<VTag>, Accumulator& accumulator, const T& value);
+template <typename KTag, typename Accumulator, typename T>
+void accumulateHash(type::set<KTag>, Accumulator& accumulator, const T& value);
+template <typename KTag, typename VTag, typename Accumulator, typename T>
+void accumulateHash(
+    type::map<KTag, VTag>, Accumulator& accumulator, const T& value);
+template <typename Accumulator, typename T>
+void accumulateHash(
+    type::structured_c, Accumulator& accumulator, const T& value);
+
+template <typename VTag, typename Accumulator, typename T>
 void accumulateHash(
     type::list<VTag>, Accumulator& accumulator, const T& value) {
   auto listGuard = makeContainerHashGuard(accumulator, value.size());
