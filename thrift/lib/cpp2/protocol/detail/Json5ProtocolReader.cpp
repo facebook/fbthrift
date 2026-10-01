@@ -160,6 +160,19 @@ std::optional<std::string> Json5ProtocolReader::tryReadObjectMapKey() {
   return name;
 }
 
+Json5Reader::Primitive Json5ProtocolReader::readPrimitiveOrMapKey(
+    Json5Reader::FloatingPointPrecision precision) {
+  Json5Reader::Primitive primitive;
+  if (auto key = tryReadObjectMapKey()) {
+    primitive = std::move(*key);
+  } else {
+    beginReadValue();
+    primitive = reader_.readPrimitive(precision);
+    endReadValue();
+  }
+  return primitive;
+}
+
 // ============================================================================
 // Struct Methods
 // ============================================================================
@@ -371,14 +384,7 @@ Json5ProtocolReader::IdentifierReadResult<>
 Json5ProtocolReader::readEnumImpl() {
   // When reading enum as a map key in Object form, the enum value is the
   // JSON object property name (a string), not a JSON value.
-  if (auto key = tryReadObjectMapKey()) {
-    return parseIdentifierString(std::move(*key));
-  }
-
-  beginReadValue();
-  auto primitive = reader_.readPrimitive();
-  endReadValue();
-
+  auto primitive = readPrimitiveOrMapKey();
   if (auto* i = std::get_if<std::int64_t>(&primitive)) {
     return {.name = {}, .value = convertTo<std::int32_t>(*i)};
   }
@@ -448,15 +454,7 @@ template Json5ProtocolReader::IdentifierReadResult<std::int16_t>
 // ============================================================================
 
 std::string Json5ProtocolReader::readStringValue() {
-  if (auto key = tryReadObjectMapKey()) {
-    return std::move(*key);
-  }
-
-  beginReadValue();
-  auto primitive = reader_.readPrimitive();
-  endReadValue();
-
-  return takeStringValue(std::move(primitive), "string");
+  return takeStringValue(readPrimitiveOrMapKey(), "string");
 }
 
 std::string Json5ProtocolReader::readBinaryValue() {
@@ -515,15 +513,7 @@ std::optional<std::int64_t> tryParseI64(
 } // namespace
 
 std::int64_t Json5ProtocolReader::readIntegralValue() {
-  if (auto key = tryReadObjectMapKey()) {
-    return convertTo<std::int64_t>(*key);
-  }
-
-  beginReadValue();
-  auto primitive = reader_.readPrimitive();
-  endReadValue();
-
-  if (auto i = tryParseI64(primitive)) {
+  if (auto i = tryParseI64(readPrimitiveOrMapKey())) {
     return *i;
   }
   throwError("expected integer value");
@@ -535,14 +525,7 @@ T Json5ProtocolReader::readFloatingPointValue() {
       ? Json5Reader::FloatingPointPrecision::Single
       : Json5Reader::FloatingPointPrecision::Double;
 
-  if (auto key = tryReadObjectMapKey()) {
-    return convertTo<T>(*key);
-  }
-
-  beginReadValue();
-  auto primitive = reader_.readPrimitive(precision);
-  endReadValue();
-
+  auto primitive = readPrimitiveOrMapKey(precision);
   if (auto* f = std::get_if<T>(&primitive)) {
     return *f;
   }
@@ -575,15 +558,7 @@ void Json5ProtocolReader::readBool(bool& value) {
     throwError("expected boolean, got '" + s + "'");
   };
 
-  if (auto key = tryReadObjectMapKey()) {
-    value = parseBool(*key);
-    return;
-  }
-
-  beginReadValue();
-  auto primitive = reader_.readPrimitive();
-  endReadValue();
-
+  auto primitive = readPrimitiveOrMapKey();
   if (auto* b = std::get_if<bool>(&primitive)) {
     value = *b;
     return;

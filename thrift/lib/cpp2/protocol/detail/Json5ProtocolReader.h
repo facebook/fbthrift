@@ -196,6 +196,12 @@ class Json5ProtocolReader final
   // a key, otherwise returns nullopt. Toggles the map state when a key is read.
   std::optional<std::string> tryReadObjectMapKey();
 
+  // Like reader_.readPrimitive, but when an object-form map expects a key,
+  // reads the key instead and returns it as a string.
+  Json5Reader::Primitive readPrimitiveOrMapKey(
+      Json5Reader::FloatingPointPrecision precision =
+          Json5Reader::FloatingPointPrecision::Double);
+
   [[noreturn]] static void throwError(std::string_view message);
 
   // Like folly::to, but reports conversion failures through throwError.
