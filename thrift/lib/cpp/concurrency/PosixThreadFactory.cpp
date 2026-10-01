@@ -29,7 +29,6 @@
 #include <folly/system/ThreadName.h>
 
 #include <thrift/lib/cpp/concurrency/Exception.h>
-#include <thrift/lib/cpp/thrift_config.h>
 
 namespace apache::thrift::concurrency {
 
