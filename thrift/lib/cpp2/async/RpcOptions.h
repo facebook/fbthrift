@@ -17,14 +17,37 @@
 #pragma once
 
 #include <chrono>
+#include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ClientStreamBridge.h>
 
+// Forward declaration for per-RPC bulk response placement. Overloads of
+// `SetBulkTransportTarget` (one per bindable kind) are defined bulk-side in
+// `thrift_fb/bulk_transport/alloc/RpcOptionsBulkBinding.h`; the delegating
+// member template below resolves them at the caller's instantiation point,
+// so this header never depends on `thrift_fb/`.
 namespace apache::thrift {
+class RpcOptions;
+} // namespace apache::thrift
+
+namespace apache::thrift {
+// ADL anchor for the `SetBulkTransportTarget` customization point, whose
+// overloads (one per bindable kind) are defined bulk-side in
+// `thrift_fb/bulk_transport/alloc/RpcOptionsBulkBinding.h`. The delegating
+// member template below passes this tag so the overloads are found by
+// argument-dependent lookup along with `RpcOptions` itself. The tag lives
+// in this namespace -- rather than a `facebook::` namespace -- so including
+// this header never introduces a new `thrift` name into enclosing scopes
+// (which broke downstream code with its own nested `thrift` namespace).
+// (A qualified `SetBulkTransportTarget(...)` call would only see
+// declarations in this header -- never the bulk-side overloads -- so the
+// call is deliberately unqualified.)
+struct BulkBindTag {};
 
 struct SerializedAuthProofs {
   SerializedAuthProofs() = default;
@@ -237,6 +260,48 @@ class RpcOptions {
   RpcOptions& setFrameRelativeDataAlignment(uint32_t alignment);
   uint32_t getFrameRelativeDataAlignment() const;
 
+  /**
+   * Per-RPC bulk response placement: directs where bulk transport delivers
+   * this RPC's response payload (e.g. `setBulkResponseTarget(iobuf)` for a
+   * caller-owned buffer, or `setBulkResponseTarget(IOBufAllocator{4096})`
+   * to carve from the transport). Transparent delegation only: each
+   * overload of `SetBulkTransportTarget` (defined bulk-side, one per
+   * bindable kind) stores into the opaque slot below. New bindable kinds
+   * never touch this header.
+   *
+   * Copies of these options share the binding, and the client interceptor
+   * consumes it once per RPC. Holding the options keeps the bound buffer
+   * and its registration alive for the entire RPC.
+   */
+  template <typename T>
+  RpcOptions& setBulkResponseTarget(T&& arg) {
+    // Unqualified on purpose: ADL through `BulkBindTag` and `RpcOptions`
+    // finds the bulk-side overloads at instantiation.
+    SetBulkTransportTarget(BulkBindTag{}, *this, std::forward<T>(arg));
+    return *this;
+  }
+
+  // Binding holder base. The concrete binding lives bulk-side (see
+  // `thrift_fb/bulk_transport/alloc/RpcOptionsBulkBinding.h`); this base
+  // keeps the slot typed without this header depending on `thrift_fb/`.
+  struct BulkResponseBinding {
+    virtual ~BulkResponseBinding() = default;
+  };
+  using BulkResponseBindingPtr = std::shared_ptr<BulkResponseBinding>;
+
+  // Opaque slot for the binding above. For bulk_transport use only.
+  // Deliberately named apart from the delegating template so overload
+  // resolution can never route internal stores back through it.
+  void setBulkResponseBinding(BulkResponseBindingPtr binding) {
+    bulkResponseTarget_ = std::move(binding);
+  }
+  const BulkResponseBindingPtr& getBulkResponseTarget() const {
+    return bulkResponseTarget_;
+  }
+  BulkResponseBindingPtr& getBulkResponseTarget() {
+    return bulkResponseTarget_;
+  }
+
  private:
   using timeout_ms_t = uint32_t;
   timeout_ms_t timeout_{0};
@@ -289,6 +354,10 @@ class RpcOptions {
   // This controls the alignment of the data portion of the first entry
   // of the first parameter of the Thrift RPC call w.r.t. the frame start.
   uint32_t frameRelativeDataAlignmentBytes_{0};
+
+  // Opaque per-RPC bulk response placement (a bulk-side
+  // `BulkResponseBinding` subclass; see above).
+  BulkResponseBindingPtr bulkResponseTarget_;
 };
 
 } // namespace apache::thrift
