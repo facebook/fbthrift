@@ -139,7 +139,8 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
         expected = 42
 
         # WHEN
-        actual = await round_trip(composed_factory)
+        async with factory:
+            actual = await round_trip(composed_factory)
 
         # THEN
         self.ut.assertEqual(expected, actual)
