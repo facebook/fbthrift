@@ -96,6 +96,15 @@ struct FastThriftServerConfig {
   // Backpressure while saturated so the transport pauses socket reads.
   bool enableWriteBufferBackpressure{false};
 
+  // When true, insert ThriftServerStreamMuxHandler immediately head-ward of the
+  // tail app adapter. It owns and multiplexes per-stream producing-end
+  // sub-pipelines: outbound it converts the app's stream-open into a registered
+  // sub-pipeline and emits stream chunks; inbound it routes RequestN/Cancel to
+  // the matching sub-pipeline. Unary traffic passes through untouched, and the
+  // handler needs no per-request context, so it is independent of the other
+  // flags. Default off while server streaming is still being built out.
+  bool enableStreamMux{false};
+
   // When true, the outbound write-path handlers (batching, fragmentation)
   // participate in pipeline write backpressure: they buffer while the
   // transport's write buffer is saturated and drain when it reports ready.

@@ -307,6 +307,9 @@ class FastThriftServerTest : public ::testing::Test {
     if (enableChecksum_) {
       config.enableChecksum = true;
     }
+    if (enableStreamMux_) {
+      config.enableStreamMux = true;
+    }
 
     server_ = std::make_unique<ftt::FastThriftServer>(std::move(config));
     server_->setInterface(handler_);
@@ -422,6 +425,7 @@ class FastThriftServerTest : public ::testing::Test {
   std::unique_ptr<ftt::FastThriftServer> server_;
   std::unique_ptr<folly::ScopedEventBaseThread> clientThread_;
   bool enableChecksum_{false};
+  bool enableStreamMux_{false};
 };
 
 // ---------------------------------------------------------------------------
@@ -466,6 +470,29 @@ TEST_F(FastThriftServerTest, SecureLookupSecondExceptionPropagates) {
   syncCallExpectException<PermissionDeniedException>([&] {
     return client->semifuture_secureLookup(/*id=*/5, std::string("alice"));
   });
+  destroyClientOnEvb(client);
+}
+
+// ---------------------------------------------------------------------------
+// Stream mux handler wired into the real server pipeline (enableStreamMux).
+// ---------------------------------------------------------------------------
+
+class FastThriftServerStreamMuxTest : public FastThriftServerTest {
+ protected:
+  void SetUp() override {
+    enableStreamMux_ = true;
+    FastThriftServerTest::SetUp();
+  }
+};
+
+// With the stream mux handler in the pipeline, ordinary unary requests must
+// still round-trip untouched — the mux forwards non-stream traffic to the app.
+// (End-to-end stream behavior is covered by the mux's own unit test; the client
+// stream path is not wired yet.)
+TEST_F(FastThriftServerStreamMuxTest, UnaryTrafficRoundTripsWithStreamMux) {
+  auto client = createClient();
+  auto resp = syncCall([&] { return client->semifuture_echo("muxed"); });
+  EXPECT_EQ(*resp.message(), "echoed:muxed");
   destroyClientOnEvb(client);
 }
 

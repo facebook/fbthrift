@@ -583,6 +583,7 @@ void FastThriftServer::start() {
       .enableChecksum = config_.enableChecksum,
       .enableCancellation = config_.enableCancellation,
       .enableWriteBufferBackpressure = config_.enableWriteBufferBackpressure,
+      .enableStreamMux = config_.enableStreamMux,
       .enableBackpressure = config_.enableBackpressure,
       .batchingConfig = config_.batchingConfig,
       .drainTimeout = config_.drainTimeout,

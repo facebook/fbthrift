@@ -112,6 +112,13 @@ struct ThriftServerConnectionFactoryConfig {
   // surface Backpressure while buffered to pause socket reads.
   bool enableWriteBufferBackpressure{false};
 
+  // When true, insert ThriftServerStreamMuxHandler immediately head-ward of the
+  // tail app adapter, so it owns/multiplexes per-stream producing-end
+  // sub-pipelines (converts the app's outbound stream-open, routes inbound
+  // RequestN/Cancel). Unary traffic passes through; needs no per-request
+  // context.
+  bool enableStreamMux{false};
+
   // When true, the outbound write-path handlers (batching, fragmentation)
   // participate in pipeline write backpressure. When false, their
   // backpressure participation is compiled out: the no-backpressure

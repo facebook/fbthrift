@@ -58,6 +58,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestContextHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestLifecycleHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerStreamMuxHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/WriteBufferBackpressureHandler.h>
 
 namespace apache::thrift::fast_thrift::thrift::server {
@@ -126,6 +127,7 @@ HANDLER_TAG(thrift_server_checksum_handler);
 HANDLER_TAG(thrift_server_connection_close_handler);
 HANDLER_TAG(write_buffer_backpressure_handler);
 HANDLER_TAG(thrift_server_setup_handler);
+HANDLER_TAG(thrift_server_stream_mux_handler);
 
 template <bool Backpressure, bool WithStats>
 PipelineOwner buildStaticRocketPipeline(
@@ -800,6 +802,8 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
       WriteBufferBackpressureHandler<channel_pipeline::detail::ContextImpl>;
   using SetupHandler =
       ThriftServerSetupHandler<channel_pipeline::detail::ContextImpl>;
+  using MuxHandler =
+      ThriftServerStreamMuxHandler<channel_pipeline::detail::ContextImpl>;
   PipelineOwner thriftPipeline;
   const bool supportsStaticHandlers = std::all_of(
       config_.thriftPipelineHandlerFactories.begin(),
@@ -889,6 +893,18 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
     if (config_.enableCancellation) {
       thriftPipelineBuilder.template addNextDuplex<RequestLifecycleHandler>(
           thrift_server_request_lifecycle_handler_tag);
+    }
+    // Stream mux sits immediately head-ward of the tail app adapter (tail-ward
+    // of every built-in, including setup). Outbound it intercepts the app's
+    // ThriftServerStreamOpenPayload to build/own the per-stream sub-pipeline
+    // and emits stream chunks that traverse compression/checksum/transport like
+    // a unary response; inbound it routes RequestN/Cancel to the matching
+    // sub-pipeline and passes unary requests through to the app. It answers no
+    // connection-lifecycle message, so keeping it below setup leaves the setup
+    // handler's "app sees only requests" invariant intact.
+    if (config_.enableStreamMux) {
+      thriftPipelineBuilder.template addNextDuplex<MuxHandler>(
+          thrift_server_stream_mux_handler_tag);
     }
     thriftPipeline = thriftPipelineBuilder.build();
   }
