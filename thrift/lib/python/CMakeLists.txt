@@ -610,6 +610,7 @@ install(TARGETS thrift_python_cpp DESTINATION ${py_install_dir})
 add_custom_target(create_binding_symlink_server_impl ALL)
 
 file(MAKE_DIRECTORY "${_cybld}/thrift/python/server_impl")
+file(MAKE_DIRECTORY "${_cybld}/thrift/python/server_impl/execution")
 file(MAKE_DIRECTORY "${_cybld}/thrift/python/server_impl/interceptor")
 
 # For cimport during Cython compilation
@@ -625,6 +626,20 @@ ${_cybld}/thrift/python/server_impl/${_target_file} -> ${_src}")
     PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E create_symlink "${_src}"
             "${_cybld}/thrift/python/server_impl/${_target_file}")
+endforeach ()
+
+set(ServerImplExecutionFiles
+    "${CMAKE_CURRENT_SOURCE_DIR}/server/execution/asyncio_worker.py")
+
+foreach (_src ${ServerImplExecutionFiles})
+  get_filename_component(_target_file "${_src}" NAME)
+  message(STATUS "Creating server_impl/execution symlink: \
+${_cybld}/thrift/python/server_impl/execution/${_target_file} -> ${_src}")
+  add_custom_command(
+    TARGET create_binding_symlink_server_impl
+    PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E create_symlink "${_src}"
+            "${_cybld}/thrift/python/server_impl/execution/${_target_file}")
 endforeach ()
 
 # Create symlinks for server_impl/interceptor/*.pxd

@@ -564,6 +564,7 @@ else:
         "thrift.python.conformance",
         "thrift.python.schema",
         "thrift.python.server_impl",
+        "thrift.python.server_impl.execution",
         "thrift.python.server_impl.interceptor",
         "thrift.python.streaming",
         "thrift.py3",
