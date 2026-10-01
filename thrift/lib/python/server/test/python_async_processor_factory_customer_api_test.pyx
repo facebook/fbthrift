@@ -14,6 +14,11 @@
 
 import asyncio
 
+from cpython.ref cimport PyObject
+from cython.operator cimport dereference as deref
+from folly cimport cFollyExecutor
+from folly.executor cimport get_executor
+from libc.stddef cimport size_t
 from libcpp.memory cimport make_shared, shared_ptr, static_pointer_cast
 from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector as cvector
@@ -26,8 +31,26 @@ from thrift.python.server_impl.async_processor cimport (
     cAsyncProcessorFactory,
     AsyncProcessorFactory,
 )
-from thrift.python.server_impl.python_async_processor cimport PythonAsyncProcessorFactory
+from thrift.python.server_impl.python_async_processor cimport (
+    cPythonAsyncProcessorFactory,
+    PyObjPtr,
+    PythonAsyncProcessorFactory,
+)
 from thrift.python.types cimport ServiceInterface as cServiceInterface
+
+
+cdef extern from "thrift/lib/python/server/test/PythonAsyncProcessorFactoryLifecycleTestHelper.h" namespace "apache::thrift::python::test":
+    cdef cppclass cForwardingKeepAliveTrackingExecutor "apache::thrift::python::test::ForwardingKeepAliveTrackingExecutor":
+        cForwardingKeepAliveTrackingExecutor(cFollyExecutor* delegate) except +
+        size_t keepAliveCount() noexcept
+
+    shared_ptr[cPythonAsyncProcessorFactory] createHostedTestFactory(
+        PyObject* python_server,
+        cvector[PyObjPtr] lifecycle_functions,
+        cForwardingKeepAliveTrackingExecutor& control_executor,
+    ) except +
+
+    bint isFreeThreadedBuild() noexcept
 
 
 cdef extern from "thrift/lib/cpp2/async/MultiplexAsyncProcessor.h" namespace "apache::thrift":
@@ -35,6 +58,35 @@ cdef extern from "thrift/lib/cpp2/async/MultiplexAsyncProcessor.h" namespace "ap
         cMultiplexAsyncProcessorFactory(
             cvector[shared_ptr[cAsyncProcessorFactory]] processorFactories,
         ) except +
+
+
+cdef class ExecutorKeepAliveProbe:
+    cdef shared_ptr[cForwardingKeepAliveTrackingExecutor] executor
+
+    def __cinit__(self):
+        self.executor = make_shared[cForwardingKeepAliveTrackingExecutor](
+            <cFollyExecutor*>get_executor()
+        )
+
+    def keep_alive_count(self):
+        return self.executor.get().keepAliveCount()
+
+
+class StopRequestedExecutorObserver:
+    def __init__(self, callback, executor_probe):
+        self.callback = callback
+        self.executor_probe = executor_probe
+        self.keep_alive_count_before_callback = None
+        self.keep_alive_count_after_callback = None
+
+    async def __call__(self):
+        self.keep_alive_count_before_callback = (
+            self.executor_probe.keep_alive_count()
+        )
+        await self.callback()
+        self.keep_alive_count_after_callback = (
+            self.executor_probe.keep_alive_count()
+        )
 
 
 class Handler(BaseServiceInterface):
@@ -52,6 +104,86 @@ class ContextHandler(Handler):
 
     async def __aexit__(self, *exc_info):
         self.events.append("exit")
+
+
+class NoopContextPythonAsyncProcessorFactory(PythonAsyncProcessorFactory):
+    def __init__(self):
+        self.context_enter_count = 0
+        self.context_exit_count = 0
+
+    async def __aenter__(self):
+        self.context_enter_count += 1
+        return self
+
+    async def __aexit__(self, *exc_info):
+        self.context_exit_count += 1
+
+
+class HostedLifecycleHandler(Handler):
+    def __init__(self):
+        self.context_events = []
+        self.service_events = []
+        self.stop_requested = asyncio.Event()
+        self.context_exit_started = asyncio.Event()
+        self.release_context_exit = asyncio.Event()
+
+    async def __aenter__(self):
+        self.context_events.append("enter")
+        return self
+
+    async def __aexit__(self, *exc_info):
+        self.context_events.append("exit")
+        self.context_exit_started.set()
+        await self.release_context_exit.wait()
+
+    async def onStartServing(self):
+        self.service_events.append("start")
+
+    async def onStopRequested(self):
+        self.service_events.append("stop")
+        self.stop_requested.set()
+
+
+cdef PythonAsyncProcessorFactory create_noop_context_factory(
+    PythonAsyncProcessorFactory factory,
+):
+    cdef PythonAsyncProcessorFactory noop_context_factory = (
+        NoopContextPythonAsyncProcessorFactory()
+    )
+    noop_context_factory._cpp_obj = factory._cpp_obj
+    return noop_context_factory
+
+
+cdef PythonAsyncProcessorFactory create_hosted_factory(
+    cServiceInterface handler,
+    ExecutorKeepAliveProbe executor_probe,
+):
+    cdef list lifecycle_functions = [
+        handler.onStartServing,
+        handler.onStopRequested,
+    ]
+    cdef cvector[PyObjPtr] cpp_lifecycle_functions
+    cdef object lifecycle_function
+    for lifecycle_function in lifecycle_functions:
+        cpp_lifecycle_functions.push_back(<PyObject*>lifecycle_function)
+
+    cdef PythonAsyncProcessorFactory factory = (
+        PythonAsyncProcessorFactory.__new__(PythonAsyncProcessorFactory)
+    )
+    factory.funcMap = {}
+    factory.lifecycleFuncs = lifecycle_functions
+    factory.handler = handler
+    factory._cpp_obj = static_pointer_cast[
+        cAsyncProcessorFactory,
+        cPythonAsyncProcessorFactory,
+    ](
+        createHostedTestFactory(
+            <PyObject*>handler,
+            cmove(cpp_lifecycle_functions),
+            deref(executor_probe.executor),
+        )
+    )
+    return factory
 
 
 cdef AsyncProcessorFactory compose_processor_factory(
@@ -99,6 +231,138 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
 
     def __cinit__(self, object unit_test):
         self.ut = unit_test
+
+    async def test_host_without_factory_context_uses_legacy_stop_fallback(self):
+        # GIVEN
+        handler = HostedLifecycleHandler()
+        executor_probe = ExecutorKeepAliveProbe()
+        stop_observer = StopRequestedExecutorObserver(
+            handler.onStopRequested,
+            executor_probe,
+        )
+        handler.onStopRequested = stop_observer
+        cdef PythonAsyncProcessorFactory factory = create_hosted_factory(
+            <cServiceInterface>handler,
+            executor_probe,
+        )
+        noop_context_factory = create_noop_context_factory(factory)
+        server = ThriftServer(noop_context_factory, ip="::1")
+        serve_task = None
+        expected_context_enter_count = 1
+        expected_context_exit_count = 1
+        expected_context_events = []
+        expected_service_events = ["start", "stop"]
+        expected_released_keep_alive_count = 0
+
+        # WHEN
+        try:
+            serve_task = asyncio.create_task(server.serve())
+            await asyncio.wait_for(server.get_address(), timeout=5.0)
+            actual_keep_alive_count_before_stop = executor_probe.keep_alive_count()
+            server.stop()
+            await asyncio.wait_for(handler.stop_requested.wait(), timeout=5.0)
+            await asyncio.wait_for(serve_task, timeout=5.0)
+            actual_keep_alive_count_after_serve = executor_probe.keep_alive_count()
+            actual_serve_completed = serve_task.done()
+        finally:
+            server.stop()
+            if serve_task is not None:
+                await asyncio.gather(serve_task, return_exceptions=True)
+            factory.releaseOwnedResources()
+        actual_context_enter_count = noop_context_factory.context_enter_count
+        actual_context_exit_count = noop_context_factory.context_exit_count
+        actual_keep_alive_count_before_callback = (
+            stop_observer.keep_alive_count_before_callback
+        )
+        actual_keep_alive_count_after_callback = (
+            stop_observer.keep_alive_count_after_callback
+        )
+        actual_callback_count_stable = (
+            actual_keep_alive_count_before_callback
+            == actual_keep_alive_count_after_callback
+        )
+        actual_context_events = handler.context_events
+        actual_service_events = handler.service_events
+
+        # THEN
+        self.ut.assertEqual(expected_context_enter_count, actual_context_enter_count)
+        self.ut.assertEqual(expected_context_exit_count, actual_context_exit_count)
+        self.ut.assertGreater(actual_keep_alive_count_before_stop, 0)
+        self.ut.assertIsNotNone(actual_keep_alive_count_before_callback)
+        self.ut.assertIsNotNone(actual_keep_alive_count_after_callback)
+        self.ut.assertTrue(actual_callback_count_stable)
+        if isFreeThreadedBuild():
+            self.ut.assertEqual(
+                expected_released_keep_alive_count,
+                actual_keep_alive_count_after_serve,
+            )
+        else:
+            self.ut.assertGreater(actual_keep_alive_count_after_serve, 0)
+        self.ut.assertTrue(actual_serve_completed)
+        self.ut.assertEqual(expected_context_events, actual_context_events)
+        self.ut.assertEqual(expected_service_events, actual_service_events)
+
+    async def test_host_with_factory_context_defers_resources_to_exit(self):
+        # GIVEN
+        handler = HostedLifecycleHandler()
+        executor_probe = ExecutorKeepAliveProbe()
+        stop_observer = StopRequestedExecutorObserver(
+            handler.onStopRequested,
+            executor_probe,
+        )
+        handler.onStopRequested = stop_observer
+        cdef PythonAsyncProcessorFactory factory = create_hosted_factory(
+            <cServiceInterface>handler,
+            executor_probe,
+        )
+        server = ThriftServer(factory, ip="::1")
+        serve_task = None
+        expected_context_events = ["enter", "exit"]
+        expected_service_events = ["start", "stop"]
+        expected_released_keep_alive_count = 0
+
+        # WHEN
+        try:
+            serve_task = asyncio.create_task(server.serve())
+            await asyncio.wait_for(server.get_address(), timeout=5.0)
+            actual_keep_alive_count_after_entry = executor_probe.keep_alive_count()
+            server.stop()
+            await asyncio.wait_for(handler.stop_requested.wait(), timeout=5.0)
+            await asyncio.wait_for(handler.context_exit_started.wait(), timeout=5.0)
+            actual_keep_alive_count_during_exit = executor_probe.keep_alive_count()
+            handler.release_context_exit.set()
+            await asyncio.wait_for(serve_task, timeout=5.0)
+            actual_keep_alive_count_after_exit = executor_probe.keep_alive_count()
+            actual_serve_completed = serve_task.done()
+        finally:
+            handler.release_context_exit.set()
+            server.stop()
+            if serve_task is not None:
+                await asyncio.gather(serve_task, return_exceptions=True)
+            factory.releaseOwnedResources()
+        actual_keep_alive_count_before_callback = (
+            stop_observer.keep_alive_count_before_callback
+        )
+        actual_keep_alive_count_after_callback = (
+            stop_observer.keep_alive_count_after_callback
+        )
+        actual_context_events = handler.context_events
+        actual_service_events = handler.service_events
+
+        # THEN
+        self.ut.assertGreater(actual_keep_alive_count_after_entry, 0)
+        self.ut.assertIsNotNone(actual_keep_alive_count_before_callback)
+        self.ut.assertGreater(actual_keep_alive_count_before_callback, 0)
+        self.ut.assertIsNotNone(actual_keep_alive_count_after_callback)
+        self.ut.assertGreater(actual_keep_alive_count_after_callback, 0)
+        self.ut.assertGreater(actual_keep_alive_count_during_exit, 0)
+        self.ut.assertEqual(
+            expected_released_keep_alive_count,
+            actual_keep_alive_count_after_exit,
+        )
+        self.ut.assertTrue(actual_serve_completed)
+        self.ut.assertEqual(expected_context_events, actual_context_events)
+        self.ut.assertEqual(expected_service_events, actual_service_events)
 
     async def test_factory_context_composes_handler_context(self):
         # GIVEN

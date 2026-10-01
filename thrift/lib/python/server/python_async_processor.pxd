@@ -76,7 +76,8 @@ cdef extern from "thrift/lib/python/server/PythonAsyncProcessor.h" namespace "::
 
 cdef extern from "thrift/lib/python/server/PythonAsyncProcessorFactory.h" namespace "::apache::thrift::python":
     cdef cppclass cPythonAsyncProcessorFactory "::apache::thrift::python::PythonAsyncProcessorFactory"(cAsyncProcessorFactory):
-        pass
+        void releaseOwnedResources() noexcept
+        void markContextEntered() noexcept
 
     cdef shared_ptr[cPythonAsyncProcessorFactory] \
         cCreatePythonAsyncProcessorFactory "::apache::thrift::python::PythonAsyncProcessorFactory::create"(
@@ -104,6 +105,8 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
     cdef dict funcMap
     cdef list lifecycleFuncs
     cdef object handler
+
+    cdef void releaseOwnedResources(self) noexcept
 
     @staticmethod
     cdef PythonAsyncProcessorFactory create(cServiceInterface server)

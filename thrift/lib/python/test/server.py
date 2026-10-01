@@ -23,7 +23,7 @@ import threading
 from collections.abc import Callable
 from contextlib import contextmanager
 from types import TracebackType
-from typing import Iterator, Optional, Sequence
+from typing import Callable, Iterator, Optional, Sequence
 from unittest import mock
 
 import later.unittest
@@ -207,6 +207,47 @@ class BlockingEntryHandler(Handler):
         traceback: TracebackType | None,
     ) -> None:
         self.events.append("context_exit")
+
+
+class EnterFailureHandler(Handler):
+    def __init__(self, failure: RuntimeError) -> None:
+        super().__init__()
+        self.failure = failure
+        self.enter_count = 0
+        self.exit_count = 0
+
+    async def __aenter__(self) -> "EnterFailureHandler":
+        self.enter_count += 1
+        raise self.failure
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> bool | None:
+        self.exit_count += 1
+
+
+class ExitFailureHandler(Handler):
+    def __init__(self, failure: RuntimeError) -> None:
+        super().__init__()
+        self.failure = failure
+        self.enter_count = 0
+        self.exit_count = 0
+
+    async def __aenter__(self) -> "ExitFailureHandler":
+        self.enter_count += 1
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> bool | None:
+        self.exit_count += 1
+        raise self.failure
 
 
 class ServicesTests(later.unittest.TestCase):
@@ -511,14 +552,17 @@ class ServicesTests(later.unittest.TestCase):
         loop = asyncio.get_running_loop()
         native_serve: asyncio.Future[None] = loop.create_future()
         native_serve_started = asyncio.Event()
+        real_run_in_executor = loop.run_in_executor
         expected_log_message = (
             "Native server execution for ThriftServer failed before shutdown completed"
         )
 
         def start_native_serve(
             _executor: object,
-            _serve: object,
+            operation: Callable[[], None],
         ) -> asyncio.Future[None]:
+            if getattr(operation, "__name__", None) != "_serve":
+                return real_run_in_executor(None, operation)
             native_serve_started.set()
             return native_serve
 
@@ -542,6 +586,88 @@ class ServicesTests(later.unittest.TestCase):
         # THEN
         self.assertTrue(actual_serve_cancelled)
         self.assertIn(expected_log_message, actual_log_messages)
+
+    def test_context_entry_failure_releases_factory_resources(self) -> None:
+        # GIVEN
+        failure = RuntimeError("context entry failed")
+        handler = EnterFailureHandler(failure)
+        errors: list[Exception] = []
+        retained_servers: list[object] = []
+        expected_errors = [failure]
+        expected_enter_count = 1
+        expected_exit_count = 0
+
+        async def inner() -> None:
+            server = ThriftServer(handler, port=0)
+            retained_servers.append(server)
+            serve_task = asyncio.create_task(server.serve())
+            try:
+                await server.get_address()
+            except RuntimeError:
+                pass
+            await serve_task
+
+        def run() -> None:
+            try:
+                asyncio.run(inner())
+            except Exception as error:
+                errors.append(error)
+
+        # WHEN
+        server_runner = threading.Thread(target=run, daemon=True)
+        server_runner.start()
+        server_runner.join(timeout=10)
+        actual_server_runner_alive = server_runner.is_alive()
+        actual_errors = errors
+        actual_enter_count = handler.enter_count
+        actual_exit_count = handler.exit_count
+        retained_servers.clear()
+
+        # THEN
+        self.assertFalse(actual_server_runner_alive)
+        self.assertEqual(expected_errors, actual_errors)
+        self.assertEqual(expected_enter_count, actual_enter_count)
+        self.assertEqual(expected_exit_count, actual_exit_count)
+
+    def test_context_exit_failure_releases_factory_resources(self) -> None:
+        # GIVEN
+        failure = RuntimeError("context exit failed")
+        handler = ExitFailureHandler(failure)
+        errors: list[Exception] = []
+        retained_servers: list[object] = []
+        expected_errors = [failure]
+        expected_enter_count = 1
+        expected_exit_count = 1
+
+        async def inner() -> None:
+            server = ThriftServer(handler, port=0)
+            retained_servers.append(server)
+            serve_task = asyncio.create_task(server.serve())
+            await server.get_address()
+            server.stop()
+            await serve_task
+
+        def run() -> None:
+            try:
+                asyncio.run(inner())
+            except Exception as error:
+                errors.append(error)
+
+        # WHEN
+        server_runner = threading.Thread(target=run, daemon=True)
+        server_runner.start()
+        server_runner.join(timeout=10)
+        actual_server_runner_alive = server_runner.is_alive()
+        actual_errors = errors
+        actual_enter_count = handler.enter_count
+        actual_exit_count = handler.exit_count
+        retained_servers.clear()
+
+        # THEN
+        self.assertFalse(actual_server_runner_alive)
+        self.assertEqual(expected_errors, actual_errors)
+        self.assertEqual(expected_enter_count, actual_enter_count)
+        self.assertEqual(expected_exit_count, actual_exit_count)
 
     def test_threaded_destruction(self) -> None:
         handler = Handler()

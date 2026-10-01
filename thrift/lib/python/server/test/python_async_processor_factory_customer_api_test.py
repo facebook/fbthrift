@@ -22,6 +22,16 @@ from thrift.python.test.python_async_processor_factory_customer_api_test import 
 class PythonAsyncProcessorFactoryCustomerApiTest(later.unittest.TestCase):
     """Bootstraps component tests for customer-facing Cython APIs."""
 
+    async def test_host_without_factory_context_uses_legacy_stop_fallback(
+        self,
+    ) -> None:
+        await CTests(self).test_host_without_factory_context_uses_legacy_stop_fallback()
+
+    async def test_host_with_factory_context_defers_resources_to_exit(
+        self,
+    ) -> None:
+        await CTests(self).test_host_with_factory_context_defers_resources_to_exit()
+
     async def test_factory_context_composes_handler_context(self) -> None:
         await CTests(self).test_factory_context_composes_handler_context()
 

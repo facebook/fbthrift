@@ -606,12 +606,23 @@ cdef api void scheduleInteractionTermination(object handler):
     _schedule_termination(handler, None)
 
 cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
+    cdef void releaseOwnedResources(self) noexcept:
+        (<cPythonAsyncProcessorFactory*>self._cpp_obj.get()).releaseOwnedResources()
+
     async def __aenter__(self):
-        await self.handler.__aenter__()
+        try:
+            await self.handler.__aenter__()
+        except BaseException:
+            self.releaseOwnedResources()
+            raise
+        (<cPythonAsyncProcessorFactory*>self._cpp_obj.get()).markContextEntered()
         return self
 
     async def __aexit__(self, *exc_info):
-        return await self.handler.__aexit__(*exc_info)
+        try:
+            return await self.handler.__aexit__(*exc_info)
+        finally:
+            self.releaseOwnedResources()
 
     @staticmethod
     cdef PythonAsyncProcessorFactory create(cServiceInterface server):

@@ -37,6 +37,12 @@ class PythonAsyncProcessorFactory
   folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
   folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 
+  // PythonAsyncProcessorFactory owns resources that must not wait for object
+  // destruction.
+  void releaseOwnedResources() noexcept;
+
+  void markContextEntered() noexcept { factoryContextEntered_ = true; }
+
   PythonAsyncProcessorFactory(PythonAsyncProcessorFactory&&) = delete;
   PythonAsyncProcessorFactory(const PythonAsyncProcessorFactory&) = delete;
   PythonAsyncProcessorFactory& operator=(PythonAsyncProcessorFactory&&) =
@@ -81,6 +87,8 @@ class PythonAsyncProcessorFactory
   const FunctionMapType functions_;
   const std::vector<PyObject*> lifecycleFuncs_;
   folly::Executor::KeepAlive<> controlExecutor_;
+  // Factory context entry completes before native service execution starts.
+  bool factoryContextEntered_{false};
   std::string serviceName_;
 
   /**
