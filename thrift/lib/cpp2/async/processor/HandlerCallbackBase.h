@@ -327,9 +327,11 @@ class HandlerCallbackBase {
     if (executor.get() == eb_ && eb_->isInEventBaseThread()) {
       // Avoid rescheduling in the common case where result() is called inline
       // on the EB thread where request execution began
-      co_withExecutor(std::move(executor), std::move(task)).startInlineUnsafe();
+      co_withExecutor(std::move(executor), std::move(task))
+          .startInlineUnsafe([](auto&&) noexcept {});
     } else {
-      co_withExecutor(std::move(executor), std::move(task)).start();
+      co_withExecutor(std::move(executor), std::move(task))
+          .start([](auto&&) noexcept {});
     }
   }
 
