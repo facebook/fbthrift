@@ -669,6 +669,10 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
         for lifecycle_func in lifecycleFuncs:
             lifecycle.push_back(<PyObject*>lifecycle_func)
 
+        cdef cAsyncioExecutor* controlExecutor = get_executor()
+        cdef shared_ptr[cExecutionSystem] executionSystem = make_shared[cExecutionSystem](
+            controlExecutor
+        )
         cdef PythonAsyncProcessorFactory inst = PythonAsyncProcessorFactory.__new__(PythonAsyncProcessorFactory)
         inst.funcMap = funcMap
         inst.lifecycleFuncs = lifecycleFuncs
@@ -678,6 +682,7 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
                 <PyObject*>controlHandler,
                 cmove(funcs),
                 cmove(lifecycle),
-                get_executor(),
+                executionSystem,
+                controlExecutor,
                 <bytes>controlHandler.service_name()))
         return inst

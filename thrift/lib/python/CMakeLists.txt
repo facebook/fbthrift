@@ -547,6 +547,7 @@ add_library(
   server/request_context_holder.cpp
   server/interceptor/PythonServiceInterceptor.cpp
   server/PythonAsyncProcessor.cpp
+  server/execution/ExecutionSystem.cpp
   server/PythonAsyncProcessorFactory.cpp
   server/RequestContextExtractor.cpp
   std_libcpp.cpp

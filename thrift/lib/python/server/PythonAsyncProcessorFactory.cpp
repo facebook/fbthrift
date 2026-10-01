@@ -76,6 +76,7 @@ PythonAsyncProcessorFactory::semifuture_onStartServing() {
 
 folly::SemiFuture<folly::Unit>
 PythonAsyncProcessorFactory::semifuture_onStopRequested() {
+  auto lifecycle = callLifecycle(LifecycleFunc::ON_STOP_REQUESTED);
 #ifdef Py_GIL_DISABLED
   // In free-threaded Python, AsyncioExecutor::drop() can run before the factory
   // destructor and make destructor-time executor release unsafe. Factory
@@ -85,14 +86,19 @@ PythonAsyncProcessorFactory::semifuture_onStopRequested() {
   // connections can still arrive concurrently after the release. Migrate those
   // hosts to the factory context for the correct lifetime boundary.
   if (!factoryContextEntered_) {
+    std::lock_guard lock(executionResourcesMutex_);
     controlExecutor_ = folly::Executor::KeepAlive<>{};
+    executionSystem_ =
+        execution::ExecutionSystem::createWithEmptyExecutor(controlExecutor_);
   }
 #endif
 
-  return callLifecycle(LifecycleFunc::ON_STOP_REQUESTED);
+  return lifecycle;
 }
 
 void PythonAsyncProcessorFactory::releaseOwnedResources() noexcept {
+  std::lock_guard lock(executionResourcesMutex_);
+  executionSystem_->shutdown();
   controlExecutor_.reset();
 }
 
@@ -136,6 +142,7 @@ PythonAsyncProcessorFactory::create(
     PyObject* python_server,
     FunctionMapType functions,
     std::vector<PyObject*> lifecycleFuncs,
+    std::shared_ptr<execution::ExecutionSystem> executionSystem,
     folly::Executor::KeepAlive<> controlExecutor,
     std::string serviceName) {
   return std::shared_ptr<PythonAsyncProcessorFactory>(
@@ -143,6 +150,7 @@ PythonAsyncProcessorFactory::create(
           python_server,
           std::move(functions),
           std::move(lifecycleFuncs),
+          std::move(executionSystem),
           std::move(controlExecutor),
           std::move(serviceName)));
 }

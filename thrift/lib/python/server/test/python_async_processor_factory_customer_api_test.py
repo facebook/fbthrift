@@ -22,6 +22,9 @@ from thrift.python.test.python_async_processor_factory_customer_api_test import 
 class PythonAsyncProcessorFactoryCustomerApiTest(later.unittest.TestCase):
     """Bootstraps component tests for customer-facing Cython APIs."""
 
+    def test_processor_creation_and_legacy_stop_overlap(self) -> None:
+        CTests(self).test_processor_creation_and_legacy_stop_overlap()
+
     async def test_host_without_factory_context_uses_legacy_stop_fallback(
         self,
     ) -> None:

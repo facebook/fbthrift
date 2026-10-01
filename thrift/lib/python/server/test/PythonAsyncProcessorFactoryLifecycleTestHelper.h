@@ -19,11 +19,13 @@
 #include <atomic>
 #include <cstddef>
 #include <memory>
+#include <thread>
 #include <utility>
 #include <vector>
 
 #include <folly/Executor.h>
 #include <thrift/lib/python/server/PythonAsyncProcessorFactory.h>
+#include <thrift/lib/python/server/execution/ExecutionSystem.h>
 
 namespace apache::thrift::python::test {
 
@@ -60,14 +62,56 @@ inline bool isFreeThreadedBuild() noexcept {
 #endif
 }
 
+inline std::size_t createProcessorsWhileLegacyStopRuns(
+    ForwardingKeepAliveTrackingExecutor& controlExecutor,
+    const std::size_t iterationCount) {
+  auto executionSystem =
+      std::make_shared<execution::ExecutionSystem>(&controlExecutor);
+  auto factory = PythonAsyncProcessorFactory::create(
+      nullptr,
+      {},
+      {},
+      std::move(executionSystem),
+      folly::getKeepAliveToken(controlExecutor),
+      "test.Service");
+  std::atomic<std::size_t> readyCount{0};
+  std::size_t processorCount = 0;
+  auto waitForPeer = [&] {
+    readyCount.fetch_add(1, std::memory_order_release);
+    while (readyCount.load(std::memory_order_acquire) != 2) {
+      std::this_thread::yield();
+    }
+  };
+  std::thread processorThread([&] {
+    waitForPeer();
+    for (std::size_t i = 0; i < iterationCount; ++i) {
+      auto processor = factory->getProcessor();
+      ++processorCount;
+    }
+  });
+  std::thread stopThread([&] {
+    waitForPeer();
+    for (std::size_t i = 0; i < iterationCount; ++i) {
+      factory->semifuture_onStopRequested().get();
+    }
+  });
+  processorThread.join();
+  stopThread.join();
+  return processorCount;
+}
+
 inline std::shared_ptr<PythonAsyncProcessorFactory> createHostedTestFactory(
     PyObject* pythonServer,
+    FunctionMapType functions,
     std::vector<PyObject*> lifecycleFuncs,
     ForwardingKeepAliveTrackingExecutor& controlExecutor) {
+  auto executionSystem =
+      std::make_shared<execution::ExecutionSystem>(&controlExecutor);
   return PythonAsyncProcessorFactory::create(
       pythonServer,
-      {},
+      std::move(functions),
       std::move(lifecycleFuncs),
+      std::move(executionSystem),
       folly::getKeepAliveToken(controlExecutor),
       "test.Service");
 }

@@ -683,33 +683,28 @@ void PythonAsyncProcessor::executeRequest(
       .handlerFunction = function.funcObject,
   };
 
-  // This folly::makeSemiFuture().deferValue()
-  // ensures that the dispatchRequest(),
-  // which imports the cython module that must happen
-  // on the python thread, runs in the python thread.
-  folly::makeSemiFuture()
-      .deferValue(
-          [this,
-           eb,
-           executor,
-           serviceName,
-           qualifiedMethodName = function.fullName.c_str(),
-           requestData = std::move(requestData),
-           req = std::move(req),
-           ctxStack = std::move(ctxStack),
-           requestDispatchParameters = std::move(requestDispatchParameters)](
-              auto&& /* unused */) mutable {
-            return dispatchRequest(
-                eb,
-                executor,
-                std::move(requestData),
-                std::move(req),
-                std::move(ctxStack),
-                serviceName,
-                qualifiedMethodName,
-                std::move(requestDispatchParameters));
-          })
-      .via(executor_);
+  // The Cython module import in dispatchRequest requires the Python thread.
+  // ExecutionSystem therefore dispatches through the Python Control executor.
+  executionSystem_->execute([this,
+                             eb,
+                             executor,
+                             serviceName,
+                             qualifiedMethodName = function.fullName.c_str(),
+                             requestData = std::move(requestData),
+                             req = std::move(req),
+                             ctxStack = std::move(ctxStack),
+                             requestDispatchParameters = std::move(
+                                 requestDispatchParameters)]() mutable {
+    return dispatchRequest(
+        eb,
+        executor,
+        std::move(requestData),
+        std::move(req),
+        std::move(ctxStack),
+        serviceName,
+        qualifiedMethodName,
+        std::move(requestDispatchParameters));
+  });
 }
 
 folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequestOneway(
@@ -837,7 +832,7 @@ folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequestResponse(
 
 folly::SemiFuture<folly::Unit> PythonAsyncProcessor::dispatchRequest(
     folly::EventBase* eb,
-    folly::Executor::KeepAlive<> executor,
+    const folly::Executor::KeepAlive<>& executor,
     apache::thrift::ServerRequestData requestData,
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::ContextStack::UniquePtr ctxStack,

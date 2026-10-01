@@ -34,6 +34,7 @@
 #include <thrift/lib/cpp2/async/Interaction.h>
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/python/server/execution/ExecutionSystem.h>
 #include <thrift/lib/python/server/response_helpers.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
@@ -173,10 +174,12 @@ class PythonAsyncProcessor : public apache::thrift::GeneratedAsyncProcessorBase,
   PythonAsyncProcessor(
       PyObject* python_server,
       const FunctionMapType& functions,
+      std::shared_ptr<execution::ExecutionSystem> executionSystem,
       folly::Executor::KeepAlive<> executor,
       std::string serviceName)
       : python_server_(python_server),
         functions_(functions),
+        executionSystem_(std::move(executionSystem)),
         executor_(std::move(executor)),
         serviceName_(std::move(serviceName)) {
     // Precompute interaction name -> per-session factory so interaction
@@ -310,6 +313,7 @@ class PythonAsyncProcessor : public apache::thrift::GeneratedAsyncProcessorBase,
 
   PyObject* python_server_;
   const FunctionMapType& functions_;
+  std::shared_ptr<execution::ExecutionSystem> executionSystem_;
   // Interaction name -> per-session handler factory (`self.create<Name>`),
   // derived from `functions_` at construction. Borrowed references owned by the
   // Python function table that outlives this processor.
@@ -351,7 +355,7 @@ class PythonAsyncProcessor : public apache::thrift::GeneratedAsyncProcessorBase,
 
   folly::SemiFuture<folly::Unit> dispatchRequest(
       folly::EventBase* eb,
-      folly::Executor::KeepAlive<> executor,
+      const folly::Executor::KeepAlive<>& executor,
       apache::thrift::ServerRequestData requestData,
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::ContextStack::UniquePtr ctxStack,

@@ -74,6 +74,10 @@ cdef extern from "thrift/lib/python/server/PythonAsyncProcessor.h" namespace "::
         cbool returnsInitialResponse,
     )
 
+cdef extern from "thrift/lib/python/server/execution/ExecutionSystem.h" namespace "::apache::thrift::python::execution":
+    cdef cppclass cExecutionSystem "::apache::thrift::python::execution::ExecutionSystem":
+        cExecutionSystem(cAsyncioExecutor* controlExecutor) except +
+
 cdef extern from "thrift/lib/python/server/PythonAsyncProcessorFactory.h" namespace "::apache::thrift::python":
     cdef cppclass cPythonAsyncProcessorFactory "::apache::thrift::python::PythonAsyncProcessorFactory"(cAsyncProcessorFactory):
         void releaseOwnedResources() noexcept
@@ -84,6 +88,7 @@ cdef extern from "thrift/lib/python/server/PythonAsyncProcessorFactory.h" namesp
             PyObject* server,
             cmap[string_view, HandlerFunc] funcs,
             cvector[PyObjPtr] lifecycle,
+            shared_ptr[cExecutionSystem] executionSystem,
             cAsyncioExecutor* controlExecutor,
             string serviceName,
         ) except +

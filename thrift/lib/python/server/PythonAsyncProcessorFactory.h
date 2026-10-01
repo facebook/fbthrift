@@ -17,6 +17,7 @@
 #pragma once
 
 #include <memory>
+#include <mutex>
 #include <string>
 #include <Python.h>
 #include <glog/logging.h>
@@ -37,8 +38,8 @@ class PythonAsyncProcessorFactory
   folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
   folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 
-  // PythonAsyncProcessorFactory owns resources that must not wait for object
-  // destruction.
+  // Release only after native request drain. No processor may dispatch after
+  // this call; repeated release is supported.
   void releaseOwnedResources() noexcept;
 
   void markContextEntered() noexcept { factoryContextEntered_ = true; }
@@ -51,8 +52,19 @@ class PythonAsyncProcessorFactory
       delete;
 
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
+    std::shared_ptr<execution::ExecutionSystem> executionSystem;
+    folly::Executor::KeepAlive<> controlExecutor;
+    {
+      std::lock_guard lock(executionResourcesMutex_);
+      executionSystem = executionSystem_;
+      controlExecutor = controlExecutor_;
+    }
     return std::make_unique<PythonAsyncProcessor>(
-        python_server_, functions_, controlExecutor_, serviceName_);
+        python_server_,
+        functions_,
+        std::move(executionSystem),
+        std::move(controlExecutor),
+        serviceName_);
   }
 
   std::vector<apache::thrift::ServiceHandlerBase*> getServiceHandlers()
@@ -74,6 +86,7 @@ class PythonAsyncProcessorFactory
       PyObject* python_server,
       FunctionMapType functions,
       std::vector<PyObject*> lifecycleFuncs,
+      std::shared_ptr<execution::ExecutionSystem> executionSystem,
       folly::Executor::KeepAlive<> controlExecutor,
       std::string serviceName);
 
@@ -86,6 +99,9 @@ class PythonAsyncProcessorFactory
   // PythonAsyncProcessorFactory`
   const FunctionMapType functions_;
   const std::vector<PyObject*> lifecycleFuncs_;
+  // Serializes copies and release of resources shared with processors.
+  std::mutex executionResourcesMutex_;
+  std::shared_ptr<execution::ExecutionSystem> executionSystem_;
   folly::Executor::KeepAlive<> controlExecutor_;
   // Factory context entry completes before native service execution starts.
   bool factoryContextEntered_{false};
@@ -100,11 +116,13 @@ class PythonAsyncProcessorFactory
       PyObject* python_server,
       FunctionMapType functions,
       std::vector<PyObject*> lifecycleFuncs,
+      std::shared_ptr<execution::ExecutionSystem> executionSystem,
       folly::Executor::KeepAlive<> controlExecutor,
       std::string serviceName)
       : python_server_(python_server),
         functions_(std::move(functions)),
         lifecycleFuncs_(std::move(lifecycleFuncs)),
+        executionSystem_(std::move(executionSystem)),
         controlExecutor_(std::move(controlExecutor)),
         serviceName_(std::move(serviceName)) {}
 };

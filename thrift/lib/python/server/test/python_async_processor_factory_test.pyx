@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from cython.operator cimport dereference as deref
-from libcpp.memory cimport shared_ptr
+from libcpp.memory cimport make_shared, shared_ptr
 from libcpp.utility cimport move as cmove
 from folly.executor cimport get_executor
 from thrift.python.server_impl.python_async_processor cimport makeHandlerFunc
@@ -33,11 +33,16 @@ cdef cCreateMethodMetadataResult create(bytes function_name, RpcKind rpc_kind):
         function_name_view,
     )
 
+    cdef cAsyncioExecutor* controlExecutor = get_executor()
+    cdef shared_ptr[cExecutionSystem] executionSystem = make_shared[cExecutionSystem](
+        controlExecutor
+    )
     cdef shared_ptr[cPythonAsyncProcessorFactory] obj = cCreatePythonAsyncProcessorFactory(
         <PyObject*>server,
         cmove(funcs),
         cmove(lifecycle),
-        get_executor(),
+        executionSystem,
+        controlExecutor,
         serviceName
     )
     return deref(obj).createMethodMetadata()

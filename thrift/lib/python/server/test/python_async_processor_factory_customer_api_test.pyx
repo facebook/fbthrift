@@ -19,9 +19,11 @@ from cython.operator cimport dereference as deref
 from folly cimport cFollyExecutor
 from folly.executor cimport get_executor
 from libc.stddef cimport size_t
+from libcpp.map cimport map as cmap
 from libcpp.memory cimport make_shared, shared_ptr, static_pointer_cast
 from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector as cvector
+from thrift.python.std_libcpp cimport bytes_to_string_view, string_view
 from testing.base_service_only.thrift_clients import BaseService
 from testing.base_service_only.thrift_services import BaseServiceInterface
 from thrift.python.client import get_client
@@ -33,10 +35,15 @@ from thrift.python.server_impl.async_processor cimport (
 )
 from thrift.python.server_impl.python_async_processor cimport (
     cPythonAsyncProcessorFactory,
+    HandlerFunc,
+    makeHandlerFunc,
     PyObjPtr,
     PythonAsyncProcessorFactory,
 )
-from thrift.python.types cimport ServiceInterface as cServiceInterface
+from thrift.python.types cimport (
+    FunctionEntry,
+    ServiceInterface as cServiceInterface,
+)
 
 
 cdef extern from "thrift/lib/python/server/test/PythonAsyncProcessorFactoryLifecycleTestHelper.h" namespace "apache::thrift::python::test":
@@ -46,11 +53,17 @@ cdef extern from "thrift/lib/python/server/test/PythonAsyncProcessorFactoryLifec
 
     shared_ptr[cPythonAsyncProcessorFactory] createHostedTestFactory(
         PyObject* python_server,
+        cmap[string_view, HandlerFunc] functions,
         cvector[PyObjPtr] lifecycle_functions,
         cForwardingKeepAliveTrackingExecutor& control_executor,
     ) except +
 
     bint isFreeThreadedBuild() noexcept
+
+    size_t createProcessorsWhileLegacyStopRuns(
+        cForwardingKeepAliveTrackingExecutor& control_executor,
+        size_t iteration_count,
+    ) except +
 
 
 cdef extern from "thrift/lib/cpp2/async/MultiplexAsyncProcessor.h" namespace "apache::thrift":
@@ -78,6 +91,8 @@ class StopRequestedExecutorObserver:
         self.executor_probe = executor_probe
         self.keep_alive_count_before_callback = None
         self.keep_alive_count_after_callback = None
+        self.callback_completed = asyncio.Event()
+        self.release_callback = asyncio.Event()
 
     async def __call__(self):
         self.keep_alive_count_before_callback = (
@@ -87,6 +102,8 @@ class StopRequestedExecutorObserver:
         self.keep_alive_count_after_callback = (
             self.executor_probe.keep_alive_count()
         )
+        self.callback_completed.set()
+        await self.release_callback.wait()
 
 
 class Handler(BaseServiceInterface):
@@ -158,6 +175,19 @@ cdef PythonAsyncProcessorFactory create_hosted_factory(
     cServiceInterface handler,
     ExecutorKeepAliveProbe executor_probe,
 ):
+    cdef dict function_map = handler.getFunctionTable()
+    cdef cmap[string_view, HandlerFunc] cpp_functions
+    cdef FunctionEntry entry
+    cdef string_view name_view
+    for name, entry in function_map.items():
+        name_view = bytes_to_string_view(name)
+        cpp_functions[name_view] = makeHandlerFunc(
+            entry.rpc_kind,
+            <PyObject*>entry.handler,
+            <bytes>handler.service_name(),
+            name_view,
+        )
+
     cdef list lifecycle_functions = [
         handler.onStartServing,
         handler.onStopRequested,
@@ -170,7 +200,7 @@ cdef PythonAsyncProcessorFactory create_hosted_factory(
     cdef PythonAsyncProcessorFactory factory = (
         PythonAsyncProcessorFactory.__new__(PythonAsyncProcessorFactory)
     )
-    factory.funcMap = {}
+    factory.funcMap = function_map
     factory.lifecycleFuncs = lifecycle_functions
     factory.handler = handler
     factory._cpp_obj = static_pointer_cast[
@@ -179,6 +209,7 @@ cdef PythonAsyncProcessorFactory create_hosted_factory(
     ](
         createHostedTestFactory(
             <PyObject*>handler,
+            cmove(cpp_functions),
             cmove(cpp_lifecycle_functions),
             deref(executor_probe.executor),
         )
@@ -232,6 +263,20 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
     def __cinit__(self, object unit_test):
         self.ut = unit_test
 
+    def test_processor_creation_and_legacy_stop_overlap(self):
+        # GIVEN
+        executor_probe = ExecutorKeepAliveProbe()
+        expected_processor_count = 1000
+
+        # WHEN
+        actual_processor_count = createProcessorsWhileLegacyStopRuns(
+            deref(executor_probe.executor),
+            expected_processor_count,
+        )
+
+        # THEN
+        self.ut.assertEqual(expected_processor_count, actual_processor_count)
+
     async def test_host_without_factory_context_uses_legacy_stop_fallback(self):
         # GIVEN
         handler = HostedLifecycleHandler()
@@ -252,19 +297,40 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
         expected_context_exit_count = 1
         expected_context_events = []
         expected_service_events = ["start", "stop"]
+        expected_response = 42
         expected_released_keep_alive_count = 0
 
         # WHEN
         try:
             serve_task = asyncio.create_task(server.serve())
-            await asyncio.wait_for(server.get_address(), timeout=5.0)
+            address = await asyncio.wait_for(server.get_address(), timeout=5.0)
+            self.ut.assertIsNotNone(address.ip)
+            self.ut.assertIsNotNone(address.port)
             actual_keep_alive_count_before_stop = executor_probe.keep_alive_count()
-            server.stop()
-            await asyncio.wait_for(handler.stop_requested.wait(), timeout=5.0)
+            async with get_client(
+                BaseService,
+                host=str(address.ip),
+                port=address.port,
+            ) as client:
+                actual_initial_response = await asyncio.wait_for(
+                    client.theAnswer(),
+                    timeout=5.0,
+                )
+                server.stop()
+                await asyncio.wait_for(
+                    stop_observer.callback_completed.wait(),
+                    timeout=5.0,
+                )
+                actual_response_during_stop = await asyncio.wait_for(
+                    client.theAnswer(),
+                    timeout=5.0,
+                )
+                stop_observer.release_callback.set()
             await asyncio.wait_for(serve_task, timeout=5.0)
             actual_keep_alive_count_after_serve = executor_probe.keep_alive_count()
             actual_serve_completed = serve_task.done()
         finally:
+            stop_observer.release_callback.set()
             server.stop()
             if serve_task is not None:
                 await asyncio.gather(serve_task, return_exceptions=True)
@@ -287,6 +353,10 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
         # THEN
         self.ut.assertEqual(expected_context_enter_count, actual_context_enter_count)
         self.ut.assertEqual(expected_context_exit_count, actual_context_exit_count)
+        self.ut.assertEqual(expected_response, actual_initial_response)
+        self.ut.assertEqual(expected_response, actual_response_during_stop)
+        # Internal token copies determine the exact positive count. The contract
+        # distinguishes executor retention from complete release at zero.
         self.ut.assertGreater(actual_keep_alive_count_before_stop, 0)
         self.ut.assertIsNotNone(actual_keep_alive_count_before_callback)
         self.ut.assertIsNotNone(actual_keep_alive_count_after_callback)
@@ -319,15 +389,35 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
         serve_task = None
         expected_context_events = ["enter", "exit"]
         expected_service_events = ["start", "stop"]
+        expected_response = 42
         expected_released_keep_alive_count = 0
 
         # WHEN
         try:
             serve_task = asyncio.create_task(server.serve())
-            await asyncio.wait_for(server.get_address(), timeout=5.0)
+            address = await asyncio.wait_for(server.get_address(), timeout=5.0)
+            self.ut.assertIsNotNone(address.ip)
+            self.ut.assertIsNotNone(address.port)
             actual_keep_alive_count_after_entry = executor_probe.keep_alive_count()
-            server.stop()
-            await asyncio.wait_for(handler.stop_requested.wait(), timeout=5.0)
+            async with get_client(
+                BaseService,
+                host=str(address.ip),
+                port=address.port,
+            ) as client:
+                actual_initial_response = await asyncio.wait_for(
+                    client.theAnswer(),
+                    timeout=5.0,
+                )
+                server.stop()
+                await asyncio.wait_for(
+                    stop_observer.callback_completed.wait(),
+                    timeout=5.0,
+                )
+                actual_response_during_stop = await asyncio.wait_for(
+                    client.theAnswer(),
+                    timeout=5.0,
+                )
+                stop_observer.release_callback.set()
             await asyncio.wait_for(handler.context_exit_started.wait(), timeout=5.0)
             actual_keep_alive_count_during_exit = executor_probe.keep_alive_count()
             handler.release_context_exit.set()
@@ -335,6 +425,7 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
             actual_keep_alive_count_after_exit = executor_probe.keep_alive_count()
             actual_serve_completed = serve_task.done()
         finally:
+            stop_observer.release_callback.set()
             handler.release_context_exit.set()
             server.stop()
             if serve_task is not None:
@@ -350,6 +441,8 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
         actual_service_events = handler.service_events
 
         # THEN
+        self.ut.assertEqual(expected_response, actual_initial_response)
+        self.ut.assertEqual(expected_response, actual_response_during_stop)
         self.ut.assertGreater(actual_keep_alive_count_after_entry, 0)
         self.ut.assertIsNotNone(actual_keep_alive_count_before_callback)
         self.ut.assertGreater(actual_keep_alive_count_before_callback, 0)
