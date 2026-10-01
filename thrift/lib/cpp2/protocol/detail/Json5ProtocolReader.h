@@ -35,10 +35,6 @@
  * APIs may break with no prior notice. USE AT YOUR OWN RISK (preferably NOT IN
  * PRODUCTION).
  *
- * In addition, `gen-cpp2/[module]_types_custom_protocol.h` needs to be
- * included. (TODO: implement structs/unions support in `op::decode` so that we
- * don't need to include custom protocol header to deserialize Json5 protocol).
- *
  * ## Compatibility Features
  *
  * To support backward compatibility with existing JSON formats, this reader

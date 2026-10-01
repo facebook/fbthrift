@@ -107,7 +107,8 @@ namespace apache::thrift::json5::detail {
  *
  * Key features:
  * - API similar to CompactProtocolWriter
- * - Always sorts object keys
+ * - Writes struct fields in field id order, and sorts set elements and map keys
+ *   unless Options::keyOrder is KeyOrder::Unspecified
  * - Takes JsonWriterOptions in constructor
  * - Outputs to folly::io::QueueAppender
  */

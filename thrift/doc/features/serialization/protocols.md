@@ -343,7 +343,7 @@ Rejects:
 
 #### LIST/SET
 
-**Serialization**: JSON arrays (with trailing commas per Output Formatting). List order preserved. Set order: [stable ascending](https://www.internalfb.com/intern/staticdocs/thrift/docs/fb/object-model-draft/#operation-isstablelessthan).
+**Serialization**: JSON arrays (with trailing commas per Output Formatting). List order preserved. Set order: [stable ascending](/object-model/index.md#operation-isstablelessthan).
 
 **Deserialization**: Accepts JSON arrays. Elements inside the array are decoded recursively. List order preserved. Set order not significant.
 
@@ -362,7 +362,7 @@ Rejects:
 | String or enum | JSON Object `{"my_key": "my_value"}`. | `{"ONE (1)": 1}` (for `map<Enum, i32>`) |
 | All others | Array of `{"key": ..., "value": ...}` objects | `[{"key": "3q2-7w", "value": 1}]` (for `map<Binary, i32>`) |
 
-Order: [stable ascending](https://www.internalfb.com/intern/staticdocs/thrift/docs/fb/object-model-draft/#operation-isstablelessthan).
+Order: [stable ascending](/object-model/index.md#operation-isstablelessthan).
 **Deserialization**:
 
 * The decoder accepts both Object and Array forms for compatibility:

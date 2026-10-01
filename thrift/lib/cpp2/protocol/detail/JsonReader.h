@@ -77,7 +77,7 @@ namespace apache::thrift::json5::detail {
  * | Multi-line strings (escaped LF)  | Yes       |
  * | Infinity / NaN literals          | Yes       |
  * | Comments (//, block)             | Yes       |
- * | Hexadecimal integers             | No        |
+ * | Hexadecimal integers             | Yes       |
  * | Leading/trailing decimal point   | Yes       |
  * | Explicit positive sign (+)       | Yes       |
  */
