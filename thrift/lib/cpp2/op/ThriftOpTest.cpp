@@ -29,7 +29,7 @@ using test::IsEqualTo;
 using test::IsIdenticalTo;
 using ::testing::Not;
 
-// A test suite that check ops work correctly for a given test case.
+// A test suite that checks ops work correctly for a given test case.
 template <typename OpTestCase>
 class TypedOpTest : public testing::Test {};
 
@@ -110,7 +110,7 @@ struct MapTestCase : BaseDefaultTestCase<map_type_tag<KTagCase, VTagCase>, T> {
   };
 };
 
-// The tests cases to run.
+// The test cases to run.
 using OpTestCases = ::testing::Types<
     NumericTestCase<type::byte_t>,
     NumericTestCase<type::i16_t>,
@@ -133,7 +133,7 @@ using OpTestCases = ::testing::Types<
     ListTestCase<NumericTestCase<type::byte_t>>,
     ListTestCase<StringTestCase<type::binary_t>>,
     // TODO(afuller): Consider supporting non-default standard types in
-    // the paramaterized types, for these tests.
+    // the parameterized types, for these tests.
     // ListTestCase<StringTestCase<type::binary_t, folly::IOBuf>>,
     SetTestCase<NumericTestCase<type::i32_t, uint32_t>>,
     MapTestCase<StringTestCase<type::string_t>, NumericTestCase<type::i32_t>>>;
