@@ -48,6 +48,18 @@ using apache::thrift::protocol::asValueStruct;
 using apache::thrift::protocol::TType;
 using detail::typeTagToTType;
 
+struct WideCountProtocol {
+  static constexpr std::size_t kElementBytes = static_cast<std::size_t>(1)
+      << 32;
+
+  std::size_t writeListBegin(TType, uint32_t) { return 5; }
+  std::size_t writeI64(int64_t) { return kElementBytes; }
+  std::size_t writeListEnd() { return 0; }
+  std::size_t serializedSizeListBegin(TType, uint32_t) { return 5; }
+  std::size_t serializedSizeI64(int64_t) { return kElementBytes; }
+  std::size_t serializedSizeListEnd() { return 0; }
+};
+
 TEST(EncodeTest, TypeTagToTType) {
   EXPECT_EQ(typeTagToTType<type::bool_t>, TType::T_BOOL);
   EXPECT_EQ(typeTagToTType<type::byte_t>, TType::T_BYTE);
@@ -79,6 +91,17 @@ TEST(EncodeTest, TypeTagToTType) {
       TType::T_STRUCT);
 }
 
+TEST(EncodeTest, WideByteCounts) {
+  WideCountProtocol protocol;
+
+  const std::vector<int64_t> values{1};
+  const auto expected = WideCountProtocol::kElementBytes + 5;
+  EXPECT_EQ(expected, (op::encode<type::list<type::i64_t>>)(protocol, values));
+  EXPECT_EQ(
+      expected,
+      (op::serialized_size<false, type::list<type::i64_t>>)(protocol, values));
+}
+
 template <
     conformance::StandardProtocol Protocol,
     bool ZeroCopy,
@@ -89,7 +112,7 @@ template <
 void testSerializedSize(T value) {
   SCOPED_TRACE(folly::pretty_name<Tag>());
   protocol_writer_t<Protocol> writer;
-  uint32_t size;
+  std::size_t size;
   if constexpr (IsAdapted) {
     using AdaptedTag = type::adapted<test::TemplatedTestAdapter, Tag>;
     size = op::serialized_size<ZeroCopy, AdaptedTag>(
@@ -101,7 +124,7 @@ void testSerializedSize(T value) {
       IsAdapted,
       type::adapted<test::TemplatedTestAdapter, Tag>,
       Tag>;
-  uint32_t expected =
+  std::size_t expected =
       apache::thrift::detail::pm::protocol_methods<TypeClass, T, ExpectedTag>::
           template serializedSize<ZeroCopy>(writer, value);
   EXPECT_EQ(size, expected);

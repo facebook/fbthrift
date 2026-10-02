@@ -158,7 +158,7 @@ struct SerializedSize;
 template <bool ZeroCopy>
 struct SerializedSize<ZeroCopy, type::bool_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, bool t) const {
+  std::size_t operator()(Protocol& prot, bool t) const {
     return prot.serializedSizeBool(t);
   }
 };
@@ -166,11 +166,11 @@ struct SerializedSize<ZeroCopy, type::bool_t> {
 template <bool ZeroCopy>
 struct SerializedSize<ZeroCopy, type::byte_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, int8_t i) const {
+  std::size_t operator()(Protocol& prot, int8_t i) const {
     return prot.serializedSizeByte(i);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, uint8_t i) const {
+  std::size_t operator()(Protocol& prot, uint8_t i) const {
     return prot.serializedSizeByte(folly::to_signed(i));
   }
 };
@@ -178,11 +178,11 @@ struct SerializedSize<ZeroCopy, type::byte_t> {
 template <bool ZeroCopy>
 struct SerializedSize<ZeroCopy, type::i16_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, int16_t i) const {
+  std::size_t operator()(Protocol& prot, int16_t i) const {
     return prot.serializedSizeI16(i);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, uint16_t i) const {
+  std::size_t operator()(Protocol& prot, uint16_t i) const {
     return prot.serializedSizeI16(folly::to_signed(i));
   }
 };
@@ -190,11 +190,11 @@ struct SerializedSize<ZeroCopy, type::i16_t> {
 template <bool ZeroCopy>
 struct SerializedSize<ZeroCopy, type::i32_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, int32_t i) const {
+  std::size_t operator()(Protocol& prot, int32_t i) const {
     return prot.serializedSizeI32(i);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, uint32_t i) const {
+  std::size_t operator()(Protocol& prot, uint32_t i) const {
     return prot.serializedSizeI32(folly::to_signed(i));
   }
 };
@@ -202,11 +202,11 @@ struct SerializedSize<ZeroCopy, type::i32_t> {
 template <bool ZeroCopy>
 struct SerializedSize<ZeroCopy, type::i64_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, int64_t i) const {
+  std::size_t operator()(Protocol& prot, int64_t i) const {
     return prot.serializedSizeI64(i);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, uint64_t i) const {
+  std::size_t operator()(Protocol& prot, uint64_t i) const {
     return prot.serializedSizeI64(folly::to_signed(i));
   }
 };
@@ -214,7 +214,7 @@ struct SerializedSize<ZeroCopy, type::i64_t> {
 template <bool ZeroCopy>
 struct SerializedSize<ZeroCopy, type::float_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, float i) const {
+  std::size_t operator()(Protocol& prot, float i) const {
     return prot.serializedSizeFloat(i);
   }
 };
@@ -222,7 +222,7 @@ struct SerializedSize<ZeroCopy, type::float_t> {
 template <bool ZeroCopy>
 struct SerializedSize<ZeroCopy, type::double_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, double i) const {
+  std::size_t operator()(Protocol& prot, double i) const {
     return prot.serializedSizeDouble(i);
   }
 };
@@ -230,7 +230,7 @@ struct SerializedSize<ZeroCopy, type::double_t> {
 template <bool ZeroCopy>
 struct SerializedSize<ZeroCopy, type::string_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, folly::StringPiece s) const {
+  std::size_t operator()(Protocol& prot, folly::StringPiece s) const {
     return prot.serializedSizeString(s);
   }
 };
@@ -238,21 +238,21 @@ struct SerializedSize<ZeroCopy, type::string_t> {
 template <>
 struct SerializedSize<false, type::binary_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, folly::StringPiece s) const {
+  std::size_t operator()(Protocol& prot, folly::StringPiece s) const {
     return prot.serializedSizeBinary(s);
   }
 
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const folly::IOBuf& s) const {
+  std::size_t operator()(Protocol& prot, const folly::IOBuf& s) const {
     return prot.serializedSizeBinary(s);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const IOBufChain& s) const {
+  std::size_t operator()(Protocol& prot, const IOBufChain& s) const {
     return prot.serializedSizeBinary(s);
   }
 
   template <typename Protocol>
-  uint32_t operator()(
+  std::size_t operator()(
       Protocol& prot, const std::unique_ptr<folly::IOBuf>& s) const {
     return prot.serializedSizeBinary(s);
   }
@@ -261,19 +261,19 @@ struct SerializedSize<false, type::binary_t> {
 template <>
 struct SerializedSize<true, type::binary_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, folly::StringPiece s) const {
+  std::size_t operator()(Protocol& prot, folly::StringPiece s) const {
     return prot.serializedSizeZCBinary(s);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const folly::IOBuf& s) const {
+  std::size_t operator()(Protocol& prot, const folly::IOBuf& s) const {
     return prot.serializedSizeZCBinary(s);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const IOBufChain& s) const {
+  std::size_t operator()(Protocol& prot, const IOBufChain& s) const {
     return prot.serializedSizeZCBinary(s);
   }
   template <typename Protocol>
-  uint32_t operator()(
+  std::size_t operator()(
       Protocol& prot, const std::unique_ptr<folly::IOBuf>& s) const {
     return prot.serializedSizeZCBinary(s);
   }
@@ -282,7 +282,7 @@ struct SerializedSize<true, type::binary_t> {
 template <typename T>
 struct SerializedSize<false, type::struct_t<T>> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const T& s) const {
+  std::size_t operator()(Protocol& prot, const T& s) const {
     return s.serializedSize(&prot);
   }
 };
@@ -290,7 +290,7 @@ struct SerializedSize<false, type::struct_t<T>> {
 template <typename T>
 struct SerializedSize<true, type::struct_t<T>> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const T& s) const {
+  std::size_t operator()(Protocol& prot, const T& s) const {
     return s.serializedSizeZC(&prot);
   }
 };
@@ -298,7 +298,7 @@ struct SerializedSize<true, type::struct_t<T>> {
 template <typename T>
 struct SerializedSize<false, type::union_t<T>> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const T& s) const {
+  std::size_t operator()(Protocol& prot, const T& s) const {
     return s.serializedSize(&prot);
   }
 };
@@ -306,7 +306,7 @@ struct SerializedSize<false, type::union_t<T>> {
 template <typename T>
 struct SerializedSize<true, type::union_t<T>> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const T& s) const {
+  std::size_t operator()(Protocol& prot, const T& s) const {
     return s.serializedSizeZC(&prot);
   }
 };
@@ -314,7 +314,7 @@ struct SerializedSize<true, type::union_t<T>> {
 template <typename T>
 struct SerializedSize<false, type::exception_t<T>> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const T& s) const {
+  std::size_t operator()(Protocol& prot, const T& s) const {
     return s.serializedSize(&prot);
   }
 };
@@ -322,7 +322,7 @@ struct SerializedSize<false, type::exception_t<T>> {
 template <typename T>
 struct SerializedSize<true, type::exception_t<T>> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const T& s) const {
+  std::size_t operator()(Protocol& prot, const T& s) const {
     return s.serializedSizeZC(&prot);
   }
 };
@@ -330,7 +330,7 @@ struct SerializedSize<true, type::exception_t<T>> {
 template <bool ZeroCopy, typename T>
 struct SerializedSize<ZeroCopy, type::enum_t<T>> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const T& s) const {
+  std::size_t operator()(Protocol& prot, const T& s) const {
     return serializedSizeEnum(prot, s);
   }
 };
@@ -340,9 +340,9 @@ struct SerializedSize<ZeroCopy, type::list<Tag>> {
   template <typename Protocol, typename ListType>
   // noinline limits optimizer work for generated translation units with many
   // list fields.
-  FOLLY_NOINLINE uint32_t
-  operator()(Protocol& prot, const ListType& list) const {
-    uint32_t xfer = 0;
+  FOLLY_NOINLINE std::size_t operator()(
+      Protocol& prot, const ListType& list) const {
+    std::size_t xfer = 0;
     xfer += prot.serializedSizeListBegin(
         typeTagToTType<Tag>, checked_container_size(list.size()));
     for (const auto& elem : list) {
@@ -356,8 +356,8 @@ struct SerializedSize<ZeroCopy, type::list<Tag>> {
 template <bool ZeroCopy, typename Tag>
 struct SerializedSize<ZeroCopy, type::set<Tag>> {
   template <typename Protocol, typename SetType>
-  uint32_t operator()(Protocol& prot, const SetType& set) const {
-    uint32_t xfer = 0;
+  std::size_t operator()(Protocol& prot, const SetType& set) const {
+    std::size_t xfer = 0;
     xfer += prot.serializedSizeSetBegin(
         typeTagToTType<Tag>, checked_container_size(set.size()));
     for (const auto& elem : set) {
@@ -371,8 +371,8 @@ struct SerializedSize<ZeroCopy, type::set<Tag>> {
 template <bool ZeroCopy, typename Key, typename Value>
 struct SerializedSize<ZeroCopy, type::map<Key, Value>> {
   template <typename Protocol, typename MapType>
-  uint32_t operator()(Protocol& prot, const MapType& map) const {
-    uint32_t xfer = 0;
+  std::size_t operator()(Protocol& prot, const MapType& map) const {
+    std::size_t xfer = 0;
     xfer += prot.serializedSizeMapBegin(
         typeTagToTType<Key>,
         typeTagToTType<Value>,
@@ -390,7 +390,7 @@ template <bool ZeroCopy, typename T, typename Tag>
 struct SerializedSize<ZeroCopy, type::cpp_type<T, Tag>>
     : SerializedSize<ZeroCopy, Tag> {
   template <typename Protocol, typename U>
-  uint32_t operator()(Protocol& prot, const U& m) const {
+  std::size_t operator()(Protocol& prot, const U& m) const {
     if constexpr (kIsStrongType<U, Tag>) {
       return SerializedSize<ZeroCopy, Tag>{}(
           prot, static_cast<type::native_type<Tag>>(m));
@@ -403,7 +403,7 @@ struct SerializedSize<ZeroCopy, type::cpp_type<T, Tag>>
 template <bool ZeroCopy, typename Adapter, typename Tag>
 struct SerializedSize<ZeroCopy, type::adapted<Adapter, Tag>> {
   template <typename Protocol, typename U>
-  uint32_t operator()(Protocol& prot, const U& m) const {
+  std::size_t operator()(Protocol& prot, const U& m) const {
     if constexpr (adapt_detail::SerializedSizeAdapter<
                       Adapter,
                       ZeroCopy,
@@ -423,7 +423,7 @@ struct Encode;
 template <>
 struct Encode<type::bool_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, bool t) const {
+  std::size_t operator()(Protocol& prot, bool t) const {
     return prot.writeBool(t);
   }
 };
@@ -431,11 +431,11 @@ struct Encode<type::bool_t> {
 template <>
 struct Encode<type::byte_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, int8_t i) const {
+  std::size_t operator()(Protocol& prot, int8_t i) const {
     return prot.writeByte(i);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, uint8_t i) const {
+  std::size_t operator()(Protocol& prot, uint8_t i) const {
     return prot.writeByte(folly::to_signed(i));
   }
 };
@@ -443,11 +443,11 @@ struct Encode<type::byte_t> {
 template <>
 struct Encode<type::i16_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, int16_t i) const {
+  std::size_t operator()(Protocol& prot, int16_t i) const {
     return prot.writeI16(i);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, uint16_t i) const {
+  std::size_t operator()(Protocol& prot, uint16_t i) const {
     return prot.writeI16(folly::to_signed(i));
   }
 };
@@ -455,11 +455,11 @@ struct Encode<type::i16_t> {
 template <>
 struct Encode<type::i32_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, int32_t i) const {
+  std::size_t operator()(Protocol& prot, int32_t i) const {
     return prot.writeI32(i);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, uint32_t i) const {
+  std::size_t operator()(Protocol& prot, uint32_t i) const {
     return prot.writeI32(folly::to_signed(i));
   }
 };
@@ -474,11 +474,11 @@ struct Encode<type::i32_t> {
 template <>
 struct Encode<type::i64_t> {
   template <typename Protocol>
-  FOLLY_NOINLINE uint32_t operator()(Protocol& prot, int64_t i) const {
+  FOLLY_NOINLINE std::size_t operator()(Protocol& prot, int64_t i) const {
     return prot.writeI64(i);
   }
   template <typename Protocol>
-  FOLLY_NOINLINE uint32_t operator()(Protocol& prot, uint64_t i) const {
+  FOLLY_NOINLINE std::size_t operator()(Protocol& prot, uint64_t i) const {
     return prot.writeI64(folly::to_signed(i));
   }
 };
@@ -486,7 +486,7 @@ struct Encode<type::i64_t> {
 template <>
 struct Encode<type::float_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, float i) const {
+  std::size_t operator()(Protocol& prot, float i) const {
     return prot.writeFloat(i);
   }
 };
@@ -494,7 +494,7 @@ struct Encode<type::float_t> {
 template <>
 struct Encode<type::double_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, double i) const {
+  std::size_t operator()(Protocol& prot, double i) const {
     return prot.writeDouble(i);
   }
 };
@@ -502,7 +502,7 @@ struct Encode<type::double_t> {
 template <>
 struct Encode<type::string_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, folly::StringPiece s) const {
+  std::size_t operator()(Protocol& prot, folly::StringPiece s) const {
     return prot.writeString(s);
   }
 };
@@ -510,19 +510,19 @@ struct Encode<type::string_t> {
 template <>
 struct Encode<type::binary_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const folly::IOBuf& s) const {
+  std::size_t operator()(Protocol& prot, const folly::IOBuf& s) const {
     return prot.writeBinary(s);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const IOBufChain& s) const {
+  std::size_t operator()(Protocol& prot, const IOBufChain& s) const {
     return prot.writeBinary(s);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, folly::StringPiece s) const {
+  std::size_t operator()(Protocol& prot, folly::StringPiece s) const {
     return prot.writeBinary(s);
   }
   template <typename Protocol>
-  uint32_t operator()(
+  std::size_t operator()(
       Protocol& prot, const std::unique_ptr<folly::IOBuf>& s) const {
     return prot.writeBinary(s);
   }
@@ -598,8 +598,8 @@ inline constexpr ShouldWriteField<T, Id> should_write{};
 template <typename T>
 struct StructEncode {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const T& t) const {
-    uint32_t s = 0;
+  std::size_t operator()(Protocol& prot, const T& t) const {
+    std::size_t s = 0;
     s += prot.writeStructBegin(op::get_class_name<T>().data());
     WriteField<Protocol> writeField{prot, t, s};
     if (getFieldOrder(prot) == FieldOrder::Serialization &&
@@ -624,7 +624,7 @@ struct StructEncode {
   struct WriteField {
     Protocol& prot;
     const T& t;
-    uint32_t& s;
+    std::size_t& s;
 
     template <typename Id>
     FOLLY_ALWAYS_INLINE void operator()(Id) const {
@@ -648,7 +648,7 @@ struct StructEncode {
 template <typename T>
 struct Encode<type::struct_t<T>> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const T& t) const {
+  std::size_t operator()(Protocol& prot, const T& t) const {
     // Is protocol is pre-compiled, use `write` method since it's faster
     // than `StructEncode`.
     constexpr bool useWrite =
@@ -675,7 +675,7 @@ struct Encode<type::exception_t<T>> : Encode<type::struct_t<T>> {};
 template <typename T>
 struct Encode<type::enum_t<T>> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, const T& s) const {
+  std::size_t operator()(Protocol& prot, const T& s) const {
     return writeEnum(prot, s);
   }
 };
@@ -686,9 +686,9 @@ struct ListEncode {
   template <typename Protocol, typename T>
   // noinline limits optimizer work for generated translation units with many
   // list fields.
-  FOLLY_NOINLINE uint32_t operator()(Protocol& prot, const T& list) const {
+  FOLLY_NOINLINE std::size_t operator()(Protocol& prot, const T& list) const {
     using elem_type = type::native_type<Tag>;
-    uint32_t xfer = 0;
+    std::size_t xfer = 0;
     xfer += prot.writeListBegin(
         typeTagToTType<Tag>, checked_container_size(list.size()));
 
@@ -714,8 +714,8 @@ struct Encode<type::list<Tag>> : ListEncode<Tag> {};
 template <typename Tag>
 struct SetEncode {
   template <typename Protocol, typename T>
-  uint32_t operator()(Protocol& prot, const T& set) const {
-    uint32_t xfer = 0;
+  std::size_t operator()(Protocol& prot, const T& set) const {
+    std::size_t xfer = 0;
     xfer += prot.writeSetBegin(
         typeTagToTType<Tag>, checked_container_size(set.size()));
     encodeSetElements<Tag>(prot, set, [&](const auto& elem) {
@@ -732,8 +732,8 @@ struct Encode<type::set<Tag>> : SetEncode<Tag> {};
 template <typename Key, typename Value>
 struct MapEncode {
   template <typename Protocol, typename T>
-  uint32_t operator()(Protocol& prot, const T& map) const {
-    uint32_t xfer = 0;
+  std::size_t operator()(Protocol& prot, const T& map) const {
+    std::size_t xfer = 0;
     // alternativeKeyForm disambiguates string/binary and i32/enum key types.
     constexpr bool alternativeKeyForm =
         type::is_a_v<Key, type::enum_c> || type::is_a_v<Key, type::string_t>;
@@ -771,7 +771,7 @@ struct CppTypeEncode {
       !requestedBypass;
   template <class Protocol, class U>
     requires directlyEncodable<Protocol, U>
-  uint32_t operator()(Protocol& prot, const U& m) const {
+  std::size_t operator()(Protocol& prot, const U& m) const {
     return Encode<Tag>{}(prot, m);
   }
 
@@ -779,14 +779,14 @@ struct CppTypeEncode {
     requires(
         std::convertible_to<U, type::standard_type<Tag>> &&
         !directlyEncodable<Protocol, U>)
-  uint32_t operator()(Protocol& prot, const U& m) const {
+  std::size_t operator()(Protocol& prot, const U& m) const {
     return Encode<Tag>{}(prot, static_cast<type::standard_type<Tag>>(m));
   }
 
   using TC = type_class::from_type_tag_t<Tag>;
   using ExpectedTag = type::cpp_type<T, Tag>;
   template <class Protocol, class U>
-  uint32_t operator()(Protocol& prot, const U& m) const
+  std::size_t operator()(Protocol& prot, const U& m) const
     requires(
         requires {
           ProtocolMethodsBridge<TC, T, ExpectedTag>::write(prot, m);
@@ -803,7 +803,7 @@ struct Encode<type::cpp_type<T, Tag>> : CppTypeEncode<T, Tag> {};
 template <typename Adapter, typename Tag>
 struct AdaptedEncode {
   template <typename Protocol, typename U>
-  uint32_t operator()(Protocol& prot, const U& m) const {
+  std::size_t operator()(Protocol& prot, const U& m) const {
     if constexpr (adapt_detail::EncodeAdapter<Adapter, Tag, U, Protocol>) {
       return Adapter::template encode<Tag>(prot, m);
     } else {
