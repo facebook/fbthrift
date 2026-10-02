@@ -99,26 +99,9 @@ class PayloadSerializer {
       strategy_;
   PayloadSerializer* nextRetired_{nullptr};
 
-  /**
-   * Visits the strategy and calls the delegate function with the strategy as
-   * the parameter. Done manually instead of using std::visit for performance.
-   */
   template <typename DelegateFunc>
   FOLLY_ALWAYS_INLINE decltype(auto) visit(DelegateFunc&& delegate) {
-    if (std::holds_alternative<DefaultPayloadSerializerStrategy>(strategy_)) {
-      auto& strategy = std::get<DefaultPayloadSerializerStrategy>(strategy_);
-      return delegate(strategy);
-    } else if (std::holds_alternative<ChecksumPayloadSerializerStrategy<
-                   DefaultPayloadSerializerStrategy>>(strategy_)) {
-      auto& strategy = std::get<
-          ChecksumPayloadSerializerStrategy<DefaultPayloadSerializerStrategy>>(
-          strategy_);
-      return delegate(strategy);
-    } else {
-      auto& strategy = std::get<CustomCompressionPayloadSerializerStrategy<
-          DefaultPayloadSerializerStrategy>>(strategy_);
-      return delegate(strategy);
-    }
+    return std::visit(std::forward<DelegateFunc>(delegate), strategy_);
   }
 
  public:
