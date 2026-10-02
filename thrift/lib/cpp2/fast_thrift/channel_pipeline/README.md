@@ -528,8 +528,8 @@ The pipeline endpoints use specialized handler concepts with fixed data flow dir
 
 **HeadEndpointHandler** (transport side):
 ```cpp
-template <typename H>
-concept HeadEndpointHandler = requires(H& h, detail::ContextImpl& ctx, TypeErasedBox&& msg) {
+template <typename H, typename Ctx = detail::ContextImpl>
+concept HeadEndpointHandler = requires(H& h, Ctx& ctx, TypeErasedBox&& msg) {
   { h.onWrite(ctx, std::move(msg)) } noexcept -> std::same_as<Result>;
   // Lifecycle methods
   { h.handlerAdded() } noexcept;
@@ -541,8 +541,8 @@ concept HeadEndpointHandler = requires(H& h, detail::ContextImpl& ctx, TypeErase
 
 **TailEndpointHandler** (application side):
 ```cpp
-template <typename T>
-concept TailEndpointHandler = requires(T& t, detail::ContextImpl& ctx,
+template <typename T, typename Ctx = detail::ContextImpl>
+concept TailEndpointHandler = requires(T& t, Ctx& ctx,
                                        TypeErasedBox&& msg, folly::exception_wrapper&& e) {
   { t.onRead(ctx, std::move(msg)) } noexcept -> std::same_as<Result>;
   { t.onException(std::move(e)) } noexcept -> std::same_as<void>;
