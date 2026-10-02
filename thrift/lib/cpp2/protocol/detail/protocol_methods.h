@@ -382,15 +382,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type, ExpectedTag> {
 
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serializedSize(Protocol& protocol, const Type& out) {
-    std::size_t xfer = 0;
-
-    xfer += protocol.serializedSizeListBegin(
-        elem_ttype::value, checked_container_size(out.size()));
-    for (const auto& elem : out) {
-      xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
-    }
-    xfer += protocol.serializedSizeListEnd();
-    return xfer;
+    return op::serialized_size<ZeroCopy, ExpectedTag>(protocol, out);
   }
 };
 
