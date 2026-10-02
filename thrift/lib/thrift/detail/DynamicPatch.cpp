@@ -2354,7 +2354,8 @@ DynamicPatch DynamicPatch::fromPatch(const type::AnyStruct& any) {
 
 template <typename Protocol>
 std::uint32_t DynamicPatch::encode(Protocol& prot) const {
-  return visitPatch([&](const auto& patch) { return patch.encode(prot); });
+  return visitPatch(
+      [&](const auto& patch) -> std::uint32_t { return patch.encode(prot); });
 }
 
 template <typename Protocol>
