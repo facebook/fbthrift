@@ -93,7 +93,7 @@ TEST_F(Json5ReaderTest, PrimitiveTypes) {
     EXPECT_FALSE(std::get<bool>(r.readPrimitive()));
 
     EXPECT_EQ(r.readObjectName(), "integer");
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 42);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 42);
 
     EXPECT_EQ(r.readObjectName(), "$float");
     EXPECT_DOUBLE_EQ(std::get<double>(r.readPrimitive()), 3.14);
@@ -161,17 +161,17 @@ TEST_F(Json5ReaderTest, Containers) {
 
     EXPECT_EQ(r.readObjectName(), "list");
     r.readListBegin();
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 1);
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 3);
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 2);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 1);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 3);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 2);
     r.readListEnd();
 
     EXPECT_EQ(r.readObjectName(), "object");
     r.readObjectBegin();
     EXPECT_EQ(r.readObjectName(), "1");
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 3);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 3);
     EXPECT_EQ(r.readObjectName(), "2");
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 4);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 4);
     r.readObjectEnd();
 
     r.readObjectEnd();
@@ -208,8 +208,8 @@ TEST_F(Json5ReaderTest, CompactList) {
   auto verify = [this](std::string_view input) {
     auto r = reader(input);
     r.readListBegin();
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 1);
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 2);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 1);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 2);
     r.readListEnd();
   };
 
@@ -273,7 +273,8 @@ TEST_F(Json5ReaderTest, NanInf) {
 
 TEST_F(Json5ReaderTest, HexNumbers) {
   auto readInt = [this](std::string_view input) {
-    return std::get<std::int64_t>(reader(input).readPrimitive());
+    return std::get<Json5Reader::Integer>(reader(input).readPrimitive())
+        .value();
   };
 
   EXPECT_EQ(readInt("0x0"), 0x0);
@@ -299,11 +300,12 @@ TEST_F(Json5ReaderTest, HexNumbers) {
     // In array/object
     auto r = reader("[0x1, 0xA, {color: 0xFF00FF}]");
     r.readListBegin();
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 1);
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 0xA);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 1);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 0xA);
     r.readObjectBegin();
     r.readObjectName();
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 0xFF00FF);
+    EXPECT_EQ(
+        std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 0xFF00FF);
     r.readObjectEnd();
     r.readListEnd();
   }
@@ -319,6 +321,33 @@ TEST_F(Json5ReaderTest, HexNumbers) {
   EXPECT_EQ(readInt(minHex), std::numeric_limits<std::int64_t>::min());
   EXPECT_THROW(readInt(maxHexPlusOne), protocol::TProtocolException);
   EXPECT_THROW(readInt(minHexMinusOne), protocol::TProtocolException);
+}
+
+TEST_F(Json5ReaderTest, DecimalIntegerRange) {
+  auto readInt = [this](std::string_view input) {
+    return std::get<Json5Reader::Integer>(reader(input).readPrimitive())
+        .value();
+  };
+  EXPECT_EQ(
+      readInt("9223372036854775807"), std::numeric_limits<std::int64_t>::max());
+  EXPECT_EQ(
+      readInt("-9223372036854775808"),
+      std::numeric_limits<std::int64_t>::min());
+  EXPECT_THROW(readInt("9223372036854775808"), protocol::TProtocolException);
+  EXPECT_THROW(readInt("-9223372036854775809"), protocol::TProtocolException);
+  EXPECT_THROW(readInt("18446744073709551616"), protocol::TProtocolException);
+}
+
+TEST_F(Json5ReaderTest, NegativeZeroInteger) {
+  for (auto input : {"-0", "-0x0"}) {
+    EXPECT_EQ(
+        std::get<Json5Reader::Integer>(reader(input).readPrimitive()),
+        (Json5Reader::Integer{.negative = true, .magnitude = 0}))
+        << input;
+  }
+  EXPECT_EQ(
+      std::get<Json5Reader::Integer>(reader("0").readPrimitive()),
+      Json5Reader::Integer{});
 }
 
 TEST_F(Json5ReaderTest, ScientificNotation) {
@@ -392,7 +421,7 @@ TEST_F(Json5ReaderTest, PeekToken) {
     EXPECT_EQ(r.peekToken(), Token::ListBegin);
     r.readListBegin();
     EXPECT_EQ(r.peekToken(), Token::Primitive);
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), -1);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), -1);
     EXPECT_EQ(r.peekToken(), Token::Primitive);
     EXPECT_EQ(std::get<std::string>(r.readPrimitive()), "two");
     EXPECT_EQ(r.peekToken(), Token::Primitive);
@@ -406,7 +435,7 @@ TEST_F(Json5ReaderTest, PeekToken) {
     r.readObjectBegin();
     EXPECT_EQ(r.readObjectName(), "inner");
     EXPECT_EQ(r.peekToken(), Token::Primitive);
-    EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 99);
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 99);
     EXPECT_EQ(r.peekToken(), Token::ObjectEnd);
     r.readObjectEnd();
 
@@ -440,7 +469,8 @@ TEST_F(Json5ReaderTest, Comments) {
            "// line\n/* block */42",
            "/*/* stars inside */42",
        }) {
-    EXPECT_EQ(std::get<std::int64_t>(reader(s).readPrimitive()), 42);
+    EXPECT_EQ(
+        std::get<Json5Reader::Integer>(reader(s).readPrimitive()).value(), 42);
   }
 }
 
@@ -477,7 +507,7 @@ TEST_F(Json5ReaderTest, CommentsInStringsAndContainers) {
 
 TEST_F(Json5ReaderTest, PeekTokenAfterEOF) {
   auto r = reader("42");
-  EXPECT_EQ(std::get<std::int64_t>(r.readPrimitive()), 42);
+  EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 42);
   EXPECT_THROW((void)r.peekToken(), protocol::TProtocolException);
 }
 

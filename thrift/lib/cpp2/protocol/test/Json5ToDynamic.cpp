@@ -50,6 +50,7 @@ static folly::dynamic json5ToDynamic(Json5Reader& r) {
       return folly::variant_match(
           r.readPrimitive(),
           [](std::monostate) -> folly::dynamic { return nullptr; },
+          [](Json5Reader::Integer i) -> folly::dynamic { return i.value(); },
           [](auto&& v) -> folly::dynamic { return std::move(v); });
     case Json5Reader::Token::ListEnd:
     case Json5Reader::Token::ObjectEnd:

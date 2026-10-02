@@ -64,7 +64,7 @@ bool isIdentifierPart(char c) {
 }
 
 template <typename T>
-T parseNumberOrThrow(const std::string& str) {
+T parseNumberOrThrow(std::string_view str) {
   auto result = folly::tryTo<T>(str);
   if (!result.hasValue()) {
     throwParseError(folly::makeConversionError(result.error(), str).what());
@@ -72,7 +72,7 @@ T parseNumberOrThrow(const std::string& str) {
   return *result;
 }
 
-std::int64_t parseHexInteger(std::string_view str, bool isNegative) {
+std::uint64_t parseHexMagnitude(std::string_view str) {
   uint64_t uval = 0;
   auto [ptr, ec] =
       std::from_chars(str.data(), str.data() + str.size(), uval, 16);
@@ -80,18 +80,18 @@ std::int64_t parseHexInteger(std::string_view str, bool isNegative) {
   if (ec != std::errc{} || ptr != str.data() + str.size()) {
     throwParseError(fmt::format("invalid hex number {}", str));
   }
+  return uval;
+}
 
-  constexpr auto kMinAsUnsigned =
-      static_cast<uint64_t>(std::numeric_limits<int64_t>::max()) + 1;
-  if (uval == kMinAsUnsigned && isNegative) {
-    return std::numeric_limits<int64_t>::min();
+// Rejects integers outside the int64_t range.
+Json5Reader::Integer makeInteger(
+    bool negative, std::uint64_t magnitude, std::string_view literal) {
+  constexpr std::uint64_t kInt64Max = std::numeric_limits<std::int64_t>::max();
+  const std::uint64_t maxMagnitude = negative ? kInt64Max + 1 : kInt64Max;
+  if (magnitude > maxMagnitude) {
+    throwParseError(fmt::format("integer {} out of range", literal));
   }
-  if (uval <= std::numeric_limits<int64_t>::max()) {
-    return isNegative ? -static_cast<int64_t>(uval)
-                      : static_cast<int64_t>(uval);
-  }
-
-  throwParseError(fmt::format("hex number {} out of range", str));
+  return {.negative = negative, .magnitude = magnitude};
 }
 
 std::uint16_t readFourHexDigits(folly::io::Cursor& cursor) {
@@ -99,7 +99,7 @@ std::uint16_t readFourHexDigits(folly::io::Cursor& cursor) {
     throwParseError("expected 4 hex digits");
   }
   return static_cast<std::uint16_t>(
-      parseHexInteger(cursor.readFixedString(4), false));
+      parseHexMagnitude(cursor.readFixedString(4)));
 }
 
 // The writer escapes strings with folly::json::escapeString's validate_utf8, so
@@ -381,7 +381,9 @@ Json5Reader::Primitive Json5Reader::parseNumber(
     c = peekNext(cursor);
     if (c == 'x' || c == 'X') {
       cursor.skip(1);
-      return parseHexInteger(cursor.readWhile(isAsciiHexDigit), sign < 0);
+      auto digits = cursor.readWhile(isAsciiHexDigit);
+      return makeInteger(
+          sign < 0, parseHexMagnitude(digits), numStr + "x" + digits);
     }
   } else if (c != '.') {
     numStr += cursor.readWhile(isAsciiDigit);
@@ -411,7 +413,12 @@ Json5Reader::Primitive Json5Reader::parseNumber(
   }
 
   if (!isFloating) {
-    return parseNumberOrThrow<std::int64_t>(numStr);
+    std::string_view digits = numStr;
+    if (digits.front() == '+' || digits.front() == '-') {
+      digits.remove_prefix(1);
+    }
+    return makeInteger(
+        sign < 0, parseNumberOrThrow<std::uint64_t>(digits), numStr);
   }
   if (precision == FloatingPointPrecision::Single) {
     return parseNumberOrThrow<float>(numStr);

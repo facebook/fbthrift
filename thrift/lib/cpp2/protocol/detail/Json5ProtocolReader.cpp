@@ -53,7 +53,12 @@ template <typename Variant>
 const char* getVariantTypePrettyName(const Variant& variant) {
   return std::visit(
       [](const auto& value) {
-        return folly::pretty_name<std::remove_cvref_t<decltype(value)>>();
+        using T = std::remove_cvref_t<decltype(value)>;
+        if constexpr (std::is_same_v<T, Json5Reader::Integer>) {
+          return folly::pretty_name<std::int64_t>();
+        } else {
+          return folly::pretty_name<T>();
+        }
       },
       variant);
 }
@@ -385,8 +390,8 @@ Json5ProtocolReader::readEnumImpl() {
   // When reading enum as a map key in Object form, the enum value is the
   // JSON object property name (a string), not a JSON value.
   auto primitive = readPrimitiveOrMapKey();
-  if (auto* i = std::get_if<std::int64_t>(&primitive)) {
-    return {.name = {}, .value = convertTo<std::int32_t>(*i)};
+  if (auto* i = std::get_if<Json5Reader::Integer>(&primitive)) {
+    return {.name = {}, .value = convertTo<std::int32_t>(i->value())};
   }
 
   return parseIdentifierString(takeStringValue(std::move(primitive), "enum"));
@@ -499,8 +504,8 @@ namespace {
 
 std::optional<std::int64_t> tryParseI64(
     const Json5Reader::Primitive& primitive) {
-  if (auto* i = std::get_if<std::int64_t>(&primitive)) {
-    return *i;
+  if (auto* i = std::get_if<Json5Reader::Integer>(&primitive)) {
+    return i->value();
   }
   if (auto* s = std::get_if<std::string>(&primitive)) {
     if (auto i = folly::tryTo<std::int64_t>(*s)) {

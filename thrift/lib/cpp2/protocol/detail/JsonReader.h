@@ -39,7 +39,7 @@ namespace apache::thrift::json5::detail {
  *   auto key1 = r.readObjectName();   // "name"
  *   auto val1 = r.readPrimitive(...); // "Alice"
  *   auto key2 = r.readObjectName();   // "age"
- *   auto val2 = r.readPrimitive(...); // int64_t(30)
+ *   auto val2 = r.readPrimitive(...); // Integer{.magnitude = 30}
  *   r.readObjectEnd();
  * @endcode
  *
@@ -98,19 +98,37 @@ class Json5Reader final {
   [[nodiscard]] Token peekToken();
 
   /**
+   * A JSON integer, with the sign kept apart from the magnitude so that `-0`
+   * is distinguishable from `0`. The magnitude is at most 2^63 - 1, or 2^63 if
+   * `negative`, so `value()` always fits.
+   */
+  struct Integer {
+    bool negative = false;
+    std::uint64_t magnitude = 0;
+
+    std::int64_t value() const {
+      // Unsigned subtraction and the conversion to int64_t are both modular,
+      // so a magnitude of 2^63 gives INT64_MIN without a special case. (Not
+      // `-magnitude`: MSVC warns about negating an unsigned value.)
+      return static_cast<std::int64_t>(negative ? 0 - magnitude : magnitude);
+    }
+    bool operator==(const Integer&) const = default;
+  };
+
+  /**
    * Variant type representing JSON primitive (non-compound) values.
    *
    * Maps JSON types to C++ types as follows:
    *   - JSON null    → std::monostate
    *   - JSON boolean → bool
-   *   - JSON integer → std::int64_t
+   *   - JSON integer → Integer
    *   - JSON float   → float (when FloatingPointPrecision::Single is requested)
    *   - JSON float   → double (when FloatingPointPrecision::Double is
    * requested)
    *   - JSON string  → std::string
    */
-  using Primitive = std::
-      variant<std::monostate, bool, std::int64_t, float, double, std::string>;
+  using Primitive =
+      std::variant<std::monostate, bool, Integer, float, double, std::string>;
 
   /**
    * Reads and returns the next primitive value.
