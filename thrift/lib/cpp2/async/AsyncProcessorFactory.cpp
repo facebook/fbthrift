@@ -78,7 +78,8 @@ std::string AsyncProcessorFactory::MethodMetadata::describeFields() const {
       "interactionName={} createsInteraction={} isWildcard={}",
       executorTypeToString(executorType),
       interactionTypeToString(interactionType),
-      rpcKind ? util::enumNameSafe(*rpcKind) : kNONE,
+      rpcKind ? std::string_view(util::enumNameSafe(*rpcKind))
+              : std::string_view(kNONE),
       priority ? priorityToString(*priority) : kNONE,
       interactionName.value_or(kNONE),
       createsInteraction,
