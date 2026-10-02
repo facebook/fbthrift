@@ -3474,3 +3474,7 @@ def get_standard_mutable_default_value_for_type(TypeInfoBase typeinfo):
 # for fbthrift test introspection only, DO NOT USE elsewhere
 def _fbthrift__runtime_is_cinder():
     return pbool(_fbthrift_is_cinder_runtime)
+
+# Cython 3.1 (used for Python 3.14+) no longer copies cpdef enum members into the
+# module namespace; keep `from thrift.python.types import cServiceHealth_OK` working.
+globals().update({_m.name: _m for _m in globals()["cServiceHealth"]})
