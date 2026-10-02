@@ -458,11 +458,12 @@ struct SetIdenticalTo {
   }
 
  private:
-  // Create a multimap from hash(key)->&key
+  // Iterators rather than pointers, since custom containers may iterate by
+  // value (e.g. proxy iterators) or not expose `const_pointer`.
   static auto createHashMap(const T& set) {
-    std::unordered_multimap<size_t, typename T::const_pointer> hashMap;
-    for (const auto& key : set) {
-      hashMap.emplace(op::hash<KTag>(key), &key);
+    std::unordered_multimap<size_t, typename T::const_iterator> hashMap;
+    for (auto it = set.begin(); it != set.end(); ++it) {
+      hashMap.emplace(op::hash<KTag>(*it), it);
     }
     return hashMap;
   }
@@ -508,11 +509,11 @@ struct MapEquality {
   }
 
  private:
-  // Create a multimap from hash(key)->&pair(key, value)
+  // Create a multimap from hash(key)->iterator to pair(key, value)
   static auto createHashMap(const T& map) {
-    std::unordered_multimap<size_t, typename T::const_pointer> hashMap;
-    for (const auto& entry : map) {
-      hashMap.emplace(op::hash<KTag>(entry.first), &entry);
+    std::unordered_multimap<size_t, typename T::const_iterator> hashMap;
+    for (auto it = map.begin(); it != map.end(); ++it) {
+      hashMap.emplace(op::hash<KTag>(it->first), it);
     }
     return hashMap;
   }

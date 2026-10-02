@@ -16,7 +16,11 @@
 
 #include <array>
 #include <compare>
+#include <cstdint>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 #include <thrift/lib/cpp2/op/Compare.h>
 
@@ -46,6 +50,19 @@ struct EqualOnlyStringAdapter {
   [[maybe_unused]] static bool equal(const std::string&, const std::string&) {
     return false;
   }
+};
+
+// Hides `const_pointer`, like a class that privately inherits a container and
+// re-exports only the part of its interface it needs.
+template <typename Base>
+class PrivateBase : private Base {
+ public:
+  using Base::Base;
+  using Base::begin;
+  using Base::end;
+  using Base::size;
+  using typename Base::const_iterator;
+  using typename Base::value_type;
 };
 
 TEST(CompareTest, IOBuf) {
@@ -165,6 +182,27 @@ TEST(CompareTest, Float) {
           std::numeric_limits<float>::quiet_NaN(),
           std::numeric_limits<float>::quiet_NaN()),
       std::partial_ordering::unordered);
+}
+
+TEST(CompareTest, SetAndMapWithoutConstPointer) {
+  using Set = PrivateBase<std::unordered_set<double>>;
+  using Map = PrivateBase<std::unordered_map<int32_t, double>>;
+  using SetTag = type::cpp_type<Set, type::set<type::double_t>>;
+  using MapTag = type::cpp_type<Map, type::map<type::i32_t, type::double_t>>;
+  const double nan = std::numeric_limits<double>::quiet_NaN();
+
+  EXPECT_TRUE(op::identical<SetTag>(Set{nan, 1.0}, Set{1.0, nan}));
+  EXPECT_FALSE(op::identical<SetTag>(Set{-0.0}, Set{+0.0}));
+  EXPECT_TRUE(op::identical<MapTag>(Map{{1, nan}}, Map{{1, nan}}));
+  EXPECT_FALSE(op::identical<MapTag>(Map{{1, -0.0}}, Map{{1, +0.0}}));
+  EXPECT_FALSE(op::identical<MapTag>(Map{{1, 1.0}}, Map{{2, 1.0}}));
+}
+
+// std::vector<bool>'s iterator returns elements by value.
+TEST(CompareTest, SetWithByValueIterator) {
+  using Tag = type::cpp_type<std::vector<bool>, type::set<type::bool_t>>;
+  EXPECT_TRUE(op::identical<Tag>({true, false}, {false, true}));
+  EXPECT_FALSE(op::identical<Tag>({true}, {false}));
 }
 
 TEST(CompareTest, StructWithFloat) {
