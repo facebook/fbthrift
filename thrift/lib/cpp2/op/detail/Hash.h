@@ -17,6 +17,7 @@
 #pragma once
 
 #include <cmath>
+#include <type_traits>
 
 #include <folly/Range.h>
 #include <thrift/lib/cpp2/op/DeterministicAccumulator.h>
@@ -31,6 +32,20 @@ namespace apache::thrift::op::detail {
 template <typename Accumulator, typename T>
 void accumulateHash(type::all_c, Accumulator& accumulator, const T& value) {
   accumulator.combine(value);
+}
+
+// libc++'s std::vector<bool> iterates proxies (e.g. __bit_const_reference) that
+// only convert to bool. Copy-initialization allows implicit conversions only,
+// so types with an explicit operator bool (e.g. std::optional<bool>) are
+// rejected.
+template <typename Accumulator, typename T>
+void accumulateHash(type::bool_t, Accumulator& accumulator, const T& value) {
+  if constexpr (std::is_class_v<T>) {
+    const bool b = value;
+    accumulator.combine(b);
+  } else {
+    accumulator.combine(value);
+  }
 }
 
 template <typename Accumulator, typename T>

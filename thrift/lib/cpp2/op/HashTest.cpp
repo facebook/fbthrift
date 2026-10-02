@@ -344,5 +344,11 @@ TEST(HashTest, OpEncode) {
   EXPECT_NE(op::hash<Tag>(x), op::hash<Tag>(y));
 }
 
+TEST(HashTest, ListOfBool) {
+  using Tag = type::list<type::bool_t>;
+  EXPECT_EQ(op::hash<Tag>({true, false}), op::hash<Tag>({true, false}));
+  EXPECT_NE(op::hash<Tag>({true, false}), op::hash<Tag>({false, true}));
+}
+
 } // namespace
 } // namespace apache::thrift::op
