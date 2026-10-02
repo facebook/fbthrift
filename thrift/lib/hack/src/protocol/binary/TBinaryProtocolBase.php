@@ -141,8 +141,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
 
   <<__Override>>
   public function writeBool(bool $value)[zoned_shallow]: int {
-    $data = PHP\pack('c', $value ? 1 : 0);
-    $this->trans_->write($data);
+    $this->trans_->write(PHP\pack('c', $value ? 1 : 0));
     return 1;
   }
 
@@ -504,16 +503,14 @@ abstract class TBinaryProtocolBase extends TProtocol {
 
   <<__Override>>
   public function readBool(inout bool $value)[zoned_shallow]: int {
-    $data = $this->trans_->readAll(1);
-    $arr = PHP\unpack('c', $data);
+    $arr = PHP\unpack('c', $this->trans_->readAll(1));
     $value = $arr[1] == 1;
     return 1;
   }
 
   <<__Override>>
   public function readByte(inout int $value)[zoned_shallow]: int {
-    $data = $this->trans_->readAll(1);
-    $value = PHP\ord($data);
+    $value = PHP\ord($this->trans_->readAll(1));
     if ($value > 0x7f) {
       $value = 0 - (($value - 1) ^ 0xff);
     }
@@ -532,16 +529,13 @@ abstract class TBinaryProtocolBase extends TProtocol {
 
   <<__Override>>
   public function readI32(inout int $value)[zoned_shallow]: int {
-    $data = $this->trans_->readAll(4);
-    $value = $this->unpackI32($data);
+    $value = $this->unpackI32($this->trans_->readAll(4));
     return 4;
   }
 
   <<__Override>>
   public function readI64(inout int $value)[zoned_shallow]: int {
-    $data = $this->trans_->readAll(8);
-
-    $arr = PHP\unpack('N2', $data);
+    $arr = PHP\unpack('N2', $this->trans_->readAll(8));
 
     // If we are on a 32bit architecture we have to explicitly deal with
     // 64-bit twos-complement arithmetic since PHP wants to treat all ints
@@ -611,8 +605,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
       $data = PHP\strrev($data);
     }
     $arr = PHP\unpack('d', $data);
-    $value = $arr[1];
-    $value as float;
+    $value = $arr[1] as float;
     return 8;
   }
 
@@ -623,8 +616,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
       $data = PHP\strrev($data);
     }
     $arr = PHP\unpack('f', $data);
-    $value = $arr[1];
-    $value as float;
+    $value = $arr[1] as float;
     return 4;
   }
 

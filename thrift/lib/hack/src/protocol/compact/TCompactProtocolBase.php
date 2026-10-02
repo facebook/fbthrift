@@ -383,15 +383,12 @@ abstract class TCompactProtocolBase extends TProtocol {
 
   <<__Override>>
   public function writeFloat(float $value)[zoned_shallow]: int {
-    $data = PHP\pack('f', $value);
-    $data = Str\reverse($data);
-    $this->trans_->write($data);
+    $this->trans_->write(Str\reverse(PHP\pack('f', $value)));
     return 4;
   }
 
   <<__Override>>
   public function writeString(string $value)[zoned_shallow]: int {
-    $value = (string)$value;
     $len = Str\length($value);
     $result = $this->writeVarint($len);
     if ($len !== 0) {
@@ -449,18 +446,14 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function readUByte(inout int $value)[zoned_shallow]: int {
-    $data = $this->trans_->readAll(1);
-    $value = PHP\ord($data);
+    $value = PHP\ord($this->trans_->readAll(1));
     return 1;
   }
 
   <<__Override>>
   public function readByte(inout int $value)[zoned_shallow]: int {
-    $data = $this->trans_->readAll(1);
-    $value = PHP\ord($data);
-    if ($value > 0x7f) {
-      $value = 0 - (($value - 1) ^ 0xff);
-    }
+    $value = PHP\ord($this->trans_->readAll(1));
+    $value = $value > 0x7f ? 0 - (($value - 1) ^ 0xff) : $value;
     return 1;
   }
 
@@ -662,18 +655,14 @@ abstract class TCompactProtocolBase extends TProtocol {
       $data = PHP\strrev($data);
     }
     $arr = PHP\unpack('d', $data);
-    $value = $arr[1];
-    $value as float;
+    $value = $arr[1] as float;
     return 8;
   }
 
   <<__Override>>
   public function readFloat(inout float $value)[zoned_shallow]: int {
-    $data = $this->trans_->readAll(4);
-    $data = PHP\strrev($data);
-    $arr = PHP\unpack('f', $data);
-    $value = $arr[1];
-    $value as float;
+    $arr = PHP\unpack('f', PHP\strrev($this->trans_->readAll(4)));
+    $value = $arr[1] as float;
     return 4;
   }
 
