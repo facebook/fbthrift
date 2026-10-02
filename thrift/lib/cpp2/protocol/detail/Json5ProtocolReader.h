@@ -151,10 +151,13 @@ class Json5ProtocolReader final
     if constexpr (std::is_assignable_v<StrType&, std::string>) {
       str = readBinaryValue();
     } else {
-      // Custom binary types, which SimpleJSONProtocolReader fills the same way.
+      // Custom binary types, which SimpleJSONProtocolReader fills the same way:
+      // without calling append() for an empty value, which some types reject.
       auto value = readBinaryValue();
       str.clear();
-      str.append(value.data(), value.size());
+      if (!value.empty()) {
+        str.append(value.data(), value.size());
+      }
     }
   }
   void readBinary(std::unique_ptr<folly::IOBuf>& str);

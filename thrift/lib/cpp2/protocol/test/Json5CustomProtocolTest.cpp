@@ -217,6 +217,32 @@ TEST(Json5CustomProtocolExtraTest, NegativeZeroRoundTrip) {
   EXPECT_EQ(*d2.doubleValue(), 0.0);
 }
 
+TEST(Json5CustomProtocolExtraTest, CustomBinaryAppendsOnlyNonEmptyValues) {
+  struct Binary {
+    std::string data;
+    int appends = 0;
+    void clear() { data.clear(); }
+    void append(const char* p, std::size_t n) {
+      ++appends;
+      data.append(p, n);
+    }
+  };
+  auto read = [](std::string_view json) {
+    auto buf = folly::IOBuf::copyBuffer(json);
+    Json5ProtocolReader reader;
+    reader.setInput(buf.get());
+    Binary binary;
+    reader.readBinary(binary);
+    return binary;
+  };
+  auto empty = read(R"("")");
+  EXPECT_EQ(empty.appends, 0);
+  EXPECT_EQ(empty.data, "");
+  auto nonEmpty = read(R"("AAEC")");
+  EXPECT_EQ(nonEmpty.appends, 1);
+  EXPECT_EQ(nonEmpty.data, std::string("\x00\x01\x02", 3));
+}
+
 TEST(Json5CustomProtocolExtraTest, NonBmpStringRoundTrip) {
   // The reader recombines the surrogate pair; the writer emits raw UTF-8
   // rather than splitting it back into one.
