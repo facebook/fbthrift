@@ -65,8 +65,9 @@ void Controller::run(
 }
 
 void Controller::createWorkerThreads(uint32_t numThreads) {
+  const PosixThreadFactory defaultThreadFactory;
   const PosixThreadFactory& threadFactory =
-      threadFactory_ ? *threadFactory_ : PosixThreadFactory();
+      threadFactory_ ? *threadFactory_ : defaultThreadFactory;
 
   for (uint32_t n = 0; n < numThreads; ++n) {
     shared_ptr<WorkerRunner> runner(new WorkerRunner(this));
