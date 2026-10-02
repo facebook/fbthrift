@@ -941,29 +941,7 @@ class TestUnion final  {
 
   TestUnion(TestUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::int_value:
-      {
-        set_int_value(std::move(rhs.value_.int_value));
-        break;
-      }
-      case Type::struct_value:
-      {
-        set_struct_value(std::move(rhs.value_.struct_value));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   TestUnion(const TestUnion& rhs);

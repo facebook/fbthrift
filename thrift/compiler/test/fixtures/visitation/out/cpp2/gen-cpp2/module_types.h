@@ -1079,39 +1079,7 @@ class union1 final  {
 
   union1(union1&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::ui:
-      {
-        set_ui(std::move(rhs.value_.ui));
-        break;
-      }
-      case Type::ud:
-      {
-        set_ud(std::move(rhs.value_.ud));
-        break;
-      }
-      case Type::us:
-      {
-        set_us(std::move(rhs.value_.us));
-        break;
-      }
-      case Type::ue:
-      {
-        set_ue(std::move(rhs.value_.ue));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   union1(const union1& rhs);
@@ -1528,39 +1496,7 @@ class union2 final  {
 
   union2(union2&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::ui_2:
-      {
-        set_ui_2(std::move(rhs.value_.ui_2));
-        break;
-      }
-      case Type::ud_2:
-      {
-        set_ud_2(std::move(rhs.value_.ud_2));
-        break;
-      }
-      case Type::us_2:
-      {
-        set_us_2(std::move(rhs.value_.us_2));
-        break;
-      }
-      case Type::ue_2:
-      {
-        set_ue_2(std::move(rhs.value_.ue_2));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   union2(const union2& rhs);
@@ -1977,39 +1913,7 @@ class union3 final  {
 
   union3(union3&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::ui_3:
-      {
-        set_ui_3(std::move(rhs.value_.ui_3));
-        break;
-      }
-      case Type::ud_3:
-      {
-        set_ud_3(std::move(rhs.value_.ud_3));
-        break;
-      }
-      case Type::us_3:
-      {
-        set_us_3(std::move(rhs.value_.us_3));
-        break;
-      }
-      case Type::ue_3:
-      {
-        set_ue_3(std::move(rhs.value_.ue_3));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   union3(const union3& rhs);
@@ -2620,44 +2524,7 @@ class unionA final  {
 
   unionA(unionA&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::i:
-      {
-        set_i(std::move(rhs.value_.i));
-        break;
-      }
-      case Type::d:
-      {
-        set_d(std::move(rhs.value_.d));
-        break;
-      }
-      case Type::s:
-      {
-        set_s(std::move(rhs.value_.s));
-        break;
-      }
-      case Type::e:
-      {
-        set_e(std::move(rhs.value_.e));
-        break;
-      }
-      case Type::a:
-      {
-        set_a(std::move(rhs.value_.a));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   unionA(const unionA& rhs);
@@ -8446,159 +8313,7 @@ class union_with_special_names final  {
 
   union_with_special_names(union_with_special_names&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::get:
-      {
-        set_get(std::move(rhs.value_.get));
-        break;
-      }
-      case Type::getter:
-      {
-        set_getter(std::move(rhs.value_.getter));
-        break;
-      }
-      case Type::lists:
-      {
-        set_lists(std::move(rhs.value_.lists));
-        break;
-      }
-      case Type::maps:
-      {
-        set_maps(std::move(rhs.value_.maps));
-        break;
-      }
-      case Type::name:
-      {
-        set_name(std::move(rhs.value_.name));
-        break;
-      }
-      case Type::name_to_value:
-      {
-        set_name_to_value(std::move(rhs.value_.name_to_value));
-        break;
-      }
-      case Type::names:
-      {
-        set_names(std::move(rhs.value_.names));
-        break;
-      }
-      case Type::prefix_tree:
-      {
-        set_prefix_tree(std::move(rhs.value_.prefix_tree));
-        break;
-      }
-      case Type::sets:
-      {
-        set_sets(std::move(rhs.value_.sets));
-        break;
-      }
-      case Type::setter:
-      {
-        set_setter(std::move(rhs.value_.setter));
-        break;
-      }
-      case Type::str:
-      {
-        set_str(std::move(rhs.value_.str));
-        break;
-      }
-      case Type::strings:
-      {
-        set_strings(std::move(rhs.value_.strings));
-        break;
-      }
-      case Type::type:
-      {
-        set_type(std::move(rhs.value_.type));
-        break;
-      }
-      case Type::value:
-      {
-        set_value(std::move(rhs.value_.value));
-        break;
-      }
-      case Type::value_to_name:
-      {
-        set_value_to_name(std::move(rhs.value_.value_to_name));
-        break;
-      }
-      case Type::values:
-      {
-        set_values(std::move(rhs.value_.values));
-        break;
-      }
-      case Type::id:
-      {
-        set_id(std::move(rhs.value_.id));
-        break;
-      }
-      case Type::ids:
-      {
-        set_ids(std::move(rhs.value_.ids));
-        break;
-      }
-      case Type::descriptor:
-      {
-        set_descriptor(std::move(rhs.value_.descriptor));
-        break;
-      }
-      case Type::descriptors:
-      {
-        set_descriptors(std::move(rhs.value_.descriptors));
-        break;
-      }
-      case Type::key:
-      {
-        set_key(std::move(rhs.value_.key));
-        break;
-      }
-      case Type::keys:
-      {
-        set_keys(std::move(rhs.value_.keys));
-        break;
-      }
-      case Type::annotation:
-      {
-        set_annotation(std::move(rhs.value_.annotation));
-        break;
-      }
-      case Type::annotations:
-      {
-        set_annotations(std::move(rhs.value_.annotations));
-        break;
-      }
-      case Type::member:
-      {
-        set_member(std::move(rhs.value_.member));
-        break;
-      }
-      case Type::members:
-      {
-        set_members(std::move(rhs.value_.members));
-        break;
-      }
-      case Type::field:
-      {
-        set_field(std::move(rhs.value_.field));
-        break;
-      }
-      case Type::fields:
-      {
-        set_fields(std::move(rhs.value_.fields));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   union_with_special_names(const union_with_special_names& rhs);

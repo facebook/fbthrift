@@ -5298,54 +5298,7 @@ class Shallot final  {
 
   Shallot(Shallot&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::myEnum:
-      {
-        set_myEnum(std::move(rhs.value_.myEnum));
-        break;
-      }
-      case Type::myStruct:
-      {
-        set_myStruct(std::move(rhs.value_.myStruct));
-        break;
-      }
-      case Type::intSet:
-      {
-        set_intSet(std::move(*rhs.value_.intSet));
-        break;
-      }
-      case Type::myString:
-      {
-        set_myString(std::move(rhs.value_.myString));
-        break;
-      }
-      case Type::doubleList:
-      {
-        set_doubleList(std::move(*rhs.value_.doubleList));
-        break;
-      }
-      case Type::strMap:
-      {
-        set_strMap(std::move(*rhs.value_.strMap));
-        break;
-      }
-      case Type::adapted_int:
-      {
-        set_adapted_int(std::move(rhs.value_.adapted_int));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   Shallot(const Shallot& rhs);
@@ -5987,34 +5940,7 @@ class SomeBinary final  {
 
   SomeBinary(SomeBinary&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::iobuf:
-      {
-        set_iobuf(std::move(rhs.value_.iobuf));
-        break;
-      }
-      case Type::iobuf_ptr:
-      {
-        set_iobuf_ptr(std::move(rhs.value_.iobuf_ptr));
-        break;
-      }
-      case Type::iobufRef:
-      {
-        set_iobufRef(std::move(*rhs.value_.iobufRef));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   SomeBinary(const SomeBinary& rhs);

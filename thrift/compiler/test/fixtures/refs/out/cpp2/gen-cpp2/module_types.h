@@ -506,29 +506,7 @@ class MyUnion final  {
 
   MyUnion(MyUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::anInteger:
-      {
-        set_anInteger(std::move(*rhs.value_.anInteger));
-        break;
-      }
-      case Type::aString:
-      {
-        set_aString(std::move(*rhs.value_.aString));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   MyUnion(const MyUnion& rhs);
@@ -812,24 +790,7 @@ class NonTriviallyDestructibleUnion final  {
 
   NonTriviallyDestructibleUnion(NonTriviallyDestructibleUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::int_field:
-      {
-        set_int_field(std::move(*rhs.value_.int_field));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   NonTriviallyDestructibleUnion(const NonTriviallyDestructibleUnion& rhs);

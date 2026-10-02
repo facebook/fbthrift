@@ -2187,29 +2187,7 @@ class SimpleUnion  {
 
   SimpleUnion(SimpleUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::intValue:
-      {
-        set_intValue(std::move(rhs.value_.intValue));
-        break;
-      }
-      case Type::stringValue:
-      {
-        set_stringValue(std::move(rhs.value_.stringValue));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   SimpleUnion(const SimpleUnion& rhs);
@@ -3558,159 +3536,7 @@ class ComplexUnion final  {
 
   ComplexUnion(ComplexUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::intValue:
-      {
-        set_intValue(std::move(rhs.value_.intValue));
-        break;
-      }
-      case Type::opt_intValue:
-      {
-        set_opt_intValue(std::move(rhs.value_.opt_intValue));
-        break;
-      }
-      case Type::stringValue:
-      {
-        set_stringValue(std::move(rhs.value_.stringValue));
-        break;
-      }
-      case Type::opt_stringValue:
-      {
-        set_opt_stringValue(std::move(rhs.value_.opt_stringValue));
-        break;
-      }
-      case Type::intValue2:
-      {
-        set_intValue2(std::move(rhs.value_.intValue2));
-        break;
-      }
-      case Type::intValue3:
-      {
-        set_intValue3(std::move(rhs.value_.intValue3));
-        break;
-      }
-      case Type::doubelValue:
-      {
-        set_doubelValue(std::move(rhs.value_.doubelValue));
-        break;
-      }
-      case Type::boolValue:
-      {
-        set_boolValue(std::move(rhs.value_.boolValue));
-        break;
-      }
-      case Type::union_list:
-      {
-        set_union_list(std::move(rhs.value_.union_list));
-        break;
-      }
-      case Type::union_set:
-      {
-        set_union_set(std::move(rhs.value_.union_set));
-        break;
-      }
-      case Type::union_map:
-      {
-        set_union_map(std::move(rhs.value_.union_map));
-        break;
-      }
-      case Type::opt_union_map:
-      {
-        set_opt_union_map(std::move(rhs.value_.opt_union_map));
-        break;
-      }
-      case Type::enum_field:
-      {
-        set_enum_field(std::move(rhs.value_.enum_field));
-        break;
-      }
-      case Type::enum_container:
-      {
-        set_enum_container(std::move(rhs.value_.enum_container));
-        break;
-      }
-      case Type::a_struct:
-      {
-        set_a_struct(std::move(rhs.value_.a_struct));
-        break;
-      }
-      case Type::a_set_struct:
-      {
-        set_a_set_struct(std::move(rhs.value_.a_set_struct));
-        break;
-      }
-      case Type::a_union:
-      {
-        set_a_union(std::move(rhs.value_.a_union));
-        break;
-      }
-      case Type::opt_a_union:
-      {
-        set_opt_a_union(std::move(rhs.value_.opt_a_union));
-        break;
-      }
-      case Type::a_union_list:
-      {
-        set_a_union_list(std::move(rhs.value_.a_union_list));
-        break;
-      }
-      case Type::a_union_typedef:
-      {
-        set_a_union_typedef(std::move(rhs.value_.a_union_typedef));
-        break;
-      }
-      case Type::a_union_typedef_list:
-      {
-        set_a_union_typedef_list(std::move(rhs.value_.a_union_typedef_list));
-        break;
-      }
-      case Type::MyBinaryField:
-      {
-        set_MyBinaryField(std::move(rhs.value_.MyBinaryField));
-        break;
-      }
-      case Type::MyBinaryField2:
-      {
-        set_MyBinaryField2(std::move(rhs.value_.MyBinaryField2));
-        break;
-      }
-      case Type::MyBinaryListField4:
-      {
-        set_MyBinaryListField4(std::move(rhs.value_.MyBinaryListField4));
-        break;
-      }
-      case Type::ref_field:
-      {
-        set_ref_field(std::move(*rhs.value_.ref_field));
-        break;
-      }
-      case Type::ref_field2:
-      {
-        set_ref_field2(std::move(*rhs.value_.ref_field2));
-        break;
-      }
-      case Type::excp_field:
-      {
-        set_excp_field(std::move(rhs.value_.excp_field));
-        break;
-      }
-      case Type::MyCustomField:
-      {
-        set_MyCustomField(std::move(rhs.value_.MyCustomField));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   ComplexUnion(const ComplexUnion& rhs);
@@ -11423,29 +11249,7 @@ class FloatUnion final  {
 
   FloatUnion(FloatUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::floatSide:
-      {
-        set_floatSide(std::move(rhs.value_.floatSide));
-        break;
-      }
-      case Type::doubleSide:
-      {
-        set_doubleSide(std::move(rhs.value_.doubleSide));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   FloatUnion(const FloatUnion& rhs);

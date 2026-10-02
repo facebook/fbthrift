@@ -1865,29 +1865,7 @@ class union1 final  {
 
   union1(union1&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::i:
-      {
-        set_i(std::move(rhs.value_.i));
-        break;
-      }
-      case Type::d:
-      {
-        set_d(std::move(rhs.value_.d));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   union1(const union1& rhs);
@@ -2144,39 +2122,7 @@ class union2 final  {
 
   union2(union2&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::i:
-      {
-        set_i(std::move(rhs.value_.i));
-        break;
-      }
-      case Type::d:
-      {
-        set_d(std::move(rhs.value_.d));
-        break;
-      }
-      case Type::s:
-      {
-        set_s(std::move(rhs.value_.s));
-        break;
-      }
-      case Type::u:
-      {
-        set_u(std::move(rhs.value_.u));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   union2(const union2& rhs);

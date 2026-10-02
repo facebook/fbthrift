@@ -1201,39 +1201,7 @@ class MyUnion final  {
 
   MyUnion(MyUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::myEnum:
-      {
-        set_myEnum(std::move(rhs.value_.myEnum));
-        break;
-      }
-      case Type::myStruct:
-      {
-        set_myStruct(std::move(rhs.value_.myStruct));
-        break;
-      }
-      case Type::myDataItem:
-      {
-        set_myDataItem(std::move(rhs.value_.myDataItem));
-        break;
-      }
-      case Type::floatSet:
-      {
-        set_floatSet(std::move(rhs.value_.floatSet));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   MyUnion(const MyUnion& rhs);
@@ -2432,24 +2400,7 @@ class UnionToBeRenamed final  {
 
   UnionToBeRenamed(UnionToBeRenamed&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::reserved_field:
-      {
-        set_reserved_field(std::move(rhs.value_.reserved_field));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   UnionToBeRenamed(const UnionToBeRenamed& rhs);

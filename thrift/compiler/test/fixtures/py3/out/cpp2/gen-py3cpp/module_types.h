@@ -1247,24 +1247,7 @@ class AdaptedUnion final  {
 
   AdaptedUnion(AdaptedUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::best:
-      {
-        set_best(std::move(rhs.value_.best));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   AdaptedUnion(const AdaptedUnion& rhs);
@@ -3263,24 +3246,7 @@ class BinaryUnion final  {
 
   BinaryUnion(BinaryUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::iobuf_val:
-      {
-        set_iobuf_val(std::move(rhs.value_.iobuf_val));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   BinaryUnion(const BinaryUnion& rhs);

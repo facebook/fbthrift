@@ -1689,29 +1689,7 @@ class MyUnion final  {
 
   MyUnion(MyUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::first:
-      {
-        set_first(std::move(rhs.value_.first));
-        break;
-      }
-      case Type::second:
-      {
-        set_second(std::move(rhs.value_.second));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   MyUnion(const MyUnion& rhs);

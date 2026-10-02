@@ -1483,44 +1483,7 @@ class Baz final  {
 
   Baz(Baz&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::intField:
-      {
-        set_intField(std::move(rhs.value_.intField));
-        break;
-      }
-      case Type::setField:
-      {
-        set_setField(std::move(rhs.value_.setField));
-        break;
-      }
-      case Type::mapField:
-      {
-        set_mapField(std::move(rhs.value_.mapField));
-        break;
-      }
-      case Type::binaryField:
-      {
-        set_binaryField(std::move(rhs.value_.binaryField));
-        break;
-      }
-      case Type::longField:
-      {
-        set_longField(std::move(rhs.value_.longField));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   Baz(const Baz& rhs);
@@ -5841,29 +5804,7 @@ class ThriftAdaptTestUnion final  {
 
   ThriftAdaptTestUnion(ThriftAdaptTestUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::delay:
-      {
-        set_delay(std::move(rhs.value_.delay));
-        break;
-      }
-      case Type::custom:
-      {
-        set_custom(std::move(rhs.value_.custom));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   ThriftAdaptTestUnion(const ThriftAdaptTestUnion& rhs);

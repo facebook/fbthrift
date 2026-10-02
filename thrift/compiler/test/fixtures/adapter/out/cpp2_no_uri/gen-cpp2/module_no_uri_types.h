@@ -87,24 +87,7 @@ class RefUnion final  {
 
   RefUnion(RefUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::field1:
-      {
-        set_field1(std::move(*rhs.value_.field1));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   RefUnion(const RefUnion& rhs);

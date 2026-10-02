@@ -1106,29 +1106,7 @@ class ExampleUnion final  {
 
   ExampleUnion(ExampleUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::fieldA:
-      {
-        set_fieldA(std::move(rhs.value_.fieldA));
-        break;
-      }
-      case Type::fieldB:
-      {
-        set_fieldB(std::move(rhs.value_.fieldB));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   ExampleUnion(const ExampleUnion& rhs);

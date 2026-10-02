@@ -200,49 +200,7 @@ class ComplexUnion final  {
 
   ComplexUnion(ComplexUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::intValue:
-      {
-        set_intValue(std::move(rhs.value_.intValue));
-        break;
-      }
-      case Type::stringValue:
-      {
-        set_stringValue(std::move(rhs.value_.stringValue));
-        break;
-      }
-      case Type::intListValue:
-      {
-        set_intListValue(std::move(rhs.value_.intListValue));
-        break;
-      }
-      case Type::stringListValue:
-      {
-        set_stringListValue(std::move(rhs.value_.stringListValue));
-        break;
-      }
-      case Type::typedefValue:
-      {
-        set_typedefValue(std::move(rhs.value_.typedefValue));
-        break;
-      }
-      case Type::stringRef:
-      {
-        set_stringRef(std::move(*rhs.value_.stringRef));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   ComplexUnion(const ComplexUnion& rhs);
@@ -871,29 +829,7 @@ class ListUnion final  {
 
   ListUnion(ListUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::intListValue:
-      {
-        set_intListValue(std::move(rhs.value_.intListValue));
-        break;
-      }
-      case Type::stringListValue:
-      {
-        set_stringListValue(std::move(rhs.value_.stringListValue));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   ListUnion(const ListUnion& rhs);
@@ -1183,29 +1119,7 @@ class DataUnion final  {
 
   DataUnion(DataUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::binaryData:
-      {
-        set_binaryData(std::move(rhs.value_.binaryData));
-        break;
-      }
-      case Type::stringData:
-      {
-        set_stringData(std::move(rhs.value_.stringData));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   DataUnion(const DataUnion& rhs);
@@ -1744,29 +1658,7 @@ class ValUnion final  {
 
   ValUnion(ValUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::v1:
-      {
-        set_v1(std::move(rhs.value_.v1));
-        break;
-      }
-      case Type::v2:
-      {
-        set_v2(std::move(rhs.value_.v2));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   ValUnion(const ValUnion& rhs);
@@ -2056,29 +1948,7 @@ class VirtualComplexUnion  {
 
   VirtualComplexUnion(VirtualComplexUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::thingOne:
-      {
-        set_thingOne(std::move(rhs.value_.thingOne));
-        break;
-      }
-      case Type::thingTwo:
-      {
-        set_thingTwo(std::move(rhs.value_.thingTwo));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   VirtualComplexUnion(const VirtualComplexUnion& rhs);
@@ -2494,24 +2364,7 @@ class NonCopyableUnion final  {
 
   NonCopyableUnion(NonCopyableUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::s:
-      {
-        set_s(std::move(rhs.value_.s));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   NonCopyableUnion& operator=(NonCopyableUnion&& rhs) noexcept {

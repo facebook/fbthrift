@@ -4344,49 +4344,7 @@ class MyUnion final  {
 
   MyUnion(MyUnion&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::myEnum:
-      {
-        set_myEnum(std::move(rhs.value_.myEnum));
-        break;
-      }
-      case Type::myStruct:
-      {
-        set_myStruct(std::move(rhs.value_.myStruct));
-        break;
-      }
-      case Type::myDataItem:
-      {
-        set_myDataItem(std::move(rhs.value_.myDataItem));
-        break;
-      }
-      case Type::complexNestedStruct:
-      {
-        set_complexNestedStruct(std::move(rhs.value_.complexNestedStruct));
-        break;
-      }
-      case Type::longValue:
-      {
-        set_longValue(std::move(rhs.value_.longValue));
-        break;
-      }
-      case Type::intValue:
-      {
-        set_intValue(std::move(rhs.value_.intValue));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   MyUnion(const MyUnion& rhs);
@@ -6806,39 +6764,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   MyUnionFloatFieldThrowExp(MyUnionFloatFieldThrowExp&& rhs) noexcept
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
-    if (this == &rhs) { return; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        return;
-      }
-      case Type::myEnum:
-      {
-        set_myEnum(std::move(rhs.value_.myEnum));
-        break;
-      }
-      case Type::setFloat:
-      {
-        set_setFloat(std::move(rhs.value_.setFloat));
-        break;
-      }
-      case Type::myDataItem:
-      {
-        set_myDataItem(std::move(rhs.value_.myDataItem));
-        break;
-      }
-      case Type::complexNestedStruct:
-      {
-        set_complexNestedStruct(std::move(rhs.value_.complexNestedStruct));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    apache::thrift::clear(rhs);
+    *this = std::move(rhs);
   }
 
   MyUnionFloatFieldThrowExp(const MyUnionFloatFieldThrowExp& rhs);
