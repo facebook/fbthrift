@@ -77,7 +77,7 @@ class Wrap {
   void reset() { op::clear<underlying_tag>(data_); }
   bool empty() const { return op::isEmpty<underlying_tag>(data_); }
   template <typename Protocol>
-  std::size_t encode(Protocol& prot) const {
+  std::uint32_t encode(Protocol& prot) const {
     return op::encode<underlying_tag>(prot, data_);
   }
 
