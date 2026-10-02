@@ -24,7 +24,6 @@
 #include <optional>
 
 #include <folly/Executor.h>
-#include <folly/SocketAddress.h>
 #include <folly/container/F14Map.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
@@ -52,9 +51,6 @@
 
 namespace apache::thrift::fast_thrift::connection {
 
-// Disambiguate from sibling apache::thrift::fast_thrift::connection::security
-// namespace (the inner TLS pipeline). Bare `security::` resolves to the
-// sibling inside this namespace.
 namespace fast_security = ::apache::thrift::fast_thrift::security;
 
 // Pipeline handler tags. Must be at namespace scope (HANDLER_TAG expands to
@@ -64,20 +60,14 @@ HANDLER_TAG(connection_builder_handler);
 HANDLER_TAG(connection_accept_callback_handler);
 
 /**
- * ConnectionHandler — per-EventBase unit. Generic on the connection type:
- * setConnectionFactory<F>() is a templated setter that wires the acceptance
- * pipeline with a typed ConnectionBuilderHandler<F> + ConnectionInstaller<Conn>
- * (and an optional ConnectionAcceptCallbackHandler<Conn> middleware). The
- * resulting connections are stored type-erased so this class itself stays
- * non-templated.
+ * ConnectionHandler — per-data-EventBase unit. Its ConnectionListener receives
+ * accepted fds as the pipeline head, then this handler owns the resulting
+ * connection through teardown.
  *
  * Pipeline shape (constructed lazily by setConnectionFactory):
  *
  *   ConnectionListener (head)
- *     → [ConnectionTLSHandler]                       // PERMITTED + REQUIRED;
- *                                                    //   owns the inner TLS
- *                                                    //   pipeline (classifier,
- *                                                    //   fizz, stoptls)
+ *     → [ConnectionTLSHandler]
  *     → [ConnectionLimitHandler]                     // only if a per-IO-thread
  *                                                    //   connection cap is set
  *     → ConnectionBuilderHandler<F>
@@ -85,32 +75,28 @@ HANDLER_TAG(connection_accept_callback_handler);
  *     → [ConnectionMetricsHandler]                   // only if stats are set
  *     → ConnectionInstaller<Conn>  (tail)
  *
- * Shutdown is single-call: stop() tears the acceptance pipeline down,
- * triggers close on every live connection, and waits for each one's
+ * Shutdown is single-call: stop() rejects new installs, triggers close on
+ * every live connection, and waits for each one's
  * close callback to remove its entry. Each connection is responsible for
  * bounding its own termination — ConnectionHandler does not impose an
  * outer deadline. Must NOT be called from the owning EVB thread; the
  * wait would block the same loop that fires the close callbacks.
  *
- * Hot-reload of TLS state is pull-based: ConnectionHandler holds the
- * Observer and threads it into the TLS pipeline at construction time.
  */
 class ConnectionHandler {
  public:
   using Ptr = std::unique_ptr<ConnectionHandler>;
 
-  // `stats` is borrowed and may be null, in which case no metrics handler is
-  // built into the acceptance pipeline and the handler costs nothing. Must be
-  // constructed on `evb`: the shard is resolved here, and it belongs to the
-  // constructing thread.
+  // `stats` is borrowed and may be null. Must be constructed on `evb`: the
+  // shard is resolved here and belongs to the constructing thread.
   ConnectionHandler(
       folly::EventBase& evb,
-      folly::SocketAddress address,
       fast_security::SSLPolicy sslPolicy,
       folly::observer::Observer<std::shared_ptr<const fast_security::TLSParams>>
           tlsParamsObserver,
       SocketOptions socketOptions,
-      bool enableReusePortBpfSpread,
+      std::optional<folly::observer::Observer<uint32_t>>
+          maxConnectionsPerIOThread,
       ConnectionStats* stats = nullptr,
       security::TLSStats* tlsStats = nullptr);
 
@@ -122,7 +108,8 @@ class ConnectionHandler {
   ConnectionHandler& operator=(ConnectionHandler&&) = delete;
 
   /**
-   * Build and start the acceptance pipeline using `factory`. Optional
+   * Build and start the established-connection pipeline using `factory`.
+   * Optional
    * `onAccept` callback fires once per accepted connection with typed
    * access to the freshly-built Connection, between creation and storage.
    *
@@ -130,31 +117,23 @@ class ConnectionHandler {
    * handler's pipeline is torn down (stop() / dtor). Typically owned by
    * ConnectionManager and outlives every per-EVB handler.
    *
-   * Must be called exactly once on the owning EVB before any accepts can
-   * be processed.
+   * Must be called exactly once on the owning EVB before any connection can
+   * be installed.
    */
   template <ConnectionFactory F>
   void setConnectionFactory(
       F& factory, std::function<void(FactoryConnectionType<F>&)> onAccept = {});
 
+  ConnectionListener& listener() noexcept { return listener_; }
+
   /**
-   * Graceful shutdown. Stops accept, triggers close on every live
+   * Graceful shutdown. Stops installation, triggers close on every live
    * connection, and waits for them all to fully tear down (their close
    * callbacks remove each entry). Each connection bounds its own
    * termination — there is no outer deadline here. Must be called
    * off-EVB.
    */
   void stop();
-
-  /**
-   * The address this handler listens on. Before setConnectionFactory() binds
-   * the socket this is the configured address (port may be 0); afterwards it
-   * is the bound address. Remains readable after stop() — callers such as
-   * debug-interface handlers can race shutdown from other threads.
-   *
-   * Safe to call from any thread once the handler has been wired.
-   */
-  folly::SocketAddress getAddress() const;
 
   // Thread-safe: backed by an atomic kept in sync with connections_ on the
   // EVB. Plain connections_.size() would race with off-EVB readers
@@ -186,8 +165,8 @@ class ConnectionHandler {
     };
   }
 
-  // Acceptance pipeline teardown — invoked from stop().
-  void stopAcceptingOnEvb();
+  // Established-connection pipeline teardown — invoked from stop().
+  void stopInstallingOnEvb();
   // Trigger close on every live connection — invoked from stop() on EVB.
   void closeAllOnEvb();
   // Synchronous force-destroy escape hatch — invoked only from the dtor's
@@ -200,43 +179,30 @@ class ConnectionHandler {
   void onConnectionClosed(uint64_t connId) noexcept;
 
   // Post drainedBaton_ at most once. The drain-empty path in
-  // drainAllOnEvb and the last-close path in onConnectionClosed both
+  // closeAllOnEvb and the last-close path in onConnectionClosed both
   // race to post; folly::Baton requires a single post per cycle.
   void postDrainedOnce() noexcept;
 
   folly::Executor::KeepAlive<folly::EventBase> evb_;
-  folly::SocketAddress address_;
-  SocketOptions socketOptions_;
-  bool enableReusePortBpfSpread_;
   fast_security::SSLPolicy sslPolicy_;
   folly::observer::Observer<std::shared_ptr<const fast_security::TLSParams>>
       tlsParamsObserver_;
+  SocketOptions socketOptions_;
+  std::optional<folly::observer::Observer<uint32_t>> maxConnectionsPerIOThread_;
 
-  // Acceptance pipeline pieces. listener_ is constructed in the ctor so
-  // the handler is addressable before setConnectionFactory(); the rest is
-  // built lazily in setConnectionFactory(). Declaration order ensures the
-  // pipeline tears down first.
+  // Established-connection pipeline pieces. The listener callback is entered
+  // only on this handler's EventBase. Declaration order ensures the pipeline
+  // tears down first.
   channel_pipeline::SimpleBufferAllocator allocator_;
-  ConnectionListener::Ptr listener_;
+  ConnectionListener listener_;
   std::unique_ptr<
       folly::DelayedDestruction,
       void (*)(folly::DelayedDestruction*) noexcept>
       installer_{nullptr, [](folly::DelayedDestruction*) noexcept {}};
   channel_pipeline::PipelineImpl::Ptr pipeline_;
 
-  // Snapshot of the listening address, seeded with the configured address
-  // and overwritten with the bound one once setConnectionFactory() binds.
-  // Outlives listener_ so getAddress() stays answerable during and after
-  // teardown.
-  //
-  // Written once at wiring time and read unsynchronized thereafter, matching
-  // ThriftServerAppAdapter::cpuExecutor_. ConnectionManager wires a handler
-  // before inserting it into handlers_, so the map's lock publishes this to
-  // every reader that goes through it.
-  folly::SocketAddress boundAddress_;
-
-  // This EventBase's counter shards, resolved in the ctor, or null when the
-  // server was given no corresponding stats. Written only from this EVB.
+  // This EventBase's counter shard, resolved in the ctor, or null when the
+  // server was given no stats. Written only from this EventBase.
   ConnectionStatsShard* statsShard_{nullptr};
   security::TLSStatsShard* tlsShard_{nullptr};
 
@@ -300,15 +266,10 @@ void ConnectionHandler::setConnectionFactory(
       channel_pipeline::SimpleBufferAllocator>
       builder;
   builder.setEventBase(evb_.get())
-      .setHead(listener_.get())
+      .setHead(&listener_)
       .setTail(installerRaw)
       .setAllocator(&allocator_);
 
-  // The TLS lifecycle (peek classification under PERMITTED, fizz handshake,
-  // optional StopTLS V1 downgrade) lives entirely inside ConnectionTLSHandler
-  // as an inner pipeline. The outer pipeline sees one handler. The Observer
-  // is forwarded in and snapshotted per accept inside that inner pipeline
-  // (hot-reload safe).
   if (sslPolicy_ != fast_security::SSLPolicy::DISABLED) {
     builder.template addNextDuplex<handler::ConnectionTLSHandler>(
         connection_tls_tag,
@@ -323,10 +284,10 @@ void ConnectionHandler::setConnectionFactory(
   // Above the builder, so a refused connection is closed before a Connection
   // is built for it, and below the TLS handler, so only connections that got
   // through the handshake are counted against the cap.
-  if (socketOptions_.maxConnectionsPerIOThread.has_value()) {
+  if (maxConnectionsPerIOThread_.has_value()) {
     builder.template addNextInbound<handler::ConnectionLimitHandler>(
         handler::connection_limit_handler_tag,
-        *socketOptions_.maxConnectionsPerIOThread,
+        *maxConnectionsPerIOThread_,
         &connectionCount_,
         statsShard_);
   }
@@ -339,23 +300,17 @@ void ConnectionHandler::setConnectionFactory(
         connection_accept_callback_handler_tag, std::move(onAccept));
   }
 
-  // Below the builder, so only connections that survived TLS and were built
-  // reach it — matching what the classic server's connAccepted() counts.
+  // Below the builder, so only connections that were built reach it — matching
+  // what the classic server's connAccepted() counts.
   if (statsShard_ != nullptr) {
     builder.template addNextInbound<handler::ConnectionMetricsHandler>(
         handler::connection_metrics_handler_tag, statsShard_);
   }
 
   pipeline_ = builder.build();
-  listener_->setPipeline(pipeline_.get());
+  listener_.setPipeline(pipeline_.get());
   installerRaw->setPipeline(pipeline_.get());
-  listener_->start();
-  // start() binds, so the port is only final here. Snapshot it: getAddress()
-  // reads this rather than the listener, which teardown destroys while
-  // off-EVB observability callers may still be asking. Written before this
-  // handler is published to ConnectionManager::handlers_, so readers reaching
-  // it through that map see it via the map's lock.
-  boundAddress_ = listener_->getAddress();
+  pipeline_->activate();
 }
 
 } // namespace apache::thrift::fast_thrift::connection

@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 #include <optional>
 
@@ -48,6 +49,11 @@ struct SocketOptions {
   bool tcpNoDelay{false};
   int trafficClass{0};
 
+  // Cap on accepted sockets queued for one destination IO worker. This is the
+  // same boundary AsyncServerSocket provides to the classic Thrift server;
+  // keep the default in parity with ThriftServerConfig.
+  uint32_t maxPendingConnectionsPerWorker{4096};
+
   // Cap on the connections an IO thread will hold parked in a TLS stage —
   // accepted, but not yet resolved to an established connection: awaiting
   // peek classification, the fizz handshake, or a StopTLS V1 downgrade. Past
@@ -59,6 +65,11 @@ struct SocketOptions {
   // three under PERMITTED. Has no effect under DISABLED, where a connection
   // is established on the accept itself and is never parked.
   uint32_t maxPendingConnections{0};
+
+  // Maximum time an accepted socket may wait for its destination IO worker.
+  // Zero disables expiry.
+  std::chrono::nanoseconds pendingConnectionQueueTimeout{
+      std::chrono::milliseconds{100}};
 
   // Cap on the connections one IO thread will hold established at once. A
   // connection past the cap is closed once its handshake completes, rather

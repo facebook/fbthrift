@@ -16,6 +16,7 @@
 
 #include <gtest/gtest.h>
 
+#include <array>
 #include <atomic>
 #include <chrono>
 #include <memory>
@@ -136,15 +137,23 @@ class ConnectionManagerTest : public ::testing::Test {
   void connectAndWait(const folly::SocketAddress& address) {
     struct ConnectCb : folly::AsyncSocket::ConnectCallback {
       folly::Baton<>& baton;
-      explicit ConnectCb(folly::Baton<>& b) : baton(b) {}
-      void connectSuccess() noexcept override { baton.post(); }
-      void connectErr(const folly::AsyncSocketException&) noexcept override {}
+      bool& connected;
+      ConnectCb(folly::Baton<>& b, bool& connectedRef)
+          : baton(b), connected(connectedRef) {}
+      void connectSuccess() noexcept override {
+        connected = true;
+        baton.post();
+      }
+      void connectErr(const folly::AsyncSocketException&) noexcept override {
+        baton.post();
+      }
     };
 
     const size_t before = connectionManager_->connectionCount();
 
     folly::Baton<> connected;
-    ConnectCb cb(connected);
+    bool connectedSuccessfully = false;
+    ConnectCb cb(connected, connectedSuccessfully);
     auto clientThread = std::make_unique<folly::ScopedEventBaseThread>();
     auto* clientEvb = clientThread->getEventBase();
     std::shared_ptr<folly::AsyncSocket> clientSocket;
@@ -153,6 +162,7 @@ class ConnectionManagerTest : public ::testing::Test {
       clientSocket->connect(&cb, address, 1000);
     });
     connected.wait();
+    ASSERT_TRUE(connectedSuccessfully);
 
     const auto deadline =
         std::chrono::steady_clock::now() + std::chrono::seconds{5};
@@ -219,6 +229,49 @@ TEST_F(ConnectionManagerTest, StopClosesConnections) {
 TEST_F(ConnectionManagerTest, ConnectionHandlerRegistration) {
   // Per-IO-thread ConnectionHandler should be registered after start().
   EXPECT_EQ(connectionManager_->numHandlers(), kNumIOThreads);
+  EXPECT_EQ(connectionManager_->numAcceptors(), kNumIOThreads);
+}
+
+TEST_F(ConnectionManagerTest, DedicatedAcceptorDistributesAcrossWorkers) {
+  connectionManager_.reset();
+
+  folly::IOThreadPoolExecutor acceptorExecutor{/*maxThreads=*/1,
+                                               /*minThreads=*/1};
+  const auto workerEvbs = executor_.getAllEventBases();
+  auto* acceptorEvb = acceptorExecutor.getEventBase();
+  std::array<std::atomic<bool>, kNumIOThreads> acceptedWorkers{};
+  std::atomic<bool> acceptedOnAcceptor{false};
+
+  connectionManager_ = ConnectionManager::create(
+      folly::SocketAddress("::1", 0),
+      folly::getKeepAliveToken(executor_),
+      fast_security::SSLPolicy::DISABLED,
+      /*tlsParams=*/nullptr,
+      SocketOptions{},
+      folly::getKeepAliveToken(acceptorExecutor));
+  connectionManager_->setConnectionFactory(
+      TestConnectionFactory{closeCount_}, [&](TestConnection&) noexcept {
+        for (size_t i = 0; i < workerEvbs.size(); ++i) {
+          if (workerEvbs[i]->isInEventBaseThread()) {
+            acceptedWorkers[i].store(true);
+          }
+        }
+        acceptedOnAcceptor.store(acceptorEvb->isInEventBaseThread());
+      });
+  connectionManager_->start();
+
+  EXPECT_EQ(connectionManager_->numHandlers(), kNumIOThreads);
+  EXPECT_EQ(connectionManager_->numAcceptors(), 1);
+  for (size_t i = 0; i < kNumIOThreads; ++i) {
+    connectAndWait(connectionManager_->getAddress());
+  }
+  for (const auto& accepted : acceptedWorkers) {
+    EXPECT_TRUE(accepted.load());
+  }
+  EXPECT_FALSE(acceptedOnAcceptor.load());
+
+  connectionManager_.reset();
+  acceptorExecutor.join();
 }
 
 TEST_F(ConnectionManagerTest, DestructorStopsServer) {

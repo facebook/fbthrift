@@ -304,6 +304,7 @@ class FastThriftServerTest : public ::testing::Test {
     ftt::FastThriftServerConfig config;
     config.address = folly::SocketAddress("::1", 0);
     config.numIOThreads = 1;
+    config.numConnectionSetupThreads = 1;
     if (enableChecksum_) {
       config.enableChecksum = true;
     }
@@ -639,6 +640,7 @@ class FastThriftServerTlsTest : public ::testing::Test {
     ftt::FastThriftServerConfig config;
     config.address = folly::SocketAddress("::1", 0);
     config.numIOThreads = 1;
+    config.numConnectionSetupThreads = 1;
     server_ = std::make_unique<ftt::FastThriftServer>(std::move(config));
 
     security::FizzServerCertConfig sslConfig;

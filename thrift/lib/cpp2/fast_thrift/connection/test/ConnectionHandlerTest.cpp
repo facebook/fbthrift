@@ -16,18 +16,19 @@
 
 #include <gtest/gtest.h>
 
+#include <sys/socket.h>
+#include <array>
 #include <atomic>
-#include <chrono>
 #include <memory>
 #include <vector>
 
 #include <folly/SocketAddress.h>
 #include <folly/init/Init.h>
-#include <folly/io/async/AsyncSocket.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
+#include <folly/net/NetworkSocket.h>
 #include <folly/observer/SimpleObservable.h>
-#include <folly/synchronization/Baton.h>
 
 #include <thrift/lib/cpp2/fast_thrift/connection/ConnectionHandler.h>
 
@@ -99,7 +100,7 @@ class TestConnectionFactory {
         .closeOnStart = closeOnStart_};
   }
 
-  // Written on the accepting EVB; read back through that EVB.
+  // Written on the data EVB; read back through that EVB.
   folly::SocketAddress lastClientAddr;
   std::shared_ptr<const PeerSecurityInfo> lastPeerSecurity;
 
@@ -118,94 +119,44 @@ class ConnectionHandlerTest : public ::testing::Test {
   }
 
   void TearDown() override {
-    clientConnections_.clear();
+    for (auto fd : clientFds_) {
+      folly::netops::close(fd);
+    }
     evbThread_.reset();
   }
 
   std::unique_ptr<ConnectionHandler> createConnectionHandler() {
-    // DISABLED never reads tlsParams, but the ctor needs a valid Observer.
     return std::make_unique<ConnectionHandler>(
         *evb_,
-        folly::SocketAddress("::1", 0),
         fast_security::SSLPolicy::DISABLED,
-        // DISABLED never reads tlsParams, but the ctor needs a valid Observer.
         folly::observer::SimpleObservable<
             std::shared_ptr<const fast_security::TLSParams>>(
             std::shared_ptr<const fast_security::TLSParams>{})
             .getObserver(),
         SocketOptions{},
-        /*enableReusePortBpfSpread=*/false);
+        std::nullopt);
   }
 
-  // Wires the factory + starts the acceptance pipeline. Runs on the
+  // Wires the factory + starts the installation pipeline. Runs on the
   // owning EVB because setConnectionFactory builds + activates the pipeline.
   // Factory is stored on the test fixture so it outlives the handler.
-  void wireFactory(ConnectionHandler& h) {
-    factory_ = std::make_unique<TestConnectionFactory>(closeCount_);
+  void wireFactory(ConnectionHandler& h, bool closeOnStart = false) {
+    factory_ =
+        std::make_unique<TestConnectionFactory>(closeCount_, closeOnStart);
     evb_->runInEventBaseThreadAndWait(
         [&] { h.setConnectionFactory(*factory_); });
   }
 
-  // Owns a client socket + its EVB thread. The dtor destroys the socket
-  // on its own EVB thread (AsyncSocket asserts this).
-  struct ClientConnection {
-    std::shared_ptr<folly::AsyncSocket> socket;
-    std::unique_ptr<folly::ScopedEventBaseThread> thread;
-
-    ClientConnection() = default;
-    ClientConnection(ClientConnection&&) = default;
-    ClientConnection& operator=(ClientConnection&&) = default;
-
-    ~ClientConnection() {
-      if (thread && socket) {
-        thread->getEventBase()->runInEventBaseThreadAndWait(
-            [s = std::move(socket)]() mutable { s.reset(); });
-      }
-    }
-  };
-
-  // Connects a client to the server and waits for the server's accept to
-  // produce a connection (observed via handler.connectionCount()).
-  void connectAndWait(
-      ConnectionHandler& handler, const folly::SocketAddress& address) {
-    struct ConnectCb : folly::AsyncSocket::ConnectCallback {
-      folly::Baton<>& baton;
-      explicit ConnectCb(folly::Baton<>& b) : baton(b) {}
-      void connectSuccess() noexcept override { baton.post(); }
-      void connectErr(const folly::AsyncSocketException&) noexcept override {}
-    };
-
-    const size_t before = handler.connectionCount();
-
-    folly::Baton<> connected;
-    ConnectCb cb(connected);
-    auto clientThread = std::make_unique<folly::ScopedEventBaseThread>();
-    auto* clientEvb = clientThread->getEventBase();
-    std::shared_ptr<folly::AsyncSocket> clientSocket;
-    clientEvb->runInEventBaseThreadAndWait([&] {
-      clientSocket = folly::AsyncSocket::newSocket(clientEvb);
-      clientSocket->connect(&cb, address, 1000);
+  void install(ConnectionHandler& handler) {
+    std::array<int, 2> fds{};
+    ASSERT_EQ(::socketpair(AF_UNIX, SOCK_STREAM, 0, fds.data()), 0);
+    clientFds_.emplace_back(fds[0]);
+    evb_->runInEventBaseThreadAndWait([&] {
+      handler.listener().connectionAccepted(
+          folly::NetworkSocket{fds[1]},
+          folly::SocketAddress{"127.0.0.1", 5001},
+          folly::AsyncServerSocket::AcceptCallback::AcceptInfo{});
     });
-    connected.wait();
-
-    // Server-side accept is asynchronous w.r.t. the client's connect-success.
-    // Spin-wait on the count (with a generous deadline) until the factory
-    // has produced the new connection.
-    const auto deadline =
-        std::chrono::steady_clock::now() + std::chrono::seconds{5};
-    while (handler.connectionCount() == before) {
-      ASSERT_LT(std::chrono::steady_clock::now(), deadline)
-          << "timed out waiting for server to accept connection";
-      // Short poll; server-side accept is asynchronous and has no synchronous
-      // hand-off, so we wait on its observable side-effect (connectionCount).
-      // NOLINTNEXTLINE(facebook-hte-BadCall-sleep_for)
-      std::this_thread::sleep_for(std::chrono::milliseconds{5});
-    }
-
-    ClientConnection cc;
-    cc.socket = std::move(clientSocket);
-    cc.thread = std::move(clientThread);
-    clientConnections_.push_back(std::move(cc));
   }
 
   std::unique_ptr<folly::ScopedEventBaseThread> evbThread_;
@@ -213,7 +164,7 @@ class ConnectionHandlerTest : public ::testing::Test {
   std::shared_ptr<std::atomic<size_t>> closeCount_ =
       std::make_shared<std::atomic<size_t>>(0);
   std::unique_ptr<TestConnectionFactory> factory_;
-  std::vector<ClientConnection> clientConnections_;
+  std::vector<folly::NetworkSocket> clientFds_;
 };
 
 TEST_F(ConnectionHandlerTest, ConstructDoesNotStart) {
@@ -222,35 +173,11 @@ TEST_F(ConnectionHandlerTest, ConstructDoesNotStart) {
   EXPECT_EQ(handler->connectionCount(), 0);
 }
 
-TEST_F(ConnectionHandlerTest, GetAddressAfterFactoryBindsPort) {
-  auto handler = createConnectionHandler();
-  wireFactory(*handler);
-
-  auto bound = handler->getAddress();
-  EXPECT_NE(bound.getPort(), 0);
-}
-
-// stop() destroys the listener on the EVB, but off-EVB callers (debug
-// interfaces, observability) can still be asking for the address. Reading
-// through the listener would be a use-after-free, so the bound address has
-// to outlive it.
-TEST_F(ConnectionHandlerTest, GetAddressSurvivesStop) {
-  auto handler = createConnectionHandler();
-  wireFactory(*handler);
-
-  const auto bound = handler->getAddress();
-  ASSERT_NE(bound.getPort(), 0);
-
-  handler->stop();
-
-  EXPECT_EQ(handler->getAddress(), bound);
-}
-
 TEST_F(ConnectionHandlerTest, AcceptsSingleConnection) {
   auto handler = createConnectionHandler();
   wireFactory(*handler);
 
-  connectAndWait(*handler, handler->getAddress());
+  install(*handler);
 
   EXPECT_EQ(handler->connectionCount(), 1);
 }
@@ -259,9 +186,8 @@ TEST_F(ConnectionHandlerTest, AcceptsMultipleConnections) {
   auto handler = createConnectionHandler();
   wireFactory(*handler);
 
-  auto addr = handler->getAddress();
   for (int i = 0; i < 3; ++i) {
-    connectAndWait(*handler, addr);
+    install(*handler);
   }
 
   EXPECT_EQ(handler->connectionCount(), 3);
@@ -271,9 +197,8 @@ TEST_F(ConnectionHandlerTest, StopDrainsAllConnections) {
   auto handler = createConnectionHandler();
   wireFactory(*handler);
 
-  auto addr = handler->getAddress();
   for (int i = 0; i < 3; ++i) {
-    connectAndWait(*handler, addr);
+    install(*handler);
   }
   ASSERT_EQ(handler->connectionCount(), 3);
 
@@ -297,8 +222,7 @@ TEST_F(ConnectionHandlerTest, StopWithNoConnections) {
 TEST_F(ConnectionHandlerTest, DestroyWithActiveConnections) {
   auto handler = createConnectionHandler();
   wireFactory(*handler);
-  auto addr = handler->getAddress();
-  connectAndWait(*handler, addr);
+  install(*handler);
   ASSERT_EQ(handler->connectionCount(), 1);
 
   // Destructor drives stop() — should release live connections cleanly.
@@ -313,50 +237,11 @@ TEST_F(ConnectionHandlerTest, DestroyWithActiveConnections) {
 // against a not-yet-registered entry, missing the erase + count decrement.
 TEST_F(ConnectionHandlerTest, SynchronousCloseDuringStartIsSafe) {
   auto handler = createConnectionHandler();
-  factory_ = std::make_unique<TestConnectionFactory>(
-      closeCount_, /*closeOnStart=*/true);
-  evb_->runInEventBaseThreadAndWait(
-      [&] { handler->setConnectionFactory(*factory_); });
-
-  // Open a client socket — the server-side install will run start(), which
-  // synchronously closes, firing the close callback under the install
-  // lambda. We wait on closeCount_ rather than connectionCount() because
-  // the count briefly hits 1 and returns to 0 in the same EVB iteration;
-  // a spin-wait on connectionCount() would race the synchronous close.
-  folly::Baton<> connected;
-  struct ConnectCb : folly::AsyncSocket::ConnectCallback {
-    folly::Baton<>& baton;
-    explicit ConnectCb(folly::Baton<>& b) : baton(b) {}
-    void connectSuccess() noexcept override { baton.post(); }
-    void connectErr(const folly::AsyncSocketException&) noexcept override {}
-  };
-  ConnectCb cb(connected);
-  auto clientThread = std::make_unique<folly::ScopedEventBaseThread>();
-  auto* clientEvb = clientThread->getEventBase();
-  std::shared_ptr<folly::AsyncSocket> clientSocket;
-  clientEvb->runInEventBaseThreadAndWait([&] {
-    clientSocket = folly::AsyncSocket::newSocket(clientEvb);
-    clientSocket->connect(&cb, handler->getAddress(), 1000);
-  });
-  connected.wait();
-
-  const auto deadline =
-      std::chrono::steady_clock::now() + std::chrono::seconds{5};
-  while (closeCount_->load() == 0) {
-    ASSERT_LT(std::chrono::steady_clock::now(), deadline)
-        << "timed out waiting for server-side install + synchronous close";
-    // NOLINTNEXTLINE(facebook-hte-BadCall-sleep_for)
-    std::this_thread::sleep_for(std::chrono::milliseconds{5});
-  }
+  wireFactory(*handler, /*closeOnStart=*/true);
+  install(*handler);
   EXPECT_EQ(handler->connectionCount(), 0)
       << "synchronous close during start() must remove the registered entry";
   EXPECT_EQ(closeCount_->load(), 1);
-
-  // Hand off the client socket so its dtor runs on its EVB.
-  ClientConnection cc;
-  cc.socket = std::move(clientSocket);
-  cc.thread = std::move(clientThread);
-  clientConnections_.push_back(std::move(cc));
 }
 
 // The factory is handed the peer address observed at accept, so it never has
@@ -365,18 +250,12 @@ TEST_F(ConnectionHandlerTest, FactoryReceivesPeerAddress) {
   auto handler = createConnectionHandler();
   wireFactory(*handler);
 
-  connectAndWait(*handler, handler->getAddress());
-
-  auto& client = clientConnections_.back();
-  folly::SocketAddress clientLocalAddr;
-  client.thread->getEventBase()->runInEventBaseThreadAndWait(
-      [&] { client.socket->getLocalAddress(&clientLocalAddr); });
+  install(*handler);
 
   folly::SocketAddress seen;
   evb_->runInEventBaseThreadAndWait([&] { seen = factory_->lastClientAddr; });
 
-  EXPECT_FALSE(seen.empty());
-  EXPECT_EQ(seen, clientLocalAddr);
+  EXPECT_EQ(seen, folly::SocketAddress("127.0.0.1", 5001));
 }
 
 } // namespace apache::thrift::fast_thrift::connection

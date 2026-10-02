@@ -393,11 +393,13 @@ class FastThriftServer {
   /**
    * Attach a cBPF program to the SO_REUSEPORT group that replaces the
    * kernel's default 4-tuple hash selection with uniform random across
-   * worker listening sockets. Mitigates per-worker pile-up when client
+   * acceptor listening sockets. Mitigates per-worker pile-up when client
    * source IPs / ports are concentrated (a single hash bucket would
    * funnel most conns to one worker). Linux-only; silently no-op'd at
    * startAccepting() time on platforms where SO_ATTACH_REUSEPORT_CBPF
-   * isn't available.
+   * isn't available. Only applies when connection acceptance is colocated
+   * with the data IO workers; a dedicated acceptor pool retains the kernel's
+   * default selection, matching classic Thrift.
    *
    * Must be called before start()/serve().
    */
@@ -405,9 +407,9 @@ class FastThriftServer {
 
   /**
    * Listening-socket and accept-path tuning knobs (listen backlog, TCP Fast
-   * Open, max reads per event, max pending connections). Applied by
-   * ConnectionHandler on every IO thread. When unset, defaults from
-   * connection/SocketOptions.h apply.
+   * Open, max reads per event, max pending connections). Listener options apply
+   * on acceptor threads; accepted-socket options apply on data IO threads. When
+   * unset, defaults from connection/SocketOptions.h apply.
    *
    * Must be called before start()/serve().
    */
@@ -484,6 +486,14 @@ class FastThriftServer {
   const std::shared_ptr<folly::IOThreadPoolExecutorBase>& getIOThreadPool()
       const noexcept {
     return ioThreadPool_;
+  }
+
+  // The pool that owns listeners. Equal to getIOThreadPool() when dedicated
+  // accept threads are disabled; TLS always runs on the data IO pool.
+  const std::shared_ptr<folly::IOThreadPoolExecutorBase>&
+  getConnectionSetupThreadPool() const noexcept {
+    return connectionSetupThreadPool_ ? connectionSetupThreadPool_
+                                      : ioThreadPool_;
   }
 
   /**
@@ -586,6 +596,9 @@ class FastThriftServer {
   // constructed in start() from config_.numIOThreads. Released on
   // destruction; the pool's own dtor joins when the last ref drops.
   std::shared_ptr<folly::IOThreadPoolExecutorBase> ioThreadPool_;
+  // Null when setup is colocated on ioThreadPool_; retaining a second shared
+  // reference there would change the ownership contract of setIOThreadPool().
+  std::shared_ptr<folly::IOThreadPoolExecutorBase> connectionSetupThreadPool_;
   // Backs cpuExecutor_ only when start() had to construct the pool itself
   // from config_.numCPUThreads; an embedder-supplied executor is owned by
   // the embedder and this stays null. Declared before cpuExecutor_ so the

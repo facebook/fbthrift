@@ -134,6 +134,7 @@ class FastThriftChannelServerTest : public ::testing::Test {
     thrift::FastThriftServerConfig config;
     config.address = folly::SocketAddress("::1", 0);
     config.numIOThreads = 1;
+    config.numConnectionSetupThreads = 1;
     config.enableBackpressure = enableBackpressure();
 
     server_ = std::make_unique<thrift::FastThriftChannelServer>(

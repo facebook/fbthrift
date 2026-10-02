@@ -494,6 +494,11 @@ void FastThriftServer::start() {
         /*maxThreads=*/config_.numIOThreads,
         /*minThreads=*/config_.numIOThreads);
   }
+  if (config_.numConnectionSetupThreads > 0) {
+    connectionSetupThreadPool_ = std::make_shared<folly::IOThreadPoolExecutor>(
+        /*maxThreads=*/config_.numConnectionSetupThreads,
+        /*minThreads=*/config_.numConnectionSetupThreads);
+  }
 
   // Materialize the CPU pool only when asked for one and the embedder didn't
   // supply it. Leaving it null keeps handlers inline on the IO threads.
@@ -528,7 +533,8 @@ void FastThriftServer::start() {
       folly::getKeepAliveToken(ioThreadPool_.get()),
       sslPolicy,
       std::move(tlsParams),
-      socketOptions_);
+      socketOptions_,
+      folly::getKeepAliveToken(getConnectionSetupThreadPool().get()));
   connectionManager_->setEnableReusePortBpfSpread(enableReusePortBpfSpread_);
   connectionManager_->setConnectionStats(connectionStats_.get());
   connectionManager_->setTLSStats(tlsStats_.get());

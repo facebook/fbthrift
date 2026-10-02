@@ -25,11 +25,13 @@
 
 #include <sys/socket.h>
 #include <array>
+#include <utility>
 #include <vector>
 
 #include <folly/Benchmark.h>
 #include <folly/SocketAddress.h>
 #include <folly/init/Init.h>
+#include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/net/NetworkSocket.h>
@@ -42,7 +44,6 @@
 
 using namespace folly;
 using apache::thrift::fast_thrift::channel_pipeline::PipelineBuilder;
-using apache::thrift::fast_thrift::channel_pipeline::PipelineImpl;
 using apache::thrift::fast_thrift::channel_pipeline::SimpleBufferAllocator;
 using apache::thrift::fast_thrift::channel_pipeline::test::MockTailHandler;
 using apache::thrift::fast_thrift::connection::ConnectionListener;
@@ -66,36 +67,32 @@ BENCHMARK(Plaintext_AcceptToTail, iters) {
 
   MockTailHandler tail;
   SimpleBufferAllocator allocator;
-  ConnectionListener::Ptr listener(new ConnectionListener(
-      evb,
-      folly::SocketAddress("::1", 0),
-      SocketOptions{},
-      /*enableReusePortBpfSpread=*/false));
+  ConnectionListener listener(*evb, SocketOptions{});
   auto pipeline = PipelineBuilder<
                       ConnectionListener,
                       MockTailHandler,
                       SimpleBufferAllocator>()
                       .setEventBase(evb)
-                      .setHead(listener.get())
+                      .setHead(&listener)
                       .setTail(&tail)
                       .setAllocator(&allocator)
                       .build();
-  listener->setPipeline(pipeline.get());
+  listener.setPipeline(pipeline.get());
   evb->runInEventBaseThreadAndWait([&] { pipeline->activate(); });
 
   std::vector<folly::NetworkSocket> serverFds(iters);
   std::vector<folly::NetworkSocket> clientFds(iters);
   for (size_t i = 0; i < iters; ++i) {
-    auto p = makeSocketPair();
-    clientFds[i] = p.first;
-    serverFds[i] = p.second;
+    auto sockets = makeSocketPair();
+    clientFds[i] = sockets.first;
+    serverFds[i] = sockets.second;
   }
   folly::SocketAddress clientAddr("127.0.0.1", 5001);
 
   suspender.dismiss();
   evb->runInEventBaseThreadAndWait([&] {
     for (size_t i = 0; i < iters; ++i) {
-      listener->connectionAccepted(
+      listener.connectionAccepted(
           serverFds[i],
           clientAddr,
           folly::AsyncServerSocket::AcceptCallback::AcceptInfo{});
@@ -108,9 +105,9 @@ BENCHMARK(Plaintext_AcceptToTail, iters) {
     ::close(fd.toFd());
   }
   evb->runInEventBaseThreadAndWait([&] {
-    listener->resetPipeline();
+    pipeline->deactivate();
+    listener.resetPipeline();
     pipeline.reset();
-    listener.reset();
   });
 }
 

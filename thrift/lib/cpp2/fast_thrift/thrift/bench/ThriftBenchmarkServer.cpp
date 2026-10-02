@@ -59,6 +59,10 @@
 
 DEFINE_int32(port, 0, "Port to listen on (0 = system assigned)");
 DEFINE_int32(io_threads, 8, "Number of IO threads");
+DEFINE_int32(
+    connection_setup_threads,
+    0,
+    "Number of dedicated fast_thrift accept and TLS setup threads");
 DEFINE_string(
     rpc_type,
     "thrift",
@@ -169,9 +173,14 @@ class FastThriftBenchmarkServer {
   FastThriftBenchmarkServer(
       std::shared_ptr<BenchmarkServiceHandler> handler,
       uint16_t port,
-      uint32_t numIOThreads)
+      uint32_t numIOThreads,
+      uint32_t numConnectionSetupThreads)
       : handler_(std::move(handler)),
         executor_(std::make_shared<folly::IOThreadPoolExecutor>(numIOThreads)) {
+    if (numConnectionSetupThreads > 0) {
+      connectionSetupExecutor_ = std::make_shared<folly::IOThreadPoolExecutor>(
+          numConnectionSetupThreads, numConnectionSetupThreads);
+    }
     folly::SocketAddress address;
     address.setFromLocalPort(port);
 
@@ -180,7 +189,10 @@ class FastThriftBenchmarkServer {
         folly::getKeepAliveToken(executor_.get()),
         security::SSLPolicy::DISABLED,
         /*tlsParams=*/nullptr,
-        connection::SocketOptions{});
+        connection::SocketOptions{},
+        connectionSetupExecutor_
+            ? folly::getKeepAliveToken(connectionSetupExecutor_.get())
+            : folly::Executor::KeepAlive<folly::IOThreadPoolExecutorBase>{});
 
     connectionManager_->setConnectionFactory(ConnectionFactory{this});
   }
@@ -302,6 +314,7 @@ class FastThriftBenchmarkServer {
  private:
   std::shared_ptr<BenchmarkServiceHandler> handler_;
   std::shared_ptr<folly::IOThreadPoolExecutor> executor_;
+  std::shared_ptr<folly::IOThreadPoolExecutor> connectionSetupExecutor_;
   connection::ConnectionManager::Ptr connectionManager_;
   channel_pipeline::SimpleBufferAllocator allocator_;
   folly::Synchronized<std::vector<std::shared_ptr<thrift::ThriftServerChannel>>>
@@ -321,7 +334,8 @@ int main(int argc, char* argv[]) {
     XLOG(INFO) << "Starting ThriftServer on port " << FLAGS_port;
     server->serve();
   } else if (FLAGS_rpc_type == "fast_thrift") {
-    FastThriftBenchmarkServer server(handler, port, FLAGS_io_threads);
+    FastThriftBenchmarkServer server(
+        handler, port, FLAGS_io_threads, FLAGS_connection_setup_threads);
     server.serve();
   } else {
     XLOG(FATAL) << "Unknown rpc_type: " << FLAGS_rpc_type

@@ -16,55 +16,53 @@
 
 #include <thrift/lib/cpp2/fast_thrift/connection/endpoint/ConnectionListener.h>
 
-#include <array>
-#include <cerrno>
+#include <netinet/in.h>
 
-#if defined(__linux__)
-#include <linux/filter.h>
-#include <sys/socket.h>
-#endif
-
-#include <folly/String.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/logging/xlog.h>
 #include <folly/net/NetworkSocket.h>
 
 namespace apache::thrift::fast_thrift::connection {
 
-void ConnectionListener::attachReusePortBpfSpread() noexcept {
-  // Replace the kernel's default 4-tuple-hash REUSEPORT selection with a
-  // 2-instruction cBPF program returning a random u32 — kernel mods by
-  // group size internally. Every worker installs the same program on its
-  // own fd; last-write-wins is harmless. Failed attach leaves the kernel's
-  // default selector in place.
-#if defined(__linux__)
-  auto code = std::to_array<sock_filter>({
-      BPF_STMT(
-          BPF_LD | BPF_W | BPF_ABS,
-          static_cast<uint32_t>(SKF_AD_OFF + SKF_AD_RANDOM)),
-      BPF_STMT(BPF_RET | BPF_A, 0),
-  });
-  struct sock_fprog prog = {
-      .len = static_cast<unsigned short>(code.size()),
-      .filter = code.data(),
-  };
-  for (auto fd : socket_->getNetworkSockets()) {
-    if (::setsockopt(
-            fd.toFd(),
-            SOL_SOCKET,
-            SO_ATTACH_REUSEPORT_CBPF,
-            &prog,
-            sizeof(prog)) != 0) {
-      const int savedErrno = errno;
-      XLOGF_EVERY_MS(
-          ERR,
-          1000,
-          "SO_ATTACH_REUSEPORT_CBPF failed on fd {}: errno={} ({})",
-          fd.toFd(),
-          savedErrno,
-          folly::errnoStr(savedErrno));
-    }
+void ConnectionListener::connectionAccepted(
+    folly::NetworkSocket fd,
+    const folly::SocketAddress& clientAddr,
+    AcceptInfo) noexcept {
+  DCHECK(evb_->isInEventBaseThread());
+  if (FOLLY_UNLIKELY(!pipeline_)) {
+    folly::netops::close(fd);
+    return;
   }
-#endif
+
+  auto socket = folly::AsyncSocket::newSocket(evb_, fd);
+  socket->setMaxReadsPerEvent(socketOptions_.maxReadsPerEvent);
+  if (socketOptions_.tcpNoDelay) {
+    socket->setNoDelay(true);
+  }
+  if (socketOptions_.trafficClass > 0 && clientAddr.getFamily() == AF_INET6 &&
+      socket->setSockOpt(
+          IPPROTO_IPV6, IPV6_TCLASS, &socketOptions_.trafficClass) != 0) {
+    XLOG_EVERY_MS(ERR, 1000)
+        << "Failed to set IPV6_TCLASS=" << socketOptions_.trafficClass
+        << " on accepted socket";
+  }
+
+  folly::AsyncTransport::UniquePtr transport(socket.release());
+  const auto result = pipeline_->fireRead(
+      channel_pipeline::erase_and_box(
+          ConnectionMessage{
+              .transport = std::move(transport),
+              .clientAddr = clientAddr,
+              .peerSecurity = nullptr,
+          }));
+  if (FOLLY_UNLIKELY(result != channel_pipeline::Result::Success)) {
+    XLOG_EVERY_MS(WARN, 1000) << "Connection pipeline rejected connection from "
+                              << clientAddr.describe();
+  }
+}
+
+void ConnectionListener::acceptError(folly::exception_wrapper ew) noexcept {
+  XLOG_EVERY_MS(ERR, 1000) << "Accept dispatch failed: " << ew.what();
 }
 
 } // namespace apache::thrift::fast_thrift::connection

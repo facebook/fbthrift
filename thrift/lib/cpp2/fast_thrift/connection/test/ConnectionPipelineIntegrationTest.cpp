@@ -14,23 +14,13 @@
  * limitations under the License.
  */
 
-/**
- * AcceptancePipelineIntegrationTest
- *
- * End-to-end exercise of the acceptance pipeline head:
- *   ConnectionListener (head) → MockTailHandler
- *
- * Drives connectionAccepted() directly with an accepted IPv6 TCP fd and
- * asserts the mock tail receives a configured AsyncSocket. Bypasses the
- * listener's bind/listen path.
- */
+#include <gtest/gtest.h>
 
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <sys/socket.h>
 #include <memory>
-
-#include <gtest/gtest.h>
+#include <utility>
 
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -48,7 +38,6 @@
 namespace apache::thrift::fast_thrift::connection {
 
 using channel_pipeline::PipelineBuilder;
-using channel_pipeline::PipelineImpl;
 using channel_pipeline::Result;
 using channel_pipeline::SimpleBufferAllocator;
 using channel_pipeline::TypeErasedBox;
@@ -95,12 +84,13 @@ std::pair<folly::NetworkSocket, folly::NetworkSocket> makeTcpSocketPair() {
 
 } // namespace
 
-class AcceptancePipelineIntegrationTest : public ::testing::Test {
+class ConnectionPipelineIntegrationTest : public ::testing::Test {
  protected:
   void SetUp() override {
     evbThread_ = std::make_unique<folly::ScopedEventBaseThread>();
     evb_ = evbThread_->getEventBase();
   }
+
   void TearDown() override { evbThread_.reset(); }
 
   std::unique_ptr<folly::ScopedEventBaseThread> evbThread_;
@@ -108,8 +98,7 @@ class AcceptancePipelineIntegrationTest : public ::testing::Test {
   SimpleBufferAllocator allocator_;
 };
 
-// Listener → tail delivers the configured AsyncSocket synchronously.
-TEST_F(AcceptancePipelineIntegrationTest, DeliversConfiguredSocket) {
+TEST_F(ConnectionPipelineIntegrationTest, ListenerDeliversConfiguredSocket) {
   MockTailHandler tail;
   ConnectionMessage captured;
   tail.setOnReadCallback([&captured](TypeErasedBox&& msg) {
@@ -120,30 +109,26 @@ TEST_F(AcceptancePipelineIntegrationTest, DeliversConfiguredSocket) {
   SocketOptions socketOptions;
   socketOptions.tcpNoDelay = true;
   socketOptions.trafficClass = 72;
-  ConnectionListener::Ptr listener(new ConnectionListener(
-      evb_,
-      folly::SocketAddress("::1", 0),
-      socketOptions,
-      /*enableReusePortBpfSpread=*/false));
+  ConnectionListener listener(*evb_, socketOptions);
   auto pipeline = PipelineBuilder<
                       ConnectionListener,
                       MockTailHandler,
                       SimpleBufferAllocator>()
                       .setEventBase(evb_)
-                      .setHead(listener.get())
+                      .setHead(&listener)
                       .setTail(&tail)
                       .setAllocator(&allocator_)
                       .build();
-  listener->setPipeline(pipeline.get());
-  // Activate the pipeline directly without start(); we don't need to
-  // bind a real listening socket for this test.
+  listener.setPipeline(pipeline.get());
   evb_->runInEventBaseThreadAndWait([&] { pipeline->activate(); });
 
-  auto sp = makeTcpSocketPair();
+  auto sockets = makeTcpSocketPair();
   folly::SocketAddress clientAddr("::1", 4001);
   evb_->runInEventBaseThreadAndWait([&] {
-    listener->connectionAccepted(
-        sp.second,
+    // Another acceptor sharing this listener may stop independently.
+    listener.acceptStopped();
+    listener.connectionAccepted(
+        sockets.second,
         clientAddr,
         folly::AsyncServerSocket::AcceptCallback::AcceptInfo{});
   });
@@ -179,11 +164,11 @@ TEST_F(AcceptancePipelineIntegrationTest, DeliversConfiguredSocket) {
 
   evb_->runInEventBaseThreadAndWait([&] {
     captured.transport.reset();
-    listener->resetPipeline();
+    pipeline->deactivate();
+    listener.resetPipeline();
     pipeline.reset();
-    listener.reset();
   });
-  folly::netops::close(sp.first);
+  folly::netops::close(sockets.first);
 }
 
 } // namespace apache::thrift::fast_thrift::connection

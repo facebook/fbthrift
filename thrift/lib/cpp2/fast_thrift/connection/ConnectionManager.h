@@ -19,6 +19,7 @@
 #include <atomic>
 #include <functional>
 #include <memory>
+#include <mutex>
 
 #include <folly/Executor.h>
 #include <folly/SocketAddress.h>
@@ -29,6 +30,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/observer/Observer.h>
 #include <folly/observer/SimpleObservable.h>
+#include <thrift/lib/cpp2/fast_thrift/connection/ConnectionAcceptor.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/ConnectionFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/ConnectionHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/SocketOptions.h>
@@ -42,16 +44,18 @@ namespace apache::thrift::fast_thrift::connection {
 namespace fast_security = ::apache::thrift::fast_thrift::security;
 
 /**
- * ConnectionManager owns one ConnectionHandler per registered EventBase.
- * The IOObserver bounces register / unregister calls onto the owning EVB,
- * so each handler is constructed, configured, and torn down on its own
- * thread.
+ * ConnectionManager owns one ConnectionHandler per data EventBase and one
+ * ConnectionAcceptor per setup EventBase. The pools may be the same, which
+ * preserves inline dispatch, or distinct, which keeps socket acceptance off
+ * the data plane. TLS and connection construction always run on data
+ * EventBases. Worker EventBase membership must remain fixed between start()
+ * and stop() because each acceptor snapshots its worker callback targets.
  *
  * The factory + optional onAccept callback are registered once via the
  * templated setConnectionFactory<F>(); the manager type-erases them so
  * the class itself stays non-templated.
  *
- * Shutdown is a single call: stop() stops accept across every handler,
+ * Shutdown is a single call: stop() stops every acceptor,
  * triggers close on every live connection, and waits for them all to
  * fully tear down. Each connection bounds its own termination — there
  * is no outer deadline. The dtor calls stop().
@@ -70,18 +74,38 @@ class ConnectionManager : public folly::DelayedDestruction {
   ConnectionManager(ConnectionManager&&) = delete;
   ConnectionManager& operator=(ConnectionManager&&) = delete;
 
-  class IOObserver : public folly::IOThreadPoolExecutorBase::IOObserver {
+  class WorkerIOObserver : public folly::IOThreadPoolExecutorBase::IOObserver {
    public:
-    explicit IOObserver(ConnectionManager& manager) : manager_(manager) {}
+    explicit WorkerIOObserver(ConnectionManager& manager) : manager_(manager) {}
 
     void registerEventBase(folly::EventBase& evb) noexcept override {
       evb.runImmediatelyOrRunInEventBaseThreadAndWait(
-          [this, &evb]() { manager_.registerEventBase(evb); });
+          [this, &evb]() { manager_.registerWorkerEventBase(evb); });
     }
 
     void unregisterEventBase(folly::EventBase& evb) noexcept override {
       evb.runImmediatelyOrRunInEventBaseThreadAndWait(
-          [this, &evb]() { manager_.unregisterEventBase(evb); });
+          [this, &evb]() { manager_.unregisterWorkerEventBase(evb); });
+    }
+
+   private:
+    ConnectionManager& manager_;
+  };
+
+  class AcceptorIOObserver
+      : public folly::IOThreadPoolExecutorBase::IOObserver {
+   public:
+    explicit AcceptorIOObserver(ConnectionManager& manager)
+        : manager_(manager) {}
+
+    void registerEventBase(folly::EventBase& evb) noexcept override {
+      evb.runImmediatelyOrRunInEventBaseThreadAndWait(
+          [this, &evb]() { manager_.registerAcceptorEventBase(evb); });
+    }
+
+    void unregisterEventBase(folly::EventBase& evb) noexcept override {
+      evb.runImmediatelyOrRunInEventBaseThreadAndWait(
+          [this, &evb]() { manager_.unregisterAcceptorEventBase(evb); });
     }
 
    private:
@@ -93,7 +117,9 @@ class ConnectionManager : public folly::DelayedDestruction {
       folly::Executor::KeepAlive<folly::IOThreadPoolExecutorBase> executor,
       fast_security::SSLPolicy sslPolicy,
       std::shared_ptr<const fast_security::TLSParams> tlsParams,
-      SocketOptions socketOptions);
+      SocketOptions socketOptions,
+      folly::Executor::KeepAlive<folly::IOThreadPoolExecutorBase>
+          acceptorExecutor = {});
 
   /**
    * Register the factory (and optional onAccept hook) used to build
@@ -115,13 +141,16 @@ class ConnectionManager : public folly::DelayedDestruction {
   void start();
 
   /**
-   * Single-call shutdown: stop accept on every handler, trigger close on
+   * Single-call shutdown: stop every acceptor, trigger close on
    * every live connection, wait for them all to fully tear down, then
    * drop the IOObserver. Each connection bounds its own termination —
    * there is no outer deadline. Idempotent.
    */
   void stop();
 
+  // Only applies when acceptors are colocated with connection workers. A
+  // dedicated acceptor pool retains the kernel's default reuse-port hashing,
+  // matching the classic Thrift accept-offload path.
   void setEnableReusePortBpfSpread(bool e) noexcept {
     enableReusePortBpfSpread_ = e;
   }
@@ -171,6 +200,10 @@ class ConnectionManager : public folly::DelayedDestruction {
     return handlers_.withRLock([](const auto& map) { return map.size(); });
   }
 
+  size_t numAcceptors() const noexcept {
+    return acceptors_.withRLock([](const auto& map) { return map.size(); });
+  }
+
   size_t connectionCount() const noexcept {
     return handlers_.withRLock([](const auto& map) {
       size_t total = 0;
@@ -187,21 +220,28 @@ class ConnectionManager : public folly::DelayedDestruction {
       folly::Executor::KeepAlive<folly::IOThreadPoolExecutorBase> executor,
       fast_security::SSLPolicy sslPolicy,
       std::shared_ptr<const fast_security::TLSParams> tlsParams,
-      SocketOptions socketOptions);
+      SocketOptions socketOptions,
+      folly::Executor::KeepAlive<folly::IOThreadPoolExecutorBase>
+          acceptorExecutor);
 
   ~ConnectionManager() override;
 
  private:
-  friend class IOObserver;
+  friend class WorkerIOObserver;
+  friend class AcceptorIOObserver;
 
   enum class State { NONE, STARTED, STOPPED };
 
-  void registerEventBase(folly::EventBase& evb);
-  void unregisterEventBase(folly::EventBase& evb);
+  void registerWorkerEventBase(folly::EventBase& evb);
+  void unregisterWorkerEventBase(folly::EventBase& evb);
+  void registerAcceptorEventBase(folly::EventBase& evb);
+  void unregisterAcceptorEventBase(folly::EventBase& evb);
 
   std::atomic<State> state_{State::NONE};
   folly::SocketAddress address_;
-  folly::Executor::KeepAlive<folly::IOThreadPoolExecutorBase> executor_;
+  std::mutex addressMutex_;
+  folly::Executor::KeepAlive<folly::IOThreadPoolExecutorBase> workerExecutor_;
+  folly::Executor::KeepAlive<folly::IOThreadPoolExecutorBase> acceptorExecutor_;
   fast_security::SSLPolicy sslPolicy_;
   // Source-of-truth TLS params. setTLSParams is a single setValue,
   // observed by every accept on every EVB. Declaration before handlers_
@@ -211,7 +251,8 @@ class ConnectionManager : public folly::DelayedDestruction {
       std::shared_ptr<const fast_security::TLSParams>>
       tlsParamsObservable_;
   SocketOptions socketOptions_;
-  std::shared_ptr<IOObserver> observer_;
+  std::shared_ptr<WorkerIOObserver> workerObserver_;
+  std::shared_ptr<AcceptorIOObserver> acceptorObserver_;
 
   // Configured by setConnectionFactory; applied to each new handler.
   // Captures shared_ptr<F> so the factory outlives every handler.
@@ -220,6 +261,9 @@ class ConnectionManager : public folly::DelayedDestruction {
   folly::Synchronized<
       folly::F14FastMap<folly::EventBase*, ConnectionHandler::Ptr>>
       handlers_;
+  folly::Synchronized<
+      folly::F14FastMap<folly::EventBase*, ConnectionAcceptor::Ptr>>
+      acceptors_;
   bool enableReusePortBpfSpread_{false};
   // Borrowed; null unless the corresponding setter was called. Each per-EVB
   // handler resolves its own shard from these at construction.

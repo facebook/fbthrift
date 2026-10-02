@@ -23,27 +23,20 @@ namespace apache::thrift::fast_thrift::connection {
 
 ConnectionHandler::ConnectionHandler(
     folly::EventBase& evb,
-    folly::SocketAddress address,
     fast_security::SSLPolicy sslPolicy,
     folly::observer::Observer<std::shared_ptr<const fast_security::TLSParams>>
         tlsParamsObserver,
     SocketOptions socketOptions,
-    bool enableReusePortBpfSpread,
+    std::optional<folly::observer::Observer<uint32_t>>
+        maxConnectionsPerIOThread,
     ConnectionStats* stats,
     security::TLSStats* tlsStats)
     : evb_(folly::getKeepAliveToken(&evb)),
-      address_(std::move(address)),
-      socketOptions_(socketOptions),
-      enableReusePortBpfSpread_(enableReusePortBpfSpread),
       sslPolicy_(sslPolicy),
       tlsParamsObserver_(std::move(tlsParamsObserver)),
-      listener_(
-          ConnectionListener::Ptr(new ConnectionListener(
-              evb_.get(),
-              address_,
-              socketOptions_,
-              enableReusePortBpfSpread_))),
-      boundAddress_(address_) {
+      socketOptions_(std::move(socketOptions)),
+      maxConnectionsPerIOThread_(std::move(maxConnectionsPerIOThread)),
+      listener_(evb, socketOptions_) {
   // Resolved here rather than at pipeline-build time because this ctor runs
   // on the EventBase that will own every connection this handler accepts —
   // making it the thread whose shard these counts belong in, and the only
@@ -64,12 +57,10 @@ ConnectionHandler::~ConnectionHandler() {
   // callbacks), so fall back to a synchronous teardown — same as the
   // original behavior of this dtor.
   if (evb_->inRunningEventBaseThread()) {
-    stopAcceptingOnEvb();
+    stopInstallingOnEvb();
     closeAllConnectionsOnEvb();
-    listener_.reset();
   } else {
     stop();
-    evb_->runInEventBaseThreadAndWait([this] { listener_.reset(); });
   }
 }
 
@@ -78,9 +69,9 @@ void ConnectionHandler::stop() {
       << "ConnectionHandler::stop must not be called from the owning EVB; "
       << "the wait would block the loop that fires close callbacks";
 
-  // Phase 1: stop accepting new connections.
+  // Phase 1: reject new connection installs.
   evb_->runImmediatelyOrRunInEventBaseThreadAndWait(
-      [this] { stopAcceptingOnEvb(); });
+      [this] { stopInstallingOnEvb(); });
 
   // Phase 2: trigger close on every live connection.
   evb_->runImmediatelyOrRunInEventBaseThreadAndWait(
@@ -95,15 +86,14 @@ void ConnectionHandler::stop() {
   drainedBaton_.wait();
 }
 
-void ConnectionHandler::stopAcceptingOnEvb() {
+void ConnectionHandler::stopInstallingOnEvb() {
   if (!pipeline_) {
     return;
   }
-  listener_->stop();
-  listener_->resetPipeline();
+  pipeline_->deactivate();
+  listener_.resetPipeline();
   pipeline_.reset();
   installer_.reset();
-  listener_.reset();
 }
 
 void ConnectionHandler::closeAllOnEvb() {
@@ -173,13 +163,6 @@ void ConnectionHandler::postDrainedOnce() noexcept {
   if (drainedPosted_.compare_exchange_strong(expected, true)) {
     drainedBaton_.post();
   }
-}
-
-folly::SocketAddress ConnectionHandler::getAddress() const {
-  // Deliberately does not consult listener_: teardown destroys it on the EVB
-  // while off-EVB callers (debug interfaces, observability) may still be
-  // asking, and dereferencing it there is a use-after-free.
-  return boundAddress_;
 }
 
 } // namespace apache::thrift::fast_thrift::connection

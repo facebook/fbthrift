@@ -49,9 +49,14 @@ struct FastThriftServerConfig {
   // Address to bind to.
   folly::SocketAddress address;
 
-  // Number of IO threads. Each thread runs its own EventBase and accepts
-  // connections via SO_REUSEPORT.
+  // Number of data IO threads. Each thread owns established connections and,
+  // unless a setup pool is configured below, accepts via SO_REUSEPORT.
   uint32_t numIOThreads{1};
+
+  // Number of dedicated threads that accept connections and complete TLS
+  // setup before handing transports to the IO pool. Zero keeps setup on the
+  // IO threads.
+  uint32_t numConnectionSetupThreads{0};
 
   // Minimum payload size in bytes for MSG_ZEROCOPY. 0 disables zero-copy.
   size_t zeroCopyThreshold{0};
@@ -252,9 +257,9 @@ class FastThriftServerT {
   void setThriftConfig(security::ThriftTlsConfig cfg);
 
   // Listening-socket and accept-path tuning knobs (listen backlog, TCP Fast
-  // Open, max reads per event, max pending connections). Applied by
-  // ConnectionHandler on every IO thread. When unset, defaults from
-  // SocketOptions.h apply.
+  // Open, max reads per event, max pending connections). Listener options apply
+  // on acceptor threads; accepted-socket options apply on data IO threads. When
+  // unset, defaults from SocketOptions.h apply.
   //
   // Must be called before start()/serve().
   void setSocketOptions(connection::SocketOptions opts);
@@ -331,6 +336,7 @@ class FastThriftServerT {
   std::optional<security::FizzServerCertConfig> sslConfig_;
   security::ThriftTlsConfig thriftConfig_{};
   std::shared_ptr<folly::IOThreadPoolExecutor> executor_;
+  std::shared_ptr<folly::IOThreadPoolExecutor> connectionSetupExecutor_;
   // Listening-socket tuning. Defaults from SocketOptions.h apply unless the
   // embedder calls setSocketOptions before start().
   connection::SocketOptions socketOptions_{};
@@ -405,8 +411,13 @@ FastThriftServerT<Stats>::FastThriftServerT(
       processorFactory_(std::move(processorFactory)),
       // config_ is initialized first per member declaration order in the header
       executor_(
-          std::make_shared<folly::IOThreadPoolExecutor>(config_.numIOThreads)) {
-}
+          std::make_shared<folly::IOThreadPoolExecutor>(config_.numIOThreads)),
+      connectionSetupExecutor_(
+          config_.numConnectionSetupThreads > 0
+              ? std::make_shared<folly::IOThreadPoolExecutor>(
+                    config_.numConnectionSetupThreads,
+                    config_.numConnectionSetupThreads)
+              : executor_) {}
 
 template <typename Stats>
 void FastThriftServerT<Stats>::setSSLConfig(
@@ -632,6 +643,9 @@ FastThriftServerT<Stats>::~FastThriftServerT() {
   // destroy those members before the executor joins, causing use-after-free
   // in the pipeline factory lambda that captures `this`.
   connectionManager_.reset();
+  if (connectionSetupExecutor_ != executor_) {
+    connectionSetupExecutor_->join();
+  }
   executor_->join();
 }
 
@@ -656,7 +670,8 @@ void FastThriftServerT<Stats>::start() {
       folly::getKeepAliveToken(executor_.get()),
       sslPolicy,
       std::move(tlsParams),
-      socketOptions_);
+      socketOptions_,
+      folly::getKeepAliveToken(connectionSetupExecutor_.get()));
   connectionManager_->setConnectionFactory(ConnectionFactoryImpl{this});
   connectionManager_->start();
   state_ = State::kRunning;

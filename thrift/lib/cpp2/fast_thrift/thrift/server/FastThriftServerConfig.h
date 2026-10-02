@@ -38,9 +38,15 @@ struct FastThriftServerConfig {
   // Address to bind to.
   folly::SocketAddress address;
 
-  // Number of IO threads. Each thread runs its own EventBase and accepts
-  // connections via SO_REUSEPORT.
+  // Number of data IO threads. Each thread owns established connections and,
+  // unless a setup pool is configured below, accepts via SO_REUSEPORT.
   uint32_t numIOThreads{1};
+
+  // Number of dedicated connection-accept threads. These EventBases own the
+  // listening sockets and dispatch accepted fds through bounded queues to the
+  // data IO threads, where TLS and connection setup run. Zero keeps socket
+  // acceptance colocated with connection IO.
+  uint32_t numConnectionSetupThreads{0};
 
   // Size of the CPU thread pool used by the generated service path.
   // Zero keeps the pre-existing behavior: request deserialization, the
