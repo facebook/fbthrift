@@ -16,7 +16,9 @@
 
 #include <thrift/lib/cpp2/transport/rocket/compression/CompressionManager.h>
 
+#include <folly/compression/Utils.h>
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/IOBufChainCursor.h>
 #include <thrift/lib/cpp2/transport/rocket/compression/CompressionAlgorithmSelector.h>
 
 namespace apache::thrift::rocket {
@@ -60,21 +62,50 @@ static std::unique_ptr<folly::IOBuf> compressBuffer(
     return folly::compression::getCodec(codecType, level)
         ->compress(buffer.get());
   } catch (const std::exception& e) {
-    // getCodec() throws if this build lacks the codec.
     throw TApplicationException(
         TApplicationException::INVALID_TRANSFORM,
         fmt::format("compression failure: {}", e.what()));
   }
 }
 
-static std::unique_ptr<folly::IOBuf> uncompressBuffer(
+static std::unique_ptr<folly::IOBuf> uncompressBufferImpl(
     std::unique_ptr<folly::IOBuf>&& buffer,
-    CompressionAlgorithm compressionAlgorithm) {
+    folly::compression::CodecType codecType,
+    int level) {
+  return folly::compression::getCodec(codecType, level)
+      ->uncompress(buffer.get());
+}
+
+static IOBufChain uncompressBufferImpl(
+    IOBufChain&& buffer, folly::compression::CodecType codecType, int level) {
+  if (codecType == folly::compression::CodecType::NO_COMPRESSION) {
+    return std::move(buffer);
+  }
+  if (codecType == folly::compression::CodecType::LZ4_VARINT_SIZE) {
+    throw std::invalid_argument(
+        "IOBufChain LZ4 decompression is not supported");
+  }
+
+  auto codec = folly::compression::getStreamCodec(codecType, level);
+  io::IOBufChainCursor cursor(buffer);
+  const auto uncompressedLength = codec->getUncompressedLength(
+      folly::StringPiece{cursor.peekBytes()}, folly::none);
+  IOBufChain result;
+  folly::compression::detail::uncompressStream(
+      *codec, cursor, buffer.chainLength(), uncompressedLength, result);
+  if (uncompressedLength && *uncompressedLength != result.chainLength()) {
+    throw std::runtime_error("Codec: invalid uncompressed length");
+  }
+  return result;
+}
+
+template <typename Buffer>
+static Buffer uncompressBuffer(
+    Buffer&& buffer, CompressionAlgorithm compressionAlgorithm) {
   auto [codecType, level] =
       CompressionAlgorithmSelector::toCodecTypeAndLevel(compressionAlgorithm);
   try {
-    return folly::compression::getCodec(codecType, level)
-        ->uncompress(buffer.get());
+    return uncompressBufferImpl(std::forward<Buffer>(buffer), codecType, level);
   } catch (const std::exception& e) {
     throw TApplicationException(
         TApplicationException::INVALID_TRANSFORM,
@@ -124,6 +155,11 @@ std::unique_ptr<folly::IOBuf> CompressionManager::compressBuffer(
 std::unique_ptr<folly::IOBuf> CompressionManager::uncompressBuffer(
     std::unique_ptr<folly::IOBuf>&& buffer,
     CompressionAlgorithm compressionAlgorithm) {
+  return rocket::uncompressBuffer(std::move(buffer), compressionAlgorithm);
+}
+
+IOBufChain CompressionManager::uncompressBuffer(
+    IOBufChain&& buffer, CompressionAlgorithm compressionAlgorithm) {
   return rocket::uncompressBuffer(std::move(buffer), compressionAlgorithm);
 }
 

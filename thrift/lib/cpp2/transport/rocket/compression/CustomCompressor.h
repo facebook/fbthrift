@@ -16,7 +16,11 @@
 
 #pragma once
 
+#include <stdexcept>
+
 #include <folly/compression/Compression.h>
+#include <folly/lang/Exception.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 
 namespace apache::thrift::rocket {
 
@@ -31,6 +35,11 @@ struct CustomCompressor {
 
   virtual std::unique_ptr<folly::IOBuf> uncompressBuffer(
       std::unique_ptr<folly::IOBuf>&& buffer) = 0;
+
+  virtual IOBufChain uncompressBuffer(IOBufChain&&) {
+    folly::throw_exception<std::runtime_error>(
+        "Custom compressor does not support IOBufChain input");
+  }
 };
 
 } // namespace apache::thrift::rocket

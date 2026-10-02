@@ -165,6 +165,11 @@ class ChecksumPayloadSerializerStrategy final
     return delegate_.uncompressBuffer(std::move(buffer), compressionAlgorithm);
   }
 
+  FOLLY_ERASE IOBufChain uncompressBuffer(
+      IOBufChain&& buffer, CompressionAlgorithm compressionAlgorithm) {
+    return delegate_.uncompressBuffer(std::move(buffer), compressionAlgorithm);
+  }
+
  private:
   DelegateStrategy delegate_;
 

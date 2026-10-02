@@ -19,6 +19,7 @@
 #include <variant>
 #include <folly/GLog.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/cpp2/transport/rocket/payload/ChecksumPayloadSerializerStrategy.h>
 #include <thrift/lib/cpp2/transport/rocket/payload/CustomCompressionPayloadSerializerStrategy.h>
 #include <thrift/lib/cpp2/transport/rocket/payload/DefaultPayloadSerializerStrategy.h>
@@ -273,6 +274,13 @@ class PayloadSerializer {
   std::unique_ptr<folly::IOBuf> uncompressBuffer(
       std::unique_ptr<folly::IOBuf>&& buffer,
       CompressionAlgorithm compressionAlgorithm) {
+    return visit([&](auto& strategy) {
+      return strategy.uncompressBuffer(std::move(buffer), compressionAlgorithm);
+    });
+  }
+
+  IOBufChain uncompressBuffer(
+      IOBufChain&& buffer, CompressionAlgorithm compressionAlgorithm) {
     return visit([&](auto& strategy) {
       return strategy.uncompressBuffer(std::move(buffer), compressionAlgorithm);
     });

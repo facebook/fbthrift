@@ -170,12 +170,12 @@ class CustomCompressionPayloadSerializerStrategy final
   std::unique_ptr<folly::IOBuf> uncompressBuffer(
       std::unique_ptr<folly::IOBuf>&& buffer,
       CompressionAlgorithm compressionAlgorithm) {
-    if (compressionAlgorithm != CompressionAlgorithm::CUSTOM) {
-      return delegate_.uncompressBuffer(
-          std::move(buffer), compressionAlgorithm);
-    }
+    return uncompressBufferImpl(std::move(buffer), compressionAlgorithm);
+  }
 
-    return customUncompressBuffer(std::move(buffer));
+  FOLLY_ERASE IOBufChain uncompressBuffer(
+      IOBufChain&& buffer, CompressionAlgorithm compressionAlgorithm) {
+    return uncompressBufferImpl(std::move(buffer), compressionAlgorithm);
   }
 
   FOLLY_ERASE
@@ -184,13 +184,22 @@ class CustomCompressionPayloadSerializerStrategy final
     return compressor_->compressBuffer(std::move(buffer));
   }
 
-  FOLLY_ERASE
-  std::unique_ptr<folly::IOBuf> customUncompressBuffer(
-      std::unique_ptr<folly::IOBuf>&& buffer) {
-    return compressor_->uncompressBuffer(std::move(buffer));
+  template <typename Buffer>
+  FOLLY_ERASE Buffer customUncompressBuffer(Buffer&& buffer) {
+    return compressor_->uncompressBuffer(std::forward<Buffer>(buffer));
   }
 
  private:
+  template <typename Buffer>
+  FOLLY_ERASE Buffer uncompressBufferImpl(
+      Buffer&& buffer, CompressionAlgorithm compressionAlgorithm) {
+    if (compressionAlgorithm != CompressionAlgorithm::CUSTOM) {
+      return delegate_.uncompressBuffer(
+          std::forward<Buffer>(buffer), compressionAlgorithm);
+    }
+    return customUncompressBuffer(std::forward<Buffer>(buffer));
+  }
+
   DelegateStrategy delegate_;
   std::shared_ptr<CustomCompressor> compressor_;
 };

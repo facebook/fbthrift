@@ -19,6 +19,7 @@
 #include <gtest/gtest.h>
 
 #include <folly/compression/Zstd.h>
+#include <folly/io/Cursor.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/transport/rocket/compression/CompressionManager.h>
 
@@ -107,8 +108,52 @@ void testUncompress(const CompressionAlgorithm& compressionAlgorithm) {
   EXPECT_TRUE(folly::IOBufEqualTo()(buffer, baseBuffer));
 }
 
+IOBufChain makeSegmentedChain(const folly::IOBuf& buffer) {
+  const auto length = buffer.computeChainDataLength();
+  IOBufChain result((length + 6) / 7 + 1);
+  folly::io::Cursor cursor(&buffer);
+  size_t remaining = length;
+  size_t segmentLength = 1;
+  while (remaining != 0) {
+    const auto size = std::min(segmentLength, remaining);
+    auto segment = folly::IOBuf::create(size);
+    cursor.pull(segment->writableData(), size);
+    segment->append(size);
+    result.append(std::move(segment));
+    remaining -= size;
+    segmentLength = 7;
+  }
+  return result;
+}
+
+void testChainUncompress(const CompressionAlgorithm& compressionAlgorithm) {
+  auto compressed = CompressionManager().compressBuffer(
+      baseBuffer->clone(), compressionAlgorithm);
+  auto buffer = CompressionManager().uncompressBuffer(
+      makeSegmentedChain(*compressed), compressionAlgorithm);
+  EXPECT_EQ(buffer, IOBufChain(baseBuffer->clone()));
+}
+
+void testLargeChainUncompress(
+    const CompressionAlgorithm& compressionAlgorithm) {
+  constexpr size_t kLength = 1 << 20;
+  auto source = folly::IOBuf::create(kLength);
+  std::memset(source->writableData(), 'a', kLength);
+  source->append(kLength);
+  auto compressed = CompressionManager().compressBuffer(
+      source->clone(), compressionAlgorithm);
+  auto buffer = CompressionManager().uncompressBuffer(
+      makeSegmentedChain(*compressed), compressionAlgorithm);
+  EXPECT_EQ(buffer, IOBufChain(std::move(source)));
+  EXPECT_GT(buffer.chainElements(), 1);
+}
+
 TEST(CompressionTest, unsetUncompressSucceeds) {
   testUncompress(CompressionAlgorithm::NONE);
+}
+
+TEST(CompressionTest, unsetChainUncompressSucceeds) {
+  testChainUncompress(CompressionAlgorithm::NONE);
 }
 
 TEST(CompressionTest, zlibUncompressSucceeds) {
@@ -117,10 +162,24 @@ TEST(CompressionTest, zlibUncompressSucceeds) {
   testUncompress(CompressionAlgorithm::ZLIB_MORE);
 }
 
+TEST(CompressionTest, zlibChainUncompressSucceeds) {
+  testChainUncompress(CompressionAlgorithm::ZLIB);
+  testChainUncompress(CompressionAlgorithm::ZLIB_LESS);
+  testChainUncompress(CompressionAlgorithm::ZLIB_MORE);
+  testLargeChainUncompress(CompressionAlgorithm::ZLIB);
+}
+
 TEST(CompressionTest, zstdUncompressSucceeds) {
   testUncompress(CompressionAlgorithm::ZSTD);
   testUncompress(CompressionAlgorithm::ZSTD_LESS);
   testUncompress(CompressionAlgorithm::ZSTD_MORE);
+}
+
+TEST(CompressionTest, zstdChainUncompressSucceeds) {
+  testChainUncompress(CompressionAlgorithm::ZSTD);
+  testChainUncompress(CompressionAlgorithm::ZSTD_LESS);
+  testChainUncompress(CompressionAlgorithm::ZSTD_MORE);
+  testLargeChainUncompress(CompressionAlgorithm::ZSTD);
 }
 
 #if FOLLY_HAVE_LIBLZ4
@@ -130,6 +189,19 @@ TEST(CompressionTest, lz4UncompressSucceeds) {
   testUncompress(CompressionAlgorithm::LZ4_MORE);
 }
 #endif
+
+TEST(CompressionTest, lz4ChainUncompressThrows) {
+  for (const auto algorithm : {
+           CompressionAlgorithm::LZ4,
+           CompressionAlgorithm::LZ4_LESS,
+           CompressionAlgorithm::LZ4_MORE,
+       }) {
+    EXPECT_THROW(
+        CompressionManager().uncompressBuffer(
+            IOBufChain(baseBuffer->clone()), algorithm),
+        TApplicationException);
+  }
+}
 
 // isLz4Supported() is what a server advertises in SetupResponse.lz4Supported,
 // so it has to track the build. Over-reporting makes servers advertise a codec

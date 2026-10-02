@@ -105,6 +105,11 @@ struct MyCustomCompressor : public CustomCompressor {
     return folly::compression::getCodec(folly::compression::CodecType::ZSTD)
         ->uncompress(buffer.get());
   }
+
+  IOBufChain uncompressBuffer(IOBufChain&& buffer) override {
+    return CompressionManager().uncompressBuffer(
+        std::move(buffer), CompressionAlgorithm::ZSTD);
+  }
 };
 
 TEST(PayloadSerializerTest, TestMakeCustomCompression) {
@@ -185,6 +190,19 @@ TEST(PayloadSerializerTest, TestCompressionAndUncompression) {
       const auto actual =
           ps->uncompressBuffer(std::move(compressedBuf), compressionAlgorithm);
       EXPECT_EQ(actual->toString(), expected);
+
+      auto compressedChain = ps->compressBuffer(
+          folly::IOBuf::fromString(expected), compressionAlgorithm);
+      if (compressionAlgorithm == CompressionAlgorithm::LZ4) {
+        EXPECT_THROW(
+            ps->uncompressBuffer(
+                IOBufChain(std::move(compressedChain)), compressionAlgorithm),
+            TApplicationException);
+        continue;
+      }
+      auto actualChain = ps->uncompressBuffer(
+          IOBufChain(std::move(compressedChain)), compressionAlgorithm);
+      EXPECT_EQ(actualChain, IOBufChain(folly::IOBuf::fromString(expected)));
     }
   }
 }

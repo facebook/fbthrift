@@ -21,6 +21,7 @@
 #include <string>
 
 #include <folly/compression/Compression.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::rocket {
@@ -59,6 +60,9 @@ class CompressionManager {
   std::unique_ptr<folly::IOBuf> uncompressBuffer(
       std::unique_ptr<folly::IOBuf>&& buffer,
       CompressionAlgorithm compressionAlgorithm);
+
+  IOBufChain uncompressBuffer(
+      IOBufChain&& buffer, CompressionAlgorithm compressionAlgorithm);
 };
 
 /**

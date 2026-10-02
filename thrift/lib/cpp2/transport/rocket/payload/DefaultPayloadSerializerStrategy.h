@@ -160,6 +160,12 @@ class DefaultPayloadSerializerStrategy final
         std::move(buffer), compressionAlgorithm);
   }
 
+  IOBufChain uncompressBuffer(
+      IOBufChain&& buffer, CompressionAlgorithm compressionAlgorithm) {
+    return CompressionManager().uncompressBuffer(
+        std::move(buffer), compressionAlgorithm);
+  }
+
  private:
   static constexpr size_t kHeadroomBytes = 16;
 

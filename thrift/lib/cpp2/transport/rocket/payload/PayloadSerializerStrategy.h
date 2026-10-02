@@ -20,6 +20,7 @@
 #include <folly/Try.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/async/AsyncTransport.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -110,6 +111,11 @@ class PayloadSerializerStrategy {
   FOLLY_ALWAYS_INLINE std::unique_ptr<folly::IOBuf> uncompressBuffer(
       std::unique_ptr<folly::IOBuf>&& buffer,
       CompressionAlgorithm compressionAlgorithm) {
+    return child_.uncompressBuffer(std::move(buffer), compressionAlgorithm);
+  }
+
+  FOLLY_ALWAYS_INLINE IOBufChain uncompressBuffer(
+      IOBufChain&& buffer, CompressionAlgorithm compressionAlgorithm) {
     return child_.uncompressBuffer(std::move(buffer), compressionAlgorithm);
   }
 
