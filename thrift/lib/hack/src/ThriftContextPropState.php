@@ -473,6 +473,31 @@ final class ThriftContextPropState {
     return $request_id === "" ? "0" : Base64::encode($request_id);
   }
 
+  /**
+   * Key for consistent sampling across services: systems that sample on this
+   * id pick the same requests, so their logs join on the request.
+   *
+   * The last 8 bytes of the 16-byte request id, little-endian, with the top
+   * bit cleared so it is never negative -- the same value as C++
+   * `RequestIdStruct::getConsistentSamplingId()` for the same request. Null
+   * when the request id is not 16 bytes.
+   */
+  public readonly function getConsistentSamplingId()[leak_safe]: ?int {
+    $request_id = $this->getRequestId();
+    if (Str\length($request_id) !== 16) {
+      return null;
+    }
+    $unpacked = PHP\unpack('P', Str\slice($request_id, 8));
+    if ($unpacked is null || $unpacked === false) {
+      return null;
+    }
+    $suffix = idx($unpacked, 1);
+    if (!$suffix is int) {
+      return null;
+    }
+    return $suffix & 0x7FFFFFFFFFFFFFFF;
+  }
+
   public function setRequestId(?string $s)[write_props]: void {
     $this->storage->request_id = $s;
     $this->dirty();

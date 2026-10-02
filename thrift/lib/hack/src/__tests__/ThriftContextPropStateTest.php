@@ -151,6 +151,36 @@ final class ThriftContextPropStateTest extends WWWTest {
     expect(ThriftContextPropState::get()->getRequestId())->toEqual("12345");
   }
 
+  // Same vectors as fbcode/common/request/test/RequestIdTest.cpp: the last 8
+  // bytes of the request id, little-endian, with the top bit cleared.
+  public static function dataProviderForConsistentSamplingId(
+  ): dict<string, (string, int)> {
+    return dict[
+      'positive' => tuple('abcdefgh', 7523094288207667809),
+      'int64 max' => tuple(Str\repeat("\xff", 7)."\x7f", 9223372036854775807),
+      'only top bit set' => tuple(Str\repeat("\x00", 7)."\x80", 0),
+      'all bits set' => tuple(Str\repeat("\xff", 8), 9223372036854775807),
+    ];
+  }
+
+  <<DataProvider('dataProviderForConsistentSamplingId')>>
+  public function testGetConsistentSamplingId(
+    string $suffix,
+    int $expected,
+  ): void {
+    $tcps = ThriftContextPropState::get();
+    $tcps->setRequestId('01234567'.$suffix);
+    expect($tcps->getConsistentSamplingId())->toEqual($expected);
+  }
+
+  public function testGetConsistentSamplingIdWithoutValidRequestId(): void {
+    $tcps = ThriftContextPropState::get();
+    $tcps->setRequestId(null);
+    expect($tcps->getConsistentSamplingId())->toBeNull();
+    $tcps->setRequestId('12345');
+    expect($tcps->getConsistentSamplingId())->toBeNull();
+  }
+
   public function testRegionalizationEntityNullable(): void {
     $tcps = ThriftContextPropState::get();
     expect($tcps->getRegionalizationEntity())->toBeNull();
