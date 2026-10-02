@@ -25,6 +25,7 @@
 #include <thrift/compiler/sema/schematizer.h>
 
 #include <gtest/gtest.h>
+#include <folly/container/View.h>
 
 using namespace apache::thrift::compiler;
 using apache::thrift::FieldId;
@@ -301,10 +302,12 @@ TEST(SchematizerTest, wrap_with_protocol_set) {
   EXPECT_TRUE(saw_first);
   EXPECT_TRUE(saw_second);
 
-  auto it = foos_set.begin();
+  // The order serialization writes, which is not the set's iteration order.
+  auto written = folly::order_preserving_reinsertion_view(foos_set);
+  auto it = written.begin();
   EXPECT_EQ(map_at_string(*it++, "foo").as_i32(), 1);
   EXPECT_EQ(map_at_string(*it++, "foo").as_i32(), 4);
-  EXPECT_EQ(it, foos_set.end());
+  EXPECT_EQ(it, written.end());
 }
 
 TEST(SchematizerTest, wrap_with_protocol_typedef) {

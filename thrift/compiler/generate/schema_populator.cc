@@ -1035,21 +1035,15 @@ protocol::Value protocol_value_builder::wrap(
       if (ty_ != nullptr && ty_->is<t_set>()) {
         auto& set = ret.emplace_set();
         set.reserve(protocol_value.get_list().size());
-        // Preserve the first occurrence of each element before reversing.
-        // F14's vector policy reverses insertion order again in optimized
-        // builds.
-        std::vector<protocol::Value> elements;
+        // Inserted in IDL order, unlike the map above, and deduplicated through
+        // `seen`: see the set case of const_to_value() in const_util.h.
         folly::F14FastSet<protocol::Value> seen;
-        elements.reserve(protocol_value.get_list().size());
         seen.reserve(protocol_value.get_list().size());
         for (const auto& list_elem : protocol_value.get_list()) {
           auto element = list_ty_resolver.wrap(*list_elem);
           if (seen.insert(element).second) {
-            elements.push_back(std::move(element));
+            set.insert(std::move(element));
           }
-        }
-        for (auto& element : elements | std::views::reverse) {
-          set.insert(std::move(element));
         }
       } else {
         auto& list = ret.emplace_list();

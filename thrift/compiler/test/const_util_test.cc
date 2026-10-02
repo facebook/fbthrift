@@ -17,6 +17,7 @@
 #include <thrift/compiler/generate/const_util.h>
 
 #include <gtest/gtest.h>
+#include <folly/container/View.h>
 #include <thrift/compiler/test/gen-cpp2/const_util_test_types.h>
 
 using apache::thrift::compiler::t_const_value;
@@ -76,9 +77,10 @@ TEST(ConstUtilTest, ConstToValue) {
   set->add_list(val(1));
   t_set set_type(t_primitive_type::t_i32());
   auto converted = const_to_value(*set, &set_type);
-  const auto& converted_set = converted.as_set();
-  auto it = converted_set.begin();
+  // The order serialization writes, which is not the set's iteration order.
+  auto written = folly::order_preserving_reinsertion_view(converted.as_set());
+  auto it = written.begin();
   EXPECT_EQ((it++)->as_i32(), 1);
   EXPECT_EQ((it++)->as_i32(), 2);
-  EXPECT_EQ(it, converted_set.end());
+  EXPECT_EQ(it, written.end());
 }

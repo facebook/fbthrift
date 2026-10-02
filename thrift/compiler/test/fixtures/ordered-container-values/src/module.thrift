@@ -17,3 +17,4 @@
 package "meta.com/thrift/test/ordered_container_values"
 
 const map<string, i32> orderedMap = {"second": 2, "first": 1};
+const set<string> orderedSet = ["second", "first"];

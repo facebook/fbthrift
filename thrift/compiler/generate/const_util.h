@@ -281,20 +281,18 @@ inline protocol::Value const_to_value(
     auto& set = ret.emplace_set();
     set.reserve(valList.size());
     const auto* elem_type = ttype->as<t_set>().elem_type()->get_true_type();
-    // Preserve the first occurrence of each element before reversing. F14's
-    // vector policy reverses insertion order again in optimized builds.
-    std::vector<protocol::Value> elements;
+    // Inserted in IDL order, unlike the map above: serialization writes an
+    // F14VectorSet through order_preserving_reinsertion_view, i.e. in insertion
+    // order, where it writes the map in iteration order. `seen` keeps the first
+    // of a repeated element; the set's own insert() does not collapse equal
+    // struct values.
     folly::F14FastSet<protocol::Value> seen;
-    elements.reserve(valList.size());
     seen.reserve(valList.size());
     for (const auto& list_elem : valList) {
       auto element = const_to_value(*list_elem, elem_type);
       if (seen.insert(element).second) {
-        elements.push_back(std::move(element));
+        set.insert(std::move(element));
       }
-    }
-    for (auto& element : elements | std::views::reverse) {
-      set.insert(std::move(element));
     }
   } else if (ttype->is<t_enum>()) {
     ret.emplace_i32(val.get_integer());
