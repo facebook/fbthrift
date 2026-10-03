@@ -77,4 +77,21 @@ class StreamFactory {
   Composer composer_;
 };
 
+/**
+ * ResponseAndStreamFactory<R, T> — the value a server handler returns for a
+ * `R, stream<T>` RPC (a stream RPC that also carries a non-void initial
+ * response).
+ *
+ * Pairs the initial response value with the [[StreamFactory]] for the stream's
+ * producing side. The framework serializes `response` into the stream's first
+ * PAYLOAD (the presult the client reads before switching to stream elements)
+ * and binds the protocol codec to `factory` exactly as it does for a bare
+ * `stream<T>`. Move-only, mirroring StreamFactory.
+ */
+template <typename R, typename T>
+struct ResponseAndStreamFactory {
+  R response;
+  StreamFactory<T> factory;
+};
+
 } // namespace apache::thrift::fast_thrift::thrift::stream
