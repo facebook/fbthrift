@@ -629,7 +629,8 @@ ${_cybld}/thrift/python/server_impl/${_target_file} -> ${_src}")
 endforeach ()
 
 set(ServerImplExecutionFiles
-    "${CMAKE_CURRENT_SOURCE_DIR}/server/execution/asyncio_worker.py")
+    "${CMAKE_CURRENT_SOURCE_DIR}/server/execution/asyncio_worker.py"
+    "${CMAKE_CURRENT_SOURCE_DIR}/server/execution/asyncio_worker_pool.py")
 
 foreach (_src ${ServerImplExecutionFiles})
   get_filename_component(_target_file "${_src}" NAME)
