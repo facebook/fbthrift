@@ -31,6 +31,9 @@ struct field4;
 struct field1;
 struct field2;
 struct field3;
+struct field1;
+struct field2;
+struct field3;
 struct field4;
 struct field1;
 struct field2;
@@ -126,6 +129,18 @@ APACHE_THRIFT_DEFINE_ACCESSOR(field2);
 #define APACHE_THRIFT_ACCESSOR_field3
 APACHE_THRIFT_DEFINE_ACCESSOR(field3);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_field1
+#define APACHE_THRIFT_ACCESSOR_field1
+APACHE_THRIFT_DEFINE_ACCESSOR(field1);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_field2
+#define APACHE_THRIFT_ACCESSOR_field2
+APACHE_THRIFT_DEFINE_ACCESSOR(field2);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_field3
+#define APACHE_THRIFT_ACCESSOR_field3
+APACHE_THRIFT_DEFINE_ACCESSOR(field3);
+#endif
 #ifndef APACHE_THRIFT_ACCESSOR_field4
 #define APACHE_THRIFT_ACCESSOR_field4
 APACHE_THRIFT_DEFINE_ACCESSOR(field4);
@@ -205,6 +220,7 @@ class Foo;
 class LazyFoo;
 class OptionalFoo;
 class OptionalLazyFoo;
+class TerseLazyFooNoChecksum;
 class OptionalBoxedLazyFoo;
 class LazyCppRef;
 class IndexedFoo;
@@ -1502,6 +1518,255 @@ class OptionalLazyFoo final  {
 
 template <class Protocol_>
 unsigned long OptionalLazyFoo::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+
+/** Glean {"file": "thrift/compiler/test/fixtures/lazy_deserialization/src/simple.thrift", "name": "TerseLazyFooNoChecksum", "kind": "struct" } */
+class TerseLazyFooNoChecksum final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_is_runtime_annotation = false;
+  static std::string_view __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
+  static std::string_view __fbthrift_get_class_name();
+  template <class ...>
+  FOLLY_ERASE static constexpr std::string_view __fbthrift_get_module_name() noexcept {
+    return "simple";
+  }
+  static constexpr std::size_t __fbthrift_num_fields = 3;
+
+  static constexpr const int16_t __fbthrift_reflection_field_ids[] = {0,1,2,3};
+
+  using __fbthrift_reflection_idents = folly::tag_t<
+    ::apache::thrift::ident::field1,
+    ::apache::thrift::ident::field2,
+    ::apache::thrift::ident::field3
+  >;
+
+  using __fbthrift_reflection_type_tags = folly::tag_t<
+    ::apache::thrift::type::list<::apache::thrift::type::i32_t>,
+    ::apache::thrift::type::list<::apache::thrift::type::i32_t>,
+    ::apache::thrift::type::list<::apache::thrift::type::i32_t>
+  >;
+  void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
+
+ public:
+  using __fbthrift_cpp2_type = TerseLazyFooNoChecksum;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  TerseLazyFooNoChecksum();
+
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  TerseLazyFooNoChecksum(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<::std::int32_t> field3__arg);
+
+  TerseLazyFooNoChecksum(TerseLazyFooNoChecksum&&) noexcept;
+  TerseLazyFooNoChecksum(const TerseLazyFooNoChecksum& src);
+
+
+  TerseLazyFooNoChecksum& operator=(TerseLazyFooNoChecksum&&) noexcept;
+  TerseLazyFooNoChecksum& operator=(const TerseLazyFooNoChecksum&);
+
+  ~TerseLazyFooNoChecksum();
+
+ private:
+  ::std::vector<::std::int32_t> __fbthrift_field_field1;
+ private:
+  mutable ::std::vector<::std::int32_t> __fbthrift_field_field2;
+ private:
+  mutable ::std::vector<::std::int32_t> __fbthrift_field_field3;
+
+ public:
+
+  bool operator==(const TerseLazyFooNoChecksum&) const;
+  std::partial_ordering operator<=>(const TerseLazyFooNoChecksum&) const;
+
+  /** Glean { "field": "field1" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<const fbthrift_T&> field1_ref() const& {
+    return ::apache::thrift::terse_field_ref<const fbthrift_T&>{this->__fbthrift_field_field1};
+  }
+
+  /** Glean { "field": "field1" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&> field1_ref() & {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&>{this->__fbthrift_field_field1};
+  }
+
+  /** Glean { "field": "field1" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&&> field1_ref() && {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&&>{static_cast<fbthrift_T&&>(this->__fbthrift_field_field1)};
+  }
+
+  /** Glean { "field": "field1" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<const fbthrift_T&> field1() const& {
+    return ::apache::thrift::terse_field_ref<const fbthrift_T&>{this->__fbthrift_field_field1};
+  }
+
+  /** Glean { "field": "field1" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&> field1() & {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&>{this->__fbthrift_field_field1};
+  }
+
+  /** Glean { "field": "field1" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&&> field1() && {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&&>{static_cast<fbthrift_T&&>(this->__fbthrift_field_field1)};
+  }
+
+  /** Glean { "field": "field2" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<const fbthrift_T&> field2_ref() const& {
+    return ::apache::thrift::terse_field_ref<const fbthrift_T&>{this->__fbthrift_read_field_field2()};
+  }
+
+  /** Glean { "field": "field2" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&> field2_ref() & {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&>{this->__fbthrift_read_field_field2()};
+  }
+
+  /** Glean { "field": "field2" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&&> field2_ref() && {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&&>{static_cast<fbthrift_T&&>(this->__fbthrift_read_field_field2())};
+  }
+
+  /** Glean { "field": "field2" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<const fbthrift_T&> field2() const& {
+    return ::apache::thrift::terse_field_ref<const fbthrift_T&>{this->__fbthrift_read_field_field2()};
+  }
+
+  /** Glean { "field": "field2" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&> field2() & {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&>{this->__fbthrift_read_field_field2()};
+  }
+
+  /** Glean { "field": "field2" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&&> field2() && {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&&>{static_cast<fbthrift_T&&>(this->__fbthrift_read_field_field2())};
+  }
+
+  /** Glean { "field": "field3" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<const fbthrift_T&> field3_ref() const& {
+    return ::apache::thrift::terse_field_ref<const fbthrift_T&>{this->__fbthrift_read_field_field3()};
+  }
+
+  /** Glean { "field": "field3" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&> field3_ref() & {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&>{this->__fbthrift_read_field_field3()};
+  }
+
+  /** Glean { "field": "field3" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&&> field3_ref() && {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&&>{static_cast<fbthrift_T&&>(this->__fbthrift_read_field_field3())};
+  }
+
+  /** Glean { "field": "field3" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<const fbthrift_T&> field3() const& {
+    return ::apache::thrift::terse_field_ref<const fbthrift_T&>{this->__fbthrift_read_field_field3()};
+  }
+
+  /** Glean { "field": "field3" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&> field3() & {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&>{this->__fbthrift_read_field_field3()};
+  }
+
+  /** Glean { "field": "field3" } */
+  template <typename..., typename fbthrift_T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::terse_field_ref<fbthrift_T&&> field3() && {
+    return ::apache::thrift::terse_field_ref<fbthrift_T&&>{static_cast<fbthrift_T&&>(this->__fbthrift_read_field_field3())};
+  }
+
+  template <class Protocol_>
+  unsigned long read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  mutable struct __fbthrift_SerializedData {
+    folly::IOBuf field2;
+    folly::IOBuf field3;
+  } __fbthrift_serializedData_;
+
+  mutable ::apache::thrift::detail::st::DeserializationMutex __fbthrift_deserializationMutex_;
+  ::apache::thrift::ProtocolType __fbthrift_protocol_{};
+
+  mutable struct __fbthrift_IsDeserialized {
+    std::atomic<uint8_t> field2{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
+    std::atomic<uint8_t> field3{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
+  } __fbthrift_isDeserialized_;
+
+  const ::std::vector<::std::int32_t>& __fbthrift_read_field_field2() const;
+  ::std::vector<::std::int32_t>& __fbthrift_read_field_field2();
+  void __fbthrift_read_field_field2_slow() const;
+  template<class ProtocolReader> void __fbthrift_read_field_field2_impl() const;
+  template <typename Protocol_>
+  std::optional<uint32_t> __fbthrift_try_write_lazy_field(folly::tag_t<::apache::thrift::ident::field2>, Protocol_* prot_) const {
+    if constexpr (Protocol_::kHasIndexSupport()) {
+      if (prot_->protocolType() == __fbthrift_protocol_) {
+        auto lock = std::shared_lock(__fbthrift_deserializationMutex_);
+        if (__fbthrift_isDeserialized_.field2.load() == ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+          return prot_->writeRaw(__fbthrift_serializedData_.field2);
+        }
+      }
+    }
+    std::as_const(*this).__fbthrift_read_field_field2();
+    return std::nullopt;
+  }
+  const ::std::vector<::std::int32_t>& __fbthrift_read_field_field3() const;
+  ::std::vector<::std::int32_t>& __fbthrift_read_field_field3();
+  void __fbthrift_read_field_field3_slow() const;
+  template<class ProtocolReader> void __fbthrift_read_field_field3_impl() const;
+  template <typename Protocol_>
+  std::optional<uint32_t> __fbthrift_try_write_lazy_field(folly::tag_t<::apache::thrift::ident::field3>, Protocol_* prot_) const {
+    if constexpr (Protocol_::kHasIndexSupport()) {
+      if (prot_->protocolType() == __fbthrift_protocol_) {
+        auto lock = std::shared_lock(__fbthrift_deserializationMutex_);
+        if (__fbthrift_isDeserialized_.field3.load() == ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+          return prot_->writeRaw(__fbthrift_serializedData_.field3);
+        }
+      }
+    }
+    std::as_const(*this).__fbthrift_read_field_field3();
+    return std::nullopt;
+  }
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<TerseLazyFooNoChecksum>;
+  friend void swap(TerseLazyFooNoChecksum& a, TerseLazyFooNoChecksum& b);
+};
+
+template <class Protocol_>
+unsigned long TerseLazyFooNoChecksum::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -3049,47 +3314,52 @@ unsigned long Empty::read(Protocol_* iprot) {
 namespace apache::thrift::detail {
 template <> struct TSchemaAssociation<::apache::thrift::test::Foo, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -7484912837684733486;
-  static constexpr ::std::string_view definitionKey = {"\x54\xc4\xf6\xc7\xfb\xd2\x32\x01\xff\x30\xe6\x2c\x4d\xf1\x04\x94", 16};
+  static constexpr int64_t programId = -3679774640930736531;
+  static constexpr ::std::string_view definitionKey = {"\xdd\x76\x72\x7b\x66\x00\x83\xa3\x3e\x35\xad\x25\xb9\x36\x22\x3a", 16};
 };
 template <> struct TSchemaAssociation<::apache::thrift::test::LazyFoo, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -7484912837684733486;
-  static constexpr ::std::string_view definitionKey = {"\x0f\x4f\x36\xd3\xae\x76\x9c\x60\xf6\x00\xe5\xb9\x1c\xae\x2b\x24", 16};
+  static constexpr int64_t programId = -3679774640930736531;
+  static constexpr ::std::string_view definitionKey = {"\x59\x68\xe2\x16\x3e\x10\x7e\x9f\x49\x67\x38\x1a\x1a\xd6\xd5\xad", 16};
 };
 template <> struct TSchemaAssociation<::apache::thrift::test::OptionalFoo, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -7484912837684733486;
-  static constexpr ::std::string_view definitionKey = {"\xde\xb8\x63\x2b\x54\x24\xe0\x63\x30\xd1\x6b\x46\xde\x2b\x92\x9c", 16};
+  static constexpr int64_t programId = -3679774640930736531;
+  static constexpr ::std::string_view definitionKey = {"\x35\xca\xd9\x0a\xdf\x29\xb2\x18\xed\xed\x4a\x89\x21\xff\xf0\x9a", 16};
 };
 template <> struct TSchemaAssociation<::apache::thrift::test::OptionalLazyFoo, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -7484912837684733486;
-  static constexpr ::std::string_view definitionKey = {"\x28\x1e\xe0\xd7\xba\xc5\xea\x49\xdb\xb0\x00\x50\x48\xe0\xdc\xe0", 16};
+  static constexpr int64_t programId = -3679774640930736531;
+  static constexpr ::std::string_view definitionKey = {"\x7b\xa4\xc0\x49\x1d\x92\xbb\x66\x55\x7f\x78\x14\x67\x0d\xcc\x97", 16};
+};
+template <> struct TSchemaAssociation<::apache::thrift::test::TerseLazyFooNoChecksum, false> {
+  static ::folly::Range<const ::std::string_view*> bundle();
+  static constexpr int64_t programId = -3679774640930736531;
+  static constexpr ::std::string_view definitionKey = {"\xad\xe4\x45\xd1\x4e\x00\x7b\x0c\x5d\x64\x58\xdd\x00\xa5\x2d\xaa", 16};
 };
 template <> struct TSchemaAssociation<::apache::thrift::test::OptionalBoxedLazyFoo, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -7484912837684733486;
-  static constexpr ::std::string_view definitionKey = {"\x0d\x3d\x53\x93\x7b\xb2\x65\x95\x01\x0a\x03\xe6\x48\x72\xaa\x87", 16};
+  static constexpr int64_t programId = -3679774640930736531;
+  static constexpr ::std::string_view definitionKey = {"\x4d\x97\xed\x05\x5a\xf8\xa2\xc5\x91\x18\x02\x9e\x75\x0d\xbd\x01", 16};
 };
 template <> struct TSchemaAssociation<::apache::thrift::test::LazyCppRef, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -7484912837684733486;
-  static constexpr ::std::string_view definitionKey = {"\xc8\x08\x44\x91\x9f\xb5\xeb\x92\x4f\xc3\x6e\x9a\xde\x32\x8a\xec", 16};
+  static constexpr int64_t programId = -3679774640930736531;
+  static constexpr ::std::string_view definitionKey = {"\x12\x05\xac\x20\xc7\x44\x05\xbb\x33\x16\x63\x60\xf2\x12\xf8\x34", 16};
 };
 template <> struct TSchemaAssociation<::apache::thrift::test::IndexedFoo, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -7484912837684733486;
-  static constexpr ::std::string_view definitionKey = {"\xbd\x6d\x56\x3f\x59\xa0\x32\x09\x3a\x2d\x45\x94\x64\x74\x32\x81", 16};
+  static constexpr int64_t programId = -3679774640930736531;
+  static constexpr ::std::string_view definitionKey = {"\x87\xcd\x9f\xd1\xb9\xeb\x78\x3a\x94\x6d\x10\x4c\x42\x52\x86\x54", 16};
 };
 template <> struct TSchemaAssociation<::apache::thrift::test::OptionalIndexedFoo, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -7484912837684733486;
-  static constexpr ::std::string_view definitionKey = {"\xb2\x54\x19\x49\xc4\xd3\x33\x6e\xfd\x19\x24\xb7\xf3\xdc\x25\x73", 16};
+  static constexpr int64_t programId = -3679774640930736531;
+  static constexpr ::std::string_view definitionKey = {"\xf2\x1d\xa8\xa3\xc4\x10\x5c\x34\xea\xc1\x26\x7b\xef\x84\x51\x2b", 16};
 };
 template <> struct TSchemaAssociation<::apache::thrift::test::Empty, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -7484912837684733486;
-  static constexpr ::std::string_view definitionKey = {"\x04\xdd\xab\x2e\xd1\xd9\xaa\xeb\x31\x4f\x8d\x28\x86\xa0\xa7\x20", 16};
+  static constexpr int64_t programId = -3679774640930736531;
+  static constexpr ::std::string_view definitionKey = {"\x26\xc5\xae\x73\x38\x5b\x2b\x18\x55\x12\x92\xb2\x39\x24\xe8\xd2", 16};
 };
 } // namespace apache::thrift::detail

@@ -174,6 +174,83 @@ void OptionalLazyFoo::__fbthrift_read_field_field4_slow() const {
 
 
 
+const ::std::vector<::std::int32_t>& TerseLazyFooNoChecksum::__fbthrift_read_field_field2() const {
+  const auto isDeserialized = __fbthrift_isDeserialized_.field2.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field2_slow();
+  }
+  return __fbthrift_field_field2;
+}
+
+::std::vector<::std::int32_t>& TerseLazyFooNoChecksum::__fbthrift_read_field_field2() {
+  const auto isDeserialized = __fbthrift_isDeserialized_.field2.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field2_slow();
+  } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+    __fbthrift_isDeserialized_.field2 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+  }
+  return __fbthrift_field_field2;
+}
+
+void TerseLazyFooNoChecksum::__fbthrift_read_field_field2_slow() const {
+  auto lock = std::unique_lock(__fbthrift_deserializationMutex_);
+  if (__fbthrift_isDeserialized_.field2 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
+    return;
+  }
+  switch (__fbthrift_protocol_) {
+    case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
+      __fbthrift_read_field_field2_impl<::apache::thrift::CompactProtocolReader>();
+      break;
+    case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+      __fbthrift_read_field_field2_impl<::apache::thrift::BinaryProtocolReader>();
+      break;
+    default:
+      CHECK(false) << int(__fbthrift_protocol_);
+  }
+  __fbthrift_serializedData_.field2 = {};
+  __fbthrift_isDeserialized_.field2 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+}
+
+const ::std::vector<::std::int32_t>& TerseLazyFooNoChecksum::__fbthrift_read_field_field3() const {
+  const auto isDeserialized = __fbthrift_isDeserialized_.field3.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field3_slow();
+  }
+  return __fbthrift_field_field3;
+}
+
+::std::vector<::std::int32_t>& TerseLazyFooNoChecksum::__fbthrift_read_field_field3() {
+  const auto isDeserialized = __fbthrift_isDeserialized_.field3.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field3_slow();
+  } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+    __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+  }
+  return __fbthrift_field_field3;
+}
+
+void TerseLazyFooNoChecksum::__fbthrift_read_field_field3_slow() const {
+  auto lock = std::unique_lock(__fbthrift_deserializationMutex_);
+  if (__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
+    return;
+  }
+  switch (__fbthrift_protocol_) {
+    case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
+      __fbthrift_read_field_field3_impl<::apache::thrift::CompactProtocolReader>();
+      break;
+    case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+      __fbthrift_read_field_field3_impl<::apache::thrift::BinaryProtocolReader>();
+      break;
+    default:
+      CHECK(false) << int(__fbthrift_protocol_);
+  }
+  __fbthrift_serializedData_.field3 = {};
+  __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+}
+
+
+
+
 const ::apache::thrift::detail::boxed_value_ptr<::std::vector<double>>& OptionalBoxedLazyFoo::__fbthrift_read_field_field3() const {
   const auto isDeserialized = __fbthrift_isDeserialized_.field3.load(std::memory_order_relaxed);
   if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {

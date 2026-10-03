@@ -16,13 +16,13 @@ namespace simple_constants {
 
 
 
-::std::string_view _fbthrift_schema_98203f6e4f0a59d2() {
+::std::string_view _fbthrift_schema_cceed075d9d5366d() {
   return "";
 }
-::folly::Range<const ::std::string_view*> _fbthrift_schema_98203f6e4f0a59d2_includes() {
+::folly::Range<const ::std::string_view*> _fbthrift_schema_cceed075d9d5366d_includes() {
   return {};
 }
-::folly::Range<const ::std::string_view*> _fbthrift_schema_98203f6e4f0a59d2_uris() {
+::folly::Range<const ::std::string_view*> _fbthrift_schema_cceed075d9d5366d_uris() {
   return {};
 }
 

@@ -28,6 +28,11 @@ template uint32_t OptionalLazyFoo::write<>(apache::thrift::CompactProtocolWriter
 template uint32_t OptionalLazyFoo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t OptionalLazyFoo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+template void TerseLazyFooNoChecksum::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t TerseLazyFooNoChecksum::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t TerseLazyFooNoChecksum::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t TerseLazyFooNoChecksum::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 template void OptionalBoxedLazyFoo::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t OptionalBoxedLazyFoo::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t OptionalBoxedLazyFoo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;

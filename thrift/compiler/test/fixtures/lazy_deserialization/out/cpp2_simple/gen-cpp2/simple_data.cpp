@@ -116,6 +116,28 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<:
   3,
 }};
 
+THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::string_view TStructDataStorage<::apache::thrift::test::TerseLazyFooNoChecksum>::name = "TerseLazyFooNoChecksum";
+THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<std::string_view, 3> TStructDataStorage<::apache::thrift::test::TerseLazyFooNoChecksum>::fields_names = { {
+  "field1"sv,
+  "field2"sv,
+  "field3"sv,
+}};
+THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 3> TStructDataStorage<::apache::thrift::test::TerseLazyFooNoChecksum>::fields_ids = { {
+  1,
+  2,
+  3,
+}};
+THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 3> TStructDataStorage<::apache::thrift::test::TerseLazyFooNoChecksum>::fields_types = { {
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+}};
+THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 3> TStructDataStorage<::apache::thrift::test::TerseLazyFooNoChecksum>::isset_indexes = { {
+  -1,
+  -1,
+  -1,
+}};
+
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::string_view TStructDataStorage<::apache::thrift::test::OptionalBoxedLazyFoo>::name = "OptionalBoxedLazyFoo";
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<std::string_view, 4> TStructDataStorage<::apache::thrift::test::OptionalBoxedLazyFoo>::fields_names = { {
   "field1"sv,
@@ -249,39 +271,43 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 0> TStructDataStorage<:
 namespace detail {
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::apache::thrift::test::Foo, false>::bundle() {
-    return ::apache::thrift::test::simple_constants::_fbthrift_schema_98203f6e4f0a59d2_includes();
+    return ::apache::thrift::test::simple_constants::_fbthrift_schema_cceed075d9d5366d_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::apache::thrift::test::LazyFoo, false>::bundle() {
-    return ::apache::thrift::test::simple_constants::_fbthrift_schema_98203f6e4f0a59d2_includes();
+    return ::apache::thrift::test::simple_constants::_fbthrift_schema_cceed075d9d5366d_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::apache::thrift::test::OptionalFoo, false>::bundle() {
-    return ::apache::thrift::test::simple_constants::_fbthrift_schema_98203f6e4f0a59d2_includes();
+    return ::apache::thrift::test::simple_constants::_fbthrift_schema_cceed075d9d5366d_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::apache::thrift::test::OptionalLazyFoo, false>::bundle() {
-    return ::apache::thrift::test::simple_constants::_fbthrift_schema_98203f6e4f0a59d2_includes();
+    return ::apache::thrift::test::simple_constants::_fbthrift_schema_cceed075d9d5366d_includes();
+}
+
+::folly::Range<const ::std::string_view*> TSchemaAssociation<::apache::thrift::test::TerseLazyFooNoChecksum, false>::bundle() {
+    return ::apache::thrift::test::simple_constants::_fbthrift_schema_cceed075d9d5366d_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::apache::thrift::test::OptionalBoxedLazyFoo, false>::bundle() {
-    return ::apache::thrift::test::simple_constants::_fbthrift_schema_98203f6e4f0a59d2_includes();
+    return ::apache::thrift::test::simple_constants::_fbthrift_schema_cceed075d9d5366d_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::apache::thrift::test::LazyCppRef, false>::bundle() {
-    return ::apache::thrift::test::simple_constants::_fbthrift_schema_98203f6e4f0a59d2_includes();
+    return ::apache::thrift::test::simple_constants::_fbthrift_schema_cceed075d9d5366d_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::apache::thrift::test::IndexedFoo, false>::bundle() {
-    return ::apache::thrift::test::simple_constants::_fbthrift_schema_98203f6e4f0a59d2_includes();
+    return ::apache::thrift::test::simple_constants::_fbthrift_schema_cceed075d9d5366d_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::apache::thrift::test::OptionalIndexedFoo, false>::bundle() {
-    return ::apache::thrift::test::simple_constants::_fbthrift_schema_98203f6e4f0a59d2_includes();
+    return ::apache::thrift::test::simple_constants::_fbthrift_schema_cceed075d9d5366d_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::apache::thrift::test::Empty, false>::bundle() {
-    return ::apache::thrift::test::simple_constants::_fbthrift_schema_98203f6e4f0a59d2_includes();
+    return ::apache::thrift::test::simple_constants::_fbthrift_schema_cceed075d9d5366d_includes();
 }
 
 } // namespace detail

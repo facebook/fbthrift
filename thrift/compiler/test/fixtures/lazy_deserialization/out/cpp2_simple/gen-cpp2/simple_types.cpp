@@ -22,6 +22,8 @@ template void TccStructTraits<::apache::thrift::test::OptionalFoo>::translateFie
     std::string_view, int16_t&, apache::thrift::protocol::TType&);
 template void TccStructTraits<::apache::thrift::test::OptionalLazyFoo>::translateFieldName(
     std::string_view, int16_t&, apache::thrift::protocol::TType&);
+template void TccStructTraits<::apache::thrift::test::TerseLazyFooNoChecksum>::translateFieldName(
+    std::string_view, int16_t&, apache::thrift::protocol::TType&);
 template void TccStructTraits<::apache::thrift::test::OptionalBoxedLazyFoo>::translateFieldName(
     std::string_view, int16_t&, apache::thrift::protocol::TType&);
 template void TccStructTraits<::apache::thrift::test::LazyCppRef>::translateFieldName(
@@ -586,6 +588,142 @@ void swap([[maybe_unused]] OptionalLazyFoo& a, [[maybe_unused]] OptionalLazyFoo&
   swap(a.__fbthrift_field_field4, b.__fbthrift_field_field4);
   a.__fbthrift_isDeserialized_.field4.store(b.__fbthrift_isDeserialized_.field4.exchange(a.__fbthrift_isDeserialized_.field4.load(relaxed), relaxed), relaxed);
   swap(a.__isset, b.__isset);
+}
+
+
+} // namespace apache::thrift::test
+
+
+namespace apache::thrift::test {
+
+std::string_view TerseLazyFooNoChecksum::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<TerseLazyFooNoChecksum>::fields_names[folly::to_underlying(ord) - 1];
+}
+std::string_view TerseLazyFooNoChecksum::__fbthrift_get_class_name() {
+  return apache::thrift::TStructDataStorage<TerseLazyFooNoChecksum>::name;
+}
+
+TerseLazyFooNoChecksum::TerseLazyFooNoChecksum(const TerseLazyFooNoChecksum& srcObj) :
+    __fbthrift_field_field1(srcObj.__fbthrift_field_field1),
+    __fbthrift_field_field2(srcObj.__fbthrift_field_field2),
+    __fbthrift_field_field3(srcObj.__fbthrift_field_field3) {
+  const auto relaxed = std::memory_order_relaxed;
+  auto lock = std::shared_lock(srcObj.__fbthrift_deserializationMutex_);
+  __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
+  {
+    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field2.load(relaxed);
+    __fbthrift_isDeserialized_.field2.store(isDeserialized, relaxed);
+    __fbthrift_serializedData_.field2 = srcObj.__fbthrift_serializedData_.field2;
+  }
+  {
+    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
+    __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+    __fbthrift_serializedData_.field3 = srcObj.__fbthrift_serializedData_.field3;
+  }
+}
+
+static void __fbthrift_swap(TerseLazyFooNoChecksum& lhs, TerseLazyFooNoChecksum& rhs) { swap(lhs, rhs); }
+TerseLazyFooNoChecksum& TerseLazyFooNoChecksum::operator=(const TerseLazyFooNoChecksum& other) {
+  TerseLazyFooNoChecksum tmp(other);
+  __fbthrift_swap(*this, tmp);
+  return *this;
+}
+
+TerseLazyFooNoChecksum::TerseLazyFooNoChecksum() {
+}
+
+
+TerseLazyFooNoChecksum::~TerseLazyFooNoChecksum() {}
+
+TerseLazyFooNoChecksum::TerseLazyFooNoChecksum([[maybe_unused]] TerseLazyFooNoChecksum&& other) noexcept :
+    __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
+    __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
+    __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
+    __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)),
+    __fbthrift_protocol_(other.__fbthrift_protocol_) {
+  const auto relaxed = std::memory_order_relaxed;
+  {
+    const auto isDeserialized = other.__fbthrift_isDeserialized_.field2.load(relaxed);
+    __fbthrift_isDeserialized_.field2.store(isDeserialized, relaxed);
+    other.__fbthrift_isDeserialized_.field2.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+  }
+  {
+    const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
+    __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+    other.__fbthrift_isDeserialized_.field3.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+  }
+}
+
+TerseLazyFooNoChecksum& TerseLazyFooNoChecksum::operator=([[maybe_unused]] TerseLazyFooNoChecksum&& other) noexcept {
+    const auto relaxed = std::memory_order_relaxed;
+    __fbthrift_protocol_ = other.__fbthrift_protocol_;
+    __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
+    this->__fbthrift_field_field1 = std::move(other.__fbthrift_field_field1);
+    this->__fbthrift_field_field2 = std::move(other.__fbthrift_field_field2);
+    {
+      const auto isDeserialized = other.__fbthrift_isDeserialized_.field2.load(relaxed);
+      __fbthrift_isDeserialized_.field2.store(isDeserialized, relaxed);
+      other.__fbthrift_isDeserialized_.field2.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+    }
+    this->__fbthrift_field_field3 = std::move(other.__fbthrift_field_field3);
+    {
+      const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
+      __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+      other.__fbthrift_isDeserialized_.field3.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+    }
+    return *this;
+}
+
+
+TerseLazyFooNoChecksum::TerseLazyFooNoChecksum(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<::std::int32_t> field3__arg) :
+    __fbthrift_field_field1(std::move(field1__arg)),
+    __fbthrift_field_field2(std::move(field2__arg)),
+    __fbthrift_field_field3(std::move(field3__arg)) { 
+}
+
+void TerseLazyFooNoChecksum::__fbthrift_clear() {
+  // clear all fields
+  this->__fbthrift_field_field1.clear();
+  this->__fbthrift_field_field2.clear();
+  this->__fbthrift_field_field3.clear();
+  __fbthrift_serializedData_ = {};
+  __fbthrift_isDeserialized_.~__fbthrift_IsDeserialized();
+  new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
+}
+
+bool TerseLazyFooNoChecksum::__fbthrift_is_empty() const {
+  if (!(::apache::thrift::op::isEmpty<::apache::thrift::type::list<::apache::thrift::type::i32_t>>(this->__fbthrift_field_field1))) {
+    return false;
+  }
+  if (!(::apache::thrift::op::isEmpty<::apache::thrift::type::list<::apache::thrift::type::i32_t>>(this->__fbthrift_field_field2))) {
+    return false;
+  }
+  if (!(::apache::thrift::op::isEmpty<::apache::thrift::type::list<::apache::thrift::type::i32_t>>(this->__fbthrift_field_field3))) {
+    return false;
+  }
+  return true;
+}
+
+bool TerseLazyFooNoChecksum::operator==([[maybe_unused]] const TerseLazyFooNoChecksum& rhs) const {
+  return ::apache::thrift::op::detail::StructEquality{}(*this, rhs);
+}
+
+std::partial_ordering TerseLazyFooNoChecksum::operator<=>([[maybe_unused]] const TerseLazyFooNoChecksum& rhs) const {
+  return ::apache::thrift::op::compare<TerseLazyFooNoChecksum>(*this, rhs);
+}
+
+
+void swap([[maybe_unused]] TerseLazyFooNoChecksum& a, [[maybe_unused]] TerseLazyFooNoChecksum& b) {
+  using ::std::swap;
+  const auto relaxed = std::memory_order_relaxed;
+  swap(a.__fbthrift_protocol_, b.__fbthrift_protocol_);
+  swap(a.__fbthrift_serializedData_, b.__fbthrift_serializedData_);
+  swap(a.__fbthrift_field_field1, b.__fbthrift_field_field1);
+  swap(a.__fbthrift_field_field2, b.__fbthrift_field_field2);
+  a.__fbthrift_isDeserialized_.field2.store(b.__fbthrift_isDeserialized_.field2.exchange(a.__fbthrift_isDeserialized_.field2.load(relaxed), relaxed), relaxed);
+  swap(a.__fbthrift_field_field3, b.__fbthrift_field_field3);
+  a.__fbthrift_isDeserialized_.field3.store(b.__fbthrift_isDeserialized_.field3.exchange(a.__fbthrift_isDeserialized_.field3.load(relaxed), relaxed), relaxed);
 }
 
 

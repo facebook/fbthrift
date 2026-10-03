@@ -28,6 +28,11 @@ template uint32_t OptionalLazyFoo::write<>(apache::thrift::BinaryProtocolWriter*
 template uint32_t OptionalLazyFoo::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t OptionalLazyFoo::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
 
+template void TerseLazyFooNoChecksum::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t TerseLazyFooNoChecksum::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t TerseLazyFooNoChecksum::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t TerseLazyFooNoChecksum::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+
 template void OptionalBoxedLazyFoo::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t OptionalBoxedLazyFoo::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t OptionalBoxedLazyFoo::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;

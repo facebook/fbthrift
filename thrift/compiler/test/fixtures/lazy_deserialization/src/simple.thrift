@@ -56,6 +56,17 @@ struct OptionalLazyFoo {
   4: optional list<i32> field4;
 }
 
+@thrift.Experimental
+@thrift.TerseWrite
+@cpp.DisableLazyChecksum
+struct TerseLazyFooNoChecksum {
+  1: list<i32> field1;
+  @cpp.Lazy
+  2: list<i32> field2;
+  @cpp.Lazy
+  3: list<i32> field3;
+}
+
 struct OptionalBoxedLazyFoo {
   @thrift.Box
   1: optional list<double> field1;

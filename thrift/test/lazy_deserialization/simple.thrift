@@ -86,6 +86,24 @@ struct LazyFooNoChecksum {
   4: list<i32> field4;
 }
 
+@thrift.Experimental
+@thrift.TerseWrite
+struct TerseFooNoChecksum {
+  1: list<i32> field1;
+  2: list<i32> field2;
+}
+
+@thrift.Experimental
+@thrift.TerseWrite
+@cpp.DisableLazyChecksum
+struct TerseLazyFooNoChecksum {
+  1: list<i32> field1;
+  @cpp.Lazy
+  2: list<i32> field2;
+  @cpp.Lazy
+  3: list<i32> field3;
+}
+
 struct LazyCppRef {
   @cpp.Lazy
   @cpp.Ref{type = cpp.RefType.Unique}

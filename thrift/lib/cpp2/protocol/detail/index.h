@@ -117,7 +117,7 @@ class Xxh3Hasher {
 [[noreturn]] void throwChecksumMismatch(int64_t expected, int64_t actual);
 
 struct DummyIndexWriter {
-  DummyIndexWriter(void*, uint32_t&, bool) {}
+  DummyIndexWriter(void*, uint32_t&, bool, bool = true) {}
 
   void recordFieldStart() {}
 
@@ -132,8 +132,14 @@ template <class Protocol>
 class IndexWriterImpl {
  public:
   IndexWriterImpl(
-      Protocol* prot, uint32_t& writtenBytes, bool writeValidationFields)
-      : prot_(prot), writtenBytes_(writtenBytes) {
+      Protocol* prot,
+      uint32_t& writtenBytes,
+      bool writeValidationFields,
+      bool writeIndex = true)
+      : prot_(prot), writtenBytes_(writtenBytes), writeIndex_(writeIndex) {
+    if (!writeIndex_) {
+      return;
+    }
     if (writeValidationFields) {
       hasher_.init();
       writeRandomNumberField();
@@ -145,6 +151,9 @@ class IndexWriterImpl {
 
   template <typename Type, typename TypeClass>
   void recordFieldEnd(TypeClass, int16_t id) {
+    if (!writeIndex_) {
+      return;
+    }
     if (!std::is_same<TypeClass, type_class::integral>{} &&
         !fixed_cost_skip_v<
             typename Protocol::ProtocolReader,
@@ -159,6 +168,9 @@ class IndexWriterImpl {
   }
 
   void finalize() {
+    if (!writeIndex_) {
+      return;
+    }
     if (hasher_.is_initialized()) {
       fieldIdAndSize_.push_back(
           {kXxh3ChecksumFieldId, static_cast<int64_t>(hasher_)});
@@ -209,6 +221,7 @@ class IndexWriterImpl {
 
   Protocol* prot_;
   uint32_t& writtenBytes_;
+  bool writeIndex_;
   uint32_t indexOffsetLocation_ = 0;
   uint32_t sizeFieldEnd_ = 0;
   uint32_t fieldStart_ = 0;

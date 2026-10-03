@@ -146,10 +146,83 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, LazyFooNoChecksum, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, LazyFooNoChecksum, field3);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyFooNoChecksum, field4);
 
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, TerseLazyFooNoChecksum, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, TerseLazyFooNoChecksum, field3);
+
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, LazyCppRef, field1);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, LazyCppRef, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, LazyCppRef, field3);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyCppRef, field4);
+
+TYPED_TEST(Serialization, DisabledChecksumOmitsIndexWithoutLazyFields) {
+  const auto empty =
+      TypeParam::template serialize<std::string>(TerseLazyFooNoChecksum{});
+  EXPECT_EQ(std::string(1, '\0'), empty);
+  EXPECT_EQ(
+      TypeParam::template serialize<std::string>(TerseFooNoChecksum{}), empty);
+
+  TerseFooNoChecksum eager;
+  eager.field1_ref() = std::vector<int32_t>{1, 2};
+  TerseLazyFooNoChecksum lazy;
+  lazy.field1_ref() = std::vector<int32_t>{1, 2};
+  const auto withoutLazyField =
+      TypeParam::template serialize<std::string>(lazy);
+  EXPECT_EQ(
+      TypeParam::template serialize<std::string>(eager), withoutLazyField);
+
+  const auto decoded =
+      TypeParam::template deserialize<TerseLazyFooNoChecksum>(withoutLazyField);
+  EXPECT_EQ(*lazy.field1_ref(), *decoded.field1_ref());
+  EXPECT_TRUE(decoded.field2_ref()->empty());
+}
+
+TYPED_TEST(Serialization, DisabledChecksumRetainsIndexWithLazyField) {
+  TerseLazyFooNoChecksum lazy;
+  lazy.field2_ref() = std::vector<int32_t>{3, 4};
+  const auto indexed = TypeParam::template serialize<std::string>(lazy);
+
+  TerseFooNoChecksum eager;
+  eager.field2_ref() = std::vector<int32_t>{3, 4};
+  EXPECT_NE(TypeParam::template serialize<std::string>(eager), indexed);
+
+  auto decoded =
+      TypeParam::template deserialize<TerseLazyFooNoChecksum>(indexed);
+  EXPECT_TRUE(get_field2(decoded).empty());
+  EXPECT_EQ(indexed, TypeParam::template serialize<std::string>(decoded));
+  EXPECT_EQ(*lazy.field2_ref(), *decoded.field2_ref());
+}
+
+TYPED_TEST(Serialization, DisabledChecksumIndexesEachLazyField) {
+  TerseLazyFooNoChecksum lazy;
+  lazy.field3_ref() = std::vector<int32_t>{5, 6};
+  const auto onlyField3 = TypeParam::template serialize<std::string>(lazy);
+
+  auto decodedField3 =
+      TypeParam::template deserialize<TerseLazyFooNoChecksum>(onlyField3);
+  EXPECT_TRUE(get_field2(decodedField3).empty());
+  EXPECT_TRUE(get_field3(decodedField3).empty());
+  EXPECT_EQ(
+      onlyField3, TypeParam::template serialize<std::string>(decodedField3));
+  EXPECT_EQ(*lazy.field3_ref(), *decodedField3.field3_ref());
+
+  lazy.field2_ref() = std::vector<int32_t>{3, 4};
+  const auto bothFields = TypeParam::template serialize<std::string>(lazy);
+  EXPECT_GT(bothFields.size(), onlyField3.size());
+
+  auto decodedBoth =
+      TypeParam::template deserialize<TerseLazyFooNoChecksum>(bothFields);
+  EXPECT_TRUE(get_field2(decodedBoth).empty());
+  EXPECT_TRUE(get_field3(decodedBoth).empty());
+  EXPECT_EQ(
+      bothFields, TypeParam::template serialize<std::string>(decodedBoth));
+  EXPECT_EQ(*lazy.field2_ref(), *decodedBoth.field2_ref());
+  EXPECT_EQ(*lazy.field3_ref(), *decodedBoth.field3_ref());
+}
+
+TYPED_TEST(Serialization, ChecksumEnabledStillIndexesEmptyStruct) {
+  EXPECT_GT(
+      TypeParam::template serialize<std::string>(TerseLazyFoo{}).size(), 1);
+}
 
 TYPED_TEST(LazyDeserialization, CheckDataMember) {
   using LazyStruct = typename TypeParam::LazyStruct;
