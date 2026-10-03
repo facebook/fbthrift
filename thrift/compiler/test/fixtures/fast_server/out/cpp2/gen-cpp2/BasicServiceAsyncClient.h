@@ -916,6 +916,130 @@ class Client<::cpp2::test::BasicService> : public apache::thrift::GeneratedAsync
   template <typename CallbackType>
   folly::SemiFuture<apache::thrift::ClientBufferedStream<::cpp2::test::DataItem>> fbthrift_semifuture_streamItems(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_count);
  public:
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  virtual void streamItemsWithResponse(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_count);
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  virtual void streamItemsWithResponse(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_count);
+ protected:
+  void fbthrift_serialize_and_send_streamItemsWithResponse(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_count, bool stealRpcOptions = false);
+ public:
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  virtual apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem> sync_streamItemsWithResponse(::std::int32_t p_count);
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  virtual apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem> sync_streamItemsWithResponse(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_count);
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>> semifuture_streamItemsWithResponse(::std::int32_t p_count);
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>> semifuture_streamItemsWithResponse(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_count);
+
+#if FOLLY_HAS_COROUTINES
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  template <int = 0>
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>> co_streamItemsWithResponse(::std::int32_t p_count) {
+    return co_streamItemsWithResponse<false>(nullptr, p_count);
+  }
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  template <int = 0>
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>> co_streamItemsWithResponse(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_count) {
+    return co_streamItemsWithResponse<true>(&rpcOptions, p_count);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>> co_streamItemsWithResponse(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_count) {
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientCoroCallback<false> callback(&returnState, co_await folly::coro::co_current_executor);
+    auto channelShared = apache::thrift::GeneratedAsyncClient::getChannelShared();
+    auto protocolId = channelShared->getProtocolId();
+    std::weak_ptr<apache::thrift::RequestChannel> channelWeak = std::move(channelShared);
+    auto [ctx, header] = streamItemsWithResponseCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static apache::thrift::RpcOptions* defaultRpcOptions = new apache::thrift::RpcOptions();
+    auto wrappedCallback = apache::thrift::createStreamClientCallback(
+        apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback),
+      hasRpcOptions ? rpcOptions->getBufferOptions() : defaultRpcOptions->getBufferOptions());
+    if (ctx != nullptr) {
+      auto argsAsRefs = std::tie(p_count);
+      auto interceptorTry = ctx->processClientInterceptorsOnRequest(apache::thrift::ClientInterceptorOnRequestArguments(argsAsRefs), header.get(), hasRpcOptions ? *rpcOptions : *defaultRpcOptions);
+      if (interceptorTry.hasException()) {
+        co_yield folly::coro::co_error(std::move(interceptorTry.exception()));
+      }
+    }
+    if constexpr (hasRpcOptions) {
+      fbthrift_serialize_and_send_streamItemsWithResponse(*rpcOptions, header, ctx.get(), std::move(wrappedCallback), p_count);
+    } else {
+      fbthrift_serialize_and_send_streamItemsWithResponse(*defaultRpcOptions, header, ctx.get(), std::move(wrappedCallback), p_count);
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::move(ctx));
+    apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem> _return;
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
+      }
+    };
+    if (auto channel = channelWeak.lock()) {
+      channel->decompressResponse(returnState);
+    }
+    auto ew = recv_wrapped_streamItemsWithResponse(_return, returnState);
+    if (returnState.ctx()) {
+      auto interceptorResult = returnState.ctx()->processClientInterceptorsOnResponse(returnState.header(), ew, _return);
+      folly::Try<void> interceptorTry;
+      if (!apache::thrift::ContextStack::tryResolveInterceptorResultSync(interceptorResult, interceptorTry)) {
+        interceptorTry = co_await std::get<folly::coro::Task<folly::Try<void>>>(std::move(interceptorResult));
+      }
+      interceptorTry.throwUnlessValue();
+    }
+    // Attach interceptor context to stream for automatic interception
+    if (returnState.ctx()) {
+      _return.stream.setInterceptorContext(
+          apache::thrift::makeClientStreamInterceptorContextFromContextStack(
+              *returnState.ctx()));
+    }
+    if (ew) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+    co_return _return;
+  }
+ public:
+#endif // FOLLY_HAS_COROUTINES
+
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  static folly::exception_wrapper recv_wrapped_streamItemsWithResponse(apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>& _return, ::apache::thrift::ClientReceiveState& state);
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  static apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem> recv_streamItemsWithResponse(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  virtual apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem> recv_instance_streamItemsWithResponse(::apache::thrift::ClientReceiveState& state);
+  /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "streamItemsWithResponse"} */
+  virtual folly::exception_wrapper recv_instance_wrapped_streamItemsWithResponse(apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
+  apache::thrift::SerializedRequest fbthrift_serialize_streamItemsWithResponse(const RpcOptions& rpcOptions, apache::thrift::transport::THeader& header, apache::thrift::ContextStack* contextStack, ::std::int32_t p_count);
+  template <typename RpcOptions>
+  void fbthrift_send_streamItemsWithResponse(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::StreamClientCallback* callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata);
+  std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::thrift::transport::THeader>> streamItemsWithResponseCtx(apache::thrift::RpcOptions* rpcOptions);
+  template <typename CallbackType>
+  folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>> fbthrift_semifuture_streamItemsWithResponse(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_count);
+ public:
   /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "ebStreamItems"} */
   virtual void ebStreamItems(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_count);
   /** Glean {"file": "thrift/compiler/test/fixtures/fast_server/src/module.thrift", "service": "BasicService", "function": "ebStreamItems"} */

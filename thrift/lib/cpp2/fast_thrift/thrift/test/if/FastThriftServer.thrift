@@ -57,6 +57,10 @@ service FastThriftServer {
   // server stream — handler returns a StreamFactory<EchoResponse>
   stream<EchoResponse> streamEchoes(1: i32 count);
 
+  // server stream with initial response — handler returns a
+  // ResponseAndStreamFactory<EchoResponse, EchoResponse>
+  EchoResponse, stream<EchoResponse> streamEchoesWithResponse(1: i32 count);
+
   // event-base server stream — compile guard for the async_eb_ stream path
   @cpp.ProcessInEbThreadUnsafe
   stream<EchoResponse> ebStreamEchoes(1: i32 count);

@@ -27,6 +27,11 @@ typedef apache::thrift::ThriftPResultStream<
     apache::thrift::ThriftPresult<true>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure, ::cpp2::test::DataItem*>>
     > BasicService_streamItems_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>> BasicService_streamItemsWithResponse_pargs;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure, ::cpp2::test::DataItem*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure, ::cpp2::test::DataItem*>>
+    > BasicService_streamItemsWithResponse_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>> BasicService_ebStreamItems_pargs;
 typedef apache::thrift::ThriftPResultStream<
     apache::thrift::ThriftPresult<true>,
@@ -106,6 +111,17 @@ void apache::thrift::Client<::cpp2::test::BasicService>::fbthrift_send_streamIte
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "streamItems",
+                ::apache::thrift::FunctionQualifier::Unspecified,
+                "meta.com/thrift/test/fixtures/fast_server/BasicService");
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(std::move(request), std::forward<RpcOptions>(rpcOptions), std::move(callback), std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), std::move(interceptorFrameworkMetadata));
+}
+
+template <typename RpcOptions>
+void apache::thrift::Client<::cpp2::test::BasicService>::fbthrift_send_streamItemsWithResponse(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::StreamClientCallback* callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata) {
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata =
+        new ::apache::thrift::MethodMetadata::Data(
+                "streamItemsWithResponse",
                 ::apache::thrift::FunctionQualifier::Unspecified,
                 "meta.com/thrift/test/fixtures/fast_server/BasicService");
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(std::move(request), std::forward<RpcOptions>(rpcOptions), std::move(callback), std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), std::move(interceptorFrameworkMetadata));
@@ -1476,6 +1492,191 @@ apache::thrift::ClientBufferedStream<::cpp2::test::DataItem> apache::thrift::Cli
 
 folly::exception_wrapper apache::thrift::Client<::cpp2::test::BasicService>::recv_instance_wrapped_streamItems(apache::thrift::ClientBufferedStream<::cpp2::test::DataItem>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_streamItems(_return, state);
+}
+
+void apache::thrift::Client<::cpp2::test::BasicService>::streamItemsWithResponse(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_count) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  streamItemsWithResponse(rpcOptions, std::move(callback), p_count);
+}
+
+void apache::thrift::Client<::cpp2::test::BasicService>::streamItemsWithResponse(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_count) {
+  auto [ctx, header] = streamItemsWithResponseCtx(&rpcOptions);
+  if (ctx != nullptr) {
+    auto argsAsRefs = std::tie(p_count);
+    ctx->processClientInterceptorsOnRequest(apache::thrift::ClientInterceptorOnRequestArguments(argsAsRefs), header.get(), rpcOptions).throwUnlessValue();
+  }
+  auto [wrappedCallback, contextStack] = apache::thrift::GeneratedAsyncClient::template prepareRequestClientCallback<false /* kIsOneWay */>(std::move(callback), std::move(ctx));
+  auto streamCallback = apache::thrift::createStreamClientCallback(std::move(wrappedCallback), rpcOptions.getBufferOptions());
+  fbthrift_serialize_and_send_streamItemsWithResponse(rpcOptions, std::move(header), contextStack, std::move(streamCallback), p_count);
+}
+
+apache::thrift::SerializedRequest apache::thrift::Client<::cpp2::test::BasicService>::fbthrift_serialize_streamItemsWithResponse(const RpcOptions& rpcOptions, apache::thrift::transport::THeader& header, apache::thrift::ContextStack* contextStack, ::std::int32_t p_count) {
+  return apache::thrift::detail::ac::withProtocolWriter(apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(), [&](auto&& prot) {
+    using ProtocolWriter = std::decay_t<decltype(prot)>;
+    ::cpp2::test::BasicService_streamItemsWithResponse_pargs args;
+    args.get<0>().value = &p_count;
+    const auto sizer = [&](ProtocolWriter* p) { return args.serializedSizeZC(p); };
+    const auto writer = [&](ProtocolWriter* p) { args.write(p); };
+    return apache::thrift::preprocessSendT<ProtocolWriter>(
+        &prot,
+        rpcOptions,
+        contextStack,
+        header,
+        "streamItemsWithResponse",
+        writer,
+        sizer,
+        channel_->getChecksumSamplingRate(),
+        getIOBufFactory());
+  });
+}
+
+void apache::thrift::Client<::cpp2::test::BasicService>::fbthrift_serialize_and_send_streamItemsWithResponse(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_count, bool stealRpcOptions) {
+  apache::thrift::SerializedRequest request = fbthrift_serialize_streamItemsWithResponse(rpcOptions, *header, contextStack, p_count);
+  channel_->compressRequest(request, rpcOptions, *header);
+  std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata = nullptr;
+  if (contextStack != nullptr) {
+    interceptorFrameworkMetadata = detail::ContextStackUnsafeAPI(*contextStack).getInterceptorFrameworkMetadata(rpcOptions);
+  }
+  if (stealRpcOptions) {
+    fbthrift_send_streamItemsWithResponse(std::move(request), std::move(rpcOptions), std::move(header), std::move(callback), std::move(interceptorFrameworkMetadata));
+  } else {
+    fbthrift_send_streamItemsWithResponse(std::move(request), rpcOptions, std::move(header), std::move(callback), std::move(interceptorFrameworkMetadata));
+  }
+}
+
+std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::cpp2::test::BasicService>::streamItemsWithResponseCtx(apache::thrift::RpcOptions* rpcOptions) {
+  auto header = std::make_shared<apache::thrift::transport::THeader>(
+      apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
+  header->setProtocolId(channel_->getProtocolId());
+  if (rpcOptions) {
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
+  }
+
+  auto ctx = apache::thrift::ContextStack::createWithClientContext(
+      handlers_,
+      interceptors_,
+      getServiceName(),
+      "BasicService.streamItemsWithResponse",
+      *header);
+
+  return {std::move(ctx), std::move(header)};
+}
+
+apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem> apache::thrift::Client<::cpp2::test::BasicService>::sync_streamItemsWithResponse(::std::int32_t p_count) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return sync_streamItemsWithResponse(rpcOptions, p_count);
+}
+
+apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem> apache::thrift::Client<::cpp2::test::BasicService>::sync_streamItemsWithResponse(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_count) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  auto channel = apache::thrift::GeneratedAsyncClient::getChannelShared();
+  auto protocolId = channel->getProtocolId();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctxAndHeader = streamItemsWithResponseCtx(&rpcOptions);
+  auto wrappedCallback = apache::thrift::createStreamClientCallback(
+    apache::thrift::RequestClientCallback::Ptr(&callback),
+    rpcOptions.getBufferOptions());
+  auto* contextStack  = ctxAndHeader.first.get();
+  if (contextStack != nullptr) {
+    auto argsAsRefs = std::tie(p_count);
+    contextStack->processClientInterceptorsOnRequest(apache::thrift::ClientInterceptorOnRequestArguments(argsAsRefs), ctxAndHeader.second.get(), rpcOptions).throwUnlessValue();
+  }
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      fbthrift_serialize_and_send_streamItemsWithResponse(rpcOptions, ctxAndHeader.second, ctxAndHeader.first.get(), std::move(wrappedCallback), p_count);
+    });
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::move(ctxAndHeader.first));
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
+  return folly::fibers::runInMainContext([&] {
+    channel->decompressResponse(returnState);
+auto tryObj = folly::makeTryWith([&]() {
+      return recv_streamItemsWithResponse(returnState);
+    });
+    if (contextStack != nullptr) {
+      tryObj = contextStack->processClientInterceptorsOnResponse(returnState.header(), std::move(tryObj));
+    }
+    tryObj.throwUnlessValue();
+    return std::move(tryObj.value());
+  });
+}
+
+
+template <typename CallbackType>
+folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>> apache::thrift::Client<::cpp2::test::BasicService>::fbthrift_semifuture_streamItemsWithResponse(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_count) {
+  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>>;
+  folly::Promise<CallbackHelper::PromiseResult> promise;
+  auto semifuture = promise.getSemiFuture();
+  auto ctxAndHeader = streamItemsWithResponseCtx(&rpcOptions);
+  auto wrappedCallbackAndContextStack = apache::thrift::GeneratedAsyncClient::template prepareRequestClientCallback<false /* kIsOneWay */>(
+    std::make_unique<CallbackType>(std::move(promise), recv_wrapped_streamItemsWithResponse, channel_),
+    std::move(ctxAndHeader.first));
+  auto header = std::move(ctxAndHeader.second);
+  auto* contextStack = wrappedCallbackAndContextStack.second;
+  auto wrappedCallback = apache::thrift::createStreamClientCallback(std::move(wrappedCallbackAndContextStack.first), rpcOptions.getBufferOptions());
+  std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata = nullptr;
+  if (contextStack != nullptr) {
+    auto argsAsRefs = std::tie(p_count);
+    if (auto exTry = contextStack->processClientInterceptorsOnRequest(apache::thrift::ClientInterceptorOnRequestArguments(argsAsRefs), header.get(), rpcOptions);
+        exTry.hasException()) {
+      return folly::makeSemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>>(std::move(exTry).exception());
+    }
+    interceptorFrameworkMetadata = detail::ContextStackUnsafeAPI(*contextStack).getInterceptorFrameworkMetadata(rpcOptions);
+  }
+  apache::thrift::SerializedRequest request = fbthrift_serialize_streamItemsWithResponse(rpcOptions, *header, contextStack, p_count);
+  fbthrift_send_streamItemsWithResponse(std::move(request), rpcOptions, std::move(header), std::move(wrappedCallback), std::move(interceptorFrameworkMetadata));
+  return std::move(semifuture).deferValue(CallbackHelper::processClientInterceptorsAndExtractResult);
+}
+
+folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>> apache::thrift::Client<::cpp2::test::BasicService>::semifuture_streamItemsWithResponse(::std::int32_t p_count) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_streamItemsWithResponse(rpcOptions, p_count);
+}
+
+folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>> apache::thrift::Client<::cpp2::test::BasicService>::semifuture_streamItemsWithResponse(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_count) {
+  using CallbackType = apache::thrift::SemiFutureCallback<apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>>;
+  return fbthrift_semifuture_streamItemsWithResponse<CallbackType>(rpcOptions, p_count);
+}
+
+
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
+folly::exception_wrapper apache::thrift::Client<::cpp2::test::BasicService>::recv_wrapped_streamItemsWithResponse(apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>& _return, ::apache::thrift::ClientReceiveState& state) {
+    if (auto ew = apache::thrift::detail::ac::check_recv_state(state)) {
+    return ew;
+  }
+
+  using result = ::cpp2::test::BasicService_streamItemsWithResponse_presult;
+  return apache::thrift::detail::ac::withProtocolReader(state.protocolId(), [&](auto&& reader) {
+    return apache::thrift::detail::ac::recv_wrapped<result>(
+        &reader, state, _return);
+  });
+}
+
+apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem> apache::thrift::Client<::cpp2::test::BasicService>::recv_streamItemsWithResponse(::apache::thrift::ClientReceiveState& state) {
+  apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem> _return;
+  auto ew = recv_wrapped_streamItemsWithResponse(_return, state);
+  if (ew) {
+    ew.throw_exception();
+  }
+  return _return;
+}
+
+apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem> apache::thrift::Client<::cpp2::test::BasicService>::recv_instance_streamItemsWithResponse(::apache::thrift::ClientReceiveState& state) {
+  return recv_streamItemsWithResponse(state);
+}
+
+folly::exception_wrapper apache::thrift::Client<::cpp2::test::BasicService>::recv_instance_wrapped_streamItemsWithResponse(apache::thrift::ResponseAndClientBufferedStream<::cpp2::test::DataItem,::cpp2::test::DataItem>& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_wrapped_streamItemsWithResponse(_return, state);
 }
 
 void apache::thrift::Client<::cpp2::test::BasicService>::ebStreamItems(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_count) {

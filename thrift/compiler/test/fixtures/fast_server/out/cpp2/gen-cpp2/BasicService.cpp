@@ -934,6 +934,152 @@ determineInvocationType:
 //
 
 //
+// Method 'streamItemsWithResponse'
+//
+
+::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem> apache::thrift::ServiceHandler<::cpp2::test::BasicService>::streamItemsWithResponse(::std::int32_t /*count*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("streamItemsWithResponse");
+}
+
+::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem> apache::thrift::ServiceHandler<::cpp2::test::BasicService>::sync_streamItemsWithResponse(::std::int32_t p_count) {
+  return streamItemsWithResponse(p_count);
+}
+
+folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>>
+apache::thrift::ServiceHandler<::cpp2::test::BasicService>::semifuture_streamItemsWithResponse(::std::int32_t p_count) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_streamItemsWithResponse.compare_exchange_strong(
+      expected,
+      apache::thrift::detail::si::InvocationType::Sync,
+      std::memory_order_relaxed);
+  return sync_streamItemsWithResponse(p_count);
+}
+
+folly::Future<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>>
+apache::thrift::ServiceHandler<::cpp2::test::BasicService>::future_streamItemsWithResponse(::std::int32_t p_count) {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_streamItemsWithResponse.compare_exchange_strong(
+      expected,
+      apache::thrift::detail::si::InvocationType::SemiFuture,
+      std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(
+      semifuture_streamItemsWithResponse(p_count),
+      getInternalKeepAlive());
+}
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>>
+apache::thrift::ServiceHandler<::cpp2::test::BasicService>::co_streamItemsWithResponse(::std::int32_t p_count) {
+  auto expected{apache::thrift::detail::si::InvocationType::Coro};
+  __fbthrift_invocation_streamItemsWithResponse.compare_exchange_strong(
+      expected,
+      apache::thrift::detail::si::InvocationType::Future,
+      std::memory_order_relaxed);
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::
+                             withCapturedArgs<::std::int32_t /*count*/>(p_count));
+}
+
+folly::coro::Task<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>> apache::thrift::ServiceHandler<::cpp2::test::BasicService>::co_streamItemsWithResponse(
+    apache::thrift::RequestParams /* params */, ::std::int32_t p_count) {
+  auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
+  __fbthrift_invocation_streamItemsWithResponse.compare_exchange_strong(
+      expected,
+      apache::thrift::detail::si::InvocationType::Coro,
+      std::memory_order_relaxed);
+  return co_streamItemsWithResponse(p_count);
+}
+#endif // FOLLY_HAS_COROUTINES
+
+void apache::thrift::ServiceHandler<::cpp2::test::BasicService>::async_tm_streamItemsWithResponse(
+    apache::thrift::HandlerCallbackPtr<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>> callback, ::std::int32_t p_count) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
+  auto invocationType =
+      __fbthrift_invocation_streamItemsWithResponse.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm: {
+#if FOLLY_HAS_COROUTINES
+        __fbthrift_invocation_streamItemsWithResponse.compare_exchange_strong(
+            invocationType,
+            apache::thrift::detail::si::InvocationType::CoroParam,
+            std::memory_order_relaxed);
+        apache::thrift::RequestParams params{
+            callback->getRequestContext(),
+            callback->getThreadManager_deprecated(),
+            callback->getEventBase(),
+            callback->getHandlerExecutor()};
+        auto task = co_streamItemsWithResponse(params, p_count);
+        apache::thrift::detail::si::async_tm_coro(
+            std::move(callback), std::move(task));
+        return;
+#else // FOLLY_HAS_COROUTINES
+        __fbthrift_invocation_streamItemsWithResponse.compare_exchange_strong(
+            invocationType,
+            apache::thrift::detail::si::InvocationType::Future,
+            std::memory_order_relaxed);
+        [[fallthrough]];
+#endif // FOLLY_HAS_COROUTINES
+      }
+      case apache::thrift::detail::si::InvocationType::Future: {
+        auto fut = future_streamItemsWithResponse(p_count);
+        apache::thrift::detail::si::async_tm_future(
+            std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture: {
+        auto fut = semifuture_streamItemsWithResponse(p_count);
+        apache::thrift::detail::si::async_tm_semifuture(
+            std::move(callback), std::move(fut));
+        return;
+      }
+#if FOLLY_HAS_COROUTINES
+      case apache::thrift::detail::si::InvocationType::CoroParam: {
+        apache::thrift::RequestParams params{
+            callback->getRequestContext(),
+            callback->getThreadManager_deprecated(),
+            callback->getEventBase(),
+            callback->getHandlerExecutor()};
+        auto task = co_streamItemsWithResponse(params, p_count);
+        apache::thrift::detail::si::async_tm_coro(
+            std::move(callback), std::move(task));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Coro: {
+        auto task = co_streamItemsWithResponse(p_count);
+        apache::thrift::detail::si::async_tm_coro(
+            std::move(callback), std::move(task));
+        return;
+      }
+#endif // FOLLY_HAS_COROUTINES
+      case apache::thrift::detail::si::InvocationType::Sync: {
+        callback->result(sync_streamItemsWithResponse(p_count));
+        return;
+      }
+      default: {
+        folly::assume_unreachable();
+      }
+    }
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod& ex) {
+    std::tie(p_count) = std::move(ex).restoreArgs<::std::int32_t /*count*/>();
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+}
+//
+// End of Method 'streamItemsWithResponse'
+//
+
+//
 // Method 'ebStreamItems'
 //
 
@@ -1173,6 +1319,11 @@ const BasicServiceAsyncProcessor::ProcessMap BasicServiceAsyncProcessor::kOwnPro
      &BasicServiceAsyncProcessor::setUpAndProcess_streamItems<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
      &BasicServiceAsyncProcessor::executeRequest_streamItems<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
      &BasicServiceAsyncProcessor::executeRequest_streamItems<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"streamItemsWithResponse",
+    {&BasicServiceAsyncProcessor::setUpAndProcess_streamItemsWithResponse<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &BasicServiceAsyncProcessor::setUpAndProcess_streamItemsWithResponse<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &BasicServiceAsyncProcessor::executeRequest_streamItemsWithResponse<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &BasicServiceAsyncProcessor::executeRequest_streamItemsWithResponse<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
   {"ebStreamItems",
     {&BasicServiceAsyncProcessor::setUpAndProcess_ebStreamItems<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
      &BasicServiceAsyncProcessor::setUpAndProcess_ebStreamItems<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
@@ -1248,6 +1399,14 @@ apache::thrift::ServiceRequestInfoMap BasicServiceServiceInfoHolder::staticReque
      apache::thrift::concurrency::NORMAL,
      std::nullopt,
      ::apache::thrift::detail::getFunctionNode<::cpp2::test::BasicService>("streamItems")}},
+  {"streamItemsWithResponse",
+    { false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "BasicService.streamItemsWithResponse",
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL,
+     std::nullopt,
+     ::apache::thrift::detail::getFunctionNode<::cpp2::test::BasicService>("streamItemsWithResponse")}},
   {"ebStreamItems",
     { true,
      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
@@ -1341,6 +1500,12 @@ void FastServiceHandler<::cpp2::test::BasicService>::populateMethodMetadata(
       .definingServiceName = "BasicService",
       .methodName = "streamItems",
       .qualifiedMethodName = "BasicService.streamItems",
+  });
+  registry.add({
+      .serviceName = "BasicService",
+      .definingServiceName = "BasicService",
+      .methodName = "streamItemsWithResponse",
+      .qualifiedMethodName = "BasicService.streamItemsWithResponse",
   });
   registry.add({
       .serviceName = "BasicService",
@@ -1930,6 +2095,9 @@ BasicServiceAppAdapter::methodDispatchTable() {
               &Adapter::process_streamItems>("streamItems"),
           Base::makeRequestResponseMethod<
               Adapter,
+              &Adapter::process_streamItemsWithResponse>("streamItemsWithResponse"),
+          Base::makeRequestResponseMethod<
+              Adapter,
               &Adapter::process_ebStreamItems>("ebStreamItems"),
       });
   return table;
@@ -2231,6 +2399,48 @@ template void BasicServiceAppAdapter::process_streamItems_impl<
     std::unique_ptr<folly::IOBuf>,
     ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 template void BasicServiceAppAdapter::process_streamItems_impl<
+    ::apache::thrift::BinaryProtocolReader,
+    ::apache::thrift::BinaryProtocolWriter>(
+    uint32_t,
+    std::unique_ptr<folly::IOBuf>,
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
+
+void BasicServiceAppAdapter::process_streamItemsWithResponse(
+    uint32_t streamId,
+    std::unique_ptr<folly::IOBuf> data,
+    ::apache::thrift::ProtocolId protocolId,
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
+        requestContext) noexcept {
+  switch (protocolId) {
+    case ::apache::thrift::ProtocolId::COMPACT:
+      process_streamItemsWithResponse_impl<
+          ::apache::thrift::CompactProtocolReader,
+          ::apache::thrift::CompactProtocolWriter>(
+          streamId, std::move(data), std::move(requestContext));
+      break;
+    case ::apache::thrift::ProtocolId::BINARY:
+      process_streamItemsWithResponse_impl<
+          ::apache::thrift::BinaryProtocolReader,
+          ::apache::thrift::BinaryProtocolWriter>(
+          streamId, std::move(data), std::move(requestContext));
+      break;
+    default:
+      writeResponse(
+          ::apache::thrift::fast_thrift::thrift::makeFrameworkErrorMessage(
+              streamId,
+              ::apache::thrift::ResponseRpcErrorCode::REQUEST_PARSING_FAILURE,
+              "Unsupported protocol id for fast_thrift server"));
+      break;
+  }
+}
+
+template void BasicServiceAppAdapter::process_streamItemsWithResponse_impl<
+    ::apache::thrift::CompactProtocolReader,
+    ::apache::thrift::CompactProtocolWriter>(
+    uint32_t,
+    std::unique_ptr<folly::IOBuf>,
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
+template void BasicServiceAppAdapter::process_streamItemsWithResponse_impl<
     ::apache::thrift::BinaryProtocolReader,
     ::apache::thrift::BinaryProtocolWriter>(
     uint32_t,

@@ -63,6 +63,10 @@ service BasicService {
   // server stream — handler returns a StreamFactory<DataItem>
   stream<DataItem> streamItems(1: i32 count);
 
+  // server stream with initial response — handler returns a
+  // ResponseAndStreamFactory<DataItem, DataItem>
+  DataItem, stream<DataItem> streamItemsWithResponse(1: i32 count);
+
   // event-base server stream — dispatcher must run inline on the EventBase and
   // dispatch to async_eb_, never the CPU pool
   @cpp.ProcessInEbThreadUnsafe

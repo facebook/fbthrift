@@ -36,6 +36,18 @@
 {{#if function.creates_interaction?}}>{{/if}}
 {{/let partial}}
 
+{{! The value a fast_thrift handler returns for a stream method: a bare
+    StreamFactory<T>, or a ResponseAndStreamFactory<R, T> when the method also
+    carries a non-void initial response (`R, stream<T>`). }}
+{{#let export partial fast_stream_return_type |function|}}
+{{#pragma ignore-newlines}}
+{{#if function.stream_has_first_response?}}
+::apache::thrift::fast_thrift::thrift::stream::ResponseAndStreamFactory<{{function.return_type.cpp_type}}, {{function.stream.elem_type.cpp_type}}>
+{{#else}}
+::apache::thrift::fast_thrift::thrift::stream::StreamFactory<{{function.stream.elem_type.cpp_type}}>
+{{/if function.stream_has_first_response?}}
+{{/let partial}}
+
 {{#let export partial return_type_lift_unit |function service| captures |return_type|}}
 {{#pragma ignore-newlines}}
 {{#if function.void?}}folly::Unit{{#else}}{{#partial return_type function=function service=service}}{{/if}}

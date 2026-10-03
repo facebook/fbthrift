@@ -107,6 +107,15 @@ class ServiceHandler<::cpp2::test::BasicService> : public apache::thrift::Server
   virtual folly::coro::Task<::apache::thrift::ServerStream<::cpp2::test::DataItem>> co_streamItems(apache::thrift::RequestParams params, ::std::int32_t p_count);
 #endif
   virtual void async_tm_streamItems(apache::thrift::HandlerCallbackPtr<::apache::thrift::ServerStream<::cpp2::test::DataItem>> callback, ::std::int32_t p_count);
+  virtual ::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem> sync_streamItemsWithResponse(::std::int32_t /*count*/);
+  [[deprecated("Use sync_streamItemsWithResponse instead")]] virtual ::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem> streamItemsWithResponse(::std::int32_t /*count*/);
+  virtual folly::Future<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>> future_streamItemsWithResponse(::std::int32_t p_count);
+  virtual folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>> semifuture_streamItemsWithResponse(::std::int32_t p_count);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>> co_streamItemsWithResponse(::std::int32_t p_count);
+  virtual folly::coro::Task<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>> co_streamItemsWithResponse(apache::thrift::RequestParams params, ::std::int32_t p_count);
+#endif
+  virtual void async_tm_streamItemsWithResponse(apache::thrift::HandlerCallbackPtr<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>> callback, ::std::int32_t p_count);
   virtual void async_eb_ebStreamItems(apache::thrift::HandlerCallbackPtr<::apache::thrift::ServerStream<::cpp2::test::DataItem>> callback, ::std::int32_t p_count);
   virtual void sync_fireAndForget(std::unique_ptr<::std::string> /*event*/);
   [[deprecated("Use sync_fireAndForget instead")]] virtual void fireAndForget(std::unique_ptr<::std::string> /*event*/);
@@ -125,6 +134,7 @@ class ServiceHandler<::cpp2::test::BasicService> : public apache::thrift::Server
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_lookup{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_secureLookup{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_streamItems{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_streamItemsWithResponse{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_fireAndForget{apache::thrift::detail::si::InvocationType::AsyncTm};
  public:
 
@@ -163,6 +173,11 @@ class ServiceHandler<::cpp2::test::BasicService> : public apache::thrift::Server
   static void fbthrift_invoke_decorator_after_streamItems(void* iface, apache::thrift::Cpp2RequestContext* ctx) {
     static_cast<ServiceHandler<::cpp2::test::BasicService>*>(iface)->fbthrift_execute_decorators_after_streamItems(*ctx);
   }
+  virtual void fbthrift_execute_decorators_before_streamItemsWithResponse(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::int32_t>::type /*p_count*/) {}
+  virtual void fbthrift_execute_decorators_after_streamItemsWithResponse(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>>::type /*result*/) {}
+  static void fbthrift_invoke_decorator_after_streamItemsWithResponse(void* iface, apache::thrift::Cpp2RequestContext* ctx, apache::thrift::detail::DecoratorReturnType<::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>>::type result) {
+    static_cast<ServiceHandler<::cpp2::test::BasicService>*>(iface)->fbthrift_execute_decorators_after_streamItemsWithResponse(*ctx, result);
+  }
   virtual void fbthrift_execute_decorators_before_ebStreamItems(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::int32_t>::type /*p_count*/) {}
   virtual void fbthrift_execute_decorators_after_ebStreamItems(apache::thrift::Cpp2RequestContext& /*requestCtx*/) {}
   static void fbthrift_invoke_decorator_after_ebStreamItems(void* iface, apache::thrift::Cpp2RequestContext* ctx) {
@@ -178,8 +193,8 @@ class ServiceHandler<::cpp2::test::BasicService> : public apache::thrift::Server
 namespace detail {
 template <> struct TSchemaAssociation<::cpp2::test::BasicService, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 3751326510370360015;
-  static constexpr ::std::string_view definitionKey = {"\xc0\x50\xb5\xc1\xa8\x97\x6d\xbe\x8c\xeb\xe5\x4b\xc1\xd7\xbe\x42", 16};
+  static constexpr int64_t programId = 133658382577701708;
+  static constexpr ::std::string_view definitionKey = {"\x39\x69\xff\xe5\x7f\x41\x91\xf0\xf2\x0a\x38\x89\x26\x00\x8a\x0d", 16};
 };
 }
 } // namespace apache::thrift
@@ -431,6 +446,37 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
+  // Method 'streamItemsWithResponse'
+  //
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void setUpAndProcess_streamItemsWithResponse(
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
+      apache::thrift::SerializedCompressedRequest&& serializedRequest,
+      apache::thrift::Cpp2RequestContext* ctx,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm);
+
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void executeRequest_streamItemsWithResponse(apache::thrift::ServerRequest&& serverRequest);
+
+  template <class ProtocolIn_, class ProtocolOut_>
+  static apache::thrift::ResponseAndServerStreamFactory return_streamItemsWithResponse(
+      apache::thrift::ContextStack* ctx,
+      folly::Executor::KeepAlive<> executor,
+      ::apache::thrift::ResponseAndServerStream<::cpp2::test::DataItem, ::cpp2::test::DataItem>&& _return);
+
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_streamItemsWithResponse(
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
+      int32_t protoSeqId,
+      apache::thrift::ContextStack* ctx,
+      folly::exception_wrapper ew,
+      apache::thrift::Cpp2RequestContext* reqCtx);
+  //
+  // End of Method 'streamItemsWithResponse'
+  //
+
+  //
   // Method 'ebStreamItems'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -621,6 +667,15 @@ class FastServiceHandler<::cpp2::test::BasicService>
         folly::make_exception_wrapper<::apache::thrift::TApplicationException>(
             ::apache::thrift::TApplicationException::UNKNOWN_METHOD,
             "Unimplemented fast_thrift stream method: streamItems"));
+  }
+  virtual void async_tm_streamItemsWithResponse(
+      ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<
+          ::apache::thrift::fast_thrift::thrift::stream::ResponseAndStreamFactory<::cpp2::test::DataItem, ::cpp2::test::DataItem>> callback,
+      ::std::int32_t /*p_count*/) {
+    callback->exception(
+        folly::make_exception_wrapper<::apache::thrift::TApplicationException>(
+            ::apache::thrift::TApplicationException::UNKNOWN_METHOD,
+            "Unimplemented fast_thrift stream method: streamItemsWithResponse"));
   }
   virtual void async_eb_ebStreamItems(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<
@@ -863,6 +918,25 @@ class BasicServiceAppAdapter
   void process_streamItems_run(
       ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<
           ::apache::thrift::fast_thrift::thrift::stream::StreamFactory<::cpp2::test::DataItem>> callback,
+      std::unique_ptr<folly::IOBuf> data) noexcept;
+  void process_streamItemsWithResponse(
+      uint32_t streamId,
+      std::unique_ptr<folly::IOBuf> data,
+      ::apache::thrift::ProtocolId protocolId,
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
+          requestContext) noexcept;
+
+  template <typename ProtocolReader, typename ProtocolWriter>
+  void process_streamItemsWithResponse_impl(
+      uint32_t streamId,
+      std::unique_ptr<folly::IOBuf> data,
+      ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
+          requestContext) noexcept;
+
+  template <typename ProtocolReader, typename ProtocolWriter>
+  void process_streamItemsWithResponse_run(
+      ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<
+          ::apache::thrift::fast_thrift::thrift::stream::ResponseAndStreamFactory<::cpp2::test::DataItem, ::cpp2::test::DataItem>> callback,
       std::unique_ptr<folly::IOBuf> data) noexcept;
   void process_ebStreamItems(
       uint32_t streamId,

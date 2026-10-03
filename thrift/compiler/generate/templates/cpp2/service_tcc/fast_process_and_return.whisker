@@ -52,6 +52,22 @@ struct {{interface.cpp_name}}FastServerInternal {
     return ::apache::thrift::fast_thrift::thrift::stream::Error{
         .ex = std::move(ew)};
   }
+{{#if function.stream_has_first_response?}}
+  // Serialize the '{{function.name}}' non-void initial response into the
+  // stream's first PAYLOAD presult (field 0), reusing the unary presult
+  // serializer keyed by the method's InitialResponsePResultType.
+  template <typename ProtocolWriter>
+  static std::unique_ptr<folly::IOBuf>
+  encode_{{function.cpp_name}}_response(
+      {{function.return_type.cpp_type}}&& value) noexcept {
+    typename ::{{interface.cpp_qualified_namespace}}::{{interface.cpp_name}}_{{function.prefixed_name}}_presult::InitialResponsePResultType result;
+    result.template get<0>().value = &value;
+    result.setIsSet(0, true);
+    return ::apache::thrift::fast_thrift::thrift::serializeResponse<ProtocolWriter>(
+        [&](ProtocolWriter& writer) { result.write(&writer); },
+        [&](ProtocolWriter& writer) { return result.serializedSizeZC(&writer); });
+  }
+{{/if function.stream_has_first_response?}}
 {{/if function.stream?}}
 {{/each}}
 };
@@ -225,20 +241,29 @@ void {{interface.cpp_name}}AppAdapter::process_{{function.cpp_name}}_impl(
     std::unique_ptr<folly::IOBuf> data,
     ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
         requestContext) noexcept {
-  using StreamFactoryT = ::apache::thrift::fast_thrift::thrift::stream::
-      StreamFactory<{{function.stream.elem_type.cpp_type}}>;
+  using ResultT = {{#partial server.fast_stream_return_type function=function}};
   using Cb =
-      ::apache::thrift::fast_thrift::thrift::FastHandlerCallback<StreamFactoryT>;
+      ::apache::thrift::fast_thrift::thrift::FastHandlerCallback<ResultT>;
 
   // ResultFn binds the protocol-specialized element encoders to the
-  // handler-returned StreamFactory (building the ThriftServerStreamOpenPayload
-  // the mux consumes). ExceptionFn covers a failure before the stream opens.
+  // handler-returned factory (building the ThriftServerStreamOpenPayload the mux
+  // consumes); the response variant also serializes the initial response into
+  // the first PAYLOAD. ExceptionFn covers a failure before the stream opens.
   auto callback =
       ::apache::thrift::fast_thrift::thrift::makeFastHandlerCallback<Cb>(
+{{#if function.stream_has_first_response?}}
+          &::apache::thrift::fast_thrift::thrift::detail::writeResponseStreamOpen<
+              {{function.return_type.cpp_type}},
+              {{function.stream.elem_type.cpp_type}},
+              &{{interface.cpp_name}}FastServerInternal::encode_{{function.cpp_name}}_response<ProtocolWriter>,
+              &{{interface.cpp_name}}FastServerInternal::encode_{{function.cpp_name}}_value<ProtocolWriter>,
+              &{{interface.cpp_name}}FastServerInternal::encode_{{function.cpp_name}}_error<ProtocolWriter>>,
+{{#else}}
           &::apache::thrift::fast_thrift::thrift::detail::writeStreamOpen<
               {{function.stream.elem_type.cpp_type}},
               &{{interface.cpp_name}}FastServerInternal::encode_{{function.cpp_name}}_value<ProtocolWriter>,
               &{{interface.cpp_name}}FastServerInternal::encode_{{function.cpp_name}}_error<ProtocolWriter>>,
+{{/if function.stream_has_first_response?}}
           &::apache::thrift::fast_thrift::thrift::detail::writeStreamException,
           this,
           streamId,
@@ -290,7 +315,7 @@ void {{interface.cpp_name}}AppAdapter::process_{{function.cpp_name}}_impl(
 template <typename ProtocolReader, typename ProtocolWriter>
 void {{interface.cpp_name}}AppAdapter::process_{{function.cpp_name}}_run(
     ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<
-        ::apache::thrift::fast_thrift::thrift::stream::StreamFactory<{{function.stream.elem_type.cpp_type}}>> callback,
+        {{#partial server.fast_stream_return_type function=function}}> callback,
     std::unique_ptr<folly::IOBuf> data) noexcept {
   struct ArgsState {
     {{#each function.params.fields as |param|}}
