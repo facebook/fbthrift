@@ -198,6 +198,7 @@ void ConnectionManager::registerAcceptorEventBase(folly::EventBase& evb) {
         socketOptions_,
         enableReusePortBpfSpread_ && acceptsOnWorkerExecutor,
         std::move(workers));
+    acceptor->setConnectionEventCallback(connectionEventCallback_);
     acceptor->start();
     if (address_.getPort() == 0) {
       address_ = acceptor->getAddress();

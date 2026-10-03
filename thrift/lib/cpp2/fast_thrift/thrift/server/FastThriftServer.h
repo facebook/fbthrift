@@ -528,6 +528,8 @@ class FastThriftServer {
   }
 
  private:
+  class PendingConnectionEventCallback;
+
   // Lifecycle states. Transitions are linear: kNotStarted → kRunning →
   // kStopped. start() and stop() are idempotent — calling either outside
   // its expected source state is a no-op. All transitions and reads are
@@ -589,6 +591,10 @@ class FastThriftServer {
   std::optional<security::FizzServerCertConfig> sslConfig_;
   security::ThriftTlsConfig thriftConfig_{};
   bool enableReusePortBpfSpread_{false};
+  std::vector<FastServerModule::PendingConnectionCallbacks>
+      pendingConnectionCallbacks_;
+  std::shared_ptr<PendingConnectionEventCallback>
+      pendingConnectionEventCallback_;
   // Listening-socket tuning. Defaults from SocketOptions.h apply unless the
   // embedder calls setSocketOptions before start().
   connection::SocketOptions socketOptions_{};

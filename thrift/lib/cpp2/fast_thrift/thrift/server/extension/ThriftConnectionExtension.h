@@ -289,4 +289,21 @@ concept ThriftConnectionExtensionHandler =
     HasConnectionAttemptedCallback<H> || HasConnectionAnsweringCallback<H> ||
     HasConnectionEstablishedCallback<H> || HasConnectionClosedCallback<H>;
 
+/**
+ * Server-wide callbacks for accepted sockets waiting in the dedicated
+ * acceptor-to-data-IO queue. These are static because no per-connection
+ * extension instance exists until after a socket leaves that queue.
+ *
+ * Every enqueue is paired with exactly one dequeue or queued-drop callback,
+ * and all callbacks finish before server shutdown returns. Callbacks may run
+ * concurrently, and a terminal callback can be observed before its enqueue
+ * notification, so implementations must be thread-safe and non-blocking.
+ */
+template <typename H>
+concept ThriftPendingConnectionExtensionHandler = requires {
+  { H::onConnectionEnqueued() } noexcept -> std::same_as<void>;
+  { H::onConnectionDequeued() } noexcept -> std::same_as<void>;
+  { H::onConnectionDroppedWhileQueued() } noexcept -> std::same_as<void>;
+};
+
 } // namespace apache::thrift::fast_thrift::thrift

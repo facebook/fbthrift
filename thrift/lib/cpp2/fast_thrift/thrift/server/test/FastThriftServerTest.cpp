@@ -910,11 +910,11 @@ TEST_F(FastThriftServerStopTlsTest, RoundTripAfterStopTLSDowngrade) {
   EXPECT_FALSE(rpcErr) << rpcErr.what();
   EXPECT_EQ(*echoed.message(), "echoed:after stoptls");
 
-  // The connection is plaintext by the time it is established, so the only
-  // reason the context can still report what the peer proved is that it was
-  // captured at handshake and carried across the downgrade.
+  // The connection is plaintext by the time it is established. Preserve the
+  // negotiated downgrade explicitly so observers can distinguish it from a
+  // connection that was plaintext from the start.
   EXPECT_TRUE(recorder_.established.load(std::memory_order_relaxed));
-  EXPECT_FALSE(recorder_.securityProtocol.rlock()->empty());
+  EXPECT_EQ(*recorder_.securityProtocol.rlock(), "stopTLS");
 
   evb->runInEventBaseThreadAndWait([&] { client.reset(); });
 }
@@ -1333,6 +1333,30 @@ struct ConnectionRecorder {
     int expected = -1;
     slot.compare_exchange_strong(expected, next);
   }
+};
+
+struct PendingConnectionRecordingExtension {
+  static void reset() noexcept {
+    enqueued.store(0, std::memory_order_relaxed);
+    dequeued.store(0, std::memory_order_relaxed);
+    dropped.store(0, std::memory_order_relaxed);
+  }
+
+  static void onConnectionEnqueued() noexcept {
+    enqueued.fetch_add(1, std::memory_order_relaxed);
+  }
+
+  static void onConnectionDequeued() noexcept {
+    dequeued.fetch_add(1, std::memory_order_relaxed);
+  }
+
+  static void onConnectionDroppedWhileQueued() noexcept {
+    dropped.fetch_add(1, std::memory_order_relaxed);
+  }
+
+  static inline std::atomic<int> enqueued{0};
+  static inline std::atomic<int> dequeued{0};
+  static inline std::atomic<int> dropped{0};
 };
 
 // Records every lifecycle point plus the request, so a single connection's
@@ -2029,6 +2053,38 @@ TEST(FastThriftServerConnectionExtensionTest, LifecycleBracketsSetupExchange) {
   EXPECT_LT(rec.established.load(), rec.request.load());
   EXPECT_GT(rec.negotiatedVersion.load(), 0);
   EXPECT_TRUE(rec.sawClientSetup.load());
+}
+
+TEST(
+    FastThriftServerConnectionExtensionTest,
+    ModuleObservesDedicatedAcceptorQueue) {
+  THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
+
+  auto handler = std::make_shared<TestHandler>();
+  PendingConnectionRecordingExtension::reset();
+  auto config = makeLoopbackConfig();
+  config.numIOThreads = 1;
+  config.numConnectionSetupThreads = 1;
+
+  ftt::FastThriftServer server(std::move(config));
+  server.setInterface(handler);
+  server.addModule(
+      ftt::FastServerModule("pending-connections")
+          .addThriftExtension<PendingConnectionRecordingExtension>());
+  server.start();
+
+  EXPECT_EQ(addRoundTrip(server.getAddress()), 42);
+  EXPECT_TRUE(waitFor(PendingConnectionRecordingExtension::enqueued, 1));
+  EXPECT_TRUE(waitFor(PendingConnectionRecordingExtension::dequeued, 1));
+  EXPECT_EQ(
+      PendingConnectionRecordingExtension::enqueued.load(
+          std::memory_order_relaxed),
+      PendingConnectionRecordingExtension::dequeued.load(
+          std::memory_order_relaxed));
+  EXPECT_EQ(
+      PendingConnectionRecordingExtension::dropped.load(
+          std::memory_order_relaxed),
+      0);
 }
 
 // Refusing at the first decision point short-circuits: no SETUP response is

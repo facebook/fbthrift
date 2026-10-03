@@ -62,6 +62,7 @@ void ConnectionAcceptor::start() {
   DCHECK(!started_);
 
   socket_->setReusePortEnabled(true);
+  socket_->setConnectionEventCallback(connectionEventCallback_.get());
   socket_->setMaxNumMessagesInQueue(
       socketOptions_.maxPendingConnectionsPerWorker);
   socket_->setQueueTimeout(socketOptions_.pendingConnectionQueueTimeout);

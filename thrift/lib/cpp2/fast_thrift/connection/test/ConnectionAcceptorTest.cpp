@@ -21,6 +21,7 @@
 #include <atomic>
 #include <chrono>
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -76,12 +77,53 @@ class TestAcceptCallback final
   folly::EventBase& evb_;
 };
 
+class TestConnectionEventCallback final
+    : public folly::AsyncServerSocket::ConnectionEventCallback {
+ public:
+  void onConnectionAccepted(
+      folly::NetworkSocket, const folly::SocketAddress&) noexcept override {
+    accepted.fetch_add(1, std::memory_order_relaxed);
+  }
+
+  void onConnectionAcceptError(int) noexcept override {
+    errors.fetch_add(1, std::memory_order_relaxed);
+  }
+
+  void onConnectionDropped(
+      folly::NetworkSocket,
+      const folly::SocketAddress&,
+      const std::string&) noexcept override {
+    dropped.fetch_add(1, std::memory_order_relaxed);
+  }
+
+  void onConnectionEnqueuedForAcceptorCallback(
+      folly::NetworkSocket, const folly::SocketAddress&) noexcept override {
+    enqueued.fetch_add(1, std::memory_order_relaxed);
+  }
+
+  void onConnectionDequeuedByAcceptorCallback(
+      folly::NetworkSocket, const folly::SocketAddress&) noexcept override {
+    dequeued.fetch_add(1, std::memory_order_relaxed);
+  }
+
+  void onBackoffStarted() noexcept override {}
+  void onBackoffEnded() noexcept override {}
+  void onBackoffError() noexcept override {}
+
+  std::atomic<size_t> accepted{0};
+  std::atomic<size_t> errors{0};
+  std::atomic<size_t> dropped{0};
+  std::atomic<size_t> enqueued{0};
+  std::atomic<size_t> dequeued{0};
+};
+
 TEST(ConnectionAcceptorTest, DispatchesAcceptedFdToWorker) {
   folly::ScopedEventBaseThread acceptorThread;
   folly::ScopedEventBaseThread workerThread;
   auto* acceptorEvb = acceptorThread.getEventBase();
   auto* workerEvb = workerThread.getEventBase();
   TestAcceptCallback callback(*workerEvb);
+  auto eventCallback = std::make_shared<TestConnectionEventCallback>();
 
   ConnectionAcceptor::Ptr acceptor;
   folly::SocketAddress address;
@@ -95,6 +137,7 @@ TEST(ConnectionAcceptorTest, DispatchesAcceptedFdToWorker) {
         SocketOptions{},
         /*enableReusePortBpfSpread=*/false,
         std::move(workers));
+    acceptor->setConnectionEventCallback(eventCallback);
     acceptor->start();
     address = acceptor->getAddress();
   });
@@ -121,11 +164,74 @@ TEST(ConnectionAcceptorTest, DispatchesAcceptedFdToWorker) {
 
   EXPECT_FALSE(callback.acceptError_.load(std::memory_order_relaxed));
   EXPECT_TRUE(callback.acceptedOnWorker_.load(std::memory_order_relaxed));
+  EXPECT_EQ(eventCallback->accepted.load(std::memory_order_relaxed), 1);
+  EXPECT_EQ(eventCallback->enqueued.load(std::memory_order_relaxed), 1);
+  EXPECT_EQ(eventCallback->dequeued.load(std::memory_order_relaxed), 1);
+  EXPECT_EQ(eventCallback->dropped.load(std::memory_order_relaxed), 0);
+  EXPECT_EQ(eventCallback->errors.load(std::memory_order_relaxed), 0);
 
   acceptor->stop();
   EXPECT_TRUE(callback.stopped_.ready());
   acceptor.reset();
   workerEvb->runInEventBaseThreadAndWait(
+      [client = std::move(client)]() mutable { client.reset(); });
+}
+
+TEST(ConnectionAcceptorTest, ReportsDirectAcceptWithoutQueueEvents) {
+  folly::ScopedEventBaseThread acceptorThread;
+  folly::ScopedEventBaseThread clientThread;
+  auto* acceptorEvb = acceptorThread.getEventBase();
+  auto* clientEvb = clientThread.getEventBase();
+  TestAcceptCallback callback(*acceptorEvb);
+  auto eventCallback = std::make_shared<TestConnectionEventCallback>();
+
+  ConnectionAcceptor::Ptr acceptor;
+  folly::SocketAddress address;
+  acceptorEvb->runInEventBaseThreadAndWait([&] {
+    std::vector<ConnectionWorkerTarget> workers;
+    workers.reserve(1);
+    workers.push_back({*acceptorEvb, callback});
+    acceptor = std::make_unique<ConnectionAcceptor>(
+        *acceptorEvb,
+        folly::SocketAddress("::1", 0),
+        SocketOptions{},
+        /*enableReusePortBpfSpread=*/false,
+        std::move(workers));
+    acceptor->setConnectionEventCallback(eventCallback);
+    acceptor->start();
+    address = acceptor->getAddress();
+  });
+
+  folly::Baton<> connected;
+  struct ConnectCallback final : folly::AsyncSocket::ConnectCallback {
+    explicit ConnectCallback(folly::Baton<>& baton) : baton_(baton) {}
+
+    void connectSuccess() noexcept override { baton_.post(); }
+    void connectErr(const folly::AsyncSocketException&) noexcept override {
+      baton_.post();
+    }
+
+    folly::Baton<>& baton_;
+  } connectCallback(connected);
+
+  std::shared_ptr<folly::AsyncSocket> client;
+  clientEvb->runInEventBaseThreadAndWait([&] {
+    client = folly::AsyncSocket::newSocket(clientEvb);
+    client->connect(&connectCallback, address, 1000);
+  });
+  connected.wait();
+  callback.accepted_.wait();
+
+  EXPECT_TRUE(callback.acceptedOnWorker_.load(std::memory_order_relaxed));
+  EXPECT_EQ(eventCallback->accepted.load(std::memory_order_relaxed), 1);
+  EXPECT_EQ(eventCallback->enqueued.load(std::memory_order_relaxed), 0);
+  EXPECT_EQ(eventCallback->dequeued.load(std::memory_order_relaxed), 0);
+  EXPECT_EQ(eventCallback->dropped.load(std::memory_order_relaxed), 0);
+  EXPECT_EQ(eventCallback->errors.load(std::memory_order_relaxed), 0);
+
+  acceptor->stop();
+  acceptor.reset();
+  clientEvb->runInEventBaseThreadAndWait(
       [client = std::move(client)]() mutable { client.reset(); });
 }
 

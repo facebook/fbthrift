@@ -28,6 +28,7 @@
 #include <folly/Function.h>
 #include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/task_queue/StripedPriorityUnboundedBlockingQueue.h>
+#include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/AsyncSignalHandler.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
@@ -50,7 +51,56 @@ using channel_pipeline::SimpleBufferAllocator;
 namespace {
 constexpr std::string_view kEventHandlerBridgeName{
     "__cpp2_event_handler_bridge"};
-}
+constexpr std::string_view kPendingConnectionQueueTimeout{
+    "Exceeded deadline for accepting connection"};
+} // namespace
+
+class FastThriftServer::PendingConnectionEventCallback final
+    : public folly::AsyncServerSocket::ConnectionEventCallback {
+ public:
+  using Callbacks = FastServerModule::PendingConnectionCallbacks;
+
+  explicit PendingConnectionEventCallback(std::vector<Callbacks> callbacks)
+      : callbacks_(std::move(callbacks)) {}
+
+  void onConnectionAccepted(
+      folly::NetworkSocket, const folly::SocketAddress&) noexcept override {}
+
+  void onConnectionAcceptError(int) noexcept override {}
+
+  void onConnectionDropped(
+      folly::NetworkSocket,
+      const folly::SocketAddress&,
+      const std::string& errorMsg) noexcept override {
+    if (errorMsg.find(kPendingConnectionQueueTimeout) == std::string::npos) {
+      return;
+    }
+    for (const auto& callbacks : callbacks_) {
+      callbacks.droppedWhileQueued();
+    }
+  }
+
+  void onConnectionEnqueuedForAcceptorCallback(
+      folly::NetworkSocket, const folly::SocketAddress&) noexcept override {
+    for (const auto& callbacks : callbacks_) {
+      callbacks.enqueued();
+    }
+  }
+
+  void onConnectionDequeuedByAcceptorCallback(
+      folly::NetworkSocket, const folly::SocketAddress&) noexcept override {
+    for (const auto& callbacks : callbacks_) {
+      callbacks.dequeued();
+    }
+  }
+
+  void onBackoffStarted() noexcept override {}
+  void onBackoffEnded() noexcept override {}
+  void onBackoffError() noexcept override {}
+
+ private:
+  const std::vector<Callbacks> callbacks_;
+};
 
 FastThriftServer::FastThriftServer(FastThriftServerConfig config)
     : config_(std::move(config)),
@@ -308,12 +358,19 @@ void FastThriftServer::addModule(FastServerModule module) {
             module.name()));
   }
   auto name = module.name();
+  const auto& pendingConnectionCallbacks = module.pendingConnectionCallbacks();
+  const auto factoryCount = module.handlers().size();
+  pendingConnectionCallbacks_.reserve(
+      pendingConnectionCallbacks_.size() + pendingConnectionCallbacks.size());
+  thriftPipelineHandlerFactories_.reserve(
+      thriftPipelineHandlerFactories_.size() + factoryCount);
+  pendingConnectionCallbacks_.insert(
+      pendingConnectionCallbacks_.end(),
+      pendingConnectionCallbacks.begin(),
+      pendingConnectionCallbacks.end());
   // Splice the module's handlers into the ordered list at the current call
   // position, preserving intra-module order.
-  auto factories = std::move(module).handlers();
-  thriftPipelineHandlerFactories_.reserve(
-      thriftPipelineHandlerFactories_.size() + factories.size());
-  for (auto& factory : factories) {
+  for (auto& factory : std::move(module).handlers()) {
     thriftPipelineHandlerFactories_.push_back(std::move(factory));
   }
   // Claim the name only once the splice succeeded, so a throwing splice does
@@ -536,6 +593,14 @@ void FastThriftServer::start() {
       socketOptions_,
       folly::getKeepAliveToken(getConnectionSetupThreadPool().get()));
   connectionManager_->setEnableReusePortBpfSpread(enableReusePortBpfSpread_);
+  if (config_.numConnectionSetupThreads > 0 &&
+      !pendingConnectionCallbacks_.empty()) {
+    pendingConnectionEventCallback_ =
+        std::make_shared<PendingConnectionEventCallback>(
+            std::move(pendingConnectionCallbacks_));
+    connectionManager_->setConnectionEventCallback(
+        pendingConnectionEventCallback_);
+  }
   connectionManager_->setConnectionStats(connectionStats_.get());
   connectionManager_->setTLSStats(tlsStats_.get());
 

@@ -120,6 +120,11 @@ const std::string& extensionName() {
 
 } // namespace extension_detail
 
+template <typename H>
+concept ThriftPerConnectionExtensionHandler = ThriftExtensionHandler<H> ||
+    HasResponseCallback<H> || ThriftConnectionExtensionHandler<H> ||
+    ThriftBackpressureExtensionHandler<H>;
+
 /**
  * Adapts a user extension handler H into a duplex channel_pipeline handler.
  * This is the only place that touches the raw TypeErasedBox and pipeline
@@ -149,9 +154,7 @@ const std::string& extensionName() {
 template <typename H, typename Context = ThriftPipelineHandlerContext>
 class ThriftExtensionPipelineHandler {
   static_assert(
-      ThriftExtensionHandler<H> || HasResponseCallback<H> ||
-          ThriftConnectionExtensionHandler<H> ||
-          ThriftBackpressureExtensionHandler<H>,
+      ThriftPerConnectionExtensionHandler<H>,
       "ThriftExtensionPipelineHandler<H>: H must implement at least one "
       "extension callback — onRequest taking either const ThriftRequestView& "
       "[read-only] or ThriftRequestMutator& [read/write] and returning "

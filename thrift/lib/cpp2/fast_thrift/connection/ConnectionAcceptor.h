@@ -19,6 +19,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <utility>
 #include <vector>
 
 #include <folly/Executor.h>
@@ -60,6 +61,12 @@ class ConnectionAcceptor {
   void start();
   void stop();
   folly::SocketAddress getAddress() const;
+  void setConnectionEventCallback(
+      std::shared_ptr<folly::AsyncServerSocket::ConnectionEventCallback>
+          callback) {
+    DCHECK(!started_);
+    connectionEventCallback_ = std::move(callback);
+  }
 
   int64_t getNumPendingConnections() const;
   size_t getNumDroppedConnections() const;
@@ -73,6 +80,9 @@ class ConnectionAcceptor {
   SocketOptions socketOptions_;
   bool enableReusePortBpfSpread_;
   std::vector<ConnectionWorkerTarget> workers_;
+  // Declared before socket_ so it outlives every callback from the socket.
+  std::shared_ptr<folly::AsyncServerSocket::ConnectionEventCallback>
+      connectionEventCallback_;
   folly::AsyncServerSocket::UniquePtr socket_;
   folly::SocketAddress boundAddress_;
   bool started_{false};

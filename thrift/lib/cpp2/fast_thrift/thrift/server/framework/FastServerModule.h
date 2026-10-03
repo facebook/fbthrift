@@ -28,12 +28,11 @@
 namespace apache::thrift::fast_thrift::thrift {
 
 /**
- * FastServerModule — a named, ordered bundle of thrift pipeline handlers.
+ * FastServerModule — a named bundle of Fast Thrift extensions.
  *
- * A module is a *value*, not a polymorphic base: it carries only data (a name
- * plus an ordered list of handler factories), so it needs no virtuals. Unlike
- * the legacy apache::thrift::ServerModule, it contributes only pipeline
- * handlers (no interceptors / event handlers).
+ * A module is a *value*, not a polymorphic base. It carries an ordered list of
+ * per-connection pipeline handler factories plus optional server-scoped
+ * extension callbacks.
  *
  * Distribute a reusable bundle as a free function returning a populated module:
  *
@@ -52,6 +51,13 @@ namespace apache::thrift::fast_thrift::thrift {
  */
 class FastServerModule {
  public:
+  using PendingConnectionCallback = void (*)() noexcept;
+  struct PendingConnectionCallbacks {
+    PendingConnectionCallback enqueued;
+    PendingConnectionCallback dequeued;
+    PendingConnectionCallback droppedWhileQueued;
+  };
+
   explicit FastServerModule(std::string name) : name_(std::move(name)) {}
 
   const std::string& name() const { return name_; }
@@ -77,10 +83,10 @@ class FastServerModule {
   }
 
   /**
-   * Append a constrained extension to this module, in order. `H` must declare
-   * an onRequest taking a request view (read-only) or mutator (read/write) —
-   * see ThriftExtension.h — the recommended, safe way to hook the
-   * request/response path. `args` are copied and used to construct a fresh H
+   * Append a constrained extension to this module, in order. `H` may implement
+   * any supported extension callback family. Static pending-connection
+   * callbacks are registered once for the server; when `H` also implements a
+   * per-connection family, `args` are copied and used to construct a fresh H
    * per connection. Returns *this for chaining.
    *
    * H is wrapped in the framework's extension adapter, which owns message
@@ -93,12 +99,29 @@ class FastServerModule {
    */
   template <typename H, typename... Args>
   FastServerModule& addThriftExtension(Args... args) {
-    controlsReads_ |= ThriftBackpressureExtensionHandler<H>;
-    requiresHeaders_ |= UsesHeaders<H>;
-    return addFactory([&](channel_pipeline::HandlerId id) {
-      return server::makeThriftExtensionHandlerFactory<H>(
-          id, std::move(args)...);
-    });
+    static_assert(
+        server::ThriftPerConnectionExtensionHandler<H> ||
+            ThriftPendingConnectionExtensionHandler<H>,
+        "H must implement a per-connection or pending-connection extension "
+        "callback family");
+    if constexpr (ThriftPendingConnectionExtensionHandler<H>) {
+      pendingConnectionCallbacks_.push_back(
+          PendingConnectionCallbacks{
+              .enqueued = +[]() noexcept { H::onConnectionEnqueued(); },
+              .dequeued = +[]() noexcept { H::onConnectionDequeued(); },
+              .droppedWhileQueued =
+                  +[]() noexcept { H::onConnectionDroppedWhileQueued(); },
+          });
+    }
+    if constexpr (server::ThriftPerConnectionExtensionHandler<H>) {
+      controlsReads_ |= ThriftBackpressureExtensionHandler<H>;
+      requiresHeaders_ |= UsesHeaders<H>;
+      addFactory([&](channel_pipeline::HandlerId id) {
+        return server::makeThriftExtensionHandlerFactory<H>(
+            id, std::move(args)...);
+      });
+    }
+    return *this;
   }
 
   /**
@@ -129,6 +152,14 @@ class FastServerModule {
     return std::move(factories_);
   }
 
+  const std::vector<PendingConnectionCallbacks>& pendingConnectionCallbacks()
+      const& {
+    return pendingConnectionCallbacks_;
+  }
+  std::vector<PendingConnectionCallbacks>&& pendingConnectionCallbacks() && {
+    return std::move(pendingConnectionCallbacks_);
+  }
+
  private:
   // Append the factory `makeFactory` builds for the next registration slot.
   //
@@ -147,6 +178,7 @@ class FastServerModule {
 
   std::string name_;
   std::vector<server::ThriftPipelineHandlerFactory> factories_;
+  std::vector<PendingConnectionCallbacks> pendingConnectionCallbacks_;
   bool controlsReads_{false};
   bool requiresHeaders_{false};
 };

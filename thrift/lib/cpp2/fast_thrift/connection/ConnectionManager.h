@@ -26,6 +26,7 @@
 #include <folly/Synchronized.h>
 #include <folly/container/F14Map.h>
 #include <folly/executors/IOThreadPoolExecutor.h>
+#include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/observer/Observer.h>
@@ -156,6 +157,17 @@ class ConnectionManager : public folly::DelayedDestruction {
   }
 
   /**
+   * Observe listener-socket events. The callback may run concurrently on
+   * acceptor and data EventBases and must remain thread-safe. Must be set
+   * before start().
+   */
+  void setConnectionEventCallback(
+      std::shared_ptr<folly::AsyncServerSocket::ConnectionEventCallback>
+          callback) noexcept {
+    connectionEventCallback_ = std::move(callback);
+  }
+
+  /**
    * Attach connection counters. Wires the metrics handlers into the
    * acceptance pipeline of every per-EventBase handler built after this
    * point; leaving it unset omits them, so a server without stats pays
@@ -265,6 +277,8 @@ class ConnectionManager : public folly::DelayedDestruction {
       folly::F14FastMap<folly::EventBase*, ConnectionAcceptor::Ptr>>
       acceptors_;
   bool enableReusePortBpfSpread_{false};
+  std::shared_ptr<folly::AsyncServerSocket::ConnectionEventCallback>
+      connectionEventCallback_;
   // Borrowed; null unless the corresponding setter was called. Each per-EVB
   // handler resolves its own shard from these at construction.
   ConnectionStats* stats_{nullptr};
