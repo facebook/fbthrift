@@ -19,9 +19,11 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/util/StreamResponse.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::fast_thrift::thrift {

@@ -732,17 +732,17 @@ unsigned long PermissionDeniedException::read(Protocol_* iprot) {
 namespace apache::thrift::detail {
 template <> struct TSchemaAssociation<::cpp2::test::DataItem, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -8456849235406565360;
-  static constexpr ::std::string_view definitionKey = {"\x1a\x8c\x70\x70\x8c\x3d\x01\xa1\xd5\x1d\x85\xbf\x7e\xf5\x13\xb6", 16};
+  static constexpr int64_t programId = 3751326510370360015;
+  static constexpr ::std::string_view definitionKey = {"\xd8\x68\x16\x4e\xa2\xc7\xf4\xc3\xbf\x6e\x2a\xa2\x0a\xd5\x2d\xac", 16};
 };
 template <> struct TSchemaAssociation<::cpp2::test::NotFoundException, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -8456849235406565360;
-  static constexpr ::std::string_view definitionKey = {"\x9f\x8a\xd0\x76\xd0\x69\xca\x66\x3b\x55\x9e\x78\x43\x2c\xa3\x64", 16};
+  static constexpr int64_t programId = 3751326510370360015;
+  static constexpr ::std::string_view definitionKey = {"\x2f\x88\x15\xb1\xed\x63\x92\x6a\xc5\xed\x1d\x5d\x46\xe8\xb3\x7c", 16};
 };
 template <> struct TSchemaAssociation<::cpp2::test::PermissionDeniedException, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -8456849235406565360;
-  static constexpr ::std::string_view definitionKey = {"\x2f\xc8\x1e\x4e\x42\x57\x6d\x9d\x01\xdf\xe9\xb6\x51\x4c\xd7\x89", 16};
+  static constexpr int64_t programId = 3751326510370360015;
+  static constexpr ::std::string_view definitionKey = {"\x93\x06\x92\xba\x30\x03\xf7\x65\x06\xc5\x20\xdc\x34\x4b\x74\x93", 16};
 };
 } // namespace apache::thrift::detail

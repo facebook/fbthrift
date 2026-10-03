@@ -48,15 +48,17 @@ FastServiceHandler<{{service.qualified_name}}>::getMethodDispatchTable() const {
 void FastServiceHandler<{{service.qualified_name}}>::populateMethodMetadata(
     ::apache::thrift::fast_thrift::thrift::ThriftServerMethodMetadataRegistry&
         registry) const {
+  {{! A stream method (REQUEST_STREAM) registers identically to a unary one, so }}
+  {{! both share this entry. }}
   {{#each service.functions as |function|}}
-  {{#if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}
+  {{#if (and (not function.starts_interaction?) (not function.sink?) (not function.oneway?))}}
   registry.add({
       .serviceName = "{{service.name}}",
       .definingServiceName = "{{service.name}}",
       .methodName = "{{function.name}}",
       .qualifiedMethodName = "{{service.name}}.{{function.name}}",
   });
-  {{/if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}
+  {{/if (and (not function.starts_interaction?) (not function.sink?) (not function.oneway?))}}
   {{/each}}
 }
 
@@ -219,12 +221,15 @@ const std::shared_ptr<const
       ThriftServerMethodDispatchTable;
   static const auto table = std::make_shared<const Table>(
       std::initializer_list<Table::Method>{
+  {{! A stream method (REQUEST_STREAM) registers identically to a unary one: }}
+  {{! dispatchRequestResponse handles both request payloads and the generated }}
+  {{! process function picks its response shape, so both share this entry. }}
   {{#each service.functions as |function|}}
-  {{#if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}
+  {{#if (and (not function.starts_interaction?) (not function.sink?) (not function.oneway?))}}
           Base::makeRequestResponseMethod<
               Adapter,
               &Adapter::process_{{function.cpp_name}}>("{{function.name}}"),
-  {{/if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}
+  {{/if (and (not function.starts_interaction?) (not function.sink?) (not function.oneway?))}}
   {{/each}}
       });
   return table;
@@ -283,6 +288,50 @@ template void {{service.cpp_name}}AppAdapter::process_{{function.cpp_name}}_impl
     ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
 
 {{/if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}
+{{#if function.stream?}}
+void {{service.cpp_name}}AppAdapter::process_{{function.cpp_name}}(
+    uint32_t streamId,
+    std::unique_ptr<folly::IOBuf> data,
+    ::apache::thrift::ProtocolId protocolId,
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
+        requestContext) noexcept {
+  switch (protocolId) {
+    case ::apache::thrift::ProtocolId::COMPACT:
+      process_{{function.cpp_name}}_impl<
+          ::apache::thrift::CompactProtocolReader,
+          ::apache::thrift::CompactProtocolWriter>(
+          streamId, std::move(data), std::move(requestContext));
+      break;
+    case ::apache::thrift::ProtocolId::BINARY:
+      process_{{function.cpp_name}}_impl<
+          ::apache::thrift::BinaryProtocolReader,
+          ::apache::thrift::BinaryProtocolWriter>(
+          streamId, std::move(data), std::move(requestContext));
+      break;
+    default:
+      writeResponse(
+          ::apache::thrift::fast_thrift::thrift::makeFrameworkErrorMessage(
+              streamId,
+              ::apache::thrift::ResponseRpcErrorCode::REQUEST_PARSING_FAILURE,
+              "Unsupported protocol id for fast_thrift server"));
+      break;
+  }
+}
+
+template void {{service.cpp_name}}AppAdapter::process_{{function.cpp_name}}_impl<
+    ::apache::thrift::CompactProtocolReader,
+    ::apache::thrift::CompactProtocolWriter>(
+    uint32_t,
+    std::unique_ptr<folly::IOBuf>,
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
+template void {{service.cpp_name}}AppAdapter::process_{{function.cpp_name}}_impl<
+    ::apache::thrift::BinaryProtocolReader,
+    ::apache::thrift::BinaryProtocolWriter>(
+    uint32_t,
+    std::unique_ptr<folly::IOBuf>,
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr) noexcept;
+
+{{/if function.stream?}}
 {{/each}}
 
 } // namespace {{service.cpp_qualified_namespace}}

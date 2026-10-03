@@ -29,6 +29,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/StreamResponsePayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponseMetadata.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/stream/ProducerPipeline.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/stream/StreamElementEncoder.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/stream/StreamFactory.h>
@@ -88,6 +89,25 @@ void writeStreamOpen(
       sid,
       std::move(factory),
       stream::StreamElementEncoder<T>{EncodeValue, EncodeError});
+  message.requestContext = std::move(requestContext);
+  a->writeResponse(std::move(message), std::move(adapterGuard));
+}
+
+/**
+ * `FastHandlerCallback<StreamFactory<T>>::ExceptionFn` for a stream RPC: a
+ * failure before the stream opens (arg parse, or the handler throwing before it
+ * returns a factory) is reported as a `TApplicationException` on the request.
+ * Declared-exception-on-open fidelity is a follow-up; this is the appUnknown
+ * fallback, which does not depend on the method presult.
+ */
+inline void writeStreamException(
+    ThriftServerAppAdapter* a,
+    uint32_t sid,
+    ThriftRequestContextPtr requestContext,
+    folly::DelayedDestruction::DestructorGuard&& adapterGuard,
+    folly::exception_wrapper ew) noexcept {
+  auto message =
+      makeUnknownExceptionMessage(sid, ew, apache::thrift::ErrorBlame::SERVER);
   message.requestContext = std::move(requestContext);
   a->writeResponse(std::move(message), std::move(adapterGuard));
 }

@@ -24,6 +24,16 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apac
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure, ::cpp2::test::DataItem*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::cpp2::test::NotFoundException>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure, ::cpp2::test::PermissionDeniedException>> BasicService_secureLookup_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>> BasicService_ebLookup_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure, ::cpp2::test::DataItem*>> BasicService_ebLookup_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>> BasicService_streamItems_pargs;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<true>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure, ::cpp2::test::DataItem*>>
+    > BasicService_streamItems_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>> BasicService_ebStreamItems_pargs;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<true>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure, ::cpp2::test::DataItem*>>
+    > BasicService_ebStreamItems_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::std::string*>> BasicService_fireAndForget_pargs;
 //
 // Service Methods
@@ -1157,6 +1167,374 @@ void BasicServiceAsyncProcessor::throw_wrapped_ebLookup(
 //
 
 //
+// Method 'streamItems'
+//
+template <typename ProtocolIn_, typename ProtocolOut_>
+void BasicServiceAsyncProcessor::setUpAndProcess_streamItems(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    apache::thrift::Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    [[maybe_unused]] apache::thrift::concurrency::ThreadManager* tm) {
+  if (!setUpRequestProcessing(
+          req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, iface_)) {
+    return;
+  }
+  auto scope = iface_->getRequestExecutionScope(
+      ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestExecutionScope(std::move(scope));
+  processInThread(
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      eb,
+      tm,
+      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+      &BasicServiceAsyncProcessor::
+          executeRequest_streamItems<ProtocolIn_, ProtocolOut_>,
+      this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void BasicServiceAsyncProcessor::executeRequest_streamItems(
+    apache::thrift::ServerRequest&& serverRequest) {
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  struct ArgsState {
+    ::std::int32_t uarg_count{0};
+    BasicService_streamItems_pargs pargs() {
+      BasicService_streamItems_pargs args;
+      args.get<0>().value = &uarg_count;
+      return args;
+    }
+
+    auto asTupleOfRefs() & {
+      return std::tie(
+        std::as_const(uarg_count)
+      );
+    }
+  } args;
+
+  auto ctxStack = apache::thrift::ContextStack::create(
+      this->getEventHandlersSharedPtr(),
+      this->getServiceName(),
+      "BasicService.streamItems",
+      serverRequest.requestContext());
+  apache::thrift::SerializedRequest serializedRequest{nullptr};
+  try {
+    auto pargs = args.pargs();
+    serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
+        std::move(serverRequest)).uncompress();
+    deserializeRequest<ProtocolIn_>(
+        pargs,
+        "streamItems",
+        serializedRequest,
+        ctxStack.get());
+  } catch (...) {
+    folly::exception_wrapper ew(std::current_exception());
+    apache::thrift::detail::ap::process_handle_exn_deserialization<
+        ProtocolOut_>(
+        ew,
+        apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest)),
+            serverRequest.requestContext(),
+        apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+        "streamItems");
+    return;
+  }
+  auto requestPileNotification =
+      apache::thrift::detail::ServerRequestHelper::moveRequestPileNotification(
+          serverRequest);
+  auto concurrencyControllerNotification =
+      apache::thrift::detail::ServerRequestHelper::moveConcurrencyControllerNotification(
+          serverRequest);
+  apache::thrift::HandlerCallbackBase::MethodNameInfo methodNameInfo{
+      /* .serviceName =*/ this->getServiceName(),
+      /* .definingServiceName =*/ "BasicService",
+      /* .methodName =*/ "streamItems",
+      /* .qualifiedMethodName =*/ "BasicService.streamItems"};
+  apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::test::DataItem>>::DecoratorAfterCallback decoratorCallback{
+    static_cast<void*>(iface_),
+    apache::thrift::ServiceHandler<::cpp2::test::BasicService>::fbthrift_invoke_decorator_after_streamItems};
+ auto callback =
+      apache::thrift::HandlerCallbackPtr<::apache::thrift::ServerStream<::cpp2::test::DataItem>>::make(
+          apache::thrift::detail::ServerRequestHelper::request(
+              std::move(serverRequest)),
+          std::move(ctxStack),
+          std::move(methodNameInfo),
+          return_streamItems<ProtocolIn_, ProtocolOut_>,
+          throw_wrapped_streamItems<ProtocolIn_, ProtocolOut_>,
+          serverRequest.requestContext()->getProtoSeqId(),
+          apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+          apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+          serverRequest.requestContext(),
+          requestPileNotification,
+          concurrencyControllerNotification,
+          std::move(serverRequest.requestData()),
+          apache::thrift::TilePtr(),
+          std::move(decoratorCallback));
+  // Execute method decorator before_streamItems.
+  iface_->fbthrift_execute_decorators_before_streamItems(*serverRequest.requestContext(), args.uarg_count);
+
+  const auto makeExecuteHandler = [&] {
+    return [ifacePtr = iface_](auto&& cb, ArgsState args) mutable {
+      (void)args;
+      ifacePtr->async_tm_streamItems(std::move(cb), args.uarg_count);
+    };
+  };
+#if FOLLY_HAS_COROUTINES
+  if (apache::thrift::detail::shouldProcessServiceInterceptorsOnRequest(
+          *callback)) {
+    [](
+        auto callback,
+        auto executeHandler,
+        ArgsState args,
+        apache::thrift::SerializedRequest serializedRequest
+    ) -> folly::coro::Task<void> {
+      auto argRefs = args.asTupleOfRefs();
+      const bool shouldExecuteHandler =
+          co_await apache::thrift::detail::processServiceInterceptorsOnRequest(
+              *callback,
+              apache::thrift::detail::ServiceInterceptorOnRequestArguments(
+                  argRefs),
+              serializedRequest);
+      if (shouldExecuteHandler) {
+        executeHandler(std::move(callback), std::move(args));
+      }
+    }(
+        std::move(callback),
+        makeExecuteHandler(),
+        std::move(args),
+        std::move(serializedRequest))
+      .scheduleOn(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
+      .startInlineUnsafe();
+  } else {
+    makeExecuteHandler()(std::move(callback), std::move(args));
+  }
+#else
+  makeExecuteHandler()(std::move(callback), std::move(args));
+#endif // FOLLY_HAS_COROUTINES
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+/* static */ apache::thrift::ResponseAndServerStreamFactory BasicServiceAsyncProcessor::return_streamItems(
+    apache::thrift::ContextStack* ctx,
+    folly::Executor::KeepAlive<> executor,
+    ::apache::thrift::ServerStream<::cpp2::test::DataItem>&& _return) {
+  ProtocolOut_ prot;
+  BasicService_streamItems_presult::InitialResponsePResultType result;
+  using StreamPResultType = BasicService_streamItems_presult::StreamPResultType;
+  auto& returnStream = _return;
+  auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType>(std::move(returnStream), std::move(executor));
+  return {serializeResponse("streamItems", &prot, ctx, result), std::move(encodedStream)};
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void BasicServiceAsyncProcessor::throw_wrapped_streamItems(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    [[maybe_unused]] int32_t protoSeqId,
+    apache::thrift::ContextStack* ctx,
+    folly::exception_wrapper ew,
+    apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  {
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<
+        ProtocolOut_>(ew, std::move(req), reqCtx, ctx, "streamItems");
+    return;
+  }
+}
+//
+// End of Method 'streamItems'
+//
+
+//
+// Method 'ebStreamItems'
+//
+template <typename ProtocolIn_, typename ProtocolOut_>
+void BasicServiceAsyncProcessor::setUpAndProcess_ebStreamItems(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    apache::thrift::Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    [[maybe_unused]] apache::thrift::concurrency::ThreadManager* tm) {
+  if (!setUpRequestProcessing(
+          req, ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, iface_)) {
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(
+        std::move(req),
+        eb);
+    return;
+  }
+  apache::thrift::ServerRequest serverRequest{
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      {},
+      {},
+      {},
+      {}};
+  executeRequest_ebStreamItems<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void BasicServiceAsyncProcessor::executeRequest_ebStreamItems(
+    apache::thrift::ServerRequest&& serverRequest) {
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  struct ArgsState {
+    ::std::int32_t uarg_count{0};
+    BasicService_ebStreamItems_pargs pargs() {
+      BasicService_ebStreamItems_pargs args;
+      args.get<0>().value = &uarg_count;
+      return args;
+    }
+
+    auto asTupleOfRefs() & {
+      return std::tie(
+        std::as_const(uarg_count)
+      );
+    }
+  } args;
+
+  auto ctxStack = apache::thrift::ContextStack::create(
+      this->getEventHandlersSharedPtr(),
+      this->getServiceName(),
+      "BasicService.ebStreamItems",
+      serverRequest.requestContext());
+  apache::thrift::SerializedRequest serializedRequest{nullptr};
+  try {
+    auto pargs = args.pargs();
+    serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
+        std::move(serverRequest)).uncompress();
+    deserializeRequest<ProtocolIn_>(
+        pargs,
+        "ebStreamItems",
+        serializedRequest,
+        ctxStack.get());
+  } catch (...) {
+    folly::exception_wrapper ew(std::current_exception());
+    apache::thrift::detail::ap::process_handle_exn_deserialization<
+        ProtocolOut_>(
+        ew,
+        apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest)),
+            serverRequest.requestContext(),
+        apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+        "ebStreamItems");
+    return;
+  }
+  auto requestPileNotification =
+      apache::thrift::detail::ServerRequestHelper::moveRequestPileNotification(
+          serverRequest);
+  auto concurrencyControllerNotification =
+      apache::thrift::detail::ServerRequestHelper::moveConcurrencyControllerNotification(
+          serverRequest);
+  apache::thrift::HandlerCallbackBase::MethodNameInfo methodNameInfo{
+      /* .serviceName =*/ this->getServiceName(),
+      /* .definingServiceName =*/ "BasicService",
+      /* .methodName =*/ "ebStreamItems",
+      /* .qualifiedMethodName =*/ "BasicService.ebStreamItems"};
+  apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::test::DataItem>>::DecoratorAfterCallback decoratorCallback{
+    static_cast<void*>(iface_),
+    apache::thrift::ServiceHandler<::cpp2::test::BasicService>::fbthrift_invoke_decorator_after_ebStreamItems};
+ auto callback =
+      apache::thrift::HandlerCallbackPtr<::apache::thrift::ServerStream<::cpp2::test::DataItem>>::make(
+          apache::thrift::detail::ServerRequestHelper::request(
+              std::move(serverRequest)),
+          std::move(ctxStack),
+          std::move(methodNameInfo),
+          return_ebStreamItems<ProtocolIn_, ProtocolOut_>,
+          throw_wrapped_ebStreamItems<ProtocolIn_, ProtocolOut_>,
+          serverRequest.requestContext()->getProtoSeqId(),
+          apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+          nullptr,
+          serverRequest.requestContext(),
+          requestPileNotification,
+          concurrencyControllerNotification,
+          std::move(serverRequest.requestData()),
+          apache::thrift::TilePtr(),
+          std::move(decoratorCallback));
+  // Execute method decorator before_ebStreamItems.
+  iface_->fbthrift_execute_decorators_before_ebStreamItems(*serverRequest.requestContext(), args.uarg_count);
+
+  const auto makeExecuteHandler = [&] {
+    return [ifacePtr = iface_](auto&& cb, ArgsState args) mutable {
+      (void)args;
+      ifacePtr->async_eb_ebStreamItems(std::move(cb), args.uarg_count);
+    };
+  };
+#if FOLLY_HAS_COROUTINES
+  if (apache::thrift::detail::shouldProcessServiceInterceptorsOnRequest(
+          *callback)) {
+    [](
+        auto callback,
+        auto executeHandler,
+        ArgsState args,
+        apache::thrift::SerializedRequest serializedRequest
+    ) -> folly::coro::Task<void> {
+      auto argRefs = args.asTupleOfRefs();
+      const bool shouldExecuteHandler =
+          co_await apache::thrift::detail::processServiceInterceptorsOnRequest(
+              *callback,
+              apache::thrift::detail::ServiceInterceptorOnRequestArguments(
+                  argRefs),
+              serializedRequest);
+      if (shouldExecuteHandler) {
+        executeHandler(std::move(callback), std::move(args));
+      }
+    }(
+        std::move(callback),
+        makeExecuteHandler(),
+        std::move(args),
+        std::move(serializedRequest))
+      .scheduleOn(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
+      .startInlineUnsafe();
+  } else {
+    makeExecuteHandler()(std::move(callback), std::move(args));
+  }
+#else
+  makeExecuteHandler()(std::move(callback), std::move(args));
+#endif // FOLLY_HAS_COROUTINES
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+/* static */ apache::thrift::ResponseAndServerStreamFactory BasicServiceAsyncProcessor::return_ebStreamItems(
+    apache::thrift::ContextStack* ctx,
+    folly::Executor::KeepAlive<> executor,
+    ::apache::thrift::ServerStream<::cpp2::test::DataItem>&& _return) {
+  ProtocolOut_ prot;
+  BasicService_ebStreamItems_presult::InitialResponsePResultType result;
+  using StreamPResultType = BasicService_ebStreamItems_presult::StreamPResultType;
+  auto& returnStream = _return;
+  auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType>(std::move(returnStream), std::move(executor));
+  return {serializeResponse("ebStreamItems", &prot, ctx, result), std::move(encodedStream)};
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void BasicServiceAsyncProcessor::throw_wrapped_ebStreamItems(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    [[maybe_unused]] int32_t protoSeqId,
+    apache::thrift::ContextStack* ctx,
+    folly::exception_wrapper ew,
+    apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  {
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<
+        ProtocolOut_>(ew, std::move(req), reqCtx, ctx, "ebStreamItems");
+    return;
+  }
+}
+//
+// End of Method 'ebStreamItems'
+//
+
+//
 // Method 'fireAndForget'
 //
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1302,6 +1680,63 @@ void BasicServiceAsyncProcessor::executeRequest_fireAndForget(
 //
 // End of Service Methods
 //
+
+// Per-service scope for the stream element encoders. Static members keep
+// external linkage — so they can ride writeStreamOpen as non-type template
+// arguments — while the interface-qualified class name keeps two services that
+// declare a stream method of the same name from colliding.
+struct BasicServiceFastServerInternal {
+  // Serialize one 'streamItems' stream element (and wrap a producer
+  // failure) into the wire vocabulary, reusing the classic element serializer
+  // keyed by the method's StreamPResultType.
+  template <typename ProtocolWriter>
+  static ::apache::thrift::fast_thrift::thrift::stream::Payload
+  encode_streamItems_value(
+      ::cpp2::test::DataItem&& value) noexcept {
+    ::apache::thrift::StreamPayloadMetadata metadata;
+    metadata.payloadMetadata().ensure().responseMetadata().ensure();
+    return ::apache::thrift::fast_thrift::thrift::stream::Payload{
+        .data = ::apache::thrift::detail::ap::encode_stream_payload<
+            ProtocolWriter,
+            ::cpp2::test::BasicService_streamItems_presult::StreamPResultType>(
+            std::move(value)),
+        .metadata = std::make_unique<::apache::thrift::StreamPayloadMetadata>(
+            std::move(metadata))};
+  }
+
+  template <typename ProtocolWriter>
+  static ::apache::thrift::fast_thrift::thrift::stream::Error
+  encode_streamItems_error(
+      ::folly::exception_wrapper&& ew) noexcept {
+    return ::apache::thrift::fast_thrift::thrift::stream::Error{
+        .ex = std::move(ew)};
+  }
+  // Serialize one 'ebStreamItems' stream element (and wrap a producer
+  // failure) into the wire vocabulary, reusing the classic element serializer
+  // keyed by the method's StreamPResultType.
+  template <typename ProtocolWriter>
+  static ::apache::thrift::fast_thrift::thrift::stream::Payload
+  encode_ebStreamItems_value(
+      ::cpp2::test::DataItem&& value) noexcept {
+    ::apache::thrift::StreamPayloadMetadata metadata;
+    metadata.payloadMetadata().ensure().responseMetadata().ensure();
+    return ::apache::thrift::fast_thrift::thrift::stream::Payload{
+        .data = ::apache::thrift::detail::ap::encode_stream_payload<
+            ProtocolWriter,
+            ::cpp2::test::BasicService_ebStreamItems_presult::StreamPResultType>(
+            std::move(value)),
+        .metadata = std::make_unique<::apache::thrift::StreamPayloadMetadata>(
+            std::move(metadata))};
+  }
+
+  template <typename ProtocolWriter>
+  static ::apache::thrift::fast_thrift::thrift::stream::Error
+  encode_ebStreamItems_error(
+      ::folly::exception_wrapper&& ew) noexcept {
+    return ::apache::thrift::fast_thrift::thrift::stream::Error{
+        .ex = std::move(ew)};
+  }
+};
 
 //
 // Method 'ping'
@@ -2047,6 +2482,220 @@ void BasicServiceAppAdapter::process_ebLookup_run(
 
 //
 // End of Method 'ebLookup'
+//
+
+//
+// Stream method 'streamItems'
+//
+
+template <typename ProtocolReader, typename ProtocolWriter>
+void BasicServiceAppAdapter::process_streamItems_impl(
+    uint32_t streamId,
+    std::unique_ptr<folly::IOBuf> data,
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
+        requestContext) noexcept {
+  using StreamFactoryT = ::apache::thrift::fast_thrift::thrift::stream::
+      StreamFactory<::cpp2::test::DataItem>;
+  using Cb =
+      ::apache::thrift::fast_thrift::thrift::FastHandlerCallback<StreamFactoryT>;
+
+  // ResultFn binds the protocol-specialized element encoders to the
+  // handler-returned StreamFactory (building the ThriftServerStreamOpenPayload
+  // the mux consumes). ExceptionFn covers a failure before the stream opens.
+  auto callback =
+      ::apache::thrift::fast_thrift::thrift::makeFastHandlerCallback<Cb>(
+          &::apache::thrift::fast_thrift::thrift::detail::writeStreamOpen<
+              ::cpp2::test::DataItem,
+              &BasicServiceFastServerInternal::encode_streamItems_value<ProtocolWriter>,
+              &BasicServiceFastServerInternal::encode_streamItems_error<ProtocolWriter>>,
+          &::apache::thrift::fast_thrift::thrift::detail::writeStreamException,
+          this,
+          streamId,
+          *getEventBase(),
+          cpuExecutor(),
+          std::move(requestContext));
+
+  auto* executor = cpuExecutor();
+  if (executor == nullptr) {
+    process_streamItems_run<ProtocolReader, ProtocolWriter>(
+        std::move(callback), std::move(data));
+    return;
+  }
+
+  auto task = [this,
+               executor,
+               callback = std::move(callback),
+               data = std::move(data)]() mutable {
+    ::apache::thrift::fast_thrift::thrift::detail::HandlerExecutorScope scope(
+        executor);
+    if (callback->isCancellationRequested()) {
+      callback->cancelled();
+      return;
+    }
+    callback->markHandlerStarted();
+    process_streamItems_run<ProtocolReader, ProtocolWriter>(
+        std::move(callback), std::move(data));
+  };
+  // folly::Function stores callables of up to six pointers inline, so
+  // staying under that keeps task type erasure allocation-free.
+  static_assert(
+      sizeof(task) <= 6 * sizeof(void*),
+      "dispatch task outgrew folly::Function's in-situ buffer");
+  try {
+    executor->add(std::move(task));
+  } catch (...) {
+    // The move-only task retains sole callback ownership. Rejection destroys
+    // it here; an executor that accepted it owns either execution or cleanup.
+  }
+}
+
+template <typename ProtocolReader, typename ProtocolWriter>
+void BasicServiceAppAdapter::process_streamItems_run(
+    ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<
+        ::apache::thrift::fast_thrift::thrift::stream::StreamFactory<::cpp2::test::DataItem>> callback,
+    std::unique_ptr<folly::IOBuf> data) noexcept {
+  struct ArgsState {
+    ::std::int32_t uarg_count{0};
+
+    ::cpp2::test::BasicService_streamItems_pargs pargs() {
+      ::cpp2::test::BasicService_streamItems_pargs args;
+      args.template get<0>().value = &uarg_count;
+      return args;
+    }
+  } args;
+
+  try {
+    auto pargs = args.pargs();
+    ::apache::thrift::fast_thrift::thrift::deserializeRequest<ProtocolReader>(
+        *data, pargs);
+  } catch (...) {
+    // Reports the failure before the stream opens: writeStreamException turns
+    // this into a TApplicationException on the request. The callback owns the
+    // adapter guard that rides along with the write and marks itself complete
+    // so its destructor does not synthesize a second error frame.
+    callback->sendAppError(
+        ::folly::exception_wrapper(std::current_exception()));
+    return;
+  }
+
+  // Dispatch to the user-implemented FastServiceHandler<Service> method.
+  // The handler may complete synchronously or asynchronously; either way the
+  // callback owns any further write/close coordination.
+  //
+  // A synchronous throw out of the handler would otherwise hit the noexcept
+  // boundary on this function and terminate the process, so it is swallowed
+  // here. The callback is deliberately not touched: ownership passed to the
+  // handler at the call, and reaching back for it would mean a second owner
+  // and the reference count that sole ownership exists to avoid.
+  //
+  // The client still gets an error either way. A handler that completed and
+  // then threw has already opened (or failed) the stream; one that threw
+  // without completing gets INTERNAL_ERROR synthesized by the callback's
+  // destructor, which invokes writeStreamException. Reporting errors by
+  // throwing is not the documented contract — callback->exception(ew) is — so
+  // the lost exception detail is confined to handler misuse.
+  try {
+    handler_->async_tm_streamItems(
+        std::move(callback), args.uarg_count);
+  } catch (...) {
+  }
+}
+
+//
+// End of Stream method 'streamItems'
+//
+
+//
+// Stream method 'ebStreamItems'
+//
+
+template <typename ProtocolReader, typename ProtocolWriter>
+void BasicServiceAppAdapter::process_ebStreamItems_impl(
+    uint32_t streamId,
+    std::unique_ptr<folly::IOBuf> data,
+    ::apache::thrift::fast_thrift::thrift::ThriftRequestContextPtr
+        requestContext) noexcept {
+  using StreamFactoryT = ::apache::thrift::fast_thrift::thrift::stream::
+      StreamFactory<::cpp2::test::DataItem>;
+  using Cb =
+      ::apache::thrift::fast_thrift::thrift::FastHandlerCallback<StreamFactoryT>;
+
+  // ResultFn binds the protocol-specialized element encoders to the
+  // handler-returned StreamFactory (building the ThriftServerStreamOpenPayload
+  // the mux consumes). ExceptionFn covers a failure before the stream opens.
+  auto callback =
+      ::apache::thrift::fast_thrift::thrift::makeFastHandlerCallback<Cb>(
+          &::apache::thrift::fast_thrift::thrift::detail::writeStreamOpen<
+              ::cpp2::test::DataItem,
+              &BasicServiceFastServerInternal::encode_ebStreamItems_value<ProtocolWriter>,
+              &BasicServiceFastServerInternal::encode_ebStreamItems_error<ProtocolWriter>>,
+          &::apache::thrift::fast_thrift::thrift::detail::writeStreamException,
+          this,
+          streamId,
+          *getEventBase(),
+          nullptr,
+          std::move(requestContext));
+
+  // @cpp.ProcessInEbThreadUnsafe: this method runs inline on the EventBase,
+  // so it never consults the CPU pool even when the server has one.
+  process_ebStreamItems_run<ProtocolReader, ProtocolWriter>(
+      std::move(callback), std::move(data));
+}
+
+template <typename ProtocolReader, typename ProtocolWriter>
+void BasicServiceAppAdapter::process_ebStreamItems_run(
+    ::apache::thrift::fast_thrift::thrift::FastHandlerCallbackPtr<
+        ::apache::thrift::fast_thrift::thrift::stream::StreamFactory<::cpp2::test::DataItem>> callback,
+    std::unique_ptr<folly::IOBuf> data) noexcept {
+  struct ArgsState {
+    ::std::int32_t uarg_count{0};
+
+    ::cpp2::test::BasicService_ebStreamItems_pargs pargs() {
+      ::cpp2::test::BasicService_ebStreamItems_pargs args;
+      args.template get<0>().value = &uarg_count;
+      return args;
+    }
+  } args;
+
+  try {
+    auto pargs = args.pargs();
+    ::apache::thrift::fast_thrift::thrift::deserializeRequest<ProtocolReader>(
+        *data, pargs);
+  } catch (...) {
+    // Reports the failure before the stream opens: writeStreamException turns
+    // this into a TApplicationException on the request. The callback owns the
+    // adapter guard that rides along with the write and marks itself complete
+    // so its destructor does not synthesize a second error frame.
+    callback->sendAppError(
+        ::folly::exception_wrapper(std::current_exception()));
+    return;
+  }
+
+  // Dispatch to the user-implemented FastServiceHandler<Service> method.
+  // The handler may complete synchronously or asynchronously; either way the
+  // callback owns any further write/close coordination.
+  //
+  // A synchronous throw out of the handler would otherwise hit the noexcept
+  // boundary on this function and terminate the process, so it is swallowed
+  // here. The callback is deliberately not touched: ownership passed to the
+  // handler at the call, and reaching back for it would mean a second owner
+  // and the reference count that sole ownership exists to avoid.
+  //
+  // The client still gets an error either way. A handler that completed and
+  // then threw has already opened (or failed) the stream; one that threw
+  // without completing gets INTERNAL_ERROR synthesized by the callback's
+  // destructor, which invokes writeStreamException. Reporting errors by
+  // throwing is not the documented contract — callback->exception(ew) is — so
+  // the lost exception detail is confined to handler misuse.
+  try {
+    handler_->async_eb_ebStreamItems(
+        std::move(callback), args.uarg_count);
+  } catch (...) {
+  }
+}
+
+//
+// End of Stream method 'ebStreamItems'
 //
 
 

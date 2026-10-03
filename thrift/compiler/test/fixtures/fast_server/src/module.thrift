@@ -60,6 +60,14 @@ service BasicService {
   @cpp.ProcessInEbThreadUnsafe
   DataItem ebLookup(1: i32 id);
 
+  // server stream — handler returns a StreamFactory<DataItem>
+  stream<DataItem> streamItems(1: i32 count);
+
+  // event-base server stream — dispatcher must run inline on the EventBase and
+  // dispatch to async_eb_, never the CPU pool
+  @cpp.ProcessInEbThreadUnsafe
+  stream<DataItem> ebStreamItems(1: i32 count);
+
   // oneway — generator must skip this method entirely
   // @lint-ignore THRIFTCHECKS oneway is intentional fixture input
   oneway void fireAndForget(1: string event);

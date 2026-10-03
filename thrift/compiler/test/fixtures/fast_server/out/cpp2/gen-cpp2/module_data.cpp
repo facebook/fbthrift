@@ -76,24 +76,24 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<:
 namespace detail {
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::test::DataItem, false>::bundle() {
-    return ::cpp2::test::module_constants::_fbthrift_schema_8aa33c6d3c8ed010_includes();
+    return ::cpp2::test::module_constants::_fbthrift_schema_340f6395f7218acf_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::test::NotFoundException, false>::bundle() {
-    return ::cpp2::test::module_constants::_fbthrift_schema_8aa33c6d3c8ed010_includes();
+    return ::cpp2::test::module_constants::_fbthrift_schema_340f6395f7218acf_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::test::PermissionDeniedException, false>::bundle() {
-    return ::cpp2::test::module_constants::_fbthrift_schema_8aa33c6d3c8ed010_includes();
+    return ::cpp2::test::module_constants::_fbthrift_schema_340f6395f7218acf_includes();
 }
 
 template <> struct TSchemaAssociation<::cpp2::test::BasicService, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -8456849235406565360;
-  static constexpr ::std::string_view definitionKey = {"\x7b\x5c\x33\xf3\xd3\xc8\x8b\x72\xc3\xfe\x8c\x4b\x71\xb5\x47\xe7", 16};
+  static constexpr int64_t programId = 3751326510370360015;
+  static constexpr ::std::string_view definitionKey = {"\xc0\x50\xb5\xc1\xa8\x97\x6d\xbe\x8c\xeb\xe5\x4b\xc1\xd7\xbe\x42", 16};
 };
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::test::BasicService, false>::bundle() {
-    return ::cpp2::test::module_constants::_fbthrift_schema_8aa33c6d3c8ed010_includes();
+    return ::cpp2::test::module_constants::_fbthrift_schema_340f6395f7218acf_includes();
 }
 } // namespace detail
 } // namespace apache::thrift

@@ -53,6 +53,13 @@ service FastThriftServer {
     1: NotFoundException notFound,
     2: PermissionDeniedException denied,
   );
+
+  // server stream — handler returns a StreamFactory<EchoResponse>
+  stream<EchoResponse> streamEchoes(1: i32 count);
+
+  // event-base server stream — compile guard for the async_eb_ stream path
+  @cpp.ProcessInEbThreadUnsafe
+  stream<EchoResponse> ebStreamEchoes(1: i32 count);
 }
 
 // Stand-in service for tests that need a second FastServer handler on an
