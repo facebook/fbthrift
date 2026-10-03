@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <thrift/lib/cpp2/fast_thrift/common/allocator/EvbAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftControlPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftPayloadVariant.h>
@@ -38,18 +40,18 @@ namespace apache::thrift::fast_thrift::thrift {
 // ThriftServerRequestCancellationEvent — routed by streamId to the mux (stream
 // cancel) or the request-lifecycle handler (unary cancel).
 using ThriftServerRequestResponsePayload = BasicThriftRequestResponsePayload<
-    mem::evb_local_ptr<apache::thrift::RequestRpcMetadata>>;
+    std::unique_ptr<apache::thrift::RequestRpcMetadata>>;
 
-inline mem::evb_local_ptr<apache::thrift::RequestRpcMetadata>
-makeServerRequestMetadata(folly::EventBase& eventBase) {
-  return mem::evb_make_local<apache::thrift::RequestRpcMetadata>(eventBase);
+inline std::unique_ptr<apache::thrift::RequestRpcMetadata>
+makeServerRequestMetadata(folly::EventBase&) {
+  return std::make_unique<apache::thrift::RequestRpcMetadata>();
 }
 
-inline mem::evb_local_ptr<apache::thrift::RequestRpcMetadata>
+inline std::unique_ptr<apache::thrift::RequestRpcMetadata>
 makeServerRequestMetadata(
-    folly::EventBase& eventBase, apache::thrift::RequestRpcMetadata metadata) {
-  return mem::evb_make_local<apache::thrift::RequestRpcMetadata>(
-      eventBase, std::move(metadata));
+    folly::EventBase&, apache::thrift::RequestRpcMetadata metadata) {
+  return std::make_unique<apache::thrift::RequestRpcMetadata>(
+      std::move(metadata));
 }
 
 using ThriftServerInboundPayloadVariant = ThriftPayloadVariant<

@@ -112,7 +112,7 @@ TEST(FromRocketFrameTest, RequestResponseDecodesToTypedPayload) {
   EXPECT_EQ(rr.data->moveToFbString().toStdString(), "hello");
 }
 
-TEST(FromRocketFrameTest, RequestMetadataUsesEventBaseAllocator) {
+TEST(FromRocketFrameTest, RequestMetadataBypassesEventBaseAllocator) {
   auto& allocator = mem::EvbAllocator::getOrCreate(decoderEventBase());
   const auto baseline = allocator.snapshotStats().outstandingAllocations;
 
@@ -125,7 +125,7 @@ TEST(FromRocketFrameTest, RequestMetadataUsesEventBaseAllocator) {
         apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
         decoderEventBase());
     ASSERT_TRUE(result.hasValue());
-    EXPECT_EQ(allocator.snapshotStats().outstandingAllocations, baseline + 1);
+    EXPECT_EQ(allocator.snapshotStats().outstandingAllocations, baseline);
   }
 
   EXPECT_EQ(allocator.snapshotStats().outstandingAllocations, baseline);

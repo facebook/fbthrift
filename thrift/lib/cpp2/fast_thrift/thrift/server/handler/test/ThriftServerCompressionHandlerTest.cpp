@@ -188,7 +188,7 @@ ThriftServerRequestMessage makeRequest(
           ThriftServerRequestResponsePayload{
               .data = std::move(data),
               .metadata = metadata == nullptr
-                  ? mem::evb_local_ptr<apache::thrift::RequestRpcMetadata>{}
+                  ? std::unique_ptr<apache::thrift::RequestRpcMetadata>{}
                   : makeServerRequestMetadata(
                         requestContextEventBase(), std::move(*metadata)),
           },

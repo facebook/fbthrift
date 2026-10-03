@@ -585,16 +585,13 @@ class FastHandlerCallback {
   // Distinguishes executor rejection/drop from an abandoned handler callback.
   void markHandlerStarted() noexcept { cancellationSlot_.markHandlerStarted(); }
 
-  // Called by CallbackPtr when the sole owner lets go. The object came from
-  // the EventBase allocator, so destruction and page accounting both return
-  // to that EventBase.
+  // Called by CallbackPtr when the sole owner lets go.
   void destroyOnEventBase() noexcept {
     if (!evb_ || evb_->isInEventBaseThread()) {
-      mem::evb_local_ptr<FastHandlerCallback<T>>(this).reset();
+      delete this;
       return;
     }
-    evb_->runInEventBaseThread(
-        [this] { mem::evb_local_ptr<FastHandlerCallback<T>>(this).reset(); });
+    evb_->runInEventBaseThread([this] { delete this; });
   }
 
   // ---- Codegen-targeted static helpers ----
@@ -639,8 +636,6 @@ class FastHandlerCallback {
   }
 
  private:
-  friend class mem::evb_local_ptr<FastHandlerCallback<T>>;
-
   template <typename F>
   bool tryCompleteInline(F&& fn) noexcept {
     static_assert(std::is_nothrow_invocable_v<F&>);
@@ -908,12 +903,10 @@ class FastHandlerCallback<void> {
   // See FastHandlerCallback<T>::destroyOnEventBase.
   void destroyOnEventBase() noexcept {
     if (!evb_ || evb_->isInEventBaseThread()) {
-      mem::evb_local_ptr<FastHandlerCallback<void>>(this).reset();
+      delete this;
       return;
     }
-    evb_->runInEventBaseThread([this] {
-      mem::evb_local_ptr<FastHandlerCallback<void>>(this).reset();
-    });
+    evb_->runInEventBaseThread([this] { delete this; });
   }
 
   // ---- Codegen-targeted static helpers (void return) ----
@@ -947,8 +940,6 @@ class FastHandlerCallback<void> {
   }
 
  private:
-  friend class mem::evb_local_ptr<FastHandlerCallback<void>>;
-
   template <typename F>
   bool tryCompleteInline(F&& fn) noexcept {
     static_assert(std::is_nothrow_invocable_v<F&>);
@@ -1065,16 +1056,14 @@ detail::CallbackPtr<Cb> makeFastHandlerCallback(
     folly::EventBase& evb,
     folly::Executor* executor,
     Context&& requestContext) {
-  auto callback = mem::evb_make_local<Cb>(
-      evb,
+  return detail::CallbackPtr<Cb>(new Cb(
       resultFn,
       exceptionFn,
       handler,
       streamId,
       evb,
       executor,
-      static_cast<Context&&>(requestContext));
-  return detail::CallbackPtr<Cb>(callback.release());
+      static_cast<Context&&>(requestContext)));
 }
 
 } // namespace apache::thrift::fast_thrift::thrift

@@ -73,7 +73,7 @@ ThriftServerRequestMessage makeRequest(uint32_t streamId = 1) {
 // Request-response message carrying real metadata, as the transport adapter
 // would hand it over.
 ThriftServerRequestMessage makeRequestWithMetadata(
-    folly::EventBase& eventBase,
+    folly::EventBase&,
     uint32_t streamId,
     std::unique_ptr<apache::thrift::RequestRpcMetadata> metadata) {
   ThriftServerRequestMessage req;
@@ -81,8 +81,8 @@ ThriftServerRequestMessage makeRequestWithMetadata(
   req.payload =
       ThriftServerInboundPayloadVariant{ThriftServerRequestResponsePayload{
           .data = folly::IOBuf::copyBuffer("body"),
-          .metadata = mem::evb_make_local<apache::thrift::RequestRpcMetadata>(
-              eventBase, std::move(*metadata))}};
+          .metadata = std::make_unique<apache::thrift::RequestRpcMetadata>(
+              std::move(*metadata))}};
   return req;
 }
 

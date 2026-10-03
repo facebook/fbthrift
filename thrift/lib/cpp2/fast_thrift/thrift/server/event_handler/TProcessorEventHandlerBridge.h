@@ -472,12 +472,10 @@ class TProcessorEventHandlerBridge {
     }
   };
 
-  using RequestStatePtr =
-      apache::thrift::fast_thrift::mem::evb_local_ptr<RequestState>;
+  using RequestStatePtr = std::unique_ptr<RequestState>;
 
-  RequestStatePtr acquireState(folly::EventBase& eventBase) {
-    return apache::thrift::fast_thrift::mem::evb_make_local<RequestState>(
-        eventBase, handlers_->processor);
+  RequestStatePtr acquireState(folly::EventBase&) {
+    return std::make_unique<RequestState>(handlers_->processor);
   }
 
   void releaseState(RequestStatePtr state) {

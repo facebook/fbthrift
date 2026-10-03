@@ -337,7 +337,7 @@ TEST(FastHandlerCallbackTest, ResultInvokesResultFnAndSuppressesDestructor) {
   EXPECT_EQ(rec->lastValue, 123);
 }
 
-TEST(FastHandlerCallbackTest, StorageComesFromEventBaseAllocator) {
+TEST(FastHandlerCallbackTest, StorageBypassesEventBaseAllocator) {
   auto rec = makeRecorder();
   folly::EventBase evb;
   auto& allocator = mem::EvbAllocator::getOrCreate(evb);
@@ -346,7 +346,7 @@ TEST(FastHandlerCallbackTest, StorageComesFromEventBaseAllocator) {
   {
     auto cb = makeFastHandlerCallback<FastHandlerCallback<int>>(
         &onResult, &onException, rec.get(), kStreamId, evb, nullptr, nullptr);
-    EXPECT_EQ(allocator.snapshotStats().outstandingAllocations, baseline + 1);
+    EXPECT_EQ(allocator.snapshotStats().outstandingAllocations, baseline);
     cb->result(123);
   }
 

@@ -17,6 +17,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -241,13 +242,10 @@ class ThriftRequestContext {
   CompletionState completionState_{CompletionState::Active};
 };
 
-using ThriftRequestContextPtr =
-    apache::thrift::fast_thrift::mem::evb_local_ptr<ThriftRequestContext>;
+using ThriftRequestContextPtr = std::unique_ptr<ThriftRequestContext>;
 
-inline ThriftRequestContextPtr makeThriftRequestContext(
-    folly::EventBase& eventBase) {
-  return apache::thrift::fast_thrift::mem::evb_make_local<ThriftRequestContext>(
-      eventBase);
+inline ThriftRequestContextPtr makeThriftRequestContext(folly::EventBase&) {
+  return std::make_unique<ThriftRequestContext>();
 }
 
 } // namespace apache::thrift::fast_thrift::thrift
