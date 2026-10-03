@@ -127,6 +127,25 @@ class StreamHandler : public FastServiceHandler<integration::FastThriftServer> {
                   std::make_unique<EchoProducer<Context>>(encoder, count));
             }));
   }
+
+  void async_tm_streamEchoesWithResponse(
+      ftt::FastHandlerCallbackPtr<
+          stream::ResponseAndStreamFactory<EchoResponse, EchoResponse>> cb,
+      int32_t count) override {
+    EchoResponse initial;
+    initial.message() = "initial";
+    cb->result(
+        stream::ResponseAndStreamFactory<EchoResponse, EchoResponse>{
+            .response = std::move(initial),
+            .factory = stream::StreamFactory<EchoResponse>(
+                [count](
+                    stream::ProducerPipeline::Builder& builder,
+                    const stream::StreamElementEncoder<EchoResponse>& encoder) {
+                  builder.addNextDuplex<EchoProducer<Context>>(
+                      producer_tag,
+                      std::make_unique<EchoProducer<Context>>(encoder, count));
+                })});
+  }
 };
 
 class FastThriftServerStreamE2ETest : public ::testing::Test {
@@ -175,6 +194,36 @@ TEST_F(FastThriftServerStreamE2ETest, ClientReceivesStreamItems) {
             }
           })));
 
+  EXPECT_EQ(items, (std::vector<std::string>{"item", "item", "item"}));
+}
+
+TEST_F(
+    FastThriftServerStreamE2ETest,
+    ClientReceivesInitialResponseAndStreamItems) {
+  auto* evb = clientThread_->getEventBase();
+  std::string initialResponse;
+  std::vector<std::string> items;
+  folly::coro::blockingWait(
+      folly::coro::co_withExecutor(
+          evb, folly::coro::co_invoke([&]() -> folly::coro::Task<void> {
+            auto socket =
+                folly::AsyncSocket::newSocket(evb, server_->getAddress());
+            auto channel = apache::thrift::RocketClientChannel::newChannel(
+                std::move(socket));
+            apache::thrift::Client<integration::FastThriftServer> client(
+                std::move(channel));
+            auto [response, stream] =
+                co_await client.co_streamEchoesWithResponse(3);
+            initialResponse = *response.message();
+            auto gen = std::move(stream).toAsyncGenerator();
+            while (auto item = co_await gen.next()) {
+              items.push_back(*item->message());
+            }
+          })));
+
+  // The initial response is delivered before, and independently of, the stream
+  // elements: the classic client decodes it from the stream's first PAYLOAD.
+  EXPECT_EQ(initialResponse, "initial");
   EXPECT_EQ(items, (std::vector<std::string>{"item", "item", "item"}));
 }
 
