@@ -606,7 +606,7 @@ TEST_F(ThriftServerCompositeAppAdapterTest, RejectsUnsupportedRpcKind) {
   TestChildAdapter::Ptr userChild{new TestChildAdapter("user")};
   TestChildAdapter::Ptr monitoringChild{new TestChildAdapter("monitoring")};
 
-  userChild->registerMethod("streamingMethod");
+  userChild->registerMethod("sinkMethod");
 
   ThriftServerCompositeAppAdapter::Ptr composite{
       new ThriftServerCompositeAppAdapter()};
@@ -629,13 +629,14 @@ TEST_F(ThriftServerCompositeAppAdapterTest, RejectsUnsupportedRpcKind) {
         return Result::Success;
       });
 
-  // Method exists in user, but RPC kind is streaming — composite must reject
-  // before invoking the user thunk.
+  // Method exists in user, but SINK is not a supported RPC kind — composite
+  // must reject before invoking the user thunk. (REQUEST_RESPONSE and
+  // REQUEST_STREAM are both accepted now.)
   auto msg = makeRequestMessage(
       1,
-      "streamingMethod",
+      "sinkMethod",
       apache::thrift::ProtocolId::BINARY,
-      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
+      apache::thrift::RpcKind::SINK);
   EXPECT_EQ(
       composite->onRead(
           channel_pipeline::test::inertEndpointContext(),

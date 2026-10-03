@@ -49,7 +49,8 @@ inline ServerRequestRoutingMetadata getServerRequestRoutingMetadata(
   }
   const auto kind =
       metadata->kind().value_or(static_cast<apache::thrift::RpcKind>(-1));
-  if (kind != apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
+  if (kind != apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE &&
+      kind != apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE) {
     return {{}, kind, ServerRequestRoutingStatus::UnsupportedRpcKind};
   }
   std::string_view methodName;

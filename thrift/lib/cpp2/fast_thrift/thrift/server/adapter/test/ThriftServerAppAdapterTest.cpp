@@ -165,13 +165,33 @@ ThriftServerRequestMessage makeFnfRequestMessage(
       "fnf");
 }
 
+// A real REQUEST_STREAM request carries a ThriftRequestStreamPayload (with
+// initialRequestN), not an RR payload — this is what the transport adapter
+// produces from fromRocketFrame for a stream open.
 ThriftServerRequestMessage makeStreamingRequestMessage(
+    uint32_t streamId,
+    const std::string& methodName,
+    const std::string& data = "payload",
+    uint32_t initialRequestN = 1) {
+  auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
+  metadata->name() = methodName;
+  metadata->kind() = apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE;
+  metadata->protocol() = apache::thrift::ProtocolId::BINARY;
+
+  ThriftServerRequestMessage msg;
+  msg.streamId = streamId;
+  msg.payload = ThriftServerInboundPayloadVariant{ThriftRequestStreamPayload{
+      .data = data.empty() ? nullptr : folly::IOBuf::copyBuffer(data),
+      .metadata = std::move(metadata),
+      .initialRequestN = initialRequestN}};
+  return msg;
+}
+
+// A SINK request stands in for an RPC kind the server does not support yet.
+ThriftServerRequestMessage makeSinkRequestMessage(
     uint32_t streamId, const std::string& methodName) {
   return makeTypedRequestMessage(
-      streamId,
-      methodName,
-      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
-      "payload");
+      streamId, methodName, apache::thrift::RpcKind::SINK, "payload");
 }
 
 } // namespace
@@ -834,6 +854,38 @@ TEST_F(ThriftServerAppAdapterTest, WriteAppErrorWithServerBlame) {
 // Registered Method RPC Kind Test
 // =============================================================================
 
+TEST_F(ThriftServerAppAdapterTest, OnReadDispatchesStreamingRequestToHandler) {
+  TestServerAppAdapter::Ptr adapter{new TestServerAppAdapter()};
+
+  adapter->registerMethod(
+      "streamMethod",
+      +[](ThriftServerAppAdapter* self,
+          uint32_t streamId,
+          std::unique_ptr<folly::IOBuf>,
+          apache::thrift::ProtocolId protocol,
+          ThriftRequestContextPtr) noexcept {
+        auto* t = static_cast<TestServerAppAdapter*>(self);
+        t->handlerCalled = true;
+        t->capturedStreamId = streamId;
+        t->capturedProtocol = protocol;
+      });
+
+  auto built = buildPipeline(adapter.get());
+
+  // A REQUEST_STREAM open (ThriftRequestStreamPayload) dispatches to the same
+  // registered process function as a unary call; the generated function is what
+  // returns a stream instead of a unary response.
+  auto msg = makeStreamingRequestMessage(1, "streamMethod");
+  auto result = adapter->onRead(
+      channel_pipeline::test::inertEndpointContext(),
+      erase_and_box(std::move(msg)));
+
+  EXPECT_EQ(result, Result::Success);
+  EXPECT_TRUE(adapter->handlerCalled);
+  EXPECT_EQ(adapter->capturedStreamId, 1u);
+  EXPECT_EQ(adapter->capturedProtocol, apache::thrift::ProtocolId::BINARY);
+}
+
 TEST_F(ThriftServerAppAdapterTest, OnReadRejectsRegisteredUnsupportedRpcKind) {
   TestServerAppAdapter::Ptr adapter{new TestServerAppAdapter()};
 
@@ -867,8 +919,9 @@ TEST_F(ThriftServerAppAdapterTest, OnReadRejectsRegisteredUnsupportedRpcKind) {
         return Result::Success;
       });
 
-  // Streaming RPC kind in a REQUEST_RESPONSE frame should be rejected
-  auto msg = makeStreamingRequestMessage(1, "testMethod");
+  // SINK is not a supported RPC kind yet, so it should be rejected even though
+  // REQUEST_RESPONSE and REQUEST_STREAM are both accepted.
+  auto msg = makeSinkRequestMessage(1, "testMethod");
   auto result = adapter->onRead(
       channel_pipeline::test::inertEndpointContext(),
       erase_and_box(std::move(msg)));

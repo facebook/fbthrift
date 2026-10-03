@@ -321,19 +321,34 @@ ThriftServerAppAdapter::dispatchRequestResponse(
   DCHECK(owner != nullptr);
   DCHECK(method != nullptr);
 
+  // A method dispatches identically whether it opens a unary exchange
+  // (REQUEST_RESPONSE) or a server stream (REQUEST_STREAM): the generated
+  // process function takes the same (streamId, data, protocol, context) and
+  // picks its response shape. The two request payloads differ only in that the
+  // stream payload also carries initialRequestN, which the mux — not the
+  // adapter — consumes. Extract the shared fields and dispatch.
   auto& inbound = request.payload;
-  if (FOLLY_UNLIKELY(!inbound.is<ThriftServerRequestResponsePayload>())) {
+  const apache::thrift::RequestRpcMetadata* metadata = nullptr;
+  std::unique_ptr<folly::IOBuf> data;
+  if (inbound.is<ThriftServerRequestResponsePayload>()) {
+    auto& requestResponse = inbound.get<ThriftServerRequestResponsePayload>();
+    metadata = requestResponse.metadata.get();
+    data = std::move(requestResponse.data);
+  } else if (inbound.is<ThriftRequestStreamPayload>()) {
+    auto& requestStream = inbound.get<ThriftRequestStreamPayload>();
+    metadata = requestStream.metadata.get();
+    data = std::move(requestStream.data);
+  } else {
     // Result::Error propagates to TransportHandler, which closes the
     // connection.
     return channel_pipeline::Result::Error;
   }
-  auto& requestResponse = inbound.get<ThriftServerRequestResponsePayload>();
-  DCHECK(requestResponse.metadata != nullptr);
-  const auto protocol = requestResponse.metadata->protocol().value_or(0);
+  DCHECK(metadata != nullptr);
+  const auto protocol = metadata->protocol().value_or(0);
   method(
       owner,
       request.streamId,
-      std::move(requestResponse.data),
+      std::move(data),
       protocol,
       std::move(request.requestContext));
   return channel_pipeline::Result::Success;
