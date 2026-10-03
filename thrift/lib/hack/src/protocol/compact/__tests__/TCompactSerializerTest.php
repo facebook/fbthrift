@@ -40,10 +40,7 @@ final class TCompactSerializerTest extends WWWTest {
     return $versions;
   }
 
-  <<
-    DataProvider('provideStructs', 'providerVersions'),
-    JKBoolDataProvider('thrift/hack:compact_struct'),
-  >>
+  <<DataProvider('provideStructs', 'providerVersions')>>
   public async function testSerializeDeserialize(
     IThriftStruct $struct,
     ?int $version,

@@ -67,7 +67,6 @@ final class TBinarySerializerTest extends WWWTest {
 
   // Tests serialization and deserialization methods
   // of TBinarySerializer.
-  <<JKBoolDataProvider('thrift/hack:binary_struct')>>
   public function testSerializeAndDeserialize(): void {
     $obj1 = new fb303\CountersInformation();
 
@@ -108,7 +107,6 @@ final class TBinarySerializerTest extends WWWTest {
 
   }
 
-  <<JKBoolDataProvider('thrift/hack:binary_struct')>>
   public function testSerializeDeserializeComplexStruct(): void {
     $struct = CompactTestStruct::withDefaultValues();
     $struct->i1 = 42;

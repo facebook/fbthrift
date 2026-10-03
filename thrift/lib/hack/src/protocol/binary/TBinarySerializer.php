@@ -25,14 +25,6 @@ use namespace FlibSL\{C, Math, Str, Vec}; // @oss-enable
 // @oss-disable: <<Oncalls('thrift')>>
 final class TBinarySerializer extends TProtocolSerializer {
 
-  <<__Memoize>>
-  public static function useBinaryStruct()[write_props]: bool {
-    return HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-      ()[defaults] ==> JustKnobs::eval('thrift/hack:binary_struct'),
-      'Need to gate the change',
-    );
-  }
-
   // NOTE(rmarin): Because thrift_protocol_write_binary
   // adds a begin message prefix, you cannot specify
   // a transport in which to serialize an object. It has to
@@ -46,7 +38,7 @@ final class TBinarySerializer extends TProtocolSerializer {
     $use_hphp_extension = !$disable_hphp_extension &&
       !ThriftSerializationHelper::structContainsObjectKeyContainer($object);
 
-    if (self::useBinaryStruct() && $use_hphp_extension) {
+    if ($use_hphp_extension) {
       return HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
         ()[defaults] ==> thrift_protocol_write_binary_struct_to_string($object),
         'Binary with memory buffer would have write_props, but Hack doesn\'t '.
@@ -55,39 +47,12 @@ final class TBinarySerializer extends TProtocolSerializer {
     }
     $transport = new TMemoryBuffer();
     $protocol = new TBinaryProtocolAccelerated($transport);
-    if ($use_hphp_extension) {
-      HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==> thrift_protocol_write_binary(
-          $protocol,
-          $object->getName(),
-          TMessageType::REPLY,
-          $object,
-          0,
-          $protocol->isStrictWrite(),
-        ),
-        'Binary with memory buffer is write_props, but Hack doesn\'t have a '.
-        'way to express this atm.',
-      );
 
-      $_name = '';
-      $_type = -1;
-      $_seqid = -1;
-      HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==> $protocol->readMessageBegin(
-          inout $_name,
-          inout $_type,
-          inout $_seqid,
-        ),
-        'Binary with memory buffer is write_props, but Hack doesn\'t have a '.
-        'way to express this atm.',
-      );
-    } else {
-      HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==> $object->write($protocol),
-        'Binary with memory buffer is write_props, but Hack doesn\'t have a '.
-        'way to express this atm.',
-      );
-    }
+    HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
+      ()[defaults] ==> $object->write($protocol),
+      'Binary with memory buffer is write_props, but Hack doesn\'t have a '.
+      'way to express this atm.',
+    );
     return $transport->getBuffer();
   }
 
@@ -102,7 +67,7 @@ final class TBinarySerializer extends TProtocolSerializer {
     $use_hphp_extension = !$disable_hphp_extension &&
       !ThriftSerializationHelper::structContainsObjectKeyContainer($object);
 
-    if (self::useBinaryStruct() && $use_hphp_extension) {
+    if ($use_hphp_extension) {
       return HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
         ()[defaults] ==> thrift_protocol_read_binary_struct_from_string(
           $str,
@@ -116,32 +81,13 @@ final class TBinarySerializer extends TProtocolSerializer {
     $transport = new TMemoryBuffer();
     $protocol = (new TBinaryProtocolAccelerated($transport))
       ->setOptions($options);
-    if ($use_hphp_extension) {
-      HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==>
-          $protocol->writeMessageBegin('', TMessageType::REPLY, 0),
-        'Binary with memory buffer is write_props, but Hack doesn\'t have a '.
-        'way to express this atm.',
-      );
-      $transport->write($str);
-      $object = HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==> thrift_protocol_read_binary(
-          $protocol,
-          get_class($object),
-          $protocol->isStrictRead(),
-          $protocol->getOptions(),
-        ),
-        'Binary with memory buffer is write_props, but Hack doesn\'t have a '.
-        'way to express this atm.',
-      );
-    } else {
-      $transport->write($str);
-      HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==> $object->read($protocol),
-        'Binary with memory buffer is write_props, but Hack doesn\'t have a '.
-        'way to express this atm.',
-      );
-    }
+
+    $transport->write($str);
+    HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
+      ()[defaults] ==> $object->read($protocol),
+      'Binary with memory buffer is write_props, but Hack doesn\'t have a '.
+      'way to express this atm.',
+    );
     return $object;
   }/* BEGIN_STRIP */
 

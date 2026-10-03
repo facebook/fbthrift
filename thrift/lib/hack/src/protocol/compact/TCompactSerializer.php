@@ -25,14 +25,6 @@ use namespace FlibSL\{C, Math, Str, Vec}; // @oss-enable
 // @oss-disable: <<Oncalls('thrift')>>
 final class TCompactSerializer extends TProtocolWritePropsSerializer {
 
-  <<__Memoize>>
-  public static function useCompactStruct()[write_props]: bool {
-    return HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-      ()[defaults] ==> JustKnobs::eval('thrift/hack:compact_struct'),
-      'Need to gate the change',
-    );
-  }
-
   <<__Override>>
   public static function serialize(
     IThriftStruct $object,
@@ -43,7 +35,7 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
     $use_hphp_extension = !$disable_hphp_extension &&
       !ThriftSerializationHelper::structContainsObjectKeyContainer($object);
 
-    if (self::useCompactStruct() && $use_hphp_extension) {
+    if ($use_hphp_extension) {
       return HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
         ()[defaults] ==> thrift_protocol_write_compact_struct_to_string(
           $object,
@@ -61,39 +53,11 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
       $protocol->setWriteVersion($override_version);
     }
 
-    if ($use_hphp_extension) {
-      HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==> thrift_protocol_write_compact2(
-          $protocol,
-          $object->getName(),
-          TMessageType::REPLY,
-          $object,
-          0,
-          false,
-          $override_version,
-        ),
-        'Compact with memory buffer would have write_props, but Hack doesn\'t '.
-        'have a way to express this atm.',
-      );
-      $_name = '';
-      $_type = -1;
-      $_seqid = -1;
-      HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==> $protocol->readMessageBegin(
-          inout $_name,
-          inout $_type,
-          inout $_seqid,
-        ),
-        'Compact with memory buffer would have write_props, but Hack doesn\'t '.
-        'have a way to express this atm.',
-      );
-    } else {
-      HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==> $object->write($protocol),
-        'Compact with memory buffer would have write_props, but Hack doesn\'t '.
-        'have a way to express this atm.',
-      );
-    }
+    HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
+      ()[defaults] ==> $object->write($protocol),
+      'Compact with memory buffer would have write_props, but Hack doesn\'t '.
+      'have a way to express this atm.',
+    );
     return $transport->getBuffer();
   }
 
@@ -123,7 +87,7 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
     $use_hphp_extension = !$disable_hphp_extension &&
       !ThriftSerializationHelper::structContainsObjectKeyContainer($object);
 
-    if (self::useCompactStruct() && $use_hphp_extension) {
+    if ($use_hphp_extension) {
       $override_version ??= TCompactProtocolBase::VERSION;
       return HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
         ()[defaults] ==> thrift_protocol_read_compact_struct_from_string(
@@ -145,31 +109,12 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
       $protocol->setWriteVersion($override_version);
     }
 
-    if ($use_hphp_extension) {
-      HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==>
-          $protocol->writeMessageBegin('', TMessageType::REPLY, 0),
-        'Compact with memory buffer would have write_props, but Hack doesn\'t '.
-        'have a way to express this atm.',
-      );
-      $transport->write($str);
-      $object = HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==> thrift_protocol_read_compact(
-          $protocol,
-          get_class($object),
-          $protocol->getOptions(),
-        ),
-        'Compact with memory buffer would have write_props, but Hack doesn\'t '.
-        'have a way to express this atm.',
-      );
-    } else {
-      $transport->write($str);
-      HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==> $object->read($protocol),
-        'Compact with memory buffer would have write_props, but Hack doesn\'t '.
-        'have a way to express this atm.',
-      );
-    }
+    $transport->write($str);
+    HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
+      ()[defaults] ==> $object->read($protocol),
+      'Compact with memory buffer would have write_props, but Hack doesn\'t '.
+      'have a way to express this atm.',
+    );
     /* END_STRIP */
     return $object;
   }/* BEGIN_STRIP */
