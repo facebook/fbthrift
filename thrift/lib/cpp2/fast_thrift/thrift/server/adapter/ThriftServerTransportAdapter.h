@@ -226,10 +226,20 @@ class ThriftServerTransportAdapter {
   channel_pipeline::Result writeToRocket(
       channel_pipeline::TypeErasedBox&& msg) noexcept {
     auto response = msg.take<ThriftServerResponseMessage>();
+    // The rocket per-pattern handlers dispatch on streamType: the RR handler
+    // owns REQUEST_RESPONSE responses (serializes one terminal PAYLOAD and
+    // retires the exchange), the stream handler owns REQUEST_STREAM responses
+    // (enforces credit, lets many PAYLOADs through until complete). A stream's
+    // chunks must therefore be tagged REQUEST_STREAM, or the RR handler would
+    // treat the first chunk as the whole reply and drop the rest.
+    const auto streamType =
+        (response.payload.is<ThriftStreamInitialResponsePayload>() ||
+         response.payload.is<ThriftStreamPayload>())
+        ? apache::thrift::fast_thrift::frame::FrameType::REQUEST_STREAM
+        : apache::thrift::fast_thrift::frame::FrameType::REQUEST_RESPONSE;
     rocket::server::RocketResponseMessage rocketMsg{
         .frame = std::move(response.payload).toRocketFrame(metadataProtocol_),
-        .streamType =
-            apache::thrift::fast_thrift::frame::FrameType::REQUEST_RESPONSE,
+        .streamType = streamType,
     };
     return rocketConn_->appAdapter->write(std::move(rocketMsg));
   }

@@ -21,6 +21,7 @@
 #include <utility>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/io/IOBuf.h>
 #include <folly/io/async/DelayedDestruction.h>
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftResponsePayloads.h>
@@ -54,10 +55,19 @@ inline ThriftServerResponseMessage makeStreamOpenMessage(
     stream::StreamElementEncoder<T> encoder) {
   auto metadata = std::make_unique<apache::thrift::ResponseRpcMetadata>();
   fillSuccessResponseMetadata(*metadata);
+  // The stream's first PAYLOAD carries the serialized first-response presult as
+  // its data (the ResponseRpcMetadata rides the frame metadata); the client
+  // decodes that presult before switching to stream elements. For a `stream<T>`
+  // with no initial-response value the presult is an empty struct — a single
+  // STOP byte, identical in Binary and Compact — so emit that rather than null
+  // data, which would underflow the client's presult reader. A non-void initial
+  // response (ResponseAndServerStream) is a follow-up.
+  static constexpr uint8_t kEmptyPresultStop = 0;
   return ThriftServerResponseMessage{
       .payload = ThriftServerStreamOpenPayload{
           .initialResponse =
               ThriftStreamInitialResponsePayload{
+                  .data = folly::IOBuf::copyBuffer(&kEmptyPresultStop, 1),
                   .metadata = std::move(metadata),
                   .streamId = streamId,
                   .complete = false,
