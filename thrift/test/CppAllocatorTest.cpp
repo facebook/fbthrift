@@ -798,4 +798,41 @@ TEST(CppAllocatorTest, DefaultConstructor1allocator) {
   EXPECT_EQ(alloc, ScopedCountingAlloc<>(child.aa_string()->get_allocator()));
 }
 
+TEST(CppAllocatorTest, AllocExtendedCtorsWithNullOptionalRef) {
+  std::pmr::monotonic_buffer_resource res;
+  std::pmr::monotonic_buffer_resource res2;
+  OptionalRefPmr src{PmrByteAlloc(&res)};
+  src.c_ref().reset();
+  src.s_ref().reset();
+
+  OptionalRefPmr moved(std::move(src));
+  EXPECT_EQ(moved.c_ref(), nullptr);
+  EXPECT_EQ(moved.s_ref(), nullptr);
+
+  const OptionalRefPmr copied(moved, PmrByteAlloc(&res2));
+  EXPECT_EQ(copied.c_ref(), nullptr);
+  EXPECT_EQ(copied.s_ref(), nullptr);
+
+  const OptionalRefPmr movedWithAlloc(std::move(moved), PmrByteAlloc(&res2));
+  EXPECT_EQ(movedWithAlloc.c_ref(), nullptr);
+  EXPECT_EQ(movedWithAlloc.s_ref(), nullptr);
+}
+
+TEST(CppAllocatorTest, AllocExtendedMoveRebuildsNonNullOptionalRef) {
+  std::pmr::monotonic_buffer_resource res;
+  std::pmr::monotonic_buffer_resource res2;
+  OptionalRefPmr src{PmrByteAlloc(&res)};
+  src.c_ref()->aa_string() = kTooLong;
+  src.s_ref()->aa_list()->assign({1, 2});
+
+  const OptionalRefPmr moved(std::move(src), PmrByteAlloc(&res2));
+
+  ASSERT_NE(moved.c_ref(), nullptr);
+  ASSERT_NE(moved.s_ref(), nullptr);
+  EXPECT_EQ(*moved.c_ref()->aa_string(), kTooLong);
+  EXPECT_EQ(moved.c_ref()->get_allocator().resource(), &res2);
+  EXPECT_EQ(moved.c_ref()->aa_string()->get_allocator().resource(), &res2);
+  EXPECT_EQ(moved.s_ref()->aa_list()->size(), 2);
+}
+
 } // namespace apache::thrift::test

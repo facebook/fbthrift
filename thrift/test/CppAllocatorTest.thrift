@@ -241,6 +241,17 @@ struct HasContainerFieldsPmr {
   3: map_i32_i32_7355 aa_map;
 }
 
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "PmrByteAlloc"},
+}
+struct OptionalRefPmr {
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  1: optional ChildPmr_7470 c;
+  2: list_ChildPmr_9632 l;
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  3: optional ChildPmr s;
+}
+
 @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
 @cpp.Type{template = "::StatefulAllocMap"}
 typedef map<i32, i32> StatefulAllocIntMap
