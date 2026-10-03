@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticPipelineBuilder.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticSegmentBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
 
 #include <folly/portability/GTest.h>
@@ -782,6 +783,72 @@ TEST(StaticPipelineTest, SplicesErasedHandlersInOrder) {
           "erased-first.inactive", "typed-first.inactive",
           "typed-second.removed",  "erased-second.removed",
           "erased-first.removed",  "typed-first.removed"}));
+}
+
+template <typename>
+using SegmentTraceHandler = TraceHandler;
+
+TEST(StaticPipelineTest, SplicesTypedSegmentAsLogicalHandlers) {
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  StaticTailHandler tail;
+  TestAllocator allocator;
+  std::vector<std::string> trace;
+  std::vector<detail::ErasedStaticSegment> segments;
+  segments.push_back(
+      StaticSegmentBuilder<>()
+          .addHandler<SegmentTraceHandler>(
+              first_erased_static_tag.id, &trace, "segment-first")
+          .build());
+  segments.push_back(
+      StaticSegmentBuilder<>()
+          .addHandler<SegmentTraceHandler>(
+              second_erased_static_tag.id, &trace, "segment-second")
+          .build());
+
+  auto pipeline =
+      StaticPipelineBuilder<
+          StaticHeadHandler,
+          StaticTailHandler,
+          TestAllocator>()
+          .setEventBase(&eventBase)
+          .setHead(&head)
+          .setTail(&tail)
+          .setAllocator(&allocator)
+          .addNextDuplex<TraceHandler>(first_static_tag, &trace, "typed-first")
+          .addStaticSegments(std::move(segments))
+          .addNextDuplex<TraceHandler>(
+              second_static_tag, &trace, "typed-second")
+          .build();
+
+  static_assert(sizeof(detail::StaticSegmentContext<void, 0>) == sizeof(void*));
+  EXPECT_EQ(pipeline->handlerCount(), 4);
+  pipeline->activate();
+  EXPECT_EQ(pipeline->fireRead(TypeErasedBox{1}), Result::Success);
+  EXPECT_EQ(
+      pipeline->fireWrite(erase_and_box(folly::IOBuf::create(0))),
+      Result::Success);
+  EXPECT_EQ(
+      pipeline->sendRead(second_erased_static_tag, TypeErasedBox{1}),
+      Result::Success);
+  pipeline->close();
+
+  EXPECT_EQ(
+      trace,
+      (std::vector<std::string>{
+          "typed-first.added",      "segment-first.added",
+          "segment-second.added",   "typed-second.added",
+          "typed-first.active",     "segment-first.active",
+          "segment-second.active",  "typed-second.active",
+          "typed-first.read",       "segment-first.read",
+          "segment-second.read",    "typed-second.read",
+          "typed-second.write",     "segment-second.write",
+          "segment-first.write",    "typed-first.write",
+          "segment-second.read",    "typed-second.read",
+          "typed-second.inactive",  "segment-second.inactive",
+          "segment-first.inactive", "typed-first.inactive",
+          "typed-second.removed",   "segment-second.removed",
+          "segment-first.removed",  "typed-first.removed"}));
 }
 
 TEST(StaticPipelineTest, TargetsHandlersWithoutCrossingSplice) {

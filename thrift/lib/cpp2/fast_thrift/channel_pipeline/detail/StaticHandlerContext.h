@@ -36,6 +36,11 @@ struct StaticHandlerContextOps {
   Result (*fireWrite)(void*, std::size_t, TypeErasedBox&&) noexcept;
   void (*fireException)(
       void*, std::size_t, folly::exception_wrapper&&) noexcept;
+  Result (*fireReadAfterSegment)(void*, std::size_t, TypeErasedBox&&) noexcept;
+  Result (*fireWriteBeforeSegment)(
+      void*, std::size_t, TypeErasedBox&&) noexcept;
+  void (*fireExceptionAfterSegment)(
+      void*, std::size_t, folly::exception_wrapper&&) noexcept;
   void (*deactivate)(void*, std::size_t) noexcept;
   void (*fireEvent)(void*, EventKey, const void*) noexcept;
   BytesPtr (*allocate)(void*, std::size_t) noexcept;

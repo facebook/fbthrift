@@ -123,7 +123,8 @@ class StaticPipelineBuilder {
         std::tuple_cat(
             std::move(stateTuple_),
             std::tuple<T>(T(std::forward<Args>(args)...))),
-        std::move(staticHandlers_));
+        std::move(staticHandlers_),
+        std::move(staticSegments_));
   }
 
   template <typename H, HandlerId Id, typename... Args>
@@ -196,7 +197,34 @@ class StaticPipelineBuilder {
         allocator_,
         std::move(factories_),
         std::move(stateTuple_),
-        std::move(handlers));
+        std::move(handlers),
+        {});
+  }
+
+  auto addStaticSegments(std::vector<detail::ErasedStaticSegment> segments) &&
+    requires(!StaticHandlerConfig::enabled)
+  {
+    if (segments.empty()) {
+      throw std::invalid_argument(
+          "StaticPipelineBuilder: static segment list must not be empty");
+    }
+    using Config = detail::ErasedStaticSegmentsAt<sizeof...(Entry)>;
+    return StaticPipelineBuilder<
+        HeadHandler,
+        TailHandler,
+        Allocator,
+        StateTuple,
+        Config,
+        Entry...>(
+        detail::StaticPipelineBuilderRebindTag{},
+        eventBase_,
+        headHandler_,
+        tailHandler_,
+        allocator_,
+        std::move(factories_),
+        std::move(stateTuple_),
+        {},
+        std::move(segments));
   }
 
   auto build() && {
@@ -216,7 +244,8 @@ class StaticPipelineBuilder {
         allocator_,
         std::move(stateTuple_),
         factories_,
-        std::move(staticHandlers_)));
+        std::move(staticHandlers_),
+        std::move(staticSegments_)));
     pipeline->finishBuild();
     return pipeline;
   }
@@ -250,7 +279,8 @@ class StaticPipelineBuilder {
             std::move(factories_),
             std::tuple<NewEntry>(NewEntry(std::forward<Args>(args)...))),
         std::move(stateTuple_),
-        std::move(staticHandlers_));
+        std::move(staticHandlers_),
+        std::move(staticSegments_));
   }
 
   template <
@@ -281,7 +311,8 @@ class StaticPipelineBuilder {
             std::move(factories_),
             std::tuple<NewEntry>(NewEntry(std::forward<Args>(args)...))),
         std::move(stateTuple_),
-        std::move(staticHandlers_));
+        std::move(staticHandlers_),
+        std::move(staticSegments_));
   }
 
   void validateRequired() const {
@@ -300,14 +331,23 @@ class StaticPipelineBuilder {
   }
 
   void validateHandlerIds() const {
+    std::vector<HandlerId> erasedIds;
+    for (const auto& segment : staticSegments_) {
+      for (std::size_t i = 0; i < segment.handlerCount(); ++i) {
+        erasedIds.push_back(segment.handlerId(i));
+      }
+    }
     for (std::size_t i = 0; i < staticHandlers_.size(); ++i) {
-      const auto id = staticHandlers_[i].handlerId();
+      erasedIds.push_back(staticHandlers_[i].handlerId());
+    }
+    for (std::size_t i = 0; i < erasedIds.size(); ++i) {
+      const auto id = erasedIds[i];
       if (((Entry::Spec::id == id) || ...)) {
         throw std::invalid_argument(
             "StaticPipelineBuilder: handler IDs must be unique");
       }
       for (std::size_t j = 0; j < i; ++j) {
-        if (staticHandlers_[j].handlerId() == id) {
+        if (erasedIds[j] == id) {
           throw std::invalid_argument(
               "StaticPipelineBuilder: handler IDs must be unique");
         }
@@ -323,14 +363,16 @@ class StaticPipelineBuilder {
       Allocator* allocator,
       std::tuple<Entry...>&& factories,
       StateTuple&& stateTuple,
-      std::vector<detail::ErasedStaticHandler>&& staticHandlers) noexcept
+      std::vector<detail::ErasedStaticHandler>&& staticHandlers,
+      std::vector<detail::ErasedStaticSegment>&& staticSegments) noexcept
       : eventBase_(eventBase),
         headHandler_(headHandler),
         tailHandler_(tailHandler),
         allocator_(allocator),
         factories_(std::move(factories)),
         stateTuple_(std::move(stateTuple)),
-        staticHandlers_(std::move(staticHandlers)) {}
+        staticHandlers_(std::move(staticHandlers)),
+        staticSegments_(std::move(staticSegments)) {}
 
   folly::EventBase* eventBase_{nullptr};
   HeadHandler* headHandler_{nullptr};
@@ -339,6 +381,7 @@ class StaticPipelineBuilder {
   std::tuple<Entry...> factories_;
   StateTuple stateTuple_;
   std::vector<detail::ErasedStaticHandler> staticHandlers_;
+  std::vector<detail::ErasedStaticSegment> staticSegments_;
 };
 
 } // namespace apache::thrift::fast_thrift::channel_pipeline

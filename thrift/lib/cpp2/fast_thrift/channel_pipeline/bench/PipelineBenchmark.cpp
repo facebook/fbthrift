@@ -29,6 +29,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineStorage.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticPipelineBuilder.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticSegmentBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 
 #include <folly/Benchmark.h>
@@ -290,7 +291,7 @@ struct BenchTransportHandler {
   uint64_t exception_count{0};
 
   template <typename Context>
-  Result onWrite(Context&, TypeErasedBox&&) noexcept {
+  FOLLY_NOINLINE Result onWrite(Context&, TypeErasedBox&&) noexcept {
     ++write_count;
     return Result::Success;
   }
@@ -313,7 +314,7 @@ struct BenchAppHandler {
   uint64_t exception_count{0};
 
   template <typename Context>
-  Result onRead(Context&, TypeErasedBox&&) noexcept {
+  FOLLY_NOINLINE Result onRead(Context&, TypeErasedBox&&) noexcept {
     ++read_count;
     return Result::Success;
   }
@@ -508,6 +509,9 @@ auto makePipelineWithOwnedHandlers(
 
 namespace apache::thrift::fast_thrift::channel_pipeline::detail::benchmark {
 
+template <typename>
+using SegmentPassthroughHandler = PassthroughDuplexHandler;
+
 auto makeStaticPipelineErased8(
     folly::EventBase& evb,
     BenchTransportHandler& transport,
@@ -542,6 +546,34 @@ auto makeStaticPipelineErased8(
   return std::move(builder).addStaticHandlers(std::move(handlers)).build();
 }
 
+auto makeStaticPipelineSegment8(
+    folly::EventBase& evb,
+    BenchTransportHandler& transport,
+    BenchAppHandler& app,
+    BenchAllocator& allocator) {
+  std::vector<ErasedStaticSegment> segments;
+  segments.push_back(
+      StaticSegmentBuilder<>()
+          .addHandler<SegmentPassthroughHandler>(static_bench1_tag.id)
+          .addHandler<SegmentPassthroughHandler>(static_bench2_tag.id)
+          .addHandler<SegmentPassthroughHandler>(static_bench3_tag.id)
+          .addHandler<SegmentPassthroughHandler>(static_bench4_tag.id)
+          .addHandler<SegmentPassthroughHandler>(static_bench5_tag.id)
+          .addHandler<SegmentPassthroughHandler>(static_bench6_tag.id)
+          .addHandler<SegmentPassthroughHandler>(static_bench7_tag.id)
+          .addHandler<SegmentPassthroughHandler>(static_bench8_tag.id)
+          .build());
+  auto builder = StaticPipelineBuilder<
+      BenchTransportHandler,
+      BenchAppHandler,
+      BenchAllocator>();
+  builder.setEventBase(&evb)
+      .setHead(&transport)
+      .setTail(&app)
+      .setAllocator(&allocator);
+  return std::move(builder).addStaticSegments(std::move(segments)).build();
+}
+
 } // namespace apache::thrift::fast_thrift::channel_pipeline::detail::benchmark
 
 // =============================================================================
@@ -558,8 +590,8 @@ BENCHMARK(DynamicPipeline_FireRead_8Handlers, iters) {
   auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
   susp.dismiss();
   for (std::size_t i = 0; i < iters; ++i) {
-    (void)concretePipeline.fireRead(
-        TypeErasedBox{static_cast<std::uint64_t>(i)});
+    folly::compiler_must_not_elide(concretePipeline.fireRead(
+        TypeErasedBox{static_cast<std::uint64_t>(i)}));
   }
   folly::doNotOptimizeAway(app.read_count);
 }
@@ -574,8 +606,9 @@ BENCHMARK_RELATIVE(StaticPipeline_FireRead_8Handlers, iters) {
   auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
   susp.dismiss();
   for (std::size_t i = 0; i < iters; ++i) {
-    (void)concretePipeline.fireRead(
-        TypeErasedBox{static_cast<std::uint64_t>(i)});
+    folly::doNotOptimizeAway(i);
+    folly::compiler_must_not_elide(concretePipeline.fireRead(
+        TypeErasedBox{static_cast<std::uint64_t>(i)}));
   }
   folly::doNotOptimizeAway(app.read_count);
 }
@@ -592,8 +625,26 @@ BENCHMARK_RELATIVE(StaticPipelineErased_FireRead_8Handlers, iters) {
   auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
   susp.dismiss();
   for (std::size_t i = 0; i < iters; ++i) {
-    (void)concretePipeline.fireRead(
-        TypeErasedBox{static_cast<std::uint64_t>(i)});
+    folly::doNotOptimizeAway(i);
+    folly::compiler_must_not_elide(concretePipeline.fireRead(
+        TypeErasedBox{static_cast<std::uint64_t>(i)}));
+  }
+  folly::doNotOptimizeAway(app.read_count);
+}
+
+BENCHMARK_RELATIVE(StaticPipelineSegment_FireRead_8Handlers, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+  auto pipeline = makeStaticPipelineSegment8(evb, transport, app, allocator);
+  auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    folly::doNotOptimizeAway(i);
+    folly::compiler_must_not_elide(concretePipeline.fireRead(
+        TypeErasedBox{static_cast<std::uint64_t>(i)}));
   }
   folly::doNotOptimizeAway(app.read_count);
 }
@@ -610,8 +661,8 @@ BENCHMARK(DynamicPipeline_FireWrite_8Handlers, iters) {
   auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
   susp.dismiss();
   for (std::size_t i = 0; i < iters; ++i) {
-    (void)concretePipeline.fireWrite(
-        TypeErasedBox{static_cast<std::uint64_t>(i)});
+    folly::compiler_must_not_elide(concretePipeline.fireWrite(
+        TypeErasedBox{static_cast<std::uint64_t>(i)}));
   }
   folly::doNotOptimizeAway(transport.write_count);
 }
@@ -626,8 +677,9 @@ BENCHMARK_RELATIVE(StaticPipeline_FireWrite_8Handlers, iters) {
   auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
   susp.dismiss();
   for (std::size_t i = 0; i < iters; ++i) {
-    (void)concretePipeline.fireWrite(
-        TypeErasedBox{static_cast<std::uint64_t>(i)});
+    folly::doNotOptimizeAway(i);
+    folly::compiler_must_not_elide(concretePipeline.fireWrite(
+        TypeErasedBox{static_cast<std::uint64_t>(i)}));
   }
   folly::doNotOptimizeAway(transport.write_count);
 }
@@ -644,8 +696,26 @@ BENCHMARK_RELATIVE(StaticPipelineErased_FireWrite_8Handlers, iters) {
   auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
   susp.dismiss();
   for (std::size_t i = 0; i < iters; ++i) {
-    (void)concretePipeline.fireWrite(
-        TypeErasedBox{static_cast<std::uint64_t>(i)});
+    folly::doNotOptimizeAway(i);
+    folly::compiler_must_not_elide(concretePipeline.fireWrite(
+        TypeErasedBox{static_cast<std::uint64_t>(i)}));
+  }
+  folly::doNotOptimizeAway(transport.write_count);
+}
+
+BENCHMARK_RELATIVE(StaticPipelineSegment_FireWrite_8Handlers, iters) {
+  folly::BenchmarkSuspender susp;
+  folly::EventBase evb;
+  BenchTransportHandler transport;
+  BenchAppHandler app;
+  BenchAllocator allocator;
+  auto pipeline = makeStaticPipelineSegment8(evb, transport, app, allocator);
+  auto& concretePipeline = *CHECK_NOTNULL(pipeline.get());
+  susp.dismiss();
+  for (std::size_t i = 0; i < iters; ++i) {
+    folly::doNotOptimizeAway(i);
+    folly::compiler_must_not_elide(concretePipeline.fireWrite(
+        TypeErasedBox{static_cast<std::uint64_t>(i)}));
   }
   folly::doNotOptimizeAway(transport.write_count);
 }

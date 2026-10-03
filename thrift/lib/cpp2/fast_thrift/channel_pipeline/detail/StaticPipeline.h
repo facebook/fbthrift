@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ErasedStaticHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ErasedStaticSegment.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/StaticHandler.h>
 
 #include <cstddef>
@@ -45,12 +46,21 @@ concept StaticHandlerForDirection =
 
 struct NoErasedStaticHandlers {
   static constexpr bool enabled = false;
+  static constexpr bool segmented = false;
   static constexpr std::size_t index = 0;
 };
 
 template <std::size_t Index>
 struct ErasedStaticHandlersAt {
   static constexpr bool enabled = true;
+  static constexpr bool segmented = false;
+  static constexpr std::size_t index = Index;
+};
+
+template <std::size_t Index>
+struct ErasedStaticSegmentsAt {
+  static constexpr bool enabled = true;
+  static constexpr bool segmented = true;
   static constexpr std::size_t index = Index;
 };
 
@@ -91,6 +101,35 @@ class ErasedStaticHandlerStorage<false> {
   const ErasedStaticHandler& operator[](std::size_t) const noexcept {
     std::terminate();
   }
+};
+
+template <bool Enabled>
+class ErasedStaticSegmentStorage;
+
+template <>
+class ErasedStaticSegmentStorage<true> {
+ public:
+  explicit ErasedStaticSegmentStorage(
+      std::vector<ErasedStaticSegment>&& segments) noexcept
+      : segments_(std::move(segments)) {
+    for (const auto& segment : segments_) {
+      size_ += segment.handlerCount();
+    }
+  }
+  std::size_t size() const noexcept { return size_; }
+  std::vector<ErasedStaticSegment>& segments() noexcept { return segments_; }
+
+ private:
+  std::vector<ErasedStaticSegment> segments_;
+  std::size_t size_{0};
+};
+
+template <>
+class ErasedStaticSegmentStorage<false> {
+ public:
+  explicit ErasedStaticSegmentStorage(
+      std::vector<ErasedStaticSegment>&&) noexcept {}
+  constexpr std::size_t size() const noexcept { return 0; }
 };
 
 template <typename H, HandlerId Id, StaticHandlerDirection Direction>
@@ -300,6 +339,10 @@ class StaticPipelineImpl final {
   using Self = StaticPipelineImpl;
   static constexpr std::size_t kHandlerCount = sizeof...(Specs);
   static constexpr bool kHasStaticHandlers = StaticHandlerConfig::enabled;
+  static constexpr bool kHasStaticSegments =
+      kHasStaticHandlers && StaticHandlerConfig::segmented;
+  static constexpr bool kHasErasedHandlers =
+      kHasStaticHandlers && !kHasStaticSegments;
   static constexpr std::size_t kStaticHandlerIndex = StaticHandlerConfig::index;
   static_assert(!kHasStaticHandlers || kStaticHandlerIndex <= kHandlerCount);
   using EndpointContext = StaticContext<Self, kHandlerCount, 0, StateTuple>;
@@ -344,7 +387,8 @@ class StaticPipelineImpl final {
       Allocator* allocator,
       StateTuple&& state,
       FactoryTuple& factories,
-      std::vector<ErasedStaticHandler>&& staticHandlers)
+      std::vector<ErasedStaticHandler>&& staticHandlers,
+      std::vector<ErasedStaticSegment>&& staticSegments)
       : eventBase_(eventBase),
         headHandler_(headHandler),
         tailHandler_(tailHandler),
@@ -352,6 +396,7 @@ class StaticPipelineImpl final {
         stateStorage_(std::move(state)),
         handlers_(this, factories),
         staticHandlers_(std::move(staticHandlers)),
+        staticSegments_(std::move(staticSegments)),
         endpointContext_(this) {
     static_assert(ValidEndpointPair<HeadHandler, TailHandler, EndpointContext>);
     bindStaticHandlerContexts();
@@ -408,7 +453,11 @@ class StaticPipelineImpl final {
   template <std::size_t Index>
   Result fireReadFrom(TypeErasedBox&& msg) noexcept {
     if constexpr (kHasStaticHandlers && Index == kStaticHandlerIndex) {
-      return fireReadFromStaticHandler(0, std::move(msg));
+      if constexpr (kHasStaticSegments) {
+        return staticSegments_.segments().front().onReadFirst(std::move(msg));
+      } else {
+        return fireReadFromStaticHandler(0, std::move(msg));
+      }
     } else {
       return fireReadTypedAt<Index>(std::move(msg));
     }
@@ -433,7 +482,11 @@ class StaticPipelineImpl final {
   template <std::size_t Count>
   Result fireWriteFrom(TypeErasedBox&& msg) noexcept {
     if constexpr (kHasStaticHandlers && Count == kStaticHandlerIndex) {
-      return fireWriteFromStaticHandler(staticHandlers_.size(), std::move(msg));
+      if constexpr (kHasStaticSegments) {
+        return staticSegments_.segments().back().onWriteLast(std::move(msg));
+      } else {
+        return fireWriteFromStaticHandler(staticHandlerCount(), std::move(msg));
+      }
     } else {
       return fireWriteTypedAt<Count>(std::move(msg));
     }
@@ -458,7 +511,11 @@ class StaticPipelineImpl final {
   template <std::size_t Index>
   void fireExceptionFrom(folly::exception_wrapper&& e) noexcept {
     if constexpr (kHasStaticHandlers && Index == kStaticHandlerIndex) {
-      fireExceptionFromStaticHandler(0, std::move(e));
+      if constexpr (kHasStaticSegments) {
+        staticSegments_.segments().front().onExceptionFirst(std::move(e));
+      } else {
+        fireExceptionFromStaticHandler(0, std::move(e));
+      }
     } else {
       fireExceptionTypedAt<Index>(std::move(e));
     }
@@ -497,7 +554,7 @@ class StaticPipelineImpl final {
   template <std::size_t Count>
   void deactivateFrom() noexcept {
     if constexpr (kHasStaticHandlers && Count == kStaticHandlerIndex) {
-      deactivateStaticHandlersFrom(staticHandlers_.size());
+      deactivateStaticHandlersFrom(staticHandlerCount());
       deactivateTypedHandlers<Count>();
     } else if constexpr (Count > 0) {
       auto& slot = handlerAt<Count - 1>();
@@ -516,22 +573,22 @@ class StaticPipelineImpl final {
 
   Result sendRead(HandlerId id, TypeErasedBox&& msg) noexcept {
     Guard guard(this);
-    if (auto* handler = findStaticHandler(id)) {
-      return handler->onRead(std::move(msg));
+    if (auto index = findStaticHandler(id)) {
+      return staticOnRead(*index, std::move(msg));
     }
     return sendReadAt<0>(id, std::move(msg));
   }
   Result sendWrite(HandlerId id, TypeErasedBox&& msg) noexcept {
     Guard guard(this);
-    if (auto* handler = findStaticHandler(id)) {
-      return handler->onWrite(std::move(msg));
+    if (auto index = findStaticHandler(id)) {
+      return staticOnWrite(*index, std::move(msg));
     }
     return sendWriteAt<0>(id, std::move(msg));
   }
   void sendException(HandlerId id, folly::exception_wrapper&& e) noexcept {
     Guard guard(this);
-    if (auto* handler = findStaticHandler(id)) {
-      handler->onException(std::move(e));
+    if (auto index = findStaticHandler(id)) {
+      staticOnException(*index, std::move(e));
       return;
     }
     sendExceptionAt<0>(id, std::move(e));
@@ -559,7 +616,7 @@ class StaticPipelineImpl final {
     return state_ == State::Closing || state_ == State::Closed;
   }
   std::size_t handlerCount() const noexcept {
-    return kHandlerCount + staticHandlers_.size();
+    return kHandlerCount + staticHandlerCount();
   }
   bool hasPendingWriteReady() const noexcept {
     return !writeReadyList_.empty();
@@ -942,12 +999,12 @@ class StaticPipelineImpl final {
   void initializeHooks(std::index_sequence<Index...>) noexcept {
     headWriteReadyHook_.handlerIndex = handlerCount();
     (initializeHook<Index>(), ...);
-    for (std::size_t i = 0; i < staticHandlers_.size(); ++i) {
+    for (std::size_t i = 0; i < staticHandlerCount(); ++i) {
       const auto logicalIndex = kStaticHandlerIndex + i;
-      if (auto* hook = staticHandlers_[i].writeReadyHook()) {
+      if (auto* hook = staticWriteReadyHook(i)) {
         hook->handlerIndex = logicalIndex;
       }
-      if (auto* hook = staticHandlers_[i].readReadyHook()) {
+      if (auto* hook = staticReadReadyHook(i)) {
         hook->handlerIndex = logicalIndex;
       }
     }
@@ -981,7 +1038,7 @@ class StaticPipelineImpl final {
 
   void dispatchWriteReadyTarget(std::size_t target) noexcept {
     if (isStaticHandlerIndex(target)) {
-      staticHandlers_[target - kStaticHandlerIndex].onWriteReady();
+      staticOnWriteReady(target - kStaticHandlerIndex);
       return;
     }
     dispatchWriteReady<0>(target);
@@ -1005,7 +1062,7 @@ class StaticPipelineImpl final {
   }
   void dispatchReadReadyTarget(std::size_t target) noexcept {
     if (isStaticHandlerIndex(target)) {
-      staticHandlers_[target - kStaticHandlerIndex].onReadReady();
+      staticOnReadReady(target - kStaticHandlerIndex);
       return;
     }
     dispatchReadReady<0>(target);
@@ -1144,31 +1201,150 @@ class StaticPipelineImpl final {
   template <std::size_t TypedIndex>
   std::size_t logicalHandlerIndex() const noexcept {
     if constexpr (kHasStaticHandlers && TypedIndex >= kStaticHandlerIndex) {
-      return TypedIndex + staticHandlers_.size();
+      return TypedIndex + staticHandlerCount();
     }
     return TypedIndex;
   }
 
   bool isStaticHandlerIndex(std::size_t index) const noexcept {
     return kHasStaticHandlers && index >= kStaticHandlerIndex &&
-        index < kStaticHandlerIndex + staticHandlers_.size();
+        index < kStaticHandlerIndex + staticHandlerCount();
   }
 
-  ErasedStaticHandler* findStaticHandler(HandlerId id) noexcept {
-    for (auto& handler : staticHandlers_) {
-      if (handler.handlerId() == id) {
-        return &handler;
+  std::size_t staticHandlerCount() const noexcept {
+    if constexpr (kHasStaticSegments) {
+      return staticSegments_.size();
+    } else {
+      return staticHandlers_.size();
+    }
+  }
+
+  struct SegmentPosition {
+    ErasedStaticSegment* segment;
+    std::size_t localIndex;
+  };
+
+  SegmentPosition staticSegmentPosition(std::size_t index) noexcept {
+    for (auto& segment : staticSegments_.segments()) {
+      if (index < segment.handlerCount()) {
+        return {&segment, index};
+      }
+      index -= segment.handlerCount();
+    }
+    std::terminate();
+  }
+
+  HandlerId staticHandlerId(std::size_t index) noexcept {
+    if constexpr (kHasStaticSegments) {
+      auto position = staticSegmentPosition(index);
+      return position.segment->handlerId(position.localIndex);
+    } else {
+      return staticHandlers_[index].handlerId();
+    }
+  }
+
+  Result staticOnRead(std::size_t index, TypeErasedBox&& msg) noexcept {
+    if constexpr (kHasStaticSegments) {
+      auto position = staticSegmentPosition(index);
+      if (position.localIndex == 0) {
+        return position.segment->onReadFirst(std::move(msg));
+      }
+      return position.segment->onReadAt(position.localIndex, std::move(msg));
+    } else {
+      return staticHandlers_[index].onRead(std::move(msg));
+    }
+  }
+  Result staticOnWrite(std::size_t index, TypeErasedBox&& msg) noexcept {
+    if constexpr (kHasStaticSegments) {
+      auto position = staticSegmentPosition(index);
+      if (position.localIndex + 1 == position.segment->handlerCount()) {
+        return position.segment->onWriteLast(std::move(msg));
+      }
+      return position.segment->onWriteAt(position.localIndex, std::move(msg));
+    } else {
+      return staticHandlers_[index].onWrite(std::move(msg));
+    }
+  }
+  void staticOnException(
+      std::size_t index, folly::exception_wrapper&& e) noexcept {
+    if constexpr (kHasStaticSegments) {
+      auto position = staticSegmentPosition(index);
+      if (position.localIndex == 0) {
+        position.segment->onExceptionFirst(std::move(e));
+      } else {
+        position.segment->onExceptionAt(position.localIndex, std::move(e));
+      }
+    } else {
+      staticHandlers_[index].onException(std::move(e));
+    }
+  }
+
+#define THRIFT_STATIC_SEGMENT_VOID_DISPATCH(                \
+    Name, SegmentMethod, HandlerMethod)                     \
+  void Name(std::size_t index) noexcept {                   \
+    if constexpr (kHasStaticSegments) {                     \
+      auto position = staticSegmentPosition(index);         \
+      position.segment->SegmentMethod(position.localIndex); \
+    } else {                                                \
+      staticHandlers_[index].HandlerMethod();               \
+    }                                                       \
+  }
+
+  THRIFT_STATIC_SEGMENT_VOID_DISPATCH(
+      staticOnWriteReady, onWriteReady, onWriteReady)
+  THRIFT_STATIC_SEGMENT_VOID_DISPATCH(
+      staticOnReadReady, onReadReady, onReadReady)
+  THRIFT_STATIC_SEGMENT_VOID_DISPATCH(
+      staticOnPipelineActive, onPipelineActive, onPipelineActive)
+  THRIFT_STATIC_SEGMENT_VOID_DISPATCH(
+      staticOnPipelineInactive, onPipelineInactive, onPipelineInactive)
+  THRIFT_STATIC_SEGMENT_VOID_DISPATCH(
+      staticHandlerAdded, handlerAdded, handlerAdded)
+  THRIFT_STATIC_SEGMENT_VOID_DISPATCH(
+      staticHandlerRemoved, handlerRemoved, handlerRemoved)
+#undef THRIFT_STATIC_SEGMENT_VOID_DISPATCH
+
+  void staticFireEvent(
+      std::size_t index, EventKey key, const void* payload) noexcept {
+    if constexpr (kHasStaticSegments) {
+      auto position = staticSegmentPosition(index);
+      position.segment->fireEvent(position.localIndex, key, payload);
+    } else {
+      staticHandlers_[index].fireEvent(key, payload);
+    }
+  }
+  WriteReadyHook* staticWriteReadyHook(std::size_t index) noexcept {
+    if constexpr (kHasStaticSegments) {
+      auto position = staticSegmentPosition(index);
+      return position.segment->writeReadyHook(position.localIndex);
+    } else {
+      return staticHandlers_[index].writeReadyHook();
+    }
+  }
+  ReadReadyHook* staticReadReadyHook(std::size_t index) noexcept {
+    if constexpr (kHasStaticSegments) {
+      auto position = staticSegmentPosition(index);
+      return position.segment->readReadyHook(position.localIndex);
+    } else {
+      return staticHandlers_[index].readReadyHook();
+    }
+  }
+
+  std::optional<std::size_t> findStaticHandler(HandlerId id) noexcept {
+    for (std::size_t i = 0; i < staticHandlerCount(); ++i) {
+      if (staticHandlerId(i) == id) {
+        return i;
       }
     }
-    return nullptr;
+    return std::nullopt;
   }
 
   Result fireReadFromStaticHandler(
       std::size_t index, TypeErasedBox&& msg) noexcept {
-    if (index == staticHandlers_.size()) {
+    if (index == staticHandlerCount()) {
       return fireReadTypedAt<kStaticHandlerIndex>(std::move(msg));
     }
-    return staticHandlers_[index].onRead(std::move(msg));
+    return staticOnRead(index, std::move(msg));
   }
 
   Result fireWriteFromStaticHandler(
@@ -1176,45 +1352,85 @@ class StaticPipelineImpl final {
     if (count == 0) {
       return fireWriteTypedAt<kStaticHandlerIndex>(std::move(msg));
     }
-    return staticHandlers_[count - 1].onWrite(std::move(msg));
+    return staticOnWrite(count - 1, std::move(msg));
   }
 
   void fireExceptionFromStaticHandler(
       std::size_t index, folly::exception_wrapper&& e) noexcept {
-    if (index == staticHandlers_.size()) {
+    if (index == staticHandlerCount()) {
       fireExceptionTypedAt<kStaticHandlerIndex>(std::move(e));
       return;
     }
-    staticHandlers_[index].onException(std::move(e));
+    staticOnException(index, std::move(e));
+  }
+
+  Result fireReadAfterSegment(
+      std::size_t segmentIndex, TypeErasedBox&& msg) noexcept {
+    if constexpr (!kHasStaticSegments) {
+      return fireReadTypedAt<kStaticHandlerIndex>(std::move(msg));
+    } else {
+      auto& segments = staticSegments_.segments();
+      if (++segmentIndex == segments.size()) {
+        return fireReadTypedAt<kStaticHandlerIndex>(std::move(msg));
+      }
+      return segments[segmentIndex].onReadFirst(std::move(msg));
+    }
+  }
+
+  Result fireWriteBeforeSegment(
+      std::size_t segmentIndex, TypeErasedBox&& msg) noexcept {
+    if constexpr (!kHasStaticSegments) {
+      return fireWriteTypedAt<kStaticHandlerIndex>(std::move(msg));
+    } else {
+      if (segmentIndex == 0) {
+        return fireWriteTypedAt<kStaticHandlerIndex>(std::move(msg));
+      }
+      return staticSegments_.segments()[segmentIndex - 1].onWriteLast(
+          std::move(msg));
+    }
+  }
+
+  void fireExceptionAfterSegment(
+      std::size_t segmentIndex, folly::exception_wrapper&& e) noexcept {
+    if constexpr (!kHasStaticSegments) {
+      fireExceptionTypedAt<kStaticHandlerIndex>(std::move(e));
+    } else {
+      auto& segments = staticSegments_.segments();
+      if (++segmentIndex == segments.size()) {
+        fireExceptionTypedAt<kStaticHandlerIndex>(std::move(e));
+        return;
+      }
+      segments[segmentIndex].onExceptionFirst(std::move(e));
+    }
   }
 
   void activateStaticHandlers() noexcept {
-    for (auto& handler : staticHandlers_) {
-      handler.onPipelineActive();
+    for (std::size_t i = 0; i < staticHandlerCount(); ++i) {
+      staticOnPipelineActive(i);
     }
   }
 
   void deactivateStaticHandlersFrom(std::size_t count) noexcept {
     while (count != 0) {
-      staticHandlers_[--count].onPipelineInactive();
+      staticOnPipelineInactive(--count);
     }
   }
 
   void callStaticHandlersAdded() noexcept {
-    for (auto& handler : staticHandlers_) {
-      handler.handlerAdded();
+    for (std::size_t i = 0; i < staticHandlerCount(); ++i) {
+      staticHandlerAdded(i);
     }
   }
 
   void callStaticHandlersRemoved() noexcept {
-    for (std::size_t i = staticHandlers_.size(); i != 0; --i) {
-      staticHandlers_[i - 1].handlerRemoved();
+    for (std::size_t i = staticHandlerCount(); i != 0; --i) {
+      staticHandlerRemoved(i - 1);
     }
   }
 
   void dispatchStaticHandlerEvents(EventKey key, const void* payload) noexcept {
-    for (std::size_t i = staticHandlers_.size(); i != 0; --i) {
-      staticHandlers_[i - 1].fireEvent(key, payload);
+    for (std::size_t i = staticHandlerCount(); i != 0; --i) {
+      staticFireEvent(i - 1, key, payload);
     }
   }
 
@@ -1223,8 +1439,17 @@ class StaticPipelineImpl final {
       return;
     }
     const auto& ops = staticHandlerContextOps();
-    for (std::size_t i = 0; i < staticHandlers_.size(); ++i) {
-      staticHandlers_[i].bindContext(this, ops, i);
+    if constexpr (kHasStaticSegments) {
+      std::size_t base = 0;
+      std::size_t segmentIndex = 0;
+      for (auto& segment : staticSegments_.segments()) {
+        segment.bindContext(this, ops, base, segmentIndex++);
+        base += segment.handlerCount();
+      }
+    } else {
+      for (std::size_t i = 0; i < staticHandlers_.size(); ++i) {
+        staticHandlers_[i].bindContext(this, ops, i);
+      }
     }
   }
 
@@ -1232,9 +1457,8 @@ class StaticPipelineImpl final {
     static const StaticHandlerContextOps ops{
         .handlerId =
             +[](const void* p, std::size_t index) noexcept {
-              return static_cast<const Self*>(p)
-                  ->staticHandlers_[index]
-                  .handlerId();
+              return const_cast<Self*>(static_cast<const Self*>(p))
+                  ->staticHandlerId(index);
             },
         .handlerIndex =
             +[](const void*, std::size_t index) noexcept {
@@ -1261,6 +1485,27 @@ class StaticPipelineImpl final {
                 folly::exception_wrapper&& e) noexcept {
               static_cast<Self*>(p)->fireExceptionFromStaticHandler(
                   index + 1, std::move(e));
+            },
+        .fireReadAfterSegment =
+            +[](void* p,
+                std::size_t segmentIndex,
+                TypeErasedBox&& msg) noexcept {
+              return static_cast<Self*>(p)->fireReadAfterSegment(
+                  segmentIndex, std::move(msg));
+            },
+        .fireWriteBeforeSegment =
+            +[](void* p,
+                std::size_t segmentIndex,
+                TypeErasedBox&& msg) noexcept {
+              return static_cast<Self*>(p)->fireWriteBeforeSegment(
+                  segmentIndex, std::move(msg));
+            },
+        .fireExceptionAfterSegment =
+            +[](void* p,
+                std::size_t segmentIndex,
+                folly::exception_wrapper&& e) noexcept {
+              static_cast<Self*>(p)->fireExceptionAfterSegment(
+                  segmentIndex, std::move(e));
             },
         .deactivate =
             +[](void* p, std::size_t index) noexcept {
@@ -1322,40 +1567,38 @@ class StaticPipelineImpl final {
 
   void awaitStaticWriteReady(std::size_t index) noexcept {
     if (!isClosed()) {
-      if (auto* hook = staticHandlers_[index].writeReadyHook();
+      if (auto* hook = staticWriteReadyHook(index);
           hook != nullptr && !hook->hook.is_linked()) {
         writeReadyList_.push_back(*hook);
       }
     }
   }
   void cancelStaticWriteReady(std::size_t index) noexcept {
-    if (auto* hook = staticHandlers_[index].writeReadyHook();
+    if (auto* hook = staticWriteReadyHook(index);
         hook != nullptr && hook->hook.is_linked()) {
       hook->hook.unlink();
     }
   }
   bool isAwaitingStaticWriteReady(std::size_t index) const noexcept {
-    auto* hook =
-        const_cast<Self*>(this)->staticHandlers_[index].writeReadyHook();
+    auto* hook = const_cast<Self*>(this)->staticWriteReadyHook(index);
     return hook != nullptr && hook->hook.is_linked();
   }
   void awaitStaticReadReady(std::size_t index) noexcept {
     if (!isClosed()) {
-      if (auto* hook = staticHandlers_[index].readReadyHook();
+      if (auto* hook = staticReadReadyHook(index);
           hook != nullptr && !hook->hook.is_linked()) {
         readReadyList_.push_back(*hook);
       }
     }
   }
   void cancelStaticReadReady(std::size_t index) noexcept {
-    if (auto* hook = staticHandlers_[index].readReadyHook();
+    if (auto* hook = staticReadReadyHook(index);
         hook != nullptr && hook->hook.is_linked()) {
       hook->hook.unlink();
     }
   }
   bool isAwaitingStaticReadReady(std::size_t index) const noexcept {
-    auto* hook =
-        const_cast<Self*>(this)->staticHandlers_[index].readReadyHook();
+    auto* hook = const_cast<Self*>(this)->staticReadReadyHook(index);
     return hook != nullptr && hook->hook.is_linked();
   }
 
@@ -1379,8 +1622,10 @@ class StaticPipelineImpl final {
   Allocator* allocator_;
   StateTuple stateStorage_;
   StaticHandlerStorage<Self, 0, StateTuple, Specs...> handlers_;
-  [[no_unique_address]] ErasedStaticHandlerStorage<kHasStaticHandlers>
+  [[no_unique_address]] ErasedStaticHandlerStorage<kHasErasedHandlers>
       staticHandlers_;
+  [[no_unique_address]] ErasedStaticSegmentStorage<kHasStaticSegments>
+      staticSegments_;
   EndpointContext endpointContext_;
   State state_{State::Inactive};
   WriteReadyList writeReadyList_;
