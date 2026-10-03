@@ -20,6 +20,7 @@
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/FrameViews.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/SetupResponseBuilder.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -90,6 +91,13 @@ fromRocketFrame(
       setup->clientSetup = std::move(clientSetup).value();
       return ThriftServerInboundPayloadVariant{
           ThriftConnectionSetupPayload{.setup = std::move(setup)}};
+    }
+
+    case FrameType::REQUEST_N: {
+      const auto n =
+          frame::read::asView<frame::read::RequestNView>(frame).requestN();
+      return ThriftServerInboundPayloadVariant{
+          ThriftRequestNPayload{.streamId = frame.streamId(), .requestN = n}};
     }
 
     case FrameType::CANCEL:

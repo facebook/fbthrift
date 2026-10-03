@@ -83,10 +83,20 @@ frame::read::ParsedFrame makeKeepAliveFrame() {
   return frame::read::parseFrame(std::move(wire));
 }
 
+frame::read::ParsedFrame makeRequestNFrame(uint32_t streamId, uint32_t n) {
+  frame::ComposedFrame frame{
+      .frameType = frame::FrameType::REQUEST_N,
+      .streamId = streamId,
+      .requestN = n};
+  auto wire = std::move(frame).serialize();
+  return frame::read::parseFrame(std::move(wire));
+}
+
 frame::read::ParsedFrame makeCancelFrame(uint32_t streamId) {
   frame::ComposedFrame frame{
       .frameType = frame::FrameType::CANCEL, .streamId = streamId};
-  return frame::read::parseFrame(std::move(frame).serialize());
+  auto wire = std::move(frame).serialize();
+  return frame::read::parseFrame(std::move(wire));
 }
 
 } // namespace
@@ -168,6 +178,19 @@ TEST(FromRocketFrameTest, MalformedMetadataReturnsError) {
       apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
       decoderEventBase());
   EXPECT_FALSE(result.hasValue());
+}
+
+TEST(FromRocketFrameTest, RequestNDecodesToTypedPayload) {
+  auto result = fromRocketFrame(
+      makeRequestNFrame(/*streamId=*/9, /*n=*/42),
+      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
+      decoderEventBase());
+  ASSERT_TRUE(result.hasValue());
+  ASSERT_TRUE(result->is<ThriftRequestNPayload>());
+
+  const auto& requestN = result->get<ThriftRequestNPayload>();
+  EXPECT_EQ(requestN.streamId, 9u);
+  EXPECT_EQ(requestN.requestN, 42u);
 }
 
 TEST(FromRocketFrameTest, RequestFnfNotYetWired) {
