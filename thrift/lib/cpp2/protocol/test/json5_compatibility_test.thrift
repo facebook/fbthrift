@@ -290,6 +290,16 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
     inputs = ["{\"doubleValue\": -9223372036854775808}"],
     output = json5_test.Example{doubleValue = -9223372036854775808.0},
   },
+  CompatibilityTestCase{
+    name = "DoubleFromLargeDecimalOrExponent",
+    inputs = [
+      "{\"doubleValue\": 1e20}",
+      "{\"doubleValue\": \"1e20\"}",
+      "{\"doubleValue\": 100000000000000000000.0}",
+      "{\"doubleValue\": \"100000000000000000000.0\"}",
+    ],
+    output = json5_test.Example{doubleValue = 100000000000000000000.0},
+  },
   // ── Union Compatibility ─────────────────────────────────────────────────────
   CompatibilityTestCase{
     name = "UnionEmpty",

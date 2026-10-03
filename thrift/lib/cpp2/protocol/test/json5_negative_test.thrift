@@ -163,6 +163,30 @@ const list<NegativeTestCase> typeValidationNegativeCases = [
     name = "FloatFromInt64Max",
     json = "{\"floatValue\": 9223372036854775807}",
   },
+  NegativeTestCase{
+    name = "DoubleFromQuoted2Pow63",
+    json = "{\"doubleValue\": \"9223372036854775808\"}",
+  },
+  NegativeTestCase{
+    name = "DoubleFromQuotedIntegerAboveInt64",
+    json = "{\"doubleValue\": \"9223372036854775809\"}",
+  },
+  NegativeTestCase{
+    name = "DoubleFromQuotedIntegerBelowInt64",
+    json = "{\"doubleValue\": \"-9223372036854775809\"}",
+  },
+  NegativeTestCase{
+    name = "FloatFromQuotedIntegerAboveInt64",
+    json = "{\"floatValue\": \"99999999999999999999\"}",
+  },
+  NegativeTestCase{
+    name = "DoubleFromQuotedIntegerAfterFormFeed",
+    json = "{\"doubleValue\": \"\\f9007199254740993\"}",
+  },
+  NegativeTestCase{
+    name = "DoubleFromQuotedIntegerBeforeVerticalTab",
+    json = "{\"doubleValue\": \"9007199254740993\\u000B\"}",
+  },
   NegativeTestCase{name = "BoolGotNumber", json = "{\"boolValue\": 1}"},
   NegativeTestCase{
     name = "BoolKeyInvalidString",

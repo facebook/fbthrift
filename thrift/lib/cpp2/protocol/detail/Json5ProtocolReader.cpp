@@ -531,6 +531,16 @@ T Json5ProtocolReader::readFloatingPointValue() {
       : Json5Reader::FloatingPointPrecision::Double;
 
   auto primitive = readPrimitiveOrMapKey(precision);
+  if (auto* s = std::get_if<std::string>(&primitive)) {
+    auto buf = folly::IOBuf::wrapBufferAsValue(s->data(), s->size());
+    folly::io::Cursor cursor(&buf);
+    auto number = Json5Reader::parseNumber(cursor, precision);
+    if (!cursor.isAtEnd()) {
+      throwError(fmt::format("invalid number '{}'", *s));
+    }
+    primitive = number;
+  }
+
   if (auto* f = std::get_if<T>(&primitive)) {
     return *f;
   }
@@ -544,8 +554,11 @@ T Json5ProtocolReader::readFloatingPointValue() {
     }
     return result;
   }
-  return convertTo<T>(
-      takeStringValue(std::move(primitive), folly::pretty_name<T>()));
+  throwError(
+      fmt::format(
+          "cannot parse `{}` as `{}`",
+          getVariantTypePrettyName(primitive),
+          folly::pretty_name<T>()));
 }
 
 // ============================================================================

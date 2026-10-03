@@ -256,12 +256,13 @@ Rejects:
 * JSON5 numeric literals.
 * Special float literals.
 * Integers if and only if converting to the target IEEE 754 type and back to integer yields the original value (e.g., every integer in \[-2²⁴, 2²⁴\] (`±16,777,216`) for float or \[-2⁵³, 2⁵³\] (`±9,007,199,254,740,992`) for double, and larger ones such as `9223372036854774784`, i.e. 2⁶³ − 1024, for double).
-* Quoted numeric strings (same rules as above, e.g., `"3.14"`).
+* Quoted numeric strings and object-form map keys (same rules as above, e.g., `"3.14"`).
 
 Rejects:
 
 * Non-numeric strings (e.g., `"abc"`, `""`).
 * Integers with precision loss (e.g., `9007199254740993` or `9223372036854775807` for double, `123456789` for float).
+* Integers outside the int64 range, even ones without precision loss (e.g., `9223372036854775808`, i.e. 2⁶³); write them with an exponent instead (e.g., `9.223372036854775808e18`).
 
 #### STRING
 

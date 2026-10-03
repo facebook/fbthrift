@@ -131,6 +131,27 @@ TEST(JsonDecoderDepthLimitTest, SiblingsDoNotAccumulateDepth) {
   EXPECT_NO_THROW(decode(json + "]}"));
 }
 
+TEST(JsonDecoderFloatingPointKeyTest, IntegerKeysMustConvertExactly) {
+  using DoubleKeyed = type::map<type::double_t, type::i32_t>;
+  using FloatKeyed = type::map<type::float_t, type::i32_t>;
+  auto doubleKey = [](std::string_view json) {
+    return Json5ProtocolUtils::fromJson5<DoubleKeyed>(json).begin()->first;
+  };
+  EXPECT_EQ(doubleKey(R"({"9007199254740992": 1})"), 0x1p53);
+  EXPECT_EQ(doubleKey(R"({"1.5": 1})"), 1.5);
+  EXPECT_EQ(doubleKey(R"({"1e20": 1})"), 1e20);
+  EXPECT_THROW(
+      doubleKey(R"({"9007199254740993": 1})"), protocol::TProtocolException);
+  EXPECT_THROW(
+      doubleKey(R"({"9223372036854775808": 1})"), protocol::TProtocolException);
+
+  auto floatKey = [](std::string_view json) {
+    return Json5ProtocolUtils::fromJson5<FloatKeyed>(json).begin()->first;
+  };
+  EXPECT_EQ(floatKey(R"({"16777216": 1})"), 0x1p24f);
+  EXPECT_THROW(floatKey(R"({"16777217": 1})"), protocol::TProtocolException);
+}
+
 INSTANTIATE_TEST_SUITE_P(
     EnumValidation,
     JsonDecoderNegativeTest,
