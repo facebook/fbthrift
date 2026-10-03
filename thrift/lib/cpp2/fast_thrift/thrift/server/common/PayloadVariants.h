@@ -34,11 +34,12 @@ namespace apache::thrift::fast_thrift::thrift {
 // they continue to take the same wrapper variant type).
 
 // Server-side inbound — what the server pipeline reads from the wire.
-// Unary REQUEST_RESPONSE, connection setup, the established-stream REQUEST_N
-// flow-control frame the stream mux routes by streamId, and the header-only
-// cancellation (CANCEL) that the transport adapter turns into a
-// ThriftServerRequestCancellationEvent — routed by streamId to the mux (stream
-// cancel) or the request-lifecycle handler (unary cancel).
+// Unary REQUEST_RESPONSE, the stream-opening REQUEST_STREAM, connection setup,
+// the established-stream REQUEST_N flow-control frame the stream mux routes by
+// streamId, and the header-only cancellation (CANCEL) that the transport
+// adapter turns into a ThriftServerRequestCancellationEvent — routed by
+// streamId to the mux (stream cancel) or the request-lifecycle handler (unary
+// cancel).
 using ThriftServerRequestResponsePayload = BasicThriftRequestResponsePayload<
     std::unique_ptr<apache::thrift::RequestRpcMetadata>>;
 
@@ -56,6 +57,7 @@ makeServerRequestMetadata(
 
 using ThriftServerInboundPayloadVariant = ThriftPayloadVariant<
     ThriftServerRequestResponsePayload,
+    ThriftRequestStreamPayload,
     ThriftConnectionSetupPayload,
     ThriftRequestNPayload,
     ThriftRequestCancellationPayload>;
@@ -74,10 +76,11 @@ using ThriftServerOutboundPayloadVariant = ThriftPayloadVariant<
     ThriftSetupRejectionPayload>;
 
 // The variant is inline storage sized by its largest alternative, and the
-// inbound one sits on every request message. The setup and stream-control
-// payloads therefore stay no larger than the RR payload; this pins that, so a
-// field added by value fails here rather than silently widening the request
-// path.
+// inbound one sits on every request message. REQUEST_STREAM's payload sets that
+// upper bound (it adds `initialRequestN` on top of the RR payload's shape); the
+// setup and stream-control payloads stay no larger than the RR payload, so a
+// field added by value to one of those fails here rather than silently widening
+// the request path further.
 static_assert(
     sizeof(ThriftConnectionSetupPayload) <=
         sizeof(ThriftServerRequestResponsePayload),
@@ -88,5 +91,18 @@ static_assert(
     sizeof(ThriftRequestNPayload) <= sizeof(ThriftServerRequestResponsePayload),
     "stream flow-control payloads must not grow the per-request inbound "
     "message");
+
+// Pins the sizing claim in the comment above: REQUEST_STREAM's payload is the
+// largest inbound alternative, so it alone sets the per-request message size.
+// If another alternative grows past it, revisit that comment (and whether the
+// growth is intended) rather than letting the bound move silently.
+static_assert(
+    sizeof(ThriftRequestResponsePayload) <=
+            sizeof(ThriftRequestStreamPayload) &&
+        sizeof(ThriftConnectionSetupPayload) <=
+            sizeof(ThriftRequestStreamPayload) &&
+        sizeof(ThriftRequestNPayload) <= sizeof(ThriftRequestStreamPayload),
+    "ThriftRequestStreamPayload is expected to be the largest inbound "
+    "alternative (it adds initialRequestN on top of the RR payload shape)");
 
 } // namespace apache::thrift::fast_thrift::thrift

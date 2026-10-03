@@ -104,8 +104,23 @@ fromRocketFrame(
       return ThriftServerInboundPayloadVariant{
           ThriftRequestCancellationPayload{}};
 
+    case FrameType::REQUEST_STREAM: {
+      const auto initialRequestN =
+          frame::read::asView<frame::read::RequestStreamView>(frame)
+              .initialRequestN();
+      auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
+      if (auto ew =
+              deserializeRequestMetadata(frame, *metadata, metadataProtocol)) {
+        return folly::makeUnexpected(std::move(ew));
+      }
+      auto data = std::move(frame).extractData();
+      return ThriftServerInboundPayloadVariant{ThriftRequestStreamPayload{
+          .data = std::move(data),
+          .metadata = std::move(metadata),
+          .initialRequestN = initialRequestN}};
+    }
+
     case FrameType::REQUEST_FNF:
-    case FrameType::REQUEST_STREAM:
     case FrameType::REQUEST_CHANNEL:
       return folly::makeUnexpected(
           folly::make_exception_wrapper<apache::thrift::TApplicationException>(

@@ -67,6 +67,27 @@ frame::read::ParsedFrame makeRequestResponseFrame(
   return frame::read::parseFrame(std::move(wire));
 }
 
+frame::read::ParsedFrame makeRequestStreamFrame(
+    apache::thrift::RequestRpcMetadata md,
+    std::unique_ptr<folly::IOBuf> data,
+    uint32_t initialRequestN) {
+  // No streamId patching: fromRocketFrame decodes REQUEST_STREAM into
+  // ThriftRequestStreamPayload, which carries no streamId (the transport
+  // adapter stamps it on the message downstream), so the frame's streamId is
+  // irrelevant to what this test observes.
+  ThriftRequestStreamPayload payload{
+      .data = std::move(data),
+      .metadata =
+          std::make_unique<apache::thrift::RequestRpcMetadata>(std::move(md)),
+      .initialRequestN = initialRequestN};
+  auto wire = std::move(payload)
+                  .toRocketFrame(
+                      ::apache::thrift::fast_thrift::rocket::server::
+                          MetadataProtocol::BINARY)
+                  .serialize();
+  return frame::read::parseFrame(std::move(wire));
+}
+
 frame::read::ParsedFrame makeFnfFrame(uint32_t streamId) {
   frame::ComposedFrame frame{
       .frameType = frame::FrameType::REQUEST_FNF,
@@ -178,6 +199,28 @@ TEST(FromRocketFrameTest, MalformedMetadataReturnsError) {
       apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
       decoderEventBase());
   EXPECT_FALSE(result.hasValue());
+}
+
+TEST(FromRocketFrameTest, RequestStreamDecodesToTypedPayload) {
+  auto md = makePopulatedRequestMetadata("Service.streamMethod");
+  md.kind() = apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE;
+  auto frame = makeRequestStreamFrame(
+      std::move(md), folly::IOBuf::copyBuffer("args"), /*initialRequestN=*/17);
+
+  auto result = fromRocketFrame(
+      std::move(frame),
+      apache::thrift::fast_thrift::rocket::server::MetadataProtocol::BINARY,
+      decoderEventBase());
+  ASSERT_TRUE(result.hasValue());
+  ASSERT_TRUE(result->is<ThriftRequestStreamPayload>());
+
+  auto& stream = result->get<ThriftRequestStreamPayload>();
+  ASSERT_NE(stream.metadata, nullptr);
+  ASSERT_TRUE(stream.metadata->name().has_value());
+  EXPECT_EQ(stream.metadata->name()->view(), "Service.streamMethod");
+  ASSERT_NE(stream.data, nullptr);
+  EXPECT_EQ(stream.data->moveToFbString().toStdString(), "args");
+  EXPECT_EQ(stream.initialRequestN, 17u);
 }
 
 TEST(FromRocketFrameTest, RequestNDecodesToTypedPayload) {
