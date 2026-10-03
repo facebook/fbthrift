@@ -287,6 +287,17 @@ ThriftServerRequestMessage makeRequestN(uint32_t streamId, uint32_t n) {
   return msg;
 }
 
+// The inbound stream-open request a client sends to start a server stream. Only
+// streamId and initialRequestN matter to the mux; the metadata/args ride
+// through to the app adapter, which the mux test stands in for with MockTail.
+ThriftServerRequestMessage makeStreamOpenRequest(
+    uint32_t streamId, uint32_t initialRequestN) {
+  ThriftServerRequestMessage msg;
+  msg.payload = ThriftRequestStreamPayload{.initialRequestN = initialRequestN};
+  msg.streamId = streamId;
+  return msg;
+}
+
 class ThriftServerStreamMuxHandlerTest : public ::testing::Test {
  protected:
   cp::PipelineImpl::Ptr build() {
@@ -498,6 +509,56 @@ TEST_F(ThriftServerStreamMuxHandlerTest, CancellationForUnownedStreamIgnored) {
       ThriftServerRequestCancellationEvent{.streamId = 9});
   EXPECT_TRUE(recorded_.empty());
   EXPECT_TRUE(exceptions_.empty());
+}
+
+TEST_F(
+    ThriftServerStreamMuxHandlerTest,
+    InitialRequestNFromStreamOpenDrivesProducer) {
+  auto pipeline = build();
+
+  // Inbound REQUEST_STREAM carrying an initial demand of 3. The mux records the
+  // demand and passes the request through to the app (tail) for dispatch.
+  (void)pipeline->fireRead(
+      cp::erase_and_box(
+          makeStreamOpenRequest(/*streamId=*/2, /*initialRequestN=*/3)));
+  EXPECT_EQ(tail_.readCount(), 1);
+  EXPECT_TRUE(recorded_.empty());
+
+  // The handler responds by opening the stream. The stashed demand is injected
+  // right after the initial response — driving 3 payloads then completion with
+  // no separate inbound RequestN.
+  (void)pipeline->fireWrite(cp::erase_and_box(makeOpen(/*streamId=*/2, 3)));
+
+  ASSERT_EQ(recorded_.size(), 5u);
+  EXPECT_EQ(recorded_[0].kind, Recorded::Kind::InitialResponse);
+  EXPECT_EQ(recorded_[1].kind, Recorded::Kind::Payload);
+  EXPECT_EQ(recorded_[2].kind, Recorded::Kind::Payload);
+  EXPECT_EQ(recorded_[3].kind, Recorded::Kind::Payload);
+  EXPECT_EQ(recorded_[4].kind, Recorded::Kind::Complete);
+  for (const auto& r : recorded_) {
+    EXPECT_EQ(r.streamId, 2u);
+  }
+}
+
+TEST_F(
+    ThriftServerStreamMuxHandlerTest,
+    ZeroInitialRequestNProducesOnlyInitialResponse) {
+  auto pipeline = build();
+
+  // A REQUEST_STREAM with zero initial demand grants the producer nothing.
+  (void)pipeline->fireRead(
+      cp::erase_and_box(
+          makeStreamOpenRequest(/*streamId=*/2, /*initialRequestN=*/0)));
+  (void)pipeline->fireWrite(cp::erase_and_box(makeOpen(/*streamId=*/2, 3)));
+
+  // Only the initial response reaches the wire — no premature production.
+  ASSERT_EQ(recorded_.size(), 1u);
+  EXPECT_EQ(recorded_[0].kind, Recorded::Kind::InitialResponse);
+
+  // An explicit later REQUEST_N still drives the same open stream.
+  (void)pipeline->fireRead(cp::erase_and_box(makeRequestN(2, /*n=*/10)));
+  ASSERT_EQ(recorded_.size(), 5u);
+  EXPECT_EQ(recorded_[4].kind, Recorded::Kind::Complete);
 }
 
 TEST_F(ThriftServerStreamMuxHandlerTest, UnaryTrafficPassesThrough) {

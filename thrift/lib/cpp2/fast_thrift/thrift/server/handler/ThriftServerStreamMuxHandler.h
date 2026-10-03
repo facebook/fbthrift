@@ -35,6 +35,7 @@
 #include <thrift/lib/cpp2/fast_thrift/frame/read/DirectStreamMap.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/StreamPayloadMetadata.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftControlPayloads.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftRequestPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftResponsePayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
@@ -119,7 +120,14 @@ class ThriftServerStreamMuxHandler {
     openStream(streamId, std::move(configFunc));
     // Forward the initial chunk upward as an ordinary stream response.
     response.payload = std::move(initialResponse);
-    return ctx.fireWrite(std::move(msg));
+    auto result = ctx.fireWrite(std::move(msg));
+    // Deliver the client's initial REQUEST_N — captured from the inbound
+    // REQUEST_STREAM — now that the stream is open and its headers are on the
+    // wire. This must run after the initial response is forwarded: producer
+    // chunks have to follow the stream's first response, never precede it.
+    applyPendingInitialCredit(streamId);
+    drainPendingRemoval();
+    return result;
   }
 
   channel_pipeline::Result onRead(
@@ -135,6 +143,22 @@ class ThriftServerStreamMuxHandler {
         return fireUnknownStream(ctx, request.streamId);
       }
       return channel_pipeline::Result::Success;
+    }
+    if (request.payload.is<ThriftRequestStreamPayload>()) {
+      // The stream-open request carries the client's initial demand, but the
+      // sub-pipeline it credits does not exist until the handler responds and
+      // openStream() runs. Create the stream entry now (synchronously, before
+      // the request is dispatched) holding the demand; openStream() fills in
+      // the pipeline and applyPendingInitialCredit() injects the demand once
+      // the stream is open. The request itself still flows to the app adapter
+      // via the fireRead below.
+      const uint32_t n =
+          request.payload.get<ThriftRequestStreamPayload>().initialRequestN;
+      const bool inserted =
+          streams_
+              .emplace(request.streamId, StreamEntry{.pendingInitialCredit = n})
+              .second;
+      DCHECK(inserted) << "duplicate stream id " << request.streamId;
     }
     return ctx.fireRead(std::move(msg));
   }
@@ -168,7 +192,11 @@ class ThriftServerStreamMuxHandler {
   // ProducerPipeline owns its endpoints and pipeline and tears them down in the
   // correct order internally.
   struct StreamEntry {
-    std::optional<stream::ProducerPipeline> pipeline;
+    std::optional<stream::ProducerPipeline> pipeline{std::nullopt};
+    // Initial REQUEST_N demand seen on the REQUEST_STREAM, held until the
+    // stream opens and it is injected (once, then zeroed). Zero when the client
+    // opened with no initial credit.
+    uint32_t pendingInitialCredit{0};
     bool terminated{false};
   };
 
@@ -187,25 +215,28 @@ class ThriftServerStreamMuxHandler {
               return emitOutbound(streamId, std::move(msg));
             }});
     (*configFunc)(builder);
-    // A live streamId is opened exactly once: the client assigns fresh ids and
-    // a duplicate REQUEST_STREAM is expected to be rejected before it reaches
-    // the mux. `emplace` is a no-op on collision, so a duplicate would silently
-    // drop the freshly built sub-pipeline while the stale entry keeps driving —
-    // a framework bug, not client input. Guard it in debug.
-    const bool inserted =
-        streams_.emplace(streamId, StreamEntry{.pipeline = builder.build()})
-            .second;
-    DCHECK(inserted) << "duplicate stream id " << streamId;
+    // The entry usually already exists — the inbound REQUEST_STREAM created it
+    // to stash the initial credit. It is absent only when the mux never saw
+    // that request (e.g. a stream opened directly). `emplace` is find-or-create
+    // and a no-op on collision, so it returns that entry either way. A live
+    // streamId opens exactly once: a second open would find an entry that
+    // already holds a pipeline — a framework bug, not client input. Guard it in
+    // debug.
+    auto* slot = streams_.emplace(streamId, StreamEntry{}).first;
+    DCHECK(!slot->second.pipeline.has_value())
+        << "duplicate stream id " << streamId;
+    slot->second.pipeline = builder.build();
   }
 
   // Route an inbound flow-control message into the matching sub-pipeline.
-  // Returns false when no active stream owns `streamId` (unknown, or already
-  // terminated) — the caller surfaces that as an error rather than dropping it
-  // silently.
+  // Returns false when no open stream owns `streamId` — unknown, already
+  // terminated, or seen (its entry exists) but not yet opened — the caller
+  // surfaces that as an error rather than dropping it silently.
   bool routeInbound(
       uint32_t streamId, stream::ThriftStreamMessage&& msg) noexcept {
     auto* slot = streams_.find(streamId);
-    if (slot == nullptr || slot->second.terminated) {
+    if (slot == nullptr || slot->second.terminated ||
+        !slot->second.pipeline.has_value()) {
       return false;
     }
     (void)slot->second.pipeline->fireRead(
@@ -275,6 +306,20 @@ class ThriftServerStreamMuxHandler {
     return result;
   }
 
+  // Inject the initial demand captured from the inbound REQUEST_STREAM into the
+  // now-open sub-pipeline, then forget it. No-op when the client opened with
+  // zero initial credit.
+  void applyPendingInitialCredit(uint32_t streamId) noexcept {
+    auto* slot = streams_.find(streamId);
+    if (slot == nullptr || slot->second.pendingInitialCredit == 0) {
+      return;
+    }
+    const uint32_t n = std::exchange(slot->second.pendingInitialCredit, 0);
+    routeInbound(
+        streamId,
+        stream::ThriftStreamMessage{.payload = stream::RequestN{.n = n}});
+  }
+
   void markTerminated(uint32_t streamId) noexcept {
     auto* slot = streams_.find(streamId);
     if (slot == nullptr || slot->second.terminated) {
@@ -295,6 +340,12 @@ class ThriftServerStreamMuxHandler {
   }
 
   channel_pipeline::detail::ContextImpl* mainCtx_{nullptr};
+  // One entry per stream the mux has seen, keyed by streamId: created by the
+  // inbound REQUEST_STREAM (which stashes the initial credit), given its
+  // sub-pipeline at stream-open, and erased at teardown. Holding the initial
+  // credit here rather than in a second map keeps per-connection footprint to a
+  // single table. An entry whose handler never opens the stream lingers until
+  // the connection closes; bounding that is a follow-up.
   frame::read::DirectStreamMap<StreamEntry> streams_;
   std::vector<uint32_t> pendingRemoval_;
 };
