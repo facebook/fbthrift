@@ -156,6 +156,7 @@ char readNext(folly::io::Cursor& cursor) {
 
 void Json5Reader::setCursor(folly::io::Cursor c) {
   in_ = std::move(c);
+  depth_ = 0;
   skipWhitespaceAndComments();
 }
 
@@ -233,6 +234,9 @@ void Json5Reader::expectCommaOrEnd() {
   skipWhitespaceAndComments();
   char c = peekChar();
   if (c == ',') {
+    if (depth_ == 0) {
+      return; // A comma after a top-level value belongs to the caller.
+    }
     cursor().skip(1);
     skipWhitespaceAndComments();
     if (peekChar() == ',') {

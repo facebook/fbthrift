@@ -62,6 +62,7 @@ TEST(JsonDecoderErrorTypeTest, ReportsInvalidDataAsTProtocolException) {
            R"({"enumValue": "NOT_AN_ENUM"})", // rejected by the protocol reader
            R"({"binaryValue": {"base64": "!!!!"}})", // invalid base64
            R"({"i64Value": 1}])", // trailing content after the value
+           R"({"i64Value": 1},)", // a comma after the top-level value
        }) {
     try {
       (void)Json5ProtocolUtils::fromJson5<Example>(json);

@@ -48,7 +48,8 @@ namespace apache::thrift::json5::detail {
  * After `setCursor()` or any public `read*` method returns, the cursor is
  * positioned at the next meaningful character — all whitespace and separating
  * commas have already been consumed. This means callers (and `peekToken()`)
- * can inspect the cursor immediately without skipping whitespace first.
+ * can inspect the cursor immediately without skipping whitespace first. A
+ * comma after a top-level value is not consumed: it belongs to the caller.
  *
  * @section errors Error Handling
  *
@@ -149,16 +150,16 @@ class Json5Reader final {
   std::string readObjectName();
 
   /** Consumes the opening bracket of an array. */
-  void readListBegin() { consume('['); }
+  void readListBegin() { consume('['), ++depth_; }
 
   /** Consumes the closing bracket of an array. */
-  void readListEnd() { consume(']'), expectCommaOrEnd(); }
+  void readListEnd() { consume(']'), --depth_, expectCommaOrEnd(); }
 
   /** Consumes the opening brace of an object. */
-  void readObjectBegin() { consume('{'); }
+  void readObjectBegin() { consume('{'), ++depth_; }
 
   /** Consumes the closing brace of an object. */
-  void readObjectEnd() { consume('}'), expectCommaOrEnd(); }
+  void readObjectEnd() { consume('}'), --depth_, expectCommaOrEnd(); }
 
  private:
   folly::io::Cursor& cursor();
@@ -176,6 +177,8 @@ class Json5Reader final {
   void expectCommaOrEnd();
 
   std::optional<folly::io::Cursor> in_;
+  // Number of arrays and objects the cursor is inside.
+  int depth_ = 0;
 };
 
 } // namespace apache::thrift::json5::detail

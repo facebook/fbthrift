@@ -323,6 +323,35 @@ TEST_F(Json5ReaderTest, HexNumbers) {
   EXPECT_THROW(readInt(minHexMinusOne), protocol::TProtocolException);
 }
 
+// Like SimpleJSON, a top-level value doesn't consume what follows it, so a
+// caller can read a comma-separated stream of values.
+TEST_F(Json5ReaderTest, CommaAfterTopLevelValue) {
+  auto rest = [](const Json5Reader& r) {
+    return folly::io::Cursor(r.getCursor())
+        .readFixedString(r.getCursor().totalLength());
+  };
+  {
+    auto r = reader("{\"a\": 1}, {}");
+    r.readObjectBegin();
+    EXPECT_EQ(r.readObjectName(), "a");
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 1);
+    r.readObjectEnd();
+    EXPECT_EQ(rest(r), ", {}");
+  }
+  {
+    auto r = reader("[1], 2");
+    r.readListBegin();
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 1);
+    r.readListEnd();
+    EXPECT_EQ(rest(r), ", 2");
+  }
+  {
+    auto r = reader("42 /* comment */ , 43");
+    EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 42);
+    EXPECT_EQ(rest(r), ", 43");
+  }
+}
+
 TEST_F(Json5ReaderTest, DecimalIntegerRange) {
   auto readInt = [this](std::string_view input) {
     return std::get<Json5Reader::Integer>(reader(input).readPrimitive())
