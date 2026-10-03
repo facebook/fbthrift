@@ -121,48 +121,10 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = MyService_MyInteraction_frobnicate_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("MyService", "MyInteraction.frobnicate", $args);
-    $currentseqid = $this->sendImpl_frobnicate();
+    $currentseqid = $this->sendImplHelper($args, "MyInteraction.frobnicate", false, "MyService" );
     return (await $this->genAwaitResponse(MyService_MyInteraction_frobnicate_result::class, "frobnicate", false, $currentseqid, $rpc_options))[0];
   }
 
-  protected function sendImpl_frobnicate(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_MyInteraction_frobnicate_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteraction.frobnicate', $args, $currentseqid, 'MyService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteraction.frobnicate', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteraction.frobnicate', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteraction.frobnicate', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteraction.frobnicate', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteraction.frobnicate', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteraction.frobnicate', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteraction.frobnicate', $args, $currentseqid);
-    return $currentseqid;
-  }
   /**
    * Original thrift definition:-
    * oneway void
@@ -173,48 +135,10 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = MyService_MyInteraction_ping_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("MyService", "MyInteraction.ping", $args);
-    $currentseqid = $this->sendImpl_ping();
+    $currentseqid = $this->sendImplHelper($args, "MyInteraction.ping", true, "MyService" );
     await $this->genAwaitNoResponse($rpc_options);
   }
 
-  protected function sendImpl_ping(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_MyInteraction_ping_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteraction.ping', $args, $currentseqid, 'MyService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteraction.ping', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), true);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteraction.ping', \TMessageType::CALL, $args, $currentseqid, true, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteraction.ping', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->onewayFlush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteraction.ping', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteraction.ping', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteraction.ping', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteraction.ping', $args, $currentseqid);
-    return $currentseqid;
-  }
   /**
    * Original thrift definition:-
    * void, stream<bool>
@@ -229,48 +153,10 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = MyService_MyInteraction_truthify_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("MyService", "MyInteraction.truthify", $args);
-    $currentseqid = $this->sendImpl_truthify();
+    $currentseqid = $this->sendImplHelper($args, "MyInteraction.truthify", false, "MyService" );
     return await $this->genAwaitStreamResponse(MyService_MyInteraction_truthify_FirstResponse::class, MyService_MyInteraction_truthify_StreamResponse::class, "truthify", true, $currentseqid, $rpc_options);
   }
 
-  protected function sendImpl_truthify(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_MyInteraction_truthify_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteraction.truthify', $args, $currentseqid, 'MyService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteraction.truthify', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteraction.truthify', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteraction.truthify', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteraction.truthify', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteraction.truthify', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteraction.truthify', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteraction.truthify', $args, $currentseqid);
-    return $currentseqid;
-  }
   /**
    * Original thrift definition:-
    * set<i32>, sink<string, binary>
@@ -285,48 +171,10 @@ class MyService_MyInteraction extends \ThriftClientBase {
 $rpc_options->setInteractionId($this->interactionId);
     $args = MyService_MyInteraction_encode_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("MyService", "MyInteraction.encode", $args);
-    $currentseqid = $this->sendImpl_encode();
+    $currentseqid = $this->sendImplHelper($args, "MyInteraction.encode", false, "MyService" );
     return await $this->genAwaitSinkResponse(MyService_MyInteraction_encode_FirstResponse::class, MyService_MyInteraction_encode_SinkPayload::class, MyService_MyInteraction_encode_FinalResponse::class, "encode", false, $currentseqid, $rpc_options);
   }
 
-  protected function sendImpl_encode(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_MyInteraction_encode_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteraction.encode', $args, $currentseqid, 'MyService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteraction.encode', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteraction.encode', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteraction.encode', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteraction.encode', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteraction.encode', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteraction.encode', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteraction.encode', $args, $currentseqid);
-    return $currentseqid;
-  }
 }
 
 class MyService_MyInteractionFast extends \ThriftClientBase {
@@ -353,48 +201,10 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = MyService_MyInteractionFast_frobnicate_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.frobnicate", $args);
-    $currentseqid = $this->sendImpl_frobnicate();
+    $currentseqid = $this->sendImplHelper($args, "MyInteractionFast.frobnicate", false, "MyService" );
     return (await $this->genAwaitResponse(MyService_MyInteractionFast_frobnicate_result::class, "frobnicate", false, $currentseqid, $rpc_options))[0];
   }
 
-  protected function sendImpl_frobnicate(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_MyInteractionFast_frobnicate_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteractionFast.frobnicate', $args, $currentseqid, 'MyService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteractionFast.frobnicate', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteractionFast.frobnicate', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteractionFast.frobnicate', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteractionFast.frobnicate', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteractionFast.frobnicate', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteractionFast.frobnicate', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteractionFast.frobnicate', $args, $currentseqid);
-    return $currentseqid;
-  }
   /**
    * Original thrift definition:-
    * oneway void
@@ -405,48 +215,10 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = MyService_MyInteractionFast_ping_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.ping", $args);
-    $currentseqid = $this->sendImpl_ping();
+    $currentseqid = $this->sendImplHelper($args, "MyInteractionFast.ping", true, "MyService" );
     await $this->genAwaitNoResponse($rpc_options);
   }
 
-  protected function sendImpl_ping(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_MyInteractionFast_ping_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteractionFast.ping', $args, $currentseqid, 'MyService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteractionFast.ping', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), true);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteractionFast.ping', \TMessageType::CALL, $args, $currentseqid, true, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteractionFast.ping', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->onewayFlush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteractionFast.ping', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteractionFast.ping', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteractionFast.ping', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteractionFast.ping', $args, $currentseqid);
-    return $currentseqid;
-  }
   /**
    * Original thrift definition:-
    * void, stream<bool>
@@ -461,48 +233,10 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = MyService_MyInteractionFast_truthify_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.truthify", $args);
-    $currentseqid = $this->sendImpl_truthify();
+    $currentseqid = $this->sendImplHelper($args, "MyInteractionFast.truthify", false, "MyService" );
     return await $this->genAwaitStreamResponse(MyService_MyInteractionFast_truthify_FirstResponse::class, MyService_MyInteractionFast_truthify_StreamResponse::class, "truthify", true, $currentseqid, $rpc_options);
   }
 
-  protected function sendImpl_truthify(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_MyInteractionFast_truthify_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteractionFast.truthify', $args, $currentseqid, 'MyService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteractionFast.truthify', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteractionFast.truthify', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteractionFast.truthify', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteractionFast.truthify', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteractionFast.truthify', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteractionFast.truthify', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteractionFast.truthify', $args, $currentseqid);
-    return $currentseqid;
-  }
   /**
    * Original thrift definition:-
    * set<i32>, sink<string, binary>
@@ -517,48 +251,10 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
 $rpc_options->setInteractionId($this->interactionId);
     $args = MyService_MyInteractionFast_encode_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.encode", $args);
-    $currentseqid = $this->sendImpl_encode();
+    $currentseqid = $this->sendImplHelper($args, "MyInteractionFast.encode", false, "MyService" );
     return await $this->genAwaitSinkResponse(MyService_MyInteractionFast_encode_FirstResponse::class, MyService_MyInteractionFast_encode_SinkPayload::class, MyService_MyInteractionFast_encode_FinalResponse::class, "encode", false, $currentseqid, $rpc_options);
   }
 
-  protected function sendImpl_encode(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_MyInteractionFast_encode_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteractionFast.encode', $args, $currentseqid, 'MyService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteractionFast.encode', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteractionFast.encode', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteractionFast.encode', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteractionFast.encode', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteractionFast.encode', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteractionFast.encode', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteractionFast.encode', $args, $currentseqid);
-    return $currentseqid;
-  }
 }
 
 class MyService_SerialInteraction extends \ThriftClientBase {
@@ -585,48 +281,10 @@ class MyService_SerialInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = MyService_SerialInteraction_frobnicate_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("MyService", "SerialInteraction.frobnicate", $args);
-    $currentseqid = $this->sendImpl_frobnicate();
+    $currentseqid = $this->sendImplHelper($args, "SerialInteraction.frobnicate", false, "MyService" );
     await $this->genAwaitResponse(MyService_SerialInteraction_frobnicate_result::class, "frobnicate", true, $currentseqid, $rpc_options);
   }
 
-  protected function sendImpl_frobnicate(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_SerialInteraction_frobnicate_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('SerialInteraction.frobnicate', $args, $currentseqid, 'MyService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'SerialInteraction.frobnicate', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'SerialInteraction.frobnicate', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('SerialInteraction.frobnicate', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('SerialInteraction.frobnicate', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('SerialInteraction.frobnicate', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('SerialInteraction.frobnicate', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('SerialInteraction.frobnicate', $args, $currentseqid);
-    return $currentseqid;
-  }
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

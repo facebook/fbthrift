@@ -608,10 +608,6 @@ class t_hack_generator : public t_concat_generator {
       std::ofstream& out,
       const t_interface* tservice,
       const t_function* tfunction);
-  void _generate_sendImplHelper(
-      std::ofstream& out,
-      const t_function* tfunction,
-      const t_interface* tservice);
   void generate_service(const t_service* tservice, bool mangle);
   void generate_service_helpers(const t_service* tservice, bool mangle);
   void generate_service_interactions(const t_service* tservice, bool mangle);
@@ -620,10 +616,6 @@ class t_hack_generator : public t_concat_generator {
   void generate_service_client(const t_service* tservice, bool mangle);
   void _generate_service_client(
       std::ofstream& out, const t_service* tservice, bool mangle);
-  void _generate_sendImpl(
-      std::ofstream& out,
-      const t_interface* tservice,
-      const t_function* tfunction);
   void _generate_sendImpl_arg(
       std::ofstream& out,
       t_name_generator& namer,
@@ -6986,22 +6978,6 @@ void t_hack_generator::generate_php_struct_async_struct_creation_method(
   generate_php_struct_async_struct_creation_method_footer(out);
 }
 
-void t_hack_generator::_generate_sendImplHelper(
-    std::ofstream& out,
-    const t_function* tfunction,
-    const t_interface* tservice) {
-  std::string long_name = php_servicename_mangle(mangled_services_, tservice);
-  const std::string& tservice_name =
-      (tservice->is<t_interaction>()
-           ? "\"" + service_name_ + "\""
-           : long_name + "StaticMetadata::THRIFT_SVC_NAME");
-  out << "$this->sendImplHelper($args, " << "\"" << find_hack_name(tfunction)
-      << "\", "
-      << (tfunction->qualifier() == t_function_qualifier::oneway ? "true"
-                                                                 : "false")
-      << ", " << tservice_name << " );\n";
-}
-
 /**
  * Generates a thrift service.
  *
@@ -7027,7 +7003,7 @@ void t_hack_generator::generate_service(const t_service* tservice) {
       // (for PACKAGE) the namespace itself already disambiguates classes
       // across thrift files. Disabling the option here ensures inner
       // call sites that read `mangled_services_` directly (e.g.
-      // `_generate_sendImplHelper`) also emit unmangled output rather
+      // `_generate_current_seq_id`) also emit unmangled output rather
       // than identifiers/filenames that embed namespace separators.
       mangled_services_ = false;
     }
@@ -7754,7 +7730,6 @@ void t_hack_generator::generate_service_interactions(
         continue;
       }
       _generate_service_client_child_fn(f_service_, interaction, function);
-      _generate_sendImpl(f_service_, interaction, function);
     }
 
     indent_down();
@@ -8725,122 +8700,16 @@ void t_hack_generator::_generate_current_seq_id(
     std::ofstream& out,
     const t_interface* tservice,
     const t_function* tfunction) {
-  if (tservice->is<t_interaction>()) {
-    indent(out) << "$currentseqid = $this->sendImpl_" << tfunction->name()
-                << "(";
-
-    auto delim = "";
-    for (const auto& param : tfunction->params().fields()) {
-      out << delim << "$" << param.name();
-      delim = ", ";
-    }
-    out << ");\n";
-  } else {
-    out << indent() << "$currentseqid = ";
-    _generate_sendImplHelper(out, tfunction, tservice);
-  }
-}
-
-void t_hack_generator::_generate_sendImpl(
-    std::ofstream& out,
-    const t_interface* tservice,
-    const t_function* tfunction) {
-  const std::string& funname = tfunction->name();
-  const std::string& rpc_function_name =
-      generate_rpc_function_name(tservice, tfunction);
+  std::string long_name = php_servicename_mangle(mangled_services_, tservice);
   const std::string& tservice_name =
-      (tservice->is<t_interaction>() ? service_name_ : tservice->name());
-
-  if (nullable_everything_) {
-    indent(out) << "protected function sendImpl_" << funname << "("
-                << argument_list(tfunction->params(), "", true, true)
-                << "): int {\n";
-  } else {
-    indent(out) << "protected function sendImpl_"
-                << function_signature(tfunction, "", "int") << " {\n";
-  }
-  indent_up();
-
-  out << indent() << "$currentseqid = $this->getNextSequenceID();\n";
-  _generate_args(out, tservice, tfunction);
-
-  out << indent() << "try {\n";
-  indent_up();
-  out << indent() << "$this->eventHandler_->preSend('" << rpc_function_name
-      << "', $args, $currentseqid, '" << tservice_name << "');\n";
-  out << indent() << "if ($this->output_ is \\TBinaryProtocolAccelerated)\n";
-  scope_up(out);
-
-  out << indent() << "\\thrift_protocol_write_binary($this->output_, '"
-      << rpc_function_name << "', "
-      << "\\TMessageType::CALL, $args, $currentseqid, "
-      << "$this->output_->isStrictWrite(), "
+      (tservice->is<t_interaction>()
+           ? "\"" + service_name_ + "\""
+           : long_name + "StaticMetadata::THRIFT_SVC_NAME");
+  out << indent() << "$currentseqid = $this->sendImplHelper($args, " << "\""
+      << generate_rpc_function_name(tservice, tfunction) << "\", "
       << (tfunction->qualifier() == t_function_qualifier::oneway ? "true"
                                                                  : "false")
-      << ");\n";
-
-  scope_down(out);
-  out << indent()
-      << "else if ($this->output_ is \\TCompactProtocolAccelerated)\n";
-  scope_up(out);
-
-  out << indent() << "\\thrift_protocol_write_compact2($this->output_, '"
-      << rpc_function_name << "', "
-      << "\\TMessageType::CALL, $args, $currentseqid, "
-      << (tfunction->qualifier() == t_function_qualifier::oneway ? "true"
-                                                                 : "false")
-      << ", \\TCompactProtocolBase::VERSION);\n";
-
-  scope_down(out);
-  out << indent() << "else\n";
-  scope_up(out);
-
-  // Serialize the request header
-  out << indent() << "$this->output_->writeMessageBegin('" << rpc_function_name
-      << "', \\TMessageType::CALL, $currentseqid);\n";
-
-  // Write to the stream
-  out << indent() << "$args->write($this->output_);\n"
-      << indent() << "$this->output_->writeMessageEnd();\n";
-  if (tfunction->qualifier() == t_function_qualifier::oneway) {
-    out << indent() << "$this->output_->getTransport()->onewayFlush();\n";
-  } else {
-    out << indent() << "$this->output_->getTransport()->flush();\n";
-  }
-
-  scope_down(out);
-
-  indent_down();
-  indent(out) << "} catch (\\THandlerShortCircuitException $ex) {\n";
-  indent_up();
-  out << indent() << "switch ($ex->resultType) {\n"
-      << indent() << "  case \\THandlerShortCircuitException::R_EXPECTED_EX:\n"
-      << indent()
-      << "  case \\THandlerShortCircuitException::R_UNEXPECTED_EX:\n"
-      << indent() << "    $this->eventHandler_->sendError('"
-      << rpc_function_name << "', $args, $currentseqid, $ex->result);" << "\n"
-      << indent() << "    throw $ex->result;\n"
-      << indent() << "  case \\THandlerShortCircuitException::R_SUCCESS:\n"
-      << indent() << "  default:\n"
-      << indent() << "    $this->eventHandler_->postSend('" << rpc_function_name
-      << "', $args, $currentseqid);\n"
-      << indent() << "    return $currentseqid;\n"
-      << indent() << "}\n";
-  indent_down();
-  indent(out) << "} catch (\\Exception $ex) {\n";
-  indent_up();
-  out << indent() << "$this->eventHandler_->sendError('" << rpc_function_name
-      << "', $args, $currentseqid, $ex);\n"
-      << indent() << "throw $ex;\n";
-  indent_down();
-  indent(out) << "}\n";
-
-  out << indent() << "$this->eventHandler_->postSend('" << rpc_function_name
-      << "', $args, $currentseqid);\n";
-
-  indent(out) << "return $currentseqid;\n";
-
-  scope_down(out);
+      << ", " << tservice_name << " );\n";
 }
 
 // If !strict_types, containers are typehinted as KeyedContainer<Key, Value>

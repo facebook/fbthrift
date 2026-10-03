@@ -115,48 +115,10 @@ class InteractWithShared_MyInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = InteractWithShared_MyInteraction_frobnicate_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("InteractWithShared", "MyInteraction.frobnicate", $args);
-    $currentseqid = $this->sendImpl_frobnicate();
+    $currentseqid = $this->sendImplHelper($args, "MyInteraction.frobnicate", false, "InteractWithShared" );
     return (await $this->genAwaitResponse(InteractWithShared_MyInteraction_frobnicate_result::class, "frobnicate", false, $currentseqid, $rpc_options))[0];
   }
 
-  protected function sendImpl_frobnicate(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = InteractWithShared_MyInteraction_frobnicate_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteraction.frobnicate', $args, $currentseqid, 'InteractWithShared');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteraction.frobnicate', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteraction.frobnicate', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteraction.frobnicate', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteraction.frobnicate', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteraction.frobnicate', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteraction.frobnicate', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteraction.frobnicate', $args, $currentseqid);
-    return $currentseqid;
-  }
   /**
    * Original thrift definition:-
    * oneway void
@@ -167,48 +129,10 @@ class InteractWithShared_MyInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = InteractWithShared_MyInteraction_ping_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("InteractWithShared", "MyInteraction.ping", $args);
-    $currentseqid = $this->sendImpl_ping();
+    $currentseqid = $this->sendImplHelper($args, "MyInteraction.ping", true, "InteractWithShared" );
     await $this->genAwaitNoResponse($rpc_options);
   }
 
-  protected function sendImpl_ping(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = InteractWithShared_MyInteraction_ping_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteraction.ping', $args, $currentseqid, 'InteractWithShared');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteraction.ping', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), true);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteraction.ping', \TMessageType::CALL, $args, $currentseqid, true, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteraction.ping', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->onewayFlush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteraction.ping', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteraction.ping', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteraction.ping', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteraction.ping', $args, $currentseqid);
-    return $currentseqid;
-  }
   /**
    * Original thrift definition:-
    * void, stream<bool>
@@ -223,48 +147,10 @@ class InteractWithShared_MyInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = InteractWithShared_MyInteraction_truthify_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("InteractWithShared", "MyInteraction.truthify", $args);
-    $currentseqid = $this->sendImpl_truthify();
+    $currentseqid = $this->sendImplHelper($args, "MyInteraction.truthify", false, "InteractWithShared" );
     return await $this->genAwaitStreamResponse(InteractWithShared_MyInteraction_truthify_FirstResponse::class, InteractWithShared_MyInteraction_truthify_StreamResponse::class, "truthify", true, $currentseqid, $rpc_options);
   }
 
-  protected function sendImpl_truthify(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = InteractWithShared_MyInteraction_truthify_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteraction.truthify', $args, $currentseqid, 'InteractWithShared');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteraction.truthify', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteraction.truthify', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteraction.truthify', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteraction.truthify', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteraction.truthify', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteraction.truthify', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteraction.truthify', $args, $currentseqid);
-    return $currentseqid;
-  }
   /**
    * Original thrift definition:-
    * set<i32>, sink<string, binary>
@@ -279,48 +165,10 @@ class InteractWithShared_MyInteraction extends \ThriftClientBase {
 $rpc_options->setInteractionId($this->interactionId);
     $args = InteractWithShared_MyInteraction_encode_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("InteractWithShared", "MyInteraction.encode", $args);
-    $currentseqid = $this->sendImpl_encode();
+    $currentseqid = $this->sendImplHelper($args, "MyInteraction.encode", false, "InteractWithShared" );
     return await $this->genAwaitSinkResponse(InteractWithShared_MyInteraction_encode_FirstResponse::class, InteractWithShared_MyInteraction_encode_SinkPayload::class, InteractWithShared_MyInteraction_encode_FinalResponse::class, "encode", false, $currentseqid, $rpc_options);
   }
 
-  protected function sendImpl_encode(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = InteractWithShared_MyInteraction_encode_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('MyInteraction.encode', $args, $currentseqid, 'InteractWithShared');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'MyInteraction.encode', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'MyInteraction.encode', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('MyInteraction.encode', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('MyInteraction.encode', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('MyInteraction.encode', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('MyInteraction.encode', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('MyInteraction.encode', $args, $currentseqid);
-    return $currentseqid;
-  }
 }
 
 class InteractWithShared_SharedInteraction extends \ThriftClientBase {
@@ -347,48 +195,10 @@ class InteractWithShared_SharedInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = InteractWithShared_SharedInteraction_init_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("InteractWithShared", "SharedInteraction.init", $args);
-    $currentseqid = $this->sendImpl_init();
+    $currentseqid = $this->sendImplHelper($args, "SharedInteraction.init", false, "InteractWithShared" );
     return (await $this->genAwaitResponse(InteractWithShared_SharedInteraction_init_result::class, "init", false, $currentseqid, $rpc_options))[0];
   }
 
-  protected function sendImpl_init(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = InteractWithShared_SharedInteraction_init_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('SharedInteraction.init', $args, $currentseqid, 'InteractWithShared');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'SharedInteraction.init', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'SharedInteraction.init', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('SharedInteraction.init', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('SharedInteraction.init', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('SharedInteraction.init', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('SharedInteraction.init', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('SharedInteraction.init', $args, $currentseqid);
-    return $currentseqid;
-  }
   /**
    * Original thrift definition:-
    * shared.DoSomethingResult
@@ -399,48 +209,10 @@ class InteractWithShared_SharedInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = InteractWithShared_SharedInteraction_do_something_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("InteractWithShared", "SharedInteraction.do_something", $args);
-    $currentseqid = $this->sendImpl_do_something();
+    $currentseqid = $this->sendImplHelper($args, "SharedInteraction.do_something", false, "InteractWithShared" );
     return (await $this->genAwaitResponse(InteractWithShared_SharedInteraction_do_something_result::class, "do_something", false, $currentseqid, $rpc_options))[0];
   }
 
-  protected function sendImpl_do_something(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = InteractWithShared_SharedInteraction_do_something_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('SharedInteraction.do_something', $args, $currentseqid, 'InteractWithShared');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'SharedInteraction.do_something', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'SharedInteraction.do_something', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('SharedInteraction.do_something', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('SharedInteraction.do_something', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('SharedInteraction.do_something', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('SharedInteraction.do_something', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('SharedInteraction.do_something', $args, $currentseqid);
-    return $currentseqid;
-  }
   /**
    * Original thrift definition:-
    * void
@@ -451,48 +223,10 @@ class InteractWithShared_SharedInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = InteractWithShared_SharedInteraction_tear_down_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("InteractWithShared", "SharedInteraction.tear_down", $args);
-    $currentseqid = $this->sendImpl_tear_down();
+    $currentseqid = $this->sendImplHelper($args, "SharedInteraction.tear_down", false, "InteractWithShared" );
     await $this->genAwaitResponse(InteractWithShared_SharedInteraction_tear_down_result::class, "tear_down", true, $currentseqid, $rpc_options);
   }
 
-  protected function sendImpl_tear_down(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = InteractWithShared_SharedInteraction_tear_down_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('SharedInteraction.tear_down', $args, $currentseqid, 'InteractWithShared');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'SharedInteraction.tear_down', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'SharedInteraction.tear_down', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('SharedInteraction.tear_down', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('SharedInteraction.tear_down', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('SharedInteraction.tear_down', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('SharedInteraction.tear_down', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('SharedInteraction.tear_down', $args, $currentseqid);
-    return $currentseqid;
-  }
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

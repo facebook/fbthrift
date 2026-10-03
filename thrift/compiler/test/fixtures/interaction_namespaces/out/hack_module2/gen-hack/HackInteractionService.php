@@ -115,50 +115,10 @@ class HackInteractionService_HackInteraction extends \ThriftClientBase {
       'msg' => $msg,
     ));
     await $this->asyncHandler_->genBefore("HackInteractionService", "HackInteraction.ping", $args);
-    $currentseqid = $this->sendImpl_ping($msg);
+    $currentseqid = $this->sendImplHelper($args, "HackInteraction.ping", false, "HackInteractionService" );
     return (await $this->genAwaitResponse(HackInteractionService_HackInteraction_ping_result::class, "ping", false, $currentseqid, $rpc_options))[0];
   }
 
-  protected function sendImpl_ping(string $msg): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = HackInteractionService_HackInteraction_ping_args::fromShape(shape(
-      'msg' => $msg,
-    ));
-    try {
-      $this->eventHandler_->preSend('HackInteraction.ping', $args, $currentseqid, 'HackInteractionService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'HackInteraction.ping', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'HackInteraction.ping', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('HackInteraction.ping', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('HackInteraction.ping', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('HackInteraction.ping', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('HackInteraction.ping', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('HackInteraction.ping', $args, $currentseqid);
-    return $currentseqid;
-  }
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

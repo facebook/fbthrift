@@ -113,50 +113,10 @@ class PhpInteractionService_PhpInteraction extends \ThriftClientBase {
       'msg' => $msg,
     ));
     await $this->asyncHandler_->genBefore("PhpInteractionService", "PhpInteraction.ping", $args);
-    $currentseqid = $this->sendImpl_ping($msg);
+    $currentseqid = $this->sendImplHelper($args, "PhpInteraction.ping", false, "PhpInteractionService" );
     return (await $this->genAwaitResponse(PhpInteractionService_PhpInteraction_ping_result::class, "ping", false, $currentseqid, $rpc_options))[0];
   }
 
-  protected function sendImpl_ping(string $msg): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = PhpInteractionService_PhpInteraction_ping_args::fromShape(shape(
-      'msg' => $msg,
-    ));
-    try {
-      $this->eventHandler_->preSend('PhpInteraction.ping', $args, $currentseqid, 'PhpInteractionService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'PhpInteraction.ping', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'PhpInteraction.ping', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('PhpInteraction.ping', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('PhpInteraction.ping', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('PhpInteraction.ping', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('PhpInteraction.ping', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('PhpInteraction.ping', $args, $currentseqid);
-    return $currentseqid;
-  }
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

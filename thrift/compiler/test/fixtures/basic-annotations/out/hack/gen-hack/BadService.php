@@ -108,48 +108,10 @@ class BadService_BadInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $args = BadService_BadInteraction_foo_args::withDefaultValues();
     await $this->asyncHandler_->genBefore("BadService", "BadInteraction.foo", $args);
-    $currentseqid = $this->sendImpl_foo();
+    $currentseqid = $this->sendImplHelper($args, "BadInteraction.foo", false, "BadService" );
     await $this->genAwaitResponse(BadService_BadInteraction_foo_result::class, "foo", true, $currentseqid, $rpc_options);
   }
 
-  protected function sendImpl_foo(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = BadService_BadInteraction_foo_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('BadInteraction.foo', $args, $currentseqid, 'BadService');
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'BadInteraction.foo', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact2($this->output_, 'BadInteraction.foo', \TMessageType::CALL, $args, $currentseqid, false, \TCompactProtocolBase::VERSION);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('BadInteraction.foo', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('BadInteraction.foo', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('BadInteraction.foo', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('BadInteraction.foo', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('BadInteraction.foo', $args, $currentseqid);
-    return $currentseqid;
-  }
 }
 
 abstract class BadServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
