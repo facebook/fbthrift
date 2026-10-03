@@ -105,9 +105,11 @@ struct Fixture {
   }
 };
 
+// A unary REQUEST_RESPONSE — an exchange opener, so it counts as request work.
 ThriftServerRequestMessage makeRequest(uint32_t streamId = 1) {
   ThriftServerRequestMessage req;
   req.streamId = streamId;
+  req.payload = ThriftServerRequestResponsePayload{};
   return req;
 }
 
@@ -118,6 +120,38 @@ ThriftServerResponseMessage makeResponse(uint32_t streamId) {
           .metadata = nullptr,
           .streamId = streamId,
       }};
+}
+
+// The inbound stream-open request (REQUEST_STREAM) — an exchange opener, so it
+// counts as request work.
+ThriftServerRequestMessage makeStreamRequest(uint32_t streamId = 1) {
+  ThriftServerRequestMessage req;
+  req.streamId = streamId;
+  req.payload = ThriftRequestStreamPayload{.initialRequestN = 1};
+  return req;
+}
+
+// Established-stream flow-control frames — not request work.
+ThriftServerRequestMessage makeRequestN(uint32_t streamId, uint32_t n = 1) {
+  ThriftServerRequestMessage req;
+  req.streamId = streamId;
+  req.payload = ThriftRequestNPayload{.streamId = streamId, .requestN = n};
+  return req;
+}
+
+// A stream's initial response — the message that retires the request.
+ThriftServerResponseMessage makeStreamInitialResponse(uint32_t streamId) {
+  return ThriftServerResponseMessage{
+      .payload = ThriftStreamInitialResponsePayload{
+          .streamId = streamId, .complete = false, .next = true}};
+}
+
+// A stream continuation chunk (data when !complete, terminal when complete) —
+// not request work.
+ThriftServerResponseMessage makeStreamChunk(uint32_t streamId, bool complete) {
+  return ThriftServerResponseMessage{
+      .payload = ThriftStreamPayload{
+          .streamId = streamId, .complete = complete, .next = !complete}};
 }
 
 // Verifies a captured outbound box holds the stream-0 CONNECTION_CLOSE
@@ -164,6 +198,84 @@ TEST(
   EXPECT_EQ(
       f.handler.onRead(f.ctx, erase_and_box(makeRequest(2))), Result::Error);
   EXPECT_EQ(f.handler.inFlight(), 1u);
+}
+
+// =============================================================================
+// Stream in-flight accounting — a stream is one in-flight REQUEST, retired at
+// its initial response (matching regular Thrift); its continuation is not
+// request work.
+// =============================================================================
+
+TEST(
+    ThriftServerConnectionCloseHandlerTest,
+    StreamRequestRetiresAtInitialResponseThenContinuationIsUncounted) {
+  Fixture f;
+
+  // REQUEST_STREAM opens one in-flight request.
+  ASSERT_EQ(
+      f.handler.onRead(f.ctx, erase_and_box(makeStreamRequest(1))),
+      Result::Success);
+  EXPECT_EQ(f.handler.inFlight(), 1u);
+
+  // The initial response retires it — exactly as a unary response would.
+  ASSERT_EQ(
+      f.handler.onWrite(f.ctx, erase_and_box(makeStreamInitialResponse(1))),
+      Result::Success);
+  EXPECT_EQ(f.handler.inFlight(), 0u);
+
+  // The stream then continues: inbound demand and outbound chunks/terminal are
+  // not request work, so the count stays at zero (no double-count, no
+  // underflow/DCHECK).
+  ASSERT_EQ(
+      f.handler.onRead(f.ctx, erase_and_box(makeRequestN(1, 5))),
+      Result::Success);
+  EXPECT_EQ(f.handler.inFlight(), 0u);
+  ASSERT_EQ(
+      f.handler.onWrite(f.ctx, erase_and_box(makeStreamChunk(1, false))),
+      Result::Success);
+  ASSERT_EQ(
+      f.handler.onWrite(f.ctx, erase_and_box(makeStreamChunk(1, true))),
+      Result::Success);
+  EXPECT_EQ(f.handler.inFlight(), 0u);
+}
+
+TEST(
+    ThriftServerConnectionCloseHandlerTest,
+    StreamFlowControlFramesAreNotRequestWork) {
+  Fixture f;
+
+  // REQUEST_N forwards through but never counts as request work. (CANCEL is no
+  // longer an inbound message — it arrives as a
+  // ThriftServerRequestCancellationEvent.)
+  ASSERT_EQ(
+      f.handler.onRead(f.ctx, erase_and_box(makeRequestN(3, 10))),
+      Result::Success);
+  EXPECT_EQ(f.handler.inFlight(), 0u);
+  EXPECT_EQ(f.ctx.reads.size(), 1u);
+}
+
+TEST(
+    ThriftServerConnectionCloseHandlerTest,
+    DrainWaitsForStreamInitialResponseNotStreamCompletion) {
+  Fixture f;
+
+  ASSERT_EQ(
+      f.handler.onRead(f.ctx, erase_and_box(makeStreamRequest(1))),
+      Result::Success);
+  f.handler.on<ThriftServerCloseConnectionEvent>(
+      f.ctx, ThriftServerCloseConnectionEvent{});
+  EXPECT_TRUE(f.handler.isDraining());
+  EXPECT_FALSE(f.handler.isClosed());
+
+  // The initial response alone settles the drain — the connection does not wait
+  // for the (still-open) stream to finish producing.
+  ASSERT_EQ(
+      f.handler.onWrite(f.ctx, erase_and_box(makeStreamInitialResponse(1))),
+      Result::Success);
+  EXPECT_EQ(f.handler.inFlight(), 0u);
+  EXPECT_TRUE(f.handler.isClosed());
+  EXPECT_EQ(f.ctx.pipeline_.deactivateCount, 1);
+  ASSERT_EQ(f.ctx.events.size(), 1u);
 }
 
 // =============================================================================

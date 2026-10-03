@@ -29,8 +29,12 @@
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftControlPayloads.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftRequestPayloads.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftResponsePayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/StreamResponsePayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/SetupMessages.h>
 
@@ -254,21 +258,33 @@ class ThriftServerConnectionCloseHandler {
   }
 
  private:
-  // The connection setup exchange rides the same pipeline but is not request
-  // work: its answer is a connection-level frame, not a response, so counting
-  // it would leave a count outstanding that no write can ever retire.
-  // Excluding by name rather than admitting by name deliberately: anything
-  // unrecognised is counted, so an unaccounted message delays the close
-  // instead of letting it race ahead of work still in flight.
+  // Count only the frames that OPEN a request exchange: REQUEST_RESPONSE and
+  // REQUEST_STREAM. Everything else is not request work — connection setup is
+  // answered with a connection-level frame (counting it would leave a count no
+  // write can retire), and REQUEST_N / CANCEL are established-stream flow
+  // control for an exchange already retired at its initial response (the stream
+  // itself is owned by the mux, not the in-flight request count). A new
+  // request-opening payload must be admitted here.
   static bool isRequestWork(
       const ThriftServerInboundPayloadVariant& payload) noexcept {
-    return !payload.template is<ThriftConnectionSetupPayload>();
+    return payload.template is<ThriftServerRequestResponsePayload>() ||
+        payload.template is<ThriftRequestStreamPayload>();
   }
 
+  // A request is retired by its INITIAL response: a unary response
+  // (ThriftInitialResponsePayload), a unary error (ThriftErrorPayload), or a
+  // stream's first response (ThriftStreamInitialResponsePayload). Everything
+  // else is not request work — setup responses/rejections are connection-level;
+  // ThriftStreamPayload is stream continuation (data chunks and the terminal
+  // complete/error), which drain does not wait for (the stream's lifecycle is
+  // owned by the mux, matching regular Thrift); ThriftServerStreamOpenPayload
+  // is the app->mux message consumed below this handler and never reaches the
+  // wire. A new payload that retires a request must be admitted here.
   static bool isRequestWork(
       const ThriftServerOutboundPayloadVariant& payload) noexcept {
-    return !payload.template is<ThriftSetupResponsePayload>() &&
-        !payload.template is<ThriftSetupRejectionPayload>();
+    return payload.template is<ThriftInitialResponsePayload>() ||
+        payload.template is<ThriftErrorPayload>() ||
+        payload.template is<ThriftStreamInitialResponsePayload>();
   }
 
   enum class State : uint8_t {
