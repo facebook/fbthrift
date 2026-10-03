@@ -544,15 +544,15 @@ T Json5ProtocolReader::readFloatingPointValue() {
   if (auto* f = std::get_if<T>(&primitive)) {
     return *f;
   }
-  if (auto i = tryParseI64(primitive)) {
-    T result = static_cast<T>(*i);
-    // Integers close to INT64_MAX round up to 2^63, and converting that back
-    // to int64_t would be undefined behavior.
-    if (result >= static_cast<T>(0x1p63) ||
-        static_cast<std::int64_t>(result) != *i) {
+  if (auto* i = std::get_if<Json5Reader::Integer>(&primitive)) {
+    // The magnitude is at most 2^63, so it rounds to at most 2^63 and
+    // converting back is defined.
+    T result = static_cast<T>(i->magnitude);
+    if (static_cast<std::uint64_t>(result) != i->magnitude) {
       throwError("precision loss converting integer to floating point");
     }
-    return result;
+    // Negating after the conversion keeps the sign of `-0`.
+    return i->negative ? -result : result;
   }
   throwError(
       fmt::format(

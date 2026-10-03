@@ -243,6 +243,47 @@ TEST(Json5CustomProtocolExtraTest, CustomBinaryAppendsOnlyNonEmptyValues) {
   EXPECT_EQ(nonEmpty.data, std::string("\x00\x01\x02", 3));
 }
 
+// SimpleJSON writes -0.0 as `-0`.
+TEST(Json5CustomProtocolExtraTest, NegativeZeroInteger) {
+  for (auto json :
+       {R"({"floatValue": -0, "doubleValue": -0})",
+        R"({"floatValue": "-0", "doubleValue": "-0"})",
+        R"({"floatValue": -0x0, "doubleValue": -0x0})",
+        R"({"floatValue": "-0x0", "doubleValue": "-0x0"})"}) {
+    auto example = readExample(json);
+    EXPECT_TRUE(std::signbit(*example.floatValue())) << json;
+    EXPECT_TRUE(std::signbit(*example.doubleValue())) << json;
+  }
+  for (auto json :
+       {R"({"floatValue": 0, "doubleValue": 0})",
+        R"({"floatValue": "0", "doubleValue": "0"})",
+        R"({"floatValue": +0, "doubleValue": +0})"}) {
+    auto example = readExample(json);
+    EXPECT_FALSE(std::signbit(*example.floatValue())) << json;
+    EXPECT_FALSE(std::signbit(*example.doubleValue())) << json;
+  }
+  auto firstKey = []<class Tag>(Tag, std::string_view json) {
+    return Json5ProtocolUtils::fromJson5<Tag>(json).begin()->first;
+  };
+  using FloatKeyed = type::map<type::float_t, type::i32_t>;
+  using DoubleKeyed = type::map<type::double_t, type::i32_t>;
+  for (auto json : {R"({"-0": 1})", R"({"-0x0": 1})"}) {
+    EXPECT_TRUE(std::signbit(firstKey(FloatKeyed{}, json))) << json;
+    EXPECT_TRUE(std::signbit(firstKey(DoubleKeyed{}, json))) << json;
+  }
+  // A value after a non-primitive key, in key/value-array form.
+  using ListKeyed = type::map<type::list<type::i32_t>, type::double_t>;
+  EXPECT_TRUE(
+      std::signbit(
+          Json5ProtocolUtils::fromJson5<ListKeyed>(
+              R"([{"key": [1], "value": -0}])")
+              .begin()
+              ->second));
+  EXPECT_FALSE(std::signbit(firstKey(FloatKeyed{}, R"({"0": 1})")));
+  EXPECT_FALSE(std::signbit(firstKey(DoubleKeyed{}, R"({"0": 1})")));
+  EXPECT_EQ(*readExample(R"({"i64Value": -0})").i64Value(), 0);
+}
+
 TEST(Json5CustomProtocolExtraTest, NonBmpStringRoundTrip) {
   // The reader recombines the surrogate pair; the writer emits raw UTF-8
   // rather than splitting it back into one.
