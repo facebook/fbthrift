@@ -835,4 +835,20 @@ TEST(CppAllocatorTest, AllocExtendedMoveRebuildsNonNullOptionalRef) {
   EXPECT_EQ(moved.s_ref()->aa_list()->size(), 2);
 }
 
+TEST(CppAllocatorTest, AllocExtendedCtorsRunAdapterConstruct) {
+  std::pmr::monotonic_buffer_resource res;
+  PmrByteAlloc alloc(&res);
+  auto& count = ConstructCountingAdapter::constructCount;
+  count = 0;
+
+  AdaptedFieldPmr fromAlloc(alloc);
+  EXPECT_EQ(count, 1);
+  AdaptedFieldPmr copied(fromAlloc, alloc);
+  EXPECT_EQ(count, 2);
+  AdaptedFieldPmr movedWithAlloc(std::move(copied), alloc);
+  EXPECT_EQ(count, 3);
+  const AdaptedFieldPmr moved(std::move(movedWithAlloc));
+  EXPECT_EQ(count, 4);
+}
+
 } // namespace apache::thrift::test

@@ -252,6 +252,15 @@ struct OptionalRefPmr {
   3: optional ChildPmr s;
 }
 
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "PmrByteAlloc"},
+}
+struct AdaptedFieldPmr {
+  @cpp.Adapter{name = "::ConstructCountingAdapter"}
+  1: i32 counted;
+  2: list_i32_8699 aa_list;
+}
+
 @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
 @cpp.Type{template = "::StatefulAllocMap"}
 typedef map<i32, i32> StatefulAllocIntMap

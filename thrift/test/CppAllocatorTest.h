@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <compare>
+#include <cstdint>
 #include <map>
 #include <memory>
 #include <memory_resource>
@@ -279,4 +281,21 @@ struct PropagateMoveSwapAlloc : public PropagateAllocBase {
   PropagateMoveSwapAlloc(PropagateMoveSwapAlloc&&) = default;
   PropagateMoveSwapAlloc& operator=(const PropagateMoveSwapAlloc&) = delete;
   PropagateMoveSwapAlloc& operator=(PropagateMoveSwapAlloc&&) = default;
+};
+
+struct ConstructCounted {
+  int32_t value = 0;
+  auto operator<=>(const ConstructCounted&) const = default;
+};
+
+// Counts the Adapter::construct calls that generated constructors make.
+struct ConstructCountingAdapter {
+  static inline int constructCount = 0;
+
+  static ConstructCounted fromThrift(int32_t value) { return {value}; }
+  static int32_t toThrift(const ConstructCounted& value) { return value.value; }
+  template <typename Context>
+  static void construct(ConstructCounted&, Context) {
+    ++constructCount;
+  }
 };

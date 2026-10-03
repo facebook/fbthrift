@@ -2555,7 +2555,8 @@ AllocatorAware::AllocatorAware(const allocator_type& alloc) noexcept :
     __fbthrift_field_aa_string(alloc),
     __fbthrift_field_not_a_container(),
     __fbthrift_field_aa_unique(folly::allocate_unique<::apache::thrift::fixtures::types::i32_9314>(alloc)),
-    __fbthrift_field_aa_shared(std::allocate_shared<::apache::thrift::fixtures::types::i32_9314>(alloc)) {}
+    __fbthrift_field_aa_shared(std::allocate_shared<::apache::thrift::fixtures::types::i32_9314>(alloc)) {
+}
 
 AllocatorAware::AllocatorAware(const AllocatorAware& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
@@ -2566,7 +2567,8 @@ AllocatorAware::AllocatorAware(const AllocatorAware& other, const allocator_type
     __fbthrift_field_not_a_container(other.__fbthrift_field_not_a_container),
     __fbthrift_field_aa_unique(other.__fbthrift_field_aa_unique ? folly::allocate_unique<::apache::thrift::fixtures::types::i32_9314>(alloc, *other.__fbthrift_field_aa_unique) : nullptr),
     __fbthrift_field_aa_shared(other.__fbthrift_field_aa_shared ? std::allocate_shared<::apache::thrift::fixtures::types::i32_9314>(alloc, *other.__fbthrift_field_aa_shared) : nullptr),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
 
 AllocatorAware::AllocatorAware(AllocatorAware&& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
@@ -2577,7 +2579,8 @@ AllocatorAware::AllocatorAware(AllocatorAware&& other, const allocator_type& all
     __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),
     __fbthrift_field_aa_unique(other.__fbthrift_field_aa_unique ? folly::allocate_unique<::apache::thrift::fixtures::types::i32_9314>(alloc, std::move(*other.__fbthrift_field_aa_unique)) : nullptr),
     __fbthrift_field_aa_shared(other.__fbthrift_field_aa_shared ? std::allocate_shared<::apache::thrift::fixtures::types::i32_9314>(alloc, std::move(*other.__fbthrift_field_aa_shared)) : nullptr),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
 AllocatorAware::AllocatorAware([[maybe_unused]] AllocatorAware&& other) noexcept :
     __fbthrift_alloc(std::move(other.__fbthrift_alloc)),
     __fbthrift_field_aa_list(std::move(other.__fbthrift_field_aa_list)),
@@ -2731,19 +2734,22 @@ AllocatorAware2::~AllocatorAware2() {}
 AllocatorAware2::AllocatorAware2(const allocator_type& alloc) noexcept :
     __fbthrift_alloc(alloc),
     __fbthrift_field_not_a_container(),
-    __fbthrift_field_box_field() {}
+    __fbthrift_field_box_field() {
+}
 
 AllocatorAware2::AllocatorAware2(const AllocatorAware2& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
     __fbthrift_field_not_a_container(other.__fbthrift_field_not_a_container),
     __fbthrift_field_box_field(other.__fbthrift_field_box_field),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
 
 AllocatorAware2::AllocatorAware2(AllocatorAware2&& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
     __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),
     __fbthrift_field_box_field(std::move(other.__fbthrift_field_box_field)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
 AllocatorAware2::AllocatorAware2([[maybe_unused]] AllocatorAware2&& other) noexcept :
     __fbthrift_alloc(std::move(other.__fbthrift_alloc)),
     __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),

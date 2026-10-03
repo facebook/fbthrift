@@ -24,6 +24,20 @@
   {{/if field.cpp_ref_unique?}}
 <{{field.cpp_type}}>
 {{/let partial}}
+{{#let partial default_adapter_construct_calls |struct|}}
+  {{#each struct.fields as |field|}}
+    {{#if (and (object.notnull? field.cpp_first_adapter) (not field.opt_cpp_ref?) (not field.intern_boxed_ref?))}}
+  ::apache::thrift::adapt_detail::construct<{{field.cpp_first_adapter}}, {{field.id}}>({{#if field.cpp_ref?}}*{{/if}}{{field.cpp_storage_name}}, *this);
+    {{/if (and (object.notnull? field.cpp_first_adapter) (not field.opt_cpp_ref?) (not field.intern_boxed_ref?))}}
+  {{/each}}
+{{/let partial}}
+{{#let partial copied_adapter_construct_calls |struct|}}
+  {{#each struct.fields as |field|}}
+    {{#if (object.notnull? field.cpp_first_adapter)}}
+  {{#if field.opt_cpp_ref?}}if ({{field.cpp_storage_name}}) {{/if}}::apache::thrift::adapt_detail::construct<{{field.cpp_first_adapter}}, {{field.id}}>({{#if field.cpp_ref?}}*{{/if}}{{field.cpp_storage_name}}, *this);
+    {{/if (object.notnull? field.cpp_first_adapter)}}
+  {{/each}}
+{{/let partial}}
 {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const allocator_type& alloc){{#if (not struct.cpp_alloc_ctor_default_fields?)}} noexcept{{/if}} :
   {{#if (object.eq? null struct.cpp_allocator_via)}}
     __fbthrift_alloc(alloc),
@@ -34,8 +48,11 @@
 }}{{#partial alloc_smart_ptr_fn field=field}}({{#if (object.notnull? field.default_value)}}{{#partial fields.default_value field=field}}{{#else if field.type.cpp_use_allocator?}}alloc{{/if}}){{/if field.cpp_ref_not_boxed?}}{{!
 }}{{#if (and (not field.cpp_ref?) field.cpp_use_allocator?)}}{{#if field.cpp_alloc_ctor_applies_default?}}{{#partial fields.default_value field=field}}, {{/if}}alloc{{!
 }}{{#else if (and (not field.cpp_ref?) field.cpp_alloc_ctor_applies_default?)}}{{#partial fields.default_value field=field}}{{!
-}}{{/if (and (not field.cpp_ref?) field.cpp_use_allocator?)}}){{#if last?}} {}{{#else}},{{/if}}
-  {{/each}}
+}}{{/if (and (not field.cpp_ref?) field.cpp_use_allocator?)}}){{#if (not last?)}},
+{{/if (not last?)}}{{!
+  }}{{/each}} {
+{{#partial default_adapter_construct_calls struct=struct}}
+}
 {{#if (not struct.cpp_noncopyable)}}
 
 {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const {{struct.cpp_underlying_name}}& other, const allocator_type& alloc) :
@@ -48,7 +65,9 @@
 }}{{#else}}other.{{field.cpp_storage_name}}{{#if (and (not field.cpp_ref?) field.cpp_use_allocator?)}}, alloc{{/if}}{{/if field.cpp_ref_not_boxed?}}{{!
     }}){{#if last?}}{{#if struct.isset_fields?}},{{/if}}{{#else}},{{/if}}
   {{/each}}
-{{#if struct.isset_fields?}}    __isset(other.__isset){{/if}} {}
+{{#if struct.isset_fields?}}    __isset(other.__isset){{/if}} {
+{{#partial copied_adapter_construct_calls struct=struct}}
+}
 {{/if (not struct.cpp_noncopyable)}}
 
 {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}({{struct.cpp_underlying_name}}&& other, const allocator_type& alloc) :
@@ -61,4 +80,6 @@
 }}{{#else}}std::move(other.{{field.cpp_storage_name}}){{#if (and (not field.cpp_ref?) field.cpp_use_allocator?)}}, alloc{{/if}}{{/if field.cpp_ref_not_boxed?}}{{!
     }}){{#if last?}}{{#if struct.isset_fields?}},{{/if}}{{#else}},{{/if}}
   {{/each}}
-{{#if struct.isset_fields?}}    __isset(other.__isset){{/if}} {}
+{{#if struct.isset_fields?}}    __isset(other.__isset){{/if}} {
+{{#partial copied_adapter_construct_calls struct=struct}}
+}
