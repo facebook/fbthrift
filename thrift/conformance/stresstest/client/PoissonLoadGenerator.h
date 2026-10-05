@@ -46,6 +46,7 @@ class PoissonLoadGenerator : public BaseLoadGenerator {
   ~PoissonLoadGenerator() override;
 
   folly::coro::AsyncGenerator<Count> getRequestCount() override;
+  folly::coro::AsyncGenerator<RequestSignal> getRequestSignals() override;
   void start() override;
   void stop() override;
 
@@ -53,7 +54,7 @@ class PoissonLoadGenerator : public BaseLoadGenerator {
   const double targetQps_;
   std::atomic<bool> running_{true};
   std::atomic<bool> started_{false};
-  folly::coro::SmallUnboundedQueue<Count> queue_;
+  folly::coro::SmallUnboundedQueue<RequestSignal> queue_;
   std::mt19937_64 gen_{std::random_device()()};
   std::thread thread_;
 

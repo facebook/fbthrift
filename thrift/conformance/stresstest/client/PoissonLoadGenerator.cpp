@@ -61,8 +61,17 @@ PoissonLoadGenerator::PoissonLoadGenerator(double targetQps)
 
 folly::coro::AsyncGenerator<PoissonLoadGenerator::Count>
 PoissonLoadGenerator::getRequestCount() {
+  folly::coro::AsyncGenerator<RequestSignal> signals = getRequestSignals();
+  while (const folly::coro::AsyncGenerator<RequestSignal>::NextResult signal =
+             co_await signals.next()) {
+    co_yield signal->count;
+  }
+}
+
+folly::coro::AsyncGenerator<PoissonLoadGenerator::RequestSignal>
+PoissonLoadGenerator::getRequestSignals() {
   while (true) {
-    const Count request = co_await queue_.dequeue();
+    const RequestSignal request = co_await queue_.dequeue();
     if (!running_.load(std::memory_order_relaxed)) {
       co_return;
     }
@@ -117,7 +126,11 @@ void PoissonLoadGenerator::generateRequestSignals() {
     if (!running_.load(std::memory_order_relaxed)) {
       break;
     }
-    queue_.enqueue(1);
+    queue_.enqueue(
+        RequestSignal{
+            .count = 1,
+            .plannedArrival = nextArrival,
+        });
   }
 }
 
@@ -130,7 +143,7 @@ void PoissonLoadGenerator::start() {
 
 void PoissonLoadGenerator::stop() {
   if (running_.exchange(false, std::memory_order_relaxed)) {
-    queue_.enqueue(0);
+    queue_.enqueue(RequestSignal{});
   }
 }
 

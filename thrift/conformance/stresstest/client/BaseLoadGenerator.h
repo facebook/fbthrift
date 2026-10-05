@@ -16,20 +16,40 @@
 
 #pragma once
 
+#include <chrono>
+
 #include <folly/coro/AsyncGenerator.h>
 #include <folly/coro/Coroutine.h>
 
 namespace apache::thrift::stress {
 
 /**
- * Generates a Signals that indicates the client should create a request.
+ * Supplies request counts to stress-test runners.
+ *
+ * Detailed signals also carry a planned arrival time. Generators that only
+ * implement getRequestCount() use the time when the runner consumes the count.
  */
 class BaseLoadGenerator {
  public:
   virtual ~BaseLoadGenerator() = default;
   using Count = int32_t;
 
+  struct RequestSignal {
+    Count count;
+    std::chrono::steady_clock::time_point plannedArrival;
+  };
+
   virtual folly::coro::AsyncGenerator<Count> getRequestCount() = 0;
+  virtual folly::coro::AsyncGenerator<RequestSignal> getRequestSignals() {
+    folly::coro::AsyncGenerator<Count> counts = getRequestCount();
+    while (const folly::coro::AsyncGenerator<Count>::NextResult count =
+               co_await counts.next()) {
+      co_yield RequestSignal{
+          .count = *count,
+          .plannedArrival = std::chrono::steady_clock::now(),
+      };
+    }
+  }
   virtual void start() = 0;
   virtual void stop() = 0;
 };
