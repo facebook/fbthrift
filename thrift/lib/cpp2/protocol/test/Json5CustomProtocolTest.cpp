@@ -235,9 +235,9 @@ TEST(Json5CustomProtocolExtraTest, CustomBinaryAppendsOnlyNonEmptyValues) {
     reader.readBinary(binary);
     return binary;
   };
-  auto empty = read(R"("")");
-  EXPECT_EQ(empty.appends, 0);
-  EXPECT_EQ(empty.data, "");
+  auto emptyBinary = read(R"("")");
+  EXPECT_EQ(emptyBinary.appends, 0);
+  EXPECT_EQ(emptyBinary.data, "");
   auto nonEmpty = read(R"("AAEC")");
   EXPECT_EQ(nonEmpty.appends, 1);
   EXPECT_EQ(nonEmpty.data, std::string("\x00\x01\x02", 3));
