@@ -50,6 +50,12 @@ class TestAcceptCallback final
       folly::NetworkSocket fd,
       const folly::SocketAddress&,
       AcceptInfo) noexcept override {
+    int keepAlive = 0;
+    socklen_t keepAliveLength = sizeof(keepAlive);
+    if (folly::netops::getsockopt(
+            fd, SOL_SOCKET, SO_KEEPALIVE, &keepAlive, &keepAliveLength) == 0) {
+      acceptedKeepAlive_.store(keepAlive, std::memory_order_relaxed);
+    }
     acceptedOnWorker_.store(
         evb_.isInEventBaseThread(), std::memory_order_relaxed);
     folly::netops::close(fd);
@@ -72,6 +78,7 @@ class TestAcceptCallback final
   std::atomic<size_t> acceptedCount_{0};
   std::atomic<bool> acceptedOnWorker_{false};
   std::atomic<bool> acceptError_{false};
+  std::atomic<int> acceptedKeepAlive_{-1};
 
  private:
   folly::EventBase& evb_;
@@ -127,6 +134,10 @@ TEST(ConnectionAcceptorTest, DispatchesAcceptedFdToWorker) {
 
   ConnectionAcceptor::Ptr acceptor;
   folly::SocketAddress address;
+  SocketOptions socketOptions;
+  socketOptions.listeningSocketOptions.emplace(
+      folly::SocketOptionKey{SOL_SOCKET, SO_KEEPALIVE},
+      folly::SocketOptionValue(1));
   acceptorEvb->runInEventBaseThreadAndWait([&] {
     std::vector<ConnectionWorkerTarget> workers;
     workers.reserve(1);
@@ -134,7 +145,7 @@ TEST(ConnectionAcceptorTest, DispatchesAcceptedFdToWorker) {
     acceptor = std::make_unique<ConnectionAcceptor>(
         *acceptorEvb,
         folly::SocketAddress("::1", 0),
-        SocketOptions{},
+        socketOptions,
         /*enableReusePortBpfSpread=*/false,
         std::move(workers));
     acceptor->setConnectionEventCallback(eventCallback);
@@ -164,6 +175,7 @@ TEST(ConnectionAcceptorTest, DispatchesAcceptedFdToWorker) {
 
   EXPECT_FALSE(callback.acceptError_.load(std::memory_order_relaxed));
   EXPECT_TRUE(callback.acceptedOnWorker_.load(std::memory_order_relaxed));
+  EXPECT_NE(callback.acceptedKeepAlive_.load(std::memory_order_relaxed), 0);
   EXPECT_EQ(eventCallback->accepted.load(std::memory_order_relaxed), 1);
   EXPECT_EQ(eventCallback->enqueued.load(std::memory_order_relaxed), 1);
   EXPECT_EQ(eventCallback->dequeued.load(std::memory_order_relaxed), 1);

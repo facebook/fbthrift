@@ -435,6 +435,15 @@ void FastThriftServer::setSocketOptions(connection::SocketOptions opts) {
   socketOptions_ = opts;
 }
 
+void FastThriftServer::setListeningSocketOption(
+    folly::SocketOptionKey key, folly::SocketOptionValue value) {
+  std::lock_guard<std::mutex> lock(lifecycleMutex_);
+  CHECK(state_ == State::kNotStarted)
+      << "FastThriftServer::setListeningSocketOption must be called before "
+         "start()/serve()";
+  socketOptions_.listeningSocketOptions.insert_or_assign(key, std::move(value));
+}
+
 void FastThriftServer::reloadTLSConfig(security::FizzServerCertConfig cfg) {
   // Snapshot thriftConfig_ under the lock: setThriftConfig writes it under
   // the same mutex, and reloadTLSConfig is documented as safe from any

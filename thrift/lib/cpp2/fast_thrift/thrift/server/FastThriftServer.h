@@ -416,6 +416,16 @@ class FastThriftServer {
   void setSocketOptions(connection::SocketOptions opts);
 
   /**
+   * Add or replace one option on every listening socket without disturbing
+   * options installed by other integrations. The key's ApplyPos selects
+   * whether the option is applied before or after bind.
+   *
+   * Must be called before start()/serve().
+   */
+  void setListeningSocketOption(
+      folly::SocketOptionKey key, folly::SocketOptionValue value);
+
+  /**
    * Per-connection accept callback. Invoked once per accepted connection
    * (after handshake completion when TLS is enabled), with a pointer to the
    * per-connection ThriftConnContext. Use this to attach embedder-owned

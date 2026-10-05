@@ -69,7 +69,24 @@ void ConnectionAcceptor::start() {
   if (socketOptions_.tfoEnabled) {
     socket_->setTFOEnabled(true, socketOptions_.tfoQueueSize);
   }
-  socket_->bind(address_);
+  socket_->bind(address_, socketOptions_.listeningSocketOptions);
+  for (auto fd : socket_->getNetworkSockets()) {
+    for (const auto& [key, value] : folly::validateSocketOptions(
+             socketOptions_.listeningSocketOptions,
+             address_.getFamily(),
+             folly::SocketOptionKey::ApplyPos::POST_BIND)) {
+      if (key.apply(fd, value) != 0) {
+        const int savedErrno = errno;
+        XLOGF_EVERY_MS(
+            ERR,
+            60000,
+            "Failed to apply listening socket option on fd {}: errno={} ({})",
+            fd.toFd(),
+            savedErrno,
+            folly::errnoStr(savedErrno));
+      }
+    }
+  }
   socket_->listen(static_cast<int>(socketOptions_.listenBacklog));
   if (enableReusePortBpfSpread_) {
     attachReusePortBpfSpread();

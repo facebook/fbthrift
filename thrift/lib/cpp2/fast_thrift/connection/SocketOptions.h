@@ -20,6 +20,7 @@
 #include <cstdint>
 #include <optional>
 
+#include <folly/io/SocketOptionMap.h>
 #include <folly/observer/Observer.h>
 
 namespace apache::thrift::fast_thrift::connection {
@@ -30,6 +31,10 @@ namespace apache::thrift::fast_thrift::connection {
  * ConnectionManager to every IO thread's ConnectionHandler.
  */
 struct SocketOptions {
+  // Options added one at a time through FastThriftServer and applied to every
+  // listening socket at the phase declared by each key.
+  folly::SocketOptionMap listeningSocketOptions;
+
   // Accept queue depth (kernel listen backlog).
   uint32_t listenBacklog{1024};
 
