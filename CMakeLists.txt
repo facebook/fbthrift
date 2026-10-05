@@ -119,7 +119,6 @@ find_package(Threads)
 find_package(Gflags REQUIRED)
 find_package(Glog REQUIRED)
 find_package(OpenSSL REQUIRED)
-find_package(Xxhash REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(Zstd REQUIRED)
 
@@ -147,6 +146,56 @@ if ("OpenSSL::Crypto" IN_LIST thrift_folly_build_local)
   endif ()
   # Still linked; it just stops being something an installed thrift asks for.
   set(thrift_openssl_crypto "$<BUILD_LOCAL_INTERFACE:OpenSSL::Crypto>")
+endif ()
+
+# Fetch xxhash if it is not installed.
+function (thrift_fetch_xxhash)
+  set(path "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/manifests/xxhash")
+  file(READ "${path}" text)
+  if (NOT text MATCHES
+      "url = (https://[^\r\n]+\\.tar\\.gz)[\r\n]+sha256 = ([0-9a-f]+)")
+    message(FATAL_ERROR "no archive in ${path}")
+  endif ()
+  message(STATUS "xxhash not found, fetching ${CMAKE_MATCH_1}")
+  set(XXHASH_BUILD_XXHSUM OFF)
+  # Otherwise xxhash's option() caches BUILD_SHARED_LIBS=ON for all of thrift.
+  if (NOT DEFINED BUILD_SHARED_LIBS)
+    set(BUILD_SHARED_LIBS OFF)
+  endif ()
+  # xxhash FORCEs CMAKE_BUILD_TYPE to Release when it is unset.
+  set(saved_build_type "${CMAKE_BUILD_TYPE}")
+  include(FetchContent)
+  FetchContent_Declare(
+    xxhash
+    URL "${CMAKE_MATCH_1}"
+    URL_HASH SHA256=${CMAKE_MATCH_2}
+    SOURCE_SUBDIR cmake_unofficial)
+  FetchContent_MakeAvailable(xxhash)
+  if (NOT saved_build_type)
+    set(CMAKE_BUILD_TYPE
+        ""
+        CACHE STRING "Choose the type of build." FORCE)
+  endif ()
+  set_target_properties(xxhash PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  # Imported, so thrift's export names Xxhash::xxhash as it does for an
+  # installed xxhash, and the fetched target needn't be exported.
+  add_library(Xxhash::xxhash INTERFACE IMPORTED GLOBAL)
+  target_link_libraries(Xxhash::xxhash INTERFACE xxhash)
+  FetchContent_GetProperties(xxhash SOURCE_DIR source_dir)
+  set(Xxhash_INCLUDE_DIR
+      "${source_dir}"
+      PARENT_SCOPE)
+  set(Xxhash_LIBRARY
+      xxhash
+      PARENT_SCOPE)
+  set(Xxhash_FOUND
+      ON
+      PARENT_SCOPE)
+endfunction ()
+
+find_package(Xxhash)
+if (NOT Xxhash_FOUND)
+  thrift_fetch_xxhash()
 endif ()
 
 if (THRIFT_RPC)
