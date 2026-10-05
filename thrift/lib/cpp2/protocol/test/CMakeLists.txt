@@ -14,11 +14,18 @@
 
 # Generate required Thrift dependencies.
 foreach (thrift_file Module CompactProtocolTestStructs cursor)
+  # cursor.thrift's adapted types have no frozen layouts, and its Buck target
+  # doesn't generate them either.
+  if ("${thrift_file}" STREQUAL "cursor")
+    set(thrift_options "")
+  else ()
+    set(thrift_options "frozen2,layouts")
+  endif ()
   thrift_generate(
     "${thrift_file}" #file_name
     "" #services
     "cpp2" #language
-    "frozen2,layouts" #options
+    "${thrift_options}" #options
     "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
     "${CMAKE_CURRENT_BINARY_DIR}" #output_path
     "thrift/lib/cpp2/protocol/test" #include_prefix
