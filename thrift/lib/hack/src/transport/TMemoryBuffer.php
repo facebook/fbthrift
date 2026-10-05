@@ -92,22 +92,40 @@ final class TMemoryBuffer
     return $ret;
   }
 
-  // This is the same as the parent implementation except the narrower coeffect.
   <<__Override>>
   public function readAll(int $len)[write_props]: string {
-    $data = '';
-    for ($got = Str\length($data); $got < $len; $got = Str\length($data)) {
-      $data .= $this->read($len - $got);
+    // Str\slice rejects a negative length, which corrupted size prefixes
+    // produce; the read loop returns '' for them.
+    if ($len <= 0) {
+      return '';
     }
-    return $data;
+    $offset = $this->index_;
+    if ($this->length() - $offset < $len) {
+      throw new TTransportException(
+        'TMemoryBuffer: Could not read '.
+        $len.
+        ' bytes from buffer.'.
+        ' Original length is '.
+        $this->length().
+        ' Current index is '.
+        $offset,
+        TTransportException::UNKNOWN,
+      );
+    }
+    $this->index_ = $offset + $len;
+    if ($len === 1) {
+      return $this->buf_[$offset];
+    }
+    return Str\slice($this->buf_, $offset, $len);
   }
 
   public function peek(int $len, int $start = 0)[]: string {
+    $offset = $this->index_ + $start;
     if ($len !== 1) {
-      return Str\slice($this->buf_, $this->index_ + $start, $len);
+      return Str\slice($this->buf_, $offset, $len);
     }
-    if (Str\length($this->buf_) !== 0) {
-      return $this->buf_[$this->index_ + $start];
+    if (Str\length($this->buf_) > $offset) {
+      return $this->buf_[$offset];
     }
     return '';
   }
@@ -116,8 +134,7 @@ final class TMemoryBuffer
     if ($this->available() === 0) {
       $this->buf_ = $buf;
     } else {
-      $remaining = (string)PHP\substr($this->buf_, $this->index_);
-      $this->buf_ = $buf.$remaining;
+      $this->buf_ = $buf.(string)PHP\substr($this->buf_, $this->index_);
     }
     $this->length_ = null;
     $this->index_ = 0;
