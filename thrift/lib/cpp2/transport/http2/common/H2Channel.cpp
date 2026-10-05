@@ -20,26 +20,27 @@
 #include <folly/String.h>
 #include <folly/base64.h>
 #include <proxygen/lib/http/codec/CodecUtil.h>
+#include <proxygen/lib/utils/UtilInl.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 
+#include <string_view>
+
 namespace {
-template <uint64_t x>
 // TODO: Replace `encode_<base64url(name)>` with encode_thrift_header, and add
 // that header to proxygen/lib/http/HTTPCommonHeaders.txt
-// encode_C2VYDMLJZXJVDXRLCJPOB3BFCGF0AA = "servicerouter:hop_path"
-std::enable_if_t<(x > 200), bool> isEncodeHeader(
-    proxygen::HTTPHeaderCode code, const std::string& key) {
-  return code == proxygen::HTTP_HEADER_ENCODE_C2VYDMLJZXJVDXRLCJPOB3BFCGF0AA ||
-      (code == proxygen::HTTP_HEADER_OTHER &&
-       folly::StringPiece(key).startsWith("encode_"));
-}
-template <uint64_t x>
-std::enable_if_t<(x <= 200), bool> isEncodeHeader(
-    proxygen::HTTPHeaderCode code, const std::string& key) {
+// encode_c2vydmljzxjvdxrlcjpob3bfcgf0aa = "servicerouter:hop_path"
+//
+// That header is no longer in the common list, so it arrives as
+// HTTP_HEADER_OTHER and is caught by the "encode_" name prefix like every
+// other encoded header.
+bool isEncodeHeader(proxygen::HTTPHeaderCode code, const std::string& key) {
   return (
       code == proxygen::HTTP_HEADER_OTHER &&
       folly::StringPiece(key).startsWith("encode_"));
 }
+
+// Not in the common header list, so addressed by name.
+constexpr std::string_view kThriftPriority{"thrift_priority"};
 } // namespace
 
 namespace apache::thrift {
@@ -98,7 +99,7 @@ void H2Channel::decodeHeaders(
     if (metadata && handleThriftMetadata(metadata, code, key, val)) {
       return;
     }
-    if (isEncodeHeader<proxygen::HTTPCommonHeaders::num_codes>(code, key)) {
+    if (isEncodeHeader(code, key)) {
       // This decodes key-value pairs that have been encoded using
       // encodeHeaders() or equivalent methods.  If the key starts with
       // "encode_", the value is split at the underscore and then the
@@ -132,7 +133,7 @@ void H2Channel::decodeHeaders(
 bool H2Channel::handleThriftMetadata(
     RequestRpcMetadata* metadata,
     proxygen::HTTPHeaderCode code,
-    const std::string&,
+    const std::string& key,
     const std::string& value) noexcept {
   if (code == proxygen::HTTP_HEADER_RPCKIND) {
     auto parsed = folly::tryTo<int32_t>(value);
@@ -150,7 +151,9 @@ bool H2Channel::handleThriftMetadata(
     }
     metadata->queueTimeoutMs() = *parsed;
     return true;
-  } else if (code == proxygen::HTTP_HEADER_THRIFT_PRIORITY) {
+  } else if (
+      code == proxygen::HTTP_HEADER_OTHER &&
+      proxygen::caseInsensitiveEqual(key, kThriftPriority)) {
     auto parsed = folly::tryTo<int32_t>(value);
     if (!parsed) {
       LOG(INFO) << "Bad method priority " << value;

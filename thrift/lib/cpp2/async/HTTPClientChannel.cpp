@@ -29,6 +29,13 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <wangle/ssl/SSLContextConfig.h>
 
+#include <string_view>
+
+namespace {
+// Not in the common header list, so addressed by name.
+constexpr std::string_view kXThriftProtocol{"X-Thrift-Protocol"};
+} // namespace
+
 using apache::thrift::transport::THeader;
 using apache::thrift::transport::TTransportException;
 using folly::EventBase;
@@ -522,21 +529,16 @@ proxygen::HTTPMessage HTTPClientChannel::buildHTTPMessage(THeader* header) {
 
   switch (protocolId_) {
     case protocol::T_BINARY_PROTOCOL:
-      headers.set(
-          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "binary");
+      headers.set(kXThriftProtocol, "binary");
       break;
     case protocol::T_COMPACT_PROTOCOL:
-      headers.set(
-          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "compact");
+      headers.set(kXThriftProtocol, "compact");
       break;
     case protocol::T_JSON_PROTOCOL:
-      headers.set(
-          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "json");
+      headers.set(kXThriftProtocol, "json");
       break;
     case protocol::T_SIMPLE_JSON_PROTOCOL:
-      headers.set(
-          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
-          "simplejson");
+      headers.set(kXThriftProtocol, "simplejson");
       break;
     default:
       // Do nothing

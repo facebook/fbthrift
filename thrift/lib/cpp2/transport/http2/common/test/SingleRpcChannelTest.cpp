@@ -30,6 +30,13 @@
 #include <thrift/lib/cpp2/transport/http2/common/testutil/ChannelTestFixture.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h>
 
+#include <string_view>
+
+namespace {
+// Not in the common header list, so addressed by name.
+constexpr std::string_view kRetryAfter{"Retry-After"};
+} // namespace
+
 namespace apache::thrift {
 
 using std::string;
@@ -216,7 +223,7 @@ void httpHandler(
         .body(generateResponse("oom"));
   } else if (message.getURL() == "app_overloaded") {
     builder.status(503, "Service Unavailable")
-        .header(proxygen::HTTP_HEADER_RETRY_AFTER, "0");
+        .header(std::string{kRetryAfter}, "0");
   } else if (message.getURL() == "too_many_requests") {
     builder.status(429, "Too Many Requests");
   } else if (message.getURL() == "eof") {

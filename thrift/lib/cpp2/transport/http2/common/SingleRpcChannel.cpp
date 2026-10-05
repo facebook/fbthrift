@@ -40,6 +40,13 @@
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 
+#include <string_view>
+
+namespace {
+// Not in the common header list, so addressed by name.
+constexpr std::string_view kRetryAfter{"Retry-After"};
+} // namespace
+
 namespace apache::thrift {
 
 namespace detail {
@@ -443,8 +450,7 @@ void SingleRpcChannel::onThriftResponse() noexcept {
   }
 
   const auto statusCode = headers_->getStatusCode();
-  const auto& retryAfter = headers_->getHeaders().getSingleOrEmpty(
-      proxygen::HTTP_HEADER_RETRY_AFTER);
+  const auto& retryAfter = headers_->getHeaders().getSingleOrEmpty(kRetryAfter);
 
   // HTTP 429 (Too Many Requests) - rate limiting/throttling
   // HTTP 503 (Service Unavailable) + Retry-After - service overload
