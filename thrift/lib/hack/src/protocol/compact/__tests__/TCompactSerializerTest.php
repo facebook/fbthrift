@@ -19,6 +19,13 @@
 <<Oncalls('thrift')>>
 final class TCompactSerializerTest extends WWWTest {
 
+  // The knob samples requests in production; pin it off so other cases never
+  // queue a PSP comparison.
+  <<__Override>>
+  public static async function createData(): Awaitable<void> {
+    MockJustKnobs::setBool('thrift/hack:compact_protocol_v2', false);
+  }
+
   public static function provideStructs(): vec<(IThriftStruct)> {
     return vec[
       tuple(thriftshim_Kudo::withDefaultValues()),
@@ -52,5 +59,55 @@ final class TCompactSerializerTest extends WWWTest {
     $serialized_again =
       TCompactSerializer::serialize($deserialized_struct, $version);
     expect($serialized_again)->toEqual($serialized);
+  }
+
+  public static function providerProtocolV2Knob(
+  ): dict<string, shape('enabled' => bool)> {
+    return dict[
+      'protocol v2 comparison off' => shape('enabled' => false),
+      'protocol v2 comparison on' => shape('enabled' => true),
+    ];
+  }
+
+  <<DataProvider('providerProtocolV2Knob')>>
+  public function testPureHackPathsAcrossProtocolV2Knob(bool $enabled): void {
+    MockJustKnobs::setBool('thrift/hack:compact_protocol_v2', $enabled);
+    // shouldCompareProtocolV2() is memoized; earlier cases would otherwise pin
+    // its value.
+    clear_class_memoization(
+      TCompactSerializer::class,
+      'shouldCompareProtocolV2',
+    );
+    $struct = new thriftshim_FooBar(Vector {1.0, -2.5}, 'bar');
+    $expected = thrift_protocol_write_compact_struct_to_string(
+      $struct,
+      TCompactProtocolBase::VERSION,
+    );
+
+    $serialized = TCompactSerializer::serialize($struct, null, true);
+    expect($serialized)->toEqual($expected);
+    $deserialized = TCompactSerializer::deserialize(
+      $serialized,
+      thriftshim_FooBar::withDefaultValues(),
+      null,
+      true,
+    );
+    expect(TCompactSerializer::serialize($deserialized, null, true))
+      ->toEqual($expected);
+
+    $i64 = shape('type' => TType::I64);
+    $data = TCompactSerializer::serializeData(Math\INT64_MIN, $i64);
+    expect(TCompactSerializer::deserializeData($data, $i64))
+      ->toEqual(Math\INT64_MIN);
+
+    // V2 decodes this i64 with the opposite sign; the knob only schedules a
+    // comparison, so the base protocol's value is still returned.
+    $overflow = TCompactSerializer::deserialize(
+      "\x36".Str\repeat("\xff", 9)."\x02\x00",
+      thriftshim_Pokemon::withDefaultValues(),
+      null,
+      true,
+    );
+    expect($overflow->charizard)->toEqual(4611686018427387904);
   }
 }

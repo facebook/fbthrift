@@ -26,6 +26,13 @@ final class TBinarySerializerTest extends WWWTest {
 
   use ClassLevelTest;
 
+  // The knob samples requests in production; pin it off so other cases never
+  // queue a PSP comparison.
+  <<__Override>>
+  public static async function createData(): Awaitable<void> {
+    MockJustKnobs::setBool('thrift/hack:binary_protocol_v2', false);
+  }
+
   // Verifies if two objects of type CountersInformation
   // have the same content (counters value).
   private function checkEqualCounters(
@@ -128,5 +135,47 @@ final class TBinarySerializerTest extends WWWTest {
     expect($deserialized->ints)->toEqual($struct->ints);
     expect($deserialized->m1)->toEqual($struct->m1);
     expect($deserialized->s)->toEqual($struct->s);
+  }
+
+  public static function providerProtocolV2Knob(
+  ): dict<string, shape('enabled' => bool)> {
+    return dict[
+      'protocol v2 comparison off' => shape('enabled' => false),
+      'protocol v2 comparison on' => shape('enabled' => true),
+    ];
+  }
+
+  <<DataProvider('providerProtocolV2Knob')>>
+  public function testPureHackPathsAcrossProtocolV2Knob(bool $enabled): void {
+    MockJustKnobs::setBool('thrift/hack:binary_protocol_v2', $enabled);
+    // shouldCompareProtocolV2() is memoized; earlier cases would otherwise pin
+    // its value.
+    clear_class_memoization(
+      TBinarySerializer::class,
+      'shouldCompareProtocolV2',
+    );
+    $struct = CompactTestStruct::withDefaultValues();
+    $struct->i1 = 42;
+    $struct->b2 = true;
+    $struct->doubles = vec[1.5, -2.5];
+    $struct->m1 = dict['key1' => 10, 'key2' => -20];
+    $struct->s = 'test string';
+    $expected = thrift_protocol_write_binary_struct_to_string($struct);
+
+    $serialized = TBinarySerializer::serialize($struct, true);
+    expect($serialized)->toEqual($expected);
+    $deserialized = TBinarySerializer::deserialize(
+      $serialized,
+      CompactTestStruct::withDefaultValues(),
+      true,
+    );
+    expect(TBinarySerializer::serialize($deserialized, true))
+      ->toEqual($expected);
+
+    $i64 = shape('type' => TType::I64);
+    $data = TBinarySerializer::serializeData(Math\INT64_MIN, $i64);
+    expect($data)->toEqual("\x80\x00\x00\x00\x00\x00\x00\x00");
+    expect(TBinarySerializer::deserializeData($data, $i64))
+      ->toEqual(Math\INT64_MIN);
   }
 }

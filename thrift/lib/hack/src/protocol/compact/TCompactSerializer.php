@@ -25,6 +25,16 @@ use namespace FlibSL\{C, Math, Str, Vec}; // @oss-enable
 // @oss-disable: <<Oncalls('thrift')>>
 final class TCompactSerializer extends TProtocolWritePropsSerializer {
 
+  // Samples requests whose Hack serialization is compared against
+  // TCompactProtocolV2 in PSP.
+  <<__Memoize>>
+  private static function shouldCompareProtocolV2()[write_props]: bool {
+    return HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
+      ()[defaults] ==> JustKnobs::eval('thrift/hack:compact_protocol_v2'),
+      'Need to gate the change',
+    );
+  }
+
   <<__Override>>
   public static function serialize(
     IThriftStruct $object,
@@ -54,7 +64,17 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
     }
 
     HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-      ()[defaults] ==> $object->write($protocol),
+      ()[defaults] ==> {
+        $object->write($protocol);
+        if (self::shouldCompareProtocolV2()) {
+          ThriftProtocolV2Comparison::compareStruct(
+            $transport->getBuffer(),
+            $object,
+            true,
+            $override_version,
+          );
+        }
+      },
       'Compact with memory buffer would have write_props, but Hack doesn\'t '.
       'have a way to express this atm.',
     );
@@ -111,7 +131,18 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
 
     $transport->write($str);
     HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-      ()[defaults] ==> $object->read($protocol),
+      ()[defaults] ==> {
+        $object->read($protocol);
+        if (self::shouldCompareProtocolV2()) {
+          ThriftProtocolV2Comparison::compareStruct(
+            $str,
+            $object,
+            true,
+            $override_version,
+            $options,
+          );
+        }
+      },
       'Compact with memory buffer would have write_props, but Hack doesn\'t '.
       'have a way to express this atm.',
     );
@@ -204,12 +235,21 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
       );
     } else {
       HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-        ()[defaults] ==> ThriftSerializationHelper::writeStructHelper(
-          $protocol,
-          $type_spec['type'],
-          $object,
-          $type_spec,
-        ),
+        ()[defaults] ==> {
+          ThriftSerializationHelper::writeStructHelper(
+            $protocol,
+            $type_spec['type'],
+            $object,
+            $type_spec,
+          );
+          if (self::shouldCompareProtocolV2()) {
+            ThriftProtocolV2Comparison::compareData(
+              $transport->getBuffer(),
+              $type_spec,
+              true,
+            );
+          }
+        },
         '[T133628451] Memory buffer transport would have write_props, but Hack doesn\'t '.
         'have a way to express this atm.',
       );
@@ -247,6 +287,9 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
             $type_spec,
             inout $has_wrapper,
           );
+          if (self::shouldCompareProtocolV2()) {
+            ThriftProtocolV2Comparison::compareData($str, $type_spec, true);
+          }
           return $result;
         },
         '[T133628451] Compact with memory buffer would have write_props, but Hack doesn\'t '.
