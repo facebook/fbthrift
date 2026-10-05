@@ -237,8 +237,8 @@ std::size_t hash_value(const Value& s) {
       std::size_t* valueHashes = keyHashes + size;
       std::size_t i = 0;
       for (auto&& [k, v] : map) {
-        hashes[i] = hash_value(k);
-        hashes[size + i] = hash_value(v);
+        keyHashes[i] = hash_value(k);
+        valueHashes[i] = hash_value(v);
         ++i;
       }
       std::sort(keyHashes, valueHashes);
