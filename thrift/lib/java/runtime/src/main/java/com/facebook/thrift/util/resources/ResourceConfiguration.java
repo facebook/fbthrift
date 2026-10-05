@@ -117,7 +117,12 @@ final class ResourceConfiguration {
   static final boolean separateOffLoopScheduler =
       System.getProperty("thrift.separate-offloop-scheduler", "false").equalsIgnoreCase("true");
 
-  // TODO: @jbahr 12/23/25 Remove once rollout and testing is complete
+  /**
+   * Enables io_uring as the default Netty transport for thrift servers. When true (the default),
+   * io_uring is selected wherever the kernel and native libraries support it, with transparent
+   * fallback to EPOLL (then KQUEUE, then NIO) where io_uring is unavailable. Set to {@code false}
+   * to restore the legacy EPOLL-first selection.
+   */
   static final boolean enableIoUring =
-      System.getProperty("thrift.enable-iouring", "false").equalsIgnoreCase("true");
+      System.getProperty("thrift.enable-iouring", "true").equalsIgnoreCase("true");
 }
