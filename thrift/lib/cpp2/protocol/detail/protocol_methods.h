@@ -88,6 +88,8 @@ using op::detail::deserialize_known_length_map;
 using op::detail::deserialize_known_length_set;
 using op::detail::detect_key_compare;
 using op::detail::ListDecodeImpl;
+// NOLINTNEXTLINE(facebook-hte-DetailCall)
+using op::detail::ListEncodeImpl;
 using op::detail::map_emplace_hint_is_invocable_v;
 // NOLINTNEXTLINE(facebook-hte-DetailCall)
 using op::detail::map_supports_in_place_deserialize_v;
@@ -332,7 +334,6 @@ template <typename Type, typename ExpectedTag>
 struct protocol_methods<type_class::integral, Type, ExpectedTag>
     : enum_protocol_methods<type_class::integral, Type> {};
 
-using op::detail::should_process_as_arithmetic_vector_v;
 /*
  * List Specialization
  */
@@ -360,24 +361,10 @@ struct protocol_methods<type_class::list<ElemClass>, Type, ExpectedTag> {
 
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, const Type& out) {
-    std::size_t xfer = 0;
-
-    xfer += protocol.writeListBegin(
-        elem_ttype::value, checked_container_size(out.size()));
-
-    if constexpr (should_process_as_arithmetic_vector_v<
-                      Protocol,
-                      elem_ttype,
-                      Type>) {
-      xfer += protocol.template writeArithmeticVector<elem_type>(
-          out.data(), out.size());
-    } else {
-      for (const auto& elem : out) {
-        xfer += elem_methods::write(protocol, elem);
-      }
-    }
-    xfer += protocol.writeListEnd();
-    return xfer;
+    return ListEncodeImpl<elem_ttype::value, elem_type>{}(
+        protocol, out, [&](const auto& elem) {
+          return elem_methods::write(protocol, elem);
+        });
   }
 
   template <bool ZeroCopy, typename Protocol>

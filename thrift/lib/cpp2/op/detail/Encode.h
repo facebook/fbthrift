@@ -680,31 +680,40 @@ struct Encode<type::enum_t<T>> {
   }
 };
 
-// TODO: add optimization used in protocol_methods.h
-template <typename Tag>
-struct ListEncode {
-  template <typename Protocol, typename T>
+template <TType ElemType, typename ElemCppType>
+struct ListEncodeImpl {
+  template <typename Protocol, typename ListType, typename ElementWrite>
   // noinline limits optimizer work for generated translation units with many
   // list fields.
-  FOLLY_NOINLINE std::size_t operator()(Protocol& prot, const T& list) const {
-    using elem_type = type::native_type<Tag>;
+  FOLLY_NOINLINE std::size_t operator()(
+      Protocol& prot, const ListType& list, ElementWrite elementWrite) const {
     std::size_t xfer = 0;
-    xfer += prot.writeListBegin(
-        typeTagToTType<Tag>, checked_container_size(list.size()));
+    xfer += prot.writeListBegin(ElemType, checked_container_size(list.size()));
 
     if constexpr (should_process_as_arithmetic_vector_v<
                       Protocol,
-                      detail::TypeTagToTType<Tag>,
-                      T>) {
-      xfer += prot.template writeArithmeticVector<elem_type>(
+                      std::integral_constant<TType, ElemType>,
+                      ListType>) {
+      xfer += prot.template writeArithmeticVector<ElemCppType>(
           list.data(), list.size());
     } else {
       for (const auto& elem : list) {
-        xfer += Encode<Tag>{}(prot, elem);
+        xfer += elementWrite(elem);
       }
     }
     xfer += prot.writeListEnd();
     return xfer;
+  }
+};
+
+template <typename Tag>
+struct ListEncode {
+  template <typename Protocol, typename T>
+  std::size_t operator()(Protocol& prot, const T& list) const {
+    return ListEncodeImpl<typeTagToTType<Tag>, type::native_type<Tag>>{}(
+        prot, list, [&](const auto& elem) {
+          return Encode<Tag>{}(prot, elem);
+        });
   }
 };
 
