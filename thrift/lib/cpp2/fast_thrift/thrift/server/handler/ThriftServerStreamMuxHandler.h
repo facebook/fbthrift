@@ -88,10 +88,7 @@ class ThriftServerStreamMuxHandler {
   using SubscribedEvents =
       channel_pipeline::Events<ThriftServerRequestCancellationEvent>;
 
-  void handlerAdded(Context& ctx) noexcept {
-    channel_pipeline::detail::ContextImpl& base = ctx;
-    mainCtx_ = &base;
-  }
+  void handlerAdded(Context& ctx) noexcept { mainCtx_ = &ctx; }
   void handlerRemoved(Context& /*ctx*/) noexcept {}
   void onPipelineActive(Context& /*ctx*/) noexcept {}
   void onReadReady(Context& /*ctx*/) noexcept {}
@@ -339,7 +336,7 @@ class ThriftServerStreamMuxHandler {
     pendingRemoval_.clear();
   }
 
-  channel_pipeline::detail::ContextImpl* mainCtx_{nullptr};
+  Context* mainCtx_{nullptr};
   // One entry per stream the mux has seen, keyed by streamId: created by the
   // inbound REQUEST_STREAM (which stashes the initial credit), given its
   // sub-pipeline at stream-open, and erased at teardown. Holding the initial

@@ -74,8 +74,8 @@ struct FastThriftServerConfig {
   bool useAlignedParser{false};
 
   // Static mode fixes handler types and order while the server is running.
-  // Dynamic remains the default for compatibility with runtime-shaped users.
-  ChannelPipelineMode channelPipelineMode{ChannelPipelineMode::Dynamic};
+  // Runtime-shaped users must explicitly opt in to Dynamic mode.
+  ChannelPipelineMode channelPipelineMode{ChannelPipelineMode::Static};
 
   // When true, auto-mount the ThriftMetadataService alongside the user
   // handler so introspection tools (e.g. Thrift Fiddle) can discover the

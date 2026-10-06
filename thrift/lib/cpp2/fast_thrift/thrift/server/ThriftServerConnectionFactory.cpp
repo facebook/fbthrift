@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <stdexcept>
 #include <type_traits>
 #include <utility>
 
@@ -216,10 +217,67 @@ PipelineOwner selectStaticRocketStats(
       config, allocator, evb, transportHandler, appAdapter, statsShard);
 }
 
+template <bool WithCancellation, bool WithStreamMux, typename Builder>
+PipelineOwner finishStaticThriftPipelineTail(Builder&& builder) {
+  if constexpr (WithCancellation && WithStreamMux) {
+    return PipelineOwner(
+        std::forward<Builder>(builder)
+            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
+                thrift_server_setup_handler_tag)
+            .template addNextDuplexTemplate<
+                ThriftServerRequestLifecycleHandler>(
+                thrift_server_request_lifecycle_handler_tag)
+            .template addNextDuplexTemplate<ThriftServerStreamMuxHandler>(
+                thrift_server_stream_mux_handler_tag)
+            .build());
+  } else if constexpr (WithCancellation) {
+    return PipelineOwner(
+        std::forward<Builder>(builder)
+            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
+                thrift_server_setup_handler_tag)
+            .template addNextDuplexTemplate<
+                ThriftServerRequestLifecycleHandler>(
+                thrift_server_request_lifecycle_handler_tag)
+            .build());
+  } else if constexpr (WithStreamMux) {
+    return PipelineOwner(
+        std::forward<Builder>(builder)
+            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
+                thrift_server_setup_handler_tag)
+            .template addNextDuplexTemplate<ThriftServerStreamMuxHandler>(
+                thrift_server_stream_mux_handler_tag)
+            .build());
+  } else {
+    return PipelineOwner(
+        std::forward<Builder>(builder)
+            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
+                thrift_server_setup_handler_tag)
+            .build());
+  }
+}
+
+template <typename Builder>
+PipelineOwner selectStaticThriftPipelineTail(
+    Builder&& builder, bool enableCancellation, bool enableStreamMux) {
+  if (enableCancellation) {
+    if (enableStreamMux) {
+      return finishStaticThriftPipelineTail<true, true>(
+          std::forward<Builder>(builder));
+    }
+    return finishStaticThriftPipelineTail<true, false>(
+        std::forward<Builder>(builder));
+  }
+  if (enableStreamMux) {
+    return finishStaticThriftPipelineTail<false, true>(
+        std::forward<Builder>(builder));
+  }
+  return finishStaticThriftPipelineTail<false, false>(
+      std::forward<Builder>(builder));
+}
+
 template <bool WithExtensions, typename Builder>
 PipelineOwner finishStaticThriftPipeline(
     Builder&& builder,
-    bool enableCancellation,
     const ThriftServerConnectionFactoryConfig& config,
     ExtensionStateStore& extensionStates) {
   if constexpr (WithExtensions) {
@@ -228,39 +286,15 @@ PipelineOwner finishStaticThriftPipeline(
     for (const auto& factory : config.thriftPipelineHandlerFactories) {
       handlers.push_back(factory.makeStatic(extensionStates));
     }
-    if (enableCancellation) {
-      return PipelineOwner(
-          std::forward<Builder>(builder)
-              .addStaticHandlers(std::move(handlers))
-              .template addNextDuplexTemplate<ThriftServerSetupHandler>(
-                  thrift_server_setup_handler_tag)
-              .template addNextDuplexTemplate<
-                  ThriftServerRequestLifecycleHandler>(
-                  thrift_server_request_lifecycle_handler_tag)
-              .build());
-    }
-    return PipelineOwner(
-        std::forward<Builder>(builder)
-            .addStaticHandlers(std::move(handlers))
-            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
-                thrift_server_setup_handler_tag)
-            .build());
+    return selectStaticThriftPipelineTail(
+        std::forward<Builder>(builder).addStaticHandlers(std::move(handlers)),
+        config.enableCancellation,
+        config.enableStreamMux);
   } else {
-    if (enableCancellation) {
-      return PipelineOwner(
-          std::forward<Builder>(builder)
-              .template addNextDuplexTemplate<ThriftServerSetupHandler>(
-                  thrift_server_setup_handler_tag)
-              .template addNextDuplexTemplate<
-                  ThriftServerRequestLifecycleHandler>(
-                  thrift_server_request_lifecycle_handler_tag)
-              .build());
-    }
-    return PipelineOwner(
-        std::forward<Builder>(builder)
-            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
-                thrift_server_setup_handler_tag)
-            .build());
+    return selectStaticThriftPipelineTail(
+        std::forward<Builder>(builder),
+        config.enableCancellation,
+        config.enableStreamMux);
   }
 }
 
@@ -274,15 +308,11 @@ PipelineOwner addStaticWriteBuffer(
         std::forward<Builder>(builder)
             .template addNextDuplexTemplate<WriteBufferBackpressureHandler>(
                 write_buffer_backpressure_handler_tag),
-        config.enableCancellation,
         config,
         extensionStates);
   } else {
     return finishStaticThriftPipeline<WithExtensions>(
-        std::forward<Builder>(builder),
-        config.enableCancellation,
-        config,
-        extensionStates);
+        std::forward<Builder>(builder), config, extensionStates);
   }
 }
 
@@ -582,6 +612,17 @@ ThriftServerConnectionFactory::ThriftServerConnectionFactory(
           static_cast<bool>(config_.metadataResponse)) {
   CHECK(config_.handler)
       << "ThriftServerConnectionFactory requires a non-null handler";
+  if (config_.channelPipelineMode == ChannelPipelineMode::Static &&
+      std::any_of(
+          config_.thriftPipelineHandlerFactories.begin(),
+          config_.thriftPipelineHandlerFactories.end(),
+          [](const auto& factory) {
+            return !factory.supportsStaticPipeline();
+          })) {
+    throw std::logic_error(
+        "Dynamic thrift pipeline handlers require "
+        "ChannelPipelineMode::Dynamic");
+  }
   if (!needsComposite_) {
     return;
   }
@@ -829,12 +870,7 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   using MuxHandler =
       ThriftServerStreamMuxHandler<channel_pipeline::detail::ContextImpl>;
   PipelineOwner thriftPipeline;
-  const bool supportsStaticHandlers = std::all_of(
-      config_.thriftPipelineHandlerFactories.begin(),
-      config_.thriftPipelineHandlerFactories.end(),
-      [](const auto& factory) { return factory.supportsStaticPipeline(); });
-  if (config_.channelPipelineMode == ChannelPipelineMode::Static &&
-      supportsStaticHandlers) {
+  if (config_.channelPipelineMode == ChannelPipelineMode::Static) {
     thriftPipeline = selectStaticThriftStats(
         config_,
         evb,

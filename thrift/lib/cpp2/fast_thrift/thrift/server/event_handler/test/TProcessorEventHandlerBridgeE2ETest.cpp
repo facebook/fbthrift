@@ -225,8 +225,11 @@ class TProcessorEventHandlerBridgeE2ETest : public ::testing::Test {
 
     server_->addModule(
         FastServerModule("event_handlers")
-            .addNativeThriftHandler<TProcessorEventHandlerBridge<
-                channel_pipeline::detail::ContextImpl>>(
+            .addNativeThriftHandler<
+                TProcessorEventHandlerBridge<
+                    channel_pipeline::detail::ContextImpl>,
+                TProcessorEventHandlerBridge<
+                    channel_pipeline::detail::StaticHandlerContext>>(
                 TProcessorEventHandlerBridgeConfig{
                     .handlers = std::move(handlers),
                     .methodMetadata = server_->getMethodMetadataRegistry(),

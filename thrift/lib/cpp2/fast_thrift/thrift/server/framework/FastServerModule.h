@@ -72,12 +72,14 @@ class FastServerModule {
    * chaining.
    *
    * T must satisfy the Inbound, Outbound, or Duplex handler concept over
-   * server::ThriftPipelineHandlerContext.
+   * server::ThriftPipelineHandlerContext. StaticT may provide the equivalent
+   * implementation over server::StaticThriftPipelineHandlerContext; without
+   * it, the module requires ChannelPipelineMode::Dynamic.
    */
-  template <typename T, typename... Args>
+  template <typename T, typename StaticT = void, typename... Args>
   FastServerModule& addNativeThriftHandler(Args... args) {
     return addFactory([&](channel_pipeline::HandlerId id) {
-      return server::makeThriftPipelineHandlerFactory<T>(
+      return server::makeThriftPipelineHandlerFactory<T, StaticT>(
           id, std::move(args)...);
     });
   }

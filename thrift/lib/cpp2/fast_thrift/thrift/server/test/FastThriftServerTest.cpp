@@ -1843,18 +1843,42 @@ TEST(FastThriftServerExtensionTest, ExtensionResponseHeaderReachesClient) {
   EXPECT_EQ(readBack, "xyz");
 }
 
-// Runtime-registered handlers preserve their dynamic topology until a static
-// registration path is selected, even when static mode is requested.
+TEST(FastThriftServerExtensionTest, DynamicHandlerRequiresDynamicMode) {
+  auto handler = std::make_shared<TestHandler>();
+  ftt::FastThriftServer server(makeLoopbackConfig());
+  server.setInterface(handler);
+  server.addNativeThriftPipelineHandlers(
+      {ftt::server::ThriftPipelineHandlerFactory([](ftt::ExtensionStateStore&) {
+        return ::apache::thrift::fast_thrift::channel_pipeline::detail::
+            HandlerNode{};
+      })});
+
+  EXPECT_THROW(server.start(), std::logic_error);
+}
+
+TEST(FastThriftServerExtensionTest, DynamicModeAllowsDynamicHandler) {
+  auto handler = std::make_shared<TestHandler>();
+  auto config = makeLoopbackConfig();
+  config.channelPipelineMode = ftt::ChannelPipelineMode::Dynamic;
+  ftt::FastThriftServer server(std::move(config));
+  server.setInterface(handler);
+  server.addNativeThriftPipelineHandlers(
+      {ftt::server::ThriftPipelineHandlerFactory([](ftt::ExtensionStateStore&) {
+        return ::apache::thrift::fast_thrift::channel_pipeline::detail::
+            HandlerNode{};
+      })});
+
+  EXPECT_NO_THROW(server.start());
+}
+
 TEST(
-    FastThriftServerExtensionTest,
-    StaticModeSupportsObserverExtensionViaDynamicFallback) {
+    FastThriftServerExtensionTest, DefaultStaticModeSupportsObserverExtension) {
   THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
 
   auto handler = std::make_shared<TestHandler>();
   std::atomic<int> requests{0};
   std::atomic<int> responses{0};
   auto config = makeLoopbackConfig();
-  config.channelPipelineMode = ftt::ChannelPipelineMode::Static;
 
   ftt::FastThriftServer server(std::move(config));
   server.setInterface(handler);
@@ -2254,7 +2278,6 @@ TEST(FastThriftServerBackpressureExtensionTest, PauseThenResumeKeepsServing) {
   auto handler = std::make_shared<TestHandler>();
 
   auto config = makeLoopbackConfig();
-  config.channelPipelineMode = ftt::ChannelPipelineMode::Static;
   ftt::FastThriftServer server(std::move(config));
   server.setInterface(handler);
   server.setIOThreadPool(makeFixedSizePool(1));

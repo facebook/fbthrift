@@ -84,7 +84,7 @@ struct ThriftServerConnectionFactoryConfig {
   // Per-connection MSG_ZEROCOPY threshold; 0 disables zero-copy.
   std::size_t zeroCopyThreshold{0};
 
-  ChannelPipelineMode channelPipelineMode{ChannelPipelineMode::Dynamic};
+  ChannelPipelineMode channelPipelineMode{ChannelPipelineMode::Static};
 
   // Slot plans for the extensions installed on this server, built once before
   // it accepts anything and shared by every context. Null when nothing
