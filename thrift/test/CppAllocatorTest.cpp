@@ -597,6 +597,31 @@ TEST(CppAllocatorTest, PropagateOnlyCopyAlloc) {
   }
 }
 
+// Copy assignment that adopts the source's allocator builds the fields with it,
+// although that allocator does not propagate on swap.
+TEST(CppAllocatorTest, CopyAssignBuildsFieldsWithPropagatedAllocator) {
+  const ScopedCopyPropagatingAlloc<> alloc1(
+      CopyPropagatingStatefulAlloc<char>(1));
+  const ScopedCopyPropagatingAlloc<> alloc2(
+      CopyPropagatingStatefulAlloc<char>(2));
+  CopyPropagatingParent src(alloc1);
+  src.s() = kTooLong;
+  src.c_ref()->l()->assign({1, 2});
+  CopyPropagatingParent dst(alloc2);
+
+  dst = src;
+
+  EXPECT_EQ(dst.get_allocator(), alloc1);
+  EXPECT_EQ(dst.s()->get_allocator(), alloc1);
+  EXPECT_EQ(*dst.s(), kTooLong);
+  ASSERT_NE(dst.c_ref(), nullptr);
+  EXPECT_NE(dst.c_ref(), src.c_ref());
+  EXPECT_EQ(dst.c_ref()->get_allocator(), alloc1);
+  EXPECT_EQ(
+      ScopedCopyPropagatingAlloc<>(dst.c_ref()->l()->get_allocator()), alloc1);
+  EXPECT_EQ(dst.c_ref()->l()->size(), 2);
+}
+
 TEST(CppAllocatorTest, PropagateOnlyMoveAlloc) {
   const PropagateOnlyMoveAlloc alloc1(1);
   const PropagateOnlyMoveAlloc alloc2(2);

@@ -555,6 +555,15 @@ bool move_assign_can_steal(const Alloc& dst, const Alloc& src) {
       traits::is_always_equal::value || dst == src;
 }
 
+// Whether copy assignment replaces `dst` with `src`: the allocator propagates
+// on copy assignment and the two compare unequal.
+template <typename Alloc>
+bool copy_assign_changes_allocator(const Alloc& dst, const Alloc& src) {
+  using traits = std::allocator_traits<Alloc>;
+  return traits::propagate_on_container_copy_assignment::value &&
+      !traits::is_always_equal::value && dst != src;
+}
+
 // We identify field quailfier using different types of C++ field_ref. For
 // cpp.ref fields, we can not deduce the field qualifier information.
 namespace qualifier {

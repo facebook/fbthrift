@@ -121,6 +121,32 @@ template <class K, class V>
 using StatefulAllocMap =
     std::map<K, V, std::less<K>, ScopedStatefulAlloc<std::pair<const K, V>>>;
 
+// Propagates on copy assignment only. Unlike PropagateOnlyCopyAlloc below,
+// containers can rebind it.
+template <class T>
+struct CopyPropagatingStatefulAlloc : StatefulAlloc<T> {
+  using StatefulAlloc<T>::StatefulAlloc;
+  using propagate_on_container_copy_assignment = std::true_type;
+  using propagate_on_container_move_assignment = std::false_type;
+  using propagate_on_container_swap = std::false_type;
+
+  CopyPropagatingStatefulAlloc() = default;
+  template <class U>
+  explicit CopyPropagatingStatefulAlloc(
+      const CopyPropagatingStatefulAlloc<U>& other) noexcept
+      : StatefulAlloc<T>(other.state_) {}
+};
+
+template <typename T = char>
+using ScopedCopyPropagatingAlloc =
+    std::scoped_allocator_adaptor<CopyPropagatingStatefulAlloc<T>>;
+
+template <class T>
+using CopyPropagatingVector = std::vector<T, ScopedCopyPropagatingAlloc<T>>;
+
+using CopyPropagatingString = std::
+    basic_string<char, std::char_traits<char>, ScopedCopyPropagatingAlloc<>>;
+
 template <class T>
 using StatefulAllocSortedVectorSet =
     folly::sorted_vector_set<T, std::less<T>, ScopedStatefulAlloc<T>>;

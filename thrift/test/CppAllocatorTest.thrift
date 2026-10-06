@@ -580,3 +580,26 @@ typedef string string_4597
 @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
 @cpp.Type{name = "std::pmr::string"}
 typedef string string_8090
+
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "::ScopedCopyPropagatingAlloc<>"},
+}
+struct CopyPropagatingChild {
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+  @cpp.Type{template = "::CopyPropagatingVector"}
+  1: list<i32> l;
+}
+
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+typedef CopyPropagatingChild CopyPropagatingChildAA
+
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "::ScopedCopyPropagatingAlloc<>"},
+}
+struct CopyPropagatingParent {
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+  @cpp.Type{name = "::CopyPropagatingString"}
+  1: string s;
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  2: optional CopyPropagatingChildAA c;
+}

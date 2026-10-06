@@ -2527,6 +2527,18 @@ AllocatorAware::AllocatorAware(const AllocatorAware& srcObj) :
 
 static void __fbthrift_swap(AllocatorAware& lhs, AllocatorAware& rhs) { swap(lhs, rhs); }
 AllocatorAware& AllocatorAware::operator=(const AllocatorAware& other) {
+  if (::apache::thrift::detail::copy_assign_changes_allocator(get_allocator(), other.get_allocator())) {
+    this->__fbthrift_field_aa_list = other.__fbthrift_field_aa_list;
+    this->__fbthrift_field_aa_set = other.__fbthrift_field_aa_set;
+    this->__fbthrift_field_aa_map = other.__fbthrift_field_aa_map;
+    this->__fbthrift_field_aa_string = other.__fbthrift_field_aa_string;
+    this->__fbthrift_field_not_a_container = other.__fbthrift_field_not_a_container;
+    this->__fbthrift_field_aa_unique = other.__fbthrift_field_aa_unique ? folly::allocate_unique<::apache::thrift::fixtures::types::i32_9314>(other.get_allocator(), *other.__fbthrift_field_aa_unique) : nullptr;
+    this->__fbthrift_field_aa_shared = other.__fbthrift_field_aa_shared ? std::allocate_shared<::apache::thrift::fixtures::types::i32_9314>(other.get_allocator(), *other.__fbthrift_field_aa_shared) : nullptr;
+    __isset = other.__isset;
+    ::apache::thrift::detail::copy_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
+    return *this;
+  }
   AllocatorAware tmp(other, get_allocator());
   __fbthrift_swap(*this, tmp);
   ::apache::thrift::detail::copy_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
@@ -2721,6 +2733,13 @@ AllocatorAware2::AllocatorAware2(const AllocatorAware2& srcObj) :
 
 static void __fbthrift_swap(AllocatorAware2& lhs, AllocatorAware2& rhs) { swap(lhs, rhs); }
 AllocatorAware2& AllocatorAware2::operator=(const AllocatorAware2& other) {
+  if (::apache::thrift::detail::copy_assign_changes_allocator(get_allocator(), other.get_allocator())) {
+    this->__fbthrift_field_not_a_container = other.__fbthrift_field_not_a_container;
+    this->__fbthrift_field_box_field = other.__fbthrift_field_box_field;
+    __isset = other.__isset;
+    ::apache::thrift::detail::copy_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
+    return *this;
+  }
   AllocatorAware2 tmp(other, get_allocator());
   __fbthrift_swap(*this, tmp);
   ::apache::thrift::detail::copy_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
