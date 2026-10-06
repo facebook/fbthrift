@@ -516,10 +516,13 @@ namespace detail {
 template <size_t... I, typename F>
 FOLLY_ALWAYS_INLINE constexpr void for_each_ordinal_impl(
     F&& f, std::index_sequence<I...>) {
-  // This doesn't use fold expression (from C++17) as this file is used in
-  // C++14 environment as well.
-  int unused[] = {0, (f(type::detail::pos_to_ordinal<I>{}), 0)...};
-  static_cast<void>(unused);
+  // Array expansion instead of a fold expression: folds over more elements
+  // than -fbracket-depth (256 by default) do not compile. The array must stay
+  // an unnamed temporary; naming it emits per-field debug values, whose
+  // processing is quadratic in the number of fields and dominates compile time
+  // for large structs.
+  using expand = int[];
+  static_cast<void>(expand{0, (f(type::detail::pos_to_ordinal<I>{}), 0)...});
 }
 
 template <typename T, typename F, size_t... I>
@@ -533,11 +536,9 @@ FOLLY_ALWAYS_INLINE constexpr void for_each_field_id_ascending_impl(
     return fieldIds;
   });
 
-  // Use array-based expansion instead of fold expression to avoid exceeding
-  // compiler's expression nesting limit for structs with >256 fields.
-  std::array<int, sizeof...(I) + 1> unused{
-      {0, (f(field_id<sortedFieldIds[I]>{}), 0)...}};
-  static_cast<void>(unused);
+  // See for_each_ordinal_impl for why this is an unnamed array temporary.
+  using expand = int[];
+  static_cast<void>(expand{0, (f(field_id<sortedFieldIds[I]>{}), 0)...});
 }
 
 template <size_t... I, typename F>
