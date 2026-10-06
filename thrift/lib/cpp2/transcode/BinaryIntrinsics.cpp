@@ -102,6 +102,10 @@ void skipBinaryField(TranscodeCursor* cursor, uint8_t ttype, size_t depth) {
     }
     case wire::kBinaryList:
     case wire::kBinarySet: {
+      if (depth >= kMaxBinarySkipDepth) {
+        setCursorError(cursor, kMalformedBinary);
+        return;
+      }
       if (!cursorCanRead(cursor, 5)) {
         setCursorError(cursor, kMalformedBinary);
         return;
@@ -112,11 +116,15 @@ void skipBinaryField(TranscodeCursor* cursor, uint8_t ttype, size_t depth) {
         return;
       }
       for (int32_t i = 0; i < count && cursor->error == 0; ++i) {
-        skipBinaryField(cursor, elemType, depth);
+        skipBinaryField(cursor, elemType, depth + 1);
       }
       return;
     }
     case wire::kBinaryMap: {
+      if (depth >= kMaxBinarySkipDepth) {
+        setCursorError(cursor, kMalformedBinary);
+        return;
+      }
       if (!cursorCanRead(cursor, 6)) {
         setCursorError(cursor, kMalformedBinary);
         return;
@@ -128,11 +136,11 @@ void skipBinaryField(TranscodeCursor* cursor, uint8_t ttype, size_t depth) {
         return;
       }
       for (int32_t i = 0; i < count && cursor->error == 0; ++i) {
-        skipBinaryField(cursor, keyType, depth);
+        skipBinaryField(cursor, keyType, depth + 1);
         if (cursor->error != 0) {
           return;
         }
-        skipBinaryField(cursor, valType, depth);
+        skipBinaryField(cursor, valType, depth + 1);
       }
       return;
     }

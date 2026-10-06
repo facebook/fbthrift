@@ -154,6 +154,109 @@ TEST(BinaryIntrinsicsTest, SkipFixedWidthFieldRejectsTruncatedInput) {
   EXPECT_LE(r.readPos, r.readEnd);
 }
 
+TEST(BinaryIntrinsicsTest, SkipNestedListsRejectsExcessiveDepth) {
+  std::vector<uint8_t> data;
+  for (int i = 0; i < 70; ++i) {
+    data.insert(data.end(), {wire::kBinaryList, 0x00, 0x00, 0x00, 0x01});
+  }
+  data.insert(data.end(), {wire::kBinaryI32, 0x00, 0x00, 0x00, 0x00});
+  auto r = makeReader(data);
+
+  thrift_transcode_binary_skip_field(&r, wire::kBinaryList);
+  EXPECT_NE(r.error, 0);
+}
+
+// Each list body is {elemType, i32 count}; 63 bodies of a single nested list
+// followed by an empty i32 list yields exactly 64 levels of nesting.
+TEST(BinaryIntrinsicsTest, SkipNestedListsAcceptsMaxDepth) {
+  std::vector<uint8_t> data;
+  for (int i = 0; i < 63; ++i) {
+    data.insert(data.end(), {wire::kBinaryList, 0x00, 0x00, 0x00, 0x01});
+  }
+  data.insert(data.end(), {wire::kBinaryI32, 0x00, 0x00, 0x00, 0x00, 0x7f});
+  auto r = makeReader(data);
+
+  thrift_transcode_binary_skip_field(&r, wire::kBinaryList);
+  ASSERT_EQ(r.error, 0);
+  EXPECT_EQ(thrift_transcode_read_byte_checked(&r), 0x7f);
+}
+
+TEST(BinaryIntrinsicsTest, SkipNestedListsRejectsOneBeyondMaxDepth) {
+  std::vector<uint8_t> data;
+  for (int i = 0; i < 64; ++i) {
+    data.insert(data.end(), {wire::kBinaryList, 0x00, 0x00, 0x00, 0x01});
+  }
+  data.insert(data.end(), {wire::kBinaryI32, 0x00, 0x00, 0x00, 0x00});
+  auto r = makeReader(data);
+
+  thrift_transcode_binary_skip_field(&r, wire::kBinaryList);
+  EXPECT_NE(r.error, 0);
+}
+
+TEST(BinaryIntrinsicsTest, SkipNestedSetsRejectsExcessiveDepth) {
+  std::vector<uint8_t> data;
+  for (int i = 0; i < 70; ++i) {
+    data.insert(data.end(), {wire::kBinarySet, 0x00, 0x00, 0x00, 0x01});
+  }
+  data.insert(data.end(), {wire::kBinaryI32, 0x00, 0x00, 0x00, 0x00});
+  auto r = makeReader(data);
+
+  thrift_transcode_binary_skip_field(&r, wire::kBinarySet);
+  EXPECT_NE(r.error, 0);
+}
+
+// Each map body is {keyType, valType, i32 count} followed by one i32 key whose
+// value is the next nested map.
+TEST(BinaryIntrinsicsTest, SkipNestedMapsRejectsExcessiveDepth) {
+  std::vector<uint8_t> data;
+  for (int i = 0; i < 70; ++i) {
+    data.insert(
+        data.end(),
+        {wire::kBinaryI32,
+         wire::kBinaryMap,
+         0x00,
+         0x00,
+         0x00,
+         0x01,
+         0x00,
+         0x00,
+         0x00,
+         0x00});
+  }
+  data.insert(
+      data.end(), {wire::kBinaryI32, wire::kBinaryI32, 0x00, 0x00, 0x00, 0x00});
+  auto r = makeReader(data);
+
+  thrift_transcode_binary_skip_field(&r, wire::kBinaryMap);
+  EXPECT_NE(r.error, 0);
+}
+
+// Depth accumulates across container kinds: alternating list<map<i32, ...>>
+// nesting is bounded just like a homogeneous chain.
+TEST(BinaryIntrinsicsTest, SkipMixedContainersRejectsExcessiveDepth) {
+  std::vector<uint8_t> data;
+  for (int i = 0; i < 35; ++i) {
+    data.insert(data.end(), {wire::kBinaryMap, 0x00, 0x00, 0x00, 0x01});
+    data.insert(
+        data.end(),
+        {wire::kBinaryI32,
+         wire::kBinaryList,
+         0x00,
+         0x00,
+         0x00,
+         0x01,
+         0x00,
+         0x00,
+         0x00,
+         0x00});
+  }
+  data.insert(data.end(), {wire::kBinaryI32, 0x00, 0x00, 0x00, 0x00});
+  auto r = makeReader(data);
+
+  thrift_transcode_binary_skip_field(&r, wire::kBinaryList);
+  EXPECT_NE(r.error, 0);
+}
+
 // skip_field over a string consumes its i32 length prefix and payload.
 TEST(BinaryIntrinsicsTest, SkipStringField) {
   const std::vector<uint8_t> payload = {'h', 'i', '!'};
