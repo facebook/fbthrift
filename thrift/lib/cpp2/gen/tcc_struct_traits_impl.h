@@ -26,8 +26,8 @@
 
 namespace apache::thrift::detail {
 
-template <typename T>
-void TccStructTraits<T>::translateFieldName(
+template <typename T, typename Enable>
+void TccStructTraits<T, Enable>::translateFieldName(
     std::string_view _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) {

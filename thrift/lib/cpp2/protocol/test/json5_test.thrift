@@ -984,3 +984,9 @@ const list<TestCase> testCases = [
 }",
   },
 ];
+
+// Not final, so the test can derive a class from it.
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.virtual": "1"}}
+struct NonFinalStruct {
+  1: i64 value;
+}

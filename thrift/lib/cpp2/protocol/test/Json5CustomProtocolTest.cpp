@@ -314,6 +314,18 @@ TEST(Json5CustomProtocolExtraTest, NegativeZeroInteger) {
   EXPECT_EQ(*readExample(R"({"i64Value": -0})").i64Value(), 0);
 }
 
+struct ClassDerivedFromThriftStruct : facebook::thrift::json5::NonFinalStruct {
+};
+
+TEST(Json5CustomProtocolExtraTest, ClassDerivedFromThriftStruct) {
+  auto buf = folly::IOBuf::copyBuffer(R"({"value": 42})");
+  Json5ProtocolReader reader;
+  reader.setInput(buf.get());
+  ClassDerivedFromThriftStruct derived;
+  op::decode<type::struct_t<ClassDerivedFromThriftStruct>>(reader, derived);
+  EXPECT_EQ(*derived.value(), 42);
+}
+
 TEST(Json5CustomProtocolExtraTest, NonBmpStringRoundTrip) {
   // The reader recombines the surrogate pair; the writer emits raw UTF-8
   // rather than splitting it back into one.
