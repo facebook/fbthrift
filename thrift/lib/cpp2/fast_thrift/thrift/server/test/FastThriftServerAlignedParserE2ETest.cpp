@@ -15,17 +15,20 @@
  */
 
 #include <atomic>
+#include <chrono>
 #include <cstdint>
 #include <memory>
 #include <string>
+#include <utility>
 
 #include <gtest/gtest.h>
 #include <fizz/client/AsyncFizzClient.h>
 #include <fizz/client/FizzClientContext.h>
 
 #include <folly/ExceptionWrapper.h>
-#include <folly/ScopeGuard.h>
+#include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
@@ -33,21 +36,61 @@
 #include <folly/synchronization/Baton.h>
 
 #include <thrift/lib/cpp2/Flags.h>
-#include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/AlignedParser.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FrameLengthEncoderHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/client/adapter/RocketClientAppAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/client/common/RocketClientConnection.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientConnectionErrorHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientFrameCodecHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientRequestResponseHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientSetupFrameHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientStreamStateHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/security/FizzServerCertConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/security/test/TestCert.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/client/ThriftClientAppAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/client/adapter/ThriftClientTransportAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/client/handler/ThriftClientRequestTimeoutHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServer.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/AlignedParserServer.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/AlignedParserServer.tcc>
-#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/AlignedParserServerAsyncClient.h>
-
-THRIFT_FLAG_DECLARE_bool(rocket_client_binary_rpc_metadata_encoding);
+#include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::fast_thrift::thrift::test::aligned_parser {
 
 using namespace testing;
 
 namespace {
+
+HANDLER_TAG(client_frame_length_encoder_handler);
+HANDLER_TAG(rocket_client_frame_codec_handler);
+HANDLER_TAG(rocket_client_setup_handler);
+HANDLER_TAG(rocket_client_request_response_handler);
+HANDLER_TAG(rocket_client_connection_error_handler);
+HANDLER_TAG(rocket_client_stream_state_handler);
+HANDLER_TAG(thrift_client_request_timeout_handler);
+
+constexpr std::chrono::milliseconds kDefaultRequestTimeout{60'000};
+
+using ClientConnection =
+    ::apache::thrift::fast_thrift::rocket::client::RocketClientConnectionT<
+        ::apache::thrift::fast_thrift::transport::NoOpWriteCompleteEventFactory,
+        ::apache::thrift::fast_thrift::frame::read::AlignedParser>;
+using ClientTransportHandler = ClientConnection::TransportHandler;
+using ClientTransportAdapter = ::apache::thrift::fast_thrift::thrift::client::
+    ThriftClientTransportAdapterT<
+        ::apache::thrift::fast_thrift::transport::NoOpWriteCompleteEventFactory,
+        ::apache::thrift::fast_thrift::frame::read::AlignedParser>;
+using ClientAppAdapter =
+    ::apache::thrift::fast_thrift::thrift::ThriftClientAppAdapter;
+using FastClientType =
+    ::apache::thrift::FastClient<AlignedParserServer, ClientAppAdapter>;
 
 class Handler : public apache::thrift::FastServiceHandler<AlignedParserServer> {
  public:
@@ -61,6 +104,12 @@ class Handler : public apache::thrift::FastServiceHandler<AlignedParserServer> {
     chainElements_.store(data.countChainElements(), std::memory_order_relaxed);
     dataSize_.store(data.computeChainDataLength(), std::memory_order_relaxed);
     callback->done();
+  }
+
+  void async_tm_echo(
+      FastHandlerCallbackPtr<std::unique_ptr<std::string>> callback,
+      std::unique_ptr<std::string> value) override {
+    callback->result(std::move(value));
   }
 
   size_t addressRemainder() const noexcept {
@@ -168,8 +217,6 @@ folly::AsyncTransport::UniquePtr connectFizz(
 class FastThriftServerAlignedParserE2ETest : public Test {
  protected:
   void SetUp() override {
-    THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
-
     handler_ = std::make_shared<Handler>();
     server_ = std::make_unique<FastThriftServer>(makeServerConfig());
     server_->setSSLConfig(makeTlsConfig());
@@ -179,7 +226,18 @@ class FastThriftServerAlignedParserE2ETest : public Test {
   }
 
   void TearDown() override {
-    THRIFT_FLAG_UNMOCK(rocket_client_binary_rpc_metadata_encoding);
+    clientThread_->getEventBase()->runInEventBaseThreadAndWait([&] {
+      if (clientPipeline_) {
+        clientPipeline_->deactivate();
+        clientPipeline_->close();
+      }
+      if (clientTransportAdapter_) {
+        clientTransportAdapter_->resetPipeline();
+      }
+      client_.reset();
+      clientPipeline_.reset();
+      clientTransportAdapter_.reset();
+    });
     clientThread_.reset();
     if (server_ != nullptr) {
       server_->stop();
@@ -187,33 +245,115 @@ class FastThriftServerAlignedParserE2ETest : public Test {
     server_.reset();
   }
 
-  std::unique_ptr<apache::thrift::Client<AlignedParserServer>> createClient() {
+  void createClient() {
     folly::EventBase* const evb = clientThread_->getEventBase();
     folly::AsyncTransport::UniquePtr transport =
         connectFizz(evb, server_->getAddress());
     if (transport == nullptr) {
-      return nullptr;
+      return;
     }
-    std::unique_ptr<apache::thrift::Client<AlignedParserServer>> client;
-    evb->runInEventBaseThreadAndWait([&] {
-      apache::thrift::RocketClientChannel::Ptr channel =
-          apache::thrift::RocketClientChannel::newChannel(std::move(transport));
-      channel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
-      client = std::make_unique<apache::thrift::Client<AlignedParserServer>>(
-          std::move(channel));
-    });
-    return client;
-  }
 
-  template <typename Client>
-  void destroyClientOnEvb(std::unique_ptr<Client>& client) {
-    clientThread_->getEventBase()->runInEventBaseThreadAndWait(
-        [&] { client.reset(); });
+    ClientAppAdapter::Ptr appAdapter(new ClientAppAdapter(
+        static_cast<uint16_t>(apache::thrift::protocol::T_BINARY_PROTOCOL)));
+
+    evb->runInEventBaseThreadAndWait([&] {
+      std::unique_ptr<ClientConnection> connection =
+          std::make_unique<ClientConnection>();
+      ClientTransportHandler::Ptr transportHandler =
+          ClientTransportHandler::createWithParser(
+              std::move(transport), frame::read::AlignedParser{});
+      ClientTransportHandler* const transportHandlerPtr =
+          transportHandler.get();
+      clientTransportIsBufferMovable_ = transportHandlerPtr->isBufferMovable();
+      connection->transportHandler = std::move(transportHandler);
+
+      auto setupFactory = []() {
+        apache::thrift::RequestSetupMetadata metadata;
+        metadata.minVersion() = 8;
+        metadata.maxVersion() = 10;
+        metadata.clientMetadata().ensure().agent() =
+            "fast_thrift_aligned_parser_e2e_test";
+
+        apache::thrift::BinaryProtocolWriter writer;
+        folly::IOBufQueue metadataBytes;
+        writer.setOutput(&metadataBytes);
+        metadata.write(&writer);
+
+        folly::IOBufQueue setup;
+        const uint32_t protocolKey =
+            apache::thrift::RpcMetadata_constants::kRocketProtocolKey();
+        folly::io::QueueAppender appender(&setup, sizeof(protocolKey));
+        appender.writeBE<uint32_t>(protocolKey);
+        setup.append(metadataBytes.move());
+        return std::make_pair(setup.move(), std::unique_ptr<folly::IOBuf>());
+      };
+
+      connection->pipeline =
+          channel_pipeline::PipelineBuilder<
+              ClientTransportHandler,
+              rocket::client::RocketClientAppAdapter,
+              channel_pipeline::SimpleBufferAllocator>()
+              .setEventBase(evb)
+              .setHead(transportHandlerPtr)
+              .setTail(connection->appAdapter.get())
+              .setAllocator(&connection->allocator)
+              .addState<rocket::client::RocketClientStreamContexts>()
+              .addNextOutbound<
+                  frame::write::handler::FrameLengthEncoderHandler>(
+                  client_frame_length_encoder_handler_tag)
+              .addNextDuplex<
+                  rocket::client::handler::RocketClientFrameCodecHandler>(
+                  rocket_client_frame_codec_handler_tag)
+              .addNextDuplex<
+                  rocket::client::handler::RocketClientSetupFrameHandler>(
+                  rocket_client_setup_handler_tag, std::move(setupFactory))
+              .addNextInbound<
+                  rocket::client::handler::RocketClientConnectionErrorHandler>(
+                  rocket_client_connection_error_handler_tag)
+              .addNextDuplex<
+                  rocket::client::handler::RocketClientStreamStateHandler>(
+                  rocket_client_stream_state_handler_tag)
+              .addNextInbound<
+                  rocket::client::handler::RocketClientRequestResponseHandler>(
+                  rocket_client_request_response_handler_tag)
+              .build();
+
+      connection->appAdapter->setPipeline(connection->pipeline.get());
+      connection->transportHandler->setPipeline(connection->pipeline.get());
+
+      clientTransportAdapter_ =
+          std::make_unique<ClientTransportAdapter>(std::move(connection));
+      clientPipeline_ =
+          channel_pipeline::PipelineBuilder<
+              ClientTransportAdapter,
+              ClientAppAdapter,
+              channel_pipeline::SimpleBufferAllocator>()
+              .setEventBase(evb)
+              .setHead(clientTransportAdapter_.get())
+              .setTail(appAdapter.get())
+              .setAllocator(&clientAllocator_)
+              .addNextDuplex<
+                  thrift::client::handler::ThriftClientRequestTimeoutHandler>(
+                  thrift_client_request_timeout_handler_tag,
+                  kDefaultRequestTimeout)
+              .build();
+
+      appAdapter->setPipeline(clientPipeline_.get());
+      clientTransportAdapter_->setPipeline(clientPipeline_.get());
+      transportHandlerPtr->onConnect();
+    });
+
+    client_ = std::make_unique<FastClientType>(std::move(appAdapter));
   }
 
   std::shared_ptr<Handler> handler_;
   std::unique_ptr<FastThriftServer> server_;
   std::unique_ptr<folly::ScopedEventBaseThread> clientThread_;
+  channel_pipeline::SimpleBufferAllocator clientAllocator_;
+  std::unique_ptr<FastClientType> client_;
+  std::unique_ptr<ClientTransportAdapter> clientTransportAdapter_;
+  channel_pipeline::PipelineImpl::Ptr clientPipeline_;
+  bool clientTransportIsBufferMovable_{true};
 };
 
 TEST_F(FastThriftServerAlignedParserE2ETest, AlignsRequestData) {
@@ -222,20 +362,30 @@ TEST_F(FastThriftServerAlignedParserE2ETest, AlignsRequestData) {
   request.data() = folly::IOBuf::copyBuffer(std::string(kDataSize, 'd'));
   request.marker() = 42;
 
-  std::unique_ptr<apache::thrift::Client<AlignedParserServer>> client =
-      createClient();
-  SCOPE_EXIT {
-    destroyClientOnEvb(client);
-  };
-  EXPECT_THAT(client, NotNull());
-  if (client == nullptr) {
+  createClient();
+  EXPECT_THAT(client_, NotNull());
+  if (client_ == nullptr) {
     return;
   }
-  client->semifuture_consume(request).get();
+  client_->sync_consume(request);
 
   EXPECT_THAT(handler_->addressRemainder(), Eq(0));
   EXPECT_THAT(handler_->chainElements(), Eq(1));
   EXPECT_THAT(handler_->dataSize(), Eq(kDataSize));
+}
+
+TEST_F(FastThriftServerAlignedParserE2ETest, ClientParsesPayloadResponse) {
+  const std::string value(4096, 'd');
+  createClient();
+  EXPECT_THAT(client_, NotNull());
+  if (client_ == nullptr) {
+    return;
+  }
+
+  EXPECT_THAT(clientTransportIsBufferMovable_, IsFalse());
+  std::string response;
+  client_->sync_echo(response, value);
+  EXPECT_THAT(response, Eq(value));
 }
 
 } // namespace apache::thrift::fast_thrift::thrift::test::aligned_parser

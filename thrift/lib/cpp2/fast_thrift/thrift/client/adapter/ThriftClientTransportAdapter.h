@@ -32,7 +32,7 @@
 namespace apache::thrift::fast_thrift::thrift::client {
 
 /**
- * ThriftClientTransportAdapter — tail endpoint of the thrift client pipeline.
+ * ThriftClientTransportAdapter — head endpoint of the thrift client pipeline.
  *
  * Bridges the thrift pipeline to the rocket pipeline by converting between
  * thrift and rocket message types. Owns a RocketClientConnection
@@ -67,18 +67,17 @@ namespace apache::thrift::fast_thrift::thrift::client {
  *   // 4. Wire up
  *   transportAdapter.setPipeline(thriftPipeline.get());
  *
- * Templated on the rocket connection's write-completion event factory so the
- * bridge can own either connection flavour. The default matches the
- * non-tracking RocketClientConnection; pipelines that opt into write tracking
- * instantiate with the same factory they built the rocket pipeline with, or
- * the two connection types won't match.
+ * Factory and ParserT must match the types used to build the owned
+ * RocketClientConnectionT. The defaults use no write-completion events and
+ * FrameLengthParser.
  */
 template <
     transport::WriteCompleteEventFactory Factory =
-        transport::NoOpWriteCompleteEventFactory>
+        transport::NoOpWriteCompleteEventFactory,
+    transport::Parser ParserT = frame::read::FrameLengthParser>
 class ThriftClientTransportAdapterT {
  public:
-  using Connection = rocket::client::RocketClientConnectionT<Factory>;
+  using Connection = rocket::client::RocketClientConnectionT<Factory, ParserT>;
 
   using PublishedEvents = channel_pipeline::
       Events<ThriftClientCloseConnectionEvent, ThriftClientWriteCompleteEvent>;

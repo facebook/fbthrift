@@ -41,6 +41,12 @@ namespace apache::thrift::fast_thrift::rocket::client {
  * RocketClientEventFactory (see the RocketClientTrackingConnection alias) and
  * build the pipeline with typed Rocket client events plus a subscriber.
  *
+ * ParserT must be a MovableBufferParser when the transport handler reads
+ * directly from an AsyncSocket on an io_uring EventBase. If it is not, folly
+ * aborts the process. AlignedParser is not a MovableBufferParser. It still
+ * works with a Fizz transport on any EventBase. Fizz copies decrypted bytes
+ * into the buffers that AlignedParser provides.
+ *
  * Lifecycle is split between disconnect() and destroy():
  *   - disconnect(ew) deactivates the pipeline and closes the underlying
  *     socket. If `ew` is non-empty it is fired up the pipeline as the
@@ -52,12 +58,12 @@ namespace apache::thrift::fast_thrift::rocket::client {
  */
 template <
     transport::WriteCompleteEventFactory Factory =
-        transport::NoOpWriteCompleteEventFactory>
+        transport::NoOpWriteCompleteEventFactory,
+    transport::Parser ParserT = frame::read::FrameLengthParser>
 struct RocketClientConnectionT {
   using OnConnectFn = folly::Function<void() noexcept>;
   using OnDisconnectFn = folly::Function<void() noexcept>;
-  using TransportHandler =
-      transport::TransportHandlerT<Factory, frame::read::FrameLengthParser>;
+  using TransportHandler = transport::TransportHandlerT<Factory, ParserT>;
 
   RocketClientConnectionT() = default;
   RocketClientConnectionT(const RocketClientConnectionT&) = delete;

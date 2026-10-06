@@ -29,6 +29,8 @@ struct Request {
 }
 
 @cpp.FastServer
+@cpp.FastClient
 service AlignedParserServer {
   void consume(1: Request request);
+  string echo(1: string value);
 }
