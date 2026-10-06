@@ -28,6 +28,14 @@ namespace apache::thrift::json5::detail {
 
 namespace {
 
+std::string unpaddedBase64(folly::StringPiece str) {
+  auto encoded = folly::base64Encode(str);
+  while (!encoded.empty() && encoded.back() == '=') {
+    encoded.pop_back();
+  }
+  return encoded;
+}
+
 bool isPrintableUtf8(std::string_view str) {
   auto p = reinterpret_cast<const unsigned char*>(str.data());
   auto end = p + str.size();
@@ -325,15 +333,15 @@ std::uint32_t Json5ProtocolWriter::writeString(folly::StringPiece str) {
 
 std::uint32_t Json5ProtocolWriter::writeBinary(folly::StringPiece str) {
   std::uint32_t xfer = beginWriteValue();
-  if (auto size = maybeWriteSimpleMapKey<type::string_t>(str)) {
-    xfer += *size;
-  } else if (options_.binaryAsBase64String) {
-    auto encoded = folly::base64Encode(str);
-    while (!encoded.empty() && encoded.back() == '=') {
-      encoded.pop_back();
-    }
-    xfer += writer_.writeString(encoded);
+  if (options_.binaryAsBase64String) {
+    // Map keys are base64 too, like values.
+    auto encoded = unpaddedBase64(str);
+    auto keySize = maybeWriteSimpleMapKey<type::string_t>(encoded);
+    xfer += keySize ? *keySize : writer_.writeString(encoded);
+  } else if (auto keySize = maybeWriteSimpleMapKey<type::string_t>(str)) {
+    xfer += *keySize;
   } else {
+    // {"utf-8": ...} or {"base64url": ...}
     xfer += writer_.writeObjectBegin();
     if (isPrintableUtf8(str)) {
       xfer += writer_.writeObjectName("utf-8");

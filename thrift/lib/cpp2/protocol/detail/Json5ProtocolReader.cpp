@@ -463,41 +463,51 @@ std::string Json5ProtocolReader::readStringValue() {
 }
 
 std::string Json5ProtocolReader::readBinaryValue() {
+  // A binary map key written as a member name is base64.
+  if (auto key = tryReadObjectMapKey()) {
+    return decodeBinary("base64url", std::move(*key));
+  }
+
   beginReadValue();
-  std::string name, value;
+  std::string encoding = "base64url";
+  std::string encoded;
   if (reader_.peekToken() == Json5Reader::Token::ObjectBegin) {
+    // {"utf-8": ...}, {"base64": ...} or {"base64url": ...}
     reader_.readObjectBegin();
-    name = reader_.readObjectName();
-    auto primitive = reader_.readPrimitive();
-    value = takeStringValue(std::move(primitive), "binary");
+    encoding = reader_.readObjectName();
+    encoded = takeStringValue(reader_.readPrimitive(), "binary");
     reader_.readObjectEnd();
   } else {
-    // folly::base64URLDecode accepts both standard and url-safe base64 string.
-    name = "base64url";
-    auto primitive = reader_.readPrimitive();
-    value = takeStringValue(std::move(primitive), "binary");
+    // A plain string is base64.
+    encoded = takeStringValue(reader_.readPrimitive(), "binary");
   }
   endReadValue();
+  return decodeBinary(encoding, std::move(encoded));
+}
 
-  if (name == "utf-8") {
-    return value;
+std::string Json5ProtocolReader::decodeBinary(
+    std::string_view encoding, std::string encoded) {
+  if (encoding == "utf-8") {
+    return encoded;
   }
   try {
-    if (name == "base64url") {
-      return folly::base64URLDecode(value);
-    } else if (name == "base64") {
-      while (value.size() % 4 != 0) {
+    if (encoding == "base64url") {
+      // Accepts both standard and url-safe base64.
+      return folly::base64URLDecode(encoded);
+    } else if (encoding == "base64") {
+      while (encoded.size() % 4 != 0) {
         // We want to support unpadded base64 string. Unfortunately there is no
         // folly function to support base64 decode without padding. We have to
         // add padding manually.
-        value += '=';
+        encoded += '=';
       }
-      return folly::base64Decode(value);
+      return folly::base64Decode(encoded);
     }
   } catch (const folly::base64_decode_error& e) {
-    throwError(fmt::format("invalid {} binary value: {}", name, e.what()));
+    throwError(fmt::format("invalid {} binary value: {}", encoding, e.what()));
   }
-  throwError("Unsupported encoding type for binary object: " + name);
+  throwError(
+      fmt::format("Unsupported encoding type for binary object: {}", encoding));
 }
 
 namespace {

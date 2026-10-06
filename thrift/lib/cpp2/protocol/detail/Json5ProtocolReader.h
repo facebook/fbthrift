@@ -223,6 +223,9 @@ class Json5ProtocolReader final
 
   std::string readStringValue();
   std::string readBinaryValue();
+  // `encoding` is "utf-8", "base64" or "base64url".
+  static std::string decodeBinary(
+      std::string_view encoding, std::string encoded);
 
   template <typename T = std::int32_t>
   struct IdentifierReadResult {

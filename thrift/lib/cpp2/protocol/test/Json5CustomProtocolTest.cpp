@@ -162,6 +162,18 @@ TEST_F(Json5MapPrimitiveKeysTest, BinaryAsKey) {
   EXPECT_EQ(writeJson5(example), R"RAW({binaryAsKey:{"?~":1,},})RAW");
 }
 
+TEST_F(Json5MapPrimitiveKeysTest, BinaryAsKeyBase64) {
+  Example example;
+  example.binaryAsKey() = {{"?~", 1}};
+  auto json = writeExample(
+      example,
+      {.writer = {},
+       .binaryAsBase64String = true,
+       .mapPrimitiveKeysAsMemberNames = true});
+  EXPECT_EQ(json, R"RAW({"binaryAsKey":{"P34":1}})RAW");
+  EXPECT_EQ(Json5ProtocolUtils::fromJson5<Example>(json), example);
+}
+
 TEST_F(Json5MapPrimitiveKeysTest, WholeNumberFloatWithoutFraction) {
   using DoubleMap = type::map<type::double_t, type::double_t>;
   const std::map<double, double> value{{12345, 1}, {0.5, 2.5}};
