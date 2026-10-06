@@ -1230,7 +1230,12 @@ template <typename T, typename Tag>
 struct Decode<type::cpp_type<T, Tag>> : Decode<Tag> {
   template <class Protocol, class U>
   void operator()(Protocol& prot, U& m) const {
-    if constexpr (kIsIntegral<U, Tag>) {
+    if constexpr (CppTypeEncode<T, Tag>::requestedBypass) {
+      ProtocolMethodsBridge<
+          type_class::from_type_tag_t<Tag>,
+          T,
+          type::cpp_type<T, Tag>>::read(prot, m);
+    } else if constexpr (kIsIntegral<U, Tag>) {
       type::native_type<Tag> i;
       Decode<Tag>::operator()(prot, i);
       m = static_cast<U>(i);

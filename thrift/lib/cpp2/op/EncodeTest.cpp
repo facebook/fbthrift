@@ -42,6 +42,33 @@ using namespace ::apache::thrift::conformance;
 using detail::protocol_reader_t;
 using detail::protocol_writer_t;
 
+namespace {
+// Like arvr's `ThriftMatrix`: a `cpp.type` with no container interface, which
+// only its `protocol_methods` specialization can encode and decode.
+struct ProtocolMethodsOnlyList {
+  using __fbthrift_use_protocol_methods = void;
+  std::vector<std::int32_t> values;
+  bool operator==(const ProtocolMethodsOnlyList&) const = default;
+};
+} // namespace
+
+namespace apache::thrift::detail::pm {
+template <typename ExpectedTag>
+struct protocol_methods<
+    type_class::list<type_class::integral>,
+    ProtocolMethodsOnlyList,
+    ExpectedTag> {
+  template <typename Protocol>
+  static uint32_t write(Protocol& prot, const ProtocolMethodsOnlyList& list) {
+    return op::encode<type::list<type::i32_t>>(prot, list.values);
+  }
+  template <typename Protocol>
+  static void read(Protocol& prot, ProtocolMethodsOnlyList& list) {
+    op::decode<type::list<type::i32_t>>(prot, list.values);
+  }
+};
+} // namespace apache::thrift::detail::pm
+
 namespace apache::thrift::op::detail {
 namespace {
 using apache::thrift::protocol::asValueStruct;
@@ -790,6 +817,13 @@ void testDecodeCppType() {
     // test strongly typed integer
     testDecode<Protocol, type::cpp_type<EmptyEnum, type::i16_t>>(
         static_cast<EmptyEnum>(1));
+  }
+  {
+    // test cpp_type that requests protocol_methods
+    testDecode<
+        Protocol,
+        type::cpp_type<ProtocolMethodsOnlyList, type::list<type::i32_t>>>(
+        ProtocolMethodsOnlyList{{1, 2, 3}});
   }
   {
     // test cpp_type with list
