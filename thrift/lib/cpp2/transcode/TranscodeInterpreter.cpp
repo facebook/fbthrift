@@ -868,6 +868,9 @@ void execJsonKeyValueArrayEntry(TranscodeCursor* c, const MapOp& op) {
     } else if (name == "value") {
       valueStart = valueBegin;
       valueEnd = valueFinish;
+    } else {
+      detail::setError(c, kMalformedFieldType);
+      return;
     }
   }
 
@@ -1321,6 +1324,14 @@ TaggedUnionInput scanTaggedUnion(
       continue;
     }
 
+    // With internal tagging the remaining members are the arm's own fields,
+    // which are checked when the arm is read.
+    if (FOLLY_UNLIKELY(
+            taggedUnion.content.has_value() &&
+            op.unknownFieldMode == UnknownFieldMode::Reject)) {
+      detail::setError(c, kMalformedFieldType);
+      return {};
+    }
     if (FOLLY_UNLIKELY(!thrift_transcode_skip_json_value(c))) {
       return {};
     }
@@ -1460,6 +1471,14 @@ bool writeJsonScalarValue(
   return writeScalarValue(c, scalar, value);
 }
 
+// `ignoredMember` is the tag of an internally tagged union, which shares the
+// arm's JSON object without being one of the arm's fields.
+void execJsonStruct(
+    TranscodeCursor* c,
+    const StructOp& op,
+    ScalarFieldOverrides fieldOverrides = {},
+    folly::ByteRange ignoredMember = {});
+
 void execTaggedUnion(
     TranscodeCursor* c,
     const StructOp& op,
@@ -1507,13 +1526,19 @@ void execTaggedUnion(
       return;
     }
   } else {
+    const auto* arm = std::get_if<StructOp>(input.member->command.get());
+    if (FOLLY_UNLIKELY(arm == nullptr)) {
+      detail::setError(c, kMalformedFieldType);
+      return;
+    }
     wf.writeHeader(
         c, input.member->writeTypeInfo, input.member->fieldId, prevWrite);
     if (hasError(c)) {
       return;
     }
     c->readPos = input.objectBegin;
-    execCommand(c, *input.member->command, 0);
+    execJsonStruct(
+        c, *arm, {}, folly::ByteRange{std::string_view{taggedUnion.tag}});
   }
   if (hasError(c)) {
     return;
@@ -1529,12 +1554,13 @@ void execTaggedUnion(
 
 // JSON object source → field-framed target.
 // read `{`, loop over `"name": value` pairs writing the matched field through
-// the target's numeric field headers, skip unknown keys, read `}`, and finish
-// the target framing.
+// the target's numeric field headers, reject unknown keys, read `}`, and
+// finish the target framing.
 void execJsonStruct(
     TranscodeCursor* c,
     const StructOp& op,
-    ScalarFieldOverrides fieldOverrides = {}) {
+    ScalarFieldOverrides fieldOverrides,
+    folly::ByteRange ignoredMember) {
   if (op.readTaggedUnion.has_value()) {
     execTaggedUnion(c, op, fieldOverrides);
     return;
@@ -1577,6 +1603,14 @@ void execJsonStruct(
 
     const FieldEntry* fe = findFieldByName(op, name);
     if (fe == nullptr) {
+      const bool ignored = !ignoredMember.empty() &&
+          thrift_transcode_json_string_token_equals(
+              &name, ignoredMember.data(), ignoredMember.size());
+      if (FOLLY_UNLIKELY(
+              !ignored && op.unknownFieldMode == UnknownFieldMode::Reject)) {
+        detail::setError(c, kMalformedFieldType);
+        return;
+      }
       if (FOLLY_UNLIKELY(!thrift_transcode_skip_json_value(c))) {
         return;
       }
@@ -1656,11 +1690,6 @@ struct IdFieldMatch {
   const FieldEntry* field = nullptr;
 };
 
-enum class UnknownFieldMode : uint8_t {
-  Skip,
-  Reject,
-};
-
 bool enterIdStructRead(
     TranscodeCursor* c, const StructOp& op, const uint8_t*& savedReadEnd) {
   savedReadEnd = nullptr;
@@ -1692,7 +1721,7 @@ bool readNextIdField(
     const Framing& rf,
     int16_t& prevRead,
     IdFieldMatch& match,
-    UnknownFieldMode unknownFieldMode = UnknownFieldMode::Skip) {
+    UnknownFieldMode unknownFieldMode) {
   while (true) {
     int16_t fieldId = 0;
     uint8_t typeInfo = rf.readHeader(c, &fieldId, prevRead);
@@ -1763,7 +1792,8 @@ void execIdStructToFieldFramed(
   bool unionMemberSeen = false;
   while (!hasError(c)) {
     IdFieldMatch match;
-    if (!readNextIdField(c, op, readProto, rf, prevRead, match)) {
+    if (!readNextIdField(
+            c, op, readProto, rf, prevRead, match, op.unknownFieldMode)) {
       break;
     }
     if (FOLLY_UNLIKELY(!noteUnionMember(c, unionStruct, unionMemberSeen))) {
@@ -1837,7 +1867,8 @@ void execIdStructToJsonFields(
   bool unionMemberSeen = false;
   while (!hasError(c)) {
     IdFieldMatch match;
-    if (!readNextIdField(c, op, readProto, rf, prevRead, match)) {
+    if (!readNextIdField(
+            c, op, readProto, rf, prevRead, match, op.unknownFieldMode)) {
       break;
     }
     if (FOLLY_UNLIKELY(!noteUnionMember(c, unionStruct, unionMemberSeen))) {
@@ -1925,7 +1956,8 @@ void execIdStructToTaggedJson(
   const auto& taggedUnion = *op.writeTaggedUnion;
   while (!hasError(c)) {
     IdFieldMatch match;
-    if (!readNextIdField(c, op, readProto, rf, prevRead, match)) {
+    if (!readNextIdField(
+            c, op, readProto, rf, prevRead, match, op.unknownFieldMode)) {
       break;
     }
     if (FOLLY_UNLIKELY(!noteSingleField(c, unionMemberSeen))) {

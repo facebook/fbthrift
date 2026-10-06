@@ -119,6 +119,7 @@ folly::Expected<Command, CompileError> fuseStructOps(
   fused.readEnd = source.readEnd;
   fused.writeEnd = target.writeEnd;
   fused.skipField = source.skipField;
+  fused.unknownFieldMode = source.unknownFieldMode;
   fused.readLengthDelimited = source.readLengthDelimited;
   fused.writeLengthDelimited = target.writeLengthDelimited;
   fused.schemaType =
@@ -131,7 +132,7 @@ folly::Expected<Command, CompileError> fuseStructOps(
   for (const auto& srcField : source.fields) {
     auto it = targetById.find(srcField.fieldId);
     if (it == targetById.end()) {
-      continue; // source field not in target — skipped at runtime
+      continue; // source field not in target — rejected at runtime
     }
     const auto& tgtField = *it->second;
 
@@ -245,6 +246,36 @@ folly::Expected<TranscodePlan, CompileError> fuseCodecs(
   plan.sourceProtocol = source.protocol;
   plan.targetProtocol = target.protocol;
   return plan;
+}
+
+namespace {
+
+void setUnknownFieldMode(Command& cmd, UnknownFieldMode mode) {
+  if (auto* st = std::get_if<StructOp>(&cmd)) {
+    st->unknownFieldMode = mode;
+    for (auto& field : st->fields) {
+      if (field.command != nullptr) {
+        setUnknownFieldMode(*field.command, mode);
+      }
+    }
+  } else if (auto* seq = std::get_if<SeqOp>(&cmd)) {
+    if (seq->element != nullptr) {
+      setUnknownFieldMode(*seq->element, mode);
+    }
+  } else if (auto* map = std::get_if<MapOp>(&cmd)) {
+    if (map->key != nullptr) {
+      setUnknownFieldMode(*map->key, mode);
+    }
+    if (map->value != nullptr) {
+      setUnknownFieldMode(*map->value, mode);
+    }
+  }
+}
+
+} // namespace
+
+void setUnknownFieldMode(TranscodePlan& plan, UnknownFieldMode mode) {
+  setUnknownFieldMode(plan.root, mode);
 }
 
 namespace {

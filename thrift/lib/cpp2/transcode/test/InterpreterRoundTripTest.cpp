@@ -305,6 +305,60 @@ std::vector<uint8_t> binaryNestedStructMessage() {
   return b;
 }
 
+// test.Sample{id=7} followed by field 9, which test.Sample does not define.
+std::vector<uint8_t> binaryUnknownFieldMessage() {
+  std::vector<uint8_t> b;
+
+  b.push_back(kTI32);
+  putI16BE(b, 1);
+  putI32BE(b, 7);
+
+  b.push_back(kTI32);
+  putI16BE(b, 9);
+  putI32BE(b, 1);
+
+  b.push_back(kTStop);
+  return b;
+}
+
+// test.Outer{inner=test.Inner{id=7}} where the nested struct also carries
+// field 2, which test.Inner does not define.
+std::vector<uint8_t> binaryNestedUnknownFieldMessage() {
+  std::vector<uint8_t> b;
+
+  b.push_back(kTStruct);
+  putI16BE(b, 1);
+  b.push_back(kTI32);
+  putI16BE(b, 1);
+  putI32BE(b, 7);
+  b.push_back(kTI32);
+  putI16BE(b, 2);
+  putI32BE(b, 1);
+  b.push_back(kTStop);
+  b.push_back(kTStop);
+
+  return b;
+}
+
+std::vector<uint8_t> compactUnknownFieldMessage() {
+  std::vector<uint8_t> b;
+
+  b.push_back(static_cast<uint8_t>((9 << 4) | wire::kCompactI32));
+  putUVarint(b, 2); // zigzag(1)
+
+  b.push_back(wire::kCompactStop);
+  return b;
+}
+
+std::vector<uint8_t> protobufUnknownFieldMessage() {
+  std::vector<uint8_t> b;
+
+  putUVarint(b, (static_cast<uint64_t>(9) << 3) | 0);
+  putUVarint(b, 1);
+
+  return b;
+}
+
 std::string enumBinaryMessage(fixture::Color color) {
   fixture::EnumSample value;
   value.color() = color;
@@ -464,6 +518,120 @@ TEST_F(InterpreterRoundTripTest, ProtobufNestedStructWritesThriftStop) {
   auto result = protobufToBinary.transcode(buf);
   ASSERT_FALSE(result.hasError()) << result.error().message;
   EXPECT_EQ(toBytes(**result), binaryNestedStructMessage());
+}
+
+TEST_F(InterpreterRoundTripTest, UnknownBinaryFieldYieldsError) {
+  auto binary = makeCodec(WireProtocol::ThriftBinary, sampleNode());
+  auto compact = makeCodec(WireProtocol::ThriftCompact, sampleNode());
+  TranscodeInterpreter binaryToCompact{fuse(binary, compact)};
+
+  auto input = binaryUnknownFieldMessage();
+  auto buf = folly::IOBuf::wrapBufferAsValue(input.data(), input.size());
+  EXPECT_TRUE(binaryToCompact.transcode(buf).hasError());
+}
+
+TEST_F(InterpreterRoundTripTest, UnknownNestedFieldYieldsError) {
+  auto binary = makeCodec(WireProtocol::ThriftBinary, outerNode());
+  auto compact = makeCodec(WireProtocol::ThriftCompact, outerNode());
+  TranscodeInterpreter binaryToCompact{fuse(binary, compact)};
+
+  auto input = binaryNestedUnknownFieldMessage();
+  auto buf = folly::IOBuf::wrapBufferAsValue(input.data(), input.size());
+  EXPECT_TRUE(binaryToCompact.transcode(buf).hasError());
+}
+
+TEST_F(InterpreterRoundTripTest, UnknownCompactFieldYieldsError) {
+  auto compact = makeCodec(WireProtocol::ThriftCompact, sampleNode());
+  auto binary = makeCodec(WireProtocol::ThriftBinary, sampleNode());
+  TranscodeInterpreter compactToBinary{fuse(compact, binary)};
+
+  auto input = compactUnknownFieldMessage();
+  auto buf = folly::IOBuf::wrapBufferAsValue(input.data(), input.size());
+  EXPECT_TRUE(compactToBinary.transcode(buf).hasError());
+}
+
+TEST_F(InterpreterRoundTripTest, UnknownProtobufFieldYieldsError) {
+  auto protobuf = makeCodec(WireProtocol::ProtobufBinary, sampleNode());
+  auto binary = makeCodec(WireProtocol::ThriftBinary, sampleNode());
+  TranscodeInterpreter protobufToBinary{fuse(protobuf, binary)};
+
+  auto input = protobufUnknownFieldMessage();
+  auto buf = folly::IOBuf::wrapBufferAsValue(input.data(), input.size());
+  EXPECT_TRUE(protobufToBinary.transcode(buf).hasError());
+}
+
+TEST_F(InterpreterRoundTripTest, UnknownFieldYieldsErrorWhenWritingJson) {
+  auto binary = makeCodec(WireProtocol::ThriftBinary, sampleNode());
+  auto json = makeCodec(WireProtocol::Json, sampleNode());
+  TranscodeInterpreter binaryToJson{fuse(binary, json)};
+
+  auto input = binaryUnknownFieldMessage();
+  auto buf = folly::IOBuf::wrapBufferAsValue(input.data(), input.size());
+  EXPECT_TRUE(binaryToJson.transcode(buf).hasError());
+}
+
+TEST_F(InterpreterRoundTripTest, SkipModeDropsUnknownBinaryField) {
+  auto binary = makeCodec(WireProtocol::ThriftBinary, sampleNode());
+  auto compact = makeCodec(WireProtocol::ThriftCompact, sampleNode());
+  auto plan = fuse(binary, compact);
+  setUnknownFieldMode(plan, UnknownFieldMode::Skip);
+  TranscodeInterpreter binaryToCompact{std::move(plan)};
+
+  auto input = binaryUnknownFieldMessage();
+  auto buf = folly::IOBuf::wrapBufferAsValue(input.data(), input.size());
+  auto result = binaryToCompact.transcode(buf);
+  ASSERT_FALSE(result.hasError()) << result.error().message;
+  const std::vector<uint8_t> expected = {
+      (1 << 4) | wire::kCompactI32, 14, wire::kCompactStop};
+  EXPECT_EQ(toBytes(**result), expected);
+}
+
+TEST_F(InterpreterRoundTripTest, SkipModeDropsUnknownCompactField) {
+  auto compact = makeCodec(WireProtocol::ThriftCompact, sampleNode());
+  auto binary = makeCodec(WireProtocol::ThriftBinary, sampleNode());
+  auto plan = fuse(compact, binary);
+  setUnknownFieldMode(plan, UnknownFieldMode::Skip);
+  TranscodeInterpreter compactToBinary{std::move(plan)};
+
+  auto input = compactUnknownFieldMessage();
+  auto buf = folly::IOBuf::wrapBufferAsValue(input.data(), input.size());
+  auto result = compactToBinary.transcode(buf);
+  ASSERT_FALSE(result.hasError()) << result.error().message;
+  EXPECT_EQ(toBytes(**result), std::vector<uint8_t>{kTStop});
+}
+
+TEST_F(InterpreterRoundTripTest, SkipModeDropsUnknownProtobufField) {
+  auto protobuf = makeCodec(WireProtocol::ProtobufBinary, sampleNode());
+  auto binary = makeCodec(WireProtocol::ThriftBinary, sampleNode());
+  auto plan = fuse(protobuf, binary);
+  setUnknownFieldMode(plan, UnknownFieldMode::Skip);
+  TranscodeInterpreter protobufToBinary{std::move(plan)};
+
+  auto input = protobufUnknownFieldMessage();
+  auto buf = folly::IOBuf::wrapBufferAsValue(input.data(), input.size());
+  auto result = protobufToBinary.transcode(buf);
+  ASSERT_FALSE(result.hasError()) << result.error().message;
+  EXPECT_EQ(toBytes(**result), std::vector<uint8_t>{kTStop});
+}
+
+TEST_F(InterpreterRoundTripTest, SkipModeReachesNestedStructs) {
+  auto binary = makeCodec(WireProtocol::ThriftBinary, outerNode());
+  auto compact = makeCodec(WireProtocol::ThriftCompact, outerNode());
+  auto plan = fuse(binary, compact);
+  setUnknownFieldMode(plan, UnknownFieldMode::Skip);
+  TranscodeInterpreter binaryToCompact{std::move(plan)};
+
+  auto input = binaryNestedUnknownFieldMessage();
+  auto buf = folly::IOBuf::wrapBufferAsValue(input.data(), input.size());
+  auto result = binaryToCompact.transcode(buf);
+  ASSERT_FALSE(result.hasError()) << result.error().message;
+  const std::vector<uint8_t> expected = {
+      (1 << 4) | wire::kCompactStruct,
+      (1 << 4) | wire::kCompactI32,
+      14,
+      wire::kCompactStop,
+      wire::kCompactStop};
+  EXPECT_EQ(toBytes(**result), expected);
 }
 
 TEST_F(InterpreterRoundTripTest, BinarySignedScalarsTranscodeToJson) {

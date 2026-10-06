@@ -242,10 +242,11 @@ TEST_F(TranscoderTest, FlattenedStructRejectsMultipleFields) {
   EXPECT_EQ(output.error().code, TranscodeErrc::Malformed);
 }
 
-TEST_F(TranscoderTest, FlattenedStructRejectsUnknownField) {
+TEST_F(TranscoderTest, FlattenedStructRejectsUnknownFieldEvenUnderSkipMode) {
   auto compact = makeCodec(WireProtocol::ThriftCompact, sampleNode());
   auto json = makeCodec(WireProtocol::Json, sampleNode());
   auto plan = fuse(compact, json);
+  setUnknownFieldMode(plan, UnknownFieldMode::Skip);
   std::get<StructOp>(plan.root).outputMode = StructOutputMode::Flattened;
   auto transcoder = makeTranscoder(std::move(plan), Engine::Interpreter);
   ASSERT_FALSE(transcoder.hasError()) << transcoder.error().message;

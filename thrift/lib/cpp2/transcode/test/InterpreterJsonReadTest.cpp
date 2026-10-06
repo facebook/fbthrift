@@ -143,24 +143,46 @@ TEST_F(InterpreterJsonReadTest, EmptyArrayProducesStableBytes) {
   EXPECT_EQ(toBytes(**compact0), toBytes(**compact1));
 }
 
-// An extra unknown key must be skipped via skip_json_value and not disturb the
-// surrounding fields (unknown object value nested here to exercise recursion).
-TEST_F(InterpreterJsonReadTest, UnknownFieldIsSkipped) {
+TEST_F(InterpreterJsonReadTest, UnknownFieldIsRejected) {
   auto compact = makeCodec(WireProtocol::ThriftCompact, sampleNode());
   auto json = makeCodec(WireProtocol::Json, sampleNode());
   TranscodeInterpreter jsonToCompact{fuse(json, compact)};
 
-  const std::string withUnknown =
-      R"({"id": 7, "extra": {"a": [1, 2], "b": "skip me"}, "name": "hi", )"
-      R"("flag": true, "nested": {"n": 99}, "nums": [10, 20, 30]})";
-  const std::string withoutUnknown =
-      R"({"id":7,"name":"hi","flag":true,"nested":{"n":99},"nums":[10,20,30]})";
+  EXPECT_TRUE(
+      jsonToCompact
+          .transcode(wrap(
+              R"({"id": 7, "extra": {"a": [1, 2]}, "name": "hi", )"
+              R"("flag": true, "nested": {"n": 99}, "nums": [10, 20, 30]})"))
+          .hasError());
+}
 
-  auto compact0 = jsonToCompact.transcode(wrap(withUnknown));
-  ASSERT_FALSE(compact0.hasError()) << compact0.error().message;
-  auto compact1 = jsonToCompact.transcode(wrap(withoutUnknown));
-  ASSERT_FALSE(compact1.hasError()) << compact1.error().message;
-  EXPECT_EQ(toBytes(**compact0), toBytes(**compact1));
+TEST_F(InterpreterJsonReadTest, UnknownNestedFieldIsRejected) {
+  auto compact = makeCodec(WireProtocol::ThriftCompact, sampleNode());
+  auto json = makeCodec(WireProtocol::Json, sampleNode());
+  TranscodeInterpreter jsonToCompact{fuse(json, compact)};
+
+  EXPECT_TRUE(jsonToCompact
+                  .transcode(wrap(
+                      R"({"id": 7, "name": "hi", "flag": true, )"
+                      R"("nested": {"n": 99, "extra": 1}, "nums": []})"))
+                  .hasError());
+}
+
+TEST_F(InterpreterJsonReadTest, SkipModeDropsUnknownMembers) {
+  auto compact = makeCodec(WireProtocol::ThriftCompact, sampleNode());
+  auto json = makeCodec(WireProtocol::Json, sampleNode());
+  auto plan = fuse(json, compact);
+  setUnknownFieldMode(plan, UnknownFieldMode::Skip);
+  TranscodeInterpreter jsonToCompact{std::move(plan)};
+
+  auto withUnknown = jsonToCompact.transcode(wrap(
+      R"({"id": 7, "extra": {"a": [1, 2], "b": "skip me"}, "name": "hi", )"
+      R"("flag": true, "nested": {"n": 99, "extra": 1}, "nums": [10, 20, 30]})"));
+  ASSERT_FALSE(withUnknown.hasError()) << withUnknown.error().message;
+  auto withoutUnknown = jsonToCompact.transcode(wrap(
+      R"({"id":7,"name":"hi","flag":true,"nested":{"n":99},"nums":[10,20,30]})"));
+  ASSERT_FALSE(withoutUnknown.hasError()) << withoutUnknown.error().message;
+  EXPECT_EQ(toBytes(**withUnknown), toBytes(**withoutUnknown));
 }
 
 // A string value with \n and \uXXXX escapes must decode to the right bytes
@@ -438,6 +460,106 @@ TEST_F(InterpreterJsonReadTest, InternallyTaggedJsonUnionRejectsBadTags) {
           .hasError());
 }
 
+TEST_F(
+    InterpreterJsonReadTest, InternallyTaggedJsonUnionRejectsUnknownMembers) {
+  type_system::TypeSystemBuilder builder;
+  builder.addType(
+      "test.Payload",
+      def::Struct({
+          def::Field(
+              def::Identity(1, "message"), def::AlwaysPresent, TypeIds::String),
+      }));
+  builder.addType(
+      "test.Event",
+      def::Union({
+          def::Field(
+              def::Identity(1, "message"),
+              def::Optional,
+              TypeIds::uri("test.Payload")),
+      }));
+  auto ts = std::move(builder).build();
+  const auto& node = ts->getUserDefinedTypeOrThrow("test.Event").asUnion();
+
+  auto json = makeCodec(WireProtocol::Json, node);
+  std::get<StructOp>(json.root).readTaggedUnion =
+      TaggedUnion{.tag = "type", .content = {}};
+  auto compact = makeCodec(WireProtocol::ThriftCompact, node);
+  TranscodeInterpreter jsonToCompact{fuse(json, compact)};
+
+  EXPECT_FALSE(
+      jsonToCompact.transcode(wrap(R"({"type":"message","message":"hello"})"))
+          .hasError());
+  EXPECT_TRUE(
+      jsonToCompact
+          .transcode(wrap(R"({"type":"message","message":"hello","extra":1})"))
+          .hasError());
+}
+
+TEST_F(
+    InterpreterJsonReadTest,
+    AdjacentlyTaggedJsonUnionRejectsUnknownMembersUnlessSkipped) {
+  type_system::TypeSystemBuilder builder;
+  builder.addType(
+      "test.Result",
+      def::Union({
+          def::Field(def::Identity(1, "flag"), def::Optional, TypeIds::Bool),
+      }));
+  auto ts = std::move(builder).build();
+  const auto& node = ts->getUserDefinedTypeOrThrow("test.Result").asUnion();
+
+  auto json = makeCodec(WireProtocol::Json, node);
+  std::get<StructOp>(json.root).readTaggedUnion = TaggedUnion{
+      .tag = "type",
+      .content = "value",
+  };
+  auto compact = makeCodec(WireProtocol::ThriftCompact, node);
+  TranscodeInterpreter jsonToCompact{fuse(json, compact)};
+  auto skippingPlan = fuse(json, compact);
+  setUnknownFieldMode(skippingPlan, UnknownFieldMode::Skip);
+  TranscodeInterpreter skippingJsonToCompact{std::move(skippingPlan)};
+
+  const auto withExtra = R"({"type":"flag","value":true,"extra":1})";
+  EXPECT_TRUE(jsonToCompact.transcode(wrap(withExtra)).hasError());
+
+  auto skipped = skippingJsonToCompact.transcode(wrap(withExtra));
+  ASSERT_FALSE(skipped.hasError()) << skipped.error().message;
+  auto expected =
+      jsonToCompact.transcode(wrap(R"({"type":"flag","value":true})"));
+  ASSERT_FALSE(expected.hasError()) << expected.error().message;
+  EXPECT_EQ(toBytes(**skipped), toBytes(**expected));
+}
+
+TEST_F(InterpreterJsonReadTest, TaggedJsonUnionTargetRejectsUnknownMember) {
+  type_system::TypeSystemBuilder builder;
+  builder.addType(
+      "test.Result",
+      def::Union({
+          def::Field(def::Identity(1, "flag"), def::Optional, TypeIds::Bool),
+      }));
+  auto ts = std::move(builder).build();
+  const auto& node = ts->getUserDefinedTypeOrThrow("test.Result").asUnion();
+
+  auto json = makeCodec(WireProtocol::Json, node);
+  std::get<StructOp>(json.root).writeTaggedUnion = TaggedUnion{
+      .tag = "type",
+      .content = "value",
+  };
+  auto compact = makeCodec(WireProtocol::ThriftCompact, node);
+  TranscodeInterpreter compactToJson{fuse(compact, json)};
+
+  // Compact union whose only member is field 2, which test.Result lacks.
+  const std::vector<uint8_t> input = {
+      static_cast<uint8_t>((2 << 4) | 5), // field 2, i32
+      2, // zigzag(1)
+      0, // stop
+  };
+  EXPECT_TRUE(
+      compactToJson
+          .transcode(
+              folly::IOBuf::wrapBufferAsValue(input.data(), input.size()))
+          .hasError());
+}
+
 TEST_F(InterpreterJsonReadTest, AdjacentlyTaggedJsonUnionRoundTripsScalar) {
   type_system::TypeSystemBuilder builder;
   builder.addType(
@@ -522,9 +644,7 @@ TEST_F(InterpreterJsonReadTest, JsonMapKeyValueArrayAcceptsValueBeforeKey) {
   EXPECT_EQ(toBytes(**actual), toBytes(**expected));
 }
 
-TEST_F(
-    InterpreterJsonReadTest,
-    JsonMapKeyValueArrayUsesLastKeyValueAndSkipsUnknownMembers) {
+TEST_F(InterpreterJsonReadTest, JsonMapKeyValueArrayUsesLastKeyValue) {
   type_system::TypeSystemBuilder builder;
   builder.addType(
       "test.WithMap",
@@ -545,10 +665,33 @@ TEST_F(
       jsonToCompact.transcode(wrap(R"({"m":[{"key":2,"value":"two"}]})"));
   ASSERT_FALSE(expected.hasError()) << expected.error().message;
 
-  auto actual = jsonToCompact.transcode(wrap(
-      R"({"m":[{"extra":{"ignored":[1,2]},"key":1,"value":"one","key":2,"value":"two"}]})"));
+  auto actual = jsonToCompact.transcode(
+      wrap(R"({"m":[{"key":1,"value":"one","key":2,"value":"two"}]})"));
   ASSERT_FALSE(actual.hasError()) << actual.error().message;
   EXPECT_EQ(toBytes(**actual), toBytes(**expected));
+}
+
+TEST_F(InterpreterJsonReadTest, JsonMapKeyValueEntryRejectsUnknownMembers) {
+  type_system::TypeSystemBuilder builder;
+  builder.addType(
+      "test.WithMap",
+      def::Struct({
+          def::Field(
+              def::Identity(1, "m"),
+              def::AlwaysPresent,
+              TypeIds::map(TypeIds::I32, TypeIds::String)),
+      }));
+  auto ts = std::move(builder).build();
+  const auto& node = ts->getUserDefinedTypeOrThrow("test.WithMap").asStruct();
+
+  auto json = makeCodec(WireProtocol::Json, node);
+  auto compact = makeCodec(WireProtocol::ThriftCompact, node);
+  TranscodeInterpreter jsonToCompact{fuse(json, compact)};
+
+  EXPECT_TRUE(
+      jsonToCompact
+          .transcode(wrap(R"({"m":[{"key":1,"value":"one","extra":[1,2]}]})"))
+          .hasError());
 }
 
 TEST_F(InterpreterJsonReadTest, JsonEnumMapObjectKeyAcceptsNameOrId) {

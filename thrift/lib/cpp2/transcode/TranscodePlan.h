@@ -69,6 +69,9 @@ struct TranscodePlan {
 folly::Expected<TranscodePlan, CompileError> fuseCodecs(
     const Codec& source, const Codec& target);
 
+// Sets the unknown-field mode of every struct the plan reads.
+void setUnknownFieldMode(TranscodePlan& plan, UnknownFieldMode mode);
+
 /**
  * Fuse a source StructOp (read-side) with a target StructOp (write-side)
  * into a single StructOp that reads from source and writes to target.
@@ -78,7 +81,8 @@ folly::Expected<TranscodePlan, CompileError> fuseCodecs(
  *   - writeFn comes from the target
  *   - coercion is inferred from value kinds
  *
- * Fields only in source → skipped at runtime (via skipField intrinsic).
+ * Fields only in source → unknown fields at runtime, rejected unless the
+ *   source sets UnknownFieldMode::Skip.
  * Fields only in target → left unset.
  */
 folly::Expected<Command, CompileError> fuseStructOps(

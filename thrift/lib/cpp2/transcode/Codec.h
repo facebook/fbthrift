@@ -364,6 +364,14 @@ enum class StructOutputMode : uint8_t {
   Flattened,
 };
 
+// How a reader treats a field its struct's schema does not define.
+enum class UnknownFieldMode : uint8_t {
+  // Read past the field and drop its value. Opt in only where tolerating a peer
+  // with a newer schema matters more than noticing the data that is lost.
+  Skip,
+  Reject,
+};
+
 struct TaggedUnion {
   std::string tag;
   std::optional<std::string> content;
@@ -392,6 +400,8 @@ struct StructOp {
 
   // Skip intrinsic for unknown fields
   std::string skipField;
+  // Read-side. Flattened structs reject unknown fields regardless.
+  UnknownFieldMode unknownFieldMode = UnknownFieldMode::Reject;
 
   // Protobuf: nested structs are length-delimited blocks.
   // When true, the codegen wraps read/write with length framing:
