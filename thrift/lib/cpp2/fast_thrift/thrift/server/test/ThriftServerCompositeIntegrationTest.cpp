@@ -51,6 +51,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/handler/FrameCodecHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameViews.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/handler/FrameDefragmentationHandler.h>
@@ -61,6 +62,7 @@
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FrameLengthEncoderHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/common/RocketStreamContext.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/server/RocketServerEventFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/adapter/RocketServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/common/RocketServerConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerMessageMarshalHandler.h>
@@ -263,18 +265,18 @@ class ThriftServerCompositeIntegrationTest : public ::testing::Test {
 
     auto rocketConn =
         std::make_unique<rocket::server::RocketServerConnection>();
-    rocketConn->transportHandler = apache::thrift::fast_thrift::rocket::server::
-        RocketServerTransportHandler::create(std::move(transport));
+    auto transportHandler = transport::TransportHandlerT<
+        rocket::server::RocketServerEventFactory>::create(std::move(transport));
 
     // 1. Rocket pipeline (identical to ThriftServerIntegrationTest setup).
     rocketConn->pipeline =
         PipelineBuilder<
-            apache::thrift::fast_thrift::rocket::server::
-                RocketServerTransportHandler,
+            transport::TransportHandlerT<
+                rocket::server::RocketServerEventFactory>,
             RocketServerAppAdapter,
             TestAllocator>()
             .setEventBase(&evb_)
-            .setHead(rocketConn->transportHandler.get())
+            .setHead(transportHandler.get())
             .setTail(rocketConn->appAdapter.get())
             .setAllocator(&rocketAllocator_)
             .addState<
@@ -327,6 +329,7 @@ class ThriftServerCompositeIntegrationTest : public ::testing::Test {
 
     // 3. Thrift pipeline with composite as tail. ThriftServerTransportAdapter
     //    takes ownership of the rocket connection bundle.
+    rocketConn->transportHandler = std::move(transportHandler);
     transportAdapter_ =
         std::make_unique<ThriftServerTransportAdapter>(std::move(rocketConn));
 
@@ -430,9 +433,8 @@ class ThriftServerCompositeIntegrationTest : public ::testing::Test {
   rocket::server::RocketServerConnection& rocketConn_() {
     return transportAdapter_->rocketConnection();
   }
-  apache::thrift::fast_thrift::rocket::server::RocketServerTransportHandler*
-  transportHandler_() {
-    return rocketConn_().transportHandler.get();
+  rocket::server::AnyTransportHandler* transportHandler_() {
+    return &rocketConn_().transportHandler;
   }
   RocketServerAppAdapter* appAdapter_() {
     return rocketConn_().appAdapter.get();

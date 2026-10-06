@@ -59,6 +59,7 @@
 #include <thrift/lib/cpp2/fast_thrift/common/Stats.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/handler/FrameCodecHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/handler/FrameDefragmentationHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/FragmentationHandlerConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/FrameHeaders.h>
@@ -68,6 +69,7 @@
 #include <thrift/lib/cpp2/fast_thrift/rocket/common/RocketStreamContext.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/common/handler/RocketMetricsHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/server/RocketServerEventFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/adapter/RocketServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/common/RocketServerConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerMessageMarshalHandler.h>
@@ -217,19 +219,19 @@ std::unique_ptr<rocket::server::RocketServerConnection> buildRocketConnection(
       folly::AsyncTransport::UniquePtr(new BenchAsyncTransport(evb));
   *outTransport = static_cast<BenchAsyncTransport*>(transport.get());
 
-  rocketConn->transportHandler = apache::thrift::fast_thrift::rocket::server::
-      RocketServerTransportHandler::create(std::move(transport));
+  auto transportHandler = transport::TransportHandlerT<
+      rocket::server::RocketServerEventFactory>::create(std::move(transport));
 
   // addState rebinds the builder and leaves the original moved-from, so the
   // chain through it has to be bound here before anything else is added.
   auto builder =
       PipelineBuilder<
-          apache::thrift::fast_thrift::rocket::server::
-              RocketServerTransportHandler,
+          transport::TransportHandlerT<
+              rocket::server::RocketServerEventFactory>,
           rocket::server::RocketServerAppAdapter,
           SimpleBufferAllocator>()
           .setEventBase(evb)
-          .setHead(rocketConn->transportHandler.get())
+          .setHead(transportHandler.get())
           .setTail(rocketConn->appAdapter.get())
           .setAllocator(&rocketConn->allocator)
           .addState<
@@ -263,7 +265,8 @@ std::unique_ptr<rocket::server::RocketServerConnection> buildRocketConnection(
   rocketConn->pipeline = builder.build();
 
   rocketConn->appAdapter->setPipeline(rocketConn->pipeline.get());
-  rocketConn->transportHandler->setPipeline(rocketConn->pipeline.get());
+  transportHandler->setPipeline(rocketConn->pipeline.get());
+  rocketConn->transportHandler = std::move(transportHandler);
   rocketConn->transportHandler->onConnect();
 
   return rocketConn;

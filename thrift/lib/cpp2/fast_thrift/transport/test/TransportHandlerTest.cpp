@@ -24,8 +24,13 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
+#include <folly/io/async/Liburing.h>
 #include <folly/io/async/test/MockAsyncTransport.h>
 #include <folly/portability/GMock.h>
+
+#if FOLLY_HAS_LIBURING
+#include <folly/io/async/IoUringBackend.h>
+#endif
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
@@ -788,6 +793,58 @@ TEST_F(TransportHandlerTest, IsBufferMovableFollowsANonMovableParser) {
 
   EXPECT_THAT(handler->isBufferMovable(), IsFalse());
 }
+
+#if FOLLY_HAS_LIBURING
+TEST_F(TransportHandlerTest, RejectsANonMovableParserOnNativeIoUring) {
+  if (!folly::IoUringBackend::isAvailable()) {
+    GTEST_SKIP();
+  }
+
+  folly::EventBase evb(
+      folly::EventBase::Options{}.setBackendFactory(
+          []() -> std::unique_ptr<folly::EventBaseBackendBase> {
+            folly::IoUringBackend::Options options;
+            options.setCapacity(64).setMaxSubmit(32).setInitialProvidedBuffers(
+                2048, 256);
+            return std::make_unique<folly::IoUringBackend>(std::move(options));
+          }));
+  std::array<int, 2> fds{};
+  const int socketPairResult =
+      ::socketpair(AF_UNIX, SOCK_STREAM, 0, fds.data());
+  EXPECT_THAT(socketPairResult, Eq(0));
+  if (socketPairResult != 0) {
+    return;
+  }
+
+  folly::AsyncSocket::UniquePtr peer(
+      new folly::AsyncSocket(&evb, folly::NetworkSocket{fds[1]}));
+  folly::AsyncTransport::UniquePtr socket(
+      new folly::AsyncSocket(&evb, folly::NetworkSocket{fds[0]}));
+  NonMovableTransportHandler::Ptr handler =
+      NonMovableTransportHandler::createWithParser(
+          std::move(socket), NonMovableParser());
+  std::unique_ptr<MockHandler> mockHandler = std::make_unique<MockHandler>();
+  MockHandler* const mockHandlerPtr = mockHandler.get();
+  PipelineImpl::Ptr pipeline =
+      PipelineBuilder<
+          NonMovableTransportHandler,
+          MockAppHandler,
+          SimpleBufferAllocator>()
+          .setEventBase(&evb)
+          .setHead(handler.get())
+          .setTail(&appHandler_)
+          .setAllocator(&allocator_)
+          .addNextDuplex<MockHandler>(
+              exception_handler_tag, std::move(mockHandler))
+          .build();
+  handler->setPipeline(pipeline.get());
+
+  handler->onConnect();
+
+  EXPECT_THAT(handler->state(), Eq(NonMovableTransportHandler::State::Closed));
+  EXPECT_THAT(mockHandlerPtr->exceptionCount(), Eq(1));
+}
+#endif
 
 TEST_F(TransportHandlerTest, ReadBufferAvailableOnANonMovableParserDeath) {
 #ifdef NDEBUG

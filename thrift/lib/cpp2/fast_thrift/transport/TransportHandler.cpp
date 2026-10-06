@@ -18,3 +18,28 @@
 // TU can implicit-instantiate with its own WriteCompleteEventFactory.
 
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
+
+#include <folly/io/async/AsyncSocket.h>
+#include <folly/io/async/Liburing.h>
+
+#if FOLLY_HAS_LIBURING
+#include <folly/io/async/IoUringBackend.h>
+#endif
+
+namespace apache::thrift::fast_thrift::transport::detail {
+
+bool requiresMovableReadCallback(
+    const folly::AsyncTransport& transport) noexcept {
+#if FOLLY_HAS_LIBURING
+  const folly::AsyncSocket* const socket =
+      dynamic_cast<const folly::AsyncSocket*>(&transport);
+  return socket != nullptr &&
+      dynamic_cast<const folly::IoUringBackend*>(
+          socket->getEventBase()->getBackend()) != nullptr;
+#else
+  (void)transport;
+  return false;
+#endif
+}
+
+} // namespace apache::thrift::fast_thrift::transport::detail

@@ -46,9 +46,7 @@ namespace apache::thrift::fast_thrift::thrift::server {
  *   rocket pipeline (owned by ThriftServerTransportAdapter):
  *     TransportHandler → [rocket handlers] → RocketServerAppAdapter
  *
- * Non-templated: the variation in tail shape (a single user adapter vs a
- * composite fronting user + monitoring/status/debug/metadata) is hidden
- * inside `tail` as a variant.
+ * The variation in tail shape is hidden inside `tail` as a variant.
  */
 struct ThriftServerConnection {
   /**
@@ -105,7 +103,7 @@ struct ThriftServerConnection {
   void start() noexcept {
     DCHECK(!started_) << "ThriftServerConnection::start called twice";
     started_ = true;
-    thriftTransportAdapter->rocketConnection().transportHandler->onConnect();
+    thriftTransportAdapter->rocketConnection().transportHandler.onConnect();
   }
 
   // Initiate close. From the owner's perspective this is fire-and-wait:

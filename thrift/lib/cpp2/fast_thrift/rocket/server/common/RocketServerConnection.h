@@ -16,24 +16,138 @@
 
 #pragma once
 
+#include <cstddef>
+#include <memory>
+#include <type_traits>
+#include <utility>
+
 #include <folly/Function.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
-#include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
-#include <thrift/lib/cpp2/fast_thrift/rocket/server/RocketServerEventFactory.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/common/TypeErasedPtr.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/adapter/RocketServerAppAdapter.h>
-#include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 
 namespace apache::thrift::fast_thrift::rocket::server {
 
-// The rocket server's transport handler, bound to the rocket pipeline's event
-// space so socket-level write completions are fired as pipeline events rather
-// than dropped. Everything that builds or holds a rocket server pipeline uses
-// this alias, so the binding is stated once.
-using RocketServerTransportHandler =
-    apache::thrift::fast_thrift::transport::TransportHandlerT<
-        RocketServerEventFactory,
-        apache::thrift::fast_thrift::frame::read::FrameLengthParser>;
+/**
+ * Owns a server TransportHandler without exposing its parser type, so code that
+ * stores this handle can use a parser without becoming a template.
+ * Call operations only when the handle is non-empty.
+ */
+class AnyTransportHandler {
+ public:
+  AnyTransportHandler() noexcept = default;
+  ~AnyTransportHandler() = default;
+
+  template <typename Handler, typename Deleter>
+  explicit AnyTransportHandler(
+      std::unique_ptr<Handler, Deleter> handler) noexcept
+      : handler_(
+            rocket::with_custom_deleter(
+                handler.release(),
+                [](void* instance) noexcept {
+                  Deleter{}(static_cast<Handler*>(instance));
+                })),
+        ops_(&opsFor<Handler>()) {
+    static_assert(std::is_empty_v<Deleter>);
+    static_assert(std::is_default_constructible_v<Deleter>);
+  }
+
+  AnyTransportHandler(AnyTransportHandler&& other) noexcept
+      : handler_(std::move(other.handler_)),
+        ops_(std::exchange(other.ops_, nullptr)) {}
+
+  AnyTransportHandler& operator=(AnyTransportHandler&& other) noexcept {
+    if (this != &other) {
+      handler_ = std::move(other.handler_);
+      ops_ = std::exchange(other.ops_, nullptr);
+    }
+    return *this;
+  }
+
+  template <typename Handler, typename Deleter>
+  AnyTransportHandler& operator=(
+      std::unique_ptr<Handler, Deleter> handler) noexcept {
+    *this = AnyTransportHandler(std::move(handler));
+    return *this;
+  }
+
+  AnyTransportHandler(const AnyTransportHandler&) = delete;
+  AnyTransportHandler& operator=(const AnyTransportHandler&) = delete;
+
+  explicit operator bool() const noexcept {
+    return static_cast<bool>(handler_);
+  }
+
+  AnyTransportHandler* operator->() noexcept { return this; }
+
+  template <channel_pipeline::PipelineRefTarget P>
+  void setPipeline(P* pipeline) noexcept {
+    setPipeline(channel_pipeline::PipelineRef(*pipeline));
+  }
+
+  void setPipeline(channel_pipeline::PipelineRef pipeline) noexcept {
+    ops_->setPipeline(handler_.get(), pipeline);
+  }
+
+  friend bool operator==(
+      const AnyTransportHandler& handler, std::nullptr_t) noexcept {
+    return !handler;
+  }
+
+  friend bool operator==(
+      std::nullptr_t, const AnyTransportHandler& handler) noexcept {
+    return !handler;
+  }
+
+  void onConnect() noexcept { ops_->onConnect(handler_.get()); }
+
+  void close(folly::exception_wrapper&& error) noexcept {
+    ops_->close(handler_.get(), std::move(error));
+  }
+
+  void resetPipeline() noexcept { ops_->resetPipeline(handler_.get()); }
+
+  void reset() noexcept {
+    handler_.reset();
+    ops_ = nullptr;
+  }
+
+ private:
+  struct Ops {
+    void (*onConnect)(void*) noexcept;
+    void (*setPipeline)(void*, channel_pipeline::PipelineRef) noexcept;
+    void (*close)(void*, folly::exception_wrapper&&) noexcept;
+    void (*resetPipeline)(void*) noexcept;
+  };
+
+  template <typename Handler>
+  static const Ops& opsFor() noexcept {
+    static const Ops ops{
+        .onConnect =
+            [](void* instance) noexcept {
+              static_cast<Handler*>(instance)->onConnect();
+            },
+        .setPipeline =
+            [](void* instance,
+               channel_pipeline::PipelineRef pipeline) noexcept {
+              static_cast<Handler*>(instance)->setPipeline(pipeline);
+            },
+        .close =
+            [](void* instance, folly::exception_wrapper&& error) noexcept {
+              static_cast<Handler*>(instance)->close(std::move(error));
+            },
+        .resetPipeline =
+            [](void* instance) noexcept {
+              static_cast<Handler*>(instance)->resetPipeline();
+            },
+    };
+    return ops;
+  }
+
+  rocket::TypeErasedPtr handler_;
+  const Ops* ops_{nullptr};
+};
 
 /**
  * RocketServerConnection — owns the rocket pipeline and its
@@ -71,7 +185,7 @@ struct RocketServerConnection {
 
   rocket::server::RocketServerAppAdapter::Ptr appAdapter{
       new rocket::server::RocketServerAppAdapter()};
-  RocketServerTransportHandler::Ptr transportHandler;
+  AnyTransportHandler transportHandler;
   channel_pipeline::PipelineOwner pipeline;
   channel_pipeline::SimpleBufferAllocator allocator;
 
@@ -115,7 +229,7 @@ struct RocketServerConnection {
           .template fire<FlushWritesEvent>();
     }
     if (transportHandler) {
-      transportHandler->close(std::move(ew));
+      transportHandler.close(std::move(ew));
     }
   }
 
@@ -130,7 +244,7 @@ struct RocketServerConnection {
   void destroy() noexcept {
     disconnect();
     if (transportHandler) {
-      transportHandler->resetPipeline();
+      transportHandler.resetPipeline();
     }
     if (appAdapter) {
       appAdapter->resetPipeline();

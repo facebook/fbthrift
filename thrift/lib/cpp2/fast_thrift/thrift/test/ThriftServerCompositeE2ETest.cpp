@@ -48,6 +48,7 @@
 #include <thrift/lib/cpp2/fast_thrift/connection/ConnectionHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/ConnectionManager.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/handler/FrameCodecHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/handler/FrameDefragmentationHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/FragmentationHandlerConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FrameFragmentationHandler.h>
@@ -60,6 +61,7 @@
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientSetupFrameHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientStreamStateHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/common/RocketStreamContext.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/server/RocketServerEventFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/adapter/RocketServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/common/RocketServerConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerMessageMarshalHandler.h>
@@ -334,19 +336,20 @@ class ThriftServerCompositeE2ETest : public ::testing::Test {
     // so the thrift transport adapter can take ownership of the whole bundle.
     auto rocketConn =
         std::make_unique<rocket::server::RocketServerConnection>();
-    rocketConn->transportHandler =
-        rocket::server::RocketServerTransportHandler::create(std::move(socket));
+    auto transportHandler = transport::TransportHandlerT<
+        rocket::server::RocketServerEventFactory>::create(std::move(socket));
 
     ServerConnectionContext ctx;
 
     // 1. Rocket pipeline (same as bare-server E2E)
     rocketConn->pipeline =
         PipelineBuilder<
-            rocket::server::RocketServerTransportHandler,
+            transport::TransportHandlerT<
+                rocket::server::RocketServerEventFactory>,
             rocket::server::RocketServerAppAdapter,
             SimpleBufferAllocator>()
             .setEventBase(evb)
-            .setHead(rocketConn->transportHandler.get())
+            .setHead(transportHandler.get())
             .setTail(rocketConn->appAdapter.get())
             .setAllocator(ctx.rocketAllocator.get())
             .addState<
@@ -376,7 +379,8 @@ class ThriftServerCompositeE2ETest : public ::testing::Test {
             .build();
 
     rocketConn->appAdapter->setPipeline(rocketConn->pipeline.get());
-    rocketConn->transportHandler->setPipeline(rocketConn->pipeline.get());
+    transportHandler->setPipeline(rocketConn->pipeline.get());
+    rocketConn->transportHandler = std::move(transportHandler);
 
     // 2. Thrift pipeline — composite wraps two codegen children.
     ctx.primaryChild.reset(

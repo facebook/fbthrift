@@ -36,7 +36,18 @@
 #include <thrift/lib/cpp2/fast_thrift/transport/Parser.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/WriteCompletion.h>
 
+namespace apache::thrift::fast_thrift::frame::read {
+class FrameLengthParser;
+}
+
 namespace apache::thrift::fast_thrift::transport {
+
+namespace detail {
+
+bool requiresMovableReadCallback(
+    const folly::AsyncTransport& transport) noexcept;
+
+} // namespace detail
 
 /**
  * Bridges the channel_pipeline framework with an async socket.
@@ -54,9 +65,8 @@ namespace apache::thrift::fast_thrift::transport {
  * per connection at runtime supplies a parser that dispatches internally; the
  * transport stays a direct call either way.
  *
- * There is deliberately no default parser: framing is a property of the
- * protocol on the wire, and a transport that guesses it is the bug this
- * parameter exists to prevent.
+ * FrameLengthParser is the default for fast_thrift's RSocket wire format.
+ * Callers that use a different frame format supply its parser explicitly.
  *
  * State machine (one-directional; per-connection, not reused):
  *   Created   --setPipeline-->   Ready
@@ -70,7 +80,9 @@ namespace apache::thrift::fast_thrift::transport {
  * AsyncSocket. Closing -> Closed when writePending_ hits 0 (natural drain)
  * or the drain timeout fires (force closeNow cascades writeErrs).
  */
-template <WriteCompleteEventFactory Factory, Parser ParserT>
+template <
+    WriteCompleteEventFactory Factory,
+    Parser ParserT = frame::read::FrameLengthParser>
 class TransportHandlerT : public folly::DelayedDestruction,
                           public folly::AsyncTransport::ReadCallback,
                           public folly::AsyncTransport::WriteCallback {
@@ -190,8 +202,18 @@ class TransportHandlerT : public folly::DelayedDestruction,
     DCHECK(state_ == State::Ready);
     DCHECK(socket_->good());
     state_ = State::Open;
-    resumeRead();
-    pipeline_.activate();
+    const bool unsupportedReadCallback = !MovableBufferParser<ParserT> &&
+        detail::requiresMovableReadCallback(*socket_);
+    if (FOLLY_UNLIKELY(unsupportedReadCallback)) {
+      pipeline_.activate();
+      closeImmediately(
+          folly::AsyncSocketException(
+              folly::AsyncSocketException::NOT_SUPPORTED,
+              "Transport requires a movable read callback"));
+    } else {
+      resumeRead();
+      pipeline_.activate();
+    }
   }
 
   // --- AsyncTransport::ReadCallback interface ---

@@ -65,6 +65,14 @@ struct FastThriftServerConfig {
   // Minimum payload size in bytes for MSG_ZEROCOPY. 0 disables zero-copy.
   size_t zeroCopyThreshold{0};
 
+  // Use AlignedParser for inbound frames. See AlignedParser for its buffer
+  // guarantees and preconditions. The server rejects a direct native io_uring
+  // connection because that receive path requires a movable read callback.
+  // Fizz connections are accepted because Fizz copies decrypted bytes into
+  // the buffers that AlignedParser provides.
+  // Only FastThriftServer reads this field.
+  bool useAlignedParser{false};
+
   // Static mode fixes handler types and order while the server is running.
   // Dynamic remains the default for compatibility with runtime-shaped users.
   ChannelPipelineMode channelPipelineMode{ChannelPipelineMode::Dynamic};

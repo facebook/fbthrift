@@ -30,6 +30,8 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineStorage.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticPipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/handler/FrameCodecHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/AlignedParser.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/handler/FrameDefragmentationHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/BackpressurePolicy.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FragmentCompletionTracker.h>
@@ -129,12 +131,12 @@ HANDLER_TAG(write_buffer_backpressure_handler);
 HANDLER_TAG(thrift_server_setup_handler);
 HANDLER_TAG(thrift_server_stream_mux_handler);
 
-template <bool Backpressure, bool WithStats>
+template <bool Backpressure, bool WithStats, typename TransportHandler>
 PipelineOwner buildStaticRocketPipeline(
     const ThriftServerConnectionFactoryConfig& config,
     SimpleBufferAllocator* allocator,
     folly::EventBase* evb,
-    rocket::server::RocketServerTransportHandler* transportHandler,
+    TransportHandler* transportHandler,
     rocket::server::RocketServerAppAdapter* appAdapter,
     ServerStatsShard* FOLLY_NULLABLE statsShard) {
   using BatchingHandler = std::conditional_t<
@@ -148,14 +150,14 @@ PipelineOwner buildStaticRocketPipeline(
 
   auto builder =
       channel_pipeline::StaticPipelineBuilder<
-          rocket::server::RocketServerTransportHandler,
+          TransportHandler,
           rocket::server::RocketServerAppAdapter,
           SimpleBufferAllocator>()
           .setEventBase(evb)
           .setHead(transportHandler)
           .setTail(appAdapter)
           .setAllocator(allocator)
-          .addState<rocket::RocketStreamContexts>()
+          .template addState<rocket::RocketStreamContexts>()
           .template addNextOutbound<BatchingHandler>(
               batching_frame_handler_tag, config.batchingConfig)
           .template addNextOutbound<
@@ -198,12 +200,12 @@ PipelineOwner buildStaticRocketPipeline(
   }
 }
 
-template <bool Backpressure>
+template <bool Backpressure, typename TransportHandler>
 PipelineOwner selectStaticRocketStats(
     const ThriftServerConnectionFactoryConfig& config,
     SimpleBufferAllocator* allocator,
     folly::EventBase* evb,
-    rocket::server::RocketServerTransportHandler* transportHandler,
+    TransportHandler* transportHandler,
     rocket::server::RocketServerAppAdapter* appAdapter,
     ServerStatsShard* FOLLY_NULLABLE statsShard) {
   if (statsShard != nullptr) {
@@ -632,7 +634,7 @@ ThriftServerConnection ThriftServerConnectionFactory::getConnection(
     connContext->setSecurityProtocol(peerSecurity->securityProtocol);
   }
 
-  auto conn = needsComposite_
+  ThriftServerConnection conn = needsComposite_
       ? buildCompositeConnection(std::move(socket), connContext)
       : buildSimpleConnection(std::move(socket), connContext);
 
@@ -733,6 +735,36 @@ ThriftServerConnection ThriftServerConnectionFactory::buildCompositeConnection(
       std::move(connContext));
 }
 
+template <transport::Parser ParserT = frame::read::FrameLengthParser>
+void ThriftServerConnectionFactory::initializeRocketConnection(
+    folly::AsyncTransport::UniquePtr socket,
+    folly::EventBase* evb,
+    rocket::server::RocketServerConnection& rocketConnection,
+    ServerStatsShard* FOLLY_NULLABLE statsShard) {
+  using TransportHandler = transport::
+      TransportHandlerT<rocket::server::RocketServerEventFactory, ParserT>;
+  typename TransportHandler::Ptr transportHandler =
+      TransportHandler::createWithParser(std::move(socket), ParserT{});
+  PipelineOwner pipeline =
+      buildRocketPipeline<channel_pipeline::pipeline_storage::Medium>(
+          evb,
+          transportHandler.get(),
+          rocketConnection.appAdapter.get(),
+          statsShard);
+  rocketConnection.appAdapter->setPipeline(pipeline.get());
+  transportHandler->setPipeline(pipeline.get());
+
+  if (config_.zeroCopyThreshold > 0) {
+    if (!transportHandler->setZeroCopy(true)) {
+      XLOG(WARN) << "MSG_ZEROCOPY not supported on this socket";
+    }
+    transportHandler->setZeroCopyEnableThreshold(config_.zeroCopyThreshold);
+  }
+  rocketConnection.transportHandler =
+      rocket::server::AnyTransportHandler(std::move(transportHandler));
+  rocketConnection.pipeline = std::move(pipeline);
+}
+
 template <typename TailAdapter, typename Storage>
 ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
     folly::AsyncTransport::UniquePtr socket,
@@ -742,7 +774,7 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
         ThriftServerConnection::CompositeTail> tail,
     TailAdapter* tailAdapter,
     boost::intrusive_ptr<ThriftConnContext> connContext) {
-  auto* evb = socket->getEventBase();
+  folly::EventBase* const evb = socket->getEventBase();
 
   // Accept runs on the IO thread that will own this connection, which is the
   // thread holding the shard these counts belong in — both to look it up here
@@ -752,9 +784,6 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
     DCHECK(evb->isInEventBaseThread());
     statsShard = &config_.stats->currentThreadShard();
   }
-
-  auto transportHandler =
-      rocket::server::RocketServerTransportHandler::create(std::move(socket));
 
   ThriftServerConnection conn;
   conn.tail = std::move(tail);
@@ -766,23 +795,18 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   // buildRocketPipeline runs.
   conn.thriftTransportAdapter = std::make_unique<ThriftServerTransportAdapter>(
       std::make_unique<rocket::server::RocketServerConnection>());
-  auto& rocketConn = conn.thriftTransportAdapter->rocketConnection();
-  auto* transportAdapterPtr = conn.thriftTransportAdapter.get();
+  rocket::server::RocketServerConnection& rocketConnection =
+      conn.thriftTransportAdapter->rocketConnection();
+  ThriftServerTransportAdapter* const transportAdapterPtr =
+      conn.thriftTransportAdapter.get();
 
-  auto rocketPipeline =
-      buildRocketPipeline<channel_pipeline::pipeline_storage::Medium>(
-          evb, transportHandler.get(), rocketConn.appAdapter.get(), statsShard);
-  rocketConn.appAdapter->setPipeline(rocketPipeline.get());
-  transportHandler->setPipeline(rocketPipeline.get());
-
-  if (config_.zeroCopyThreshold > 0) {
-    if (!transportHandler->setZeroCopy(true)) {
-      XLOG(WARN) << "MSG_ZEROCOPY not supported on this socket";
-    }
-    transportHandler->setZeroCopyEnableThreshold(config_.zeroCopyThreshold);
+  if (config_.useAlignedParser) {
+    initializeRocketConnection<frame::read::AlignedParser>(
+        std::move(socket), evb, rocketConnection, statsShard);
+  } else {
+    initializeRocketConnection<>(
+        std::move(socket), evb, rocketConnection, statsShard);
   }
-  rocketConn.transportHandler = std::move(transportHandler);
-  rocketConn.pipeline = std::move(rocketPipeline);
 
   // Thrift pipeline templated on the tail adapter type. For the simple case
   // this works because generated adapters use the base adapter's shared
@@ -915,10 +939,10 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   return conn;
 }
 
-template <typename Storage>
+template <typename Storage, typename TransportHandler>
 PipelineOwner ThriftServerConnectionFactory::buildRocketPipeline(
     folly::EventBase* evb,
-    rocket::server::RocketServerTransportHandler* transportHandler,
+    TransportHandler* transportHandler,
     rocket::server::RocketServerAppAdapter* appAdapter,
     ServerStatsShard* FOLLY_NULLABLE statsShard) {
   if (config_.channelPipelineMode == ChannelPipelineMode::Static) {
@@ -944,7 +968,7 @@ PipelineOwner ThriftServerConnectionFactory::buildRocketPipeline(
   // original moved-from, so the chain up to and including it must be bound
   // here rather than continued on a pre-declared builder.
   auto builder = PipelineBuilder<
-                     rocket::server::RocketServerTransportHandler,
+                     TransportHandler,
                      rocket::server::RocketServerAppAdapter,
                      SimpleBufferAllocator,
                      Storage>()

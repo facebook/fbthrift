@@ -28,6 +28,8 @@
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/server/RocketServerEventFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/adapter/RocketServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/common/RocketServerConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
@@ -54,10 +56,11 @@ struct ConnectionFixture {
     auto socket =
         folly::AsyncTransport::UniquePtr(new TestAsyncTransport(&evb));
     auto transportHandler =
-        rocket::server::RocketServerTransportHandler::create(std::move(socket));
+        transport::TransportHandlerT<RocketServerEventFactory>::create(
+            std::move(socket));
 
     auto pipeline = PipelineBuilder<
-                        rocket::server::RocketServerTransportHandler,
+                        transport::TransportHandlerT<RocketServerEventFactory>,
                         RocketServerAppAdapter,
                         SimpleBufferAllocator>()
                         .setEventBase(&evb)

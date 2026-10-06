@@ -539,7 +539,6 @@ void FastThriftServer::start() {
           security::buildTLSParams(*sslConfig_, thriftConfig_));
     }
   }
-
   // Materialize the default IO pool only when the embedder didn't supply
   // one via setIOThreadPool.
   //
@@ -670,6 +669,7 @@ void FastThriftServer::start() {
       .reapTimeout = config_.reapTimeout,
       .thriftPipelineHandlerFactories = thriftPipelineHandlerFactories_,
       .stats = stats_,
+      .useAlignedParser = config_.useAlignedParser,
   };
   std::function<void(server::ThriftServerConnection&)> onAccept;
   if (onConnectionAccepted_) {

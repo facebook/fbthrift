@@ -35,11 +35,13 @@
 #include <thrift/lib/cpp2/fast_thrift/connection/ConnectionHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/ConnectionManager.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/handler/FrameCodecHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/handler/FrameDefragmentationHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/FragmentationHandlerConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FrameFragmentationHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FrameLengthEncoderHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/common/RocketStreamContext.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/server/RocketServerEventFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/adapter/RocketServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerMessageMarshalHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerRequestResponseHandler.h>
@@ -160,8 +162,8 @@ class ThriftServerBackwardsCompatibilityE2ETest : public ::testing::Test {
     // so the transport adapter can take ownership of the whole bundle.
     auto rocketConn =
         std::make_unique<rocket::server::RocketServerConnection>();
-    rocketConn->transportHandler = apache::thrift::fast_thrift::rocket::server::
-        RocketServerTransportHandler::create(std::move(socket));
+    auto transportHandler = transport::TransportHandlerT<
+        rocket::server::RocketServerEventFactory>::create(std::move(socket));
 
     auto serverChannel =
         std::make_shared<thrift::ThriftServerChannel>(handler_);
@@ -172,12 +174,12 @@ class ThriftServerBackwardsCompatibilityE2ETest : public ::testing::Test {
 
     rocketConnRef.pipeline =
         PipelineBuilder<
-            apache::thrift::fast_thrift::rocket::server::
-                RocketServerTransportHandler,
+            transport::TransportHandlerT<
+                rocket::server::RocketServerEventFactory>,
             apache::thrift::fast_thrift::rocket::server::RocketServerAppAdapter,
             SimpleBufferAllocator>()
             .setEventBase(evb)
-            .setHead(rocketConnRef.transportHandler.get())
+            .setHead(transportHandler.get())
             .setTail(rocketConnRef.appAdapter.get())
             .setAllocator(&rocketAllocator_)
             .addState<
@@ -211,7 +213,8 @@ class ThriftServerBackwardsCompatibilityE2ETest : public ::testing::Test {
                 server_request_response_frame_handler_tag)
             .build();
     rocketConnRef.appAdapter->setPipeline(rocketConnRef.pipeline.get());
-    rocketConnRef.transportHandler->setPipeline(rocketConnRef.pipeline.get());
+    transportHandler->setPipeline(rocketConnRef.pipeline.get());
+    rocketConnRef.transportHandler = std::move(transportHandler);
 
     thrift::server::test::TestServerConnection conn;
     conn.serverChannel = serverChannel;

@@ -31,6 +31,8 @@
 #include <thrift/lib/cpp2/fast_thrift/common/Stats.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/ConnectionManager.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/SocketOptions.h>
+#include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/server/RocketServerEventFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/adapter/RocketServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerSetupFrameHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/security/FizzServerCertConfig.h>
@@ -39,6 +41,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/ThriftServerChannel.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerTransportAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 
 namespace apache::thrift::fast_thrift::thrift {
 
@@ -193,7 +196,7 @@ struct ThriftServerChannelConnection {
   void start() noexcept {
     DCHECK(!started) << "ThriftServerChannelConnection::start called twice";
     started = true;
-    transportAdapter->rocketConnection().transportHandler->onConnect();
+    transportAdapter->rocketConnection().transportHandler.onConnect();
   }
 
   // Connection concept: forceful synchronous teardown. Closes the thrift
@@ -327,7 +330,8 @@ class FastThriftServerT {
 
   channel_pipeline::PipelineImpl::Ptr buildRocketPipeline(
       folly::EventBase* evb,
-      rocket::server::RocketServerTransportHandler* transportHandler,
+      transport::TransportHandlerT<rocket::server::RocketServerEventFactory>*
+          transportHandler,
       rocket::server::RocketServerAppAdapter* appAdapter,
       Stats* stats);
 
@@ -385,7 +389,6 @@ using FastThriftChannelServer = FastThriftServerT<NoStats>;
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerStreamStateHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/security/FizzServerContextBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/handler/ThriftMetricsHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
 namespace apache::thrift::fast_thrift::thrift {
@@ -456,8 +459,8 @@ ThriftServerChannelConnection FastThriftServerT<Stats>::buildConnection(
   // + app adapter tear down together when the thrift pipeline's handlerRemoved
   // propagates into the adapter.
   auto rocketConn = std::make_unique<rocket::server::RocketServerConnection>();
-  rocketConn->transportHandler =
-      rocket::server::RocketServerTransportHandler::create(std::move(socket));
+  auto transportHandler = transport::TransportHandlerT<
+      rocket::server::RocketServerEventFactory>::create(std::move(socket));
 
   // Per-connection stats (when enabled). Ownership moves to the connection
   // below; the metrics handlers only reference it.
@@ -471,20 +474,17 @@ ThriftServerChannelConnection FastThriftServerT<Stats>::buildConnection(
   // Build the rocket pipeline:
   //   TransportHandler → ... → RocketServerAppAdapter
   rocketConn->pipeline = buildRocketPipeline(
-      evb,
-      rocketConn->transportHandler.get(),
-      rocketConn->appAdapter.get(),
-      stats.get());
+      evb, transportHandler.get(), rocketConn->appAdapter.get(), stats.get());
   rocketConn->appAdapter->setPipeline(rocketConn->pipeline.get());
-  rocketConn->transportHandler->setPipeline(rocketConn->pipeline.get());
+  transportHandler->setPipeline(rocketConn->pipeline.get());
 
   if (config_.zeroCopyThreshold > 0) {
-    if (!rocketConn->transportHandler->setZeroCopy(true)) {
+    if (!transportHandler->setZeroCopy(true)) {
       XLOG(WARN) << "MSG_ZEROCOPY not supported on this socket";
     }
-    rocketConn->transportHandler->setZeroCopyEnableThreshold(
-        config_.zeroCopyThreshold);
+    transportHandler->setZeroCopyEnableThreshold(config_.zeroCopyThreshold);
   }
+  rocketConn->transportHandler = std::move(transportHandler);
 
   // ThriftServerTransportAdapter takes ownership of the rocket connection.
   // Teardown is driven by the thrift pipeline's handlerRemoved fan-out.
@@ -564,14 +564,16 @@ template <typename Stats>
 channel_pipeline::PipelineImpl::Ptr
 FastThriftServerT<Stats>::buildRocketPipeline(
     folly::EventBase* evb,
-    rocket::server::RocketServerTransportHandler* transportHandler,
+    transport::TransportHandlerT<rocket::server::RocketServerEventFactory>*
+        transportHandler,
     rocket::server::RocketServerAppAdapter* appAdapter,
     Stats* stats) {
   // Single chain for both stats modes. Only addState rebinds the builder
   // type, so bind through it once and append conditionally from there —
   // same shape as ThriftServerConnectionFactory::buildRocketPipeline.
   auto builder = channel_pipeline::PipelineBuilder<
-                     rocket::server::RocketServerTransportHandler,
+                     transport::TransportHandlerT<
+                         rocket::server::RocketServerEventFactory>,
                      rocket::server::RocketServerAppAdapter,
                      channel_pipeline::SimpleBufferAllocator>()
                      .setEventBase(evb)

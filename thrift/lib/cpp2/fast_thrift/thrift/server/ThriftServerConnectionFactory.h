@@ -156,18 +156,14 @@ struct ThriftServerConnectionFactoryConfig {
   // entirely, so a server without stats pays nothing for them.
   //
   std::shared_ptr<ServerStats> stats;
+
+  // See FastThriftServerConfig::useAlignedParser.
+  bool useAlignedParser{false};
 };
 
 /**
- * ThriftServerConnectionFactory builds a fully-wired ThriftServerConnection
- * (rocket pipeline owned via the transport adapter + thrift pipeline) for
- * each accepted socket. Used by ConnectionHandler to materialize and install
- * connections.
- *
- * Public API is non-templated so ConnectionHandler can store the factory by
- * value/reference without knowing the thrift tail-adapter shape. Internally,
- * a small templated helper picks the tail type (SimpleTail vs CompositeTail)
- * based on whether any auxiliary interface or metadata response is wired.
+ * Builds a fully-wired server connection for each accepted socket.
+ * Its public API does not expose parser or tail-adapter types.
  */
 class ThriftServerConnectionFactory {
  public:
@@ -193,11 +189,18 @@ class ThriftServerConnectionFactory {
   // here because the factory owns the shared rocket allocator.
   // `statsShard` is null when config_.stats is unset, in which case no
   // metrics handler is added.
-  template <typename Storage>
+  template <typename Storage, typename TransportHandler>
   channel_pipeline::PipelineOwner buildRocketPipeline(
       folly::EventBase* evb,
-      rocket::server::RocketServerTransportHandler* transportHandler,
+      TransportHandler* transportHandler,
       rocket::server::RocketServerAppAdapter* appAdapter,
+      ServerStatsShard* FOLLY_NULLABLE statsShard);
+
+  template <transport::Parser ParserT>
+  void initializeRocketConnection(
+      folly::AsyncTransport::UniquePtr socket,
+      folly::EventBase* evb,
+      rocket::server::RocketServerConnection& rocketConnection,
       ServerStatsShard* FOLLY_NULLABLE statsShard);
 
   // Hands the configured CPU pool to a user adapter. No-op when no pool is
