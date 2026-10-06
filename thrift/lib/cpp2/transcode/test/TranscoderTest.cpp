@@ -563,5 +563,262 @@ TEST_F(TranscoderTest, MissingProtocolMetadataRejected) {
       << missingMetadata.error().message;
 }
 
+using TranscoderResult =
+    folly::Expected<std::unique_ptr<ITranscoder>, CompileError>;
+
+void expectCompileError(
+    const TranscoderResult& result, std::string_view expectedReason) {
+  ASSERT_TRUE(result.hasError());
+  EXPECT_NE(result.error().message.find(expectedReason), std::string::npos)
+      << result.error().message;
+}
+
+struct ProtobufShapeTest : ::testing::Test {
+  std::unique_ptr<type_system::TypeSystem> typeSystem;
+
+  ProtobufShapeTest() {
+    type_system::TypeSystemBuilder builder;
+    builder.addType(
+        "test.Inner",
+        def::Struct({
+            def::Field(def::Identity(1, "n"), def::AlwaysPresent, TypeIds::I64),
+        }));
+    builder.addType(
+        "test.ScalarChoice",
+        def::Union({
+            def::Field(def::Identity(1, "id"), def::Optional, TypeIds::I32),
+            def::Field(
+                def::Identity(2, "name"), def::Optional, TypeIds::String),
+        }));
+    builder.addType(
+        "test.Supported",
+        def::Struct({
+            def::Field(
+                def::Identity(1, "id"), def::AlwaysPresent, TypeIds::I32),
+            def::Field(
+                def::Identity(2, "name"), def::Optional, TypeIds::String),
+            def::Field(
+                def::Identity(3, "inner"),
+                def::AlwaysPresent,
+                TypeIds::uri("test.Inner")),
+            def::Field(
+                def::Identity(4, "choice"),
+                def::AlwaysPresent,
+                TypeIds::uri("test.ScalarChoice")),
+        }));
+    addSingleFieldStruct(
+        builder,
+        "test.WithMap",
+        def::Field(
+            def::Identity(1, "scores"),
+            def::AlwaysPresent,
+            TypeIds::map(TypeIds::String, TypeIds::I32)));
+    addSingleFieldStruct(
+        builder,
+        "test.WithStrings",
+        def::Field(
+            def::Identity(1, "tags"),
+            def::AlwaysPresent,
+            TypeIds::list(TypeIds::String)));
+    addSingleFieldStruct(
+        builder,
+        "test.WithNumbers",
+        def::Field(
+            def::Identity(1, "nums"),
+            def::AlwaysPresent,
+            TypeIds::list(TypeIds::I32)));
+    builder.addType(
+        "test.ListChoice",
+        def::Union({
+            def::Field(
+                def::Identity(1, "nums"),
+                def::Optional,
+                TypeIds::list(TypeIds::I32)),
+        }));
+    addSingleFieldStruct(
+        builder,
+        "test.WithListChoice",
+        def::Field(
+            def::Identity(1, "choice"),
+            def::AlwaysPresent,
+            TypeIds::uri("test.ListChoice")));
+    addSingleFieldStruct(
+        builder,
+        "test.WithOptionalList",
+        def::Field(
+            def::Identity(1, "nums"),
+            def::Optional,
+            TypeIds::list(TypeIds::I32)));
+    addSingleFieldStruct(
+        builder,
+        "test.WithZeroId",
+        def::Field(
+            def::Identity(0, "success"), def::AlwaysPresent, TypeIds::I32));
+    addSingleFieldStruct(
+        builder,
+        "test.WithNegativeId",
+        def::Field(
+            def::Identity(-1, "legacy"), def::AlwaysPresent, TypeIds::I32));
+    addSingleFieldStruct(
+        builder,
+        "test.WithReservedId",
+        def::Field(
+            def::Identity(19000, "reserved"),
+            def::AlwaysPresent,
+            TypeIds::I32));
+    typeSystem = std::move(builder).build();
+  }
+
+  static void addSingleFieldStruct(
+      type_system::TypeSystemBuilder& builder,
+      std::string uri,
+      type_system::SerializableFieldDefinition field) {
+    builder.addType(std::move(uri), def::Struct({std::move(field)}));
+  }
+
+  TranscodePlan fusePlan(
+      WireProtocol source, WireProtocol target, const std::string& uri) {
+    const auto& node = typeSystem->getUserDefinedTypeOrThrow(uri).asStruct();
+    auto plan = fuseCodecs(makeCodec(source, node), makeCodec(target, node));
+    EXPECT_FALSE(plan.hasError()) << plan.error().message;
+    return std::move(*plan);
+  }
+
+  TranscoderResult compile(
+      WireProtocol source, WireProtocol target, const std::string& uri) {
+    return compile(fusePlan(source, target, uri));
+  }
+
+  static TranscoderResult compile(TranscodePlan plan) {
+    return makeTranscoder(
+        std::move(plan), Engine::Interpreter, allowExperimentalProtocols());
+  }
+};
+
+TEST_F(ProtobufShapeTest, ScalarsStructsAndUnionsCompileInBothDirections) {
+  auto fromProtobuf = compile(
+      WireProtocol::ProtobufBinary,
+      WireProtocol::ThriftCompact,
+      "test.Supported");
+  EXPECT_FALSE(fromProtobuf.hasError()) << fromProtobuf.error().message;
+
+  auto toProtobuf = compile(
+      WireProtocol::ThriftCompact,
+      WireProtocol::ProtobufBinary,
+      "test.Supported");
+  EXPECT_FALSE(toProtobuf.hasError()) << toProtobuf.error().message;
+}
+
+TEST_F(ProtobufShapeTest, PackedFieldReadFromProtobufCompiles) {
+  auto transcoder = compile(
+      WireProtocol::ProtobufBinary,
+      WireProtocol::ThriftCompact,
+      "test.WithNumbers");
+  EXPECT_FALSE(transcoder.hasError()) << transcoder.error().message;
+}
+
+TEST_F(ProtobufShapeTest, MapsAreRejected) {
+  expectCompileError(
+      compile(
+          WireProtocol::ProtobufBinary,
+          WireProtocol::ThriftCompact,
+          "test.WithMap"),
+      "protobuf maps are not supported yet");
+  expectCompileError(
+      compile(
+          WireProtocol::ThriftCompact,
+          WireProtocol::ProtobufBinary,
+          "test.WithMap"),
+      "protobuf maps are not supported yet");
+}
+
+TEST_F(ProtobufShapeTest, UnpackedRepeatedFieldsAreRejected) {
+  expectCompileError(
+      compile(
+          WireProtocol::ProtobufBinary,
+          WireProtocol::ThriftCompact,
+          "test.WithStrings"),
+      "unpacked protobuf repeated fields are not supported yet");
+}
+
+TEST_F(ProtobufShapeTest, PackedFieldWrittenFromNonProtobufSourceIsRejected) {
+  expectCompileError(
+      compile(
+          WireProtocol::ThriftCompact,
+          WireProtocol::ProtobufBinary,
+          "test.WithNumbers"),
+      "writing a packed protobuf field from a non-protobuf source");
+  expectCompileError(
+      compile(
+          WireProtocol::Json, WireProtocol::ProtobufBinary, "test.WithNumbers"),
+      "writing a packed protobuf field from a non-protobuf source");
+}
+
+TEST_F(ProtobufShapeTest, ContainerUnionMembersAreRejected) {
+  expectCompileError(
+      compile(
+          WireProtocol::ProtobufBinary,
+          WireProtocol::ThriftCompact,
+          "test.WithListChoice"),
+      "union member cannot be a container");
+  expectCompileError(
+      compile(
+          WireProtocol::ThriftCompact,
+          WireProtocol::ProtobufBinary,
+          "test.WithListChoice"),
+      "union member cannot be a container");
+}
+
+TEST_F(ProtobufShapeTest, OptionalContainersAreRejected) {
+  expectCompileError(
+      compile(
+          WireProtocol::ProtobufBinary,
+          WireProtocol::ThriftCompact,
+          "test.WithOptionalList"),
+      "@proto.OptionalContainer");
+  expectCompileError(
+      compile(
+          WireProtocol::ThriftCompact,
+          WireProtocol::ProtobufBinary,
+          "test.WithOptionalList"),
+      "@proto.OptionalContainer");
+}
+
+TEST_F(ProtobufShapeTest, FieldIdsOutsideProtobufNumberRangeAreRejected) {
+  expectCompileError(
+      compile(
+          WireProtocol::ProtobufBinary,
+          WireProtocol::ThriftCompact,
+          "test.WithZeroId"),
+      "field ID 0 cannot be a protobuf field number");
+  expectCompileError(
+      compile(
+          WireProtocol::ThriftCompact,
+          WireProtocol::ProtobufBinary,
+          "test.WithNegativeId"),
+      "negative field IDs are not supported with protobuf yet");
+}
+
+// Protobuf only forbids 19000-19999 in schemas; the wire format carries them.
+TEST_F(ProtobufShapeTest, SchemaReservedFieldNumbersAreAccepted) {
+  auto transcoder = compile(
+      WireProtocol::ThriftCompact,
+      WireProtocol::ProtobufBinary,
+      "test.WithReservedId");
+
+  EXPECT_TRUE(transcoder.hasValue()) << transcoder.error().message;
+}
+
+TEST_F(ProtobufShapeTest, FlattenedProtobufTargetDoesNotWriteFieldIds) {
+  auto plan = fusePlan(
+      WireProtocol::ThriftCompact,
+      WireProtocol::ProtobufBinary,
+      "test.WithZeroId");
+  std::get<StructOp>(plan.root).outputMode = StructOutputMode::Flattened;
+
+  auto transcoder = compile(std::move(plan));
+  EXPECT_FALSE(transcoder.hasError()) << transcoder.error().message;
+}
+
 } // namespace
 } // namespace apache::thrift::transcode

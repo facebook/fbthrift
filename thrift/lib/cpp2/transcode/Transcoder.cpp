@@ -19,6 +19,8 @@
 #include <thrift/lib/cpp2/transcode/Codec.h>
 #include <thrift/lib/cpp2/transcode/TranscodeInterpreter.h>
 
+#include <fmt/core.h>
+
 #include <atomic>
 #include <optional>
 #include <string>
@@ -158,6 +160,106 @@ std::optional<std::string> unsupportedTaggedUnionReason(const Command& cmd) {
   return std::nullopt;
 }
 
+bool hasProtobufSide(const StructOp& op) {
+  return op.readFieldProto == FieldProto::Protobuf ||
+      op.writeFieldProto == FieldProto::Protobuf;
+}
+
+// A flattened target writes only the field's value, so its field IDs never
+// become protobuf field numbers.
+bool usesProtobufFieldNumbers(const StructOp& op) {
+  return op.readFieldProto == FieldProto::Protobuf ||
+      (op.writeFieldProto == FieldProto::Protobuf &&
+       op.outputMode == StructOutputMode::Normal);
+}
+
+bool isContainer(const Command& cmd) {
+  return std::holds_alternative<SeqOp>(cmd) ||
+      std::holds_alternative<MapOp>(cmd);
+}
+
+std::optional<std::string> unsupportedProtobufFieldReason(
+    const StructOp& op, const FieldEntry& field) {
+  if (usesProtobufFieldNumbers(op)) {
+    if (field.fieldId == 0) {
+      return "field ID 0 cannot be a protobuf field number";
+    }
+    if (field.fieldId < 0) {
+      return "negative field IDs are not supported with protobuf yet";
+    }
+  }
+  if (!hasProtobufSide(op) || field.command == nullptr ||
+      !isContainer(*field.command)) {
+    return std::nullopt;
+  }
+  if (op.schemaType.has_value() && op.schemaType->isUnion()) {
+    return "a protobuf union member cannot be a container without a wrapper "
+           "message, which is not supported yet";
+  }
+  if (field.optional) {
+    return "an optional container needs @proto.OptionalContainer, which is "
+           "not supported yet";
+  }
+  return std::nullopt;
+}
+
+std::optional<std::string> unsupportedProtobufSeqReason(const SeqOp& op) {
+  if (op.readFraming == ContainerFraming::None &&
+      op.readLoopKind != LoopKind::ByBytes) {
+    return "unpacked protobuf repeated fields are not supported yet";
+  }
+  if (op.writeFraming == ContainerFraming::None) {
+    if (op.writeLoopKind != LoopKind::ByBytes) {
+      return "unpacked protobuf repeated fields are not supported yet";
+    }
+    if (op.readLoopKind != LoopKind::ByBytes) {
+      return "writing a packed protobuf field from a non-protobuf source is "
+             "not supported yet";
+    }
+  }
+  return std::nullopt;
+}
+
+std::optional<std::string> unsupportedProtobufReason(const Command& cmd) {
+  if (const auto* st = std::get_if<StructOp>(&cmd)) {
+    for (const auto& field : st->fields) {
+      auto reason = unsupportedProtobufFieldReason(*st, field);
+      if (!reason.has_value() && field.command != nullptr) {
+        reason = unsupportedProtobufReason(*field.command);
+      }
+      if (reason.has_value()) {
+        return fmt::format(
+            "field {} (id={}): {}", field.fieldName, field.fieldId, *reason);
+      }
+    }
+    return std::nullopt;
+  }
+  if (const auto* sq = std::get_if<SeqOp>(&cmd)) {
+    if (auto reason = unsupportedProtobufSeqReason(*sq)) {
+      return reason;
+    }
+    if (sq->element != nullptr) {
+      return unsupportedProtobufReason(*sq->element);
+    }
+    return std::nullopt;
+  }
+  if (const auto* mp = std::get_if<MapOp>(&cmd)) {
+    if (mp->readFraming == ContainerFraming::None ||
+        mp->writeFraming == ContainerFraming::None) {
+      return "protobuf maps are not supported yet";
+    }
+    if (mp->key != nullptr) {
+      if (auto reason = unsupportedProtobufReason(*mp->key)) {
+        return reason;
+      }
+    }
+    if (mp->value != nullptr) {
+      return unsupportedProtobufReason(*mp->value);
+    }
+  }
+  return std::nullopt;
+}
+
 std::optional<std::string> missingProtocolReason(const TranscodePlan& plan) {
   if (plan.sourceProtocol == WireProtocol::Unknown ||
       plan.targetProtocol == WireProtocol::Unknown) {
@@ -191,6 +293,9 @@ std::optional<std::string> interpreterSupports(const TranscodePlan& plan) {
     return "interpreter does not support JSON-to-JSON map transcodes";
   }
   if (auto reason = unsupportedTaggedUnionReason(plan.root)) {
+    return reason;
+  }
+  if (auto reason = unsupportedProtobufReason(plan.root)) {
     return reason;
   }
   return std::nullopt;
