@@ -142,7 +142,10 @@ struct BasicSerializableDynamicAdapter {
       case folly::dynamic::Type::OBJECT:
         xfer += protocol.writeFieldBegin("object", protocol::T_MAP, 6);
         xfer += protocol.writeMapBegin(
-            protocol::T_STRING, protocol::T_STRUCT, value->size());
+            protocol::T_STRING,
+            protocol::T_STRUCT,
+            value->size(),
+            /* alternativeKeyForm */ true);
         for (const auto& item : value->items()) {
           xfer += protocol.writeString(item.first.asString());
           xfer += write(protocol, SerializableDynamic(item.second));

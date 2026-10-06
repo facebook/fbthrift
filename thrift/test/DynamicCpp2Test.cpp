@@ -22,6 +22,7 @@
 #include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp2/op/Encode.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/Json5Protocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <thrift/lib/thrift/gen-cpp2/dynamic_types.h>
@@ -178,6 +179,18 @@ TEST(SerializableDynamicAdapterTest, PreservesSimpleJsonEncoding) {
     SimpleJSONSerializer::deserialize(serialized, actual);
     EXPECT_EQ(expected, actual);
   }
+}
+
+TEST(SerializableDynamicAdapterTest, Json5WritesObjectAsJsonObject) {
+  const SerializableDynamic expected(dynamic::object("a", "A"));
+  folly::IOBufQueue queue;
+  json5::detail::Json5ProtocolWriter writer;
+  writer.setOutput(&queue);
+  op::encode<SerializableDynamicTag>(writer, expected);
+  auto json = queue.move()->to<std::string>();
+  EXPECT_EQ(json, R"({"object":{"a":{"str":"A"}}})");
+  EXPECT_EQ(
+      expected, Json5ProtocolUtils::fromJson5<SerializableDynamicTag>(json));
 }
 
 TEST_P(RoundtripTestFixture, RoundtripContainer) {
