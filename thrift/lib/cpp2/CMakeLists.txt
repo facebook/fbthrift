@@ -105,9 +105,7 @@ add_dependencies(
   syntax_graph-cpp2-target
   service_catalog-cpp2-target)
 target_link_libraries(thriftmetadata PUBLIC Folly::folly thriftprotocol)
-if (Xxhash_FOUND)
-  target_link_libraries(thriftmetadata PUBLIC Xxhash::xxhash)
-endif ()
+target_link_libraries(thriftmetadata PUBLIC ${thrift_xxhash})
 # SerializableRecord.cpp includes F14Map and instantiates PrimitiveDatum for
 # every primitive type; on MSVC this exceeds the default COFF section limit.
 if (MSVC)
@@ -482,7 +480,7 @@ if (THRIFT_RPC)
            thrifttype
            thriftanyrep
            serverdbginfo
-           Xxhash::xxhash)
+           ${thrift_xxhash})
 
   add_library(quic_thriftcpp2 server/ThriftQuicServer.cpp)
   add_dependencies(quic_thriftcpp2 thriftcpp2 mvfst::mvfst_server_async_tran)

@@ -177,8 +177,7 @@ function (thrift_fetch_xxhash)
         CACHE STRING "Choose the type of build." FORCE)
   endif ()
   set_target_properties(xxhash PROPERTIES POSITION_INDEPENDENT_CODE ON)
-  # Imported, so thrift's export names Xxhash::xxhash as it does for an
-  # installed xxhash, and the fetched target needn't be exported.
+  # The name an installed xxhash provides.
   add_library(Xxhash::xxhash INTERFACE IMPORTED GLOBAL)
   target_link_libraries(Xxhash::xxhash INTERFACE xxhash)
   FetchContent_GetProperties(xxhash SOURCE_DIR source_dir)
@@ -194,8 +193,27 @@ function (thrift_fetch_xxhash)
 endfunction ()
 
 find_package(Xxhash)
+set(thrift_xxhash Xxhash::xxhash)
 if (NOT Xxhash_FOUND)
+  # A fetched xxhash builds in bundled mode, which disables its install rules.
+  if (NOT CMAKE_SKIP_INSTALL_RULES)
+    message(
+      FATAL_ERROR
+        "xxhash is not installed, and the one thrift would fetch is not "
+        "installed with it, so installing thrift would produce a package "
+        "pointing at an xxhash that is not installed. Install xxhash, or "
+        "configure with -DCMAKE_SKIP_INSTALL_RULES=ON to build without "
+        "installing.")
+  endif ()
+  if (CMAKE_VERSION VERSION_LESS 3.26)
+    message(
+      FATAL_ERROR
+        "Keeping a fetched xxhash out of thrift's link interface needs the "
+        "CMake 3.26 $<BUILD_LOCAL_INTERFACE:> generator expression. Install "
+        "xxhash, or use CMake 3.26 or newer.")
+  endif ()
   thrift_fetch_xxhash()
+  set(thrift_xxhash "$<BUILD_LOCAL_INTERFACE:Xxhash::xxhash>")
 endif ()
 
 if (THRIFT_RPC)
