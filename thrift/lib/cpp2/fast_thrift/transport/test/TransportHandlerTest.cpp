@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-#undef protected
-#undef private
-
 #include <gtest/gtest.h>
 
 #include <array>
@@ -35,11 +32,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockHandler.h>
 
-#define private public
-#define protected public
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
-#undef protected
-#undef private
 #include <thrift/lib/cpp2/fast_thrift/transport/test/PassthroughParser.h>
 
 namespace apache::thrift::fast_thrift::transport {
@@ -212,7 +205,8 @@ TEST_F(TransportHandlerTest, WritePath) {
       TypeErasedBox(std::move(bytes)));
 
   EXPECT_EQ(result, Result::Success);
-  EXPECT_EQ(handler->writePending_, 0);
+  EXPECT_EQ(handler->debugState().pendingWrites, 0);
+  EXPECT_FALSE(handler->debugState().isWriteSaturated);
 }
 
 // Test: Pause and Resume Read
@@ -220,18 +214,18 @@ TEST_F(TransportHandlerTest, PauseAndResumeRead) {
   auto [handler, pipeline] = createHandlerAndPipeline();
 
   // Initially readPaused_ is true (not reading yet)
-  EXPECT_TRUE(handler->readPaused_);
+  EXPECT_TRUE(handler->debugState().isPaused);
 
   // resumeRead should set the handler itself as read callback (implements
   // ReadCallback)
   EXPECT_CALL(*mockSocket_, setReadCB(handler.get())).Times(1);
   handler->resumeRead();
-  EXPECT_FALSE(handler->readPaused_);
+  EXPECT_FALSE(handler->debugState().isPaused);
 
   // Now pause
   EXPECT_CALL(*mockSocket_, setReadCB(nullptr)).Times(1);
   handler->pauseRead();
-  EXPECT_TRUE(handler->readPaused_);
+  EXPECT_TRUE(handler->debugState().isPaused);
 }
 
 // Test: Pause Read is idempotent
@@ -239,23 +233,23 @@ TEST_F(TransportHandlerTest, PauseReadIdempotent) {
   auto [handler, pipeline] = createHandlerAndPipeline();
 
   // Initially paused, so pauseRead should not call setReadCB
-  EXPECT_TRUE(handler->readPaused_);
+  EXPECT_TRUE(handler->debugState().isPaused);
   handler->pauseRead();
-  EXPECT_TRUE(handler->readPaused_);
+  EXPECT_TRUE(handler->debugState().isPaused);
 
   // Resume first
   EXPECT_CALL(*mockSocket_, setReadCB(handler.get())).Times(1);
   handler->resumeRead();
-  EXPECT_FALSE(handler->readPaused_);
+  EXPECT_FALSE(handler->debugState().isPaused);
 
   // Now pause should call setReadCB(nullptr)
   EXPECT_CALL(*mockSocket_, setReadCB(nullptr)).Times(1);
   handler->pauseRead();
-  EXPECT_TRUE(handler->readPaused_);
+  EXPECT_TRUE(handler->debugState().isPaused);
 
   // Second pause should not call setReadCB again
   handler->pauseRead();
-  EXPECT_TRUE(handler->readPaused_);
+  EXPECT_TRUE(handler->debugState().isPaused);
 }
 
 // Test: Resume Read is idempotent
@@ -263,27 +257,27 @@ TEST_F(TransportHandlerTest, ResumeReadIdempotent) {
   auto [handler, pipeline] = createHandlerAndPipeline();
 
   // Initially paused
-  EXPECT_TRUE(handler->readPaused_);
+  EXPECT_TRUE(handler->debugState().isPaused);
 
   // First resume should set callback
   EXPECT_CALL(*mockSocket_, setReadCB(handler.get())).Times(1);
   handler->resumeRead();
-  EXPECT_FALSE(handler->readPaused_);
+  EXPECT_FALSE(handler->debugState().isPaused);
 
   // Second resume should not call setReadCB again (already resumed)
   handler->resumeRead();
-  EXPECT_FALSE(handler->readPaused_);
+  EXPECT_FALSE(handler->debugState().isPaused);
 }
 
 TEST_F(TransportHandlerTest, OnReadReadyResumesRead) {
   auto [handler, pipeline] = createHandlerAndPipeline();
 
-  EXPECT_TRUE(handler->readPaused_);
+  EXPECT_TRUE(handler->debugState().isPaused);
 
   EXPECT_CALL(*mockSocket_, setReadCB(handler.get())).Times(1);
   handler->onReadReady();
 
-  EXPECT_FALSE(handler->readPaused_);
+  EXPECT_FALSE(handler->debugState().isPaused);
 }
 
 TEST_F(
@@ -302,14 +296,14 @@ TEST_F(
   }
 
   handler->resumeRead();
-  EXPECT_FALSE(handler->readPaused_);
+  EXPECT_FALSE(handler->debugState().isPaused);
 
   auto data = buildTestData(32);
   handler->readBufferAvailable(std::move(data));
-  EXPECT_TRUE(handler->readPaused_);
+  EXPECT_TRUE(handler->debugState().isPaused);
 
   pipeline->onReadReady();
-  EXPECT_FALSE(handler->readPaused_);
+  EXPECT_FALSE(handler->debugState().isPaused);
 }
 
 // Test: onConnect resumes reading and fires connect event to pipeline
@@ -318,7 +312,7 @@ TEST_F(TransportHandlerTest, OnConnectResumesReadAndFiresConnect) {
       createHandlerAndPipelineWithExceptionHandler();
 
   // Initially paused
-  EXPECT_TRUE(handler->readPaused_);
+  EXPECT_TRUE(handler->debugState().isPaused);
   EXPECT_EQ(mockHandler->pipelineActivatedCount(), 0);
 
   // onConnect should resume reading and fire connect to the pipeline.
@@ -327,7 +321,7 @@ TEST_F(TransportHandlerTest, OnConnectResumesReadAndFiresConnect) {
   EXPECT_CALL(*mockSocket_, setReadCB(nullptr)).Times(AnyNumber());
   handler->onConnect();
 
-  EXPECT_FALSE(handler->readPaused_);
+  EXPECT_FALSE(handler->debugState().isPaused);
   EXPECT_EQ(mockHandler->pipelineActivatedCount(), 1);
 }
 
@@ -351,7 +345,8 @@ TEST_F(TransportHandlerTest, WriteBackpressureWhenWritePending) {
 
   // First write returns Backpressure to signal pending write
   EXPECT_EQ(result1, Result::Backpressure);
-  EXPECT_EQ(handler->writePending_, 1);
+  EXPECT_EQ(handler->debugState().pendingWrites, 1);
+  EXPECT_TRUE(handler->debugState().isWriteSaturated);
 
   auto bytes2 = folly::IOBuf::copyBuffer("second write");
   Result result2 = handler->onWrite(
@@ -361,10 +356,13 @@ TEST_F(TransportHandlerTest, WriteBackpressureWhenWritePending) {
 
   // Second write also goes through and returns Backpressure
   EXPECT_EQ(result2, Result::Backpressure);
-  EXPECT_EQ(handler->writePending_, 2);
+  EXPECT_EQ(handler->debugState().pendingWrites, 2);
+  EXPECT_TRUE(handler->debugState().isWriteSaturated);
   // Drain both pending writes so close doesn't hang in Closing.
   capturedCallback->writeSuccess();
   capturedCallback->writeSuccess();
+  EXPECT_EQ(handler->debugState().pendingWrites, 0);
+  EXPECT_FALSE(handler->debugState().isWriteSaturated);
 }
 
 // Test: a write that lands inline never saturated the socket, so nothing
@@ -387,7 +385,8 @@ TEST_F(TransportHandlerTest, SynchronousWriteDoesNotSignalWriteReady) {
       TypeErasedBox(std::move(bytes)));
 
   EXPECT_EQ(result, Result::Success);
-  EXPECT_EQ(handler->writePending_, 0);
+  EXPECT_EQ(handler->debugState().pendingWrites, 0);
+  EXPECT_FALSE(handler->debugState().isWriteSaturated);
   EXPECT_EQ(appHandler_.onWriteReadyCount(), 0);
 }
 
@@ -407,11 +406,14 @@ TEST_F(TransportHandlerTest, QueuedWriteSignalsWriteReadyOnceDrained) {
       TypeErasedBox(std::move(bytes)));
 
   EXPECT_EQ(result, Result::Backpressure);
+  EXPECT_EQ(handler->debugState().pendingWrites, 1);
+  EXPECT_TRUE(handler->debugState().isWriteSaturated);
   EXPECT_EQ(appHandler_.onWriteReadyCount(), 0);
 
   capturedCallback->writeSuccess();
 
-  EXPECT_EQ(handler->writePending_, 0);
+  EXPECT_EQ(handler->debugState().pendingWrites, 0);
+  EXPECT_FALSE(handler->debugState().isWriteSaturated);
   EXPECT_EQ(appHandler_.onWriteReadyCount(), 1);
 }
 
@@ -435,13 +437,18 @@ TEST_F(TransportHandlerTest, MultipleInFlightWritesSignalWriteReadyOnce) {
             TypeErasedBox(std::move(bytes))),
         Result::Backpressure);
   }
-  EXPECT_EQ(handler->writePending_, 3);
+  EXPECT_EQ(handler->debugState().pendingWrites, 3);
+  EXPECT_TRUE(handler->debugState().isWriteSaturated);
 
   capturedCallback->writeSuccess();
+  EXPECT_EQ(handler->debugState().pendingWrites, 2);
   EXPECT_EQ(appHandler_.onWriteReadyCount(), 0);
   capturedCallback->writeSuccess();
+  EXPECT_EQ(handler->debugState().pendingWrites, 1);
   EXPECT_EQ(appHandler_.onWriteReadyCount(), 0);
   capturedCallback->writeSuccess();
+  EXPECT_EQ(handler->debugState().pendingWrites, 0);
+  EXPECT_FALSE(handler->debugState().isWriteSaturated);
   EXPECT_EQ(appHandler_.onWriteReadyCount(), 1);
 }
 
@@ -463,7 +470,11 @@ TEST_F(TransportHandlerTest, WriteReadySignalReArmsAfterDrain) {
             channel_pipeline::test::inertEndpointContext(),
             TypeErasedBox(std::move(bytes))),
         Result::Backpressure);
+    EXPECT_EQ(handler->debugState().pendingWrites, 1);
+    EXPECT_TRUE(handler->debugState().isWriteSaturated);
     capturedCallback->writeSuccess();
+    EXPECT_EQ(handler->debugState().pendingWrites, 0);
+    EXPECT_FALSE(handler->debugState().isWriteSaturated);
     EXPECT_EQ(appHandler_.onWriteReadyCount(), expected);
   }
 }
@@ -486,11 +497,12 @@ TEST_F(TransportHandlerTest, WriteSuccessClearsPendingState) {
           std::move(bytes1)));
 
   EXPECT_EQ(result1, Result::Backpressure);
-  EXPECT_GT(handler->writePending_, 0);
+  EXPECT_EQ(handler->debugState().pendingWrites, 1);
 
   capturedCallback->writeSuccess();
 
-  EXPECT_EQ(handler->writePending_, 0);
+  EXPECT_EQ(handler->debugState().pendingWrites, 0);
+  EXPECT_EQ(appHandler_.onWriteReadyCount(), 1);
 
   auto bytes2 = folly::IOBuf::copyBuffer("second write");
   Result result2 = handler->onWrite(
@@ -519,13 +531,14 @@ TEST_F(TransportHandlerTest, WriteErrorClearsPendingState) {
       TypeErasedBox(std::move(bytes)));
 
   EXPECT_EQ(result, Result::Backpressure);
-  EXPECT_GT(handler->writePending_, 0);
+  EXPECT_EQ(handler->debugState().pendingWrites, 1);
 
   folly::AsyncSocketException ex(
       folly::AsyncSocketException::NETWORK_ERROR, "write failed");
   capturedCallback->writeErr(0, ex);
 
-  EXPECT_EQ(handler->writePending_, 0);
+  EXPECT_EQ(handler->debugState().pendingWrites, 0);
+  EXPECT_EQ(handler->state(), TransportHandler::State::Closed);
 }
 
 // Test: Multiple Writes After Completion
@@ -545,10 +558,11 @@ TEST_F(TransportHandlerTest, MultipleWritesAfterCompletion) {
         channel_pipeline::test::inertEndpointContext(),
         TypeErasedBox(std::move(bytes)));
     EXPECT_EQ(result, Result::Backpressure);
-    EXPECT_GT(handler->writePending_, 0);
+    EXPECT_EQ(handler->debugState().pendingWrites, 1);
 
     capturedCallback->writeSuccess();
-    EXPECT_EQ(handler->writePending_, 0);
+    EXPECT_EQ(handler->debugState().pendingWrites, 0);
+    EXPECT_EQ(appHandler_.onWriteReadyCount(), i + 1);
   }
 }
 
@@ -637,7 +651,7 @@ TEST_F(TransportHandlerTest, ReadEOFCloseBehavior) {
   auto [handler, pipeline] = createHandlerAndPipeline();
   handler->onConnect();
 
-  EXPECT_NE(handler->pipeline_, nullptr);
+  EXPECT_TRUE(handler->debugState().hasPipeline);
 
   handler->readEOF();
 
@@ -672,7 +686,7 @@ TEST_F(TransportHandlerTest, ReadErrCloseBehavior) {
   auto [handler, pipeline] = createHandlerAndPipeline();
   handler->onConnect();
 
-  EXPECT_NE(handler->pipeline_, nullptr);
+  EXPECT_TRUE(handler->debugState().hasPipeline);
 
   folly::AsyncSocketException ex(
       folly::AsyncSocketException::NETWORK_ERROR, "read error");
@@ -696,8 +710,7 @@ TEST_F(TransportHandlerTest, WriteErrCloseBehavior) {
       channel_pipeline::test::inertEndpointContext(),
       TypeErasedBox(std::move(bytes)));
   EXPECT_EQ(result, Result::Backpressure);
-
-  EXPECT_NE(handler->pipeline_, nullptr);
+  EXPECT_TRUE(handler->debugState().hasPipeline);
 
   folly::AsyncSocketException ex(
       folly::AsyncSocketException::NETWORK_ERROR, "write failed");
@@ -711,7 +724,7 @@ TEST_F(TransportHandlerTest, OnCloseCloseBehavior) {
   auto [handler, pipeline] = createHandlerAndPipeline();
   handler->onConnect();
 
-  EXPECT_NE(handler->pipeline_, nullptr);
+  EXPECT_TRUE(handler->debugState().hasPipeline);
 
   handler->close(folly::exception_wrapper{});
 
@@ -1088,6 +1101,12 @@ TEST_F(TransportHandlerTest, StateTransitions) {
 
   auto handler = TransportHandler::create(std::move(socket), 256, 4096);
   EXPECT_EQ(handler->state(), TransportHandler::State::Created);
+  EXPECT_EQ(handler->debugState().state, TransportHandler::State::Created);
+  EXPECT_TRUE(handler->debugState().isPaused);
+  EXPECT_FALSE(handler->debugState().isWriteSaturated);
+  EXPECT_EQ(handler->debugState().pendingWrites, 0);
+  EXPECT_FALSE(handler->debugState().hasPipeline);
+  EXPECT_FALSE(handler->debugState().isDraining);
 
   auto pipeline =
       PipelineBuilder<TransportHandler, MockAppHandler, SimpleBufferAllocator>()
@@ -1099,17 +1118,25 @@ TEST_F(TransportHandlerTest, StateTransitions) {
 
   handler->setPipeline(pipeline.get());
   EXPECT_EQ(handler->state(), TransportHandler::State::Ready);
+  EXPECT_EQ(handler->debugState().state, TransportHandler::State::Ready);
+  EXPECT_TRUE(handler->debugState().hasPipeline);
 
   handler->onConnect();
   EXPECT_EQ(handler->state(), TransportHandler::State::Open);
+  EXPECT_EQ(handler->debugState().state, TransportHandler::State::Open);
+  EXPECT_FALSE(handler->debugState().isPaused);
 
   // No pending writes -> Open transitions straight to Closed (no drain).
   handler->close(folly::exception_wrapper{});
   EXPECT_EQ(handler->state(), TransportHandler::State::Closed);
+  EXPECT_EQ(handler->debugState().state, TransportHandler::State::Closed);
+  EXPECT_TRUE(handler->debugState().isPaused);
+  EXPECT_FALSE(handler->debugState().isDraining);
 
   // resetPipeline drops the pipeline pointer; state stays Closed (terminal).
   handler->resetPipeline();
   EXPECT_EQ(handler->state(), TransportHandler::State::Closed);
+  EXPECT_FALSE(handler->debugState().hasPipeline);
 
   pipeline.reset();
 }
@@ -1224,23 +1251,26 @@ TEST_F(TransportHandlerTest, MultiWriteErrCascadeReachesClosed) {
         channel_pipeline::test::inertEndpointContext(),
         TypeErasedBox(folly::IOBuf::copyBuffer("x")));
   }
-  EXPECT_EQ(handler->writePending_, 3u);
+  ASSERT_EQ(capturedCallbacks.size(), 3);
+  EXPECT_EQ(handler->debugState().pendingWrites, 3);
 
   folly::AsyncSocketException ex(
       folly::AsyncSocketException::NETWORK_ERROR, "broken pipe");
 
   capturedCallbacks[0]->writeErr(0, ex);
-  EXPECT_EQ(handler->writePending_, 2u);
   EXPECT_EQ(handler->state(), TransportHandler::State::Closing);
-  EXPECT_TRUE(handler->socketDrainer_.active());
+  EXPECT_EQ(handler->debugState().pendingWrites, 2);
+  EXPECT_TRUE(handler->debugState().isDraining);
 
   capturedCallbacks[1]->writeErr(0, ex);
-  EXPECT_EQ(handler->writePending_, 1u);
+  EXPECT_EQ(handler->state(), TransportHandler::State::Closing);
+  EXPECT_EQ(handler->debugState().pendingWrites, 1);
+  EXPECT_TRUE(handler->debugState().isDraining);
 
   capturedCallbacks[2]->writeErr(0, ex);
-  EXPECT_EQ(handler->writePending_, 0u);
   EXPECT_EQ(handler->state(), TransportHandler::State::Closed);
-  EXPECT_FALSE(handler->socketDrainer_.active());
+  EXPECT_EQ(handler->debugState().pendingWrites, 0);
+  EXPECT_FALSE(handler->debugState().isDraining);
 
   handler->resetPipeline();
   pipeline.reset();
@@ -1252,21 +1282,23 @@ TEST_F(TransportHandlerTest, DrainGuardReleasedByWriteSuccessAfterClose) {
 
   folly::AsyncTransport::WriteCallback* cb = nullptr;
   EXPECT_CALL(*mockSocket_, writeChain(_, _, _)).WillOnce(SaveArg<0>(&cb));
-  (void)handler->onWrite(
-      channel_pipeline::test::inertEndpointContext(),
-      TypeErasedBox(folly::IOBuf::copyBuffer("x")));
-  EXPECT_EQ(handler->writePending_, 1u);
+  EXPECT_EQ(
+      handler->onWrite(
+          channel_pipeline::test::inertEndpointContext(),
+          TypeErasedBox(folly::IOBuf::copyBuffer("x"))),
+      Result::Backpressure);
+  EXPECT_EQ(handler->debugState().pendingWrites, 1);
 
   handler->close(folly::exception_wrapper{});
   // writePending_ > 0 → state Closing, drain guard held.
   EXPECT_EQ(handler->state(), TransportHandler::State::Closing);
-  EXPECT_TRUE(handler->socketDrainer_.active());
+  EXPECT_TRUE(handler->debugState().isDraining);
 
   // Pending write completes naturally; drainer transitions Closing -> Closed.
   cb->writeSuccess();
-  EXPECT_EQ(handler->writePending_, 0u);
-  EXPECT_FALSE(handler->socketDrainer_.active());
   EXPECT_EQ(handler->state(), TransportHandler::State::Closed);
+  EXPECT_EQ(handler->debugState().pendingWrites, 0);
+  EXPECT_FALSE(handler->debugState().isDraining);
 
   handler->resetPipeline();
   pipeline.reset();
@@ -1278,7 +1310,7 @@ TEST_F(TransportHandlerTest, NoDrainGuardWhenNoPendingWrites) {
 
   handler->close(folly::exception_wrapper{});
   EXPECT_EQ(handler->state(), TransportHandler::State::Closed);
-  EXPECT_FALSE(handler->socketDrainer_.active());
+  EXPECT_FALSE(handler->debugState().isDraining);
 
   handler->resetPipeline();
   pipeline.reset();
@@ -1313,7 +1345,9 @@ TEST_F(TransportHandlerTest, DrainTimeoutForcesClose) {
       TypeErasedBox(folly::IOBuf::copyBuffer("x")));
 
   handler->close(folly::exception_wrapper{});
-  EXPECT_TRUE(handler->socketDrainer_.active());
+  EXPECT_EQ(handler->state(), TransportHandler::State::Closing);
+  EXPECT_EQ(handler->debugState().pendingWrites, 1);
+  EXPECT_TRUE(handler->debugState().isDraining);
 
   // closeNow() in onDrainTimeout simulates AsyncSocket's force-cascade. We
   // simulate that by having the mock's closeNow invoke writeErr on the
@@ -1331,8 +1365,9 @@ TEST_F(TransportHandlerTest, DrainTimeoutForcesClose) {
   evb_.loop();
 
   EXPECT_TRUE(forceCloseFired);
-  EXPECT_FALSE(handler->socketDrainer_.active());
-  EXPECT_EQ(handler->writePending_, 0u);
+  EXPECT_EQ(handler->state(), TransportHandler::State::Closed);
+  EXPECT_EQ(handler->debugState().pendingWrites, 0);
+  EXPECT_FALSE(handler->debugState().isDraining);
 
   handler->resetPipeline();
   pipeline.reset();

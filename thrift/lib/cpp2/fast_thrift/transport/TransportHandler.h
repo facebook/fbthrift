@@ -91,6 +91,15 @@ class TransportHandlerT : public folly::DelayedDestruction,
     Closed,
   };
 
+  struct DebugState {
+    State state;
+    bool isPaused;
+    bool isWriteSaturated;
+    uint32_t pendingWrites;
+    bool hasPipeline;
+    bool isDraining;
+  };
+
   static constexpr std::chrono::milliseconds kDefaultDrainTimeout{30'000};
 
   TransportHandlerT(const TransportHandlerT&) = delete;
@@ -123,6 +132,24 @@ class TransportHandlerT : public folly::DelayedDestruction,
   }
 
   State state() const noexcept { return state_; }
+
+  /**
+   * Returns a value-only snapshot for diagnostics and tests.
+   *
+   * Like the rest of TransportHandler, this must be called on the owning
+   * EventBase thread. It deliberately reports presence and activity as
+   * booleans rather than exposing internal object addresses.
+   */
+  DebugState debugState() const noexcept {
+    return DebugState{
+        .state = state_,
+        .isPaused = readPaused_,
+        .isWriteSaturated = writeSaturated_,
+        .pendingWrites = writePending_,
+        .hasPipeline = static_cast<bool>(pipeline_),
+        .isDraining = socketDrainer_.active(),
+    };
+  }
 
   /** Invoked once when an open transport reaches Closed. */
   void setOnClosed(folly::Function<void() noexcept> callback) {
@@ -512,7 +539,7 @@ class TransportHandlerT : public folly::DelayedDestruction,
       self_->closeNow();
     }
 
-    bool active() const { return guard_.has_value(); }
+    bool active() const noexcept { return guard_.has_value(); }
 
     void timeoutExpired() noexcept override {
       folly::DelayedDestruction::DestructorGuard dg(self_);
