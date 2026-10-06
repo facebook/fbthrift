@@ -409,7 +409,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_My
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            id: field_id.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.hasDataById", "id"))?,
+            id: field_id.unwrap_or_default(),
         })
     }
 }
@@ -439,7 +439,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_My
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            id: field_id.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.getDataById", "id"))?,
+            id: field_id.unwrap_or_default(),
         })
     }
 }
@@ -473,8 +473,8 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_My
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            id: field_id.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.putDataById", "id"))?,
-            data: field_data.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.putDataById", "data"))?,
+            id: field_id.unwrap_or_default(),
+            data: field_data.unwrap_or_default(),
         })
     }
 }
@@ -508,8 +508,8 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_My
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            id: field_id.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.lobDataById", "id"))?,
-            data: field_data.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.lobDataById", "data"))?,
+            id: field_id.unwrap_or_default(),
+            data: field_data.unwrap_or_default(),
         })
     }
 }

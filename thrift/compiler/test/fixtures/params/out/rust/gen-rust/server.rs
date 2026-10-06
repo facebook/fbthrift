@@ -209,7 +209,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Ne
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "NestedContainers.mapList", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }
@@ -239,7 +239,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Ne
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "NestedContainers.mapSet", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }
@@ -269,7 +269,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Ne
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "NestedContainers.listMap", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }
@@ -299,7 +299,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Ne
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "NestedContainers.listSet", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }
@@ -329,7 +329,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Ne
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "NestedContainers.turtles", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }

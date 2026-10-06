@@ -128,7 +128,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_So
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            m: field_m.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "SomeService.bounce_map", "m"))?,
+            m: field_m.unwrap_or_default(),
         })
     }
 }
@@ -158,7 +158,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_So
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            r: field_r.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "SomeService.binary_keyed_map", "r"))?,
+            r: field_r.unwrap_or_default(),
         })
     }
 }

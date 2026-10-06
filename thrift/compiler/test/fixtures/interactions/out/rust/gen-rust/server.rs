@@ -2285,7 +2285,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_My
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            arg: field_arg.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.interact", "arg"))?,
+            arg: field_arg.unwrap_or_default(),
         })
     }
 }
@@ -4589,7 +4589,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Fa
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            arg: field_arg.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "Factories.interact", "arg"))?,
+            arg: field_arg.unwrap_or_default(),
         })
     }
 }
@@ -8938,7 +8938,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Bo
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            req: field_req.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "BoxService.getABoxSession", "req"))?,
+            req: field_req.unwrap_or_default(),
         })
     }
 }

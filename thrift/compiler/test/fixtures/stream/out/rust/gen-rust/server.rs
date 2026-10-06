@@ -412,8 +412,8 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Pu
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            i32_from: field_i32_from.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "PubSubStreamingService.returnstream", "i32_from"))?,
-            i32_to: field_i32_to.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "PubSubStreamingService.returnstream", "i32_to"))?,
+            i32_from: field_i32_from.unwrap_or_default(),
+            i32_to: field_i32_to.unwrap_or_default(),
         })
     }
 }
@@ -443,7 +443,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Pu
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "PubSubStreamingService.streamthrows", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }
@@ -473,7 +473,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Pu
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "PubSubStreamingService.servicethrows", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }
@@ -503,7 +503,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Pu
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "PubSubStreamingService.servicethrows2", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }
@@ -533,7 +533,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Pu
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "PubSubStreamingService.boththrows", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }
@@ -563,7 +563,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Pu
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "PubSubStreamingService.responseandstreamstreamthrows", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }
@@ -593,7 +593,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Pu
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "PubSubStreamingService.responseandstreamservicethrows", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }
@@ -623,7 +623,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Pu
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "PubSubStreamingService.responseandstreamboththrows", "foo"))?,
+            foo: field_foo.unwrap_or_default(),
         })
     }
 }
@@ -657,8 +657,8 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Pu
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            i32_from: field_i32_from.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "PubSubStreamingService.returnstreamFast", "i32_from"))?,
-            i32_to: field_i32_to.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "PubSubStreamingService.returnstreamFast", "i32_to"))?,
+            i32_from: field_i32_from.unwrap_or_default(),
+            i32_to: field_i32_to.unwrap_or_default(),
         })
     }
 }

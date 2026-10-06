@@ -125,9 +125,13 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Se
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            arg1: field_arg1.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "Service.func", "arg1"))?,
-            arg2: field_arg2.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "Service.func", "arg2"))?,
-            arg3: field_arg3.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "Service.func", "arg3"))?,
+            arg1: match field_arg1 {
+                ::std::option::Option::Some(value) => value,
+                ::std::option::Option::None => <crate::types::adapters::StringWithAdapter as ::fbthrift::adapter::ThriftAdapter>::from_thrift_field::<::fbthrift::metadata::NoThriftAnnotations>(::std::default::Default::default(), 1)
+                    .map_err(|e| ::std::convert::Into::<::anyhow::Error>::into(e).context(::std::format!("`{}` missing arg `{}`", "Service.func", "arg1")))?,
+            },
+            arg2: field_arg2.unwrap_or_default(),
+            arg3: field_arg3.unwrap_or_default(),
         })
     }
 }

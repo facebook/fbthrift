@@ -468,6 +468,28 @@ bool typedef_has_constructor_expression(const t_typedef* t) {
   return false;
 }
 
+// Also decides whether `typedef.whisker` derives `Default` for a newtype.
+bool typedef_has_adapter(const t_typedef& t) {
+  return node_has_adapter(t) ||
+      type_has_transitive_adapter(
+             step_through_typedefs(&*t.type(), true), false);
+}
+
+// Whether generated code can construct the intrinsic default of `type`, either
+// as `Default::default()` of its Rust type or by adapting the default of its
+// standard type. Newtypes over adapted types and adapted structs have no
+// `Default`.
+bool has_intrinsic_default(const t_type& type) {
+  if (const t_typedef* typedef_type = type.try_as<t_typedef>()) {
+    return has_newtype_annotation(typedef_type)
+        ? !typedef_has_adapter(*typedef_type)
+        : has_intrinsic_default(*typedef_type->type());
+  }
+  const t_structured* structured = type.try_as<t_structured>();
+  return structured == nullptr ||
+      find_structured_adapter_annotation(*structured) == nullptr;
+}
+
 bool node_has_custom_rust_type(const t_named& node) {
   return node.has_structured_annotation(kRustTypeUri) ||
       node.has_structured_annotation(kRustNewTypeUri);
@@ -1279,11 +1301,7 @@ class t_mstch_rust_generator : public t_whisker_generator {
       return typedef_has_constructor_expression(&self);
     });
     def.property("has_adapter?", [](const t_typedef& self) {
-      auto adapter_annotation = find_structured_adapter_annotation(self);
-      auto type = &self.type().deref();
-      const t_type* curr_type = step_through_typedefs(type, true);
-      return adapter_annotation != nullptr ||
-          type_has_transitive_adapter(curr_type, false);
+      return typedef_has_adapter(self);
     });
     // Typedef unfortunately already has a pre-existing property called
     // `has_adapter`, with usages, so we need to have a different one for
@@ -1347,6 +1365,9 @@ class t_mstch_rust_generator : public t_whisker_generator {
       const t_type* curr_type = step_through_typedefs(type, true);
       return adapter_annotation != nullptr ||
           type_has_transitive_adapter(curr_type, false);
+    });
+    def.property("intrinsic_default?", [](const t_field& self) {
+      return has_intrinsic_default(self.type().deref());
     });
     def.property("adapter_name", [this](const t_field& self) {
       auto adapter_annotation = find_structured_adapter_annotation(self);

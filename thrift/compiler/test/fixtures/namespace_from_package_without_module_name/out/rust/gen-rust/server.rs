@@ -101,7 +101,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Te
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            int1: field_int1.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "TestService.init", "int1"))?,
+            int1: field_int1.unwrap_or_default(),
         })
     }
 }

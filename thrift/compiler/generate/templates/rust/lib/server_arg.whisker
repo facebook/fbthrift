@@ -66,7 +66,17 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_{{
         {{! Use formatting in errors to try to maximize string sharing }}
         ::std::result::Result::Ok(Self {
       {{#each function.params.fields as |param|}}
+        {{#if (not param.intrinsic_default?)}}
             {{param.rust_name}}: field_{{param.name}}.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "{{interface.name}}.{{function.name}}", "{{param.name}}"))?,
+        {{#else if param.has_adapter?}}
+            {{param.rust_name}}: match field_{{param.name}} {
+                ::std::option::Option::Some(value) => value,
+                ::std::option::Option::None => {{param.adapter_qualified}}::from_thrift_field::<::fbthrift::metadata::NoThriftAnnotations>(::std::default::Default::default(), {{param.id}})
+                    .map_err(|e| ::std::convert::Into::<::anyhow::Error>::into(e).context(::std::format!("`{}` missing arg `{}`", "{{interface.name}}.{{function.name}}", "{{param.name}}")))?,
+            },
+        {{#else}}
+            {{param.rust_name}}: field_{{param.name}}.unwrap_or_default(),
+        {{/if (not param.intrinsic_default?)}}
       {{/each}}
         })
     }

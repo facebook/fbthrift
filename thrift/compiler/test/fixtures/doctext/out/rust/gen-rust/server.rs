@@ -223,9 +223,9 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_C_
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            a: field_a.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "C.thing", "a"))?,
-            b: field_b.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "C.thing", "b"))?,
-            c: field_c.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "C.thing", "c"))?,
+            a: field_a.unwrap_or_default(),
+            b: field_b.unwrap_or_default(),
+            c: field_c.unwrap_or_default(),
         })
     }
 }

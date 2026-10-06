@@ -128,7 +128,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Fo
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            bar: field_bar.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "Foo.return", "bar"))?,
+            bar: field_bar.unwrap_or_default(),
         })
     }
 }
@@ -158,7 +158,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Fo
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
-            bar: field_bar.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "Foo.super", "bar"))?,
+            bar: field_bar.unwrap_or_default(),
         })
     }
 }
