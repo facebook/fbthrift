@@ -21,7 +21,9 @@
 #include <thrift/lib/cpp2/transcode/Cursor.h>
 
 // Protobuf field framing intrinsics, exposed with the uniform field-header
-// signature the codegen uses for every protocol.
+// signature the codegen uses for every protocol. Field IDs are Thrift field
+// IDs: positive IDs are their own protobuf field numbers, and negative IDs
+// travel as `32767 - id` (32768 through 65535).
 
 extern "C" {
 
@@ -34,7 +36,7 @@ uint8_t thrift_transcode_proto_read_field_header(
 
 // Writes a protobuf tag from uniform signature:
 //   typeInfo = wire_type + 1 (the readers' offset form; 1 is subtracted to
-//   recover the wire type), fieldId = field number. prevFieldId is ignored.
+//   recover the wire type). prevFieldId is ignored.
 void thrift_transcode_proto_write_field_header(
     TranscodeCursor* cursor,
     uint8_t typeInfo,

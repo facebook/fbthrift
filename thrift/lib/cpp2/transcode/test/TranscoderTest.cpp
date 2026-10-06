@@ -792,12 +792,6 @@ TEST_F(ProtobufShapeTest, FieldIdsOutsideProtobufNumberRangeAreRejected) {
           WireProtocol::ThriftCompact,
           "test.WithZeroId"),
       "field ID 0 cannot be a protobuf field number");
-  expectCompileError(
-      compile(
-          WireProtocol::ThriftCompact,
-          WireProtocol::ProtobufBinary,
-          "test.WithNegativeId"),
-      "negative field IDs are not supported with protobuf yet");
 }
 
 // Protobuf only forbids 19000-19999 in schemas; the wire format carries them.
@@ -808,6 +802,20 @@ TEST_F(ProtobufShapeTest, SchemaReservedFieldNumbersAreAccepted) {
       "test.WithReservedId");
 
   EXPECT_TRUE(transcoder.hasValue()) << transcoder.error().message;
+}
+
+TEST_F(ProtobufShapeTest, NegativeFieldIdsCompileInBothDirections) {
+  auto toProtobuf = compile(
+      WireProtocol::ThriftCompact,
+      WireProtocol::ProtobufBinary,
+      "test.WithNegativeId");
+  EXPECT_FALSE(toProtobuf.hasError()) << toProtobuf.error().message;
+
+  auto fromProtobuf = compile(
+      WireProtocol::ProtobufBinary,
+      WireProtocol::ThriftCompact,
+      "test.WithNegativeId");
+  EXPECT_FALSE(fromProtobuf.hasError()) << fromProtobuf.error().message;
 }
 
 TEST_F(ProtobufShapeTest, WriteFieldIdIsTheProtobufFieldNumber) {

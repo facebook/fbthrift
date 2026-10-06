@@ -181,9 +181,6 @@ std::optional<std::string> invalidProtobufFieldIdReason(int16_t fieldId) {
   if (fieldId == 0) {
     return "field ID 0 cannot be a protobuf field number";
   }
-  if (fieldId < 0) {
-    return "negative field IDs are not supported with protobuf yet";
-  }
   return std::nullopt;
 }
 

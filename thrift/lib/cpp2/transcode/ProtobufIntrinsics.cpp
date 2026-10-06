@@ -42,6 +42,24 @@ bool isSupportedWireType(uint8_t wireType) {
   }
 }
 
+// Legacy negative Thrift field IDs map above INT16_MAX on the protobuf wire as
+// `32767 - id`, so -1 is field number 32768 and -32768 is 65535.
+constexpr int64_t kMaxPositiveFieldNumber = std::numeric_limits<int16_t>::max();
+constexpr int64_t kMaxFieldNumber =
+    kMaxPositiveFieldNumber - std::numeric_limits<int16_t>::min();
+
+int16_t fieldIdForNumber(uint64_t fieldNumber) {
+  const auto number = static_cast<int64_t>(fieldNumber);
+  return static_cast<int16_t>(
+      number <= kMaxPositiveFieldNumber ? number
+                                        : kMaxPositiveFieldNumber - number);
+}
+
+uint64_t numberForFieldId(int16_t fieldId) {
+  return static_cast<uint64_t>(
+      fieldId > 0 ? fieldId : kMaxPositiveFieldNumber - fieldId);
+}
+
 } // namespace
 
 extern "C" {
@@ -71,14 +89,13 @@ uint8_t thrift_transcode_proto_read_field_header(
   const uint8_t wireType = static_cast<uint8_t>(tag & 0x07);
   const uint64_t fieldNumber = tag >> 3;
   if (fieldNumber == 0 ||
-      fieldNumber >
-          static_cast<uint64_t>(std::numeric_limits<int16_t>::max()) ||
+      fieldNumber > static_cast<uint64_t>(kMaxFieldNumber) ||
       !isSupportedWireType(wireType)) {
     *fieldId = 0;
     setCursorError(cursor, kMalformedProtobuf);
     return 0;
   }
-  *fieldId = static_cast<int16_t>(fieldNumber);
+  *fieldId = fieldIdForNumber(fieldNumber);
   // Offset wire type by 1 so 0 is reserved for "end of message".
   // The codegen only checks for 0 = stop, the actual wire type value is not
   // used for dispatch (field ID is used instead).
@@ -96,7 +113,7 @@ void thrift_transcode_proto_write_field_header(
   if (cursor->error != 0) {
     return;
   }
-  if (typeInfo == 0 || fieldId <= 0) {
+  if (typeInfo == 0 || fieldId == 0) {
     setCursorError(cursor, kMalformedProtobuf);
     return;
   }
@@ -108,7 +125,7 @@ void thrift_transcode_proto_write_field_header(
     return;
   }
   thrift_transcode_write_unsigned_varint(
-      cursor, (static_cast<uint64_t>(fieldId) << 3) | wireType);
+      cursor, (numberForFieldId(fieldId) << 3) | wireType);
 }
 
 void thrift_transcode_proto_write_stop(TranscodeCursor* /*cursor*/) {

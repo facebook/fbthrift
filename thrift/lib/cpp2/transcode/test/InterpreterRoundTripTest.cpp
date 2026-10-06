@@ -111,6 +111,12 @@ struct InterpreterRoundTripTest : ::testing::Test {
                 TypeIds::uri("test.Inner")),
         }));
     builder.addType(
+        "test.Legacy",
+        def::Struct({
+            def::Field(
+                def::Identity(-1, "legacy"), def::AlwaysPresent, TypeIds::I32),
+        }));
+    builder.addType(
         "test.Result",
         def::Struct({
             def::Field(
@@ -143,6 +149,10 @@ struct InterpreterRoundTripTest : ::testing::Test {
 
   const type_system::StructNode& enumNode() {
     return typeSystem->getUserDefinedTypeOrThrow("test.EnumSample").asStruct();
+  }
+
+  const type_system::StructNode& legacyNode() {
+    return typeSystem->getUserDefinedTypeOrThrow("test.Legacy").asStruct();
   }
 
   const type_system::StructNode& resultNode() {
@@ -551,6 +561,23 @@ TEST_F(InterpreterRoundTripTest, ProtobufNestedStructWritesThriftStop) {
   auto result = protobufToBinary.transcode(buf);
   ASSERT_FALSE(result.hasError()) << result.error().message;
   EXPECT_EQ(toBytes(**result), binaryNestedStructMessage());
+}
+
+TEST_F(InterpreterRoundTripTest, NegativeFieldIdRoundTripsThroughProtobuf) {
+  auto compact = makeCodec(WireProtocol::ThriftCompact, legacyNode());
+  auto protobuf = makeCodec(WireProtocol::ProtobufBinary, legacyNode());
+  TranscodeInterpreter compactToProtobuf{fuse(compact, protobuf)};
+  TranscodeInterpreter protobufToCompact{fuse(protobuf, compact)};
+
+  auto input = compactLongFormI32Message(-1);
+  auto toProtobuf = compactToProtobuf.transcode(
+      folly::IOBuf::wrapBufferAsValue(input.data(), input.size()));
+  ASSERT_FALSE(toProtobuf.hasError()) << toProtobuf.error().message;
+  EXPECT_EQ(toBytes(**toProtobuf), protobufI32Message(32767 - (-1)));
+
+  auto backToCompact = protobufToCompact.transcode(**toProtobuf);
+  ASSERT_FALSE(backToCompact.hasError()) << backToCompact.error().message;
+  EXPECT_EQ(toBytes(**backToCompact), input);
 }
 
 TEST_F(InterpreterRoundTripTest, WriteFieldIdRenumbersProtobufOutput) {

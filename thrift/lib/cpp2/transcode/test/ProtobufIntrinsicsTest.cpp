@@ -83,7 +83,13 @@ class RoundTrip {
 // through the varint (field_number << 3 | wire_type) encoding.
 TEST(ProtobufIntrinsicsTest, FieldHeaderRoundTrip) {
   for (auto [fieldId, typeInfo] : std::vector<std::pair<int16_t, uint8_t>>{
-           {1, kVarint}, {1000, kLenDelim}, {5, k32Bit}, {2, k64Bit}}) {
+           {1, kVarint},
+           {1000, kLenDelim},
+           {5, k32Bit},
+           {2, k64Bit},
+           {32767, kVarint},
+           {-1, kVarint},
+           {-32768, kLenDelim}}) {
     RoundTrip rt;
     auto w = rt.writer();
     thrift_transcode_proto_write_field_header(&w, typeInfo, fieldId, 0);
@@ -123,11 +129,26 @@ TEST(ProtobufIntrinsicsTest, ReadFieldHeaderRejectsMalformedTag) {
   }
 }
 
+// Negative Thrift field IDs travel as protobuf field number 32767 - id.
+TEST(ProtobufIntrinsicsTest, NegativeFieldIdsUseNumbersAboveInt16Max) {
+  for (auto [fieldId, fieldNumber] : std::vector<std::pair<int16_t, uint64_t>>{
+           {-1, 32768}, {-2, 32769}, {-32768, 65535}}) {
+    RoundTrip rt;
+    auto w = rt.writer();
+    thrift_transcode_proto_write_field_header(&w, kVarint, fieldId, 0);
+    ASSERT_EQ(w.error, 0);
+
+    auto r = rt.reader(w);
+    EXPECT_EQ(thrift_transcode_read_unsigned_varint(&r), fieldNumber << 3);
+    EXPECT_EQ(r.error, 0);
+  }
+}
+
 TEST(ProtobufIntrinsicsTest, ReadFieldHeaderRejectsFieldIdOutOfRange) {
   RoundTrip rt;
   auto w = rt.writer();
   thrift_transcode_write_unsigned_varint(
-      &w, (static_cast<uint64_t>(32768) << 3) | 0);
+      &w, (static_cast<uint64_t>(65536) << 3) | 0);
   ASSERT_EQ(w.error, 0);
 
   auto r = rt.reader(w);
@@ -147,8 +168,8 @@ TEST(ProtobufIntrinsicsTest, WriteStopEmitsNothing) {
 }
 
 TEST(ProtobufIntrinsicsTest, WriteFieldHeaderRejectsMalformedTag) {
-  for (auto [fieldId, typeInfo] : std::vector<std::pair<int16_t, uint8_t>>{
-           {0, kVarint}, {-1, kVarint}, {1, 0}, {1, 4}}) {
+  for (auto [fieldId, typeInfo] :
+       std::vector<std::pair<int16_t, uint8_t>>{{0, kVarint}, {1, 0}, {1, 4}}) {
     RoundTrip rt;
     auto w = rt.writer();
 
