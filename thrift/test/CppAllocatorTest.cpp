@@ -901,6 +901,25 @@ TEST(CppAllocatorTest, AllocExtendedMoveRebuildsNonNullOptionalRef) {
   EXPECT_EQ(moved.s_ref()->aa_list()->size(), 2);
 }
 
+// A pointee that does not use the allocator, or one on an equal allocator, is
+// taken over, as the plain move ctor does.
+TEST(CppAllocatorTest, AllocExtendedMoveTakesOverRefs) {
+  CountingIdentityResource counting;
+  const PmrByteAlloc alloc(&counting);
+  OptionalRefPmr src(alloc);
+  src.c_ref()->aa_string() = kTooLong;
+  src.s_ref()->aa_list()->assign({1, 2});
+  const auto* c = src.c_ref().get();
+  const auto* s = src.s_ref().get();
+  const int before = counting.allocations();
+
+  const OptionalRefPmr moved(std::move(src), alloc);
+
+  EXPECT_EQ(moved.c_ref().get(), c);
+  EXPECT_EQ(moved.s_ref().get(), s);
+  EXPECT_EQ(counting.allocations(), before);
+}
+
 // Other owners may share the pointee, so it is copied rather than moved from.
 TEST(CppAllocatorTest, AllocExtendedMoveCopiesSharedRefPointee) {
   std::pmr::monotonic_buffer_resource res1;

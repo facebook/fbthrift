@@ -325,3 +325,23 @@ struct ConstructCountingAdapter {
     ++constructCount;
   }
 };
+
+// Counts allocations. Unlike CountingPmrResource, it is equal only to itself.
+class CountingIdentityResource : public std::pmr::memory_resource {
+ public:
+  int allocations() const { return allocations_; }
+
+ private:
+  int allocations_ = 0;
+
+  void* do_allocate(size_t bytes, size_t alignment) override {
+    ++allocations_;
+    return std::pmr::new_delete_resource()->allocate(bytes, alignment);
+  }
+  void do_deallocate(void* p, size_t bytes, size_t alignment) override {
+    std::pmr::new_delete_resource()->deallocate(p, bytes, alignment);
+  }
+  bool do_is_equal(const memory_resource& other) const noexcept override {
+    return this == &other;
+  }
+};
