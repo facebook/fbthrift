@@ -835,6 +835,21 @@ TEST(CppAllocatorTest, AllocExtendedMoveRebuildsNonNullOptionalRef) {
   EXPECT_EQ(moved.s_ref()->aa_list()->size(), 2);
 }
 
+// Other owners may share the pointee, so it is copied rather than moved from.
+TEST(CppAllocatorTest, AllocExtendedMoveCopiesSharedRefPointee) {
+  std::pmr::monotonic_buffer_resource res1;
+  std::pmr::monotonic_buffer_resource res2;
+  OptionalRefPmr b{PmrByteAlloc(&res2)};
+  b.c_ref()->not_aa_string() = kTooLong;
+  const auto otherOwner = b.c_ref();
+
+  const OptionalRefPmr a(std::move(b), PmrByteAlloc(&res1));
+
+  EXPECT_EQ(*a.c_ref()->not_aa_string(), kTooLong);
+  EXPECT_EQ(a.c_ref()->get_allocator().resource(), &res1);
+  EXPECT_EQ(*otherOwner->not_aa_string(), kTooLong);
+}
+
 TEST(CppAllocatorTest, AllocExtendedCtorsRunAdapterConstruct) {
   std::pmr::monotonic_buffer_resource res;
   PmrByteAlloc alloc(&res);

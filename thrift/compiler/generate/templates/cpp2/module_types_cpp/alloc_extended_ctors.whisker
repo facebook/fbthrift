@@ -76,7 +76,7 @@
   {{/if (object.eq? null struct.cpp_allocator_via)}}
   {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field last?|}}
     {{field.cpp_storage_name}}({{!
-}}{{#if field.cpp_ref_not_boxed?}}other.{{field.cpp_storage_name}} ? {{#partial alloc_smart_ptr_fn field=field}}({{#if field.type.cpp_use_allocator?}}alloc, {{/if}}std::move(*other.{{field.cpp_storage_name}})) : nullptr{{!
+}}{{#if field.cpp_ref_not_boxed?}}other.{{field.cpp_storage_name}} ? {{#partial alloc_smart_ptr_fn field=field}}({{#if field.type.cpp_use_allocator?}}alloc, {{/if}}{{#if field.cpp_ref_shared?}}*other.{{field.cpp_storage_name}}{{#else}}std::move(*other.{{field.cpp_storage_name}}){{/if field.cpp_ref_shared?}}) : nullptr{{!
 }}{{#else}}std::move(other.{{field.cpp_storage_name}}){{#if (and (not field.cpp_ref?) field.cpp_use_allocator?)}}, alloc{{/if}}{{/if field.cpp_ref_not_boxed?}}{{!
     }}){{#if last?}}{{#if struct.isset_fields?}},{{/if}}{{#else}},{{/if}}
   {{/each}}
