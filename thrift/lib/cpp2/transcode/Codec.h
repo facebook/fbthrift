@@ -332,6 +332,10 @@ struct MapOp {
  */
 struct FieldEntry {
   int16_t fieldId{};
+  // Field ID written to the target when it differs from the source's, such as
+  // a Thrift result's field 0 written as protobuf field 1. Reads always match
+  // `fieldId`.
+  std::optional<int16_t> writeFieldId;
   std::string fieldName; // for name-based framing (JSON)
   uint8_t readTypeInfo = 0; // expected source type byte (for ttype validation)
   uint8_t writeTypeInfo = 0; // protocol-specific type byte for write header

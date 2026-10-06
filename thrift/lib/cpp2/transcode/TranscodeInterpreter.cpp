@@ -1362,6 +1362,10 @@ findFieldById(const StructOp& op, int16_t fieldId) {
   return &*it;
 }
 
+int16_t targetFieldId(const FieldEntry& field) {
+  return field.writeFieldId.value_or(field.fieldId);
+}
+
 bool isUnion(const StructOp& op) {
   return op.schemaType.has_value() && op.schemaType->isUnion();
 }
@@ -1434,16 +1438,16 @@ bool writeFieldFramedScalarValue(
       return false;
     }
     thrift_transcode_compact_write_bool_field(
-        c, boolVal ? 1 : 0, field.fieldId, prevWrite);
-    prevWrite = field.fieldId;
+        c, boolVal ? 1 : 0, targetFieldId(field), prevWrite);
+    prevWrite = targetFieldId(field);
     return !hasError(c);
   }
 
-  wf.writeHeader(c, field.writeTypeInfo, field.fieldId, prevWrite);
+  wf.writeHeader(c, field.writeTypeInfo, targetFieldId(field), prevWrite);
   if (hasError(c)) {
     return false;
   }
-  prevWrite = field.fieldId;
+  prevWrite = targetFieldId(field);
   return writeScalarValue(c, scalar, value);
 }
 
@@ -1511,11 +1515,14 @@ void execTaggedUnion(
       int64_t value = 0;
       if (readScalarInt(c, *scalar, 0, &value)) {
         thrift_transcode_compact_write_bool_field(
-            c, value ? 1 : 0, input.member->fieldId, prevWrite);
+            c, value ? 1 : 0, targetFieldId(*input.member), prevWrite);
       }
     } else {
       wf.writeHeader(
-          c, input.member->writeTypeInfo, input.member->fieldId, prevWrite);
+          c,
+          input.member->writeTypeInfo,
+          targetFieldId(*input.member),
+          prevWrite);
       execCommand(c, *input.member->command, 0);
     }
     const bool contentConsumed = !hasError(c) && c->readPos == c->readEnd;
@@ -1532,7 +1539,10 @@ void execTaggedUnion(
       return;
     }
     wf.writeHeader(
-        c, input.member->writeTypeInfo, input.member->fieldId, prevWrite);
+        c,
+        input.member->writeTypeInfo,
+        targetFieldId(*input.member),
+        prevWrite);
     if (hasError(c)) {
       return;
     }
@@ -1638,13 +1648,13 @@ void execJsonStruct(
         return;
       }
       thrift_transcode_compact_write_bool_field(
-          c, boolVal ? 1 : 0, fe->fieldId, prevWrite);
-      prevWrite = fe->fieldId;
+          c, boolVal ? 1 : 0, targetFieldId(*fe), prevWrite);
+      prevWrite = targetFieldId(*fe);
       continue;
     }
 
-    wf.writeHeader(c, fe->writeTypeInfo, fe->fieldId, prevWrite);
-    prevWrite = fe->fieldId;
+    wf.writeHeader(c, fe->writeTypeInfo, targetFieldId(*fe), prevWrite);
+    prevWrite = targetFieldId(*fe);
     execCommand(c, *fe->command, 0);
   }
 
@@ -1807,16 +1817,17 @@ void execIdStructToFieldFramed(
         return;
       }
       thrift_transcode_compact_write_bool_field(
-          c, boolVal ? 1 : 0, match.fieldId, prevWrite);
-      prevWrite = match.fieldId;
+          c, boolVal ? 1 : 0, targetFieldId(*match.field), prevWrite);
+      prevWrite = targetFieldId(*match.field);
       continue;
     }
 
-    wf.writeHeader(c, match.field->writeTypeInfo, match.fieldId, prevWrite);
+    wf.writeHeader(
+        c, match.field->writeTypeInfo, targetFieldId(*match.field), prevWrite);
     if (hasError(c)) {
       break;
     }
-    prevWrite = match.fieldId;
+    prevWrite = targetFieldId(*match.field);
     execCommand(c, *match.field->command, match.typeInfo);
   }
 

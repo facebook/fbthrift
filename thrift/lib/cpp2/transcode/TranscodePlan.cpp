@@ -175,6 +175,7 @@ folly::Expected<Command, CompileError> fuseStructOps(
 
       FieldEntry entry;
       entry.fieldId = srcField.fieldId;
+      entry.writeFieldId = tgtField.writeFieldId;
       entry.fieldName = source.fieldIdent == FieldIdent::ByName
           ? srcField.fieldName
           : tgtField.fieldName;
@@ -211,6 +212,7 @@ folly::Expected<Command, CompileError> fuseStructOps(
 
     FieldEntry entry;
     entry.fieldId = srcField.fieldId;
+    entry.writeFieldId = tgtField.writeFieldId;
     entry.fieldName = source.fieldIdent == FieldIdent::ByName
         ? srcField.fieldName
         : tgtField.fieldName;

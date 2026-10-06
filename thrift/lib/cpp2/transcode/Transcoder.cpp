@@ -167,10 +167,9 @@ bool hasProtobufSide(const StructOp& op) {
 
 // A flattened target writes only the field's value, so its field IDs never
 // become protobuf field numbers.
-bool usesProtobufFieldNumbers(const StructOp& op) {
-  return op.readFieldProto == FieldProto::Protobuf ||
-      (op.writeFieldProto == FieldProto::Protobuf &&
-       op.outputMode == StructOutputMode::Normal);
+bool writesProtobufFieldNumbers(const StructOp& op) {
+  return op.writeFieldProto == FieldProto::Protobuf &&
+      op.outputMode == StructOutputMode::Normal;
 }
 
 bool isContainer(const Command& cmd) {
@@ -178,14 +177,27 @@ bool isContainer(const Command& cmd) {
       std::holds_alternative<MapOp>(cmd);
 }
 
+std::optional<std::string> invalidProtobufFieldIdReason(int16_t fieldId) {
+  if (fieldId == 0) {
+    return "field ID 0 cannot be a protobuf field number";
+  }
+  if (fieldId < 0) {
+    return "negative field IDs are not supported with protobuf yet";
+  }
+  return std::nullopt;
+}
+
 std::optional<std::string> unsupportedProtobufFieldReason(
     const StructOp& op, const FieldEntry& field) {
-  if (usesProtobufFieldNumbers(op)) {
-    if (field.fieldId == 0) {
-      return "field ID 0 cannot be a protobuf field number";
+  if (op.readFieldProto == FieldProto::Protobuf) {
+    if (auto reason = invalidProtobufFieldIdReason(field.fieldId)) {
+      return reason;
     }
-    if (field.fieldId < 0) {
-      return "negative field IDs are not supported with protobuf yet";
+  }
+  if (writesProtobufFieldNumbers(op)) {
+    if (auto reason = invalidProtobufFieldIdReason(
+            field.writeFieldId.value_or(field.fieldId))) {
+      return reason;
     }
   }
   if (!hasProtobufSide(op) || field.command == nullptr ||

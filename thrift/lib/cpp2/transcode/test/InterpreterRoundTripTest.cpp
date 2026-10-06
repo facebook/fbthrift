@@ -110,6 +110,12 @@ struct InterpreterRoundTripTest : ::testing::Test {
                 def::AlwaysPresent,
                 TypeIds::uri("test.Inner")),
         }));
+    builder.addType(
+        "test.Result",
+        def::Struct({
+            def::Field(
+                def::Identity(0, "success"), def::AlwaysPresent, TypeIds::I32),
+        }));
     builder.addType("test.Color", def::Enum({{"RED", 1}, {"BLUE", 2}}));
     builder.addType(
         "test.EnumSample",
@@ -137,6 +143,10 @@ struct InterpreterRoundTripTest : ::testing::Test {
 
   const type_system::StructNode& enumNode() {
     return typeSystem->getUserDefinedTypeOrThrow("test.EnumSample").asStruct();
+  }
+
+  const type_system::StructNode& resultNode() {
+    return typeSystem->getUserDefinedTypeOrThrow("test.Result").asStruct();
   }
 
   TranscodePlan fuse(const Codec& source, const Codec& target) {
@@ -359,6 +369,29 @@ std::vector<uint8_t> protobufUnknownFieldMessage() {
   return b;
 }
 
+// A single Compact i32 field set to 7. IDs outside 1-15 of the previous ID use
+// the long-form header: the type byte, then the zigzag-encoded field ID.
+std::vector<uint8_t> compactLongFormI32Message(int16_t fieldId) {
+  std::vector<uint8_t> b;
+
+  b.push_back(wire::kCompactI32);
+  putUVarint(b, fieldId >= 0 ? 2 * fieldId : -2 * fieldId - 1);
+  putUVarint(b, 14); // zigzag(7)
+
+  b.push_back(wire::kCompactStop);
+  return b;
+}
+
+// A single protobuf varint field set to sint32 7.
+std::vector<uint8_t> protobufI32Message(uint64_t fieldNumber) {
+  std::vector<uint8_t> b;
+
+  putUVarint(b, fieldNumber << 3);
+  putUVarint(b, 14); // zigzag(7)
+
+  return b;
+}
+
 std::string enumBinaryMessage(fixture::Color color) {
   fixture::EnumSample value;
   value.color() = color;
@@ -518,6 +551,19 @@ TEST_F(InterpreterRoundTripTest, ProtobufNestedStructWritesThriftStop) {
   auto result = protobufToBinary.transcode(buf);
   ASSERT_FALSE(result.hasError()) << result.error().message;
   EXPECT_EQ(toBytes(**result), binaryNestedStructMessage());
+}
+
+TEST_F(InterpreterRoundTripTest, WriteFieldIdRenumbersProtobufOutput) {
+  auto compact = makeCodec(WireProtocol::ThriftCompact, resultNode());
+  auto protobuf = makeCodec(WireProtocol::ProtobufBinary, resultNode());
+  std::get<StructOp>(protobuf.root).fields.front().writeFieldId = 1;
+  TranscodeInterpreter compactToProtobuf{fuse(compact, protobuf)};
+
+  auto input = compactLongFormI32Message(0);
+  auto result = compactToProtobuf.transcode(
+      folly::IOBuf::wrapBufferAsValue(input.data(), input.size()));
+  ASSERT_FALSE(result.hasError()) << result.error().message;
+  EXPECT_EQ(toBytes(**result), protobufI32Message(1));
 }
 
 TEST_F(InterpreterRoundTripTest, UnknownBinaryFieldYieldsError) {

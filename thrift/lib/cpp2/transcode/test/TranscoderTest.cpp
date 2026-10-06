@@ -810,6 +810,30 @@ TEST_F(ProtobufShapeTest, SchemaReservedFieldNumbersAreAccepted) {
   EXPECT_TRUE(transcoder.hasValue()) << transcoder.error().message;
 }
 
+TEST_F(ProtobufShapeTest, WriteFieldIdIsTheProtobufFieldNumber) {
+  const auto& node =
+      typeSystem->getUserDefinedTypeOrThrow("test.WithZeroId").asStruct();
+  auto compact = makeCodec(WireProtocol::ThriftCompact, node);
+
+  auto renumbered = makeCodec(WireProtocol::ProtobufBinary, node);
+  std::get<StructOp>(renumbered.root).fields.front().writeFieldId = 1;
+  auto plan = fuseCodecs(compact, renumbered);
+  ASSERT_FALSE(plan.hasError()) << plan.error().message;
+  auto transcoder = compile(std::move(*plan));
+  EXPECT_FALSE(transcoder.hasError()) << transcoder.error().message;
+
+  const auto& numbered =
+      typeSystem->getUserDefinedTypeOrThrow("test.WithReservedId").asStruct();
+  auto zeroed = makeCodec(WireProtocol::ProtobufBinary, numbered);
+  std::get<StructOp>(zeroed.root).fields.front().writeFieldId = 0;
+  auto zeroedPlan =
+      fuseCodecs(makeCodec(WireProtocol::ThriftCompact, numbered), zeroed);
+  ASSERT_FALSE(zeroedPlan.hasError()) << zeroedPlan.error().message;
+  expectCompileError(
+      compile(std::move(*zeroedPlan)),
+      "field ID 0 cannot be a protobuf field number");
+}
+
 TEST_F(ProtobufShapeTest, FlattenedProtobufTargetDoesNotWriteFieldIds) {
   auto plan = fusePlan(
       WireProtocol::ThriftCompact,
