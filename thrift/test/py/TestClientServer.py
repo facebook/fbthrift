@@ -22,12 +22,11 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import errno
 import importlib.resources
-import socket
-import ssl as SSL
+import os
 import string
 import sys
+import tempfile
 import time
 import unittest
 from subprocess import Popen
@@ -53,12 +52,12 @@ except ImportError:
     fastproto = None
 
 
-def start_server(server_type, ssl, server_header, server_context, multiple, port):
+def start_server(server_type, ssl, server_header, server_context, multiple, port_file):
     server_bin = str(
         importlib.resources.files(__package__).joinpath("python_test_server")
     )
 
-    args = [server_bin, "--port", str(port)]
+    args = [server_bin, "--port", "0", "--port-file", port_file]
     if ssl:
         args.append("--ssl")
     if server_header:
@@ -76,51 +75,40 @@ def start_server(server_type, ssl, server_header, server_context, multiple, port
     return Popen(args, stdout=stdout, stderr=stderr)
 
 
-def isConnectionRefused(e):
-    if sys.version_info[0] >= 3:
-        return isinstance(e, ConnectionRefusedError)
-    else:
-        return e[0] == errno.ECONNREFUSED
-
-
-def wait_for_server(port, timeout, ssl=False):
+def wait_for_port(server, port_file, timeout):
+    """Returns the port the server bound to, or None if it exited or timed out."""
     end = time.time() + timeout
     while time.time() < end:
+        if server.poll() is not None:
+            return None
         try:
-            sock = socket.socket()
-            sock.settimeout(end - time.time())
-            if ssl:
-                sock = SSL.wrap_socket(sock)
-            sock.connect(("localhost", port))
-            return True
-        except socket.timeout:
-            return False
-        except socket.error as e:
-            if not isConnectionRefused(e):
-                raise
-        finally:
-            sock.close()
-        time.sleep(0.1)
-    return False
+            with open(port_file) as f:
+                return int(f.read())
+        except FileNotFoundError:
+            pass
+        time.sleep(0.05)
+    return None
 
 
 class AbstractTest:
     @classmethod
     def setUpClass(cls):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        sock.bind(("0.0.0.0", 0))
-        port = sock.getsockname()[1]
+        cls._tmpdir = tempfile.TemporaryDirectory()
+        port_file = os.path.join(cls._tmpdir.name, "port")
         server = start_server(
             cls.server_type,
             cls.ssl,
             cls.server_header,
             cls.server_context,
             cls.multiple,
-            port,
+            port_file,
         )
 
-        if not wait_for_server(port, 15.0, ssl=cls.ssl):
+        port = wait_for_port(server, port_file, 15.0)
+        if port is None:
+            server.kill()
+            returncode = server.wait()
+            cls._tmpdir.cleanup()
             msg = "Failed to start " + cls.server_type
             if cls.ssl:
                 msg += " using ssl"
@@ -128,6 +116,7 @@ class AbstractTest:
                 msg += " using header protocol"
             if cls.server_context:
                 msg += " using context"
+            msg += " (exit code {})".format(returncode)
             raise Exception(msg)
 
         cls._port = port
@@ -137,6 +126,7 @@ class AbstractTest:
     def tearDownClass(cls):
         cls._server.kill()
         cls._server.wait()
+        cls._tmpdir.cleanup()
 
     def bytes_comp(self, seq1, seq2):
         if not isinstance(seq1, bytes):

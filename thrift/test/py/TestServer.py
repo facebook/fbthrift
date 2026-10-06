@@ -217,7 +217,9 @@ class HeaderEventHandler(ContextEventHandler):
 
 
 class TestServerEventHandler(TServer.TServerEventHandler):
-    def __init__(self):
+    def __init__(self, port_file=None, context_handlers=()):
+        self.port_file = port_file
+        self.context_handlers = context_handlers
         self.num_pre_serve = 0
         self.request_count = 0
         self.num_new_conns = 0
@@ -228,6 +230,15 @@ class TestServerEventHandler(TServer.TServerEventHandler):
 
     def preServe(self, address):
         self.num_pre_serve += 1
+        port = address[1]
+        for handler in self.context_handlers:
+            handler._server_port = port
+        if self.port_file:
+            # Write then rename so the reader never sees a partial file.
+            tmp = self.port_file + ".tmp"
+            with open(tmp, "w") as f:
+                f.write(str(port))
+            os.rename(tmp, self.port_file)
 
     def clientBegin(self, iprot, oprot):
         self.request_count += 1
@@ -268,11 +279,16 @@ def main() -> None:
     )
     parser.add_option("--port", action="store", type="int", dest="port", default=9090)
     parser.add_option(
+        "--port-file",
+        action="store",
+        dest="port_file",
+        default=None,
+        help="write the bound port to this file once the server is listening",
+    )
+    parser.add_option(
         "--timeout", action="store", type="int", dest="timeout", default=60
     )
     options, args = parser.parse_args()
-
-    event_handler = TestServerEventHandler()
 
     if options.header:
         pfactory = THeaderProtocol.THeaderProtocolFactory(
@@ -287,9 +303,16 @@ def main() -> None:
     else:
         pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 
+    context_handlers = []
+
+    def make_context_handler():
+        handler = TestContextHandler(options.port)
+        context_handlers.append(handler)
+        return handler
+
     if options.context:
         # pyre-fixme[16]: Module `ThriftTest` has no attribute `ContextProcessor`.
-        processor = ThriftTest.ContextProcessor(TestContextHandler(options.port))
+        processor = ThriftTest.ContextProcessor(make_context_handler())
     else:
         processor = ThriftTest.Processor(TestHandler())
 
@@ -300,7 +323,7 @@ def main() -> None:
                 "ThriftTest",
                 # pyre-fixme[16]: Module `ThriftTest` has no attribute
                 #  `ContextProcessor`.
-                ThriftTest.ContextProcessor(TestContextHandler(options.port)),
+                ThriftTest.ContextProcessor(make_context_handler()),
             )
             processor.registerProcessor(
                 "SecondService",
@@ -323,7 +346,9 @@ def main() -> None:
         server.processor.setEventHandler(HeaderEventHandler())
     elif options.context:
         server.processor.setEventHandler(ContextEventHandler())
-    server.setServerEventHandler(event_handler)
+    server.setServerEventHandler(
+        TestServerEventHandler(options.port_file, context_handlers)
+    )
 
     server.serve()
 
