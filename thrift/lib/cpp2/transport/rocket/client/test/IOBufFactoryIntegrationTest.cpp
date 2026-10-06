@@ -133,7 +133,7 @@ TEST(IOBufFactoryIntegrationTest, FrameInArena) {
   // written by RocketClientChannel are allocated through our IOBufFactory.
   folly::IOBufFactory factoryFn;
   std::function<bool(const uint8_t*)> inArena;
-  if (iua::ioUringArenaSupported() && iua::init(kArenaSize)) {
+  if (iua::init(kArenaSize)) {
     factoryFn = folly::memory::makeIOBufArenaFactory<iua>();
     inArena = [](const uint8_t* p) {
       return iua::addressInArena(const_cast<uint8_t*>(p));
