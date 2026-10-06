@@ -149,7 +149,8 @@ std::uint32_t JsonWriter::writeFloatingPoint(T t) {
     out_.value().push(sp);
   } else {
     auto tmp = fmt::format("{}", t);
-    if (tmp.find_first_of(".eE") == std::string::npos) {
+    if (!options_.wholeNumberFloatWithoutFraction &&
+        tmp.find_first_of(".eE") == std::string::npos) {
       // The shortest round-trip form of a whole-valued double has no '.', 'e',
       // or 'E' (e.g. "100000"), which would read back as an integer, so append
       // ".0" to keep it a floating-point literal. Values that already carry a

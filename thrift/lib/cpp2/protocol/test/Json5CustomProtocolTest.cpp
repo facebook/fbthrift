@@ -162,6 +162,24 @@ TEST_F(Json5MapPrimitiveKeysTest, BinaryAsKey) {
   EXPECT_EQ(writeJson5(example), R"RAW({binaryAsKey:{"?~":1,},})RAW");
 }
 
+TEST_F(Json5MapPrimitiveKeysTest, WholeNumberFloatWithoutFraction) {
+  using DoubleMap = type::map<type::double_t, type::double_t>;
+  const std::map<double, double> value{{12345, 1}, {0.5, 2.5}};
+  Json5ProtocolWriter::Options options{
+      .writer = {}, .mapPrimitiveKeysAsMemberNames = true};
+  EXPECT_EQ(
+      toJsonImpl<DoubleMap>(value, options), R"({"0.5":2.5,"12345.0":1.0})");
+
+  options.writer.wholeNumberFloatWithoutFraction = true;
+  auto json = toJsonImpl<DoubleMap>(value, options);
+  EXPECT_EQ(json, R"({"0.5":2.5,"12345":1})");
+  EXPECT_EQ(Json5ProtocolUtils::fromJson5<DoubleMap>(json), value);
+  EXPECT_EQ(
+      (toJsonImpl<type::map<type::float_t, type::float_t>>(
+          {{-3, -3}}, options)),
+      R"({"-3":-3})");
+}
+
 TEST_F(Json5MapPrimitiveKeysTest, StringAndEnumKeysUnchanged) {
   for (const auto& tc : testCases()) {
     const auto& name = *tc.name();

@@ -78,6 +78,9 @@ struct JsonWriterOptions {
   bool unquoteObjectName = false;
   // Allow Infinity and NaN as bare literals; rejected when false.
   bool allowNanInf = false;
+  // Write whole-number floating-point values without ".0", like SimpleJSON.
+  // They then read back as integers in untyped JSON.
+  bool wholeNumberFloatWithoutFraction = false;
   // Number of spaces per indentation level. indentWidth=0 produces the compact
   // output with no extra whitespace or newlines.
   std::size_t indentWidth = 0;
