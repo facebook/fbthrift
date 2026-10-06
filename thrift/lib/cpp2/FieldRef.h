@@ -60,6 +60,21 @@ struct move_to_unique_ptr_fn;
 struct assign_from_unique_ptr_fn;
 struct union_value_unsafe_fn;
 struct is_non_optional_field_set_manually_or_by_serializer_fn;
+
+// Lets field ref specializations read each other's members. A
+// `template <typename U> friend class X;` self-friend instead adds a
+// redeclaration of X per instantiation, and clang walks that chain on every
+// template-id naming X, making parsing quadratic in the number of fields.
+struct field_ref_access {
+  template <typename Ref>
+  static constexpr auto& value(Ref& ref) noexcept {
+    return ref.value_;
+  }
+  template <typename Ref>
+  static constexpr auto& bitref(Ref& ref) noexcept {
+    return ref.bitref_;
+  }
+};
 template <typename U, typename T>
 concept ImplicitlyBindableTo = std::is_same_v<
                                    std::add_const_t<std::remove_reference_t<U>>,
@@ -102,8 +117,7 @@ template <typename T>
 class field_ref {
   static_assert(std::is_reference_v<T>, "not a reference");
 
-  template <typename U>
-  friend class field_ref;
+  friend struct apache::thrift::detail::field_ref_access;
   friend struct apache::thrift::detail::unset_unsafe_fn;
   friend struct apache::thrift::detail::
       is_non_optional_field_set_manually_or_by_serializer_fn;
@@ -132,7 +146,8 @@ class field_ref {
 
   template <detail::ImplicitlyBindableTo<T> U>
   FOLLY_ERASE /* implicit */ field_ref(const field_ref<U>& other) noexcept
-      : value_(other.value_), bitref_(other.bitref_) {}
+      : value_(detail::field_ref_access::value(other)),
+        bitref_(detail::field_ref_access::bitref(other)) {}
 
   template <typename U = value_type>
   FOLLY_ERASE
@@ -301,8 +316,7 @@ template <typename T>
 class optional_field_ref {
   static_assert(std::is_reference_v<T>, "not a reference");
 
-  template <typename U>
-  friend class optional_field_ref;
+  friend struct apache::thrift::detail::field_ref_access;
   friend struct apache::thrift::detail::ensure_isset_unsafe_fn;
   friend struct apache::thrift::detail::unset_unsafe_fn;
   friend struct apache::thrift::detail::alias_isset_fn;
@@ -334,7 +348,8 @@ class optional_field_ref {
   template <detail::ImplicitlyBindableTo<T> U>
   FOLLY_ERASE /* implicit */ optional_field_ref(
       const optional_field_ref<U>& other) noexcept
-      : value_(other.value_), bitref_(other.bitref_) {}
+      : value_(detail::field_ref_access::value(other)),
+        bitref_(detail::field_ref_access::bitref(other)) {}
 
   template <
       typename U,
@@ -343,7 +358,8 @@ class optional_field_ref {
           int> = 0>
   FOLLY_ERASE explicit optional_field_ref(
       const optional_field_ref<U&>& other) noexcept
-      : value_(other.value_), bitref_(other.bitref_) {}
+      : value_(detail::field_ref_access::value(other)),
+        bitref_(detail::field_ref_access::bitref(other)) {}
 
   template <typename U = value_type>
   FOLLY_ERASE std::
@@ -379,7 +395,8 @@ class optional_field_ref {
   template <typename U>
   FOLLY_ERASE void move_from(optional_field_ref<U> other) noexcept(
       std::is_nothrow_assignable_v<value_type&, std::remove_reference_t<U>&&>) {
-    value_ = static_cast<std::remove_reference_t<U>&&>(other.value_);
+    value_ = static_cast<std::remove_reference_t<U>&&>(
+        detail::field_ref_access::value(other));
     bitref_ = other.has_value();
   }
 
@@ -631,8 +648,7 @@ class optional_boxed_field_ref {
 
   using element_type = typename folly::remove_cvref_t<T>::element_type;
 
-  template <typename U>
-  friend class optional_boxed_field_ref;
+  friend struct apache::thrift::detail::field_ref_access;
   friend struct apache::thrift::detail::move_to_unique_ptr_fn;
   friend struct apache::thrift::detail::assign_from_unique_ptr_fn;
 
@@ -646,7 +662,7 @@ class optional_boxed_field_ref {
   template <detail::ImplicitlyBindableTo<T> U>
   FOLLY_ERASE /* implicit */
   optional_boxed_field_ref(const optional_boxed_field_ref<U>& other) noexcept
-      : value_(other.value_) {}
+      : value_(detail::field_ref_access::value(other)) {}
 
   template <
       typename U,
@@ -655,7 +671,7 @@ class optional_boxed_field_ref {
           int> = 0>
   FOLLY_ERASE explicit optional_boxed_field_ref(
       const optional_boxed_field_ref<U&>& other) noexcept
-      : value_(other.value_) {}
+      : value_(detail::field_ref_access::value(other)) {}
 
   template <typename U = value_type>
   FOLLY_ERASE std::enable_if_t<
@@ -674,12 +690,13 @@ class optional_boxed_field_ref {
   // reference rebinding. This copy_from method is provided instead.
   template <typename U>
   FOLLY_ERASE void copy_from(const optional_boxed_field_ref<U>& other) {
-    value_ = T(other.value_);
+    value_ = T(detail::field_ref_access::value(other));
   }
 
   template <typename U>
   FOLLY_ERASE void move_from(optional_boxed_field_ref<U> other) noexcept {
-    value_ = static_cast<std::remove_reference_t<U>&&>(other.value_);
+    value_ = static_cast<std::remove_reference_t<U>&&>(
+        detail::field_ref_access::value(other));
   }
 
   template <typename U>
@@ -885,8 +902,7 @@ class intern_boxed_field_ref {
   using element_type = typename folly::remove_cvref_t<T>::element_type;
   using boxed_value_type = std::remove_reference_t<T>;
 
-  template <typename U>
-  friend class intern_boxed_field_ref;
+  friend struct apache::thrift::detail::field_ref_access;
   friend struct apache::thrift::detail::
       is_non_optional_field_set_manually_or_by_serializer_fn;
 
@@ -919,7 +935,8 @@ class intern_boxed_field_ref {
   template <detail::ImplicitlyBindableTo<T> U>
   FOLLY_ERASE /* implicit */ intern_boxed_field_ref(
       const intern_boxed_field_ref<U>& other) noexcept
-      : value_(other.value_), bitref_(other.bitref_) {}
+      : value_(detail::field_ref_access::value(other)),
+        bitref_(detail::field_ref_access::bitref(other)) {}
 
   template <typename U = value_type>
   FOLLY_ERASE std::enable_if_t<
@@ -943,7 +960,7 @@ class intern_boxed_field_ref {
   // field does not own the value, it will perform a shallow copy.
   template <typename U>
   FOLLY_ERASE void copy_from(const intern_boxed_field_ref<U>& other) {
-    value_ = other.value_;
+    value_ = detail::field_ref_access::value(other);
     bitref_ = other.is_set();
   }
 
@@ -1115,8 +1132,7 @@ class terse_intern_boxed_field_ref {
   using element_type = typename folly::remove_cvref_t<T>::element_type;
   using boxed_value_type = std::remove_reference_t<T>;
 
-  template <typename U>
-  friend class terse_intern_boxed_field_ref;
+  friend struct apache::thrift::detail::field_ref_access;
 
   // TODO(dokwon): Consider removing `get_default_t` after resolving
   // dependency issue.
@@ -1133,7 +1149,7 @@ class terse_intern_boxed_field_ref {
   template <detail::ImplicitlyBindableTo<T> U>
   FOLLY_ERASE /* implicit */ terse_intern_boxed_field_ref(
       const terse_intern_boxed_field_ref<U>& other) noexcept
-      : value_(other.value_) {}
+      : value_(detail::field_ref_access::value(other)) {}
 
   template <typename U = value_type>
   FOLLY_ERASE std::enable_if_t<
@@ -1154,13 +1170,14 @@ class terse_intern_boxed_field_ref {
 
   template <typename U>
   FOLLY_ERASE void copy_from(const terse_intern_boxed_field_ref<U>& other) {
-    value_ = other.value_;
+    value_ = detail::field_ref_access::value(other);
   }
 
   template <typename U>
   FOLLY_ERASE void move_from(terse_intern_boxed_field_ref<U> other) noexcept(
       std::is_nothrow_assignable_v<value_type&, std::remove_reference_t<U>&&>) {
-    value_ = static_cast<std::remove_reference_t<U>&&>(other.value_);
+    value_ = static_cast<std::remove_reference_t<U>&&>(
+        detail::field_ref_access::value(other));
   }
 
   FOLLY_ERASE void reset() noexcept {
@@ -1481,8 +1498,7 @@ template <typename T>
 class required_field_ref {
   static_assert(std::is_reference_v<T>, "not a reference");
 
-  template <typename U>
-  friend class required_field_ref;
+  friend struct apache::thrift::detail::field_ref_access;
 
  public:
   using value_type = std::remove_reference_t<T>;
@@ -1494,7 +1510,7 @@ class required_field_ref {
   template <detail::ImplicitlyBindableTo<T> U>
   FOLLY_ERASE /* implicit */ required_field_ref(
       const required_field_ref<U>& other) noexcept
-      : value_(other.value_) {}
+      : value_(detail::field_ref_access::value(other)) {}
 
   template <typename U = value_type>
   FOLLY_ERASE std::
@@ -1670,8 +1686,6 @@ template <typename T>
 class union_field_ref {
   static_assert(std::is_reference_v<T>, "not a reference");
 
-  template <typename>
-  friend class union_field_ref;
   friend struct detail::union_value_unsafe_fn;
 
   using is_cpp_ref_or_boxed = std::bool_constant<
@@ -1827,10 +1841,9 @@ class union_field_ref {
 
   /// Produces a union_field_ref<const T>
   FOLLY_ERASE auto as_const() const {
-    using const_ref_type = union_field_ref<detail::const_storage_ref_t<T>>;
-    return const_ref_type{
-        static_cast<typename const_ref_type::storage_reference_type>(
-            storage_value_),
+    using const_storage_ref = detail::const_storage_ref_t<T>;
+    return union_field_ref<const_storage_ref>{
+        static_cast<const_storage_ref>(storage_value_),
         type_,
         field_type_,
         owner_,
@@ -1942,8 +1955,7 @@ template <typename T>
 class terse_field_ref {
   static_assert(std::is_reference_v<T>, "not a reference");
 
-  template <typename U>
-  friend class terse_field_ref;
+  friend struct apache::thrift::detail::field_ref_access;
 
  public:
   using value_type = std::remove_reference_t<T>;
@@ -1954,7 +1966,7 @@ class terse_field_ref {
   template <detail::ImplicitlyBindableTo<T> U>
   FOLLY_ERASE /* implicit */ terse_field_ref(
       const terse_field_ref<U>& other) noexcept
-      : value_(other.value_) {}
+      : value_(detail::field_ref_access::value(other)) {}
 
   template <
       typename U,
@@ -1963,7 +1975,7 @@ class terse_field_ref {
           int> = 0>
   FOLLY_ERASE explicit terse_field_ref(
       const terse_field_ref<U&>& other) noexcept
-      : value_(other.value_) {}
+      : value_(detail::field_ref_access::value(other)) {}
 
   template <typename U = value_type>
   FOLLY_ERASE
@@ -1984,13 +1996,14 @@ class terse_field_ref {
   template <typename U>
   FOLLY_ERASE void copy_from(const terse_field_ref<U>& other) noexcept(
       std::is_nothrow_assignable_v<value_type&, U>) {
-    value_ = other.value_;
+    value_ = detail::field_ref_access::value(other);
   }
 
   template <typename U>
   FOLLY_ERASE void move_from(terse_field_ref<U> other) noexcept(
       std::is_nothrow_assignable_v<value_type&, std::remove_reference_t<U>&&>) {
-    value_ = static_cast<std::remove_reference_t<U>&&>(other.value_);
+    value_ = static_cast<std::remove_reference_t<U>&&>(
+        detail::field_ref_access::value(other));
   }
 
   // Returns a reference to the value. The returned reference's constness comes
