@@ -545,6 +545,16 @@ void swap_allocators(Alloc& a, Alloc& b) {
   swap_allocators_impl(pocs{}, a, b);
 }
 
+// Whether move assignment may take over the source's memory: the allocator
+// propagates on move assignment, all instances compare equal, or `dst` equals
+// `src`.
+template <typename Alloc>
+bool move_assign_can_steal(const Alloc& dst, const Alloc& src) {
+  using traits = std::allocator_traits<Alloc>;
+  return traits::propagate_on_container_move_assignment::value ||
+      traits::is_always_equal::value || dst == src;
+}
+
 // We identify field quailfier using different types of C++ field_ref. For
 // cpp.ref fields, we can not deduce the field qualifier information.
 namespace qualifier {

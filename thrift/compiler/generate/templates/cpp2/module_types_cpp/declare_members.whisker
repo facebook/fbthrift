@@ -40,6 +40,13 @@
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
     __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
     {{/if struct.lazy_fields?}}
+    {{#if (and (object.notnull? struct.cpp_allocator) struct.cpp_use_allocator_ref_fields?)}}
+    if (!::apache::thrift::detail::move_assign_can_steal(get_allocator(), other.get_allocator())) {
+      {{struct.cpp_underlying_name}} tmp(std::move(other), get_allocator());
+      ::apache::thrift::detail::adl_swap(*this, tmp);
+      return *this;
+    }
+    {{/if (and (object.notnull? struct.cpp_allocator) struct.cpp_use_allocator_ref_fields?)}}
     {{#each struct.fields_in_layout_order as |field|}}
     this->{{field.cpp_storage_name}} = std::move(other.{{field.cpp_storage_name}});
       {{#if field.lazy?}}

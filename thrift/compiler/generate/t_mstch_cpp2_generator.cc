@@ -1367,6 +1367,21 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
           }
           return false;
         });
+    // Whether some non-boxed `cpp.ref` field's pointee is `cpp.use_allocator`.
+    def.property(
+        "cpp_use_allocator_ref_fields?", [](const t_structured& strct) {
+          for (const auto& field : strct.fields()) {
+            auto ref_type = gen::cpp::find_ref_type(field);
+            if (ref_type != gen::cpp::reference_type::none &&
+                ref_type != gen::cpp::reference_type::boxed &&
+                ref_type != gen::cpp::reference_type::boxed_intern &&
+                t_typedef::get_first_unstructured_annotation_or_null(
+                    &field.type().deref(), {"cpp.use_allocator"})) {
+              return true;
+            }
+          }
+          return false;
+        });
     def.property("lazy_fields?", [](const t_structured& strct) {
       for (const auto& field : strct.fields()) {
         if (cpp2::is_lazy(&field)) {

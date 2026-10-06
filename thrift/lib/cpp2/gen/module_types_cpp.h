@@ -318,6 +318,14 @@ bool pointer_less(const T& lhs, const T& rhs) {
   return lhs && rhs ? *lhs < *rhs : lhs < rhs;
 }
 
+// `swap(a, b)` found by argument-dependent lookup, for a member function, in
+// which a member named `swap` would hide it.
+template <class T>
+void adl_swap(T& a, T& b) {
+  using std::swap;
+  swap(a, b);
+}
+
 } // namespace apache::thrift::detail
 
 // __fbthrift_static_init_* are referenced using extern prototypes to keep them

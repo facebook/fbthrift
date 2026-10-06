@@ -798,6 +798,47 @@ TEST(CppAllocatorTest, DefaultConstructor1allocator) {
   EXPECT_EQ(alloc, ScopedCountingAlloc<>(child.aa_string()->get_allocator()));
 }
 
+// The allocator does not propagate on move assignment, so across resources a
+// cpp.ref pointee is rebuilt on the target's resource; between equal resources
+// the pointer moves as is.
+TEST(CppAllocatorTest, PmrMoveAssignRebuildsRefPointeeAcrossResources) {
+  std::pmr::monotonic_buffer_resource res1;
+  std::pmr::monotonic_buffer_resource res2;
+  OptionalRefPmr a{PmrByteAlloc(&res1)};
+  OptionalRefPmr b{PmrByteAlloc(&res2)};
+  b.c_ref()->aa_string() = kTooLong;
+
+  a = std::move(b);
+  EXPECT_EQ(*a.c_ref()->aa_string(), kTooLong);
+  EXPECT_EQ(a.c_ref()->get_allocator().resource(), &res1);
+  EXPECT_EQ(a.c_ref()->aa_string()->get_allocator().resource(), &res1);
+
+  OptionalRefPmr c{PmrByteAlloc(&res1)};
+  const auto* pointee = a.c_ref().get();
+  c = std::move(a);
+  EXPECT_EQ(c.c_ref().get(), pointee);
+
+  OptionalRefPmr nullRef{PmrByteAlloc(&res2)};
+  nullRef.c_ref().reset();
+  c = std::move(nullRef);
+  EXPECT_EQ(c.c_ref(), nullptr);
+}
+
+// Other owners may share the pointee, so it is copied rather than moved from.
+TEST(CppAllocatorTest, PmrMoveAssignCopiesSharedRefPointee) {
+  std::pmr::monotonic_buffer_resource res1;
+  std::pmr::monotonic_buffer_resource res2;
+  OptionalRefPmr a{PmrByteAlloc(&res1)};
+  OptionalRefPmr b{PmrByteAlloc(&res2)};
+  b.c_ref()->not_aa_string() = kTooLong;
+  const auto otherOwner = b.c_ref();
+
+  a = std::move(b);
+
+  EXPECT_EQ(*a.c_ref()->not_aa_string(), kTooLong);
+  EXPECT_EQ(*otherOwner->not_aa_string(), kTooLong);
+}
+
 TEST(CppAllocatorTest, AllocExtendedCtorsWithNullOptionalRef) {
   std::pmr::monotonic_buffer_resource res;
   std::pmr::monotonic_buffer_resource res2;

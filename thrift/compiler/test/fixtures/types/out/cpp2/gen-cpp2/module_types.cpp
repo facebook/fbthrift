@@ -2594,6 +2594,11 @@ AllocatorAware::AllocatorAware([[maybe_unused]] AllocatorAware&& other) noexcept
 }
 
 AllocatorAware& AllocatorAware::operator=([[maybe_unused]] AllocatorAware&& other) noexcept {
+    if (!::apache::thrift::detail::move_assign_can_steal(get_allocator(), other.get_allocator())) {
+      AllocatorAware tmp(std::move(other), get_allocator());
+      ::apache::thrift::detail::adl_swap(*this, tmp);
+      return *this;
+    }
     this->__fbthrift_field_aa_list = std::move(other.__fbthrift_field_aa_list);
     this->__fbthrift_field_aa_set = std::move(other.__fbthrift_field_aa_set);
     this->__fbthrift_field_aa_map = std::move(other.__fbthrift_field_aa_map);
