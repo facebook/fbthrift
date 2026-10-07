@@ -19,6 +19,8 @@
 impl ::fbthrift::GetTType for {{typedef.rust_name}} {
     const TTYPE: ::fbthrift::TType = {{!}}
         {{~ #if typedef.has_adapter?}}<{{typedef.adapter_qualified}}::StandardType{{#else}}<{{#partial types.type_name type=typedef.resolved}}{{/if}} as ::fbthrift::GetTType>::TTYPE;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = {{!}}
+        {{~ #if typedef.has_adapter?}}<{{typedef.adapter_qualified}}::StandardType{{#else}}<{{#partial types.type_name type=typedef.resolved}}{{/if}} as ::fbthrift::GetTType>::MAP_KEY_TYPE;
 }
 
     {{#if typedef.nonstandard?}}

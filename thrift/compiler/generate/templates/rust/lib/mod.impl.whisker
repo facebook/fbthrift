@@ -110,10 +110,11 @@ where
 {
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_map_begin(
+        p.write_map_begin_with_key_type(
             <{{#partial types.type_name type=map_key_type}} as ::fbthrift::GetTType>::TTYPE,
             <{{#partial types.type_name type=map_val_type}} as ::fbthrift::GetTType>::TTYPE,
             self.0.len(),
+            <{{#partial types.type_name type=map_key_type}} as ::fbthrift::GetTType>::MAP_KEY_TYPE,
         );
         for (k, v) in &self.0 {
             p.write_map_key_begin();
@@ -298,10 +299,11 @@ where
 {
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_map_begin(
+        p.write_map_begin_with_key_type(
             <{{#partial types.type_name type=map_key_type}} as ::fbthrift::GetTType>::TTYPE,
             <{{#partial types.type_name type=map_val_type}} as ::fbthrift::GetTType>::TTYPE,
             self.0.len(),
+            <{{#partial types.type_name type=map_key_type}} as ::fbthrift::GetTType>::MAP_KEY_TYPE,
         );
         for (k, v) in &self.0 {
             p.write_map_key_begin();

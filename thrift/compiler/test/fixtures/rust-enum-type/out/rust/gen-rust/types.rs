@@ -116,6 +116,7 @@ impl ::std::str::FromStr for SmallEnum {
 
 impl ::fbthrift::GetTType for SmallEnum {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetUri for self::SmallEnum {
@@ -137,7 +138,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -147,10 +148,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i8>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for SmallEnum: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -271,6 +269,7 @@ impl ::std::str::FromStr for SignedEnum {
 
 impl ::fbthrift::GetTType for SignedEnum {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetUri for self::SignedEnum {
@@ -292,7 +291,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -302,10 +301,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i16>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for SignedEnum: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -420,6 +416,7 @@ impl ::std::str::FromStr for MediumEnum {
 
 impl ::fbthrift::GetTType for MediumEnum {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetUri for self::MediumEnum {
@@ -441,7 +438,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -451,10 +448,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::u16>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for MediumEnum: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -569,6 +563,7 @@ impl ::std::str::FromStr for LargeEnum {
 
 impl ::fbthrift::GetTType for LargeEnum {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetUri for self::LargeEnum {
@@ -590,7 +585,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -600,10 +595,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::u32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for LargeEnum: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -718,6 +710,7 @@ impl ::std::str::FromStr for DefaultEnum {
 
 impl ::fbthrift::GetTType for DefaultEnum {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetUri for self::DefaultEnum {
@@ -739,7 +732,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -749,10 +742,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for DefaultEnum: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 

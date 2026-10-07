@@ -341,6 +341,7 @@ impl ::std::str::FromStr for E1 {
 
 impl ::fbthrift::GetTType for E1 {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetTypeNameType for self::E1 {
@@ -356,7 +357,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -366,10 +367,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for E1: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -472,6 +470,7 @@ impl ::std::str::FromStr for F2 {
 
 impl ::fbthrift::GetTType for F2 {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetTypeNameType for self::F2 {
@@ -487,7 +486,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -497,10 +496,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for E2: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -615,6 +611,7 @@ impl ::std::str::FromStr for EnumWithDerives {
 
 impl ::fbthrift::GetTType for EnumWithDerives {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetTypeNameType for self::EnumWithDerives {
@@ -630,7 +627,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -640,10 +637,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for EnumWithDerives: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -656,6 +650,7 @@ impl ::fbthrift::help::clap::builder::ValueParserFactory for EnumWithDerives {
 }
 impl ::fbthrift::GetTType for binary_t {
     const TTYPE: ::fbthrift::TType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::TTYPE;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::MAP_KEY_TYPE;
 }
 
 impl<P> ::fbthrift::Serialize<P> for binary_t
@@ -680,6 +675,7 @@ where
 
 impl ::fbthrift::GetTType for Generation {
     const TTYPE: ::fbthrift::TType = <::std::primitive::i64 as ::fbthrift::GetTType>::TTYPE;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = <::std::primitive::i64 as ::fbthrift::GetTType>::MAP_KEY_TYPE;
 }
 
 impl<P> ::fbthrift::Serialize<P> for Generation
@@ -704,6 +700,7 @@ where
 
 impl ::fbthrift::GetTType for binary_t2 {
     const TTYPE: ::fbthrift::TType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::TTYPE;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::MAP_KEY_TYPE;
 }
 
 impl<P> ::fbthrift::Serialize<P> for binary_t2
@@ -3312,10 +3309,11 @@ pub(crate) mod r#impl {
     {
         #[inline]
         fn rs_thrift_write(&self, p: &mut P) {
-            p.write_map_begin(
+            p.write_map_begin_with_key_type(
                 <::std::string::String as ::fbthrift::GetTType>::TTYPE,
                 <::std::primitive::i64 as ::fbthrift::GetTType>::TTYPE,
                 self.0.len(),
+                <::std::string::String as ::fbthrift::GetTType>::MAP_KEY_TYPE,
             );
             for (k, v) in &self.0 {
                 p.write_map_key_begin();

@@ -209,6 +209,7 @@ impl ::std::str::FromStr for EmptyEnum {
 
 impl ::fbthrift::GetTType for EmptyEnum {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetTypeNameType for self::EmptyEnum {
@@ -224,7 +225,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -234,10 +235,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for EmptyEnum: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -364,6 +362,7 @@ impl ::std::str::FromStr for City {
 
 impl ::fbthrift::GetTType for City {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetTypeNameType for self::City {
@@ -379,7 +378,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -389,10 +388,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for City: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -525,6 +521,7 @@ impl ::std::str::FromStr for Company {
 
 impl ::fbthrift::GetTType for Company {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetTypeNameType for self::Company {
@@ -540,7 +537,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -550,10 +547,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for Company: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 

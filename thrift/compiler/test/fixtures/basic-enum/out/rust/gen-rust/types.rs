@@ -114,6 +114,7 @@ impl ::std::str::FromStr for EmptyEnum {
 
 impl ::fbthrift::GetTType for EmptyEnum {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetUri for self::EmptyEnum {
@@ -135,7 +136,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -145,10 +146,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for EmptyEnum: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -263,6 +261,7 @@ impl ::std::str::FromStr for MyEnum {
 
 impl ::fbthrift::GetTType for MyEnum {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetUri for self::MyEnum {
@@ -284,7 +283,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -294,10 +293,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for MyEnum: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -418,6 +414,7 @@ impl ::std::str::FromStr for MyUseIntrinsicDefaultEnum {
 
 impl ::fbthrift::GetTType for MyUseIntrinsicDefaultEnum {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetUri for self::MyUseIntrinsicDefaultEnum {
@@ -439,7 +436,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -449,10 +446,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for MyUseIntrinsicDefaultEnum: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
@@ -675,6 +669,7 @@ impl ::std::str::FromStr for MyBigEnum {
 
 impl ::fbthrift::GetTType for MyBigEnum {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    const MAP_KEY_TYPE: ::fbthrift::MapKeyType = ::fbthrift::MapKeyType::Enum;
 }
 
 impl ::fbthrift::GetUri for self::MyBigEnum {
@@ -696,7 +691,7 @@ where
     #[inline]
     #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.0 as i32)
+        p.write_enum(self)
     }
 }
 
@@ -706,10 +701,7 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for MyBigEnum: {}", value))?;
-        ::std::result::Result::Ok(Self::from(underlying))
+        p.read_enum()
     }
 }
 
