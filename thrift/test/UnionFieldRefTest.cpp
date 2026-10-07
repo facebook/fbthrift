@@ -350,6 +350,19 @@ TEST(UnionFieldTest, CppRef) {
   EXPECT_THROW(*s.box(), bad_union_field_access);
 }
 
+TEST(UnionFieldTest, CppRefEmplaceStorage) {
+  CppRef value;
+  auto storage = std::make_shared<std::string>("shared_const");
+  const auto* storedValue = storage.get();
+
+  value.shared_const().emplace(
+      std::shared_ptr<const std::string>(std::move(storage)));
+
+  EXPECT_FALSE(storage);
+  EXPECT_EQ(value.shared_const().operator->(), storedValue);
+  EXPECT_EQ(value.shared_const(), "shared_const");
+}
+
 TEST(UnionFieldTest, CppMethods) {
   CppMethods t;
   EXPECT_FALSE(t.field().has_value());

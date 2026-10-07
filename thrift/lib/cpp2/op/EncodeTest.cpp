@@ -1027,6 +1027,16 @@ TEST(DecodeTest, BinaryChainUnion) {
   EXPECT_EQ((binaryChainRoundTrip<type::union_t<Union>>(expected)), expected);
 }
 
+TEST(DecodeTest, BinaryChainUnionWithSharedConstRef) {
+  using Union = test::testset::union_with<
+      type::list<type::bool_t>,
+      test::testset::FieldModifier::ConstSharedReference>;
+  Union expected;
+  expected.field_1_ref().emplace(std::vector<bool>{true, false});
+
+  EXPECT_EQ((binaryChainRoundTrip<type::union_t<Union>>(expected)), expected);
+}
+
 TEST(DecodeTest, BinaryChainUnionResetsMatchedFieldBeforeDecode) {
   BinaryProtocolWriter writer;
   folly::IOBufQueue queue;

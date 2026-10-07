@@ -932,6 +932,12 @@ inline constexpr bool kIsSharedPtrToConst = false;
 template <typename U>
 inline constexpr bool kIsSharedPtrToConst<std::shared_ptr<const U>> = true;
 
+template <typename>
+inline constexpr bool kIsConstUnionFieldRef = false;
+template <typename T>
+inline constexpr bool kIsConstUnionFieldRef<union_field_ref<T>> =
+    std::is_const_v<typename union_field_ref<T>::value_type>;
+
 template <bool ClearBeforeDecode = false, typename T, typename Protocol>
 bool decodeStructField(
     Protocol& prot, T& value, TType fieldType, int16_t fieldId) {
@@ -950,7 +956,14 @@ bool decodeStructField(
 
         using FieldTag = op::get_field_tag<T, IdT>;
         using FieldRef = folly::remove_cvref_t<decltype(op::get<IdT>(value))>;
-        if constexpr (kIsSharedPtrToConst<FieldRef>) {
+        if constexpr (kIsConstUnionFieldRef<FieldRef>) {
+          // A union `shared_ptr<const T>` field can't be decoded in place.
+          using FieldValue = type::native_type<ValueTag>;
+          auto fieldValue = std::make_shared<FieldValue>();
+          Decode<FieldTag>{}(prot, *fieldValue, value);
+          op::get<IdT>(value).emplace(
+              std::shared_ptr<const FieldValue>(std::move(fieldValue)));
+        } else if constexpr (kIsSharedPtrToConst<FieldRef>) {
           // `shared_ptr<const T>` field can't be decoded in place.
           auto fieldValue = std::make_shared<type::native_type<ValueTag>>();
           Decode<FieldTag>{}(prot, *fieldValue, value);

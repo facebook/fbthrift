@@ -1921,8 +1921,16 @@ class union_field_ref {
   template <class... Args>
   FOLLY_ERASE void emplace_impl(std::true_type, Args&&... args) {
     ::new (&storage_value_) storage_value_type();
-    // TODO: use make_shared to initialize cpp.ref_type = "shared" field
     storage_value_.reset(new element_type(static_cast<Args&&>(args)...));
+  }
+
+  FOLLY_ERASE void emplace_impl(
+      std::true_type, storage_value_type&& storage_value) {
+    if (storage_value == nullptr) {
+      apache::thrift::detail::throw_on_nullptr_dereferencing();
+    }
+    ::new (&storage_value_)
+        storage_value_type(static_cast<storage_value_type&&>(storage_value));
   }
 
   storage_value_type& storage_value_;
