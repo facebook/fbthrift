@@ -90,6 +90,33 @@ option(THRIFT_PY_DEPRECATED
 option(THRIFT_PYTHON
        "Enable the thrift-python library and extensions (requires Cython)" OFF)
 
+# Records a dependency that exists only in this build tree. As in folly, an
+# installed thrift would point at files that are not there, so install rules
+# are turned off unless CMAKE_SKIP_INSTALL_RULES is set explicitly. A macro, so
+# the setting reaches the subdirectories added after it.
+set(thrift_build_local_deps "")
+macro (thrift_build_local name)
+  list(APPEND thrift_build_local_deps ${name})
+  if (NOT DEFINED CMAKE_SKIP_INSTALL_RULES)
+    set(CMAKE_SKIP_INSTALL_RULES ON)
+    set(thrift_skipped_install ON)
+  endif ()
+endmacro ()
+
+# Sets `out` to `dep` kept out of thrift's export, like folly_localize_deps.
+# CMake before 3.26 has no $<BUILD_LOCAL_INTERFACE:>.
+function (thrift_localize out dep)
+  if (CMAKE_VERSION VERSION_LESS 3.26)
+    set(${out}
+        "${dep}"
+        PARENT_SCOPE)
+  else ()
+    set(${out}
+        "$<BUILD_LOCAL_INTERFACE:${dep}>"
+        PARENT_SCOPE)
+  endif ()
+endfunction ()
+
 # Fetch the dependency `name` from GitHub at the revision this repo is tested
 # against, kept current by rev_sync. Extra arguments go to FetchContent_Declare.
 function (thrift_fetch_github org name)
@@ -133,23 +160,8 @@ find_package(Zstd REQUIRED)
 get_property(thrift_folly_build_local GLOBAL PROPERTY FOLLY_BUILD_LOCAL_TARGETS)
 set(thrift_openssl_crypto OpenSSL::Crypto)
 if ("OpenSSL::Crypto" IN_LIST thrift_folly_build_local)
-  if (NOT CMAKE_SKIP_INSTALL_RULES)
-    message(
-      FATAL_ERROR
-        "folly built OpenSSL into its build tree, so installing thrift would "
-        "produce a package pointing at an OpenSSL that is not installed. "
-        "Install OpenSSL, or configure with -DCMAKE_SKIP_INSTALL_RULES=ON to "
-        "build without installing.")
-  endif ()
-  if (CMAKE_VERSION VERSION_LESS 3.26)
-    message(
-      FATAL_ERROR
-        "Keeping folly's OpenSSL out of thrift's link interface needs the "
-        "CMake 3.26 $<BUILD_LOCAL_INTERFACE:> generator expression. Install "
-        "OpenSSL, or use CMake 3.26 or newer.")
-  endif ()
-  # Still linked; it just stops being something an installed thrift asks for.
-  set(thrift_openssl_crypto "$<BUILD_LOCAL_INTERFACE:OpenSSL::Crypto>")
+  thrift_build_local(OpenSSL)
+  thrift_localize(thrift_openssl_crypto OpenSSL::Crypto)
 endif ()
 
 # Fetch xxhash if it is not installed.
@@ -199,25 +211,10 @@ endfunction ()
 find_package(Xxhash)
 set(thrift_xxhash Xxhash::xxhash)
 if (NOT Xxhash_FOUND)
-  # A fetched xxhash builds in bundled mode, which disables its install rules.
-  if (NOT CMAKE_SKIP_INSTALL_RULES)
-    message(
-      FATAL_ERROR
-        "xxhash is not installed, and the one thrift would fetch is not "
-        "installed with it, so installing thrift would produce a package "
-        "pointing at an xxhash that is not installed. Install xxhash, or "
-        "configure with -DCMAKE_SKIP_INSTALL_RULES=ON to build without "
-        "installing.")
-  endif ()
-  if (CMAKE_VERSION VERSION_LESS 3.26)
-    message(
-      FATAL_ERROR
-        "Keeping a fetched xxhash out of thrift's link interface needs the "
-        "CMake 3.26 $<BUILD_LOCAL_INTERFACE:> generator expression. Install "
-        "xxhash, or use CMake 3.26 or newer.")
-  endif ()
+  # Bundled mode, which a fetched xxhash builds in, disables its install rules.
+  thrift_build_local(xxhash)
   thrift_fetch_xxhash()
-  set(thrift_xxhash "$<BUILD_LOCAL_INTERFACE:Xxhash::xxhash>")
+  thrift_localize(thrift_xxhash Xxhash::xxhash)
 endif ()
 
 # libsodium ships no CMakeLists.txt, so ExternalProject runs its configure
@@ -279,23 +276,6 @@ if (THRIFT_RPC)
   find_package(wangle CONFIG QUIET)
   find_package(mvfst CONFIG QUIET)
   if (NOT (fizz_FOUND AND wangle_FOUND AND mvfst_FOUND))
-    if (NOT CMAKE_SKIP_INSTALL_RULES)
-      message(
-        FATAL_ERROR
-          "fizz, wangle or mvfst is not installed, and one thrift fetches is "
-          "not installed with it, so installing thrift would produce a "
-          "package pointing at a library that is not installed. Install them, "
-          "configure with -DTHRIFT_RPC=OFF, or configure with "
-          "-DCMAKE_SKIP_INSTALL_RULES=ON to build without installing.")
-    endif ()
-    if (CMAKE_VERSION VERSION_LESS 3.26)
-      message(
-        FATAL_ERROR
-          "Keeping a fetched wangle or mvfst out of thrift's link interface "
-          "needs the CMake 3.26 $<BUILD_LOCAL_INTERFACE:> generator "
-          "expression. Install fizz, wangle and mvfst, or use CMake 3.26 or "
-          "newer.")
-    endif ()
     set(BUILD_TESTS OFF)
     set(BUILD_EXAMPLES OFF)
   endif ()
@@ -306,6 +286,7 @@ if (THRIFT_RPC)
     if (NOT THRIFT_SODIUM_LIBRARY)
       thrift_build_sodium()
     endif ()
+    thrift_build_local(fizz)
     thrift_fetch_github(facebookincubator fizz SOURCE_SUBDIR fizz)
   endif ()
   if (NOT wangle_FOUND)
@@ -316,13 +297,14 @@ if (THRIFT_RPC)
         set(${var} "")
       endif ()
     endforeach ()
+    thrift_build_local(wangle)
     thrift_fetch_github(facebook wangle SOURCE_SUBDIR wangle)
-    set(thrift_wangle "$<BUILD_LOCAL_INTERFACE:wangle::wangle>")
+    thrift_localize(thrift_wangle wangle::wangle)
   endif ()
   if (NOT mvfst_FOUND)
+    thrift_build_local(mvfst)
     thrift_fetch_github(facebook mvfst)
-    set(thrift_mvfst_server
-        "$<BUILD_LOCAL_INTERFACE:mvfst::mvfst_server_async_tran>")
+    thrift_localize(thrift_mvfst_server mvfst::mvfst_server_async_tran)
   endif ()
 endif ()
 
@@ -331,6 +313,12 @@ if (THRIFT_TESTS)
   find_package(GTest REQUIRED)
   include(GoogleTest)
   enable_testing()
+endif ()
+
+if (thrift_skipped_install)
+  list(JOIN thrift_build_local_deps ", " text)
+  message(STATUS "Not installable, so install rules are off. Install these and "
+                 "reconfigure for an installable thrift: ${text}")
 endif ()
 
 add_subdirectory(thrift)
