@@ -682,16 +682,6 @@ struct ProtocolMethodsBridge {
     return apache::thrift::detail::pm::
         protocol_methods<TypeClass, Type, ExpectedTag>::write(protocol, value);
   }
-
-  template <typename Protocol, typename U>
-    requires requires(Protocol& protocol, U& value) {
-      apache::thrift::detail::pm::
-          protocol_methods<TypeClass, Type, ExpectedTag>::read(protocol, value);
-    }
-  static void read(Protocol& protocol, U& value) {
-    apache::thrift::detail::pm::protocol_methods<TypeClass, Type, ExpectedTag>::
-        read(protocol, value);
-  }
 };
 
 } // namespace apache::thrift::op::detail

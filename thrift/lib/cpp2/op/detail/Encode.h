@@ -772,12 +772,9 @@ struct ProtocolMethodsBridge;
 
 template <typename T, typename Tag>
 struct CppTypeEncode {
-  static constexpr bool requestedBypass =
-      requires { typename T::__fbthrift_use_protocol_methods; };
   template <class Protocol, class U>
   static constexpr bool directlyEncodable =
-      requires(Protocol& prot, const U& u) { Encode<Tag>{}(prot, u); } &&
-      !requestedBypass;
+      requires(Protocol& prot, const U& u) { Encode<Tag>{}(prot, u); };
   template <class Protocol, class U>
     requires directlyEncodable<Protocol, U>
   std::size_t operator()(Protocol& prot, const U& m) const {
@@ -1230,12 +1227,7 @@ template <typename T, typename Tag>
 struct Decode<type::cpp_type<T, Tag>> : Decode<Tag> {
   template <class Protocol, class U>
   void operator()(Protocol& prot, U& m) const {
-    if constexpr (CppTypeEncode<T, Tag>::requestedBypass) {
-      ProtocolMethodsBridge<
-          type_class::from_type_tag_t<Tag>,
-          T,
-          type::cpp_type<T, Tag>>::read(prot, m);
-    } else if constexpr (kIsIntegral<U, Tag>) {
+    if constexpr (kIsIntegral<U, Tag>) {
       type::native_type<Tag> i;
       Decode<Tag>::operator()(prot, i);
       m = static_cast<U>(i);
