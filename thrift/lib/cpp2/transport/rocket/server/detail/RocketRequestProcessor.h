@@ -45,6 +45,8 @@ struct RequestPayload {
   std::optional<IOBufChain> payloadChain;
 };
 
+bool isUnaryRpcKind(RpcKind kind);
+
 /**
  * RocketRequestProcessor handles all request payload processing logic for
  * Rocket server connections. It parses payloads, validates metadata, handles
@@ -86,6 +88,10 @@ class RocketRequestProcessor {
       std::unique_ptr<folly::IOBuf>& data,
       const RequestRpcMetadata& metadata,
       IRocketServerConnection& connection);
+  std::string processPayloadCompression(
+      IOBufChain& data,
+      const RequestRpcMetadata& metadata,
+      IRocketServerConnection& connection);
 
   /**
    * Validate payload checksum if present in metadata.
@@ -93,6 +99,8 @@ class RocketRequestProcessor {
   bool validateChecksum(
       const std::unique_ptr<folly::IOBuf>& data,
       const RequestRpcMetadata& metadata);
+  bool validateChecksum(
+      const IOBufChain& data, const RequestRpcMetadata& metadata);
 
   /**
    * Log application-level events from request metadata.

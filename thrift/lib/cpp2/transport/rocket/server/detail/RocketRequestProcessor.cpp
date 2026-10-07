@@ -32,6 +32,48 @@
 
 namespace apache::thrift::rocket {
 
+namespace {
+
+template <typename Buffer>
+std::string processPayloadCompressionImpl(
+    Buffer& data,
+    const RequestRpcMetadata& metadata,
+    IRocketServerConnection& connection) {
+  if (!metadata.crc32c()) {
+    return std::string();
+  }
+
+  auto compression = metadata.compression();
+  if (!compression) {
+    return std::string();
+  }
+
+  try {
+    data = connection.getPayloadSerializer()->uncompressBuffer(
+        std::move(data), *compression);
+  } catch (...) {
+    return folly::exceptionStr(folly::current_exception()).toStdString();
+  }
+
+  return std::string();
+}
+
+template <typename Buffer>
+bool validateChecksumImpl(
+    const Buffer& data, const RequestRpcMetadata& metadata) {
+  auto crc32c = metadata.crc32c();
+  const bool badChecksum =
+      crc32c.has_value() && *crc32c != checksum::crc32c(data);
+  return !badChecksum;
+}
+
+} // namespace
+
+bool isUnaryRpcKind(RpcKind kind) {
+  return kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
+      kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
+}
+
 RocketRequestProcessor::RocketRequestProcessor(folly::AsyncTransport* transport)
     : transport_(transport) {}
 
@@ -90,31 +132,25 @@ std::string RocketRequestProcessor::processPayloadCompression(
     std::unique_ptr<folly::IOBuf>& data,
     const RequestRpcMetadata& metadata,
     IRocketServerConnection& connection) {
-  if (!metadata.crc32c()) {
-    return std::string();
-  }
+  return processPayloadCompressionImpl(data, metadata, connection);
+}
 
-  auto compression = metadata.compression();
-  if (!compression) {
-    return std::string();
-  }
-
-  try {
-    data = connection.getPayloadSerializer()->uncompressBuffer(
-        std::move(data), *compression);
-  } catch (...) {
-    return folly::exceptionStr(folly::current_exception()).toStdString();
-  }
-
-  return std::string();
+std::string RocketRequestProcessor::processPayloadCompression(
+    IOBufChain& data,
+    const RequestRpcMetadata& metadata,
+    IRocketServerConnection& connection) {
+  return processPayloadCompressionImpl(data, metadata, connection);
 }
 
 bool RocketRequestProcessor::validateChecksum(
     const std::unique_ptr<folly::IOBuf>& data,
     const RequestRpcMetadata& metadata) {
-  const bool badChecksum =
-      metadata.crc32c() && (*metadata.crc32c() != checksum::crc32c(*data));
-  return !badChecksum;
+  return validateChecksumImpl(*data, metadata);
+}
+
+bool RocketRequestProcessor::validateChecksum(
+    const IOBufChain& data, const RequestRpcMetadata& metadata) {
+  return validateChecksumImpl(data, metadata);
 }
 
 void RocketRequestProcessor::logApplicationEvents(

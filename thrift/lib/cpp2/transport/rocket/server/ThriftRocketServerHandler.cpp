@@ -54,6 +54,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketThriftRequests.h>
 #include <thrift/lib/cpp2/transport/rocket/server/detail/RequestEncryptionStateDispatch.h>
+#include <thrift/lib/cpp2/transport/rocket/server/detail/RocketRequestProcessor.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 
@@ -617,6 +618,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
   }
 
   auto& data = requestPayloadTry->payload;
+  auto& dataChain = requestPayloadTry->payloadChain;
   auto& metadata = requestPayloadTry->metadata;
 
   ChecksumAlgorithm checksumAlgorithm = ChecksumAlgorithm::NONE;
@@ -684,6 +686,14 @@ void ThriftRocketServerHandler::handleRequestCommon(
     return;
   }
 
+  if (dataChain && !isUnaryRpcKind(expectedKind)) {
+    handleRequestWithBadMetadata(makeActiveRequest(
+        std::move(metadata),
+        std::move(debugPayload),
+        createDefaultRequestContext()));
+    return;
+  }
+
   THRIFT_APPLICATION_EVENT(server_read_headers).log([&] {
     auto size = metadata.otherMetadata() ? metadata.otherMetadata()->size() : 0;
     std::vector<folly::dynamic> keys;
@@ -703,28 +713,26 @@ void ThriftRocketServerHandler::handleRequestCommon(
         ("frameworkMetadataSize", fmd_sz);
   });
 
-  if (metadata.crc32c()) {
-    try {
-      if (auto compression = metadata.compression()) {
-        data = connection.getPayloadSerializer()->uncompressBuffer(
-            std::move(data), *compression);
-      }
-    } catch (...) {
-      handleDecompressionFailure(
-          makeActiveRequest(
-              std::move(metadata),
-              rocket::Payload{},
-              createDefaultRequestContext()),
-          folly::exceptionStr(folly::current_exception()).toStdString());
-      return;
-    }
+  RocketRequestProcessor requestProcessor(transport_);
+  auto errorMsg = dataChain
+      ? requestProcessor.processPayloadCompression(
+            *dataChain, metadata, connection)
+      : requestProcessor.processPayloadCompression(data, metadata, connection);
+  if (!errorMsg.empty()) {
+    handleDecompressionFailure(
+        makeActiveRequest(
+            std::move(metadata),
+            rocket::Payload{},
+            createDefaultRequestContext()),
+        std::move(errorMsg));
+    return;
   }
 
   // check the checksum
-  const bool badChecksum =
-      metadata.crc32c() && (*metadata.crc32c() != checksum::crc32c(*data));
-
-  if (badChecksum) {
+  const bool validChecksum = dataChain
+      ? requestProcessor.validateChecksum(*dataChain, metadata)
+      : requestProcessor.validateChecksum(data, metadata);
+  if (!validChecksum) {
     handleRequestWithBadChecksum(makeActiveRequest(
         std::move(metadata),
         std::move(debugPayload),
@@ -912,12 +920,19 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   context_utils::checkRequestEncryptionState(*cpp2ReqCtx);
 
-  auto serializedCompressedRequest = SerializedCompressedRequest(
-      std::move(data),
-      crc32Opt ? CompressionAlgorithm::NONE
-               : compressionOpt.value_or(CompressionAlgorithm::NONE),
-      checksumAlgorithm,
-      connection.getPayloadSerializer());
+  auto serializedCompressedRequest = dataChain
+      ? SerializedCompressedRequest(
+            std::move(*dataChain),
+            crc32Opt ? CompressionAlgorithm::NONE
+                     : compressionOpt.value_or(CompressionAlgorithm::NONE),
+            checksumAlgorithm,
+            connection.getPayloadSerializer())
+      : SerializedCompressedRequest(
+            std::move(data),
+            crc32Opt ? CompressionAlgorithm::NONE
+                     : compressionOpt.value_or(CompressionAlgorithm::NONE),
+            checksumAlgorithm,
+            connection.getPayloadSerializer());
 
   const auto protocolId = request->getProtoId();
   Cpp2Worker::dispatchRequest(

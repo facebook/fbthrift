@@ -18,6 +18,7 @@
 
 #include <chrono>
 #include <memory>
+#include <optional>
 
 #include <fmt/core.h>
 
@@ -67,6 +68,7 @@ class Payload;
 struct ParsedPayloadData {
   RequestRpcMetadata metadata;
   std::unique_ptr<folly::IOBuf> data;
+  std::optional<IOBufChain> dataChain;
   folly::Try<folly::SocketFds> fds;
   ChecksumAlgorithm checksumAlgorithm;
 };
@@ -74,6 +76,7 @@ struct ParsedPayloadData {
 struct ExtractedPayloadData {
   RequestRpcMetadata metadata;
   std::unique_ptr<folly::IOBuf> data;
+  std::optional<IOBufChain> dataChain;
   folly::Try<folly::SocketFds> tryFds;
   ChecksumAlgorithm checksumAlgorithm;
 };
@@ -210,6 +213,7 @@ RocketRequestOrchestrator::parsePayloadAndExtractFds(
 
   auto& metadata = requestPayloadTry.value().metadata;
   auto& data = requestPayloadTry.value().payload;
+  auto& dataChain = requestPayloadTry.value().payloadChain;
   auto checksumAlgorithm =
       requestProcessor.setupChecksumHandling(metadata, connection);
 
@@ -232,6 +236,7 @@ RocketRequestOrchestrator::parsePayloadAndExtractFds(
   return ExtractedPayloadData{
       RequestRpcMetadata(metadata),
       std::move(data),
+      std::move(dataChain),
       std::move(tryFds),
       checksumAlgorithm};
 }
@@ -269,8 +274,21 @@ RocketRequestOrchestrator::validateAndProcessPayload(
 
   requestProcessor.logApplicationEvents(extractedData.metadata);
 
-  auto errorMsg = requestProcessor.processPayloadCompression(
-      extractedData.data, extractedData.metadata, connection);
+  if (extractedData.dataChain && !isUnaryRpcKind(expectedKind)) {
+    serverConfigs_->incActiveRequests();
+    errorHandler_->handleRequestWithBadMetadata(makeRequest(
+        RequestRpcMetadata(extractedData.metadata),
+        std::move(debugPayload),
+        std::make_shared<folly::RequestContext>(
+            requestsRegistry_->genRootId())));
+    return std::nullopt;
+  }
+
+  auto errorMsg = extractedData.dataChain
+      ? requestProcessor.processPayloadCompression(
+            *extractedData.dataChain, extractedData.metadata, connection)
+      : requestProcessor.processPayloadCompression(
+            extractedData.data, extractedData.metadata, connection);
   if (!errorMsg.empty()) {
     serverConfigs_->incActiveRequests();
     errorHandler_->handleDecompressionFailure(
@@ -283,8 +301,12 @@ RocketRequestOrchestrator::validateAndProcessPayload(
     return std::nullopt;
   }
 
-  if (!requestProcessor.validateChecksum(
-          extractedData.data, extractedData.metadata)) {
+  const bool validChecksum = extractedData.dataChain
+      ? requestProcessor.validateChecksum(
+            *extractedData.dataChain, extractedData.metadata)
+      : requestProcessor.validateChecksum(
+            extractedData.data, extractedData.metadata);
+  if (!validChecksum) {
     serverConfigs_->incActiveRequests();
     errorHandler_->handleRequestWithBadChecksum(makeRequest(
         RequestRpcMetadata(extractedData.metadata),
@@ -297,6 +319,7 @@ RocketRequestOrchestrator::validateAndProcessPayload(
   return ParsedPayloadData{
       std::move(extractedData.metadata),
       std::move(extractedData.data),
+      std::move(extractedData.dataChain),
       std::move(extractedData.tryFds),
       extractedData.checksumAlgorithm};
 }
@@ -472,14 +495,23 @@ void RocketRequestOrchestrator::finalizeAndDispatchRequest(
   context_utils::setupRequestMetadata(
       cpp2ReqCtx, expectedKind, wiredPayloadSize, contextInfo.contextData);
 
-  auto serializedCompressedRequest = SerializedCompressedRequest(
-      std::move(parsedData.data),
-      contextInfo.contextData.crc32Opt
-          ? CompressionAlgorithm::NONE
-          : contextInfo.contextData.compressionOpt.value_or(
-                CompressionAlgorithm::NONE),
-      parsedData.checksumAlgorithm,
-      connection.getPayloadSerializer());
+  auto serializedCompressedRequest = parsedData.dataChain
+      ? SerializedCompressedRequest(
+            std::move(*parsedData.dataChain),
+            contextInfo.contextData.crc32Opt
+                ? CompressionAlgorithm::NONE
+                : contextInfo.contextData.compressionOpt.value_or(
+                      CompressionAlgorithm::NONE),
+            parsedData.checksumAlgorithm,
+            connection.getPayloadSerializer())
+      : SerializedCompressedRequest(
+            std::move(parsedData.data),
+            contextInfo.contextData.crc32Opt
+                ? CompressionAlgorithm::NONE
+                : contextInfo.contextData.compressionOpt.value_or(
+                      CompressionAlgorithm::NONE),
+            parsedData.checksumAlgorithm,
+            connection.getPayloadSerializer());
 
   const auto protocolId = request->getProtoId();
   Cpp2Worker::dispatchRequest(
