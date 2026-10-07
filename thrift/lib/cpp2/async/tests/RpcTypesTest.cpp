@@ -21,12 +21,26 @@
 
 #include <gtest/gtest.h>
 
+#include <thrift/lib/cpp2/transport/rocket/compression/CompressionManager.h>
+
 using namespace apache::thrift;
 
 class RpcTypesTest : public ::testing::TestWithParam<
                          std::tuple<bool, protocol::PROTOCOL_TYPES>> {};
 
 folly::StringPiece methodName("methodName");
+
+IOBufChain chainPayload() {
+  IOBufChain result;
+  result.append(folly::IOBuf::copyBuffer("pay"));
+  result.append(folly::IOBuf::copyBuffer("load"));
+  return result;
+}
+
+void expectSameBuffer(
+    const folly::IOBuf& expected, const folly::IOBuf& actual) {
+  EXPECT_EQ(folly::ordering::eq, folly::IOBufCompare()(expected, actual));
+}
 
 TEST_P(RpcTypesTest, Responses) {
   auto lsr1 = []() {
@@ -89,6 +103,62 @@ TEST_P(RpcTypesTest, Responses) {
   check(lsrep1(lsr3(10), 0), srep(sr1(), 10));
   check(lsrep1(lsr2(10), 5), srep(sr1(), 5));
   check(lsrep1(lsr3(10), 5), srep(sr1(), 5));
+}
+
+TEST(RpcTypesTestStandalone, UncompressPreservesChain) {
+  auto request =
+      std::move(SerializedCompressedRequest{chainPayload()}).uncompress();
+
+  ASSERT_TRUE(request.chainBuffer);
+  EXPECT_EQ(nullptr, request.buffer);
+  EXPECT_EQ(chainPayload(), *request.chainBuffer);
+}
+
+TEST(RpcTypesTestStandalone, UncompressPreservesRequestChain) {
+  auto request =
+      std::move(SerializedCompressedRequest{SerializedRequest{chainPayload()}})
+          .uncompress();
+
+  ASSERT_TRUE(request.chainBuffer);
+  EXPECT_EQ(nullptr, request.buffer);
+  EXPECT_EQ(chainPayload(), *request.chainBuffer);
+}
+
+TEST(RpcTypesTestStandalone, ClonePreservesChecksum) {
+  const SerializedCompressedRequest request{
+      folly::IOBuf::copyBuffer("payload"),
+      CompressionAlgorithm::NONE,
+      ChecksumAlgorithm::CRC32};
+
+  EXPECT_EQ(ChecksumAlgorithm::CRC32, request.clone().getChecksumAlgorithm());
+}
+
+TEST(RpcTypesTestStandalone, UncompressesChain) {
+  auto compressed = rocket::CompressionManager().compressBuffer(
+      folly::IOBuf::copyBuffer("payload"), CompressionAlgorithm::ZSTD);
+  auto request =
+      std::move(
+          SerializedCompressedRequest{
+              IOBufChain(std::move(compressed)), CompressionAlgorithm::ZSTD})
+          .uncompress();
+
+  ASSERT_TRUE(request.chainBuffer);
+  EXPECT_EQ(nullptr, request.buffer);
+  EXPECT_EQ(
+      IOBufChain(folly::IOBuf::copyBuffer("payload")), *request.chainBuffer);
+}
+
+TEST(RpcTypesTestStandalone, UncompressPassesThroughChecksummedChain) {
+  auto request = std::move(
+                     SerializedCompressedRequest{
+                         chainPayload(),
+                         CompressionAlgorithm::NONE,
+                         ChecksumAlgorithm::CRC32})
+                     .uncompress();
+
+  ASSERT_TRUE(request.chainBuffer);
+  EXPECT_EQ(nullptr, request.buffer);
+  EXPECT_EQ(chainPayload(), *request.chainBuffer);
 }
 
 TEST_P(RpcTypesTest, Exceptions) {

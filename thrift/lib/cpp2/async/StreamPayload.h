@@ -17,10 +17,12 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/fdsock/SocketFds.h>
 
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift {
@@ -30,6 +32,7 @@ struct FirstResponsePayload {
       std::unique_ptr<folly::IOBuf> p, ResponseRpcMetadata&& md);
 
   std::unique_ptr<folly::IOBuf> payload;
+  std::optional<IOBufChain> payloadChain;
   ResponseRpcMetadata metadata;
   folly::SocketFds fds;
   // True when the payload was already compressed on the CPU thread.

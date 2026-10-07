@@ -15,7 +15,10 @@
  */
 
 #include <gtest/gtest.h>
+#include <folly/io/Cursor.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/IOBufChainCursor.h>
+#include <thrift/lib/cpp2/async/StreamPayload.h>
 #include <thrift/lib/cpp2/transport/rocket/RequestPayload.h>
 #include <thrift/lib/cpp2/transport/rocket/payload/CustomCompressionPayloadSerializerStrategy.h>
 #include <thrift/lib/cpp2/transport/rocket/payload/DefaultPayloadSerializerStrategy.h>
@@ -23,6 +26,30 @@
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::rocket {
+
+namespace {
+std::string chainString(const IOBufChain& chain) {
+  io::IOBufChainCursor cursor(chain);
+  return cursor.readFixedString(chain.chainLength());
+}
+
+Payload movePayloadToIOBufChain(Payload payload) {
+  const auto metadataSize = payload.metadataSize();
+  return Payload::makeCombined(
+      IOBufChain(std::move(payload).buffer()), metadataSize);
+}
+
+Payload movePayloadToFragmentedIOBufChain(Payload payload) {
+  const auto metadataSize = payload.metadataSize();
+  const auto buffer = std::move(payload).buffer();
+  const auto bytes = buffer->coalesce();
+  IOBufChain chain;
+  for (size_t offset = 0; offset < bytes.size(); ++offset) {
+    chain.append(folly::IOBuf::copyBuffer(bytes.data() + offset, 1));
+  }
+  return Payload::makeCombined(std::move(chain), metadataSize);
+}
+} // namespace
 
 void testPackAndUnpackWithCompactProtocol(PayloadSerializer& serializer) {
   RequestRpcMetadata metadata;
@@ -59,6 +86,98 @@ TEST(PayloadSerializerTest, TestPackWithoutChecksumUsingFacade) {
   auto other = PayloadSerializer::getInstance()->unpack<RequestPayload>(
       std::move(payload), false);
   EXPECT_EQ(other.hasException(), false);
+  EXPECT_NE(other->payload, nullptr);
+  EXPECT_FALSE(other->payloadChain);
+}
+
+TEST(PayloadSerializerTest, ChainPayloadRemainsAChainAfterMetadataUnpack) {
+  PayloadSerializer::reset();
+  PayloadSerializer::initialize(DefaultPayloadSerializerStrategy());
+  auto& serializer = *PayloadSerializer::getInstance();
+
+  RequestRpcMetadata metadata;
+  metadata.protocol() = ProtocolId::BINARY;
+  auto serializedMetadata = serializer.packCompact(metadata);
+  const auto metadataSize = serializedMetadata->computeChainDataLength();
+  IOBufChain combined;
+  combined.append(std::move(serializedMetadata));
+  combined.append(folly::IOBuf::copyBuffer("request-data"));
+
+  auto result = serializer.unpack<RequestPayload>(
+      Payload::makeCombined(std::move(combined), metadataSize), false);
+
+  ASSERT_FALSE(result.hasException());
+  EXPECT_EQ(nullptr, result->payload);
+  ASSERT_TRUE(result->payloadChain);
+  EXPECT_EQ("request-data", chainString(*result->payloadChain));
+}
+
+void testFragmentedChainMetadata(bool encodeMetadataUsingBinary) {
+  PayloadSerializer::reset();
+  PayloadSerializer::initialize(DefaultPayloadSerializerStrategy());
+  auto& serializer = *PayloadSerializer::getInstance();
+
+  RequestRpcMetadata metadata;
+  metadata.protocol() = ProtocolId::BINARY;
+  auto payload = serializer.packWithFds(
+      &metadata,
+      folly::IOBuf::copyBuffer("request-data"),
+      folly::SocketFds(),
+      encodeMetadataUsingBinary,
+      nullptr);
+
+  auto result = serializer.unpack<RequestPayload>(
+      movePayloadToFragmentedIOBufChain(std::move(payload)),
+      encodeMetadataUsingBinary);
+
+  ASSERT_FALSE(result.hasException());
+  EXPECT_EQ(ProtocolId::BINARY, result->metadata.protocol());
+  ASSERT_TRUE(result->payloadChain);
+  EXPECT_EQ("request-data", chainString(*result->payloadChain));
+}
+
+TEST(PayloadSerializerTest, BinaryMetadataSpansIOBufChainElements) {
+  testFragmentedChainMetadata(true);
+}
+
+TEST(PayloadSerializerTest, CompactMetadataSpansIOBufChainElements) {
+  testFragmentedChainMetadata(false);
+}
+
+TEST(PayloadSerializerTest, ChainPayloadSupportsCompression) {
+  PayloadSerializer::reset();
+  PayloadSerializer::initialize(DefaultPayloadSerializerStrategy());
+  auto& serializer = *PayloadSerializer::getInstance();
+
+  RequestRpcMetadata metadata;
+  metadata.protocol() = ProtocolId::BINARY;
+  metadata.compression() = CompressionAlgorithm::ZSTD;
+  auto payload = serializer.packWithFds(
+      &metadata,
+      folly::IOBuf::copyBuffer("request-data"),
+      folly::SocketFds(),
+      false,
+      nullptr);
+
+  auto result = serializer.unpack<RequestPayload>(
+      movePayloadToIOBufChain(std::move(payload)), false);
+
+  ASSERT_FALSE(result.hasException());
+  ASSERT_TRUE(result->payloadChain);
+  EXPECT_EQ("request-data", chainString(*result->payloadChain));
+}
+
+TEST(PayloadSerializerTest, ChainPayloadRejectsStreamPayload) {
+  PayloadSerializer::reset();
+  PayloadSerializer::initialize(DefaultPayloadSerializerStrategy());
+  auto& serializer = *PayloadSerializer::getInstance();
+
+  IOBufChain data;
+  data.append(folly::IOBuf::copyBuffer("stream-data"));
+  auto result = serializer.unpack<StreamPayload>(
+      Payload::makeCombined(std::move(data), 0), false);
+
+  EXPECT_TRUE(result.hasException<TApplicationException>());
 }
 
 TEST(PayloadSerializerTest, TestPtrCoOwnership) {
@@ -119,6 +238,30 @@ TEST(PayloadSerializerTest, TestMakeCustomCompression) {
   auto ps = PayloadSerializer::make<CustomCompressionPayloadSerializerStrategy<
       DefaultPayloadSerializerStrategy>>(options);
   testPackAndUnpackWithCompactProtocol(ps);
+}
+
+TEST(PayloadSerializerTest, ChainPayloadSupportsCustomCompression) {
+  CustomCompressionPayloadSerializerStrategyOptions options;
+  options.compressor = std::make_shared<MyCustomCompressor>();
+  CustomCompressionPayloadSerializerStrategy<DefaultPayloadSerializerStrategy>
+      strategy(options);
+
+  RequestRpcMetadata metadata;
+  metadata.protocol() = ProtocolId::BINARY;
+  metadata.compression() = CompressionAlgorithm::CUSTOM;
+  auto payload = strategy.packWithFds(
+      &metadata,
+      folly::IOBuf::copyBuffer("request-data"),
+      folly::SocketFds(),
+      false,
+      nullptr);
+
+  auto result = strategy.unpack<RequestPayload>(
+      movePayloadToIOBufChain(std::move(payload)), false);
+
+  ASSERT_FALSE(result.hasException());
+  ASSERT_TRUE(result->payloadChain);
+  EXPECT_EQ("request-data", chainString(*result->payloadChain));
 }
 
 TEST(PayloadSerializerTest, TestCompressionAndUncompression) {

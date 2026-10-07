@@ -24,7 +24,20 @@
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
+namespace apache::thrift {
+struct StreamPayload;
+}
+
 namespace apache::thrift::rocket {
+
+template <typename T>
+bool payloadUsesIOBufChain(const T& payload) {
+  return payload.payloadChain.has_value();
+}
+
+inline bool payloadUsesIOBufChain(const StreamPayload&) {
+  return false;
+}
 
 /**
  * Defines strategy contract for serializing and deserializing payloads.

@@ -17,11 +17,12 @@
 #pragma once
 
 #include <memory>
-
+#include <optional>
 #include <folly/Try.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncTransport.h>
 
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -41,6 +42,7 @@ class IRocketServerConnection;
 struct RequestPayload {
   RequestRpcMetadata metadata;
   std::unique_ptr<folly::IOBuf> payload;
+  std::optional<IOBufChain> payloadChain;
 };
 
 /**

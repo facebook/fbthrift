@@ -16,9 +16,12 @@
 
 #pragma once
 
+#include <optional>
+
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/transport/rocket/payload/PayloadSerializer.h>
 
@@ -28,7 +31,13 @@ struct SerializedRequest {
   explicit SerializedRequest(std::unique_ptr<folly::IOBuf> buffer_)
       : buffer(std::move(buffer_)) {}
 
+  explicit SerializedRequest(IOBufChain buffer_)
+      : chainBuffer(std::move(buffer_)) {}
+
+  bool usesIOBufChain() const noexcept { return chainBuffer.has_value(); }
+
   std::unique_ptr<folly::IOBuf> buffer;
+  std::optional<IOBufChain> chainBuffer;
   folly::IOBufFactory* ioBufFactory{nullptr};
 };
 
@@ -45,9 +54,26 @@ class SerializedCompressedRequest {
         checksum_(checksum),
         payloadSerializer_(std::move(payloadSerializer)) {}
 
+  explicit SerializedCompressedRequest(
+      IOBufChain buffer,
+      CompressionAlgorithm compression = CompressionAlgorithm::NONE,
+      ChecksumAlgorithm checksum = ChecksumAlgorithm::NONE,
+      std::optional<rocket::PayloadSerializer::Ptr> payloadSerializer =
+          std::nullopt)
+      : chainBuffer_(std::move(buffer)),
+        compression_(compression),
+        checksum_(checksum),
+        payloadSerializer_(std::move(payloadSerializer)) {}
+
   explicit SerializedCompressedRequest(SerializedRequest&& request)
-      : buffer_(std::move(request.buffer)),
-        compression_(CompressionAlgorithm::NONE) {}
+      : compression_(CompressionAlgorithm::NONE),
+        checksum_(ChecksumAlgorithm::NONE) {
+    if (request.chainBuffer) {
+      chainBuffer_.emplace(std::move(*request.chainBuffer));
+    } else {
+      buffer_ = std::move(request.buffer);
+    }
+  }
 
   SerializedRequest uncompress() &&;
 
@@ -61,6 +87,7 @@ class SerializedCompressedRequest {
 
  private:
   std::unique_ptr<folly::IOBuf> buffer_;
+  std::optional<IOBufChain> chainBuffer_;
   CompressionAlgorithm compression_;
   ChecksumAlgorithm checksum_;
   std::optional<rocket::PayloadSerializer::Ptr> payloadSerializer_;
@@ -123,6 +150,9 @@ struct SerializedResponse {
       std::unique_ptr<folly::IOBuf> buffer_ = std::unique_ptr<folly::IOBuf>{})
       : buffer(std::move(buffer_)) {}
 
+  explicit SerializedResponse(IOBufChain buffer_)
+      : chainBuffer(std::move(buffer_)) {}
+
   explicit SerializedResponse(
       LegacySerializedResponse&& legacyResponse, int16_t protocolId);
 
@@ -135,7 +165,10 @@ struct SerializedResponse {
 
   ResponsePayload extractPayload(bool includeEnvelope) &&;
 
+  bool usesIOBufChain() const noexcept { return chainBuffer.has_value(); }
+
   std::unique_ptr<folly::IOBuf> buffer;
+  std::optional<IOBufChain> chainBuffer;
 };
 
 struct LegacySerializedResponse {

@@ -106,23 +106,28 @@ std::unique_ptr<folly::IOBuf> makeEnvelope(
 } // namespace
 
 SerializedRequest SerializedCompressedRequest::uncompress() && {
-  if (compression_ == CompressionAlgorithm::NONE) {
-    return SerializedRequest(std::move(buffer_));
-  }
-
-  if (!payloadSerializer_) {
+  auto uncompress = [&](auto buffer) {
+    if (compression_ == CompressionAlgorithm::NONE) {
+      return SerializedRequest(std::move(buffer));
+    }
+    auto serializer = payloadSerializer_
+        ? *payloadSerializer_
+        : rocket::PayloadSerializer::getInstance();
     return SerializedRequest(
-        rocket::PayloadSerializer::getInstance()->uncompressBuffer(
-            std::move(buffer_), compression_));
-  }
+        serializer->uncompressBuffer(std::move(buffer), compression_));
+  };
 
-  return SerializedRequest(
-      (*payloadSerializer_)
-          ->uncompressBuffer(std::move(buffer_), compression_));
+  return chainBuffer_ ? uncompress(std::move(*chainBuffer_))
+                      : uncompress(std::move(buffer_));
 }
 
 SerializedCompressedRequest SerializedCompressedRequest::clone() const {
-  return SerializedCompressedRequest(buffer_->clone(), compression_);
+  if (chainBuffer_) {
+    return SerializedCompressedRequest(
+        chainBuffer_->clone(), compression_, checksum_, payloadSerializer_);
+  }
+  return SerializedCompressedRequest(
+      buffer_->clone(), compression_, checksum_, payloadSerializer_);
 }
 
 LegacySerializedRequest::LegacySerializedRequest(

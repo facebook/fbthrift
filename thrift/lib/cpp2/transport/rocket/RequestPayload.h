@@ -16,7 +16,9 @@
 
 #pragma once
 
+#include <optional>
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift {
@@ -26,6 +28,7 @@ struct RequestPayload {
       : payload(std::move(p)), metadata(std::move(md)) {}
 
   std::unique_ptr<folly::IOBuf> payload;
+  std::optional<IOBufChain> payloadChain;
   RequestRpcMetadata metadata;
 };
 

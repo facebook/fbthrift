@@ -16,16 +16,16 @@
 
 #pragma once
 
+#include <stdexcept>
 #include <type_traits>
 
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/async/StreamPayload.h>
+#include <thrift/lib/cpp2/op/Encode.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/compression/CompressionManager.h>
 #include <thrift/lib/cpp2/transport/rocket/payload/PayloadSerializerStrategy.h>
-
-namespace apache::thrift {
-struct StreamPayload;
-} // namespace apache::thrift
 
 namespace apache::thrift::rocket {
 
@@ -58,8 +58,7 @@ class DefaultPayloadSerializerStrategy final
         // CustomCompressionPayloadSerializerStrategy
         if (compressionAlgorithm != CompressionAlgorithm::NONE &&
             compressionAlgorithm != CompressionAlgorithm::CUSTOM) {
-          t.payload =
-              uncompressBuffer(std::move(t.payload), compressionAlgorithm);
+          uncompressPayload(t, compressionAlgorithm);
           // Clear compression only for StreamPayload. This signals to
           // decompressStreamPayload() that IO-thread decompression already
           // happened, preventing double decompression without a racy flag
@@ -129,6 +128,14 @@ class DefaultPayloadSerializerStrategy final
     BinaryProtocolReader reader;
     reader.setInput(cursor);
     output.read(&reader);
+    return reader.getCursorPosition();
+  }
+
+  template <typename T>
+  size_t unpackBinary(T& output, const IOBufChain& buffer) {
+    BinaryProtocolChainReader reader;
+    reader.setInput(&buffer);
+    op::decode<type::struct_t<T>>(reader, output);
     return reader.getCursorPosition();
   }
 
@@ -208,10 +215,47 @@ class DefaultPayloadSerializerStrategy final
   }
 
   template <typename T>
+  static void storePayloadData(T& payload, IOBufChain&& data) {
+    payload.payloadChain.emplace(std::move(data));
+  }
+
+  [[noreturn]] static void storePayloadData(StreamPayload&, IOBufChain&&) {
+    folly::throw_exception<TApplicationException>(
+        TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+        "IOBufChain stream payloads are not supported");
+  }
+
+  template <typename T>
+  void uncompressPayload(T& payload, CompressionAlgorithm compression) {
+    if (payloadUsesIOBufChain(payload)) {
+      payload.payloadChain =
+          uncompressBuffer(std::move(*payload.payloadChain), compression);
+    } else {
+      payload.payload =
+          uncompressBuffer(std::move(payload.payload), compression);
+    }
+  }
+
+  void uncompressPayload(
+      StreamPayload& payload, CompressionAlgorithm compression) {
+    payload.payload = uncompressBuffer(std::move(payload.payload), compression);
+  }
+
+  template <typename T>
   T unpackImpl(rocket::Payload&& payload, bool decodeMetadataUsingBinary) {
-    T t{{}, {}};
+    T t = [] {
+      if constexpr (std::is_aggregate_v<T>) {
+        return T{};
+      } else {
+        return T{{}, {}};
+      }
+    }();
     unpackPayloadMetadata(t, payload, decodeMetadataUsingBinary);
-    t.payload = std::move(payload).data();
+    if (payload.usesIOBufChain()) {
+      storePayloadData(t, std::move(payload).chainData());
+    } else {
+      t.payload = std::move(payload).data();
+    }
     return t;
   }
 
@@ -220,15 +264,25 @@ class DefaultPayloadSerializerStrategy final
       T& t, rocket::Payload& payload, bool decodeMetadataUsingBinary) {
     if (payload.hasNonemptyMetadata()) {
       size_t metadataSize;
-      if (decodeMetadataUsingBinary) {
-        metadataSize = unpackBinary(t.metadata, payload.buffer());
+      if (payload.usesIOBufChain()) {
+        if (decodeMetadataUsingBinary) {
+          metadataSize = unpackBinary(t.metadata, payload.chainBuffer());
+        } else {
+          const auto& first = *payload.chainBuffer().begin();
+          std::unique_ptr<folly::IOBuf> metadata;
+          const folly::IOBuf* metadataBuffer = &first;
+          if (first.length() < payload.metadataSize()) {
+            metadata = payload.copyMetadataToIOBuf();
+            metadataBuffer = metadata.get();
+          }
+          metadataSize = unpackCompact(t.metadata, metadataBuffer);
+        }
       } else {
-        metadataSize = unpackCompact(t.metadata, payload.buffer());
+        metadataSize = decodeMetadataUsingBinary
+            ? unpackBinary(t.metadata, payload.buffer())
+            : unpackCompact(t.metadata, payload.buffer());
       }
-
-      if (metadataSize != payload.metadataSize()) {
-        folly::throw_exception<std::out_of_range>("metadata size mismatch");
-      }
+      verifyMetadataSize(metadataSize, payload.metadataSize());
     }
   }
 };

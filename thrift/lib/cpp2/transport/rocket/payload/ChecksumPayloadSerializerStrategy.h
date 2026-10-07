@@ -19,6 +19,7 @@
 #include <folly/Function.h>
 #include <folly/logging/xlog.h>
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/async/StreamPayload.h>
 #include <thrift/lib/cpp2/transport/rocket/ChecksumGenerator.h>
 #include <thrift/lib/cpp2/transport/rocket/payload/PayloadSerializerStrategy.h>
 
@@ -220,11 +221,11 @@ class ChecksumPayloadSerializerStrategy final
     }
   }
 
-  template <typename Algo>
-  bool validateChecksumImpl(folly::IOBuf& buf, Checksum checksum) {
+  template <typename Algo, typename Buffer>
+  bool validateChecksumImpl(Buffer& buf, Checksum checksum) {
     ChecksumGenerator<Algo> generator;
-    bool ret = generator.validateChecksumFromIOBuf(
-        *checksum.checksum(), *checksum.salt(), buf);
+    bool ret =
+        generator.validateChecksum(*checksum.checksum(), *checksum.salt(), buf);
     if (FOLLY_LIKELY(ret)) {
       tryRecordChecksumSuccess();
     } else {
@@ -233,8 +234,9 @@ class ChecksumPayloadSerializerStrategy final
     return ret;
   }
 
+  template <typename Buffer>
   bool validateChecksum(
-      folly::IOBuf& buf,
+      Buffer& buf,
       ::apache::thrift::optional_field_ref<Checksum&> checksumOpt) {
     switch (getChecksumAlgorithm(checksumOpt)) {
       case apache::thrift::ChecksumAlgorithm::CRC32:
@@ -254,6 +256,19 @@ class ChecksumPayloadSerializerStrategy final
             "Unsupported checksum algorithm");
       }
     }
+  }
+
+  template <typename T>
+  bool validatePayloadChecksum(T& payload) {
+    if (payloadUsesIOBufChain(payload)) {
+      return validateChecksum(
+          *payload.payloadChain, payload.metadata.checksum());
+    }
+    return validateChecksum(*payload.payload, payload.metadata.checksum());
+  }
+
+  bool validatePayloadChecksum(StreamPayload& payload) {
+    return validateChecksum(*payload.payload, payload.metadata.checksum());
   }
 
  private:
@@ -291,10 +306,9 @@ class ChecksumPayloadSerializerStrategy final
       try {
         folly::Try<T> t = func(std::move(payload));
         bool compressed = isDataCompressed(&t.value().metadata);
-        folly::IOBuf& buf = *t->payload.get();
         if (t.hasException() || compressed) {
           return t;
-        } else if (validateChecksum(buf, t->metadata.checksum())) {
+        } else if (validatePayloadChecksum(*t)) {
           return t;
         } else {
           if (FOLLY_LIKELY(t->metadata.checksum().has_value())) {

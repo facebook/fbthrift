@@ -20,6 +20,7 @@
 #include <folly/Try.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/async/AsyncTransport.h>
+#include <thrift/lib/cpp2/async/StreamPayload.h>
 #include <thrift/lib/cpp2/transport/rocket/compression/CustomCompressor.h>
 #include <thrift/lib/cpp2/transport/rocket/payload/PayloadSerializerStrategy.h>
 
@@ -71,8 +72,7 @@ class CustomCompressionPayloadSerializerStrategy final
       if (auto compress = unpackedPayload->metadata.compression()) {
         if (*compress == CompressionAlgorithm::CUSTOM) {
           try {
-            unpackedPayload->payload =
-                customUncompressBuffer(std::move(unpackedPayload->payload));
+            customUncompressPayload(*unpackedPayload);
           } catch (std::exception const& ex) {
             unpackedPayload = folly::Try<T>(
                 folly::make_exception_wrapper<transport::TTransportException>(
@@ -187,6 +187,20 @@ class CustomCompressionPayloadSerializerStrategy final
   template <typename Buffer>
   FOLLY_ERASE Buffer customUncompressBuffer(Buffer&& buffer) {
     return compressor_->uncompressBuffer(std::forward<Buffer>(buffer));
+  }
+
+  template <typename T>
+  void customUncompressPayload(T& payload) {
+    if (payloadUsesIOBufChain(payload)) {
+      payload.payloadChain =
+          customUncompressBuffer(std::move(*payload.payloadChain));
+    } else {
+      payload.payload = customUncompressBuffer(std::move(payload.payload));
+    }
+  }
+
+  void customUncompressPayload(StreamPayload& payload) {
+    payload.payload = customUncompressBuffer(std::move(payload.payload));
   }
 
  private:
