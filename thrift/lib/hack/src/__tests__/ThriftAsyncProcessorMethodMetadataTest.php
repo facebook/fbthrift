@@ -17,7 +17,8 @@
  */
 
 /**
- * Tests for ThriftAsyncProcessor::getMethodMetadata() with service inheritance.
+ * Tests for ThriftAsyncProcessor::getMethodMetadata() with service inheritance,
+ * and for the `getThriftServiceMetadata` reply over the accelerated protocols.
  *
  * Inheritance: ExampleChildService -> ExampleMiddleService -> ExampleService
  * Methods: sendChildRequest, sendMiddleRequest, sendRequest (respectively)
@@ -149,6 +150,53 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
     $metadata = $processor->testGetMethodMetadata('unknownMethod');
 
     expect($metadata)->toBeNull();
+  }
+
+  public async function testGetThriftServiceMetadataOverBinaryAccelerated(
+  ): Awaitable<void> {
+    await $this->genExpectServiceMetadataReply(
+      new TBinaryProtocolAccelerated(new TMemoryBuffer()),
+      new TBinaryProtocolAccelerated(new TMemoryBuffer()),
+    );
+  }
+
+  public async function testGetThriftServiceMetadataOverCompactAccelerated(
+  ): Awaitable<void> {
+    await $this->genExpectServiceMetadataReply(
+      new TCompactProtocolAccelerated(new TMemoryBuffer()),
+      new TCompactProtocolAccelerated(new TMemoryBuffer()),
+    );
+  }
+
+  private async function genExpectServiceMetadataReply(
+    TProtocol $input,
+    TProtocol $output,
+  ): Awaitable<void> {
+    $processor = new ExampleChildServiceAsyncProcessor(
+      mock(ExampleChildServiceAsyncIf::class),
+    );
+    $input->writeRPCMessage(
+      'getThriftServiceMetadata',
+      TMessageType::CALL,
+      ThriftMetadataService_getThriftServiceMetadata_args::withDefaultValues(),
+      7,
+    );
+
+    await $processor->processAsync($input, $output);
+
+    $name = '';
+    $type = 0;
+    $seqid = 0;
+    $output->readMessageBegin(inout $name, inout $type, inout $seqid);
+    expect($name)->toEqual('getThriftServiceMetadata');
+    expect($type)->toEqual(TMessageType::REPLY);
+    expect($seqid)->toEqual(7);
+    $result = $output->readRPCStruct(
+      ThriftMetadataService_getThriftServiceMetadata_result::class,
+    );
+    expect($result->success?->context?->service_info?->name)->toEqual(
+      'ExampleThriftService.ExampleChildService',
+    );
   }
 }
 

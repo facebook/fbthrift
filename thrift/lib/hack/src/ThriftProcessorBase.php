@@ -487,12 +487,12 @@ trait GetThriftServiceMetadata {
     if ($input is TBinaryProtocolAccelerated) {
       thrift_protocol_read_binary_struct(
         $input,
-        '\ThriftMetadataService_getThriftServiceMetadata_args',
+        nameof ThriftMetadataService_getThriftServiceMetadata_args,
       );
     } else if ($input is TCompactProtocolAccelerated) {
       thrift_protocol_read_compact_struct(
         $input,
-        '\ThriftMetadataService_getThriftServiceMetadata_args',
+        nameof ThriftMetadataService_getThriftServiceMetadata_args,
       );
     } else {
       $args =
