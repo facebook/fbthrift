@@ -56,7 +56,7 @@ abstract class ThriftProcessorBase implements IThriftProcessor {
   }
 
   /**
-   * Helper method to be used in the generated {Sync,Async}ProcessorBase classes
+   * Helper method to be used in the generated AsyncProcessorBase classes
    */
   final protected function readHelper<TResult as IThriftStruct>(
     class<TResult> $request_args_class,
@@ -72,7 +72,7 @@ abstract class ThriftProcessorBase implements IThriftProcessor {
   }
 
   /**
-   * Helper method to be used in the generated {Sync,Async}ProcessorBase classes
+   * Helper method to be used in the generated AsyncProcessorBase classes
    */
   final protected function writeHelper<TResult as IThriftStruct>(
     TResult $result,
@@ -470,7 +470,7 @@ abstract class ThriftProcessorBase implements IThriftProcessor {
 /**
  * This trait defines the `process_getThriftServiceMetadataHelper()` method.
  * This method is used to implement the `process_getThriftServiceMetadata()`
- * method in {ServiceName}{Async|Sync}ProcessorBase classes.
+ * method in {ServiceName}AsyncProcessorBase classes.
  */
 trait GetThriftServiceMetadata {
   require extends ThriftProcessorBase;
