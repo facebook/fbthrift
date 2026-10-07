@@ -17,22 +17,49 @@
 #include <thrift/lib/cpp2/util/Checksum.h>
 
 #include <folly/hash/Checksum.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 
 namespace apache::thrift::checksum {
 
-// Calculate crc32c of a IOBuf chain start from skipOffset
-uint32_t crc32c(const folly::IOBuf& payload, size_t skipOffset) {
-  uint32_t crc32c = ~0U;
-  for (auto& buf : payload) {
-    if (skipOffset >= buf.size()) {
-      skipOffset -= buf.size();
-      continue;
-    }
-    crc32c =
-        folly::crc32c(buf.data() + skipOffset, buf.size() - skipOffset, crc32c);
-    skipOffset = 0;
+namespace {
+
+template <typename Function>
+void forEachRange(const folly::IOBuf& payload, Function function) {
+  for (auto range : payload) {
+    function(range);
   }
-  return crc32c;
+}
+
+template <typename Function>
+void forEachRange(const IOBufChain& payload, Function function) {
+  for (const auto& buffer : payload) {
+    function(folly::ByteRange{buffer.data(), buffer.length()});
+  }
+}
+
+template <typename Buffer>
+uint32_t crc32cImpl(const Buffer& payload, size_t skipOffset) {
+  uint32_t checksum = ~0U;
+  forEachRange(payload, [&](folly::ByteRange range) {
+    if (skipOffset >= range.size()) {
+      skipOffset -= range.size();
+      return;
+    }
+    checksum = folly::crc32c(
+        range.data() + skipOffset, range.size() - skipOffset, checksum);
+    skipOffset = 0;
+  });
+  return checksum;
+}
+
+} // namespace
+
+uint32_t crc32c(const folly::IOBuf& payload, size_t skipOffset) {
+  return crc32cImpl(payload, skipOffset);
+}
+
+uint32_t crc32c(const IOBufChain& payload, size_t skipOffset) {
+  return crc32cImpl(payload, skipOffset);
 }
 
 } // namespace apache::thrift::checksum

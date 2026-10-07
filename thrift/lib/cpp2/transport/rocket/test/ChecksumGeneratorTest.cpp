@@ -16,6 +16,7 @@
 
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/transport/rocket/ChecksumGenerator.h>
+#include <thrift/lib/cpp2/util/Checksum.h>
 
 using namespace ::apache::thrift::rocket;
 
@@ -94,4 +95,17 @@ TEST_F(ChecksumTest, TestXXH3) {
 
 TEST_F(ChecksumTest, TestCRC32) {
   doChecksumTest<CRC32C>(buffers);
+}
+
+TEST_F(ChecksumTest, LegacyCRC32) {
+  for (const auto& buffer : buffers) {
+    apache::thrift::IOBufChain chain(buffer->clone());
+    EXPECT_EQ(
+        apache::thrift::checksum::crc32c(*buffer),
+        apache::thrift::checksum::crc32c(chain));
+    const auto skipOffset = buffer->computeChainDataLength() / 2 + 1;
+    EXPECT_EQ(
+        apache::thrift::checksum::crc32c(*buffer, skipOffset),
+        apache::thrift::checksum::crc32c(chain, skipOffset));
+  }
 }

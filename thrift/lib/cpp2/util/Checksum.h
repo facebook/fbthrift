@@ -18,9 +18,15 @@
 
 #include <folly/io/IOBuf.h>
 
-namespace apache::thrift::checksum {
+namespace apache::thrift {
+
+class IOBufChain;
+
+namespace checksum {
 
 // Calculate crc32c of a IOBuf chain start from skipOffset
 uint32_t crc32c(const folly::IOBuf& payload, size_t skipOffset = 0);
+uint32_t crc32c(const IOBufChain& payload, size_t skipOffset = 0);
 
-} // namespace apache::thrift::checksum
+} // namespace checksum
+} // namespace apache::thrift
