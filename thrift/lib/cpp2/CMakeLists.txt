@@ -485,7 +485,7 @@ if (THRIFT_RPC)
   add_library(quic_thriftcpp2 server/ThriftQuicServer.cpp)
   add_dependencies(quic_thriftcpp2 thriftcpp2 mvfst::mvfst_server_async_tran)
   target_link_libraries(quic_thriftcpp2 PUBLIC thriftcpp2
-                                               mvfst::mvfst_server_async_tran)
+                                               ${thrift_mvfst_server})
 endif () # THRIFT_RPC
 
 # Install includes

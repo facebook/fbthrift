@@ -90,24 +90,28 @@ option(THRIFT_PY_DEPRECATED
 option(THRIFT_PYTHON
        "Enable the thrift-python library and extensions (requires Cython)" OFF)
 
-# Fetch folly if it is not installed.
-find_package(folly CONFIG QUIET)
-if (NOT folly_FOUND)
-  # The revision this repo is tested against, kept current by rev_sync.
-  set(folly_rev_file
-      "${CMAKE_CURRENT_SOURCE_DIR}/build/deps/github_hashes/facebook/folly-rev.txt"
+# Fetch the dependency `name` from GitHub at the revision this repo is tested
+# against, kept current by rev_sync. Extra arguments go to FetchContent_Declare.
+function (thrift_fetch_github org name)
+  set(path
+      "${CMAKE_CURRENT_SOURCE_DIR}/build/deps/github_hashes/${org}/${name}-rev.txt"
   )
-  file(READ "${folly_rev_file}" folly_rev_text)
-  if (NOT folly_rev_text MATCHES "Subproject commit ([0-9a-f]+)")
-    message(FATAL_ERROR "no folly revision in ${folly_rev_file}")
+  file(READ "${path}" text)
+  if (NOT text MATCHES "Subproject commit ([0-9a-f]+)")
+    message(FATAL_ERROR "no ${name} revision in ${path}")
   endif ()
-  message(STATUS "folly not found, fetching ${CMAKE_MATCH_1}")
+  message(STATUS "${name} not found, fetching ${CMAKE_MATCH_1}")
   include(FetchContent)
   FetchContent_Declare(
-    folly
-    GIT_REPOSITORY https://github.com/facebook/folly.git
-    GIT_TAG ${CMAKE_MATCH_1})
-  FetchContent_MakeAvailable(folly)
+    ${name}
+    GIT_REPOSITORY https://github.com/${org}/${name}.git
+    GIT_TAG ${CMAKE_MATCH_1} ${ARGN})
+  FetchContent_MakeAvailable(${name})
+endfunction ()
+
+find_package(folly CONFIG QUIET)
+if (NOT folly_FOUND)
+  thrift_fetch_github(facebook folly)
 endif ()
 
 # Older folly installs export Threads::Threads without declaring it.
@@ -216,10 +220,110 @@ if (NOT Xxhash_FOUND)
   set(thrift_xxhash "$<BUILD_LOCAL_INTERFACE:Xxhash::xxhash>")
 endif ()
 
+# libsodium ships no CMakeLists.txt, so ExternalProject runs its configure
+# script at build time, as folly does for OpenSSL.
+function (thrift_build_sodium)
+  set(path
+      "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/manifests/libsodium")
+  file(READ "${path}" text)
+  if (NOT text MATCHES
+      "url = (https://[^\r\n]+\\.tar\\.gz)[\r\n]+sha256 = ([0-9a-f]+)")
+    message(FATAL_ERROR "no archive in ${path}")
+  endif ()
+  set(url "${CMAKE_MATCH_1}")
+  set(sha "${CMAKE_MATCH_2}")
+  if (WIN32)
+    message(
+      FATAL_ERROR
+        "libsodium is not installed, and building it is not supported on "
+        "Windows. Install libsodium and set sodium_DIR.")
+  endif ()
+  find_program(THRIFT_SODIUM_MAKE NAMES make)
+  if (NOT THRIFT_SODIUM_MAKE)
+    message(FATAL_ERROR "libsodium is not installed, and building it needs "
+                        "make. Install make or libsodium.")
+  endif ()
+  message(STATUS "libsodium not found, building ${url}")
+  set(prefix "${CMAKE_CURRENT_BINARY_DIR}/libsodium")
+  set(lib "${prefix}/lib/libsodium.a")
+  include(ExternalProject)
+  ExternalProject_Add(
+    libsodium
+    URL "${url}"
+    URL_HASH SHA256=${sha}
+    DOWNLOAD_EXTRACT_TIMESTAMP FALSE
+    BUILD_IN_SOURCE ON
+    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=${prefix}
+                      --libdir=${prefix}/lib --disable-shared --with-pic
+    BUILD_COMMAND ${THRIFT_SODIUM_MAKE} -j
+    INSTALL_COMMAND ${THRIFT_SODIUM_MAKE} install
+    # Without this Ninja has no rule to produce the library.
+    BUILD_BYPRODUCTS "${lib}")
+  file(MAKE_DIRECTORY "${prefix}/include")
+  # The target fizz links. add_dependencies() orders compiling against the
+  # headers; BUILD_BYPRODUCTS only orders linking.
+  add_library(sodium STATIC IMPORTED GLOBAL)
+  set_target_properties(
+    sodium PROPERTIES IMPORTED_LOCATION "${lib}" INTERFACE_INCLUDE_DIRECTORIES
+                                                "${prefix}/include")
+  add_dependencies(sodium libsodium)
+  # Makes fizz's find_package(Sodium) resolve to this instead of FindSodium.
+  file(WRITE "${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/sodium-config.cmake"
+       "set(sodium_INCLUDE_DIR \"${prefix}/include\")\n")
+endfunction ()
+
+set(thrift_wangle wangle::wangle)
+set(thrift_mvfst_server mvfst::mvfst_server_async_tran)
 if (THRIFT_RPC)
-  find_package(fizz CONFIG REQUIRED)
-  find_package(wangle CONFIG REQUIRED)
-  find_package(mvfst CONFIG REQUIRED)
+  find_package(fizz CONFIG QUIET)
+  find_package(wangle CONFIG QUIET)
+  find_package(mvfst CONFIG QUIET)
+  if (NOT (fizz_FOUND AND wangle_FOUND AND mvfst_FOUND))
+    if (NOT CMAKE_SKIP_INSTALL_RULES)
+      message(
+        FATAL_ERROR
+          "fizz, wangle or mvfst is not installed, and one thrift fetches is "
+          "not installed with it, so installing thrift would produce a "
+          "package pointing at a library that is not installed. Install them, "
+          "configure with -DTHRIFT_RPC=OFF, or configure with "
+          "-DCMAKE_SKIP_INSTALL_RULES=ON to build without installing.")
+    endif ()
+    if (CMAKE_VERSION VERSION_LESS 3.26)
+      message(
+        FATAL_ERROR
+          "Keeping a fetched wangle or mvfst out of thrift's link interface "
+          "needs the CMake 3.26 $<BUILD_LOCAL_INTERFACE:> generator "
+          "expression. Install fizz, wangle and mvfst, or use CMake 3.26 or "
+          "newer.")
+    endif ()
+    set(BUILD_TESTS OFF)
+    set(BUILD_EXAMPLES OFF)
+  endif ()
+  if (NOT fizz_FOUND)
+    # Not find_package(Sodium): FindSodium defines the target fizz links even
+    # when it finds nothing.
+    find_library(THRIFT_SODIUM_LIBRARY sodium)
+    if (NOT THRIFT_SODIUM_LIBRARY)
+      thrift_build_sodium()
+    endif ()
+    thrift_fetch_github(facebookincubator fizz SOURCE_SUBDIR fizz)
+  endif ()
+  if (NOT wangle_FOUND)
+    # When folly fetched libevent, FindLibEvent's NOTFOUND results stay cached
+    # and wangle would use them. folly's link interface carries libevent.
+    foreach (var LIBEVENT_INCLUDE_DIR LIBEVENT_LIB)
+      if (NOT ${var})
+        set(${var} "")
+      endif ()
+    endforeach ()
+    thrift_fetch_github(facebook wangle SOURCE_SUBDIR wangle)
+    set(thrift_wangle "$<BUILD_LOCAL_INTERFACE:wangle::wangle>")
+  endif ()
+  if (NOT mvfst_FOUND)
+    thrift_fetch_github(facebook mvfst)
+    set(thrift_mvfst_server
+        "$<BUILD_LOCAL_INTERFACE:mvfst::mvfst_server_async_tran>")
+  endif ()
 endif ()
 
 # Add the test dependencies.

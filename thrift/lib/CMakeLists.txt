@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(FindFolly)
 include(FindPackageHandleStandardArgs)
 find_package(Boost REQUIRED)
 

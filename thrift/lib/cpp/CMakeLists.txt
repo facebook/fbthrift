@@ -84,7 +84,7 @@ if (THRIFT_RPC)
            transport
            Boost::headers
            Folly::folly
-           wangle::wangle
+           ${thrift_wangle}
            glog::glog
            ${thrift_openssl_crypto})
 
