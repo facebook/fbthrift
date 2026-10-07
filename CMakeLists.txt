@@ -136,6 +136,15 @@ function (thrift_fetch_github org name)
   FetchContent_MakeAvailable(${name})
 endfunction ()
 
+# Homebrew's OpenSSL is keg-only, so CMake's FindOpenSSL doesn't search it.
+# Set before folly, which also looks for OpenSSL.
+if (APPLE AND NOT DEFINED OPENSSL_ROOT_DIR)
+  execute_process(
+    COMMAND brew --prefix openssl
+    OUTPUT_VARIABLE OPENSSL_ROOT_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
+endif ()
+
 find_package(folly CONFIG QUIET)
 if (NOT folly_FOUND)
   thrift_fetch_github(facebook folly)
