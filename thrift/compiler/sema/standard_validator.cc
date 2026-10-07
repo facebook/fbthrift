@@ -1896,9 +1896,17 @@ void validate_cpp_type_annotation(sema_context& ctx, const Node& node) {
           node.name());
     }
     const t_type* true_type = node.type()->get_true_type();
+    if (!true_type) {
+      return;
+    }
     if (true_type->is<t_structured>()) {
       ctx.error(
           "`@cpp.Type` cannot be used on `{}` because its Thrift type resolves to structured type `{}`. Use `@cpp.Adapter` instead.",
+          node.name(),
+          true_type->name());
+    } else if (true_type->is<t_enum>()) {
+      ctx.error(
+          "`@cpp.Type` cannot be used on `{}` because its Thrift type resolves to enum `{}`. Use `@cpp.Adapter` instead.",
           node.name(),
           true_type->name());
     } else if (tmplate) {

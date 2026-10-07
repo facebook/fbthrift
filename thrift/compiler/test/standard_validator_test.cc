@@ -479,6 +479,35 @@ TEST(StandardValidatorTest, CppTypeCannotReplaceStructuredTypes) {
   )");
 }
 
+TEST(StandardValidatorTest, CppTypeCannotReplaceEnums) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/cpp.thrift"
+
+    enum Mode { A = 0 }
+    typedef Mode ModeAlias
+
+    @cpp.Type{name = "OtherMode"}
+    typedef Mode ModeReplacement
+    # expected-error@-2: `@cpp.Type` cannot be used on `ModeReplacement` because its Thrift type resolves to enum `Mode`. Use `@cpp.Adapter` instead.
+
+    struct Wrapper {
+      @cpp.Type{name = "OtherMode"}
+      1: Mode direct;
+      # expected-error@-2: `@cpp.Type` cannot be used on `direct` because its Thrift type resolves to enum `Mode`. Use `@cpp.Adapter` instead.
+
+      @cpp.Type{name = "OtherMode"}
+      2: ModeAlias aliased;
+      # expected-error@-2: `@cpp.Type` cannot be used on `aliased` because its Thrift type resolves to enum `Mode`. Use `@cpp.Adapter` instead.
+    }
+
+    service Api {
+      void call(@cpp.Type{name = "OtherMode"} 1: Mode mode)
+      # expected-error@-1: `@cpp.Type` cannot be used on `mode` because its Thrift type resolves to enum `Mode`. Use `@cpp.Adapter` instead.
+    }
+  )");
+}
+
 TEST(StandardValidatorTest, CppTypeNameOnContainer) {
   check_compile(R"(
     package "facebook.com/thrift/test"
