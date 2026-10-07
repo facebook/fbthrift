@@ -88,6 +88,7 @@ class AnyRegistryTest(unittest.TestCase):
             StandardProtocol.Binary,
             StandardProtocol.Compact,
             StandardProtocol.SimpleJson,
+            StandardProtocol.Json5,
         ]:
             with self.subTest(standard_protocol=standard_protocol):
                 any_obj = registry.store(
@@ -108,6 +109,7 @@ class AnyRegistryTest(unittest.TestCase):
             StandardProtocol.Binary,
             StandardProtocol.Compact,
             StandardProtocol.SimpleJson,
+            StandardProtocol.Json5,
         ]:
             with self.subTest(standard_protocol=standard_protocol):
                 any_obj = registry.store(
@@ -131,6 +133,7 @@ class AnyRegistryTest(unittest.TestCase):
             StandardProtocol.Binary,
             StandardProtocol.Compact,
             StandardProtocol.SimpleJson,
+            StandardProtocol.Json5,
         ]:
             with self.subTest(standard_protocol=standard_protocol):
                 any_obj = registry.store(
@@ -148,6 +151,7 @@ class AnyRegistryTest(unittest.TestCase):
             StandardProtocol.Binary,
             StandardProtocol.Compact,
             StandardProtocol.SimpleJson,
+            StandardProtocol.Json5,
         ]:
             with self.subTest(standard_protocol=standard_protocol):
                 any_obj = registry.store(
@@ -166,6 +170,7 @@ class AnyRegistryTest(unittest.TestCase):
             StandardProtocol.Binary,
             StandardProtocol.Compact,
             StandardProtocol.SimpleJson,
+            StandardProtocol.Json5,
         ]:
             with self.subTest(standard_protocol=standard_protocol):
                 for primitive in TEST_PRIMITIVES:
@@ -193,6 +198,7 @@ class AnyRegistryTest(unittest.TestCase):
             StandardProtocol.Binary,
             StandardProtocol.Compact,
             StandardProtocol.SimpleJson,
+            StandardProtocol.Json5,
         ]:
             with self.subTest(standard_protocol=standard_protocol):
                 for container in TEST_CONTAINERS:
@@ -211,6 +217,7 @@ class AnyRegistryTest(unittest.TestCase):
             StandardProtocol.Binary,
             StandardProtocol.Compact,
             StandardProtocol.SimpleJson,
+            StandardProtocol.Json5,
         ):
             with self.subTest(standard_protocol=standard_protocol):
                 buf = IOBuf(b"iobuf")

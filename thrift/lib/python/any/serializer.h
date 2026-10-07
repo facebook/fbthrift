@@ -22,6 +22,7 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Json5Protocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/TableBasedSerializerImpl.h>
 #include <thrift/lib/python/types.h>
@@ -63,6 +64,9 @@ std::unique_ptr<folly::IOBuf> serialize_type(
       return serialize_type<BinaryProtocolWriter>(typeInfo, object);
     case protocol::PROTOCOL_TYPES::T_SIMPLE_JSON_PROTOCOL:
       return serialize_type<SimpleJSONProtocolWriter>(typeInfo, object);
+    case protocol::PROTOCOL_TYPES::T_JSON5_PROTOCOL:
+      return serialize_type<json5::detail::Json5ProtocolWriter>(
+          typeInfo, object);
     default:
       throw TProtocolException(
           TProtocolException::NOT_IMPLEMENTED, "protocol not supported yet");
@@ -80,6 +84,9 @@ PyObject* deserialize_type(
       return deserialize_type<BinaryProtocolReader>(typeInfo, buf);
     case protocol::PROTOCOL_TYPES::T_SIMPLE_JSON_PROTOCOL:
       return deserialize_type<SimpleJSONProtocolReader>(typeInfo, buf);
+    case protocol::PROTOCOL_TYPES::T_JSON5_PROTOCOL:
+      return deserialize_type<json5::detail::Json5ProtocolReader>(
+          typeInfo, buf);
     default:
       throw TProtocolException(
           TProtocolException::NOT_IMPLEMENTED, "protocol not supported yet");

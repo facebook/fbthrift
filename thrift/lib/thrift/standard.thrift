@@ -165,4 +165,7 @@ enum StandardProtocol {
   // Deprecated protocols.
   Json = 3,
   SimpleJson = 4,
+
+  // Human-readable JSON5 protocol.
+  Json5 = 5,
 }

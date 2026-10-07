@@ -49,6 +49,7 @@ enum apache_thrift_type_standard_StandardProtocol: int {
   Compact = 2;
   Json = 3;
   SimpleJson = 4;
+  Json5 = 5;
 }
 
 class apache_thrift_type_standard_StandardProtocol_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
@@ -62,6 +63,7 @@ class apache_thrift_type_standard_StandardProtocol_TEnumStaticMetadata implement
           2 => "Compact",
           3 => "Json",
           4 => "SimpleJson",
+          5 => "Json5",
         ],
       )
     );

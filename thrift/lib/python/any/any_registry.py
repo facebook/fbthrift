@@ -79,6 +79,8 @@ def _standard_protocol_to_serializer_protocol(
         return serializer.Protocol.COMPACT
     if protocol is StandardProtocol.SimpleJson:
         return serializer.Protocol.JSON
+    if protocol is StandardProtocol.Json5:
+        return serializer.Protocol.JSON5
     raise NotImplementedError(f"Unsupported standard protocol: {protocol}")
 
 
