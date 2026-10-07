@@ -223,6 +223,7 @@ final class ThriftLazyAny implements JsonSerializable {
       case apache_thrift_type_standard_StandardProtocol::SimpleJson:
         return JSONThriftSerializer::class;
       case apache_thrift_type_standard_StandardProtocol::Json:
+      case apache_thrift_type_standard_StandardProtocol::Json5:
       case apache_thrift_type_standard_StandardProtocol::Custom:
         invariant_violation(
           "Unsupported Lazy serialization protocol: %d",
