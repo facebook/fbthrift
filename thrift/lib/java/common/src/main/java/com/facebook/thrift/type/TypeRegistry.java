@@ -51,8 +51,47 @@ public final class TypeRegistry {
 
   private TypeRegistry() {}
 
+  /**
+   * Opt in to deferring the classpath scan until a hash-prefix lookup actually needs it.
+   *
+   * <p>Default is eager, so behaviour is unchanged unless a process asks for the new one.
+   *
+   * <p>The name is deliberately not under {@code com.facebook.thrift}. The shaded copies of this
+   * class relocate dotted string literals rooted at {@code com.*}, so a package-prefixed property
+   * would become a different name in every copy and one {@code -D} would reach none of them. A
+   * {@code thrift.}-rooted name survives relocation, so a single flag covers every copy.
+   */
+  private static final String DEFER_CLASSPATH_SCAN = "thrift.type-registry.defer-classpath-scan";
+
+  /**
+   * Read here, above the static block that tests it. Static field initializers and static blocks
+   * run in textual order, so moving this declaration below the block would leave it false at the
+   * point the block reads it and the flag would silently never engage.
+   */
+  private static final boolean DEFER = Boolean.getBoolean(DEFER_CLASSPATH_SCAN);
+
   static {
-    initialize();
+    if (!DEFER) {
+      initialize();
+    }
+  }
+
+  /**
+   * Runs the scan on first need, once, when deferral is enabled.
+   *
+   * <p>{@code initialize()} enumerates every class on the system classpath.On the eager path every
+   * touch of this class pays that, including {@code add(Type)}, which never reads {@code hashList}.
+   * The list is read only by {@code registered(ByteBuf)}, itself reached only from a {@code
+   * findByHashPrefix(ByteBuf)} miss, so with deferral on a process that never resolves a type by
+   * hash prefix never pays for the scan at all.
+   */
+  private static final class DeferredInitialize {
+    static {
+      initialize();
+    }
+
+    /** Invoking this forces the holder's class initialization, and so the scan, exactly once. */
+    static void ensureInitialized() {}
   }
 
   /**
@@ -64,6 +103,9 @@ public final class TypeRegistry {
    * @throws AmbiguousUniversalNameException if the prefix return more than one entry.
    */
   private static boolean registered(ByteBuf prefix) {
+    if (DEFER) {
+      DeferredInitialize.ensureInitialized();
+    }
     ByteBuf key = hashList.ceilingKey(prefix);
     if (key == null || !startsWith(key, prefix)) {
       return false;
