@@ -34,6 +34,7 @@ class JsonWriterOptions:
         object_trailing_comma: bool = False,
         unquote_object_name: bool = False,
         allow_nan_inf: bool = False,
+        whole_number_float_without_fraction: bool = False,
         indent_width: int = 2,
     ) -> None: ...
 

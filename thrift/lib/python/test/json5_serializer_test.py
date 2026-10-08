@@ -282,6 +282,23 @@ class Json5SerializerOptionTest(unittest.TestCase):
         result = serialize(example, Protocol.JSON5, options=options).decode()
         self.assertEqual(result, '{"infValue":Infinity}')
 
+    def test_serialize_json5_whole_number_float_without_fraction(self) -> None:
+        example = test_types.Example(floatValue=3.0, doubleValue=100000.0)
+        options = Json5ProtocolWriterOptions(writer=JsonWriterOptions(indent_width=0))
+        result = serialize(example, Protocol.JSON5, options=options).decode()
+        self.assertEqual(result, '{"floatValue":3.0,"doubleValue":100000.0}')
+
+        options = Json5ProtocolWriterOptions(
+            writer=JsonWriterOptions(
+                whole_number_float_without_fraction=True, indent_width=0
+            )
+        )
+        result = serialize(example, Protocol.JSON5, options=options)
+        self.assertEqual(result, b'{"floatValue":3,"doubleValue":100000}')
+        self.assertEqual(
+            deserialize(test_types.Example, result, Protocol.JSON5), example
+        )
+
     def test_serialize_json5_iobuf(self) -> None:
         """serialize_iobuf with options returns an IOBuf with the same content."""
         example = test_types.Example(i64Value=42, stringValue="hello")

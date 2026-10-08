@@ -34,6 +34,7 @@ cdef extern from "<thrift/lib/python/Serializer.h>" namespace "apache::thrift::j
         cbool objectTrailingComma
         cbool unquoteObjectName
         cbool allowNanInf
+        cbool wholeNumberFloatWithoutFraction
         size_t indentWidth
 
 
