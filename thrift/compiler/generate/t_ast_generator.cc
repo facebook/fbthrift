@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
+#include <deque>
 #include <filesystem>
 #include <fstream>
 #include <optional>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include <thrift/compiler/ast/ast_visitor.h>
 #include <thrift/compiler/ast/t_include.h>
 #include <thrift/compiler/ast/t_type.h>
+#include <thrift/compiler/ast/type_visitor.h>
 #include <thrift/compiler/detail/pluggable_functions.h>
 #include <thrift/compiler/generate/schema_populator.h>
 #include <thrift/compiler/generate/t_generator.h>
@@ -127,6 +130,8 @@ class t_ast_generator : public t_generator {
         schema_opts_.only_root_program_ = true;
       } else if (pair.first == "ordered_container_values") {
         schema_opts_.ordered_container_values_ = true;
+      } else if (pair.first == "pruned") {
+        schema_opts_.pruned_ = true;
       } else if (pair.first == "ast") {
       } else {
         throw std::runtime_error(
@@ -275,6 +280,132 @@ schematizer::value_id intern_schema_value(
   values.push_back(std::move(value));
   return ret;
 }
+
+std::unordered_set<const t_named*> reachable_definitions(
+    const t_program& root_program, bool include_generated) {
+  std::unordered_set<const t_named*> reachable;
+  std::deque<const t_named*> pending;
+  auto mark = [&](const t_named* node) {
+    if (!node || (node->generated() && !include_generated) ||
+        !reachable.insert(node).second) {
+      return;
+    }
+    pending.push_back(node);
+  };
+
+  auto mark_type = [&](const t_type* type, const auto& recurse) -> void {
+    if (!type) {
+      return;
+    }
+    if (const auto* list = type->try_as<t_list>()) {
+      recurse(&list->elem_type().deref(), recurse);
+    } else if (const auto* set = type->try_as<t_set>()) {
+      recurse(&set->elem_type().deref(), recurse);
+    } else if (const auto* map = type->try_as<t_map>()) {
+      recurse(&map->key_type().deref(), recurse);
+      recurse(&map->val_type().deref(), recurse);
+    } else if (type->program()) {
+      mark(type);
+    }
+  };
+  auto mark_ref = [&](const t_type_ref& ref) {
+    if (ref) {
+      mark_type(&ref.deref(), mark_type);
+    }
+  };
+
+  auto mark_value = [&](const t_const_value* value,
+                        const auto& recurse) -> void {
+    if (!value) {
+      return;
+    }
+    mark(value->get_owner());
+    mark(value->get_enum());
+    if (value->kind() == t_const_value::CV_LIST) {
+      for (const auto* element : value->get_list()) {
+        recurse(element, recurse);
+      }
+    } else if (value->kind() == t_const_value::CV_MAP) {
+      for (const auto& [key, element] : value->get_map()) {
+        recurse(key, recurse);
+        recurse(element, recurse);
+      }
+    }
+  };
+
+  auto mark_annotations = [&](const t_named& node) {
+    for (const auto& annotation : node.structured_annotations()) {
+      mark_ref(annotation.type_ref());
+      mark_value(annotation.value(), mark_value);
+    }
+  };
+
+  const_ast_visitor visitor;
+  visitor.add_named_visitor(mark_annotations);
+  auto mark_field = [&](const t_field& field) {
+    mark_ref(field.type());
+    mark_value(field.default_value(), mark_value);
+  };
+  visitor.add_field_visitor(mark_field);
+  visitor.add_function_param_visitor(mark_field);
+  visitor.add_thrown_exception_visitor(mark_field);
+  visitor.add_function_visitor([&](const t_function& function) {
+    mark_ref(function.return_type());
+    mark_ref(function.interaction());
+  });
+  visitor.add_stream_visitor(
+      [&](const t_stream& stream) { mark_ref(stream.elem_type()); });
+  visitor.add_sink_visitor([&](const t_sink& sink) {
+    mark_ref(sink.elem_type());
+    mark_ref(sink.final_response_type());
+  });
+  visitor.add_typedef_visitor(
+      [&](const t_typedef& type) { mark_ref(type.type()); });
+  visitor.add_const_visitor([&](const t_const& constant) {
+    mark_ref(constant.type_ref());
+    mark_value(constant.value(), mark_value);
+  });
+  visitor.add_service_visitor(
+      [&](const t_service& service) { mark(service.extends()); });
+
+  // All root definitions are retained. Included programs still have metadata,
+  // so their structured annotations also contribute dependency edges.
+  for (const auto& definition : root_program.definitions()) {
+    mark(&definition);
+  }
+  std::unordered_set<const t_program*> visited_programs;
+  auto mark_programs = [&](const t_program& program,
+                           const auto& recurse) -> void {
+    if (!visited_programs.insert(&program).second) {
+      return;
+    }
+    mark_annotations(program);
+    for (const auto* include : program.get_included_programs()) {
+      recurse(*include, recurse);
+    }
+  };
+  mark_programs(root_program, mark_programs);
+
+  while (!pending.empty()) {
+    const auto* node = pending.back();
+    pending.pop_back();
+    if (const auto* constant = dynamic_cast<const t_const*>(node)) {
+      visitor(*constant);
+    } else if (const auto* type = dynamic_cast<const t_type*>(node)) {
+      type->visit([&](const auto& concrete) {
+        using T = std::decay_t<decltype(concrete)>;
+        if constexpr (
+            std::is_base_of_v<t_interface, T> ||
+            std::is_base_of_v<t_structured, T> ||
+            std::is_same_v<T, t_typedef> || std::is_same_v<T, t_enum>) {
+          visitor(concrete);
+        }
+      });
+    }
+  }
+
+  return reachable;
+}
 } // namespace
 
 type::Schema t_ast_generator::gen_schema(
@@ -304,6 +435,9 @@ type::Schema t_ast_generator::gen_schema(
       if (def.generated() && !schema_opts.include_generated_) {
         continue;
       }
+      if (schema_opts.pruned_ && !definition_index.contains(&def)) {
+        continue;
+      }
       if (!schema_opts.use_hash) {
         defs.push_back(definition_index.at(&def));
       }
@@ -322,6 +456,9 @@ type::Schema t_ast_generator::gen_schema(
   schema_populator schema_defs{schema_source, intern_value};
   const_ast_visitor visitor;
   bool is_root_program = true;
+  const auto pruning_set = schema_opts.pruned_
+      ? reachable_definitions(root_program, schema_opts.include_generated_)
+      : std::unordered_set<const t_named*>{};
   visitor.add_program_visitor([&](const t_program& program) {
     assert(!program_index.count(&program));
 
@@ -384,7 +521,9 @@ type::Schema t_ast_generator::gen_schema(
     }
     auto key = schema_source.identify_definition(node);
     definition_key_index[&node] = key;
-    if (!is_root_program && schema_opts.only_root_program_) {
+    if (!is_root_program &&
+        (schema_opts.only_root_program_ ||
+         (schema_opts.pruned_ && !pruning_set.contains(&node)))) {
       return;
     }
     auto& definitions = *ast.definitions();
@@ -623,6 +762,7 @@ no_backcompat:     Disables double writes (breaking changes possible!).
 use_hash:          Uses definitionKey in typeUri and instead of extern ids.
                    (Required for use with the SyntaxGraph API)
 root_program_only: Only schematize the root program.
+pruned:            Only schematize the root program and definitions reachable from it.
 ordered_container_values: Writes map and set values in IDL order, except in
                           debug output, which remains sorted.)");
 

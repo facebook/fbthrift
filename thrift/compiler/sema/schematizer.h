@@ -45,6 +45,7 @@ class schematizer {
     bool include_generated_ = false;
     bool source_ranges_ = false;
     bool only_root_program_ = false;
+    bool pruned_ = false;
     // Writes map and set values in IDL order and keys them by that order.
     bool ordered_container_values_ = false;
 

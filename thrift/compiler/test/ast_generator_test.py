@@ -54,7 +54,12 @@ class AstGeneratorTest(unittest.TestCase):
         self.maxDiff = None
 
     def run_thrift(
-        self, file, backcompat=True, use_hash=False, root_program_only=False
+        self,
+        file,
+        backcompat=True,
+        use_hash=False,
+        root_program_only=False,
+        pruned=False,
     ):
         with resources.as_file(
             resources.files(__package__).joinpath("implicit_includes")
@@ -64,6 +69,8 @@ class AstGeneratorTest(unittest.TestCase):
                 extra_args += ",use_hash"
             if root_program_only:
                 extra_args += ",root_program_only"
+            if pruned:
+                extra_args += ",pruned"
             argsx = [
                 thrift2ast,
                 "--gen",
@@ -512,3 +519,58 @@ class AstGeneratorTest(unittest.TestCase):
         for ast in asts.values():
             for uri, definition in ast.definitionsMap.items():
                 self.assertEqual(definition, combined_ast.definitionsMap[uri])
+
+    def test_pruned_follows_types_services_and_constant_values(self):
+        write_file(
+            "root.thrift",
+            textwrap.dedent(
+                """
+                include "deps.thrift"
+
+                struct Root {
+                    1: list<deps.Target> target;
+                    2: i32 x = deps.Used;
+                }
+                service Derived extends deps.Base {}
+                const i32 Aliased = deps.Other;
+                """
+            ),
+        )
+        write_file(
+            "deps.thrift",
+            textwrap.dedent(
+                """
+                struct Target { 1: Alias leaf; }
+                typedef Leaf Alias
+                struct Leaf {}
+                service Base {}
+                const i32 Used = 42;
+                const i32 Other = Used;
+                const i32 Unused = 7;
+                struct UnusedType {}
+                """
+            ),
+        )
+
+        full = self.run_thrift("root.thrift")
+        pruned = self.run_thrift("root.thrift", pruned=True)
+        hashed_pruned = self.run_thrift("root.thrift", use_hash=True, pruned=True)
+
+        self.assertEqual(len(full.definitions), 11)
+        self.assertEqual(len(pruned.definitions), 8)
+        self.assertEqual(len(pruned.definitionsMap), 8)
+        self.assertEqual(len(pruned.programs), len(full.programs))
+        self.assertEqual(len(hashed_pruned.definitions), 0)
+        self.assertEqual(len(hashed_pruned.definitionsMap), 8)
+        for ast in (pruned, hashed_pruned):
+            keys = [key for program in ast.programs for key in program.definitionKeys]
+            self.assertEqual(len(keys), 8)
+            self.assertEqual(set(keys), set(ast.definitionsMap))
+        self.assertEqual(
+            sum(len(program.definitions) for program in pruned.programs),
+            sum(len(program.definitionKeys) for program in pruned.programs),
+        )
+        self.assertEqual(
+            {definition.value.attrs.name for definition in pruned.definitions},
+            {"Root", "Derived", "Aliased", "Target", "Alias", "Leaf", "Base", "Used"},
+        )
