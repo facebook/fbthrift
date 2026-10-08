@@ -683,9 +683,7 @@ struct Encode<type::enum_t<T>> {
 template <TType ElemType, typename ElemCppType>
 struct ListEncodeImpl {
   template <typename Protocol, typename ListType, typename ElementWrite>
-  // noinline limits optimizer work for generated translation units with many
-  // list fields.
-  FOLLY_NOINLINE std::size_t operator()(
+  std::size_t operator()(
       Protocol& prot, const ListType& list, ElementWrite elementWrite) const {
     std::size_t xfer = 0;
     xfer += prot.writeListBegin(ElemType, checked_container_size(list.size()));
@@ -709,7 +707,9 @@ struct ListEncodeImpl {
 template <typename Tag>
 struct ListEncode {
   template <typename Protocol, typename T>
-  std::size_t operator()(Protocol& prot, const T& list) const {
+  // noinline limits optimizer work for generated translation units with many
+  // list fields.
+  FOLLY_NOINLINE std::size_t operator()(Protocol& prot, const T& list) const {
     return ListEncodeImpl<typeTagToTType<Tag>, type::native_type<Tag>>{}(
         prot, list, [&](const auto& elem) {
           return Encode<Tag>{}(prot, elem);
