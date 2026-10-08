@@ -29,6 +29,14 @@ constexpr uint8_t PB_WIRE_VARINT = 0;
 constexpr uint8_t PB_WIRE_64BIT = 1;
 constexpr uint8_t PB_WIRE_LENGTH_DELIMITED = 2;
 constexpr uint8_t PB_WIRE_32BIT = 5;
+// Protobuf writes each map entry as a nested message carrying the key in field
+// 1 and the value in field 2.
+constexpr int16_t kMapEntryKeyField = 1;
+constexpr int16_t kMapEntryValueField = 2;
+// Room left for a record's length while its body is written. Five bytes hold
+// any 32-bit length as a varint, and protobuf readers accept the padding when
+// the length needs fewer.
+constexpr size_t kReservedLengthBytes = 5;
 
 bool isSupportedWireType(uint8_t wireType) {
   switch (wireType) {
@@ -165,6 +173,128 @@ void thrift_transcode_proto_skip_field(
       setCursorError(cursor, kMalformedProtobuf);
       break;
   }
+}
+
+TranscodePatchPoint thrift_transcode_proto_reserve_length(
+    TranscodeCursor* cursor) {
+  TranscodePatchPoint mark = thrift_transcode_cursor_mark(cursor);
+  thrift_transcode_cursor_skip(cursor, kReservedLengthBytes);
+  return mark;
+}
+
+void thrift_transcode_proto_patch_length(
+    TranscodeCursor* cursor, TranscodePatchPoint mark) {
+  if (cursor == nullptr || cursor->error != 0) {
+    return;
+  }
+  const size_t bodyBytes =
+      thrift_transcode_cursor_bytes_since_mark(cursor, mark) -
+      kReservedLengthBytes;
+  thrift_transcode_cursor_patch_varint(
+      cursor, mark, bodyBytes, kReservedLengthBytes);
+}
+
+bool thrift_transcode_proto_read_next_occurrence(
+    TranscodeCursor* cursor, int16_t fieldId, uint8_t typeInfo) {
+  if (cursor == nullptr || cursor->error != 0) {
+    return false;
+  }
+  const uint8_t* next = cursor->readPos;
+  int16_t nextFieldId = 0;
+  const uint8_t nextTypeInfo =
+      thrift_transcode_proto_read_field_header(cursor, &nextFieldId, 0);
+  if (cursor->error != 0) {
+    return false;
+  }
+  if (nextTypeInfo == 0 || nextFieldId != fieldId) {
+    cursor->readPos = next;
+    return false;
+  }
+  if (nextTypeInfo != typeInfo) {
+    setCursorError(cursor, kMalformedProtobuf);
+    return false;
+  }
+  return true;
+}
+
+TranscodePatchPoint thrift_transcode_proto_begin_map_entry(
+    TranscodeCursor* cursor, int16_t fieldId, uint8_t keyWireType) {
+  thrift_transcode_proto_write_field_header(
+      cursor, PB_WIRE_LENGTH_DELIMITED + 1, fieldId, 0);
+  TranscodePatchPoint mark = thrift_transcode_proto_reserve_length(cursor);
+  thrift_transcode_proto_write_field_header(
+      cursor, static_cast<uint8_t>(keyWireType + 1), kMapEntryKeyField, 0);
+  return mark;
+}
+
+void thrift_transcode_proto_write_map_value_header(
+    TranscodeCursor* cursor, uint8_t valueWireType) {
+  thrift_transcode_proto_write_field_header(
+      cursor, static_cast<uint8_t>(valueWireType + 1), kMapEntryValueField, 0);
+}
+
+void thrift_transcode_proto_end_map_entry(
+    TranscodeCursor* cursor, TranscodePatchPoint mark) {
+  thrift_transcode_proto_patch_length(cursor, mark);
+}
+
+bool thrift_transcode_proto_enter_map_entry(
+    TranscodeCursor* cursor,
+    uint8_t keyWireType,
+    uint8_t valueWireType,
+    TranscodeProtoMapEntry* entry) {
+  if (cursor == nullptr || cursor->error != 0) {
+    return false;
+  }
+  if (entry == nullptr) {
+    setCursorError(cursor, kMalformedProtobuf);
+    return false;
+  }
+  *entry = {};
+  const uint64_t len = thrift_transcode_read_unsigned_varint(cursor);
+  if (cursor->error != 0) {
+    return false;
+  }
+  if (cursor->readPos > cursor->readEnd ||
+      len > static_cast<uint64_t>(cursor->readEnd - cursor->readPos)) {
+    setCursorError(cursor, kMalformedProtobuf);
+    return false;
+  }
+  entry->parentReadEnd = cursor->readEnd;
+  entry->end = cursor->readPos + len;
+  cursor->readEnd = entry->end;
+  int16_t fieldId = 0;
+  while (const uint8_t typeInfo =
+             thrift_transcode_proto_read_field_header(cursor, &fieldId, 0)) {
+    if (fieldId == kMapEntryKeyField) {
+      if (typeInfo != keyWireType + 1) {
+        setCursorError(cursor, kMalformedProtobuf);
+        break;
+      }
+      entry->key = cursor->readPos;
+    } else if (fieldId == kMapEntryValueField) {
+      if (typeInfo != valueWireType + 1) {
+        setCursorError(cursor, kMalformedProtobuf);
+        break;
+      }
+      entry->value = cursor->readPos;
+    }
+    thrift_transcode_proto_skip_field(cursor, typeInfo);
+  }
+  if (cursor->error != 0) {
+    cursor->readEnd = entry->parentReadEnd;
+    return false;
+  }
+  return true;
+}
+
+void thrift_transcode_proto_leave_map_entry(
+    TranscodeCursor* cursor, const TranscodeProtoMapEntry* entry) {
+  if (cursor == nullptr || entry == nullptr) {
+    return;
+  }
+  cursor->readPos = entry->end;
+  cursor->readEnd = entry->parentReadEnd;
 }
 
 } // extern "C"

@@ -260,4 +260,112 @@ TEST(ProtobufIntrinsicsTest, SkipByWireType) {
   }
 }
 
+// Raw protobuf wire types, as map entry intrinsics take them.
+constexpr uint8_t kVarintWire = 0;
+constexpr uint8_t kLenDelimWire = 2;
+
+TEST(ProtobufIntrinsicsTest, ReadNextOccurrenceLeavesOtherFieldsUnread) {
+  RoundTrip rt;
+  auto w = rt.writer();
+  thrift_transcode_proto_write_field_header(&w, kLenDelim, 2, 0);
+  thrift_transcode_write_unsigned_varint(&w, 0);
+  thrift_transcode_proto_write_field_header(&w, kVarint, 3, 0);
+  auto r = rt.reader(w);
+
+  EXPECT_TRUE(thrift_transcode_proto_read_next_occurrence(&r, 2, kLenDelim));
+  thrift_transcode_proto_skip_field(&r, kLenDelim);
+  EXPECT_FALSE(thrift_transcode_proto_read_next_occurrence(&r, 2, kLenDelim));
+  int16_t fieldId = 0;
+  EXPECT_EQ(thrift_transcode_proto_read_field_header(&r, &fieldId, 0), kVarint);
+  EXPECT_EQ(fieldId, 3);
+  EXPECT_EQ(r.error, 0);
+}
+
+TEST(ProtobufIntrinsicsTest, ReadNextOccurrenceRejectsAnotherWireType) {
+  RoundTrip rt;
+  auto w = rt.writer();
+  thrift_transcode_proto_write_field_header(&w, kVarint, 2, 0);
+  auto r = rt.reader(w);
+
+  EXPECT_FALSE(thrift_transcode_proto_read_next_occurrence(&r, 2, kLenDelim));
+  EXPECT_NE(r.error, 0);
+}
+
+TEST(
+    ProtobufIntrinsicsTest, MapEntryWritesKeyThenValueInALengthDelimitedField) {
+  const std::vector<uint8_t> key = {'k'};
+  RoundTrip rt;
+  auto w = rt.writer();
+  auto mark = thrift_transcode_proto_begin_map_entry(&w, 4, kLenDelimWire);
+  thrift_transcode_write_varint_prefixed(&w, key.data(), key.size());
+  thrift_transcode_proto_write_map_value_header(&w, kVarintWire);
+  thrift_transcode_write_unsigned_varint(&w, 10);
+  thrift_transcode_proto_end_map_entry(&w, mark);
+  ASSERT_EQ(w.error, 0);
+
+  auto r = rt.reader(w);
+  TranscodeProtoMapEntry entry{};
+  int16_t fieldId = 0;
+  ASSERT_EQ(
+      thrift_transcode_proto_read_field_header(&r, &fieldId, 0), kLenDelim);
+  EXPECT_EQ(fieldId, 4);
+  ASSERT_TRUE(thrift_transcode_proto_enter_map_entry(
+      &r, kLenDelimWire, kVarintWire, &entry));
+  ASSERT_NE(entry.key, nullptr);
+  ASSERT_NE(entry.value, nullptr);
+  EXPECT_LT(entry.key, entry.value);
+  r.readPos = entry.value;
+  EXPECT_EQ(thrift_transcode_read_unsigned_varint(&r), 10);
+}
+
+TEST(ProtobufIntrinsicsTest, EnterMapEntryFindsPartsInAnyOrderOrMissing) {
+  RoundTrip rt;
+  auto w = rt.writer();
+  // value = 7 before key = 5, then an unknown field 3.
+  thrift_transcode_write_unsigned_varint(&w, 6);
+  thrift_transcode_proto_write_field_header(&w, kVarint, 2, 0);
+  thrift_transcode_write_unsigned_varint(&w, 7);
+  thrift_transcode_proto_write_field_header(&w, kVarint, 1, 0);
+  thrift_transcode_write_unsigned_varint(&w, 5);
+  thrift_transcode_proto_write_field_header(&w, kVarint, 3, 0);
+  thrift_transcode_write_unsigned_varint(&w, 9);
+  // An entry with only a key.
+  thrift_transcode_write_unsigned_varint(&w, 2);
+  thrift_transcode_proto_write_field_header(&w, kVarint, 1, 0);
+  thrift_transcode_write_unsigned_varint(&w, 1);
+  auto r = rt.reader(w);
+  const uint8_t* end = r.readEnd;
+
+  TranscodeProtoMapEntry first{};
+  ASSERT_TRUE(thrift_transcode_proto_enter_map_entry(
+      &r, kVarintWire, kVarintWire, &first));
+  EXPECT_LT(first.value, first.key);
+  EXPECT_EQ(r.readEnd, first.end);
+  thrift_transcode_proto_leave_map_entry(&r, &first);
+  TranscodeProtoMapEntry second{};
+  ASSERT_TRUE(thrift_transcode_proto_enter_map_entry(
+      &r, kVarintWire, kVarintWire, &second));
+  thrift_transcode_proto_leave_map_entry(&r, &second);
+
+  EXPECT_NE(second.key, nullptr);
+  EXPECT_EQ(second.value, nullptr);
+  EXPECT_EQ(r.readPos, end);
+  EXPECT_EQ(r.readEnd, end);
+  EXPECT_EQ(r.error, 0);
+}
+
+TEST(ProtobufIntrinsicsTest, EnterMapEntryRejectsAKeyOfAnotherWireType) {
+  RoundTrip rt;
+  auto w = rt.writer();
+  thrift_transcode_write_unsigned_varint(&w, 2);
+  thrift_transcode_proto_write_field_header(&w, kVarint, 1, 0);
+  thrift_transcode_write_unsigned_varint(&w, 1);
+  auto r = rt.reader(w);
+
+  TranscodeProtoMapEntry entry{};
+  EXPECT_FALSE(thrift_transcode_proto_enter_map_entry(
+      &r, kLenDelimWire, kVarintWire, &entry));
+  EXPECT_NE(r.error, 0);
+}
+
 } // namespace
