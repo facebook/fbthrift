@@ -110,7 +110,6 @@ THRIFT_FLAG_DEFINE_bool(enable_on_stop_serving, true);
 
 THRIFT_FLAG_DEFINE_bool(enable_io_queue_lag_detection, true);
 
-THRIFT_FLAG_DEFINE_bool(server_fizz_enable_aegis, false);
 THRIFT_FLAG_DEFINE_bool(server_fizz_prefer_psk_ke, false);
 THRIFT_FLAG_DEFINE_bool(server_fizz_enable_presenting_dc, false);
 THRIFT_FLAG_DEFINE_bool(default_sync_max_requests_to_concurrency_limit, false);
@@ -2484,10 +2483,6 @@ ThriftServer::extractNewConnectionContext(folly::AsyncTransport& transport) {
     }
   }
   return folly::none;
-}
-
-folly::observer::Observer<bool> ThriftServer::enableAegis() {
-  return THRIFT_FLAG_OBSERVE(server_fizz_enable_aegis);
 }
 
 folly::observer::Observer<bool> ThriftServer::preferPskKe() {
