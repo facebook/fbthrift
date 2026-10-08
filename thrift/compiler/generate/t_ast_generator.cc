@@ -157,6 +157,126 @@ class t_ast_generator : public t_generator {
   schematizer::options schema_opts_;
 };
 
+namespace {
+class source_range_builder {
+ public:
+  source_range_builder(
+      source_manager& source_mgr,
+      const std::unordered_map<const t_program*, type::ProgramId>&
+          program_index)
+      : source_mgr_(source_mgr), program_index_(program_index) {}
+
+  type::SourceRange resolve(source_range in, const t_program& program) const {
+    resolved_location begin = source_mgr_.resolve_location(in.begin);
+    resolved_location end = source_mgr_.resolve_location(in.end);
+    type::SourceRange range;
+    range.programId() = program_index_.at(&program);
+    range.beginLine() = begin.line();
+    range.beginColumn() = begin.column();
+    range.endLine() = end.line();
+    range.endColumn() = end.column();
+    return range;
+  }
+
+  void set(
+      const t_named& node,
+      type::DefinitionAttrs& attrs,
+      const t_program* program = nullptr) const {
+    program = program ? program : node.program();
+    attrs.sourceRange() = resolve(node.src_range(), *program);
+    if (node.has_doc()) {
+      attrs.docs()->sourceRange() = resolve(node.doc_range(), *program);
+    }
+  }
+
+  template <typename Node, typename Definition>
+  void set_children(const Node& node, Definition& parent_def) const {
+    if constexpr (std::is_base_of_v<t_structured, Node>) {
+      int i = 0;
+      for (const auto& field : node.fields()) {
+        auto& def = parent_def.fields()[i++];
+        assert(def.name() == field.name());
+        set(field, *def.attrs(), node.program());
+      }
+    } else if constexpr (std::is_same_v<Node, t_enum>) {
+      int i = 0;
+      for (const auto& value : node.values()) {
+        auto& def = parent_def.values()[i++];
+        assert(def.name() == value.name());
+        set(value, *def.attrs(), node.program());
+      }
+    } else if constexpr (std::is_base_of_v<t_interface, Node>) {
+      int i = 0;
+      for (const auto& function : node.functions()) {
+        auto& def = parent_def.functions()[i++];
+        assert(def.name() == function.name());
+        set(function, *def.attrs(), node.program());
+
+        for (size_t p = 0; p < function.params().fields().size(); p++) {
+          const auto& param = function.params().fields()[p];
+          auto& param_def = def.paramlist()->fields()[p];
+          assert(param_def.name() == param.name());
+          set(param, *param_def.attrs(), node.program());
+        }
+        if (function.exceptions() != nullptr) {
+          for (size_t e = 0; e < function.exceptions()->fields().size(); e++) {
+            const auto& exception = function.exceptions()->fields()[e];
+            auto& exception_def = def.exceptions()[e];
+            assert(exception_def.name() == exception.name());
+            set(exception, *exception_def.attrs(), node.program());
+          }
+        }
+      }
+    }
+  }
+
+ private:
+  source_manager& source_mgr_;
+  const std::unordered_map<const t_program*, type::ProgramId>& program_index_;
+};
+
+schematizer::value_id intern_schema_value(
+    type::Schema& ast,
+    const schematizer::options& opts,
+    protocol::Value value) {
+  if (opts.use_hash) {
+    // Values differing only in container order must not share a key when
+    // that order is written, since each key carries one order.
+    std::optional<std::string> ordered_bytes;
+    std::array<uint8_t, SHA256_DIGEST_LENGTH> hash;
+    if (opts.ordered_container_values_) {
+      ordered_bytes = ordered_value_bytes(value);
+      hash = ordered_value_hash(*ordered_bytes);
+    } else {
+      hash = op::hash<
+          type::struct_t<protocol::Value>,
+          apache::thrift::op::Sha256Hasher>(value);
+    }
+    type::ValueKey key;
+    memcpy(&key, hash.data(), sizeof(key));
+    if (ast.valuesMap()->count(key)) {
+      const auto& existing = ast.valuesMap()->at(key);
+      const bool matches = ordered_bytes
+          ? ordered_value_bytes(existing) == *ordered_bytes
+          : existing == value;
+      if (!matches) {
+        throw std::runtime_error(
+            fmt::format(
+                "Hash collision on value: {}", debugStringViaEncode(value)));
+      }
+    } else {
+      ast.valuesMap()->insert({key, std::move(value)});
+    }
+    return static_cast<schematizer::value_id>(key);
+  }
+
+  auto& values = ast.values().value();
+  auto ret = static_cast<schematizer::value_id>(values.size() + 1);
+  values.push_back(std::move(value));
+  return ret;
+}
+} // namespace
+
 type::Schema t_ast_generator::gen_schema(
     schematizer::options& schema_opts,
     source_manager& source_mgr,
@@ -169,43 +289,10 @@ type::Schema t_ast_generator::gen_schema(
       definition_index;
   std::unordered_map<const t_named*, apache::thrift::type::DefinitionKey>
       definition_key_index;
+  source_range_builder ranges{source_mgr, program_index};
 
   auto intern_value = [&](protocol::Value value, t_program* = nullptr) {
-    if (schema_opts.use_hash) {
-      // Values differing only in container order must not share a key when
-      // that order is written, since each key carries one order.
-      std::optional<std::string> ordered_bytes;
-      std::array<uint8_t, SHA256_DIGEST_LENGTH> hash;
-      if (schema_opts.ordered_container_values_) {
-        ordered_bytes = ordered_value_bytes(value);
-        hash = ordered_value_hash(*ordered_bytes);
-      } else {
-        hash = op::hash<
-            type::struct_t<protocol::Value>,
-            apache::thrift::op::Sha256Hasher>(value);
-      }
-      type::ValueKey key;
-      memcpy(&key, hash.data(), sizeof(key));
-      if (ast.valuesMap()->count(key)) {
-        const auto& existing = ast.valuesMap()->at(key);
-        const bool matches = ordered_bytes
-            ? ordered_value_bytes(existing) == *ordered_bytes
-            : existing == value;
-        if (!matches) {
-          throw std::runtime_error(
-              fmt::format(
-                  "Hash collision on value: {}", debugStringViaEncode(value)));
-        }
-      } else {
-        ast.valuesMap()->insert({key, std::move(value)});
-      }
-      return static_cast<schematizer::value_id>(key);
-    }
-
-    auto& values = ast.values().value();
-    auto ret = position_to_id<schematizer::value_id>(values.size());
-    values.push_back(std::move(value));
-    return ret;
+    return intern_schema_value(ast, schema_opts, std::move(value));
   };
 
   auto populate_defs = [&](const t_program& program) {
@@ -221,69 +308,6 @@ type::Schema t_ast_generator::gen_schema(
         defs.push_back(definition_index.at(&def));
       }
       defKeys.push_back(definition_key_index.at(&def));
-    }
-  };
-
-  auto src_range = [&](source_range in, const t_program& program) {
-    resolved_location begin = source_mgr.resolve_location(in.begin);
-    resolved_location end = source_mgr.resolve_location(in.end);
-    type::SourceRange range;
-    range.programId() = program_index.at(&program);
-    range.beginLine() = begin.line();
-    range.beginColumn() = begin.column();
-    range.endLine() = end.line();
-    range.endColumn() = end.column();
-    return range;
-  };
-
-  auto set_source_range = [&](const t_named& def,
-                              type::DefinitionAttrs& attrs,
-                              const t_program* program = nullptr) {
-    program = program ? program : def.program();
-    attrs.sourceRange() = src_range(def.src_range(), *program);
-    if (def.has_doc()) {
-      attrs.docs()->sourceRange() = src_range(def.doc_range(), *program);
-    }
-  };
-
-  auto set_child_source_ranges = [&](const auto& node, auto& parent_def) {
-    using Node = std::decay_t<decltype(node)>;
-    if constexpr (std::is_base_of_v<t_structured, Node>) {
-      int i = 0;
-      for (const auto& field : node.fields()) {
-        auto& def = parent_def.fields()[i++];
-        assert(def.name() == field.name());
-        set_source_range(field, *def.attrs(), node.program());
-      }
-    } else if constexpr (std::is_same_v<Node, t_enum>) {
-      int i = 0;
-      for (const auto& value : node.values()) {
-        auto& def = parent_def.values()[i++];
-        assert(def.name() == value.name());
-        set_source_range(value, *def.attrs(), node.program());
-      }
-    } else if constexpr (std::is_base_of_v<t_interface, Node>) {
-      int i = 0;
-      for (const auto& function : node.functions()) {
-        auto& def = parent_def.functions()[i++];
-        assert(def.name() == function.name());
-        set_source_range(function, *def.attrs(), node.program());
-
-        for (size_t p = 0; p < function.params().fields().size(); p++) {
-          const auto& param = function.params().fields()[p];
-          auto& param_def = def.paramlist()->fields()[p];
-          assert(param_def.name() == param.name());
-          set_source_range(param, *param_def.attrs(), node.program());
-        }
-        if (function.exceptions() != nullptr) {
-          for (size_t e = 0; e < function.exceptions()->fields().size(); e++) {
-            const auto& exception = function.exceptions()->fields()[e];
-            auto& exception_def = def.exceptions()[e];
-            assert(exception_def.name() == exception.name());
-            set_source_range(exception, *exception_def.attrs(), node.program());
-          }
-        }
-      }
     }
   };
 
@@ -314,7 +338,7 @@ type::Schema t_ast_generator::gen_schema(
     if (program.has_doc() && schema_opts.include_docs &&
         schema_opts.include_source_ranges) {
       programs.back().attrs()->docs()->sourceRange() =
-          src_range(program.doc_range(), program);
+          ranges.resolve(program.doc_range(), program);
     }
 
     auto was_root_program = std::exchange(is_root_program, false);
@@ -370,8 +394,8 @@ type::Schema t_ast_generator::gen_schema(
     auto& def = kind_ref_fn(definitions.emplace_back()).ensure();
     def = schema_defs.gen_schema(node);
     if (schema_opts.include_source_ranges) {
-      set_source_range(node, *def.attrs());
-      set_child_source_ranges(node, def);
+      ranges.set(node, *def.attrs());
+      ranges.set_children(node, def);
     }
     if (ast.definitionsMap()->count(key)) {
       throw std::runtime_error(
@@ -414,7 +438,7 @@ type::Schema t_ast_generator::gen_schema(
       } else {
         try {
           type::IdentifierRef ident;
-          ident.range() = src_range(ref.src_range(), root_program);
+          ident.range() = ranges.resolve(ref.src_range(), root_program);
           if (const auto& uri = ref->uri(); !uri.empty()) {
             ident.uri()->uri_ref() = uri;
           } else {
@@ -438,7 +462,7 @@ type::Schema t_ast_generator::gen_schema(
       if (auto rng = val->ref_range(); rng.begin != source_location{}) {
         try {
           type::IdentifierRef ident;
-          ident.range() = src_range(rng, root_program);
+          ident.range() = ranges.resolve(rng, root_program);
           if (auto enum_owner = val->get_enum()) {
             if (const auto& uri = enum_owner->uri(); !uri.empty()) {
               ident.uri()->uri_ref() = uri;
@@ -535,7 +559,7 @@ type::Schema t_ast_generator::gen_schema(
   if (schema_opts.source_ranges_) {
     for (auto inc : root_program.includes()) {
       type::IncludeRef ident;
-      ident.range() = src_range(inc->str_range(), root_program);
+      ident.range() = ranges.resolve(inc->str_range(), root_program);
       ident.target() = program_index.at(inc->get_program());
       ast.includeSourceRanges()->push_back(std::move(ident));
     }
