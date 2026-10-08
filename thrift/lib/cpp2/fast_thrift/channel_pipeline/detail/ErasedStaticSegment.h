@@ -244,4 +244,70 @@ class ErasedStaticSegment {
 
 static_assert(sizeof(ErasedStaticSegment) == 2 * sizeof(void*));
 
+class ErasedStaticHandlerSegment {
+ public:
+  explicit ErasedStaticHandlerSegment(ErasedStaticHandler handler)
+      : handler_(std::move(handler)) {}
+
+  std::size_t handlerCount() const noexcept { return 1; }
+  HandlerId handlerId(std::size_t) const noexcept {
+    return handler_.handlerId();
+  }
+  void bindContext(
+      void* pipeline,
+      const StaticHandlerContextOps& ops,
+      std::size_t baseIndex,
+      std::size_t) noexcept {
+    handler_.bindContext(pipeline, ops, baseIndex);
+  }
+  Result onReadFirst(TypeErasedBox&& msg) noexcept {
+    return handler_.onRead(std::move(msg));
+  }
+  Result onReadAt(std::size_t, TypeErasedBox&& msg) noexcept {
+    return handler_.onRead(std::move(msg));
+  }
+  Result onWriteLast(TypeErasedBox&& msg) noexcept {
+    return handler_.onWrite(std::move(msg));
+  }
+  Result onWriteAt(std::size_t, TypeErasedBox&& msg) noexcept {
+    return handler_.onWrite(std::move(msg));
+  }
+  void onExceptionFirst(folly::exception_wrapper&& e) noexcept {
+    handler_.onException(std::move(e));
+  }
+  void onExceptionAt(std::size_t, folly::exception_wrapper&& e) noexcept {
+    handler_.onException(std::move(e));
+  }
+  void onWriteReady(std::size_t) noexcept { handler_.onWriteReady(); }
+  void onReadReady(std::size_t) noexcept { handler_.onReadReady(); }
+  void onPipelineActive(std::size_t) noexcept { handler_.onPipelineActive(); }
+  void onPipelineInactive(std::size_t) noexcept {
+    handler_.onPipelineInactive();
+  }
+  void handlerAdded(std::size_t) noexcept { handler_.handlerAdded(); }
+  void handlerRemoved(std::size_t) noexcept { handler_.handlerRemoved(); }
+  void fireEvent(std::size_t, EventKey key, const void* payload) noexcept {
+    handler_.fireEvent(key, payload);
+  }
+  WriteReadyHook* writeReadyHook(std::size_t) noexcept {
+    return handler_.writeReadyHook();
+  }
+  ReadReadyHook* readReadyHook(std::size_t) noexcept {
+    return handler_.readReadyHook();
+  }
+
+ private:
+  ErasedStaticHandler handler_;
+};
+
 } // namespace apache::thrift::fast_thrift::channel_pipeline::detail
+
+namespace apache::thrift::fast_thrift::channel_pipeline {
+
+inline detail::ErasedStaticSegment makeErasedStaticHandlerSegment(
+    detail::ErasedStaticHandler handler) {
+  return detail::ErasedStaticSegment::make<detail::ErasedStaticHandlerSegment>(
+      std::move(handler));
+}
+
+} // namespace apache::thrift::fast_thrift::channel_pipeline

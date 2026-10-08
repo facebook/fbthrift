@@ -16,16 +16,119 @@
 
 #pragma once
 
+#include <array>
+#include <memory>
 #include <string>
+#include <tuple>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticSegmentBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/extension/ThriftConnectionExtension.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/extension/ThriftExtensionPipelineHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/framework/ThriftPipelineHandler.h>
 
 namespace apache::thrift::fast_thrift::thrift {
+
+namespace module_detail {
+
+template <typename H>
+struct ExtensionAdapter {
+  template <typename Context>
+  using Handler = server::ThriftExtensionPipelineHandler<H, Context>;
+};
+
+template <typename H, typename... Args>
+struct TypedExtensionEntry {
+  channel_pipeline::HandlerId id;
+  std::tuple<Args...> args;
+
+  channel_pipeline::detail::HandlerNode makeDynamic(
+      ExtensionStateStore& store) const {
+    return std::apply(
+        [&](const auto&... arg) {
+          using Adapter = server::ThriftExtensionPipelineHandler<H>;
+          return channel_pipeline::detail::makeHandlerNode<Adapter>(
+              id, std::make_unique<Adapter>(store, arg...));
+        },
+        args);
+  }
+
+  auto makeStatic(ExtensionStateStore& store) const {
+    using Adapter = ExtensionAdapter<H>;
+    using Entry = channel_pipeline::detail::StaticSegmentEntry<
+        Adapter::template Handler,
+        std::reference_wrapper<ExtensionStateStore>,
+        Args...>;
+    return std::apply(
+        [&](const auto&... arg) {
+          return Entry{
+              id,
+              std::tuple<std::reference_wrapper<ExtensionStateStore>, Args...>(
+                  store, arg...)};
+        },
+        args);
+  }
+
+  template <typename Callbacks>
+  void appendPendingConnectionCallbacks(
+      std::vector<Callbacks>& callbacks) const {
+    if constexpr (ThriftPendingConnectionExtensionHandler<H>) {
+      callbacks.push_back(
+          Callbacks{
+              .enqueued = +[]() noexcept { H::onConnectionEnqueued(); },
+              .dequeued = +[]() noexcept { H::onConnectionDequeued(); },
+              .droppedWhileQueued =
+                  +[]() noexcept { H::onConnectionDroppedWhileQueued(); },
+          });
+    }
+  }
+};
+
+template <typename... Entry>
+struct TypedModuleState {
+  static constexpr std::size_t kCount = sizeof...(Entry);
+
+  explicit TypedModuleState(std::tuple<Entry...> entries)
+      : entries(std::move(entries)), ids(makeIds()) {}
+
+  void appendDynamic(
+      ExtensionStateStore& store,
+      folly::FunctionRef<void(channel_pipeline::detail::HandlerNode&&)> append)
+      const {
+    std::apply(
+        [&](const auto&... entry) { (append(entry.makeDynamic(store)), ...); },
+        entries);
+  }
+
+  channel_pipeline::detail::ErasedStaticSegment makeStatic(
+      ExtensionStateStore& store) const {
+    return std::apply(
+        [&](const auto&... entry) {
+          auto segmentEntries = std::tuple(entry.makeStatic(store)...);
+          using Segment = channel_pipeline::detail::InlineTypedStaticSegment<
+              decltype(entry.makeStatic(store))...>;
+          return channel_pipeline::detail::ErasedStaticSegment::make<Segment>(
+              segmentEntries, ids);
+        },
+        entries);
+  }
+
+  std::array<channel_pipeline::HandlerId, kCount> makeIds() const {
+    return std::apply(
+        [](const auto&... entry) {
+          return std::array<channel_pipeline::HandlerId, kCount>{entry.id...};
+        },
+        entries);
+  }
+
+  std::tuple<Entry...> entries;
+  std::array<channel_pipeline::HandlerId, kCount> ids;
+};
+
+} // namespace module_detail
 
 /**
  * FastServerModule — a named bundle of Fast Thrift extensions.
@@ -184,5 +287,80 @@ class FastServerModule {
   bool controlsReads_{false};
   bool requiresHeaders_{false};
 };
+
+template <typename... Entry>
+class StaticFastServerModule {
+ public:
+  explicit StaticFastServerModule(std::string name) : name_(std::move(name)) {}
+
+  template <typename H, typename... Args>
+  auto addThriftExtension(Args&&... args) && {
+    using NewEntry =
+        module_detail::TypedExtensionEntry<H, std::decay_t<Args>...>;
+    const auto id =
+        server::deriveThriftPipelineHandlerId(name_, sizeof...(Entry));
+    return StaticFastServerModule<Entry..., NewEntry>(
+        std::move(name_),
+        std::tuple_cat(
+            std::move(entries_),
+            std::tuple<NewEntry>(NewEntry{
+                id,
+                std::tuple<std::decay_t<Args>...>(
+                    std::forward<Args>(args)...)})),
+        controlsReads_ || ThriftBackpressureExtensionHandler<H>,
+        requiresHeaders_ || UsesHeaders<H>);
+  }
+
+  const std::string& name() const noexcept { return name_; }
+  bool controlsReads() const noexcept { return controlsReads_; }
+  bool requiresHeaders() const noexcept { return requiresHeaders_; }
+
+  std::vector<FastServerModule::PendingConnectionCallbacks>
+  pendingConnectionCallbacks() const {
+    std::vector<FastServerModule::PendingConnectionCallbacks> callbacks;
+    std::apply(
+        [&](const auto&... entry) {
+          (entry.appendPendingConnectionCallbacks(callbacks), ...);
+        },
+        entries_);
+    return callbacks;
+  }
+
+  server::ThriftPipelineRegistration registration() && {
+    static_assert(sizeof...(Entry) != 0);
+    auto state =
+        std::make_shared<const module_detail::TypedModuleState<Entry...>>(
+            std::move(entries_));
+    return server::ThriftPipelineRegistration(
+        server::ThriftPipelineSegmentFactory(
+            [state](ExtensionStateStore& store, auto append) {
+              state->appendDynamic(store, append);
+            },
+            [state](ExtensionStateStore& store) {
+              return state->makeStatic(store);
+            }));
+  }
+
+ private:
+  template <typename...>
+  friend class StaticFastServerModule;
+
+  StaticFastServerModule(
+      std::string name,
+      std::tuple<Entry...> entries,
+      bool controlsReads,
+      bool requiresHeaders)
+      : name_(std::move(name)),
+        entries_(std::move(entries)),
+        controlsReads_(controlsReads),
+        requiresHeaders_(requiresHeaders) {}
+
+  std::string name_;
+  std::tuple<Entry...> entries_;
+  bool controlsReads_{false};
+  bool requiresHeaders_{false};
+};
+
+StaticFastServerModule(std::string) -> StaticFastServerModule<>;
 
 } // namespace apache::thrift::fast_thrift::thrift

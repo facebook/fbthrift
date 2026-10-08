@@ -151,16 +151,22 @@ class StaticSegmentSlot<Segment, Index, StaticSegmentEntry<H, Args...>> {
   Context context_;
 };
 
-template <typename IndexSequence, typename... Entry>
+template <typename IndexSequence, typename IdStorage, typename... Entry>
 class TypedStaticSegmentImpl;
 
-template <std::size_t... Index, typename... Entry>
-class TypedStaticSegmentImpl<std::index_sequence<Index...>, Entry...>
+template <std::size_t... Index, typename IdStorage, typename... Entry>
+class TypedStaticSegmentImpl<std::index_sequence<Index...>, IdStorage, Entry...>
     : private StaticSegmentSlot<
-          TypedStaticSegmentImpl<std::index_sequence<Index...>, Entry...>,
+          TypedStaticSegmentImpl<
+              std::index_sequence<Index...>,
+              IdStorage,
+              Entry...>,
           Index,
           Entry>... {
-  using Self = TypedStaticSegmentImpl<std::index_sequence<Index...>, Entry...>;
+  using Self = TypedStaticSegmentImpl<
+      std::index_sequence<Index...>,
+      IdStorage,
+      Entry...>;
   static constexpr std::size_t kCount = sizeof...(Entry);
 
   template <std::size_t I>
@@ -170,13 +176,18 @@ class TypedStaticSegmentImpl<std::index_sequence<Index...>, Entry...>
 
  public:
   explicit TypedStaticSegmentImpl(
-      const std::tuple<Entry...>& entries,
-      std::shared_ptr<const std::array<HandlerId, kCount>> ids)
+      const std::tuple<Entry...>& entries, IdStorage ids)
       : Slot<Index>(this, std::get<Index>(entries))..., ids_(std::move(ids)) {}
 
   static constexpr std::size_t handlerCount() noexcept { return kCount; }
   HandlerId handlerId(std::size_t index) const noexcept {
-    return (*ids_)[index];
+    if constexpr (
+        std::is_pointer_v<IdStorage> ||
+        requires(const IdStorage& ids) { *ids; }) {
+      return (*ids_)[index];
+    } else {
+      return ids_[index];
+    }
   }
   std::size_t handlerIndex(std::size_t index) const noexcept {
     return baseIndex_ + index;
@@ -454,7 +465,7 @@ class TypedStaticSegmentImpl<std::index_sequence<Index...>, Entry...>
     }
   }
 
-  std::shared_ptr<const std::array<HandlerId, kCount>> ids_;
+  IdStorage ids_;
   void* pipeline_{nullptr};
   const StaticHandlerContextOps* outerOps_{nullptr};
   std::uint32_t baseIndex_{0};
@@ -462,8 +473,16 @@ class TypedStaticSegmentImpl<std::index_sequence<Index...>, Entry...>
 };
 
 template <typename... Entry>
-using TypedStaticSegment =
-    TypedStaticSegmentImpl<std::index_sequence_for<Entry...>, Entry...>;
+using TypedStaticSegment = TypedStaticSegmentImpl<
+    std::index_sequence_for<Entry...>,
+    std::shared_ptr<const std::array<HandlerId, sizeof...(Entry)>>,
+    Entry...>;
+
+template <typename... Entry>
+using InlineTypedStaticSegment = TypedStaticSegmentImpl<
+    std::index_sequence_for<Entry...>,
+    std::array<HandlerId, sizeof...(Entry)>,
+    Entry...>;
 
 } // namespace detail
 

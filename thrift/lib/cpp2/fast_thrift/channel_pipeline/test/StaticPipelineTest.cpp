@@ -851,6 +851,80 @@ TEST(StaticPipelineTest, SplicesTypedSegmentAsLogicalHandlers) {
           "segment-first.removed",  "typed-first.removed"}));
 }
 
+TEST(StaticPipelineTest, SplicesErasedHandlerAsSingletonSegment) {
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  StaticTailHandler tail;
+  TestAllocator allocator;
+  std::vector<std::string> trace;
+  std::vector<detail::ErasedStaticSegment> segments;
+  segments.push_back(
+      StaticSegmentBuilder<>()
+          .addHandler<SegmentTraceHandler>(
+              first_erased_static_tag.id, &trace, "typed-segment")
+          .build());
+  segments.push_back(makeErasedStaticHandlerSegment(
+      detail::makeErasedStaticHandler<TraceHandler>(
+          second_erased_static_tag.id, &trace, "erased-handler")));
+
+  auto pipeline =
+      StaticPipelineBuilder<
+          StaticHeadHandler,
+          StaticTailHandler,
+          TestAllocator>()
+          .setEventBase(&eventBase)
+          .setHead(&head)
+          .setTail(&tail)
+          .setAllocator(&allocator)
+          .addNextDuplex<TraceHandler>(first_static_tag, &trace, "before")
+          .addStaticSegments(std::move(segments))
+          .addNextDuplex<TraceHandler>(second_static_tag, &trace, "after")
+          .build();
+
+  EXPECT_EQ(pipeline->handlerCount(), 4);
+  pipeline->activate();
+  EXPECT_EQ(pipeline->fireRead(TypeErasedBox{1}), Result::Success);
+  EXPECT_EQ(
+      pipeline->fireWrite(erase_and_box(folly::IOBuf::create(0))),
+      Result::Success);
+  pipeline->fireException(
+      folly::make_exception_wrapper<std::runtime_error>("test exception"));
+  pipeline->close();
+
+  EXPECT_EQ(tail.exceptionCount(), 1);
+  EXPECT_EQ(
+      trace,
+      (std::vector<std::string>{
+          "before.added",
+          "typed-segment.added",
+          "erased-handler.added",
+          "after.added",
+          "before.active",
+          "typed-segment.active",
+          "erased-handler.active",
+          "after.active",
+          "before.read",
+          "typed-segment.read",
+          "erased-handler.read",
+          "after.read",
+          "after.write",
+          "erased-handler.write",
+          "typed-segment.write",
+          "before.write",
+          "before.exception",
+          "typed-segment.exception",
+          "erased-handler.exception",
+          "after.exception",
+          "after.inactive",
+          "erased-handler.inactive",
+          "typed-segment.inactive",
+          "before.inactive",
+          "after.removed",
+          "erased-handler.removed",
+          "typed-segment.removed",
+          "before.removed"}));
+}
+
 TEST(StaticPipelineTest, TargetsHandlersWithoutCrossingSplice) {
   folly::EventBase eventBase;
   StaticHeadHandler head;

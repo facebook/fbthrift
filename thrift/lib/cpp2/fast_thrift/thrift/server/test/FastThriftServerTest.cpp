@@ -975,6 +975,49 @@ struct CountingExtension {
   }
 };
 
+class StaticSelectionRecordingHandler {
+ public:
+  StaticSelectionRecordingHandler(
+      std::atomic<int>* reads,
+      std::atomic<int>* sequence,
+      std::atomic<int>* firstRead)
+      : reads_(reads), sequence_(sequence), firstRead_(firstRead) {}
+
+  template <typename Context>
+  void handlerAdded(Context&) noexcept {}
+  template <typename Context>
+  void handlerRemoved(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineActive(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineInactive(Context&) noexcept {}
+  template <typename Context>
+  void onReadReady(Context&) noexcept {}
+  template <typename Context>
+  void onWriteReady(Context&) noexcept {}
+  template <typename Context>
+  cp::Result onRead(Context& ctx, cp::TypeErasedBox&& msg) noexcept {
+    reads_->fetch_add(1, std::memory_order_relaxed);
+    const int next = sequence_->fetch_add(1, std::memory_order_relaxed);
+    int expected = -1;
+    firstRead_->compare_exchange_strong(expected, next);
+    return ctx.fireRead(std::move(msg));
+  }
+  template <typename Context>
+  cp::Result onWrite(Context& ctx, cp::TypeErasedBox&& msg) noexcept {
+    return ctx.fireWrite(std::move(msg));
+  }
+  template <typename Context>
+  void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
+    ctx.fireException(std::move(e));
+  }
+
+ private:
+  std::atomic<int>* reads_;
+  std::atomic<int>* sequence_;
+  std::atomic<int>* firstRead_;
+};
+
 // Identity for a state object that outlives the object itself, so a test can
 // still tell two of them apart. An address cannot do this job: a connection's
 // store is destroyed with the connection, and the next one may be handed the
@@ -1891,6 +1934,86 @@ TEST(
   EXPECT_EQ(addRoundTrip(server.getAddress()), 42);
   EXPECT_GE(requests.load(), 1);
   EXPECT_GE(responses.load(), 1);
+}
+
+TEST(FastThriftServerExtensionTest, StaticModulePreservesRegistrationOrder) {
+  THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
+
+  std::atomic<int> sequence{0};
+  std::atomic<int> first{-1};
+  std::atomic<int> second{-1};
+  std::atomic<int> third{-1};
+  std::atomic<int> fourth{-1};
+  auto config = makeLoopbackConfig();
+  config.channelPipelineMode = ftt::ChannelPipelineMode::Static;
+
+  ftt::FastThriftServer server(std::move(config));
+  server.setInterface(std::make_shared<TestHandler>());
+  server.addModule(
+      ftt::StaticFastServerModule("typed")
+          .addThriftExtension<CountingExtension>(
+              nullptr, nullptr, &sequence, &first)
+          .addThriftExtension<CountingExtension>(
+              nullptr, nullptr, &sequence, &second)
+          .addThriftExtension<CountingExtension>(
+              nullptr, nullptr, &sequence, &third)
+          .addThriftExtension<CountingExtension>(
+              nullptr, nullptr, &sequence, &fourth));
+  server.start();
+
+  EXPECT_EQ(addRoundTrip(server.getAddress()), 42);
+  EXPECT_EQ(
+      (std::array{first.load(), second.load(), third.load(), fourth.load()}),
+      (std::array{0, 1, 2, 3}));
+}
+
+TEST(
+    FastThriftServerExtensionTest,
+    StaticModeKeepsMixedHandlerAndSegmentRegistrationsStatic) {
+  THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
+
+  std::atomic<int> dynamicFactories{0};
+  std::atomic<int> staticFactories{0};
+  std::atomic<int> handlerReads{0};
+  std::atomic<int> sequence{0};
+  std::atomic<int> handlerFirstRead{-1};
+  std::atomic<int> extensionFirstRequest{-1};
+  const auto handlerId =
+      ftt::server::deriveThriftPipelineHandlerId("mixed-static", 0);
+
+  std::vector<ftt::server::ThriftPipelineHandlerFactory> factories;
+  factories.emplace_back(
+      [&](ftt::ExtensionStateStore&) {
+        dynamicFactories.fetch_add(1, std::memory_order_relaxed);
+        return cp::detail::makeHandlerNode<StaticSelectionRecordingHandler>(
+            handlerId,
+            std::make_unique<StaticSelectionRecordingHandler>(
+                &handlerReads, &sequence, &handlerFirstRead));
+      },
+      [&](ftt::ExtensionStateStore&) {
+        staticFactories.fetch_add(1, std::memory_order_relaxed);
+        return cp::detail::makeErasedStaticHandler<
+            StaticSelectionRecordingHandler>(
+            handlerId, &handlerReads, &sequence, &handlerFirstRead);
+      });
+
+  auto config = makeLoopbackConfig();
+  config.channelPipelineMode = ftt::ChannelPipelineMode::Static;
+  ftt::FastThriftServer server(std::move(config));
+  server.setInterface(std::make_shared<TestHandler>());
+  server.addNativeThriftPipelineHandlers(std::move(factories));
+  server.addModule(
+      ftt::StaticFastServerModule("typed")
+          .addThriftExtension<CountingExtension>(
+              nullptr, nullptr, &sequence, &extensionFirstRequest));
+  server.start();
+
+  EXPECT_EQ(addRoundTrip(server.getAddress()), 42);
+  EXPECT_EQ(dynamicFactories.load(), 0);
+  EXPECT_GT(staticFactories.load(), 0);
+  EXPECT_GT(handlerReads.load(), 0);
+  EXPECT_GE(handlerFirstRead.load(), 0);
+  EXPECT_GT(extensionFirstRequest.load(), handlerFirstRead.load());
 }
 
 // Extensions are spliced in registration order (head→tail), across modules and

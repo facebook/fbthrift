@@ -21,11 +21,15 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <variant>
+
+#include <folly/Function.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ErasedStaticHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ErasedStaticSegment.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/HandlerNode.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ExtensionStateStore.h>
@@ -88,6 +92,86 @@ class ThriftPipelineHandlerFactory {
  private:
   DynamicFactory dynamicFactory_;
   StaticFactory staticFactory_;
+};
+
+class ThriftPipelineSegmentFactory {
+ public:
+  using DynamicFactory = std::function<void(
+      ExtensionStateStore&,
+      folly::FunctionRef<void(channel_pipeline::detail::HandlerNode&&)>)>;
+  using StaticFactory =
+      std::function<channel_pipeline::detail::ErasedStaticSegment(
+          ExtensionStateStore&)>;
+
+  ThriftPipelineSegmentFactory(
+      DynamicFactory dynamicFactory, StaticFactory staticFactory)
+      : dynamicFactory_(std::move(dynamicFactory)),
+        staticFactory_(std::move(staticFactory)) {}
+
+  void appendDynamic(
+      ExtensionStateStore& store,
+      folly::FunctionRef<void(channel_pipeline::detail::HandlerNode&&)> append)
+      const {
+    dynamicFactory_(store, append);
+  }
+
+  channel_pipeline::detail::ErasedStaticSegment makeStatic(
+      ExtensionStateStore& store) const {
+    return staticFactory_(store);
+  }
+
+ private:
+  DynamicFactory dynamicFactory_;
+  StaticFactory staticFactory_;
+};
+
+class ThriftPipelineRegistration {
+ public:
+  explicit ThriftPipelineRegistration(ThriftPipelineHandlerFactory factory)
+      : registration_(std::move(factory)) {}
+  explicit ThriftPipelineRegistration(ThriftPipelineSegmentFactory factory)
+      : registration_(std::move(factory)) {}
+
+  bool isSegment() const noexcept {
+    return std::holds_alternative<ThriftPipelineSegmentFactory>(registration_);
+  }
+
+  bool supportsStaticPipeline() const noexcept {
+    if (const auto* handler =
+            std::get_if<ThriftPipelineHandlerFactory>(&registration_)) {
+      return handler->supportsStaticPipeline();
+    }
+    return true;
+  }
+
+  void appendDynamic(
+      ExtensionStateStore& store,
+      folly::FunctionRef<void(channel_pipeline::detail::HandlerNode&&)> append)
+      const {
+    if (const auto* handler =
+            std::get_if<ThriftPipelineHandlerFactory>(&registration_)) {
+      append((*handler)(store));
+      return;
+    }
+    return std::get<ThriftPipelineSegmentFactory>(registration_)
+        .appendDynamic(store, append);
+  }
+
+  channel_pipeline::detail::ErasedStaticHandler makeStaticHandler(
+      ExtensionStateStore& store) const {
+    return std::get<ThriftPipelineHandlerFactory>(registration_)
+        .makeStatic(store);
+  }
+
+  channel_pipeline::detail::ErasedStaticSegment makeStaticSegment(
+      ExtensionStateStore& store) const {
+    return std::get<ThriftPipelineSegmentFactory>(registration_)
+        .makeStatic(store);
+  }
+
+ private:
+  std::variant<ThriftPipelineHandlerFactory, ThriftPipelineSegmentFactory>
+      registration_;
 };
 
 /**

@@ -281,10 +281,31 @@ PipelineOwner finishStaticThriftPipeline(
     const ThriftServerConnectionFactoryConfig& config,
     ExtensionStateStore& extensionStates) {
   if constexpr (WithExtensions) {
+    const bool hasSegments = std::any_of(
+        config.thriftPipelineRegistrations.begin(),
+        config.thriftPipelineRegistrations.end(),
+        [](const auto& registration) { return registration.isSegment(); });
+    if (hasSegments) {
+      std::vector<channel_pipeline::detail::ErasedStaticSegment> segments;
+      segments.reserve(config.thriftPipelineRegistrations.size());
+      for (const auto& registration : config.thriftPipelineRegistrations) {
+        if (registration.isSegment()) {
+          segments.push_back(registration.makeStaticSegment(extensionStates));
+        } else {
+          segments.push_back(
+              channel_pipeline::makeErasedStaticHandlerSegment(
+                  registration.makeStaticHandler(extensionStates)));
+        }
+      }
+      return selectStaticThriftPipelineTail(
+          std::forward<Builder>(builder).addStaticSegments(std::move(segments)),
+          config.enableCancellation,
+          config.enableStreamMux);
+    }
     std::vector<channel_pipeline::detail::ErasedStaticHandler> handlers;
-    handlers.reserve(config.thriftPipelineHandlerFactories.size());
-    for (const auto& factory : config.thriftPipelineHandlerFactories) {
-      handlers.push_back(factory.makeStatic(extensionStates));
+    handlers.reserve(config.thriftPipelineRegistrations.size());
+    for (const auto& registration : config.thriftPipelineRegistrations) {
+      handlers.push_back(registration.makeStaticHandler(extensionStates));
     }
     return selectStaticThriftPipelineTail(
         std::forward<Builder>(builder).addStaticHandlers(std::move(handlers)),
@@ -478,7 +499,7 @@ PipelineOwner selectStaticWriteBuffer(
     boost::intrusive_ptr<ThriftConnContext> connContext,
     ExtensionStateStore& extensionStates,
     ServerStatsShard* statsShard) {
-  const bool withExtensions = !config.thriftPipelineHandlerFactories.empty();
+  const bool withExtensions = !config.thriftPipelineRegistrations.empty();
   if (config.enableWriteBufferBackpressure) {
     return selectStaticExtensions<WithStats, WithHeaders, WithChecksum, true>(
         withExtensions,
@@ -614,10 +635,10 @@ ThriftServerConnectionFactory::ThriftServerConnectionFactory(
       << "ThriftServerConnectionFactory requires a non-null handler";
   if (config_.channelPipelineMode == ChannelPipelineMode::Static &&
       std::any_of(
-          config_.thriftPipelineHandlerFactories.begin(),
-          config_.thriftPipelineHandlerFactories.end(),
-          [](const auto& factory) {
-            return !factory.supportsStaticPipeline();
+          config_.thriftPipelineRegistrations.begin(),
+          config_.thriftPipelineRegistrations.end(),
+          [](const auto& registration) {
+            return !registration.supportsStaticPipeline();
           })) {
     throw std::logic_error(
         "Dynamic thrift pipeline handlers require "
@@ -941,8 +962,12 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
     // order — the first sits closest to the head, the last immediately above
     // the tail adapter. Each factory constructs a fresh per-connection
     // instance.
-    for (const auto& factory : config_.thriftPipelineHandlerFactories) {
-      thriftPipelineBuilder.addErasedHandler(factory(conn.extensionStates));
+    for (const auto& registration : config_.thriftPipelineRegistrations) {
+      registration.appendDynamic(
+          conn.extensionStates,
+          [&](channel_pipeline::detail::HandlerNode&& handler) {
+            thriftPipelineBuilder.addErasedHandler(std::move(handler));
+          });
     }
     // Last before the tail, and deliberately after the embedder handlers: this
     // terminates the connection-lifecycle messages, so everything that might

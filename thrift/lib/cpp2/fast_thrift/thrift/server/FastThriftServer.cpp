@@ -261,10 +261,10 @@ void FastThriftServer::addNativeThriftPipelineHandlers(
   CHECK(state_ == State::kNotStarted)
       << "FastThriftServer::addNativeThriftPipelineHandlers must be called "
          "before start()/serve()";
-  thriftPipelineHandlerFactories_.reserve(
-      thriftPipelineHandlerFactories_.size() + factories.size());
+  thriftPipelineRegistrations_.reserve(
+      thriftPipelineRegistrations_.size() + factories.size());
   for (auto& factory : factories) {
-    thriftPipelineHandlerFactories_.push_back(std::move(factory));
+    thriftPipelineRegistrations_.emplace_back(std::move(factory));
   }
 }
 
@@ -315,63 +315,82 @@ void FastThriftServer::addServerEventHandler(
 }
 
 void FastThriftServer::addModule(FastServerModule module) {
+  auto name = module.name();
+  const bool controlsReads = module.controlsReads();
+  const bool requiresHeaders = module.requiresHeaders();
+  auto pendingConnectionCallbacks = module.pendingConnectionCallbacks();
+  auto factories = std::move(module).handlers();
+  std::vector<server::ThriftPipelineRegistration> registrations;
+  registrations.reserve(factories.size());
+  for (auto& factory : factories) {
+    registrations.emplace_back(std::move(factory));
+  }
+  addModuleRegistrations(
+      std::move(name),
+      controlsReads,
+      requiresHeaders,
+      std::move(pendingConnectionCallbacks),
+      std::move(registrations));
+}
+
+void FastThriftServer::addModuleRegistrations(
+    std::string name,
+    bool controlsReads,
+    bool requiresHeaders,
+    std::vector<FastServerModule::PendingConnectionCallbacks>
+        pendingConnectionCallbacks,
+    std::vector<server::ThriftPipelineRegistration> registrations) {
   std::lock_guard<std::mutex> lock(lifecycleMutex_);
   CHECK(state_ == State::kNotStarted)
       << "FastThriftServer::addModule must be called before start()/serve()";
-  if (module.name().empty()) {
+  if (name.empty()) {
     // The empty namespace is reserved for top-level
     // addNativeThriftPipelineHandlers ids; rejecting empty module names keeps
     // module and top-level id streams disjoint.
     throw std::logic_error(
         "FastThriftServer::addModule: module name must be non-empty");
   }
-  if (module.name() == kEventHandlerBridgeName) {
+  if (name == kEventHandlerBridgeName) {
     throw std::logic_error(
         "FastThriftServer::addModule: module name is reserved by the server");
   }
-  if (moduleNames_.contains(module.name())) {
+  if (moduleNames_.contains(name)) {
     throw std::logic_error(
         fmt::format(
-            "FastThriftServer::addModule: duplicate module name: {}",
-            module.name()));
+            "FastThriftServer::addModule: duplicate module name: {}", name));
   }
   // Same posture for headers: they are reachable only through the per-request
   // context, and only this setting puts them there. An extension that gates on
   // a header it never receives would admit everything.
-  if (module.requiresHeaders() && !config_.enableRequestHeaders) {
+  if (requiresHeaders && !config_.enableRequestHeaders) {
     throw std::logic_error(
         fmt::format(
             "FastThriftServer::addModule: module '{}' registers an extension "
             "that uses headers, which requires enableRequestHeaders",
-            module.name()));
+            name));
   }
   // Two independent things pausing and resuming the same connection's reads,
   // with nothing arbitrating between them: WriteBufferBackpressureHandler
   // resumes as soon as its own buffer drains, which would lift a pause the
   // extension still wants held. Fail loudly rather than intermittently.
-  if (module.controlsReads() && config_.enableWriteBufferBackpressure) {
+  if (controlsReads && config_.enableWriteBufferBackpressure) {
     throw std::logic_error(
         fmt::format(
             "FastThriftServer::addModule: module '{}' registers an extension "
             "that controls reads, which cannot be combined with "
             "enableWriteBufferBackpressure",
-            module.name()));
+            name));
   }
-  auto name = module.name();
-  const auto& pendingConnectionCallbacks = module.pendingConnectionCallbacks();
-  const auto factoryCount = module.handlers().size();
   pendingConnectionCallbacks_.reserve(
       pendingConnectionCallbacks_.size() + pendingConnectionCallbacks.size());
-  thriftPipelineHandlerFactories_.reserve(
-      thriftPipelineHandlerFactories_.size() + factoryCount);
   pendingConnectionCallbacks_.insert(
       pendingConnectionCallbacks_.end(),
-      pendingConnectionCallbacks.begin(),
-      pendingConnectionCallbacks.end());
-  // Splice the module's handlers into the ordered list at the current call
-  // position, preserving intra-module order.
-  for (auto& factory : std::move(module).handlers()) {
-    thriftPipelineHandlerFactories_.push_back(std::move(factory));
+      std::make_move_iterator(pendingConnectionCallbacks.begin()),
+      std::make_move_iterator(pendingConnectionCallbacks.end()));
+  thriftPipelineRegistrations_.reserve(
+      thriftPipelineRegistrations_.size() + registrations.size());
+  for (auto& registration : registrations) {
+    thriftPipelineRegistrations_.push_back(std::move(registration));
   }
   // Claim the name only once the splice succeeded, so a throwing splice does
   // not leave the name permanently reserved against a retry.
@@ -618,19 +637,20 @@ void FastThriftServer::start() {
     registerExtension<server::Cpp2BridgeExtension>();
     auto handlers = std::make_shared<const server::TProcessorEventHandlers>(
         std::move(eventHandlers_));
-    thriftPipelineHandlerFactories_.insert(
-        thriftPipelineHandlerFactories_.begin(),
-        server::makeThriftPipelineHandlerFactory<
-            server::TProcessorEventHandlerBridge<
-                channel_pipeline::detail::ContextImpl>,
-            server::TProcessorEventHandlerBridge<
-                channel_pipeline::detail::StaticHandlerContext>>(
-            server::deriveThriftPipelineHandlerId(
-                kEventHandlerBridgeName, /*index=*/0),
-            server::TProcessorEventHandlerBridgeConfig{
-                .handlers = std::move(handlers),
-                .methodMetadata = methodMetadataRegistry_,
-                .identityResolver = peerIdentityResolver_}));
+    thriftPipelineRegistrations_.insert(
+        thriftPipelineRegistrations_.begin(),
+        server::ThriftPipelineRegistration(
+            server::makeThriftPipelineHandlerFactory<
+                server::TProcessorEventHandlerBridge<
+                    channel_pipeline::detail::ContextImpl>,
+                server::TProcessorEventHandlerBridge<
+                    channel_pipeline::detail::StaticHandlerContext>>(
+                server::deriveThriftPipelineHandlerId(
+                    kEventHandlerBridgeName, /*index=*/0),
+                server::TProcessorEventHandlerBridgeConfig{
+                    .handlers = std::move(handlers),
+                    .methodMetadata = methodMetadataRegistry_,
+                    .identityResolver = peerIdentityResolver_})));
   }
 
   // Wire the per-connection factory. The factory carries all per-EVB-handler
@@ -667,7 +687,7 @@ void FastThriftServer::start() {
       .batchingConfig = config_.batchingConfig,
       .drainTimeout = config_.drainTimeout,
       .reapTimeout = config_.reapTimeout,
-      .thriftPipelineHandlerFactories = thriftPipelineHandlerFactories_,
+      .thriftPipelineRegistrations = thriftPipelineRegistrations_,
       .stats = stats_,
       .useAlignedParser = config_.useAlignedParser,
   };

@@ -148,7 +148,7 @@ struct ThriftServerConnectionFactoryConfig {
   // spliced into the thrift pipeline after all built-in handlers, in
   // registration order — first registered sits closest to the head, last
   // registered sits immediately above the tail app adapter.
-  std::vector<ThriftPipelineHandlerFactory> thriftPipelineHandlerFactories;
+  std::vector<ThriftPipelineRegistration> thriftPipelineRegistrations;
 
   // When set, insert RocketMetricsHandler / ThriftMetricsHandler into the
   // rocket and thrift pipelines, counting messages and errors at each layer

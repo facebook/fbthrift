@@ -328,6 +328,22 @@ class FastThriftServer {
    */
   void addModule(FastServerModule module);
 
+  template <typename... Entry>
+  void addModule(StaticFastServerModule<Entry...> module) {
+    auto name = module.name();
+    const bool controlsReads = module.controlsReads();
+    const bool requiresHeaders = module.requiresHeaders();
+    auto pendingConnectionCallbacks = module.pendingConnectionCallbacks();
+    std::vector<server::ThriftPipelineRegistration> registrations;
+    registrations.push_back(std::move(module).registration());
+    addModuleRegistrations(
+        std::move(name),
+        controlsReads,
+        requiresHeaders,
+        std::move(pendingConnectionCallbacks),
+        std::move(registrations));
+  }
+
   /**
    * The configuration this server was constructed with, for an embedder whose
    * handlers only work under particular settings and want to say so at
@@ -566,6 +582,13 @@ class FastThriftServer {
   };
 
   void rebuildMethodMetadataRegistry();
+  void addModuleRegistrations(
+      std::string name,
+      bool controlsReads,
+      bool requiresHeaders,
+      std::vector<FastServerModule::PendingConnectionCallbacks>
+          pendingConnectionCallbacks,
+      std::vector<server::ThriftPipelineRegistration> registrations);
 
   const FastThriftServerConfig config_;
   std::shared_ptr<ThriftServerAppAdapterFactory> handler_;
@@ -573,8 +596,7 @@ class FastThriftServer {
   std::shared_ptr<ThriftServerMethodMetadataRegistry> methodMetadataRegistry_;
   // Embedder-registered thrift pipeline handler factories, in registration
   // order. Copied into the per-connection factory config at start().
-  std::vector<server::ThriftPipelineHandlerFactory>
-      thriftPipelineHandlerFactories_;
+  std::vector<server::ThriftPipelineRegistration> thriftPipelineRegistrations_;
   server::TProcessorEventHandlers eventHandlers_;
   server::PeerIdentityResolver peerIdentityResolver_{nullptr};
   // Consumed into the layouts below at start(); untouched after.
