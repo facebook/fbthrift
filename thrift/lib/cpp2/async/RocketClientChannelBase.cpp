@@ -240,6 +240,8 @@ folly::Try<FirstResponsePayload> decodeResponseError(
   if (auto loadRef = responseError.load()) {
     metadata.load() = *loadRef;
   }
+  metadata.firstRequestServedUnixTimeSec().from_optional(
+      responseError.firstRequestServedUnixTimeSec().to_optional());
   return folly::Try<FirstResponsePayload>(FirstResponsePayload(
       handler.handleException(TApplicationException(
           exType, responseError.what_utf8().value_or(""))),

@@ -430,6 +430,8 @@ ResponseRpcMetadata ThriftRequestCore::makeResponseRpcMetadata(
 
   if (loadMetric_) {
     metadata.load() = serverConfigs_.getLoad(*loadMetric_);
+    metadata.firstRequestServedUnixTimeSec().from_optional(
+        serverConfigs_.getFirstRequestServedUnixTimeSec());
   }
 
   if (secondaryLoadMetric_) {

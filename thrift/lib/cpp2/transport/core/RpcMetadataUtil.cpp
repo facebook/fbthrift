@@ -306,6 +306,14 @@ void fillTHeaderFromResponseRpcMetadata(
         folly::to<std::string>(*grHealth));
   }
 
+  if (auto firstRequestServedUnixTimeSec =
+          responseMetadata.firstRequestServedUnixTimeSec()) {
+    header.setFirstRequestServedUnixTimeSec(*firstRequestServedUnixTimeSec);
+    header.setReadHeader(
+        transport::THeader::FIRST_REQUEST_SERVED_UNIX_TIME_SEC_HEADER,
+        folly::to<std::string>(*firstRequestServedUnixTimeSec));
+  }
+
   if (auto crc32c = responseMetadata.crc32c()) {
     header.setCrc32c(*crc32c);
   }
@@ -392,6 +400,15 @@ void fillResponseRpcMetadataFromTHeader(
     if (grHealthIt != otherMetadata.end()) {
       responseMetadata.grHealth() = folly::to<int64_t>(grHealthIt->second);
       otherMetadata.erase(grHealthIt);
+    }
+  }
+  {
+    auto firstRequestServedUnixTimeSecIt = otherMetadata.find(
+        transport::THeader::FIRST_REQUEST_SERVED_UNIX_TIME_SEC_HEADER);
+    if (firstRequestServedUnixTimeSecIt != otherMetadata.end()) {
+      responseMetadata.firstRequestServedUnixTimeSec() =
+          folly::to<int64_t>(firstRequestServedUnixTimeSecIt->second);
+      otherMetadata.erase(firstRequestServedUnixTimeSecIt);
     }
   }
   if (auto crc32c = header.getCrc32c()) {

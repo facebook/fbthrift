@@ -64,6 +64,11 @@ class MockServerConfigs : public apache::thrift::server::ServerConfigs {
   MOCK_METHOD(
       std::chrono::milliseconds, getStreamExpireTime, (), (const, override));
   MOCK_METHOD(int64_t, getLoad, (const std::string&, bool), (const, override));
+  MOCK_METHOD(
+      std::optional<int64_t>,
+      getFirstRequestServedUnixTimeSec,
+      (),
+      (const, override));
 
   // using ErrorCodeAndMessage = std::pair<std::string, std::string>;
   MOCK_METHOD(

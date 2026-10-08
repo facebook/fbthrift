@@ -2640,6 +2640,9 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
         std::chrono::system_clock::duration{timeSinceEpoch}};
   }
 
+  // getFirstRequestServedTime in Unix seconds, as reported in responses.
+  std::optional<int64_t> getFirstRequestServedUnixTimeSec() const final;
+
   /**
    * Configures maxReadsPerEvent for accepted connections, see
    * `folly::AsyncSocket::setMaxReadsPerEvent` for more details.

@@ -271,6 +271,11 @@ void Cpp2Connection::setServerHeaders(
   if (ptr) {
     auto load = getWorker()->getServer()->getLoad(*ptr);
     writeHeaders[THeader::QUERY_LOAD_HEADER] = folly::to<std::string>(load);
+    if (const auto firstRequestServedUnixTimeSec =
+            getWorker()->getServer()->getFirstRequestServedUnixTimeSec()) {
+      writeHeaders[THeader::FIRST_REQUEST_SERVED_UNIX_TIME_SEC_HEADER] =
+          folly::to<std::string>(*firstRequestServedUnixTimeSec);
+    }
   }
 
   // set secondary load header

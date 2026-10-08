@@ -445,6 +445,10 @@ struct ResponseRpcMetadata {
   18: optional i64 grSecondaryLoad;
   // Global routing health counter value returned by server in response
   19: optional i64 grHealth;
+  // Unix time in seconds at which the server first served a request.
+  // Only set if loadMetric was set in RequestRpcMetadata and the server has
+  // served a request.
+  20: optional i64 firstRequestServedUnixTimeSec;
 }
 
 enum ResponseRpcErrorCategory {
@@ -531,6 +535,8 @@ struct ResponseRpcError {
   4: optional ResponseRpcErrorCode code;
   // Server load. Returned to client if loadMetric was set in RequestRpcMetadata
   5: optional i64 load;
+  // @see ResponseRpcMetadata.firstRequestServedUnixTimeSec
+  6: optional i64 firstRequestServedUnixTimeSec;
 }
 
 enum StreamRpcErrorCode {

@@ -447,6 +447,14 @@ class THeader final {
 
   std::optional<int64_t> getGrLoadValue() const { return c_.grLoad_; }
 
+  void setFirstRequestServedUnixTimeSec(std::optional<int64_t> value) {
+    c_.firstRequestServedUnixTimeSec_ = value;
+  }
+
+  std::optional<int64_t> getFirstRequestServedUnixTimeSec() const {
+    return c_.firstRequestServedUnixTimeSec_;
+  }
+
   void setGrSecondaryLoadValue(std::optional<int64_t> value) {
     c_.grSecondaryLoad_ = value;
   }
@@ -540,6 +548,8 @@ class THeader final {
       "gr_secondary_load";
   static constexpr std::string_view QUERY_GLOBAL_ROUTING_HEALTH_HEADER =
       "gr_health";
+  static constexpr std::string_view FIRST_REQUEST_SERVED_UNIX_TIME_SEC_HEADER =
+      "first_request_served_unix_time_sec";
   static constexpr std::string_view kClientId = "client_id";
   static constexpr std::string_view kServiceTraceMeta = "service_trace_meta";
   static constexpr std::string_view kTenantId = "tenant_id";
@@ -640,6 +650,7 @@ class THeader final {
     std::optional<int64_t> grLoad_;
     std::optional<int64_t> grSecondaryLoad_;
     std::optional<int64_t> grHealth_;
+    std::optional<int64_t> firstRequestServedUnixTimeSec_;
 
     std::optional<ProxiedPayloadMetadata> proxiedPayloadMetadata_;
 

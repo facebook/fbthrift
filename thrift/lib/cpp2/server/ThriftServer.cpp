@@ -518,6 +518,16 @@ void ThriftServer::maybeRecordFirstRequestServed(
       expected, std::chrono::system_clock::now().time_since_epoch().count());
 }
 
+std::optional<int64_t> ThriftServer::getFirstRequestServedUnixTimeSec() const {
+  const auto firstRequestServedTime = getFirstRequestServedTime();
+  if (!firstRequestServedTime) {
+    return std::nullopt;
+  }
+  return std::chrono::duration_cast<std::chrono::seconds>(
+             firstRequestServedTime->time_since_epoch())
+      .count();
+}
+
 class ThriftServer::ConnectionEventCallback
     : public folly::AsyncServerSocket::ConnectionEventCallback {
  public:

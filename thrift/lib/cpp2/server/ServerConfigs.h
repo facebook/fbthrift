@@ -19,6 +19,7 @@
 #include <atomic>
 #include <chrono>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <variant>
 
@@ -100,6 +101,9 @@ class ServerConfigs {
   // @see ThriftServer::getLoad function.
   virtual int64_t getLoad(
       const std::string& counter = "", bool check_custom = true) const = 0;
+
+  // @see ThriftServer::getFirstRequestServedUnixTimeSec function.
+  virtual std::optional<int64_t> getFirstRequestServedUnixTimeSec() const = 0;
 
   // @see ThriftServer::checkOverload function.
   virtual folly::Optional<OverloadResult> checkOverload(

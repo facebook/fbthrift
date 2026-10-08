@@ -65,6 +65,10 @@ class ServerConfigsMock : public ServerConfigs {
     return 123;
   }
 
+  std::optional<int64_t> getFirstRequestServedUnixTimeSec() const override {
+    return 456;
+  }
+
   folly::Optional<OverloadResult> checkOverload(
       const transport::THeader::StringToStringMap&,
       const std::string&) override {

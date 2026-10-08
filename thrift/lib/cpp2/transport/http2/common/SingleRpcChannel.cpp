@@ -196,6 +196,13 @@ void SingleRpcChannel::sendThriftResponse(
           folly::to<std::string>(*grHealth));
     }
 
+    if (auto firstRequestServedUnixTimeSec =
+            metadata.firstRequestServedUnixTimeSec()) {
+      metadata.otherMetadata().ensure().emplace(
+          transport::THeader::FIRST_REQUEST_SERVED_UNIX_TIME_SEC_HEADER,
+          folly::to<std::string>(*firstRequestServedUnixTimeSec));
+    }
+
     if (auto otherMetadata = metadata.otherMetadata()) {
       encodeHeaders(*otherMetadata, msg);
     }

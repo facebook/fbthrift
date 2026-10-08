@@ -4584,6 +4584,107 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
   handler->stopping.post();
 }
 
+namespace {
+enum class FirstRequestServedTimeTransport { Header, Rocket, Http2 };
+
+void doFirstRequestServedTimeResponseTest(
+    FirstRequestServedTimeTransport transport) {
+  std::atomic<bool> shed{false};
+  ScopedServerInterfaceThread runner(
+      std::make_shared<TestHandler>(), [&](ThriftServer& server) {
+        server.setIsOverloaded(
+            [&](const auto&, const std::string&) { return shed.load(); });
+      });
+  auto& server = runner.getThriftServer();
+  if (transport == FirstRequestServedTimeTransport::Http2) {
+    server.addRoutingHandler(createHTTP2RoutingHandler(server));
+  }
+
+  auto client = runner.newStickyClient<apache::thrift::Client<TestService>>(
+      folly::getGlobalCPUExecutor().get(),
+      [=](folly::AsyncSocket::UniquePtr socket) -> RequestChannel::Ptr {
+        switch (transport) {
+          case FirstRequestServedTimeTransport::Header:
+            return HeaderClientChannel::newChannel(
+                HeaderClientChannel::WithoutRocketUpgrade{}, std::move(socket));
+          case FirstRequestServedTimeTransport::Rocket:
+            return RocketClientChannel::newChannel(std::move(socket));
+          case FirstRequestServedTimeTransport::Http2:
+            return HTTPClientChannel::newHTTP2Channel(std::move(socket));
+        }
+        folly::assume_unreachable();
+      });
+
+  auto firstRequestServedUnixTimeSec =
+      [](const THeader& header) -> std::optional<int64_t> {
+    if (auto value = header.getFirstRequestServedUnixTimeSec()) {
+      return value;
+    }
+    if (auto* value = folly::get_ptr(
+            header.getHeaders(),
+            THeader::FIRST_REQUEST_SERVED_UNIX_TIME_SEC_HEADER)) {
+      return folly::to<int64_t>(*value);
+    }
+    return std::nullopt;
+  };
+  auto shedFirstRequestServedUnixTimeSec = [&]() -> std::optional<int64_t> {
+    shed = true;
+    SCOPE_EXIT {
+      shed = false;
+    };
+    RpcOptions shedWithLoadQuery;
+    shedWithLoadQuery.setWriteHeader(THeader::QUERY_LOAD_HEADER, "");
+    EXPECT_THROW(
+        client->sync_voidResponse(shedWithLoadQuery), TApplicationException);
+    auto* value = folly::get_ptr(
+        shedWithLoadQuery.getReadHeaders(),
+        THeader::FIRST_REQUEST_SERVED_UNIX_TIME_SEC_HEADER);
+    return value ? std::optional{folly::to<int64_t>(*value)} : std::nullopt;
+  };
+  // The server's overload shedding does not apply to HTTP/2 requests.
+  const bool canShed = transport != FirstRequestServedTimeTransport::Http2;
+
+  RpcOptions withoutLoadQuery;
+  RpcOptions withLoadQuery;
+  withLoadQuery.setWriteHeader(THeader::QUERY_LOAD_HEADER, "");
+
+  // Shed before being handed off, so it does not count as served.
+  if (canShed) {
+    EXPECT_EQ(std::nullopt, shedFirstRequestServedUnixTimeSec());
+  }
+  {
+    auto [_, header] =
+        client->header_semifuture_voidResponse(withoutLoadQuery).get();
+    EXPECT_EQ(std::nullopt, firstRequestServedUnixTimeSec(*header));
+  }
+  {
+    auto [_, header] =
+        client->header_semifuture_voidResponse(withLoadQuery).get();
+    ASSERT_TRUE(server.getFirstRequestServedTime().has_value());
+    EXPECT_EQ(
+        server.getFirstRequestServedUnixTimeSec(),
+        firstRequestServedUnixTimeSec(*header));
+  }
+  if (canShed) {
+    EXPECT_EQ(
+        server.getFirstRequestServedUnixTimeSec(),
+        shedFirstRequestServedUnixTimeSec());
+  }
+}
+} // namespace
+
+TEST(ThriftServerTest, FirstRequestServedTimeResponse_HeaderClientChannel) {
+  doFirstRequestServedTimeResponseTest(FirstRequestServedTimeTransport::Header);
+}
+
+TEST(ThriftServerTest, FirstRequestServedTimeResponse_RocketClientChannel) {
+  doFirstRequestServedTimeResponseTest(FirstRequestServedTimeTransport::Rocket);
+}
+
+TEST(ThriftServerTest, FirstRequestServedTimeResponse_HTTP2ClientChannel) {
+  doFirstRequestServedTimeResponseTest(FirstRequestServedTimeTransport::Http2);
+}
+
 TEST(ThriftServerTest, getResourcePoolServerDbgInfo) {
   // Arrange integration test setup
   auto handler = std::make_shared<TestHandler>();

@@ -113,6 +113,8 @@ ResponseRpcError makeResponseRpcError(
   if (auto loadRef = metadata.load()) {
     responseRpcError.load() = *loadRef;
   }
+  responseRpcError.firstRequestServedUnixTimeSec().from_optional(
+      metadata.firstRequestServedUnixTimeSec().to_optional());
 
   return responseRpcError;
 }
