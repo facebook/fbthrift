@@ -714,6 +714,8 @@ void Cpp2Worker::dispatchRequest(
         apache::thrift::detail::ServerRequestHelper::setResourcePool(
             serverRequest, resourcePool);
 
+        server->maybeRecordFirstRequestServed(cpp2ReqCtx);
+
         if (cpp2ReqCtx->getInteractionId()) {
           processor->processInteraction(std::move(serverRequest));
           return;

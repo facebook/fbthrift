@@ -51,6 +51,7 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/MultiplexAsyncProcessor.h>
 #include <thrift/lib/cpp2/runtime/Init.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
@@ -58,6 +59,7 @@
 #include <thrift/lib/cpp2/server/ExecutorToThreadManagerAdaptor.h>
 #include <thrift/lib/cpp2/server/LegacyHeaderRoutingHandler.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
+#include <thrift/lib/cpp2/server/MonitoringMethodNames.h>
 #include <thrift/lib/cpp2/server/ServerFlags.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
 #include <thrift/lib/cpp2/server/StandardConcurrencyController.h>
@@ -493,6 +495,27 @@ void ThriftServer::touchRequestTimestamp() noexcept {
         std::chrono::steady_clock::now().time_since_epoch().count(),
         std::memory_order_relaxed);
   }
+}
+
+void ThriftServer::maybeRecordFirstRequestServed(
+    Cpp2RequestContext* reqCtx) noexcept {
+  if (firstRequestServedTimeSinceEpoch_.load() != kNoRequestServed) {
+    return;
+  }
+  // Neither method list covers the whole monitoring surface on its own: the
+  // monitoring set leaves out getStatus, and the recent-requests exclusion
+  // leaves out getCounter. The connection check additionally covers custom
+  // monitoring methods no list can name.
+  const auto& methodName = reqCtx->getMethodName();
+  if (reqCtx->getConnectionContext()->getInterfaceKind() !=
+          InterfaceKind::USER ||
+      isMonitoringMethodName(methodName) ||
+      !util::includeInRecentRequestsCount(methodName)) {
+    return;
+  }
+  auto expected = kNoRequestServed;
+  firstRequestServedTimeSinceEpoch_.compare_exchange_strong(
+      expected, std::chrono::system_clock::now().time_since_epoch().count());
 }
 
 class ThriftServer::ConnectionEventCallback

@@ -52,6 +52,7 @@
 #include <folly/logging/xlog.h>
 #include <folly/observer/Observer.h>
 #include <folly/synchronization/CallOnce.h>
+#include <folly/synchronization/RelaxedAtomic.h>
 
 #include <fmt/core.h>
 
@@ -2005,6 +2006,15 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
   std::chrono::steady_clock::time_point lastRequestTime() const noexcept;
   void touchRequestTimestamp() noexcept;
 
+  static constexpr std::chrono::system_clock::rep kNoRequestServed = 0;
+  // system_clock ticks since the epoch. Write-once.
+  folly::relaxed_atomic<std::chrono::system_clock::rep>
+      firstRequestServedTimeSinceEpoch_{kNoRequestServed};
+
+  // Must be called before the request is handed off, which can destroy
+  // reqCtx.
+  void maybeRecordFirstRequestServed(Cpp2RequestContext* reqCtx) noexcept;
+
   //! Manager of per-thread EventBase objects.
   folly::EventBaseManager* eventBaseManager_ = folly::EventBaseManager::get();
 
@@ -2609,6 +2619,25 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setIdleServerTimeout(std::chrono::milliseconds timeout) {
     idleServerTimeout_ = timeout;
+  }
+
+  /**
+   * When this process first served a request, or nullopt if it has not served
+   * one yet. Only tracked when resource pools are in use.
+   *
+   * A request counts once the server hands it to its resource pool. Monitoring
+   * calls and requests the server rejects before then do not count, so a
+   * process that has only been health checked still reports nullopt. Requests
+   * the pool rejects or sheds, e.g. on a full queue or queue timeout, do count.
+   */
+  std::optional<std::chrono::system_clock::time_point>
+  getFirstRequestServedTime() const noexcept {
+    const auto timeSinceEpoch = firstRequestServedTimeSinceEpoch_.load();
+    if (timeSinceEpoch == kNoRequestServed) {
+      return std::nullopt;
+    }
+    return std::chrono::system_clock::time_point{
+        std::chrono::system_clock::duration{timeSinceEpoch}};
   }
 
   /**
