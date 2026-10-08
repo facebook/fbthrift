@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_types.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_types_custom_protocol.h>
 #include <thrift/lib/cpp2/type/Tag.h>
+#include <thrift/test/gen-cpp2/References_types.h>
 
 namespace apache::thrift {
 
@@ -324,6 +325,12 @@ TEST(Json5CustomProtocolExtraTest, ClassDerivedFromThriftStruct) {
   ClassDerivedFromThriftStruct derived;
   op::decode<type::struct_t<ClassDerivedFromThriftStruct>>(reader, derived);
   EXPECT_EQ(*derived.value(), 42);
+}
+
+TEST(Json5CustomProtocolExtraTest, InternBoxField) {
+  auto obj = Json5ProtocolUtils::fromJson5<cpp2::StructuredAnnotation>(
+      R"({"intern_box_field": {"field": 1}})");
+  EXPECT_EQ(obj.intern_box_field()->field(), 1);
 }
 
 TEST(Json5CustomProtocolExtraTest, NonBmpStringRoundTrip) {

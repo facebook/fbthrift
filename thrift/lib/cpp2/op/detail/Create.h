@@ -81,6 +81,10 @@ decltype(auto) ensureValue(field_ref<T> val) {
   return val.ensure();
 }
 template <typename T>
+decltype(auto) ensureValue(intern_boxed_field_ref<T> val) {
+  return val.ensure();
+}
+template <typename T>
 decltype(auto) ensureValue(terse_field_ref<T> val) {
   // A terse field doesn't have a set or unset state, so ensure is a noop.
   return *val;

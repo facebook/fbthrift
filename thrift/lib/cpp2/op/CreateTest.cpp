@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/thrift/gen-cpp2/type_types.h>
+#include <thrift/test/gen-cpp2/References_types.h>
 #include <thrift/test/gen-cpp2/ensure_types.h>
 #include <thrift/test/testset/Testset.h>
 #include <thrift/test/testset/gen-cpp2/testset_types.h>
@@ -266,6 +267,11 @@ TEST(EnsureTest, IsAbsentAndEnsureValue) {
     EXPECT_FALSE(isAbsent(obj.field_1()));
     ensureValue(obj.field_1()) = 1;
     EXPECT_FALSE(isAbsent(obj.field_1()));
+  }
+  {
+    cpp2::StructuredAnnotation obj;
+    ensureValue(obj.intern_box_field()).field() = 1;
+    EXPECT_EQ(obj.intern_box_field()->field(), 1);
   }
 }
 
