@@ -180,6 +180,12 @@ class alignas(64) ContextImpl {
    */
   BytesPtr copyBuffer(const void* data, size_t size) noexcept;
 
+  /**
+   * Wrap an externally owned buffer using the pipeline's allocator.
+   * Ownership is consumed even when allocation fails.
+   */
+  BytesPtr takeOwnership(OwnedBuffer buffer) noexcept;
+
   // === Event loop access ===
 
   /**

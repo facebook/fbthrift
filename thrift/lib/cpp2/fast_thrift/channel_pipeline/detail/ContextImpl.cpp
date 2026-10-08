@@ -64,6 +64,10 @@ BytesPtr ContextImpl::copyBuffer(const void* data, size_t size) noexcept {
   return pipeline_->copyBuffer(data, size);
 }
 
+BytesPtr ContextImpl::takeOwnership(OwnedBuffer buffer) noexcept {
+  return pipeline_->takeOwnership(buffer);
+}
+
 void ContextImpl::close() noexcept {
   pipeline_->close();
 }

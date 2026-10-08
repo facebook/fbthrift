@@ -439,6 +439,13 @@ class PipelineBuilder {
         [](void* alloc, const void* data, size_t size) noexcept -> BytesPtr {
       return static_cast<Allocator*>(alloc)->copyBuffer(data, size);
     };
+    pipeline->takeOwnershipFn_ = [](void* alloc,
+                                    OwnedBuffer buffer) noexcept -> BytesPtr {
+      if constexpr (ExternalBufferAllocator<Allocator>) {
+        return static_cast<Allocator*>(alloc)->takeOwnership(buffer);
+      }
+      return takeBufferOwnership(buffer);
+    };
 
     pipeline->linkTypeEventLists();
 

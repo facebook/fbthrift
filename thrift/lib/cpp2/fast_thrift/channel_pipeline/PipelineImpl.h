@@ -250,6 +250,12 @@ class alignas(detail::ContextImpl) PipelineImpl
   BytesPtr copyBuffer(const void* data, size_t size) noexcept;
 
   /**
+   * Wrap an externally owned buffer using the pipeline's allocator.
+   * Ownership is consumed even when allocation fails.
+   */
+  BytesPtr takeOwnership(OwnedBuffer buffer) noexcept;
+
+  /**
    * Get the EventBase this pipeline runs on.
    */
   folly::EventBase* eventBase() const noexcept { return eventBase_; }
@@ -447,6 +453,7 @@ class alignas(detail::ContextImpl) PipelineImpl
   // Allocator callbacks
   BytesPtr (*allocateFn_)(void*, size_t) noexcept {nullptr};
   BytesPtr (*copyBufferFn_)(void*, const void*, size_t) noexcept {nullptr};
+  BytesPtr (*takeOwnershipFn_)(void*, OwnedBuffer) noexcept {nullptr};
 
   // Cached entry-point dispatch for fireRead/fireWrite hot paths.
   // Points directly to the read-entry/write-entry handler's function pointer,

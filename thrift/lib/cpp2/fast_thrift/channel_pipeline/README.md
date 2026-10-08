@@ -623,6 +623,15 @@ concept BufferAllocator = requires(B b, size_t size, const void* data) {
 Implementations provide allocation to the pipeline; handlers just call `ctx.allocate(size)` or
 `ctx.copyBuffer(data, size)`.
 
+Allocators may also satisfy `ExternalBufferAllocator` by implementing
+`takeOwnership(OwnedBuffer)`. Handlers call `ctx.takeOwnership()` to wrap
+external storage without selecting its IOBuf control-block allocator. Pipelines
+whose allocator does not provide this operation use the default heap-backed
+IOBuf implementation.
+
+`EvbBufferAllocator` uses the EventBase-local `EvbAllocator` for external IOBuf
+control blocks and for buffers up to `EvbAllocator::kMaxObjectSize`.
+
 ---
 
 ## Ownership Model

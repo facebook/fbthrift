@@ -670,6 +670,13 @@ BytesPtr PipelineImpl::copyBuffer(const void* data, size_t size) noexcept {
   return copyBufferFn_(allocator_, data, size);
 }
 
+BytesPtr PipelineImpl::takeOwnership(OwnedBuffer buffer) noexcept {
+  if (!takeOwnershipFn_ || !allocator_) {
+    return takeBufferOwnership(buffer);
+  }
+  return takeOwnershipFn_(allocator_, buffer);
+}
+
 size_t PipelineImpl::lookupHandler(HandlerId handlerId) const noexcept {
   const auto it = std::upper_bound(
       handlerMap_.begin(),
