@@ -62,11 +62,16 @@ final class TBinarySerializer extends TProtocolSerializer {
       ()[defaults] ==> {
         $object->write($protocol);
         if (self::shouldCompareProtocolV2()) {
-          ThriftProtocolV2Comparison::compareStruct(
+          ThriftProtocolV2Comparison::schedule(
             $transport->getBuffer(),
-            $object,
+            shape(
+              'type' => TType::STRUCT,
+              'class' => HH\classname_to_class(Classnames::getx($object)),
+            ),
             false,
             null,
+            0,
+            false,
           );
         }
       },
@@ -107,12 +112,16 @@ final class TBinarySerializer extends TProtocolSerializer {
       ()[defaults] ==> {
         $object->read($protocol);
         if (self::shouldCompareProtocolV2()) {
-          ThriftProtocolV2Comparison::compareStruct(
+          ThriftProtocolV2Comparison::schedule(
             $str,
-            $object,
+            shape(
+              'type' => TType::STRUCT,
+              'class' => HH\classname_to_class(Classnames::getx($object)),
+            ),
             false,
             null,
             $options,
+            true,
           );
         }
       },
@@ -151,9 +160,12 @@ final class TBinarySerializer extends TProtocolSerializer {
           $type_spec,
         );
         if (self::shouldCompareProtocolV2()) {
-          ThriftProtocolV2Comparison::compareData(
+          ThriftProtocolV2Comparison::schedule(
             $transport->getBuffer(),
             $type_spec,
+            false,
+            null,
+            0,
             false,
           );
         }
@@ -184,7 +196,14 @@ final class TBinarySerializer extends TProtocolSerializer {
           inout $has_wrapper,
         );
         if (self::shouldCompareProtocolV2()) {
-          ThriftProtocolV2Comparison::compareData($str, $type_spec, false);
+          ThriftProtocolV2Comparison::schedule(
+            $str,
+            $type_spec,
+            false,
+            null,
+            0,
+            true,
+          );
         }
         return $result;
       },

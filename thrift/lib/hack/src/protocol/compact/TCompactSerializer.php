@@ -67,11 +67,16 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
       ()[defaults] ==> {
         $object->write($protocol);
         if (self::shouldCompareProtocolV2()) {
-          ThriftProtocolV2Comparison::compareStruct(
+          ThriftProtocolV2Comparison::schedule(
             $transport->getBuffer(),
-            $object,
+            shape(
+              'type' => TType::STRUCT,
+              'class' => HH\classname_to_class(Classnames::getx($object)),
+            ),
             true,
             $override_version,
+            0,
+            false,
           );
         }
       },
@@ -134,12 +139,16 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
       ()[defaults] ==> {
         $object->read($protocol);
         if (self::shouldCompareProtocolV2()) {
-          ThriftProtocolV2Comparison::compareStruct(
+          ThriftProtocolV2Comparison::schedule(
             $str,
-            $object,
+            shape(
+              'type' => TType::STRUCT,
+              'class' => HH\classname_to_class(Classnames::getx($object)),
+            ),
             true,
             $override_version,
             $options,
+            true,
           );
         }
       },
@@ -243,10 +252,13 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
             $type_spec,
           );
           if (self::shouldCompareProtocolV2()) {
-            ThriftProtocolV2Comparison::compareData(
+            ThriftProtocolV2Comparison::schedule(
               $transport->getBuffer(),
               $type_spec,
               true,
+              null,
+              0,
+              false,
             );
           }
         },
@@ -288,7 +300,14 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
             inout $has_wrapper,
           );
           if (self::shouldCompareProtocolV2()) {
-            ThriftProtocolV2Comparison::compareData($str, $type_spec, true);
+            ThriftProtocolV2Comparison::schedule(
+              $str,
+              $type_spec,
+              true,
+              null,
+              0,
+              true,
+            );
           }
           return $result;
         },
