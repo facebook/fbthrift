@@ -15,7 +15,6 @@
  */
 
 #include <folly/Benchmark.h>
-#include <folly/Portability.h>
 #include <folly/init/Init.h>
 
 #include <thrift/lib/cpp2/transport/rocket/payload/ChecksumPayloadSerializerStrategy.h>
