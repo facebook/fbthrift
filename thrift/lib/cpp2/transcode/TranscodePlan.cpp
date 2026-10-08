@@ -77,6 +77,27 @@ folly::Expected<CoerceOp, CompileError> inferCoercion(
 folly::Expected<Command, CompileError> fuseCommands(
     const Command& source, const Command& target);
 
+FieldEntry fusedField(
+    const StructOp& source,
+    const FieldEntry& srcField,
+    const FieldEntry& tgtField,
+    bool isRepeated,
+    Command command) {
+  FieldEntry entry;
+  entry.fieldId = srcField.fieldId;
+  entry.writeFieldId = tgtField.writeFieldId;
+  entry.fieldName = source.fieldIdent == FieldIdent::ByName
+      ? srcField.fieldName
+      : tgtField.fieldName;
+  entry.readTypeInfo = srcField.readTypeInfo;
+  entry.writeTypeInfo = tgtField.writeTypeInfo;
+  entry.isRepeated = isRepeated;
+  entry.optional = tgtField.optional;
+  entry.required = tgtField.required;
+  entry.command = std::make_unique<Command>(std::move(command));
+  return entry;
+}
+
 } // namespace
 
 folly::Expected<ScalarOp, CompileError> fuseScalarOps(
@@ -173,17 +194,6 @@ folly::Expected<Command, CompileError> fuseStructOps(
                 fusedElem.error().message)});
       }
 
-      FieldEntry entry;
-      entry.fieldId = srcField.fieldId;
-      entry.writeFieldId = tgtField.writeFieldId;
-      entry.fieldName = source.fieldIdent == FieldIdent::ByName
-          ? srcField.fieldName
-          : tgtField.fieldName;
-      entry.readTypeInfo = srcField.readTypeInfo;
-      entry.writeTypeInfo = tgtField.writeTypeInfo;
-      entry.isRepeated = true;
-      entry.optional = tgtField.optional;
-      entry.required = tgtField.required;
       // Store fused element command + target SeqOp's write framing info
       // The codegen will use the write framing to produce the container header.
       SeqOp fusedSeq;
@@ -195,8 +205,8 @@ folly::Expected<Command, CompileError> fuseStructOps(
       fusedSeq.readElemType = 0;
       fusedSeq.writeElemType = tgtSeq.writeElemType;
       fusedSeq.element = std::make_unique<Command>(std::move(*fusedElem));
-      entry.command = std::make_unique<Command>(std::move(fusedSeq));
-      fused.fields.push_back(std::move(entry));
+      fused.fields.push_back(fusedField(
+          source, srcField, tgtField, true, Command{std::move(fusedSeq)}));
       continue;
     }
 
@@ -210,19 +220,8 @@ folly::Expected<Command, CompileError> fuseStructOps(
               fusedCmd.error().message)});
     }
 
-    FieldEntry entry;
-    entry.fieldId = srcField.fieldId;
-    entry.writeFieldId = tgtField.writeFieldId;
-    entry.fieldName = source.fieldIdent == FieldIdent::ByName
-        ? srcField.fieldName
-        : tgtField.fieldName;
-    entry.readTypeInfo = srcField.readTypeInfo; // from source codec
-    entry.writeTypeInfo = tgtField.writeTypeInfo; // from target codec
-    entry.isRepeated = srcField.isRepeated;
-    entry.optional = tgtField.optional;
-    entry.required = tgtField.required;
-    entry.command = std::make_unique<Command>(std::move(*fusedCmd));
-    fused.fields.push_back(std::move(entry));
+    fused.fields.push_back(fusedField(
+        source, srcField, tgtField, srcField.isRepeated, std::move(*fusedCmd)));
   }
 
   // Sort by field ID for jump table generation
