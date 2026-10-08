@@ -38,7 +38,9 @@ namespace apache::thrift::stress {
 namespace {
 
 void writeClientResult(
-    const std::string& testName, const StressTestStats& stats) {
+    const std::string& testName,
+    const StressTestStats& stats,
+    CqeCounters cqe) {
   if (FLAGS_stress_test_result_path.empty()) {
     return;
   }
@@ -50,6 +52,7 @@ void writeClientResult(
   result.requests()->failed() = stats.rpcStats.numFailure;
   result.requests()->total() =
       stats.rpcStats.numSuccess + stats.rpcStats.numFailure;
+  result.cqe() = std::move(cqe);
   writeStressTestResult(FLAGS_stress_test_result_path, result);
 }
 
@@ -117,7 +120,7 @@ StressTestStats TestRunner::runTest(
       .memoryStats = runner.getMemoryStats(),
       .rpcStats = runner.getRpcStats(),
   };
-  writeClientResult(testName, result);
+  writeClientResult(testName, result, runner.getCqeCounters());
   return result;
 }
 

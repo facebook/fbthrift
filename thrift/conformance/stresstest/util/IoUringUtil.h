@@ -18,6 +18,7 @@
 
 #include <gflags/gflags.h>
 #include <folly/io/async/IoUringBackend.h>
+#include <thrift/conformance/stresstest/if/gen-cpp2/StressTestResult_types.h>
 
 DECLARE_bool(use_iouring_event_eventfd);
 DECLARE_int32(io_capacity);
@@ -48,6 +49,8 @@ namespace apache::thrift::stress {
 void setIoUringCommonOptionsFromFlags(folly::IoUringOptions& opts);
 void validateZcrxFlags();
 folly::IoUringBackend::Options getIoUringOptions();
+CqeCounters toCqeCounters(const folly::IoUringBackend::CqeStats& stats);
+void addCqeCounters(CqeCounters& total, const CqeCounters& delta);
 } // namespace apache::thrift::stress
 
 #endif

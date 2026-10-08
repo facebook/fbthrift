@@ -203,6 +203,22 @@ folly::IoUringBackend::Options getIoUringOptions() {
 
   return options;
 }
+
+CqeCounters toCqeCounters(const folly::IoUringBackend::CqeStats& stats) {
+  CqeCounters counters;
+  counters.providedBufferCount() =
+      static_cast<int64_t>(stats.providedBufferCount);
+  counters.bufMoreCount() = static_cast<int64_t>(stats.bufMoreCount);
+  counters.zeroCopyNotifCount() =
+      static_cast<int64_t>(stats.zeroCopyNotifCount);
+  return counters;
+}
+
+void addCqeCounters(CqeCounters& total, const CqeCounters& delta) {
+  *total.providedBufferCount() += *delta.providedBufferCount();
+  *total.bufMoreCount() += *delta.bufMoreCount();
+  *total.zeroCopyNotifCount() += *delta.zeroCopyNotifCount();
+}
 } // namespace apache::thrift::stress
 
 #endif

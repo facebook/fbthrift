@@ -28,6 +28,7 @@
 #include <thrift/conformance/stresstest/client/PoissonLoadGenerator.h>
 #include <thrift/conformance/stresstest/client/StressTestBase.h>
 #include <thrift/conformance/stresstest/if/gen-cpp2/StressTest.h>
+#include <thrift/conformance/stresstest/if/gen-cpp2/StressTestResult_types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 
 namespace apache::thrift::stress {
@@ -43,6 +44,7 @@ class ClientRunner : public folly::AsyncSocket::ConnectCallback {
 
   ClientRpcStats getRpcStats() const;
   ClientThreadMemoryStats getMemoryStats() const;
+  CqeCounters getCqeCounters() const;
 
   void resetStats();
 

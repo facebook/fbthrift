@@ -24,6 +24,7 @@
 #include <glog/logging.h>
 #include <folly/io/async/IoUringBackend.h>
 #include <folly/system/ThreadId.h>
+#include <thrift/conformance/stresstest/util/IoUringUtil.h>
 
 namespace apache::thrift::stress {
 
@@ -48,6 +49,7 @@ class StressTestServerStats::IoUringStatsTimer : public folly::AsyncTimeout {
 
   void collect() noexcept {
     auto stats = backend_->getStats();
+    addCqeCounters(cqe_, toCqeCounters(stats.cqe));
 
     if (backend_->zcBufferPool()) {
       auto& prevZcrx = stats_.zcrx;
@@ -90,6 +92,8 @@ class StressTestServerStats::IoUringStatsTimer : public folly::AsyncTimeout {
     return stats_.zcrx;
   }
 
+  const CqeCounters& cqeCounters() const noexcept { return cqe_; }
+
   std::optional<folly::IoUringBufferProvider::Stats> providedBufferStats()
       const noexcept {
     if (backend_->zcBufferPool()) {
@@ -103,6 +107,7 @@ class StressTestServerStats::IoUringStatsTimer : public folly::AsyncTimeout {
   size_t evbIdx_;
   uint32_t intervalMs_;
   folly::IoUringBackend::IoUringStats stats_{};
+  CqeCounters cqe_;
 };
 
 void StressTestServerStats::init(
@@ -144,10 +149,12 @@ void StressTestServerStats::collectFinal() {
   int64_t enobufCount = 0;
   int maxUtilPct = -1;
   int maxAreaCount = 0;
+  CqeCounters cqe;
   for (const auto& [eventBase, timer] : timers_) {
     eventBase->runInEventBaseThreadAndWait([&] {
       timer->cancelTimeout();
       timer->collect();
+      addCqeCounters(cqe, timer->cqeCounters());
       if (const auto stats = timer->zcrxStats()) {
         ++zcrxEventBaseCount;
         ioThreadIds.insert(static_cast<int64_t>(folly::getOSThreadID()));
@@ -176,6 +183,7 @@ void StressTestServerStats::collectFinal() {
   providedBufferCounters_.enobufCount() = enobufCount;
   providedBufferCounters_.maxUtilPct() = maxUtilPct;
   providedBufferCounters_.maxAreaCount() = maxAreaCount;
+  cqeCounters_ = std::move(cqe);
 }
 #else
 void StressTestServerStats::init(
@@ -215,6 +223,7 @@ ServerResult StressTestServerStats::publish(ResultMetadata metadata) const {
   };
   result.zcrx() = zcrxCounters_;
   result.providedBuffer() = providedBufferCounters_;
+  result.cqe() = cqeCounters_;
   return result;
 }
 

@@ -125,6 +125,7 @@ class ClientThread : public folly::HHWheelTimer::Callback {
           memoryStats_.p50 = memoryHistogram_.getPercentileEstimate(.5);
           memoryStats_.p99 = memoryHistogram_.getPercentileEstimate(.99);
           memoryStats_.p100 = memoryHistogram_.getPercentileEstimate(1.0);
+          collectCqeCounters();
           return folly::Unit{};
         });
   }
@@ -138,6 +139,7 @@ class ClientThread : public folly::HHWheelTimer::Callback {
 
   const ClientRpcStats& getRpcStats() const { return rpcStats_; }
   const ClientThreadMemoryStats& getMemoryStats() const { return memoryStats_; }
+  const CqeCounters& getCqeCounters() const { return cqeCounters_; }
 
   void resetStats() {
     rpcStats_.numFailure = 0;
@@ -186,6 +188,7 @@ class ClientThread : public folly::HHWheelTimer::Callback {
 
   ClientRpcStats rpcStats_;
   ClientThreadMemoryStats memoryStats_;
+  CqeCounters cqeCounters_;
   folly::Histogram<size_t> memoryHistogram_;
   folly::coro::AsyncScope scope_;
   std::vector<std::unique_ptr<StressTestClient>> clients_;
@@ -198,6 +201,15 @@ class ClientThread : public folly::HHWheelTimer::Callback {
   BaseLoadGenerator& loadGenerator_;
 
  private:
+  void collectCqeCounters() {
+#if FOLLY_HAS_LIBURING
+    if (auto* backend = dynamic_cast<folly::IoUringBackend*>(
+            getEventBase()->getBackend())) {
+      cqeCounters_ = toCqeCounters(backend->getStats().cqe);
+    }
+#endif
+  }
+
   folly::coro::Task<void> runConcurrentInternal(
       StressTestClient* client, const StressTestBase* test) {
     size_t count = 0;
@@ -424,6 +436,16 @@ ClientRpcStats ClientRunner::getRpcStats() const {
     combinedStats.combine(clientThread->getRpcStats());
   }
   return combinedStats;
+}
+
+CqeCounters ClientRunner::getCqeCounters() const {
+  CqeCounters combined;
+#if FOLLY_HAS_LIBURING
+  for (auto& clientThread : clientThreads_) {
+    addCqeCounters(combined, clientThread->getCqeCounters());
+  }
+#endif
+  return combined;
 }
 
 ClientThreadMemoryStats ClientRunner::getMemoryStats() const {

@@ -51,9 +51,16 @@ struct ProvidedBufferCounters {
   4: i64 maxAreaCount;
 }
 
+struct CqeCounters {
+  1: i64 providedBufferCount;
+  2: i64 bufMoreCount;
+  3: i64 zeroCopyNotifCount;
+}
+
 struct ClientResult {
   1: ResultMetadata metadata;
   2: RequestCounters requests;
+  3: CqeCounters cqe;
 }
 
 struct ServerResult {
@@ -61,4 +68,5 @@ struct ServerResult {
   2: map<ConnectionMode, i64> connections;
   3: ZcrxCounters zcrx;
   4: ProvidedBufferCounters providedBuffer;
+  5: CqeCounters cqe;
 }
