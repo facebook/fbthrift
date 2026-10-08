@@ -253,15 +253,13 @@ void execSeq(TranscodeCursor* c, const SeqOp& op) {
       return;
     }
 
-    TranscodePatchPoint writeMark = thrift_transcode_cursor_mark(c);
+    TranscodePatchPoint writeMark{};
     if (op.writeFraming == ContainerFraming::Json) {
       thrift_transcode_write_byte_checked(c, '[');
     } else if (op.writeLoopKind == LoopKind::ByBytes) {
-      thrift_transcode_cursor_skip(c, 5); // protobuf: 5-byte varint length
-    } else if (op.writeFraming == ContainerFraming::Compact) {
-      thrift_transcode_cursor_skip(c, 6); // escape byte + 5-byte varint count
-    } else if (op.writeFraming == ContainerFraming::Binary) {
-      thrift_transcode_cursor_skip(c, 5); // elem-type byte + i32 BE count
+      writeMark = thrift_transcode_proto_reserve_length(c);
+    } else {
+      writeMark = reserveSeqHeader(c, op.writeFraming);
     }
 
     uint32_t count = 0;
@@ -280,23 +278,9 @@ void execSeq(TranscodeCursor* c, const SeqOp& op) {
     if (op.writeFraming == ContainerFraming::Json) {
       thrift_transcode_write_byte_checked(c, ']');
     } else if (op.writeLoopKind == LoopKind::ByBytes) {
-      size_t bodyBytes =
-          thrift_transcode_cursor_bytes_since_mark(c, writeMark) - 5;
-      thrift_transcode_cursor_patch_varint(c, writeMark, bodyBytes, 5);
-    } else if (op.writeFraming == ContainerFraming::Compact) {
-      thrift_transcode_cursor_patch_byte(
-          c, writeMark, static_cast<uint8_t>(0xF0 | op.writeElemType));
-      thrift_transcode_cursor_patch_varint(
-          c,
-          thrift_transcode_cursor_offset_patch_point(writeMark, 1),
-          count,
-          5);
-    } else if (op.writeFraming == ContainerFraming::Binary) {
-      thrift_transcode_cursor_patch_byte(c, writeMark, op.writeElemType);
-      thrift_transcode_cursor_patch_i32_be(
-          c,
-          thrift_transcode_cursor_offset_patch_point(writeMark, 1),
-          static_cast<int32_t>(count));
+      thrift_transcode_proto_patch_length(c, writeMark);
+    } else {
+      patchSeqHeader(c, writeMark, op.writeFraming, count, op.writeElemType);
     }
     return;
   }
@@ -376,8 +360,7 @@ void patchDelimitedStruct(
   if (!op.writeLengthDelimited || hasError(c)) {
     return;
   }
-  size_t bodyBytes = thrift_transcode_cursor_bytes_since_mark(c, writeMark) - 5;
-  thrift_transcode_cursor_patch_varint(c, writeMark, bodyBytes, 5);
+  thrift_transcode_proto_patch_length(c, writeMark);
 }
 
 void execIdStructToFieldFramed(
@@ -400,8 +383,7 @@ void execIdStructToFieldFramed(
 
   TranscodePatchPoint writeMark{};
   if (op.writeLengthDelimited) {
-    writeMark = thrift_transcode_cursor_mark(c);
-    thrift_transcode_cursor_skip(c, 5);
+    writeMark = thrift_transcode_proto_reserve_length(c);
   }
 
   int16_t prevRead = 0;
@@ -828,6 +810,52 @@ void writeMapHeader(
       thrift_transcode_write_byte_unchecked(c, keyType);
       thrift_transcode_write_byte_unchecked(c, valueType);
       thrift_transcode_write_fixed32_be_unchecked(c, count);
+      break;
+    case ContainerFraming::Json:
+    case ContainerFraming::None:
+      break;
+  }
+}
+
+TranscodePatchPoint reserveSeqHeader(
+    TranscodeCursor* c, ContainerFraming framing) {
+  TranscodePatchPoint writeMark = thrift_transcode_cursor_mark(c);
+  switch (framing) {
+    case ContainerFraming::Compact:
+      thrift_transcode_cursor_skip(c, 6); // escape byte + 5-byte varint count
+      break;
+    case ContainerFraming::Binary:
+      thrift_transcode_cursor_skip(c, 5); // elem-type byte + i32 BE count
+      break;
+    case ContainerFraming::Json:
+    case ContainerFraming::None:
+      break;
+  }
+  return writeMark;
+}
+
+void patchSeqHeader(
+    TranscodeCursor* c,
+    TranscodePatchPoint writeMark,
+    ContainerFraming framing,
+    uint32_t count,
+    uint8_t elemType) {
+  switch (framing) {
+    case ContainerFraming::Compact:
+      thrift_transcode_cursor_patch_byte(
+          c, writeMark, static_cast<uint8_t>(0xF0 | elemType));
+      thrift_transcode_cursor_patch_varint(
+          c,
+          thrift_transcode_cursor_offset_patch_point(writeMark, 1),
+          count,
+          5);
+      break;
+    case ContainerFraming::Binary:
+      thrift_transcode_cursor_patch_byte(c, writeMark, elemType);
+      thrift_transcode_cursor_patch_i32_be(
+          c,
+          thrift_transcode_cursor_offset_patch_point(writeMark, 1),
+          static_cast<int32_t>(count));
       break;
     case ContainerFraming::Json:
     case ContainerFraming::None:

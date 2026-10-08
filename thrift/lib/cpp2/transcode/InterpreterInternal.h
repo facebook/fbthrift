@@ -62,6 +62,18 @@ void writeMapHeader(
     uint32_t count,
     uint8_t keyType,
     uint8_t valueType);
+
+// A Thrift container header whose count is only known once its elements have
+// been written is reserved at its longest encoding and patched in place.
+// Readers accept the padded, non-canonical form.
+TranscodePatchPoint reserveSeqHeader(
+    TranscodeCursor* c, ContainerFraming framing);
+void patchSeqHeader(
+    TranscodeCursor* c,
+    TranscodePatchPoint writeMark,
+    ContainerFraming framing,
+    uint32_t count,
+    uint8_t elemType);
 TranscodePatchPoint reserveNonEmptyMapHeader(
     TranscodeCursor* c, ContainerFraming framing);
 void patchNonEmptyMapHeader(

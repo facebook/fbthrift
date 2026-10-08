@@ -531,8 +531,7 @@ void execTaggedUnion(
   }
   TranscodePatchPoint writeMark{};
   if (op.writeLengthDelimited) {
-    writeMark = thrift_transcode_cursor_mark(c);
-    thrift_transcode_cursor_skip(c, 5);
+    writeMark = thrift_transcode_proto_reserve_length(c);
   }
 
   const Framing wf = framingFor(writeProto);
@@ -587,9 +586,7 @@ void execTaggedUnion(
   if (!op.writeLengthDelimited) {
     wf.writeStop(c);
   } else {
-    const size_t bodyBytes =
-        thrift_transcode_cursor_bytes_since_mark(c, writeMark) - 5;
-    thrift_transcode_cursor_patch_varint(c, writeMark, bodyBytes, 5);
+    thrift_transcode_proto_patch_length(c, writeMark);
   }
 }
 
@@ -846,12 +843,7 @@ void execJsonSeq(TranscodeCursor* c, const SeqOp& op) {
     return;
   }
 
-  TranscodePatchPoint writeMark = thrift_transcode_cursor_mark(c);
-  if (op.writeFraming == ContainerFraming::Compact) {
-    thrift_transcode_cursor_skip(c, 6); // escape byte + 5-byte varint count
-  } else if (op.writeFraming == ContainerFraming::Binary) {
-    thrift_transcode_cursor_skip(c, 5); // elem-type byte + i32 BE count
-  }
+  TranscodePatchPoint writeMark = reserveSeqHeader(c, op.writeFraming);
 
   uint32_t count = 0;
   bool first = true;
@@ -879,18 +871,7 @@ void execJsonSeq(TranscodeCursor* c, const SeqOp& op) {
     return;
   }
 
-  if (op.writeFraming == ContainerFraming::Compact) {
-    thrift_transcode_cursor_patch_byte(
-        c, writeMark, static_cast<uint8_t>(0xF0 | op.writeElemType));
-    thrift_transcode_cursor_patch_varint(
-        c, thrift_transcode_cursor_offset_patch_point(writeMark, 1), count, 5);
-  } else if (op.writeFraming == ContainerFraming::Binary) {
-    thrift_transcode_cursor_patch_byte(c, writeMark, op.writeElemType);
-    thrift_transcode_cursor_patch_i32_be(
-        c,
-        thrift_transcode_cursor_offset_patch_point(writeMark, 1),
-        static_cast<int32_t>(count));
-  }
+  patchSeqHeader(c, writeMark, op.writeFraming, count, op.writeElemType);
 }
 
 void execJsonSeqTarget(TranscodeCursor* c, const SeqOp& op) {
@@ -960,8 +941,7 @@ void execJsonStruct(
   TranscodePatchPoint writeMark{};
   bool patchWrite = false;
   if (op.writeLengthDelimited) {
-    writeMark = thrift_transcode_cursor_mark(c);
-    thrift_transcode_cursor_skip(c, 5);
+    writeMark = thrift_transcode_proto_reserve_length(c);
     patchWrite = true;
   }
 
@@ -1063,9 +1043,7 @@ void execJsonStruct(
   }
 
   if (patchWrite) {
-    size_t bodyBytes =
-        thrift_transcode_cursor_bytes_since_mark(c, writeMark) - 5;
-    thrift_transcode_cursor_patch_varint(c, writeMark, bodyBytes, 5);
+    thrift_transcode_proto_patch_length(c, writeMark);
   }
 }
 
