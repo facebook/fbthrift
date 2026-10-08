@@ -327,4 +327,33 @@ TEST(BinaryIntrinsicsTest, SkipStructFieldRejectsExcessiveDepth) {
   EXPECT_NE(r.error, 0);
 }
 
+TEST(BinaryIntrinsicsTest, WritesTheDefaultOfEachScalarAndStructType) {
+  for (const auto& [type, expected] :
+       std::vector<std::pair<uint8_t, std::vector<uint8_t>>>{
+           {wire::kBinaryBool, std::vector<uint8_t>{0}},
+           {wire::kBinaryI16, std::vector<uint8_t>{0, 0}},
+           {wire::kBinaryI32, std::vector<uint8_t>{0, 0, 0, 0}},
+           {wire::kBinaryI64, std::vector<uint8_t>{0, 0, 0, 0, 0, 0, 0, 0}},
+           {wire::kBinaryDouble, std::vector<uint8_t>{0, 0, 0, 0, 0, 0, 0, 0}},
+           {wire::kBinaryString, std::vector<uint8_t>{0, 0, 0, 0}},
+           {wire::kBinaryStruct, std::vector<uint8_t>{wire::kBinaryStop}},
+       }) {
+    RoundTrip rt;
+    auto w = rt.writer();
+    thrift_transcode_binary_write_default(&w, type);
+    ASSERT_EQ(w.error, 0) << static_cast<int>(type);
+
+    auto r = rt.reader(w);
+    EXPECT_EQ(std::vector<uint8_t>(r.readPos, r.readEnd), expected)
+        << static_cast<int>(type);
+  }
+}
+
+TEST(BinaryIntrinsicsTest, ContainersHaveNoDefaultWithoutTheirElementTypes) {
+  RoundTrip rt;
+  auto w = rt.writer();
+  thrift_transcode_binary_write_default(&w, wire::kBinaryList);
+  EXPECT_NE(w.error, 0);
+}
+
 } // namespace

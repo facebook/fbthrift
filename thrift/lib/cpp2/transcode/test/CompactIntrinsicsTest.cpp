@@ -402,4 +402,35 @@ TEST(CompactIntrinsicsTest, SkipUnsupportedFieldTypeSetsError) {
   EXPECT_NE(r.error, 0);
 }
 
+TEST(CompactIntrinsicsTest, WritesTheDefaultOfEachScalarAndStructType) {
+  for (const auto& [type, expected] :
+       std::vector<std::pair<uint8_t, std::vector<uint8_t>>>{
+           {wire::kCompactBooleanTrue,
+            std::vector<uint8_t>{wire::kCompactBooleanFalse}},
+           {wire::kCompactByte, std::vector<uint8_t>{0}},
+           {wire::kCompactI32, std::vector<uint8_t>{0}},
+           {wire::kCompactI64, std::vector<uint8_t>{0}},
+           {wire::kCompactFloat, std::vector<uint8_t>{0, 0, 0, 0}},
+           {wire::kCompactDouble, std::vector<uint8_t>{0, 0, 0, 0, 0, 0, 0, 0}},
+           {wire::kCompactBinary, std::vector<uint8_t>{0}},
+           {wire::kCompactStruct, std::vector<uint8_t>{wire::kCompactStop}},
+       }) {
+    RoundTrip rt;
+    auto w = rt.writer();
+    thrift_transcode_compact_write_default(&w, type);
+    ASSERT_EQ(w.error, 0) << static_cast<int>(type);
+
+    auto r = rt.reader(w);
+    EXPECT_EQ(std::vector<uint8_t>(r.readPos, r.readEnd), expected)
+        << static_cast<int>(type);
+  }
+}
+
+TEST(CompactIntrinsicsTest, ContainersHaveNoDefaultWithoutTheirElementTypes) {
+  RoundTrip rt;
+  auto w = rt.writer();
+  thrift_transcode_compact_write_default(&w, wire::kCompactList);
+  EXPECT_NE(w.error, 0);
+}
+
 } // namespace

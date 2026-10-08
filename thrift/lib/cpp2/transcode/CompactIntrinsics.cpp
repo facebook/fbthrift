@@ -281,4 +281,40 @@ void thrift_transcode_compact_skip_field(
   skipCompactValue(cursor, ttype, 0, /*boolValueInFieldHeader=*/true);
 }
 
+void thrift_transcode_compact_write_default(
+    TranscodeCursor* cursor, uint8_t type) {
+  if (cursor == nullptr || cursor->error != 0) {
+    return;
+  }
+  switch (type) {
+    case wire::kCompactBooleanTrue:
+    case wire::kCompactBooleanFalse:
+      thrift_transcode_write_byte_checked(cursor, wire::kCompactBooleanFalse);
+      return;
+    case wire::kCompactByte:
+      thrift_transcode_write_byte_checked(cursor, 0);
+      return;
+    case wire::kCompactI16:
+    case wire::kCompactI32:
+    case wire::kCompactI64:
+      thrift_transcode_write_zigzag_varint(cursor, 0);
+      return;
+    case wire::kCompactFloat:
+      thrift_transcode_write_fixed32_be_checked(cursor, 0);
+      return;
+    case wire::kCompactDouble:
+      thrift_transcode_write_fixed64_be_checked(cursor, 0);
+      return;
+    case wire::kCompactBinary:
+      thrift_transcode_write_unsigned_varint(cursor, 0);
+      return;
+    case wire::kCompactStruct:
+      thrift_transcode_compact_write_stop(cursor);
+      return;
+    default:
+      setCursorError(cursor, kMalformedCompact);
+      return;
+  }
+}
+
 } // extern "C"

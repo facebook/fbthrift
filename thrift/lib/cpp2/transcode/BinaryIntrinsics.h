@@ -41,6 +41,12 @@ void thrift_transcode_binary_write_field_header(
 // Write Binary STOP marker (single 0x00 byte).
 void thrift_transcode_binary_write_stop(TranscodeCursor* cursor);
 
+// Writes the default value of Binary type `ttype`: false, zero, an empty
+// string or binary, or a struct with no fields. Containers have no default
+// without their element types, so they are rejected.
+void thrift_transcode_binary_write_default(
+    TranscodeCursor* cursor, uint8_t ttype);
+
 // Skip a Binary field of the given TType.
 void thrift_transcode_binary_skip_field(TranscodeCursor* cursor, uint8_t ttype);
 

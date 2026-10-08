@@ -37,6 +37,12 @@ void thrift_transcode_compact_write_field_header(
 
 void thrift_transcode_compact_write_stop(TranscodeCursor* cursor);
 
+// Writes the default value of Compact type `type`: false, zero, an empty
+// string or binary, or a struct with no fields. Containers have no default
+// without their element types, so they are rejected.
+void thrift_transcode_compact_write_default(
+    TranscodeCursor* cursor, uint8_t type);
+
 // Fused bool field write: writes a Compact field header with the bool value
 // encoded in the ttype byte (CT_BOOLEAN_TRUE=1 or CT_BOOLEAN_FALSE=2).
 // No separate value bytes are written.

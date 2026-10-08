@@ -198,4 +198,37 @@ void thrift_transcode_binary_skip_field(
   skipBinaryField(cursor, ttype, 0);
 }
 
+void thrift_transcode_binary_write_default(
+    TranscodeCursor* cursor, uint8_t ttype) {
+  if (cursor == nullptr || cursor->error != 0) {
+    return;
+  }
+  switch (ttype) {
+    case wire::kBinaryBool:
+    case wire::kBinaryByte:
+      thrift_transcode_write_byte_checked(cursor, 0);
+      return;
+    case wire::kBinaryI16:
+      thrift_transcode_write_fixed16_be_checked(cursor, 0);
+      return;
+    case wire::kBinaryI32:
+    case wire::kBinaryFloat:
+      thrift_transcode_write_fixed32_be_checked(cursor, 0);
+      return;
+    case wire::kBinaryI64:
+    case wire::kBinaryDouble:
+      thrift_transcode_write_fixed64_be_checked(cursor, 0);
+      return;
+    case wire::kBinaryString:
+      thrift_transcode_write_fixed32_be_checked(cursor, 0); // zero length
+      return;
+    case wire::kBinaryStruct:
+      thrift_transcode_binary_write_stop(cursor);
+      return;
+    default:
+      setCursorError(cursor, kMalformedBinary);
+      return;
+  }
+}
+
 } // extern "C"
