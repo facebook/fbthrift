@@ -29,7 +29,6 @@
 #include <glog/logging.h>
 
 #include <folly/ExceptionWrapper.h>
-#include <folly/container/F14Map.h>
 #include <folly/io/async/Request.h>
 #include <folly/lang/Exception.h>
 
@@ -39,7 +38,6 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
-#include <thrift/lib/cpp2/fast_thrift/common/allocator/EvbAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ConnectionPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
@@ -73,6 +71,55 @@ struct TProcessorEventHandlerBridgeConfig {
   std::shared_ptr<const ThriftServerMethodMetadataRegistry> methodMetadata;
   PeerIdentityResolver identityResolver{nullptr};
 };
+
+struct TProcessorEventHandlerBridgeRequestState {
+  explicit TProcessorEventHandlerBridgeRequestState(
+      std::shared_ptr<const TProcessorEventHandlers> handlers)
+      : handlersOwner(std::move(handlers)), chain(handlersOwner->processor) {
+    published.owner = this;
+  }
+
+  TProcessorEventHandlerBridgeRequestState(
+      const TProcessorEventHandlerBridgeRequestState&) = delete;
+  TProcessorEventHandlerBridgeRequestState& operator=(
+      const TProcessorEventHandlerBridgeRequestState&) = delete;
+  TProcessorEventHandlerBridgeRequestState(
+      TProcessorEventHandlerBridgeRequestState&&) = delete;
+  TProcessorEventHandlerBridgeRequestState& operator=(
+      TProcessorEventHandlerBridgeRequestState&&) = delete;
+
+  ~TProcessorEventHandlerBridgeRequestState() { release(); }
+
+  void release() noexcept {
+    if (!context) {
+      return;
+    }
+    const auto ambient = context->ambientContext();
+    folly::RequestContextSaverScopeGuard guard;
+    chain.unbind([&] {
+      if (folly::RequestContext::try_get() != ambient.get()) {
+        folly::RequestContext::setContext(ambient);
+      }
+    });
+    context.reset();
+    cpp2Request.reset();
+    published.context = nullptr;
+  }
+
+  std::shared_ptr<const TProcessorEventHandlers> handlersOwner;
+  Cpp2BridgeRequestState published;
+  EventHandlerChain chain;
+  apache::thrift::transport::THeader header;
+  std::optional<apache::thrift::Cpp2RequestContext> cpp2Request;
+  std::optional<Cpp2RequestContextAdapter> context;
+  apache::thrift::protocol::PROTOCOL_TYPES protocolType{};
+};
+
+inline void Cpp2BridgeExtension::destroyRequestState(
+    RequestState* state) noexcept {
+  std::unique_ptr<TProcessorEventHandlerBridgeRequestState> owned(
+      static_cast<TProcessorEventHandlerBridgeRequestState*>(state->owner));
+}
 
 namespace event_handler_detail {
 
@@ -191,12 +238,7 @@ class TProcessorEventHandlerBridge {
   TProcessorEventHandlerBridge& operator=(TProcessorEventHandlerBridge&&) =
       delete;
 
-  ~TProcessorEventHandlerBridge() {
-    for (auto& [streamId, state] : requests_) {
-      (void)streamId;
-      releaseState(std::move(state));
-    }
-  }
+  ~TProcessorEventHandlerBridge() = default;
 
   channel_pipeline::Result onRead(
       Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
@@ -266,7 +308,10 @@ class TProcessorEventHandlerBridge {
               "request or connection context")));
     }
 
-    auto state = acquireState(*ctx.eventBase());
+    auto ownedState =
+        std::make_unique<TProcessorEventHandlerBridgeRequestState>(
+            config_.handlers);
+    auto* state = ownedState.get();
     const auto& requestResponse =
         request.payload.get<ThriftServerRequestResponsePayload>();
     state->protocolType = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
@@ -274,6 +319,9 @@ class TProcessorEventHandlerBridge {
     state->cpp2Request.emplace(&connectionContext_->get(), &state->header);
     state->context.emplace(
         *state->cpp2Request, state->header, *request.requestContext);
+    state->published.context = &state->context->get();
+    request.requestContext->adoptState<Cpp2BridgeExtension>(
+        &ownedState.release()->published);
 
     // Scoped across the forward as well as the callbacks: handlers stamp
     // identity onto the ambient context for the service to read, and an
@@ -311,23 +359,11 @@ class TProcessorEventHandlerBridge {
       event_handler_detail::stampWriteHeaders(
           response.payload.template get<ThriftInitialResponsePayload>(),
           state->context->takeWriteHeaders());
+      request.requestContext->clearOwnedState<Cpp2BridgeExtension>();
+      response.requestContext = std::move(request.requestContext);
       auto boxed = channel_pipeline::erase_and_box(std::move(response));
-      releaseState(std::move(state));
       return ctx.fireWrite(std::move(boxed));
     }
-
-    // Always an insert: the rocket layer errors a stream id that is already in
-    // flight, so the bridge never sees the same one twice. Assigning over a
-    // live entry would drop a bound chain, so it is not offered.
-    if (FOLLY_UNLIKELY(!requestsInitialized_)) {
-      // Preserve the normal pipelining headroom, but make connections that
-      // never retain a request pay nothing for it.
-      requests_.reserve(kInitialInFlight);
-      requestsInitialized_ = true;
-    }
-    [[maybe_unused]] const bool inserted =
-        requests_.try_emplace(streamId, std::move(state)).second;
-    DCHECK(inserted);
     return ctx.fireRead(std::move(msg));
   }
 
@@ -335,25 +371,22 @@ class TProcessorEventHandlerBridge {
       Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
     auto& response = msg.get<ThriftServerResponseMessage>();
 
-    // Resolved once: the stream this answers, and the reply body if it carries
-    // one. A frame that names no stream belongs to no request.
+    // Resolve the reply body when this response carries one.
     ThriftInitialResponsePayload* reply = nullptr;
-    uint32_t streamId = 0;
     if (response.payload.is<ThriftInitialResponsePayload>()) {
       reply = &response.payload.get<ThriftInitialResponsePayload>();
-      streamId = reply->streamId;
-    } else if (response.payload.is<ThriftErrorPayload>()) {
-      streamId = response.payload.get<ThriftErrorPayload>().streamId;
     }
 
-    auto it = requests_.find(streamId);
-    if (it == requests_.end()) {
+    auto* published = response.requestContext == nullptr
+        ? nullptr
+        : response.requestContext->tryState<Cpp2BridgeExtension>();
+    if (published == nullptr) {
       // Setup responses, connection-level frames, and anything the bridge
       // refused — none of which a handler saw on the way in.
       return ctx.fireWrite(std::move(msg));
     }
-    auto state = std::move(it->second);
-    requests_.erase(it);
+    auto* state = static_cast<TProcessorEventHandlerBridgeRequestState*>(
+        published->owner);
 
     {
       // Responses may arrive after an executor hop, on an EventBase carrying
@@ -369,7 +402,7 @@ class TProcessorEventHandlerBridge {
       // returned below, which is the pairing they are promised.
       if (reply != nullptr) {
         if (!event_handler_detail::isAppUnknownException(*reply)) {
-          const auto* exception = state->context->exception();
+          const auto* exception = published->exception.get();
           if (exception != nullptr) {
             state->chain.userExceptionWrapped(
                 exception->declared, exception->exception);
@@ -395,15 +428,14 @@ class TProcessorEventHandlerBridge {
         event_handler_detail::stampWriteHeaders(
             *reply, state->context->takeWriteHeaders());
       }
-      releaseState(std::move(state));
+      response.requestContext->clearOwnedState<Cpp2BridgeExtension>();
     }
 
     return ctx.fireWrite(std::move(msg));
   }
 
-  using SubscribedEvents = channel_pipeline::Events<
-      ThriftServerConnectionClosedEvent,
-      ThriftServerRequestCompletedEvent>;
+  using SubscribedEvents =
+      channel_pipeline::Events<ThriftServerConnectionClosedEvent>;
 
   template <channel_pipeline::PipelineEvent E>
     requires std::same_as<E, ThriftServerConnectionClosedEvent>
@@ -415,25 +447,9 @@ class TProcessorEventHandlerBridge {
     // Announce closure once even if the event arrives twice: each handler is
     // promised one connectionDestroyed for the newConnection it observed.
     connectionDestroyed_ = true;
-    // Requests still outstanding never produced a response, so their
-    // write-side callbacks do not run. Keep their state until bridge
-    // destruction because a service may still hold a request backed by this
-    // connection context.
     for (const auto& handler : handlers_->server) {
       handler->connectionDestroyed(&connectionContext_->get());
     }
-  }
-
-  template <channel_pipeline::PipelineEvent E>
-    requires std::same_as<E, ThriftServerRequestCompletedEvent>
-  void on(Context&, const ThriftServerRequestCompletedEvent& event) noexcept {
-    auto it = requests_.find(event.streamId);
-    if (it == requests_.end()) {
-      return;
-    }
-    auto state = std::move(it->second);
-    requests_.erase(it);
-    releaseState(std::move(state));
   }
 
   void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
@@ -448,50 +464,6 @@ class TProcessorEventHandlerBridge {
   void handlerRemoved(Context&) noexcept {}
 
  private:
-  static constexpr std::size_t kInitialInFlight = 8;
-  // One request's adapted state, from the point it enters the pipeline until
-  // its response leaves.
-  struct RequestState {
-    // The two small members every acquire and release touches, kept at the
-    // head so the bookkeeping does not reach past the bulk of the state.
-    EventHandlerChain chain;
-    // Engaged only while a request is in flight.
-    std::optional<Cpp2RequestContextAdapter> context;
-    // Pointed at by the classic context below, so it is declared ahead of it
-    // and outlives it.
-    apache::thrift::transport::THeader header;
-    std::optional<apache::thrift::Cpp2RequestContext> cpp2Request;
-    apache::thrift::protocol::PROTOCOL_TYPES protocolType{};
-    explicit RequestState(const EventHandlerChain::HandlerList& handlers)
-        : chain(handlers) {}
-
-    ~RequestState() {
-      // The adapter clears the header view, so it must die while the pooled
-      // header is still alive.
-      context.reset();
-    }
-  };
-
-  using RequestStatePtr = std::unique_ptr<RequestState>;
-
-  RequestStatePtr acquireState(folly::EventBase&) {
-    return std::make_unique<RequestState>(handlers_->processor);
-  }
-
-  void releaseState(RequestStatePtr state) {
-    const auto ambient = state->context->ambientContext();
-    folly::RequestContextSaverScopeGuard guard;
-    state->chain.unbind([&] {
-      if (folly::RequestContext::try_get() != ambient.get()) {
-        folly::RequestContext::setContext(ambient);
-      }
-    });
-    // Destroying the adapter empties the request's extension slot rather than
-    // leaving it pointing at storage the next request rebuilds.
-    state->context.reset();
-    state->cpp2Request.reset();
-  }
-
   const TProcessorEventHandlerBridgeConfig config_;
   // Resolved once: the answer cannot change, and reaching it through the
   // shared_ptr on every request is two dependent loads into memory that every
@@ -502,18 +474,11 @@ class TProcessorEventHandlerBridge {
   // Sits here to land in the padding the flag above leaves, rather than widen
   // the connection by a word of its own.
   bool connectionDestroyed_{false};
-  bool requestsInitialized_{false};
 
-  // Declared before the requests: their contexts borrow this one, and members
-  // are destroyed in reverse.
   std::unique_ptr<Cpp2ConnContextAdapter> connectionContext_;
   // Latched from the setup message, the first thing the connection sends.
   // Non-owning; the connection-context handler outlives this pipeline.
   ThriftConnContext* ftConnContext_{nullptr};
-
-  // Keyed by stream id rather than by the request context, because a
-  // framework-generated error response carries no context to key on.
-  folly::F14FastMap<uint32_t, RequestStatePtr> requests_;
 };
 
 } // namespace apache::thrift::fast_thrift::thrift::server

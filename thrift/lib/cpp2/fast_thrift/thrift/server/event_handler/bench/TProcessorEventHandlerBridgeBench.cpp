@@ -24,6 +24,7 @@
 #include <vector>
 
 #include <folly/Benchmark.h>
+#include <folly/container/F14Map.h>
 #include <folly/init/Init.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 
@@ -135,6 +136,57 @@ BENCHMARK_RELATIVE(ThriftRequestContext_Heap, iters) {
       folly::doNotOptimizeAway(context.get());
     }
   });
+}
+
+struct BenchmarkExtension {
+  EXTENSION_ID(benchmark);
+  using RequestState = std::uint64_t;
+};
+
+const ExtensionLayout& borrowedBenchmarkLayout() {
+  static const ExtensionLayout layout = [] {
+    ExtensionLayoutBuilder builder;
+    builder.add(BenchmarkExtension::kId);
+    return std::move(builder).build();
+  }();
+  return layout;
+}
+
+const ExtensionLayout& ownedBenchmarkLayout() {
+  static const ExtensionLayout layout = [] {
+    ExtensionLayoutBuilder builder;
+    builder.add(BenchmarkExtension::kId, [](void* state) noexcept {
+      delete static_cast<BenchmarkExtension::RequestState*>(state);
+    });
+    return std::move(builder).build();
+  }();
+  return layout;
+}
+
+BENCHMARK(RequestStateOwnership_StreamMap, iters) {
+  folly::F14FastMap<
+      std::uint32_t,
+      std::unique_ptr<BenchmarkExtension::RequestState>>
+      states;
+  for (std::size_t i = 0; i < iters; ++i) {
+    auto context = std::make_unique<ThriftRequestContext>();
+    context->installExtensions(borrowedBenchmarkLayout());
+    auto state = std::make_unique<BenchmarkExtension::RequestState>(i);
+    context->setState<BenchmarkExtension>(state.get());
+    states.emplace(0, std::move(state));
+    folly::doNotOptimizeAway(context->tryState<BenchmarkExtension>());
+    states.erase(0);
+  }
+}
+
+BENCHMARK_RELATIVE(RequestStateOwnership_ExtensionSlot, iters) {
+  for (std::size_t i = 0; i < iters; ++i) {
+    auto context = std::make_unique<ThriftRequestContext>();
+    context->installExtensions(ownedBenchmarkLayout());
+    context->adoptState<BenchmarkExtension>(
+        new BenchmarkExtension::RequestState(i));
+    folly::doNotOptimizeAway(context->tryState<BenchmarkExtension>());
+  }
 }
 
 BENCHMARK(Cpp2RequestContext_LongMethod, iters) {

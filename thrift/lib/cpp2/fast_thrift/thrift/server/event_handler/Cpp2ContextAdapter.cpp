@@ -20,6 +20,7 @@
 
 #include <folly/io/async/ssl/OpenSSLTransportCertificate.h>
 
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/event_handler/Cpp2BridgeExtension.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
 namespace apache::thrift::fast_thrift::thrift::server {
@@ -116,12 +117,6 @@ Cpp2RequestContextAdapter::Cpp2RequestContextAdapter(
   apache::thrift::detail::Cpp2RequestContextUnsafeAPI(*cpp2RequestContext_)
       .setBorrowedMethodName(requestContext_.getMethodName());
 
-  // Published on the request for its whole lifetime. Missing registration is a
-  // wiring error, so setState aborts instead of silently exposing a null
-  // classic context.
-  bridgeState_.context = cpp2RequestContext_;
-  requestContext_.setState<Cpp2BridgeExtension>(&bridgeState_);
-
   // The native request owns these for longer than this adapter lives. A
   // classic handler that mutates them makes the THeader detach its own copy,
   // preserving the two contexts' independent-header semantics.
@@ -129,7 +124,6 @@ Cpp2RequestContextAdapter::Cpp2RequestContextAdapter(
 }
 
 Cpp2RequestContextAdapter::~Cpp2RequestContextAdapter() {
-  requestContext_.setState<Cpp2BridgeExtension>(nullptr);
   header_.clearReadHeaders();
 }
 

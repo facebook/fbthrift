@@ -222,6 +222,16 @@ class ThriftRequestContext {
     extensionSlots_.set(Ext::kId, state);
   }
 
+  template <class Ext>
+  void adoptState(typename Ext::RequestState* state) noexcept {
+    extensionSlots_.adopt(Ext::kId, state);
+  }
+
+  template <class Ext>
+  void clearOwnedState() noexcept {
+    extensionSlots_.clearOwned(Ext::kId);
+  }
+
  private:
   enum class CompletionState : uint8_t {
     Active,

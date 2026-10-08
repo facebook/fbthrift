@@ -20,8 +20,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
-#include <new>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -62,8 +60,11 @@ namespace detail {
  * context's slot array belongs to it.
  */
 struct ExtensionSlotEntry {
+  using Deleter = void (*)(void*) noexcept;
+
   ExtensionId id{0};
   std::uint16_t index{0};
+  Deleter deleter{nullptr};
 };
 
 } // namespace detail
@@ -107,14 +108,16 @@ class ExtensionLayoutBuilder {
   /**
    * Reserves a slot for `id`.
    *
-   * A slot holds one pointer. What it points at, and who owns that, is the
-   * extension's business — the framework never constructs or destroys it.
+   * A slot holds one pointer. A null deleter makes that pointer borrowed; a
+   * non-null deleter makes the context own it.
    *
    * A repeated id aborts. Two extensions reaching one slot is the failure this
    * mechanism exists to prevent, and startup is the only point at which it can
    * be caught rather than silently aliasing state under traffic.
    */
-  void add(ExtensionId id) {
+  void add(ExtensionId id) { add(id, nullptr); }
+
+  void add(ExtensionId id, detail::ExtensionSlotEntry::Deleter deleter) {
     for (const auto& entry : layout_.entries_) {
       FOLLY_SAFE_CHECK(
           entry.id != id, "two fast_thrift extensions share one id");
@@ -122,7 +125,8 @@ class ExtensionLayoutBuilder {
     layout_.entries_.push_back(
         detail::ExtensionSlotEntry{
             .id = id,
-            .index = static_cast<std::uint16_t>(layout_.entries_.size())});
+            .index = static_cast<std::uint16_t>(layout_.entries_.size()),
+            .deleter = deleter});
   }
 
   ExtensionLayout build() && { return std::move(layout_); }
@@ -134,10 +138,9 @@ class ExtensionLayoutBuilder {
 /**
  * A context's extension slots: one pointer per installed extension.
  *
- * The framework owns the array, never what the pointers reach. An extension
- * decides whether its slot holds state it allocated, or is itself the payload —
- * the event-handler bridge stores a `Cpp2RequestContext*` it already owns, and
- * allocates nothing.
+ * The framework owns the array. Each layout entry decides whether its pointer
+ * is borrowed or owned; owned entries are destroyed with the context without
+ * widening the per-context slot.
  *
  * Slots are installed after construction rather than built in, so a context
  * created without a layout — every test that does not exercise an extension —
@@ -154,7 +157,18 @@ class ExtensionSlots {
   static constexpr std::size_t kInlineSlots = 2;
 
   ExtensionSlots() = default;
-  ~ExtensionSlots() = default;
+  ~ExtensionSlots() {
+    if (layout_ == nullptr) {
+      return;
+    }
+    const auto* entries = layout_->entries();
+    for (std::size_t i = 0; i < layout_->entryCount(); ++i) {
+      const auto& entry = entries[i];
+      if (entry.deleter != nullptr && slots_[entry.index] != nullptr) {
+        entry.deleter(slots_[entry.index]);
+      }
+    }
+  }
 
   // Rejected rather than bound: a layout that dies at the end of the install
   // statement leaves every later lookup reading freed memory.
@@ -205,7 +219,35 @@ class ExtensionSlots {
   void set(ExtensionId id, void* FOLLY_NULLABLE state) noexcept {
     const auto* entry = findEntry(id);
     FOLLY_SAFE_CHECK(entry != nullptr, "extension is not installed");
+    FOLLY_SAFE_CHECK(
+        entry->deleter == nullptr,
+        "owning extension state must be adopted, not borrowed");
     slots_[entry->index] = state;
+  }
+
+  /** Transfers ownership of `state` to an owning slot. */
+  void adopt(ExtensionId id, void* state) noexcept {
+    const auto* entry = findEntry(id);
+    FOLLY_SAFE_CHECK(entry != nullptr, "extension is not installed");
+    FOLLY_SAFE_CHECK(
+        entry->deleter != nullptr,
+        "borrowed extension state cannot be adopted");
+    FOLLY_SAFE_CHECK(state != nullptr, "owned extension state cannot be null");
+    FOLLY_SAFE_CHECK(
+        slots_[entry->index] == nullptr, "extension state already exists");
+    slots_[entry->index] = state;
+  }
+
+  /** Destroys and clears an owning slot. */
+  void clearOwned(ExtensionId id) noexcept {
+    const auto* entry = findEntry(id);
+    FOLLY_SAFE_CHECK(entry != nullptr, "extension is not installed");
+    FOLLY_SAFE_CHECK(
+        entry->deleter != nullptr, "borrowed extension state is not owned");
+    void* state = std::exchange(slots_[entry->index], nullptr);
+    if (state != nullptr) {
+      entry->deleter(state);
+    }
   }
 
   // Whether `id` has a slot on this context at all.
@@ -239,5 +281,7 @@ class ExtensionSlots {
   void* inline_[kInlineSlots]{};
   std::unique_ptr<void*[]> heap_;
 };
+
+static_assert(sizeof(ExtensionSlots) == 5 * sizeof(void*));
 
 } // namespace apache::thrift::fast_thrift::thrift

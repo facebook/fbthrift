@@ -19,11 +19,13 @@
 #include <concepts>
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <string_view>
 #include <utility>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/io/async/Request.h>
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftRequestPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftResponsePayloads.h>
@@ -60,6 +62,13 @@ namespace apache::thrift::fast_thrift::thrift {
 class RequestVerdict {
  public:
   static RequestVerdict proceed() noexcept { return RequestVerdict(); }
+
+  static RequestVerdict proceedWithContext(
+      std::shared_ptr<folly::RequestContext> context) noexcept {
+    RequestVerdict verdict;
+    verdict.context_ = std::move(context);
+    return verdict;
+  }
 
   static RequestVerdict reject(folly::exception_wrapper cause) noexcept {
     return RequestVerdict(std::move(cause));
@@ -100,6 +109,10 @@ class RequestVerdict {
 
   bool appliesBackpressure() const noexcept { return backpressure_; }
 
+  const std::shared_ptr<folly::RequestContext>& context() const noexcept {
+    return context_;
+  }
+
   // Empty unless isRejected().
   const folly::exception_wrapper& cause() const& noexcept { return cause_; }
   folly::exception_wrapper&& cause() && noexcept { return std::move(cause_); }
@@ -110,6 +123,7 @@ class RequestVerdict {
       : cause_(std::move(cause)) {}
 
   folly::exception_wrapper cause_;
+  std::shared_ptr<folly::RequestContext> context_;
   bool backpressure_{false};
 };
 
@@ -217,6 +231,11 @@ class ThriftRequestMutator final : public ThriftRequestView {
   // pipeline-wide contract, not a hazard introduced here.
   void setHeader(std::string key, std::string value) noexcept {
     request_.requestContext->setHeader(std::move(key), std::move(value));
+  }
+
+  template <class Ext>
+  void adoptState(typename Ext::RequestState* state) noexcept {
+    request_.requestContext->template adoptState<Ext>(state);
   }
 
  private:

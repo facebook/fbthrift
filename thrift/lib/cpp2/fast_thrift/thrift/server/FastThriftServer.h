@@ -314,7 +314,16 @@ class FastThriftServer {
       connExtensionBuilder_.add(Ext::kId);
     }
     if constexpr (requires { typename Ext::RequestState; }) {
-      requestExtensionBuilder_.add(Ext::kId);
+      if constexpr (requires(typename Ext::RequestState* state) {
+                      Ext::destroyRequestState(state);
+                    }) {
+        requestExtensionBuilder_.add(Ext::kId, [](void* state) noexcept {
+          Ext::destroyRequestState(
+              static_cast<typename Ext::RequestState*>(state));
+        });
+      } else {
+        requestExtensionBuilder_.add(Ext::kId);
+      }
     }
   }
 

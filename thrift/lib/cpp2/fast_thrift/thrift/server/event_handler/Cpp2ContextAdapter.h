@@ -73,41 +73,6 @@ using PeerIdentityResolver = std::unique_ptr<void, void (*)(void*)> (*)(
     const folly::SocketAddress& peerAddress);
 
 /**
- * The event-handler bridge's slots on a fast_thrift connection and request.
- *
- * Each slot holds the corresponding classic context the bridge already owns,
- * so a consumer written against the classic server reaches it without another
- * allocation. The connection slot is cleared when its adapter is destroyed;
- * the request slot is cleared once the response has left.
- *
- * A server that installs the bridge registers this; one that does not leaves
- * every lookup below reading null, which is the answer a server with no bridge
- * should give.
- */
-/**
- * The classic context for this connection, or null on a server that installed
- * no event-handler bridge.
- */
-inline apache::thrift::Cpp2ConnContext* FOLLY_NULLABLE
-tryGetCpp2ConnContext(const ThriftConnContext& connContext) noexcept {
-  return connContext.tryState<Cpp2BridgeExtension>();
-}
-
-/**
- * The classic context for this request, or null on a server that installed no
- * event-handler bridge.
- *
- * The only place fast_thrift names the classic type on behalf of a consumer:
- * reaching it means depending on this library, not on the context headers.
- */
-template <typename Request>
-inline apache::thrift::Cpp2RequestContext* FOLLY_NULLABLE
-tryGetCpp2RequestContext(const Request& request) noexcept {
-  const auto* state = request.template tryState<Cpp2BridgeExtension>();
-  return state == nullptr ? nullptr : state->context;
-}
-
-/**
  * Owns the `Cpp2ConnContext` for one connection, built from that connection's
  * `ThriftConnContext`. Construct once, when the setup request enters the
  * Thrift pipeline, and keep it for the connection's life: per-connection state
@@ -210,17 +175,12 @@ class Cpp2RequestContextAdapter {
 
   ThriftRequestContext& ftContext() noexcept { return requestContext_; }
 
-  const Cpp2BridgeRequestException* exception() const noexcept {
-    return bridgeState_.exception.get();
-  }
-
  private:
   apache::thrift::transport::THeader& header_;
   ThriftRequestContext& requestContext_;
   // Owned by the request context, which outlives this; this only reaches it.
   apache::thrift::Cpp2RequestContext* cpp2RequestContext_;
   std::shared_ptr<folly::RequestContext> ambientContext_;
-  Cpp2BridgeRequestState bridgeState_;
 };
 
 } // namespace apache::thrift::fast_thrift::thrift::server

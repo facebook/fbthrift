@@ -181,12 +181,21 @@ class ThriftSetupConnectionView : public ThriftConnectionView {
  * Contributing to the answer is not done here — the response does not exist
  * yet at this point. It is assembled downstream of every extension and passes
  * back out on the write path, which is where onConnectionAnswering stamps it.
- * This type carries the inbound-settable fields; it has none today.
+ * This type carries the inbound-settable fields.
  */
 class ThriftSetupConnectionMutator final : public ThriftSetupConnectionView {
  public:
   explicit ThriftSetupConnectionMutator(ConnectionSetupData& setup) noexcept
       : ThriftSetupConnectionView(setup), setup_(setup) {}
+
+  template <class Ext>
+  void setState(typename Ext::ConnState* state) noexcept {
+    setup_.connContext->template setState<Ext>(state);
+  }
+
+  void setPeerIdentities(void* FOLLY_NULLABLE identities) noexcept {
+    setup_.connContext->setPeerIdentities(identities);
+  }
 
  private:
   ConnectionSetupData& setup_;

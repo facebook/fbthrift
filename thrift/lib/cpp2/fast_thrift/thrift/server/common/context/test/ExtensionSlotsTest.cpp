@@ -55,6 +55,15 @@ struct DeltaExtension {
   };
 };
 
+struct OwnedExtension {
+  EXTENSION_ID(owned);
+  struct RequestState {
+    explicit RequestState(int* destructions) : destructions(destructions) {}
+    ~RequestState() { ++*destructions; }
+    int* destructions;
+  };
+};
+
 ExtensionLayout layoutOf(std::initializer_list<ExtensionId> ids) {
   ExtensionLayoutBuilder builder;
   for (auto id : ids) {
@@ -127,6 +136,44 @@ TEST(ExtensionSlotsTest, ClearingASlotLeavesNothingToRead) {
   slots.set(AlphaExtension::kId, nullptr);
   EXPECT_EQ(
       slots.find<AlphaExtension::ConnState>(AlphaExtension::kId), nullptr);
+}
+
+TEST(ExtensionSlotsTest, OwningSlotDestroysStateWithSlots) {
+  int destructions = 0;
+  ExtensionLayoutBuilder builder;
+  builder.add(OwnedExtension::kId, [](void* state) noexcept {
+    delete static_cast<OwnedExtension::RequestState*>(state);
+  });
+  const ExtensionLayout layout = std::move(builder).build();
+
+  {
+    ExtensionSlots slots;
+    slots.install(layout);
+    auto* state = new OwnedExtension::RequestState(&destructions);
+    slots.adopt(OwnedExtension::kId, state);
+    EXPECT_EQ(
+        slots.find<OwnedExtension::RequestState>(OwnedExtension::kId), state);
+  }
+
+  EXPECT_EQ(destructions, 1);
+}
+
+TEST(ExtensionSlotsTest, ClearingOwningSlotDestroysStateExactlyOnce) {
+  int destructions = 0;
+  ExtensionLayoutBuilder builder;
+  builder.add(OwnedExtension::kId, [](void* state) noexcept {
+    delete static_cast<OwnedExtension::RequestState*>(state);
+  });
+  const ExtensionLayout layout = std::move(builder).build();
+
+  ExtensionSlots slots;
+  slots.install(layout);
+  slots.adopt(
+      OwnedExtension::kId, new OwnedExtension::RequestState(&destructions));
+  slots.clearOwned(OwnedExtension::kId);
+  EXPECT_EQ(destructions, 1);
+  EXPECT_EQ(
+      slots.find<OwnedExtension::RequestState>(OwnedExtension::kId), nullptr);
 }
 
 TEST(ExtensionSlotsTest, EachExtensionGetsItsOwnSlot) {

@@ -412,6 +412,10 @@ class ThriftExtensionPipelineHandler {
                  "declares no onBackpressureAttached — nothing could resume it";
         }
       }
+      if (verdict.context() != nullptr) {
+        folly::RequestContextScopeGuard guard(verdict.context());
+        return ctx.fireRead(std::move(msg));
+      }
       return ctx.fireRead(std::move(msg));
     }
     auto response = makeUnknownExceptionMessage(streamId, verdict.cause());

@@ -362,7 +362,19 @@ TProcessorEventHandlerBridgeConfig makeNestedContextConfig(
 
 // The slot plan a server that registered the bridge's extension builds at
 // start(). Static so it outlives every request context below.
-const ExtensionLayout& bridgeLayout() {
+const ExtensionLayout& bridgeRequestLayout() {
+  static const ExtensionLayout layout = [] {
+    ExtensionLayoutBuilder builder;
+    builder.add(Cpp2BridgeExtension::kId, [](void* state) noexcept {
+      Cpp2BridgeExtension::destroyRequestState(
+          static_cast<Cpp2BridgeExtension::RequestState*>(state));
+    });
+    return std::move(builder).build();
+  }();
+  return layout;
+}
+
+const ExtensionLayout& bridgeConnectionLayout() {
   static const ExtensionLayout layout = [] {
     ExtensionLayoutBuilder builder;
     builder.add(Cpp2BridgeExtension::kId);
@@ -380,7 +392,7 @@ ThriftServerRequestMessage makeRequest(
   ThriftServerRequestMessage req;
   req.streamId = streamId;
   req.requestContext = makeThriftRequestContext(eventBase);
-  req.requestContext->installExtensions(bridgeLayout());
+  req.requestContext->installExtensions(bridgeRequestLayout());
   req.requestContext->setConnectionContext(conn);
   req.requestContext->setHeaders(std::move(headers));
   auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
@@ -415,9 +427,8 @@ ThriftServerResponseMessage makeErrorResponse(uint32_t streamId) {
 
 // The answer to a request that went downstream, carrying that request's
 // context back the way the handler callback hands it over.
-ThriftServerResponseMessage makeResponseFor(
-    FakeContext& ctx, uint32_t streamId) {
-  auto response = makeResponse(streamId);
+ThriftServerResponseMessage attachRequestContext(
+    FakeContext& ctx, uint32_t streamId, ThriftServerResponseMessage response) {
   for (auto& box : ctx.read) {
     auto& request = box.get<ThriftServerRequestMessage>();
     if (request.streamId == streamId && request.requestContext != nullptr) {
@@ -426,6 +437,11 @@ ThriftServerResponseMessage makeResponseFor(
     }
   }
   return response;
+}
+
+ThriftServerResponseMessage makeResponseFor(
+    FakeContext& ctx, uint32_t streamId) {
+  return attachRequestContext(ctx, streamId, makeResponse(streamId));
 }
 
 void recordExceptionFor(FakeContext& ctx, uint32_t streamId, bool declared) {
@@ -458,7 +474,7 @@ void establish(
 
 boost::intrusive_ptr<ThriftConnContext> makeConn() {
   boost::intrusive_ptr<ThriftConnContext> conn{new ThriftConnContext()};
-  conn->installExtensions(bridgeLayout());
+  conn->installExtensions(bridgeConnectionLayout());
   conn->setPeerAddress(folly::SocketAddress("127.0.0.1", 4321));
   return conn;
 }
@@ -480,7 +496,8 @@ TEST(TProcessorEventHandlerBridgeTest, DrivesTheClassicCallbackOrder) {
       Result::Success);
   EXPECT_EQ(ctx.read.size(), 2); // setup + request
   EXPECT_EQ(
-      bridge.onWrite(ctx, erase_and_box(makeResponse(7))), Result::Success);
+      bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 7))),
+      Result::Success);
 
   EXPECT_EQ(
       log.calls,
@@ -510,7 +527,7 @@ TEST(TProcessorEventHandlerBridgeTest, DrivesTheClassicCallbackOrder) {
   EXPECT_EQ(log.postWriteBytes, 5);
 }
 
-TEST(TProcessorEventHandlerBridgeTest, CancellationFreesContextExactlyOnce) {
+TEST(TProcessorEventHandlerBridgeTest, DroppedRequestFreesContextExactlyOnce) {
   CallLog log;
   Bridge bridge(makeConfig(&log));
   FakeContext ctx;
@@ -522,9 +539,8 @@ TEST(TProcessorEventHandlerBridgeTest, CancellationFreesContextExactlyOnce) {
       bridge.onRead(
           ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 17, "ping"))),
       Result::Success);
-  const auto event = ThriftServerRequestCompletedEvent{.streamId = 17};
-  bridge.on<ThriftServerRequestCompletedEvent>(ctx, event);
-  bridge.on<ThriftServerRequestCompletedEvent>(ctx, event);
+  ASSERT_EQ(ctx.read.size(), 2);
+  ctx.read.clear();
 
   EXPECT_EQ(std::count(log.calls.begin(), log.calls.end(), "freeContext"), 1);
   EXPECT_EQ(
@@ -599,7 +615,7 @@ TEST(TProcessorEventHandlerBridgeTest, HeadersCrossInBothDirections) {
       ctx,
       erase_and_box(
           makeRequest(*ctx.eventBase(), conn, 1, "ping", {{"cat", "token"}})));
-  (void)bridge.onWrite(ctx, erase_and_box(makeResponse(1)));
+  (void)bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 1)));
 
   EXPECT_NE(
       std::find(log.calls.begin(), log.calls.end(), "sawCatHeader"),
@@ -647,7 +663,7 @@ TEST(TProcessorEventHandlerBridgeTest, AmbientContextSpansBothDirections) {
 
   (void)bridge.onRead(
       ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 1, "ping")));
-  (void)bridge.onWrite(ctx, erase_and_box(makeResponse(1)));
+  (void)bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 1)));
 
   EXPECT_EQ(log.ambientMarker, "stamped");
   // Nothing leaked into the caller's context.
@@ -681,7 +697,7 @@ TEST(
     EXPECT_EQ(currentAmbientDepth(), 3);
   }
 
-  (void)bridge.onWrite(ctx, erase_and_box(makeResponse(1)));
+  (void)bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 1)));
 
   EXPECT_EQ(readDepths, (std::vector<int>{3, 3, 3}));
   EXPECT_EQ(writeDepths, (std::vector<int>{3, 3, 3}));
@@ -716,6 +732,7 @@ TEST(
     EXPECT_EQ(currentAmbientDepth(), 99);
   }
 
+  ctx.read.clear();
   EXPECT_EQ(freeDepths, (std::vector<int>{3, 3, 3}));
   EXPECT_EQ(currentAmbientDepth(), 99);
 }
@@ -790,7 +807,7 @@ TEST(TProcessorEventHandlerBridgeTest, UsesResolvedInheritedMethodNames) {
 
   (void)bridge.onRead(
       ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 1, "baseMethod")));
-  (void)bridge.onWrite(ctx, erase_and_box(makeResponse(1)));
+  (void)bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 1)));
 
   EXPECT_EQ(log.serviceName, "LeafService");
   EXPECT_EQ(log.methodName, "BaseService.baseMethod");
@@ -847,7 +864,8 @@ TEST(TProcessorEventHandlerBridgeTest, ErrorFrameSkipsWriteCallbacksButFrees) {
 
   (void)bridge.onRead(
       ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 5, "ping")));
-  (void)bridge.onWrite(ctx, erase_and_box(makeErrorResponse(5)));
+  (void)bridge.onWrite(
+      ctx, erase_and_box(attachRequestContext(ctx, 5, makeErrorResponse(5))));
 
   EXPECT_EQ(
       std::find(log.calls.begin(), log.calls.end(), "preWrite"),
@@ -875,10 +893,13 @@ TEST(
       ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 5, "ping")));
   (void)bridge.onWrite(
       ctx,
-      erase_and_box(makeUnknownExceptionMessage(
+      erase_and_box(attachRequestContext(
+          ctx,
           5,
-          folly::make_exception_wrapper<apache::thrift::TApplicationException>(
-              "denied"))));
+          makeUnknownExceptionMessage(
+              5,
+              folly::make_exception_wrapper<
+                  apache::thrift::TApplicationException>("denied")))));
 
   EXPECT_EQ(
       std::find(log.calls.begin(), log.calls.end(), "preWrite"),
@@ -908,8 +929,11 @@ TEST(
   fillDeclaredExceptionMetadata(*metadata, "Busy", "busy");
   (void)bridge.onWrite(
       ctx,
-      erase_and_box(makeResponseMessage(
-          5, folly::IOBuf::copyBuffer("declared"), std::move(metadata))));
+      erase_and_box(attachRequestContext(
+          ctx,
+          5,
+          makeResponseMessage(
+              5, folly::IOBuf::copyBuffer("declared"), std::move(metadata)))));
 
   EXPECT_NE(
       std::find(log.calls.begin(), log.calls.end(), "preWrite"),
@@ -959,8 +983,8 @@ TEST(TProcessorEventHandlerBridgeTest, ConcurrentRequestsAreTrackedSeparately) {
   EXPECT_EQ(first->getConnectionContext(), second->getConnectionContext());
 
   // Responses arrive out of order; each still finds its own request.
-  (void)bridge.onWrite(ctx, erase_and_box(makeResponse(2)));
-  (void)bridge.onWrite(ctx, erase_and_box(makeResponse(1)));
+  (void)bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 2)));
+  (void)bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 1)));
   EXPECT_EQ(std::count(log.calls.begin(), log.calls.end(), "postWrite"), 2);
 }
 

@@ -372,10 +372,14 @@ TEST(Cpp2ContextAdapterTest, ClassicContextIsReachableThroughTheRequest) {
   EXPECT_EQ(tryGetCpp2RequestContext(request), nullptr);
 
   Cpp2RequestContext cpp2Request(&connAdapter.get(), &header);
+  Cpp2BridgeRequestState state{
+      .context = &cpp2Request, .exception = nullptr, .owner = nullptr};
+  request.setState<Cpp2BridgeExtension>(&state);
   {
     Cpp2RequestContextAdapter requestAdapter(cpp2Request, header, request);
     EXPECT_EQ(tryGetCpp2RequestContext(request), &requestAdapter.get());
   }
+  request.setState<Cpp2BridgeExtension>(nullptr);
   EXPECT_EQ(tryGetCpp2RequestContext(request), nullptr);
 }
 
@@ -390,6 +394,9 @@ TEST(Cpp2ContextAdapterTest, ClearingTheSlotLeavesNothingToRead) {
   request.setConnectionContext(conn);
 
   Cpp2RequestContext cpp2Request(&connAdapter.get(), &header, "ping");
+  Cpp2BridgeRequestState state{
+      .context = &cpp2Request, .exception = nullptr, .owner = nullptr};
+  request.setState<Cpp2BridgeExtension>(&state);
   Cpp2RequestContextAdapter requestAdapter(cpp2Request, header, request);
   ASSERT_NE(tryGetCpp2RequestContext(request), nullptr);
 

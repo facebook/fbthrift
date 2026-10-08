@@ -37,13 +37,28 @@ struct Cpp2BridgeRequestException {
 struct Cpp2BridgeRequestState {
   apache::thrift::Cpp2RequestContext* context{nullptr};
   std::unique_ptr<Cpp2BridgeRequestException> exception;
+  void* owner{nullptr};
 };
 
 struct Cpp2BridgeExtension {
   EXTENSION_ID(cpp2_bridge);
   using ConnState = apache::thrift::Cpp2ConnContext;
   using RequestState = Cpp2BridgeRequestState;
+
+  static void destroyRequestState(RequestState* state) noexcept;
 };
+
+inline apache::thrift::Cpp2ConnContext* FOLLY_NULLABLE
+tryGetCpp2ConnContext(const ThriftConnContext& connContext) noexcept {
+  return connContext.tryState<Cpp2BridgeExtension>();
+}
+
+template <typename Request>
+inline apache::thrift::Cpp2RequestContext* FOLLY_NULLABLE
+tryGetCpp2RequestContext(const Request& request) noexcept {
+  const auto* state = request.template tryState<Cpp2BridgeExtension>();
+  return state == nullptr ? nullptr : state->context;
+}
 
 inline void recordCpp2BridgeException(
     ThriftRequestContext* requestContext,
