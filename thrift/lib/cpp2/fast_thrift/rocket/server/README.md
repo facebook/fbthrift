@@ -86,7 +86,7 @@ After successful setup, the following parameters are available via `setupParamet
 ## Usage Example
 
 ```cpp
-#include <thrift/lib/cpp2/fast_thrift/rocket/server/RocketServerSetupFrameHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerSetupFrameHandler.h>
 
 using namespace apache::thrift::fast_thrift::rocket::server;
 
