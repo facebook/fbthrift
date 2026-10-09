@@ -204,6 +204,11 @@ class {{#if def.exception?}}FOLLY_EXPORT {{/if}}{{def.cpp_underlying_name}} {{!
 {{> module_types_h/union_copy_ctor}}
 
 {{> module_types_h/union_assign_overload}}
+        {{#if (object.notnull? def.cpp_allocator)}}
+
+{{> module_types_h/alloc_extended_ctors_decl}}
+
+        {{/if (object.notnull? def.cpp_allocator)}}
 
         {{#if (not def.is_trivially_destructible?)}}
   {{#if def.virtual}}virtual {{/if}}~{{def.cpp_underlying_name}}();

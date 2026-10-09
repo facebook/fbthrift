@@ -49,6 +49,21 @@ union UnionPmr {
   7: string not_aa_string;
   8: NotAAPmrString not_aa_pmr_string;
 }
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+typedef UnionPmr UnionPmrAA
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+@cpp.Type{template = "std::pmr::vector"}
+typedef list<UnionPmr> UPmrUnionList
+
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "PmrByteAlloc"},
+}
+struct HasUnionPmr {
+  1: UnionPmrAA u;
+  2: UPmrUnionList us;
+  // No cpp.use_allocator: on the default resource, like a struct field.
+  3: UnionPmr heap_u;
+}
 
 @thrift.DeprecatedUnvalidatedAnnotations{
   items = {"cpp.allocator": "PmrByteAlloc"},
@@ -58,3 +73,17 @@ union RefChildUnionPmr {
   @cpp.Ref{type = cpp.RefType.Unique}
   2: string ref_s;
 }
+
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "PmrByteAlloc", "cpp.noncopyable": "1"},
+}
+@cpp.InternalExperimentalAllowAllocatorOnUnion
+union NoncopyableUnionPmr {
+  1: NotAAPmrString s;
+}
+
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "PmrByteAlloc"},
+}
+@cpp.InternalExperimentalAllowAllocatorOnUnion
+union EmptyUnionPmr {}

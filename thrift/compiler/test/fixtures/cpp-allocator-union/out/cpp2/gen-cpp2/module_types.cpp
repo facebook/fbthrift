@@ -77,8 +77,68 @@ void AllocUnion::__fbthrift_clear() {
 bool AllocUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  AllocUnion::AllocUnion(const allocator_type& alloc) noexcept
+      : __fbthrift_alloc(alloc),
+        fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {}
+
+  AllocUnion::AllocUnion(AllocUnion&& rhs, const allocator_type& alloc)
+      : __fbthrift_alloc(alloc),
+        fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+        return;
+      case Type::aa_string:
+      {
+        set_aa_string(std::move(rhs.value_.aa_string));
+        break;
+      }
+      case Type::aa_list:
+      {
+        set_aa_list(std::move(rhs.value_.aa_list));
+        break;
+      }
+      case Type::plain_int:
+      {
+        set_plain_int(std::move(rhs.value_.plain_int));
+        break;
+      }
+      case Type::ref_string:
+      {
+        set_ref_string(std::move(*rhs.value_.ref_string));
+        break;
+      }
+      default:
+        assert(false);
+    }
+    apache::thrift::clear(rhs);
+  }
+
   AllocUnion::AllocUnion(const AllocUnion& rhs)
       : __fbthrift_alloc(::std::allocator_traits<allocator_type>::select_on_container_copy_construction(rhs.__fbthrift_alloc)),
+        fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+        return;
+      case Type::aa_string:
+        set_aa_string(rhs.value_.aa_string);
+        break;
+      case Type::aa_list:
+        set_aa_list(rhs.value_.aa_list);
+        break;
+      case Type::plain_int:
+        set_plain_int(rhs.value_.plain_int);
+        break;
+      case Type::ref_string:
+        set_ref_string(::apache::thrift::detail::st::copy_field<
+          ::apache::thrift::type_class::string>(rhs.value_.ref_string));
+        break;
+      default:
+        assert(false);
+    }
+  }
+
+  AllocUnion::AllocUnion(const AllocUnion& rhs, const allocator_type& alloc)
+      : __fbthrift_alloc(alloc),
         fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
       case Type::__EMPTY__:

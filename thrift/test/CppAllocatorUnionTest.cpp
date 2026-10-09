@@ -19,6 +19,7 @@
 #include <memory_resource>
 #include <string>
 #include <type_traits>
+#include <vector>
 
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/op/Encode.h>
@@ -32,14 +33,23 @@ namespace apache::thrift::test {
 static_assert(
     std::uses_allocator_v<UnionPmr, std::pmr::polymorphic_allocator<UnionPmr>>);
 static_assert(std::is_nothrow_move_constructible_v<UnionPmr>);
-// FIXME(ytj): Should be constructible: std::uses_allocator promises
-// allocator-extended constructors, so std::pmr::vector<UnionPmr> and a
-// cpp.use_allocator UnionPmr field of a cpp.allocator struct fail to compile.
-static_assert(!std::is_constructible_v<UnionPmr, const PmrByteAlloc&>);
+static_assert(std::is_nothrow_constructible_v<UnionPmr, const PmrByteAlloc&>);
 static_assert(
-    !std::is_constructible_v<UnionPmr, const UnionPmr&, const PmrByteAlloc&>);
+    std::is_constructible_v<UnionPmr, const UnionPmr&, const PmrByteAlloc&>);
 static_assert(
-    !std::is_constructible_v<UnionPmr, UnionPmr&&, const PmrByteAlloc&>);
+    std::is_constructible_v<UnionPmr, UnionPmr&&, const PmrByteAlloc&>);
+static_assert(!std::is_constructible_v<
+              NoncopyableUnionPmr,
+              const NoncopyableUnionPmr&,
+              const PmrByteAlloc&>);
+static_assert(std::is_constructible_v<
+              NoncopyableUnionPmr,
+              NoncopyableUnionPmr&&,
+              const PmrByteAlloc&>);
+static_assert(std::is_constructible_v<
+              EmptyUnionPmr,
+              EmptyUnionPmr&&,
+              const PmrByteAlloc&>);
 
 namespace {
 
@@ -100,6 +110,59 @@ TEST(CppAllocatorUnionTest, MoveCtorKeepsSourceAllocator) {
   const auto alloc = counting.get_allocator();
   const CountingUnion movedCounting(std::move(counting));
   EXPECT_EQ(movedCounting.get_allocator(), alloc);
+}
+
+TEST(CppAllocatorUnionTest, AllocatorCtorStoresAllocatorAndIsEmpty) {
+  auto res = makeResource();
+  const UnionPmr u{PmrByteAlloc(&res)};
+  EXPECT_EQ(u.getType(), UnionPmr::Type::__EMPTY__);
+  EXPECT_EQ(resourceOf(u), &res);
+}
+
+TEST(CppAllocatorUnionTest, AllocatorExtendedCopyAndMoveCtors) {
+  auto res = makeResource();
+  auto res2 = makeResource();
+  UnionPmr src{PmrByteAlloc(&res)};
+  src.set_aa_string(UPmrString(kTooLong, &res));
+
+  const UnionPmr copy(src, PmrByteAlloc(&res2));
+  EXPECT_EQ(copy, src);
+  EXPECT_EQ(resourceOf(copy), &res2);
+  // FIXME(ytj): Should be &res2, the copy's allocator.
+  EXPECT_EQ(resourceOf(copy.get_aa_string()), std::pmr::get_default_resource());
+
+  const UnionPmr moved(std::move(src), PmrByteAlloc(&res2));
+  EXPECT_EQ(moved, copy);
+  EXPECT_EQ(resourceOf(moved), &res2);
+  // FIXME(ytj): Should be &res2: the allocators differ,
+  // so the member must be rebuilt.
+  EXPECT_EQ(resourceOf(moved.get_aa_string()), &res);
+}
+
+TEST(CppAllocatorUnionTest, PmrVectorOfUnions) {
+  auto res = makeResource();
+  auto res2 = makeResource();
+  std::pmr::vector<UnionPmr> v(&res);
+  for (int i = 0; i < 32; ++i) {
+    v.emplace_back().set_not_a_container(i);
+  }
+  for (const auto& u : v) {
+    EXPECT_EQ(resourceOf(u), &res);
+  }
+  const std::pmr::vector<UnionPmr> w(v, &res2);
+  for (const auto& u : w) {
+    EXPECT_EQ(resourceOf(u), &res2);
+  }
+}
+
+TEST(CppAllocatorUnionTest, UnionFieldOfAllocatorAwareStruct) {
+  auto res = makeResource();
+  auto res2 = makeResource();
+  const HasUnionPmr s{PmrByteAlloc(&res)};
+  EXPECT_EQ(resourceOf(*s.u()), &res);
+  EXPECT_EQ(resourceOf(*s.heap_u()), std::pmr::get_default_resource());
+  const HasUnionPmr copy(s, PmrByteAlloc(&res2));
+  EXPECT_EQ(resourceOf(*copy.u()), &res2);
 }
 
 TEST(CppAllocatorUnionTest, MovesTakeOverRefMember) {
