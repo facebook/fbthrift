@@ -98,6 +98,7 @@ add_dependencies(
   any_rep-cpp2-target
   protocol-cpp2-target
   protocol_detail-cpp2-target
+  type-cpp2-target
   type_id-cpp2-target
   type_system-cpp2-target
   schema-cpp2-target
