@@ -125,10 +125,9 @@ std::unique_ptr<folly::IOBuf> serializeFrame(
     headerSize += kMetadataLengthSize;
   }
 
-  // Fast path: write frame header into the metadata buffer's headroom.
-  // Conditions: has metadata, not chained (single buffer), not shared,
-  // and sufficient headroom for the entire frame header.
-  if (hasMetadata && !metadata->isChained() && !metadata->isSharedOne() &&
+  // Fast path: write the frame header into the first metadata buffer's
+  // headroom. The remaining chain stays untouched.
+  if (hasMetadata && !metadata->isSharedOne() &&
       metadata->headroom() >= headerSize) {
     return serializeFrameIntoHeadroom(
         type,
