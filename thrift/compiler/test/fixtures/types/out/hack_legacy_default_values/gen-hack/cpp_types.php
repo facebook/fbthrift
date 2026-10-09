@@ -2746,3 +2746,79 @@ class AllowCustomDefaultInAllocCtor implements \IThriftSyncStruct, \IThriftStruc
 
 }
 
+/**
+ * Allows the unstructured `cpp.allocator` annotation on this union, which
+ * unions otherwise reject.
+ * 
+ * Internal and experimental: Thrift's own unit tests use it while support for
+ * `cpp.allocator` unions is incomplete. Do not use it elsewhere; it may change
+ * or go away without notice.
+ *
+ * Original thrift struct:-
+ * InternalExperimentalAllowAllocatorOnUnion
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/cpp/InternalExperimentalAllowAllocatorOnUnion'))>>
+class InternalExperimentalAllowAllocatorOnUnion implements \IThriftSyncStruct, \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct()[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'InternalExperimentalAllowAllocatorOnUnion';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "cpp.InternalExperimentalAllowAllocatorOnUnion",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\facebook\thrift\annotation\Union' => \facebook\thrift\annotation\Union::withDefaultValues(),
+        '\facebook\thrift\annotation\Experimental' => \facebook\thrift\annotation\Experimental::withDefaultValues(),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = PHP\json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+

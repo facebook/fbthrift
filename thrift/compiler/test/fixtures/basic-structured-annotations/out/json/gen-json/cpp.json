@@ -861,6 +861,28 @@
           "column" : 2
         }
       }
+    },
+    "InternalExperimentalAllowAllocatorOnUnion" : {
+      "lineno" : 522,
+      "is_exception" : false,
+      "is_union" : false,
+      "structured_annotations" : {
+        "scope.Union" : {  },
+        "thrift.Experimental" : {  }
+      },
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 522,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 524,
+          "column" : 52
+        }
+      }
     }
   }
 }

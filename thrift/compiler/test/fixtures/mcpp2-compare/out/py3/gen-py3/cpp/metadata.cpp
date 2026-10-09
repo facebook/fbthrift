@@ -43,6 +43,7 @@ namespace facebook::thrift::annotation::cpp {
   ::apache::thrift::detail::md::StructMetadata<DeclareHashSpecialization>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<DeclareEqualToSpecialization>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<AllowCustomDefaultInAllocCtor>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<InternalExperimentalAllowAllocatorOnUnion>::gen(metadata);
   return metadata;
 }
 } // namespace facebook::thrift::annotation::cpp

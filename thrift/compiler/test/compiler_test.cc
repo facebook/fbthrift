@@ -3210,6 +3210,28 @@ TEST(CompilerTest, cpp_allocator_on_union) {
     }
       # expected-error@-6: `cpp.allocator` does not support union `Bad`
 
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    @cpp.InternalExperimentalAllowAllocatorOnUnion
+    union Allowed {
+      1: i32 field1;
+    }
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    @cpp.InternalExperimentalAllowAllocatorOnUnion
+    union Defaulted {
+      @thrift.AllowUnsafeUnionFieldCustomDefaultValue
+      1: i32 field1 = 8;
+        # expected-error@-2: Field `field1` of union `Defaulted` has a default value, which unions don't support.
+      @cpp.AllowCustomDefaultInAllocCtor
+      @thrift.AllowUnsafeUnionFieldCustomDefaultValue
+      2: i32 field2 = 8;
+        # expected-error@-3: Field `field2` of union `Defaulted` has a default value, which unions don't support.
+    }
+
     # Structs are unaffected.
     @thrift.DeprecatedUnvalidatedAnnotations{
       items = {"cpp.allocator": "MyAlloc"},

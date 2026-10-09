@@ -841,6 +841,31 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 509
+      },
+      "InternalExperimentalAllowAllocatorOnUnion" : {
+        "name" : "InternalExperimentalAllowAllocatorOnUnion",
+        "structured_annotations": {
+          "scope.Union" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Union",
+            "path" : "thrift/annotation/scope.thrift"
+          },
+            "value" : {}
+          },
+          "thrift.Experimental" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Experimental",
+            "path" : "thrift/annotation/thrift.thrift"
+          },
+            "value" : {}
+          }
+        },
+        "docstring" : "Allows the unstructured `cpp.allocator` annotation on this union, which\nunions otherwise reject.\n\nInternal and experimental: Thrift's own unit tests use it while support for\n`cpp.allocator` unions is incomplete. Do not use it elsewhere; it may change\nor go away without notice.\n",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 522
       }
   },
   "source_path" : "thrift/annotation/cpp",

@@ -2715,7 +2715,9 @@ void forbid_allocator_via_on_union(sema_context& ctx, const t_union& node) {
 }
 
 void forbid_allocator_on_union(sema_context& ctx, const t_union& node) {
-  if (!node.has_unstructured_annotation("cpp.allocator")) {
+  if (!node.has_unstructured_annotation("cpp.allocator") ||
+      node.has_structured_annotation(
+          kCppInternalExperimentalAllowAllocatorOnUnionUri)) {
     return;
   }
   ctx.report(
@@ -2756,6 +2758,17 @@ void validate_alloc_ctor_custom_defaults(
   const bool allocator_aware =
       strct.has_unstructured_annotation("cpp.allocator");
   for (const auto& field : strct.fields()) {
+    if (allocator_aware && strct.is<t_union>() &&
+        field.default_value() != nullptr) {
+      ctx.report(
+          field,
+          diagnostic_level::error,
+          "Field `{}` of union `{}` has a default value, which unions don't "
+          "support.",
+          field.name(),
+          strct.name());
+      continue;
+    }
     // A default that happens to match value-initialization still counts:
     // whether the two agree is a per-type judgement the annotation should not
     // depend on.
