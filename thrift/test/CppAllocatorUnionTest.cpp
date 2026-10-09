@@ -84,9 +84,7 @@ std::pmr::monotonic_buffer_resource makeResource() {
 TEST(CppAllocatorUnionTest, CopyCtorUsesSelectOnContainerCopyConstruction) {
   const CountingUnion src;
   const CountingUnion copy(src);
-  // FIXME(ytj): Should be equal: select_on_container_copy_construction
-  // returns a copy.
-  EXPECT_NE(copy.get_allocator(), src.get_allocator());
+  EXPECT_EQ(copy.get_allocator(), src.get_allocator());
 }
 
 TEST(CppAllocatorUnionTest, MoveCtorKeepsSourceAllocator) {
@@ -95,15 +93,13 @@ TEST(CppAllocatorUnionTest, MoveCtorKeepsSourceAllocator) {
   src.aa_string_ref() = UPmrString(kTooLong, &res);
 
   const UnionPmr moved(std::move(src));
-  // FIXME(ytj): Should be &res, the source's allocator.
-  EXPECT_EQ(resourceOf(moved), std::pmr::get_default_resource());
+  EXPECT_EQ(resourceOf(moved), &res);
   EXPECT_EQ(resourceOf(*moved.aa_string_ref()), &res);
 
   CountingUnion counting;
   const auto alloc = counting.get_allocator();
   const CountingUnion movedCounting(std::move(counting));
-  // FIXME(ytj): Should be equal.
-  EXPECT_NE(movedCounting.get_allocator(), alloc);
+  EXPECT_EQ(movedCounting.get_allocator(), alloc);
 }
 
 TEST(CppAllocatorUnionTest, MovesTakeOverRefMember) {

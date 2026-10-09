@@ -122,7 +122,8 @@ class AllocUnion final  {
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {}
 
   AllocUnion(AllocUnion&& rhs) noexcept
-      : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
+      : __fbthrift_alloc(rhs.__fbthrift_alloc),
+        fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     *this = std::move(rhs);
   }
 

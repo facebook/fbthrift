@@ -78,7 +78,8 @@ bool AllocUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
   AllocUnion::AllocUnion(const AllocUnion& rhs)
-      : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
+      : __fbthrift_alloc(::std::allocator_traits<allocator_type>::select_on_container_copy_construction(rhs.__fbthrift_alloc)),
+        fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
       case Type::__EMPTY__:
         return;
