@@ -19,9 +19,13 @@
 #include <gtest/gtest.h>
 
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/ErrorCode.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameDescriptor.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
@@ -43,6 +47,8 @@ namespace {
 
 apache::thrift::fast_thrift::channel_pipeline::SimpleBufferAllocator
     g_allocator;
+
+HANDLER_TAG(server_keepalive);
 
 /**
  * MockContext capturing fireRead/fireWrite/fireException, close(), and the
@@ -72,6 +78,8 @@ class MockContext {
 
   void close() noexcept { closeCalled_ = true; }
 
+  void deactivate() noexcept { deactivateCalled_ = true; }
+
   apache::thrift::fast_thrift::channel_pipeline::BytesPtr copyBuffer(
       const void* data, size_t len) noexcept {
     auto buf = g_allocator.allocate(len);
@@ -96,6 +104,7 @@ class MockContext {
     readResult_ = Result::Success;
     writeResult_ = Result::Success;
     closeCalled_ = false;
+    deactivateCalled_ = false;
     writeReadyCalled_ = false;
   }
 
@@ -106,6 +115,7 @@ class MockContext {
   Result readResult_{Result::Success};
   Result writeResult_{Result::Success};
   bool closeCalled_{false};
+  bool deactivateCalled_{false};
   bool writeReadyCalled_{false};
 };
 
@@ -291,6 +301,150 @@ TEST_F(ServerKeepAliveHandlerTest, OnExceptionPassesThrough) {
 TEST_F(ServerKeepAliveHandlerTest, OnWriteReadyIsNoOp) {
   handler_.onWriteReady(ctx_);
   EXPECT_FALSE(ctx_.writeReadyCalled());
+}
+
+TEST(ServerKeepAliveTimerTest, MissingProbeTimesOutConnection) {
+  namespace cp = apache::thrift::fast_thrift::channel_pipeline;
+
+  folly::EventBase eventBase;
+  cp::test::MockHeadHandler transport;
+  cp::test::MockTailHandler app;
+  cp::test::TestAllocator allocator;
+  auto pipeline = cp::PipelineBuilder<
+                      cp::test::MockHeadHandler,
+                      cp::test::MockTailHandler,
+                      cp::test::TestAllocator>()
+                      .setEventBase(&eventBase)
+                      .setHead(&transport)
+                      .setTail(&app)
+                      .setAllocator(&allocator)
+                      .addNextDuplex<RocketServerKeepAliveHandler>(
+                          server_keepalive_tag, /*enforcePeerLiveness=*/true)
+                      .build();
+
+  pipeline->activate();
+  auto setup = frame::write::serialize(
+      frame::write::SetupHeader{
+          .majorVersion = 1,
+          .minorVersion = 0,
+          .keepaliveTime = 2,
+          .maxLifetime = 10,
+          .lease = false,
+      },
+      nullptr,
+      nullptr);
+  RocketRequestMessage request;
+  request.frame = frame::read::parseFrame(std::move(setup));
+  EXPECT_EQ(
+      pipeline->fireRead(erase_and_box(std::move(request))), Result::Success);
+
+  eventBase.loop();
+
+  EXPECT_EQ(app.exceptionCount(), 1);
+}
+
+TEST(ServerKeepAliveTimerTest, DefaultPolicyDoesNotTimeOutConnection) {
+  namespace cp = apache::thrift::fast_thrift::channel_pipeline;
+
+  folly::EventBase eventBase;
+  cp::test::MockHeadHandler transport;
+  cp::test::MockTailHandler app;
+  cp::test::TestAllocator allocator;
+  auto pipeline =
+      cp::PipelineBuilder<
+          cp::test::MockHeadHandler,
+          cp::test::MockTailHandler,
+          cp::test::TestAllocator>()
+          .setEventBase(&eventBase)
+          .setHead(&transport)
+          .setTail(&app)
+          .setAllocator(&allocator)
+          .addNextDuplex<RocketServerKeepAliveHandler>(server_keepalive_tag)
+          .build();
+
+  pipeline->activate();
+  auto setup = frame::write::serialize(
+      frame::write::SetupHeader{
+          .majorVersion = 1,
+          .minorVersion = 0,
+          .keepaliveTime = 2,
+          .maxLifetime = 5,
+          .lease = false,
+      },
+      nullptr,
+      nullptr);
+  RocketRequestMessage request;
+  request.frame = frame::read::parseFrame(std::move(setup));
+  ASSERT_EQ(
+      pipeline->fireRead(erase_and_box(std::move(request))), Result::Success);
+
+  auto stop = folly::AsyncTimeout::make(
+      eventBase, [&]() noexcept { pipeline->deactivate(); });
+  stop->scheduleTimeout(std::chrono::milliseconds{15});
+  eventBase.loop();
+
+  EXPECT_EQ(app.exceptionCount(), 0);
+}
+
+TEST(ServerKeepAliveTimerTest, ProbeExtendsLifetimeWithoutRearmingHotPath) {
+  namespace cp = apache::thrift::fast_thrift::channel_pipeline;
+
+  folly::EventBase eventBase;
+  cp::test::MockHeadHandler transport;
+  cp::test::MockTailHandler app;
+  cp::test::TestAllocator allocator;
+  size_t echoes = 0;
+  transport.setOnWriteCallback([&echoes](TypeErasedBox&& box) noexcept {
+    auto response = box.take<RocketResponseMessage>();
+    EXPECT_EQ(response.frame.frameType, frame::FrameType::KEEPALIVE);
+    EXPECT_FALSE(response.frame.respond);
+    ++echoes;
+    return Result::Success;
+  });
+  auto pipeline = cp::PipelineBuilder<
+                      cp::test::MockHeadHandler,
+                      cp::test::MockTailHandler,
+                      cp::test::TestAllocator>()
+                      .setEventBase(&eventBase)
+                      .setHead(&transport)
+                      .setTail(&app)
+                      .setAllocator(&allocator)
+                      .addNextDuplex<RocketServerKeepAliveHandler>(
+                          server_keepalive_tag, /*enforcePeerLiveness=*/true)
+                      .build();
+
+  pipeline->activate();
+  auto setup = frame::write::serialize(
+      frame::write::SetupHeader{
+          .majorVersion = 1,
+          .minorVersion = 0,
+          .keepaliveTime = 2,
+          .maxLifetime = 12,
+          .lease = false,
+      },
+      nullptr,
+      nullptr);
+  RocketRequestMessage request;
+  request.frame = frame::read::parseFrame(std::move(setup));
+  ASSERT_EQ(
+      pipeline->fireRead(erase_and_box(std::move(request))), Result::Success);
+
+  auto probe = folly::AsyncTimeout::make(eventBase, [&]() noexcept {
+    RocketRequestMessage keepAlive;
+    keepAlive.frame = makeKeepAlive(/*respond=*/true, "");
+    EXPECT_EQ(
+        pipeline->fireRead(erase_and_box(std::move(keepAlive))),
+        Result::Success);
+  });
+  auto stop = folly::AsyncTimeout::make(
+      eventBase, [&]() noexcept { pipeline->deactivate(); });
+  probe->scheduleTimeout(std::chrono::milliseconds{7});
+  stop->scheduleTimeout(std::chrono::milliseconds{15});
+
+  eventBase.loop();
+
+  EXPECT_EQ(echoes, 1u);
+  EXPECT_EQ(app.exceptionCount(), 0);
 }
 
 } // namespace apache::thrift::fast_thrift::rocket::server::handler

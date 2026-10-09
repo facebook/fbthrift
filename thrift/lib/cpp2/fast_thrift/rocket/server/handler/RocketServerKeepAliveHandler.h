@@ -16,20 +16,27 @@
 
 #pragma once
 
+#include <algorithm>
+#include <chrono>
 #include <cstring>
+#include <memory>
+#include <stdexcept>
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/AsyncTimeout.h>
 #include <folly/lang/Hint.h>
 #include <folly/logging/xlog.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/ErrorCode.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameViews.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/ComposedFrame.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/common/RSocketKeepAliveConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/Messages.h>
 
 namespace apache::thrift::fast_thrift::rocket::server::handler {
@@ -61,15 +68,26 @@ namespace apache::thrift::fast_thrift::rocket::server::handler {
  */
 class RocketServerKeepAliveHandler {
  public:
-  RocketServerKeepAliveHandler() = default;
+  explicit RocketServerKeepAliveHandler(
+      bool enforcePeerLiveness = false) noexcept
+      : enforcePeerLiveness_(enforcePeerLiveness) {}
 
   // === HandlerLifecycle ===
 
   template <typename Context>
-  void handlerAdded(Context& /*ctx*/) noexcept {}
+  void handlerAdded(Context& ctx) noexcept {
+    if (!enforcePeerLiveness_) {
+      return;
+    }
+    timer_ = folly::AsyncTimeout::make(
+        *ctx.eventBase(), [this, &ctx]() noexcept { onTimeout(ctx); });
+  }
 
   template <typename Context>
-  void handlerRemoved(Context& /*ctx*/) noexcept {}
+  void handlerRemoved(Context& /*ctx*/) noexcept {
+    active_ = false;
+    timer_.reset();
+  }
 
   // === InboundHandler ===
 
@@ -86,6 +104,14 @@ class RocketServerKeepAliveHandler {
           msg) noexcept {
     auto& request = msg.get<RocketRequestMessage>();
     auto& frame = request.frame;
+
+    if (FOLLY_UNLIKELY(
+            enforcePeerLiveness_ &&
+            frame.type() ==
+                apache::thrift::fast_thrift::frame::FrameType::SETUP)) {
+      armFromSetup(frame);
+      return ctx.fireRead(std::move(msg));
+    }
 
     if (FOLLY_LIKELY(
             frame.type() !=
@@ -106,6 +132,9 @@ class RocketServerKeepAliveHandler {
     // consumed without a reply.
     apache::thrift::fast_thrift::frame::read::KeepAliveView view(frame);
     if (view.shouldRespond()) {
+      if (active_) {
+        lastProbe_ = Clock::now();
+      }
       RocketResponseMessage echo{
           .frame =
               apache::thrift::fast_thrift::frame::ComposedFrame{
@@ -122,7 +151,8 @@ class RocketServerKeepAliveHandler {
               apache::thrift::fast_thrift::channel_pipeline::erase_and_box(
                   std::move(echo))) ==
           apache::thrift::fast_thrift::channel_pipeline::Result::Error) {
-        XLOG(WARN) << "Failed to write KEEPALIVE echo";
+        failRead(ctx, "Failed to write Rocket KEEPALIVE echo");
+        return apache::thrift::fast_thrift::channel_pipeline::Result::Error;
       }
     }
 
@@ -147,12 +177,77 @@ class RocketServerKeepAliveHandler {
   }
 
   template <typename Context>
-  void onPipelineInactive(Context& /*ctx*/) noexcept {}
+  void onPipelineInactive(Context& /*ctx*/) noexcept {
+    active_ = false;
+    if (timer_) {
+      timer_->cancelTimeout();
+    }
+  }
 
   template <typename Context>
   void onWriteReady(Context& /*ctx*/) noexcept {}
 
  private:
+  using Clock = std::chrono::steady_clock;
+  using Milliseconds = std::chrono::milliseconds;
+
+  void armFromSetup(
+      const apache::thrift::fast_thrift::frame::read::ParsedFrame&
+          frame) noexcept {
+    const apache::thrift::fast_thrift::frame::read::SetupView view(frame);
+    config_ = apache::thrift::fast_thrift::rocket::RSocketKeepAliveConfig{
+        .intervalMs = view.keepaliveTime(),
+        .maxLifetimeMs = view.maxLifetime(),
+    };
+    if (!config_.enabled()) {
+      return;
+    }
+    active_ = true;
+    lastProbe_ = Clock::now();
+    timer_->scheduleTimeout(Milliseconds{config_.maxLifetimeMs});
+  }
+
+  template <typename Context>
+  void onTimeout(Context& ctx) noexcept {
+    if (!active_) {
+      return;
+    }
+
+    const auto now = Clock::now();
+    const auto deadline = lastProbe_ + Milliseconds{config_.maxLifetimeMs};
+    if (FOLLY_UNLIKELY(now >= deadline)) {
+      failTimer(ctx, "Rocket keepalive probe timed out");
+      return;
+    }
+
+    auto delay = std::chrono::ceil<Milliseconds>(deadline - now);
+    if (delay <= Milliseconds::zero()) {
+      delay = Milliseconds{1};
+    }
+    timer_->scheduleTimeout(delay);
+  }
+
+  template <typename Context>
+  void failTimer(Context& ctx, const char* reason) noexcept {
+    active_ = false;
+    XLOG(ERR) << reason;
+    ctx.fireException(
+        folly::make_exception_wrapper<std::runtime_error>(reason));
+    ctx.deactivate();
+  }
+
+  template <typename Context>
+  void failRead(Context& ctx, const char* reason) noexcept {
+    active_ = false;
+    if (timer_) {
+      timer_->cancelTimeout();
+    }
+    XLOG(ERR) << reason;
+    ctx.fireException(
+        folly::make_exception_wrapper<std::runtime_error>(reason));
+    ctx.close();
+  }
+
   template <typename Context>
   apache::thrift::fast_thrift::channel_pipeline::Result sendConnectionError(
       Context& ctx, const char* message) noexcept {
@@ -186,6 +281,12 @@ class RocketServerKeepAliveHandler {
 
     return apache::thrift::fast_thrift::channel_pipeline::Result::Error;
   }
+
+  bool enforcePeerLiveness_{false};
+  apache::thrift::fast_thrift::rocket::RSocketKeepAliveConfig config_;
+  std::unique_ptr<folly::AsyncTimeout> timer_;
+  Clock::time_point lastProbe_{};
+  bool active_{false};
 };
 
 static_assert(
