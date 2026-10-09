@@ -33,8 +33,8 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/FBThriftConfig.cmake
 # downstream find_package(FBThrift) can define the imported targets that
 # FBThriftTargets.cmake refers to. FindLibUnwind is here because FindGlog uses it.
 install(
-  FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindXxhash.cmake
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindZstd.cmake
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindZstd.cmake
+        ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindXxhash.cmake
         ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindGflags.cmake
         ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindGlog.cmake
         ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindLibUnwind.cmake
