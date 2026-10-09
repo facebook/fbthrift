@@ -16,11 +16,14 @@
 
 #include <thrift/lib/python/server/execution/ExecutionSystem.h>
 
+#include <array>
 #include <cstddef>
 #include <optional>
 #include <ostream>
 #include <stdexcept>
 #include <utility>
+#include <variant>
+#include <vector>
 
 #include <folly/Try.h>
 #include <folly/executors/ManualExecutor.h>
@@ -70,149 +73,90 @@ struct SynchronousDispatchFailureTrace {
   }
 };
 
-struct ResponseTrace {
-  PyObject* handlerFunctionBeforeControlDrain = nullptr;
-  bool requestDispatchExecutedBeforeControlDrain = false;
-  PyObject* startedCoroutineFactoryBeforeControlDrain = nullptr;
-  std::size_t requestStartCountBeforeControlDrain = 0;
-  PyObject* handlerFunctionAfterControlDrain = nullptr;
-  bool requestDispatchExecutedAfterControlDrain = false;
-  PyObject* startedCoroutineFactoryAfterControlDrain = nullptr;
-  std::size_t requestStartCountAfterControlDrain = 0;
-  std::optional<int> responseBeforeControlDrain;
-  std::optional<int> responseBeforeHandlerCompletion;
-  std::optional<int> responseBeforeFinalControlDrain;
-  std::optional<int> responseAfterFinalControlDrain;
+struct RequestEvent {
+  enum class Kind {
+    BeforeDispatchDrain,
+    Dispatch,
+    RequestStart,
+    AfterDispatchDrain,
+    HandlerCompletion,
+    BeforeCompletionDrain,
+    Response,
+    AfterCompletionDrain,
+  };
 
-  bool operator==(const ResponseTrace&) const = default;
+  Kind kind;
+  std::variant<std::monostate, PyObject*, int> subject;
 
-  friend void PrintTo(const ResponseTrace& trace, std::ostream* out) {
-    auto printResponse = [out](const std::optional<int>& response) {
-      if (response.has_value()) {
-        *out << *response;
-      } else {
-        *out << "none";
-      }
-    };
-    *out << "{handlerFunctionBeforeControlDrain: "
-         << trace.handlerFunctionBeforeControlDrain
-         << ", requestDispatchExecutedBeforeControlDrain: "
-         << trace.requestDispatchExecutedBeforeControlDrain
-         << ", startedCoroutineFactoryBeforeControlDrain: "
-         << trace.startedCoroutineFactoryBeforeControlDrain
-         << ", requestStartCountBeforeControlDrain: "
-         << trace.requestStartCountBeforeControlDrain
-         << ", handlerFunctionAfterControlDrain: "
-         << trace.handlerFunctionAfterControlDrain
-         << ", requestDispatchExecutedAfterControlDrain: "
-         << trace.requestDispatchExecutedAfterControlDrain
-         << ", startedCoroutineFactoryAfterControlDrain: "
-         << trace.startedCoroutineFactoryAfterControlDrain
-         << ", requestStartCountAfterControlDrain: "
-         << trace.requestStartCountAfterControlDrain
-         << ", responseBeforeControlDrain: ";
-    printResponse(trace.responseBeforeControlDrain);
-    *out << ", responseBeforeHandlerCompletion: ";
-    printResponse(trace.responseBeforeHandlerCompletion);
-    *out << ", responseBeforeFinalControlDrain: ";
-    printResponse(trace.responseBeforeFinalControlDrain);
-    *out << ", responseAfterFinalControlDrain: ";
-    printResponse(trace.responseAfterFinalControlDrain);
-    *out << '}';
+  bool operator==(const RequestEvent&) const = default;
+
+  friend void PrintTo(const RequestEvent& event, std::ostream* out) {
+    static constexpr std::array names{
+        "before dispatch drain",
+        "dispatch",
+        "start request",
+        "after dispatch drain",
+        "complete handler",
+        "before completion drain",
+        "respond",
+        "after completion drain"};
+    *out << names[static_cast<std::size_t>(event.kind)] << '('
+         << ::testing::PrintToString(event.subject) << ')';
   }
 };
 
-TEST(ExecutionSystemTest, ExecuteStartsSelectedRequestOnControlExecutor) {
+TEST(ExecutionSystemTest, ExecuteStartsSelectedRequestOnExecutor) {
   // GIVEN
-  folly::ManualExecutor controlExecutor;
-  PyObject* startedCoroutineFactory = nullptr;
-  std::size_t requestStartCount = 0;
+  std::vector<RequestEvent> events;
+  folly::ManualExecutor selectedExecutor;
   ExecutionSystem executionSystem(
-      &controlExecutor,
-      [&startedCoroutineFactory,
-       &requestStartCount](PyObject* coroutineFactory) {
-        startedCoroutineFactory = coroutineFactory;
-        ++requestStartCount;
+      &selectedExecutor, [&events](PyObject* coroutineFactory) {
+        events.push_back({RequestEvent::Kind::RequestStart, coroutineFactory});
         return 0;
       });
   auto [handlerPromise, handlerResultFuture] =
       folly::makePromiseContract<int>();
-  ResponseCallback responseCallback;
   auto* const selectedHandlerFunction = reinterpret_cast<PyObject*>(42);
   auto* const coroutineFactory = reinterpret_cast<PyObject*>(84);
-  const ResponseTrace expected{
-      .handlerFunctionBeforeControlDrain = nullptr,
-      .requestDispatchExecutedBeforeControlDrain = false,
-      .startedCoroutineFactoryBeforeControlDrain = nullptr,
-      .requestStartCountBeforeControlDrain = 0,
-      .handlerFunctionAfterControlDrain = selectedHandlerFunction,
-      .requestDispatchExecutedAfterControlDrain = true,
-      .startedCoroutineFactoryAfterControlDrain = coroutineFactory,
-      .requestStartCountAfterControlDrain = 1,
-      .responseBeforeControlDrain = std::nullopt,
-      .responseBeforeHandlerCompletion = std::nullopt,
-      .responseBeforeFinalControlDrain = std::nullopt,
-      .responseAfterFinalControlDrain = 42,
+  const std::vector<RequestEvent> expected{
+      {RequestEvent::Kind::BeforeDispatchDrain, std::monostate{}},
+      {RequestEvent::Kind::Dispatch, selectedHandlerFunction},
+      {RequestEvent::Kind::RequestStart, coroutineFactory},
+      {RequestEvent::Kind::AfterDispatchDrain, std::monostate{}},
+      {RequestEvent::Kind::HandlerCompletion, std::monostate{}},
+      {RequestEvent::Kind::BeforeCompletionDrain, std::monostate{}},
+      {RequestEvent::Kind::Response, 42},
+      {RequestEvent::Kind::AfterCompletionDrain, std::monostate{}},
   };
 
   // WHEN
-  PyObject* handlerFunction = nullptr;
-  bool requestDispatchExecuted = false;
   executionSystem.execute(
       selectedHandlerFunction,
       RequestDispatch([pendingHandlerFuture = std::move(handlerResultFuture),
-                       &handlerFunction,
-                       &requestDispatchExecuted,
-                       &responseCallback,
+                       &events,
                        coroutineFactory = coroutineFactory](
                           PyObject* selectedFunction,
                           RequestExecution requestExecution) mutable {
-        handlerFunction = selectedFunction;
-        requestDispatchExecuted = true;
+        events.push_back({RequestEvent::Kind::Dispatch, selectedFunction});
         std::move(requestExecution)(coroutineFactory);
-        return std::move(pendingHandlerFuture)
-            .defer([&responseCallback](auto&& result) {
-              responseCallback.complete(std::move(result));
-            });
+        return std::move(pendingHandlerFuture).defer([&events](auto&& result) {
+          events.push_back(
+              {RequestEvent::Kind::Response, std::move(result).value()});
+        });
       }));
-  const auto handlerFunctionBeforeControlDrain = handlerFunction;
-  const auto requestDispatchExecutedBeforeControlDrain =
-      requestDispatchExecuted;
-  const auto startedCoroutineFactoryBeforeControlDrain =
-      startedCoroutineFactory;
-  const auto requestStartCountBeforeControlDrain = requestStartCount;
-  const auto responseBeforeControlDrain = responseCallback.response();
-  controlExecutor.drain();
-  const auto handlerFunctionAfterControlDrain = handlerFunction;
-  const auto requestDispatchExecutedAfterControlDrain = requestDispatchExecuted;
-  const auto startedCoroutineFactoryAfterControlDrain = startedCoroutineFactory;
-  const auto requestStartCountAfterControlDrain = requestStartCount;
-  const auto responseBeforeHandlerCompletion = responseCallback.response();
+  events.push_back({RequestEvent::Kind::BeforeDispatchDrain, std::monostate{}});
+  selectedExecutor.drain();
+  events.push_back({RequestEvent::Kind::AfterDispatchDrain, std::monostate{}});
+  events.push_back({RequestEvent::Kind::HandlerCompletion, std::monostate{}});
   handlerPromise.setValue(42);
-  const auto responseBeforeFinalControlDrain = responseCallback.response();
-  controlExecutor.drain();
-  const ResponseTrace actual{
-      .handlerFunctionBeforeControlDrain = handlerFunctionBeforeControlDrain,
-      .requestDispatchExecutedBeforeControlDrain =
-          requestDispatchExecutedBeforeControlDrain,
-      .startedCoroutineFactoryBeforeControlDrain =
-          startedCoroutineFactoryBeforeControlDrain,
-      .requestStartCountBeforeControlDrain =
-          requestStartCountBeforeControlDrain,
-      .handlerFunctionAfterControlDrain = handlerFunctionAfterControlDrain,
-      .requestDispatchExecutedAfterControlDrain =
-          requestDispatchExecutedAfterControlDrain,
-      .startedCoroutineFactoryAfterControlDrain =
-          startedCoroutineFactoryAfterControlDrain,
-      .requestStartCountAfterControlDrain = requestStartCountAfterControlDrain,
-      .responseBeforeControlDrain = responseBeforeControlDrain,
-      .responseBeforeHandlerCompletion = responseBeforeHandlerCompletion,
-      .responseBeforeFinalControlDrain = responseBeforeFinalControlDrain,
-      .responseAfterFinalControlDrain = responseCallback.response(),
-  };
+  events.push_back(
+      {RequestEvent::Kind::BeforeCompletionDrain, std::monostate{}});
+  selectedExecutor.drain();
+  events.push_back(
+      {RequestEvent::Kind::AfterCompletionDrain, std::monostate{}});
 
   // THEN
-  EXPECT_EQ(expected, actual);
+  EXPECT_EQ(expected, events);
 }
 
 TEST(ExecutionSystemTest, AcceptedWorkCompletesAfterShutdown) {
