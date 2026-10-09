@@ -245,6 +245,25 @@ TEST_F(ClientSetupFrameHandlerTest, SetupFrameHasCorrectHeaderFormat) {
   EXPECT_EQ(dataMime, "application/x-rocket-payload");
 }
 
+TEST_F(ClientSetupFrameHandlerTest, SetupFrameUsesConfiguredKeepAliveValues) {
+  RocketClientSetupFrameHandler handler(
+      makeDefaultFactory(),
+      apache::thrift::fast_thrift::rocket::RSocketKeepAliveConfig{
+          .intervalMs = 1'234,
+          .maxLifetimeMs = 5'678,
+      });
+
+  handler.onPipelineActive(ctx_);
+
+  ASSERT_EQ(ctx_.writeMessages().size(), 1);
+  auto& msg = ctx_.writeMessages()[0].get<RocketRequestMessage>();
+  auto serialized = serializeSetupFrame(msg)->cloneCoalesced();
+  folly::io::Cursor cursor(serialized.get());
+  cursor.skip(10);
+  EXPECT_EQ(cursor.readBE<uint32_t>(), 1'234u);
+  EXPECT_EQ(cursor.readBE<uint32_t>(), 5'678u);
+}
+
 TEST_F(ClientSetupFrameHandlerTest, SetupFrameIncludesMetadataAndData) {
   const std::string testMetadata = "test metadata content";
   const std::string testData = "test data content";

@@ -18,12 +18,14 @@
 
 #include <functional>
 
+#include <glog/logging.h>
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/ComposedFrame.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/common/RSocketKeepAliveConfig.h>
 
 namespace apache::thrift::fast_thrift::rocket::client::handler {
 
@@ -48,11 +50,10 @@ class RocketClientSetupFrameHandler {
   static constexpr uint16_t kRSocketMajorVersion = 1;
   static constexpr uint16_t kRSocketMinorVersion = 0;
 
-  // Keepalive and lifetime constants (in milliseconds).
-  // These are set to the max allowed value (2^31 - 1) since client-side
-  // keepalive is not supported (server-to-client keepalive is supported).
-  static constexpr uint32_t kMaxKeepaliveTime = (1u << 31) - 1;
-  static constexpr uint32_t kMaxLifetime = (1u << 31) - 1;
+  static constexpr uint32_t kMaxKeepaliveTime =
+      apache::thrift::fast_thrift::rocket::kRSocketMaxKeepAliveTime;
+  static constexpr uint32_t kMaxLifetime =
+      apache::thrift::fast_thrift::rocket::kRSocketMaxLifetime;
 
   // Factory function type for dynamic metadata creation at connect time
   using SetupFactory = std::function<std::pair<
@@ -63,8 +64,13 @@ class RocketClientSetupFrameHandler {
    * Construct with a factory function for dynamic metadata creation.
    * The factory is called at connect time to create the metadata/data.
    */
-  explicit RocketClientSetupFrameHandler(SetupFactory factory)
-      : setupFactory_(std::move(factory)) {}
+  explicit RocketClientSetupFrameHandler(
+      SetupFactory factory,
+      apache::thrift::fast_thrift::rocket::RSocketKeepAliveConfig
+          keepAliveConfig = {})
+      : setupFactory_(std::move(factory)), keepAliveConfig_(keepAliveConfig) {
+    CHECK(keepAliveConfig_.valid());
+  }
 
   // === HandlerLifecycle ===
 
@@ -144,8 +150,8 @@ class RocketClientSetupFrameHandler {
                 .data = std::move(data),
                 .majorVersion = kRSocketMajorVersion,
                 .minorVersion = kRSocketMinorVersion,
-                .keepaliveTime = kMaxKeepaliveTime,
-                .maxLifetime = kMaxLifetime,
+                .keepaliveTime = keepAliveConfig_.intervalMs,
+                .maxLifetime = keepAliveConfig_.maxLifetimeMs,
             },
         .requestContext = {},
     };
@@ -154,6 +160,7 @@ class RocketClientSetupFrameHandler {
   // Factory function for creating setup metadata and data
   bool setupSent_{false};
   SetupFactory setupFactory_;
+  apache::thrift::fast_thrift::rocket::RSocketKeepAliveConfig keepAliveConfig_;
 };
 
 static_assert(
