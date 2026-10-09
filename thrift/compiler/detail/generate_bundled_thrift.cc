@@ -44,6 +44,7 @@ using lines_t = std::vector<std::string>;
 
 void populate_one_file(
     const fs::path& root,
+    const fs::path& directory,
     std::map<std::string, lines_t>& out,
     const fs::path& path) {
   std::ifstream file(path);
@@ -55,21 +56,26 @@ void populate_one_file(
   // .thrift files should always end with a trailing newline.
   lines.emplace_back();
 
+  // Key by the path inside DIRECTORY: the compiler resolves includes by these
+  // names, so where DIRECTORY itself lives must not leak into them.
   std::string key = fmt::format(
-      "{}/{}", root.generic_string(), path.lexically_normal().generic_string());
+      "{}/{}",
+      root.generic_string(),
+      path.lexically_relative(directory).generic_string());
   out[std::move(key)] = std::move(lines);
 }
 
 void populate_recursively(
     const fs::path& root,
+    const fs::path& directory,
     std::map<std::string, lines_t>& out,
     const fs::path& path) {
   for (const auto& entry : fs::directory_iterator(path)) {
     const auto& filepath = entry.path();
     if (entry.is_directory()) {
-      populate_recursively(root, out, filepath);
+      populate_recursively(root, directory, out, filepath);
     } else if (entry.is_regular_file() && filepath.extension() == ".thrift") {
-      populate_one_file(root, out, filepath);
+      populate_one_file(root, directory, out, filepath);
     }
   }
 }
@@ -161,7 +167,8 @@ int main(int argc, char** argv) {
 
   // Read the files.
   std::map<std::string, lines_t> files;
-  populate_recursively(root, files, directory);
+  populate_recursively(
+      root, directory.lexically_normal(), files, directory.lexically_normal());
 
   // Print the content.
   print_all_files(function_name, files);
