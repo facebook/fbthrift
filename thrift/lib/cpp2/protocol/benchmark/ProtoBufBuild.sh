@@ -18,4 +18,8 @@ set -e
 # remove --install_dir
 shift 1
 
-${PROTOC} --cpp_out="$INSTALL_DIR" "$@"
+PROTOC_ABS="$(cd "$(dirname "$PROTOC")" && pwd)/$(basename "$PROTOC")"
+mkdir -p "$INSTALL_DIR"
+INSTALL_DIR_ABS="$(cd "$INSTALL_DIR" && pwd)"
+cd "$SRCDIR"
+"$PROTOC_ABS" --cpp_out="$INSTALL_DIR_ABS" "$@"
