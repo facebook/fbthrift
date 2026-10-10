@@ -40,6 +40,32 @@ import enum
 from collections.abc import Iterable, Iterator
 from typing import Final, Literal, NoReturn, TypeVar
 
+from apache.thrift.type.any_rep.thrift_types import AnyStruct
+from thrift.lib.python.schema._errors import EncodeError
+from thrift.lib.python.schema._value_checks import (
+    check_binary,
+    check_bool,
+    check_double,
+    check_float32,
+    check_int,
+    check_string,
+)
+from thrift.lib.python.schema.type_system import (
+    EnumTypeRef,
+    FieldDefinition,
+    InvalidTypeError,
+    ListTypeRef,
+    MapTypeRef,
+    OpaqueAliasTypeRef,
+    Primitive,
+    PrimitiveTypeRef,
+    SetTypeRef,
+    StructTypeRef,
+    TypeRef,
+    TypeRefBase,
+    UnionTypeRef,
+)
+
 _K = TypeVar("_K")
 _V = TypeVar("_V")
 _T = TypeVar("_T")
@@ -136,3 +162,179 @@ class FrozenSet(frozenset[_T]):
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}({list(self._order)!r})"
+
+
+INT_BITS: dict[Primitive, int] = {
+    Primitive.BYTE: 8,
+    Primitive.I16: 16,
+    Primitive.I32: 32,
+    Primitive.I64: 64,
+}
+
+
+def resolved(type_ref: TypeRefBase) -> TypeRef:
+    """``type_ref`` as a ``TypeRef``. Container element types are typed
+    ``TypeRefBase`` because builder input may hold unresolved references; a
+    built type system holds only ``TypeRef``s."""
+    if not isinstance(type_ref, TypeRef):
+        raise InvalidTypeError(f"unresolved type {type_ref!r}")
+    return type_ref
+
+
+def true_type(type_ref: TypeRef) -> TypeRef:
+    """``type_ref`` with an opaque alias replaced by its target. Alias
+    targets are never user-defined, so one step suffices."""
+    if isinstance(type_ref, OpaqueAliasTypeRef):
+        return type_ref.node.target_type
+    return type_ref
+
+
+def type_name(type_ref: TypeRef) -> str:
+    """A short name for error messages."""
+    match type_ref:
+        case PrimitiveTypeRef():
+            return type_ref.primitive.name.lower()
+        case ListTypeRef():
+            return f"list<{type_name(resolved(type_ref.element_type))}>"
+        case SetTypeRef():
+            return f"set<{type_name(resolved(type_ref.element_type))}>"
+        case MapTypeRef():
+            key = type_name(resolved(type_ref.key_type))
+            return f"map<{key}, {type_name(resolved(type_ref.value_type))}>"
+        case _:
+            return type_ref.node.uri
+
+
+# ---------------------------------------------------------------------------
+# Validation
+# ---------------------------------------------------------------------------
+
+
+def check_value(value: object, type_ref: TypeRef) -> None:
+    """Raise ``EncodeError`` unless ``value`` is a valid value of
+    ``type_ref``. ``UNSET`` is valid only as a struct field: an unset optional
+    field, or a non-optional field to be written as its default."""
+    target = true_type(type_ref)
+    name = type_name(type_ref)
+    match target:
+        case PrimitiveTypeRef(primitive=primitive):
+            _check_primitive(value, primitive, name)
+        case EnumTypeRef():
+            check_int(value, 32, name)
+        case ListTypeRef():
+            element_type = resolved(target.element_type)
+            for element in expect_instance(value, tuple, name):
+                check_value(element, element_type)
+        case SetTypeRef():
+            element_type = resolved(target.element_type)
+            for element in expect_instance(value, FrozenSet, name):
+                check_value(element, element_type)
+        case MapTypeRef():
+            key_type = resolved(target.key_type)
+            value_type = resolved(target.value_type)
+            for key, item in expect_instance(value, FrozenMap, name).items():
+                check_value(key, key_type)
+                check_value(item, value_type)
+        case StructTypeRef():
+            _check_struct(value, target)
+        case UnionTypeRef():
+            _check_union(value, target)
+        case _:
+            raise InvalidTypeError(f"opaque alias of user-defined type {target!r}")
+
+
+def _check_primitive(value: object, primitive: Primitive, name: str) -> None:
+    match primitive:
+        case Primitive.BOOL:
+            check_bool(value, name)
+        case Primitive.BYTE | Primitive.I16 | Primitive.I32 | Primitive.I64:
+            check_int(value, INT_BITS[primitive], name)
+        case Primitive.FLOAT:
+            check_float32(value, name)
+        case Primitive.DOUBLE:
+            check_double(value, name)
+        case Primitive.STRING:
+            check_string(value, name)
+        case Primitive.BINARY:
+            check_binary(value, name)
+        case Primitive.ANY:
+            check_any(value)
+
+
+def check_any(value: object) -> AnyStruct:
+    if not isinstance(value, AnyStruct):
+        raise EncodeError(
+            f"value {value!r} of Python type '{type(value).__name__}' does not fit "
+            "type 'any' (an AnyStruct)"
+        )
+    return value
+
+
+_C = TypeVar("_C")
+
+
+def expect_instance(value: object, kind: type[_C], name: str) -> _C:
+    if not isinstance(value, kind):
+        raise EncodeError(
+            f"value {value!r} of Python type '{type(value).__name__}' does not fit "
+            f"type '{name}' (a {kind.__name__})"
+        )
+    return value
+
+
+def check_struct_shape(value: object, type_ref: StructTypeRef) -> tuple[object, ...]:
+    fields = type_ref.node.fields
+    if not isinstance(value, tuple) or len(value) != len(fields):
+        raise EncodeError(
+            f"value {value!r} does not fit struct '{type_ref.node.uri}': expected a "
+            f"tuple of {len(fields)} field values"
+        )
+    return value
+
+
+def check_union_shape(
+    value: object, type_ref: UnionTypeRef
+) -> tuple[FieldDefinition, object] | None:
+    """The active field and its value, or ``None`` for an empty union."""
+    if value is EMPTY_UNION:
+        return None
+    if isinstance(value, tuple) and len(value) == 2:
+        field_id, field_value = value
+        if isinstance(field_id, int) and not isinstance(field_id, bool):
+            field = type_ref.node.field_by_id(field_id)
+            if field is not None and field_value is not UNSET:
+                return field, field_value
+    raise EncodeError(
+        f"value {value!r} does not fit union '{type_ref.node.uri}': expected "
+        "EMPTY_UNION or a (field_id, value) pair with a known field id"
+    )
+
+
+def field_error(
+    type_ref: StructTypeRef | UnionTypeRef, field: FieldDefinition, error: EncodeError
+) -> EncodeError:
+    """``error`` prefixed with the field it occurred in."""
+    path = f"{type_ref.node.uri.rpartition('/')[2]}.{field.identity.name}"
+    return EncodeError(f"{path}: {error}")
+
+
+def _check_struct(value: object, type_ref: StructTypeRef) -> None:
+    values = check_struct_shape(value, type_ref)
+    for field, field_value in zip(type_ref.node.fields, values):
+        if field_value is UNSET:
+            continue
+        try:
+            check_value(field_value, field.type)
+        except EncodeError as e:
+            raise field_error(type_ref, field, e) from None
+
+
+def _check_union(value: object, type_ref: UnionTypeRef) -> None:
+    active = check_union_shape(value, type_ref)
+    if active is None:
+        return
+    field, field_value = active
+    try:
+        check_value(field_value, field.type)
+    except EncodeError as e:
+        raise field_error(type_ref, field, e) from None
