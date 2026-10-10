@@ -163,6 +163,8 @@ bool AllocUnion::__fbthrift_is_empty() const {
 
     AllocUnion&AllocUnion::operator=(const AllocUnion& rhs) {
     if (this == &rhs) { return *this; }
+    __fbthrift_clear();
+    ::apache::thrift::detail::copy_allocator(__fbthrift_alloc, rhs.__fbthrift_alloc);
     switch (rhs.getType()) {
       case Type::__EMPTY__:
         __fbthrift_clear();

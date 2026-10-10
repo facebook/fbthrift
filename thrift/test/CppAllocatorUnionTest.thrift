@@ -24,6 +24,14 @@ namespace cpp2 apache.thrift.test
 cpp_include "thrift/test/CppAllocatorTest.h"
 
 @thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "::ScopedPropagatingStatefulAlloc<>"},
+}
+@cpp.InternalExperimentalAllowAllocatorOnUnion
+union PropagatingUnion {
+  2: i32 n;
+}
+
+@thrift.DeprecatedUnvalidatedAnnotations{
   items = {"cpp.allocator": "::ScopedCountingAlloc<>"},
 }
 @cpp.InternalExperimentalAllowAllocatorOnUnion

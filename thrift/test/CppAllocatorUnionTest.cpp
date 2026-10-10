@@ -83,6 +83,11 @@ std::pmr::memory_resource* resourceOf(const T& t) {
   return t.get_allocator().resource();
 }
 
+template <class T>
+int stateOf(const T& t) {
+  return t.get_allocator().outer_allocator().state_;
+}
+
 std::pmr::monotonic_buffer_resource makeResource() {
   return std::pmr::monotonic_buffer_resource(std::pmr::new_delete_resource());
 }
@@ -202,6 +207,16 @@ TEST(CppAllocatorUnionTest, CopyAssignKeepsTargetAllocator) {
   EXPECT_EQ(resourceOf(dst), &res2);
   // FIXME(ytj): Should be &res2, the target's allocator.
   EXPECT_EQ(resourceOf(*dst.aa_string_ref()), std::pmr::get_default_resource());
+}
+
+TEST(CppAllocatorUnionTest, CopyAssignPropagatesPoccaAllocator) {
+  PropagatingUnion src(ScopedPropagatingStatefulAlloc<>(1));
+  src.set_n(5);
+  PropagatingUnion dst(ScopedPropagatingStatefulAlloc<>(2));
+
+  dst = src;
+  EXPECT_EQ(stateOf(dst), 1);
+  EXPECT_EQ(dst, src);
 }
 
 TEST(CppAllocatorUnionTest, MoveAssignKeepsTargetAllocator) {
