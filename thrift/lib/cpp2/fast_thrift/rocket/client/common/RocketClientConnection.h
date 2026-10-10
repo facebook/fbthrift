@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/RocketClientEventFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/adapter/RocketClientAppAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/common/RocketTransportLifecycle.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 
 namespace apache::thrift::fast_thrift::rocket::client {
@@ -79,6 +80,7 @@ struct RocketClientConnectionT {
   channel_pipeline::SimpleBufferAllocator allocator;
   channel_pipeline::PipelineImpl::Ptr pipeline;
   typename TransportHandler::Ptr transportHandler;
+  rocket::RocketTransportLifecycle transportLifecycle;
   rocket::client::RocketClientAppAdapter::Ptr appAdapter{
       new rocket::client::RocketClientAppAdapter()};
 
@@ -111,8 +113,18 @@ struct RocketClientConnectionT {
       return;
     }
     disconnected_ = true;
-    if (transportHandler) {
+    if (transportLifecycle) {
+      transportLifecycle.disconnect(std::move(ew));
+    } else if (transportHandler) {
       transportHandler->close(std::move(ew));
+    }
+  }
+
+  void start() noexcept {
+    if (transportLifecycle) {
+      transportLifecycle.start();
+    } else if (transportHandler) {
+      transportHandler->onConnect();
     }
   }
 
@@ -138,6 +150,7 @@ struct RocketClientConnectionT {
       pipeline->close();
       pipeline.reset();
     }
+    transportLifecycle.reset();
     transportHandler.reset();
     appAdapter.reset();
   }

@@ -24,6 +24,7 @@
 #include <folly/Function.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/common/RocketTransportLifecycle.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/common/TypeErasedPtr.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/adapter/RocketServerAppAdapter.h>
 
@@ -186,6 +187,7 @@ struct RocketServerConnection {
   rocket::server::RocketServerAppAdapter::Ptr appAdapter{
       new rocket::server::RocketServerAppAdapter()};
   AnyTransportHandler transportHandler;
+  rocket::RocketTransportLifecycle transportLifecycle;
   channel_pipeline::PipelineOwner pipeline;
   channel_pipeline::SimpleBufferAllocator allocator;
 
@@ -228,8 +230,18 @@ struct RocketServerConnection {
           .bindEvents<channel_pipeline::Events<FlushWritesEvent>>()
           .template fire<FlushWritesEvent>();
     }
-    if (transportHandler) {
+    if (transportLifecycle) {
+      transportLifecycle.disconnect(std::move(ew));
+    } else if (transportHandler) {
       transportHandler.close(std::move(ew));
+    }
+  }
+
+  void start() noexcept {
+    if (transportLifecycle) {
+      transportLifecycle.start();
+    } else if (transportHandler) {
+      transportHandler->onConnect();
     }
   }
 
@@ -259,6 +271,7 @@ struct RocketServerConnection {
       pipeline->close();
       pipeline.reset();
     }
+    transportLifecycle.reset();
     transportHandler.reset();
     appAdapter.reset();
   }
