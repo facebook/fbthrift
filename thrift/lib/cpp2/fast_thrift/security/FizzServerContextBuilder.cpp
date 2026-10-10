@@ -95,6 +95,7 @@ std::vector<fizz::NamedGroup> buildSupportedGroups() {
   std::vector<fizz::NamedGroup> groups;
 #if FIZZ_HAVE_OQS && OQS_ENABLE_KEM_ml_kem_768
   groups.push_back(fizz::NamedGroup::X25519MLKEM768);
+  groups.push_back(fizz::NamedGroup::MLKEM512X25519);
   groups.push_back(fizz::NamedGroup::X25519MLKEM512_FB);
 #endif
   groups.push_back(fizz::NamedGroup::x25519);
