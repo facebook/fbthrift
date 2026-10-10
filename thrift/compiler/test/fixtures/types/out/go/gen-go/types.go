@@ -6102,7 +6102,7 @@ type AllocatorAware struct {
     AaMap MapI32I32_9565 `thrift:"aa_map,3" json:"aa_map" db:"aa_map"`
     AaString String_5252 `thrift:"aa_string,4" json:"aa_string" db:"aa_string"`
     NotAContainer int32 `thrift:"not_a_container,5" json:"not_a_container" db:"not_a_container"`
-    AaUnique I32_9314 `thrift:"aa_unique,6" json:"aa_unique" db:"aa_unique"`
+    AaUnique int32 `thrift:"aa_unique,6" json:"aa_unique" db:"aa_unique"`
     AaShared I32_9314 `thrift:"aa_shared,7" json:"aa_shared" db:"aa_shared"`
 }
 // Compile time interface enforcer
@@ -6339,16 +6339,16 @@ func (x *AllocatorAware) readField5(p thrift.Decoder) error {  // NotAContainer
     return nil
 }
 
-func (x *AllocatorAware) GetAaUnique() I32_9314 {
+func (x *AllocatorAware) GetAaUnique() int32 {
     return x.AaUnique
 }
 
-func (x *AllocatorAware) SetAaUniqueNonCompat(value I32_9314) *AllocatorAware {
+func (x *AllocatorAware) SetAaUniqueNonCompat(value int32) *AllocatorAware {
     x.AaUnique = value
     return x
 }
 
-func (x *AllocatorAware) SetAaUnique(value I32_9314) *AllocatorAware {
+func (x *AllocatorAware) SetAaUnique(value int32) *AllocatorAware {
     x.AaUnique = value
     return x
 }
@@ -6360,8 +6360,7 @@ func (x *AllocatorAware) writeField6(p thrift.Encoder) error {  // AaUnique
     }
 
     item := x.AaUnique
-    err := WriteI32_9314(item, p)
-    if err != nil {
+    if err := p.WriteI32(item); err != nil {
         return err
     }
 
@@ -6372,7 +6371,7 @@ func (x *AllocatorAware) writeField6(p thrift.Encoder) error {  // AaUnique
 }
 
 func (x *AllocatorAware) readField6(p thrift.Decoder) error {  // AaUnique
-    result, err := ReadI32_9314(p)
+    result, err := p.ReadI32()
     if err != nil {
         return err
     }
@@ -6525,7 +6524,7 @@ func (x *AllocatorAware) setDefaults() *AllocatorAware {
         SetAaMapNonCompat(NewMapI32I32_9565()).
         SetAaStringNonCompat(NewString_5252()).
         SetNotAContainerNonCompat(0).
-        SetAaUniqueNonCompat(NewI32_9314()).
+        SetAaUniqueNonCompat(0).
         SetAaSharedNonCompat(NewI32_9314())
 }
 

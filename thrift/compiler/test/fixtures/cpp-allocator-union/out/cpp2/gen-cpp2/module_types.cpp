@@ -56,9 +56,6 @@ void AllocUnion::__fbthrift_destruct() {
     case Type::plain_int:
       ::std::destroy_at(::std::addressof(value_.plain_int));
       break;
-    case Type::ref_string:
-      ::std::destroy_at(::std::addressof(value_.ref_string));
-      break;
     default:
       assert(false);
       break;
@@ -102,11 +99,6 @@ bool AllocUnion::__fbthrift_is_empty() const {
         set_plain_int(std::move(rhs.value_.plain_int));
         break;
       }
-      case Type::ref_string:
-      {
-        set_ref_string(std::move(*rhs.value_.ref_string));
-        break;
-      }
       default:
         assert(false);
     }
@@ -128,10 +120,6 @@ bool AllocUnion::__fbthrift_is_empty() const {
       case Type::plain_int:
         set_plain_int(rhs.value_.plain_int);
         break;
-      case Type::ref_string:
-        set_ref_string(::apache::thrift::detail::st::copy_field<
-          ::apache::thrift::type_class::string>(rhs.value_.ref_string));
-        break;
       default:
         assert(false);
     }
@@ -151,10 +139,6 @@ bool AllocUnion::__fbthrift_is_empty() const {
         break;
       case Type::plain_int:
         set_plain_int(rhs.value_.plain_int);
-        break;
-      case Type::ref_string:
-        set_ref_string(::apache::thrift::detail::st::copy_field<
-          ::apache::thrift::type_class::string>(rhs.value_.ref_string));
         break;
       default:
         assert(false);
@@ -177,10 +161,6 @@ bool AllocUnion::__fbthrift_is_empty() const {
         break;
       case Type::plain_int:
         set_plain_int(rhs.value_.plain_int);
-        break;
-      case Type::ref_string:
-        set_ref_string(::apache::thrift::detail::st::copy_field<
-          ::apache::thrift::type_class::string>(rhs.value_.ref_string));
         break;
       default:
         __fbthrift_clear();

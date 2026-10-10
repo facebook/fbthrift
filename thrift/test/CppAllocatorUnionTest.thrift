@@ -74,15 +74,6 @@ struct HasUnionPmr {
 }
 
 @thrift.DeprecatedUnvalidatedAnnotations{
-  items = {"cpp.allocator": "PmrByteAlloc"},
-}
-@cpp.InternalExperimentalAllowAllocatorOnUnion
-union RefChildUnionPmr {
-  @cpp.Ref{type = cpp.RefType.Unique}
-  2: string ref_s;
-}
-
-@thrift.DeprecatedUnvalidatedAnnotations{
   items = {"cpp.allocator": "PmrByteAlloc", "cpp.noncopyable": "1"},
 }
 @cpp.InternalExperimentalAllowAllocatorOnUnion

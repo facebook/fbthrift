@@ -14,9 +14,9 @@ namespace test::fixtures::cpp_allocator_union {
 /** Glean {"file": "thrift/compiler/test/fixtures/cpp-allocator-union/src/module.thrift"} */
 namespace module_constants {
 
-  FOLLY_EXPORT ::std::string_view _fbthrift_schema_6c09135e5791ae40();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_6c09135e5791ae40_includes();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_6c09135e5791ae40_uris();
+  FOLLY_EXPORT ::std::string_view _fbthrift_schema_e48dded07633ff5b();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_e48dded07633ff5b_includes();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_e48dded07633ff5b_uris();
 
 } // namespace module_constants
 } // namespace test::fixtures::cpp_allocator_union

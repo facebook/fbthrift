@@ -39,6 +39,4 @@ union AllocUnion {
   1: PmrString aa_string;
   2: PmrStringList aa_list;
   3: i32 plain_int;
-  @cpp.Ref{type = cpp.RefType.Unique}
-  4: PmrString ref_string;
 }

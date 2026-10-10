@@ -4705,7 +4705,7 @@ class AllocatorAware implements \IThriftSyncStruct, \IThriftStructMetadata {
     ?'aa_shared' => ?int,
   );
 
-  const int STRUCTURAL_ID = 8493199907928342656;
+  const int STRUCTURAL_ID = 4762772597986369938;
   /**
    * Original thrift field:-
    * 1: module.list_i32_9187 aa_list
@@ -4733,7 +4733,7 @@ class AllocatorAware implements \IThriftSyncStruct, \IThriftStructMetadata {
   public int $not_a_container;
   /**
    * Original thrift field:-
-   * 6: module.i32_9314 aa_unique
+   * 6: i32 aa_unique
    */
   public int $aa_unique;
   /**
@@ -4902,16 +4902,7 @@ class AllocatorAware implements \IThriftSyncStruct, \IThriftStructMetadata {
               "id" => 6,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
-                    shape(
-                      "name" => "module.i32_9314",
-                      "underlyingType" => \tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
-                        )
-                      ),
-                    )
-                  ),
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                 )
               ),
               "name" => "aa_unique",
@@ -5016,16 +5007,7 @@ class AllocatorAware implements \IThriftSyncStruct, \IThriftStructMetadata {
             ),
             '\facebook\thrift\annotation\cpp\AllowLegacyNonOptionalRef' => \facebook\thrift\annotation\cpp\AllowLegacyNonOptionalRef::withDefaultValues(),
           ],
-          'type' => dict[
-            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
-              shape(
-                "items" => dict[
-                  "cpp.use_allocator" => "1",
-                ],
-              )
-            ),
-            '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
-          ],
+          'type' => dict[],
         ),
         'aa_shared' => shape(
           'field' => dict[

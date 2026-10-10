@@ -3242,6 +3242,75 @@ TEST(CompilerTest, cpp_allocator_on_union) {
   )");
 }
 
+TEST(CompilerTest, cpp_use_allocator_ref_fields) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/cpp.thrift"
+    include "thrift/annotation/thrift.thrift"
+
+    @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+    typedef string AAString
+
+    struct Inner {
+      1: i32 field1;
+    }
+    @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+    typedef Inner AAInner
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    struct Struct {
+      @cpp.Ref{type = cpp.RefType.Unique}
+      1: optional AAString unique;
+        # expected-warning@-2: @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `unique`.
+        # expected-error@-3: Reference field `unique` of `cpp.allocator` type `Struct` doesn't support `cpp.use_allocator`.
+      @cpp.Ref{type = cpp.RefType.Unique}
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      2: optional string field_annotated_unique;
+        # expected-warning@-3: @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field_annotated_unique`.
+        # expected-error@-4: Reference field `field_annotated_unique` of `cpp.allocator` type `Struct` doesn't support `cpp.use_allocator`.
+      @thrift.InternBox
+      3: AAInner intern_boxed;
+        # expected-error@-2: Reference field `intern_boxed` of `cpp.allocator` type `Struct` doesn't support `cpp.use_allocator`.
+      @cpp.Ref{type = cpp.RefType.Shared}
+      4: optional AAString shared;
+      @cpp.Ref{type = cpp.RefType.SharedMutable}
+      5: optional AAString shared_mutable;
+      @thrift.Box
+      6: optional AAString boxed;
+        # expected-error@-2: Reference field `boxed` of `cpp.allocator` type `Struct` doesn't support `cpp.use_allocator`.
+      @cpp.Ref{type = cpp.RefType.Unique}
+      7: optional string heap_unique;
+        # expected-warning@-2: @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `heap_unique`.
+    }
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    @cpp.InternalExperimentalAllowAllocatorOnUnion
+    union Union {
+      @cpp.Ref{type = cpp.RefType.Unique}
+      1: AAString unique;
+        # expected-error@-2: Reference field `unique` of `cpp.allocator` type `Union` doesn't support `cpp.use_allocator`.
+      @cpp.Ref{type = cpp.RefType.Shared}
+      2: AAString shared;
+      @cpp.Ref{type = cpp.RefType.SharedMutable}
+      3: AAString shared_mutable;
+      @thrift.Box
+      4: AAString boxed;
+        # expected-error@-2: Reference field `boxed` of `cpp.allocator` type `Union` doesn't support `cpp.use_allocator`.
+      @thrift.InternBox
+      5: AAInner intern_boxed;
+        # expected-error@-2: Reference field `intern_boxed` of `cpp.allocator` type `Union` doesn't support `cpp.use_allocator`.
+      @cpp.Ref{type = cpp.RefType.Unique}
+      6: string heap_unique;
+      @thrift.Box
+      7: string heap_boxed;
+    }
+  )");
+}
+
 TEST(CompilerTest, cpp_allocator_via_on_union) {
   check_compile(R"(
     package "facebook.com/thrift/test"

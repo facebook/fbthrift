@@ -1571,7 +1571,7 @@ var (
                     Id:         6,
                     Name:       "aa_unique",
                     IsOptional: false,
-                    Type:       premadeThriftType_module_i32_9314,
+                    Type:       premadeThriftType_i32,
                 },
                 &metadata.ThriftField{
                     Id:         7,

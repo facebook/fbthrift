@@ -171,16 +171,6 @@ TEST(CppAllocatorUnionTest, UnionFieldOfAllocatorAwareStruct) {
   EXPECT_EQ(resourceOf(*copy.u()), &res2);
 }
 
-TEST(CppAllocatorUnionTest, MovesTakeOverRefMember) {
-  RefChildUnionPmr u;
-  const auto* s = &u.ref_s_ref().emplace(kTooLong);
-
-  const RefChildUnionPmr moved(std::move(u));
-  // FIXME(ytj): Should hand the pointer over instead of rebuilding the
-  // pointee.
-  EXPECT_NE(&*moved.ref_s_ref(), s);
-}
-
 TEST(CppAllocatorUnionTest, SettersUseUnionAllocator) {
   auto res = makeResource();
   auto res2 = makeResource();

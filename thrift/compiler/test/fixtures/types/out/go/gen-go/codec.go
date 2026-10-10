@@ -1643,7 +1643,7 @@ var (
                     Name:                 "aa_unique",
                     ReflectIndex:         5,
                     IsOptional:           false,
-                    ValueTypeSpec:        premadeCodecTypeSpec_module_i32_9314,
+                    ValueTypeSpec:        premadeCodecTypeSpec_i32,
                     MustBeSetToSerialize: false,
                 },
                 {

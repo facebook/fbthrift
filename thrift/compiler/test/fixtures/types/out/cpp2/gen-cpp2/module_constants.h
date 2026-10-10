@@ -14,9 +14,9 @@ namespace apache::thrift::fixtures::types {
 /** Glean {"file": "thrift/compiler/test/fixtures/types/src/module.thrift"} */
 namespace module_constants {
 
-  FOLLY_EXPORT ::std::string_view _fbthrift_schema_88219f2aea8ded85();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_88219f2aea8ded85_includes();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_88219f2aea8ded85_uris();
+  FOLLY_EXPORT ::std::string_view _fbthrift_schema_8240030552ec5e1a();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_8240030552ec5e1a_includes();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_8240030552ec5e1a_uris();
 
 } // namespace module_constants
 } // namespace apache::thrift::fixtures::types

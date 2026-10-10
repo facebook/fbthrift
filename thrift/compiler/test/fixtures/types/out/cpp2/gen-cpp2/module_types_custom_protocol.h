@@ -4754,8 +4754,8 @@ _readField_not_a_container:
   }
 _readField_aa_unique:
   {
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::apache::thrift::fixtures::types::i32_9314>>(this->get_allocator());
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::apache::thrift::fixtures::types::i32_9314, ::apache::thrift::type::i32_t>::read(*iprot, *ptr);
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::int32_t>>();
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t, ::apache::thrift::type::i32_t>::read(*iprot, *ptr);
     this->__fbthrift_field_aa_unique = std::move(ptr);
   }
 
@@ -4892,7 +4892,7 @@ uint32_t AllocatorAware::serializedSize(Protocol_ const* prot_) const {
   {
     xfer += prot_->serializedFieldSize("aa_unique", apache::thrift::protocol::TType::T_I32, 6);
     if (this->__fbthrift_field_aa_unique) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::apache::thrift::fixtures::types::i32_9314, ::apache::thrift::type::i32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_aa_unique);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t, ::apache::thrift::type::i32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_aa_unique);
     }
   }
   {
@@ -4932,7 +4932,7 @@ uint32_t AllocatorAware::serializedSizeZC(Protocol_ const* prot_) const {
   {
     xfer += prot_->serializedFieldSize("aa_unique", apache::thrift::protocol::TType::T_I32, 6);
     if (this->__fbthrift_field_aa_unique) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::apache::thrift::fixtures::types::i32_9314, ::apache::thrift::type::i32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_aa_unique);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t, ::apache::thrift::type::i32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_aa_unique);
     }
   }
   {
@@ -4998,7 +4998,7 @@ uint32_t AllocatorAware::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 6, kPrevFieldId>(*prot_, "aa_unique", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->__fbthrift_field_aa_unique) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::apache::thrift::fixtures::types::i32_9314, ::apache::thrift::type::i32_t>::write(*prot_, *this->__fbthrift_field_aa_unique);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t, ::apache::thrift::type::i32_t>::write(*prot_, *this->__fbthrift_field_aa_unique);
     }
     xfer += prot_->writeFieldEnd();
   }

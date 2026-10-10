@@ -67,18 +67,6 @@ void AllocUnion::readNoXfer(Protocol_* iprot) {
         }
         break;
       }
-      case 4:
-      {
-        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING)) {
-          this->ref_string_ref().emplace();
-          auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::test::fixtures::cpp_allocator_union::PmrString>>(this->get_allocator());
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::string_t>>::read(*iprot, *ptr);
-          value_.ref_string = std::move(ptr);
-        } else {
-          _readState.skip(iprot);
-        }
-        break;
-      }
       default:
       {
         _readState.skip(iprot);
@@ -117,14 +105,6 @@ uint32_t AllocUnion::serializedSize(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t, ::apache::thrift::type::i32_t>::serializedSize<false>(*prot_, value_.plain_int);
       break;
     }
-    case AllocUnion::Type::ref_string:
-    {
-      xfer += prot_->serializedFieldSize("ref_string", apache::thrift::protocol::TType::T_STRING, 4);
-      if (value_.ref_string) {
-        xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::string_t>>::serializedSize<false>(*prot_, *value_.ref_string);
-      }
-      break;
-    }
     case AllocUnion::Type::__EMPTY__:
       break;
     default:
@@ -155,14 +135,6 @@ uint32_t AllocUnion::serializedSizeZC(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("plain_int", apache::thrift::protocol::TType::T_I32, 3);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t, ::apache::thrift::type::i32_t>::serializedSize<false>(*prot_, value_.plain_int);
-      break;
-    }
-    case AllocUnion::Type::ref_string:
-    {
-      xfer += prot_->serializedFieldSize("ref_string", apache::thrift::protocol::TType::T_STRING, 4);
-      if (value_.ref_string) {
-        xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::string_t>>::serializedSize<false>(*prot_, *value_.ref_string);
-      }
       break;
     }
     case AllocUnion::Type::__EMPTY__:;
@@ -200,16 +172,6 @@ uint32_t AllocUnion::write(Protocol_* prot_) const {
       constexpr int16_t kPrevFieldId = 2;
       xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 3, kPrevFieldId>(*prot_, "plain_int", false);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t, ::apache::thrift::type::i32_t>::write(*prot_, value_.plain_int);
-      xfer += prot_->writeFieldEnd();
-      break;
-    }
-    case AllocUnion::Type::ref_string:
-    {
-      constexpr int16_t kPrevFieldId = 3;
-      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 4, kPrevFieldId>(*prot_, "ref_string", false);
-      if (value_.ref_string) {
-        xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::string_t>>::write(*prot_, *value_.ref_string);
-      }
       xfer += prot_->writeFieldEnd();
       break;
     }

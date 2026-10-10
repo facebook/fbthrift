@@ -400,7 +400,7 @@ pub struct AllocatorAware {
     pub aa_map: crate::types::map_i32_i32_9565,
     pub aa_string: crate::types::string_5252,
     pub not_a_container: ::std::primitive::i32,
-    pub aa_unique: crate::types::i32_9314,
+    pub aa_unique: ::std::primitive::i32,
     pub aa_shared: crate::types::i32_9314,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to

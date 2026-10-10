@@ -2727,6 +2727,29 @@ void forbid_allocator_on_union(sema_context& ctx, const t_union& node) {
       node.name());
 }
 
+// `cpp.use_allocator` asks for the value to be built with the `cpp.allocator`
+// allocator, which these reference fields can't hold.
+void forbid_allocator_ignoring_ref_fields(
+    sema_context& ctx, const t_field& field) {
+  const auto& parent = dynamic_cast<const t_structured&>(*ctx.parent());
+  const auto ref = gen::cpp::find_ref_type(field);
+  const bool unsupported = ref == gen::cpp::reference_type::unique ||
+      ref == gen::cpp::reference_type::boxed ||
+      ref == gen::cpp::reference_type::boxed_intern;
+  if (unsupported && parent.has_unstructured_annotation("cpp.allocator") &&
+      (field.has_unstructured_annotation("cpp.use_allocator") ||
+       t_typedef::get_first_unstructured_annotation_or_null(
+           &field.type().deref(), {"cpp.use_allocator"}))) {
+    ctx.report(
+        field,
+        diagnostic_level::error,
+        "Reference field `{}` of `cpp.allocator` type `{}` doesn't support "
+        "`cpp.use_allocator`.",
+        field.name(),
+        parent.name());
+  }
+}
+
 // The allocator-extended copy and move constructors carry over the fields and
 // __isset and nothing else. The lazy deserialization state is only handled by
 // the constructors that take no allocator, so a lazy field reads back empty
@@ -2835,6 +2858,7 @@ void t_mstch_cpp2_generator::fill_validator_visitors(
   validator.add_struct_visitor(forbid_deprecated_terse_writes_ref);
   validator.add_union_visitor(forbid_allocator_via_on_union);
   validator.add_union_visitor(forbid_allocator_on_union);
+  validator.add_field_visitor(forbid_allocator_ignoring_ref_fields);
   validator.add_structured_definition_visitor(
       validate_alloc_ctor_custom_defaults);
   validator.add_program_visitor(validate_splits(
