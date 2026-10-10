@@ -42,6 +42,22 @@ from typing import Final, Literal, NoReturn, TypeVar
 
 from apache.thrift.type.any_rep.thrift_types import AnyStruct
 from thrift.lib.python.schema._errors import EncodeError
+from thrift.lib.python.schema._record import (
+    BoolRecord,
+    ByteArrayRecord,
+    FieldSetRecord,
+    Float32Record,
+    Float64Record,
+    Int16Record,
+    Int32Record,
+    Int64Record,
+    Int8Record,
+    ListRecord,
+    MapRecord,
+    SerializableRecord,
+    SetRecord,
+    TextRecord,
+)
 from thrift.lib.python.schema._value_checks import (
     check_binary,
     check_bool,
@@ -49,6 +65,7 @@ from thrift.lib.python.schema._value_checks import (
     check_float32,
     check_int,
     check_string,
+    int_in_range,
 )
 from thrift.lib.python.schema.type_system import (
     EnumTypeRef,
@@ -57,6 +74,7 @@ from thrift.lib.python.schema.type_system import (
     ListTypeRef,
     MapTypeRef,
     OpaqueAliasTypeRef,
+    PresenceQualifier,
     Primitive,
     PrimitiveTypeRef,
     SetTypeRef,
@@ -164,6 +182,20 @@ class FrozenSet(frozenset[_T]):
         return f"{type(self).__name__}({list(self._order)!r})"
 
 
+_EMPTY_SET: FrozenSet[object] = FrozenSet()
+
+_PRIMITIVE_DEFAULTS: dict[Primitive, object] = {
+    Primitive.BOOL: False,
+    Primitive.BYTE: 0,
+    Primitive.I16: 0,
+    Primitive.I32: 0,
+    Primitive.I64: 0,
+    Primitive.FLOAT: 0.0,
+    Primitive.DOUBLE: 0.0,
+    Primitive.STRING: "",
+    Primitive.BINARY: b"",
+}
+
 INT_BITS: dict[Primitive, int] = {
     Primitive.BYTE: 8,
     Primitive.I16: 16,
@@ -203,6 +235,152 @@ def type_name(type_ref: TypeRef) -> str:
             return f"map<{key}, {type_name(resolved(type_ref.value_type))}>"
         case _:
             return type_ref.node.uri
+
+
+# ---------------------------------------------------------------------------
+# Defaults
+# ---------------------------------------------------------------------------
+
+
+def default_value(type_ref: TypeRef) -> object:
+    """The default value of ``type_ref``: zero or empty. A struct holds each
+    field's default (``field_default``)."""
+    match true_type(type_ref):
+        case PrimitiveTypeRef(primitive=Primitive.ANY):
+            return AnyStruct()
+        case PrimitiveTypeRef(primitive=primitive):
+            return _PRIMITIVE_DEFAULTS[primitive]
+        case EnumTypeRef():
+            return 0
+        case ListTypeRef():
+            return ()
+        case SetTypeRef():
+            return _EMPTY_SET
+        case MapTypeRef():
+            return FrozenMap()
+        case StructTypeRef(node=node):
+            return tuple(field_default(f) for f in node.fields)
+        case UnionTypeRef():
+            return EMPTY_UNION
+        case target:
+            raise InvalidTypeError(f"opaque alias of user-defined type {target!r}")
+
+
+def field_default(field: FieldDefinition) -> object:
+    """The value a struct field holds when it is absent: ``UNSET`` if it is
+    optional, else its custom default, else its type's default."""
+    if field.presence is PresenceQualifier.OPTIONAL:
+        return UNSET
+    if field.custom_default is not None:
+        return value_from_record(field.custom_default, field.type)
+    return default_value(field.type)
+
+
+def _record_mismatch(record: SerializableRecord, type_ref: TypeRef) -> InvalidTypeError:
+    return InvalidTypeError(
+        f"custom default {record!r} does not fit type '{type_name(type_ref)}'"
+    )
+
+
+def _int_from_record(
+    record: SerializableRecord,
+    record_type: type[Int8Record | Int16Record | Int32Record | Int64Record],
+    bits: int,
+    type_ref: TypeRef,
+) -> int:
+    if not isinstance(record, record_type) or not int_in_range(record.value, bits):
+        raise _record_mismatch(record, type_ref)
+    return record.value
+
+
+_INT_RECORDS: dict[
+    Primitive, type[Int8Record | Int16Record | Int32Record | Int64Record]
+] = {
+    Primitive.BYTE: Int8Record,
+    Primitive.I16: Int16Record,
+    Primitive.I32: Int32Record,
+    Primitive.I64: Int64Record,
+}
+
+_ScalarRecord = (
+    BoolRecord | Float32Record | Float64Record | TextRecord | ByteArrayRecord
+)
+
+_SCALAR_RECORDS: dict[Primitive, type[_ScalarRecord]] = {
+    Primitive.BOOL: BoolRecord,
+    Primitive.FLOAT: Float32Record,
+    Primitive.DOUBLE: Float64Record,
+    Primitive.STRING: TextRecord,
+    Primitive.BINARY: ByteArrayRecord,
+}
+
+
+def _primitive_from_record(
+    record: SerializableRecord, primitive: Primitive, type_ref: TypeRef
+) -> object:
+    int_record = _INT_RECORDS.get(primitive)
+    if int_record is not None:
+        return _int_from_record(record, int_record, INT_BITS[primitive], type_ref)
+    scalar_record = _SCALAR_RECORDS.get(primitive)
+    if scalar_record is None or not isinstance(record, scalar_record):
+        raise _record_mismatch(record, type_ref)
+    return record.value
+
+
+def value_from_record(record: SerializableRecord, type_ref: TypeRef) -> object:
+    """The value a ``SerializableRecord`` denotes as ``type_ref``, for custom
+    defaults. A struct record may omit fields, which take their defaults.
+    Raises ``InvalidTypeError`` if the record does not fit."""
+    target = true_type(type_ref)
+    match target:
+        case PrimitiveTypeRef(primitive=primitive):
+            return _primitive_from_record(record, primitive, type_ref)
+        case EnumTypeRef():
+            return _int_from_record(record, Int32Record, 32, type_ref)
+        case ListTypeRef() if isinstance(record, ListRecord):
+            element_type = resolved(target.element_type)
+            return tuple(value_from_record(e, element_type) for e in record.elements)
+        case SetTypeRef() if isinstance(record, SetRecord):
+            element_type = resolved(target.element_type)
+            return FrozenSet(
+                value_from_record(e, element_type) for e in record.elements
+            )
+        case MapTypeRef() if isinstance(record, MapRecord):
+            key_type = resolved(target.key_type)
+            value_type = resolved(target.value_type)
+            return FrozenMap(
+                {
+                    value_from_record(k, key_type): value_from_record(v, value_type)
+                    for k, v in record.entries
+                }
+            )
+        case StructTypeRef() if isinstance(record, FieldSetRecord):
+            return tuple(
+                value_from_record(record.fields[f.identity.id], f.type)
+                if f.identity.id in record.fields
+                else field_default(f)
+                for f in target.node.fields
+            )
+        case UnionTypeRef() if isinstance(record, FieldSetRecord):
+            return _union_from_record(record, target)
+        case _:
+            raise _record_mismatch(record, type_ref)
+
+
+def _union_from_record(record: FieldSetRecord, type_ref: UnionTypeRef) -> object:
+    if not record.fields:
+        return EMPTY_UNION
+    if len(record.fields) > 1:
+        raise InvalidTypeError(
+            f"union record {record!r} has more than one active field"
+        )
+    ((field_id, field_record),) = record.fields.items()
+    field = type_ref.node.field_by_id(field_id)
+    if field is None:
+        raise InvalidTypeError(
+            f"unknown field id {field_id} in record for union '{type_ref.node.uri}'"
+        )
+    return (field_id, value_from_record(field_record, field.type))
 
 
 # ---------------------------------------------------------------------------
