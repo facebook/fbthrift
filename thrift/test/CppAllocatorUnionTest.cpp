@@ -128,20 +128,21 @@ TEST(CppAllocatorUnionTest, AllocatorExtendedCopyAndMoveCtors) {
   auto res = makeResource();
   auto res2 = makeResource();
   UnionPmr src{PmrByteAlloc(&res)};
-  src.set_aa_string(UPmrString(kTooLong, &res));
+  src.aa_string_ref() = UPmrString(kTooLong, &res);
 
   const UnionPmr copy(src, PmrByteAlloc(&res2));
   EXPECT_EQ(copy, src);
   EXPECT_EQ(resourceOf(copy), &res2);
   // FIXME(ytj): Should be &res2, the copy's allocator.
-  EXPECT_EQ(resourceOf(copy.get_aa_string()), std::pmr::get_default_resource());
+  EXPECT_EQ(
+      resourceOf(*copy.aa_string_ref()), std::pmr::get_default_resource());
 
   const UnionPmr moved(std::move(src), PmrByteAlloc(&res2));
   EXPECT_EQ(moved, copy);
   EXPECT_EQ(resourceOf(moved), &res2);
   // FIXME(ytj): Should be &res2: the allocators differ,
   // so the member must be rebuilt.
-  EXPECT_EQ(resourceOf(moved.get_aa_string()), &res);
+  EXPECT_EQ(resourceOf(*moved.aa_string_ref()), &res);
 }
 
 TEST(CppAllocatorUnionTest, PmrVectorOfUnions) {
@@ -149,7 +150,7 @@ TEST(CppAllocatorUnionTest, PmrVectorOfUnions) {
   auto res2 = makeResource();
   std::pmr::vector<UnionPmr> v(&res);
   for (int i = 0; i < 32; ++i) {
-    v.emplace_back().set_not_a_container(i);
+    v.emplace_back().not_a_container_ref() = i;
   }
   for (const auto& u : v) {
     EXPECT_EQ(resourceOf(u), &res);
@@ -211,7 +212,7 @@ TEST(CppAllocatorUnionTest, CopyAssignKeepsTargetAllocator) {
 
 TEST(CppAllocatorUnionTest, CopyAssignPropagatesPoccaAllocator) {
   PropagatingUnion src(ScopedPropagatingStatefulAlloc<>(1));
-  src.set_n(5);
+  src.n_ref() = 5;
   PropagatingUnion dst(ScopedPropagatingStatefulAlloc<>(2));
 
   dst = src;
