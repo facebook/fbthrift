@@ -628,6 +628,27 @@ struct ProtobufShapeTest : ::testing::Test {
             def::Identity(1, "nums"),
             def::AlwaysPresent,
             TypeIds::list(TypeIds::I32)));
+    addSingleFieldStruct(
+        builder,
+        "test.WithNestedList",
+        def::Field(
+            def::Identity(1, "rows"),
+            def::AlwaysPresent,
+            TypeIds::list(TypeIds::list(TypeIds::I32))));
+    addSingleFieldStruct(
+        builder,
+        "test.WithListValues",
+        def::Field(
+            def::Identity(1, "groups"),
+            def::AlwaysPresent,
+            TypeIds::map(TypeIds::String, TypeIds::list(TypeIds::I32))));
+    addSingleFieldStruct(
+        builder,
+        "test.WithFloatKeys",
+        def::Field(
+            def::Identity(1, "weights"),
+            def::AlwaysPresent,
+            TypeIds::map(TypeIds::Float, TypeIds::I32)));
     builder.addType(
         "test.ListChoice",
         def::Union({
@@ -718,41 +739,56 @@ TEST_F(ProtobufShapeTest, PackedFieldReadFromProtobufCompiles) {
   EXPECT_FALSE(transcoder.hasError()) << transcoder.error().message;
 }
 
-TEST_F(ProtobufShapeTest, MapsAreRejected) {
-  expectCompileError(
-      compile(
-          WireProtocol::ProtobufBinary,
-          WireProtocol::ThriftCompact,
-          "test.WithMap"),
-      "protobuf maps are not supported yet");
-  expectCompileError(
-      compile(
-          WireProtocol::ThriftCompact,
-          WireProtocol::ProtobufBinary,
-          "test.WithMap"),
-      "protobuf maps are not supported yet");
+TEST_F(ProtobufShapeTest, ContainersCompileToAndFromThrift) {
+  for (const auto* uri :
+       {"test.WithMap", "test.WithStrings", "test.WithNumbers"}) {
+    for (auto thrift :
+         {WireProtocol::ThriftCompact, WireProtocol::ThriftBinary}) {
+      auto fromProtobuf = compile(WireProtocol::ProtobufBinary, thrift, uri);
+      EXPECT_FALSE(fromProtobuf.hasError())
+          << uri << ": " << fromProtobuf.error().message;
+      auto toProtobuf = compile(thrift, WireProtocol::ProtobufBinary, uri);
+      EXPECT_FALSE(toProtobuf.hasError())
+          << uri << ": " << toProtobuf.error().message;
+    }
+  }
 }
 
-TEST_F(ProtobufShapeTest, UnpackedRepeatedFieldsAreRejected) {
+TEST_F(ProtobufShapeTest, ContainersBetweenJsonAndProtobufAreRejected) {
+  expectCompileError(
+      compile(WireProtocol::ProtobufBinary, WireProtocol::Json, "test.WithMap"),
+      "protobuf maps are only read into Thrift Compact or Binary");
+  expectCompileError(
+      compile(WireProtocol::Json, WireProtocol::ProtobufBinary, "test.WithMap"),
+      "protobuf maps are only written from Thrift Compact or Binary");
   expectCompileError(
       compile(
-          WireProtocol::ProtobufBinary,
-          WireProtocol::ThriftCompact,
-          "test.WithStrings"),
-      "unpacked protobuf repeated fields are not supported yet");
-}
-
-TEST_F(ProtobufShapeTest, PackedFieldWrittenFromNonProtobufSourceIsRejected) {
-  expectCompileError(
-      compile(
-          WireProtocol::ThriftCompact,
-          WireProtocol::ProtobufBinary,
-          "test.WithNumbers"),
-      "writing a packed protobuf field from a non-protobuf source");
+          WireProtocol::ProtobufBinary, WireProtocol::Json, "test.WithStrings"),
+      "unpacked protobuf repeated fields are only read into Thrift Compact or "
+      "Binary");
   expectCompileError(
       compile(
           WireProtocol::Json, WireProtocol::ProtobufBinary, "test.WithNumbers"),
-      "writing a packed protobuf field from a non-protobuf source");
+      "protobuf repeated fields are only written from Thrift Compact or "
+      "Binary");
+}
+
+TEST_F(ProtobufShapeTest, NestedContainersAreRejected) {
+  for (const auto* uri : {"test.WithNestedList", "test.WithListValues"}) {
+    expectCompileError(
+        compile(WireProtocol::ProtobufBinary, WireProtocol::ThriftCompact, uri),
+        "nested protobuf containers are not supported yet");
+    expectCompileError(
+        compile(WireProtocol::ThriftCompact, WireProtocol::ProtobufBinary, uri),
+        "nested protobuf containers are not supported yet");
+  }
+}
+
+TEST_F(ProtobufShapeTest, MapKeysProtobufCannotCarryAreRejected) {
+  const auto& node =
+      typeSystem->getUserDefinedTypeOrThrow("test.WithFloatKeys").asStruct();
+  EXPECT_THROW(
+      makeCodec(WireProtocol::ProtobufBinary, node), std::invalid_argument);
 }
 
 TEST_F(ProtobufShapeTest, ContainerUnionMembersAreRejected) {

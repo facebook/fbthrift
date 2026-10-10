@@ -210,6 +210,40 @@ folly::Expected<Command, CompileError> fuseStructOps(
       continue;
     }
 
+    // Protobuf repeated target: the source's SeqOp supplies the container,
+    // and each element becomes its own occurrence of the target field.
+    if (!srcField.isRepeated && tgtField.isRepeated &&
+        std::holds_alternative<SeqOp>(*srcField.command) &&
+        !std::holds_alternative<MapOp>(*tgtField.command)) {
+      const auto& srcSeq = std::get<SeqOp>(*srcField.command);
+      if (srcSeq.element == nullptr) {
+        return folly::makeUnexpected(
+            CompileError{fmt::format(
+                "field {} (id={}) has no source element command",
+                srcField.fieldName,
+                srcField.fieldId)});
+      }
+      auto fusedElem = fuseCommands(*srcSeq.element, *tgtField.command);
+      if (fusedElem.hasError()) {
+        return folly::makeUnexpected(
+            CompileError{fmt::format(
+                "repeated field {} (id={}): {}",
+                srcField.fieldName,
+                srcField.fieldId,
+                fusedElem.error().message)});
+      }
+      SeqOp fusedSeq;
+      fusedSeq.readFraming = srcSeq.readFraming;
+      fusedSeq.writeFraming = ContainerFraming::None;
+      fusedSeq.readLoopKind = srcSeq.readLoopKind;
+      fusedSeq.writeLoopKind = LoopKind::ByCount;
+      fusedSeq.readElemType = srcSeq.readElemType;
+      fusedSeq.element = std::make_unique<Command>(std::move(*fusedElem));
+      fused.fields.push_back(fusedField(
+          source, srcField, tgtField, false, Command{std::move(fusedSeq)}));
+      continue;
+    }
+
     auto fusedCmd = fuseCommands(*srcField.command, *tgtField.command);
     if (fusedCmd.hasError()) {
       return folly::makeUnexpected(

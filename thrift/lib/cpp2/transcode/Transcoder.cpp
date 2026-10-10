@@ -212,19 +212,43 @@ std::optional<std::string> unsupportedProtobufFieldReason(
   return std::nullopt;
 }
 
+bool isThriftContainerFraming(ContainerFraming framing) {
+  return framing == ContainerFraming::Compact ||
+      framing == ContainerFraming::Binary;
+}
+
 std::optional<std::string> unsupportedProtobufSeqReason(const SeqOp& op) {
-  if (op.readFraming == ContainerFraming::None &&
-      op.readLoopKind != LoopKind::ByBytes) {
-    return "unpacked protobuf repeated fields are not supported yet";
+  const bool protobufRead = op.readFraming == ContainerFraming::None;
+  const bool protobufWrite = op.writeFraming == ContainerFraming::None;
+  if (protobufRead && op.readLoopKind != LoopKind::ByBytes &&
+      !isThriftContainerFraming(op.writeFraming)) {
+    return "unpacked protobuf repeated fields are only read into Thrift "
+           "Compact or Binary";
   }
-  if (op.writeFraming == ContainerFraming::None) {
-    if (op.writeLoopKind != LoopKind::ByBytes) {
-      return "unpacked protobuf repeated fields are not supported yet";
-    }
-    if (op.readLoopKind != LoopKind::ByBytes) {
-      return "writing a packed protobuf field from a non-protobuf source is "
-             "not supported yet";
-    }
+  const bool packedToPacked = op.readLoopKind == LoopKind::ByBytes &&
+      op.writeLoopKind == LoopKind::ByBytes;
+  if (protobufWrite && !packedToPacked &&
+      !isThriftContainerFraming(op.readFraming)) {
+    return "protobuf repeated fields are only written from Thrift Compact or "
+           "Binary";
+  }
+  if ((protobufRead || protobufWrite) && op.element != nullptr &&
+      isContainer(*op.element)) {
+    return "nested protobuf containers are not supported yet";
+  }
+  return std::nullopt;
+}
+
+std::optional<std::string> unsupportedProtobufMapReason(const MapOp& op) {
+  if (op.readEntryIsSubmessage && !isThriftContainerFraming(op.writeFraming)) {
+    return "protobuf maps are only read into Thrift Compact or Binary";
+  }
+  if (op.writeEntryIsSubmessage && !isThriftContainerFraming(op.readFraming)) {
+    return "protobuf maps are only written from Thrift Compact or Binary";
+  }
+  if ((op.readEntryIsSubmessage || op.writeEntryIsSubmessage) &&
+      op.value != nullptr && isContainer(*op.value)) {
+    return "nested protobuf containers are not supported yet";
   }
   return std::nullopt;
 }
@@ -253,9 +277,8 @@ std::optional<std::string> unsupportedProtobufReason(const Command& cmd) {
     return std::nullopt;
   }
   if (const auto* mp = std::get_if<MapOp>(&cmd)) {
-    if (mp->readFraming == ContainerFraming::None ||
-        mp->writeFraming == ContainerFraming::None) {
-      return "protobuf maps are not supported yet";
+    if (auto reason = unsupportedProtobufMapReason(*mp)) {
+      return reason;
     }
     if (mp->key != nullptr) {
       if (auto reason = unsupportedProtobufReason(*mp->key)) {

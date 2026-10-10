@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/dynamic/TypeSystem.h>
 #include <thrift/lib/cpp2/transcode/InterpreterInternal.h>
 #include <thrift/lib/cpp2/transcode/JsonInterpreter.h>
+#include <thrift/lib/cpp2/transcode/ProtobufInterpreter.h>
 #include <thrift/lib/cpp2/transcode/ReadHelpers.h>
 #include <thrift/lib/cpp2/transcode/WireType.h>
 
@@ -390,6 +391,7 @@ void execIdStructToFieldFramed(
   int16_t prevWrite = 0;
   const bool unionStruct = isUnion(op);
   bool unionMemberSeen = false;
+  std::vector<int16_t> repeatedFieldsRead;
   while (!hasError(c)) {
     IdFieldMatch match;
     if (!readNextIdField(
@@ -398,6 +400,22 @@ void execIdStructToFieldFramed(
     }
     if (FOLLY_UNLIKELY(!noteUnionMember(c, unionStruct, unionMemberSeen))) {
       return;
+    }
+
+    if (writesProtobufOccurrences(*match.field->command)) {
+      writeProtobufOccurrences(c, *match.field->command, *match.field);
+      continue;
+    }
+    if (readsProtobufOccurrences(*match.field)) {
+      wf.writeHeader(
+          c,
+          match.field->writeTypeInfo,
+          targetFieldId(*match.field),
+          prevWrite);
+      prevWrite = targetFieldId(*match.field);
+      readProtobufOccurrences(
+          c, *match.field, match.typeInfo, repeatedFieldsRead);
+      continue;
     }
 
     if (const auto* sc = std::get_if<ScalarOp>(match.field->command.get());

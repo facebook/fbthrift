@@ -585,6 +585,33 @@ SeqOp makeSeqOp(
   return op;
 }
 
+void checkProtobufMapKey(const type_system::TypeRef& keyType) {
+  using Kind = type_system::TypeRef::Kind;
+  switch (resolveOpaqueAlias(keyType).kind()) {
+    case Kind::BOOL:
+    case Kind::BYTE:
+    case Kind::I16:
+    case Kind::I32:
+    case Kind::I64:
+    case Kind::STRING:
+    case Kind::ENUM:
+      return;
+    case Kind::FLOAT:
+    case Kind::DOUBLE:
+    case Kind::BINARY:
+    case Kind::STRUCT:
+    case Kind::UNION:
+    case Kind::LIST:
+    case Kind::SET:
+    case Kind::MAP:
+    case Kind::ANY:
+    case Kind::OPAQUE_ALIAS:
+      break;
+  }
+  throw std::invalid_argument(
+      "protobuf map keys must be bool, an integer, a string or an enum");
+}
+
 MapOp makeMapOp(
     const type_system::TypeRef& keyType,
     const type_system::TypeRef& valueType,
@@ -599,6 +626,7 @@ MapOp makeMapOp(
 
   // Protobuf maps: entries are length-delimited submessages
   if (ops.containerFraming == ContainerFraming::None) {
+    checkProtobufMapKey(keyType);
     op.readEntryIsSubmessage = true;
     op.writeEntryIsSubmessage = true;
     op.readKeyWireType = protoWireType(keyType);
@@ -609,6 +637,14 @@ MapOp makeMapOp(
 
   op.key = std::make_unique<Command>(
       commandForType(keyType, ops, BoolContext::Container));
+  // Protobuf forbids enum map keys, so the .proto declares a Thrift enum key
+  // as sint32, which is zigzag-encoded, unlike enum values (plain varints).
+  if (ops.containerFraming == ContainerFraming::None &&
+      resolveOpaqueAlias(keyType).kind() == type_system::TypeRef::Kind::ENUM) {
+    auto& key = std::get<ScalarOp>(*op.key);
+    key.readFn = ReadFn::ZigzagVarint;
+    key.writeFn = WriteFn::ZigzagVarint;
+  }
   op.value = std::make_unique<Command>(
       commandForType(valueType, ops, BoolContext::Container));
   return op;

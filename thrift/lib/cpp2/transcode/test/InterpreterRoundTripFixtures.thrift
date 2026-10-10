@@ -27,3 +27,15 @@ enum Color {
 struct EnumSample {
   1: Color color;
 }
+
+struct Item {
+  1: i32 id;
+}
+
+struct Containers {
+  1: list<i32> nums;
+  2: list<string> tags;
+  3: list<Item> items;
+  4: map<string, i32> scores;
+  5: map<Color, Item> itemsByColor;
+}

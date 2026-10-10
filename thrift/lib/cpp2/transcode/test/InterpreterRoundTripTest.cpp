@@ -131,6 +131,31 @@ struct InterpreterRoundTripTest : ::testing::Test {
                 def::AlwaysPresent,
                 TypeIds::uri("test.Color")),
         }));
+    builder.addType(
+        "test.Containers",
+        def::Struct({
+            def::Field(
+                def::Identity(1, "nums"),
+                def::AlwaysPresent,
+                TypeIds::list(TypeIds::I32)),
+            def::Field(
+                def::Identity(2, "tags"),
+                def::AlwaysPresent,
+                TypeIds::list(TypeIds::String)),
+            def::Field(
+                def::Identity(3, "items"),
+                def::AlwaysPresent,
+                TypeIds::list(TypeIds::uri("test.Inner"))),
+            def::Field(
+                def::Identity(4, "scores"),
+                def::AlwaysPresent,
+                TypeIds::map(TypeIds::String, TypeIds::I32)),
+            def::Field(
+                def::Identity(5, "itemsByColor"),
+                def::AlwaysPresent,
+                TypeIds::map(
+                    TypeIds::uri("test.Color"), TypeIds::uri("test.Inner"))),
+        }));
     typeSystem = std::move(builder).build();
   }
 
@@ -157,6 +182,19 @@ struct InterpreterRoundTripTest : ::testing::Test {
 
   const type_system::StructNode& resultNode() {
     return typeSystem->getUserDefinedTypeOrThrow("test.Result").asStruct();
+  }
+
+  const type_system::StructNode& containersNode() {
+    return typeSystem->getUserDefinedTypeOrThrow("test.Containers").asStruct();
+  }
+
+  folly::Expected<std::unique_ptr<folly::IOBuf>, TranscodeError> transcode(
+      WireProtocol source, WireProtocol target, const std::string& input) {
+    TranscodeInterpreter interpreter{fuse(
+        makeCodec(source, containersNode()),
+        makeCodec(target, containersNode()))};
+    return interpreter.transcode(
+        folly::IOBuf::wrapBufferAsValue(input.data(), input.size()));
   }
 
   TranscodePlan fuse(const Codec& source, const Codec& target) {
@@ -753,6 +791,181 @@ TEST_F(InterpreterRoundTripTest, BinaryEnumTranscodesToJsonNumberWhenUnknown) {
 
   auto jsonBytes = toBytes(**result);
   EXPECT_EQ(std::string(jsonBytes.begin(), jsonBytes.end()), R"({"color":99})");
+}
+
+constexpr uint8_t kProtobufVarint = 0;
+constexpr uint8_t kProtobufLengthDelimited = 2;
+
+uint64_t zigzag(int64_t v) {
+  return (static_cast<uint64_t>(v) << 1) ^ static_cast<uint64_t>(v >> 63);
+}
+
+void putProtobufTag(
+    std::vector<uint8_t>& out, uint32_t fieldNumber, uint8_t wireType) {
+  putUVarint(out, (fieldNumber << 3) | wireType);
+}
+
+// A length-delimited record. Clients write its length canonically; the
+// interpreter writes a length it learns after the body as a five-byte varint.
+void putRecord(
+    std::vector<uint8_t>& out,
+    uint32_t fieldNumber,
+    const std::vector<uint8_t>& body,
+    bool padded = false) {
+  putProtobufTag(out, fieldNumber, kProtobufLengthDelimited);
+  if (padded) {
+    for (int shift = 0; shift < 28; shift += 7) {
+      out.push_back(
+          static_cast<uint8_t>(((body.size() >> shift) & 0x7F) | 0x80));
+    }
+    out.push_back(static_cast<uint8_t>(body.size() >> 28));
+  } else {
+    putUVarint(out, body.size());
+  }
+  out.insert(out.end(), body.begin(), body.end());
+}
+
+void putVarintField(
+    std::vector<uint8_t>& out, uint32_t fieldNumber, uint64_t v) {
+  putProtobufTag(out, fieldNumber, kProtobufVarint);
+  putUVarint(out, v);
+}
+
+std::vector<uint8_t> protobufItem(int32_t id) {
+  std::vector<uint8_t> item;
+  putVarintField(item, 1, zigzag(id));
+  return item;
+}
+
+std::string asString(const std::vector<uint8_t>& bytes) {
+  return std::string(bytes.begin(), bytes.end());
+}
+
+TEST_F(InterpreterRoundTripTest, ThriftContainersWriteProtobufFieldsAndMaps) {
+  fixture::Containers value;
+  value.nums() = {1, -1};
+  value.tags() = {"a"};
+  value.items()->emplace_back().id() = 3;
+  value.scores()["k"] = 5;
+  value.itemsByColor()[fixture::Color::BLUE].id() = 7;
+
+  auto result = transcode(
+      WireProtocol::ThriftCompact,
+      WireProtocol::ProtobufBinary,
+      CompactSerializer::serialize<std::string>(value));
+
+  std::vector<uint8_t> score;
+  putRecord(score, 1, {'k'});
+  putVarintField(score, 2, zigzag(5));
+  std::vector<uint8_t> itemByColor;
+  putVarintField(itemByColor, 1, zigzag(2));
+  putRecord(itemByColor, 2, protobufItem(7), /*padded=*/true);
+  std::vector<uint8_t> expected;
+  putRecord(
+      expected,
+      1,
+      {static_cast<uint8_t>(zigzag(1)), static_cast<uint8_t>(zigzag(-1))},
+      /*padded=*/true);
+  putRecord(expected, 2, {'a'});
+  putRecord(expected, 3, protobufItem(3), /*padded=*/true);
+  putRecord(expected, 4, score, /*padded=*/true);
+  putRecord(expected, 5, itemByColor, /*padded=*/true);
+  ASSERT_FALSE(result.hasError()) << result.error().message;
+  EXPECT_EQ(toBytes(**result), expected);
+}
+
+TEST_F(InterpreterRoundTripTest, EmptyThriftContainersWriteNoProtobufFields) {
+  auto result = transcode(
+      WireProtocol::ThriftCompact,
+      WireProtocol::ProtobufBinary,
+      CompactSerializer::serialize<std::string>(fixture::Containers{}));
+
+  ASSERT_FALSE(result.hasError()) << result.error().message;
+  EXPECT_TRUE(toBytes(**result).empty());
+}
+
+TEST_F(InterpreterRoundTripTest, ContainersRoundTripThroughProtobuf) {
+  fixture::Containers value;
+  value.nums() = {1, -2, 300000};
+  value.tags() = {"first", "", "third"};
+  value.items()->emplace_back().id() = 1;
+  value.items()->emplace_back().id() = -9;
+  value.scores() = {{"a", 1}, {"b", -2}};
+  value.itemsByColor()[fixture::Color::RED].id() = 4;
+  value.itemsByColor()[fixture::Color::BLUE].id() = 5;
+
+  auto protobuf = transcode(
+      WireProtocol::ThriftCompact,
+      WireProtocol::ProtobufBinary,
+      CompactSerializer::serialize<std::string>(value));
+  ASSERT_FALSE(protobuf.hasError()) << protobuf.error().message;
+  const auto protobufBytes = asString(toBytes(**protobuf));
+  auto compact = transcode(
+      WireProtocol::ProtobufBinary, WireProtocol::ThriftCompact, protobufBytes);
+  auto binary = transcode(
+      WireProtocol::ProtobufBinary, WireProtocol::ThriftBinary, protobufBytes);
+
+  ASSERT_FALSE(compact.hasError()) << compact.error().message;
+  EXPECT_EQ(
+      CompactSerializer::deserialize<fixture::Containers>(compact->get()),
+      value);
+  ASSERT_FALSE(binary.hasError()) << binary.error().message;
+  EXPECT_EQ(
+      BinarySerializer::deserialize<fixture::Containers>(binary->get()), value);
+}
+
+TEST_F(
+    InterpreterRoundTripTest,
+    ProtobufMapEntriesReadInAnyOrderWithMissingPartsDefaulted) {
+  std::vector<uint8_t> valueFirst;
+  putVarintField(valueFirst, 2, zigzag(5));
+  putRecord(valueFirst, 1, {'k'});
+  std::vector<uint8_t> keyOnly;
+  putRecord(keyOnly, 1, {'z'});
+  putVarintField(keyOnly, 3, 9); // unknown entry fields are skipped
+  std::vector<uint8_t> valueOnly;
+  putRecord(valueOnly, 2, protobufItem(7));
+  std::vector<uint8_t> redKeyOnly;
+  putVarintField(redKeyOnly, 1, zigzag(1));
+  std::vector<uint8_t> input;
+  putRecord(input, 2, {'x'});
+  putRecord(input, 2, {'y'});
+  putRecord(input, 3, protobufItem(1));
+  putRecord(input, 3, protobufItem(2));
+  putRecord(input, 4, valueFirst);
+  putRecord(input, 4, keyOnly);
+  putRecord(input, 5, valueOnly);
+  putRecord(input, 5, redKeyOnly);
+
+  auto result = transcode(
+      WireProtocol::ProtobufBinary,
+      WireProtocol::ThriftCompact,
+      asString(input));
+
+  fixture::Containers expected;
+  expected.tags() = {"x", "y"};
+  expected.items()->emplace_back().id() = 1;
+  expected.items()->emplace_back().id() = 2;
+  expected.scores() = {{"k", 5}, {"z", 0}};
+  expected.itemsByColor()[fixture::Color::UNKNOWN].id() = 7;
+  expected.itemsByColor()[fixture::Color::RED];
+  ASSERT_FALSE(result.hasError()) << result.error().message;
+  EXPECT_EQ(
+      CompactSerializer::deserialize<fixture::Containers>(result->get()),
+      expected);
+}
+
+TEST_F(InterpreterRoundTripTest, InterleavedProtobufRepeatedFieldIsRejected) {
+  std::vector<uint8_t> input;
+  putRecord(input, 2, {'x'});
+  putRecord(input, 1, {static_cast<uint8_t>(zigzag(1))});
+  putRecord(input, 2, {'y'});
+
+  EXPECT_TRUE(transcode(
+                  WireProtocol::ProtobufBinary,
+                  WireProtocol::ThriftCompact,
+                  asString(input))
+                  .hasError());
 }
 
 } // namespace
