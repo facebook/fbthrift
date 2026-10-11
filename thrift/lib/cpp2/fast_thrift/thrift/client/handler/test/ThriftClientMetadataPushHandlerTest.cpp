@@ -56,6 +56,14 @@ class MockHandlerContext {
     exceptions_.push_back(std::move(e));
   }
 
+  template <typename Event>
+  void fireEvent(typename Event::Payload setupResponse) noexcept {
+    static_assert(std::same_as<Event, ThriftClientSetupResponseEvent>);
+    ++setupResponseEvents_;
+    eventServerVersion_ = setupResponse->version().value_or(0);
+    eventSupportsZstd_ = setupResponse->zstdSupported().value_or(false);
+  }
+
   // NOLINTNEXTLINE(clang-diagnostic-unused-member-function)
   void close() noexcept { closeCalled_ = true; }
 
@@ -67,12 +75,21 @@ class MockHandlerContext {
 
   std::vector<folly::exception_wrapper>& exceptions() { return exceptions_; }
 
+  size_t setupResponseEvents() const noexcept { return setupResponseEvents_; }
+
+  int32_t eventServerVersion() const noexcept { return eventServerVersion_; }
+
+  bool eventSupportsZstd() const noexcept { return eventSupportsZstd_; }
+
   void reset() {
     readMessages_.clear();
     exceptions_.clear();
     returnBackpressure_ = false;
     returnError_ = false;
     closeCalled_ = false;
+    setupResponseEvents_ = 0;
+    eventServerVersion_ = 0;
+    eventSupportsZstd_ = false;
   }
 
  private:
@@ -81,6 +98,9 @@ class MockHandlerContext {
   bool returnBackpressure_{false};
   bool returnError_{false};
   bool closeCalled_{false};
+  size_t setupResponseEvents_{0};
+  int32_t eventServerVersion_{0};
+  bool eventSupportsZstd_{false};
 };
 
 } // namespace
@@ -271,6 +291,20 @@ TEST_F(ThriftClientMetadataPushHandlerTest, SetupResponseMarksSetupComplete) {
 
   EXPECT_EQ(result, Result::Success);
   EXPECT_TRUE(handler_.isSetupComplete());
+}
+
+TEST_F(ThriftClientMetadataPushHandlerTest, PublishesBorrowedSetupResponse) {
+  apache::thrift::ServerPushMetadata serverMeta;
+  serverMeta.set_setupResponse();
+  serverMeta.setupResponse()->version() = 8;
+  serverMeta.setupResponse()->zstdSupported() = true;
+
+  auto response = makeMetadataPushResponse(serverMeta);
+
+  EXPECT_EQ(callOnRead(erase_and_box(std::move(response))), Result::Success);
+  EXPECT_EQ(ctx_.setupResponseEvents(), 1);
+  EXPECT_EQ(ctx_.eventServerVersion(), 8);
+  EXPECT_TRUE(ctx_.eventSupportsZstd());
 }
 
 TEST_F(

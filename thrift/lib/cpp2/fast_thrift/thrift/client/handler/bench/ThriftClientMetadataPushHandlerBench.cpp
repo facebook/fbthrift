@@ -60,6 +60,11 @@ class BenchContext {
 
   void fireException(folly::exception_wrapper&& /*e*/) noexcept {}
 
+  template <typename Event>
+  void fireEvent(typename Event::Payload /*payload*/) noexcept {
+    static_assert(std::same_as<Event, ThriftClientSetupResponseEvent>);
+  }
+
  private:
   TypeErasedBox lastReadMsg_;
 };

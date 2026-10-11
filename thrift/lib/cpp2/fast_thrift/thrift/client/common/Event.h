@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Event.h>
 
 #include <thrift/lib/cpp2/fast_thrift/transport/WriteCompletion.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::fast_thrift::thrift {
 
@@ -37,5 +38,12 @@ struct ThriftClientWriteCompleteEvent
   void* requestContext;
   apache::thrift::fast_thrift::transport::WriteCompletionStatus status;
 };
+
+/**
+ * Synchronously exposes a borrowed setup response to connection-level
+ * subscribers. The pointer is valid only for the duration of the callback.
+ */
+struct ThriftClientSetupResponseEvent
+    : channel_pipeline::EventTag<const apache::thrift::SetupResponse*> {};
 
 } // namespace apache::thrift::fast_thrift::thrift

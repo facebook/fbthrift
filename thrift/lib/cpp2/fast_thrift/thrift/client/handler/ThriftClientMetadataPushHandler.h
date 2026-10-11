@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/client/common/Event.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 namespace apache::thrift::fast_thrift::thrift::client::handler {
@@ -47,6 +48,9 @@ namespace apache::thrift::fast_thrift::thrift::client::handler {
 class ThriftClientMetadataPushHandler {
  public:
   ThriftClientMetadataPushHandler() = default;
+
+  using PublishedEvents = apache::thrift::fast_thrift::channel_pipeline::Events<
+      ThriftClientSetupResponseEvent>;
 
   // === HandlerLifecycle ===
 
@@ -146,7 +150,7 @@ class ThriftClientMetadataPushHandler {
     // NOLINTNEXTLINE(clang-diagnostic-switch-enum)
     switch (serverMeta.getType()) {
       case apache::thrift::ServerPushMetadata::Type::setupResponse:
-        return handleSetupResponse(serverMeta.get_setupResponse());
+        return handleSetupResponse(ctx, serverMeta.get_setupResponse());
 
       case apache::thrift::ServerPushMetadata::Type::drainCompletePush:
         return handleDrainComplete(ctx, serverMeta.get_drainCompletePush());
@@ -166,11 +170,15 @@ class ThriftClientMetadataPushHandler {
    * Handle setupResponse from the server.
    * Stores server version and marks setup as complete.
    */
+  template <typename Context>
   apache::thrift::fast_thrift::channel_pipeline::Result handleSetupResponse(
+      Context& ctx,
       const apache::thrift::SetupResponse& setupResponse) noexcept {
     serverVersion_ = setupResponse.version().value_or(0);
     serverSupportsZstd_ = setupResponse.zstdSupported().value_or(false);
     setupComplete_ = true;
+    PublishedEvents::template fire<ThriftClientSetupResponseEvent>(
+        ctx, &setupResponse);
     XLOG(DBG2) << "Received setupResponse: version=" << serverVersion_
                << ", zstdSupported=" << serverSupportsZstd_;
     return apache::thrift::fast_thrift::channel_pipeline::Result::Success;
