@@ -163,6 +163,18 @@ const ExtensionLayout& ownedBenchmarkLayout() {
   return layout;
 }
 
+const ExtensionLayout& ownedBridgeBenchmarkLayout() {
+  static const ExtensionLayout layout = [] {
+    ExtensionLayoutBuilder builder;
+    builder.add(Cpp2BridgeExtension::kId, [](void* state) noexcept {
+      Cpp2BridgeExtension::destroyRequestState(
+          static_cast<Cpp2BridgeExtension::RequestState*>(state));
+    });
+    return std::move(builder).build();
+  }();
+  return layout;
+}
+
 BENCHMARK(RequestStateOwnership_StreamMap, iters) {
   folly::F14FastMap<
       std::uint32_t,
@@ -186,6 +198,22 @@ BENCHMARK_RELATIVE(RequestStateOwnership_ExtensionSlot, iters) {
     context->adoptState<BenchmarkExtension>(
         new BenchmarkExtension::RequestState(i));
     folly::doNotOptimizeAway(context->tryState<BenchmarkExtension>());
+  }
+}
+
+BENCHMARK(BridgeRequestState_ExtensionSlot, iters) {
+  auto handlers = std::make_shared<TProcessorEventHandlers>();
+  handlers->processor.push_back(
+      std::make_shared<CountingProcessorEventHandler>());
+  TProcessorEventHandlerBridgeRequestStateOwnerPtr owner(
+      new TProcessorEventHandlerBridgeRequestStateOwner(std::move(handlers)));
+  for (std::size_t i = 0; i < iters; ++i) {
+    auto context = std::make_unique<ThriftRequestContext>();
+    context->installExtensions(ownedBridgeBenchmarkLayout());
+    auto state =
+        std::make_unique<TProcessorEventHandlerBridgeRequestState>(owner);
+    context->adoptState<Cpp2BridgeExtension>(&state.release()->published);
+    folly::doNotOptimizeAway(context->tryState<Cpp2BridgeExtension>());
   }
 }
 

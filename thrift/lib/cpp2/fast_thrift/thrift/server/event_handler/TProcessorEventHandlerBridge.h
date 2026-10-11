@@ -25,6 +25,7 @@
 #include <vector>
 
 #include <boost/intrusive_ptr.hpp>
+#include <boost/smart_ptr/intrusive_ref_counter.hpp>
 
 #include <glog/logging.h>
 
@@ -72,10 +73,27 @@ struct TProcessorEventHandlerBridgeConfig {
   PeerIdentityResolver identityResolver{nullptr};
 };
 
+struct TProcessorEventHandlerBridgeRequestStateOwner
+    : boost::intrusive_ref_counter<
+          TProcessorEventHandlerBridgeRequestStateOwner,
+          boost::thread_unsafe_counter> {
+  // Request contexts acquire and release this only on their connection's
+  // EventBase, the same invariant that permits ThriftConnContext's non-atomic
+  // intrusive refcount.
+  explicit TProcessorEventHandlerBridgeRequestStateOwner(
+      std::shared_ptr<const TProcessorEventHandlers> handlers)
+      : handlers(std::move(handlers)) {}
+
+  const std::shared_ptr<const TProcessorEventHandlers> handlers;
+};
+
+using TProcessorEventHandlerBridgeRequestStateOwnerPtr =
+    boost::intrusive_ptr<const TProcessorEventHandlerBridgeRequestStateOwner>;
+
 struct TProcessorEventHandlerBridgeRequestState {
   explicit TProcessorEventHandlerBridgeRequestState(
-      std::shared_ptr<const TProcessorEventHandlers> handlers)
-      : handlersOwner(std::move(handlers)), chain(handlersOwner->processor) {
+      TProcessorEventHandlerBridgeRequestStateOwnerPtr owner)
+      : owner(std::move(owner)), chain(this->owner->handlers->processor) {
     published.owner = this;
   }
 
@@ -106,7 +124,7 @@ struct TProcessorEventHandlerBridgeRequestState {
     published.context = nullptr;
   }
 
-  std::shared_ptr<const TProcessorEventHandlers> handlersOwner;
+  TProcessorEventHandlerBridgeRequestStateOwnerPtr owner;
   Cpp2BridgeRequestState published;
   EventHandlerChain chain;
   apache::thrift::transport::THeader header;
@@ -226,6 +244,11 @@ class TProcessorEventHandlerBridge {
   explicit TProcessorEventHandlerBridge(
       TProcessorEventHandlerBridgeConfig config)
       : config_(std::move(config)),
+        requestStateOwner_(
+            config_.handlers == nullptr
+                ? nullptr
+                : new TProcessorEventHandlerBridgeRequestStateOwner(
+                      config_.handlers)),
         handlers_(config_.handlers.get()),
         methodMetadata_(config_.methodMetadata.get()),
         drivesProcessorHandlers_(
@@ -310,7 +333,7 @@ class TProcessorEventHandlerBridge {
 
     auto ownedState =
         std::make_unique<TProcessorEventHandlerBridgeRequestState>(
-            config_.handlers);
+            requestStateOwner_);
     auto* state = ownedState.get();
     const auto& requestResponse =
         request.payload.get<ThriftServerRequestResponsePayload>();
@@ -465,6 +488,7 @@ class TProcessorEventHandlerBridge {
 
  private:
   const TProcessorEventHandlerBridgeConfig config_;
+  const TProcessorEventHandlerBridgeRequestStateOwnerPtr requestStateOwner_;
   // Resolved once: the answer cannot change, and reaching it through the
   // shared_ptr on every request is two dependent loads into memory that every
   // connection shares.
