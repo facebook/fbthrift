@@ -103,7 +103,7 @@ struct ThriftServerConnection {
   void start() noexcept {
     DCHECK(!started_) << "ThriftServerConnection::start called twice";
     started_ = true;
-    thriftTransportAdapter->rocketConnection().transportHandler.onConnect();
+    thriftTransportAdapter->rocketConnection().start();
   }
 
   // Initiate close. From the owner's perspective this is fire-and-wait:

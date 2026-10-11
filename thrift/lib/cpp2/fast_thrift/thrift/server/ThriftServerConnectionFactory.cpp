@@ -697,8 +697,8 @@ ThriftServerConnection ThriftServerConnectionFactory::getConnection(
   }
 
   ThriftServerConnection conn = needsComposite_
-      ? buildCompositeConnection(std::move(socket), connContext)
-      : buildSimpleConnection(std::move(socket), connContext);
+      ? buildCompositeConnection(std::move(socket), clientAddr, connContext)
+      : buildSimpleConnection(std::move(socket), clientAddr, connContext);
 
   // Expose the context on the connection so the connection-layer accept
   // callback can reach it post-construction.
@@ -723,6 +723,7 @@ void ThriftServerConnectionFactory::attachCPUExecutor(
 
 ThriftServerConnection ThriftServerConnectionFactory::buildSimpleConnection(
     folly::AsyncTransport::UniquePtr socket,
+    const folly::SocketAddress& clientAddr,
     boost::intrusive_ptr<ThriftConnContext> connContext) {
   ThriftServerConnection::SimpleTail tail{
       .adapter = config_.handler->getAppAdapter(config_.handler)};
@@ -731,11 +732,16 @@ ThriftServerConnection ThriftServerConnectionFactory::buildSimpleConnection(
   return buildConnectionImpl<
       ThriftServerAppAdapter,
       channel_pipeline::pipeline_storage::Automatic>(
-      std::move(socket), std::move(tail), tailAdapter, std::move(connContext));
+      std::move(socket),
+      clientAddr,
+      std::move(tail),
+      tailAdapter,
+      std::move(connContext));
 }
 
 ThriftServerConnection ThriftServerConnectionFactory::buildCompositeConnection(
     folly::AsyncTransport::UniquePtr socket,
+    const folly::SocketAddress& clientAddr,
     boost::intrusive_ptr<ThriftConnContext> connContext) {
   // Build the composite tail: user adapter + each wired aux + metadata.
   // children must outlive the composite (composite borrows raw T* into
@@ -792,6 +798,7 @@ ThriftServerConnection ThriftServerConnectionFactory::buildCompositeConnection(
       ThriftServerCompositeAppAdapter,
       channel_pipeline::pipeline_storage::Automatic>(
       std::move(socket),
+      clientAddr,
       std::move(tail),
       compositeAdapter,
       std::move(connContext));
@@ -830,6 +837,7 @@ void ThriftServerConnectionFactory::initializeRocketConnection(
 template <typename TailAdapter, typename Storage>
 ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
     folly::AsyncTransport::UniquePtr socket,
+    const folly::SocketAddress& clientAddr,
     std::variant<
         std::monostate,
         ThriftServerConnection::SimpleTail,
@@ -850,25 +858,33 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   ThriftServerConnection conn;
   conn.tail = std::move(tail);
 
-  // Construct the transport adapter early around a fresh (empty) rocket
-  // connection so the rocket pipeline's SETUP callback below can capture a
-  // stable pointer into it. The rocket connection's appAdapter is
-  // default-initialized; transportHandler / pipeline are populated after
-  // buildRocketPipeline runs.
+  std::unique_ptr<rocket::server::RocketServerConnection> rocketConnection;
+  std::optional<channel_pipeline::detail::HandlerNode>
+      transportNegotiationHandler;
+  if (config_.rocketConnectionBuilder) {
+    auto buildResult = config_.rocketConnectionBuilder(
+        std::move(socket), clientAddr, statsShard);
+    rocketConnection = std::move(buildResult.connection);
+    transportNegotiationHandler =
+        std::move(buildResult.transportNegotiationHandler);
+    CHECK(rocketConnection)
+        << "RocketServerConnectionBuilder returned a null connection";
+  } else {
+    rocketConnection =
+        std::make_unique<rocket::server::RocketServerConnection>();
+    if (config_.useAlignedParser) {
+      initializeRocketConnection<frame::read::AlignedParser>(
+          std::move(socket), evb, *rocketConnection, statsShard);
+    } else {
+      initializeRocketConnection<>(
+          std::move(socket), evb, *rocketConnection, statsShard);
+    }
+  }
+
   conn.thriftTransportAdapter = std::make_unique<ThriftServerTransportAdapter>(
-      std::make_unique<rocket::server::RocketServerConnection>());
-  rocket::server::RocketServerConnection& rocketConnection =
-      conn.thriftTransportAdapter->rocketConnection();
+      std::move(rocketConnection));
   ThriftServerTransportAdapter* const transportAdapterPtr =
       conn.thriftTransportAdapter.get();
-
-  if (config_.useAlignedParser) {
-    initializeRocketConnection<frame::read::AlignedParser>(
-        std::move(socket), evb, rocketConnection, statsShard);
-  } else {
-    initializeRocketConnection<>(
-        std::move(socket), evb, rocketConnection, statsShard);
-  }
 
   // Thrift pipeline templated on the tail adapter type. For the simple case
   // this works because generated adapters use the base adapter's shared
@@ -891,7 +907,8 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   using MuxHandler =
       ThriftServerStreamMuxHandler<channel_pipeline::detail::ContextImpl>;
   PipelineOwner thriftPipeline;
-  if (config_.channelPipelineMode == ChannelPipelineMode::Static) {
+  if (config_.channelPipelineMode == ChannelPipelineMode::Static &&
+      !transportNegotiationHandler) {
     thriftPipeline = selectStaticThriftStats(
         config_,
         evb,
@@ -968,6 +985,10 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
           [&](channel_pipeline::detail::HandlerNode&& handler) {
             thriftPipelineBuilder.addErasedHandler(std::move(handler));
           });
+    }
+    if (transportNegotiationHandler) {
+      thriftPipelineBuilder.addErasedHandler(
+          std::move(*transportNegotiationHandler));
     }
     // Last before the tail, and deliberately after the embedder handlers: this
     // terminates the connection-lifecycle messages, so everything that might

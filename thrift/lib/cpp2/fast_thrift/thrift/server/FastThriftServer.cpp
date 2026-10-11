@@ -232,6 +232,20 @@ void FastThriftServer::setStats(std::shared_ptr<ServerStats> stats) {
   stats_ = std::move(stats);
 }
 
+void FastThriftServer::setRocketConnectionBuilder(
+    server::RocketServerConnectionBuilder builder) {
+  std::lock_guard<std::mutex> lock(lifecycleMutex_);
+  CHECK(state_ == State::kNotStarted)
+      << "FastThriftServer::setRocketConnectionBuilder must be called before "
+         "start()/serve()";
+  CHECK(builder)
+      << "FastThriftServer::setRocketConnectionBuilder requires a non-null "
+         "builder";
+  CHECK(!rocketConnectionBuilder_)
+      << "FastThriftServer::setRocketConnectionBuilder called more than once";
+  rocketConnectionBuilder_ = std::move(builder);
+}
+
 void FastThriftServer::setConnectionStats(
     std::shared_ptr<connection::ConnectionStats> stats) {
   std::lock_guard<std::mutex> lock(lifecycleMutex_);
@@ -667,6 +681,7 @@ void FastThriftServer::start() {
 
   server::ThriftServerConnectionFactoryConfig factoryConfig{
       .handler = handler_,
+      .rocketConnectionBuilder = std::move(rocketConnectionBuilder_),
       .cpuExecutor = cpuExecutor_,
       .monitoringHandler = auxInterfaces_.monitoringHandler,
       .statusHandler = auxInterfaces_.statusHandler,

@@ -25,6 +25,7 @@
 #include <boost/intrusive_ptr.hpp>
 #include <folly/CppAttributes.h>
 #include <folly/Executor.h>
+#include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ExtensionSlots.h>
@@ -43,6 +44,7 @@
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/adapter/RocketServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerSetupFrameHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServerConfig.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/RocketServerConnectionBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapterFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerTransportAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerCompositeRoutingTable.h>
@@ -60,6 +62,7 @@ namespace apache::thrift::fast_thrift::thrift::server {
  */
 struct ThriftServerConnectionFactoryConfig {
   std::shared_ptr<ThriftServerAppAdapterFactory> handler;
+  RocketServerConnectionBuilder rocketConnectionBuilder;
   // Executor for request deserialization, method execution, and response
   // serialization. Null keeps that service path on the connection's EventBase.
   //
@@ -209,10 +212,12 @@ class ThriftServerConnectionFactory {
 
   ThriftServerConnection buildSimpleConnection(
       folly::AsyncTransport::UniquePtr socket,
+      const folly::SocketAddress& clientAddr,
       boost::intrusive_ptr<ThriftConnContext> connContext);
 
   ThriftServerConnection buildCompositeConnection(
       folly::AsyncTransport::UniquePtr socket,
+      const folly::SocketAddress& clientAddr,
       boost::intrusive_ptr<ThriftConnContext> connContext);
 
   // Shared body for the two builders above. Templated on the thrift-pipeline
@@ -223,6 +228,7 @@ class ThriftServerConnectionFactory {
   template <typename TailAdapter, typename Storage>
   ThriftServerConnection buildConnectionImpl(
       folly::AsyncTransport::UniquePtr socket,
+      const folly::SocketAddress& clientAddr,
       std::variant<
           std::monostate,
           ThriftServerConnection::SimpleTail,

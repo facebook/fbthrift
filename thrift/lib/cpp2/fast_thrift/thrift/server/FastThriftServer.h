@@ -42,6 +42,7 @@
 #include <thrift/lib/cpp2/fast_thrift/security/ThriftTlsConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServerConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServerRegistry.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/RocketServerConnectionBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapterFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ExtensionSlots.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
@@ -209,6 +210,15 @@ class FastThriftServer {
    * same instance to a FastThriftStatsPublisher.
    */
   void setStats(std::shared_ptr<ServerStats> stats);
+
+  /**
+   * Override construction of the Rocket transport below each Thrift pipeline.
+   * The builder runs once per accepted connection on its owning EventBase and
+   * must return a fully wired, inert RocketServerConnection. The connection's
+   * existing owner starts and destroys it through ThriftServerTransportAdapter.
+   */
+  void setRocketConnectionBuilder(
+      server::RocketServerConnectionBuilder builder);
 
   /// The counters attached via setStats, or nullptr if none were.
   const std::shared_ptr<ServerStats>& getStats() const noexcept {
@@ -608,6 +618,7 @@ class FastThriftServer {
   std::vector<server::ThriftPipelineRegistration> thriftPipelineRegistrations_;
   server::TProcessorEventHandlers eventHandlers_;
   server::PeerIdentityResolver peerIdentityResolver_{nullptr};
+  server::RocketServerConnectionBuilder rocketConnectionBuilder_;
   // Consumed into the layouts below at start(); untouched after.
   ExtensionLayoutBuilder connExtensionBuilder_;
   ExtensionLayoutBuilder requestExtensionBuilder_;
