@@ -54,22 +54,14 @@ struct SocketOptions {
   bool tcpNoDelay{false};
   int trafficClass{0};
 
-  // Cap on accepted sockets queued for one destination IO worker. This is the
-  // same boundary AsyncServerSocket provides to the classic Thrift server;
-  // keep the default in parity with ThriftServerConfig.
+  // Cap on pending connections per destination IO worker. Bounds the accepted
+  // sockets queued for the worker (the same boundary AsyncServerSocket
+  // provides to the classic Thrift server; keep the default in parity with
+  // ThriftServerConfig) and the connections the worker is still processing
+  // through its TLS pipeline: one slot across classification, handshake, and
+  // StopTLS, released when established or dropped, with no effect under
+  // SSLPolicy::DISABLED. Zero disables the TLS-pipeline cap.
   uint32_t maxPendingConnectionsPerWorker{4096};
-
-  // Cap on the connections an IO thread will hold parked in a TLS stage —
-  // accepted, but not yet resolved to an established connection: awaiting
-  // peek classification, the fizz handshake, or a StopTLS V1 downgrade. Past
-  // the cap a connection is closed straight away rather than parked, bounding
-  // what a peer that stalls one of those steps can pin. Zero disables the cap.
-  //
-  // Each parking stage carries the cap separately, so a thread's ceiling is
-  // this many per stage the policy installs: two under SSLPolicy::REQUIRED,
-  // three under PERMITTED. Has no effect under DISABLED, where a connection
-  // is established on the accept itself and is never parked.
-  uint32_t maxPendingConnections{0};
 
   // Maximum time an accepted socket may wait for its destination IO worker.
   // Zero disables expiry.

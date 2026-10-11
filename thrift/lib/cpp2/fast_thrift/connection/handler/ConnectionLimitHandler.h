@@ -44,7 +44,7 @@ HANDLER_TAG(connection_limit_handler);
  * every connection that survived the handshake and none that did not, and it
  * refuses before a Connection object is built. That is the point the classic
  * server enforces its own limit from, past the handshake — a socket that dies
- * mid-TLS is bounded by maxPendingConnections instead.
+ * mid-TLS is bounded by maxPendingConnectionsPerWorker instead.
  *
  * Refusing means returning Error rather than forwarding: the inbound message
  * owns the transport, so dropping it closes the socket and the peer sees a

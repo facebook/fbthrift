@@ -49,6 +49,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
+#include <thrift/lib/cpp2/fast_thrift/connection/SocketOptions.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/handler/ConnectionTLSHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/security/common/TLSStats.h>
@@ -215,11 +216,11 @@ class TLSPipelineIntegrationTest : public ::testing::Test {
   }
 
   // Build outer pipeline NoopHead → ConnectionTLSHandler → CapturingTail.
-  // maxPending of zero leaves the pending-connection limit off.
+  // A zero limit leaves the pending-connection limit off.
   void buildPipeline(
       fts::SSLPolicy policy,
       CapturingTail::OnRead onRead,
-      uint32_t maxPending,
+      uint32_t maxPendingConnectionsPerWorker,
       CapturingTail::OnException onException = nullptr) {
     head_ = std::make_unique<NoopHead>();
     tail_ = std::make_unique<CapturingTail>(std::move(onRead));
@@ -244,7 +245,7 @@ class TLSPipelineIntegrationTest : public ::testing::Test {
               policy,
               tlsParamsObservable_->getObserver(),
               &allocator_,
-              maxPending,
+              maxPendingConnectionsPerWorker,
               &stats_);
       pipeline_ = builder.build();
       pipeline_->activate();
@@ -296,7 +297,9 @@ class TLSPipelineIntegrationTest : public ::testing::Test {
   // connection is refused rather than queued behind it.
   void expectSilentPeerRefusedAtLimit(fts::SSLPolicy policy) {
     buildPipeline(
-        policy, [](conn::ConnectionMessage&&) noexcept {}, /*maxPending=*/1);
+        policy,
+        [](conn::ConnectionMessage&&) noexcept {},
+        /*maxPendingConnectionsPerWorker=*/1);
 
     auto first = makeSocketPair();
     EXPECT_EQ(feedSocket(first.server), channel_pipeline::Result::Success);
@@ -321,6 +324,10 @@ class TLSPipelineIntegrationTest : public ::testing::Test {
   channel_pipeline::PipelineImpl::Ptr pipeline_;
 };
 
+TEST(SocketOptionsTest, DefaultsPendingConnectionsPerWorkerToClassicLimit) {
+  EXPECT_EQ(conn::SocketOptions{}.maxPendingConnectionsPerWorker, 4096);
+}
+
 // A server configured for TLS with no fizz context cannot handshake, so the
 // connection is dropped on admission. It must be reported as such: returning
 // Success would tell the caller a connection it no longer holds is still on
@@ -332,7 +339,7 @@ TEST_F(TLSPipelineIntegrationTest, MissingFizzContextReportsError) {
   buildPipeline(
       fts::SSLPolicy::REQUIRED,
       [&](conn::ConnectionMessage&&) noexcept { reachedTail = true; },
-      /*maxPending=*/0);
+      /*maxPendingConnectionsPerWorker=*/0);
 
   auto sp = makeSocketPair();
   EXPECT_EQ(feedSocket(sp.server), channel_pipeline::Result::Error);
@@ -356,7 +363,7 @@ TEST_F(TLSPipelineIntegrationTest, RequiredTLSHandshakeSucceeds) {
         peerSecurity = std::move(m.peerSecurity);
         emitted.post();
       },
-      /*maxPending=*/0);
+      /*maxPendingConnectionsPerWorker=*/1);
 
   auto sp = makeSocketPair();
   ASSERT_EQ(feedSocket(sp.server), channel_pipeline::Result::Success);
@@ -382,6 +389,7 @@ TEST_F(TLSPipelineIntegrationTest, RequiredTLSHandshakeSucceeds) {
   // pipeline sees rather than being asked of the transport later.
   ASSERT_NE(peerSecurity, nullptr);
   EXPECT_FALSE(peerSecurity->securityProtocol.empty());
+  EXPECT_TRUE(waitForAdmission());
 
   evb_->runInEventBaseThreadAndWait([&] {
     transport.reset();
@@ -404,7 +412,7 @@ TEST_F(TLSPipelineIntegrationTest, PermittedPlaintextBypassesHandshake) {
         peerSecurity = std::move(m.peerSecurity);
         emitted.post();
       },
-      /*maxPending=*/0);
+      /*maxPendingConnectionsPerWorker=*/0);
 
   auto sp = makeSocketPair();
   ASSERT_EQ(feedSocket(sp.server), channel_pipeline::Result::Success);
@@ -440,7 +448,7 @@ TEST_F(TLSPipelineIntegrationTest, PermittedTLSPathCompletesHandshake) {
         transport = std::move(m.transport);
         emitted.post();
       },
-      /*maxPending=*/0);
+      /*maxPendingConnectionsPerWorker=*/0);
 
   auto sp = makeSocketPair();
   ASSERT_EQ(feedSocket(sp.server), channel_pipeline::Result::Success);
@@ -487,7 +495,7 @@ TEST_F(
   buildPipeline(
       fts::SSLPolicy::REQUIRED,
       [&](conn::ConnectionMessage&&) noexcept { emitted.post(); },
-      /*maxPending=*/0,
+      /*maxPendingConnectionsPerWorker=*/0,
       [&](folly::exception_wrapper&&) { failed.post(); });
 
   auto sp = makeSocketPair();
@@ -524,7 +532,7 @@ TEST_F(TLSPipelineIntegrationTest, ShutdownCancellationIsNotReported) {
   buildPipeline(
       fts::SSLPolicy::REQUIRED,
       [](conn::ConnectionMessage&&) noexcept {},
-      /*maxPending=*/0,
+      /*maxPendingConnectionsPerWorker=*/0,
       [&](folly::exception_wrapper&&) { ++failures; });
 
   // A peer that connects and then says nothing stays parked in the handshake
@@ -550,7 +558,7 @@ TEST_F(TLSPipelineIntegrationTest, ReportsAgainAfterReactivation) {
   buildPipeline(
       fts::SSLPolicy::REQUIRED,
       [](conn::ConnectionMessage&&) noexcept {},
-      /*maxPending=*/0,
+      /*maxPendingConnectionsPerWorker=*/0,
       [&](folly::exception_wrapper&&) { failed.post(); });
 
   evb_->runInEventBaseThreadAndWait([&] {
@@ -581,7 +589,7 @@ TEST_F(TLSPipelineIntegrationTest, ObserverMayDeactivateFromExceptionHandler) {
   buildPipeline(
       fts::SSLPolicy::REQUIRED,
       [](conn::ConnectionMessage&&) noexcept {},
-      /*maxPending=*/0,
+      /*maxPendingConnectionsPerWorker=*/0,
       [&](folly::exception_wrapper&&) {
         // Re-entrant teardown, from underneath the helper that is reporting.
         pipeline_->deactivate();
@@ -615,7 +623,7 @@ TEST_F(TLSPipelineIntegrationTest, FailedHandshakeFreesPendingCapacity) {
   buildPipeline(
       fts::SSLPolicy::REQUIRED,
       [&](conn::ConnectionMessage&&) noexcept {},
-      /*maxPending=*/1);
+      /*maxPendingConnectionsPerWorker=*/1);
 
   auto doomed = makeSocketPair();
   ASSERT_EQ(feedSocket(doomed.server), channel_pipeline::Result::Success);
@@ -649,7 +657,7 @@ TEST_F(TLSPipelineIntegrationTest, FailedPeekFreesPendingCapacity) {
   buildPipeline(
       fts::SSLPolicy::PERMITTED,
       [&](conn::ConnectionMessage&&) noexcept {},
-      /*maxPending=*/1);
+      /*maxPendingConnectionsPerWorker=*/1);
 
   auto doomed = makeSocketPair();
   ASSERT_EQ(feedSocket(doomed.server), channel_pipeline::Result::Success);
@@ -669,7 +677,7 @@ TEST_F(TLSPipelineIntegrationTest, ZeroLimitLeavesAcceptsUnbounded) {
   buildPipeline(
       fts::SSLPolicy::REQUIRED,
       [&](conn::ConnectionMessage&&) noexcept {},
-      /*maxPending=*/0);
+      /*maxPendingConnectionsPerWorker=*/0);
 
   constexpr size_t kConnections = 4;
   std::vector<SocketPair> pairs;

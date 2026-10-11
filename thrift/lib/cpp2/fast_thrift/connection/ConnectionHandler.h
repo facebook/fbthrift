@@ -277,7 +277,7 @@ void ConnectionHandler::setConnectionFactory(
         sslPolicy_,
         tlsParamsObserver_,
         &allocator_,
-        socketOptions_.maxPendingConnections,
+        socketOptions_.maxPendingConnectionsPerWorker,
         tlsShard_);
   }
 

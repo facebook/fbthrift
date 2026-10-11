@@ -86,7 +86,10 @@ TEST(TLSConnectionAdapterTest, DispatchesResolvedToOwner) {
   auto peerSecurity = std::make_shared<const PeerSecurityInfo>(
       PeerSecurityInfo{.peerCertificate = nullptr, .securityProtocol = "TLS"});
   TLSResponseMessage resp{
-      .transport = nullptr, .clientAddr = addr, .peerSecurity = peerSecurity};
+      .transport = nullptr,
+      .clientAddr = addr,
+      .peerSecurity = peerSecurity,
+      .pendingConnectionPermit = {}};
   const auto result = adapter.onRead(
       endpointContext(), channel_pipeline::erase_and_box(std::move(resp)));
 

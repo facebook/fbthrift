@@ -21,6 +21,7 @@
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/connection/security/common/PendingConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/security/FizzServerContextBuilder.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersServerExtension.h>
 
@@ -46,6 +47,8 @@ namespace apache::thrift::fast_thrift::connection::security {
 // `peerSecurity` is null until the handshake completes, and every stage after
 // it must carry it forward: it is the only surviving record of what the peer
 // proved once StopTLS has swapped the fizz transport for a plaintext one.
+// `pendingConnectionPermit` holds one worker-wide pending slot across every
+// asynchronous stage and releases it on every terminal path.
 struct TLSRequestMessage {
   folly::AsyncTransport::UniquePtr transport;
   folly::SocketAddress clientAddr;
@@ -53,6 +56,7 @@ struct TLSRequestMessage {
       tlsParams;
   std::shared_ptr<apache::thrift::ThriftParametersServerExtension> extension;
   std::shared_ptr<const PeerSecurityInfo> peerSecurity;
+  PendingConnectionPermit pendingConnectionPermit;
 };
 
 // Inbound (read/return path). TLSFinalizer collapses a resolved
@@ -64,6 +68,7 @@ struct TLSResponseMessage {
   folly::AsyncTransport::UniquePtr transport;
   folly::SocketAddress clientAddr;
   std::shared_ptr<const PeerSecurityInfo> peerSecurity;
+  PendingConnectionPermit pendingConnectionPermit;
 };
 
 } // namespace apache::thrift::fast_thrift::connection::security

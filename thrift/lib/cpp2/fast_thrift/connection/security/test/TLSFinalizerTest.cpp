@@ -163,6 +163,7 @@ TEST_F(TLSFinalizerTest, ConvertsRequestToResponse) {
         .tlsParams = nullptr,
         .extension = nullptr,
         .peerSecurity = peerSecurity,
+        .pendingConnectionPermit = {},
     };
     (void)pipeline_->fireWrite(channel_pipeline::erase_and_box(std::move(req)));
   });

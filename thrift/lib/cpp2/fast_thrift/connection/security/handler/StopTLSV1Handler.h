@@ -52,17 +52,13 @@ namespace apache::thrift::fast_thrift::connection::security::handler {
  * StopTLS failures drop the connection and report it by firing an exception
  * onto the pipeline. See Util.h.
  *
- * The downgrades parked here are capped: past the cap a connection is refused
- * rather than started. Each one is also bounded by the handshake-timeout
- * budget off the incoming message, so a peer that negotiates StopTLS V1 and
- * then stalls the downgrade is dropped rather than parked indefinitely.
+ * The aggregate pending-connection handler bounds sockets across the complete
+ * TLS pipeline, including downgrades parked here. Each downgrade is also
+ * bounded by the handshake-timeout budget off the incoming message.
  */
 class StopTLSV1Handler {
  public:
-  // maxPendingConnections caps the downgrades in flight at once; zero is
-  // unbounded.
-  explicit StopTLSV1Handler(uint32_t maxPendingConnections) noexcept
-      : maxPendingConnections_{maxPendingConnections} {}
+  StopTLSV1Handler() = default;
 
   ~StopTLSV1Handler() = default;
 
@@ -108,15 +104,6 @@ class StopTLSV1Handler {
           channel_pipeline::erase_and_box(std::move(incoming)));
     }
 
-    if (FOLLY_UNLIKELY(atCapacity())) {
-      // Dropping `incoming` closes the transport; no downgrade is started.
-      XLOG_EVERY_MS(WARN, 1000)
-          << "Refusing connection from " << incoming.clientAddr.describe()
-          << ": already downgrading " << maxPendingConnections_
-          << " connections on this thread";
-      return channel_pipeline::Result::Error;
-    }
-
     (void)incoming.transport.release();
     fizz::server::AsyncFizzServer::UniquePtr fizzServer(fizzPtr);
     auto clientAddr = std::move(incoming.clientAddr);
@@ -127,16 +114,22 @@ class StopTLSV1Handler {
     // The downgrade hands back a plaintext transport that can no longer report
     // the peer, so the handshake's record of it has to ride the callback.
     auto peerSecurity = std::move(incoming.peerSecurity);
+    auto permit = std::move(incoming.pendingConnectionPermit);
 
     util::StopTLSHelper::UniquePtr helper(new util::StopTLSHelper(
         std::move(fizzServer),
         stopTLSTimeout,
         [this](util::StopTLSHelper* h) noexcept { inFlight_.erase(h); },
-        [this, clientAddr, extension, peerSecurity](
+        [this, clientAddr, extension, peerSecurity, permit = std::move(permit)](
             folly::AsyncTransport::UniquePtr plaintext,
-            const folly::exception_wrapper& ex) noexcept {
+            const folly::exception_wrapper& ex) mutable noexcept {
           onStopTLSComplete(
-              std::move(plaintext), ex, clientAddr, extension, peerSecurity);
+              std::move(plaintext),
+              ex,
+              clientAddr,
+              extension,
+              peerSecurity,
+              std::move(permit));
         }));
     auto* raw = helper.get();
     inFlight_.emplace(raw, std::move(helper));
@@ -195,7 +188,8 @@ class StopTLSV1Handler {
       const folly::SocketAddress& clientAddr,
       std::shared_ptr<apache::thrift::ThriftParametersServerExtension>
           extension,
-      std::shared_ptr<const PeerSecurityInfo> peerSecurity) noexcept {
+      std::shared_ptr<const PeerSecurityInfo> peerSecurity,
+      PendingConnectionPermit permit) noexcept {
     if (ex || !plaintext) {
       XLOG(DBG3) << "StopTLS V1 failed for " << clientAddr.describe() << ": "
                  << (ex ? ex.what().toStdString() : std::string("null"));
@@ -219,6 +213,7 @@ class StopTLSV1Handler {
         .tlsParams = nullptr,
         .extension = std::move(extension),
         .peerSecurity = std::move(peerSecurity),
+        .pendingConnectionPermit = std::move(permit),
     };
     auto result =
         ctx_->fireWrite(channel_pipeline::erase_and_box(std::move(downgraded)));
@@ -237,23 +232,11 @@ class StopTLSV1Handler {
     }
   }
 
-  bool atCapacity() const noexcept {
-    return maxPendingConnections_ != 0 &&
-        inFlight_.size() >= maxPendingConnections_;
-  }
-
-  // Doubles as the pending count the cap is enforced against: every way a
-  // downgrade can end — success, error, shutdown cancellation — erases its
-  // entry, so capacity comes back without a release site of its own. The
-  // helper reports terminal after the user callback has run, so an entry
-  // outlives the downstream fire by the tail of that call stack; no accept
-  // can interleave there, since it is all one EventBase.
   folly::F14FastMap<util::StopTLSHelper*, util::StopTLSHelper::UniquePtr>
       inFlight_;
   channel_pipeline::detail::ContextImpl* ctx_{nullptr};
   // Set once teardown begins; see onPipelineInactive.
   bool shuttingDown_{false};
-  uint32_t maxPendingConnections_{0};
 };
 
 } // namespace apache::thrift::fast_thrift::connection::security::handler

@@ -31,7 +31,9 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/security/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/connection/security/common/PendingConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/security/handler/FizzHandshakeHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/connection/security/handler/PendingConnectionLimitHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/security/handler/StopTLSV1Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/security/handler/TLSClassifier.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/security/handler/TLSConfigHandler.h>
@@ -55,6 +57,7 @@ HANDLER_TAG(tls_inner_metrics);
 HANDLER_TAG(tls_inner_classifier);
 HANDLER_TAG(tls_inner_fizz_handshake);
 HANDLER_TAG(tls_inner_stoptls_v1);
+HANDLER_TAG(tls_inner_pending_connection_limit);
 
 /**
  * Outer-pipeline (connection acceptance) middle handler that hides the entire
@@ -69,9 +72,13 @@ HANDLER_TAG(tls_inner_stoptls_v1);
  *
  *   DISABLED:  not installed in the outer pipeline (caller's choice).
  *   REQUIRED:  TLSFinalizer → StopTLSV1Handler → FizzHandshakeHandler
- *                           → TLSConfigHandler → TLSConnectionAdapter
+ *                           → TLSConfigHandler → [TLSMetricsHandler]
+ *                           → PendingConnectionLimitHandler
+ *                           → TLSConnectionAdapter
  *   PERMITTED: TLSFinalizer → StopTLSV1Handler → FizzHandshakeHandler
  *                           → TLSClassifier → TLSConfigHandler
+ *                           → [TLSMetricsHandler]
+ *                           → PendingConnectionLimitHandler
  *                           → TLSConnectionAdapter
  *
  * StopTLSV1Handler is always present. It's a passthrough for connections that
@@ -89,9 +96,9 @@ HANDLER_TAG(tls_inner_stoptls_v1);
  * Hot-reload of TLS state is pull-based: the Observer passed at construction
  * is threaded into the pipeline and snapshotted there per accepted connection.
  *
- * The pending-connection limit is configured here and enforced by each parking
- * stage against the connections it holds itself; see SocketOptions.h for what
- * that bounds.
+ * The pending-connection limit is enforced once around the entire inner
+ * pipeline, so every accepted connection consumes one slot while it moves
+ * among the classifier, handshake, and StopTLS stages.
  *
  * Lifecycle:
  *   - The pipeline and its endpoints are built once in the constructor.
@@ -104,16 +111,16 @@ class ConnectionTLSHandler {
   // sslPolicy must not be DISABLED — caller (ConnectionHandler) doesn't
   // install this handler at all in that case. tlsParamsObserver supplies
   // fizz context + thrift extension params + handshake timeout per accept.
-  // allocator is shared with the outer pipeline. maxPendingConnections caps
-  // how many connections each TLS stage will park; zero is unlimited.
+  // allocator is shared with the outer pipeline.
   ConnectionTLSHandler(
       folly::EventBase& evb,
       fast_security::SSLPolicy sslPolicy,
       folly::observer::Observer<std::shared_ptr<const fast_security::TLSParams>>
           tlsParamsObserver,
       channel_pipeline::SimpleBufferAllocator* allocator,
-      uint32_t maxPendingConnections,
-      tls_pipeline::TLSStatsShard* stats = nullptr) {
+      uint32_t maxPendingConnectionsPerWorker,
+      tls_pipeline::TLSStatsShard* stats = nullptr)
+      : pendingConnections_(maxPendingConnectionsPerWorker) {
     DCHECK(sslPolicy != fast_security::SSLPolicy::DISABLED)
         << "ConnectionTLSHandler should not be installed for DISABLED policy";
 
@@ -129,12 +136,12 @@ class ConnectionTLSHandler {
     // flows TLSConfigHandler → [TLSClassifier] → FizzHandshakeHandler →
     // StopTLSV1Handler → TLSFinalizer.
     builder.template addNextDuplex<tls_handler::StopTLSV1Handler>(
-        tls_inner_stoptls_v1_tag, maxPendingConnections);
+        tls_inner_stoptls_v1_tag);
     builder.template addNextDuplex<tls_handler::FizzHandshakeHandler>(
-        tls_inner_fizz_handshake_tag, maxPendingConnections);
+        tls_inner_fizz_handshake_tag);
     if (sslPolicy == fast_security::SSLPolicy::PERMITTED) {
       builder.template addNextDuplex<tls_handler::TLSClassifier>(
-          tls_inner_classifier_tag, maxPendingConnections);
+          tls_inner_classifier_tag);
     }
     // TLSConfigHandler stamps the current TLSParams snapshot onto every
     // accepted message; downstream stages read it via msg.tlsParams and
@@ -142,14 +149,19 @@ class ConnectionTLSHandler {
     builder.template addNextDuplex<tls_handler::TLSConfigHandler>(
         tls_inner_config_tag, std::move(tlsParamsObserver));
 
-    // Metrics go last in build order, putting them at the tail end. Both
-    // things worth counting travel head→tail — the resolved connection on the
-    // read path TLSFinalizer turns it around onto, and any stage's failure as
-    // an exception — so this is the only position that sees both.
+    // Metrics sit at the tail end of the security stages. Both things worth
+    // counting travel head→tail — the resolved connection on the read path
+    // TLSFinalizer turns it around onto, and any stage's failure as an
+    // exception — so this position sees both.
     if (stats != nullptr) {
       builder.template addNextDuplex<tls_handler::TLSMetricsHandler>(
           tls_inner_metrics_tag, stats);
     }
+
+    // Last in build order means first on the write/work path and last on the
+    // read/response path, wrapping the complete TLS lifecycle.
+    builder.template addNextDuplex<tls_handler::PendingConnectionLimitHandler>(
+        tls_inner_pending_connection_limit_tag, pendingConnections_);
 
     innerPipeline_ = builder.build();
     head_.setPipeline(innerPipeline_.get());
@@ -197,6 +209,7 @@ class ConnectionTLSHandler {
         .tlsParams = nullptr,
         .extension = nullptr,
         .peerSecurity = nullptr,
+        .pendingConnectionPermit = {},
     };
     return tail_.submit(std::move(request));
   }
@@ -257,6 +270,7 @@ class ConnectionTLSHandler {
   tls_handler::TLSFinalizer head_;
   tls_handler::TLSConnectionAdapter tail_;
   channel_pipeline::detail::ContextImpl* outerCtx_{nullptr};
+  tls_pipeline::PendingConnectionState pendingConnections_;
   // Declared last so it is destroyed first: PipelineImpl teardown calls
   // handlerRemoved on head_/tail_, which must still be alive.
   channel_pipeline::PipelineImpl::Ptr innerPipeline_;

@@ -66,15 +66,12 @@ namespace fast_security = ::apache::thrift::fast_thrift::security;
  * exception onto the pipeline — matches FizzHandshakeHandler error policy.
  * See Util.h.
  *
- * The connections parked here awaiting classification are capped: past the
- * cap a connection is refused rather than parked, so a peer that opens a
- * socket and then says nothing cannot pin an unbounded number of them.
+ * The aggregate pending-connection handler bounds sockets across the complete
+ * TLS pipeline, including those parked here awaiting classification.
  */
 class TLSClassifier {
  public:
-  // maxPendingConnections caps the peeks in flight at once; zero is unbounded.
-  explicit TLSClassifier(uint32_t maxPendingConnections) noexcept
-      : maxPendingConnections_{maxPendingConnections} {}
+  TLSClassifier() = default;
 
   ~TLSClassifier() = default;
   TLSClassifier(const TLSClassifier&) = delete;
@@ -106,15 +103,6 @@ class TLSClassifier {
           channel_pipeline::erase_and_box(std::move(incoming)));
     }
 
-    if (FOLLY_UNLIKELY(atCapacity())) {
-      // Dropping `incoming` closes the socket; no peek is started.
-      XLOG_EVERY_MS(WARN, 1000)
-          << "Refusing connection from " << incoming.clientAddr.describe()
-          << ": already classifying " << maxPendingConnections_
-          << " connections on this thread";
-      return channel_pipeline::Result::Error;
-    }
-
     (void)incoming.transport.release();
     folly::AsyncSocket::UniquePtr socket(asyncSocket);
     auto clientAddr = std::move(incoming.clientAddr);
@@ -129,7 +117,10 @@ class TLSClassifier {
             [this](fast_security::TLSPrefixPeeker* p) noexcept {
               inFlight_.erase(p);
             },
-            [this, clientAddr, params = std::move(incoming.tlsParams)](
+            [this,
+             clientAddr,
+             params = std::move(incoming.tlsParams),
+             permit = std::move(incoming.pendingConnectionPermit)](
                 folly::AsyncSocket::UniquePtr peekedSocket,
                 std::unique_ptr<folly::IOBuf> peekedBytes,
                 bool looksLikeTLS,
@@ -140,7 +131,8 @@ class TLSClassifier {
                   looksLikeTLS,
                   ex,
                   clientAddr,
-                  std::move(params));
+                  std::move(params),
+                  std::move(permit));
             }));
     auto* raw = peeker.get();
     inFlight_.emplace(raw, std::move(peeker));
@@ -198,7 +190,8 @@ class TLSClassifier {
       bool looksLikeTLS,
       const folly::exception_wrapper& ex,
       const folly::SocketAddress& clientAddr,
-      std::shared_ptr<const fast_security::TLSParams> tlsParams) noexcept {
+      std::shared_ptr<const fast_security::TLSParams> tlsParams,
+      PendingConnectionPermit permit) noexcept {
     if (ex || !socket) {
       XLOG(DBG3) << "TLS peek failed for " << clientAddr.describe() << ": "
                  << (ex ? ex.what().toStdString() : std::string("null"));
@@ -227,6 +220,7 @@ class TLSClassifier {
         .tlsParams = std::move(tlsParams),
         .extension = nullptr,
         .peerSecurity = nullptr,
+        .pendingConnectionPermit = std::move(permit),
     };
 
     auto result = looksLikeTLS
@@ -246,9 +240,6 @@ class TLSClassifier {
             << clientAddr.describe();
         return;
       case channel_pipeline::Result::Error:
-        // Rate-limited: the handshake stage refuses routinely once its own
-        // pending limit is in force, and a peer must not be able to drive this
-        // one line per connection attempt.
         XLOG_EVERY_MS(WARN, 1000)
             << "Downstream rejected "
             << (looksLikeTLS ? "TLS-bound" : "plaintext") << " connection from "
@@ -257,16 +248,6 @@ class TLSClassifier {
     }
   }
 
-  bool atCapacity() const noexcept {
-    return maxPendingConnections_ != 0 &&
-        inFlight_.size() >= maxPendingConnections_;
-  }
-
-  // Doubles as the pending count the cap is enforced against: every way a peek
-  // can end — classification, error, timeout, shutdown cancellation — erases
-  // its entry, so capacity comes back without a release site of its own. The
-  // peeker reports terminal before the user callback runs, so the entry is
-  // already gone before the connection is routed on to the handshake stage.
   folly::F14FastMap<
       fast_security::TLSPrefixPeeker*,
       fast_security::TLSPrefixPeeker::UniquePtr>
@@ -274,7 +255,6 @@ class TLSClassifier {
   channel_pipeline::detail::ContextImpl* ctx_{nullptr};
   // Set once teardown begins; see onPipelineInactive.
   bool shuttingDown_{false};
-  uint32_t maxPendingConnections_{0};
 };
 
 } // namespace apache::thrift::fast_thrift::connection::security::handler

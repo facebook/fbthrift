@@ -67,6 +67,7 @@ class TLSFinalizer {
         .transport = std::move(request.transport),
         .clientAddr = std::move(request.clientAddr),
         .peerSecurity = std::move(request.peerSecurity),
+        .pendingConnectionPermit = std::move(request.pendingConnectionPermit),
     };
     return pipeline_->fireRead(
         channel_pipeline::erase_and_box(std::move(response)));
