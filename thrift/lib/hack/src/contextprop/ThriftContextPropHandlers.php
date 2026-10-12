@@ -144,6 +144,13 @@ final class ThriftContextPropHandlers {
       }
       $client_handler->addHandler(new ExperimentIdContextHandler());
       $client_handler->addHandler(new ProductIdContextHandler());
+      if (
+        !JustKnobs::eval(
+          'upop/contextprop_priority:disable_request_priority_context_handler',
+        )
+      ) {
+        $client_handler->addHandler(new RequestPriorityContextHandler());
+      }
       if (JustKnobs::eval('artillery/sdk_www:enable_trace_size_propagation')) {
         $client_handler->addHandler(
           TraceSizeEstimationContextHandler::getInstance(),
