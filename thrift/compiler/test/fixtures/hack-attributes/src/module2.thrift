@@ -39,3 +39,21 @@ struct CombinedAnnotations {
   @hack.UnsafeArray
   2: map<string, string> unsafe_map_only;
 }
+
+@hack.Attributes{attributes = ["__ShapeKey"]}
+const string SHAPE_KEY = "event";
+
+@hack.Attributes{attributes = ["CustomAttribute('value')", "OtherAttribute"]}
+const i64 ATTRIBUTES_WITH_ARGUMENTS = 42;
+
+@hack.Attributes{attributes = []}
+const string EMPTY_ATTRIBUTES = "empty";
+
+@hack.Attributes{}
+const string DEFAULT_ATTRIBUTES = "default";
+
+@hack.Attributes{attributes = ["CollectionAttribute('values')"]}
+const list<i32> ATTRIBUTED_LIST = [1, 2];
+
+const string UNANNOTATED = "unchanged";
+const list<i32> UNANNOTATED_LIST = [3, 4];

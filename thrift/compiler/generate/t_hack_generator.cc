@@ -2216,6 +2216,7 @@ void t_hack_generator::generate_const(const t_const* tconst) {
   }
   generate_php_docstring(out, tconst);
   out << indent();
+  const std::string attributes = find_attributes(*tconst, true);
 
   std::stringstream consts_out;
   std::stringstream consts_temp_var_initializations_out;
@@ -2223,10 +2224,17 @@ void t_hack_generator::generate_const(const t_const* tconst) {
 
   // for base hack types, use const (guarantees optimization in hphp)
   if (is_hack_const) {
+    if (!attributes.empty()) {
+      out << "<<" << attributes << ">>\n" << indent();
+    }
     out << "const " << type_to_typehint(type) << " " << name << " = ";
     // cannot use const for objects (incl arrays). use static
   } else {
-    out << "<<__Memoize>>\n"
+    out << "<<__Memoize";
+    if (!attributes.empty()) {
+      out << ", " << attributes;
+    }
+    out << ">>\n"
         << indent() << "public static function " << name << "()[write_props]: "
         << type_to_typehint(
                type, {{TypeToTypehintVariations::IMMUTABLE_COLLECTIONS, true}})
