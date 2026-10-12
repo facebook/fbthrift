@@ -610,6 +610,35 @@ union CompressionSetupResponse {
   1: CustomCompressionSetupResponse custom;
 }
 
+enum MetaRoceChecksumStrategy {
+  ALL = 0,
+  DATA = 1,
+  NONE = 2,
+}
+
+@thrift.ReserveIds{ids = [1]}
+struct MetaRoceQpRequest {}
+
+struct MetaRoceSetupRequest {
+  1: optional i32 requestedVersion;
+  2: optional i32 requestedMtuSize;
+  3: optional list<MetaRoceChecksumStrategy> checksumStrategies;
+  4: optional list<MetaRoceQpRequest> qps;
+}
+
+@thrift.ReserveIds{ids = [3]}
+struct MetaRoceQpSetup {
+  1: optional i64 sourceQp;
+  2: optional i64 destinationQp;
+}
+
+struct MetaRoceSetup {
+  1: optional i32 supportedVersion;
+  2: optional i32 supportedMtuSize;
+  3: optional list<MetaRoceQpSetup> qps;
+  4: optional MetaRoceChecksumStrategy checksumStrategy;
+}
+
 struct RequestSetupMetadata {
   @cpp.Type{template = "apache::thrift::MetadataOpaqueMap"}
   1: optional map<string, binary> opaque;
@@ -639,7 +668,8 @@ struct RequestSetupMetadata {
   13: optional bool encodeMetadataUsingBinary;
   // If provided, we attempt to perform initial negotiation for compression algorithm.
   14: optional CompressionSetupRequest compressionSetupRequest;
-} // next-id: 15
+  15: optional MetaRoceSetupRequest metaRoce;
+} // next-id: 16
 
 // Describes the security policy exchanged from server to client during connection setup (via SetupResponse).
 struct SecurityPolicy {
@@ -680,6 +710,7 @@ struct SetupResponse {
   // Whether LZ4 compression for requests and responses is supported by the
   // server. If not set, considered not to be supported.
   5: optional bool lz4Supported;
+  6: optional MetaRoceSetup metaRoce;
 }
 
 struct StreamHeadersPush {
