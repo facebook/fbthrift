@@ -2572,12 +2572,10 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setSSLConfig(
       folly::observer::Observer<wangle::SSLContextConfig> contextObserver) {
-    sslContextObserver_ = folly::observer::makeObserver(
-        [observer = std::move(contextObserver),
-         pskModeObserver = preferPskKe(),
-         dcObserver = enablePresentingDelegatedCredentials()]() {
+    sslContextObserver_ =
+        folly::observer::makeObserver([observer = std::move(contextObserver),
+                                       pskModeObserver = preferPskKe()]() {
           (void)**pskModeObserver;
-          (void)**dcObserver;
           auto context = **observer;
           context.isDefault = true;
           context.alpnAllowMismatch = false;
@@ -3224,8 +3222,6 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   static folly::observer::Observer<bool> preferPskKe();
-
-  static folly::observer::Observer<bool> enablePresentingDelegatedCredentials();
 
   /**
    * For each request debug stub, a snapshot information can be constructed to
