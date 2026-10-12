@@ -27,6 +27,7 @@ from dataclasses import dataclass
 from typing import ClassVar, Protocol as TypingProtocol
 
 from thrift.lib.python.schema._binary_protocol import BinaryReader, BinaryWriter
+from thrift.lib.python.schema._compact_protocol import CompactReader, CompactWriter
 from thrift.lib.python.schema._ttypes import Protocol
 
 
@@ -129,9 +130,10 @@ def available_backends() -> tuple[Backend, ...]:
     return (
         Backend(
             name="python",
-            readers={Protocol.BINARY: BinaryReader},
+            readers={Protocol.BINARY: BinaryReader, Protocol.COMPACT: CompactReader},
             writers={
                 Protocol.BINARY: BinaryWriter,
+                Protocol.COMPACT: CompactWriter,
             },
         ),
     )
