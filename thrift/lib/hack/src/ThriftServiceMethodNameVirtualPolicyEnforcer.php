@@ -150,8 +150,18 @@ final class ThriftServiceMethodNameVirtualPolicyEnforcer
 
     $privacy_lib =
       self::getPrivacyLibObject($asset_xid, $sr_config_service_name);
+    $payload_provider = null;
+    if (
+      ThriftServiceMethodNamePrivacyLibRPCPayloadProvider::isEnabledForCurrentRequest()
+    ) {
+      $payload_provider =
+        new ThriftServiceMethodNamePrivacyLibRPCPayloadProvider(
+          $context->get(#ThriftPolicyZones)?->getArgs(),
+          ThriftServiceMethodNamePayloadDirection::REQUEST,
+        );
+    }
     $privacylib_failure = await $privacy_lib->genClientRPCWithTAE(
-      null,
+      $payload_provider,
       $context,
       $caller,
       $policy_enforcer_api,
@@ -200,13 +210,42 @@ final class ThriftServiceMethodNameVirtualPolicyEnforcer
     PolicyEnforcerContext $context,
     mixed $response,
   ): Awaitable<void> {
-    // Pending Probes PrivacyLib post-read Integration
-    await self::genExecuteStandaloneProbes(
-      $asset_type,
-      $policy_enforcer_api,
-      $caller,
-      $context,
-    );
+    $thrift_context = $context->get(#ThriftPolicyZones);
+    if (
+      ThriftServiceMethodNamePrivacyLibRPCPayloadProvider::isEnabledForCurrentRequest()
+    ) {
+      try {
+        $asset_xid = $thrift_context?->getXID() ??
+          ThriftServiceMethodNameAssetXID::unsafeGet(
+            $asset_type,
+            $policy_enforcer_api,
+          );
+        $sr_config_service_name = $thrift_context?->getSmcServiceName() ?? '';
+        await self::getPrivacyLibObject($asset_xid, $sr_config_service_name)
+          ->genPostClientRPC(
+            new ThriftServiceMethodNamePrivacyLibRPCPayloadProvider(
+              $response,
+              ThriftServiceMethodNamePayloadDirection::RESPONSE,
+            ),
+            $context,
+          );
+      } catch (Exception $ex) {
+        ope(
+          $ex,
+          causes_the('agent observer Thrift response metadata')
+            ->to('be omitted for this RPC'),
+        );
+      }
+    }
+
+    if (self::shouldExecuteStandaloneProbes()) {
+      await self::genExecuteStandaloneProbes(
+        $asset_type,
+        $policy_enforcer_api,
+        $caller,
+        $context,
+      );
+    }
   }
 
   public static async function genProcessError(
@@ -219,6 +258,11 @@ final class ThriftServiceMethodNameVirtualPolicyEnforcer
       ThriftServiceMethodNameAssetXID::unsafeGet($service_name, $func_name);
     await ThriftServiceMethodNamePrivacyLib::get($tsmn_xid, $service_name)
       ->genPostClientRPC($error_payload, PolicyEnforcerContext::empty());
+  }
+
+  <<__Memoize>>
+  private static function shouldExecuteStandaloneProbes()[leak_safe]: bool {
+    return JustKnobs::eval('www/privacy_probes:use_paal_thrift_integration');
   }
 
   private static async function genExecuteStandaloneProbes(
@@ -249,6 +293,7 @@ final class ThriftPolicyZoneModuleContext
     private string $smcServiceName,
     private ?ICIPPContextForThriftFlows $explicitDynamicAnnotation_LEGACY =
       null,
+    private ?IThriftStruct $args = null,
   )[] {}
 
   public function getXID()[]: ThriftServiceMethodNameAssetXID {
@@ -257,6 +302,10 @@ final class ThriftPolicyZoneModuleContext
 
   public function getSmcServiceName()[]: string {
     return $this->smcServiceName;
+  }
+
+  public function getArgs()[]: ?IThriftStruct {
+    return $this->args;
   }
 
   public function getServiceName()[]: string {
