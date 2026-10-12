@@ -62,10 +62,10 @@ final class TFramedTransportTestCase extends WWWTest {
 
     /* HH_FIXME[4489] Revealed through strict exhaustivity checking for switches */
     switch ($tname) {
-      case TBufferedTransport::class:
+      case nameof TBufferedTransport:
         $transport = new TBufferedTransport<TMemoryBuffer>($buffer2);
         break;
-      case TFramedTransport::class:
+      case nameof TFramedTransport:
         $transport = new TFramedTransport($buffer2);
         break;
     }
