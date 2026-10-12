@@ -27,19 +27,27 @@ import asyncio
 import logging
 
 from cpython.ref cimport PyObject
-from folly cimport cFollyPromise
+from folly cimport cFollyExceptionWrapper, cFollyPromise
 from folly.executor cimport get_executor
 from folly.iobuf cimport cIOBuf, const_uchar, copyBuffer, from_unique_ptr, IOBuf
 from libc.stdint cimport uint16_t, uint64_t
 from libcpp.memory cimport unique_ptr
+from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
 from thrift.python.client.request_channel cimport RequestChannel
 from thrift.python.exceptions cimport (
     cTApplicationException,
     cTApplicationExceptionType__UNKNOWN,
+    cTTransportExceptionType,
 )
+from thrift.python.exceptions import TransportError, TransportErrorType
 from thrift.python.protocol cimport Protocol as cProtocol
 from thrift.python.streaming.py_promise cimport Promise_IOBuf
+
+cdef extern from "thrift/lib/cpp/transport/TTransportException.h":
+    cFollyExceptionWrapper makeTransportExceptionWrapper "folly::make_exception_wrapper<apache::thrift::transport::TTransportException>"(
+        cTTransportExceptionType type, string message
+    ) except +
 
 
 logger: logging.Logger = logging.getLogger(__name__)
@@ -67,6 +75,27 @@ cdef _error_promise(Promise_IOBuf promise, object ex):
     )
 
 
+cdef bint _error_promise_transport(Promise_IOBuf promise, object ex):
+    # The handler runs in the caller's own process, so a transport error's
+    # message crosses no process boundary. Forward its type and message as the
+    # TTransportException a native channel raises; the caller then sees
+    # TransportError, not the subclass. Returns False if `ex` can't be converted.
+    cdef cFollyExceptionWrapper wrapped
+    try:
+        # The client maps the type back with `TransportErrorType(...)` in a
+        # noexcept callback, where an unknown value would leave the caller's
+        # future unresolved, so only a valid type is forwarded.
+        error_type = TransportErrorType(ex.type)
+        wrapped = makeTransportExceptionWrapper(
+            <cTTransportExceptionType><int>error_type.value,
+            <string>ex.message.encode("utf-8"),
+        )
+    except Exception:
+        return False
+    promise.error_tse(cmove(wrapped))
+    return True
+
+
 async def _run_handler(
     object handler, IOBuf request, int rpc_kind, Promise_IOBuf promise
 ):
@@ -76,6 +105,8 @@ async def _run_handler(
         # promise rather than escaping as an uncompleted (broken) promise.
         iobuf = _bytes_to_iobuf(reply)
     except Exception as ex:
+        if isinstance(ex, TransportError) and _error_promise_transport(promise, ex):
+            return
         logger.exception("glue bridge ChannelHandler.send_request failed")
         _error_promise(promise, ex)
         return
@@ -146,6 +177,18 @@ def get_bridged_async_client(
 
     `handler` must expose `async def send_request(enveloped_request: bytes,
     rpc_kind: int) -> bytes`. Use the result as an async context manager.
+
+    If `send_request` raises, the caller sees:
+    - for a `TransportError` (or subclass): a plain `TransportError` with the
+      same type and message, and nothing is logged. The subclass, errno,
+      options and any extra args are dropped.
+    - for any other `Exception`, including a `TransportError` that can't be
+      converted (for example, its type is not a `TransportErrorType`):
+      `ApplicationError(UNKNOWN, <exception class name>)`, and the traceback is
+      logged.
+    - for a `BaseException` such as `CancelledError`: `ApplicationError(UNKNOWN,
+      <exception class name>)`, unlogged; the exception is then re-raised in
+      the bridge's task.
     """
     async_klass = getattr(client_klass, "Async", None)
     if async_klass is None:

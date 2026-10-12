@@ -16,9 +16,17 @@
 from __future__ import annotations
 
 import asyncio
+from enum import Enum
 from unittest import IsolatedAsyncioTestCase
 
 from thrift.python.client.py_bridge.py_bridge_channel import get_bridged_async_client
+from thrift.python.exceptions import (
+    ApplicationError,
+    ApplicationErrorType,
+    TransportError,
+    TransportErrorType,
+    TransportOptions,
+)
 from thrift.python.serializer import Protocol, serialize
 from thrift.python.test.thrift_clients import EchoService, TestService
 from thrift.python.test.thrift_types import (
@@ -91,6 +99,25 @@ class _CannedHandler:
         return self.reply
 
 
+class _RaisingHandler:
+    def __init__(self, error: BaseException) -> None:
+        self.error = error
+
+    async def send_request(self, enveloped_request: bytes, rpc_kind: int) -> bytes:
+        raise self.error
+
+
+class _SubclassedTransportError(TransportError):
+    """Stands in for a library subclass such as ServiceRouterError."""
+
+
+class _NotATransportErrorType(Enum):
+    BOGUS = 999
+
+
+_LOGGER = "thrift.python.client.py_bridge.py_bridge_channel"
+
+
 class PyBridgeChannelTest(IsolatedAsyncioTestCase):
     async def test_unary_typed_roundtrip(self) -> None:
         body = serialize(
@@ -121,3 +148,111 @@ class PyBridgeChannelTest(IsolatedAsyncioTestCase):
             await asyncio.wait_for(handler.called.wait(), timeout=5)
         self.assertEqual(len(handler.requests), 1)
         self.assertEqual(_compact_method(handler.requests[0][0]), "oneway")
+
+    async def test_transport_error_keeps_its_type_and_message_unlogged(self) -> None:
+        handler = _RaisingHandler(
+            TransportError(
+                TransportErrorType.TIMED_OUT,
+                "Timed out after 500 ms",
+                0,
+                TransportOptions(0),
+            )
+        )
+        with self.assertNoLogs(_LOGGER):
+            async with get_bridged_async_client(EchoService, handler) as client:
+                with self.assertRaises(TransportError) as ctx:
+                    await client.echo("hi")
+        self.assertEqual(ctx.exception.type, TransportErrorType.TIMED_OUT)
+        self.assertEqual(ctx.exception.message, "Timed out after 500 ms")
+
+    async def test_transport_error_subclass_arrives_as_transport_error(self) -> None:
+        handler = _RaisingHandler(
+            _SubclassedTransportError(
+                TransportErrorType.UNKNOWN,
+                "ServiceRouterError: no hosts for my.tier",
+                0,
+                TransportOptions(0),
+            )
+        )
+        with self.assertNoLogs(_LOGGER):
+            async with get_bridged_async_client(EchoService, handler) as client:
+                with self.assertRaises(TransportError) as ctx:
+                    await client.echo("hi")
+        self.assertIs(type(ctx.exception), TransportError)
+        self.assertEqual(ctx.exception.type, TransportErrorType.UNKNOWN)
+        self.assertEqual(
+            ctx.exception.message, "ServiceRouterError: no hosts for my.tier"
+        )
+
+    async def test_other_exception_surfaces_only_its_class_name(self) -> None:
+        handler = _RaisingHandler(ValueError("sensitive detail"))
+        with self.assertLogs(_LOGGER, level="ERROR") as logs:
+            async with get_bridged_async_client(EchoService, handler) as client:
+                with self.assertRaises(ApplicationError) as ctx:
+                    await client.echo("hi")
+        self.assertEqual(ctx.exception.type, ApplicationErrorType.UNKNOWN)
+        self.assertEqual(ctx.exception.message, "ValueError")
+        self.assertIn("glue bridge ChannelHandler.send_request failed", logs.output[0])
+
+    async def test_unconvertible_transport_error_falls_back_to_class_name(
+        self,
+    ) -> None:
+        # No args, so `.type` raises: the bridge must still complete the promise.
+        handler = _RaisingHandler(TransportError.__new__(TransportError))
+        with self.assertLogs(_LOGGER, level="ERROR") as logs:
+            async with get_bridged_async_client(EchoService, handler) as client:
+                with self.assertRaises(ApplicationError) as ctx:
+                    await client.echo("hi")
+        self.assertEqual(ctx.exception.message, "TransportError")
+        self.assertIn("glue bridge ChannelHandler.send_request failed", logs.output[0])
+
+    async def test_transport_error_with_an_invalid_type_falls_back_without_hanging(
+        self,
+    ) -> None:
+        # The client could not map 999 back to a TransportErrorType, so
+        # forwarding it would leave the call waiting forever.
+        handler = _RaisingHandler(
+            TransportError.__new__(
+                TransportError,
+                _NotATransportErrorType.BOGUS,
+                "bad type",
+                0,
+                TransportOptions(0),
+            )
+        )
+        with self.assertLogs(_LOGGER, level="ERROR"):
+            async with get_bridged_async_client(EchoService, handler) as client:
+                with self.assertRaises(ApplicationError) as ctx:
+                    await asyncio.wait_for(client.echo("hi"), timeout=5)
+        self.assertEqual(ctx.exception.message, "TransportError")
+
+    async def test_transport_error_drops_errno_options_and_extra_args(self) -> None:
+        handler = _RaisingHandler(
+            TransportError(
+                TransportErrorType.NOT_OPEN,
+                "Connection refused",
+                111,
+                TransportOptions.CHANNEL_IS_VALID,
+                "extra",
+            )
+        )
+        async with get_bridged_async_client(EchoService, handler) as client:
+            with self.assertRaises(TransportError) as ctx:
+                await client.echo("hi")
+        self.assertEqual(ctx.exception.errno, 0)
+        self.assertEqual(ctx.exception.options, TransportOptions(0))
+        self.assertEqual(
+            ctx.exception.args,
+            (TransportErrorType.NOT_OPEN, "Connection refused", 0, TransportOptions(0)),
+        )
+
+    async def test_base_exception_completes_the_promise_with_its_class_name(
+        self,
+    ) -> None:
+        handler = _RaisingHandler(asyncio.CancelledError())
+        with self.assertNoLogs(_LOGGER):
+            async with get_bridged_async_client(EchoService, handler) as client:
+                with self.assertRaises(ApplicationError) as ctx:
+                    await client.echo("hi")
+        self.assertEqual(ctx.exception.type, ApplicationErrorType.UNKNOWN)
+        self.assertEqual(ctx.exception.message, "CancelledError")
