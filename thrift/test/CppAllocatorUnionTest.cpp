@@ -226,6 +226,16 @@ TEST(CppAllocatorUnionTest, MoveAssignKeepsTargetAllocator) {
   EXPECT_EQ(resourceOf(*dst.aa_string_ref()), &res);
 }
 
+TEST(CppAllocatorUnionTest, MoveAssignPropagatesPocmaAllocator) {
+  PropagatingUnion src(ScopedPropagatingStatefulAlloc<>(1));
+  src.n_ref() = 5;
+  PropagatingUnion dst(ScopedPropagatingStatefulAlloc<>(2));
+
+  dst = std::move(src);
+  EXPECT_EQ(stateOf(dst), 1);
+  EXPECT_EQ(*dst.n_ref(), 5);
+}
+
 TEST(CppAllocatorUnionTest, SwapUnequalAllocatorsKeepsEachSidesAllocator) {
   auto res = makeResource();
   auto res2 = makeResource();
@@ -244,6 +254,18 @@ TEST(CppAllocatorUnionTest, SwapUnequalAllocatorsKeepsEachSidesAllocator) {
   // FIXME(ytj): Should be each union's own allocator.
   EXPECT_EQ(resourceOf(*a.aa_string_ref()), &res2);
   EXPECT_EQ(resourceOf(*b.aa_string_ref()), &res);
+}
+
+// Swap is a move ctor and two move assignments, so allocators follow POCMA.
+TEST(CppAllocatorUnionTest, SwapExchangesPropagatingAllocators) {
+  PropagatingUnion a(ScopedPropagatingStatefulAlloc<>(1));
+  PropagatingUnion b(ScopedPropagatingStatefulAlloc<>(2));
+  b.n_ref() = 5;
+
+  swap(a, b);
+  EXPECT_EQ(stateOf(a), 2);
+  EXPECT_EQ(*a.n_ref(), 5);
+  EXPECT_EQ(stateOf(b), 1);
 }
 
 TEST(CppAllocatorUnionTest, FieldRefEnsureEmplaceAssignUseUnionAllocator) {

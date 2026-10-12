@@ -123,6 +123,7 @@ class AllocUnion final  {
 
   AllocUnion& operator=(AllocUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
+    ::apache::thrift::detail::move_allocator(__fbthrift_alloc, rhs.__fbthrift_alloc);
     switch (rhs.getType()) {
       case Type::__EMPTY__:
       {
