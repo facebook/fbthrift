@@ -120,12 +120,8 @@ void testSerializedSize(T value) {
   } else {
     size = op::serialized_size<ZeroCopy, Tag>(writer, value);
   }
-  using ExpectedTag = std::conditional_t<
-      IsAdapted,
-      type::adapted<test::TemplatedTestAdapter, Tag>,
-      Tag>;
   std::size_t expected =
-      apache::thrift::detail::pm::protocol_methods<TypeClass, T, ExpectedTag>::
+      apache::thrift::detail::pm::protocol_methods<TypeClass, T, Tag>::
           template serializedSize<ZeroCopy>(writer, value);
   EXPECT_EQ(size, expected);
 }
