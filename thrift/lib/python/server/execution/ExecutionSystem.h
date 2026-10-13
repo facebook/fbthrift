@@ -17,7 +17,9 @@
 #pragma once
 
 #include <cassert>
+#include <map>
 #include <memory>
+#include <string>
 #include <utility>
 
 #include <folly/Executor.h>
@@ -50,9 +52,14 @@ class ExecutionSystem final {
   }
 
   ExecutionSystem(
-      folly::Executor* controlExecutor, StartControlRequest startRequest)
+      folly::Executor* controlExecutor,
+      StartControlRequest startRequest,
+      std::map<std::string, PyObject*> controlMethods)
       : controlExecutor_(folly::Executor::getKeepAliveToken(controlExecutor)),
-        startRequest_(std::move(startRequest).asSharedProxy()) {}
+        startRequest_(std::move(startRequest).asSharedProxy()),
+        controlMethods_(
+            std::make_shared<const std::map<std::string, PyObject*>>(
+                std::move(controlMethods))) {}
 
   ~ExecutionSystem() = default;
   ExecutionSystem(const ExecutionSystem&) = delete;
@@ -65,14 +72,15 @@ class ExecutionSystem final {
   void shutdown() noexcept;
 
   // Supports concurrent calls while active. Call only before shutdown starts.
-  void execute(
-      PyObject* selectedHandlerFunction, RequestDispatch requestDispatch) const;
+  void execute(std::string method, RequestDispatch requestDispatch) const;
 
  private:
   ExecutionSystem() = default;
 
   folly::Executor::KeepAlive<> controlExecutor_;
   StartControlRequest::SharedProxy startRequest_{nullptr};
+  // The Python factory's function table owns the callable references.
+  std::shared_ptr<const std::map<std::string, PyObject*>> controlMethods_;
 };
 
 } // namespace apache::thrift::python::execution

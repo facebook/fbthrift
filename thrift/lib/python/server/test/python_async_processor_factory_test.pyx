@@ -29,6 +29,7 @@ cdef int launchControlTask(object coroutine_factory) except -1:
 
 cdef cCreateMethodMetadataResult create(bytes function_name, RpcKind rpc_kind):
     cdef cmap[string_view, HandlerFunc] funcs
+    cdef cmap[string, PyObjPtr] controlMethods
     cdef cvector[PyObjPtr] lifecycle
     cdef object server = None
     cdef string serviceName
@@ -40,10 +41,11 @@ cdef cCreateMethodMetadataResult create(bytes function_name, RpcKind rpc_kind):
         serviceName,
         function_name_view,
     )
+    controlMethods[function_name] = <PyObject*>None
 
     cdef cAsyncioExecutor* controlExecutor = get_executor()
     cdef shared_ptr[cExecutionSystem] executionSystem = make_shared[cExecutionSystem](
-        controlExecutor, launchControlTask
+        controlExecutor, launchControlTask, cmove(controlMethods)
     )
     cdef shared_ptr[cPythonAsyncProcessorFactory] obj = cCreatePythonAsyncProcessorFactory(
         <PyObject*>server,

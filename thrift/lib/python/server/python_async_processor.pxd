@@ -87,6 +87,7 @@ cdef extern from "thrift/lib/python/server/execution/ExecutionSystem.h" namespac
         cExecutionSystem(
             cAsyncioExecutor* controlExecutor,
             cStartControlRequest startRequest,
+            cmap[string, PyObjPtr] controlMethods,
         ) except +
 
 cdef extern from "thrift/lib/python/server/PythonAsyncProcessorFactory.h" namespace "::apache::thrift::python":

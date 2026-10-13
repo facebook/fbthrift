@@ -677,7 +677,7 @@ void PythonAsyncProcessor::executeRequest(
   // The Cython module import in dispatchRequest requires the Python thread.
   // ExecutionSystem therefore dispatches through the Python Control executor.
   executionSystem_->execute(
-      function.funcObject,
+      ctx->getMethodName(),
       execution::RequestDispatch(
           [this,
            eb,

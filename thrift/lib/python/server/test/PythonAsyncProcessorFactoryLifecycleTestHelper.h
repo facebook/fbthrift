@@ -18,7 +18,9 @@
 
 #include <atomic>
 #include <cstddef>
+#include <map>
 #include <memory>
+#include <string>
 #include <thread>
 #include <utility>
 #include <vector>
@@ -66,7 +68,9 @@ inline std::size_t createProcessorsWhileLegacyStopRuns(
     ForwardingKeepAliveTrackingExecutor& controlExecutor,
     const std::size_t iterationCount) {
   auto executionSystem = std::make_shared<execution::ExecutionSystem>(
-      &controlExecutor, [](PyObject*) { return 0; });
+      &controlExecutor,
+      [](PyObject*) { return 0; },
+      std::map<std::string, PyObject*>{});
   auto factory = PythonAsyncProcessorFactory::create(
       nullptr,
       {},
@@ -106,8 +110,12 @@ inline std::shared_ptr<PythonAsyncProcessorFactory> createHostedTestFactory(
     std::vector<PyObject*> lifecycleFuncs,
     ForwardingKeepAliveTrackingExecutor& controlExecutor,
     execution::StartControlRequest startRequest) {
+  std::map<std::string, PyObject*> controlMethods;
+  for (const auto& [name, function] : functions) {
+    controlMethods.emplace(std::string(name), function.funcObject);
+  }
   auto executionSystem = std::make_shared<execution::ExecutionSystem>(
-      &controlExecutor, std::move(startRequest));
+      &controlExecutor, std::move(startRequest), std::move(controlMethods));
   return PythonAsyncProcessorFactory::create(
       pythonServer,
       std::move(functions),

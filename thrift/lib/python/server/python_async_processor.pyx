@@ -635,6 +635,7 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
     cdef PythonAsyncProcessorFactory create(cServiceInterface server):
         cdef cServiceInterface controlHandler = server
         cdef cmap[string_view, HandlerFunc] funcs
+        cdef cmap[string, PyObjPtr] controlMethods
         cdef cvector[PyObject*] lifecycle
         cdef string_view name_view
 
@@ -648,6 +649,7 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
 
         for name, entry in funcMap.items():
             name_view = bytes_to_string_view(name)
+            controlMethods[<bytes>name] = <PyObject*>entry.handler
             if entry.interaction:
                 # Factory or inside-interaction method. interactionName is a
                 # string_view into the Python bytes held by `entry` (kept alive
@@ -678,7 +680,7 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
 
         cdef cAsyncioExecutor* controlExecutor = get_executor()
         cdef shared_ptr[cExecutionSystem] executionSystem = make_shared[cExecutionSystem](
-            controlExecutor, launchControlTask
+            controlExecutor, launchControlTask, cmove(controlMethods)
         )
         cdef PythonAsyncProcessorFactory inst = PythonAsyncProcessorFactory.__new__(PythonAsyncProcessorFactory)
         inst.funcMap = funcMap

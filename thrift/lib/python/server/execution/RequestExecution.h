@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <string>
+
 #include <Python.h>
 #include <folly/Function.h>
 #include <folly/futures/Future.h>
