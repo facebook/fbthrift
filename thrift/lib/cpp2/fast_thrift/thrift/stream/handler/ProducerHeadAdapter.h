@@ -47,7 +47,7 @@ namespace apache::thrift::fast_thrift::thrift::stream {
  * returns the downstream Result.
  */
 using StreamSink =
-    folly::Function<channel_pipeline::Result(ThriftStreamMessage&&) noexcept>;
+    folly::Function<channel_pipeline::Result(DataMessage&&) noexcept>;
 
 /**
  * ProducerHeadAdapter — the fixed head endpoint of an established stream's
@@ -94,31 +94,15 @@ class ProducerHeadAdapter {
   void onPipelineInactive() noexcept {}
   void onReadReady() noexcept {}
 
-  // Outbound terminal: producer output exits the sub-pipeline here. Guard the
-  // outbound contract, then hand the message to the sink.
+  // Outbound terminal: producer output exits the sub-pipeline here. The write
+  // path carries only the Data set (Payload/Complete/Error), so the outbound
+  // contract is enforced by the message type itself — no runtime guard needed.
   channel_pipeline::Result onWrite(
       Context& /*ctx*/, channel_pipeline::TypeErasedBox&& msg) noexcept {
-    auto& message = msg.get<ThriftStreamMessage>();
-    if (FOLLY_UNLIKELY(
-            !message.payload.is<Payload>() && !message.payload.is<Complete>() &&
-            !message.payload.is<Error>())) {
-      return onDirectionViolation();
-    }
-    return sink_(msg.take<ThriftStreamMessage>());
+    return sink_(msg.take<DataMessage>());
   }
 
  private:
-  // A frame reached the head on the wrong side of the stream contract. The
-  // owning pipeline and the in-between handlers are expected to honor the
-  // contract, so this is a bug: fatal in debug; in release the frame is dropped
-  // with Result::Error rather than delivered out of contract. Out-of-line to
-  // keep the cold path off the hot path.
-  FOLLY_NOINLINE static channel_pipeline::Result
-  onDirectionViolation() noexcept {
-    DCHECK(false) << "stream frame on the wrong pipeline direction";
-    return channel_pipeline::Result::Error;
-  }
-
   StreamSink sink_;
 };
 

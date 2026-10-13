@@ -73,19 +73,9 @@ struct Error {
   folly::exception_wrapper ex;
 };
 
-// The frames that flow on an established stream today. Grows as more frame
-// kinds come online. CompactVariant keeps the discriminator to a single byte so
-// the message stays inline in TypeErasedBox.
-using StreamMessageVariant =
-    CompactVariant<RequestN, Payload, Complete, Cancel, Error>;
-
-struct ThriftStreamMessage {
-  StreamMessageVariant payload;
-};
-
-static_assert(
-    channel_pipeline::TypeErasedBox::fits_inline<ThriftStreamMessage>());
-
+// CompactVariant keeps each set's discriminator to a single byte so the message
+// stays inline in TypeErasedBox.
+//
 // The consumer -> producer set: demand grants and consumer-initiated teardown.
 // A producer reads these; a consumer writes them.
 using ControlVariant = CompactVariant<RequestN, Cancel>;

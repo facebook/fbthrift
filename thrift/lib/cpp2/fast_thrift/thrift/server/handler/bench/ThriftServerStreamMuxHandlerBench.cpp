@@ -75,12 +75,12 @@ class EchoProducer {
     return ctx.fireWrite(std::move(msg));
   }
   Result onRead(Ctx& ctx, TypeErasedBox&& msg) noexcept {
-    auto& m = msg.get<stream::ThriftStreamMessage>();
+    auto& m = msg.get<stream::ControlMessage>();
     if (m.payload.is<stream::RequestN>()) {
       const uint64_t n = m.payload.get<stream::RequestN>().n;
       for (uint64_t i = 0; i < n; ++i) {
-        (void)ctx.fireWrite(erase_and_box(
-            stream::ThriftStreamMessage{.payload = stream::Payload{}}));
+        (void)ctx.fireWrite(
+            erase_and_box(stream::DataMessage{.payload = stream::Payload{}}));
       }
       return Result::Success;
     }

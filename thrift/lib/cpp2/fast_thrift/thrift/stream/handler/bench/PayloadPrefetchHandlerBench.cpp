@@ -61,11 +61,11 @@ class BenchCtx {
 template <typename Handler>
 void grant(Handler& handler, BenchCtx& ctx, uint64_t n) {
   (void)handler.onRead(
-      ctx, erase_and_box(ThriftStreamMessage{.payload = RequestN{.n = n}}));
+      ctx, erase_and_box(ControlMessage{.payload = RequestN{.n = n}}));
 }
 
-ThriftStreamMessage makeItem() {
-  return ThriftStreamMessage{.payload = Payload{.data = nullptr}};
+DataMessage makeItem() {
+  return DataMessage{.payload = Payload{.data = nullptr}};
 }
 
 BENCHMARK(OnWrite_PassThrough, iters) {

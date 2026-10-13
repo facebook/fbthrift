@@ -79,20 +79,20 @@ class FiniteProducer {
     return ctx.fireWrite(std::move(msg));
   }
   cp::Result onRead(Ctx& ctx, cp::TypeErasedBox&& msg) noexcept {
-    auto& m = msg.get<stream::ThriftStreamMessage>();
+    auto& m = msg.get<stream::ControlMessage>();
     if (m.payload.is<stream::RequestN>()) {
       const uint64_t n = m.payload.get<stream::RequestN>().n;
       for (uint64_t i = 0; i < n && remaining_ > 0; ++i) {
         (void)ctx.fireWrite(
             cp::erase_and_box(
-                stream::ThriftStreamMessage{.payload = stream::Payload{}}));
+                stream::DataMessage{.payload = stream::Payload{}}));
         --remaining_;
       }
       if (remaining_ == 0 && !completed_) {
         completed_ = true;
         (void)ctx.fireWrite(
             cp::erase_and_box(
-                stream::ThriftStreamMessage{.payload = stream::Complete{}}));
+                stream::DataMessage{.payload = stream::Complete{}}));
       }
       return cp::Result::Success;
     }
@@ -125,13 +125,13 @@ class ErrorProducer {
     return ctx.fireWrite(std::move(msg));
   }
   cp::Result onRead(Ctx& ctx, cp::TypeErasedBox&& msg) noexcept {
-    auto& m = msg.get<stream::ThriftStreamMessage>();
+    auto& m = msg.get<stream::ControlMessage>();
     if (m.payload.is<stream::RequestN>()) {
       if (!failed_) {
         failed_ = true;
         (void)ctx.fireWrite(
             cp::erase_and_box(
-                stream::ThriftStreamMessage{
+                stream::DataMessage{
                     .payload = stream::Error{
                         .ex = folly::make_exception_wrapper<std::runtime_error>(
                             "boom")}}));
@@ -167,7 +167,7 @@ class MetadataProducer {
     return ctx.fireWrite(std::move(msg));
   }
   cp::Result onRead(Ctx& ctx, cp::TypeErasedBox&& msg) noexcept {
-    auto& m = msg.get<stream::ThriftStreamMessage>();
+    auto& m = msg.get<stream::ControlMessage>();
     if (m.payload.is<stream::RequestN>()) {
       if (!done_) {
         done_ = true;
@@ -176,12 +176,12 @@ class MetadataProducer {
         metadata->compression() = apache::thrift::CompressionAlgorithm::ZSTD;
         (void)ctx.fireWrite(
             cp::erase_and_box(
-                stream::ThriftStreamMessage{
+                stream::DataMessage{
                     .payload =
                         stream::Payload{.metadata = std::move(metadata)}}));
         (void)ctx.fireWrite(
             cp::erase_and_box(
-                stream::ThriftStreamMessage{.payload = stream::Complete{}}));
+                stream::DataMessage{.payload = stream::Complete{}}));
       }
       return cp::Result::Success;
     }

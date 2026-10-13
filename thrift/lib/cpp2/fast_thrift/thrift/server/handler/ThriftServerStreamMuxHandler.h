@@ -134,7 +134,7 @@ class ThriftServerStreamMuxHandler {
       const uint32_t n = request.payload.get<ThriftRequestNPayload>().requestN;
       const bool routed = routeInbound(
           request.streamId,
-          stream::ThriftStreamMessage{.payload = stream::RequestN{.n = n}});
+          stream::ControlMessage{.payload = stream::RequestN{.n = n}});
       drainPendingRemoval();
       if (FOLLY_UNLIKELY(!routed)) {
         return fireUnknownStream(ctx, request.streamId);
@@ -171,8 +171,7 @@ class ThriftServerStreamMuxHandler {
   void on(
       Context&, const ThriftServerRequestCancellationEvent& event) noexcept {
     const bool routed = routeInbound(
-        event.streamId,
-        stream::ThriftStreamMessage{.payload = stream::Cancel{}});
+        event.streamId, stream::ControlMessage{.payload = stream::Cancel{}});
     if (routed) {
       markTerminated(event.streamId);
       drainPendingRemoval();
@@ -208,7 +207,7 @@ class ThriftServerStreamMuxHandler {
     stream::ProducerPipeline::Builder builder(
         mainCtx_->eventBase(),
         stream::StreamSink{
-            [this, streamId](stream::ThriftStreamMessage&& msg) noexcept {
+            [this, streamId](stream::DataMessage&& msg) noexcept {
               return emitOutbound(streamId, std::move(msg));
             }});
     (*configFunc)(builder);
@@ -229,8 +228,7 @@ class ThriftServerStreamMuxHandler {
   // Returns false when no open stream owns `streamId` — unknown, already
   // terminated, or seen (its entry exists) but not yet opened — the caller
   // surfaces that as an error rather than dropping it silently.
-  bool routeInbound(
-      uint32_t streamId, stream::ThriftStreamMessage&& msg) noexcept {
+  bool routeInbound(uint32_t streamId, stream::ControlMessage&& msg) noexcept {
     auto* slot = streams_.find(streamId);
     if (slot == nullptr || slot->second.terminated ||
         !slot->second.pipeline.has_value()) {
@@ -258,7 +256,7 @@ class ThriftServerStreamMuxHandler {
   // inject it on this pipeline's write path (head-ward from the mux). Marks the
   // stream for teardown on a terminal.
   channel_pipeline::Result emitOutbound(
-      uint32_t streamId, stream::ThriftStreamMessage&& msg) noexcept {
+      uint32_t streamId, stream::DataMessage&& msg) noexcept {
     ThriftServerResponseMessage response;
     bool terminal = false;
     auto& payload = msg.payload;
@@ -291,9 +289,6 @@ class ThriftServerStreamMuxHandler {
           .complete = true,
           .next = true};
       terminal = true;
-    } else {
-      // RequestN/Cancel never leave the producer head (guarded there).
-      return channel_pipeline::Result::Success;
     }
     auto result = mainCtx_->fireWrite(
         channel_pipeline::erase_and_box(std::move(response)));
@@ -313,8 +308,7 @@ class ThriftServerStreamMuxHandler {
     }
     const uint32_t n = std::exchange(slot->second.pendingInitialCredit, 0);
     routeInbound(
-        streamId,
-        stream::ThriftStreamMessage{.payload = stream::RequestN{.n = n}});
+        streamId, stream::ControlMessage{.payload = stream::RequestN{.n = n}});
   }
 
   void markTerminated(uint32_t streamId) noexcept {

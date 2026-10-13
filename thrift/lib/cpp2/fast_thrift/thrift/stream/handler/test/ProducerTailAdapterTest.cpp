@@ -41,7 +41,7 @@ struct StubContext {};
 using Handler = ProducerTailAdapter<StubContext>;
 
 TypeErasedBox requestN() {
-  return erase_and_box(ThriftStreamMessage{.payload = RequestN{.n = 1}});
+  return erase_and_box(ControlMessage{.payload = RequestN{.n = 1}});
 }
 
 } // namespace

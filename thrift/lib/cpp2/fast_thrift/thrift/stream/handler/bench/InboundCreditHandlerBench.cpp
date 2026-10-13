@@ -53,12 +53,12 @@ class BenchCtx {
   void fireException(folly::exception_wrapper&&) noexcept {}
 };
 
-ThriftStreamMessage makeRequestN(uint64_t n) {
-  return ThriftStreamMessage{.payload = RequestN{.n = n}};
+ControlMessage makeRequestN(uint64_t n) {
+  return ControlMessage{.payload = RequestN{.n = n}};
 }
 
-ThriftStreamMessage makeItem() {
-  return ThriftStreamMessage{.payload = Payload{.data = nullptr}};
+DataMessage makeItem() {
+  return DataMessage{.payload = Payload{.data = nullptr}};
 }
 
 BENCHMARK(OnWrite_ForwardWithCredit, iters) {

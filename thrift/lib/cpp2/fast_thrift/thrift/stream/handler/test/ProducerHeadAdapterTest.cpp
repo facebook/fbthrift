@@ -22,7 +22,6 @@
 #include <gtest/gtest.h>
 
 #include <folly/ExceptionWrapper.h>
-#include <folly/Portability.h>
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
@@ -43,9 +42,9 @@ struct StubContext {};
 // sink that captures the recorder by reference, mirroring how the owning
 // thrift-pipeline handler captures its own instance.
 struct SinkRecorder {
-  std::vector<ThriftStreamMessage> msgs;
+  std::vector<DataMessage> msgs;
 
-  Result record(ThriftStreamMessage&& msg) noexcept {
+  Result record(DataMessage&& msg) noexcept {
     msgs.push_back(std::move(msg));
     return Result::Success;
   }
@@ -54,27 +53,20 @@ struct SinkRecorder {
 using Handler = ProducerHeadAdapter<StubContext>;
 
 StreamSink recorderSink(SinkRecorder& recorder) {
-  return StreamSink{[&recorder](ThriftStreamMessage&& msg) noexcept {
+  return StreamSink{[&recorder](DataMessage&& msg) noexcept {
     return recorder.record(std::move(msg));
   }};
 }
 
-TypeErasedBox requestN() {
-  return erase_and_box(ThriftStreamMessage{.payload = RequestN{.n = 1}});
-}
-TypeErasedBox cancel() {
-  return erase_and_box(ThriftStreamMessage{.payload = Cancel{}});
-}
 TypeErasedBox payload() {
-  return erase_and_box(
-      ThriftStreamMessage{.payload = Payload{.data = nullptr}});
+  return erase_and_box(DataMessage{.payload = Payload{.data = nullptr}});
 }
 TypeErasedBox complete() {
-  return erase_and_box(ThriftStreamMessage{.payload = Complete{}});
+  return erase_and_box(DataMessage{.payload = Complete{}});
 }
 TypeErasedBox error() {
   return erase_and_box(
-      ThriftStreamMessage{
+      DataMessage{
           .payload = Error{
               .ex =
                   folly::make_exception_wrapper<std::runtime_error>("boom")}});
@@ -100,26 +92,6 @@ TEST(ProducerHeadAdapterTest, DeliversProducerOutputToSink) {
   EXPECT_TRUE(recorder.msgs[0].payload.is<Payload>());
   EXPECT_TRUE(recorder.msgs[1].payload.is<Complete>());
   EXPECT_TRUE(recorder.msgs[2].payload.is<Error>());
-}
-
-TEST(ProducerHeadAdapterDeathTest, RejectsControlFramesOutbound) {
-  SinkRecorder recorder;
-  Handler handler(recorderSink(recorder));
-  StubContext ctx;
-
-  // RequestN / Cancel belong to the read direction; outbound they are a
-  // contract violation — fatal in debug, dropped with Result::Error in release,
-  // and never handed to the sink.
-  for (auto& make : {&requestN, &cancel}) {
-    if (folly::kIsDebug) {
-      EXPECT_DEATH((void)handler.onWrite(ctx, (*make)()), "wrong pipeline");
-    } else {
-      EXPECT_EQ(handler.onWrite(ctx, (*make)()), Result::Error);
-    }
-  }
-  if (!folly::kIsDebug) {
-    EXPECT_TRUE(recorder.msgs.empty()) << "violations are never delivered";
-  }
 }
 
 } // namespace apache::thrift::fast_thrift::thrift::stream

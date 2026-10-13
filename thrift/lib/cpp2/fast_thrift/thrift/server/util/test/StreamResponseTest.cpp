@@ -107,20 +107,20 @@ class IntProducer {
     return ctx.fireWrite(std::move(msg));
   }
   cp::Result onRead(Ctx& ctx, cp::TypeErasedBox&& msg) noexcept {
-    auto& m = msg.get<stream::ThriftStreamMessage>();
+    auto& m = msg.get<stream::ControlMessage>();
     if (m.payload.is<stream::RequestN>()) {
       const uint64_t n = m.payload.get<stream::RequestN>().n;
       for (uint64_t i = 0; i < n && next_ < values_.size(); ++i, ++next_) {
         (void)ctx.fireWrite(
             cp::erase_and_box(
-                stream::ThriftStreamMessage{
+                stream::DataMessage{
                     .payload = encoder_.encodeValue(int32_t{values_[next_]})}));
       }
       if (next_ == values_.size() && !completed_) {
         completed_ = true;
         (void)ctx.fireWrite(
             cp::erase_and_box(
-                stream::ThriftStreamMessage{.payload = stream::Complete{}}));
+                stream::DataMessage{.payload = stream::Complete{}}));
       }
       return cp::Result::Success;
     }
@@ -192,21 +192,20 @@ TEST(StreamResponseTest, MakeStreamOpenMessageBindsFactoryAndEncoder) {
   bool completed = false;
   stream::ProducerPipeline::Builder builder(
       &evb,
-      stream::StreamSink{
-          [&](stream::ThriftStreamMessage&& m) noexcept -> cp::Result {
-            if (m.payload.is<stream::Payload>()) {
-              got.push_back(decodeInt(*m.payload.get<stream::Payload>().data));
-            } else if (m.payload.is<stream::Complete>()) {
-              completed = true;
-            }
-            return cp::Result::Success;
-          }});
+      stream::StreamSink{[&](stream::DataMessage&& m) noexcept -> cp::Result {
+        if (m.payload.is<stream::Payload>()) {
+          got.push_back(decodeInt(*m.payload.get<stream::Payload>().data));
+        } else if (m.payload.is<stream::Complete>()) {
+          completed = true;
+        }
+        return cp::Result::Success;
+      }});
   (*open.configFunc)(builder);
   auto pipeline = builder.build();
 
   (void)pipeline.fireRead(
       cp::erase_and_box(
-          stream::ThriftStreamMessage{.payload = stream::RequestN{.n = 10}}));
+          stream::ControlMessage{.payload = stream::RequestN{.n = 10}}));
 
   EXPECT_EQ(got, (std::vector<int32_t>{10, 20, 30}));
   EXPECT_TRUE(completed);
@@ -244,21 +243,20 @@ TEST(StreamResponseTest, ResponseAndStreamFactoryCarriesInitialResponse) {
   bool completed = false;
   stream::ProducerPipeline::Builder builder(
       &evb,
-      stream::StreamSink{
-          [&](stream::ThriftStreamMessage&& m) noexcept -> cp::Result {
-            if (m.payload.is<stream::Payload>()) {
-              got.push_back(decodeInt(*m.payload.get<stream::Payload>().data));
-            } else if (m.payload.is<stream::Complete>()) {
-              completed = true;
-            }
-            return cp::Result::Success;
-          }});
+      stream::StreamSink{[&](stream::DataMessage&& m) noexcept -> cp::Result {
+        if (m.payload.is<stream::Payload>()) {
+          got.push_back(decodeInt(*m.payload.get<stream::Payload>().data));
+        } else if (m.payload.is<stream::Complete>()) {
+          completed = true;
+        }
+        return cp::Result::Success;
+      }});
   (*open.configFunc)(builder);
   auto pipeline = builder.build();
 
   (void)pipeline.fireRead(
       cp::erase_and_box(
-          stream::ThriftStreamMessage{.payload = stream::RequestN{.n = 10}}));
+          stream::ControlMessage{.payload = stream::RequestN{.n = 10}}));
 
   EXPECT_EQ(got, (std::vector<int32_t>{10, 20, 30}));
   EXPECT_TRUE(completed);

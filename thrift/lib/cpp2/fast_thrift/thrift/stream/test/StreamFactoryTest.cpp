@@ -94,19 +94,19 @@ class IntProducer {
     return ctx.fireWrite(std::move(msg));
   }
   cp::Result onRead(Ctx& ctx, cp::TypeErasedBox&& msg) noexcept {
-    auto& m = msg.get<ThriftStreamMessage>();
+    auto& m = msg.get<ControlMessage>();
     if (m.payload.is<RequestN>()) {
       const uint64_t n = m.payload.get<RequestN>().n;
       for (uint64_t i = 0; i < n && next_ < values_.size(); ++i, ++next_) {
         (void)ctx.fireWrite(
             cp::erase_and_box(
-                ThriftStreamMessage{
+                DataMessage{
                     .payload = encoder_.encodeValue(int32_t{values_[next_]})}));
       }
       if (next_ == values_.size() && !completed_) {
         completed_ = true;
         (void)ctx.fireWrite(
-            cp::erase_and_box(ThriftStreamMessage{.payload = Complete{}}));
+            cp::erase_and_box(DataMessage{.payload = Complete{}}));
       }
       return cp::Result::Success;
     }
@@ -161,7 +161,7 @@ TEST(StreamFactoryTest, BindEncodesElementsThroughSink) {
               StreamElementEncoder<int32_t>{&encodeIntValue, &encodeIntError});
 
   ProducerPipeline::Builder builder(
-      &evb, StreamSink{[&](ThriftStreamMessage&& m) noexcept -> cp::Result {
+      &evb, StreamSink{[&](DataMessage&& m) noexcept -> cp::Result {
         if (m.payload.is<Payload>()) {
           recorded.push_back(
               {Recorded::Kind::Payload,
@@ -179,7 +179,7 @@ TEST(StreamFactoryTest, BindEncodesElementsThroughSink) {
   auto pipeline = builder.build();
 
   (void)pipeline.fireRead(
-      cp::erase_and_box(ThriftStreamMessage{.payload = RequestN{.n = 10}}));
+      cp::erase_and_box(ControlMessage{.payload = RequestN{.n = 10}}));
 
   ASSERT_EQ(recorded.size(), 4u);
   EXPECT_EQ(recorded[0].kind, Recorded::Kind::Payload);

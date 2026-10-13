@@ -63,16 +63,18 @@ class FakeContext {
   std::vector<folly::exception_wrapper> exceptions;
 };
 
-ThriftStreamMessage makeRequestN(uint64_t n) {
-  return ThriftStreamMessage{.payload = RequestN{.n = n}};
+// Read-path (consumer -> producer) demand: the producer reads ControlMessage.
+ControlMessage makeRequestN(uint64_t n) {
+  return ControlMessage{.payload = RequestN{.n = n}};
 }
 
-ThriftStreamMessage makeItem() {
-  return ThriftStreamMessage{.payload = Payload{.data = nullptr}};
+ControlMessage makeCancel() {
+  return ControlMessage{.payload = Cancel{}};
 }
 
-ThriftStreamMessage makeCancel() {
-  return ThriftStreamMessage{.payload = Cancel{}};
+// Write-path (producer -> consumer) data: the producer writes DataMessage.
+DataMessage makeItem() {
+  return DataMessage{.payload = Payload{.data = nullptr}};
 }
 
 } // namespace
@@ -173,11 +175,10 @@ TEST(InboundCreditHandlerTest, OverflowGrantForwardsOnlyTheAcceptedDelta) {
 
   ASSERT_EQ(ctx.reads.size(), 2u);
   EXPECT_EQ(
-      ctx.reads[0].take<ThriftStreamMessage>().payload.get<RequestN>().n,
+      ctx.reads[0].take<ControlMessage>().payload.get<RequestN>().n,
       std::numeric_limits<uint64_t>::max() - 1)
       << "the first grant fit, so it is forwarded unchanged";
-  EXPECT_EQ(
-      ctx.reads[1].take<ThriftStreamMessage>().payload.get<RequestN>().n, 1u)
+  EXPECT_EQ(ctx.reads[1].take<ControlMessage>().payload.get<RequestN>().n, 1u)
       << "only the admitted headroom is forwarded once the budget saturates";
 }
 
@@ -204,7 +205,7 @@ TEST(InboundCreditHandlerTest, RequestNIsAccountedAndForwardedAsDemand) {
 
   // Forwarded on as demand...
   ASSERT_EQ(ctx.reads.size(), 1u);
-  auto forwarded = ctx.reads[0].take<ThriftStreamMessage>();
+  auto forwarded = ctx.reads[0].take<ControlMessage>();
   ASSERT_TRUE(forwarded.payload.is<RequestN>());
   EXPECT_EQ(forwarded.payload.get<RequestN>().n, 3u);
 
@@ -214,15 +215,6 @@ TEST(InboundCreditHandlerTest, RequestNIsAccountedAndForwardedAsDemand) {
   }
 }
 
-TEST(InboundCreditHandlerTest, InboundItemPassesThrough) {
-  InboundCreditHandler<FakeContext> handler;
-  FakeContext ctx;
-
-  // A consumer-side inbound item is not this handler's frame — pass through.
-  EXPECT_EQ(handler.onRead(ctx, erase_and_box(makeItem())), Result::Success);
-  EXPECT_EQ(ctx.reads.size(), 1u);
-}
-
 TEST(InboundCreditHandlerTest, CancelPassesThroughInbound) {
   InboundCreditHandler<FakeContext> handler;
   FakeContext ctx;
@@ -230,17 +222,7 @@ TEST(InboundCreditHandlerTest, CancelPassesThroughInbound) {
   // Cancel is a teardown frame for the source, not credit — pass through.
   EXPECT_EQ(handler.onRead(ctx, erase_and_box(makeCancel())), Result::Success);
   ASSERT_EQ(ctx.reads.size(), 1u);
-  EXPECT_TRUE(ctx.reads[0].take<ThriftStreamMessage>().payload.is<Cancel>());
-}
-
-TEST(InboundCreditHandlerTest, OutboundRequestNPassesThroughUngated) {
-  InboundCreditHandler<FakeContext> handler;
-  FakeContext ctx;
-
-  // A consumer granting credit outbound is not gated by (its own) credit.
-  EXPECT_EQ(
-      handler.onWrite(ctx, erase_and_box(makeRequestN(5))), Result::Success);
-  EXPECT_EQ(ctx.writes.size(), 1u);
+  EXPECT_TRUE(ctx.reads[0].take<ControlMessage>().payload.is<Cancel>());
 }
 
 TEST(InboundCreditHandlerTest, CreditSurvivesPipelineInactive) {

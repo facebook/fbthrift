@@ -59,17 +59,17 @@ namespace {
 
 using Context = cp::detail::ContextImpl;
 
-ThriftStreamMessage makeItem(uint8_t tag) {
-  return ThriftStreamMessage{
+DataMessage makeItem(uint8_t tag) {
+  return DataMessage{
       .payload = Payload{.data = folly::IOBuf::copyBuffer(&tag, sizeof(tag))}};
 }
 
-ThriftStreamMessage makeRequestN(uint64_t n) {
-  return ThriftStreamMessage{.payload = RequestN{.n = n}};
+ControlMessage makeRequestN(uint64_t n) {
+  return ControlMessage{.payload = RequestN{.n = n}};
 }
 
-ThriftStreamMessage makeCancel() {
-  return ThriftStreamMessage{.payload = Cancel{}};
+ControlMessage makeCancel() {
+  return ControlMessage{.payload = Cancel{}};
 }
 
 // Shared boilerplate for the sample producers: the handler-concept lifecycle
@@ -99,7 +99,7 @@ class FiniteProducer : public ProducerBase<Ctx> {
   explicit FiniteProducer(uint64_t total) noexcept : remaining_(total) {}
 
   cp::Result onRead(Ctx& ctx, cp::TypeErasedBox&& msg) noexcept {
-    auto& m = msg.get<ThriftStreamMessage>();
+    auto& m = msg.get<ControlMessage>();
     if (m.payload.is<RequestN>()) {
       const uint64_t n = m.payload.get<RequestN>().n;
       for (uint64_t i = 0; i < n && remaining_ > 0; ++i) {
@@ -109,7 +109,7 @@ class FiniteProducer : public ProducerBase<Ctx> {
       if (remaining_ == 0 && !completed_) {
         completed_ = true;
         (void)ctx.fireWrite(
-            cp::erase_and_box(ThriftStreamMessage{.payload = Complete{}}));
+            cp::erase_and_box(DataMessage{.payload = Complete{}}));
       }
       return cp::Result::Success;
     }
@@ -131,7 +131,7 @@ template <typename Ctx>
 class InfiniteProducer : public ProducerBase<Ctx> {
  public:
   cp::Result onRead(Ctx& ctx, cp::TypeErasedBox&& msg) noexcept {
-    auto& m = msg.get<ThriftStreamMessage>();
+    auto& m = msg.get<ControlMessage>();
     if (m.payload.is<RequestN>()) {
       if (!cancelled_) {
         const uint64_t n = m.payload.get<RequestN>().n;
@@ -160,7 +160,7 @@ class ErrorProducer : public ProducerBase<Ctx> {
   explicit ErrorProducer(uint64_t before) noexcept : before_(before) {}
 
   cp::Result onRead(Ctx& ctx, cp::TypeErasedBox&& msg) noexcept {
-    auto& m = msg.get<ThriftStreamMessage>();
+    auto& m = msg.get<ControlMessage>();
     if (m.payload.is<RequestN>()) {
       if (!failed_) {
         const uint64_t n = m.payload.get<RequestN>().n;
@@ -172,7 +172,7 @@ class ErrorProducer : public ProducerBase<Ctx> {
           failed_ = true;
           (void)ctx.fireWrite(
               cp::erase_and_box(
-                  ThriftStreamMessage{
+                  DataMessage{
                       .payload = Error{
                           .ex =
                               folly::make_exception_wrapper<std::runtime_error>(
@@ -204,7 +204,7 @@ struct WireSink {
   size_t completions{0};
   size_t errors{0};
 
-  cp::Result record(ThriftStreamMessage&& m) noexcept {
+  cp::Result record(DataMessage&& m) noexcept {
     if (m.payload.is<Payload>()) {
       if (auto& p = m.payload.get<Payload>(); p.data) {
         tags.push_back(folly::io::Cursor(p.data.get()).read<uint8_t>());
@@ -229,7 +229,7 @@ class StreamPipelineE2ETest : public ::testing::Test {
   ProducerPipeline& build(
       std::unique_ptr<Producer> producer, PayloadPrefetchConfig cfg) {
     ProducerPipeline::Builder builder(
-        &evb_, StreamSink{[this](ThriftStreamMessage&& m) noexcept {
+        &evb_, StreamSink{[this](DataMessage&& m) noexcept {
           return wire_.record(std::move(m));
         }});
     builder.addNextDuplex<InboundCreditHandler<Context>>(credit_tag)

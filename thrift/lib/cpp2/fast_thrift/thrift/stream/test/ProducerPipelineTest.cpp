@@ -46,8 +46,8 @@ namespace {
 
 using Context = cp::detail::ContextImpl;
 
-ThriftStreamMessage makeRequestN(uint64_t n) {
-  return ThriftStreamMessage{.payload = RequestN{.n = n}};
+ControlMessage makeRequestN(uint64_t n) {
+  return ControlMessage{.payload = RequestN{.n = n}};
 }
 
 // A sample producer: on each RequestN it emits up to `n` payloads (bounded by
@@ -72,19 +72,19 @@ class FiniteProducer {
   }
 
   cp::Result onRead(Ctx& ctx, cp::TypeErasedBox&& msg) noexcept {
-    auto& m = msg.get<ThriftStreamMessage>();
+    auto& m = msg.get<ControlMessage>();
     if (m.payload.is<RequestN>()) {
       const uint64_t n = m.payload.get<RequestN>().n;
       for (uint64_t i = 0; i < n && remaining_ > 0; ++i) {
         (void)ctx.fireWrite(
             cp::erase_and_box(
-                ThriftStreamMessage{.payload = Payload{.data = nullptr}}));
+                DataMessage{.payload = Payload{.data = nullptr}}));
         --remaining_;
       }
       if (remaining_ == 0 && !completed_) {
         completed_ = true;
         (void)ctx.fireWrite(
-            cp::erase_and_box(ThriftStreamMessage{.payload = Complete{}}));
+            cp::erase_and_box(DataMessage{.payload = Complete{}}));
       }
       return cp::Result::Success;
     }
@@ -100,16 +100,16 @@ class FiniteProducer {
 // a sink that captures the recorder by reference, mirroring how the owning
 // thrift-pipeline handler captures its own instance.
 struct SinkRecorder {
-  std::vector<ThriftStreamMessage> msgs;
+  std::vector<DataMessage> msgs;
 
-  cp::Result record(ThriftStreamMessage&& msg) noexcept {
+  cp::Result record(DataMessage&& msg) noexcept {
     msgs.push_back(std::move(msg));
     return cp::Result::Success;
   }
 };
 
 StreamSink recorderSink(SinkRecorder& recorder) {
-  return StreamSink{[&recorder](ThriftStreamMessage&& msg) noexcept {
+  return StreamSink{[&recorder](DataMessage&& msg) noexcept {
     return recorder.record(std::move(msg));
   }};
 }

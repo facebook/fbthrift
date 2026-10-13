@@ -50,8 +50,7 @@ BENCHMARK(OnRead_DemandBackstop, iters) {
   std::vector<TypeErasedBox> items;
   items.reserve(iters);
   for (size_t i = 0; i < iters; ++i) {
-    items.push_back(
-        erase_and_box(ThriftStreamMessage{.payload = RequestN{.n = 1}}));
+    items.push_back(erase_and_box(ControlMessage{.payload = RequestN{.n = 1}}));
   }
   suspender.dismiss();
 

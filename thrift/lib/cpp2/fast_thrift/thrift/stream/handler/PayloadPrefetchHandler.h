@@ -71,7 +71,7 @@ class BoundedMessageRing {
   bool full() const noexcept { return count_ == capacity_; }
   size_t size() const noexcept { return count_; }
 
-  void push(ThriftStreamMessage msg) noexcept {
+  void push(DataMessage msg) noexcept {
     DCHECK(!full()) << "push() on a full ring; caller must check full() first";
     if (slots_.empty()) {
       slots_.resize(capacity_);
@@ -80,10 +80,10 @@ class BoundedMessageRing {
     ++count_;
   }
 
-  ThriftStreamMessage& front() noexcept { return slots_[head_]; }
+  DataMessage& front() noexcept { return slots_[head_]; }
 
   void pop() noexcept {
-    slots_[head_] = ThriftStreamMessage{}; // release the element's IOBuf
+    slots_[head_] = DataMessage{}; // release the element's IOBuf
     head_ = (head_ + 1) % capacity_;
     --count_;
   }
@@ -92,7 +92,7 @@ class BoundedMessageRing {
   size_t capacity_;
   size_t head_{0};
   size_t count_{0};
-  std::vector<ThriftStreamMessage> slots_;
+  std::vector<DataMessage> slots_;
 };
 
 } // namespace detail
@@ -191,7 +191,7 @@ class PayloadPrefetchHandler {
   // InboundHandler — consumer demand flows head->tail to here.
   channel_pipeline::Result onRead(
       Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
-    auto& message = msg.get<ThriftStreamMessage>();
+    auto& message = msg.get<ControlMessage>();
 
     // Once cancelled we can act on nothing more: forward every frame untouched
     // toward the producer rather than swallow it.
@@ -245,7 +245,7 @@ class PayloadPrefetchHandler {
   // topped up.
   channel_pipeline::Result onWrite(
       Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
-    auto& message = msg.get<ThriftStreamMessage>();
+    auto& message = msg.get<DataMessage>();
 
     // Only stream data and terminals are handled here; anything else flows
     // through.
@@ -273,7 +273,7 @@ class PayloadPrefetchHandler {
       if (buffer_.empty() && !awaitingWriteReady_) {
         std::ignore = ctx.fireWrite(std::move(msg));
       } else {
-        terminal_ = msg.take<ThriftStreamMessage>();
+        terminal_ = msg.take<DataMessage>();
         hasTerminal_ = true;
       }
       return channel_pipeline::Result::Success;
@@ -309,7 +309,7 @@ class PayloadPrefetchHandler {
     if (FOLLY_UNLIKELY(buffer_.full())) {
       return channel_pipeline::Result::Error;
     }
-    buffer_.push(msg.take<ThriftStreamMessage>());
+    buffer_.push(msg.take<DataMessage>());
     // Delivering this element freed a unit of the reserve; top it back up.
     replenishReserve(ctx);
     return channel_pipeline::Result::Success;
@@ -410,7 +410,7 @@ class PayloadPrefetchHandler {
     // return.
     std::ignore = ctx.fireRead(
         channel_pipeline::erase_and_box(
-            ThriftStreamMessage{.payload = RequestN{.n = n}}));
+            ControlMessage{.payload = RequestN{.n = n}}));
   }
 
   size_t capacity_;
@@ -425,7 +425,7 @@ class PayloadPrefetchHandler {
   detail::BoundedMessageRing buffer_;
   // A terminal held apart from the payload ring: it is ordered after the ring's
   // payloads but is not credit-gated, so it never occupies a ring slot.
-  ThriftStreamMessage terminal_{};
+  DataMessage terminal_{};
 };
 
 static_assert(

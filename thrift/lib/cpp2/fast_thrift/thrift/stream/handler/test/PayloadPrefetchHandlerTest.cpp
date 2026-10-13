@@ -50,7 +50,7 @@ using channel_pipeline::TypeErasedBox;
 class FakeContext {
  public:
   Result fireRead(TypeErasedBox&& msg) noexcept {
-    auto m = msg.take<ThriftStreamMessage>();
+    auto m = msg.take<ControlMessage>();
     if (m.payload.is<RequestN>()) {
       const uint64_t n = m.payload.get<RequestN>().n;
       demand.push_back(n);
@@ -67,7 +67,7 @@ class FakeContext {
   }
 
   Result fireWrite(TypeErasedBox&& msg) noexcept {
-    auto m = msg.take<ThriftStreamMessage>();
+    auto m = msg.take<DataMessage>();
     if (m.payload.is<Payload>()) {
       if (auto& p = m.payload.get<Payload>(); p.data) {
         sentTags.push_back(folly::io::Cursor(p.data.get()).read<uint8_t>());
@@ -116,27 +116,27 @@ class FakeContext {
 
 using Handler = PayloadPrefetchHandler<FakeContext>;
 
-ThriftStreamMessage makeItem(uint8_t tag) {
-  return ThriftStreamMessage{
+DataMessage makeItem(uint8_t tag) {
+  return DataMessage{
       .payload = Payload{.data = folly::IOBuf::copyBuffer(&tag, sizeof(tag))}};
 }
 
-ThriftStreamMessage makeRequestN(uint64_t n) {
-  return ThriftStreamMessage{.payload = RequestN{.n = n}};
+ControlMessage makeRequestN(uint64_t n) {
+  return ControlMessage{.payload = RequestN{.n = n}};
 }
 
-ThriftStreamMessage makeComplete() {
-  return ThriftStreamMessage{.payload = Complete{}};
+DataMessage makeComplete() {
+  return DataMessage{.payload = Complete{}};
 }
 
-ThriftStreamMessage makeError() {
-  return ThriftStreamMessage{
+DataMessage makeError() {
+  return DataMessage{
       .payload = Error{
           .ex = folly::make_exception_wrapper<std::runtime_error>("boom")}};
 }
 
-ThriftStreamMessage makeCancel() {
-  return ThriftStreamMessage{.payload = Cancel{}};
+ControlMessage makeCancel() {
+  return ControlMessage{.payload = Cancel{}};
 }
 
 // Consumer grants credit: delivers a RequestN inbound.

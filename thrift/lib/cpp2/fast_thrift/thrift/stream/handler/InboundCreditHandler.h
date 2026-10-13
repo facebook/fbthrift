@@ -50,7 +50,7 @@ namespace apache::thrift::fast_thrift::thrift::stream {
  *     credit-contract violation an upstream buffer/producer keeps unreachable
  * by honoring the demand it was granted, so it fatals in debug and is dropped
  *     with `Result::Error` in release. Non-`Payload` outbound frames
- * (`Complete`, `Error`, an outbound `RequestN`) pass through ungated.
+ * (`Complete`, `Error`) pass through ungated.
  *
  * Side-agnostic: a server stream producer and a client sink producer both spend
  * the credit their peer grants. Scope is credit accounting + contract
@@ -68,7 +68,7 @@ class InboundCreditHandler {
   // InboundHandler
   channel_pipeline::Result onRead(
       Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
-    auto& message = msg.get<ThriftStreamMessage>();
+    auto& message = msg.get<ControlMessage>();
     if (message.payload.is<RequestN>()) {
       // Account the grant, then forward on only the demand we actually admitted
       // so the forwarded demand and the private budget stay in lockstep. On the
@@ -92,7 +92,7 @@ class InboundCreditHandler {
   // OutboundHandler
   channel_pipeline::Result onWrite(
       Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
-    auto& message = msg.get<ThriftStreamMessage>();
+    auto& message = msg.get<DataMessage>();
     if (!message.payload.is<Payload>()) {
       return ctx.fireWrite(std::move(msg));
     }

@@ -43,7 +43,7 @@ namespace {
 struct BenchCtx {};
 
 // Absorbs whatever the head endpoint hands to the sink.
-Result absorbSink(ThriftStreamMessage&&) noexcept {
+Result absorbSink(DataMessage&&) noexcept {
   return Result::Success;
 }
 
@@ -61,9 +61,8 @@ BENCHMARK(OnWrite_DeliverPayloadToSink, iters) {
   BenchmarkSuspender suspender;
   ProducerHeadAdapter<BenchCtx> handler(StreamSink{&absorbSink});
   BenchCtx ctx;
-  auto items = boxes(iters, [] {
-    return ThriftStreamMessage{.payload = Payload{.data = nullptr}};
-  });
+  auto items = boxes(
+      iters, [] { return DataMessage{.payload = Payload{.data = nullptr}}; });
   suspender.dismiss();
 
   for (auto& item : items) {

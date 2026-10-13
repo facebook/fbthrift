@@ -67,12 +67,12 @@ class EchoProducer {
     return ctx.fireWrite(std::move(msg));
   }
   Result onRead(Ctx& ctx, TypeErasedBox&& msg) noexcept {
-    auto& m = msg.get<ThriftStreamMessage>();
+    auto& m = msg.get<ControlMessage>();
     if (m.payload.is<RequestN>()) {
       const uint64_t n = m.payload.get<RequestN>().n;
       for (uint64_t i = 0; i < n; ++i) {
-        (void)ctx.fireWrite(erase_and_box(
-            ThriftStreamMessage{.payload = Payload{.data = nullptr}}));
+        (void)ctx.fireWrite(
+            erase_and_box(DataMessage{.payload = Payload{.data = nullptr}}));
       }
       return Result::Success;
     }
@@ -80,7 +80,7 @@ class EchoProducer {
   }
 };
 
-Result absorbSink(ThriftStreamMessage&&) noexcept {
+Result absorbSink(DataMessage&&) noexcept {
   return Result::Success;
 }
 
@@ -99,7 +99,7 @@ BENCHMARK(DemandToSinkRoundTrip, iters) {
   demands.reserve(iters);
   for (size_t i = 0; i < iters; ++i) {
     demands.push_back(
-        erase_and_box(ThriftStreamMessage{.payload = RequestN{.n = 1}}));
+        erase_and_box(ControlMessage{.payload = RequestN{.n = 1}}));
   }
   suspender.dismiss();
 
