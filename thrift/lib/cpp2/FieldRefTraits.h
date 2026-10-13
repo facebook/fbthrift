@@ -29,7 +29,7 @@ template <class T>
 class required_field_ref;
 template <class T>
 class optional_boxed_field_ref;
-template <class T>
+template <class T, class Allocator = void>
 class union_field_ref;
 template <class T>
 class intern_boxed_field_ref;
@@ -58,8 +58,9 @@ inline constexpr bool
     is_optional_boxed_field_ref_v<optional_boxed_field_ref<T>> = true;
 template <class T>
 inline constexpr bool is_union_field_ref_v = false;
-template <class T>
-inline constexpr bool is_union_field_ref_v<union_field_ref<T>> = true;
+template <class T, class Allocator>
+inline constexpr bool is_union_field_ref_v<union_field_ref<T, Allocator>> =
+    true;
 template <class T>
 inline constexpr bool is_intern_boxed_field_ref_v = false;
 template <class T>

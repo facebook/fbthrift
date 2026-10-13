@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#include <cstddef>
+#include <memory_resource>
+#include <utility>
+
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/test/gen-cpp2/UnionFieldRef_types.h>
@@ -215,6 +219,28 @@ TEST(UnionFieldTest, emplace) {
   EXPECT_EQ(*a.list_i32(), list_i32);
   EXPECT_TRUE(a.list_i32().has_value());
 }
+
+using ByteAlloc = std::pmr::polymorphic_allocator<std::byte>;
+
+// Moving, with or without an allocator, and move assignment are noexcept, so
+// the checks below depend only on union_field_ref. A thrift union's members
+// can't show this: their allocator-extended moves may allocate. Not in an
+// anonymous namespace: the checks never call the members, which draws
+// unused-function warnings when the type has internal linkage.
+struct NothrowMove {
+  using allocator_type = std::pmr::polymorphic_allocator<char>;
+  NothrowMove() = default;
+  NothrowMove(NothrowMove&&) noexcept = default;
+  NothrowMove(NothrowMove&&, const allocator_type&) noexcept {}
+  NothrowMove& operator=(NothrowMove&&) noexcept = default;
+};
+
+static_assert(
+    noexcept(std::declval<union_field_ref<NothrowMove&>&>() = NothrowMove()));
+// FIXME(ytj): Should be noexcept, since building NothrowMove with the allocator
+// can't throw.
+static_assert(!noexcept(
+    std::declval<union_field_ref<NothrowMove&, ByteAlloc>&>() = NothrowMove()));
 
 TEST(UnionFieldTest, ensure) {
   Basic a;

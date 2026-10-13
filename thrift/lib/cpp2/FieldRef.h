@@ -27,6 +27,7 @@
 #include <folly/Function.h>
 #include <folly/Portability.h>
 #include <folly/Traits.h>
+#include <folly/Unit.h>
 #include <folly/Utility.h>
 #include <thrift/lib/cpp2/BoxedValuePtr.h>
 #include <thrift/lib/cpp2/FieldRefTraits.h>
@@ -1682,7 +1683,11 @@ inline constexpr union_field_ref_owner_vtable //
 // union_field_ref objects by value without const qualifiers. Use as_const() or
 // access through a const-qualified owning struct when the field value should be
 // const.
-template <typename T>
+//
+// If Allocator is not void (the default), ensure(), emplace() and
+// assignment to an inactive field build the value with it, by uses-allocator
+// construction.
+template <typename T, typename Allocator>
 class union_field_ref {
   static_assert(std::is_reference_v<T>, "not a reference");
 
@@ -1704,6 +1709,14 @@ class union_field_ref {
   using storage_reference_type = T;
   using storage_value_type = std::remove_reference_t<T>;
 
+  static_assert(
+      std::is_void_v<Allocator> ||
+          (!is_cpp_ref_or_boxed::value &&
+           std::uses_allocator_v<
+               std::remove_cv_t<storage_value_type>,
+               Allocator>),
+      "only a field whose value uses Allocator can carry it");
+
  public:
   using value_type = detail::copy_const_t<T, element_type>;
   using reference_type = detail::copy_reference_t<T, value_type>;
@@ -1719,12 +1732,15 @@ class union_field_ref {
       int_t& type,
       int field_type,
       owner ow,
-      const vtable& vt) noexcept
+      const vtable& vt,
+      const folly::lift_unit_t<Allocator>& alloc =
+          folly::lift_unit_t<Allocator>()) noexcept
       : storage_value_(storage_value),
         type_(type),
         field_type_(field_type),
         owner_(ow),
-        vtable_(vt) {}
+        vtable_(vt),
+        alloc_(alloc) {}
 
   template <
       typename U = value_type,
@@ -1733,6 +1749,7 @@ class union_field_ref {
               std::is_constructible_v<value_type, U&&>,
           int> = 0>
   FOLLY_ERASE union_field_ref& operator=(U&& other) noexcept(
+      std::is_void_v<Allocator> &&
       std::is_nothrow_constructible_v<value_type, U> &&
       std::is_nothrow_assignable_v<value_type, U>) {
     if (has_value() &&
@@ -1842,22 +1859,23 @@ class union_field_ref {
   /// Produces a union_field_ref<const T>
   FOLLY_ERASE auto as_const() const {
     using const_storage_ref = detail::const_storage_ref_t<T>;
-    return union_field_ref<const_storage_ref>{
+    return union_field_ref<const_storage_ref, Allocator>{
         static_cast<const_storage_ref>(storage_value_),
         type_,
         field_type_,
         owner_,
-        vtable_};
+        vtable_,
+        alloc_};
   }
 
-  template <typename U>
-  FOLLY_ERASE bool operator==(union_field_ref<U> rhs) const {
+  template <typename U, typename A>
+  FOLLY_ERASE bool operator==(union_field_ref<U, A> rhs) const {
     return has_value() && rhs.has_value() ? get_value() == *rhs
                                           : has_value() == rhs.has_value();
   }
 
-  template <typename U>
-  FOLLY_ERASE auto operator<=>(union_field_ref<U> rhs) const {
+  template <typename U, typename A>
+  FOLLY_ERASE auto operator<=>(union_field_ref<U, A> rhs) const {
     using result_type =
         detail::compare_three_way_result_t<reference_type, decltype(*rhs)>;
     if (has_value() != rhs.has_value()) {
@@ -1915,7 +1933,12 @@ class union_field_ref {
 
   template <class... Args>
   FOLLY_ERASE void emplace_impl(std::false_type, Args&&... args) {
-    ::new (&storage_value_) storage_value_type(static_cast<Args&&>(args)...);
+    if constexpr (std::is_void_v<Allocator>) {
+      ::new (&storage_value_) storage_value_type(static_cast<Args&&>(args)...);
+    } else {
+      std::uninitialized_construct_using_allocator(
+          std::addressof(storage_value_), alloc_, static_cast<Args&&>(args)...);
+    }
   }
 
   template <class... Args>
@@ -1938,13 +1961,14 @@ class union_field_ref {
   const int field_type_;
   owner owner_;
   const vtable& vtable_;
+  [[FOLLY_ATTR_NO_UNIQUE_ADDRESS]] folly::lift_unit_t<Allocator> alloc_;
 };
 
 namespace detail {
 struct union_value_unsafe_fn {
-  template <typename T>
-  auto&& operator()(union_field_ref<T> ref) const {
-    return static_cast<typename union_field_ref<T>::reference_type>(
+  template <typename T, typename A>
+  auto&& operator()(union_field_ref<T, A> ref) const {
+    return static_cast<typename union_field_ref<T, A>::reference_type>(
         ref.get_value());
   }
 };

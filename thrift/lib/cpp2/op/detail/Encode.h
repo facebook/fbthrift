@@ -585,8 +585,8 @@ struct ShouldWrite {
   bool operator()(optional_boxed_field_ref<T> opt) const {
     return opt.has_value();
   }
-  template <typename T>
-  bool operator()(union_field_ref<T> opt) const {
+  template <typename T, typename A>
+  bool operator()(union_field_ref<T, A> opt) const {
     return opt.has_value();
   }
   template <typename T>
