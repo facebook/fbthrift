@@ -26,6 +26,10 @@ enum PSPNegotiationVersion : std::uint64_t {
   // thriftv0 psp negotiation. 1RTT post handshake negotiation using fizz pspv0
   // AES-128-GCM
   THRIFT_PSP_V0 = (1 << 0),
+
+  // thriftv1 psp negotiation. As v0, but the upgrade ends the TLS session with
+  // a close_notify rather than abandoning it.
+  THRIFT_PSP_V1 = (1 << 1),
 };
 
 }
