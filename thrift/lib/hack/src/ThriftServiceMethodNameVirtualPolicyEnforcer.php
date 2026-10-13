@@ -157,7 +157,6 @@ final class ThriftServiceMethodNameVirtualPolicyEnforcer
       $payload_provider =
         new ThriftServiceMethodNamePrivacyLibRPCPayloadProvider(
           $context->get(#ThriftPolicyZones)?->getArgs(),
-          ThriftServiceMethodNamePayloadDirection::REQUEST,
         );
     }
     $privacylib_failure = await $privacy_lib->genClientRPCWithTAE(
@@ -223,10 +222,7 @@ final class ThriftServiceMethodNameVirtualPolicyEnforcer
         $sr_config_service_name = $thrift_context?->getSmcServiceName() ?? '';
         await self::getPrivacyLibObject($asset_xid, $sr_config_service_name)
           ->genPostClientRPC(
-            new ThriftServiceMethodNamePrivacyLibRPCPayloadProvider(
-              $response,
-              ThriftServiceMethodNamePayloadDirection::RESPONSE,
-            ),
+            new ThriftServiceMethodNamePrivacyLibRPCPayloadProvider($response),
             $context,
           );
       } catch (Exception $ex) {
