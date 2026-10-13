@@ -29,8 +29,19 @@
 namespace apache::thrift::fast_thrift::thrift::stream {
 
 // Messages for an established stream / sink / bidi exchange.
-// Direction-agnostic: the same types flow in both directions (direction is the
-// pipeline's read/write axis) and serve both sides.
+//
+// The five frame kinds partition into two *sets* by which way they travel
+// between the two stream roles:
+//
+//   - Control = {RequestN, Cancel} always flows consumer -> producer.
+//   - Data    = {Payload, Complete, Error} always flows producer -> consumer.
+//
+// A role fixes each set to a direction; the side of the connection only selects
+// which roles are instantiated. A Producer therefore *reads* Control and
+// *writes* Data; a Consumer is the exact mirror (reads Data, writes Control).
+// This holds on either side of the wire: a server stream and a client sink both
+// have a producer that reads Control and writes Data. Bidi hosts one of each
+// role, sharing the streamId.
 
 // A demand grant: "send N more items." Not tied to the wire's 31-bit REQUEST_N.
 struct RequestN {
@@ -74,5 +85,25 @@ struct ThriftStreamMessage {
 
 static_assert(
     channel_pipeline::TypeErasedBox::fits_inline<ThriftStreamMessage>());
+
+// The consumer -> producer set: demand grants and consumer-initiated teardown.
+// A producer reads these; a consumer writes them.
+using ControlVariant = CompactVariant<RequestN, Cancel>;
+
+struct ControlMessage {
+  ControlVariant payload;
+};
+
+static_assert(channel_pipeline::TypeErasedBox::fits_inline<ControlMessage>());
+
+// The producer -> consumer set: data items and producer-initiated terminals
+// (success or failure). A producer writes these; a consumer reads them.
+using DataVariant = CompactVariant<Payload, Complete, Error>;
+
+struct DataMessage {
+  DataVariant payload;
+};
+
+static_assert(channel_pipeline::TypeErasedBox::fits_inline<DataMessage>());
 
 } // namespace apache::thrift::fast_thrift::thrift::stream
