@@ -59,7 +59,11 @@ class ExecutionSystem final {
         startRequest_(std::move(startRequest).asSharedProxy()),
         controlMethods_(
             std::make_shared<const std::map<std::string, PyObject*>>(
-                std::move(controlMethods))) {}
+                std::move(controlMethods))) {
+    for (const auto& [method, _] : *controlMethods_) {
+      executeOn_.emplace(method, &ExecutionSystem::executeOnControl);
+    }
+  }
 
   ~ExecutionSystem() = default;
   ExecutionSystem(const ExecutionSystem&) = delete;
@@ -77,6 +81,9 @@ class ExecutionSystem final {
  private:
   ExecutionSystem() = default;
 
+  using ExecuteOn =
+      void (ExecutionSystem::*)(std::string, RequestDispatch) const;
+
   void executeOnControl(
       std::string method, RequestDispatch requestDispatch) const;
 
@@ -84,6 +91,9 @@ class ExecutionSystem final {
   StartControlRequest::SharedProxy startRequest_{nullptr};
   // The Python factory's function table owns the callable references.
   std::shared_ptr<const std::map<std::string, PyObject*>> controlMethods_;
+  // Every known method starts on control. A later step flips entries for
+  // methods that may run elsewhere.
+  std::map<std::string, ExecuteOn> executeOn_;
 };
 
 } // namespace apache::thrift::python::execution

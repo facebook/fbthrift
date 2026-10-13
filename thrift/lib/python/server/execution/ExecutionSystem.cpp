@@ -24,7 +24,11 @@ void ExecutionSystem::shutdown() noexcept {
 
 void ExecutionSystem::execute(
     std::string method, RequestDispatch requestDispatch) const {
-  executeOnControl(std::move(method), std::move(requestDispatch));
+  // The map holds every method the server accepts. A request reaches this
+  // point only after the server accepted its method, so the lookup always
+  // succeeds.
+  const auto destination = executeOn_.at(method);
+  (this->*destination)(std::move(method), std::move(requestDispatch));
 }
 
 void ExecutionSystem::executeOnControl(
