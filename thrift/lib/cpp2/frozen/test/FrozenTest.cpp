@@ -118,7 +118,9 @@ TEST(Frozen, EndToEnd) {
   Layout<Person1> layout;
   LayoutRoot::layout(tom1, layout);
   auto ttom = view.thaw();
-  EXPECT_TRUE(ttom.name().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          ttom.name()));
   EXPECT_PRINTED_EQ(tom1, ttom);
 }
 
