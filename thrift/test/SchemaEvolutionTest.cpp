@@ -66,7 +66,9 @@ TYPED_TEST(EvolutionTest, evolution) {
     EXPECT_EQ(newObj.unqualified_new(), "");
     EXPECT_EQ(newObj.required_new(), "");
 
-    EXPECT_FALSE(newObj.unqualified_new().is_set());
+    EXPECT_FALSE(
+        apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+            newObj.unqualified_new()));
     EXPECT_FALSE(newObj.optional_new().has_value());
     EXPECT_TRUE(newObj.required_new().has_value());
   } else {
@@ -78,7 +80,9 @@ TYPED_TEST(EvolutionTest, evolution) {
   EXPECT_EQ(newObj.unqualified_added(), "");
   EXPECT_EQ(newObj.required_added(), "");
 
-  EXPECT_FALSE(newObj.unqualified_added().is_set());
+  EXPECT_FALSE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          newObj.unqualified_added()));
   EXPECT_FALSE(newObj.optional_added().has_value());
   EXPECT_TRUE(newObj.required_added().has_value());
 }

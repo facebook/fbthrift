@@ -193,19 +193,31 @@ TEST(SimpleJSONToThriftTest, SimpleStructMissingNonRequiredField) {
 
   deserializeJSON(thriftSimpleObj, jsonSimpleT);
 
-  EXPECT_TRUE(!thriftSimpleObj.a().has_value());
+  EXPECT_TRUE(
+      !apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.a()));
   EXPECT_EQ(*thriftSimpleObj.b(), 8);
-  EXPECT_TRUE(thriftSimpleObj.b().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.b()));
   // field c doesn't have __isset field, since it is required.
   EXPECT_EQ(*thriftSimpleObj.c(), 16);
   EXPECT_EQ(*thriftSimpleObj.d(), 32);
-  EXPECT_TRUE(thriftSimpleObj.d().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.d()));
   EXPECT_EQ(*thriftSimpleObj.e(), 64);
-  EXPECT_TRUE(thriftSimpleObj.e().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.e()));
   EXPECT_EQ(*thriftSimpleObj.f(), 0.99);
-  EXPECT_TRUE(thriftSimpleObj.f().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.f()));
   EXPECT_EQ(*thriftSimpleObj.g(), "Hello");
-  EXPECT_TRUE(thriftSimpleObj.g().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.g()));
 }
 
 TEST(SimpleJSONToThriftTest, NegativeBoundaryCase) {
@@ -275,37 +287,61 @@ TEST(SimpleJSONToThriftTest, Whitespace) {
 
   deserializeJSON(thriftComplexObj, jsonComplexT);
 
-  EXPECT_TRUE(!thriftComplexObj.a()->a().has_value());
+  EXPECT_TRUE(
+      !apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.a()->a()));
   EXPECT_EQ(*thriftComplexObj.a()->b(), 8);
-  EXPECT_TRUE(thriftComplexObj.a()->b().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.a()->b()));
   // field c doesn't have __isset field, since it is required.
   EXPECT_EQ(*thriftComplexObj.a()->c(), 16);
   EXPECT_EQ(*thriftComplexObj.a()->d(), 32);
-  EXPECT_TRUE(thriftComplexObj.a()->d().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.a()->d()));
   EXPECT_EQ(*thriftComplexObj.a()->e(), 64);
-  EXPECT_TRUE(thriftComplexObj.a()->e().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.a()->e()));
   EXPECT_EQ(*thriftComplexObj.a()->f(), 0.99);
-  EXPECT_TRUE(thriftComplexObj.a()->f().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.a()->f()));
   EXPECT_EQ(*thriftComplexObj.a()->g(), "Hello");
-  EXPECT_TRUE(thriftComplexObj.a()->g().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.a()->g()));
 
   EXPECT_EQ(thriftComplexObj.b()[0], 3);
   EXPECT_EQ(thriftComplexObj.b()[1], 2);
   EXPECT_EQ(thriftComplexObj.b()[2], 1);
 
-  EXPECT_TRUE(!thriftComplexObj.c()["key1"].a().has_value());
+  EXPECT_TRUE(
+      !apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.c()["key1"].a()));
   EXPECT_EQ(*thriftComplexObj.c()["key1"].b(), 8);
-  EXPECT_TRUE(thriftComplexObj.c()["key1"].b().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.c()["key1"].b()));
   // field c doesn't have __isset field, since it is required.
   EXPECT_EQ(*thriftComplexObj.c()["key1"].c(), 16);
   EXPECT_EQ(*thriftComplexObj.c()["key1"].d(), 32);
-  EXPECT_TRUE(thriftComplexObj.c()["key1"].d().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.c()["key1"].d()));
   EXPECT_EQ(*thriftComplexObj.c()["key1"].e(), 64);
-  EXPECT_TRUE(thriftComplexObj.c()["key1"].e().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.c()["key1"].e()));
   EXPECT_EQ(*thriftComplexObj.c()["key1"].f(), 0.99);
-  EXPECT_TRUE(thriftComplexObj.c()["key1"].f().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.c()["key1"].f()));
   EXPECT_EQ(*thriftComplexObj.c()["key1"].g(), "Hello");
-  EXPECT_TRUE(thriftComplexObj.c()["key1"].g().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftComplexObj.c()["key1"].g()));
 
   EXPECT_EQ(*thriftComplexObj.c()["key2"].c(), 20);
   EXPECT_EQ(*thriftComplexObj.c()["key2"].d(), 320);
@@ -319,19 +355,31 @@ TEST(SimpleJSONToThriftTest, MissingField) {
   mySimpleStruct thriftSimpleObj;
   deserializeJSON(thriftSimpleObj, jsonSimpleT);
 
-  EXPECT_TRUE(!thriftSimpleObj.a().has_value());
+  EXPECT_TRUE(
+      !apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.a()));
   EXPECT_EQ(*thriftSimpleObj.b(), 8);
-  EXPECT_TRUE(thriftSimpleObj.b().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.b()));
   // field c doesn't have __isset field, since it is required.
   EXPECT_EQ(*thriftSimpleObj.c(), 16);
   EXPECT_EQ(*thriftSimpleObj.d(), 32);
-  EXPECT_TRUE(thriftSimpleObj.d().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.d()));
   EXPECT_EQ(*thriftSimpleObj.e(), 64);
-  EXPECT_TRUE(thriftSimpleObj.e().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.e()));
   EXPECT_EQ(*thriftSimpleObj.f(), 0.99);
-  EXPECT_TRUE(thriftSimpleObj.f().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.f()));
   EXPECT_EQ(*thriftSimpleObj.g(), "Hello");
-  EXPECT_TRUE(thriftSimpleObj.g().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSimpleObj.g()));
 
   // checks that a map is skipped properly
   string jsonEmptyListT("{\"e\":[1, 0.13]}");
@@ -358,9 +406,15 @@ TEST(SimpleJSONToThriftTest, MissingField) {
       ",\"c\":-123}");
   myNestedEmptyStruct thriftNestedObj;
   deserializeJSON(thriftNestedObj, jsonNestedT);
-  EXPECT_TRUE(thriftNestedObj.a().has_value());
-  EXPECT_TRUE(thriftNestedObj.b().has_value());
-  EXPECT_TRUE(thriftNestedObj.c().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftNestedObj.a()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftNestedObj.b()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftNestedObj.c()));
   EXPECT_EQ(*thriftNestedObj.c(), -123);
 }
 
@@ -470,7 +524,9 @@ TEST(SimpleJSONToThriftTest, SetTypeTest) {
   string jsonT("{\"a\":[1,2,3]}");
   mySetStruct thriftSetObj;
   deserializeJSON(thriftSetObj, jsonT);
-  EXPECT_TRUE(thriftSetObj.a().has_value());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          thriftSetObj.a()));
   EXPECT_EQ(thriftSetObj.a()->size(), 3);
   EXPECT_TRUE(thriftSetObj.a()->find(2) != thriftSetObj.a()->end());
   EXPECT_TRUE(thriftSetObj.a()->find(5) == thriftSetObj.a()->end());

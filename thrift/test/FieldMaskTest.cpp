@@ -1767,7 +1767,9 @@ TEST(FieldMaskTest, Ensure) {
     ASSERT_FALSE(bar.field_3()->field_1().has_value());
     ASSERT_TRUE(bar.field_3()->field_2().has_value());
     EXPECT_EQ(bar.field_3()->field_2(), 0);
-    ASSERT_TRUE(bar.field_4().has_value());
+    ASSERT_TRUE(
+        apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+            bar.field_4()));
     EXPECT_EQ(bar.field_4(), "");
   }
 
@@ -1782,7 +1784,9 @@ TEST(FieldMaskTest, Ensure) {
     ASSERT_FALSE(bar.field_3()->field_1().has_value());
     ASSERT_TRUE(bar.field_3()->field_2().has_value());
     EXPECT_EQ(bar.field_3()->field_2(), 0);
-    ASSERT_FALSE(bar.field_4().has_value());
+    ASSERT_FALSE(
+        apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+            bar.field_4()));
   }
 
   // test excludes mask
@@ -1799,7 +1803,9 @@ TEST(FieldMaskTest, Ensure) {
     ASSERT_TRUE(bar.field_3().has_value());
     ASSERT_FALSE(bar.field_3()->field_1().has_value());
     ASSERT_FALSE(bar.field_3()->field_2().has_value());
-    ASSERT_TRUE(bar.field_4().has_value());
+    ASSERT_TRUE(
+        apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+            bar.field_4()));
     EXPECT_EQ(bar.field_4(), "");
   }
 }
@@ -1934,7 +1940,9 @@ TEST(FieldMaskTest, SchemafulClear) {
     ASSERT_TRUE(bar.field_3().has_value());
     ASSERT_FALSE(bar.field_3()->field_1().has_value());
     ASSERT_FALSE(bar.field_3()->field_2().has_value());
-    ASSERT_TRUE(bar.field_4().has_value());
+    ASSERT_TRUE(
+        apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+            bar.field_4()));
     EXPECT_EQ(bar.field_4().value(), "");
   }
 
@@ -1942,18 +1950,24 @@ TEST(FieldMaskTest, SchemafulClear) {
     Bar2 bar;
     protocol::clear(mask, bar); // no-op
     ASSERT_FALSE(bar.field_3().has_value());
-    ASSERT_FALSE(bar.field_4().has_value());
+    ASSERT_FALSE(
+        apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+            bar.field_4()));
   }
 
   {
     Bar2 bar;
     bar.field_4() = "Hello";
     protocol::clear(noneMask(), bar); // no-op
-    ASSERT_TRUE(bar.field_4().has_value());
+    ASSERT_TRUE(
+        apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+            bar.field_4()));
     EXPECT_EQ(bar.field_4().value(), "Hello");
 
     protocol::clear(allMask(), bar);
-    ASSERT_TRUE(bar.field_4().has_value());
+    ASSERT_TRUE(
+        apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+            bar.field_4()));
     EXPECT_EQ(bar.field_4().value(), "");
   }
 
@@ -1974,11 +1988,15 @@ TEST(FieldMaskTest, SchemafulClear) {
     ASSERT_TRUE(bar.field_3()->field_1().has_value());
     EXPECT_EQ(bar.field_3()->field_1(), 1);
     ASSERT_FALSE(bar.field_3()->field_2().has_value());
-    ASSERT_FALSE(bar.field_4().has_value());
+    ASSERT_FALSE(
+        apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+            bar.field_4()));
 
     protocol::clear(allMask(), bar);
     ASSERT_FALSE(bar.field_3().has_value());
-    ASSERT_FALSE(bar.field_4().has_value());
+    ASSERT_FALSE(
+        apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+            bar.field_4()));
   }
 }
 
@@ -1992,12 +2010,20 @@ TEST(FieldMaskTest, SchemafulClearExcludes) {
   bar.foo().emplace().field1() = 1;
   bar.foo()->field2() = 2;
   protocol::clear(mask, bar);
-  ASSERT_TRUE(bar.foo().has_value());
-  ASSERT_TRUE(bar.foo()->field1().has_value());
+  ASSERT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          bar.foo()));
+  ASSERT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          bar.foo()->field1()));
   EXPECT_EQ(bar.foo()->field1(), 1);
-  ASSERT_TRUE(bar.foo()->field2().has_value());
+  ASSERT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          bar.foo()->field2()));
   EXPECT_EQ(bar.foo()->field2(), 0);
-  ASSERT_FALSE(bar.foos().has_value());
+  ASSERT_FALSE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          bar.foos()));
 }
 
 TEST(FieldMaskTest, SchemafulClearEdgeCase) {

@@ -32,8 +32,10 @@ TEST(field_ref_codegen_test, optional_getter) {
 TEST(field_ref_codegen_test, getter) {
   test_struct s;
   apache::thrift::field_ref<int64_t&> ref = s.bar();
-  EXPECT_FALSE(ref.is_set());
+  EXPECT_FALSE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(ref));
   ref = 42;
-  EXPECT_TRUE(ref.is_set());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(ref));
   EXPECT_EQ(*ref, 42);
 }

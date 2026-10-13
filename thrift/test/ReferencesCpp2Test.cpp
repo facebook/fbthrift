@@ -379,7 +379,9 @@ TEST(References, structured_annotation) {
   EXPECT_EQ(nullptr, a.opt_unique_field());
   EXPECT_EQ(nullptr, a.opt_shared_field());
   EXPECT_EQ(nullptr, a.opt_shared_mutable_field());
-  EXPECT_FALSE(std::as_const(a).intern_box_field().is_set());
+  EXPECT_FALSE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          std::as_const(a).intern_box_field()));
   static_assert(std::is_same_v<
                 decltype(a.opt_unique_field()),
                 std::unique_ptr<PlainStruct>&>);

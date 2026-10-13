@@ -641,7 +641,9 @@ TEST(StructTest, clear) {
   obj.req_field() = 8;
   obj.opt_field() = 9;
   apache::thrift::clear(obj);
-  EXPECT_FALSE(obj.def_field().is_set());
+  EXPECT_FALSE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          obj.def_field()));
   EXPECT_EQ(0, *obj.def_field());
   EXPECT_EQ(0, *obj.req_field());
   EXPECT_FALSE(obj.opt_field());
@@ -901,7 +903,9 @@ TEST(StructTest, has_value) {
     //
     // Ideally, the next line should be flipped, i.e.:
     // EXPECT_TRUE(b.def_field().has_value());
-    EXPECT_FALSE(b.def_field().has_value());
+    EXPECT_FALSE(
+        apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+            b.def_field()));
 
     // Optional field
     EXPECT_FALSE(b.opt_field().has_value());

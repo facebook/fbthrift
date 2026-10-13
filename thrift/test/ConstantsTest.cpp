@@ -79,8 +79,12 @@ TEST(constants, examples) {
   pod1.b() = "foo";
 
   const auto& pod_1 = test_constants::pod_1();
-  EXPECT_TRUE(pod_1.a().is_set());
-  EXPECT_TRUE(pod_1.b().is_set());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_1.a()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_1.b()));
   EXPECT_EQ(pod1, pod_1);
 
   struct2 pod2;
@@ -92,24 +96,54 @@ TEST(constants, examples) {
   pod2.d() = std::vector<std::int32_t>{11, 22, 33};
 
   const auto& pod_2 = test_constants::pod_2();
-  EXPECT_TRUE(pod_2.a().is_set());
-  EXPECT_TRUE(pod_2.b().is_set());
-  EXPECT_TRUE(pod_2.c().is_set());
-  EXPECT_TRUE(pod_2.d().is_set());
-  EXPECT_TRUE(pod_2.c()->a().is_set());
-  EXPECT_TRUE(pod_2.c()->b().is_set());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_2.a()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_2.b()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_2.c()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_2.d()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_2.c()->a()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_2.c()->b()));
   EXPECT_EQ(pod2, pod_2);
 
   const auto& pod_3 = test_constants::pod_3();
-  EXPECT_TRUE(pod_3.a().is_set());
-  EXPECT_TRUE(pod_3.b().is_set());
-  EXPECT_TRUE(pod_3.c().is_set());
-  EXPECT_TRUE(pod_3.c()->a().is_set());
-  EXPECT_FALSE(pod_3.c()->b().is_set());
-  EXPECT_TRUE(pod_3.c()->c().is_set());
-  EXPECT_FALSE(pod_3.c()->d().is_set());
-  EXPECT_FALSE(pod_3.c()->c()->a().is_set());
-  EXPECT_TRUE(pod_3.c()->c()->b().is_set());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_3.a()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_3.b()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_3.c()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_3.c()->a()));
+  EXPECT_FALSE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_3.c()->b()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_3.c()->c()));
+  EXPECT_FALSE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_3.c()->d()));
+  EXPECT_FALSE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_3.c()->c()->a()));
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          pod_3.c()->c()->b()));
 
   EXPECT_EQ(union1::Type::i, test_constants::u_1_1().getType());
   EXPECT_EQ(97, test_constants::u_1_1().get_i());

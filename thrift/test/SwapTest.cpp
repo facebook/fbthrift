@@ -68,7 +68,11 @@ void check_simple(
   EXPECT_EQ(*s1.im_default(), *s2.im_default());
   EXPECT_EQ(*s1.im_required(), *s2.im_required());
   EXPECT_EQ(s1.im_optional(), s2.im_optional());
-  EXPECT_EQ(s1.im_default().has_value(), s2.im_default().has_value());
+  EXPECT_EQ(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          s1.im_default()),
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          s2.im_default()));
 }
 
 TEST(SwapTest, test_swap_optional) {
@@ -123,7 +127,10 @@ TEST(SwapTest, test_swap_optional) {
   swap(comp1, comp2);
 
   EXPECT_EQ(*comp1.cp_default(), -7);
-  EXPECT_EQ(comp1.cp_default().has_value(), false);
+  EXPECT_EQ(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          comp1.cp_default()),
+      false);
   EXPECT_EQ(*comp1.cp_required(), 0);
   EXPECT_FALSE(comp1.cp_optional().has_value());
   EXPECT_EQ(comp1.the_map()->size(), 1);
@@ -132,7 +139,10 @@ TEST(SwapTest, test_swap_optional) {
   check_simple(*comp1.opt_simp(), simple3);
 
   EXPECT_EQ(*comp2.cp_default(), 5);
-  EXPECT_EQ(comp2.cp_default().has_value(), true);
+  EXPECT_EQ(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          comp2.cp_default()),
+      true);
   EXPECT_EQ(*comp2.cp_required(), 0x7fff);
   EXPECT_EQ(*comp2.cp_optional(), 50);
   EXPECT_EQ(comp2.the_map()->size(), 3);

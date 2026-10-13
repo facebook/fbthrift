@@ -383,11 +383,17 @@ TEST(OptionalsTest, Comparison) {
 
 TEST(OptionalsTest, UnsetUnsafe) {
   cpp2::HasOptionals obj;
-  EXPECT_FALSE(obj.int64Def().is_set());
+  EXPECT_FALSE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          obj.int64Def()));
   obj.int64Def() = 1;
-  EXPECT_TRUE(obj.int64Def().is_set());
+  EXPECT_TRUE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          obj.int64Def()));
   unset_unsafe(obj.int64Def());
-  EXPECT_FALSE(obj.int64Def().is_set());
+  EXPECT_FALSE(
+      apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          obj.int64Def()));
   EXPECT_EQ(obj.int64Def(), 1);
 
   obj.int64Opt() = 2;
