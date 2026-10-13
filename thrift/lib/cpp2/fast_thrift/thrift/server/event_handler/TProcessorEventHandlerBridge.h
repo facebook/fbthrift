@@ -424,26 +424,26 @@ class TProcessorEventHandlerBridge {
       // interceptor rejects the request. The handlers' contexts are still
       // returned below, which is the pairing they are promised.
       if (reply != nullptr) {
-        if (!event_handler_detail::isAppUnknownException(*reply)) {
-          const auto* exception = published->exception.get();
-          if (exception != nullptr) {
-            state->chain.userExceptionWrapped(
-                exception->declared, exception->exception);
-            if (!exception->declared) {
-              state->chain.handlerErrorWrapped(exception->exception);
-            }
+        const auto* exception = published->exception.get();
+        if (exception != nullptr) {
+          state->chain.userExceptionWrapped(
+              exception->declared, exception->exception);
+          if (!exception->declared) {
+            state->chain.handlerErrorWrapped(exception->exception);
           }
+        }
 
-          // Deliberately not caught: these run after the request has been
-          // served, so there is no verdict left to honour and swallowing would
-          // hide a handler bug. An escape terminates, as it would on a classic
-          // server.
-          if (exception == nullptr || exception->declared) {
-            state->chain.preWrite();
-            state->chain.onWriteData(state->protocolType, reply->data.get());
-            state->chain.postWrite(
-                event_handler_detail::payloadBytes(reply->data));
-          }
+        // Deliberately not caught: these run after the request has been
+        // served, so there is no verdict left to honour and swallowing would
+        // hide a handler bug. An escape terminates, as it would on a classic
+        // server.
+        if ((exception == nullptr &&
+             !event_handler_detail::isAppUnknownException(*reply)) ||
+            (exception != nullptr && exception->declared)) {
+          state->chain.preWrite();
+          state->chain.onWriteData(state->protocolType, reply->data.get());
+          state->chain.postWrite(
+              event_handler_detail::payloadBytes(reply->data));
         }
 
         // After postWrite: handlers write response headers there, and the reply

@@ -586,7 +586,18 @@ TEST(TProcessorEventHandlerBridgeTest, UndeclaredExceptionRunsErrorCallback) {
   (void)bridge.onRead(
       ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 7, "ping")));
   recordExceptionFor(ctx, 7, false);
-  (void)bridge.onWrite(ctx, erase_and_box(makeResponseFor(ctx, 7)));
+  auto response = makeUnknownExceptionMessage(
+      7,
+      folly::make_exception_wrapper<std::runtime_error>("boom"),
+      apache::thrift::ErrorBlame::SERVER);
+  for (auto& box : ctx.read) {
+    auto& request = box.get<ThriftServerRequestMessage>();
+    if (request.streamId == 7 && request.requestContext != nullptr) {
+      response.requestContext = std::move(request.requestContext);
+      break;
+    }
+  }
+  (void)bridge.onWrite(ctx, erase_and_box(std::move(response)));
 
   EXPECT_FALSE(log.declaredException);
   EXPECT_EQ(

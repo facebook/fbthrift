@@ -30,8 +30,10 @@
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/event_handler/TProcessorEventHandlerBridge.h>
 
+#include <atomic>
 #include <chrono>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -93,10 +95,17 @@ class TestHandler
   void async_tm_echo(
       ftt::FastHandlerCallbackPtr<std::unique_ptr<EchoResponse>> cb,
       std::unique_ptr<std::string> message) override {
+    if (throwUndeclared.load(std::memory_order_relaxed)) {
+      cb->exception(
+          folly::make_exception_wrapper<std::runtime_error>("boom undeclared"));
+      return;
+    }
     auto resp = std::make_unique<EchoResponse>();
     resp->message() = std::string("echoed:") + *message;
     cb->result(std::move(resp));
   }
+
+  std::atomic<bool> throwUndeclared{false};
 
  private:
   SharedServiceObserved* observed_;
@@ -171,6 +180,21 @@ class ObservingEventHandler : public apache::thrift::TProcessorEventHandler {
     static_cast<apache::thrift::Cpp2RequestContext*>(ctx)
         ->getHeader()
         ->setHeader("stamped-by", "event-handler");
+  }
+
+  void userExceptionWrapped(
+      void* /*ctx*/,
+      std::string_view /*fnName*/,
+      bool /*declared*/,
+      const folly::exception_wrapper& /*exception*/) override {
+    observed_->wlock()->calls.emplace_back("userExceptionWrapped");
+  }
+
+  void handlerErrorWrapped(
+      void* /*ctx*/,
+      std::string_view /*fnName*/,
+      const folly::exception_wrapper& /*exception*/) override {
+    observed_->wlock()->calls.emplace_back("handlerErrorWrapped");
   }
 
  private:
@@ -292,6 +316,26 @@ class TProcessorEventHandlerBridgeE2ETest : public ::testing::Test {
     return result;
   }
 
+  folly::exception_wrapper echoExpectError(const std::string& message) {
+    auto* evb = clientThread_->getEventBase();
+    folly::Baton<> done;
+    folly::exception_wrapper error;
+    evb->runInEventBaseThread([&] {
+      client_->semifuture_echo(message)
+          .via(evb)
+          .thenValue([&](EchoResponse) {
+            ADD_FAILURE() << "RPC succeeded; expected an exception";
+            done.post();
+          })
+          .thenError([&](const folly::exception_wrapper& ew) {
+            error = ew;
+            done.post();
+          });
+    });
+    EXPECT_TRUE(done.try_wait_for(std::chrono::seconds{10}));
+    return error;
+  }
+
   void ping() {
     apache::thrift::RpcOptions options;
     pingWith(options);
@@ -352,6 +396,28 @@ TEST_F(TProcessorEventHandlerBridgeE2ETest, RealRequestDrivesEveryCallback) {
   EXPECT_TRUE(locked->sawRequestHeader);
   // Proves the synthesized connection context carries the real peer.
   EXPECT_TRUE(locked->sawPeerAddress);
+}
+
+TEST_F(
+    TProcessorEventHandlerBridgeE2ETest,
+    UndeclaredExceptionDrivesErrorCallbacks) {
+  handler_->throwUndeclared.store(true, std::memory_order_relaxed);
+  connect();
+
+  const auto error = echoExpectError("hello");
+  EXPECT_NE(error.what().find("boom undeclared"), std::string::npos);
+
+  auto locked = observed_.rlock();
+  EXPECT_EQ(
+      locked->calls,
+      (std::vector<std::string>{
+          "newConnection",
+          "getServiceContext",
+          "preRead",
+          "onReadData",
+          "postRead",
+          "userExceptionWrapped",
+          "handlerErrorWrapped"}));
 }
 
 // The classic request context the bridge builds reaches the service, so a
