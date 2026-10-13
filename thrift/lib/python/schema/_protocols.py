@@ -28,6 +28,7 @@ from typing import ClassVar, Protocol as TypingProtocol
 
 from thrift.lib.python.schema._binary_protocol import BinaryReader, BinaryWriter
 from thrift.lib.python.schema._compact_protocol import CompactReader, CompactWriter
+from thrift.lib.python.schema._simple_json_protocol import SimpleJsonWriter
 from thrift.lib.python.schema._ttypes import Protocol
 
 
@@ -134,6 +135,7 @@ def available_backends() -> tuple[Backend, ...]:
             writers={
                 Protocol.BINARY: BinaryWriter,
                 Protocol.COMPACT: CompactWriter,
+                Protocol.SIMPLE_JSON: SimpleJsonWriter,
             },
         ),
     )
