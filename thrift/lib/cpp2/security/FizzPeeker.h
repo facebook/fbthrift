@@ -103,7 +103,9 @@ class ThriftFizzAcceptorHandshakeHelper
     callback_->connectionError(transport_.get(), ew, sslError_);
   }
 
-  void pspSuccess(folly::NetworkSocket fd) noexcept override;
+  void pspSuccess(
+      folly::NetworkSocket fd,
+      std::unique_ptr<folly::IOBuf> postTlsData) noexcept override;
   void pspError(const folly::exception_wrapper& ew) noexcept override;
 
   std::shared_ptr<apache::thrift::ThriftParametersServerExtension>

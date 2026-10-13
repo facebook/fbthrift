@@ -187,11 +187,14 @@ void ThriftFizzAcceptorHandshakeHelper::stopTLSSuccess(
 }
 
 void ThriftFizzAcceptorHandshakeHelper::pspSuccess(
-    folly::NetworkSocket) noexcept {
+    folly::NetworkSocket, std::unique_ptr<folly::IOBuf> postTlsData) noexcept {
   auto applicationProtocol = transport_->getApplicationProtocol();
 
   auto plaintextTransport =
       toFDSocket(transport_.get(), kSecurityProtocolPSPV0);
+  if (postTlsData) {
+    plaintextTransport->setPreReceivedData(std::move(postTlsData));
+  }
   plaintextTransport->cacheAddresses();
   transport_.reset();
 
