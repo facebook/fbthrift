@@ -468,7 +468,7 @@ Cpp2Worker::makeThriftServerExtension(const folly::SocketAddress& clientAddr) {
   thriftParametersContext->setUseStopTLSV2(
       thriftConfig->enableStopTLSV2 || **ThriftServer::enableStopTLSV2());
   if (effectivePspPolicy == PSPUpgradePolicy::ALWAYS) {
-    constexpr uint64_t kSupportedPSPPolicies = THRIFT_PSP_V0 | THRIFT_PSP_V1;
+    constexpr uint64_t kSupportedPSPPolicies = THRIFT_PSP_V1;
 
     thriftParametersContext->setSupportedPSPVersionsPolicy(
         [](const folly::SocketAddress&) -> uint64_t {

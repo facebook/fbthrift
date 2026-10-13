@@ -96,20 +96,13 @@ void ThriftFizzAcceptorHandshakeHelper::fizzHandshakeSuccess(
     // Thrift extension sent in TLS.
 
     // PSP is mutually exclusive with StopTLS.
-    uint64_t pspHandshakeVersion = thriftExtension_->getNegotiatedPSPUpgrade();
-    if (pspHandshakeVersion == PSPNegotiationVersion::THRIFT_PSP_V0 ||
-        pspHandshakeVersion == PSPNegotiationVersion::THRIFT_PSP_V1) {
+    if (thriftExtension_->getNegotiatedPSPUpgrade() ==
+        PSPNegotiationVersion::THRIFT_PSP_V1) {
       // TODO: PSPVersion currently hardcoded to AES-128-GCM
-      pspUpgradeFrame_ =
-          pspHandshakeVersion == PSPNegotiationVersion::THRIFT_PSP_V1
-          ? fizz::psp::pspUpgradeV1(
-                transport,
-                fizz::psp::PSPVersion::VER0,
-                fizz::psp::KernelPSP::make(folly::getGlobalCPUExecutor()))
-          : fizz::psp::pspUpgradeV0(
-                transport,
-                fizz::psp::PSPVersion::VER0,
-                fizz::psp::KernelPSP::make(folly::getGlobalCPUExecutor()));
+      pspUpgradeFrame_ = fizz::psp::pspUpgradeV1(
+          transport,
+          fizz::psp::PSPVersion::VER0,
+          fizz::psp::KernelPSP::make(folly::getGlobalCPUExecutor()));
       return pspUpgradeFrame_->start(this);
     }
 
