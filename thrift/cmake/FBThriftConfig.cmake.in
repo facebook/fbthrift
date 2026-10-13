@@ -1,59 +1,47 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 #
-# CMake package configuration file for fbthrift
+# CMake package configuration file for Thrift.
 #
-# Defines the target "FBThrift::thriftcpp2"
-# Add this to your target_link_libraries() call to depend on thrift.
+# Link against FBThrift::thriftcpp2 to depend on Thrift. Its wangle::wangle
+# dependency must be found first with find_package(wangle CONFIG).
 #
-# Note that fbthrift depends on the wangle::wangle target.  This should
-# be found by calling find_package(wangle CONFIG) before finding fbthrift.
-#
-# This also defines the following variables
-# FBTHRIFT_COMPILER - The path to the thrift compiler
-#
+# Variables defined:
+#   FBTHRIFT_INCLUDE_DIR - The Thrift include directory
+#   THRIFT_COMPILER      - The Thrift compiler target, as used by
+#                          ThriftLibrary.cmake; unset if no compiler is installed
 
 @PACKAGE_INIT@
 
 include(CMakeFindDependencyMacro)
 
-# Save the PACKAGE_PREFIX_DIR in a separate variable.  find_dependency() calls
-# below can replace PACKAGE_PREFIX_DIR with the prefix of the dependency that
-# was searched for.
-set(FBTHRIFT_PREFIX_DIR "${PACKAGE_PREFIX_DIR}")
-
-set_and_check(FBTHRIFT_CMAKE_DIR "@PACKAGE_THRIFT_INSTALL_CMAKEDIR@")
 set_and_check(FBTHRIFT_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
 
-# None of these ship a CMake package config, so they resolve in MODULE mode via
-# the Find modules installed alongside this config. They are not optional:
-# FBThriftTargets.cmake names the imported targets they define (Xxhash::xxhash,
-# gflags, glog::glog, zstd::zstd), and a consumer that skipped them would fail
-# inside that file with "target not found" rather than here. Prepend this
-# config's own directory to CMAKE_MODULE_PATH only for these lookups, and restore
-# it before propagating any failure so the consumer's scope is never polluted
-# (find_dependency's REQUIRED failure path would return() before a later restore).
-set(_FBTHRIFT_MODULE_DEPS Xxhash Gflags Glog Zstd)
-set(_FBTHRIFT_SAVED_CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}")
-list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
-foreach(_fbthrift_dep IN LISTS _FBTHRIFT_MODULE_DEPS)
-  # FindGlog.cmake itself calls find_package(Gflags) and find_package(LibUnwind),
-  # which is why those modules are installed here too and why this runs with the
-  # module path still prepended.
-  find_package(${_fbthrift_dep} MODULE)
-endforeach()
-set(CMAKE_MODULE_PATH "${_FBTHRIFT_SAVED_CMAKE_MODULE_PATH}")
-unset(_FBTHRIFT_SAVED_CMAKE_MODULE_PATH)
-foreach(_fbthrift_dep IN LISTS _FBTHRIFT_MODULE_DEPS)
-  if (NOT ${_fbthrift_dep}_FOUND)
-    set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE "Could not find required dependency ${_fbthrift_dep}")
-    set(${CMAKE_FIND_PACKAGE_NAME}_FOUND FALSE)
-    unset(_FBTHRIFT_MODULE_DEPS)
-    unset(_fbthrift_dep)
-    return()
-  endif()
-endforeach()
-unset(_FBTHRIFT_MODULE_DEPS)
-unset(_fbthrift_dep)
+# These dependencies ship no package config, so they are found through the Find
+# modules installed next to this file. The exported Thrift targets link against
+# their imported targets, so a missing one must fail here, with a clear message.
+# The function keeps the CMAKE_MODULE_PATH change out of the consumer's scope;
+# imported targets are directory-scoped and remain visible. Function names are
+# global, hence the prefix.
+function(_thrift_find_module_deps)
+  list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+  foreach(dep IN ITEMS Xxhash Gflags Glog Zstd)
+    # FindGlog.cmake looks up Gflags and LibUnwind, so their modules are
+    # installed here too.
+    find_package(${dep} MODULE)
+    if (NOT ${dep}_FOUND)
+      set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE
+          "Could not find required dependency ${dep}" PARENT_SCOPE)
+      return()
+    endif()
+  endforeach()
+endfunction()
+
+unset(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE)
+_thrift_find_module_deps()
+if (DEFINED ${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE)
+  set(${CMAKE_FIND_PACKAGE_NAME}_FOUND FALSE)
+  return()
+endif()
 
 find_dependency(fmt CONFIG)
 find_dependency(ZLIB REQUIRED)
@@ -62,41 +50,30 @@ find_dependency(OpenSSL)
 find_package(mvfst CONFIG)
 
 if (NOT TARGET FBThrift::thriftcpp2)
-  include("${FBTHRIFT_CMAKE_DIR}/FBThriftTargets.cmake")
+  include("${CMAKE_CURRENT_LIST_DIR}/FBThriftTargets.cmake")
 endif()
 
-# Prefer the FBThrift::thrift target, which carries the right executable
-# suffix on every platform. FBTHRIFT_COMPILER is kept for consumers that
-# predate it; LOCATION is readable on IMPORTED targets and resolves here at
-# configure time. A libraries-only install exports no compiler, so leave a
-# NOTFOUND value rather than an empty string, which would reach a consumer's
-# COMMAND as a silently empty argument.
+# FBTHRIFT_COMPILER is deprecated. A libraries-only install exports no compiler;
+# NOTFOUND keeps a consumer's COMMAND from silently receiving an empty argument.
 if (TARGET FBThrift::thrift)
+  # Like ThriftLibrary.cmake, keep a value the consumer set beforehand.
+  if (NOT DEFINED THRIFT_COMPILER)
+    set(THRIFT_COMPILER FBThrift::thrift)
+  endif()
   get_target_property(FBTHRIFT_COMPILER FBThrift::thrift LOCATION)
 else()
   set(FBTHRIFT_COMPILER "FBTHRIFT_COMPILER-NOTFOUND")
 endif()
 
-#
-# Component definitions
-# The FBThrift_XXX_FOUND variables below define package components that
-# can be checked by callers using "find_package(FBThrift COMPONENTS XXX)"
-# e.g., "find_package(FBThrift COMPONENTS py)"
-#
-
-# We always build the cpp2 generator and its libraries
+# Components, checked with find_package(FBThrift COMPONENTS ...).
+# cpp2 is always built; py is the deprecated predecessor of python.
 set(FBThrift_cpp2_FOUND True)
-
-# Set FBThrift_py_FOUND if we built the thrift/lib/py library that supports
-# the output from the thrift compiler's "py" generator.
-# (Note that this generator is deprecated in favor of the "python" generator.)
 set(FBThrift_py_FOUND @THRIFT_PY_DEPRECATED@)
-
 set(FBThrift_python_FOUND @THRIFT_PYTHON@)
 
 set(FBThrift_FOUND True)
 check_required_components(FBThrift)
 
 if (FBThrift_FOUND AND NOT FBThrift_FIND_QUIETLY)
-    message(STATUS "Found FBThrift: ${FBTHRIFT_PREFIX_DIR}")
+    message(STATUS "Found FBThrift: ${CMAKE_CURRENT_LIST_DIR}")
 endif()

@@ -24,7 +24,7 @@ include(CMakePackageConfigHelpers)
 configure_package_config_file(
   cmake/FBThriftConfig.cmake.in FBThriftConfig.cmake
   INSTALL_DESTINATION ${THRIFT_INSTALL_CMAKEDIR}
-  PATH_VARS THRIFT_INSTALL_CMAKEDIR CMAKE_INSTALL_INCLUDEDIR)
+  PATH_VARS CMAKE_INSTALL_INCLUDEDIR)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/FBThriftConfig.cmake
         DESTINATION ${THRIFT_INSTALL_CMAKEDIR})
 # xxhash, gflags, glog and zstd ship no CMake package config, so
