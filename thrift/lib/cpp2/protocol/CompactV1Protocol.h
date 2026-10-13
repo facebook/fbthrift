@@ -38,6 +38,7 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
 
   using CompactProtocolWriter::CompactProtocolWriter;
   using CompactProtocolWriter::keyOrder;
+  using CompactProtocolWriter::kHasFixedSerializedSizeForNumbers;
   using CompactProtocolWriter::kHasIndexSupport;
   using CompactProtocolWriter::protocolType;
   using CompactProtocolWriter::setOutput;

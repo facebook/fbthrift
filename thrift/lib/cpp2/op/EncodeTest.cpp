@@ -16,6 +16,7 @@
 
 #include <cstddef>
 #include <functional>
+#include <limits>
 #include <map>
 #include <memory>
 #include <set>
@@ -27,6 +28,7 @@
 #include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/op/Encode.h>
+#include <thrift/lib/cpp2/protocol/CompactV1Protocol.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 #include <thrift/lib/cpp2/protocol/Object.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -100,6 +102,73 @@ TEST(EncodeTest, WideByteCounts) {
   EXPECT_EQ(
       expected,
       (op::serialized_size<false, type::list<type::i64_t>>)(protocol, values));
+}
+
+struct NoSpecialHandlingCompactWriter : CompactProtocolWriter {
+  static constexpr bool kHasFixedSerializedSizeForNumbers() { return false; }
+};
+
+template <typename Tag, typename T>
+void testSerializedSizeForDifferentFlags(const T& value) {
+  SCOPED_TRACE(folly::pretty_name<Tag>());
+  CompactProtocolWriter writer;
+  NoSpecialHandlingCompactWriter noSpecialHandling;
+  EXPECT_EQ(
+      (op::serialized_size<false, Tag>)(noSpecialHandling, value),
+      (op::serialized_size<false, Tag>)(writer, value));
+}
+
+TEST(EncodeTest, SerializedSizeForDifferentFlags) {
+  testSerializedSizeForDifferentFlags<type::list<type::i64_t>>(
+      std::vector<int64_t>{1, 2, 3});
+  testSerializedSizeForDifferentFlags<type::set<type::i64_t>>(
+      std::set<int64_t>{1, 2, 3});
+  testSerializedSizeForDifferentFlags<type::map<type::i64_t, type::i64_t>>(
+      std::map<int64_t, int64_t>{{1, 1}, {2, 2}, {3, 3}});
+  testSerializedSizeForDifferentFlags<
+      type::set<type::cpp_type<uint64_t, type::i64_t>>>(
+      std::set<uint64_t>{1, 2, 3});
+  testSerializedSizeForDifferentFlags<type::map<type::i64_t, type::string_t>>(
+      std::map<int64_t, std::string>{{1, "a"}, {2, "b"}, {3, "c"}});
+
+  using Adapted = type::adapted<test::TemplatedTestAdapter, type::i64_t>;
+  const std::set<test::Wrapper<int64_t>> wrapped{{1}, {2}, {3}};
+  testSerializedSizeForDifferentFlags<type::set<Adapted>>(wrapped);
+  testSerializedSizeForDifferentFlags<
+      type::set<type::cpp_type<test::Wrapper<int64_t>, Adapted>>>(wrapped);
+}
+
+template <typename Tag, typename Writer>
+void expectSameSerializedSizeForAllValues(Writer& writer) {
+  SCOPED_TRACE(folly::pretty_name<Tag>());
+  using T = type::native_type<Tag>;
+  const auto size = [&](T value) {
+    return op::serialized_size<false, Tag>(writer, value);
+  };
+  EXPECT_EQ(size(T{}), size(std::numeric_limits<T>::lowest()));
+  EXPECT_EQ(size(T{}), size(std::numeric_limits<T>::max()));
+}
+
+template <typename Writer>
+void expectFixedSerializedSizeForNumbers() {
+  SCOPED_TRACE(folly::pretty_name<Writer>());
+  EXPECT_TRUE(Writer::kHasFixedSerializedSizeForNumbers());
+  Writer writer;
+  expectSameSerializedSizeForAllValues<type::bool_t>(writer);
+  expectSameSerializedSizeForAllValues<type::byte_t>(writer);
+  expectSameSerializedSizeForAllValues<type::i16_t>(writer);
+  expectSameSerializedSizeForAllValues<type::i32_t>(writer);
+  expectSameSerializedSizeForAllValues<type::i64_t>(writer);
+  expectSameSerializedSizeForAllValues<type::float_t>(writer);
+  expectSameSerializedSizeForAllValues<type::double_t>(writer);
+}
+
+TEST(EncodeTest, StandardWritersHaveFixedSerializedSizeForNumbers) {
+  expectFixedSerializedSizeForNumbers<BinaryProtocolWriter>();
+  expectFixedSerializedSizeForNumbers<CompactProtocolWriter>();
+  expectFixedSerializedSizeForNumbers<CompactV1ProtocolWriter>();
+  expectFixedSerializedSizeForNumbers<JSONProtocolWriter>();
+  expectFixedSerializedSizeForNumbers<SimpleJSONProtocolWriter>();
 }
 
 template <

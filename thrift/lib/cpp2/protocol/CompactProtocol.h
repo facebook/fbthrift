@@ -86,6 +86,8 @@ class CompactProtocolWriter : public detail::ProtocolBase {
 #endif
   }
 
+  static constexpr bool kHasFixedSerializedSizeForNumbers() { return true; }
+
   /**
    * The IOBufQueue itself is managed by the caller.
    * It must exist for the life of the CompactProtocol as well,

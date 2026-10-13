@@ -55,6 +55,8 @@ class SimpleJSONProtocolWriter : public JSONProtocolWriterCommon {
 
   static constexpr bool kSupportsArithmeticVectors() { return false; }
 
+  static constexpr bool kHasFixedSerializedSizeForNumbers() { return true; }
+
   inline uint32_t writeStructBegin(const char* name);
   inline uint32_t writeStructEnd();
   inline uint32_t writeFieldBegin(

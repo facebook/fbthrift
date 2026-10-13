@@ -66,6 +66,8 @@ class BinaryProtocolWriter : public detail::ProtocolBase {
 
   static constexpr bool kSupportsArithmeticVectors() { return true; }
 
+  static constexpr bool kHasFixedSerializedSizeForNumbers() { return true; }
+
   /**
    * ...
    * The IOBuf itself is managed by the caller.

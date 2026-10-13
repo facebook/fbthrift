@@ -335,6 +335,37 @@ struct SerializedSize<ZeroCopy, type::enum_t<T>> {
   }
 };
 
+// `is_a_v` looks through `adapted` and `cpp_type`, but an adapter may size
+// values itself.
+template <typename Tag>
+inline constexpr bool kIsUnadaptedNumber = type::is_a_v<Tag, type::number_c>;
+template <typename Adapter, typename Tag>
+inline constexpr bool kIsUnadaptedNumber<type::adapted<Adapter, Tag>> = false;
+template <typename T, typename Tag>
+inline constexpr bool kIsUnadaptedNumber<type::cpp_type<T, Tag>> =
+    kIsUnadaptedNumber<Tag>;
+
+// A protocol declares `kHasFixedSerializedSizeForNumbers()` true when its
+// serializedSize for a number or enum depends only on the type, not on the
+// value.
+template <typename Protocol, typename Tag>
+inline constexpr bool kHasFixedSerializedSize = kIsUnadaptedNumber<Tag> &&
+    requires { requires Protocol::kHasFixedSerializedSizeForNumbers(); };
+
+template <bool ZeroCopy, typename Tag, typename Protocol, typename Container>
+std::size_t serializedSizeElements(Protocol& prot, const Container& elems) {
+  if constexpr (kHasFixedSerializedSize<Protocol, Tag>) {
+    return elems.size() *
+        SerializedSize<ZeroCopy, Tag>{}(prot, type::native_type<Tag>{});
+  } else {
+    std::size_t xfer = 0;
+    for (const auto& elem : elems) {
+      xfer += SerializedSize<ZeroCopy, Tag>{}(prot, elem);
+    }
+    return xfer;
+  }
+}
+
 template <bool ZeroCopy, typename Tag>
 struct SerializedSize<ZeroCopy, type::list<Tag>> {
   template <typename Protocol, typename ListType>
@@ -345,9 +376,7 @@ struct SerializedSize<ZeroCopy, type::list<Tag>> {
     std::size_t xfer = 0;
     xfer += prot.serializedSizeListBegin(
         typeTagToTType<Tag>, checked_container_size(list.size()));
-    for (const auto& elem : list) {
-      xfer += SerializedSize<ZeroCopy, Tag>{}(prot, elem);
-    }
+    xfer += serializedSizeElements<ZeroCopy, Tag>(prot, list);
     xfer += prot.serializedSizeListEnd();
     return xfer;
   }
@@ -360,9 +389,7 @@ struct SerializedSize<ZeroCopy, type::set<Tag>> {
     std::size_t xfer = 0;
     xfer += prot.serializedSizeSetBegin(
         typeTagToTType<Tag>, checked_container_size(set.size()));
-    for (const auto& elem : set) {
-      xfer += SerializedSize<ZeroCopy, Tag>{}(prot, elem);
-    }
+    xfer += serializedSizeElements<ZeroCopy, Tag>(prot, set);
     xfer += prot.serializedSizeSetEnd();
     return xfer;
   }
@@ -377,9 +404,17 @@ struct SerializedSize<ZeroCopy, type::map<Key, Value>> {
         typeTagToTType<Key>,
         typeTagToTType<Value>,
         checked_container_size(map.size()));
-    for (const auto& kv : map) {
-      xfer += SerializedSize<ZeroCopy, Key>{}(prot, kv.first);
-      xfer += SerializedSize<ZeroCopy, Value>{}(prot, kv.second);
+    if constexpr (
+        kHasFixedSerializedSize<Protocol, Key> &&
+        kHasFixedSerializedSize<Protocol, Value>) {
+      xfer += map.size() *
+          (SerializedSize<ZeroCopy, Key>{}(prot, type::native_type<Key>{}) +
+           SerializedSize<ZeroCopy, Value>{}(prot, type::native_type<Value>{}));
+    } else {
+      for (const auto& kv : map) {
+        xfer += SerializedSize<ZeroCopy, Key>{}(prot, kv.first);
+        xfer += SerializedSize<ZeroCopy, Value>{}(prot, kv.second);
+      }
     }
     xfer += prot.serializedSizeMapEnd();
     return xfer;
