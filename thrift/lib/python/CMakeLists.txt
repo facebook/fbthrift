@@ -255,7 +255,7 @@ set(_all_cython_includes
     # CMake targets pick these up) reach it.
     ${LIBGFLAGS_INCLUDE_DIR}
     ${OPENSSL_INCLUDE_DIR}
-    ${ZSTD_INCLUDE_DIRS}
+    ${ZSTD_INCLUDE_DIR}
     ${Xxhash_INCLUDE_DIR})
 list(JOIN _all_cython_includes ":" cython_include_path)
 log_debug("cython_include_path='${cython_include_path}'")
