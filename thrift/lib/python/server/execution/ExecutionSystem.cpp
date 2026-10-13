@@ -24,6 +24,11 @@ void ExecutionSystem::shutdown() noexcept {
 
 void ExecutionSystem::execute(
     std::string method, RequestDispatch requestDispatch) const {
+  executeOnControl(std::move(method), std::move(requestDispatch));
+}
+
+void ExecutionSystem::executeOnControl(
+    std::string method, RequestDispatch requestDispatch) const {
   folly::makeSemiFuture()
       .deferValue(
           [method = std::move(method),

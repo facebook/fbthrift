@@ -77,6 +77,9 @@ class ExecutionSystem final {
  private:
   ExecutionSystem() = default;
 
+  void executeOnControl(
+      std::string method, RequestDispatch requestDispatch) const;
+
   folly::Executor::KeepAlive<> controlExecutor_;
   StartControlRequest::SharedProxy startRequest_{nullptr};
   // The Python factory's function table owns the callable references.
