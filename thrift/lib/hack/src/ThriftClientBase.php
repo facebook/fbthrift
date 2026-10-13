@@ -42,7 +42,7 @@ abstract class ThriftClientBase implements IThriftClient {
   <<__NeedsConcrete, __DynamicallyCallable>>
   public static function factory()[]: ThriftClientFactory<this> {
     return tuple(
-      static::class,
+      nameof static,
       function(
         TProtocol $input,
         ?TProtocol $output,

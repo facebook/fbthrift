@@ -163,11 +163,11 @@ final class AdapterTest extends WWWTest {
 
     expect(() ==> {
       TCompactSerializer::serialize($struct);
-    })->toThrow(Exception::class, 'Adapter toThrift failed');
+    })->toThrow(nameof Exception, 'Adapter toThrift failed');
 
     expect(() ==> {
       TBinarySerializer::serialize($struct);
-    })->toThrow(Exception::class, 'Adapter toThrift failed');
+    })->toThrow(nameof Exception, 'Adapter toThrift failed');
   }
 
   public function testAdapterExceptionDuringDeserialization(): void {
@@ -179,14 +179,14 @@ final class AdapterTest extends WWWTest {
         $compact_serialized,
         AdapterTest\StructWithThrowingAdapter::withDefaultValues(),
       );
-    })->toThrow(Exception::class, 'Adapter fromThrift failed');
+    })->toThrow(nameof Exception, 'Adapter fromThrift failed');
 
     expect(() ==> {
       TBinarySerializer::deserialize(
         $binary_serialized,
         AdapterTest\StructWithThrowingAdapter::withDefaultValues(),
       );
-    })->toThrow(Exception::class, 'Adapter fromThrift failed');
+    })->toThrow(nameof Exception, 'Adapter fromThrift failed');
   }
 }
 

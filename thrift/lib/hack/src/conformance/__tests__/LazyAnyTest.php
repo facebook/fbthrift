@@ -23,7 +23,7 @@ final class LazyAnyTest extends LazyAnyTestBase {
 
   const class<IThriftStruct> CLASSNAME = unicorn_test_MainStruct::class;
   const classname<TProtocolSerializer> DATA_SERIALIZER =
-    TCompactSerializer::class;
+    nameof TCompactSerializer;
   const ?apache_thrift_StandardProtocol THRIFT_PROTOCOL = null;
   const string CPP_HEX_BINARY_SERIALIZED =
     "1c2810d58158475b86f69ea747c26d807b4d89380d150a292803666f6f03626172000000";
@@ -37,7 +37,7 @@ final class LazyAnySimpleJsonTest extends LazyAnyTestBase {
   const class<IThriftStruct> CLASSNAME =
     unicorn_test_MainStructSimpleJson::class;
   const classname<TProtocolSerializer> DATA_SERIALIZER =
-    JSONThriftSerializer::class;
+    nameof JSONThriftSerializer;
   const ?apache_thrift_StandardProtocol THRIFT_PROTOCOL =
     apache_thrift_StandardProtocol::SimpleJson;
   const string CPP_HEX_BINARY_SERIALIZED =

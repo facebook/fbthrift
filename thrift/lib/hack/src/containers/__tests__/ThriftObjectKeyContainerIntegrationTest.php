@@ -9,12 +9,12 @@ final class ThriftObjectKeyContainerIntegrationTest extends WWWTest {
   public function testGeneratedObjectKeyContainersAreFunctional(): void {
     $container = self::newObjectKeyContainer();
 
-    expect($container->struct_set)->toBeInstanceOf(ThriftSet::class);
-    expect($container->struct_map)->toBeInstanceOf(ThriftMap::class);
-    expect($container->bool_set)->toBeInstanceOf(ThriftSet::class);
-    expect($container->bool_map)->toBeInstanceOf(ThriftMap::class);
-    expect($container->value_set)->toBeInstanceOf(ThriftSet::class);
-    expect($container->value_map)->toBeInstanceOf(ThriftMap::class);
+    expect($container->struct_set)->toBeInstanceOf(nameof ThriftSet);
+    expect($container->struct_map)->toBeInstanceOf(nameof ThriftMap);
+    expect($container->bool_set)->toBeInstanceOf(nameof ThriftSet);
+    expect($container->bool_map)->toBeInstanceOf(nameof ThriftMap);
+    expect($container->value_set)->toBeInstanceOf(nameof ThriftSet);
+    expect($container->value_map)->toBeInstanceOf(nameof ThriftMap);
     expect(self::describeContainer($container))->toEqual(
       self::expectedDescription(),
     );
@@ -133,7 +133,7 @@ final class ThriftObjectKeyContainerIntegrationTest extends WWWTest {
       self::objectKeyStructShape(1, 'one'),
     ];
     expect(() ==> ObjectKeyContainerStruct::__fromShape($set_shape))->toThrow(
-      InvariantViolationException::class,
+      nameof InvariantViolationException,
       'Duplicate element',
     );
 
@@ -143,7 +143,7 @@ final class ThriftObjectKeyContainerIntegrationTest extends WWWTest {
       tuple(self::objectKeyStructShape(1, 'one'), 'again'),
     ];
     expect(() ==> ObjectKeyContainerStruct::__fromShape($map_shape))->toThrow(
-      InvariantViolationException::class,
+      nameof InvariantViolationException,
       'Duplicate key',
     );
   }
@@ -232,7 +232,7 @@ final class ThriftObjectKeyContainerIntegrationTest extends WWWTest {
     $set_shape = self::newAdaptedObjectKeyContainer()->__toShape();
     $set_shape['adapted_i32_set'] = vec['1', '1'];
     expect(() ==> ObjectKeyAdaptedContainerStruct::__fromShape($set_shape))
-      ->toThrow(InvariantViolationException::class, 'Duplicate element');
+      ->toThrow(nameof InvariantViolationException, 'Duplicate element');
 
     $map_shape = self::newAdaptedObjectKeyContainer()->__toShape();
     $map_shape['adapted_i32_map'] = vec[
@@ -240,7 +240,7 @@ final class ThriftObjectKeyContainerIntegrationTest extends WWWTest {
       tuple('1', 'again'),
     ];
     expect(() ==> ObjectKeyAdaptedContainerStruct::__fromShape($map_shape))
-      ->toThrow(InvariantViolationException::class, 'Duplicate key');
+      ->toThrow(nameof InvariantViolationException, 'Duplicate key');
   }
 
   public async function testWrappedObjectKeyMapValuesRoundTrip(

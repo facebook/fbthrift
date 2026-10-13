@@ -343,7 +343,7 @@ abstract class ThriftAsyncProcessor
     $methodname = 'process_'.$fname;
     if (JustKnobs::eval('www/mas_buenopath:enable_mbp_thrift')) {
       self::setBuenopath(ThriftMasBuenopath::newBuilder(
-        shape("class_name" => static::class, "method_name" => $methodname),
+        shape("class_name" => nameof static, "method_name" => $methodname),
       ));
     }
     // Check for new-style method metadata first (controlled by JustKnobs)

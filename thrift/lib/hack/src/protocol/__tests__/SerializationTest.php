@@ -137,7 +137,7 @@ final class SerializationTest extends WWWTest {
     (function(): void) $function,
     ?string $mention,
   ): void {
-    FBLogger::pushMessageClass(TestLogMessage::class);
+    FBLogger::pushMessageClass(nameof TestLogMessage);
     TestLogMessage::clear();
     $function();
     $msgs = TestLogMessage::getLogMessages();
@@ -222,7 +222,7 @@ final class SerializationTest extends WWWTest {
         () ==> {
           $result = TBinarySerializer::deserialize_DEPRECATED(
             $this->binarySerializedNoExtension,
-            CompactTestStruct::class,
+            nameof CompactTestStruct,
             $disable_hphp_extension,
           );
           expect($result)->toBePHPEqual($this->testValue);
@@ -251,7 +251,7 @@ final class SerializationTest extends WWWTest {
         () ==> {
           $result = TBinarySerializer::deserialize_DEPRECATED(
             $this->binarySerializedNoExtension.'extra!',
-            CompactTestStruct::class,
+            nameof CompactTestStruct,
             $disable_hphp_extension,
           );
           expect($result)->toBePHPEqual($this->testValue);
@@ -333,7 +333,7 @@ final class SerializationTest extends WWWTest {
       $s->i16_test = $value;
       expect(() ==> {
         TCompactSerializer::serialize($s, null, $disable_hphp_extension);
-      })->toThrow(TProtocolException::class, null, 'Value is out of range');
+      })->toThrow(nameof TProtocolException, null, 'Value is out of range');
     }
   }
 
@@ -368,7 +368,7 @@ final class SerializationTest extends WWWTest {
       $s->i32_test = $value;
       expect(() ==> {
         TCompactSerializer::serialize($s, null, $disable_hphp_extension);
-      })->toThrow(TProtocolException::class, null, 'Value is out of range');
+      })->toThrow(nameof TProtocolException, null, 'Value is out of range');
     }
   }
 

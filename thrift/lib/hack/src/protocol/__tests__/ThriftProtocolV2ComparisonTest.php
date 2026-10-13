@@ -162,7 +162,7 @@ final class ThriftProtocolV2ComparisonTest extends WWWTest {
           $version,
           0,
         ),
-      )->toBeInstanceOf(Throwable::class);
+      )->toBeInstanceOf(nameof Throwable);
     }
     expect(
       ThriftProtocolV2Comparison::compareRead(
@@ -197,7 +197,7 @@ final class ThriftProtocolV2ComparisonTest extends WWWTest {
           $v2,
           self::version($compact),
         ),
-      )->toBeInstanceOf(Throwable::class);
+      )->toBeInstanceOf(nameof Throwable);
     }
   }
 

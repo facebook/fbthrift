@@ -208,7 +208,7 @@ final class ThriftTypeStructAdapter implements IThriftAdapter {
           $name->set_unionType($type_uri);
         } else {
           $class = new ReflectionClass($class_nm);
-          if ($class->isSubclassOf(TException::class)) {
+          if ($class->isSubclassOf(nameof TException)) {
 
             $name->set_exceptionType($type_uri);
           } else {
@@ -263,9 +263,9 @@ final class ThriftTypeStructAdapter implements IThriftAdapter {
       ThriftTypeRegistry::getxCanonicalUriForHackType($class_name),
     );
     $class = new ReflectionClass($class_name);
-    if ($class->isSubclassOf(TException::class)) {
+    if ($class->isSubclassOf(nameof TException)) {
       $name->set_exceptionType($type_uri);
-    } else if ($class->isSubclassOf(IThriftUnion::class)) {
+    } else if ($class->isSubclassOf(nameof IThriftUnion)) {
       $name->set_unionType($type_uri);
     } else {
       $name->set_structType($type_uri);
@@ -317,11 +317,11 @@ final class ThriftTypeStructAdapter implements IThriftAdapter {
           'uri' => ThriftTypeRegistry::getxCanonicalUriForHackType($cls),
         ));
 
-        if (Classnames::is($cls, IThriftUnion::class)) {
+        if (Classnames::is($cls, nameof IThriftUnion)) {
           $type_name->set_unionType($type_uri);
-        } else if (Classnames::is($cls, TException::class)) {
+        } else if (Classnames::is($cls, nameof TException)) {
           $type_name->set_exceptionType($type_uri);
-        } else if (Classnames::is($cls, IThriftStruct::class)) {
+        } else if (Classnames::is($cls, nameof IThriftStruct)) {
           $type_name->set_structType($type_uri);
         } else {
           $type_name->set_enumType($type_uri);

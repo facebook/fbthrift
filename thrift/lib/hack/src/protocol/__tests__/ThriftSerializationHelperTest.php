@@ -305,6 +305,6 @@ final class ThriftSerializationHelperTest
         CorruptedDataStruct2::withDefaultValues(),
       ),
     )
-      ->toThrow(TTransportException::class);
+      ->toThrow(nameof TTransportException);
   }
 }

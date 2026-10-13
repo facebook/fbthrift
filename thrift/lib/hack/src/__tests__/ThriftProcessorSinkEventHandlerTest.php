@@ -33,7 +33,7 @@ final class ThriftProcessorSinkEventHandlerTest extends WWWTest {
   const string TEST_SINK_SERVICE_METHOD_NAME = 'testSink';
 
   private function mockServerSink(): TServerSink {
-    $mock_server_sink = mock(TServerSink::class);
+    $mock_server_sink = mock(nameof TServerSink);
     $mock_server_sink->mockYield('genIsSinkReady', false);
     $mock_server_sink->mockReturn('getPayloads', tuple(vec[], null));
     $mock_server_sink->mockReturn('isClientException', false);
@@ -42,7 +42,7 @@ final class ThriftProcessorSinkEventHandlerTest extends WWWTest {
   }
 
   private function mockServerSinkWithClientException(): TServerSink {
-    $mock_server_sink = mock(TServerSink::class);
+    $mock_server_sink = mock(nameof TServerSink);
     $mock_server_sink->mockYield('genIsSinkReady', false);
     $mock_server_sink->mockReturn('getPayloads', tuple(vec[], null));
     $mock_server_sink->mockReturn('isClientException', true);
@@ -59,7 +59,7 @@ final class ThriftProcessorSinkEventHandlerTest extends WWWTest {
     self::mockFunction(php_root<>)->mockReturn('/var/www');
     self::mockFunction(request_stats_total_wall<>)->mockReturn(0);
 
-    $mock_perf_metadata = mock(PerfMetadata::class);
+    $mock_perf_metadata = mock(nameof PerfMetadata);
     $mock_perf_metadata->mockReturn('setThriftFlush0Duration', null);
     self::mockFunction(PerfMetadata::get<>)->mockReturn($mock_perf_metadata);
 
@@ -71,7 +71,7 @@ final class ThriftProcessorSinkEventHandlerTest extends WWWTest {
     $temp_protocol->writeMessageEnd();
 
     // mock output protocol
-    $output_transport = mock(TMemoryBuffer::class);
+    $output_transport = mock(nameof TMemoryBuffer);
     $output_transport->mockReturn('getBuffer', '');
     $output_transport->mockReturn('resetBuffer', null);
 
@@ -174,7 +174,7 @@ final class ThriftProcessorSinkEventHandlerTest extends WWWTest {
     self::mockFunction(php_root<>)->mockReturn('/var/www');
     self::mockFunction(request_stats_total_wall<>)->mockReturn(0);
 
-    $mock_perf_metadata = mock(PerfMetadata::class);
+    $mock_perf_metadata = mock(nameof PerfMetadata);
     $mock_perf_metadata->mockReturn('setThriftFlush0Duration', null);
     self::mockFunction(PerfMetadata::get<>)->mockReturn($mock_perf_metadata);
 
@@ -186,7 +186,7 @@ final class ThriftProcessorSinkEventHandlerTest extends WWWTest {
     $temp_protocol->writeMessageEnd();
 
     // mock output protocol
-    $output_transport = mock(TMemoryBuffer::class);
+    $output_transport = mock(nameof TMemoryBuffer);
     $output_transport->mockReturn('getBuffer', '');
     $output_transport->mockReturn('resetBuffer', null);
 

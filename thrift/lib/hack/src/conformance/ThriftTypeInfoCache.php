@@ -39,7 +39,7 @@ final class ThriftTypeInfoCache
   protected static function getKeyConfig(
   )[SBC]: SandboxCacheKeyConfigBuilder<this::TKey> {
     return SandboxCacheKeyConfigBuilder::fromTypesOfWithAttributeFilters(
-      ThriftTypeInfo::class,
+      nameof ThriftTypeInfo,
       shape(
         'include_abstract' => true,
         'include_test' => true,

@@ -435,7 +435,7 @@ final class ThriftSetTest extends WWWTest {
         TType::STRUCT,
         $this->getStructElemSpec(),
       ),
-    )->toThrow(InvariantViolationException::class, 'Duplicate element');
+    )->toThrow(nameof InvariantViolationException, 'Duplicate element');
   }
 
   public function testToVecFromVecRoundTrip(): void {
@@ -475,7 +475,7 @@ final class ThriftSetTest extends WWWTest {
         TType::BOOL,
         shape('type' => TType::BOOL),
       ),
-    )->toThrow(InvariantViolationException::class, 'Duplicate element');
+    )->toThrow(nameof InvariantViolationException, 'Duplicate element');
   }
 
   public function testBoolIterationExposesAllEntriesInAnyOrder(): void {

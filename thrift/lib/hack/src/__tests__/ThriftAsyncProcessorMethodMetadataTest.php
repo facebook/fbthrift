@@ -35,14 +35,14 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
 
   public async function testExampleServiceOwnMethod(): Awaitable<void> {
 
-    $handler = mock(ExampleRootServiceAsyncIf::class);
+    $handler = mock(nameof ExampleRootServiceAsyncIf);
     $processor = new TestableExampleServiceAsyncProcessor($handler);
 
     $metadata = $processor->testGetMethodMetadata('sendRequest');
 
     $metadata = expect($metadata)->toNotBeNull();
     expect($metadata)->toBeInstanceOf(
-      ThriftServiceRequestResponseMethod::class,
+      nameof ThriftServiceRequestResponseMethod,
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
@@ -51,14 +51,14 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
   }
 
   public async function testExampleMiddleServiceOwnMethod(): Awaitable<void> {
-    $handler = mock(ExampleMiddleServiceAsyncIf::class);
+    $handler = mock(nameof ExampleMiddleServiceAsyncIf);
     $processor = new TestableExampleMiddleServiceAsyncProcessor($handler);
 
     $metadata = $processor->testGetMethodMetadata('sendMiddleRequest');
 
     $metadata = expect($metadata)->toNotBeNull();
     expect($metadata)->toBeInstanceOf(
-      ThriftServiceRequestResponseMethod::class,
+      nameof ThriftServiceRequestResponseMethod,
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
@@ -68,7 +68,7 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
 
   public async function testExampleMiddleServiceInheritedMethod(
   ): Awaitable<void> {
-    $handler = mock(ExampleMiddleServiceAsyncIf::class);
+    $handler = mock(nameof ExampleMiddleServiceAsyncIf);
     $processor = new TestableExampleMiddleServiceAsyncProcessor($handler);
 
     // sendRequest is inherited from ExampleService via parent::getMethodMetadata()
@@ -76,7 +76,7 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
 
     $metadata = expect($metadata)->toNotBeNull();
     expect($metadata)->toBeInstanceOf(
-      ThriftServiceRequestResponseMethod::class,
+      nameof ThriftServiceRequestResponseMethod,
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
@@ -85,14 +85,14 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
   }
 
   public async function testExampleChildServiceOwnMethod(): Awaitable<void> {
-    $handler = mock(ExampleChildServiceAsyncIf::class);
+    $handler = mock(nameof ExampleChildServiceAsyncIf);
     $processor = new TestableExampleChildServiceAsyncProcessor($handler);
 
     $metadata = $processor->testGetMethodMetadata('sendChildRequest');
 
     $metadata = expect($metadata)->toNotBeNull();
     expect($metadata)->toBeInstanceOf(
-      ThriftServiceRequestResponseMethod::class,
+      nameof ThriftServiceRequestResponseMethod,
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
@@ -101,7 +101,7 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
   }
 
   public async function testExampleChildServiceParentMethod(): Awaitable<void> {
-    $handler = mock(ExampleChildServiceAsyncIf::class);
+    $handler = mock(nameof ExampleChildServiceAsyncIf);
     $processor = new TestableExampleChildServiceAsyncProcessor($handler);
 
     // sendMiddleRequest is inherited from ExampleMiddleService
@@ -109,7 +109,7 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
 
     $metadata = expect($metadata)->toNotBeNull();
     expect($metadata)->toBeInstanceOf(
-      ThriftServiceRequestResponseMethod::class,
+      nameof ThriftServiceRequestResponseMethod,
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
@@ -127,7 +127,7 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
    */
   public async function testExampleChildServiceGrandparentMethod(
   ): Awaitable<void> {
-    $handler = mock(ExampleChildServiceAsyncIf::class);
+    $handler = mock(nameof ExampleChildServiceAsyncIf);
     $processor = new TestableExampleChildServiceAsyncProcessor($handler);
 
     // sendRequest is inherited from ExampleService (grandparent)
@@ -135,7 +135,7 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
 
     $metadata = expect($metadata)->toNotBeNull();
     expect($metadata)->toBeInstanceOf(
-      ThriftServiceRequestResponseMethod::class,
+      nameof ThriftServiceRequestResponseMethod,
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
@@ -144,7 +144,7 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
   }
 
   public async function testUnknownMethodReturnsNull(): Awaitable<void> {
-    $handler = mock(ExampleChildServiceAsyncIf::class);
+    $handler = mock(nameof ExampleChildServiceAsyncIf);
     $processor = new TestableExampleChildServiceAsyncProcessor($handler);
 
     $metadata = $processor->testGetMethodMetadata('unknownMethod');
@@ -173,7 +173,7 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
     TProtocol $output,
   ): Awaitable<void> {
     $processor = new ExampleChildServiceAsyncProcessor(
-      mock(ExampleChildServiceAsyncIf::class),
+      mock(nameof ExampleChildServiceAsyncIf),
     );
     $input->writeRPCMessage(
       'getThriftServiceMetadata',

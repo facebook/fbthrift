@@ -30,7 +30,7 @@ final class BacktraceClientEventHandlerTest extends WWWTest {
   }
 
   public async function testPreRecvWithoutBacktraceHeader(): Awaitable<void> {
-    $headers_transport = mock(TTransportSupportsHeaders::class)
+    $headers_transport = mock(nameof TTransportSupportsHeaders)
       ->mockReturn('getReadHeaders', dict[]);
     $handler = new BacktraceClientEventHandler($headers_transport);
     $fn_name = 'test_fn';
@@ -42,7 +42,7 @@ final class BacktraceClientEventHandlerTest extends WWWTest {
 
   public async function testPreRecvWithInvalidBacktraceHeader(
   ): Awaitable<void> {
-    $headers_transport = mock(TTransportSupportsHeaders::class)
+    $headers_transport = mock(nameof TTransportSupportsHeaders)
       ->mockReturn('getReadHeaders', dict[
         Tracing_Backtrace\Backtrace_CONSTANTS::BACKTRACE_HEADER_KEY =>
           'invalid',
@@ -64,7 +64,7 @@ final class BacktraceClientEventHandlerTest extends WWWTest {
       TCompactSerializer::serialize($propagated_context);
     $encoded_propagated_context_str = Base64::encode($propagated_context_str);
 
-    $headers_transport = mock(TTransportSupportsHeaders::class)
+    $headers_transport = mock(nameof TTransportSupportsHeaders)
       ->mockReturn('getReadHeaders', dict[
         Tracing_Backtrace\Backtrace_CONSTANTS::BACKTRACE_HEADER_KEY =>
           $encoded_propagated_context_str,
@@ -86,10 +86,10 @@ final class BacktraceClientEventHandlerTest extends WWWTest {
 final class ThriftBacktraceServerEventHandlerTest extends WWWTest {
   use ClassLevelTest;
   public async function testSetsHeaderWhenBacktraceActive(): Awaitable<void> {
-    $thrift_server = mock(ThriftServer::class);
+    $thrift_server = mock(nameof ThriftServer);
     $handler = new ThriftBacktraceServerEventHandler($thrift_server);
 
-    $mock_block = mock(ArtilleryBlock::class);
+    $mock_block = mock(nameof ArtilleryBlock);
     $mock_block->mockReturn('getID', 'AAAAAAA1234');
 
     ThriftContextPropState::get()->setRequestId(

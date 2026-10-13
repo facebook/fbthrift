@@ -24,7 +24,7 @@ final class ThriftProcessorStreamingEventHandlerTest extends WWWTest {
   const string TEST_STREAMING_SERVICE_METHOD_NAME = 'testStream';
 
   private function mockServerStream(): TServerStream {
-    $mock_server_stream = mock(TServerStream::class);
+    $mock_server_stream = mock(nameof TServerStream);
     $mock_server_stream->mockYield('genIsStreamReady', true);
     $mock_server_stream->mockYield('genSendStreamPayload', true);
     $mock_server_stream->mockReturn('sendStreamComplete', null);
@@ -41,7 +41,7 @@ final class ThriftProcessorStreamingEventHandlerTest extends WWWTest {
     self::mockFunction(php_root<>)->mockReturn('/var/www');
     self::mockFunction(request_stats_total_wall<>)->mockReturn(0);
 
-    $mock_perf_metadata = mock(PerfMetadata::class);
+    $mock_perf_metadata = mock(nameof PerfMetadata);
     $mock_perf_metadata->mockReturn('setThriftFlush0Duration', null);
     self::mockFunction(PerfMetadata::get<>)->mockReturn($mock_perf_metadata);
 
@@ -53,7 +53,7 @@ final class ThriftProcessorStreamingEventHandlerTest extends WWWTest {
     $temp_protocol->writeMessageEnd();
 
     // mock output protocol
-    $output_transport = mock(TMemoryBuffer::class);
+    $output_transport = mock(nameof TMemoryBuffer);
     $output_transport->mockReturn('getBuffer', '');
     $output_transport->mockReturn('resetBuffer', null);
 

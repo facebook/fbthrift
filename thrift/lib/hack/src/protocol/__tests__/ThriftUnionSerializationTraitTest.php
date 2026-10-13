@@ -119,7 +119,7 @@ final class ThriftUnionSerializationTraitTest extends WWWTest {
         $disable_hphp_extension,
       ),
     )
-      ->toThrow(TProtocolException::class, 'Union field already set');
+      ->toThrow(nameof TProtocolException, 'Union field already set');
   }
 
   public static function providePhpSerializeRoundTrip(): dict<string, shape(
@@ -162,7 +162,7 @@ final class ThriftUnionSerializationTraitTest extends WWWTest {
     // @lint-ignore DEPRECATED_FUNCTION16
     $deserialized = PHP\unserialize($serialized);
 
-    expect($deserialized)->toBeInstanceOf(SerializerTestUnion::class);
+    expect($deserialized)->toBeInstanceOf(nameof SerializerTestUnion);
     $deserialized as SerializerTestUnion;
     expect($deserialized->getType())->toEqual($expected_type);
 
@@ -180,7 +180,7 @@ final class ThriftUnionSerializationTraitTest extends WWWTest {
     // @lint-ignore DEPRECATED_FUNCTION16
     $deserialized = PHP\unserialize($serialized);
 
-    expect($deserialized)->toBeInstanceOf(SerializerTestStrictUnion::class);
+    expect($deserialized)->toBeInstanceOf(nameof SerializerTestStrictUnion);
     $deserialized as SerializerTestStrictUnion;
     expect($deserialized->getType())->toEqual(
       SerializerTestStrictUnionEnum::int_value,
@@ -196,7 +196,7 @@ final class ThriftUnionSerializationTraitTest extends WWWTest {
     // @lint-ignore DEPRECATED_FUNCTION16
     $deserialized = PHP\unserialize($serialized);
 
-    expect($deserialized)->toBeInstanceOf(SerializerTestUnion::class);
+    expect($deserialized)->toBeInstanceOf(nameof SerializerTestUnion);
     $deserialized as SerializerTestUnion;
     expect($deserialized->getType())->toEqual(SerializerTestUnionEnum::_EMPTY_);
   }
@@ -211,7 +211,7 @@ final class ThriftUnionSerializationTraitTest extends WWWTest {
     $deserialized = PHP\unserialize($serialized);
 
     expect($deserialized)->toBeInstanceOf(
-      ThriftUnionSerializationTraitTestExtendedUnion::class,
+      nameof ThriftUnionSerializationTraitTestExtendedUnion,
     );
     $deserialized as ThriftUnionSerializationTraitTestExtendedUnion;
     expect($deserialized->get_int_value())->toEqual(42);

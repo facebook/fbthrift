@@ -136,7 +136,7 @@ final class LazyAny implements JsonSerializable {
         }
 
         return $this->getUsingBinarySerializer(
-          ArgAssert::isClassname($class, IThriftStruct::class),
+          ArgAssert::isClassname($class, nameof IThriftStruct),
         );
       },
       $deserialized ==> $deserialized,

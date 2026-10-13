@@ -133,7 +133,7 @@ final class TCompactProtocolAcceleratedTest extends WWWTest {
   private async function genEncode(TProtocol $prot): Awaitable<string> {
     ThriftClientTestUtils::mockRPCResponse(
       CompactTestStruct::withDefaultValues(),
-      CompactTestServiceClient::class,
+      nameof CompactTestServiceClient,
     );
     $client = new CompactTestServiceClient($prot);
     await $client->test($this->getTestData());
@@ -230,7 +230,7 @@ final class TCompactProtocolAcceleratedTest extends WWWTest {
     $prot->writeRPCStruct($input);
     $prot->getTransport()->flush();
 
-    $output = $prot->readRPCStruct(CompactTestStruct::class);
+    $output = $prot->readRPCStruct(nameof CompactTestStruct);
     expect($output)->toBePHPEqual($input);
   }
 }

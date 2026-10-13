@@ -71,10 +71,10 @@ final class MonitorAndStatusInterfaceTest extends WWWTest {
     self::mockFunction(meth_caller(DefaultMonitor::class, 'getCounters'))
       ->mockYield(self::$defaultMonitorCounter);
 
-    $mocked_status = mock(DefaultStatus::class)
+    $mocked_status = mock(nameof DefaultStatus)
       ->mockYield('getStatusDetails', self::$customStatusDetails)
       ->mockYield('getLoad', self::$customStatusLoad);
-    $mocked_monitor = mock(DefaultMonitor::class)
+    $mocked_monitor = mock(nameof DefaultMonitor)
       ->mockYield('getCounters', self::$customMonitorCounter);
 
     self::mockFunctionStaticUNSAFE(
@@ -239,7 +239,7 @@ final class MonitorAndStatusInterfaceTest extends WWWTest {
     } else {
       expect(async () ==> await $status_client->getStatusDetails())
         ->toThrow(
-          TApplicationException::class,
+          nameof TApplicationException,
           'Function getStatusDetails is not found in the service',
         );
     }
@@ -249,7 +249,7 @@ final class MonitorAndStatusInterfaceTest extends WWWTest {
     } else {
       expect(async () ==> await $status_client->getLoad())
         ->toThrow(
-          TApplicationException::class,
+          nameof TApplicationException,
           'Function getLoad is not found in the service',
         );
     }
@@ -261,7 +261,7 @@ final class MonitorAndStatusInterfaceTest extends WWWTest {
     } else {
       expect(async () ==> await $monitor_client->getCounters())
         ->toThrow(
-          TApplicationException::class,
+          nameof TApplicationException,
           'Function getCounters is not found in the service',
         );
     }

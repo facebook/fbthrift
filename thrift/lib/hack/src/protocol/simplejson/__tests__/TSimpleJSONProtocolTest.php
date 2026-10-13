@@ -199,7 +199,7 @@ final class TSimpleJSONProtocolTest extends WWWTest {
       $val_type = null;
       $size = null;
       $protocol->readMapBegin(inout $key_type, inout $val_type, inout $size);
-    })->toThrow(TProtocolException::class, $message);
+    })->toThrow(nameof TProtocolException, $message);
   }
 
   public static function provideSpecialFloatingPointEncodings(): dict<
@@ -423,7 +423,7 @@ final class TSimpleJSONProtocolTest extends WWWTest {
     $input = '{"s": "Hello, World!"}';
     $expected = '"{\"s\": \"Hello, World!\"}"';
     $actual = BypassVisibility::invokeStaticMethod(
-      TSimpleJSONProtocol::class,
+      nameof TSimpleJSONProtocol,
       "quoteString",
       $input,
     );
@@ -433,7 +433,7 @@ final class TSimpleJSONProtocolTest extends WWWTest {
     $expected =
       '"{\"s\": \"Hello\\\\n\\\\r\\\\t\\\\b\\\\f\\\\\\\\\\"World!\"}"';
     $actual = BypassVisibility::invokeStaticMethod(
-      TSimpleJSONProtocol::class,
+      nameof TSimpleJSONProtocol,
       "quoteString",
       $input,
     );
@@ -442,7 +442,7 @@ final class TSimpleJSONProtocolTest extends WWWTest {
     $input = '{"s": ""}';
     $expected = '"{\"s\": \"\"}"';
     $actual = BypassVisibility::invokeStaticMethod(
-      TSimpleJSONProtocol::class,
+      nameof TSimpleJSONProtocol,
       "quoteString",
       $input,
     );
@@ -451,7 +451,7 @@ final class TSimpleJSONProtocolTest extends WWWTest {
     $input = '{"s": null}';
     $expected = '"{\"s\": null}"';
     $actual = BypassVisibility::invokeStaticMethod(
-      TSimpleJSONProtocol::class,
+      nameof TSimpleJSONProtocol,
       "quoteString",
       $input,
     );
@@ -460,7 +460,7 @@ final class TSimpleJSONProtocolTest extends WWWTest {
     $input = '{"s": "Hello, \u{00A9} World!"}';
     $expected = '"{\"s\": \"Hello, \\\\u{00A9} World!\"}"';
     $actual = BypassVisibility::invokeStaticMethod(
-      TSimpleJSONProtocol::class,
+      nameof TSimpleJSONProtocol,
       "quoteString",
       $input,
     );
@@ -469,7 +469,7 @@ final class TSimpleJSONProtocolTest extends WWWTest {
     $input = '{"s": "Hello, \\\\ World!"}';
     $expected = '"{\"s\": \"Hello, \\\\\\\\ World!\"}"';
     $actual = BypassVisibility::invokeStaticMethod(
-      TSimpleJSONProtocol::class,
+      nameof TSimpleJSONProtocol,
       "quoteString",
       $input,
     );
@@ -478,7 +478,7 @@ final class TSimpleJSONProtocolTest extends WWWTest {
     $input = '{"s": "Hello, \ World!"}';
     $expected = '"{\"s\": \"Hello, \\\\ World!\"}"';
     $actual = BypassVisibility::invokeStaticMethod(
-      TSimpleJSONProtocol::class,
+      nameof TSimpleJSONProtocol,
       "quoteString",
       $input,
     );

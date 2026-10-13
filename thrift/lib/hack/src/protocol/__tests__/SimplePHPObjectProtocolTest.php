@@ -98,14 +98,14 @@ final class SimplePHPObjectProtocolTest extends WWWTest {
         '[]',
         SimpleObjectTest_TestStruct::withDefaultValues(),
       ),
-    )->toThrow(TProtocolException::class);
+    )->toThrow(nameof TProtocolException);
 
     expect(
       () ==> JSONThriftSerializer::deserialize(
         '{"children": ""}',
         SimpleObjectTest_TestStruct::withDefaultValues(),
       ),
-    )->toThrow(TProtocolException::class);
+    )->toThrow(nameof TProtocolException);
 
   }
 }

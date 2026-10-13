@@ -46,7 +46,7 @@ abstract final class ThriftTypeRegistry {
 
   public static function getHackTypeForUri(string $uri)[]: ?classname<mixed> {
     $data =
-      ThriftTypeInfoCache::getDataForIndex(ThriftTypeUriIndex::class, $uri);
+      ThriftTypeInfoCache::getDataForIndex(nameof ThriftTypeUriIndex, $uri);
 
     invariant(
       C\count($data) <= 1,

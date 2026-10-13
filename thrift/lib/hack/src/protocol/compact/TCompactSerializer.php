@@ -216,7 +216,7 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
     ?int $override_version = null,
     bool $disable_hphp_extension = false,
   )[write_props]: IThriftStruct {
-    $class_name = ArgAssert::isClassname($class_name, IThriftStruct::class);
+    $class_name = ArgAssert::isClassname($class_name, nameof IThriftStruct);
     return static::deserialize(
       (string)$string_object,
       HH\classname_to_class($class_name) |> new $$(),

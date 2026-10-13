@@ -373,7 +373,7 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
       async () ==> await $client->sendRequest(
         example_RequestStruct::fromShape(shape('text' => 'req')),
       ),
-    )->toThrow(example_WhisperException::class, 'recv error');
+    )->toThrow(nameof example_WhisperException, 'recv error');
 
     expect($handler->getErrorFuncNames())->toEqual(vec['sendRequest']);
   }
@@ -392,7 +392,7 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
       async () ==> await $client->sendRequest(
         example_RequestStruct::fromShape(shape('text' => 'req')),
       ),
-    )->toThrow(example_WhisperException::class, 'recv error');
+    )->toThrow(nameof example_WhisperException, 'recv error');
 
     expect($handler->getErrorFuncNames())->toEqual(vec['sendRequest']);
   }
@@ -451,7 +451,7 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
       foreach ($response_and_stream->stream await as $_chunk) {
         // Should throw on first iteration
       }
-    })->toThrow(example_StreamException::class, 'stream error');
+    })->toThrow(nameof example_StreamException, 'stream error');
   }
 
   // Stream: verifies exception in stream payload propagates through the
@@ -484,7 +484,7 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
       foreach ($response_and_stream->stream await as $_chunk) {
         // Should throw on first iteration
       }
-    })->toThrow(example_StreamException::class, 'stream error');
+    })->toThrow(nameof example_StreamException, 'stream error');
   }
 
   // Sink: verifies client payloads reach handler and final response returns
@@ -629,7 +629,7 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
       async () ==> await $client->sendRequest(
         example_RequestStruct::fromShape(shape('text' => 'req')),
       ),
-    )->toThrow(example_WhisperException::class, 'recv error');
+    )->toThrow(nameof example_WhisperException, 'recv error');
 
     expect($error_handler->getErrorFuncNames())->toEqual(
       vec['sendRequest'],

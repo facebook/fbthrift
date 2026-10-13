@@ -129,9 +129,9 @@ abstract class LazyAnyTestBase extends WWWTest {
         'field' => apache_thrift_Any::fromShape(shape(
           'typeHashPrefixSha2_256' => Str\slice(
             BypassVisibility::invokeStaticMethod(
-              ThriftTypeRegistry::class,
+              nameof ThriftTypeRegistry,
               'getHashForHackType',
-              unicorn_test_ExampleStruct::class,
+              nameof unicorn_test_ExampleStruct,
             ),
             0,
             ThriftUniversalName::DEFAULT_HASH_LENGTH,
@@ -241,11 +241,11 @@ abstract class LazyAnyTestBase extends WWWTest {
   ): void {
     $lazy = self::getLazyAnyFromMixed($test_struct);
     expect(() ==> $lazy->get(unicorn_test_DifferentStruct::class))
-      ->toThrow(Exception::class);
+      ->toThrow(nameof Exception);
     expect(() ==> $lazy->get(unicorn_test_ExampleStruct::class))
       ->notToThrow();
     expect(() ==> $lazy->get(unicorn_test_DifferentStruct::class))
-      ->toThrow(Exception::class);
+      ->toThrow(nameof Exception);
     expect($lazy->get(unicorn_test_ExampleStruct::class))
       ->toBePHPEqual($expected_value);
   }

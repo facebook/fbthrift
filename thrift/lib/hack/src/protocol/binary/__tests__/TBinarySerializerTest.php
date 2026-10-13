@@ -151,7 +151,7 @@ final class TBinarySerializerTest extends WWWTest {
     // shouldCompareProtocolV2() is memoized; earlier cases would otherwise pin
     // its value.
     clear_class_memoization(
-      TBinarySerializer::class,
+      nameof TBinarySerializer,
       'shouldCompareProtocolV2',
     );
     $struct = CompactTestStruct::withDefaultValues();

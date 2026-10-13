@@ -29,7 +29,7 @@ final class TFramedTransportTestCase extends WWWTest {
 
   public static function providerTFramedTransport(
   ): vec<(classname<TTransport>, string)> {
-    $transports = vec[TBufferedTransport::class, TFramedTransport::class];
+    $transports = vec[nameof TBufferedTransport, nameof TFramedTransport];
 
     $message_array = vec[];
     /* Try all messages of sizes from 0 to 4k */

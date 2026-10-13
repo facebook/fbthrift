@@ -65,7 +65,7 @@ final class TBinaryProtocolAcceleratedTestCase extends WWWTest {
 
     $client1 = new scribeClient($protocol1);
     $client2 = new scribeClient($protocol2);
-    ThriftClientTestUtils::mockRPCResponse(ResultCode::OK, scribeClient::class);
+    ThriftClientTestUtils::mockRPCResponse(ResultCode::OK, nameof scribeClient);
     await $client1->Log($messages);
     await $client2->Log($messages);
 
@@ -104,7 +104,7 @@ final class TBinaryProtocolAcceleratedTestCase extends WWWTest {
     $client1 = new scribeClient($protocol1);
     $client2 = new scribeClient($protocol2);
 
-    ThriftClientTestUtils::mockRPCResponse(ResultCode::OK, scribeClient::class);
+    ThriftClientTestUtils::mockRPCResponse(ResultCode::OK, nameof scribeClient);
     await $client1->Log($messages);
     await $client2->Log($messages);
 
@@ -130,7 +130,7 @@ final class TBinaryProtocolAcceleratedTestCase extends WWWTest {
     $prot->writeRPCStruct($input);
     $prot->getTransport()->flush();
 
-    $output = $prot->readRPCStruct(LogEntry::class);
+    $output = $prot->readRPCStruct(nameof LogEntry);
     expect($output)->toBePHPEqual($input);
   }
 }

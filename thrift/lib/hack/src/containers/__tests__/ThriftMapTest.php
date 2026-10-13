@@ -399,7 +399,7 @@ final class ThriftMapTest extends WWWTest {
         TType::STRUCT,
         $this->getStructKeySpec(),
       ),
-    )->toThrow(InvariantViolationException::class, 'Duplicate key');
+    )->toThrow(nameof InvariantViolationException, 'Duplicate key');
   }
 
   public function testToShapeFromShapeRoundTrip(): void {

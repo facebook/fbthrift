@@ -19,7 +19,7 @@
 <<Oncalls('thrift_hack')>>
 final class ThriftEventHandlerMetadataTest extends WWWTest {
   public async function testMetadataBackwardCompatibility(): Awaitable<void> {
-    $handler = mock(ExampleRootServiceAsyncIf::class);
+    $handler = mock(nameof ExampleRootServiceAsyncIf);
     $proc = new ExampleRootServiceAsyncProcessor($handler);
 
     // The event handler will assert that the received metadata matches

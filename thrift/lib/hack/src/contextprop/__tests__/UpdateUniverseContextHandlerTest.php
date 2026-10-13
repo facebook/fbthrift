@@ -25,7 +25,7 @@ final class UpdateUniverseContextHandlerTest
 
   <<__Override>>
   public async function beforeEach(): Awaitable<void> {
-    clear_class_memoization(PrivacyLibKS::class, 'isKilled');
+    clear_class_memoization(nameof PrivacyLibKS, 'isKilled');
     MockJustKnobs::overrideKnob<bool>(
       'www/privacylib:killswitch',
       false,
@@ -79,7 +79,7 @@ final class UpdateUniverseContextHandlerTest
           "service_name_holder_to_be_updated_for_universe_propagation",
         'fn_name' =>
           "function_name_holder_to_be_updated_for_universe_propagation",
-        'thrift_class' => ThriftClientBase::class,
+        'thrift_class' => nameof ThriftClientBase,
         'client' =>
           new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
         'service_interface' =>
@@ -148,7 +148,7 @@ final class UpdateUniverseContextHandlerTest
 
   public async function testUniverseContextPropKillswitch(): Awaitable<void> {
     $mock = self::mockClassStaticMethodUNSAFE(
-      UpdateUniverseContextHandler::class,
+      nameof UpdateUniverseContextHandler,
       'getContextProps',
     );
 
@@ -158,7 +158,7 @@ final class UpdateUniverseContextHandlerTest
         "service_name_holder_to_be_updated_for_universe_propagation",
       'fn_name' =>
         "function_name_holder_to_be_updated_for_universe_propagation",
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
       'service_interface' =>
@@ -172,7 +172,7 @@ final class UpdateUniverseContextHandlerTest
     expect($mock)->wasCalled();
 
     $mock->clearCalls();
-    clear_class_memoization(PrivacyLibKS::class, 'isKilled');
+    clear_class_memoization(nameof PrivacyLibKS, 'isKilled');
     MockJustKnobs::overrideKnob<bool>(
       'www/privacylib:killswitch',
       false,
@@ -186,7 +186,7 @@ final class UpdateUniverseContextHandlerTest
         "service_name_holder_to_be_updated_for_universe_propagation",
       'fn_name' =>
         "function_name_holder_to_be_updated_for_universe_propagation",
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
       'service_interface' =>

@@ -73,7 +73,7 @@ final class ThriftTypeUriHashInnerCache
       'include_intern' => !SandboxCacheEnvironment::isProdBuild(),
     ));
 
-    $subtypes = $facts->getTypesOfWithAttributeFilters(ThriftTypeInfo::class);
+    $subtypes = $facts->getTypesOfWithAttributeFilters(nameof ThriftTypeInfo);
     return SandboxCacheKeyConfigBuilder::fromKeys($subtypes);
   }
 

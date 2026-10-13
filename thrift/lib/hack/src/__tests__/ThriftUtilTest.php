@@ -60,7 +60,7 @@ final class ThriftUtilTest extends WWWTest {
         cmux_ConstantValueEnum,
         cmux_ConstantValue::TShape,
       >(shape('boolVal' => false, 'intVal' => 0)),
-    )->toThrow(InvariantViolationException::class);
+    )->toThrow(nameof InvariantViolationException);
   }
 
   public async function testToValueMap(): Awaitable<void> {

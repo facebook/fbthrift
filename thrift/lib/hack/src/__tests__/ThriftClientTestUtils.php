@@ -20,7 +20,7 @@ abstract final class ThriftClientTestUtils {
 
   public static function mockRPCResponse<T>(
     ?T $response,
-    classname<ThriftClientBase> $cls = ThriftClientBase::class,
+    classname<ThriftClientBase> $cls = nameof ThriftClientBase,
   ): void {
     WWWTest::mockFunctionStaticUNSAFE($cls.'::genAwaitResponse')
       ->mockYield(tuple($response, null));
@@ -29,7 +29,7 @@ abstract final class ThriftClientTestUtils {
   public static function mockRPCWithException(
     Exception $ex,
     bool $after_execution = false,
-    classname<ThriftClientBase> $cls = ThriftClientBase::class,
+    classname<ThriftClientBase> $cls = nameof ThriftClientBase,
   ): void {
 
     $mock_func = WWWTest::mockFunctionStaticUNSAFE($cls.'::genAwaitResponse');

@@ -50,7 +50,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
 
   public async function testShouldBlockTraceContinuationWhenByteBudgetExceededEnabled(
   ): Awaitable<void> {
-    $budget = strict_mock(TraceSizeBudget::class);
+    $budget = strict_mock(nameof TraceSizeBudget);
     $budget->mockReturn('isExceeded', true);
     $budget->mockReturn('getMode', TraceSizeBudgetMode::ENABLED);
     ArtilleryThriftScribeSink::it()->setBudget($budget);
@@ -64,7 +64,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
   ): Awaitable<void> {
     // SHADOW over-cap is counted but must not block continuation; breadth is
     // 0 (fresh handler from beforeEach) so the breadth gate doesn't fire.
-    $budget = strict_mock(TraceSizeBudget::class);
+    $budget = strict_mock(nameof TraceSizeBudget);
     $budget->mockReturn('isExceeded', true);
     $budget->mockReturn('getMode', TraceSizeBudgetMode::SHADOW);
     ArtilleryThriftScribeSink::it()->setBudget($budget);
@@ -76,7 +76,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
 
   public async function testShouldNotBlockTraceContinuationWhenByteBudgetNotExceeded(
   ): Awaitable<void> {
-    $budget = strict_mock(TraceSizeBudget::class);
+    $budget = strict_mock(nameof TraceSizeBudget);
     $budget->mockReturn('isExceeded', false);
     ArtilleryThriftScribeSink::it()->setBudget($budget);
 
@@ -93,7 +93,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
     $handler = TraceSizeEstimationContextHandler::getInstance();
     $mutable_tfm = ThriftFrameworkMetadata::withDefaultValues();
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -115,7 +115,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
     $handler = TraceSizeEstimationContextHandler::getInstance();
     $mutable_tfm = ThriftFrameworkMetadata::withDefaultValues();
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -144,7 +144,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
     $handler = TraceSizeEstimationContextHandler::getInstance();
     $mutable_tfm = ThriftFrameworkMetadata::withDefaultValues();
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -171,7 +171,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
     $handler = TraceSizeEstimationContextHandler::getInstance();
     $mutable_tfm = ThriftFrameworkMetadata::withDefaultValues();
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -200,7 +200,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
     $handler = TraceSizeEstimationContextHandler::getInstance();
     $mutable_tfm = ThriftFrameworkMetadata::withDefaultValues();
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -228,7 +228,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
 
     $handler = TraceSizeEstimationContextHandler::getInstance();
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -282,7 +282,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
 
     $handler = TraceSizeEstimationContextHandler::getInstance();
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -341,7 +341,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
     $mutable_tfm->baggage = $baggage;
 
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -373,7 +373,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
     $handler = TraceSizeEstimationContextHandler::getInstance();
     $mutable_tfm = ThriftFrameworkMetadata::withDefaultValues();
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -463,7 +463,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
 
     $mutable_tfm = ThriftFrameworkMetadata::withDefaultValues();
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -513,7 +513,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
     $handler = TraceSizeEstimationContextHandler::getInstance();
     $mutable_tfm = ThriftFrameworkMetadata::withDefaultValues();
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -573,7 +573,7 @@ final class TraceSizeEstimationContextHandlerTest extends WWWTest {
     TraceSizeEstimationContextHandler::resetInstance();
     $handler = TraceSizeEstimationContextHandler::getInstance();
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );

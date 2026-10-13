@@ -75,7 +75,7 @@ final class TCompactSerializerTest extends WWWTest {
     // shouldCompareProtocolV2() is memoized; earlier cases would otherwise pin
     // its value.
     clear_class_memoization(
-      TCompactSerializer::class,
+      nameof TCompactSerializer,
       'shouldCompareProtocolV2',
     );
     $struct = new thriftshim_FooBar(Vector {1.0, -2.5}, 'bar');

@@ -311,11 +311,11 @@ abstract class ThriftLazyAnyTestBase<T> extends WWWTest {
   ): void {
     $lazy = self::getTLazyAnyFromThriftStruct($test_struct);
     expect(() ==> $lazy->get<facebook\thrift\test\DifferentStruct>())
-      ->toThrow(Exception::class);
+      ->toThrow(nameof Exception);
     expect(() ==> static::getValueFromLazyAny($lazy))
       ->notToThrow();
     expect(() ==> $lazy->get<facebook\thrift\test\DifferentStruct>())
-      ->toThrow(Exception::class);
+      ->toThrow(nameof Exception);
     expect(static::getValueFromLazyAny($lazy))
       ->toBePHPEqual($expected_value);
   }

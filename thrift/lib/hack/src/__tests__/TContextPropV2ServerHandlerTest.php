@@ -29,7 +29,7 @@ final class TContextPropV2ServerHandlerTest extends WWWTest {
    * controller observer with the exception
    */
   public function testHandlerExceptionObservesException(): void {
-    $mock_thrift_server = mock(ThriftServer::class);
+    $mock_thrift_server = mock(nameof ThriftServer);
     $handler = new TContextPropV2ServerHandler($mock_thrift_server, shape());
 
     $test_exception = new Exception('Test exception message');
@@ -47,7 +47,7 @@ final class TContextPropV2ServerHandlerTest extends WWWTest {
    * controller observer with the exception
    */
   public function testHandlerErrorObservesException(): void {
-    $mock_thrift_server = mock(ThriftServer::class);
+    $mock_thrift_server = mock(nameof ThriftServer);
     $handler = new TContextPropV2ServerHandler($mock_thrift_server, shape());
 
     $test_exception = new Exception('Test error message');
@@ -64,7 +64,7 @@ final class TContextPropV2ServerHandlerTest extends WWWTest {
    * Test that handlerException passes through different exception types
    */
   public function testHandlerExceptionWithTApplicationException(): void {
-    $mock_thrift_server = mock(ThriftServer::class);
+    $mock_thrift_server = mock(nameof ThriftServer);
     $handler = new TContextPropV2ServerHandler($mock_thrift_server, shape());
 
     $thrift_exception = new TApplicationException('Thrift application error');
@@ -81,7 +81,7 @@ final class TContextPropV2ServerHandlerTest extends WWWTest {
    * Test that handlerError passes through different exception types
    */
   public function testHandlerErrorWithTApplicationException(): void {
-    $mock_thrift_server = mock(ThriftServer::class);
+    $mock_thrift_server = mock(nameof ThriftServer);
     $handler = new TContextPropV2ServerHandler($mock_thrift_server, shape());
 
     $thrift_exception = new TApplicationException('Thrift application error');
@@ -98,7 +98,7 @@ final class TContextPropV2ServerHandlerTest extends WWWTest {
    * Test that only the first exception is captured by the observer
    */
   public function testOnlyFirstExceptionIsCaptured(): void {
-    $mock_thrift_server = mock(ThriftServer::class);
+    $mock_thrift_server = mock(nameof ThriftServer);
     $handler = new TContextPropV2ServerHandler($mock_thrift_server, shape());
 
     $exception1 = new Exception('First exception');

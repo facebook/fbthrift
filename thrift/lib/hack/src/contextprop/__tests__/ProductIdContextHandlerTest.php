@@ -34,7 +34,7 @@ final class ProductIdContextHandlerTest extends WWWTest {
 
     // TagManager::getLatestOriginID() returns a different value than what is in TFM already
     $mock =
-      self::mockClassStaticMethodUNSAFE(TagManager::class, 'getLatestOriginID')
+      self::mockClassStaticMethodUNSAFE(nameof TagManager, 'getLatestOriginID')
         ->mockReturn(MCPOriginIDs::CROSSMETA_INTEGRITY_XI);
 
     // call handler
@@ -62,7 +62,7 @@ final class ProductIdContextHandlerTest extends WWWTest {
 
     // TagManager::getLatestOriginID() returns a different value than what is in TFM already
     $mock =
-      self::mockClassStaticMethodUNSAFE(TagManager::class, 'getLatestOriginID')
+      self::mockClassStaticMethodUNSAFE(nameof TagManager, 'getLatestOriginID')
         ->mockReturn(MCPOriginIDs::XI_INTEL);
 
     // call handler
@@ -84,7 +84,7 @@ final class ProductIdContextHandlerTest extends WWWTest {
   public async function testRegisteredHandlerOverridesProductIdWhenProductIdChanges(
   ): Awaitable<void> {
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -98,7 +98,7 @@ final class ProductIdContextHandlerTest extends WWWTest {
 
     // TagManager::getLatestOriginID() returns a different value than what is in ThriftContextPropState already
     $mock =
-      self::mockClassStaticMethodUNSAFE(TagManager::class, 'getLatestOriginID')
+      self::mockClassStaticMethodUNSAFE(nameof TagManager, 'getLatestOriginID')
         ->mockReturn(MCPOriginIDs::CROSSMETA_INTEGRITY_XI);
 
     $handler = new ProductIdContextHandler();
@@ -134,7 +134,7 @@ final class ProductIdContextHandlerTest extends WWWTest {
   public async function testRegisteredHandlerDoesNotOverrideProductIdWhenProductIdDoesNotChange(
   ): Awaitable<void> {
     $params = shape(
-      'thrift_class' => ThriftClientBase::class,
+      'thrift_class' => nameof ThriftClientBase,
       'client' =>
         new ThriftShimClient(new TBinaryProtocol(new TNullTransport())),
     );
@@ -148,7 +148,7 @@ final class ProductIdContextHandlerTest extends WWWTest {
 
     // TagManager::getLatestOriginID() returns the same value as what is in ThriftContextPropState already
     $mock =
-      self::mockClassStaticMethodUNSAFE(TagManager::class, 'getLatestOriginID')
+      self::mockClassStaticMethodUNSAFE(nameof TagManager, 'getLatestOriginID')
         ->mockReturn(MCPOriginIDs::XI_INTEL);
 
     $handler = new ProductIdContextHandler();
