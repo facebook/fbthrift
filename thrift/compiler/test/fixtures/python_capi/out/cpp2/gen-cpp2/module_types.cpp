@@ -1820,26 +1820,26 @@ bool Shallot::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::myEnum:
-        set_myEnum(rhs.value_.myEnum);
+        myEnum_ref().emplace(rhs.value_.myEnum);
         break;
       case Type::myStruct:
-        set_myStruct(rhs.value_.myStruct);
+        myStruct_ref().emplace(rhs.value_.myStruct);
         break;
       case Type::intSet:
-        set_intSet(*rhs.value_.intSet);
+        intSet_ref().emplace(*rhs.value_.intSet);
         break;
       case Type::myString:
-        set_myString(rhs.value_.myString);
+        myString_ref().emplace(rhs.value_.myString);
         break;
       case Type::doubleList:
-        set_doubleList(*rhs.value_.doubleList);
+        doubleList_ref().emplace(*rhs.value_.doubleList);
         break;
       case Type::strMap:
-        set_strMap(::apache::thrift::detail::st::copy_field<
+        strMap_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::map<::apache::thrift::type_class::binary, ::apache::thrift::type_class::string>>(rhs.value_.strMap));
         break;
       case Type::adapted_int:
-        set_adapted_int(rhs.value_.adapted_int);
+        adapted_int_ref().emplace(rhs.value_.adapted_int);
         break;
       default:
         assert(false);
@@ -1853,26 +1853,26 @@ bool Shallot::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::myEnum:
-        set_myEnum(rhs.value_.myEnum);
+        myEnum_ref().emplace(rhs.value_.myEnum);
         break;
       case Type::myStruct:
-        set_myStruct(rhs.value_.myStruct);
+        myStruct_ref().emplace(rhs.value_.myStruct);
         break;
       case Type::intSet:
-        set_intSet(*rhs.value_.intSet);
+        intSet_ref().emplace(*rhs.value_.intSet);
         break;
       case Type::myString:
-        set_myString(rhs.value_.myString);
+        myString_ref().emplace(rhs.value_.myString);
         break;
       case Type::doubleList:
-        set_doubleList(*rhs.value_.doubleList);
+        doubleList_ref().emplace(*rhs.value_.doubleList);
         break;
       case Type::strMap:
-        set_strMap(::apache::thrift::detail::st::copy_field<
+        strMap_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::map<::apache::thrift::type_class::binary, ::apache::thrift::type_class::string>>(rhs.value_.strMap));
         break;
       case Type::adapted_int:
-        set_adapted_int(rhs.value_.adapted_int);
+        adapted_int_ref().emplace(rhs.value_.adapted_int);
         break;
       default:
         __fbthrift_clear();
@@ -2011,14 +2011,14 @@ bool SomeBinary::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::iobuf:
-        set_iobuf(rhs.value_.iobuf);
+        iobuf_ref().emplace(rhs.value_.iobuf);
         break;
       case Type::iobuf_ptr:
-        set_iobuf_ptr(::apache::thrift::detail::st::copy_field<
+        iobuf_ptr_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::binary>(rhs.value_.iobuf_ptr));
         break;
       case Type::iobufRef:
-        set_iobufRef(::apache::thrift::detail::st::copy_field<
+        iobufRef_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::binary>(rhs.value_.iobufRef));
         break;
       default:
@@ -2033,14 +2033,14 @@ bool SomeBinary::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::iobuf:
-        set_iobuf(rhs.value_.iobuf);
+        iobuf_ref().emplace(rhs.value_.iobuf);
         break;
       case Type::iobuf_ptr:
-        set_iobuf_ptr(::apache::thrift::detail::st::copy_field<
+        iobuf_ptr_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::binary>(rhs.value_.iobuf_ptr));
         break;
       case Type::iobufRef:
-        set_iobufRef(::apache::thrift::detail::st::copy_field<
+        iobufRef_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::binary>(rhs.value_.iobufRef));
         break;
       default:

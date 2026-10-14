@@ -718,17 +718,17 @@ class MyUnion final  {
       }
       case Type::myEnum:
       {
-        set_myEnum(std::move(rhs.value_.myEnum));
+        myEnum_ref().emplace(std::move(rhs.value_.myEnum));
         break;
       }
       case Type::myStruct:
       {
-        set_myStruct(std::move(rhs.value_.myStruct));
+        myStruct_ref().emplace(std::move(rhs.value_.myStruct));
         break;
       }
       case Type::myDataItem:
       {
-        set_myDataItem(std::move(rhs.value_.myDataItem));
+        myDataItem_ref().emplace(std::move(rhs.value_.myDataItem));
         break;
       }
       default:

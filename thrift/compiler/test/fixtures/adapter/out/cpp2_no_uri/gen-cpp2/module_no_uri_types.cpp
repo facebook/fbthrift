@@ -74,7 +74,7 @@ bool RefUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::field1:
-        set_field1(*rhs.value_.field1);
+        field1_ref().emplace(*rhs.value_.field1);
         break;
       default:
         assert(false);
@@ -88,7 +88,7 @@ bool RefUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::field1:
-        set_field1(*rhs.value_.field1);
+        field1_ref().emplace(*rhs.value_.field1);
         break;
       default:
         __fbthrift_clear();

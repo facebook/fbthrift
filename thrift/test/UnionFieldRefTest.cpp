@@ -389,6 +389,42 @@ TEST(UnionFieldTest, CppRefEmplaceStorage) {
   EXPECT_EQ(value.shared_const(), "shared_const");
 }
 
+TEST(UnionFieldTest, CppRefCopyAndMove) {
+  CppRef s;
+  s.cppref().emplace().str() = "ref";
+  CppRef copy = s;
+  EXPECT_EQ(copy.cppref()->str(), "ref");
+  EXPECT_NE(&*copy.cppref(), &*s.cppref());
+  CppRef moved = std::move(copy);
+  EXPECT_EQ(moved.cppref()->str(), "ref");
+
+  s.box().emplace().str() = "box";
+  copy = s;
+  EXPECT_EQ(copy.box()->str(), "box");
+  moved = std::move(copy);
+  EXPECT_EQ(moved.box()->str(), "box");
+
+  s.shared_const().emplace("shared_const");
+  copy = s;
+  EXPECT_EQ(copy.shared_const(), "shared_const");
+  moved = std::move(copy);
+  EXPECT_EQ(moved.shared_const(), "shared_const");
+}
+
+TEST(UnionFieldTest, DeprecatedFieldCopyAndMove) {
+  Deprecated s;
+  FOLLY_PUSH_WARNING
+  FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+  s.deprecated_field() = 42;
+  Deprecated copy = s;
+  EXPECT_EQ(copy.deprecated_field(), 42);
+  Deprecated moved = std::move(copy);
+  EXPECT_EQ(moved.deprecated_field(), 42);
+  copy = moved;
+  EXPECT_EQ(copy.deprecated_field(), 42);
+  FOLLY_POP_WARNING
+}
+
 TEST(UnionFieldTest, CppMethods) {
   CppMethods t;
   EXPECT_FALSE(t.field().has_value());

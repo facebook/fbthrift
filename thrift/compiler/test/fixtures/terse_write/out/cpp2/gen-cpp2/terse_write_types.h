@@ -592,72 +592,72 @@ class MyUnion final  {
       }
       case Type::bool_field:
       {
-        set_bool_field(std::move(rhs.value_.bool_field));
+        bool_field_ref().emplace(std::move(rhs.value_.bool_field));
         break;
       }
       case Type::byte_field:
       {
-        set_byte_field(std::move(rhs.value_.byte_field));
+        byte_field_ref().emplace(std::move(rhs.value_.byte_field));
         break;
       }
       case Type::short_field:
       {
-        set_short_field(std::move(rhs.value_.short_field));
+        short_field_ref().emplace(std::move(rhs.value_.short_field));
         break;
       }
       case Type::int_field:
       {
-        set_int_field(std::move(rhs.value_.int_field));
+        int_field_ref().emplace(std::move(rhs.value_.int_field));
         break;
       }
       case Type::long_field:
       {
-        set_long_field(std::move(rhs.value_.long_field));
+        long_field_ref().emplace(std::move(rhs.value_.long_field));
         break;
       }
       case Type::float_field:
       {
-        set_float_field(std::move(rhs.value_.float_field));
+        float_field_ref().emplace(std::move(rhs.value_.float_field));
         break;
       }
       case Type::double_field:
       {
-        set_double_field(std::move(rhs.value_.double_field));
+        double_field_ref().emplace(std::move(rhs.value_.double_field));
         break;
       }
       case Type::string_field:
       {
-        set_string_field(std::move(rhs.value_.string_field));
+        string_field_ref().emplace(std::move(rhs.value_.string_field));
         break;
       }
       case Type::binary_field:
       {
-        set_binary_field(std::move(rhs.value_.binary_field));
+        binary_field_ref().emplace(std::move(rhs.value_.binary_field));
         break;
       }
       case Type::enum_field:
       {
-        set_enum_field(std::move(rhs.value_.enum_field));
+        enum_field_ref().emplace(std::move(rhs.value_.enum_field));
         break;
       }
       case Type::list_field:
       {
-        set_list_field(std::move(rhs.value_.list_field));
+        list_field_ref().emplace(std::move(rhs.value_.list_field));
         break;
       }
       case Type::set_field:
       {
-        set_set_field(std::move(rhs.value_.set_field));
+        set_field_ref().emplace(std::move(rhs.value_.set_field));
         break;
       }
       case Type::map_field:
       {
-        set_map_field(std::move(rhs.value_.map_field));
+        map_field_ref().emplace(std::move(rhs.value_.map_field));
         break;
       }
       case Type::struct_field:
       {
-        set_struct_field(std::move(rhs.value_.struct_field));
+        struct_field_ref().emplace(std::move(rhs.value_.struct_field));
         break;
       }
       default:

@@ -718,10 +718,10 @@ bool MyUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::first:
-        set_first(rhs.value_.first);
+        first_ref().emplace(rhs.value_.first);
         break;
       case Type::second:
-        set_second(rhs.value_.second);
+        second_ref().emplace(rhs.value_.second);
         break;
       default:
         assert(false);
@@ -735,10 +735,10 @@ bool MyUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::first:
-        set_first(rhs.value_.first);
+        first_ref().emplace(rhs.value_.first);
         break;
       case Type::second:
-        set_second(rhs.value_.second);
+        second_ref().emplace(rhs.value_.second);
         break;
       default:
         __fbthrift_clear();

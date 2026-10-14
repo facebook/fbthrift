@@ -143,19 +143,34 @@ std::partial_ordering {{struct.cpp_underlying_name}}::operator<=>([[maybe_unused
 }}{{/let partial}}
 
 
+{{! `x_ref()` of a deprecated field is `[[deprecated]]`. Pair with
+    FOLLY_POP_WARNING. }}
+{{#let partial union_push_deprecated_warning}}
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+FOLLY_MSVC_DISABLE_WARNING(4996)
+{{/let partial}}
+
+
 {{! Union switch cases that copy `src` into `*this`. Callers supply the
     __EMPTY__ and default arms. }}
-{{#let export partial union_copy_field_cases |struct src|}}
+{{#let export partial union_copy_field_cases |struct src| captures |union_push_deprecated_warning|}}
   {{#each struct.fields as |field|}}
 case Type::{{field.cpp_name}}:
+    {{#if field.deprecated?}}
+  {{#partial union_push_deprecated_warning}}
+    {{/if field.deprecated?}}
     {{#if field.transitively_refers_to_unique?}}
-  set_{{field.cpp_name}}(::apache::thrift::detail::st::copy_field<
+  {{field.cpp_name}}_ref().emplace(::apache::thrift::detail::st::copy_field<
     {{field.type.type_class}}>({{src}}.value_.{{field.cpp_name}}));
     {{#else if field.cpp_ref?}}
-  set_{{field.cpp_name}}(*{{src}}.value_.{{field.cpp_name}});
+  {{field.cpp_name}}_ref().emplace(*{{src}}.value_.{{field.cpp_name}});
     {{#else}}
-  set_{{field.cpp_name}}({{src}}.value_.{{field.cpp_name}});
+  {{field.cpp_name}}_ref().emplace({{src}}.value_.{{field.cpp_name}});
     {{/if field.transitively_refers_to_unique?}}
+    {{#if field.deprecated?}}
+  FOLLY_POP_WARNING
+    {{/if field.deprecated?}}
   break;
   {{/each}}
 {{/let partial}}
@@ -163,11 +178,17 @@ case Type::{{field.cpp_name}}:
 
 {{! Union switch cases that move `src` into `*this`. Callers supply the
     __EMPTY__ and default arms. }}
-{{#let export partial union_move_field_cases |struct src|}}
+{{#let export partial union_move_field_cases |struct src| captures |union_push_deprecated_warning|}}
   {{#each struct.fields as |field|}}
 case Type::{{field.cpp_name}}:
 {
-  set_{{field.cpp_name}}(std::move({{#if field.cpp_ref?}}*{{/if}}{{src}}.value_.{{field.cpp_name}}));
+    {{#if field.deprecated?}}
+  {{#partial union_push_deprecated_warning}}
+    {{/if field.deprecated?}}
+  {{field.cpp_name}}_ref().emplace(std::move({{#if field.cpp_ref?}}*{{/if}}{{src}}.value_.{{field.cpp_name}}));
+    {{#if field.deprecated?}}
+  FOLLY_POP_WARNING
+    {{/if field.deprecated?}}
   break;
 }
   {{/each}}

@@ -1121,12 +1121,12 @@ class ExampleUnion final  {
       }
       case Type::fieldA:
       {
-        set_fieldA(std::move(rhs.value_.fieldA));
+        fieldA_ref().emplace(std::move(rhs.value_.fieldA));
         break;
       }
       case Type::fieldB:
       {
-        set_fieldB(std::move(rhs.value_.fieldB));
+        fieldB_ref().emplace(std::move(rhs.value_.fieldB));
         break;
       }
       default:

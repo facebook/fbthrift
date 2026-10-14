@@ -521,12 +521,12 @@ class MyUnion final  {
       }
       case Type::anInteger:
       {
-        set_anInteger(std::move(*rhs.value_.anInteger));
+        anInteger_ref().emplace(std::move(*rhs.value_.anInteger));
         break;
       }
       case Type::aString:
       {
-        set_aString(std::move(*rhs.value_.aString));
+        aString_ref().emplace(std::move(*rhs.value_.aString));
         break;
       }
       default:
@@ -805,7 +805,7 @@ class NonTriviallyDestructibleUnion final  {
       }
       case Type::int_field:
       {
-        set_int_field(std::move(*rhs.value_.int_field));
+        int_field_ref().emplace(std::move(*rhs.value_.int_field));
         break;
       }
       default:

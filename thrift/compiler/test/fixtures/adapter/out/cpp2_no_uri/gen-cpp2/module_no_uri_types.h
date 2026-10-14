@@ -102,7 +102,7 @@ class RefUnion final  {
       }
       case Type::field1:
       {
-        set_field1(std::move(*rhs.value_.field1));
+        field1_ref().emplace(std::move(*rhs.value_.field1));
         break;
       }
       default:

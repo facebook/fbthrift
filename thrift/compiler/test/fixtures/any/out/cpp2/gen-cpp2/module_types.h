@@ -264,7 +264,7 @@ class MyUnion final  {
       }
       case Type::myString:
       {
-        set_myString(std::move(rhs.value_.myString));
+        myString_ref().emplace(std::move(rhs.value_.myString));
         break;
       }
       default:

@@ -1108,22 +1108,22 @@ class union1 final  {
       }
       case Type::ui:
       {
-        set_ui(std::move(rhs.value_.ui));
+        ui_ref().emplace(std::move(rhs.value_.ui));
         break;
       }
       case Type::ud:
       {
-        set_ud(std::move(rhs.value_.ud));
+        ud_ref().emplace(std::move(rhs.value_.ud));
         break;
       }
       case Type::us:
       {
-        set_us(std::move(rhs.value_.us));
+        us_ref().emplace(std::move(rhs.value_.us));
         break;
       }
       case Type::ue:
       {
-        set_ue(std::move(rhs.value_.ue));
+        ue_ref().emplace(std::move(rhs.value_.ue));
         break;
       }
       default:
@@ -1525,22 +1525,22 @@ class union2 final  {
       }
       case Type::ui_2:
       {
-        set_ui_2(std::move(rhs.value_.ui_2));
+        ui_2_ref().emplace(std::move(rhs.value_.ui_2));
         break;
       }
       case Type::ud_2:
       {
-        set_ud_2(std::move(rhs.value_.ud_2));
+        ud_2_ref().emplace(std::move(rhs.value_.ud_2));
         break;
       }
       case Type::us_2:
       {
-        set_us_2(std::move(rhs.value_.us_2));
+        us_2_ref().emplace(std::move(rhs.value_.us_2));
         break;
       }
       case Type::ue_2:
       {
-        set_ue_2(std::move(rhs.value_.ue_2));
+        ue_2_ref().emplace(std::move(rhs.value_.ue_2));
         break;
       }
       default:
@@ -1942,22 +1942,22 @@ class union3 final  {
       }
       case Type::ui_3:
       {
-        set_ui_3(std::move(rhs.value_.ui_3));
+        ui_3_ref().emplace(std::move(rhs.value_.ui_3));
         break;
       }
       case Type::ud_3:
       {
-        set_ud_3(std::move(rhs.value_.ud_3));
+        ud_3_ref().emplace(std::move(rhs.value_.ud_3));
         break;
       }
       case Type::us_3:
       {
-        set_us_3(std::move(rhs.value_.us_3));
+        us_3_ref().emplace(std::move(rhs.value_.us_3));
         break;
       }
       case Type::ue_3:
       {
-        set_ue_3(std::move(rhs.value_.ue_3));
+        ue_3_ref().emplace(std::move(rhs.value_.ue_3));
         break;
       }
       default:
@@ -2553,27 +2553,27 @@ class unionA final  {
       }
       case Type::i:
       {
-        set_i(std::move(rhs.value_.i));
+        i_ref().emplace(std::move(rhs.value_.i));
         break;
       }
       case Type::d:
       {
-        set_d(std::move(rhs.value_.d));
+        d_ref().emplace(std::move(rhs.value_.d));
         break;
       }
       case Type::s:
       {
-        set_s(std::move(rhs.value_.s));
+        s_ref().emplace(std::move(rhs.value_.s));
         break;
       }
       case Type::e:
       {
-        set_e(std::move(rhs.value_.e));
+        e_ref().emplace(std::move(rhs.value_.e));
         break;
       }
       case Type::a:
       {
-        set_a(std::move(rhs.value_.a));
+        a_ref().emplace(std::move(rhs.value_.a));
         break;
       }
       default:
@@ -8334,142 +8334,142 @@ class union_with_special_names final  {
       }
       case Type::get:
       {
-        set_get(std::move(rhs.value_.get));
+        get_ref().emplace(std::move(rhs.value_.get));
         break;
       }
       case Type::getter:
       {
-        set_getter(std::move(rhs.value_.getter));
+        getter_ref().emplace(std::move(rhs.value_.getter));
         break;
       }
       case Type::lists:
       {
-        set_lists(std::move(rhs.value_.lists));
+        lists_ref().emplace(std::move(rhs.value_.lists));
         break;
       }
       case Type::maps:
       {
-        set_maps(std::move(rhs.value_.maps));
+        maps_ref().emplace(std::move(rhs.value_.maps));
         break;
       }
       case Type::name:
       {
-        set_name(std::move(rhs.value_.name));
+        name_ref().emplace(std::move(rhs.value_.name));
         break;
       }
       case Type::name_to_value:
       {
-        set_name_to_value(std::move(rhs.value_.name_to_value));
+        name_to_value_ref().emplace(std::move(rhs.value_.name_to_value));
         break;
       }
       case Type::names:
       {
-        set_names(std::move(rhs.value_.names));
+        names_ref().emplace(std::move(rhs.value_.names));
         break;
       }
       case Type::prefix_tree:
       {
-        set_prefix_tree(std::move(rhs.value_.prefix_tree));
+        prefix_tree_ref().emplace(std::move(rhs.value_.prefix_tree));
         break;
       }
       case Type::sets:
       {
-        set_sets(std::move(rhs.value_.sets));
+        sets_ref().emplace(std::move(rhs.value_.sets));
         break;
       }
       case Type::setter:
       {
-        set_setter(std::move(rhs.value_.setter));
+        setter_ref().emplace(std::move(rhs.value_.setter));
         break;
       }
       case Type::str:
       {
-        set_str(std::move(rhs.value_.str));
+        str_ref().emplace(std::move(rhs.value_.str));
         break;
       }
       case Type::strings:
       {
-        set_strings(std::move(rhs.value_.strings));
+        strings_ref().emplace(std::move(rhs.value_.strings));
         break;
       }
       case Type::type:
       {
-        set_type(std::move(rhs.value_.type));
+        type_ref().emplace(std::move(rhs.value_.type));
         break;
       }
       case Type::value:
       {
-        set_value(std::move(rhs.value_.value));
+        value_ref().emplace(std::move(rhs.value_.value));
         break;
       }
       case Type::value_to_name:
       {
-        set_value_to_name(std::move(rhs.value_.value_to_name));
+        value_to_name_ref().emplace(std::move(rhs.value_.value_to_name));
         break;
       }
       case Type::values:
       {
-        set_values(std::move(rhs.value_.values));
+        values_ref().emplace(std::move(rhs.value_.values));
         break;
       }
       case Type::id:
       {
-        set_id(std::move(rhs.value_.id));
+        id_ref().emplace(std::move(rhs.value_.id));
         break;
       }
       case Type::ids:
       {
-        set_ids(std::move(rhs.value_.ids));
+        ids_ref().emplace(std::move(rhs.value_.ids));
         break;
       }
       case Type::descriptor:
       {
-        set_descriptor(std::move(rhs.value_.descriptor));
+        descriptor_ref().emplace(std::move(rhs.value_.descriptor));
         break;
       }
       case Type::descriptors:
       {
-        set_descriptors(std::move(rhs.value_.descriptors));
+        descriptors_ref().emplace(std::move(rhs.value_.descriptors));
         break;
       }
       case Type::key:
       {
-        set_key(std::move(rhs.value_.key));
+        key_ref().emplace(std::move(rhs.value_.key));
         break;
       }
       case Type::keys:
       {
-        set_keys(std::move(rhs.value_.keys));
+        keys_ref().emplace(std::move(rhs.value_.keys));
         break;
       }
       case Type::annotation:
       {
-        set_annotation(std::move(rhs.value_.annotation));
+        annotation_ref().emplace(std::move(rhs.value_.annotation));
         break;
       }
       case Type::annotations:
       {
-        set_annotations(std::move(rhs.value_.annotations));
+        annotations_ref().emplace(std::move(rhs.value_.annotations));
         break;
       }
       case Type::member:
       {
-        set_member(std::move(rhs.value_.member));
+        member_ref().emplace(std::move(rhs.value_.member));
         break;
       }
       case Type::members:
       {
-        set_members(std::move(rhs.value_.members));
+        members_ref().emplace(std::move(rhs.value_.members));
         break;
       }
       case Type::field:
       {
-        set_field(std::move(rhs.value_.field));
+        field_ref().emplace(std::move(rhs.value_.field));
         break;
       }
       case Type::fields:
       {
-        set_fields(std::move(rhs.value_.fields));
+        fields_ref().emplace(std::move(rhs.value_.fields));
         break;
       }
       default:
@@ -11950,7 +11950,7 @@ class UnionWithTypedefFieldAdapter final  {
       }
       case Type::field:
       {
-        set_field(std::move(rhs.value_.field));
+        field_ref().emplace(std::move(rhs.value_.field));
         break;
       }
       default:

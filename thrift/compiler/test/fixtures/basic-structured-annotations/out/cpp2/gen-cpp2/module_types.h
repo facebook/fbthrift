@@ -1704,12 +1704,12 @@ class MyUnion final  {
       }
       case Type::first:
       {
-        set_first(std::move(rhs.value_.first));
+        first_ref().emplace(std::move(rhs.value_.first));
         break;
       }
       case Type::second:
       {
-        set_second(std::move(rhs.value_.second));
+        second_ref().emplace(std::move(rhs.value_.second));
         break;
       }
       default:

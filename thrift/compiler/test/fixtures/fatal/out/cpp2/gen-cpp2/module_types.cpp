@@ -237,16 +237,16 @@ bool union1::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::ui:
-        set_ui(rhs.value_.ui);
+        ui_ref().emplace(rhs.value_.ui);
         break;
       case Type::ud:
-        set_ud(rhs.value_.ud);
+        ud_ref().emplace(rhs.value_.ud);
         break;
       case Type::us:
-        set_us(rhs.value_.us);
+        us_ref().emplace(rhs.value_.us);
         break;
       case Type::ue:
-        set_ue(rhs.value_.ue);
+        ue_ref().emplace(rhs.value_.ue);
         break;
       default:
         assert(false);
@@ -260,16 +260,16 @@ bool union1::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::ui:
-        set_ui(rhs.value_.ui);
+        ui_ref().emplace(rhs.value_.ui);
         break;
       case Type::ud:
-        set_ud(rhs.value_.ud);
+        ud_ref().emplace(rhs.value_.ud);
         break;
       case Type::us:
-        set_us(rhs.value_.us);
+        us_ref().emplace(rhs.value_.us);
         break;
       case Type::ue:
-        set_ue(rhs.value_.ue);
+        ue_ref().emplace(rhs.value_.ue);
         break;
       default:
         __fbthrift_clear();
@@ -360,16 +360,16 @@ bool union2::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::ui_2:
-        set_ui_2(rhs.value_.ui_2);
+        ui_2_ref().emplace(rhs.value_.ui_2);
         break;
       case Type::ud_2:
-        set_ud_2(rhs.value_.ud_2);
+        ud_2_ref().emplace(rhs.value_.ud_2);
         break;
       case Type::us_2:
-        set_us_2(rhs.value_.us_2);
+        us_2_ref().emplace(rhs.value_.us_2);
         break;
       case Type::ue_2:
-        set_ue_2(rhs.value_.ue_2);
+        ue_2_ref().emplace(rhs.value_.ue_2);
         break;
       default:
         assert(false);
@@ -383,16 +383,16 @@ bool union2::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::ui_2:
-        set_ui_2(rhs.value_.ui_2);
+        ui_2_ref().emplace(rhs.value_.ui_2);
         break;
       case Type::ud_2:
-        set_ud_2(rhs.value_.ud_2);
+        ud_2_ref().emplace(rhs.value_.ud_2);
         break;
       case Type::us_2:
-        set_us_2(rhs.value_.us_2);
+        us_2_ref().emplace(rhs.value_.us_2);
         break;
       case Type::ue_2:
-        set_ue_2(rhs.value_.ue_2);
+        ue_2_ref().emplace(rhs.value_.ue_2);
         break;
       default:
         __fbthrift_clear();
@@ -483,16 +483,16 @@ bool union3::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::ui_3:
-        set_ui_3(rhs.value_.ui_3);
+        ui_3_ref().emplace(rhs.value_.ui_3);
         break;
       case Type::ud_3:
-        set_ud_3(rhs.value_.ud_3);
+        ud_3_ref().emplace(rhs.value_.ud_3);
         break;
       case Type::us_3:
-        set_us_3(rhs.value_.us_3);
+        us_3_ref().emplace(rhs.value_.us_3);
         break;
       case Type::ue_3:
-        set_ue_3(rhs.value_.ue_3);
+        ue_3_ref().emplace(rhs.value_.ue_3);
         break;
       default:
         assert(false);
@@ -506,16 +506,16 @@ bool union3::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::ui_3:
-        set_ui_3(rhs.value_.ui_3);
+        ui_3_ref().emplace(rhs.value_.ui_3);
         break;
       case Type::ud_3:
-        set_ud_3(rhs.value_.ud_3);
+        ud_3_ref().emplace(rhs.value_.ud_3);
         break;
       case Type::us_3:
-        set_us_3(rhs.value_.us_3);
+        us_3_ref().emplace(rhs.value_.us_3);
         break;
       case Type::ue_3:
-        set_ue_3(rhs.value_.ue_3);
+        ue_3_ref().emplace(rhs.value_.ue_3);
         break;
       default:
         __fbthrift_clear();
@@ -689,19 +689,19 @@ bool unionA::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::i:
-        set_i(rhs.value_.i);
+        i_ref().emplace(rhs.value_.i);
         break;
       case Type::d:
-        set_d(rhs.value_.d);
+        d_ref().emplace(rhs.value_.d);
         break;
       case Type::s:
-        set_s(rhs.value_.s);
+        s_ref().emplace(rhs.value_.s);
         break;
       case Type::e:
-        set_e(rhs.value_.e);
+        e_ref().emplace(rhs.value_.e);
         break;
       case Type::a:
-        set_a(rhs.value_.a);
+        a_ref().emplace(rhs.value_.a);
         break;
       default:
         assert(false);
@@ -715,19 +715,19 @@ bool unionA::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::i:
-        set_i(rhs.value_.i);
+        i_ref().emplace(rhs.value_.i);
         break;
       case Type::d:
-        set_d(rhs.value_.d);
+        d_ref().emplace(rhs.value_.d);
         break;
       case Type::s:
-        set_s(rhs.value_.s);
+        s_ref().emplace(rhs.value_.s);
         break;
       case Type::e:
-        set_e(rhs.value_.e);
+        e_ref().emplace(rhs.value_.e);
         break;
       case Type::a:
-        set_a(rhs.value_.a);
+        a_ref().emplace(rhs.value_.a);
         break;
       default:
         __fbthrift_clear();
@@ -2752,88 +2752,88 @@ bool union_with_special_names::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::get:
-        set_get(rhs.value_.get);
+        get_ref().emplace(rhs.value_.get);
         break;
       case Type::getter:
-        set_getter(rhs.value_.getter);
+        getter_ref().emplace(rhs.value_.getter);
         break;
       case Type::lists:
-        set_lists(rhs.value_.lists);
+        lists_ref().emplace(rhs.value_.lists);
         break;
       case Type::maps:
-        set_maps(rhs.value_.maps);
+        maps_ref().emplace(rhs.value_.maps);
         break;
       case Type::name:
-        set_name(rhs.value_.name);
+        name_ref().emplace(rhs.value_.name);
         break;
       case Type::name_to_value:
-        set_name_to_value(rhs.value_.name_to_value);
+        name_to_value_ref().emplace(rhs.value_.name_to_value);
         break;
       case Type::names:
-        set_names(rhs.value_.names);
+        names_ref().emplace(rhs.value_.names);
         break;
       case Type::prefix_tree:
-        set_prefix_tree(rhs.value_.prefix_tree);
+        prefix_tree_ref().emplace(rhs.value_.prefix_tree);
         break;
       case Type::sets:
-        set_sets(rhs.value_.sets);
+        sets_ref().emplace(rhs.value_.sets);
         break;
       case Type::setter:
-        set_setter(rhs.value_.setter);
+        setter_ref().emplace(rhs.value_.setter);
         break;
       case Type::str:
-        set_str(rhs.value_.str);
+        str_ref().emplace(rhs.value_.str);
         break;
       case Type::strings:
-        set_strings(rhs.value_.strings);
+        strings_ref().emplace(rhs.value_.strings);
         break;
       case Type::type:
-        set_type(rhs.value_.type);
+        type_ref().emplace(rhs.value_.type);
         break;
       case Type::value:
-        set_value(rhs.value_.value);
+        value_ref().emplace(rhs.value_.value);
         break;
       case Type::value_to_name:
-        set_value_to_name(rhs.value_.value_to_name);
+        value_to_name_ref().emplace(rhs.value_.value_to_name);
         break;
       case Type::values:
-        set_values(rhs.value_.values);
+        values_ref().emplace(rhs.value_.values);
         break;
       case Type::id:
-        set_id(rhs.value_.id);
+        id_ref().emplace(rhs.value_.id);
         break;
       case Type::ids:
-        set_ids(rhs.value_.ids);
+        ids_ref().emplace(rhs.value_.ids);
         break;
       case Type::descriptor:
-        set_descriptor(rhs.value_.descriptor);
+        descriptor_ref().emplace(rhs.value_.descriptor);
         break;
       case Type::descriptors:
-        set_descriptors(rhs.value_.descriptors);
+        descriptors_ref().emplace(rhs.value_.descriptors);
         break;
       case Type::key:
-        set_key(rhs.value_.key);
+        key_ref().emplace(rhs.value_.key);
         break;
       case Type::keys:
-        set_keys(rhs.value_.keys);
+        keys_ref().emplace(rhs.value_.keys);
         break;
       case Type::annotation:
-        set_annotation(rhs.value_.annotation);
+        annotation_ref().emplace(rhs.value_.annotation);
         break;
       case Type::annotations:
-        set_annotations(rhs.value_.annotations);
+        annotations_ref().emplace(rhs.value_.annotations);
         break;
       case Type::member:
-        set_member(rhs.value_.member);
+        member_ref().emplace(rhs.value_.member);
         break;
       case Type::members:
-        set_members(rhs.value_.members);
+        members_ref().emplace(rhs.value_.members);
         break;
       case Type::field:
-        set_field(rhs.value_.field);
+        field_ref().emplace(rhs.value_.field);
         break;
       case Type::fields:
-        set_fields(rhs.value_.fields);
+        fields_ref().emplace(rhs.value_.fields);
         break;
       default:
         assert(false);
@@ -2847,88 +2847,88 @@ bool union_with_special_names::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::get:
-        set_get(rhs.value_.get);
+        get_ref().emplace(rhs.value_.get);
         break;
       case Type::getter:
-        set_getter(rhs.value_.getter);
+        getter_ref().emplace(rhs.value_.getter);
         break;
       case Type::lists:
-        set_lists(rhs.value_.lists);
+        lists_ref().emplace(rhs.value_.lists);
         break;
       case Type::maps:
-        set_maps(rhs.value_.maps);
+        maps_ref().emplace(rhs.value_.maps);
         break;
       case Type::name:
-        set_name(rhs.value_.name);
+        name_ref().emplace(rhs.value_.name);
         break;
       case Type::name_to_value:
-        set_name_to_value(rhs.value_.name_to_value);
+        name_to_value_ref().emplace(rhs.value_.name_to_value);
         break;
       case Type::names:
-        set_names(rhs.value_.names);
+        names_ref().emplace(rhs.value_.names);
         break;
       case Type::prefix_tree:
-        set_prefix_tree(rhs.value_.prefix_tree);
+        prefix_tree_ref().emplace(rhs.value_.prefix_tree);
         break;
       case Type::sets:
-        set_sets(rhs.value_.sets);
+        sets_ref().emplace(rhs.value_.sets);
         break;
       case Type::setter:
-        set_setter(rhs.value_.setter);
+        setter_ref().emplace(rhs.value_.setter);
         break;
       case Type::str:
-        set_str(rhs.value_.str);
+        str_ref().emplace(rhs.value_.str);
         break;
       case Type::strings:
-        set_strings(rhs.value_.strings);
+        strings_ref().emplace(rhs.value_.strings);
         break;
       case Type::type:
-        set_type(rhs.value_.type);
+        type_ref().emplace(rhs.value_.type);
         break;
       case Type::value:
-        set_value(rhs.value_.value);
+        value_ref().emplace(rhs.value_.value);
         break;
       case Type::value_to_name:
-        set_value_to_name(rhs.value_.value_to_name);
+        value_to_name_ref().emplace(rhs.value_.value_to_name);
         break;
       case Type::values:
-        set_values(rhs.value_.values);
+        values_ref().emplace(rhs.value_.values);
         break;
       case Type::id:
-        set_id(rhs.value_.id);
+        id_ref().emplace(rhs.value_.id);
         break;
       case Type::ids:
-        set_ids(rhs.value_.ids);
+        ids_ref().emplace(rhs.value_.ids);
         break;
       case Type::descriptor:
-        set_descriptor(rhs.value_.descriptor);
+        descriptor_ref().emplace(rhs.value_.descriptor);
         break;
       case Type::descriptors:
-        set_descriptors(rhs.value_.descriptors);
+        descriptors_ref().emplace(rhs.value_.descriptors);
         break;
       case Type::key:
-        set_key(rhs.value_.key);
+        key_ref().emplace(rhs.value_.key);
         break;
       case Type::keys:
-        set_keys(rhs.value_.keys);
+        keys_ref().emplace(rhs.value_.keys);
         break;
       case Type::annotation:
-        set_annotation(rhs.value_.annotation);
+        annotation_ref().emplace(rhs.value_.annotation);
         break;
       case Type::annotations:
-        set_annotations(rhs.value_.annotations);
+        annotations_ref().emplace(rhs.value_.annotations);
         break;
       case Type::member:
-        set_member(rhs.value_.member);
+        member_ref().emplace(rhs.value_.member);
         break;
       case Type::members:
-        set_members(rhs.value_.members);
+        members_ref().emplace(rhs.value_.members);
         break;
       case Type::field:
-        set_field(rhs.value_.field);
+        field_ref().emplace(rhs.value_.field);
         break;
       case Type::fields:
-        set_fields(rhs.value_.fields);
+        fields_ref().emplace(rhs.value_.fields);
         break;
       default:
         __fbthrift_clear();
@@ -3474,7 +3474,7 @@ bool UnionWithTypedefFieldAdapter::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::field:
-        set_field(rhs.value_.field);
+        field_ref().emplace(rhs.value_.field);
         break;
       default:
         assert(false);
@@ -3488,7 +3488,7 @@ bool UnionWithTypedefFieldAdapter::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::field:
-        set_field(rhs.value_.field);
+        field_ref().emplace(rhs.value_.field);
         break;
       default:
         __fbthrift_clear();

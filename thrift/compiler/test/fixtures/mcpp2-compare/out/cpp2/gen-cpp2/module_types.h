@@ -2202,12 +2202,12 @@ class SimpleUnion  {
       }
       case Type::intValue:
       {
-        set_intValue(std::move(rhs.value_.intValue));
+        intValue_ref().emplace(std::move(rhs.value_.intValue));
         break;
       }
       case Type::stringValue:
       {
-        set_stringValue(std::move(rhs.value_.stringValue));
+        stringValue_ref().emplace(std::move(rhs.value_.stringValue));
         break;
       }
       default:
@@ -3551,142 +3551,142 @@ class ComplexUnion final  {
       }
       case Type::intValue:
       {
-        set_intValue(std::move(rhs.value_.intValue));
+        intValue_ref().emplace(std::move(rhs.value_.intValue));
         break;
       }
       case Type::opt_intValue:
       {
-        set_opt_intValue(std::move(rhs.value_.opt_intValue));
+        opt_intValue_ref().emplace(std::move(rhs.value_.opt_intValue));
         break;
       }
       case Type::stringValue:
       {
-        set_stringValue(std::move(rhs.value_.stringValue));
+        stringValue_ref().emplace(std::move(rhs.value_.stringValue));
         break;
       }
       case Type::opt_stringValue:
       {
-        set_opt_stringValue(std::move(rhs.value_.opt_stringValue));
+        opt_stringValue_ref().emplace(std::move(rhs.value_.opt_stringValue));
         break;
       }
       case Type::intValue2:
       {
-        set_intValue2(std::move(rhs.value_.intValue2));
+        intValue2_ref().emplace(std::move(rhs.value_.intValue2));
         break;
       }
       case Type::intValue3:
       {
-        set_intValue3(std::move(rhs.value_.intValue3));
+        intValue3_ref().emplace(std::move(rhs.value_.intValue3));
         break;
       }
       case Type::doubelValue:
       {
-        set_doubelValue(std::move(rhs.value_.doubelValue));
+        doubelValue_ref().emplace(std::move(rhs.value_.doubelValue));
         break;
       }
       case Type::boolValue:
       {
-        set_boolValue(std::move(rhs.value_.boolValue));
+        boolValue_ref().emplace(std::move(rhs.value_.boolValue));
         break;
       }
       case Type::union_list:
       {
-        set_union_list(std::move(rhs.value_.union_list));
+        union_list_ref().emplace(std::move(rhs.value_.union_list));
         break;
       }
       case Type::union_set:
       {
-        set_union_set(std::move(rhs.value_.union_set));
+        union_set_ref().emplace(std::move(rhs.value_.union_set));
         break;
       }
       case Type::union_map:
       {
-        set_union_map(std::move(rhs.value_.union_map));
+        union_map_ref().emplace(std::move(rhs.value_.union_map));
         break;
       }
       case Type::opt_union_map:
       {
-        set_opt_union_map(std::move(rhs.value_.opt_union_map));
+        opt_union_map_ref().emplace(std::move(rhs.value_.opt_union_map));
         break;
       }
       case Type::enum_field:
       {
-        set_enum_field(std::move(rhs.value_.enum_field));
+        enum_field_ref().emplace(std::move(rhs.value_.enum_field));
         break;
       }
       case Type::enum_container:
       {
-        set_enum_container(std::move(rhs.value_.enum_container));
+        enum_container_ref().emplace(std::move(rhs.value_.enum_container));
         break;
       }
       case Type::a_struct:
       {
-        set_a_struct(std::move(rhs.value_.a_struct));
+        a_struct_ref().emplace(std::move(rhs.value_.a_struct));
         break;
       }
       case Type::a_set_struct:
       {
-        set_a_set_struct(std::move(rhs.value_.a_set_struct));
+        a_set_struct_ref().emplace(std::move(rhs.value_.a_set_struct));
         break;
       }
       case Type::a_union:
       {
-        set_a_union(std::move(rhs.value_.a_union));
+        a_union_ref().emplace(std::move(rhs.value_.a_union));
         break;
       }
       case Type::opt_a_union:
       {
-        set_opt_a_union(std::move(rhs.value_.opt_a_union));
+        opt_a_union_ref().emplace(std::move(rhs.value_.opt_a_union));
         break;
       }
       case Type::a_union_list:
       {
-        set_a_union_list(std::move(rhs.value_.a_union_list));
+        a_union_list_ref().emplace(std::move(rhs.value_.a_union_list));
         break;
       }
       case Type::a_union_typedef:
       {
-        set_a_union_typedef(std::move(rhs.value_.a_union_typedef));
+        a_union_typedef_ref().emplace(std::move(rhs.value_.a_union_typedef));
         break;
       }
       case Type::a_union_typedef_list:
       {
-        set_a_union_typedef_list(std::move(rhs.value_.a_union_typedef_list));
+        a_union_typedef_list_ref().emplace(std::move(rhs.value_.a_union_typedef_list));
         break;
       }
       case Type::MyBinaryField:
       {
-        set_MyBinaryField(std::move(rhs.value_.MyBinaryField));
+        MyBinaryField_ref().emplace(std::move(rhs.value_.MyBinaryField));
         break;
       }
       case Type::MyBinaryField2:
       {
-        set_MyBinaryField2(std::move(rhs.value_.MyBinaryField2));
+        MyBinaryField2_ref().emplace(std::move(rhs.value_.MyBinaryField2));
         break;
       }
       case Type::MyBinaryListField4:
       {
-        set_MyBinaryListField4(std::move(rhs.value_.MyBinaryListField4));
+        MyBinaryListField4_ref().emplace(std::move(rhs.value_.MyBinaryListField4));
         break;
       }
       case Type::ref_field:
       {
-        set_ref_field(std::move(*rhs.value_.ref_field));
+        ref_field_ref().emplace(std::move(*rhs.value_.ref_field));
         break;
       }
       case Type::ref_field2:
       {
-        set_ref_field2(std::move(*rhs.value_.ref_field2));
+        ref_field2_ref().emplace(std::move(*rhs.value_.ref_field2));
         break;
       }
       case Type::excp_field:
       {
-        set_excp_field(std::move(rhs.value_.excp_field));
+        excp_field_ref().emplace(std::move(rhs.value_.excp_field));
         break;
       }
       case Type::MyCustomField:
       {
-        set_MyCustomField(std::move(rhs.value_.MyCustomField));
+        MyCustomField_ref().emplace(std::move(rhs.value_.MyCustomField));
         break;
       }
       default:
@@ -11264,12 +11264,12 @@ class FloatUnion final  {
       }
       case Type::floatSide:
       {
-        set_floatSide(std::move(rhs.value_.floatSide));
+        floatSide_ref().emplace(std::move(rhs.value_.floatSide));
         break;
       }
       case Type::doubleSide:
       {
-        set_doubleSide(std::move(rhs.value_.doubleSide));
+        doubleSide_ref().emplace(std::move(rhs.value_.doubleSide));
         break;
       }
       default:

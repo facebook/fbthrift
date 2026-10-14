@@ -173,11 +173,11 @@ bool MyUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::anInteger:
-        set_anInteger(::apache::thrift::detail::st::copy_field<
+        anInteger_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::integral>(rhs.value_.anInteger));
         break;
       case Type::aString:
-        set_aString(::apache::thrift::detail::st::copy_field<
+        aString_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::string>(rhs.value_.aString));
         break;
       default:
@@ -192,11 +192,11 @@ bool MyUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::anInteger:
-        set_anInteger(::apache::thrift::detail::st::copy_field<
+        anInteger_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::integral>(rhs.value_.anInteger));
         break;
       case Type::aString:
-        set_aString(::apache::thrift::detail::st::copy_field<
+        aString_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::string>(rhs.value_.aString));
         break;
       default:
@@ -279,7 +279,7 @@ bool NonTriviallyDestructibleUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::int_field:
-        set_int_field(*rhs.value_.int_field);
+        int_field_ref().emplace(*rhs.value_.int_field);
         break;
       default:
         assert(false);
@@ -293,7 +293,7 @@ bool NonTriviallyDestructibleUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::int_field:
-        set_int_field(*rhs.value_.int_field);
+        int_field_ref().emplace(*rhs.value_.int_field);
         break;
       default:
         __fbthrift_clear();
