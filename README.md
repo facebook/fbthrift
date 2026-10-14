@@ -33,8 +33,8 @@ Table of Contents
   * [A Serialization Framework](#a-serialization-framework)
   * [An RPC Framework](#an-rpc-framework)
 * [Building](#building)
-  * [Dependencies](#dependencies)
-  * [Build](#build)
+  * [Build with CMake](#build-with-cmake)
+  * [getdeps.py](#getdepspy)
   * [Thrift Files](#thrift-files)
   * [Python Build (thrift-python)](#python-build-thrift-python)
 * [C++ Static Reflection](#c-static-reflection)
@@ -70,64 +70,73 @@ There are several key goals for these components:
 
 ## Building
 
-### Dependencies
+### Build with CMake
 
-On Linux or MacOS (with [Homebrew](https://brew.sh/) installed) you can install
-system dependencies to avoid building them:
+The CMake build fetches any dependency it cannot find installed, so a clone and
+two commands are enough:
 
-    # Clone the repo
     git clone https://github.com/facebook/fbthrift
-    # Install dependencies
     cd fbthrift
+    cmake -B _build
+    cmake --build _build
+
+This needs CMake 3.24 or newer, a C++20 compiler, and zlib and
+[Zstd](https://github.com/facebook/zstd) installed. Everything else, including
+[Folly](https://github.com/facebook/folly),
+[Fizz](https://github.com/facebookincubator/fizz),
+[Wangle](https://github.com/facebook/wangle),
+[mvfst](https://github.com/facebook/mvfst) and their dependencies, is used
+as-is if already on the system and fetched otherwise. Alternatively, install
+the system packages first:
+
     ./build/fbcode_builder/getdeps.py install-system-deps --recursive fbthrift
 
-On other platforms or if on Linux and without system dependencies `getdeps.py`
-will mostly download and build them for you during the build step.
+The build puts its outputs in `_build`:
 
-Some of the dependencies `getdeps.py` uses and installs are:
-
-**System**:
-[Boost](https://www.boost.org),
-[CMake](https://cmake.org),
-[OpenSSLv1.0.2g](https://www.openssl.org),
-[PThreads](https://computing.llnl.gov/tutorials/pthreads),
-[Python](https://www.python.org/), and
-[Zlib](https://zlib.net)
-
-**External**:
-[{fmt}](https://github.com/fmtlib/fmt),
-[GFlags](https://github.com/gflags/gflags),
-[GLog](https://github.com/google/glog), and
-[GTest and GMock](https://github.com/google/googletest)
-
-**Facebook**:
-[Fizz](https://github.com/facebookincubator/fizz),
-[Folly](https://github.com/facebook/folly),
-[Wangle](https://github.com/facebook/wangle), and
-[Zstd](https://github.com/facebook/zstd)
-
-The Thrift compiler only depends on Boost, CMake and {fmt}.
-
-### Build
-
-    # Clone the repo
-    git clone https://github.com/facebook/fbthrift
-    cd fbthrift
-    # Build, using system dependencies if available
-    ./build/fbcode_builder/getdeps.py --allow-system-packages build fbthrift
-
-`getdeps.py` will invoke cmake etc and put output in its scratch area (you can see in logs, and can override with `--scratch-path`):
-
-* `installed/fbthrift/bin/thrift`: The Thrift compiler binary to generate client and
+* `_build/bin/thrift`: The Thrift compiler binary to generate client and
   server code.
-* `installed/fbthrift/lib/libthriftcpp2.a`: Library for clients and servers.
+* `_build/lib/libthriftcpp2.a`: Library for clients and servers.
 
-If you want to invoke `cmake` again to iterate, there is a helpful `run_cmake.py` output in the scratch `build/fbthrift` directory.
+Tests are not built by default. Configure with `-DTHRIFT_TESTS=ON` to build
+them. They need [GTest](https://github.com/google/googletest) and, unless
+`THRIFT_BENCHMARKS` is off, [Google Benchmark](https://github.com/google/benchmark)
+installed; neither is fetched:
+
+    cmake -B _build -DTHRIFT_TESTS=ON
+    cmake --build _build
+    (cd _build && ctest)
+
+If configure had to fetch Fizz, Wangle, mvfst or xxHash, it turns install rules
+off, because an installed Thrift would refer to libraries that exist only in
+the build tree. The configure output lists them; install them and reconfigure
+to get an installable Thrift.
 
 CMake options:
 
-* `THRIFT_TESTS`:
-  specifies whether to enable tests
+* `THRIFT_RPC` (default `ON`): build the RPC transport stack and its
+  dependencies (Fizz, Wangle, mvfst).
+* `THRIFT_TESTS` (default `OFF`): build the tests.
+* `THRIFT_BENCHMARKS` (default `ON`): build the benchmarks along with the
+  tests.
+* `THRIFT_PYTHON` (default `OFF`): build the thrift-python library and
+  extensions; requires Cython.
+* `THRIFT_PY_DEPRECATED` (default `ON`): build the deprecated thrift-py
+  library; use thrift-python instead.
+
+### `getdeps.py`
+
+`getdeps.py` also builds Thrift's sibling projects and is what CI uses. Prefer
+the CMake build above unless you need that.
+
+    # Build, using system dependencies if available
+    ./build/fbcode_builder/getdeps.py --allow-system-packages build fbthrift
+
+`getdeps.py` will invoke cmake etc and put output in its scratch area (you can
+see in logs, and can override with `--scratch-path`), including
+`installed/fbthrift/bin/thrift` and `installed/fbthrift/lib/libthriftcpp2.a`.
+
+If you want to invoke `cmake` again to iterate, there is a helpful
+`run_cmake.py` output in the scratch `build/fbthrift` directory.
 
 ### Thrift Files
 
