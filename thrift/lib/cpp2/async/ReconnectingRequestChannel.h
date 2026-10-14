@@ -75,6 +75,7 @@ class ReconnectingRequestChannel : public RequestChannel,
         {}};
   }
 
+  using RequestChannel::sendRequestBiDi;
   using RequestChannel::sendRequestNoResponse;
   using RequestChannel::sendRequestResponse;
   using RequestChannel::sendRequestSink;
@@ -110,6 +111,16 @@ class ReconnectingRequestChannel : public RequestChannel,
       SerializedRequest&& request,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       apache::thrift::SinkClientCallback* cb,
+      std::unique_ptr<folly::IOBuf> frameworkMetadata) override;
+
+  // Unlike the overrides above, this has to be the rvalue overload: the base
+  // rvalue sendRequestBiDi terminates, and PooledRequestChannel calls it.
+  void sendRequestBiDi(
+      RpcOptions&& options,
+      MethodMetadata&& methodMetadata,
+      SerializedRequest&& request,
+      std::shared_ptr<transport::THeader> header,
+      BiDiClientCallback* cob,
       std::unique_ptr<folly::IOBuf> frameworkMetadata) override;
 
   void setCloseCallback(CloseCallback*) override {

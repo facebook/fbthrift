@@ -15,10 +15,14 @@
  */
 
 #include <functional>
+#include <string>
+#include <vector>
 #include <folly/Portability.h>
 #include <folly/coro/AsyncGenerator.h>
+#include <folly/coro/Baton.h>
 #include <folly/coro/BlockingWait.h>
 #include <folly/coro/Task.h>
+#include <folly/executors/GlobalExecutor.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
@@ -27,6 +31,7 @@
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/ReconnectingRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/test/e2e/gen-cpp2/TestBiDiService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -270,6 +275,121 @@ TEST_F(ReconnectingRequestChannelTest, RequestsDuringReconnect) {
 
     co_await std::move(request1);
     co_await std::move(request2);
+  }());
+}
+#endif
+
+#if FOLLY_HAS_COROUTINES
+namespace {
+
+using BiDiService = apache::thrift::detail::test::TestBiDiService;
+
+class BiDiEchoHandler : public apache::thrift::ServiceHandler<BiDiService> {
+ public:
+  folly::coro::Task<StreamTransformation<std::string, std::string>> co_echo()
+      override {
+    co_return StreamTransformation<std::string, std::string>{
+        [](folly::coro::AsyncGenerator<std::string&&> input)
+            -> folly::coro::AsyncGenerator<std::string&&> {
+          while (auto item = co_await input.next()) {
+            co_yield std::move(*item);
+          }
+        }};
+  }
+};
+
+folly::coro::AsyncGenerator<std::string&&> yieldAll(
+    std::vector<std::string> items) {
+  for (auto& item : items) {
+    co_yield std::move(item);
+  }
+}
+
+folly::coro::Task<std::vector<std::string>> drainEcho(
+    BidirectionalStream<std::string, std::string> stream,
+    std::vector<std::string> items) {
+  co_await std::move(stream.sink).sink(yieldAll(std::move(items)));
+  std::vector<std::string> echoed;
+  auto generator = std::move(stream.stream).toAsyncGenerator();
+  while (auto item = co_await generator.next()) {
+    echoed.push_back(std::move(*item));
+  }
+  co_return echoed;
+}
+
+} // namespace
+
+class ReconnectingRequestChannelBiDiTest : public Test {
+ protected:
+  using OnConnect = std::function<void(folly::AsyncSocket::ConnectCallback&)>;
+
+  std::unique_ptr<Client<BiDiService>> makeClient(
+      folly::Executor* executor, OnConnect onConnect) {
+    auto channel = PooledRequestChannel::newChannel(
+        executor, ioThread_, [this, onConnect](folly::EventBase& evb) {
+          return ReconnectingRequestChannel::newChannel(
+              evb,
+              [this, onConnect](
+                  folly::EventBase& evb,
+                  folly::AsyncSocket::ConnectCallback& cb) {
+                SCOPE_EXIT {
+                  onConnect(cb);
+                };
+                auto socket =
+                    AsyncSocket::UniquePtr(new AsyncSocket(&evb, address_));
+                return RocketClientChannel::newChannel(std::move(socket));
+              });
+        });
+    return std::make_unique<Client<BiDiService>>(std::move(channel));
+  }
+
+  std::shared_ptr<BiDiEchoHandler> handler_{
+      std::make_shared<BiDiEchoHandler>()};
+  std::unique_ptr<ScopedServerInterfaceThread> runner_{
+      std::make_unique<ScopedServerInterfaceThread>(handler_)};
+  folly::SocketAddress address_{runner_->getAddress()};
+  std::shared_ptr<folly::IOExecutor> ioThread_{
+      std::make_shared<folly::ScopedEventBaseThread>()};
+};
+
+TEST_F(ReconnectingRequestChannelBiDiTest, BiDiReconnect) {
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto client = makeClient(
+        co_await folly::coro::co_current_executor,
+        [](folly::AsyncSocket::ConnectCallback& cb) { cb.connectSuccess(); });
+
+    auto echoed = co_await drainEcho(co_await client->co_echo(), {"a", "b"});
+    EXPECT_EQ(echoed, (std::vector<std::string>{"a", "b"}));
+
+    // The old impl goes !good, so the next request reconnects.
+    runner_ = std::make_unique<ScopedServerInterfaceThread>(handler_);
+    address_ = runner_->getAddress();
+
+    echoed = co_await drainEcho(co_await client->co_echo(), {"c"});
+    EXPECT_EQ(echoed, (std::vector<std::string>{"c"}));
+  }());
+}
+
+TEST_F(ReconnectingRequestChannelBiDiTest, BiDiQueuedDuringReconnect) {
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    folly::AsyncSocket::ConnectCallback* connectCallback = nullptr;
+    folly::coro::Baton connecting;
+    auto client = makeClient(
+        co_await folly::coro::co_current_executor,
+        [&](folly::AsyncSocket::ConnectCallback& cb) {
+          connectCallback = &cb;
+          connecting.post();
+        });
+
+    auto pendingStream = folly::coro::co_withExecutor(
+                             folly::getGlobalCPUExecutor(), client->co_echo())
+                             .start();
+    co_await connecting;
+    ioThread_->getEventBase()->runImmediatelyOrRunInEventBaseThreadAndWait(
+        [&] { connectCallback->connectSuccess(); });
+
+    auto echoed = co_await drainEcho(co_await std::move(pendingStream), {"a"});
+    EXPECT_EQ(echoed, (std::vector<std::string>{"a"}));
   }());
 }
 #endif

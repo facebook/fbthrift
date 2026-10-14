@@ -119,6 +119,43 @@ class ChannelKeepAliveSink : public SinkClientCallback {
   SinkClientCallback& clientCallback_;
 };
 
+class ChannelKeepAliveBiDi : public BiDiClientCallback {
+ public:
+  ChannelKeepAliveBiDi(
+      ReconnectingRequestChannel::ImplPtr impl,
+      BiDiClientCallback& clientCallback)
+      : keepAlive_(std::move(impl)), clientCallback_(clientCallback) {}
+
+  bool onFirstResponse(
+      FirstResponsePayload&& firstResponsePayload,
+      folly::EventBase* evb,
+      BiDiServerCallback* serverCallback) override {
+    SCOPE_EXIT {
+      delete this;
+    };
+    serverCallback->resetClientCallback(clientCallback_);
+    return clientCallback_.onFirstResponse(
+        std::move(firstResponsePayload), evb, serverCallback);
+  }
+  void onFirstResponseError(folly::exception_wrapper ew) override {
+    SCOPE_EXIT {
+      delete this;
+    };
+    return clientCallback_.onFirstResponseError(std::move(ew));
+  }
+
+  bool onStreamNext(StreamPayload&&) override { std::terminate(); }
+  bool onStreamError(folly::exception_wrapper) override { std::terminate(); }
+  bool onStreamComplete() override { std::terminate(); }
+  bool onSinkRequestN(int32_t) override { std::terminate(); }
+  bool onSinkCancel() override { std::terminate(); }
+  void resetServerCallback(BiDiServerCallback&) override { std::terminate(); }
+
+ private:
+  ReconnectingRequestChannel::ImplPtr keepAlive_;
+  BiDiClientCallback& clientCallback_;
+};
+
 static const folly::exception_wrapper pendingRequestOverflowError() {
   return folly::make_exception_wrapper<std::logic_error>(
       "Request Queue Overflowed!");
@@ -350,6 +387,58 @@ void ReconnectingRequestChannel::sendRequestSink(
       std::move(request),
       std::move(header),
       cob,
+      std::move(frameworkMetadata));
+}
+
+void ReconnectingRequestChannel::sendRequestBiDi(
+    RpcOptions&& options,
+    MethodMetadata&& methodMetadata,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
+    BiDiClientCallback* cob,
+    std::unique_ptr<folly::IOBuf> frameworkMetadata) {
+  if (!isChannelGood()) {
+    if (useRequestQueue_) {
+      if (requestQueue_.size() >= requestQueueLimit) {
+        cob->onFirstResponseError(pendingRequestOverflowError());
+        return;
+      }
+      requestQueue_.emplace_back([this,
+                                  rctx = folly::RequestContext::saveContext(),
+                                  options = std::move(options),
+                                  methodMetadata = std::move(methodMetadata),
+                                  request = std::move(request),
+                                  header = std::move(header),
+                                  cob,
+                                  frameworkMetadata =
+                                      std::move(frameworkMetadata)](
+                                     bool failRequest) mutable {
+        const folly::RequestContextScopeGuard guard{std::move(rctx)};
+        if (failRequest) {
+          cob->onFirstResponseError(requestQueueNonEmptyAtDestructionError());
+          return;
+        }
+        return impl_->sendRequestBiDi(
+            std::move(options),
+            std::move(methodMetadata),
+            std::move(request),
+            std::move(header),
+            new ChannelKeepAliveBiDi(impl_, *cob),
+            std::move(frameworkMetadata));
+      });
+      reconnectRequestChannelWithCallback();
+      // sendQueuedRequests() will take care of sending this request.
+      return;
+    }
+    reconnectRequestChannel();
+  }
+
+  return impl_->sendRequestBiDi(
+      std::move(options),
+      std::move(methodMetadata),
+      std::move(request),
+      std::move(header),
+      new ChannelKeepAliveBiDi(impl_, *cob),
       std::move(frameworkMetadata));
 }
 
