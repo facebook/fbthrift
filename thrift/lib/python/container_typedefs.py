@@ -205,6 +205,7 @@ def _type_and_thrift_type_from_typeinfo(
         typeinfo_i32,
         typeinfo_i64,
         typeinfo_string,
+        Union,
     )
 
     _PRIMITIVES: list[tuple[Any, type[Any], Any]] = [
@@ -223,7 +224,14 @@ def _type_and_thrift_type_from_typeinfo(
             return (py_type, tt)
     if isinstance(typeinfo, StructTypeInfo):
         # pyre-ignore[16]: Cython attribute
-        return (typeinfo._class, ThriftType.STRUCT)
+        klass = typeinfo._class
+        # Unions share StructTypeInfo with structs, but generated reflection
+        # reports them as UNION.
+        if issubclass(klass, Union):
+            tt = ThriftType.UNION
+        else:
+            tt = ThriftType.STRUCT
+        return (klass, tt)
     if isinstance(typeinfo, EnumTypeInfo):
         # pyre-ignore[16]: Cython attribute
         return (typeinfo._class, ThriftType.ENUM)
