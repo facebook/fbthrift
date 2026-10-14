@@ -193,7 +193,8 @@ class SchemaIndex {
       const type::DefinitionKey&, const type::Function&, const type::Schema&);
 
   std::vector<Annotation> createAnnotations(
-      const std::map<type::DefinitionKey, type::Annotation>& annotations,
+      const folly::F14VectorMap<type::DefinitionKey, type::Annotation>&
+          annotations,
       const type::Schema&);
   // Tries to get the TypeStruct representing a structured annotation type.
   // Due to circular dependency concerns in the Thrift compiler, the
@@ -953,7 +954,8 @@ FunctionNode SchemaIndex::createFunction(
 }
 
 std::vector<Annotation> SchemaIndex::createAnnotations(
-    const std::map<type::DefinitionKey, type::Annotation>& annotations,
+    const folly::F14VectorMap<type::DefinitionKey, type::Annotation>&
+        annotations,
     const type::Schema& schema) {
   std::vector<Annotation> result;
   for (const auto& [definitionKey, annotation] : annotations) {

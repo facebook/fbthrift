@@ -24,6 +24,7 @@ include "thrift/lib/thrift/type.thrift"
 include "thrift/annotation/python.thrift"
 
 cpp_include "<deque>"
+cpp_include "folly/container/F14Map.h"
 
 /**
  * The canonical representations for a Thrift schema.
@@ -180,7 +181,11 @@ struct DefinitionAttrs {
   /**
    * The structured annotations associated with this definitions indexed by
    * the annotation's definitionKey (~hash).
+   *
+   * Filled in declaration order, which serialization keeps unless the writer
+   * sorts keys, as `thrift2ast` does without `ordered_container_values`.
    */
+  @cpp.Type{template = "folly::F14VectorMap"}
   9: map<DefinitionKey, Annotation> annotationsByKey;
 
   /**
