@@ -36,20 +36,93 @@ final class RequestPriorityContextHandler implements IContextHandler {
       return;
     }
     $service_name = Shapes::idx($params, 'service_name');
+    if ($service_name is null) {
+      self::logSenderEvent(
+        $params,
+        null,
+        $priority,
+        $mutable_tfm->request_priority,
+        $mutable_tfm->request_priority,
+        'NO_SERVICE_NAME',
+        $immutable_ctx->getRequestId(),
+      );
+      return;
+    }
+    $upstream = $mutable_tfm->request_priority;
+    // A higher value is more sheddable; never upgrade an upstream priority.
     if (
-      $service_name is null ||
       !JustKnobs::evalString(
         'www/web_efficiency_infra:pl_set_priority_to_tcp',
         $immutable_ctx->getRequestId(),
         $service_name,
       )
     ) {
-      return;
-    }
-    // A higher value is more sheddable; never upgrade an upstream priority.
-    $upstream = $mutable_tfm->request_priority;
-    if ($upstream is null || ($priority as int) > ($upstream as int)) {
+      $decision = 'NOT_ALLOWLISTED';
+    } else if ($upstream is null || ($priority as int) > ($upstream as int)) {
       $mutable_tfm->request_priority = $priority;
+      $decision = 'PROPAGATED';
+    } else {
+      $decision = 'KEPT_UPSTREAM';
+    }
+
+    self::logSenderEvent(
+      $params,
+      $service_name,
+      $priority,
+      $upstream,
+      $mutable_tfm->request_priority,
+      $decision,
+      $immutable_ctx->getRequestId(),
+    );
+  }
+
+  private static function logSenderEvent(
+    ClientInstrumentationParams $params,
+    ?string $receiver_service,
+    RequestPriority $effective_priority,
+    ?RequestPriority $upstream_priority,
+    ?RequestPriority $wire_priority,
+    string $decision,
+    string $request_id,
+  ): void {
+    // Best-effort: a throw here would abort the remaining ContextProp handlers
+    // and the TFM header write for this outbound call.
+    try {
+      $sample_denom = JustKnobs::getInt(
+        'upop/contextprop_priority:log_sample_denom',
+        $receiver_service is null
+          ? 'WWW.SENDER.no_service'
+          : 'WWW.SENDER.tagged',
+      );
+      if ($sample_denom <= 0 || PseudoRandom\int(1, $sample_denom) !== 1) {
+        return;
+      }
+      $names = RequestPriority::getNames();
+      RoContextPropPriorityFunctionalLogger::logOnlyForNonAsyncMethods(shape(
+        'event_count' => 1,
+        'aggregation_window_sec' => 0,
+        'sample_denom' => $sample_denom,
+        'reporter_service' => 'www',
+        'reporter_platform' => 'WWW',
+        'reporter_side' => 'SENDER',
+        'log_point' => 'www.contextprop_v2_handler',
+        'sender_service' => 'www',
+        'receiver_service' => $receiver_service,
+        'method' => Shapes::idx($params, 'fn_name'),
+        'transport' => 'THRIFT_CONTEXTPROP',
+        'wire_priority' =>
+          $wire_priority is null ? null : idx($names, $wire_priority),
+        'effective_priority' => idx($names, $effective_priority),
+        'upstream_priority' =>
+          $upstream_priority is null ? null : idx($names, $upstream_priority),
+        'decision' => $decision,
+        'product_id' => TagManager::getLatestOriginID(),
+        'root_product_id' => ThriftContextPropState::get()->getRootProductId(),
+        'entrypoint' => RelativeScript::getPath(),
+        'request_id' => PHP\bin2hex($request_id),
+      ));
+    } catch (Exception $e) {
+      ope($e, causes_the('RO priority sender logging')->to('be skipped'));
     }
   }
 
