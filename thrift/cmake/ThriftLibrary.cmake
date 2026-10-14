@@ -66,7 +66,7 @@ include(GNUInstallDirs)
 #   bypass_source_check(${file_language-SOURCES})
 # This will prevent cmake from complaining about missing source files
 #
-macro (
+function (
   thrift_generate
   file_name
   services
@@ -223,7 +223,13 @@ macro (
       FILES_MATCHING
       PATTERN "*.tcc")
   endif ()
-endmacro ()
+  set("${target_file_name}-${language}-HEADERS"
+      "${${target_file_name}-${language}-HEADERS}"
+      PARENT_SCOPE)
+  set("${target_file_name}-${language}-SOURCES"
+      "${${target_file_name}-${language}-SOURCES}"
+      PARENT_SCOPE)
+endfunction ()
 
 #
 # thrift_object
