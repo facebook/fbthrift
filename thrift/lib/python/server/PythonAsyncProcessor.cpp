@@ -658,6 +658,9 @@ void PythonAsyncProcessor::executeRequest(
           .uncompress();
 
   auto* eb = apache::thrift::detail::ServerRequestHelper::eventBase(request);
+  // This executor keeps the server alive until the follow-up work that holds
+  // it finishes. Use it for callbacks so the server stays alive until that
+  // work ends.
   auto executor =
       apache::thrift::detail::ServerRequestHelper::executor(request);
   auto requestData = request.requestData();
