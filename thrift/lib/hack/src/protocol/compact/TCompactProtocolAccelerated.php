@@ -82,7 +82,7 @@ class TCompactProtocolAccelerated extends TCompactProtocolBase {
 
   <<__Override>>
   public function readRPCStruct<TStruct as IThriftStruct>(
-    classname<TStruct> $struct_class,
+    class<TStruct> $struct_class,
     int $options = 0,
   ): TStruct {
 

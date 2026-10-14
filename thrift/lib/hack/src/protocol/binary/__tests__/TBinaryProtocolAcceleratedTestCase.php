@@ -130,7 +130,7 @@ final class TBinaryProtocolAcceleratedTestCase extends WWWTest {
     $prot->writeRPCStruct($input);
     $prot->getTransport()->flush();
 
-    $output = $prot->readRPCStruct(nameof LogEntry);
+    $output = $prot->readRPCStruct(LogEntry::class);
     expect($output)->toBePHPEqual($input);
   }
 }

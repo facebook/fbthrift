@@ -230,7 +230,7 @@ final class TCompactProtocolAcceleratedTest extends WWWTest {
     $prot->writeRPCStruct($input);
     $prot->getTransport()->flush();
 
-    $output = $prot->readRPCStruct(nameof CompactTestStruct);
+    $output = $prot->readRPCStruct(CompactTestStruct::class);
     expect($output)->toBePHPEqual($input);
   }
 }
