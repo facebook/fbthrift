@@ -24,7 +24,7 @@ from apache.thrift.type.any_rep.thrift_types import AnyStruct
 from apache.thrift.type.standard.thrift_types import StandardProtocol, TypeName, Void
 from apache.thrift.type.type_rep.thrift_types import ProtocolUnion, TypeStruct
 from folly.iobuf import IOBuf
-from thrift.lib.python.schema._datum import EMPTY_UNION, FrozenMap, FrozenSet, UNSET
+from thrift.lib.python.schema._datum import freeze_key, UNSET
 from thrift.lib.python.schema.schema_registry import SchemaRegistry
 from thrift.lib.python.schema.type_system import (
     _type_ref_for_node,
@@ -93,33 +93,36 @@ def to_value(obj: object, type_ref: TypeRef) -> object:
         case ListTypeRef():
             assert isinstance(obj, Iterable)
             element_type = resolved(type_ref.element_type)
-            return tuple(to_value(e, element_type) for e in obj)
+            return [to_value(e, element_type) for e in obj]
         case SetTypeRef():
             assert isinstance(obj, Iterable)
             element_type = resolved(type_ref.element_type)
-            return FrozenSet(to_value(e, element_type) for e in obj)
+            return dict.fromkeys(
+                freeze_key(to_value(e, element_type), element_type) for e in obj
+            )
         case MapTypeRef():
             assert isinstance(obj, Mapping)
             key_type = resolved(type_ref.key_type)
             value_type = resolved(type_ref.value_type)
-            return FrozenMap(
-                {to_value(k, key_type): to_value(v, value_type) for k, v in obj.items()}
-            )
+            return {
+                freeze_key(to_value(k, key_type), key_type): to_value(v, value_type)
+                for k, v in obj.items()
+            }
         case StructTypeRef():
             names = _python_field_names(type(obj))
-            return tuple(
+            return [
                 UNSET
                 if (field_value := getattr(obj, names[f.identity.id])) is None
                 else to_value(field_value, f.type)
                 for f in type_ref.node.fields
-            )
+            ]
         case UnionTypeRef():
             assert isinstance(obj, Union)
             field_id = obj.fbthrift_current_field.value
             field = type_ref.node.field_by_id(field_id)
             if field is None:
-                return EMPTY_UNION
-            return (field_id, to_value(obj.fbthrift_current_value, field.type))
+                return []
+            return [field_id, to_value(obj.fbthrift_current_value, field.type)]
         case OpaqueAliasTypeRef():
             return to_value(obj, type_ref.node.target_type)
         case _:

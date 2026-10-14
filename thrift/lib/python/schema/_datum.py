@@ -14,30 +14,24 @@
 
 
 """
-The plain value representation the codec reads and writes. Values are
-immutable, hashable, and not self-describing; a ``TypeRef`` supplies
-their meaning.
+Schema-driven owned values. Composite storage uses plain lists/dictionaries;
+map keys and set elements use recursively frozen datum. A TypeRef supplies
+meaning, including field layout and integer widths.
 
-    bool                     bool
-    byte, i16, i32, i64      int (enums too; unknown enum values are kept)
-    float                    float, exactly representable in float32
-    double                   float
-    string                   str (valid UTF-8)
-    binary                   bytes
-    list<T>                  tuple
-    set<T>                   FrozenSet (iterates in insertion order)
-    map<K, V>                FrozenMap (an immutable, insertion-ordered dict)
-    struct, exception        tuple of field values in TypeSystem field order,
-                             with UNSET for an unset optional field
-    union                    (field_id, value), or EMPTY_UNION
-    opaque alias             the representation of its target type
-    any                      thrift-python AnyStruct
+    list, struct, exception  list (struct slots follow schema field order)
+    map                      dict from frozen keys to owned values
+    set                      insertion-ordered dict from frozen elements to None
+    union                    [] or [field_id, payload]
+
+Frozen storage follows the same shape: list becomes tuple, dict becomes
+FrozenMap, and scalar leaves are shared. This includes set dictionaries and
+empty unions. Only runtime code accesses the plain storage directly.
 """
 
 from __future__ import annotations
 
 import enum
-from collections.abc import Iterable, Iterator
+from collections.abc import Sequence
 from typing import Final, Literal, NoReturn, TypeVar
 
 from apache.thrift.type.any_rep.thrift_types import AnyStruct
@@ -86,23 +80,17 @@ from thrift.lib.python.schema.type_system import (
 
 _K = TypeVar("_K")
 _V = TypeVar("_V")
-_T = TypeVar("_T")
 
 
 class _Sentinel(enum.Enum):
     UNSET = "UNSET"
-    EMPTY_UNION = "EMPTY_UNION"
 
     def __repr__(self) -> str:
         return self.value
 
 
-# An unset optional struct field.
 UNSET: Final = _Sentinel.UNSET
 Unset = Literal[_Sentinel.UNSET]
-# A union with no active field. Unlike ``UNSET``, it is a value, which
-# an optional field or a union field can hold.
-EMPTY_UNION: Final = _Sentinel.EMPTY_UNION
 
 
 class FrozenMap(dict[_K, _V]):
@@ -157,32 +145,6 @@ class FrozenMap(dict[_K, _V]):
     def __repr__(self) -> str:
         return f"{type(self).__name__}({dict.__repr__(self)})"
 
-
-class FrozenSet(frozenset[_T]):
-    """A ``frozenset`` that iterates in insertion order, so that encoding is
-    deterministic (``frozenset`` iterates in hash order, and string hashes
-    change per process). A duplicate keeps its first position."""
-
-    __slots__ = ("_order",)
-    _order: tuple[_T, ...]
-
-    def __new__(cls, elements: Iterable[_T] = ()) -> FrozenSet[_T]:
-        order = tuple(dict.fromkeys(elements))
-        instance = super().__new__(cls, order)
-        instance._order = order
-        return instance
-
-    def __iter__(self) -> Iterator[_T]:
-        return iter(self._order)
-
-    def __reduce__(self) -> tuple[type[FrozenSet[_T]], tuple[tuple[_T, ...]]]:
-        return (type(self), (self._order,))
-
-    def __repr__(self) -> str:
-        return f"{type(self).__name__}({list(self._order)!r})"
-
-
-_EMPTY_SET: FrozenSet[object] = FrozenSet()
 
 _PRIMITIVE_DEFAULTS: dict[Primitive, object] = {
     Primitive.BOOL: False,
@@ -253,15 +215,15 @@ def default_value(type_ref: TypeRef) -> object:
         case EnumTypeRef():
             return 0
         case ListTypeRef():
-            return ()
+            return []
         case SetTypeRef():
-            return _EMPTY_SET
+            return {}
         case MapTypeRef():
-            return FrozenMap()
+            return {}
         case StructTypeRef(node=node):
-            return tuple(field_default(f) for f in node.fields)
+            return [field_default(f) for f in node.fields]
         case UnionTypeRef():
-            return EMPTY_UNION
+            return []
         case target:
             raise InvalidTypeError(f"opaque alias of user-defined type {target!r}")
 
@@ -339,28 +301,29 @@ def value_from_record(record: SerializableRecord, type_ref: TypeRef) -> object:
             return _int_from_record(record, Int32Record, 32, type_ref)
         case ListTypeRef() if isinstance(record, ListRecord):
             element_type = resolved(target.element_type)
-            return tuple(value_from_record(e, element_type) for e in record.elements)
+            return [value_from_record(e, element_type) for e in record.elements]
         case SetTypeRef() if isinstance(record, SetRecord):
             element_type = resolved(target.element_type)
-            return FrozenSet(
-                value_from_record(e, element_type) for e in record.elements
+            return dict.fromkeys(
+                freeze_key(value_from_record(e, element_type), element_type)
+                for e in record.elements
             )
         case MapTypeRef() if isinstance(record, MapRecord):
             key_type = resolved(target.key_type)
             value_type = resolved(target.value_type)
-            return FrozenMap(
-                {
-                    value_from_record(k, key_type): value_from_record(v, value_type)
-                    for k, v in record.entries
-                }
-            )
+            return {
+                freeze_key(value_from_record(k, key_type), key_type): value_from_record(
+                    v, value_type
+                )
+                for k, v in record.entries
+            }
         case StructTypeRef() if isinstance(record, FieldSetRecord):
-            return tuple(
+            return [
                 value_from_record(record.fields[f.identity.id], f.type)
                 if f.identity.id in record.fields
                 else field_default(f)
                 for f in target.node.fields
-            )
+            ]
         case UnionTypeRef() if isinstance(record, FieldSetRecord):
             return _union_from_record(record, target)
         case _:
@@ -369,7 +332,7 @@ def value_from_record(record: SerializableRecord, type_ref: TypeRef) -> object:
 
 def _union_from_record(record: FieldSetRecord, type_ref: UnionTypeRef) -> object:
     if not record.fields:
-        return EMPTY_UNION
+        return []
     if len(record.fields) > 1:
         raise InvalidTypeError(
             f"union record {record!r} has more than one active field"
@@ -380,7 +343,7 @@ def _union_from_record(record: FieldSetRecord, type_ref: UnionTypeRef) -> object
         raise InvalidTypeError(
             f"unknown field id {field_id} in record for union '{type_ref.node.uri}'"
         )
-    return (field_id, value_from_record(field_record, field.type))
+    return [field_id, value_from_record(field_record, field.type)]
 
 
 # ---------------------------------------------------------------------------
@@ -389,36 +352,192 @@ def _union_from_record(record: FieldSetRecord, type_ref: UnionTypeRef) -> object
 
 
 def check_value(value: object, type_ref: TypeRef) -> None:
-    """Raise ``EncodeError`` unless ``value`` is a valid value of
-    ``type_ref``. ``UNSET`` is valid only as a struct field: an unset optional
-    field, or a non-optional field to be written as its default."""
+    """Validate canonical owned datum, including its frozen hashed positions."""
+    _check_value(value, type_ref, False, set())
+
+
+def check_frozen_key(value: object, type_ref: TypeRef) -> None:
+    """Validate the uniformly frozen representation of a key or element."""
+    _check_value(value, type_ref, True, set())
+
+
+def copy_value(value: object, type_ref: TypeRef, *, frozen: bool = False) -> object:
+    """Validate canonical datum, owned or (with ``frozen``) frozen, and copy it
+    into owned storage with each mutable branch independent."""
+    _check_value(value, type_ref, frozen, set())
+    return _copy_tree(value)
+
+
+def freeze_key(value: object, type_ref: TypeRef) -> object:
+    """Validate canonical datum before freezing it for a hashed position."""
+    check_value(value, type_ref)
+    return _freeze_tree(value)
+
+
+def _copy_tree(value: object) -> object:
+    """Copy a validated tree; immutable scalars and hashed keys can be shared."""
+    if isinstance(value, (list, tuple)):
+        return [_copy_tree(child) for child in value]
+    if isinstance(value, dict):
+        return {key: _copy_tree(child) for key, child in value.items()}
+    return value
+
+
+def _freeze_tree(value: object) -> object:
+    """Freeze a validated tree whose dictionary keys are already immutable."""
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze_tree(child) for child in value)
+    if isinstance(value, dict):
+        return FrozenMap({key: _freeze_tree(child) for key, child in value.items()})
+    return value
+
+
+def values_equal(left: object, right: object) -> bool:
+    """Whether two valid trees of one type are equal. Owned and frozen storage
+    compare alike, and dictionaries ignore order. Scalars compare by identity
+    first, so a stored NaN equals itself."""
+    if left is right:
+        return True
+    if isinstance(left, (list, tuple)):
+        return (
+            isinstance(right, (list, tuple))
+            and len(left) == len(right)
+            and all(values_equal(a, b) for a, b in zip(left, right))
+        )
+    if isinstance(left, dict):
+        # Keys are frozen on both sides, so they hash and compare directly.
+        return (
+            isinstance(right, dict)
+            and len(left) == len(right)
+            and all(
+                key in right and values_equal(item, right[key])
+                for key, item in left.items()
+            )
+        )
+    return left == right
+
+
+def _check_value(
+    value: object,
+    type_ref: TypeRef,
+    frozen: bool,
+    active: set[int],
+) -> None:
     target = true_type(type_ref)
-    name = type_name(type_ref)
-    match target:
-        case PrimitiveTypeRef(primitive=primitive):
-            _check_primitive(value, primitive, name)
-        case EnumTypeRef():
-            check_int(value, 32, name)
-        case ListTypeRef():
-            element_type = resolved(target.element_type)
-            for element in expect_instance(value, tuple, name):
-                check_value(element, element_type)
-        case SetTypeRef():
-            element_type = resolved(target.element_type)
-            for element in expect_instance(value, FrozenSet, name):
-                check_value(element, element_type)
-        case MapTypeRef():
-            key_type = resolved(target.key_type)
-            value_type = resolved(target.value_type)
-            for key, item in expect_instance(value, FrozenMap, name).items():
-                check_value(key, key_type)
-                check_value(item, value_type)
-        case StructTypeRef():
-            _check_struct(value, target)
-        case UnionTypeRef():
-            _check_union(value, target)
-        case _:
-            raise InvalidTypeError(f"opaque alias of user-defined type {target!r}")
+    if isinstance(target, PrimitiveTypeRef):
+        _check_primitive(value, target.primitive, type_name(type_ref))
+        return
+    if isinstance(target, EnumTypeRef):
+        check_int(value, 32, type_name(type_ref))
+        return
+    identity = id(value)
+    if identity in active:
+        raise EncodeError(f"cyclic datum for type '{type_name(type_ref)}'")
+    active.add(identity)
+    try:
+        match target:
+            case ListTypeRef():
+                _check_list(value, target, frozen, active)
+            case SetTypeRef():
+                _check_set(value, target, frozen, active)
+            case MapTypeRef():
+                _check_map(value, target, frozen, active)
+            case StructTypeRef():
+                _check_struct(value, target, frozen, active)
+            case UnionTypeRef():
+                _check_union(value, target, frozen, active)
+            case _:
+                raise InvalidTypeError(f"unsupported type {target!r}")
+    finally:
+        active.remove(identity)
+
+
+def _sequence(
+    value: object, name: str, frozen: bool
+) -> list[object] | tuple[object, ...]:
+    if frozen:
+        return expect_instance(value, tuple, name)
+    return expect_instance(value, list, name, exact=True)
+
+
+def _dictionary(value: object, name: str, frozen: bool) -> dict[object, object]:
+    if frozen:
+        return expect_instance(value, FrozenMap, name)
+    return expect_instance(value, dict, name, exact=True)
+
+
+def _check_list(
+    value: object,
+    target: ListTypeRef,
+    frozen: bool,
+    active: set[int],
+) -> None:
+    element_type = resolved(target.element_type)
+    for element in _sequence(value, type_name(target), frozen):
+        _check_value(element, element_type, frozen, active)
+
+
+def _check_set(
+    value: object,
+    target: SetTypeRef,
+    frozen: bool,
+    active: set[int],
+) -> None:
+    entries = _dictionary(value, type_name(target), frozen)
+    if any(item is not None for item in entries.values()):
+        raise EncodeError("set entries must have None payloads")
+    element_type = resolved(target.element_type)
+    for element in entries:
+        _check_value(element, element_type, True, active)
+
+
+def _check_map(
+    value: object,
+    target: MapTypeRef,
+    frozen: bool,
+    active: set[int],
+) -> None:
+    entries = _dictionary(value, type_name(target), frozen)
+    key_type = resolved(target.key_type)
+    value_type = resolved(target.value_type)
+    for key, item in entries.items():
+        _check_value(key, key_type, True, active)
+        _check_value(item, value_type, frozen, active)
+
+
+def _check_struct(
+    value: object,
+    target: StructTypeRef,
+    frozen: bool,
+    active: set[int],
+) -> None:
+    values = check_struct_shape(value, target, frozen=frozen)
+    for field, item in zip(target.node.fields, values):
+        try:
+            if item is UNSET:
+                if field.presence is not PresenceQualifier.OPTIONAL:
+                    raise EncodeError(
+                        "a non-optional field must hold a value, not UNSET"
+                    )
+            else:
+                _check_value(item, field.type, frozen, active)
+        except EncodeError as error:
+            raise field_error(target, field, error) from None
+
+
+def _check_union(
+    value: object,
+    target: UnionTypeRef,
+    frozen: bool,
+    active: set[int],
+) -> None:
+    active_field = check_union_shape(value, target, frozen=frozen)
+    if active_field is not None:
+        field, item = active_field
+        try:
+            _check_value(item, field.type, frozen, active)
+        except EncodeError as error:
+            raise field_error(target, field, error) from None
 
 
 def _check_primitive(value: object, primitive: Primitive, name: str) -> None:
@@ -451,8 +570,10 @@ def check_any(value: object) -> AnyStruct:
 _C = TypeVar("_C")
 
 
-def expect_instance(value: object, kind: type[_C], name: str) -> _C:
-    if not isinstance(value, kind):
+def expect_instance(
+    value: object, kind: type[_C], name: str, *, exact: bool = False
+) -> _C:
+    if not isinstance(value, kind) or (exact and type(value) is not kind):
         raise EncodeError(
             f"value {value!r} of Python type '{type(value).__name__}' does not fit "
             f"type '{name}' (a {kind.__name__})"
@@ -460,31 +581,42 @@ def expect_instance(value: object, kind: type[_C], name: str) -> _C:
     return value
 
 
-def check_struct_shape(value: object, type_ref: StructTypeRef) -> tuple[object, ...]:
-    fields = type_ref.node.fields
-    if not isinstance(value, tuple) or len(value) != len(fields):
+def _check_field_count(values: Sequence[object], type_ref: StructTypeRef) -> None:
+    if len(values) != len(type_ref.node.fields):
         raise EncodeError(
-            f"value {value!r} does not fit struct '{type_ref.node.uri}': expected a "
-            f"tuple of {len(fields)} field values"
+            f"value does not fit struct '{type_ref.node.uri}': expected "
+            f"{len(type_ref.node.fields)} field values"
         )
-    return value
+
+
+def check_struct_shape(
+    value: object,
+    type_ref: StructTypeRef,
+    *,
+    frozen: bool = False,
+) -> list[object] | tuple[object, ...]:
+    values = _sequence(value, type_ref.node.uri, frozen)
+    _check_field_count(values, type_ref)
+    return values
 
 
 def check_union_shape(
-    value: object, type_ref: UnionTypeRef
+    value: object,
+    type_ref: UnionTypeRef,
+    *,
+    frozen: bool = False,
 ) -> tuple[FieldDefinition, object] | None:
-    """The active field and its value, or ``None`` for an empty union."""
-    if value is EMPTY_UNION:
+    values = _sequence(value, type_ref.node.uri, frozen)
+    if not values:
         return None
-    if isinstance(value, tuple) and len(value) == 2:
-        field_id, field_value = value
+    if len(values) == 2:
+        field_id, field_value = values
         if isinstance(field_id, int) and not isinstance(field_id, bool):
             field = type_ref.node.field_by_id(field_id)
             if field is not None and field_value is not UNSET:
                 return field, field_value
     raise EncodeError(
-        f"value {value!r} does not fit union '{type_ref.node.uri}': expected "
-        "EMPTY_UNION or a (field_id, value) pair with a known field id"
+        f"value does not fit union '{type_ref.node.uri}': invalid active field"
     )
 
 
@@ -494,25 +626,3 @@ def field_error(
     """``error`` prefixed with the field it occurred in."""
     path = f"{type_ref.node.uri.rpartition('/')[2]}.{field.identity.name}"
     return EncodeError(f"{path}: {error}")
-
-
-def _check_struct(value: object, type_ref: StructTypeRef) -> None:
-    values = check_struct_shape(value, type_ref)
-    for field, field_value in zip(type_ref.node.fields, values):
-        if field_value is UNSET:
-            continue
-        try:
-            check_value(field_value, field.type)
-        except EncodeError as e:
-            raise field_error(type_ref, field, e) from None
-
-
-def _check_union(value: object, type_ref: UnionTypeRef) -> None:
-    active = check_union_shape(value, type_ref)
-    if active is None:
-        return
-    field, field_value = active
-    try:
-        check_value(field_value, field.type)
-    except EncodeError as e:
-        raise field_error(type_ref, field, e) from None
