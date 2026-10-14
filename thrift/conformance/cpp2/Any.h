@@ -77,7 +77,8 @@ T fromStaticAny(const Any& any) {
   using Tag = type::infer_tag<T>;
   T value;
 
-  if (!any.data().has_value()) {
+  if (!apache::thrift::is_non_optional_field_set_manually_or_by_serializer(
+          any.data())) {
     folly::throw_exception<std::runtime_error>(
         "fromStaticAny: Any has no data");
   }
