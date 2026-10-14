@@ -46,7 +46,8 @@ class schematizer {
     bool source_ranges_ = false;
     bool only_root_program_ = false;
     bool pruned_ = false;
-    // Writes map and set values in IDL order and keys them by that order.
+    // Writes map and set values in IDL order and keys them by that order, and
+    // an integer literal given a floating-point type as an integer value.
     bool ordered_container_values_ = false;
 
     options()

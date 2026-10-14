@@ -764,7 +764,9 @@ use_hash:          Uses definitionKey in typeUri and instead of extern ids.
 root_program_only: Only schematize the root program.
 pruned:            Only schematize the root program and definitions reachable from it.
 ordered_container_values: Writes map and set values in IDL order, except in
-                          debug output, which remains sorted.)");
+                          debug output, which remains sorted. Also writes an
+                          integer literal given a floating-point type as an
+                          integer value.)");
 
 namespace {
 std::string gen_schema(

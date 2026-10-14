@@ -368,7 +368,8 @@ type::DefinitionAttrs schema_populator::gen_attrs(
       !structured.empty() && opts().include_annotations) {
     for (const auto& item : structured) {
       type::Annotation annot;
-      const auto ty_wrapper = protocol_value_builder{*item.type()};
+      const auto ty_wrapper = protocol_value_builder{
+          *item.type(), opts().ordered_container_values_};
 
       if (!item.value()->is_empty()) {
         for (const auto& [key, value] : item.value()->get_map()) {
@@ -602,7 +603,10 @@ type::Fields schema_populator::gen_fields(
     if (auto deflt = field.default_value()) {
       assert(program);
       field_schema.customDefault() = static_cast<type::ValueId>(intern_value_(
-          const_to_value(*deflt, field.type()->get_true_type()),
+          const_to_value(
+              *deflt,
+              field.type()->get_true_type(),
+              opts().ordered_container_values_),
           const_cast<t_program*>(program)));
     }
   }
@@ -790,7 +794,10 @@ type::Const schema_populator::gen_schema(const t_const& node) {
   schema.type() = gen_type(*node.type(), program);
 
   schema.value() = static_cast<type::ValueId>(intern_value_(
-      const_to_value(*node.value(), node.type()->get_true_type()),
+      const_to_value(
+          *node.value(),
+          node.type()->get_true_type(),
+          opts().ordered_container_values_),
       const_cast<t_program*>(program)));
 
   return schema;
@@ -836,8 +843,10 @@ type::Typedef schema_populator::gen_schema(const t_typedef& node) {
   return schema;
 }
 
-protocol_value_builder::protocol_value_builder(const t_type& struct_ty)
-    : ty_{struct_ty.get_true_type()} {}
+protocol_value_builder::protocol_value_builder(
+    const t_type& struct_ty, bool keep_integer_literals)
+    : ty_{struct_ty.get_true_type()},
+      keep_integer_literals_{keep_integer_literals} {}
 
 protocol_value_builder::protocol_value_builder() : ty_{nullptr} {}
 
@@ -855,21 +864,21 @@ protocol_value_builder::protocol_value_builder() : ty_{nullptr} {}
       [&](const t_map& map) {
         // Maps are not restricted to string-based field keys, so we should
         // extend the look-up to any sealed key type.
-        return protocol_value_builder{*map.val_type()};
+        return protocol_value_builder{*map.val_type(), keep_integer_literals_};
       },
       [&](const t_struct& strct) {
         assert(
             key.kind() == t_const_value::CV_STRING &&
             "A struct only has named fields");
         const auto* field = strct.get_field_by_name(key.get_string());
-        return protocol_value_builder{*field->type()};
+        return protocol_value_builder{*field->type(), keep_integer_literals_};
       },
       [&](const t_union& union_) {
         assert(
             key.kind() == t_const_value::CV_STRING &&
             "A union only has named fields");
         const auto* field = union_.get_field_by_name(key.get_string());
-        return protocol_value_builder{*field->type()};
+        return protocol_value_builder{*field->type(), keep_integer_literals_};
       },
       [&](auto&&) -> protocol_value_builder {
         throw std::logic_error(
@@ -898,7 +907,8 @@ protocol_value_builder::protocol_value_builder() : ty_{nullptr} {}
         return as_value_type();
       },
       [&](const t_map& map) {
-        return protocol_value_builder{map.key_type().deref()};
+        return protocol_value_builder{
+            map.key_type().deref(), keep_integer_literals_};
       },
       [&](auto&&) -> protocol_value_builder {
         throw std::logic_error(
@@ -917,10 +927,11 @@ protocol_value_builder::protocol_value_builder() : ty_{nullptr} {}
 
   return ty_->visit(
       [&](const t_list& list) {
-        return protocol_value_builder{*list.elem_type()};
+        return protocol_value_builder{
+            *list.elem_type(), keep_integer_literals_};
       },
       [&](const t_set& set) {
-        return protocol_value_builder{*set.elem_type()};
+        return protocol_value_builder{*set.elem_type(), keep_integer_literals_};
       },
       [&](const t_map&) -> protocol_value_builder {
         throw std::logic_error(
@@ -954,6 +965,10 @@ protocol::Value protocol_value_builder::to_labeled_value(
       if (!(ty_->is_byte() || ty_->is_any_int() || ty_->is<t_enum>() ||
             ty_->is_floating_point())) {
         raise_exception();
+      }
+      if (keep_integer_literals_ && ty_->is_floating_point()) {
+        value.emplace_i64(protocol_value.get_integer());
+        break;
       }
       if (value.is_byte()) {
         value.as_byte() = protocol_value.get_integer();

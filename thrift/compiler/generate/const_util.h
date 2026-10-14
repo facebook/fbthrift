@@ -146,8 +146,13 @@ inline void hydrate_const(protocol::Object& out, const t_const_value& val) {
 }
 
 // Assigns a t_const_value to a Value.
+//
+// With `keep_integer_literals`, an integer literal given a floating-point type
+// stays an integer, so the Value records which of the two the IDL wrote.
 inline protocol::Value const_to_value(
-    const t_const_value& val, const t_type* type_override = nullptr) {
+    const t_const_value& val,
+    const t_type* type_override = nullptr,
+    bool keep_integer_literals = false) {
   protocol::Value ret;
   const t_type* ttype = [&]() -> const t_type* {
     if (type_override) {
@@ -190,7 +195,8 @@ inline protocol::Value const_to_value(
       elem_type = list_type->elem_type()->get_true_type();
     }
     for (const auto& list_elem : valList) {
-      list.push_back(const_to_value(*list_elem, elem_type));
+      list.push_back(
+          const_to_value(*list_elem, elem_type, keep_integer_literals));
     }
     return ret;
   }
@@ -214,10 +220,13 @@ inline protocol::Value const_to_value(
       entries.reserve(val.get_map().size());
       seen.reserve(val.get_map().size());
       for (const auto& map_elem : val.get_map()) {
-        auto key = const_to_value(*map_elem.first, key_type);
+        auto key =
+            const_to_value(*map_elem.first, key_type, keep_integer_literals);
         if (seen.insert(key).second) {
           entries.emplace_back(
-              std::move(key), const_to_value(*map_elem.second, val_type));
+              std::move(key),
+              const_to_value(
+                  *map_elem.second, val_type, keep_integer_literals));
         }
       }
       for (auto& [key, value] : entries | std::views::reverse) {
@@ -231,6 +240,11 @@ inline protocol::Value const_to_value(
   // pointer, or val.type() was non-null
   assert(ttype != nullptr);
   if (const t_primitive_type* primitive = ttype->try_as<t_primitive_type>()) {
+    if (keep_integer_literals && primitive->is_floating_point() &&
+        val.kind() == t_const_value::CV_INTEGER) {
+      ret.emplace_i64(val.get_integer());
+      return ret;
+    }
     switch (primitive->primitive_type()) {
       case t_primitive_type::type::t_bool:
         ret.emplace_bool();
@@ -289,7 +303,8 @@ inline protocol::Value const_to_value(
     folly::F14FastSet<protocol::Value> seen;
     seen.reserve(valList.size());
     for (const auto& list_elem : valList) {
-      auto element = const_to_value(*list_elem, elem_type);
+      auto element =
+          const_to_value(*list_elem, elem_type, keep_integer_literals);
       if (seen.insert(element).second) {
         set.insert(std::move(element));
       }
@@ -306,8 +321,10 @@ inline protocol::Value const_to_value(
             fmt::format(
                 "invalid field name: {}", map_elem.first->get_string()));
       }
-      obj[FieldId{field->id()}] =
-          const_to_value(*map_elem.second, field->type()->get_true_type());
+      obj[FieldId{field->id()}] = const_to_value(
+          *map_elem.second,
+          field->type()->get_true_type(),
+          keep_integer_literals);
     }
   } else {
     throw std::runtime_error("Unexpected type");

@@ -84,3 +84,13 @@ TEST(ConstUtilTest, ConstToValue) {
   EXPECT_EQ((it++)->as_i32(), 2);
   EXPECT_EQ(it, written.end());
 }
+
+TEST(ConstUtilTest, ConstToValueKeepsIntegerLiterals) {
+  const auto& dbl_type = t_primitive_type::t_double();
+  auto dbl = val();
+  dbl->set_double(2.0);
+
+  EXPECT_EQ(const_to_value(*val(2), &dbl_type).as_double(), 2.0);
+  EXPECT_EQ(const_to_value(*val(2), &dbl_type, true).as_i64(), 2);
+  EXPECT_EQ(const_to_value(*dbl, &dbl_type, true).as_double(), 2.0);
+}

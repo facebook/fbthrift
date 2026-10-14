@@ -103,7 +103,10 @@ class schema_populator {
 class protocol_value_builder {
  public:
   // Start resolving from a struct definition with the given type
-  explicit protocol_value_builder(const t_type& struct_ty);
+  // With `keep_integer_literals`, an integer literal given a floating-point
+  // type stays an integer, as in `const_to_value()`.
+  explicit protocol_value_builder(
+      const t_type& struct_ty, bool keep_integer_literals = false);
 
   // Directly resolves to the type of the underlying ProtocolObject value
   // without external type info.
@@ -131,6 +134,7 @@ class protocol_value_builder {
 
  private:
   const t_type* ty_;
+  bool keep_integer_literals_ = false;
 };
 
 } // namespace detail

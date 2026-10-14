@@ -25,3 +25,12 @@ struct First {}
 @Second
 @First
 struct Annotated {}
+
+const list<double> doubles = [1000000, 1e6];
+
+struct Scale {
+  1: double factor = 2;
+}
+
+@Scale{factor = 3}
+struct Scaled {}
