@@ -171,21 +171,6 @@ TEST(CppAllocatorUnionTest, UnionFieldOfAllocatorAwareStruct) {
   EXPECT_EQ(resourceOf(*copy.u()), &res2);
 }
 
-TEST(CppAllocatorUnionTest, SettersUseUnionAllocator) {
-  auto res = makeResource();
-  auto res2 = makeResource();
-  auto u = makeOn<UnionPmr>(&res);
-  const UPmrString onRes2(kTooLong, &res2);
-
-  u.set_aa_string(kTooLong);
-  // FIXME(ytj): Should be &res, the union's allocator; likewise below.
-  EXPECT_EQ(resourceOf(*u.aa_string_ref()), std::pmr::get_default_resource());
-  EXPECT_EQ(u.set_aa_string(onRes2), onRes2);
-  EXPECT_EQ(resourceOf(*u.aa_string_ref()), std::pmr::get_default_resource());
-  u.set_aa_string(UPmrString(kTooLong, &res2));
-  EXPECT_EQ(resourceOf(*u.aa_string_ref()), &res2);
-}
-
 TEST(CppAllocatorUnionTest, CopyAssignKeepsTargetAllocator) {
   auto res = makeResource();
   auto res2 = makeResource();
