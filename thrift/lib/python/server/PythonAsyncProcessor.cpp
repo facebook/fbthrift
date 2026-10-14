@@ -693,7 +693,7 @@ void PythonAsyncProcessor::executeRequest(
            rpcKind = kind.value(),
            function = &function](
               PyObject* handlerFunction,
-              execution::RequestExecution requestExecution) mutable {
+              execution::LaunchRequest launchRequest) mutable {
             RequestDispatchParameters requestDispatchParameters{
                 .protocol = protocol,
                 .requestContext = ctx,
@@ -701,7 +701,7 @@ void PythonAsyncProcessor::executeRequest(
                 .rpcKind = rpcKind,
                 .function = function,
                 .handlerFunction = handlerFunction,
-                .requestExecution = std::move(requestExecution),
+                .launchRequest = std::move(launchRequest),
             };
             return dispatchRequest(
                 eb,

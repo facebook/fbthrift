@@ -109,13 +109,15 @@ inline std::shared_ptr<PythonAsyncProcessorFactory> createHostedTestFactory(
     FunctionMapType functions,
     std::vector<PyObject*> lifecycleFuncs,
     ForwardingKeepAliveTrackingExecutor& controlExecutor,
-    execution::StartControlRequest startRequest) {
+    execution::LaunchControlRequest launchControlRequest) {
   std::map<std::string, PyObject*> controlMethods;
   for (const auto& [name, function] : functions) {
     controlMethods.emplace(std::string(name), function.funcObject);
   }
   auto executionSystem = std::make_shared<execution::ExecutionSystem>(
-      &controlExecutor, std::move(startRequest), std::move(controlMethods));
+      &controlExecutor,
+      std::move(launchControlRequest),
+      std::move(controlMethods));
   return PythonAsyncProcessorFactory::create(
       pythonServer,
       std::move(functions),

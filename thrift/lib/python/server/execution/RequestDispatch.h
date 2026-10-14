@@ -24,11 +24,11 @@
 
 namespace apache::thrift::python::execution {
 
-// Carries request startup from native executor selection to Cython. The
+// Launches the request's Python-side processing where placement put it. The
 // coroutine factory is borrowed only for the call.
-using RequestExecution = folly::Function<int(_object*)>;
+using LaunchRequest = folly::Function<int(_object*)>;
 
 using RequestDispatch = folly::Function<folly::SemiFuture<folly::Unit>(
-    PyObject* selectedHandlerFunction, RequestExecution requestExecution)>;
+    PyObject* selectedHandlerFunction, LaunchRequest launchRequest)>;
 
 } // namespace apache::thrift::python::execution

@@ -420,7 +420,7 @@ cdef int combinedHandler(
             prot,
             kind,
         )
-        return cmove(requestDispatchParameters.requestExecution)(
+        return cmove(requestDispatchParameters.launchRequest)(
             <PyObject*>rpc_coroutine_factory
         )
     finally:

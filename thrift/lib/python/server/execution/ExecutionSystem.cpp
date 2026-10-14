@@ -34,30 +34,30 @@ void ExecutionSystem::execute(
 void ExecutionSystem::executeOnControl(
     std::string method, RequestDispatch requestDispatch) const {
   folly::makeSemiFuture()
-      .deferValue(
-          [method = std::move(method),
-           controlMethods = controlMethods_,
-           requestDispatch = std::move(requestDispatch),
-           requestExecution = RequestExecution(
-               [controlExecutor = controlExecutor_,
-                startRequest = startRequest_](_object* coroutineFactory) {
-                 // Retain the selected destination until Cython starts
-                 // the request.
-                 (void)controlExecutor;
-                 return startRequest(coroutineFactory);
-               })](folly::Unit) mutable {
-            // Both handler maps come from the same composition-root catalogue,
-            // and the name already passed that catalogue lookup upstream in
-            // executeRequest, so absence here is unreachable on valid paths.
-            // Loop-local handlers are a future requirement. With loop-local
-            // handlers, the handler function depends on the loop that executes
-            // it, which is available only after the execution system schedules
-            // a worker to take up the work. To prepare for that future, look
-            // up the function by method name in today's single shared context.
-            auto* selectedHandlerFunction = controlMethods->at(method);
-            return std::move(requestDispatch)(
-                selectedHandlerFunction, std::move(requestExecution));
-          })
+      .deferValue([method = std::move(method),
+                   controlMethods = controlMethods_,
+                   requestDispatch = std::move(requestDispatch),
+                   launchRequest = LaunchRequest(
+                       [controlExecutor = controlExecutor_,
+                        launchControlRequest =
+                            launchControlRequest_](_object* coroutineFactory) {
+                         // Retain the selected destination until Cython starts
+                         // the request.
+                         (void)controlExecutor;
+                         return launchControlRequest(coroutineFactory);
+                       })](folly::Unit) mutable {
+        // Both handler maps come from the same composition-root catalogue,
+        // and the name already passed that catalogue lookup upstream in
+        // executeRequest, so absence here is unreachable on valid paths.
+        // Loop-local handlers are a future requirement. With loop-local
+        // handlers, the handler function depends on the loop that executes
+        // it, which is available only after the execution system schedules
+        // a worker to take up the work. To prepare for that future, look
+        // up the function by method name in today's single shared context.
+        auto* selectedHandlerFunction = controlMethods->at(method);
+        return std::move(requestDispatch)(
+            selectedHandlerFunction, std::move(launchRequest));
+      })
       .via(controlExecutor_);
 }
 

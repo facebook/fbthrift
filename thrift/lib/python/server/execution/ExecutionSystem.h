@@ -23,11 +23,11 @@
 #include <utility>
 
 #include <folly/Executor.h>
-#include <thrift/lib/python/server/execution/RequestExecution.h>
+#include <thrift/lib/python/server/execution/RequestDispatch.h>
 
 namespace apache::thrift::python::execution {
 
-using StartControlRequest = folly::Function<int(_object*) const>;
+using LaunchControlRequest = folly::Function<int(_object*) const>;
 
 /**
  * Owns the resources that dispatch Python requests and releases those
@@ -53,10 +53,10 @@ class ExecutionSystem final {
 
   ExecutionSystem(
       folly::Executor* controlExecutor,
-      StartControlRequest startRequest,
+      LaunchControlRequest launchControlRequest,
       std::map<std::string, PyObject*> controlMethods)
       : controlExecutor_(folly::Executor::getKeepAliveToken(controlExecutor)),
-        startRequest_(std::move(startRequest).asSharedProxy()),
+        launchControlRequest_(std::move(launchControlRequest).asSharedProxy()),
         controlMethods_(
             std::make_shared<const std::map<std::string, PyObject*>>(
                 std::move(controlMethods))) {
@@ -88,7 +88,7 @@ class ExecutionSystem final {
       std::string method, RequestDispatch requestDispatch) const;
 
   folly::Executor::KeepAlive<> controlExecutor_;
-  StartControlRequest::SharedProxy startRequest_{nullptr};
+  LaunchControlRequest::SharedProxy launchControlRequest_{nullptr};
   // The Python factory's function table owns the callable references.
   std::shared_ptr<const std::map<std::string, PyObject*>> controlMethods_;
   // Every known method starts on control. A later step flips entries for

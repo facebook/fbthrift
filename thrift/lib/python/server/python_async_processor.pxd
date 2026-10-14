@@ -36,12 +36,12 @@ from folly.executor cimport cAsyncioExecutor
 # Make a typedef to workaround this.
 ctypedef PyObject* PyObjPtr
 # Keep the exported Cython callback as a function pointer. C++ converts it to
-# StartControlRequest at the ExecutionSystem constructor boundary.
-ctypedef int (*cStartControlRequest)(PyObject*) except -1
+# LaunchControlRequest at the ExecutionSystem constructor boundary.
+ctypedef int (*cLaunchControlRequest)(PyObject*) except -1
 
 
-cdef extern from "thrift/lib/python/server/execution/RequestExecution.h" namespace "::apache::thrift::python::execution":
-    cdef cppclass cRequestExecution "::apache::thrift::python::execution::RequestExecution":
+cdef extern from "thrift/lib/python/server/execution/RequestDispatch.h" namespace "::apache::thrift::python::execution":
+    cdef cppclass cLaunchRequest "::apache::thrift::python::execution::LaunchRequest":
         int operator()(PyObject* coroutineFactory) except -1
 
 
@@ -86,7 +86,7 @@ cdef extern from "thrift/lib/python/server/execution/ExecutionSystem.h" namespac
     cdef cppclass cExecutionSystem "::apache::thrift::python::execution::ExecutionSystem":
         cExecutionSystem(
             cAsyncioExecutor* controlExecutor,
-            cStartControlRequest startRequest,
+            cLaunchControlRequest launchControlRequest,
             cmap[string, PyObjPtr] controlMethods,
         ) except +
 
@@ -117,7 +117,7 @@ cdef extern from "thrift/lib/python/server/PythonAsyncProcessor.h" namespace "::
         RpcKind rpcKind
         const HandlerFunc* function
         PyObjPtr handlerFunction
-        cRequestExecution requestExecution
+        cLaunchRequest launchRequest
 
 cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
     cdef dict funcMap

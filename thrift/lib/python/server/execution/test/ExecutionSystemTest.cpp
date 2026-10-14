@@ -140,9 +140,9 @@ TEST(ExecutionSystemTest, ExecuteStartsSelectedRequestOnExecutor) {
                        &events,
                        coroutineFactory = coroutineFactory](
                           PyObject* selectedFunction,
-                          RequestExecution requestExecution) mutable {
+                          LaunchRequest launchRequest) mutable {
         events.push_back({RequestEvent::Kind::Dispatch, selectedFunction});
-        std::move(requestExecution)(coroutineFactory);
+        std::move(launchRequest)(coroutineFactory);
         return std::move(pendingHandlerFuture).defer([&events](auto&& result) {
           events.push_back(
               {RequestEvent::Kind::Response, std::move(result).value()});
@@ -181,7 +181,7 @@ TEST(ExecutionSystemTest, AcceptedWorkCompletesAfterShutdown) {
   executionSystem.execute(
       methodName,
       RequestDispatch([pendingHandlerFuture = std::move(handlerResultFuture),
-                       &responseCallback](PyObject*, RequestExecution) mutable {
+                       &responseCallback](PyObject*, LaunchRequest) mutable {
         return std::move(pendingHandlerFuture)
             .defer([&responseCallback](auto&& result) {
               responseCallback.complete(std::move(result));
@@ -217,7 +217,7 @@ TEST(
 
   // WHEN
   executionSystem.execute(
-      methodName, RequestDispatch([](PyObject*, RequestExecution) {
+      methodName, RequestDispatch([](PyObject*, LaunchRequest) {
         return folly::makeSemiFuture<folly::Unit>(
             folly::make_exception_wrapper<std::runtime_error>(
                 "request dispatch test failure"));
@@ -225,7 +225,7 @@ TEST(
   bool nextWorkExecuted = false;
   executionSystem.execute(
       methodName,
-      RequestDispatch([&nextWorkExecuted](PyObject*, RequestExecution) {
+      RequestDispatch([&nextWorkExecuted](PyObject*, LaunchRequest) {
         nextWorkExecuted = true;
         return folly::makeSemiFuture();
       }));
@@ -265,7 +265,7 @@ TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
       methodName,
       RequestDispatch(
           [&shouldThrow](
-              PyObject*, RequestExecution) -> folly::SemiFuture<folly::Unit> {
+              PyObject*, LaunchRequest) -> folly::SemiFuture<folly::Unit> {
             if (std::exchange(shouldThrow, false)) {
               throw std::runtime_error(
                   "synchronous request dispatch test failure");
@@ -275,7 +275,7 @@ TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
   bool nextWorkExecuted = false;
   executionSystem.execute(
       methodName,
-      RequestDispatch([&nextWorkExecuted](PyObject*, RequestExecution) {
+      RequestDispatch([&nextWorkExecuted](PyObject*, LaunchRequest) {
         nextWorkExecuted = true;
         return folly::makeSemiFuture();
       }));

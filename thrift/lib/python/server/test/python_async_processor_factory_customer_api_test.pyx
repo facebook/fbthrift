@@ -34,7 +34,7 @@ from thrift.python.server_impl.async_processor cimport (
     AsyncProcessorFactory,
 )
 from thrift.python.server_impl.python_async_processor cimport (
-    cStartControlRequest,
+    cLaunchControlRequest,
     cPythonAsyncProcessorFactory,
     HandlerFunc,
     makeHandlerFunc,
@@ -57,7 +57,7 @@ cdef extern from "thrift/lib/python/server/test/PythonAsyncProcessorFactoryLifec
         cmap[string_view, HandlerFunc] functions,
         cvector[PyObjPtr] lifecycle_functions,
         cForwardingKeepAliveTrackingExecutor& control_executor,
-        cStartControlRequest start_request,
+        cLaunchControlRequest launch_control_request,
     ) except +
 
     bint isFreeThreadedBuild() noexcept
