@@ -23,14 +23,9 @@
 # The in-tree target names. A project building against an installed Thrift
 # overrides these before including this file: its exported targets carry a
 # namespace prefix, and some such projects point THRIFT_COMPILER at a thrift
-# binary found on PATH instead. THRIFT1, its former name, is still honored for
-# projects that set that.
+# binary found on PATH instead.
 if (NOT DEFINED THRIFT_COMPILER)
-  if (DEFINED THRIFT1)
-    set(THRIFT_COMPILER "${THRIFT1}")
-  else ()
-    set(THRIFT_COMPILER thrift)
-  endif ()
+  set(THRIFT_COMPILER thrift)
 endif ()
 if (NOT DEFINED THRIFTCPP2)
   set(THRIFTCPP2 thriftcpp2)
