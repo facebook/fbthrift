@@ -373,6 +373,23 @@ class THeader final {
     return c_.compressionConfig_;
   }
 
+  // Overrides the response compression policy that would otherwise be derived
+  // from the desired compression config. A config with no codecConfig asks the
+  // server not to compress the response.
+  void setDesiredResponseCompressionConfig(
+      CompressionConfig compressionConfig) {
+    c_.responseCompressionConfig_ = std::move(compressionConfig);
+  }
+
+  void clearDesiredResponseCompressionConfig() {
+    c_.responseCompressionConfig_.reset();
+  }
+
+  const folly::Optional<CompressionConfig>&
+  getDesiredResponseCompressionConfig() const {
+    return c_.responseCompressionConfig_;
+  }
+
   void setPreCompressedAlgorithm(CompressionAlgorithm algorithm) {
     c_.preCompressedAlgorithm_ = algorithm;
   }
@@ -638,6 +655,7 @@ class THeader final {
 
     bool allowBigFrames_;
     folly::Optional<CompressionConfig> compressionConfig_;
+    folly::Optional<CompressionConfig> responseCompressionConfig_;
 
     std::shared_ptr<void> routingData_;
 

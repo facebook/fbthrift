@@ -16,8 +16,10 @@
 
 #include <gmock/gmock.h>
 #include <folly/executors/GlobalExecutor.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/test/TestUtils.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/test/e2e/gen-cpp2/TestBiDiService.h>
 #include <thrift/lib/cpp2/test/server/ThriftServerTestUtils.h>
 #include <thrift/lib/cpp2/test/util/TestHandler.h>
@@ -748,6 +750,132 @@ TEST_F(RocketCustomCompressionStreamCompressorServerFailure, _) {
     gotError = true;
   }
   EXPECT_TRUE(gotError);
+}
+
+// Calls THeader::setDesiredResponseCompressionConfig on every request
+// (generated clients do not expose the header), then forwards to the real
+// channel.
+class ResponseCompressionConfigChannel : public RequestChannel {
+ public:
+  ResponseCompressionConfigChannel(
+      ClientChannel::Ptr channel, CompressionConfig responseConfig)
+      : channel_(std::move(channel)),
+        responseConfig_(std::move(responseConfig)) {}
+
+  void sendRequestResponse(
+      const RpcOptions& rpcOptions,
+      MethodMetadata&& methodMetadata,
+      SerializedRequest&& request,
+      std::shared_ptr<transport::THeader> header,
+      RequestClientCallback::Ptr callback,
+      std::unique_ptr<folly::IOBuf> frameworkMetadata) override {
+    header->setDesiredResponseCompressionConfig(responseConfig_);
+    channel_->sendRequestResponse(
+        rpcOptions,
+        std::move(methodMetadata),
+        std::move(request),
+        std::move(header),
+        std::move(callback),
+        std::move(frameworkMetadata));
+  }
+
+  void setCloseCallback(CloseCallback* callback) override {
+    channel_->setCloseCallback(callback);
+  }
+
+  folly::EventBase* getEventBase() const override {
+    return channel_->getEventBase();
+  }
+
+  uint16_t getProtocolId() override { return channel_->getProtocolId(); }
+
+ private:
+  ClientChannel::Ptr channel_;
+  CompressionConfig responseConfig_;
+};
+
+// An empty response compression config asks the server not to compress the
+// response. The client records the response size before and after
+// decompression; they match only when the response was not compressed.
+class EmptyResponseConfigTest : public RocketCustomCompressionTest {
+ protected:
+  void SetUp() override {
+    // The size comparison needs the client to decompress on the IO thread.
+    THRIFT_FLAG_SET_MOCK(thrift_client_compress_request_on_cpu, false);
+    setupCommon();
+    compressorAutoRegistry =
+        std::make_unique<TestCustomThriftCompressorFactory::AutoRegistry>(
+            std::make_shared<TestCustomThriftCompressorFactory>(
+                getCustomCompressorNameForCurrentTestCase(),
+                TestCustomThriftCompressorFactory::
+                    GetCustomCompressorNegotiationResponseBehavior::Success,
+                TestCustomThriftCompressorFactory::ServerMakeBehavior::Success,
+                TestCustomThriftCompressorFactory::ClientMakeBehavior::Success,
+                std::make_tuple(
+                    TestCustomCompressor::CompressBehavior::Success,
+                    TestCustomCompressor::UncompressBehavior::Success),
+                std::make_tuple(
+                    TestCustomCompressor::CompressBehavior::Success,
+                    TestCustomCompressor::UncompressBehavior::Success)));
+  }
+
+  void TearDown() override {
+    THRIFT_FLAG_UNMOCK(thrift_client_compress_request_on_cpu);
+    RocketCustomCompressionTest::TearDown();
+  }
+
+  // The first request negotiates CUSTOM; the second is CUSTOM-compressed.
+  static RpcTransportStats secondResponseStats(
+      Client<TestService>& client, folly::EventBase& base) {
+    std::string response;
+    client.sync_sendResponse(response, 64);
+
+    folly::Promise<RpcTransportStats> promise;
+    auto stats = promise.getSemiFuture();
+    client.sendResponse(
+        std::make_unique<FunctionReplyCallback>(
+            [&promise](ClientReceiveState&& state) {
+              std::string result;
+              EXPECT_FALSE(
+                  Client<TestService>::recv_wrapped_sendResponse(
+                      result, state));
+              EXPECT_EQ(result, "test64");
+              promise.setValue(state.getRpcTransportStats());
+            }),
+        64);
+    return std::move(stats).via(&base).getVia(&base);
+  }
+};
+
+// An empty response config gets an uncompressed response from a real server.
+// Two clients are used: clientResponseCompressed is the control and
+// clientResponsePlain the test.
+// Both clients negotiate CUSTOM; only clientResponsePlain sets the empty
+// response compression config. Wire size == decompressed size means no
+// compression; the control proves the measurement can tell the difference.
+TEST_F(EmptyResponseConfigTest, EmptyResponseConfigIsUncompressed) {
+  folly::EventBase base;
+  ScopedServerInterfaceThread runner(makeFactory());
+
+  // No response config: the response follows the request codec (CUSTOM).
+  auto clientResponseCompressed = runner.newStickyClient<Client<TestService>>(
+      &base, [this](folly::AsyncSocket::UniquePtr socket) {
+        return makeChannel(std::move(socket));
+      });
+  // Empty response config on every request.
+  auto clientResponsePlain = runner.newStickyClient<Client<TestService>>(
+      &base, [this](folly::AsyncSocket::UniquePtr socket) {
+        return RequestChannel::Ptr(new ResponseCompressionConfigChannel(
+            makeChannel(std::move(socket)), CompressionConfig{}));
+      });
+
+  // Control: the measurement detects a compressed response.
+  auto compressed = secondResponseStats(*clientResponseCompressed, base);
+  ASSERT_NE(
+      compressed.responseWireSizeBytes, compressed.responseSerializedSizeBytes);
+
+  auto plain = secondResponseStats(*clientResponsePlain, base);
+  EXPECT_EQ(plain.responseWireSizeBytes, plain.responseSerializedSizeBytes);
 }
 
 #if FOLLY_HAS_COROUTINES

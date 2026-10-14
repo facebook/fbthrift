@@ -48,6 +48,52 @@ THRIFT_FLAG_DEFINE_bool(thrift_client_lz4_downgrade_when_unsupported, false);
 
 namespace apache::thrift::detail {
 
+namespace {
+CodecConfig adjustCodecToServerCapabilities(
+    CodecConfig codec,
+    bool serverZstdSupported,
+    bool serverLz4Supported,
+    bool customCompressionEnabled) {
+  // Custom codec cannot be used until negotiation completes (e.g. the first
+  // request on a connection). Fall back to zstd: custom compression is
+  // Rocket-only and every Rocket server unconditionally supports zstd
+  // decompression (setup response always has zstdSupported=true), so zstd
+  // is safe even before serverZstdSupported is known on this side. The
+  // legacy zlib fallback (auto-upgraded to zstd only once
+  // serverZstdSupported is known) is kept behind a flag to allow rolling
+  // back the zstd default.
+  if (codec.getType() == CodecConfig::Type::customConfig &&
+      !customCompressionEnabled) {
+    if (THRIFT_FLAG(thrift_client_custom_compression_fallback_to_zstd)) {
+      codec.zstdConfig().emplace();
+    } else {
+      codec.zlibConfig().emplace();
+    }
+  }
+
+  // Downgrade LZ4 to zlib when the peer has not advertised that it can
+  // decode LZ4. A server lacking the codec may drop the request without
+  // replying, which the caller sees as RECV_TIMEOUT rather than
+  // INVALID_TRANSFORM, so the failure is not attributable after the fact
+  // and the advertised capability is the only usable signal.
+  //
+  // Must stay ABOVE the zlib->zstd upgrade below, which then carries the
+  // downgrade on to zstd whenever the peer supports it. That reproduces
+  // what the service had before the LZ4 migration: a zlib-configured
+  // service was already upgraded to zstd on any zstd-capable peer, so zlib
+  // remains the final codec only for a peer advertising neither.
+  if (THRIFT_FLAG(thrift_client_lz4_downgrade_when_unsupported) &&
+      codec.getType() == CodecConfig::Type::lz4Config && !serverLz4Supported) {
+    codec.zlibConfig().emplace();
+  }
+
+  if (codec.getType() == CodecConfig::Type::zlibConfig && serverZstdSupported) {
+    codec.zstdConfig().emplace();
+  }
+  return codec;
+}
+} // namespace
+
 RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,
     RpcKind kind,
@@ -85,44 +131,11 @@ RequestRpcMetadata makeRequestRpcMetadata(
   // add user specified compression settings to metadata
   if (auto compressionConfig = header.getDesiredCompressionConfig()) {
     if (auto codec = compressionConfig->codecConfig()) {
-      // Custom codec cannot be used until negotiation completes (e.g. the first
-      // request on a connection). Fall back to zstd: custom compression is
-      // Rocket-only and every Rocket server unconditionally supports zstd
-      // decompression (setup response always has zstdSupported=true), so zstd
-      // is safe even before serverZstdSupported is known on this side. The
-      // legacy zlib fallback (auto-upgraded to zstd only once
-      // serverZstdSupported is known) is kept behind a flag to allow rolling
-      // back the zstd default.
-      if (codec->getType() == CodecConfig::Type::customConfig &&
-          !customCompressionEnabled) {
-        if (THRIFT_FLAG(thrift_client_custom_compression_fallback_to_zstd)) {
-          codec->zstdConfig().emplace();
-        } else {
-          codec->zlibConfig().emplace();
-        }
-      }
-
-      // Downgrade LZ4 to zlib when the peer has not advertised that it can
-      // decode LZ4. A server lacking the codec may drop the request without
-      // replying, which the caller sees as RECV_TIMEOUT rather than
-      // INVALID_TRANSFORM, so the failure is not attributable after the fact
-      // and the advertised capability is the only usable signal.
-      //
-      // Must stay ABOVE the zlib->zstd upgrade below, which then carries the
-      // downgrade on to zstd whenever the peer supports it. That reproduces
-      // what the service had before the LZ4 migration: a zlib-configured
-      // service was already upgraded to zstd on any zstd-capable peer, so zlib
-      // remains the final codec only for a peer advertising neither.
-      if (THRIFT_FLAG(thrift_client_lz4_downgrade_when_unsupported) &&
-          codec->getType() == CodecConfig::Type::lz4Config &&
-          !serverLz4Supported) {
-        codec->zlibConfig().emplace();
-      }
-
-      if (codec->getType() == CodecConfig::Type::zlibConfig &&
-          serverZstdSupported) {
-        codec->zstdConfig().emplace();
-      }
+      *codec = adjustCodecToServerCapabilities(
+          std::move(*codec),
+          serverZstdSupported,
+          serverLz4Supported,
+          customCompressionEnabled);
 
       if (payloadSize > compressionConfig->compressionSizeLimit().value_or(0)) {
         metadata.compression() =
@@ -131,6 +144,17 @@ RequestRpcMetadata makeRequestRpcMetadata(
 
       metadata.compressionConfig() = *compressionConfig;
     }
+  }
+  if (auto responseCompressionConfig =
+          header.getDesiredResponseCompressionConfig()) {
+    if (auto codec = responseCompressionConfig->codecConfig()) {
+      *codec = adjustCodecToServerCapabilities(
+          std::move(*codec),
+          serverZstdSupported,
+          serverLz4Supported,
+          customCompressionEnabled);
+    }
+    metadata.compressionConfig() = std::move(*responseCompressionConfig);
   }
 
   if (rpcOptions.getChecksum() == RpcOptions::Checksum::CRC32) {

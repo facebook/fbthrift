@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/async/RpcOptions.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataPlugins.h>
+#include <thrift/lib/cpp2/transport/rocket/compression/CompressionAlgorithmSelector.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::detail;
@@ -400,6 +401,98 @@ TEST(RpcMetadataUtil, Lz4KeptWhenFlagDisabled) {
                   ->lz4Config()
                   .has_value());
   EXPECT_EQ(metadata.compression().value(), CompressionAlgorithm::LZ4);
+}
+
+namespace {
+RequestRpcMetadata makeMetadataWithCompression(
+    std::optional<CompressionConfig> requestConfig,
+    std::optional<CompressionConfig> responseConfig,
+    bool customCompressionEnabled = true) {
+  transport::THeader header;
+  header.setProtocolId(protocol::T_COMPACT_PROTOCOL);
+  if (requestConfig) {
+    header.setDesiredCompressionConfig(std::move(*requestConfig));
+  }
+  if (responseConfig) {
+    header.setDesiredResponseCompressionConfig(std::move(*responseConfig));
+  }
+
+  MethodMetadata methodMetadata(
+      MethodMetadata::Data("foo", FunctionQualifier::Unspecified, "bar"));
+  return makeRequestRpcMetadata(
+      RpcOptions(),
+      RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+      std::move(methodMetadata),
+      std::chrono::milliseconds(100),
+      std::monostate{},
+      /*serverZstdSupported=*/true,
+      /*serverLz4Supported=*/false,
+      3000,
+      header,
+      folly::IOBuf::copyBuffer(std::string("")),
+      customCompressionEnabled);
+}
+
+CompressionConfig makeCompressionConfig(CompressionAlgorithm algorithm) {
+  CompressionConfig config;
+  config.codecConfig() =
+      rocket::CompressionAlgorithmSelector::toCodecConfig(algorithm);
+  return config;
+}
+} // namespace
+
+// The override replaces only the response policy; the request codec is
+// untouched.
+TEST(RpcMetadataUtil, ResponseCompressionConfigOverridesResponsePolicy) {
+  auto metadata = makeMetadataWithCompression(
+      makeCompressionConfig(CompressionAlgorithm::CUSTOM),
+      makeCompressionConfig(CompressionAlgorithm::ZSTD));
+
+  EXPECT_EQ(metadata.compression().value(), CompressionAlgorithm::CUSTOM);
+  EXPECT_TRUE(metadata.compressionConfig()
+                  .value()
+                  .codecConfig()
+                  ->zstdConfig()
+                  .has_value());
+}
+
+// An empty override reaches the wire as a response policy with no codec, which
+// the server treats as no compression. The request codec is untouched.
+TEST(RpcMetadataUtil, EmptyResponseCompressionConfigRequestsNoCodec) {
+  auto metadata = makeMetadataWithCompression(
+      makeCompressionConfig(CompressionAlgorithm::CUSTOM), CompressionConfig{});
+
+  EXPECT_EQ(metadata.compression().value(), CompressionAlgorithm::CUSTOM);
+  ASSERT_TRUE(metadata.compressionConfig().has_value());
+  EXPECT_FALSE(metadata.compressionConfig()->codecConfig().has_value());
+}
+
+// The override applies even when the request has no compression config.
+TEST(RpcMetadataUtil, ResponseCompressionConfigWithoutRequestCompression) {
+  auto metadata = makeMetadataWithCompression(
+      std::nullopt, makeCompressionConfig(CompressionAlgorithm::ZSTD));
+
+  EXPECT_FALSE(metadata.compression().has_value());
+  EXPECT_TRUE(metadata.compressionConfig()
+                  .value()
+                  .codecConfig()
+                  ->zstdConfig()
+                  .has_value());
+}
+
+// The response override gets the same server-capability adjustment as the
+// request config: CUSTOM falls back to zstd before negotiation.
+TEST(RpcMetadataUtil, ResponseOverrideAdjustedToServerCapabilities) {
+  auto metadata = makeMetadataWithCompression(
+      makeCompressionConfig(CompressionAlgorithm::ZSTD),
+      makeCompressionConfig(CompressionAlgorithm::CUSTOM),
+      /*customCompressionEnabled=*/false);
+
+  EXPECT_TRUE(metadata.compressionConfig()
+                  .value()
+                  .codecConfig()
+                  ->zstdConfig()
+                  .has_value());
 }
 
 // A normal-sized exception message is copied through unchanged.
