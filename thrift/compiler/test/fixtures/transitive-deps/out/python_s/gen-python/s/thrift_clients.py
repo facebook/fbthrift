@@ -94,7 +94,12 @@ class TestService(_fbthrift_python_Client["TestService.Async", "TestService.Sync
             )
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__ex`
             if (_fbthrift_ex := _fbthrift_resp._ex0__ex) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
 
 
     # pyre-ignore[4]: Missing annotation.
@@ -132,5 +137,10 @@ class TestService(_fbthrift_python_Client["TestService.Async", "TestService.Sync
             )
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__ex`
             if (_fbthrift_ex := _fbthrift_resp._ex0__ex) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
 

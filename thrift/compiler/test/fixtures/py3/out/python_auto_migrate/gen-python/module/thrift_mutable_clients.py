@@ -337,7 +337,12 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             )
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__se`
             if (_fbthrift_ex := _fbthrift_resp._ex0__se) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
 
         async def unexpected_exception(
             self,
@@ -1468,7 +1473,12 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             )
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__se`
             if (_fbthrift_ex := _fbthrift_resp._ex0__se) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
 
         def unexpected_exception(
             self,

@@ -17,7 +17,9 @@
 from __future__ import annotations
 
 import asyncio
+import gc
 import unittest
+import weakref
 from typing import Sequence
 
 from derived.thrift_clients import DerivedTestingService
@@ -169,6 +171,35 @@ class ClientServerTests(unittest.IsolatedAsyncioTestCase):
                 # TODO (ffrancet): after RPC headers are supported, check uex and uexw
                 with self.assertRaises(SimpleError):
                     await client.takes_a_list([])
+
+    async def test_declared_exception_is_freed_without_gc(self) -> None:
+        class Payload:
+            pass
+
+        async with local_server() as sa:
+            ip, port = sa.ip, sa.port
+            assert ip and port
+            async with get_client(TestingService, host=ip, port=port) as client:
+
+                async def call_and_catch() -> weakref.ref[Payload]:
+                    # Outlives this call only if the exception's traceback is in a
+                    # reference cycle. Not assertRaises: it clears traceback frames.
+                    payload = Payload()
+                    caught = False
+                    try:
+                        await client.takes_a_list([])
+                    except SimpleError:
+                        caught = True
+                    self.assertTrue(caught)
+                    return weakref.ref(payload)
+
+                gc.collect()
+                gc.disable()
+                try:
+                    payload_ref = await call_and_catch()
+                    self.assertIsNone(payload_ref())
+                finally:
+                    gc.enable()
 
     async def test_no_client_aexit(self) -> None:
         async with default_server() as sa:

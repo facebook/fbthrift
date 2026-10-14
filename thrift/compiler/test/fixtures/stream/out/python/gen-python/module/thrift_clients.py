@@ -135,7 +135,12 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__e`
             if (_fbthrift_ex := _fbthrift_resp._ex0__e) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             return _fbthrift_sink_or_stream
 
         async def servicethrows2(
@@ -157,10 +162,20 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__e1`
             if (_fbthrift_ex := _fbthrift_resp._ex0__e1) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex1__e2`
             if (_fbthrift_ex := _fbthrift_resp._ex1__e2) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             return _fbthrift_sink_or_stream
 
         async def boththrows(
@@ -182,7 +197,12 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__e`
             if (_fbthrift_ex := _fbthrift_resp._ex0__e) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             return _fbthrift_sink_or_stream
 
         async def responseandstreamstreamthrows(
@@ -232,7 +252,12 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
                 return _fbthrift_resp.success, _fbthrift_sink_or_stream
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__e`
             if (_fbthrift_ex := _fbthrift_resp._ex0__e) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             raise _fbthrift_python_exceptions.ApplicationError(
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -260,7 +285,12 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
                 return _fbthrift_resp.success, _fbthrift_sink_or_stream
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__e`
             if (_fbthrift_ex := _fbthrift_resp._ex0__e) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             raise _fbthrift_python_exceptions.ApplicationError(
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",

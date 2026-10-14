@@ -107,13 +107,28 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
             )
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__b`
             if (_fbthrift_ex := _fbthrift_resp._ex0__b) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex1__f`
             if (_fbthrift_ex := _fbthrift_resp._ex1__f) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex2__s`
             if (_fbthrift_ex := _fbthrift_resp._ex2__s) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
 
         async def get200(
             self,
@@ -156,13 +171,28 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 return _fbthrift_resp.success
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__f`
             if (_fbthrift_ex := _fbthrift_resp._ex0__f) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex1__b`
             if (_fbthrift_ex := _fbthrift_resp._ex1__b) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex2__s`
             if (_fbthrift_ex := _fbthrift_resp._ex2__s) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             raise _fbthrift_python_exceptions.ApplicationError(
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -224,13 +254,28 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
             )
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__b`
             if (_fbthrift_ex := _fbthrift_resp._ex0__b) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex1__f`
             if (_fbthrift_ex := _fbthrift_resp._ex1__f) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex2__s`
             if (_fbthrift_ex := _fbthrift_resp._ex2__s) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
 
         def get200(
             self,
@@ -271,13 +316,28 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 return _fbthrift_resp.success
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__f`
             if (_fbthrift_ex := _fbthrift_resp._ex0__f) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex1__b`
             if (_fbthrift_ex := _fbthrift_resp._ex1__b) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex2__s`
             if (_fbthrift_ex := _fbthrift_resp._ex2__s) is not None:
-                raise _fbthrift_ex
+                try:
+                    raise _fbthrift_ex
+                finally:
+                    # The traceback refers to this frame; drop the locals that refer
+                    # back to the exception so it isn't in a reference cycle.
+                    del _fbthrift_ex, _fbthrift_resp
             raise _fbthrift_python_exceptions.ApplicationError(
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",

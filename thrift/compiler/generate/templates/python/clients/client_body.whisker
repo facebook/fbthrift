@@ -147,7 +147,12 @@ class Async({{#if extends_service?}}{{!
         {{#each (array.enumerate function.exceptions) as |index field|}}
         # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `{{#partial m_fields.exception_field_name field=field index=index}}`{{!This is an intentionally mangled name.}}
         if (_fbthrift_ex := _fbthrift_resp.{{#partial m_fields.exception_field_name field=field index=index}}) is not None:
-            raise _fbthrift_ex
+            try:
+                raise _fbthrift_ex
+            finally:
+                # The traceback refers to this frame; drop the locals that refer
+                # back to the exception so it isn't in a reference cycle.
+                del _fbthrift_ex, _fbthrift_resp
         {{/each}}
         {{#if (and (not function.early_client_return?) (not function.void?))}}
         return {{#if function.creates_interaction?}}_fbthrift_interaction{{/if}}{{!
@@ -251,7 +256,12 @@ class Sync({{#if extends_service?}}{{!
         {{#each (array.enumerate function.exceptions) as |index field|}}
         # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `{{#partial m_fields.exception_field_name field=field index=index}}`{{!This is an intentionally mangled name.}}
         if (_fbthrift_ex := _fbthrift_resp.{{#partial m_fields.exception_field_name field=field index=index}}) is not None:
-            raise _fbthrift_ex
+            try:
+                raise _fbthrift_ex
+            finally:
+                # The traceback refers to this frame; drop the locals that refer
+                # back to the exception so it isn't in a reference cycle.
+                del _fbthrift_ex, _fbthrift_resp
         {{/each}}
         {{#if (not function.return_type.void?)}}
         raise _fbthrift_python_exceptions.ApplicationError(
