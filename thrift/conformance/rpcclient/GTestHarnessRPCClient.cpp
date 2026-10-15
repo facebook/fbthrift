@@ -65,10 +65,16 @@ class ConformanceVerificationServer
   }
 
   // =================== Request-Response ===================
-  void requestResponseBasic(
-      Response& res, std::unique_ptr<Request> req) override {
-    res = *testCase_.serverInstruction()->requestResponseBasic()->response();
+  folly::coro::Task<std::unique_ptr<Response>> co_requestResponseBasic(
+      std::unique_ptr<Request> req) override {
+    if (auto serverError =
+            testCase_.serverInstruction()->requestResponseServerError()) {
+      serverResult_.requestResponseServerError().emplace().request() = *req;
+      co_return co_await answerServerError(*serverError->error());
+    }
     serverResult_.requestResponseBasic().emplace().request() = *req;
+    co_return std::make_unique<Response>(
+        *testCase_.serverInstruction()->requestResponseBasic()->response());
   }
 
   void requestResponseDeclaredException(std::unique_ptr<Request> req) override {
@@ -565,6 +571,21 @@ class ConformanceVerificationServer
     throw TApplicationException(*instruction.exceptionMessage());
   }
 
+  folly::coro::Task<std::unique_ptr<Response>> answerServerError(
+      const ServerError& error) {
+    switch (error.getType()) {
+      case ServerError::Type::taskExpired:
+        co_await folly::coro::sleep(
+            std::chrono::milliseconds(*error.taskExpired()->handlerTimeMs()));
+        break;
+      default:
+        break;
+    }
+    auto res = std::make_unique<Response>();
+    res->data() = "the server should not send this";
+    co_return res;
+  }
+
   folly::SemiFuture<folly::Unit> getTestReceived() {
     return getTestReceivedPromise_.getSemiFuture();
   }
@@ -602,6 +623,12 @@ void configureServer(
               }
               return {};
             });
+        break;
+      case ServerError::Type::taskExpired:
+        server.setUseClientTimeout(false);
+        server.setTaskExpireTime(
+            std::chrono::milliseconds(
+                *error.taskExpired()->taskExpireTimeMs()));
         break;
       default:
         break;

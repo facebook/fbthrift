@@ -55,6 +55,7 @@ union ServerTestResult {
   4: RequestResponseUndeclaredExceptionServerTestResult requestResponseUndeclaredException;
   5: RequestResponseTimeoutServerTestResult requestResponseTimeout;
   6: RequestResponseAnyExceptionServerTestResult requestResponseAnyException;
+  7: RequestResponseServerErrorServerTestResult requestResponseServerError;
   100: StreamBasicServerTestResult streamBasic;
   101: StreamChunkTimeoutServerTestResult streamChunkTimeout;
   102: StreamInitialResponseServerTestResult streamInitialResponse;
@@ -142,6 +143,10 @@ struct RequestResponseTimeoutServerTestResult {
 }
 
 struct RequestResponseAnyExceptionServerTestResult {
+  1: Request request;
+}
+
+struct RequestResponseServerErrorServerTestResult {
   1: Request request;
 }
 
@@ -692,6 +697,12 @@ struct RequestResponseAnyExceptionServerInstruction {
 
 union ServerError {
   1: string loadshedding;
+  2: TaskExpiredServerError taskExpired;
+}
+
+struct TaskExpiredServerError {
+  1: i64 taskExpireTimeMs;
+  2: i64 handlerTimeMs;
 }
 
 struct RequestResponseServerErrorServerInstruction {

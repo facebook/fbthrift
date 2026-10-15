@@ -235,6 +235,49 @@ Test createRequestResponseLoadsheddingTest() {
   return ret;
 }
 
+Test createRequestResponseTaskExpiredTest() {
+  Test ret;
+  ret.name() = "RequestResponseTaskExpiredTest";
+  ret.tags()->emplace("spec/protocol/interface/#internal-server-error");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseTaskExpired/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult = rpcTest.clientTestResult()
+                               .emplace()
+                               .requestResponseServerError()
+                               .emplace();
+  clientTestResult.exceptionType() = TApplicationException::TIMEOUT;
+  clientTestResult.exceptionMessage() = "Task expired";
+  auto& taskExpired = rpcTest.serverInstruction()
+                          .emplace()
+                          .requestResponseServerError()
+                          .emplace()
+                          .error()
+                          .emplace()
+                          .taskExpired()
+                          .emplace();
+  taskExpired.taskExpireTimeMs() = 500;
+  taskExpired.handlerTimeMs() = 1500;
+  rpcTest.serverTestResult()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+
+  return ret;
+}
+
 Test createRequestResponseNoArgVoidResponse() {
   Test ret;
   ret.name() = "RequestResponseNoArgVoidResponseTest";
@@ -1761,6 +1804,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tags()->emplace("spec/protocol/interface/");
   suite.tests()->push_back(createRequestResponseAnyExceptionTest());
   suite.tests()->push_back(createRequestResponseLoadsheddingTest());
+  suite.tests()->push_back(createRequestResponseTaskExpiredTest());
   return suite;
 }
 
