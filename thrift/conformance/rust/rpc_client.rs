@@ -143,6 +143,8 @@ use rpc::rpc::InteractionPersistsStateClientInstruction;
 use rpc::rpc::InteractionPersistsStateClientTestResult;
 use rpc::rpc::InteractionTerminationClientInstruction;
 use rpc::rpc::InteractionTerminationClientTestResult;
+use rpc::rpc::RequestResponseAnyExceptionClientInstruction;
+use rpc::rpc::RequestResponseAnyExceptionClientTestResult;
 use rpc::rpc::RequestResponseBasicClientInstruction;
 use rpc::rpc::RequestResponseBasicClientTestResult;
 use rpc::rpc::RequestResponseDeclaredExceptionClientInstruction;
@@ -166,6 +168,7 @@ async fn test(client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>
         requestResponseUndeclaredException(i) => request_response_undeclared_exn(client, i).await,
         requestResponseNoArgVoidResponse(_) => request_response_no_arg_void_response(client).await,
         requestResponseTimeout(i) => request_response_timeout(client, i).await,
+        requestResponseAnyException(i) => request_response_any_exception(client, i).await,
         interactionConstructor(i) => interaction_constructor(client, i).await,
         interactionFactoryFunction(i) => interaction_factory_function(client, i).await,
         interactionPersistsState(i) => interaction_persists_state(client, i).await,
@@ -288,6 +291,35 @@ async fn request_response_undeclared_exn(
         }
         r => Err(anyhow!(
             "request_response_undeclared_exception: unexpected server response: {:?}",
+            r
+        )),
+    }
+}
+
+/// The C++ client under `bareclient` decodes the `Any` this exception arrives
+/// in, but only into read headers that never reach Rust. The message is all
+/// there is to report, so the case is listed as nonconforming. The
+/// `rustnative` category reads the exception itself.
+async fn request_response_any_exception(
+    client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>,
+    instr: &RequestResponseAnyExceptionClientInstruction,
+) -> Result<()> {
+    match &client
+        .requestResponseUndeclaredException(&instr.request)
+        .await
+    {
+        Err(RequestResponseUndeclaredExceptionError::ApplicationException(exn)) => {
+            let test_result = ClientTestResult::requestResponseAnyException(
+                RequestResponseAnyExceptionClientTestResult {
+                    exceptionMessage: exn.message.clone(),
+                    ..Default::default()
+                },
+            );
+            client.sendTestResult(&test_result).await?;
+            Ok(())
+        }
+        r => Err(anyhow!(
+            "request_response_any_exception: unexpected server response: {:?}",
             r
         )),
     }

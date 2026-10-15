@@ -54,6 +54,7 @@ union ServerTestResult {
   3: RequestResponseNoArgVoidResponseServerTestResult requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionServerTestResult requestResponseUndeclaredException;
   5: RequestResponseTimeoutServerTestResult requestResponseTimeout;
+  6: RequestResponseAnyExceptionServerTestResult requestResponseAnyException;
   100: StreamBasicServerTestResult streamBasic;
   101: StreamChunkTimeoutServerTestResult streamChunkTimeout;
   102: StreamInitialResponseServerTestResult streamInitialResponse;
@@ -90,6 +91,7 @@ union ClientTestResult {
   3: RequestResponseNoArgVoidResponseClientTestResult requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionClientTestResult requestResponseUndeclaredException;
   5: RequestResponseTimeoutClientTestResult requestResponseTimeout;
+  6: RequestResponseAnyExceptionClientTestResult requestResponseAnyException;
   100: StreamBasicClientTestResult streamBasic;
   101: StreamChunkTimeoutClientTestResult streamChunkTimeout;
   102: StreamInitialResponseClientTestResult streamInitialResponse;
@@ -135,6 +137,10 @@ struct RequestResponseUndeclaredExceptionServerTestResult {
 struct RequestResponseNoArgVoidResponseServerTestResult {}
 
 struct RequestResponseTimeoutServerTestResult {
+  1: Request request;
+}
+
+struct RequestResponseAnyExceptionServerTestResult {
   1: Request request;
 }
 
@@ -286,6 +292,13 @@ struct RequestResponseTimeoutClientTestResult {
   1: bool timeoutException;
 }
 
+struct RequestResponseAnyExceptionClientTestResult {
+  1: string exceptionMessage;
+  2: string typeUri;
+  @thrift.Box
+  3: optional UserException userException;
+}
+
 struct StreamBasicClientTestResult {
   1: list<Response> streamPayloads;
 }
@@ -414,6 +427,7 @@ union ClientInstruction {
   3: RequestResponseNoArgVoidResponseClientInstruction requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionClientInstruction requestResponseUndeclaredException;
   5: RequestResponseTimeoutClientInstruction requestResponseTimeout;
+  6: RequestResponseAnyExceptionClientInstruction requestResponseAnyException;
   100: StreamBasicClientInstruction streamBasic;
   101: StreamChunkTimeoutClientInstruction streamChunkTimeout;
   102: StreamInitialResponseClientInstruction streamInitialResponse;
@@ -450,6 +464,7 @@ union ServerInstruction {
   3: RequestResponseNoArgVoidResponseServerInstruction requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionServerInstruction requestResponseUndeclaredException;
   5: RequestResponseTimeoutServerInstruction requestResponseTimeout;
+  6: RequestResponseAnyExceptionServerInstruction requestResponseAnyException;
   100: StreamBasicServerInstruction streamBasic;
   101: StreamChunkTimeoutServerInstruction streamChunkTimeout;
   102: StreamInitialResponseServerInstruction streamInitialResponse;
@@ -497,6 +512,10 @@ struct RequestResponseNoArgVoidResponseClientInstruction {}
 struct RequestResponseTimeoutClientInstruction {
   1: Request request;
   2: i64 timeoutMs;
+}
+
+struct RequestResponseAnyExceptionClientInstruction {
+  1: Request request;
 }
 
 struct StreamBasicClientInstruction {
@@ -650,6 +669,13 @@ struct RequestResponseNoArgVoidResponseServerInstruction {}
 
 struct RequestResponseTimeoutServerInstruction {
   1: i64 timeoutMs;
+}
+
+struct RequestResponseAnyExceptionServerInstruction {
+  1: string exceptionMessage;
+  2: string typeUri;
+  @thrift.Box
+  3: optional UserException userException;
 }
 
 struct StreamBasicServerInstruction {

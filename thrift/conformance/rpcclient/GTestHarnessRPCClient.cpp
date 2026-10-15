@@ -31,6 +31,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 
 #include <fmt/core.h>
 #include <folly/Subprocess.h>
+#include <folly/base64.h>
 #include <folly/coro/AsyncGenerator.h>
 #include <folly/coro/BlockingWait.h>
 #include <folly/coro/Sleep.h>
@@ -41,6 +42,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
 #include <thrift/lib/cpp2/async/BiDiStream.h>
 #include <thrift/lib/cpp2/async/Sink.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -77,6 +79,11 @@ class ConformanceVerificationServer
 
   void requestResponseUndeclaredException(
       std::unique_ptr<Request> req) override {
+    if (auto anyException =
+            testCase_.serverInstruction()->requestResponseAnyException()) {
+      serverResult_.requestResponseAnyException().emplace().request() = *req;
+      throwAnyException(*anyException);
+    }
     serverResult_.requestResponseUndeclaredException().emplace().request() =
         *req;
     throw std::runtime_error(*testCase_.serverInstruction()
@@ -538,6 +545,23 @@ class ConformanceVerificationServer
     }
     return {std::make_unique<BasicInteraction>(
         testCase_, serverResult_, initialSum)};
+  }
+
+  // What SRProxy does with an error the caller's IDL has no name for: leave
+  // it, compact-serialized, in the anyext/anyex response headers
+  // (detail::kHeaderAnyexType and detail::kHeaderAnyex) and throw. The Rocket
+  // server then sends it as PayloadExceptionMetadata::anyException, inside a
+  // SemiAnyStruct.
+  [[noreturn]] void throwAnyException(
+      const RequestResponseAnyExceptionServerInstruction& instruction) {
+    auto* header = getRequestContext()->getHeader();
+    header->setHeader("anyext", *instruction.typeUri());
+    header->setHeader(
+        "anyex",
+        folly::base64Encode(
+            CompactSerializer::serialize<std::string>(
+                *instruction.userException())));
+    throw TApplicationException(*instruction.exceptionMessage());
   }
 
   folly::SemiFuture<folly::Unit> getTestReceived() {

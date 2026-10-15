@@ -22,10 +22,13 @@
 //! expectations and implementing one of those features turns the corresponding
 //! test red until its line is deleted.
 //!
-//! The bidi cases below are the one place the two files cannot stay identical:
-//! `bareclient` never implemented `Transport::call_bidirectional`, so the
-//! `rust` category is listed as nonconforming for all eight of them and
-//! `rpc_client.rs` still answers them with an error.
+//! The two files cannot stay identical in two places. `bareclient` never
+//! implemented `Transport::call_bidirectional`, so the `rust` category is
+//! listed as nonconforming for all eight bidi cases and `rpc_client.rs` still
+//! answers them with an error. And `bareclient` gives a Rust caller no way to
+//! read an exception sent inside a Thrift `Any`, so for the any-exception case
+//! `rpc_client.rs` reports the message alone and is listed as nonconforming
+//! too.
 
 use std::net::SocketAddr;
 use std::sync::Arc;
@@ -172,6 +175,8 @@ use rpc::rpc::InteractionPersistsStateClientInstruction;
 use rpc::rpc::InteractionPersistsStateClientTestResult;
 use rpc::rpc::InteractionTerminationClientInstruction;
 use rpc::rpc::InteractionTerminationClientTestResult;
+use rpc::rpc::RequestResponseAnyExceptionClientInstruction;
+use rpc::rpc::RequestResponseAnyExceptionClientTestResult;
 use rpc::rpc::RequestResponseBasicClientInstruction;
 use rpc::rpc::RequestResponseBasicClientTestResult;
 use rpc::rpc::RequestResponseDeclaredExceptionClientInstruction;
@@ -185,6 +190,8 @@ use rpc_clients::rpc::BasicInteraction;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseDeclaredExceptionError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseTimeoutError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseUndeclaredExceptionError;
+use standard::StandardProtocol;
+use type_rep::ProtocolUnion;
 
 async fn test(client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>) -> Result<()> {
     use ClientInstruction::*;
@@ -195,6 +202,7 @@ async fn test(client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>
         requestResponseUndeclaredException(i) => request_response_undeclared_exn(client, i).await,
         requestResponseNoArgVoidResponse(_) => request_response_no_arg_void_response(client).await,
         requestResponseTimeout(i) => request_response_timeout(client, i).await,
+        requestResponseAnyException(i) => request_response_any_exception(client, i).await,
         interactionConstructor(i) => interaction_constructor(client, i).await,
         interactionFactoryFunction(i) => interaction_factory_function(client, i).await,
         interactionPersistsState(i) => interaction_persists_state(client, i).await,
@@ -302,6 +310,60 @@ async fn request_response_undeclared_exn(
             r
         )),
     }
+}
+
+/// The exception arrives inside a Thrift `Any`. The call fails with its message
+/// as it would for any undeclared exception, and the `Any` itself is read off
+/// the response observation and decoded with the protocol it names.
+async fn request_response_any_exception(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &RequestResponseAnyExceptionClientInstruction,
+) -> Result<()> {
+    let mut opts = nativeclient::RpcOptions::default();
+    let response = opts.observe_response();
+    let exception_message = match client
+        .requestResponseUndeclaredException_with_rpc_opts(&instr.request, opts)
+        .await
+    {
+        Err(RequestResponseUndeclaredExceptionError::ApplicationException(exn)) => exn.message,
+        r => {
+            return Err(anyhow!(
+                "request_response_any_exception: unexpected server response: {:?}",
+                r
+            ));
+        }
+    };
+    let observation = response
+        .observation()
+        .ok_or_else(|| anyhow!("request_response_any_exception: no reply was observed"))?;
+    let any = observation
+        .any_exception()
+        .ok_or_else(|| anyhow!("request_response_any_exception: the reply carried no Any"))?;
+    let data = &any.any().data;
+    let user_exception = match &any.any().protocol {
+        ProtocolUnion::standard(StandardProtocol::Compact) => {
+            fbthrift::compact_protocol::deserialize(data)?
+        }
+        ProtocolUnion::standard(StandardProtocol::Binary) => {
+            fbthrift::binary_protocol::deserialize(data)?
+        }
+        other => {
+            return Err(anyhow!(
+                "request_response_any_exception: the Any names protocol {:?}",
+                other
+            ));
+        }
+    };
+    let test_result = ClientTestResult::requestResponseAnyException(
+        RequestResponseAnyExceptionClientTestResult {
+            exceptionMessage: exception_message,
+            typeUri: any.type_uri().unwrap_or_default().to_owned(),
+            userException: Some(Box::new(user_exception)),
+            ..Default::default()
+        },
+    );
+    client.sendTestResult(&test_result).await?;
+    Ok(())
 }
 
 async fn request_response_no_arg_void_response(

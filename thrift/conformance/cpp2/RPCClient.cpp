@@ -18,6 +18,8 @@
 #include <glog/logging.h>
 #include <folly/init/Init.h>
 
+#include <folly/MapUtil.h>
+#include <folly/base64.h>
 #include <folly/coro/AsyncGenerator.h>
 #include <folly/coro/BlockingWait.h>
 #include <folly/coro/Collect.h>
@@ -29,6 +31,7 @@
 #include <thrift/conformance/if/gen-cpp2/rpc_types.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 
 DEFINE_int32(port, 7777, "Port for Conformance Verification Server");
 
@@ -89,6 +92,28 @@ requestResponseUndeclaredExceptionTest(
     client->sync_requestResponseUndeclaredException(*instruction.request());
   } catch (const TApplicationException& e) {
     result.exceptionMessage() = e.getMessage();
+  }
+  return result;
+}
+
+RequestResponseAnyExceptionClientTestResult requestResponseAnyExceptionTest(
+    const RequestResponseAnyExceptionClientInstruction& instruction) {
+  RequestResponseAnyExceptionClientTestResult result;
+  apache::thrift::RpcOptions rpcOptions;
+  auto client = createClient();
+  try {
+    client->sync_requestResponseUndeclaredException(
+        rpcOptions, *instruction.request());
+  } catch (const TApplicationException& e) {
+    result.exceptionMessage() = e.getMessage();
+  }
+  const auto& headers = rpcOptions.getReadHeaders();
+  if (const auto* typeUri = folly::get_ptr(headers, "anyext")) {
+    result.typeUri() = *typeUri;
+  }
+  if (const auto* data = folly::get_ptr(headers, "anyex")) {
+    result.userException() = CompactSerializer::deserialize<UserException>(
+        folly::base64Decode(*data));
   }
   return result;
 }
@@ -710,6 +735,10 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::requestResponseTimeout:
       result.requestResponseTimeout() = runRequestResponseTimeoutTest(
           *clientInstruction.requestResponseTimeout());
+      break;
+    case ClientInstruction::Type::requestResponseAnyException:
+      result.requestResponseAnyException() = requestResponseAnyExceptionTest(
+          *clientInstruction.requestResponseAnyException());
       break;
     case ClientInstruction::Type::streamBasic:
       result.streamBasic() = streamBasicTest(*clientInstruction.streamBasic());

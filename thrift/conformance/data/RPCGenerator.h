@@ -22,5 +22,9 @@ namespace apache::thrift::conformance::data {
 TestSuite createRPCServerTestSuite();
 TestSuite createBasicRPCServerTestSuite();
 TestSuite createRPCClientTestSuite();
+// Client cases beyond createRPCClientTestSuite, for behaviors of a C++ client
+// that not every language's client implements yet. A client opts in by listing
+// gen-rpc-client-extended among its suite generators.
+TestSuite createRPCClientExtendedTestSuite();
 
 } // namespace apache::thrift::conformance::data

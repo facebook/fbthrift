@@ -146,6 +146,54 @@ Test createRequestResponseUndeclaredExceptionTest() {
   return ret;
 }
 
+Test createRequestResponseAnyExceptionTest() {
+  Test ret;
+  ret.name() = "RequestResponseAnyExceptionTest";
+  ret.tags()->emplace("spec/protocol/interface/#undeclared-exception");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseAnyException/Success";
+
+  const std::string typeUri =
+      "facebook.com/thrift/conformance/rpc/ForwardedUserException";
+  const std::string exceptionMessage = "my forwarded exception";
+  UserException userException;
+  userException.msg() = "forwarded";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .requestResponseAnyException()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult = rpcTest.clientTestResult()
+                               .emplace()
+                               .requestResponseAnyException()
+                               .emplace();
+  clientTestResult.exceptionMessage() = exceptionMessage;
+  clientTestResult.typeUri() = typeUri;
+  clientTestResult.userException() = userException;
+
+  auto& serverInstruction = rpcTest.serverInstruction()
+                                .emplace()
+                                .requestResponseAnyException()
+                                .emplace();
+  serverInstruction.exceptionMessage() = exceptionMessage;
+  serverInstruction.typeUri() = typeUri;
+  serverInstruction.userException() = userException;
+  rpcTest.serverTestResult()
+      .emplace()
+      .requestResponseAnyException()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+
+  return ret;
+}
+
 Test createRequestResponseNoArgVoidResponse() {
   Test ret;
   ret.name() = "RequestResponseNoArgVoidResponseTest";
@@ -1663,6 +1711,14 @@ TestSuite createRPCClientTestSuite() {
   suite.tests()->push_back(createStreamChunkTimeoutTest());
   suite.tests()->push_back(createStreamCreditTimeoutTest());
   suite.tests()->push_back(createStreamInitialTimeoutTest());
+  return suite;
+}
+
+TestSuite createRPCClientExtendedTestSuite() {
+  TestSuite suite;
+  suite.name() = "ThriftRPCClientTest";
+  suite.tags()->emplace("spec/protocol/interface/");
+  suite.tests()->push_back(createRequestResponseAnyExceptionTest());
   return suite;
 }
 

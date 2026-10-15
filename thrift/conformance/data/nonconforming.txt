@@ -7057,6 +7057,11 @@ rust/ThriftRPCClientTest/BidiSinkDeclaredException/Success.BidiSinkDeclaredExcep
 rust/ThriftRPCClientTest/BidiSinkUndeclaredException/Success.BidiSinkUndeclaredExceptionTest
 rust/ThriftRPCClientTest/BidiMethodDeclaredException/Success.BidiMethodDeclaredExceptionTest
 rust/ThriftRPCClientTest/BidiMethodUndeclaredException/Success.BidiMethodUndeclaredExceptionTest
+# bareclient's C++ client decodes the Any this exception arrives in, but only
+# into read headers it never hands a Rust caller, so `rpc_client.rs` reports
+# the message and nothing else. The `rustnative` category reads the exception
+# itself.
+rust/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseAnyExceptionTest
 
 # Rust nativeclient RPC client tests
 #
