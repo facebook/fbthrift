@@ -156,6 +156,11 @@ final class ThriftContextPropHandlers {
           TraceSizeEstimationContextHandler::getInstance(),
         );
       }
+      // Last, so a scoped transport priority wins over values copied from
+      // ThriftContextPropState. Per-client floors added later still run after.
+      $client_handler->addHandler(
+        new TransportPriorityOverrideContextHandler(),
+      );
       //TODO T204080230: add AM handler equivalent
 
       $thrift_client_handler->addHandler(
