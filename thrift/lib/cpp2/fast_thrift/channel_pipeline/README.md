@@ -818,8 +818,8 @@ class WriteBufferingHandler {
   WriteReadyHook writeReadyHook_;
 
   Result onWrite(Context& ctx, TypeErasedBox&& msg) noexcept {
-    // If we have pending messages, buffer this one too
-    if (!pending_.empty()) {
+    // Backpressure has not cleared yet, so buffer the message
+    if (ctx.isAwaitingWriteReady()) {
       pending_.push_back(std::move(msg));
       return Result::Success;  // Absorbed into buffer
     }
