@@ -21,34 +21,51 @@
 namespace apache::thrift::fast_thrift::channel_pipeline {
 
 /**
- * WriteReadyHook provides intrusive list membership for write backpressure.
+ * WriteReadyHook lets a handler get an onWriteReady() call when the pipeline
+ * can take writes again.
  *
- * Handlers that want to receive onWriteReady() notifications embed this hook
- * as a public member named `writeReadyHook_`. The hook is automatically
- * detected at compile time when the handler is added to the pipeline via
- * makeHandlerNode.
+ * Embed it as a public member named `writeReadyHook_`. makeHandlerNode finds
+ * it at compile time when the handler is added to the pipeline.
+ *
+ * Result::Backpressure from fireWrite() means the message was accepted, and
+ * the transport asks for no more for now. Do not keep that message to resend
+ * it. It was moved into fireWrite(), so a resend would pass on an empty box.
+ * Queue the messages that come after it instead, and send them from
+ * onWriteReady().
+ *
+ * Call awaitWriteReady() only after a fireWrite() that returned Backpressure.
+ * The transport wakes only the handlers it told to stop, so a handler that
+ * registers for any other reason never gets onWriteReady().
  *
  * Usage:
  *   class MyHandler {
  *    public:
  *     WriteReadyHook writeReadyHook_;  // Detected by makeHandlerNode
+ *     std::deque<TypeErasedBox> pending_;
  *
  *     Result onWrite(ContextImpl& ctx, TypeErasedBox&& msg) noexcept {
- *       auto result = ctx.fireWrite(std::move(msg));
- *       if (result == Result::Backpressure) {
+ *       if (ctx.isAwaitingWriteReady()) {
  *         pending_.push_back(std::move(msg));
- *         ctx.awaitWriteReady();  // Register for callback
  *         return Result::Backpressure;
+ *       }
+ *       const Result result = ctx.fireWrite(std::move(msg));
+ *       if (result == Result::Backpressure) {
+ *         ctx.awaitWriteReady();  // msg was accepted; hold back the next ones
  *       }
  *       return result;
  *     }
  *
  *     void onWriteReady(ContextImpl& ctx) noexcept {
- *       // Retry pending messages...
- *       ctx.cancelAwaitWriteReady();  // Unregister when done
+ *       while (!pending_.empty()) {
+ *         TypeErasedBox msg = std::move(pending_.front());
+ *         pending_.pop_front();
+ *         if (ctx.fireWrite(std::move(msg)) == Result::Backpressure) {
+ *           return;  // Still registered for the next onWriteReady()
+ *         }
+ *       }
+ *       ctx.cancelAwaitWriteReady();
  *     }
  *   };
- *
  */
 struct WriteReadyHook {
   folly::IntrusiveListHook hook;
