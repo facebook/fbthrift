@@ -217,6 +217,48 @@ BENCHMARK(BridgeRequestState_ExtensionSlot, iters) {
   }
 }
 
+template <bool releaseBeforeDestroy>
+void runBridgeRequestStateCleanup(std::size_t iters) {
+  auto handlers = std::make_shared<TProcessorEventHandlers>();
+  handlers->processor.push_back(
+      std::make_shared<CountingProcessorEventHandler>());
+  TProcessorEventHandlerBridgeRequestStateOwnerPtr owner(
+      new TProcessorEventHandlerBridgeRequestStateOwner(std::move(handlers)));
+  folly::RequestContextScopeGuard callerGuard;
+
+  for (std::size_t i = 0; i < iters; ++i) {
+    auto requestContext = std::make_unique<ThriftRequestContext>();
+    requestContext->installExtensions(ownedBridgeBenchmarkLayout());
+    auto state =
+        std::make_unique<TProcessorEventHandlerBridgeRequestState>(owner);
+    state->cpp2Request.emplace(nullptr, &state->header, "get");
+    state->context.emplace(*state->cpp2Request, state->header, *requestContext);
+    state->published.context = &state->context->get();
+    requestContext->adoptState<Cpp2BridgeExtension>(
+        &state.release()->published);
+    auto* published = requestContext->tryState<Cpp2BridgeExtension>();
+    auto* adopted = static_cast<TProcessorEventHandlerBridgeRequestState*>(
+        published->owner);
+
+    folly::RequestContextScopeGuard requestGuard(
+        adopted->context->ambientContext());
+    adopted->chain.bind(
+        adopted->context->get(), "UcacheService", "UcacheService.get");
+    if constexpr (releaseBeforeDestroy) {
+      adopted->releaseWithAmbientContextInstalled();
+    }
+    requestContext->clearOwnedState<Cpp2BridgeExtension>();
+  }
+}
+
+BENCHMARK(BridgeRequestStateCleanup_NestedSaver, iters) {
+  runBridgeRequestStateCleanup<false>(iters);
+}
+
+BENCHMARK_RELATIVE(BridgeRequestStateCleanup_OuterGuard, iters) {
+  runBridgeRequestStateCleanup<true>(iters);
+}
+
 BENCHMARK(Cpp2RequestContext_LongMethod, iters) {
   const std::string method(kLongMethod);
   for (std::size_t i = 0; i < iters; ++i) {

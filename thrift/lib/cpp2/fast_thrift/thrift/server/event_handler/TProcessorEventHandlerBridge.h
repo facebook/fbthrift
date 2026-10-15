@@ -106,14 +106,29 @@ struct TProcessorEventHandlerBridgeRequestState {
   TProcessorEventHandlerBridgeRequestState& operator=(
       TProcessorEventHandlerBridgeRequestState&&) = delete;
 
-  ~TProcessorEventHandlerBridgeRequestState() { release(); }
+  ~TProcessorEventHandlerBridgeRequestState() {
+    releaseWithContextRestoration();
+  }
 
-  void release() noexcept {
+  void releaseWithAmbientContextInstalled() noexcept {
     if (!context) {
       return;
     }
-    const auto& ambient = context->ambientContext();
+    DCHECK_EQ(
+        folly::RequestContext::try_get(), context->ambientContext().get());
+    release();
+  }
+
+  void releaseWithContextRestoration() noexcept {
+    if (!context) {
+      return;
+    }
     folly::RequestContextSaverScopeGuard guard;
+    release();
+  }
+
+  void release() noexcept {
+    const auto& ambient = context->ambientContext();
     chain.unbind([&] {
       if (folly::RequestContext::try_get() != ambient.get()) {
         folly::RequestContext::setContext(ambient);
@@ -386,6 +401,7 @@ class TProcessorEventHandlerBridge {
       event_handler_detail::stampWriteHeaders(
           response.payload.template get<ThriftInitialResponsePayload>(),
           state->context->takeWriteHeaders());
+      state->releaseWithAmbientContextInstalled();
       request.requestContext->clearOwnedState<Cpp2BridgeExtension>();
       response.requestContext = std::move(request.requestContext);
       auto boxed = channel_pipeline::erase_and_box(std::move(response));
@@ -455,6 +471,7 @@ class TProcessorEventHandlerBridge {
         event_handler_detail::stampWriteHeaders(
             *reply, state->context->takeWriteHeaders());
       }
+      state->releaseWithAmbientContextInstalled();
       response.requestContext->clearOwnedState<Cpp2BridgeExtension>();
     }
 
