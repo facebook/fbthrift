@@ -27,19 +27,11 @@ get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
 get_property(field_mask-cpp2-SOURCES GLOBAL PROPERTY field_mask-cpp2-SOURCES)
 
 # Generate Thrift files for this benchmark.
-thrift_generate(
-  "ProtocolBenchData" #file_name
-  "" #services
-  "cpp2" #language
-  "frozen2,layouts" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/cpp2/test" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
+thrift_generate(ProtocolBenchData.thrift LANGUAGE cpp2 OPTIONS frozen2 layouts
+                OUT_SOURCES bench_data_sources)
 
 set(GENERATED_THRIFT_SOURCES
-    ${ProtocolBenchData-cpp2-SOURCES} ${protocol-cpp2-SOURCES}
+    ${bench_data_sources} ${protocol-cpp2-SOURCES}
     ${protocol_detail-cpp2-SOURCES} ${field_mask-cpp2-SOURCES}
     ${frozen-cpp2-SOURCES})
 set(SOURCE_FILES ProtocolBench.cpp)
@@ -50,19 +42,13 @@ set(ADDITIONAL_SOURCE_FILES ../../thrift/detail/protocol.cpp
 foreach (conf_name "protocol" "type" "any" "serialization" "patch_data"
                    "conformance")
   thrift_generate(
-    "${conf_name}" #file_name
-    "" #services
-    "cpp2" #language
-    "frozen2" #options
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../conformance/if" #file_path
-    "${CMAKE_CURRENT_BINARY_DIR}/../../../conformance/if" #output_path
-    "thrift/conformance/if" #include_prefix
-    THRIFT_INCLUDE_DIRECTORIES
-    ${THRIFT_SOURCE_DIR}
-    TARGET_NAME_BASE
-    "${conf_name}conformance")
+    ../../../conformance/if/${conf_name}.thrift
+    LANGUAGE cpp2
+    OPTIONS frozen2
+    NAME ${conf_name}conformance
+    OUT_SOURCES conformance_sources)
   set(GENERATED_THRIFT_SOURCES ${GENERATED_THRIFT_SOURCES}
-                               ${${conf_name}conformance-cpp2-SOURCES})
+                               ${conformance_sources})
 endforeach ()
 
 foreach (GENERATED ${GENERATED_THRIFT_SOURCES})

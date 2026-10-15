@@ -25,17 +25,10 @@ foreach (
   go
   scope
   thrift)
-  thrift_generate(
-    ${name} # file_name
-    "" # services
-    "cpp2" # language
-    "templates,no_metadata" # options
-    "${CMAKE_CURRENT_SOURCE_DIR}" # file_path
-    "${CMAKE_CURRENT_BINARY_DIR}" # output_path
-    "thrift/annotation" # include_prefix
-    THRIFT_INCLUDE_DIRECTORIES
-    ${THRIFT_SOURCE_DIR})
-  target_sources(thriftannotation PRIVATE ${${name}-cpp2-SOURCES})
+  thrift_generate(${name}.thrift LANGUAGE cpp2 OPTIONS templates no_metadata
+                  OUT_SOURCES sources)
+  target_sources(thriftannotation PRIVATE ${sources})
+  add_dependencies(thriftannotation ${name}-cpp2-target)
 endforeach ()
 
 install(

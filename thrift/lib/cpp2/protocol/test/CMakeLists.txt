@@ -19,21 +19,12 @@ foreach (thrift_file Module CompactProtocolTestStructs cursor)
   if ("${thrift_file}" STREQUAL "cursor")
     set(thrift_options "")
   else ()
-    set(thrift_options "frozen2,layouts")
+    set(thrift_options frozen2 layouts)
   endif ()
-  thrift_generate(
-    "${thrift_file}" #file_name
-    "" #services
-    "cpp2" #language
-    "${thrift_options}" #options
-    "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-    "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-    "thrift/lib/cpp2/protocol/test" #include_prefix
-    THRIFT_INCLUDE_DIRECTORIES
-    ${THRIFT_SOURCE_DIR})
+  thrift_generate(${thrift_file}.thrift LANGUAGE cpp2 OPTIONS ${thrift_options}
+                  OUT_SOURCES sources)
   set_source_files_properties(${thrift_file} PROPERTIES GENERATED TRUE)
-  set(GENERATED_THRIFT_SOURCES ${GENERATED_THRIFT_SOURCES}
-                               ${${thrift_file}-cpp2-SOURCES})
+  set(GENERATED_THRIFT_SOURCES ${GENERATED_THRIFT_SOURCES} ${sources})
 endforeach ()
 
 # Test files to compile.

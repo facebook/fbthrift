@@ -12,239 +12,92 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-thrift_generate(
-  "any_rep" #file_name
-  "" #services
-  "cpp2" #language
-  "json,no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
+thrift_generate(any_rep.thrift LANGUAGE cpp2 OPTIONS json no_metadata
+                OUT_SOURCES any_rep_sources)
+
+thrift_generate(metadata.thrift LANGUAGE cpp2 OUT_SOURCES metadata_sources)
+
+thrift_generate(frozen.thrift LANGUAGE cpp2 OUT_SOURCES frozen_sources)
+
+thrift_generate(RpcMetadata.thrift LANGUAGE cpp2 OPTIONS json no_metadata
+                OUT_SOURCES RpcMetadata_sources)
 
 thrift_generate(
-  "metadata" #file_name
-  "" #services
-  "cpp2" #language
-  "" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
+  RocketUpgrade.thrift
+  LANGUAGE cpp2
+  SERVICES RocketUpgrade
+  OPTIONS no_metadata
+  OUT_SOURCES RocketUpgrade_sources)
+
+thrift_generate(id.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES id_sources)
+
+thrift_generate(standard.thrift LANGUAGE cpp2 OPTIONS json no_metadata
+                OUT_SOURCES standard_sources)
+
+thrift_generate(type_rep.thrift LANGUAGE cpp2 OPTIONS json no_metadata
+                OUT_SOURCES type_rep_sources)
+
+thrift_generate(type.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES type_sources)
+
+thrift_generate(serverdbginfo.thrift LANGUAGE cpp2 OPTIONS json no_metadata
+                OUT_SOURCES serverdbginfo_sources)
+
+thrift_generate(protocol.thrift LANGUAGE cpp2 OUT_SOURCES protocol_sources)
+
+thrift_generate(protocol_detail.thrift LANGUAGE cpp2
+                OUT_SOURCES protocol_detail_sources)
+
+thrift_generate(field_mask.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES field_mask_sources)
+
+thrift_generate(record.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES record_sources)
+
+thrift_generate(schema.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES schema_sources)
+
+thrift_generate(type_id.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES type_id_sources)
+
+thrift_generate(type_system.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES type_system_sources)
+
+thrift_generate(service_catalog.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES service_catalog_sources)
 
 thrift_generate(
-  "frozen" #file_name
-  "" #services
-  "cpp2" #language
-  "" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
+  thrift_catalog_service.thrift
+  LANGUAGE cpp2
+  SERVICES ThriftCatalogService
+  OPTIONS no_metadata
+  OUT_SOURCES thrift_catalog_service_sources)
 
-thrift_generate(
-  "RpcMetadata" #file_name
-  "" #services
-  "cpp2" #language
-  "json,no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "RocketUpgrade" #file_name
-  "RocketUpgrade" #services
-  "cpp2" #language
-  "no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "id" #file_name
-  "" #services
-  "cpp2" #language
-  "no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "standard" #file_name
-  "" #services
-  "cpp2" #language
-  "json,no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "type_rep" #file_name
-  "" #services
-  "cpp2" #language
-  "json,no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "type" #file_name
-  "" #services
-  "cpp2" #language
-  "no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "serverdbginfo" #file_name
-  "" #services
-  "cpp2" #language
-  "json,no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "protocol" #file_name
-  "" #services
-  "cpp2" #language
-  "" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "protocol_detail" #file_name
-  "" #services
-  "cpp2" #language
-  "" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "field_mask" #file_name
-  "" #services
-  "cpp2" #language
-  "no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "record" #file_name
-  "" #services
-  "cpp2" #language
-  "no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "schema" #file_name
-  "" #services
-  "cpp2" #language
-  "no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "type_id" #file_name
-  "" #services
-  "cpp2" #language
-  "no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "type_system" #file_name
-  "" #services
-  "cpp2" #language
-  "no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "service_catalog" #file_name
-  "" #services
-  "cpp2" #language
-  "no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-thrift_generate(
-  "thrift_catalog_service" #file_name
-  "ThriftCatalogService" #services
-  "cpp2" #language
-  "no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/thrift" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
-
-set_property(GLOBAL PROPERTY any_rep-cpp2-SOURCES ${any_rep-cpp2-SOURCES})
+set_property(GLOBAL PROPERTY any_rep-cpp2-SOURCES ${any_rep_sources})
 set_property(GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES
-                             ${RpcMetadata-cpp2-SOURCES})
-set_property(GLOBAL PROPERTY frozen-cpp2-SOURCES ${frozen-cpp2-SOURCES})
-set_property(GLOBAL PROPERTY metadata-cpp2-SOURCES ${metadata-cpp2-SOURCES})
+                             ${RpcMetadata_sources})
+set_property(GLOBAL PROPERTY frozen-cpp2-SOURCES ${frozen_sources})
+set_property(GLOBAL PROPERTY metadata-cpp2-SOURCES ${metadata_sources})
 set_property(GLOBAL PROPERTY RocketUpgrade-cpp2-SOURCES
-                             ${RocketUpgrade-cpp2-SOURCES})
-set_property(GLOBAL PROPERTY id-cpp2-SOURCES ${id-cpp2-SOURCES})
-set_property(GLOBAL PROPERTY record-cpp2-SOURCES ${record-cpp2-SOURCES})
-set_property(GLOBAL PROPERTY schema-cpp2-SOURCES ${schema-cpp2-SOURCES})
-set_property(GLOBAL PROPERTY type_id-cpp2-SOURCES ${type_id-cpp2-SOURCES})
+                             ${RocketUpgrade_sources})
+set_property(GLOBAL PROPERTY id-cpp2-SOURCES ${id_sources})
+set_property(GLOBAL PROPERTY record-cpp2-SOURCES ${record_sources})
+set_property(GLOBAL PROPERTY schema-cpp2-SOURCES ${schema_sources})
+set_property(GLOBAL PROPERTY type_id-cpp2-SOURCES ${type_id_sources})
 set_property(GLOBAL PROPERTY type_system-cpp2-SOURCES
-                             ${type_system-cpp2-SOURCES})
+                             ${type_system_sources})
 set_property(GLOBAL PROPERTY service_catalog-cpp2-SOURCES
-                             ${service_catalog-cpp2-SOURCES})
+                             ${service_catalog_sources})
 set_property(GLOBAL PROPERTY thrift_catalog_service-cpp2-SOURCES
-                             ${thrift_catalog_service-cpp2-SOURCES})
-set_property(GLOBAL PROPERTY standard-cpp2-SOURCES ${standard-cpp2-SOURCES})
+                             ${thrift_catalog_service_sources})
+set_property(GLOBAL PROPERTY standard-cpp2-SOURCES ${standard_sources})
 
-set_property(GLOBAL PROPERTY type_rep-cpp2-SOURCES ${type_rep-cpp2-SOURCES})
-set_property(GLOBAL PROPERTY type-cpp2-SOURCES ${type-cpp2-SOURCES})
+set_property(GLOBAL PROPERTY type_rep-cpp2-SOURCES ${type_rep_sources})
+set_property(GLOBAL PROPERTY type-cpp2-SOURCES ${type_sources})
 set_property(GLOBAL PROPERTY serverdbginfo-cpp2-SOURCES
-                             ${serverdbginfo-cpp2-SOURCES})
-set_property(GLOBAL PROPERTY protocol-cpp2-SOURCES ${protocol-cpp2-SOURCES})
+                             ${serverdbginfo_sources})
+set_property(GLOBAL PROPERTY protocol-cpp2-SOURCES ${protocol_sources})
 set_property(GLOBAL PROPERTY protocol_detail-cpp2-SOURCES
-                             ${protocol_detail-cpp2-SOURCES})
-set_property(GLOBAL PROPERTY field_mask-cpp2-SOURCES ${field_mask-cpp2-SOURCES})
+                             ${protocol_detail_sources})
+set_property(GLOBAL PROPERTY field_mask-cpp2-SOURCES ${field_mask_sources})

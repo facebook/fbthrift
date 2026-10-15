@@ -12,16 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-thrift_generate(
-  "syntax_graph" #file_name
-  "" #services
-  "cpp2" #language
-  "no_metadata" #options
-  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
-  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
-  "thrift/lib/cpp2/schema" #include_prefix
-  THRIFT_INCLUDE_DIRECTORIES
-  ${THRIFT_SOURCE_DIR})
+thrift_generate(syntax_graph.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES syntax_graph_sources)
 
-set_property(GLOBAL PROPERTY syntax_graph-cpp2-SOURCES
-                             ${syntax_graph-cpp2-SOURCES})
+set_property(GLOBAL PROPERTY syntax_graph-cpp2-SOURCES ${syntax_graph_sources})
