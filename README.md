@@ -120,8 +120,6 @@ CMake options:
   tests.
 * `THRIFT_PYTHON` (default `OFF`): build the thrift-python library and
   extensions; requires Cython.
-* `THRIFT_PY_DEPRECATED` (default `ON`): build the deprecated thrift-py
-  library; use thrift-python instead.
 
 ### `getdeps.py`
 
