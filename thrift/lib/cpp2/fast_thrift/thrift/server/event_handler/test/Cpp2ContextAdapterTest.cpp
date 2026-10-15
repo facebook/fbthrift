@@ -21,6 +21,7 @@
 
 #include <gtest/gtest.h>
 
+#include <folly/CancellationToken.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
@@ -122,6 +123,25 @@ TEST(Cpp2ContextAdapterTest, ConnectionContextCarriesTheTransport) {
   Cpp2ConnContextAdapter adapter(conn, /*resolver=*/nullptr);
 
   EXPECT_EQ(adapter.get().getTransport(), socket.get());
+}
+
+TEST(Cpp2ContextAdapterTest, ConnectionCloseDetachesTheTransport) {
+  folly::EventBase evb;
+  auto socket = folly::AsyncSocket::newSocket(&evb);
+  auto conn = makeConnContext(nullptr);
+  conn->setTransport(socket.get());
+  Cpp2ConnContextAdapter adapter(conn, /*resolver=*/nullptr);
+  auto cancellationToken = adapter.get().getCancellationToken();
+  const folly::AsyncTransport* transportDuringCancellation = socket.get();
+  folly::CancellationCallback cancellationCallback{
+      cancellationToken,
+      [&] { transportDuringCancellation = adapter.get().getTransport(); }};
+
+  adapter.connectionClosed();
+
+  EXPECT_TRUE(cancellationToken.isCancellationRequested());
+  EXPECT_EQ(transportDuringCancellation, nullptr);
+  EXPECT_EQ(adapter.get().getTransport(), nullptr);
 }
 
 // The protocol is stamped from the handshake snapshot, so a connection that

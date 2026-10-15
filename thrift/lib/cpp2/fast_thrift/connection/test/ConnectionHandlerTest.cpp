@@ -47,11 +47,21 @@ namespace {
 struct TestConnection {
   folly::AsyncTransport::UniquePtr transport;
   std::shared_ptr<std::atomic<size_t>> closeCount;
+  std::shared_ptr<std::atomic<size_t>> closeCallbackCount;
   std::function<void()> closeCb;
   bool closed{false};
   bool closeOnStart{false};
 
-  void setCloseCallback(std::function<void()> cb) { closeCb = std::move(cb); }
+  void setCloseCallback(std::function<void()> cb) {
+    if (!cb) {
+      closeCb = {};
+      return;
+    }
+    closeCb = [count = closeCallbackCount, callback = std::move(cb)]() mutable {
+      count->fetch_add(1, std::memory_order_relaxed);
+      callback();
+    };
+  }
 
   void start() noexcept {
     if (closeOnStart) {
@@ -84,8 +94,11 @@ class TestConnectionFactory {
  public:
   explicit TestConnectionFactory(
       std::shared_ptr<std::atomic<size_t>> closeCount = nullptr,
+      std::shared_ptr<std::atomic<size_t>> closeCallbackCount = nullptr,
       bool closeOnStart = false) noexcept
-      : closeCount_(std::move(closeCount)), closeOnStart_(closeOnStart) {}
+      : closeCount_(std::move(closeCount)),
+        closeCallbackCount_(std::move(closeCallbackCount)),
+        closeOnStart_(closeOnStart) {}
 
   TestConnection getConnection(
       folly::AsyncTransport::UniquePtr socket,
@@ -96,6 +109,7 @@ class TestConnectionFactory {
     return TestConnection{
         .transport = std::move(socket),
         .closeCount = closeCount_,
+        .closeCallbackCount = closeCallbackCount_,
         .closeCb = {},
         .closeOnStart = closeOnStart_};
   }
@@ -106,6 +120,7 @@ class TestConnectionFactory {
 
  private:
   std::shared_ptr<std::atomic<size_t>> closeCount_;
+  std::shared_ptr<std::atomic<size_t>> closeCallbackCount_;
   bool closeOnStart_;
 };
 
@@ -141,8 +156,8 @@ class ConnectionHandlerTest : public ::testing::Test {
   // owning EVB because setConnectionFactory builds + activates the pipeline.
   // Factory is stored on the test fixture so it outlives the handler.
   void wireFactory(ConnectionHandler& h, bool closeOnStart = false) {
-    factory_ =
-        std::make_unique<TestConnectionFactory>(closeCount_, closeOnStart);
+    factory_ = std::make_unique<TestConnectionFactory>(
+        closeCount_, closeCallbackCount_, closeOnStart);
     evb_->runInEventBaseThreadAndWait(
         [&] { h.setConnectionFactory(*factory_); });
   }
@@ -162,6 +177,8 @@ class ConnectionHandlerTest : public ::testing::Test {
   std::unique_ptr<folly::ScopedEventBaseThread> evbThread_;
   folly::EventBase* evb_{nullptr};
   std::shared_ptr<std::atomic<size_t>> closeCount_ =
+      std::make_shared<std::atomic<size_t>>(0);
+  std::shared_ptr<std::atomic<size_t>> closeCallbackCount_ =
       std::make_shared<std::atomic<size_t>>(0);
   std::unique_ptr<TestConnectionFactory> factory_;
   std::vector<folly::NetworkSocket> clientFds_;
@@ -228,6 +245,18 @@ TEST_F(ConnectionHandlerTest, DestroyWithActiveConnections) {
   // Destructor drives stop() — should release live connections cleanly.
   handler.reset();
   EXPECT_EQ(closeCount_->load(), 1);
+}
+
+TEST_F(ConnectionHandlerTest, DestroyOnEventBaseDetachesCloseCallback) {
+  auto handler = createConnectionHandler();
+  wireFactory(*handler);
+  install(*handler);
+  ASSERT_EQ(handler->connectionCount(), 1);
+
+  evb_->runInEventBaseThreadAndWait([&] { handler.reset(); });
+
+  EXPECT_EQ(closeCount_->load(), 1);
+  EXPECT_EQ(closeCallbackCount_->load(), 0);
 }
 
 // Regression: the installer lambda must register the connection in

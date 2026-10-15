@@ -597,6 +597,27 @@ TEST(
 
 TEST(
     ThriftServerConnectionCloseHandlerTest,
+    ForceCloseTerminatesReapingExactlyOnce) {
+  Fixture f;
+
+  ASSERT_EQ(
+      f.handler.onRead(f.ctx, erase_and_box(makeRequest(1))), Result::Success);
+  f.handler.onPipelineInactive(f.ctx);
+  ASSERT_TRUE(f.handler.isReaping());
+
+  const ThriftServerCloseConnectionEvent forceClose{
+      .rejection = std::nullopt, .forceClose = true};
+  f.handler.on<ThriftServerCloseConnectionEvent>(f.ctx, forceClose);
+  f.handler.on<ThriftServerCloseConnectionEvent>(f.ctx, forceClose);
+
+  EXPECT_TRUE(f.handler.isClosed());
+  EXPECT_EQ(f.handler.inFlight(), 1u);
+  EXPECT_TRUE(f.ctx.writes.empty());
+  EXPECT_EQ(f.ctx.events.size(), 1u);
+}
+
+TEST(
+    ThriftServerConnectionCloseHandlerTest,
     ReapingExitsOnLastInFlightDecrement) {
   Fixture f;
 

@@ -113,21 +113,17 @@ void ConnectionHandler::closeAllOnEvb() {
   for (auto id : ids) {
     auto it = connections_.find(id);
     if (it != connections_.end()) {
-      it->second.close();
+      it->second.close(/*notifyOwner=*/true);
     }
   }
 }
 
 void ConnectionHandler::closeAllConnectionsOnEvb() {
-  // Move the map out before tearing down: each close() can synchronously
-  // fire its close callback, which re-enters onConnectionClosed and tries
-  // to erase its own entry. Reentering an erase on the entry currently
-  // being closed yields use-after-free.
+  // Move the map out before tearing down so destroying each connection cannot
+  // invalidate the iteration.
   auto victims = std::move(connections_);
-  // close() below will fire each connection's close callback, which calls
-  // onConnectionClosed and tries to erase from the (now-empty) map. The
-  // erase is a no-op, so its `> 0` branch won't run; zero the counter
-  // explicitly here to keep it in sync with the moved-out map.
+  // Emergency teardown detaches each owner callback before close, so update
+  // the bookkeeping directly.
   connectionCount_.store(0, std::memory_order_relaxed);
   // Same reasoning for the gauge, which the no-op erase would likewise skip.
   // Subtracted rather than zeroed: the shard is per-EventBase and shared with
@@ -137,7 +133,7 @@ void ConnectionHandler::closeAllConnectionsOnEvb() {
         -static_cast<int64_t>(victims.size()));
   }
   for (auto& [_, conn] : victims) {
-    conn.close();
+    conn.close(/*notifyOwner=*/false);
   }
 }
 

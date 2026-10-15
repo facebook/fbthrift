@@ -234,6 +234,12 @@ class ThriftServerConnectionCloseHandler {
     requires std::same_as<E, ThriftServerCloseConnectionEvent>
   void on(
       Context& ctx, const ThriftServerCloseConnectionEvent& event) noexcept {
+    if (event.forceClose) {
+      if (state_ != State::Closed) {
+        transitionToClosed(ctx);
+      }
+      return;
+    }
     handleCloseConnectionEvent(ctx, event);
   }
 

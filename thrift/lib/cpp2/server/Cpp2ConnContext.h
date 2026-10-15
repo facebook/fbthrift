@@ -674,6 +674,8 @@ class Cpp2ConnContextInternalAPI {
     connContext_.transportInfo_.receivedCert = received;
   }
 
+  void clearTransport() noexcept { connContext_.transport_ = nullptr; }
+
   /**
    * What the client said about itself, for a transport that reads the setup
    * itself rather than handing it to readSetupMetadata.

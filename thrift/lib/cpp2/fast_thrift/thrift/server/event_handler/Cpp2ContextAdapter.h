@@ -97,6 +97,8 @@ class Cpp2ConnContextAdapter {
     return *cpp2ConnContext_;
   }
 
+  void connectionClosed();
+
   ThriftConnContext& ftContext() noexcept { return *ftConnContext_; }
 
  private:

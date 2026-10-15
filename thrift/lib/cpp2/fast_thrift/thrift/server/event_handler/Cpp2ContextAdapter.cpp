@@ -106,6 +106,12 @@ Cpp2ConnContextAdapter::~Cpp2ConnContextAdapter() {
   ftConnContext_->setPeerIdentities(nullptr);
 }
 
+void Cpp2ConnContextAdapter::connectionClosed() {
+  apache::thrift::detail::Cpp2ConnContextInternalAPI(*cpp2ConnContext_)
+      .clearTransport();
+  cpp2ConnContext_->connectionClosed();
+}
+
 Cpp2RequestContextAdapter::Cpp2RequestContextAdapter(
     apache::thrift::Cpp2RequestContext& cpp2RequestContext,
     apache::thrift::transport::THeader& header,

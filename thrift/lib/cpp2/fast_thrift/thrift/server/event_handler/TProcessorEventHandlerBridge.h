@@ -85,11 +85,11 @@ struct TProcessorEventHandlerBridgeRequestStateOwner
       : handlers(std::move(handlers)) {}
 
   const std::shared_ptr<const TProcessorEventHandlers> handlers;
+  std::unique_ptr<Cpp2ConnContextAdapter> context;
 };
 
 using TProcessorEventHandlerBridgeRequestStateOwnerPtr =
-    boost::intrusive_ptr<const TProcessorEventHandlerBridgeRequestStateOwner>;
-
+    boost::intrusive_ptr<TProcessorEventHandlerBridgeRequestStateOwner>;
 struct TProcessorEventHandlerBridgeRequestState {
   explicit TProcessorEventHandlerBridgeRequestState(
       TProcessorEventHandlerBridgeRequestStateOwnerPtr owner)
@@ -112,7 +112,7 @@ struct TProcessorEventHandlerBridgeRequestState {
     if (!context) {
       return;
     }
-    const auto ambient = context->ambientContext();
+    const auto& ambient = context->ambientContext();
     folly::RequestContextSaverScopeGuard guard;
     chain.unbind([&] {
       if (folly::RequestContext::try_get() != ambient.get()) {
@@ -243,14 +243,17 @@ class TProcessorEventHandlerBridge {
  public:
   explicit TProcessorEventHandlerBridge(
       TProcessorEventHandlerBridgeConfig config)
-      : config_(std::move(config)),
-        requestStateOwner_(
-            config_.handlers == nullptr
+      : requestStateOwner_(
+            config.handlers == nullptr
                 ? nullptr
                 : new TProcessorEventHandlerBridgeRequestStateOwner(
-                      config_.handlers)),
-        handlers_(config_.handlers.get()),
-        methodMetadata_(config_.methodMetadata.get()),
+                      std::move(config.handlers))),
+        methodMetadataOwner_(std::move(config.methodMetadata)),
+        identityResolver_(config.identityResolver),
+        handlers_(
+            requestStateOwner_ == nullptr ? nullptr
+                                          : requestStateOwner_->handlers.get()),
+        methodMetadata_(methodMetadataOwner_.get()),
         drivesProcessorHandlers_(
             handlers_ != nullptr && !handlers_->processor.empty()) {}
 
@@ -272,15 +275,16 @@ class TProcessorEventHandlerBridge {
     // classic context before downstream connection extensions run.
     if (FOLLY_UNLIKELY(request.payload.is<ThriftConnectionSetupPayload>())) {
       auto& setup = *request.payload.get<ThriftConnectionSetupPayload>().setup;
-      ftConnContext_ = setup.connContext;
-      if (handlers_ != nullptr && ftConnContext_ != nullptr &&
+      auto* const ftConnContext = setup.connContext;
+      if (handlers_ != nullptr && ftConnContext != nullptr &&
           connectionContext_ == nullptr) {
         if (auto metadata = setup.clientSetup.clientMetadata()) {
-          ftConnContext_->setClientMetadata(*metadata);
+          ftConnContext->setClientMetadata(*metadata);
         }
-        connectionContext_ = std::make_unique<Cpp2ConnContextAdapter>(
-            boost::intrusive_ptr<ThriftConnContext>(ftConnContext_),
-            config_.identityResolver);
+        requestStateOwner_->context = std::make_unique<Cpp2ConnContextAdapter>(
+            boost::intrusive_ptr<ThriftConnContext>(ftConnContext),
+            identityResolver_);
+        connectionContext_ = requestStateOwner_->context.get();
         for (const auto& handler : handlers_->server) {
           handler->newConnection(&connectionContext_->get());
         }
@@ -416,7 +420,7 @@ class TProcessorEventHandlerBridge {
       // a different request. Reinstall the effective context captured after
       // all read-side handlers bound for the callbacks and cleanup only;
       // downstream forwarding resumes under the caller's context.
-      const auto ambient = state->context->ambientContext();
+      const auto& ambient = state->context->ambientContext();
       folly::RequestContextScopeGuard guard(ambient);
 
       // The write-side callbacks bracket a successful reply body. Classic
@@ -463,16 +467,7 @@ class TProcessorEventHandlerBridge {
   template <channel_pipeline::PipelineEvent E>
     requires std::same_as<E, ThriftServerConnectionClosedEvent>
   void on(Context&) noexcept {
-    if (handlers_ == nullptr || connectionContext_ == nullptr ||
-        connectionDestroyed_) {
-      return;
-    }
-    // Announce closure once even if the event arrives twice: each handler is
-    // promised one connectionDestroyed for the newConnection it observed.
-    connectionDestroyed_ = true;
-    for (const auto& handler : handlers_->server) {
-      handler->connectionDestroyed(&connectionContext_->get());
-    }
+    closeConnection();
   }
 
   void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
@@ -484,11 +479,27 @@ class TProcessorEventHandlerBridge {
   void onPipelineActive(Context&) noexcept {}
   void onPipelineInactive(Context&) noexcept {}
   void handlerAdded(Context&) noexcept {}
-  void handlerRemoved(Context&) noexcept {}
+  void handlerRemoved(Context&) noexcept { closeConnection(); }
 
  private:
-  const TProcessorEventHandlerBridgeConfig config_;
+  void closeConnection() noexcept {
+    if (handlers_ == nullptr || connectionContext_ == nullptr ||
+        connectionDestroyed_) {
+      return;
+    }
+    // Announce closure once even if the event arrives twice: each handler is
+    // promised one connectionDestroyed for the newConnection it observed.
+    connectionDestroyed_ = true;
+    for (const auto& handler : handlers_->server) {
+      handler->connectionDestroyed(&connectionContext_->get());
+    }
+    connectionContext_->connectionClosed();
+  }
+
   const TProcessorEventHandlerBridgeRequestStateOwnerPtr requestStateOwner_;
+  const std::shared_ptr<const ThriftServerMethodMetadataRegistry>
+      methodMetadataOwner_;
+  const PeerIdentityResolver identityResolver_;
   // Resolved once: the answer cannot change, and reaching it through the
   // shared_ptr on every request is two dependent loads into memory that every
   // connection shares.
@@ -499,10 +510,9 @@ class TProcessorEventHandlerBridge {
   // the connection by a word of its own.
   bool connectionDestroyed_{false};
 
-  std::unique_ptr<Cpp2ConnContextAdapter> connectionContext_;
-  // Latched from the setup message, the first thing the connection sends.
-  // Non-owning; the connection-context handler outlives this pipeline.
-  ThriftConnContext* ftConnContext_{nullptr};
+  // Hot-path cache. Ownership stays with requestStateOwner_ so outstanding
+  // request cleanup remains valid after this bridge is destroyed.
+  Cpp2ConnContextAdapter* connectionContext_{nullptr};
 };
 
 } // namespace apache::thrift::fast_thrift::thrift::server

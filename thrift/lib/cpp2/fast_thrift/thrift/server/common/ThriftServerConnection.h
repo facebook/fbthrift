@@ -30,6 +30,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerCompositeAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerTransportAdapter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ExtensionStateStore.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 
@@ -151,6 +152,16 @@ struct ThriftServerConnection {
   // Each Ptr/visit is null-tolerant so a moved-from instance's dtor is a
   // no-op (Ptrs/variant are reset by the move).
   ~ThriftServerConnection() {
+    // Complete lifecycle notification while every handler and the transport
+    // are still alive, including emergency destruction with in-flight work.
+    if (thriftPipeline) {
+      thriftPipeline->deactivate();
+      auto closeEvents = thriftPipeline->bindEvents<
+          channel_pipeline::Events<ThriftServerCloseConnectionEvent>>();
+      closeEvents.fire<ThriftServerCloseConnectionEvent>(
+          ThriftServerCloseConnectionEvent{
+              .rejection = std::nullopt, .forceClose = true});
+    }
     // 1. Release every DG on thriftPipeline so the pipeline is fully
     //    ungated for step 3. Both the head (thriftTransportAdapter) and
     //    the tail adapter took a DG in setPipeline; if either still holds

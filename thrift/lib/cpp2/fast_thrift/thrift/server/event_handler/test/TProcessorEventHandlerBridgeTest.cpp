@@ -25,6 +25,7 @@
 #include <gtest/gtest.h>
 
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/AsyncSocket.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
@@ -146,10 +147,14 @@ std::shared_ptr<folly::RequestContext> makeAmbientContext(int depth) {
 }
 
 struct NestedAmbientContext {
-  explicit NestedAmbientContext(int value)
-      : depth(value), guard(makeAmbientContext(value)) {}
+  NestedAmbientContext(
+      int value, apache::thrift::TConnectionContext* requestContext)
+      : depth(value),
+        requestContext(requestContext),
+        guard(makeAmbientContext(value)) {}
 
   int depth;
+  apache::thrift::TConnectionContext* requestContext;
   folly::RequestContextScopeGuard guard;
 };
 
@@ -169,8 +174,8 @@ class ContextPushingEventHandler
   void* getServiceContext(
       std::string_view,
       std::string_view,
-      apache::thrift::TConnectionContext*) override {
-    return new NestedAmbientContext(depth_);
+      apache::thrift::TConnectionContext* requestContext) override {
+    return new NestedAmbientContext(depth_, requestContext);
   }
 
   void preRead(void* context, std::string_view) override {
@@ -185,9 +190,17 @@ class ContextPushingEventHandler
 
   void freeContext(void* context, std::string_view) override {
     ASSERT_NE(context, nullptr);
-    EXPECT_EQ(static_cast<NestedAmbientContext*>(context)->depth, depth_);
+    auto* nested = static_cast<NestedAmbientContext*>(context);
+    EXPECT_EQ(nested->depth, depth_);
+    auto* requestContext = static_cast<apache::thrift::Cpp2RequestContext*>(
+        nested->requestContext);
+    ASSERT_NE(requestContext, nullptr);
+    auto* connectionContext = requestContext->getConnectionContext();
+    ASSERT_NE(connectionContext, nullptr);
+    ASSERT_NE(connectionContext->getPeerAddress(), nullptr);
+    EXPECT_EQ(connectionContext->getPeerAddress()->getPort(), 4321);
     freeDepths_->push_back(currentAmbientDepth());
-    delete static_cast<NestedAmbientContext*>(context);
+    delete nested;
   }
 
  private:
@@ -724,7 +737,7 @@ TEST(
 
 TEST(
     TProcessorEventHandlerBridgeTest,
-    DestructionOfNestedInFlightContextsRestoresCallerContext) {
+    InFlightNestedContextsRetainConnectionStateAndRestoreCallerContext) {
   std::vector<int> readDepths;
   std::vector<int> writeDepths;
   std::vector<int> freeDepths;
@@ -741,8 +754,10 @@ TEST(
     (void)bridge.onRead(
         ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 1, "ping")));
     EXPECT_EQ(currentAmbientDepth(), 99);
+    EXPECT_TRUE(freeDepths.empty());
   }
 
+  EXPECT_TRUE(freeDepths.empty());
   ctx.read.clear();
   EXPECT_EQ(freeDepths, (std::vector<int>{3, 3, 3}));
   EXPECT_EQ(currentAmbientDepth(), 99);
@@ -1023,18 +1038,55 @@ TEST(TProcessorEventHandlerBridgeTest, RequestWithoutContextIsRefused) {
 
 // A handler is promised one connectionDestroyed for the newConnection it was
 // told about, however many times the event arrives.
-TEST(TProcessorEventHandlerBridgeTest, ConnectionClosedIsAnnouncedOnce) {
+TEST(
+    TProcessorEventHandlerBridgeTest,
+    ConnectionCloseIsAnnouncedOnceAndCancelsBeforeRequestCleanup) {
+  CallLog log;
+  Bridge bridge(makeConfig(&log));
+  FakeContext ctx;
+  auto conn = makeConn();
+  auto socket = folly::AsyncSocket::newSocket(ctx.eventBase());
+  conn->setTransport(socket.get());
+  establish(bridge, ctx, conn);
+  ASSERT_NE(log.connFromNewConnection, nullptr);
+  EXPECT_EQ(log.connFromNewConnection->getTransport(), socket.get());
+  auto cancellationToken = log.connFromNewConnection->getCancellationToken();
+  EXPECT_FALSE(cancellationToken.isCancellationRequested());
+  (void)bridge.onRead(
+      ctx, erase_and_box(makeRequest(*ctx.eventBase(), conn, 1, "ping")));
+
+  bridge.on<ThriftServerConnectionClosedEvent>(ctx);
+  bridge.on<ThriftServerConnectionClosedEvent>(ctx);
+
+  EXPECT_EQ(std::count(log.calls.begin(), log.calls.end(), "freeContext"), 0);
+  EXPECT_EQ(
+      std::count(log.calls.begin(), log.calls.end(), "connectionDestroyed"), 1);
+  EXPECT_TRUE(cancellationToken.isCancellationRequested());
+  EXPECT_EQ(log.connFromNewConnection->getTransport(), nullptr);
+  ctx.read.clear();
+  EXPECT_EQ(std::count(log.calls.begin(), log.calls.end(), "freeContext"), 1);
+  EXPECT_LT(
+      std::find(log.calls.begin(), log.calls.end(), "connectionDestroyed"),
+      std::find(log.calls.begin(), log.calls.end(), "freeContext"));
+}
+
+TEST(
+    TProcessorEventHandlerBridgeTest,
+    HandlerRemovalAnnouncesConnectionClosureOnce) {
   CallLog log;
   Bridge bridge(makeConfig(&log));
   FakeContext ctx;
   auto conn = makeConn();
   establish(bridge, ctx, conn);
+  ASSERT_NE(log.connFromNewConnection, nullptr);
+  auto cancellationToken = log.connFromNewConnection->getCancellationToken();
 
-  bridge.on<ThriftServerConnectionClosedEvent>(ctx);
-  bridge.on<ThriftServerConnectionClosedEvent>(ctx);
+  bridge.handlerRemoved(ctx);
+  bridge.handlerRemoved(ctx);
 
   EXPECT_EQ(
       std::count(log.calls.begin(), log.calls.end(), "connectionDestroyed"), 1);
+  EXPECT_TRUE(cancellationToken.isCancellationRequested());
 }
 
 TEST(

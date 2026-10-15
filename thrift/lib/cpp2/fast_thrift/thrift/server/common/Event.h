@@ -38,6 +38,8 @@ struct ThriftServerConnectionClosedEvent : channel_pipeline::EventTag<> {};
 struct ThriftServerCloseConnectionEvent
     : channel_pipeline::EventTag<ThriftServerCloseConnectionEvent> {
   std::optional<SetupRejection> rejection;
+  // Internal teardown skips the wire drain and publishes terminal closure.
+  bool forceClose{false};
 };
 
 /**

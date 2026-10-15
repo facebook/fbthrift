@@ -148,10 +148,10 @@ class ConnectionHandler {
   struct AnyConnection {
     std::unique_ptr<void, void (*)(void*) noexcept> conn;
     void (*startFn)(void*) noexcept;
-    void (*closeFn)(void*) noexcept;
+    void (*closeFn)(void*, bool) noexcept;
 
     void start() noexcept { startFn(conn.get()); }
-    void close() noexcept { closeFn(conn.get()); }
+    void close(bool notifyOwner) noexcept { closeFn(conn.get(), notifyOwner); }
   };
 
   template <typename C>
@@ -161,7 +161,14 @@ class ConnectionHandler {
             new C(std::move(c)),
             [](void* p) noexcept { delete static_cast<C*>(p); }),
         .startFn = [](void* p) noexcept { static_cast<C*>(p)->start(); },
-        .closeFn = [](void* p) noexcept { static_cast<C*>(p)->close(); },
+        .closeFn =
+            [](void* p, bool notifyOwner) noexcept {
+              auto& connection = *static_cast<C*>(p);
+              if (!notifyOwner) {
+                connection.setCloseCallback({});
+              }
+              connection.close();
+            },
     };
   }
 
