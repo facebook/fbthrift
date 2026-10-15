@@ -57,6 +57,9 @@ struct WideCountProtocol {
   std::size_t writeListBegin(TType, uint32_t) { return 5; }
   std::size_t writeI64(int64_t) { return kElementBytes; }
   std::size_t writeListEnd() { return 0; }
+  std::size_t writeSetBegin(TType, uint32_t) { return 5; }
+  std::size_t writeSetEnd() { return 7; }
+  KeyOrder keyOrder() const { return KeyOrder::Unspecified; }
   std::size_t serializedSizeListBegin(TType, uint32_t) { return 5; }
   std::size_t serializedSizeI64(int64_t) { return kElementBytes; }
   std::size_t serializedSizeListEnd() { return 0; }
@@ -169,6 +172,63 @@ TEST(EncodeTest, StandardWritersHaveFixedSerializedSizeForNumbers) {
   expectFixedSerializedSizeForNumbers<CompactV1ProtocolWriter>();
   expectFixedSerializedSizeForNumbers<JSONProtocolWriter>();
   expectFixedSerializedSizeForNumbers<SimpleJSONProtocolWriter>();
+}
+
+TEST(EncodeTest, SetWideByteCounts) {
+  WideCountProtocol protocol;
+  const std::set<int64_t> values{1, 2};
+  const auto expected = 2 * WideCountProtocol::kElementBytes + 12;
+  using Tag = type::set<type::i64_t>;
+  using Methods = apache::thrift::detail::pm::protocol_methods<
+      type_class::set<type_class::integral>,
+      std::set<int64_t>,
+      Tag>;
+  EXPECT_EQ(expected, op::encode<Tag>(protocol, values));
+  EXPECT_EQ(expected, Methods::write(protocol, values));
+}
+
+template <typename Protocol>
+struct SetOrderingWriter : Protocol {
+  KeyOrder order = KeyOrder::Unspecified;
+  KeyOrder keyOrder() const { return order; }
+};
+
+template <typename Protocol, typename Set>
+void testSetWriteParity(const Set& values) {
+  using Tag = type::set<type::i32_t>;
+  using Methods = apache::thrift::detail::pm::
+      protocol_methods<type_class::set<type_class::integral>, Set, Tag>;
+  for (auto order :
+       {KeyOrder::Unspecified,
+        KeyOrder::NativeAscending,
+        KeyOrder::StableAscending}) {
+    SCOPED_TRACE(static_cast<int>(order));
+    SetOrderingWriter<Protocol> writer;
+    writer.order = order;
+    folly::IOBufQueue opQueue;
+    writer.setOutput(&opQueue);
+    const auto opSize = op::encode<Tag>(writer, values);
+    folly::IOBufQueue methodsQueue;
+    writer.setOutput(&methodsQueue);
+    const auto methodsSize = Methods::write(writer, values);
+    auto opBytes = opQueue.move();
+    auto methodsBytes = methodsQueue.move();
+    EXPECT_EQ(opSize, opBytes->computeChainDataLength());
+    EXPECT_EQ(methodsSize, methodsBytes->computeChainDataLength());
+    EXPECT_TRUE(folly::IOBufEqualTo{}(*opBytes, *methodsBytes));
+  }
+}
+
+TEST(EncodeTest, SetWriteParity) {
+  const std::set<int32_t, std::greater<int32_t>> ordered{3, 2, 1};
+  const std::unordered_set<int32_t> unordered{3, 2, 1};
+  testSetWriteParity<BinaryProtocolWriter>(ordered);
+  testSetWriteParity<BinaryProtocolWriter>(unordered);
+  testSetWriteParity<CompactProtocolWriter>(ordered);
+  testSetWriteParity<CompactProtocolWriter>(unordered);
+  testSetWriteParity<SimpleJSONProtocolWriter>(ordered);
+  testSetWriteParity<SimpleJSONProtocolWriter>(unordered);
+  testSetWriteParity<CompactProtocolWriter>(std::set<int32_t>{});
 }
 
 template <

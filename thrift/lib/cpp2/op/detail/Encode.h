@@ -755,18 +755,26 @@ struct ListEncode {
 template <typename Tag>
 struct Encode<type::list<Tag>> : ListEncode<Tag> {};
 
+template <TType ElemType, typename Tag>
+struct SetEncodeImpl {
+  template <typename Protocol, typename T, typename ElementWrite>
+  std::size_t operator()(
+      Protocol& prot, const T& set, ElementWrite elementWrite) const {
+    std::size_t xfer = 0;
+    xfer += prot.writeSetBegin(ElemType, checked_container_size(set.size()));
+    encodeSetElements<Tag>(
+        prot, set, [&](const auto& elem) { xfer += elementWrite(elem); });
+    xfer += prot.writeSetEnd();
+    return xfer;
+  }
+};
+
 template <typename Tag>
 struct SetEncode {
   template <typename Protocol, typename T>
   std::size_t operator()(Protocol& prot, const T& set) const {
-    std::size_t xfer = 0;
-    xfer += prot.writeSetBegin(
-        typeTagToTType<Tag>, checked_container_size(set.size()));
-    encodeSetElements<Tag>(prot, set, [&](const auto& elem) {
-      xfer += Encode<Tag>{}(prot, elem);
-    });
-    xfer += prot.writeSetEnd();
-    return xfer;
+    return SetEncodeImpl<typeTagToTType<Tag>, Tag>{}(
+        prot, set, [&](const auto& elem) { return Encode<Tag>{}(prot, elem); });
   }
 };
 

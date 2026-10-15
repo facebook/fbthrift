@@ -374,7 +374,6 @@ struct protocol_methods<type_class::list<ElemClass>, Type, ExpectedTag> {
 };
 
 using op::detail::encodeMapElements;
-using op::detail::encodeSetElements;
 
 /*
  * Set Specialization
@@ -437,17 +436,11 @@ struct protocol_methods<type_class::set<ElemClass>, Type, ExpectedTag> {
 
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, const Type& out) {
-    std::size_t xfer = 0;
-
-    xfer += protocol.writeSetBegin(
-        elem_ttype::value, checked_container_size(out.size()));
-
     using Tag = type_class::to_type_tag_t<ElemClass, elem_type>;
-    encodeSetElements<Tag>(protocol, out, [&](const auto& elem) {
-      xfer += elem_methods::write(protocol, elem);
-    });
-    xfer += protocol.writeSetEnd();
-    return xfer;
+    return op::detail::SetEncodeImpl<elem_ttype::value, Tag>{}(
+        protocol, out, [&](const auto& elem) {
+          return elem_methods::write(protocol, elem);
+        });
   }
 
   template <bool ZeroCopy, typename Protocol>
