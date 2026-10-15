@@ -208,9 +208,9 @@ class alignas(64) ContextImpl {
    *
    * Call this when returning Result::Backpressure from onWrite() to be
    * notified when the pipeline can accept writes again. The handler must
-   * have a write_ready_hook_ member (detected at compile time).
+   * have a writeReadyHook_ member (detected at compile time).
    *
-   * No-op if the handler doesn't have a write_ready_hook_ or is already
+   * No-op if the handler doesn't have a writeReadyHook_ or is already
    * registered.
    */
   void awaitWriteReady() noexcept;

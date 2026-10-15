@@ -79,16 +79,16 @@ The pipeline framework avoids allocations as much as possible:
 - Object pooling
 - Arena allocation
 - Bump allocation
-- `TypeErasedBox`: 56-byte inline storage (no heap fallback)
+- `TypeErasedBox`: 120-byte inline storage (no heap fallback)
 
 ### Type Erasure Without Runtime Cost
 
 `TypeErasedBox` provides type erasure without the overhead of `std::any`:
-- **Zero-cost wrapper** over SmallBuffer (64 bytes total = one L1 cache line)
+- **Zero-cost wrapper** over SmallBuffer (128 bytes total in release builds = two L1 cache lines)
 - **No runtime overhead** in release builds (same size as underlying SmallBuffer)
-- **Compile-time size enforcement** via `static_assert` (won't compile if type > 56 bytes)
+- **Compile-time size enforcement** via `static_assert` (won't compile if the type is over 120 bytes, is aligned more strictly than a pointer, or has a move constructor that can throw)
 - **Debug mode exceptions**: Throws `TypeErasedBoxTypeMismatch` with demangled type names
-- **For types > 56 bytes**: Wrap in `unique_ptr`:
+- **For types that don't fit**: Wrap in `unique_ptr`:
   ```cpp
   erase_and_box(std::make_unique<LargeType>(...))
   ```
@@ -582,8 +582,8 @@ TypeErasedBox box = erase_and_box(std::move(myMessage));
 auto& msg = box.get<MyMessage>();
 ```
 
-- **≤64 bytes**: Stored inline (no heap allocation)
-- **>64 bytes**: Heap allocated
+- **Up to 120 bytes**: Stored inline (no heap allocation)
+- **Over 120 bytes**: Does not compile; wrap the value in `unique_ptr`
 - **Move-only**: No copying
 - **No runtime type checking in release**: Relies on compile-time safety
 
@@ -779,7 +779,7 @@ Handlers that need write ready notifications embed a hook member:
 class BufferingHandler {
  public:
   // Embed hook as public member — detected at compile time
-  WriteReadyHook write_ready_hook_;
+  WriteReadyHook writeReadyHook_;
 
   // ... handler methods
 };
@@ -815,7 +815,7 @@ controlled by `setAutoRead(false)` at the transport level.
 class WriteBufferingHandler {
  public:
   // Hook for write ready notifications
-  WriteReadyHook write_ready_hook_;
+  WriteReadyHook writeReadyHook_;
 
   Result onWrite(Context& ctx, TypeErasedBox&& msg) noexcept {
     // If we have pending messages, buffer this one too

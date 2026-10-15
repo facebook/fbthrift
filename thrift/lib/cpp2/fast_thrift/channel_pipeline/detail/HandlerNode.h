@@ -247,9 +247,9 @@ inline constexpr auto kHandlerTypeSubscriptions =
  * satisfy InboundHandler or OutboundHandler concepts, the corresponding
  * methods become passthroughs.
  *
- * If the handler has read_ready_hook_ or write_ready_hook_ members, their
- * addresses are captured for use by the await_read_ready() /
- * await_write_ready() context methods.
+ * If the handler has readReadyHook_ or writeReadyHook_ members, their
+ * addresses are captured for use by the awaitReadReady() /
+ * awaitWriteReady() context methods.
  *
  * @tparam H The concrete handler type
  * @param handler_id The unique ID for this handler
