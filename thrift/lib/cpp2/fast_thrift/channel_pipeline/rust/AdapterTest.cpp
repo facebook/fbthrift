@@ -211,6 +211,9 @@ TEST(AdapterTest, BytesPtrAdapterPreservesChain) {
   EXPECT_EQ((*recovered)->countChainElements(), 2);
 }
 
+// TypeErasedBox checks the stored type only in debug builds.
+#ifndef NDEBUG
+
 TEST(AdapterTest, EmptyBoxReportsAdapterFailure) {
   TestWatchdog watchdog{"empty box adapter failure"};
   TypeErasedBox box;
@@ -224,6 +227,8 @@ TEST(AdapterTest, WrongMessageTypeReportsAdapterFailure) {
   EXPECT_FALSE(
       RustMessageAdapter<BytesPtr>::tryTake(std::move(box)).has_value());
 }
+
+#endif
 
 TEST(AdapterTest, NullBytesReportsConversionFailure) {
   TestWatchdog watchdog{"null BytesPtr conversion failure"};
