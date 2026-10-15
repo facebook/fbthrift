@@ -32,6 +32,7 @@
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/TrustedServerException.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/common/allocator/EvbAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
@@ -423,6 +424,17 @@ inline void writeExceptionCascade(
     ThriftRequestContextPtr requestContext,
     folly::DelayedDestruction::DestructorGuard&& adapterGuard,
     folly::exception_wrapper ew) noexcept {
+  if (const auto* trusted = ew.get_exception<TrustedServerException>()) {
+    auto message = makeFrameworkErrorMessage(
+        sid,
+        mapExCodeToErrorCode(trusted->errorCode())
+            .value_or(apache::thrift::ResponseRpcErrorCode::UNKNOWN),
+        trusted->what());
+    message.requestContext = std::move(requestContext);
+    a->writeResponse(std::move(message), std::move(adapterGuard));
+    return;
+  }
+
   Presult presult;
   std::optional<apache::thrift::ErrorClassification> classification;
   bool handled = ::apache::thrift::detail::ap::insert_exn<HasReturnType>(

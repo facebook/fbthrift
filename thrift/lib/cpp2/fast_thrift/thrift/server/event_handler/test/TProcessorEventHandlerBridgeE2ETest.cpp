@@ -46,6 +46,7 @@
 #include <folly/synchronization/Baton.h>
 
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/TrustedServerException.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/async/RpcOptions.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
@@ -95,6 +96,12 @@ class TestHandler
   void async_tm_echo(
       ftt::FastHandlerCallbackPtr<std::unique_ptr<EchoResponse>> cb,
       std::unique_ptr<std::string> message) override {
+    if (throwTrusted.load(std::memory_order_relaxed)) {
+      cb->exception(
+          folly::make_exception_wrapper<TrustedServerException>(
+              TrustedServerException::appOverloadError("trusted overload")));
+      return;
+    }
     if (throwUndeclared.load(std::memory_order_relaxed)) {
       cb->exception(
           folly::make_exception_wrapper<std::runtime_error>("boom undeclared"));
@@ -106,6 +113,7 @@ class TestHandler
   }
 
   std::atomic<bool> throwUndeclared{false};
+  std::atomic<bool> throwTrusted{false};
 
  private:
   SharedServiceObserved* observed_;
@@ -418,6 +426,31 @@ TEST_F(
           "postRead",
           "userExceptionWrapped",
           "handlerErrorWrapped"}));
+}
+
+TEST_F(
+    TProcessorEventHandlerBridgeE2ETest,
+    TrustedServerExceptionPreservesClassicSemantics) {
+  handler_->throwTrusted.store(true, std::memory_order_relaxed);
+  connect();
+
+  const auto error = echoExpectError("hello");
+  const auto* appError = error.get_exception<TApplicationException>();
+  ASSERT_NE(appError, nullptr);
+  EXPECT_EQ(appError->getType(), TApplicationException::LOADSHEDDING);
+  EXPECT_NE(
+      std::string_view(appError->what()).find("trusted overload"),
+      std::string_view::npos);
+
+  auto locked = observed_.rlock();
+  EXPECT_EQ(
+      locked->calls,
+      (std::vector<std::string>{
+          "newConnection",
+          "getServiceContext",
+          "preRead",
+          "onReadData",
+          "postRead"}));
 }
 
 // The classic request context the bridge builds reaches the service, so a
