@@ -79,6 +79,7 @@ class TestHandler : public FastServiceHandler<integration::FastThriftServer> {
  public:
   bool throwNotFound{false};
   bool throwPermissionDenied{false};
+  bool throwUndeclaredDirectly{false};
 
   void async_tm_ping(ftt::FastHandlerCallbackPtr<void> cb) override {
     cb->done();
@@ -100,6 +101,9 @@ class TestHandler : public FastServiceHandler<integration::FastThriftServer> {
   void async_tm_lookup(
       ftt::FastHandlerCallbackPtr<std::unique_ptr<EchoResponse>> cb,
       int32_t id) override {
+    if (throwUndeclaredDirectly) {
+      throw std::runtime_error("direct handler failure");
+    }
     if (throwNotFound) {
       NotFoundException ex;
       ex.id() = id;
@@ -422,6 +426,36 @@ class FastThriftServerTest : public ::testing::Test {
         << "Expected " << typeid(ExpectedEx).name() << " got: " << actual;
   }
 
+  template <typename ExpectedEx, typename Fn>
+  void syncCallExpectExceptionMessage(
+      Fn&& fn, std::string_view expectedMessagePart) {
+    folly::Baton<> baton;
+    bool gotExpected = false;
+    std::string actual;
+    auto* evb = clientThread_->getEventBase();
+    evb->runInEventBaseThread([&] {
+      fn().via(evb)
+          .thenValue([&](auto&&) {
+            ADD_FAILURE() << "RPC succeeded; expected exception "
+                          << typeid(ExpectedEx).name();
+            baton.post();
+          })
+          .thenError([&](const folly::exception_wrapper& ew) {
+            if (const auto* ex = ew.get_exception<ExpectedEx>()) {
+              gotExpected = true;
+              actual = ex->what();
+            } else {
+              actual = folly::exceptionStr(ew).toStdString();
+            }
+            baton.post();
+          });
+    });
+    baton.wait();
+    EXPECT_TRUE(gotExpected)
+        << "Expected " << typeid(ExpectedEx).name() << " got: " << actual;
+    EXPECT_NE(actual.find(expectedMessagePart), std::string::npos);
+  }
+
   std::shared_ptr<TestHandler> handler_;
   std::unique_ptr<ftt::FastThriftServer> server_;
   std::unique_ptr<folly::ScopedEventBaseThread> clientThread_;
@@ -471,6 +505,14 @@ TEST_F(FastThriftServerTest, SecureLookupSecondExceptionPropagates) {
   syncCallExpectException<PermissionDeniedException>([&] {
     return client->semifuture_secureLookup(/*id=*/5, std::string("alice"));
   });
+  destroyClientOnEvb(client);
+}
+
+TEST_F(FastThriftServerTest, DirectHandlerThrowPreservesMessage) {
+  handler_->throwUndeclaredDirectly = true;
+  auto client = createClient();
+  syncCallExpectExceptionMessage<apache::thrift::TApplicationException>(
+      [&] { return client->semifuture_lookup(1); }, "direct handler failure");
   destroyClientOnEvb(client);
 }
 

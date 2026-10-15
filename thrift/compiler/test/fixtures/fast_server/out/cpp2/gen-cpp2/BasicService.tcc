@@ -2070,22 +2070,18 @@ void BasicServiceAppAdapter::process_ping_run(
   // The handler may complete synchronously or asynchronously; either way the
   // callback owns any further write/close coordination.
   //
-  // A synchronous throw out of the handler would otherwise hit the noexcept
-  // boundary on this function and terminate the process, so it is swallowed
-  // here. The callback is deliberately not touched: ownership passed to the
-  // handler at the call, and reaching back for it would mean a second owner
-  // and the reference count that sole ownership exists to avoid.
-  //
-  // The client still gets an error either way. A handler that completed and
-  // then threw has already written its response; one that threw without
-  // completing gets INTERNAL_ERROR synthesized by the callback's destructor.
-  // Reporting errors by throwing is not the documented contract —
-  // callback->exception(ew) is — so the lost exception detail is confined to
-  // handler misuse.
+  // Keep a synchronous callback destruction recoverable until the handler
+  // returns. This preserves an exception escaping a direct async_tm/async_eb
+  // override without adding shared ownership to the callback's normal path.
+  ::apache::thrift::fast_thrift::thrift::detail::HandlerInvocationScope<
+      std::remove_pointer_t<decltype(callback.get())>> invocation(
+      callback.get());
   try {
     handler_->async_tm_ping(
         std::move(callback));
   } catch (...) {
+    invocation.completeException(
+        callback, ::folly::exception_wrapper(std::current_exception()));
   }
 }
 
@@ -2200,22 +2196,18 @@ void BasicServiceAppAdapter::process_add_run(
   // The handler may complete synchronously or asynchronously; either way the
   // callback owns any further write/close coordination.
   //
-  // A synchronous throw out of the handler would otherwise hit the noexcept
-  // boundary on this function and terminate the process, so it is swallowed
-  // here. The callback is deliberately not touched: ownership passed to the
-  // handler at the call, and reaching back for it would mean a second owner
-  // and the reference count that sole ownership exists to avoid.
-  //
-  // The client still gets an error either way. A handler that completed and
-  // then threw has already written its response; one that threw without
-  // completing gets INTERNAL_ERROR synthesized by the callback's destructor.
-  // Reporting errors by throwing is not the documented contract —
-  // callback->exception(ew) is — so the lost exception detail is confined to
-  // handler misuse.
+  // Keep a synchronous callback destruction recoverable until the handler
+  // returns. This preserves an exception escaping a direct async_tm/async_eb
+  // override without adding shared ownership to the callback's normal path.
+  ::apache::thrift::fast_thrift::thrift::detail::HandlerInvocationScope<
+      std::remove_pointer_t<decltype(callback.get())>> invocation(
+      callback.get());
   try {
     handler_->async_tm_add(
         std::move(callback), args.uarg_a, args.uarg_b);
   } catch (...) {
+    invocation.completeException(
+        callback, ::folly::exception_wrapper(std::current_exception()));
   }
 }
 
@@ -2331,22 +2323,18 @@ void BasicServiceAppAdapter::process_buildItem_run(
   // The handler may complete synchronously or asynchronously; either way the
   // callback owns any further write/close coordination.
   //
-  // A synchronous throw out of the handler would otherwise hit the noexcept
-  // boundary on this function and terminate the process, so it is swallowed
-  // here. The callback is deliberately not touched: ownership passed to the
-  // handler at the call, and reaching back for it would mean a second owner
-  // and the reference count that sole ownership exists to avoid.
-  //
-  // The client still gets an error either way. A handler that completed and
-  // then threw has already written its response; one that threw without
-  // completing gets INTERNAL_ERROR synthesized by the callback's destructor.
-  // Reporting errors by throwing is not the documented contract —
-  // callback->exception(ew) is — so the lost exception detail is confined to
-  // handler misuse.
+  // Keep a synchronous callback destruction recoverable until the handler
+  // returns. This preserves an exception escaping a direct async_tm/async_eb
+  // override without adding shared ownership to the callback's normal path.
+  ::apache::thrift::fast_thrift::thrift::detail::HandlerInvocationScope<
+      std::remove_pointer_t<decltype(callback.get())>> invocation(
+      callback.get());
   try {
     handler_->async_tm_buildItem(
         std::move(callback), std::move(args.uarg_template_), args.uarg_id);
   } catch (...) {
+    invocation.completeException(
+        callback, ::folly::exception_wrapper(std::current_exception()));
   }
 }
 
@@ -2459,22 +2447,18 @@ void BasicServiceAppAdapter::process_lookup_run(
   // The handler may complete synchronously or asynchronously; either way the
   // callback owns any further write/close coordination.
   //
-  // A synchronous throw out of the handler would otherwise hit the noexcept
-  // boundary on this function and terminate the process, so it is swallowed
-  // here. The callback is deliberately not touched: ownership passed to the
-  // handler at the call, and reaching back for it would mean a second owner
-  // and the reference count that sole ownership exists to avoid.
-  //
-  // The client still gets an error either way. A handler that completed and
-  // then threw has already written its response; one that threw without
-  // completing gets INTERNAL_ERROR synthesized by the callback's destructor.
-  // Reporting errors by throwing is not the documented contract —
-  // callback->exception(ew) is — so the lost exception detail is confined to
-  // handler misuse.
+  // Keep a synchronous callback destruction recoverable until the handler
+  // returns. This preserves an exception escaping a direct async_tm/async_eb
+  // override without adding shared ownership to the callback's normal path.
+  ::apache::thrift::fast_thrift::thrift::detail::HandlerInvocationScope<
+      std::remove_pointer_t<decltype(callback.get())>> invocation(
+      callback.get());
   try {
     handler_->async_tm_lookup(
         std::move(callback), args.uarg_id);
   } catch (...) {
+    invocation.completeException(
+        callback, ::folly::exception_wrapper(std::current_exception()));
   }
 }
 
@@ -2590,22 +2574,18 @@ void BasicServiceAppAdapter::process_secureLookup_run(
   // The handler may complete synchronously or asynchronously; either way the
   // callback owns any further write/close coordination.
   //
-  // A synchronous throw out of the handler would otherwise hit the noexcept
-  // boundary on this function and terminate the process, so it is swallowed
-  // here. The callback is deliberately not touched: ownership passed to the
-  // handler at the call, and reaching back for it would mean a second owner
-  // and the reference count that sole ownership exists to avoid.
-  //
-  // The client still gets an error either way. A handler that completed and
-  // then threw has already written its response; one that threw without
-  // completing gets INTERNAL_ERROR synthesized by the callback's destructor.
-  // Reporting errors by throwing is not the documented contract —
-  // callback->exception(ew) is — so the lost exception detail is confined to
-  // handler misuse.
+  // Keep a synchronous callback destruction recoverable until the handler
+  // returns. This preserves an exception escaping a direct async_tm/async_eb
+  // override without adding shared ownership to the callback's normal path.
+  ::apache::thrift::fast_thrift::thrift::detail::HandlerInvocationScope<
+      std::remove_pointer_t<decltype(callback.get())>> invocation(
+      callback.get());
   try {
     handler_->async_tm_secureLookup(
         std::move(callback), args.uarg_id, std::move(args.uarg_user));
   } catch (...) {
+    invocation.completeException(
+        callback, ::folly::exception_wrapper(std::current_exception()));
   }
 }
 
@@ -2690,22 +2670,18 @@ void BasicServiceAppAdapter::process_ebLookup_run(
   // The handler may complete synchronously or asynchronously; either way the
   // callback owns any further write/close coordination.
   //
-  // A synchronous throw out of the handler would otherwise hit the noexcept
-  // boundary on this function and terminate the process, so it is swallowed
-  // here. The callback is deliberately not touched: ownership passed to the
-  // handler at the call, and reaching back for it would mean a second owner
-  // and the reference count that sole ownership exists to avoid.
-  //
-  // The client still gets an error either way. A handler that completed and
-  // then threw has already written its response; one that threw without
-  // completing gets INTERNAL_ERROR synthesized by the callback's destructor.
-  // Reporting errors by throwing is not the documented contract —
-  // callback->exception(ew) is — so the lost exception detail is confined to
-  // handler misuse.
+  // Keep a synchronous callback destruction recoverable until the handler
+  // returns. This preserves an exception escaping a direct async_tm/async_eb
+  // override without adding shared ownership to the callback's normal path.
+  ::apache::thrift::fast_thrift::thrift::detail::HandlerInvocationScope<
+      std::remove_pointer_t<decltype(callback.get())>> invocation(
+      callback.get());
   try {
     handler_->async_eb_ebLookup(
         std::move(callback), args.uarg_id);
   } catch (...) {
+    invocation.completeException(
+        callback, ::folly::exception_wrapper(std::current_exception()));
   }
 }
 

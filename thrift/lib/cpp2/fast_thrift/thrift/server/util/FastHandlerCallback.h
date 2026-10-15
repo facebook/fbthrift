@@ -81,6 +81,27 @@ class HandlerExecutorScope {
   folly::Executor* previous_;
 };
 
+struct HandlerInvocationState {
+  void* callback;
+  HandlerInvocationState* previous;
+  bool destroyDeferred{false};
+};
+
+FOLLY_EXPORT inline HandlerInvocationState*&
+currentHandlerInvocation() noexcept {
+  static thread_local HandlerInvocationState* invocation = nullptr;
+  return invocation;
+}
+
+inline bool deferHandlerCallbackDestroy(void* callback) noexcept {
+  auto* invocation = currentHandlerInvocation();
+  if (invocation == nullptr || invocation->callback != callback) {
+    return false;
+  }
+  invocation->destroyDeferred = true;
+  return true;
+}
+
 template <typename F>
 class HandlerExecutorTask {
   static_assert(std::is_nothrow_move_constructible_v<F>);
@@ -291,7 +312,9 @@ class CallbackPtr {
 
   void reset() noexcept {
     if (auto* ptr = std::exchange(ptr_, nullptr)) {
-      ptr->destroyOnEventBase();
+      if (!deferHandlerCallbackDestroy(ptr)) {
+        ptr->destroyOnEventBase();
+      }
     }
   }
 
@@ -311,6 +334,53 @@ class CallbackPtr {
 
  private:
   T* ptr_{nullptr};
+};
+
+template <typename Callback>
+class HandlerInvocationScope {
+ public:
+  explicit HandlerInvocationScope(Callback* callback) noexcept
+      : state_{callback, std::exchange(currentHandlerInvocation(), &state_)} {}
+
+  HandlerInvocationScope(const HandlerInvocationScope&) = delete;
+  HandlerInvocationScope& operator=(const HandlerInvocationScope&) = delete;
+  HandlerInvocationScope(HandlerInvocationScope&&) = delete;
+  HandlerInvocationScope& operator=(HandlerInvocationScope&&) = delete;
+
+  ~HandlerInvocationScope() {
+    deactivate();
+    if (state_.destroyDeferred) {
+      static_cast<Callback*>(state_.callback)->destroyOnEventBase();
+    }
+  }
+
+  void completeException(
+      CallbackPtr<Callback>& owner, folly::exception_wrapper ew) noexcept {
+    deactivate();
+    Callback* callback = owner ? owner.release() : nullptr;
+    if (callback == nullptr && state_.destroyDeferred) {
+      callback = static_cast<Callback*>(state_.callback);
+    }
+    state_.destroyDeferred = false;
+    state_.callback = nullptr;
+    if (callback == nullptr) {
+      return;
+    }
+    try {
+      callback->exception(std::move(ew));
+    } catch (...) {
+    }
+    callback->destroyOnEventBase();
+  }
+
+ private:
+  void deactivate() noexcept {
+    if (currentHandlerInvocation() == &state_) {
+      currentHandlerInvocation() = state_.previous;
+    }
+  }
+
+  HandlerInvocationState state_;
 };
 
 // what() materializes a std::string, so it can throw under memory pressure.
