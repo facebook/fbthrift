@@ -278,6 +278,49 @@ Test createRequestResponseTaskExpiredTest() {
   return ret;
 }
 
+Test createRequestResponseTooBigTest() {
+  Test ret;
+  ret.name() = "RequestResponseTooBigTest";
+  ret.tags()->emplace("spec/protocol/interface/#internal-server-error");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseTooBig/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult = rpcTest.clientTestResult()
+                               .emplace()
+                               .requestResponseServerError()
+                               .emplace();
+  clientTestResult.exceptionType() = TApplicationException::INTERNAL_ERROR;
+  clientTestResult.exceptionMessage() = "Response size too big";
+  auto& responseTooBig = rpcTest.serverInstruction()
+                             .emplace()
+                             .requestResponseServerError()
+                             .emplace()
+                             .error()
+                             .emplace()
+                             .responseTooBig()
+                             .emplace();
+  responseTooBig.maxResponseSize() = 4096;
+  responseTooBig.responseSize() = 65536;
+  rpcTest.serverTestResult()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+
+  return ret;
+}
+
 Test createRequestResponseNoArgVoidResponse() {
   Test ret;
   ret.name() = "RequestResponseNoArgVoidResponseTest";
@@ -1805,6 +1848,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createRequestResponseAnyExceptionTest());
   suite.tests()->push_back(createRequestResponseLoadsheddingTest());
   suite.tests()->push_back(createRequestResponseTaskExpiredTest());
+  suite.tests()->push_back(createRequestResponseTooBigTest());
   return suite;
 }
 

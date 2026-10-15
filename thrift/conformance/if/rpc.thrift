@@ -698,11 +698,17 @@ struct RequestResponseAnyExceptionServerInstruction {
 union ServerError {
   1: string loadshedding;
   2: TaskExpiredServerError taskExpired;
+  3: ResponseTooBigServerError responseTooBig;
 }
 
 struct TaskExpiredServerError {
   1: i64 taskExpireTimeMs;
   2: i64 handlerTimeMs;
+}
+
+struct ResponseTooBigServerError {
+  1: i64 maxResponseSize;
+  2: i64 responseSize;
 }
 
 struct RequestResponseServerErrorServerInstruction {

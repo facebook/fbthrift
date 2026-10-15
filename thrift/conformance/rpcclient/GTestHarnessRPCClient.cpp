@@ -573,16 +573,19 @@ class ConformanceVerificationServer
 
   folly::coro::Task<std::unique_ptr<Response>> answerServerError(
       const ServerError& error) {
+    auto res = std::make_unique<Response>();
+    res->data() = "the server should not send this";
     switch (error.getType()) {
       case ServerError::Type::taskExpired:
         co_await folly::coro::sleep(
             std::chrono::milliseconds(*error.taskExpired()->handlerTimeMs()));
         break;
+      case ServerError::Type::responseTooBig:
+        res->data() = std::string(*error.responseTooBig()->responseSize(), 'x');
+        break;
       default:
         break;
     }
-    auto res = std::make_unique<Response>();
-    res->data() = "the server should not send this";
     co_return res;
   }
 
@@ -629,6 +632,9 @@ void configureServer(
         server.setTaskExpireTime(
             std::chrono::milliseconds(
                 *error.taskExpired()->taskExpireTimeMs()));
+        break;
+      case ServerError::Type::responseTooBig:
+        server.setMaxResponseSize(*error.responseTooBig()->maxResponseSize());
         break;
       default:
         break;
