@@ -14,16 +14,21 @@
 
 
 """
-Schema-typed read-only handles on owned datum (see ``_datum``).
+Schema-typed handles on owned datum (see ``_datum``).
 
-``DynamicValue`` holds a datum that is valid for its ``TypeRef``. Scalars are
-read through checked accessors; containers, structs, and unions through views
-whose children take their types from the parent's schema.
+``MutableDynamicValue`` owns a datum that is valid for its ``TypeRef`` and
+allows checked mutation through mutable views. ``DynamicValue`` is its
+read-only base; ``read_only()`` returns a live read-only handle, not a
+snapshot. Scalars are read through checked accessors; containers, structs, and
+unions through views whose children take their types from the parent's schema.
 
-A scalar read is a value. A struct, container, or union read shares the stored
-object. Map keys and set elements are frozen. Presence is canonical: ``UNSET``
-stands only for an unset optional struct field, and every other field holds an
-explicit value.
+Handles refer to stored objects, not storage slots, as Python names do. A
+scalar read is a value. A struct, container, or union read shares the stored
+object, so in-place edits are visible through every handle on it; replacing the
+slot leaves earlier handles on the old object. Writes validate and copy the
+incoming value. Map keys and set elements are frozen and always read-only.
+Presence is canonical: ``UNSET`` stands only for an unset optional struct
+field, and every other field holds an explicit value.
 """
 
 from __future__ import annotations
@@ -43,8 +48,11 @@ from typing import cast, ClassVar, Generic, NoReturn, overload, Self, TypeVar
 
 from apache.thrift.type.any_rep.thrift_types import AnyStruct
 from thrift.lib.python.schema._datum import (
+    check_frozen_key,
     check_union_shape,
     copy_value,
+    default_value,
+    field_default,
     freeze_key,
     FrozenMap,
     resolved,
@@ -59,6 +67,7 @@ from thrift.lib.python.schema.type_system import (
     FieldDefinition,
     ListTypeRef,
     MapTypeRef,
+    PresenceQualifier,
     Primitive,
     PrimitiveTypeRef,
     SetTypeRef,
@@ -73,6 +82,12 @@ __all__ = [
     "FrozenMap",
     "ListView",
     "MapView",
+    "MutableDynamicValue",
+    "MutableListView",
+    "MutableMapView",
+    "MutableSetView",
+    "MutableStructView",
+    "MutableUnionView",
     "SetView",
     "StructView",
     "UNSET",
@@ -92,8 +107,11 @@ _FLOATS: frozenset[Primitive] = frozenset({Primitive.FLOAT, Primitive.DOUBLE})
 class DynamicValue:
     """A read-only handle on a datum and the ``TypeRef`` it was declared as.
 
-    Equality compares the ``TypeRef`` and the value; a handle never equals a
-    raw Python value and is unhashable."""
+    Values are constructed as ``MutableDynamicValue``; ``read_only()`` and
+    read-only views return this class. The datum may be shared with a mutable
+    value, so a read-only handle observes later in-place edits. Equality
+    compares the ``TypeRef`` and the current value; a handle never equals a raw
+    Python value and is unhashable."""
 
     __slots__ = ("_type_ref", "_datum", "_frozen")
     _type_ref: TypeRef
@@ -101,7 +119,10 @@ class DynamicValue:
     _frozen: bool
 
     def __init__(self, *args: object, **kwargs: object) -> None:
-        raise TypeError("DynamicValue is not constructed directly")
+        raise TypeError(
+            "DynamicValue is not constructed directly; construct a "
+            "MutableDynamicValue and call read_only()"
+        )
 
     @property
     def type_ref(self) -> TypeRef:
@@ -115,6 +136,14 @@ class DynamicValue:
                 f"'{type_name(self._type_ref)}'"
             )
         return self
+
+    def read_only(self) -> DynamicValue:
+        """A read-only handle on the same datum."""
+        return _handle(DynamicValue, self._type_ref, self._datum, self._frozen)
+
+    def copy(self) -> MutableDynamicValue:
+        """An independent mutable value equal to this one."""
+        return _handle(MutableDynamicValue, self._type_ref, self.to_datum(), False)
 
     def to_datum(self) -> object:
         """An owned copy of the datum, sharing no mutable storage."""
@@ -212,9 +241,62 @@ class DynamicValue:
         return f"{type(self).__name__}({type_name(self._type_ref)}, {self._datum!r})"
 
 
+class MutableDynamicValue(DynamicValue):
+    """An owned datum and the ``TypeRef`` it was declared as, mutable through
+    its views.
+
+    Construction validates the datum recursively and copies it, so the value
+    never shares storage with the caller."""
+
+    __slots__ = ()
+
+    def __init__(self, type_ref: TypeRef, datum: object) -> None:
+        stored = copy_value(datum, resolved(type_ref))
+        object.__setattr__(self, "_type_ref", type_ref)
+        object.__setattr__(self, "_datum", stored)
+        object.__setattr__(self, "_frozen", False)
+
+    @classmethod
+    def default(cls, type_ref: TypeRef) -> Self:
+        """The default value of ``type_ref``, with each non-optional struct
+        field holding its custom or intrinsic default."""
+        return cls(type_ref, default_value(resolved(type_ref)))
+
+    def as_list(self) -> MutableListView:
+        target = self._target(ListTypeRef, "a list")
+        elements = cast(list[object], self._datum)
+        return MutableListView(resolved(target.element_type), elements)
+
+    def as_set(self) -> MutableSetView:
+        target = self._target(SetTypeRef, "a set")
+        elements = cast(dict[object, None], self._datum)
+        return MutableSetView(resolved(target.element_type), elements)
+
+    def as_map(self) -> MutableMapView:
+        target = self._target(MapTypeRef, "a map")
+        entries = cast(dict[object, object], self._datum)
+        key_type, value_type = resolved(target.key_type), resolved(target.value_type)
+        return MutableMapView(key_type, value_type, entries)
+
+    def as_struct(self) -> MutableStructView:
+        """The present fields of a struct or exception."""
+        target = self._target(StructTypeRef, "a struct")
+        return MutableStructView(target.node, cast(list[object], self._datum))
+
+    def as_union(self) -> MutableUnionView:
+        target = self._target(UnionTypeRef, "a union")
+        return MutableUnionView(target, cast(list[object], self._datum))
+
+    def __reduce__(
+        self,
+    ) -> tuple[Callable[[TypeRef, object], DynamicValue], tuple[TypeRef, object]]:
+        return (MutableDynamicValue, (self._type_ref, self.to_datum()))
+
+
 # ---------------------------------------------------------------------------
 # Views. Each holds the parent's stored container and the child types its
-# schema declares, and wraps children as they are read.
+# schema declares, and wraps children as they are read. Read-only views wrap
+# children as DynamicValue; mutable views as MutableDynamicValue.
 # ---------------------------------------------------------------------------
 
 
@@ -266,6 +348,50 @@ class ListView(_View[_H], Sequence[_H]):
         return self._element_type == other._element_type and values_equal(
             self._elements, other._elements
         )
+
+
+class MutableListView(ListView[MutableDynamicValue]):
+    """The elements of a list value, with checked writes."""
+
+    __slots__ = ()
+    _HANDLE = MutableDynamicValue
+
+    def __init__(self, element_type: TypeRef, elements: list[object]) -> None:
+        super().__init__(element_type, elements, False)
+
+    @overload
+    def __setitem__(self, index: int, value: object) -> None: ...
+
+    @overload
+    def __setitem__(self, index: slice, value: Iterable[object]) -> None: ...
+
+    def __setitem__(self, index: int | slice, value: object) -> None:
+        if isinstance(index, slice):
+            self._list()[index] = self._owned_all(cast(Iterable[object], value))
+        else:
+            self._list()[index] = _owned_copy(value, self._element_type)
+
+    def __delitem__(self, index: int | slice) -> None:
+        del self._list()[index]
+
+    def append(self, value: object) -> None:
+        self._list().append(_owned_copy(value, self._element_type))
+
+    def extend(self, values: Iterable[object]) -> None:
+        self._list().extend(self._owned_all(values))
+
+    def insert(self, index: int, value: object) -> None:
+        self._list().insert(index, _owned_copy(value, self._element_type))
+
+    def clear(self) -> None:
+        self._list().clear()
+
+    def _owned_all(self, values: Iterable[object]) -> list[object]:
+        element_type = self._element_type
+        return [_owned_copy(value, element_type) for value in values]
+
+    def _list(self) -> list[object]:
+        return cast(list[object], self._elements)
 
 
 class _TypedSetEquality:
@@ -322,6 +448,33 @@ class SetView(_TypedSetEquality, AbstractSet[DynamicValue]):
     @classmethod
     def _from_iterable(cls, it: Iterable[object]) -> NoReturn:
         raise TypeError("set algebra on a SetView is not supported")
+
+
+class MutableSetView(SetView):
+    """The elements of a set value, with checked writes. ``discard`` and
+    ``remove`` take probes, as ``find`` does."""
+
+    __slots__ = ()
+
+    def add(self, value: object) -> None:
+        stored = _frozen_copy(value, self._element_type)
+        self._dict().setdefault(stored, None)
+
+    def discard(self, probe: object) -> None:
+        self._dict().pop(_probe_key(probe, self._element_type), None)
+
+    def remove(self, probe: object) -> None:
+        stored = _probe_key(probe, self._element_type)
+        elements = self._dict()
+        if stored not in elements:
+            raise KeyError(probe)
+        del elements[stored]
+
+    def clear(self) -> None:
+        self._dict().clear()
+
+    def _dict(self) -> dict[object, None]:
+        return cast(dict[object, None], self._elements)
 
 
 class MapView(_View[_H], Mapping[DynamicValue, _H]):
@@ -400,6 +553,59 @@ class MapView(_View[_H], Mapping[DynamicValue, _H]):
         ) and values_equal(self._entries, other._entries)
 
 
+class MutableMapView(MapView[MutableDynamicValue]):
+    """The entries of a map value, with checked writes. Indexing assignment
+    and deletion require ``DynamicValue`` keys, as indexing does; ``set`` and
+    ``remove`` also accept raw keys, as ``lookup`` does."""
+
+    __slots__ = ()
+    _HANDLE = MutableDynamicValue
+
+    def __init__(
+        self, key_type: TypeRef, value_type: TypeRef, entries: dict[object, object]
+    ) -> None:
+        super().__init__(key_type, value_type, entries, False)
+
+    def __setitem__(self, key: DynamicValue, value: object) -> None:
+        if not isinstance(key, DynamicValue):
+            raise TypeError(
+                f"map key {key!r} is not a DynamicValue; use set() for raw datum"
+            )
+        self.set(key, value)
+
+    def __delitem__(self, key: DynamicValue) -> None:
+        if not isinstance(key, DynamicValue):
+            raise TypeError(
+                f"map key {key!r} is not a DynamicValue; use remove() for raw datum"
+            )
+        if key.type_ref != self._key_type:
+            raise KeyError(key)
+        self._pop(_frozen_datum(key), key)
+
+    def set(self, key: object, value: object) -> None:
+        """Insert or update the entry for ``key`` (raw datum or a
+        ``DynamicValue``). An existing key keeps its position."""
+        stored_key = _frozen_copy(key, self._key_type)
+        stored_value = _owned_copy(value, self._value_type)
+        self._dict()[stored_key] = stored_value
+
+    def remove(self, key: object) -> None:
+        """Remove the entry for ``key`` (raw datum or a ``DynamicValue``)."""
+        self._pop(_probe_key(key, self._key_type), key)
+
+    def clear(self) -> None:
+        self._dict().clear()
+
+    def _pop(self, stored: object, key: object) -> None:
+        entries = self._dict()
+        if stored not in entries:
+            raise KeyError(key)
+        del entries[stored]
+
+    def _dict(self) -> dict[object, object]:
+        return cast(dict[object, object], self._entries)
+
+
 class _MapKeys(_TypedSetEquality, KeysView[DynamicValue]):
     __slots__ = ()
 
@@ -476,6 +682,57 @@ class StructView(_View[_H], Mapping[str, _H]):
         return sum(value is not UNSET for value in self._values)
 
 
+class MutableStructView(StructView[MutableDynamicValue]):
+    """The present fields of a struct or exception value, with checked writes.
+    Deleting a field, by ``del`` or ``clear_optional_field``, applies only to
+    optional fields."""
+
+    __slots__ = ()
+    _HANDLE = MutableDynamicValue
+
+    def __init__(self, node: StructNode, values: list[object]) -> None:
+        super().__init__(node, values, False)
+
+    def __setitem__(self, name: str, value: object) -> None:
+        self._store(self._by_name(name), value)
+
+    def __delitem__(self, name: str) -> None:
+        field = self._by_name(name)
+        _require_optional(field)
+        index = self._index(field)
+        if self._values[index] is UNSET:
+            raise KeyError(name)
+        self._list()[index] = UNSET
+
+    def set_field(self, selector: str | int, value: object) -> None:
+        """Set the field named, or with the id, ``selector``."""
+        self._store(self._select(selector), value)
+
+    def clear_optional_field(self, selector: str | int) -> None:
+        """Make an optional field absent; clearing an absent field does
+        nothing."""
+        field = self._select(selector)
+        _require_optional(field)
+        self._list()[self._index(field)] = UNSET
+
+    def reset_field(self, selector: str | int) -> None:
+        """Restore a field's schema default: absent for an optional field."""
+        field = self._select(selector)
+        self._list()[self._index(field)] = field_default(field)
+
+    def _select(self, selector: str | int) -> FieldDefinition:
+        if isinstance(selector, str):
+            return self._by_name(selector)
+        return self._by_id(selector)
+
+    def _store(self, field: FieldDefinition, value: object) -> None:
+        stored = _owned_copy(value, field.type)
+        self._list()[self._index(field)] = stored
+
+    def _list(self) -> list[object]:
+        return cast(list[object], self._values)
+
+
 class UnionView(_View[_H]):
     """The active field of a union value, if any."""
 
@@ -532,6 +789,26 @@ class UnionView(_View[_H]):
         )
 
 
+class MutableUnionView(UnionView[MutableDynamicValue]):
+    """The active field of a union value, with checked writes."""
+
+    __slots__ = ()
+    _HANDLE = MutableDynamicValue
+
+    def __init__(self, union_type: UnionTypeRef, stored: list[object]) -> None:
+        super().__init__(union_type, stored, False)
+
+    def set_field(self, selector: str | int, value: object) -> None:
+        """Make the field named, or with the id, ``selector`` active."""
+        field = self._field(selector)
+        stored = _owned_copy(value, field.type)
+        cast(list[object], self._datum)[:] = [field.identity.id, stored]
+
+    def clear(self) -> None:
+        """Make the union empty."""
+        cast(list[object], self._datum).clear()
+
+
 def _handle(cls: type[_D], type_ref: TypeRef, stored: object, frozen: bool) -> _D:
     """A handle on already validated stored datum."""
     value = object.__new__(cls)
@@ -546,8 +823,24 @@ def _key_handle(type_ref: TypeRef, stored: object) -> DynamicValue:
 
 
 def _read_only_value(type_ref: TypeRef, datum: object) -> DynamicValue:
-    stored = copy_value(datum, resolved(type_ref))
-    return _handle(DynamicValue, type_ref, stored, False)
+    return MutableDynamicValue(type_ref, datum).read_only()
+
+
+def _check_type(value: DynamicValue, type_ref: TypeRef) -> None:
+    if value.type_ref != type_ref:
+        raise TypeError(
+            f"value of type '{type_name(value.type_ref)}' does not match "
+            f"'{type_name(type_ref)}'"
+        )
+
+
+def _owned_copy(value: object, type_ref: TypeRef) -> object:
+    """Owned storage for an incoming value of ``type_ref``: raw datum, or a
+    ``DynamicValue`` with that exact ``TypeRef``."""
+    if isinstance(value, DynamicValue):
+        _check_type(value, type_ref)
+        return copy_value(value._datum, type_ref, frozen=value._frozen)
+    return copy_value(value, type_ref)
 
 
 def _frozen_datum(value: DynamicValue) -> object:
@@ -555,6 +848,19 @@ def _frozen_datum(value: DynamicValue) -> object:
     if value._frozen:
         return value._datum
     return freeze_key(value._datum, resolved(value._type_ref))
+
+
+def _frozen_copy(value: object, type_ref: TypeRef) -> object:
+    """Frozen storage for an incoming key or element of ``type_ref``. A typed
+    value is validated against ``type_ref`` itself, since ``TypeRef`` equality
+    compares user-defined types by URI only."""
+    if isinstance(value, DynamicValue):
+        _check_type(value, type_ref)
+        if value._frozen:
+            check_frozen_key(value._datum, type_ref)
+            return value._datum
+        return freeze_key(value._datum, type_ref)
+    return freeze_key(value, type_ref)
 
 
 def _probe_key(probe: object, type_ref: TypeRef) -> object:
@@ -571,6 +877,11 @@ def _probe_key(probe: object, type_ref: TypeRef) -> object:
         return freeze_key(probe, type_ref)
     except EncodeError as e:
         raise TypeError(f"invalid probe: {e}") from e
+
+
+def _require_optional(field: FieldDefinition) -> None:
+    if field.presence is not PresenceQualifier.OPTIONAL:
+        raise TypeError(f"field '{field.identity.name}' is not optional")
 
 
 def _find(
