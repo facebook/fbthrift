@@ -16,6 +16,8 @@
 
 #include <thrift/conformance/data/RPCGenerator.h>
 
+#include <thrift/lib/cpp/TApplicationException.h>
+
 namespace apache::thrift::conformance::data {
 
 namespace {
@@ -190,6 +192,45 @@ Test createRequestResponseAnyExceptionTest() {
       .request()
       .emplace()
       .data() = "hello";
+
+  return ret;
+}
+
+// The server sheds the call before any handler runs, the way a preprocess
+// function rejects work when the server is overloaded. What reaches the client
+// is the error the server made up, not an exception a handler threw.
+Test createRequestResponseLoadsheddingTest() {
+  Test ret;
+  ret.name() = "RequestResponseLoadsheddingTest";
+  ret.tags()->emplace("spec/protocol/interface/#internal-server-error");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseLoadshedding/Success";
+
+  const std::string message = "shedding the conformance call";
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult = rpcTest.clientTestResult()
+                               .emplace()
+                               .requestResponseServerError()
+                               .emplace();
+  clientTestResult.exceptionType() = TApplicationException::LOADSHEDDING;
+  clientTestResult.exceptionMessage() = message;
+  rpcTest.serverInstruction()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .loadshedding() = message;
+  // The handler never runs, so the server records nothing.
+  rpcTest.serverTestResult().emplace();
 
   return ret;
 }
@@ -1719,6 +1760,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.name() = "ThriftRPCClientTest";
   suite.tags()->emplace("spec/protocol/interface/");
   suite.tests()->push_back(createRequestResponseAnyExceptionTest());
+  suite.tests()->push_back(createRequestResponseLoadsheddingTest());
   return suite;
 }
 

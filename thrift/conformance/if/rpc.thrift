@@ -92,6 +92,7 @@ union ClientTestResult {
   4: RequestResponseUndeclaredExceptionClientTestResult requestResponseUndeclaredException;
   5: RequestResponseTimeoutClientTestResult requestResponseTimeout;
   6: RequestResponseAnyExceptionClientTestResult requestResponseAnyException;
+  7: RequestResponseServerErrorClientTestResult requestResponseServerError;
   100: StreamBasicClientTestResult streamBasic;
   101: StreamChunkTimeoutClientTestResult streamChunkTimeout;
   102: StreamInitialResponseClientTestResult streamInitialResponse;
@@ -299,6 +300,11 @@ struct RequestResponseAnyExceptionClientTestResult {
   3: optional UserException userException;
 }
 
+struct RequestResponseServerErrorClientTestResult {
+  1: i32 exceptionType;
+  2: string exceptionMessage;
+}
+
 struct StreamBasicClientTestResult {
   1: list<Response> streamPayloads;
 }
@@ -428,6 +434,7 @@ union ClientInstruction {
   4: RequestResponseUndeclaredExceptionClientInstruction requestResponseUndeclaredException;
   5: RequestResponseTimeoutClientInstruction requestResponseTimeout;
   6: RequestResponseAnyExceptionClientInstruction requestResponseAnyException;
+  7: RequestResponseServerErrorClientInstruction requestResponseServerError;
   100: StreamBasicClientInstruction streamBasic;
   101: StreamChunkTimeoutClientInstruction streamChunkTimeout;
   102: StreamInitialResponseClientInstruction streamInitialResponse;
@@ -465,6 +472,7 @@ union ServerInstruction {
   4: RequestResponseUndeclaredExceptionServerInstruction requestResponseUndeclaredException;
   5: RequestResponseTimeoutServerInstruction requestResponseTimeout;
   6: RequestResponseAnyExceptionServerInstruction requestResponseAnyException;
+  7: RequestResponseServerErrorServerInstruction requestResponseServerError;
   100: StreamBasicServerInstruction streamBasic;
   101: StreamChunkTimeoutServerInstruction streamChunkTimeout;
   102: StreamInitialResponseServerInstruction streamInitialResponse;
@@ -515,6 +523,10 @@ struct RequestResponseTimeoutClientInstruction {
 }
 
 struct RequestResponseAnyExceptionClientInstruction {
+  1: Request request;
+}
+
+struct RequestResponseServerErrorClientInstruction {
   1: Request request;
 }
 
@@ -676,6 +688,14 @@ struct RequestResponseAnyExceptionServerInstruction {
   2: string typeUri;
   @thrift.Box
   3: optional UserException userException;
+}
+
+union ServerError {
+  1: string loadshedding;
+}
+
+struct RequestResponseServerErrorServerInstruction {
+  1: ServerError error;
 }
 
 struct StreamBasicServerInstruction {

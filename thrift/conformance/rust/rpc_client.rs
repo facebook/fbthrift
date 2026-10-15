@@ -150,11 +150,14 @@ use rpc::rpc::RequestResponseBasicClientTestResult;
 use rpc::rpc::RequestResponseDeclaredExceptionClientInstruction;
 use rpc::rpc::RequestResponseDeclaredExceptionClientTestResult;
 use rpc::rpc::RequestResponseNoArgVoidResponseClientTestResult;
+use rpc::rpc::RequestResponseServerErrorClientInstruction;
+use rpc::rpc::RequestResponseServerErrorClientTestResult;
 use rpc::rpc::RequestResponseTimeoutClientInstruction;
 use rpc::rpc::RequestResponseTimeoutClientTestResult;
 use rpc::rpc::RequestResponseUndeclaredExceptionClientInstruction;
 use rpc::rpc::RequestResponseUndeclaredExceptionClientTestResult;
 use rpc_clients::rpc::BasicInteraction;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseBasicError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseDeclaredExceptionError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseTimeoutError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseUndeclaredExceptionError;
@@ -169,6 +172,7 @@ async fn test(client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>
         requestResponseNoArgVoidResponse(_) => request_response_no_arg_void_response(client).await,
         requestResponseTimeout(i) => request_response_timeout(client, i).await,
         requestResponseAnyException(i) => request_response_any_exception(client, i).await,
+        requestResponseServerError(i) => request_response_server_error(client, i).await,
         interactionConstructor(i) => interaction_constructor(client, i).await,
         interactionFactoryFunction(i) => interaction_factory_function(client, i).await,
         interactionPersistsState(i) => interaction_persists_state(client, i).await,
@@ -320,6 +324,31 @@ async fn request_response_any_exception(
         }
         r => Err(anyhow!(
             "request_response_any_exception: unexpected server response: {:?}",
+            r
+        )),
+    }
+}
+
+/// The server rejects the call itself, with one of the internal server errors,
+/// and the call fails with the `ApplicationException` its error code maps to.
+async fn request_response_server_error(
+    client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>,
+    instr: &RequestResponseServerErrorClientInstruction,
+) -> Result<()> {
+    match client.requestResponseBasic(&instr.request).await {
+        Err(RequestResponseBasicError::ApplicationException(exn)) => {
+            let test_result = ClientTestResult::requestResponseServerError(
+                RequestResponseServerErrorClientTestResult {
+                    exceptionType: exn.type_ as i32,
+                    exceptionMessage: exn.message,
+                    ..Default::default()
+                },
+            );
+            client.sendTestResult(&test_result).await?;
+            Ok(())
+        }
+        r => Err(anyhow!(
+            "request_response_server_error: unexpected server response: {:?}",
             r
         )),
     }

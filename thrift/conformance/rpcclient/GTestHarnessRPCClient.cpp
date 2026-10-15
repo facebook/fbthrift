@@ -43,6 +43,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <thrift/lib/cpp2/async/BiDiStream.h>
 #include <thrift/lib/cpp2/async/Sink.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/server/PreprocessParams.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -581,6 +582,33 @@ class ConformanceVerificationServer
   ServerTestResult serverResult_;
 };
 
+// What some cases need set on the server before it starts.
+void configureServer(
+    apache::thrift::ThriftServer& server,
+    const ServerInstruction& instruction) {
+  if (const auto serverError = instruction.requestResponseServerError()) {
+    const auto& error = *serverError->error();
+    switch (error.getType()) {
+      case ServerError::Type::loadshedding:
+        // Only the call under test: the client still fetches its test case and
+        // reports its result through this server.
+        server.addPreprocessFunc(
+            "conformance",
+            [message = *error.loadshedding()](
+                const server::PreprocessParams& params) -> PreprocessResult {
+              if (params.method == "requestResponseBasic") {
+                return AppOverloadedException(
+                    std::string(params.method), std::string(message));
+              }
+              return {};
+            });
+        break;
+      default:
+        break;
+    }
+  }
+}
+
 void createClient(
     std::string_view serviceName, std::string ipAddress, std::string port) {
   auto client = create_rpc_conformance_setup_service_client_(serviceName);
@@ -616,6 +644,8 @@ class RPCClientConformanceTest : public testing::Test {
                   // (especially Erlang/BEAM VM) may be slow to start and should
                   // never be rejected by load shedding in a test environment.
                   server.setQueueTimeout(std::chrono::milliseconds(0));
+                  configureServer(
+                      server, *testCase_.rpc()->serverInstruction());
                 })),
         connectViaServer_(connectViaServer) {
     try {

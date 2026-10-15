@@ -118,6 +118,20 @@ RequestResponseAnyExceptionClientTestResult requestResponseAnyExceptionTest(
   return result;
 }
 
+RequestResponseServerErrorClientTestResult requestResponseServerErrorTest(
+    const RequestResponseServerErrorClientInstruction& instruction) {
+  RequestResponseServerErrorClientTestResult result;
+  auto client = createClient();
+  try {
+    Response response;
+    client->sync_requestResponseBasic(response, *instruction.request());
+  } catch (const TApplicationException& e) {
+    result.exceptionType() = static_cast<int32_t>(e.getType());
+    result.exceptionMessage() = e.getMessage();
+  }
+  return result;
+}
+
 RequestResponseNoArgVoidResponseClientTestResult
 requestResponseNoArgVoidResponseTest(
     const RequestResponseNoArgVoidResponseClientInstruction&) {
@@ -739,6 +753,10 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::requestResponseAnyException:
       result.requestResponseAnyException() = requestResponseAnyExceptionTest(
           *clientInstruction.requestResponseAnyException());
+      break;
+    case ClientInstruction::Type::requestResponseServerError:
+      result.requestResponseServerError() = requestResponseServerErrorTest(
+          *clientInstruction.requestResponseServerError());
       break;
     case ClientInstruction::Type::streamBasic:
       result.streamBasic() = streamBasicTest(*clientInstruction.streamBasic());
