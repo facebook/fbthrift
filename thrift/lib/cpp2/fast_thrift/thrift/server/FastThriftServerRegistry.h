@@ -26,7 +26,9 @@
 
 namespace apache::thrift::fast_thrift::thrift {
 
-class FastThriftServer;
+namespace detail {
+class FastThriftServerBase;
+}
 
 namespace instrumentation {
 
@@ -48,7 +50,8 @@ constexpr std::string_view kFastThriftServerTrackerKey = "fast_thrift_server";
 class ServerTrackerRef {
  public:
   bool tryWithLock(
-      folly::FunctionRef<void(std::string_view, FastThriftServer&)> f) {
+      folly::FunctionRef<void(std::string_view, detail::FastThriftServerBase&)>
+          f) {
     if (auto locked = ref_.lock()) {
       DCHECK(locked->server);
       f(locked->key, *locked->server);
@@ -60,10 +63,10 @@ class ServerTrackerRef {
  private:
   friend class ServerTracker;
   struct ControlBlock {
-    ControlBlock(std::string_view k, FastThriftServer& s)
+    ControlBlock(std::string_view k, detail::FastThriftServerBase& s)
         : key(k), server(&s) {}
     std::string_view key;
-    FastThriftServer* server;
+    detail::FastThriftServerBase* server;
   };
 
   explicit ServerTrackerRef(folly::PrimaryPtrRef<ControlBlock> ref)
@@ -79,7 +82,7 @@ class ServerTrackerRef {
  */
 class ServerTracker {
  public:
-  ServerTracker(std::string_view key, FastThriftServer& server);
+  ServerTracker(std::string_view key, detail::FastThriftServerBase& server);
   ~ServerTracker();
 
   ServerTracker(const ServerTracker&) = delete;
@@ -87,7 +90,7 @@ class ServerTracker {
   ServerTracker(ServerTracker&&) = delete;
   ServerTracker& operator=(ServerTracker&&) = delete;
 
-  FastThriftServer& getServer() const { return server_; }
+  detail::FastThriftServerBase& getServer() const { return server_; }
   const std::string& getKey() const { return key_; }
 
   /**
@@ -105,7 +108,7 @@ class ServerTracker {
  private:
   uint64_t id_;
   std::string key_;
-  FastThriftServer& server_;
+  detail::FastThriftServerBase& server_;
   folly::PrimaryPtr<ServerTrackerRef::ControlBlock> cb_;
 };
 
@@ -118,7 +121,8 @@ size_t getServerCount(std::string_view key);
  * RPCs or call `start`/`stop` from inside the callback.
  */
 void forEachServer(
-    std::string_view key, folly::FunctionRef<void(FastThriftServer&)> f);
+    std::string_view key,
+    folly::FunctionRef<void(detail::FastThriftServerBase&)> f);
 
 /**
  * As forEachServer, additionally passing each server's registration id. Same
@@ -127,7 +131,7 @@ void forEachServer(
  */
 void forEachServerWithId(
     std::string_view key,
-    folly::FunctionRef<void(uint64_t, FastThriftServer&)> f);
+    folly::FunctionRef<void(uint64_t, detail::FastThriftServerBase&)> f);
 
 } // namespace instrumentation
 

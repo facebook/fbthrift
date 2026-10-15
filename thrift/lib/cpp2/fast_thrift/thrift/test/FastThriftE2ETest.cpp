@@ -270,7 +270,7 @@ class FastThriftE2ETest
   bool usingCPUPool() const { return GetParam().numCPUThreads > 0; }
 
   // Adjust the server between setInterface() and start().
-  virtual void configureServer(ftt::FastThriftServer&) {}
+  virtual void configureServer(ftt::detail::FastThriftServerBase&) {}
 
   void SetUp() override {
     handler_ = std::make_shared<TestFastServiceHandler>();
@@ -279,12 +279,16 @@ class FastThriftE2ETest
     config.address = folly::SocketAddress("::1", 0);
     config.numIOThreads = 1;
     config.numCPUThreads = GetParam().numCPUThreads;
-    config.channelPipelineMode = GetParam().pipelineMode;
     // Validate request checksums and echo a response checksum.
     config.enableChecksum = true;
     config.enableCancellation = true;
 
-    server_ = std::make_unique<ftt::FastThriftServer>(std::move(config));
+    if (GetParam().pipelineMode == ftt::ChannelPipelineMode::Static) {
+      server_ = std::make_shared<ftt::FastThriftServer>(std::move(config));
+    } else {
+      server_ =
+          std::make_shared<ftt::DynamicFastThriftServer>(std::move(config));
+    }
     server_->setInterface(handler_);
     configureServer(*server_);
     server_->start();
@@ -441,7 +445,7 @@ class FastThriftE2ETest
   }
 
   std::shared_ptr<TestFastServiceHandler> handler_;
-  std::unique_ptr<ftt::FastThriftServer> server_;
+  std::shared_ptr<ftt::detail::FastThriftServerBase> server_;
   std::unique_ptr<folly::ScopedEventBaseThread> clientThread_;
   SimpleBufferAllocator clientAllocator_;
   std::unique_ptr<thrift::client::ThriftClientTransportAdapter>
@@ -844,7 +848,7 @@ class RejectingExecutor : public folly::Executor {
 // destroyed before the handler starts.
 class FastThriftRejectedDispatchTest : public FastThriftE2ETest {
  protected:
-  void configureServer(ftt::FastThriftServer& server) override {
+  void configureServer(ftt::detail::FastThriftServerBase& server) override {
     server.setCPUExecutor(folly::getKeepAliveToken(&executor_));
   }
 

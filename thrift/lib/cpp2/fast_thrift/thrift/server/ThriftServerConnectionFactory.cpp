@@ -621,7 +621,8 @@ PipelineOwner selectStaticThriftStats(
 }
 } // namespace
 
-ThriftServerConnectionFactory::ThriftServerConnectionFactory(
+template <ChannelPipelineMode Mode>
+detail::ThriftServerConnectionFactoryT<Mode>::ThriftServerConnectionFactoryT(
     ThriftServerConnectionFactoryConfig config)
     : config_(std::move(config)),
       needsComposite_(
@@ -633,16 +634,17 @@ ThriftServerConnectionFactory::ThriftServerConnectionFactory(
           static_cast<bool>(config_.metadataResponse)) {
   CHECK(config_.handler)
       << "ThriftServerConnectionFactory requires a non-null handler";
-  if (config_.channelPipelineMode == ChannelPipelineMode::Static &&
-      std::any_of(
-          config_.thriftPipelineRegistrations.begin(),
-          config_.thriftPipelineRegistrations.end(),
-          [](const auto& registration) {
-            return !registration.supportsStaticPipeline();
-          })) {
-    throw std::logic_error(
-        "Dynamic thrift pipeline handlers require "
-        "ChannelPipelineMode::Dynamic");
+  if constexpr (Mode == ChannelPipelineMode::Static) {
+    if (std::any_of(
+            config_.thriftPipelineRegistrations.begin(),
+            config_.thriftPipelineRegistrations.end(),
+            [](const auto& registration) {
+              return !registration.supportsStaticPipeline();
+            })) {
+      throw std::logic_error(
+          "Dynamic thrift pipeline handlers require "
+          "DynamicFastThriftServer");
+    }
   }
   if (!needsComposite_) {
     return;
@@ -676,7 +678,9 @@ ThriftServerConnectionFactory::ThriftServerConnectionFactory(
   }
 }
 
-ThriftServerConnection ThriftServerConnectionFactory::getConnection(
+template <ChannelPipelineMode Mode>
+ThriftServerConnection
+detail::ThriftServerConnectionFactoryT<Mode>::getConnection(
     folly::AsyncTransport::UniquePtr socket,
     const folly::SocketAddress& clientAddr,
     const std::shared_ptr<const connection::PeerSecurityInfo>& peerSecurity) {
@@ -714,14 +718,17 @@ ThriftServerConnection ThriftServerConnectionFactory::getConnection(
   return conn;
 }
 
-void ThriftServerConnectionFactory::attachCPUExecutor(
+template <ChannelPipelineMode Mode>
+void detail::ThriftServerConnectionFactoryT<Mode>::attachCPUExecutor(
     ThriftServerAppAdapter& adapter) const {
   if (config_.cpuExecutor) {
     adapter.setCPUExecutor(config_.cpuExecutor);
   }
 }
 
-ThriftServerConnection ThriftServerConnectionFactory::buildSimpleConnection(
+template <ChannelPipelineMode Mode>
+ThriftServerConnection
+detail::ThriftServerConnectionFactoryT<Mode>::buildSimpleConnection(
     folly::AsyncTransport::UniquePtr socket,
     const folly::SocketAddress& clientAddr,
     boost::intrusive_ptr<ThriftConnContext> connContext) {
@@ -739,7 +746,9 @@ ThriftServerConnection ThriftServerConnectionFactory::buildSimpleConnection(
       std::move(connContext));
 }
 
-ThriftServerConnection ThriftServerConnectionFactory::buildCompositeConnection(
+template <ChannelPipelineMode Mode>
+ThriftServerConnection
+detail::ThriftServerConnectionFactoryT<Mode>::buildCompositeConnection(
     folly::AsyncTransport::UniquePtr socket,
     const folly::SocketAddress& clientAddr,
     boost::intrusive_ptr<ThriftConnContext> connContext) {
@@ -804,8 +813,9 @@ ThriftServerConnection ThriftServerConnectionFactory::buildCompositeConnection(
       std::move(connContext));
 }
 
-template <transport::Parser ParserT = frame::read::FrameLengthParser>
-void ThriftServerConnectionFactory::initializeRocketConnection(
+template <ChannelPipelineMode Mode>
+template <transport::Parser ParserT>
+void detail::ThriftServerConnectionFactoryT<Mode>::initializeRocketConnection(
     folly::AsyncTransport::UniquePtr socket,
     folly::EventBase* evb,
     rocket::server::RocketServerConnection& rocketConnection,
@@ -834,8 +844,10 @@ void ThriftServerConnectionFactory::initializeRocketConnection(
   rocketConnection.pipeline = std::move(pipeline);
 }
 
+template <ChannelPipelineMode Mode>
 template <typename TailAdapter, typename Storage>
-ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
+ThriftServerConnection
+detail::ThriftServerConnectionFactoryT<Mode>::buildConnectionImpl(
     folly::AsyncTransport::UniquePtr socket,
     const folly::SocketAddress& clientAddr,
     std::variant<
@@ -876,7 +888,7 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
       initializeRocketConnection<frame::read::AlignedParser>(
           std::move(socket), evb, *rocketConnection, statsShard);
     } else {
-      initializeRocketConnection<>(
+      initializeRocketConnection<frame::read::FrameLengthParser>(
           std::move(socket), evb, *rocketConnection, statsShard);
     }
   }
@@ -907,8 +919,9 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   using MuxHandler =
       ThriftServerStreamMuxHandler<channel_pipeline::detail::ContextImpl>;
   PipelineOwner thriftPipeline;
-  if (config_.channelPipelineMode == ChannelPipelineMode::Static &&
-      !transportNegotiationHandler) {
+  if constexpr (Mode == ChannelPipelineMode::Static) {
+    CHECK(!transportNegotiationHandler)
+        << "Static server cannot install a dynamic negotiation handler";
     thriftPipeline = selectStaticThriftStats(
         config_,
         evb,
@@ -1021,13 +1034,14 @@ ThriftServerConnection ThriftServerConnectionFactory::buildConnectionImpl(
   return conn;
 }
 
+template <ChannelPipelineMode Mode>
 template <typename Storage, typename TransportHandler>
-PipelineOwner ThriftServerConnectionFactory::buildRocketPipeline(
+PipelineOwner detail::ThriftServerConnectionFactoryT<Mode>::buildRocketPipeline(
     folly::EventBase* evb,
     TransportHandler* transportHandler,
     rocket::server::RocketServerAppAdapter* appAdapter,
     ServerStatsShard* FOLLY_NULLABLE statsShard) {
-  if (config_.channelPipelineMode == ChannelPipelineMode::Static) {
+  if constexpr (Mode == ChannelPipelineMode::Static) {
     if (config_.enableBackpressure) {
       return selectStaticRocketStats<true>(
           config_,
@@ -1046,90 +1060,99 @@ PipelineOwner ThriftServerConnectionFactory::buildRocketPipeline(
         statsShard);
   }
 
-  // addState rebinds: it returns a builder of an extended type and leaves the
-  // original moved-from, so the chain up to and including it must be bound
-  // here rather than continued on a pre-declared builder.
-  auto builder = PipelineBuilder<
-                     TransportHandler,
-                     rocket::server::RocketServerAppAdapter,
-                     SimpleBufferAllocator,
-                     Storage>()
-                     .setEventBase(evb)
-                     .setHead(transportHandler)
-                     .setTail(appAdapter)
-                     .setAllocator(&rocketAllocator_)
-                     .template addState<rocket::RocketStreamContexts>();
-  // Batching and fragmentation are always present, but which specialization
-  // is spliced depends on enableBackpressure. The no-backpressure variants
-  // batch and fragment identically; they simply carry no write-ready hook, so
-  // makeHandlerNode never registers them and the pipeline's writeReadyList_
-  // stays empty. The choice costs one branch per connection, not per message.
-  if (config_.enableBackpressure) {
+  else {
+    // addState rebinds: it returns a builder of an extended type and leaves the
+    // original moved-from, so the chain up to and including it must be bound
+    // here rather than continued on a pre-declared builder.
+    auto builder = PipelineBuilder<
+                       TransportHandler,
+                       rocket::server::RocketServerAppAdapter,
+                       SimpleBufferAllocator,
+                       Storage>()
+                       .setEventBase(evb)
+                       .setHead(transportHandler)
+                       .setTail(appAdapter)
+                       .setAllocator(&rocketAllocator_)
+                       .template addState<rocket::RocketStreamContexts>();
+    // Batching and fragmentation are always present, but which specialization
+    // is spliced depends on enableBackpressure. The no-backpressure variants
+    // batch and fragment identically; they simply carry no write-ready hook, so
+    // makeHandlerNode never registers them and the pipeline's writeReadyList_
+    // stays empty. The choice costs one branch per connection, not per message.
+    if (config_.enableBackpressure) {
+      builder
+          // Batcher composed with the write-completion tracker: the tracker
+          // turns the transport's per-writev completions into one event per
+          // rocket-frame batch. The fragmentation handler below turns that into
+          // the rocket-level completion the app adapter relays up to the thrift
+          // pipeline.
+          .template addNextOutbound<ServerBatchingFrameHandler>(
+              batching_frame_handler_tag, config_.batchingConfig);
+    } else {
+      builder
+          .template addNextOutbound<ServerBatchingFrameHandlerNoBackpressure>(
+              batching_frame_handler_tag, config_.batchingConfig);
+    }
     builder
-        // Batcher composed with the write-completion tracker: the tracker turns
-        // the transport's per-writev completions into one event per
-        // rocket-frame batch. The fragmentation handler below turns that into
-        // the rocket-level completion the app adapter relays up to the thrift
-        // pipeline.
-        .template addNextOutbound<ServerBatchingFrameHandler>(
-            batching_frame_handler_tag, config_.batchingConfig);
-  } else {
-    builder.template addNextOutbound<ServerBatchingFrameHandlerNoBackpressure>(
-        batching_frame_handler_tag, config_.batchingConfig);
+        .template addNextOutbound<
+            frame::write::handler::FrameLengthEncoderHandler>(
+            frame_length_encoder_handler_tag)
+        .template addNextDuplex<frame::handler::FrameCodecHandler>(
+            frame_codec_handler_tag)
+        .template addNextInbound<
+            frame::read::handler::FrameDefragmentationHandler>(
+            frame_defragmentation_handler_tag);
+    // Fragmenter composed with the fragment-completion tracker. It records each
+    // frame's streamId on the way down — below this handler the frame is
+    // serialized bytes and the stream is no longer recoverable — and fans the
+    // batcher's batch event back out into one completion per original frame. It
+    // is also the only handler that can narrow the batcher's quiescence
+    // verdict, since the frames it is still holding are invisible from below.
+    if (config_.enableBackpressure) {
+      builder.template addNextOutbound<ServerFragmentationFrameHandler>(
+          frame_fragmentation_handler_tag, config_.fragmentationConfig);
+    } else {
+      builder.template addNextOutbound<
+          ServerFragmentationFrameHandlerNoBackpressure>(
+          frame_fragmentation_handler_tag, config_.fragmentationConfig);
+    }
+    builder
+        // Restates the fragmenter's frame-layer completion as the rocket
+        // layer's own, so nothing above the rocket boundary subscribes to a
+        // frame event.
+        .template addNextDuplex<
+            rocket::server::handler::RocketServerWriteCompletionHandler>(
+            server_write_completion_handler_tag)
+        .template addNextDuplex<
+            rocket::server::handler::RocketServerMessageMarshalHandler>(
+            rocket_server_message_marshal_handler_tag)
+        .template addNextDuplex<
+            rocket::server::handler::RocketServerSetupFrameHandler>(
+            server_setup_frame_handler_tag)
+        .template addNextDuplex<
+            rocket::server::handler::RocketServerKeepAliveHandler>(
+            server_keepalive_handler_tag)
+        .template addNextDuplex<
+            rocket::server::handler::RocketServerStreamStateHandler>(
+            server_stream_state_handler_tag, config_.enableCancellation)
+        .template addNextDuplex<
+            rocket::server::handler::RocketServerRequestResponseHandler>(
+            server_request_response_frame_handler_tag);
+    // Sits closest to the tail, so inbound it counts frames that survived
+    // parsing/defragmentation and outbound it counts frames as the app emits
+    // them, before batching or fragmentation can change the frame count.
+    if (statsShard != nullptr) {
+      builder.template addNextDuplex<
+          RocketMetricsHandler<Direction::Server, ServerStatsShard>>(
+          rocket_metrics_handler_tag, statsShard);
+    }
+    return PipelineOwner(builder.build());
   }
-  builder
-      .template addNextOutbound<
-          frame::write::handler::FrameLengthEncoderHandler>(
-          frame_length_encoder_handler_tag)
-      .template addNextDuplex<frame::handler::FrameCodecHandler>(
-          frame_codec_handler_tag)
-      .template addNextInbound<
-          frame::read::handler::FrameDefragmentationHandler>(
-          frame_defragmentation_handler_tag);
-  // Fragmenter composed with the fragment-completion tracker. It records each
-  // frame's streamId on the way down — below this handler the frame is
-  // serialized bytes and the stream is no longer recoverable — and fans the
-  // batcher's batch event back out into one completion per original frame. It
-  // is also the only handler that can narrow the batcher's quiescence verdict,
-  // since the frames it is still holding are invisible from below.
-  if (config_.enableBackpressure) {
-    builder.template addNextOutbound<ServerFragmentationFrameHandler>(
-        frame_fragmentation_handler_tag, config_.fragmentationConfig);
-  } else {
-    builder.template addNextOutbound<
-        ServerFragmentationFrameHandlerNoBackpressure>(
-        frame_fragmentation_handler_tag, config_.fragmentationConfig);
-  }
-  builder
-      // Restates the fragmenter's frame-layer completion as the rocket layer's
-      // own, so nothing above the rocket boundary subscribes to a frame event.
-      .template addNextDuplex<
-          rocket::server::handler::RocketServerWriteCompletionHandler>(
-          server_write_completion_handler_tag)
-      .template addNextDuplex<
-          rocket::server::handler::RocketServerMessageMarshalHandler>(
-          rocket_server_message_marshal_handler_tag)
-      .template addNextDuplex<
-          rocket::server::handler::RocketServerSetupFrameHandler>(
-          server_setup_frame_handler_tag)
-      .template addNextDuplex<
-          rocket::server::handler::RocketServerKeepAliveHandler>(
-          server_keepalive_handler_tag)
-      .template addNextDuplex<
-          rocket::server::handler::RocketServerStreamStateHandler>(
-          server_stream_state_handler_tag, config_.enableCancellation)
-      .template addNextDuplex<
-          rocket::server::handler::RocketServerRequestResponseHandler>(
-          server_request_response_frame_handler_tag);
-  // Sits closest to the tail, so inbound it counts frames that survived
-  // parsing/defragmentation and outbound it counts frames as the app emits
-  // them, before batching or fragmentation can change the frame count.
-  if (statsShard != nullptr) {
-    builder.template addNextDuplex<
-        RocketMetricsHandler<Direction::Server, ServerStatsShard>>(
-        rocket_metrics_handler_tag, statsShard);
-  }
-  return PipelineOwner(builder.build());
 }
+
+template class detail::ThriftServerConnectionFactoryT<
+    ChannelPipelineMode::Static>;
+template class detail::ThriftServerConnectionFactoryT<
+    ChannelPipelineMode::Dynamic>;
 
 } // namespace apache::thrift::fast_thrift::thrift::server

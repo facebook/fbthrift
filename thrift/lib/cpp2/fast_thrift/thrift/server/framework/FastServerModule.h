@@ -26,6 +26,7 @@
 
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticSegmentBuilder.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServerConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/extension/ThriftConnectionExtension.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/extension/ThriftExtensionPipelineHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/framework/ThriftPipelineHandler.h>
@@ -152,16 +153,24 @@ struct TypedModuleState {
  * pipeline in call order relative to other addModule /
  * addNativeThriftPipelineHandlers calls, with intra-module order preserved.
  */
-class FastServerModule {
- public:
-  using PendingConnectionCallback = void (*)() noexcept;
-  struct PendingConnectionCallbacks {
-    PendingConnectionCallback enqueued;
-    PendingConnectionCallback dequeued;
-    PendingConnectionCallback droppedWhileQueued;
-  };
+namespace module_detail {
 
-  explicit FastServerModule(std::string name) : name_(std::move(name)) {}
+struct PendingConnectionCallbacks {
+  void (*enqueued)() noexcept;
+  void (*dequeued)() noexcept;
+  void (*droppedWhileQueued)() noexcept;
+};
+
+template <ChannelPipelineMode Mode>
+class FastServerModuleT {
+ public:
+  using PendingConnectionCallbacks = module_detail::PendingConnectionCallbacks;
+  using HandlerFactory = std::conditional_t<
+      Mode == ChannelPipelineMode::Static,
+      server::StaticThriftPipelineHandlerFactory,
+      server::ThriftPipelineHandlerFactory>;
+
+  explicit FastServerModuleT(std::string name) : name_(std::move(name)) {}
 
   const std::string& name() const { return name_; }
 
@@ -177,10 +186,11 @@ class FastServerModule {
    * T must satisfy the Inbound, Outbound, or Duplex handler concept over
    * server::ThriftPipelineHandlerContext. StaticT may provide the equivalent
    * implementation over server::StaticThriftPipelineHandlerContext; without
-   * it, the module requires ChannelPipelineMode::Dynamic.
+   * it, use DynamicFastServerModule.
    */
   template <typename T, typename StaticT = void, typename... Args>
-  FastServerModule& addNativeThriftHandler(Args... args) {
+    requires(Mode == ChannelPipelineMode::Dynamic || !std::is_void_v<StaticT>)
+  FastServerModuleT& addNativeThriftHandler(Args... args) {
     return addFactory([&](channel_pipeline::HandlerId id) {
       return server::makeThriftPipelineHandlerFactory<T, StaticT>(
           id, std::move(args)...);
@@ -203,7 +213,7 @@ class FastServerModule {
    * extensions never need an allowlist entry.
    */
   template <typename H, typename... Args>
-  FastServerModule& addThriftExtension(Args... args) {
+  FastServerModuleT& addThriftExtension(Args... args) {
     static_assert(
         server::ThriftPerConnectionExtensionHandler<H> ||
             ThriftPendingConnectionExtensionHandler<H>,
@@ -250,12 +260,8 @@ class FastServerModule {
    * The module's handler factories, in call order. FastThriftServer::addModule
    * consumes these when splicing the module into every connection's pipeline.
    */
-  const std::vector<server::ThriftPipelineHandlerFactory>& handlers() const& {
-    return factories_;
-  }
-  std::vector<server::ThriftPipelineHandlerFactory>&& handlers() && {
-    return std::move(factories_);
-  }
+  const std::vector<HandlerFactory>& handlers() const& { return factories_; }
+  std::vector<HandlerFactory>&& handlers() && { return std::move(factories_); }
 
   const std::vector<PendingConnectionCallbacks>& pendingConnectionCallbacks()
       const& {
@@ -275,18 +281,25 @@ class FastServerModule {
   // registration path derives its id here, which is what keeps the indices
   // dense and in registration order.
   template <typename MakeFactory>
-  FastServerModule& addFactory(MakeFactory&& makeFactory) {
+  FastServerModuleT& addFactory(MakeFactory&& makeFactory) {
     auto id = server::deriveThriftPipelineHandlerId(name_, factories_.size());
     factories_.push_back(std::forward<MakeFactory>(makeFactory)(id));
     return *this;
   }
 
   std::string name_;
-  std::vector<server::ThriftPipelineHandlerFactory> factories_;
+  std::vector<HandlerFactory> factories_;
   std::vector<PendingConnectionCallbacks> pendingConnectionCallbacks_;
   bool controlsReads_{false};
   bool requiresHeaders_{false};
 };
+
+} // namespace module_detail
+
+using FastServerModule =
+    module_detail::FastServerModuleT<ChannelPipelineMode::Static>;
+using DynamicFastServerModule =
+    module_detail::FastServerModuleT<ChannelPipelineMode::Dynamic>;
 
 template <typename... Entry>
 class StaticFastServerModule {

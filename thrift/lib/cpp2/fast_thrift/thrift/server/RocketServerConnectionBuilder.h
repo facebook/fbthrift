@@ -36,6 +36,12 @@ struct RocketServerConnectionBuildResult {
       transportNegotiationHandler;
 };
 
+using StaticRocketServerConnectionBuilder =
+    folly::Function<std::unique_ptr<rocket::server::RocketServerConnection>(
+        folly::AsyncTransport::UniquePtr,
+        const folly::SocketAddress&,
+        ServerStatsShard* FOLLY_NULLABLE)>;
+
 using RocketServerConnectionBuilder =
     folly::Function<RocketServerConnectionBuildResult(
         folly::AsyncTransport::UniquePtr,

@@ -66,14 +66,14 @@ TEST(
 TEST(FastThriftServerRegistryTest, MultipleServersAreAllVisible) {
   FastThriftServer a(minimalConfig());
   FastThriftServer b(minimalConfig());
-  FastThriftServer c(minimalConfig());
+  DynamicFastThriftServer c(minimalConfig());
 
   EXPECT_EQ(getServerCount(kFastThriftServerTrackerKey), 3u);
 
-  std::vector<FastThriftServer*> seen;
-  forEachServer(kFastThriftServerTrackerKey, [&](FastThriftServer& s) {
-    seen.push_back(&s);
-  });
+  std::vector<detail::FastThriftServerBase*> seen;
+  forEachServer(
+      kFastThriftServerTrackerKey,
+      [&](detail::FastThriftServerBase& s) { seen.push_back(&s); });
   ASSERT_EQ(seen.size(), 3u);
   // We don't assume iteration order, just identity coverage.
   EXPECT_TRUE(
@@ -85,7 +85,8 @@ TEST(FastThriftServerRegistryTest, MultipleServersAreAllVisible) {
 TEST(FastThriftServerRegistryTest, UnknownKeyYieldsNoIteration) {
   FastThriftServer server(minimalConfig());
   size_t calls = 0;
-  forEachServer("not_a_real_key", [&](FastThriftServer&) { ++calls; });
+  forEachServer(
+      "not_a_real_key", [&](detail::FastThriftServerBase&) { ++calls; });
   EXPECT_EQ(calls, 0u);
   EXPECT_EQ(getServerCount("not_a_real_key"), 0u);
 }
@@ -103,13 +104,14 @@ TEST(FastThriftServerRegistryTest, DestructorWaitsForIteratorCallback) {
   std::atomic<bool> destructorReturned{false};
 
   std::thread iterator([&] {
-    forEachServer(kFastThriftServerTrackerKey, [&](FastThriftServer&) {
-      insideCallback.post();
-      releaseCallback.wait();
-      // While we're parked here, the destructor must not be allowed to
-      // finish. Verify by snapshotting the flag at callback exit time.
-      EXPECT_FALSE(destructorReturned.load());
-    });
+    forEachServer(
+        kFastThriftServerTrackerKey, [&](detail::FastThriftServerBase&) {
+          insideCallback.post();
+          releaseCallback.wait();
+          // While we're parked here, the destructor must not be allowed to
+          // finish. Verify by snapshotting the flag at callback exit time.
+          EXPECT_FALSE(destructorReturned.load());
+        });
   });
 
   insideCallback.wait();

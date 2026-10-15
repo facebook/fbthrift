@@ -1378,7 +1378,6 @@ TEST(FastThriftServerExtensionTest, CoalescesClassicEventHandlers) {
       std::make_shared<CountingLegacyEventHandler>(requests, connections);
 
   auto config = makeLoopbackConfig();
-  config.channelPipelineMode = ftt::ChannelPipelineMode::Static;
   ftt::FastThriftServer server(std::move(config));
   server.setInterface(handler);
   server.addProcessorEventHandler(first);
@@ -1928,32 +1927,81 @@ TEST(FastThriftServerExtensionTest, ExtensionResponseHeaderReachesClient) {
   EXPECT_EQ(readBack, "xyz");
 }
 
-TEST(FastThriftServerExtensionTest, DynamicHandlerRequiresDynamicMode) {
-  auto handler = std::make_shared<TestHandler>();
-  ftt::FastThriftServer server(makeLoopbackConfig());
-  server.setInterface(handler);
-  server.addNativeThriftPipelineHandlers(
-      {ftt::server::ThriftPipelineHandlerFactory([](ftt::ExtensionStateStore&) {
-        return ::apache::thrift::fast_thrift::channel_pipeline::detail::
-            HandlerNode{};
-      })});
+template <typename Server, typename Factory>
+concept AcceptsNativeHandlerFactory =
+    requires(Server& server, std::vector<Factory> factories) {
+      server.addNativeThriftPipelineHandlers(std::move(factories));
+    };
 
-  EXPECT_THROW(server.start(), std::logic_error);
-}
+template <typename Server, typename Module>
+concept AcceptsModule = requires(Server& server, Module module) {
+  server.addModule(std::move(module));
+};
+
+template <typename Server, typename Builder>
+concept AcceptsRocketBuilder = requires(Server& server, Builder builder) {
+  server.setRocketConnectionBuilder(std::move(builder));
+};
+
+template <typename Server>
+concept ExposesServerImplementationTemplate = requires {
+  typename Server::template FastThriftServerT<ftt::ChannelPipelineMode::Static>;
+};
+
+static_assert(
+    !ExposesServerImplementationTemplate<ftt::detail::FastThriftServerBase>);
+
+static_assert(
+    ftt::FastThriftServer::kPipelineMode == ftt::ChannelPipelineMode::Static);
+static_assert(
+    ftt::DynamicFastThriftServer::kPipelineMode ==
+    ftt::ChannelPipelineMode::Dynamic);
+static_assert(!AcceptsNativeHandlerFactory<
+              ftt::FastThriftServer,
+              ftt::server::ThriftPipelineHandlerFactory>);
+static_assert(AcceptsNativeHandlerFactory<
+              ftt::FastThriftServer,
+              ftt::server::StaticThriftPipelineHandlerFactory>);
+static_assert(AcceptsNativeHandlerFactory<
+              ftt::DynamicFastThriftServer,
+              ftt::server::ThriftPipelineHandlerFactory>);
+static_assert(
+    !AcceptsModule<ftt::FastThriftServer, ftt::DynamicFastServerModule>);
+static_assert(AcceptsModule<ftt::FastThriftServer, ftt::FastServerModule>);
+static_assert(
+    AcceptsModule<ftt::DynamicFastThriftServer, ftt::FastServerModule>);
+static_assert(
+    AcceptsModule<ftt::DynamicFastThriftServer, ftt::DynamicFastServerModule>);
+static_assert(!AcceptsRocketBuilder<
+              ftt::FastThriftServer,
+              ftt::server::RocketServerConnectionBuilder>);
+static_assert(AcceptsRocketBuilder<
+              ftt::FastThriftServer,
+              ftt::server::StaticRocketServerConnectionBuilder>);
+static_assert(AcceptsRocketBuilder<
+              ftt::DynamicFastThriftServer,
+              ftt::server::RocketServerConnectionBuilder>);
 
 TEST(FastThriftServerExtensionTest, DynamicModeAllowsDynamicHandler) {
-  auto handler = std::make_shared<TestHandler>();
-  auto config = makeLoopbackConfig();
-  config.channelPipelineMode = ftt::ChannelPipelineMode::Dynamic;
-  ftt::FastThriftServer server(std::move(config));
-  server.setInterface(handler);
-  server.addNativeThriftPipelineHandlers(
-      {ftt::server::ThriftPipelineHandlerFactory([](ftt::ExtensionStateStore&) {
-        return ::apache::thrift::fast_thrift::channel_pipeline::detail::
-            HandlerNode{};
-      })});
+  THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
 
-  EXPECT_NO_THROW(server.start());
+  std::atomic<int> reads{0};
+  std::atomic<int> sequence{0};
+  std::atomic<int> firstRead{-1};
+  ftt::DynamicFastThriftServer server(makeLoopbackConfig());
+  server.setInterface(std::make_shared<TestHandler>());
+  server.addNativeThriftPipelineHandlers(
+      {ftt::server::ThriftPipelineHandlerFactory(
+          [&](ftt::ExtensionStateStore&) {
+            return cp::detail::makeHandlerNode<StaticSelectionRecordingHandler>(
+                ftt::server::deriveThriftPipelineHandlerId("dynamic", 0),
+                std::make_unique<StaticSelectionRecordingHandler>(
+                    &reads, &sequence, &firstRead));
+          })});
+  server.start();
+
+  EXPECT_EQ(addRoundTrip(server.getAddress()), 42);
+  EXPECT_GT(reads.load(), 0);
 }
 
 TEST(
@@ -1987,7 +2035,6 @@ TEST(FastThriftServerExtensionTest, StaticModulePreservesRegistrationOrder) {
   std::atomic<int> third{-1};
   std::atomic<int> fourth{-1};
   auto config = makeLoopbackConfig();
-  config.channelPipelineMode = ftt::ChannelPipelineMode::Static;
 
   ftt::FastThriftServer server(std::move(config));
   server.setInterface(std::make_shared<TestHandler>());
@@ -2023,7 +2070,7 @@ TEST(
   const auto handlerId =
       ftt::server::deriveThriftPipelineHandlerId("mixed-static", 0);
 
-  std::vector<ftt::server::ThriftPipelineHandlerFactory> factories;
+  std::vector<ftt::server::StaticThriftPipelineHandlerFactory> factories;
   factories.emplace_back(
       [&](ftt::ExtensionStateStore&) {
         dynamicFactories.fetch_add(1, std::memory_order_relaxed);
@@ -2040,7 +2087,6 @@ TEST(
       });
 
   auto config = makeLoopbackConfig();
-  config.channelPipelineMode = ftt::ChannelPipelineMode::Static;
   ftt::FastThriftServer server(std::move(config));
   server.setInterface(std::make_shared<TestHandler>());
   server.addNativeThriftPipelineHandlers(std::move(factories));

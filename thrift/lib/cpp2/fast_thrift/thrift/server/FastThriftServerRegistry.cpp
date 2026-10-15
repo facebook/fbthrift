@@ -75,7 +75,8 @@ std::atomic<uint64_t> nextTrackerId{1};
 
 } // namespace
 
-ServerTracker::ServerTracker(std::string_view key, FastThriftServer& server)
+ServerTracker::ServerTracker(
+    std::string_view key, detail::FastThriftServerBase& server)
     : id_(nextTrackerId.fetch_add(1, std::memory_order_relaxed)),
       key_(key),
       server_(server),
@@ -99,7 +100,8 @@ size_t getServerCount(std::string_view key) {
 }
 
 void forEachServer(
-    std::string_view key, folly::FunctionRef<void(FastThriftServer&)> f) {
+    std::string_view key,
+    folly::FunctionRef<void(detail::FastThriftServerBase&)> f) {
   getTrackerCollection().forTrackersWithKey(
       key, [&](const std::set<ServerTracker*>& trackers) {
         for (auto* tracker : trackers) {
@@ -110,7 +112,7 @@ void forEachServer(
 
 void forEachServerWithId(
     std::string_view key,
-    folly::FunctionRef<void(uint64_t, FastThriftServer&)> f) {
+    folly::FunctionRef<void(uint64_t, detail::FastThriftServerBase&)> f) {
   getTrackerCollection().forTrackersWithKey(
       key, [&](const std::set<ServerTracker*>& trackers) {
         for (auto* tracker : trackers) {

@@ -148,7 +148,7 @@ TEST(
   };
 
   {
-    ThriftServerConnectionFactory factory(std::move(config));
+    DynamicThriftServerConnectionFactory factory(std::move(config));
     auto connection = factory.getConnection(
         makeTransport(eventBase), expectedClient, nullptr);
 

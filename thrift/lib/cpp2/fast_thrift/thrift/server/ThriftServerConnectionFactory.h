@@ -87,8 +87,6 @@ struct ThriftServerConnectionFactoryConfig {
   // Per-connection MSG_ZEROCOPY threshold; 0 disables zero-copy.
   std::size_t zeroCopyThreshold{0};
 
-  ChannelPipelineMode channelPipelineMode{ChannelPipelineMode::Static};
-
   // Slot plans for the extensions installed on this server, built once before
   // it accepts anything and shared by every context. Null when nothing
   // registered, in which case contexts carry no slots and allocate nothing.
@@ -168,9 +166,12 @@ struct ThriftServerConnectionFactoryConfig {
  * Builds a fully-wired server connection for each accepted socket.
  * Its public API does not expose parser or tail-adapter types.
  */
-class ThriftServerConnectionFactory {
+namespace detail {
+
+template <ChannelPipelineMode Mode>
+class ThriftServerConnectionFactoryT {
  public:
-  explicit ThriftServerConnectionFactory(
+  explicit ThriftServerConnectionFactoryT(
       ThriftServerConnectionFactoryConfig config);
 
   /**
@@ -248,5 +249,12 @@ class ThriftServerConnectionFactory {
   // rocketAllocator_.
   channel_pipeline::SimpleBufferAllocator rocketAllocator_;
 };
+
+} // namespace detail
+
+using ThriftServerConnectionFactory =
+    detail::ThriftServerConnectionFactoryT<ChannelPipelineMode::Static>;
+using DynamicThriftServerConnectionFactory =
+    detail::ThriftServerConnectionFactoryT<ChannelPipelineMode::Dynamic>;
 
 } // namespace apache::thrift::fast_thrift::thrift::server

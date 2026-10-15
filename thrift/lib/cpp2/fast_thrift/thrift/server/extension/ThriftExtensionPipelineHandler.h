@@ -534,7 +534,7 @@ class ThriftExtensionPipelineHandler {
  * copied and forwarded to every per-connection instance, after the state.
  */
 template <typename H, typename... Args>
-ThriftPipelineHandlerFactory makeThriftExtensionHandlerFactory(
+StaticThriftPipelineHandlerFactory makeThriftExtensionHandlerFactory(
     channel_pipeline::HandlerId id, Args... args) {
   using Adapter =
       ThriftExtensionPipelineHandler<H, ThriftPipelineHandlerContext>;
@@ -560,7 +560,7 @@ ThriftPipelineHandlerFactory makeThriftExtensionHandlerFactory(
     return channel_pipeline::detail::makeErasedStaticHandler<StaticAdapter>(
         id, store, args...);
   };
-  return ThriftPipelineHandlerFactory(
+  return StaticThriftPipelineHandlerFactory(
       std::move(dynamicFactory), std::move(staticFactory));
 }
 

@@ -66,11 +66,16 @@ class ThriftPipelineHandlerFactory {
       std::function<channel_pipeline::detail::ErasedStaticHandler(
           ExtensionStateStore&)>;
 
-  explicit ThriftPipelineHandlerFactory(
-      DynamicFactory dynamicFactory, StaticFactory staticFactory = {})
+  explicit ThriftPipelineHandlerFactory(DynamicFactory dynamicFactory)
+      : dynamicFactory_(std::move(dynamicFactory)) {}
+
+ protected:
+  ThriftPipelineHandlerFactory(
+      DynamicFactory dynamicFactory, StaticFactory staticFactory)
       : dynamicFactory_(std::move(dynamicFactory)),
         staticFactory_(std::move(staticFactory)) {}
 
+ public:
   channel_pipeline::detail::HandlerNode operator()(
       ExtensionStateStore& store) const {
     return dynamicFactory_(store);
@@ -92,6 +97,19 @@ class ThriftPipelineHandlerFactory {
  private:
   DynamicFactory dynamicFactory_;
   StaticFactory staticFactory_;
+};
+
+class StaticThriftPipelineHandlerFactory final
+    : public ThriftPipelineHandlerFactory {
+ public:
+  StaticThriftPipelineHandlerFactory(
+      DynamicFactory dynamicFactory, StaticFactory staticFactory)
+      : ThriftPipelineHandlerFactory(
+            std::move(dynamicFactory), std::move(staticFactory)) {
+    if (!supportsStaticPipeline()) {
+      throw std::invalid_argument("Static handler factory must be non-null");
+    }
+  }
 };
 
 class ThriftPipelineSegmentFactory {
@@ -213,7 +231,7 @@ inline channel_pipeline::HandlerId deriveThriftPipelineHandlerId(
  * @param args Constructor arguments, copied into every per-connection instance.
  */
 template <typename T, typename StaticT = void, typename... Args>
-ThriftPipelineHandlerFactory makeThriftPipelineHandlerFactory(
+auto makeThriftPipelineHandlerFactory(
     channel_pipeline::HandlerId id, Args... args) {
   static_assert(
       channel_pipeline::InboundHandler<T, ThriftPipelineHandlerContext> ||
@@ -247,7 +265,7 @@ ThriftPipelineHandlerFactory makeThriftPipelineHandlerFactory(
       return channel_pipeline::detail::makeErasedStaticHandler<StaticT>(
           id, args...);
     };
-    return ThriftPipelineHandlerFactory(
+    return StaticThriftPipelineHandlerFactory(
         std::move(dynamicFactory), std::move(staticFactory));
   }
 }
