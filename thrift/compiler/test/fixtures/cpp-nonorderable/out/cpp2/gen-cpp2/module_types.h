@@ -333,12 +333,12 @@ class NonOrderableUnion final  {
       }
       case Type::int_value:
       {
-        int_value_ref().emplace(std::move(rhs.value_.int_value));
+        set_int_value(std::move(rhs.value_.int_value));
         break;
       }
       case Type::string_value:
       {
-        string_value_ref().emplace(std::move(rhs.value_.string_value));
+        set_string_value(std::move(rhs.value_.string_value));
         break;
       }
       default:
@@ -797,12 +797,12 @@ class OrderableUnion final  {
       }
       case Type::int_value:
       {
-        int_value_ref().emplace(std::move(rhs.value_.int_value));
+        set_int_value(std::move(rhs.value_.int_value));
         break;
       }
       case Type::string_value:
       {
-        string_value_ref().emplace(std::move(rhs.value_.string_value));
+        set_string_value(std::move(rhs.value_.string_value));
         break;
       }
       default:

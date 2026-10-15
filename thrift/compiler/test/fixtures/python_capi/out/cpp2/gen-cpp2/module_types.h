@@ -5313,37 +5313,37 @@ class Shallot final  {
       }
       case Type::myEnum:
       {
-        myEnum_ref().emplace(std::move(rhs.value_.myEnum));
+        set_myEnum(std::move(rhs.value_.myEnum));
         break;
       }
       case Type::myStruct:
       {
-        myStruct_ref().emplace(std::move(rhs.value_.myStruct));
+        set_myStruct(std::move(rhs.value_.myStruct));
         break;
       }
       case Type::intSet:
       {
-        intSet_ref().emplace(std::move(*rhs.value_.intSet));
+        set_intSet(std::move(*rhs.value_.intSet));
         break;
       }
       case Type::myString:
       {
-        myString_ref().emplace(std::move(rhs.value_.myString));
+        set_myString(std::move(rhs.value_.myString));
         break;
       }
       case Type::doubleList:
       {
-        doubleList_ref().emplace(std::move(*rhs.value_.doubleList));
+        set_doubleList(std::move(*rhs.value_.doubleList));
         break;
       }
       case Type::strMap:
       {
-        strMap_ref().emplace(std::move(*rhs.value_.strMap));
+        set_strMap(std::move(*rhs.value_.strMap));
         break;
       }
       case Type::adapted_int:
       {
-        adapted_int_ref().emplace(std::move(rhs.value_.adapted_int));
+        set_adapted_int(std::move(rhs.value_.adapted_int));
         break;
       }
       default:
@@ -5955,17 +5955,17 @@ class SomeBinary final  {
       }
       case Type::iobuf:
       {
-        iobuf_ref().emplace(std::move(rhs.value_.iobuf));
+        set_iobuf(std::move(rhs.value_.iobuf));
         break;
       }
       case Type::iobuf_ptr:
       {
-        iobuf_ptr_ref().emplace(std::move(rhs.value_.iobuf_ptr));
+        set_iobuf_ptr(std::move(rhs.value_.iobuf_ptr));
         break;
       }
       case Type::iobufRef:
       {
-        iobufRef_ref().emplace(std::move(*rhs.value_.iobufRef));
+        set_iobufRef(std::move(*rhs.value_.iobufRef));
         break;
       }
       default:

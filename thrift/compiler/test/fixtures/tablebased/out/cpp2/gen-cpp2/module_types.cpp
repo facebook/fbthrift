@@ -619,10 +619,10 @@ bool ExampleUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::fieldA:
-        fieldA_ref().emplace(rhs.value_.fieldA);
+        set_fieldA(rhs.value_.fieldA);
         break;
       case Type::fieldB:
-        fieldB_ref().emplace(rhs.value_.fieldB);
+        set_fieldB(rhs.value_.fieldB);
         break;
       default:
         assert(false);
@@ -636,10 +636,10 @@ bool ExampleUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::fieldA:
-        fieldA_ref().emplace(rhs.value_.fieldA);
+        set_fieldA(rhs.value_.fieldA);
         break;
       case Type::fieldB:
-        fieldB_ref().emplace(rhs.value_.fieldB);
+        set_fieldB(rhs.value_.fieldB);
         break;
       default:
         __fbthrift_clear();

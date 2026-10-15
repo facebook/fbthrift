@@ -956,12 +956,12 @@ class TestUnion final  {
       }
       case Type::int_value:
       {
-        int_value_ref().emplace(std::move(rhs.value_.int_value));
+        set_int_value(std::move(rhs.value_.int_value));
         break;
       }
       case Type::struct_value:
       {
-        struct_value_ref().emplace(std::move(rhs.value_.struct_value));
+        set_struct_value(std::move(rhs.value_.struct_value));
         break;
       }
       default:

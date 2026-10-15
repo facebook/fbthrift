@@ -1880,12 +1880,12 @@ class union1 final  {
       }
       case Type::i:
       {
-        i_ref().emplace(std::move(rhs.value_.i));
+        set_i(std::move(rhs.value_.i));
         break;
       }
       case Type::d:
       {
-        d_ref().emplace(std::move(rhs.value_.d));
+        set_d(std::move(rhs.value_.d));
         break;
       }
       default:
@@ -2137,22 +2137,22 @@ class union2 final  {
       }
       case Type::i:
       {
-        i_ref().emplace(std::move(rhs.value_.i));
+        set_i(std::move(rhs.value_.i));
         break;
       }
       case Type::d:
       {
-        d_ref().emplace(std::move(rhs.value_.d));
+        set_d(std::move(rhs.value_.d));
         break;
       }
       case Type::s:
       {
-        s_ref().emplace(std::move(rhs.value_.s));
+        set_s(std::move(rhs.value_.s));
         break;
       }
       case Type::u:
       {
-        u_ref().emplace(std::move(rhs.value_.u));
+        set_u(std::move(rhs.value_.u));
         break;
       }
       default:

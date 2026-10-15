@@ -1216,22 +1216,22 @@ class MyUnion final  {
       }
       case Type::myEnum:
       {
-        myEnum_ref().emplace(std::move(rhs.value_.myEnum));
+        set_myEnum(std::move(rhs.value_.myEnum));
         break;
       }
       case Type::myStruct:
       {
-        myStruct_ref().emplace(std::move(rhs.value_.myStruct));
+        set_myStruct(std::move(rhs.value_.myStruct));
         break;
       }
       case Type::myDataItem:
       {
-        myDataItem_ref().emplace(std::move(rhs.value_.myDataItem));
+        set_myDataItem(std::move(rhs.value_.myDataItem));
         break;
       }
       case Type::floatSet:
       {
-        floatSet_ref().emplace(std::move(rhs.value_.floatSet));
+        set_floatSet(std::move(rhs.value_.floatSet));
         break;
       }
       default:
@@ -2415,7 +2415,7 @@ class UnionToBeRenamed final  {
       }
       case Type::reserved_field:
       {
-        reserved_field_ref().emplace(std::move(rhs.value_.reserved_field));
+        set_reserved_field(std::move(rhs.value_.reserved_field));
         break;
       }
       default:

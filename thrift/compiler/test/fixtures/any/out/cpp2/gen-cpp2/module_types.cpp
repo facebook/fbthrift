@@ -144,7 +144,7 @@ bool MyUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::myString:
-        myString_ref().emplace(rhs.value_.myString);
+        set_myString(rhs.value_.myString);
         break;
       default:
         assert(false);
@@ -158,7 +158,7 @@ bool MyUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::myString:
-        myString_ref().emplace(rhs.value_.myString);
+        set_myString(rhs.value_.myString);
         break;
       default:
         __fbthrift_clear();

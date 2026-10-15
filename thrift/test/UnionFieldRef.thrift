@@ -58,10 +58,3 @@ union CppRef {
 union CppMethods {
   1: i32 field;
 }
-
-union Deprecated {
-  1: string str;
-
-  @thrift.Deprecated
-  2: i32 deprecated_field;
-}

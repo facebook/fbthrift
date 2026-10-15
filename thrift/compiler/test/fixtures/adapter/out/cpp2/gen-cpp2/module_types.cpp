@@ -538,19 +538,19 @@ bool Baz::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::intField:
-        intField_ref().emplace(rhs.value_.intField);
+        set_intField(rhs.value_.intField);
         break;
       case Type::setField:
-        setField_ref().emplace(rhs.value_.setField);
+        set_setField(rhs.value_.setField);
         break;
       case Type::mapField:
-        mapField_ref().emplace(rhs.value_.mapField);
+        set_mapField(rhs.value_.mapField);
         break;
       case Type::binaryField:
-        binaryField_ref().emplace(rhs.value_.binaryField);
+        set_binaryField(rhs.value_.binaryField);
         break;
       case Type::longField:
-        longField_ref().emplace(rhs.value_.longField);
+        set_longField(rhs.value_.longField);
         break;
       default:
         assert(false);
@@ -564,19 +564,19 @@ bool Baz::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::intField:
-        intField_ref().emplace(rhs.value_.intField);
+        set_intField(rhs.value_.intField);
         break;
       case Type::setField:
-        setField_ref().emplace(rhs.value_.setField);
+        set_setField(rhs.value_.setField);
         break;
       case Type::mapField:
-        mapField_ref().emplace(rhs.value_.mapField);
+        set_mapField(rhs.value_.mapField);
         break;
       case Type::binaryField:
-        binaryField_ref().emplace(rhs.value_.binaryField);
+        set_binaryField(rhs.value_.binaryField);
         break;
       case Type::longField:
-        longField_ref().emplace(rhs.value_.longField);
+        set_longField(rhs.value_.longField);
         break;
       default:
         __fbthrift_clear();
@@ -2036,10 +2036,10 @@ bool ThriftAdaptTestUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::delay:
-        delay_ref().emplace(rhs.value_.delay);
+        set_delay(rhs.value_.delay);
         break;
       case Type::custom:
-        custom_ref().emplace(rhs.value_.custom);
+        set_custom(rhs.value_.custom);
         break;
       default:
         assert(false);
@@ -2053,10 +2053,10 @@ bool ThriftAdaptTestUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::delay:
-        delay_ref().emplace(rhs.value_.delay);
+        set_delay(rhs.value_.delay);
         break;
       case Type::custom:
-        custom_ref().emplace(rhs.value_.custom);
+        set_custom(rhs.value_.custom);
         break;
       default:
         __fbthrift_clear();

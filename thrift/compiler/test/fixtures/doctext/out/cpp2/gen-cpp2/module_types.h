@@ -300,12 +300,12 @@ class U final  {
       }
       case Type::i:
       {
-        i_ref().emplace(std::move(rhs.value_.i));
+        set_i(std::move(rhs.value_.i));
         break;
       }
       case Type::s:
       {
-        s_ref().emplace(std::move(rhs.value_.s));
+        set_s(std::move(rhs.value_.s));
         break;
       }
       default:

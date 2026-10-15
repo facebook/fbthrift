@@ -266,13 +266,13 @@ bool MyUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::myEnum:
-        myEnum_ref().emplace(rhs.value_.myEnum);
+        set_myEnum(rhs.value_.myEnum);
         break;
       case Type::myStruct:
-        myStruct_ref().emplace(rhs.value_.myStruct);
+        set_myStruct(rhs.value_.myStruct);
         break;
       case Type::myDataItem:
-        myDataItem_ref().emplace(rhs.value_.myDataItem);
+        set_myDataItem(rhs.value_.myDataItem);
         break;
       default:
         assert(false);
@@ -286,13 +286,13 @@ bool MyUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::myEnum:
-        myEnum_ref().emplace(rhs.value_.myEnum);
+        set_myEnum(rhs.value_.myEnum);
         break;
       case Type::myStruct:
-        myStruct_ref().emplace(rhs.value_.myStruct);
+        set_myStruct(rhs.value_.myStruct);
         break;
       case Type::myDataItem:
-        myDataItem_ref().emplace(rhs.value_.myDataItem);
+        set_myDataItem(rhs.value_.myDataItem);
         break;
       default:
         __fbthrift_clear();

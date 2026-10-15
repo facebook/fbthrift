@@ -771,10 +771,10 @@ bool union1::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::i:
-        i_ref().emplace(rhs.value_.i);
+        set_i(rhs.value_.i);
         break;
       case Type::d:
-        d_ref().emplace(rhs.value_.d);
+        set_d(rhs.value_.d);
         break;
       default:
         assert(false);
@@ -788,10 +788,10 @@ bool union1::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::i:
-        i_ref().emplace(rhs.value_.i);
+        set_i(rhs.value_.i);
         break;
       case Type::d:
-        d_ref().emplace(rhs.value_.d);
+        set_d(rhs.value_.d);
         break;
       default:
         __fbthrift_clear();
@@ -882,16 +882,16 @@ bool union2::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::i:
-        i_ref().emplace(rhs.value_.i);
+        set_i(rhs.value_.i);
         break;
       case Type::d:
-        d_ref().emplace(rhs.value_.d);
+        set_d(rhs.value_.d);
         break;
       case Type::s:
-        s_ref().emplace(rhs.value_.s);
+        set_s(rhs.value_.s);
         break;
       case Type::u:
-        u_ref().emplace(rhs.value_.u);
+        set_u(rhs.value_.u);
         break;
       default:
         assert(false);
@@ -905,16 +905,16 @@ bool union2::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::i:
-        i_ref().emplace(rhs.value_.i);
+        set_i(rhs.value_.i);
         break;
       case Type::d:
-        d_ref().emplace(rhs.value_.d);
+        set_d(rhs.value_.d);
         break;
       case Type::s:
-        s_ref().emplace(rhs.value_.s);
+        set_s(rhs.value_.s);
         break;
       case Type::u:
-        u_ref().emplace(rhs.value_.u);
+        set_u(rhs.value_.u);
         break;
       default:
         __fbthrift_clear();

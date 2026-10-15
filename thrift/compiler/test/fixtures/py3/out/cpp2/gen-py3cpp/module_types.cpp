@@ -928,7 +928,7 @@ bool AdaptedUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::best:
-        best_ref().emplace(rhs.value_.best);
+        set_best(rhs.value_.best);
         break;
       default:
         assert(false);
@@ -942,7 +942,7 @@ bool AdaptedUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::best:
-        best_ref().emplace(rhs.value_.best);
+        set_best(rhs.value_.best);
         break;
       default:
         __fbthrift_clear();
@@ -1255,7 +1255,7 @@ bool BinaryUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::iobuf_val:
-        iobuf_val_ref().emplace(rhs.value_.iobuf_val);
+        set_iobuf_val(rhs.value_.iobuf_val);
         break;
       default:
         assert(false);
@@ -1269,7 +1269,7 @@ bool BinaryUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::iobuf_val:
-        iobuf_val_ref().emplace(rhs.value_.iobuf_val);
+        set_iobuf_val(rhs.value_.iobuf_val);
         break;
       default:
         __fbthrift_clear();

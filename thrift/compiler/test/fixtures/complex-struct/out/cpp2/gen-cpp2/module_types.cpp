@@ -1540,22 +1540,22 @@ bool MyUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::myEnum:
-        myEnum_ref().emplace(rhs.value_.myEnum);
+        set_myEnum(rhs.value_.myEnum);
         break;
       case Type::myStruct:
-        myStruct_ref().emplace(rhs.value_.myStruct);
+        set_myStruct(rhs.value_.myStruct);
         break;
       case Type::myDataItem:
-        myDataItem_ref().emplace(rhs.value_.myDataItem);
+        set_myDataItem(rhs.value_.myDataItem);
         break;
       case Type::complexNestedStruct:
-        complexNestedStruct_ref().emplace(rhs.value_.complexNestedStruct);
+        set_complexNestedStruct(rhs.value_.complexNestedStruct);
         break;
       case Type::longValue:
-        longValue_ref().emplace(rhs.value_.longValue);
+        set_longValue(rhs.value_.longValue);
         break;
       case Type::intValue:
-        intValue_ref().emplace(rhs.value_.intValue);
+        set_intValue(rhs.value_.intValue);
         break;
       default:
         assert(false);
@@ -1569,22 +1569,22 @@ bool MyUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::myEnum:
-        myEnum_ref().emplace(rhs.value_.myEnum);
+        set_myEnum(rhs.value_.myEnum);
         break;
       case Type::myStruct:
-        myStruct_ref().emplace(rhs.value_.myStruct);
+        set_myStruct(rhs.value_.myStruct);
         break;
       case Type::myDataItem:
-        myDataItem_ref().emplace(rhs.value_.myDataItem);
+        set_myDataItem(rhs.value_.myDataItem);
         break;
       case Type::complexNestedStruct:
-        complexNestedStruct_ref().emplace(rhs.value_.complexNestedStruct);
+        set_complexNestedStruct(rhs.value_.complexNestedStruct);
         break;
       case Type::longValue:
-        longValue_ref().emplace(rhs.value_.longValue);
+        set_longValue(rhs.value_.longValue);
         break;
       case Type::intValue:
-        intValue_ref().emplace(rhs.value_.intValue);
+        set_intValue(rhs.value_.intValue);
         break;
       default:
         __fbthrift_clear();
@@ -1693,16 +1693,16 @@ bool MyUnionFloatFieldThrowExp::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::myEnum:
-        myEnum_ref().emplace(rhs.value_.myEnum);
+        set_myEnum(rhs.value_.myEnum);
         break;
       case Type::setFloat:
-        setFloat_ref().emplace(rhs.value_.setFloat);
+        set_setFloat(rhs.value_.setFloat);
         break;
       case Type::myDataItem:
-        myDataItem_ref().emplace(rhs.value_.myDataItem);
+        set_myDataItem(rhs.value_.myDataItem);
         break;
       case Type::complexNestedStruct:
-        complexNestedStruct_ref().emplace(rhs.value_.complexNestedStruct);
+        set_complexNestedStruct(rhs.value_.complexNestedStruct);
         break;
       default:
         assert(false);
@@ -1716,16 +1716,16 @@ bool MyUnionFloatFieldThrowExp::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::myEnum:
-        myEnum_ref().emplace(rhs.value_.myEnum);
+        set_myEnum(rhs.value_.myEnum);
         break;
       case Type::setFloat:
-        setFloat_ref().emplace(rhs.value_.setFloat);
+        set_setFloat(rhs.value_.setFloat);
         break;
       case Type::myDataItem:
-        myDataItem_ref().emplace(rhs.value_.myDataItem);
+        set_myDataItem(rhs.value_.myDataItem);
         break;
       case Type::complexNestedStruct:
-        complexNestedStruct_ref().emplace(rhs.value_.complexNestedStruct);
+        set_complexNestedStruct(rhs.value_.complexNestedStruct);
         break;
       default:
         __fbthrift_clear();

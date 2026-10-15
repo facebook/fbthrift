@@ -1498,27 +1498,27 @@ class Baz final  {
       }
       case Type::intField:
       {
-        intField_ref().emplace(std::move(rhs.value_.intField));
+        set_intField(std::move(rhs.value_.intField));
         break;
       }
       case Type::setField:
       {
-        setField_ref().emplace(std::move(rhs.value_.setField));
+        set_setField(std::move(rhs.value_.setField));
         break;
       }
       case Type::mapField:
       {
-        mapField_ref().emplace(std::move(rhs.value_.mapField));
+        set_mapField(std::move(rhs.value_.mapField));
         break;
       }
       case Type::binaryField:
       {
-        binaryField_ref().emplace(std::move(rhs.value_.binaryField));
+        set_binaryField(std::move(rhs.value_.binaryField));
         break;
       }
       case Type::longField:
       {
-        longField_ref().emplace(std::move(rhs.value_.longField));
+        set_longField(std::move(rhs.value_.longField));
         break;
       }
       default:
@@ -5819,12 +5819,12 @@ class ThriftAdaptTestUnion final  {
       }
       case Type::delay:
       {
-        delay_ref().emplace(std::move(rhs.value_.delay));
+        set_delay(std::move(rhs.value_.delay));
         break;
       }
       case Type::custom:
       {
-        custom_ref().emplace(std::move(rhs.value_.custom));
+        set_custom(std::move(rhs.value_.custom));
         break;
       }
       default:
