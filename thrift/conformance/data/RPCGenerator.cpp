@@ -423,6 +423,44 @@ Test createRequestResponsePersistentHeadersTest() {
   return ret;
 }
 
+Test createRequestResponseTimeoutsSentTest() {
+  Test ret;
+  ret.name() = "RequestResponseTimeoutsSentTest";
+  ret.tags()->emplace("spec/protocol/interface/#client-timeout");
+  ret.tags()->emplace("spec/protocol/interface/#queue-timeout");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseTimeoutsSent/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().requestResponseMetadata().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.timeoutMs() = 7000;
+  clientInstruction.queueTimeoutMs() = 5000;
+  rpcTest.clientTestResult()
+      .emplace()
+      .requestResponseMetadata()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+  rpcTest.serverInstruction()
+      .emplace()
+      .requestResponseMetadata()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().requestResponseMetadata().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.clientTimeoutMs() = 7000;
+  serverTestResult.queueTimeoutMs() = 5000;
+
+  return ret;
+}
+
 Test createRequestResponseNoArgVoidResponse() {
   Test ret;
   ret.name() = "RequestResponseNoArgVoidResponseTest";
@@ -1954,6 +1992,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createRequestResponseUnknownMethodTest());
   suite.tests()->push_back(createRequestResponseWriteHeadersTest());
   suite.tests()->push_back(createRequestResponsePersistentHeadersTest());
+  suite.tests()->push_back(createRequestResponseTimeoutsSentTest());
   return suite;
 }
 

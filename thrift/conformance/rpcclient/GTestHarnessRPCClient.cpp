@@ -579,11 +579,17 @@ class ConformanceVerificationServer
   }
 
   void recordMetadata(RequestResponseMetadataServerTestResult& result) {
-    for (const auto& [key, value] :
-         getRequestContext()->getHeader()->getHeaders()) {
+    const auto* header = getRequestContext()->getHeader();
+    for (const auto& [key, value] : header->getHeaders()) {
       if (key.starts_with("conformance-")) {
         result.headers()[key] = value;
       }
+    }
+    const auto& sent =
+        *testCase_.clientInstruction()->requestResponseMetadata();
+    if (sent.timeoutMs().has_value() || sent.queueTimeoutMs().has_value()) {
+      result.clientTimeoutMs() = header->getClientTimeout().count();
+      result.queueTimeoutMs() = header->getClientQueueTimeout().count();
     }
   }
 

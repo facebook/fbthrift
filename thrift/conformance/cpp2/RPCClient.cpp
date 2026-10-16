@@ -153,6 +153,12 @@ RequestResponseMetadataClientTestResult requestResponseMetadataTest(
   for (const auto& [key, value] : *instruction.writeHeaders()) {
     rpcOptions.setWriteHeader(key, value);
   }
+  if (auto timeoutMs = instruction.timeoutMs()) {
+    rpcOptions.setTimeout(std::chrono::milliseconds(*timeoutMs));
+  }
+  if (auto queueTimeoutMs = instruction.queueTimeoutMs()) {
+    rpcOptions.setQueueTimeout(std::chrono::milliseconds(*queueTimeoutMs));
+  }
   auto client = std::make_unique<Client<RPCConformanceService>>(
       PooledRequestChannel::newChannel(
           [headers = *instruction.persistentHeaders()](folly::EventBase& eb) {
