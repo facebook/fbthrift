@@ -15,7 +15,8 @@
 # Set the cpp2 directory
 set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_subdirectory(schema)
+thrift_generate(schema/syntax_graph.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES syntax_graph_sources)
 
 if (THRIFT_TESTS)
   add_subdirectory(protocol/test)
@@ -54,8 +55,6 @@ get_property(service_catalog-cpp2-SOURCES GLOBAL
              PROPERTY service_catalog-cpp2-SOURCES)
 get_property(thrift_catalog_service-cpp2-SOURCES GLOBAL
              PROPERTY thrift_catalog_service-cpp2-SOURCES)
-get_property(syntax_graph-cpp2-SOURCES GLOBAL
-             PROPERTY syntax_graph-cpp2-SOURCES)
 
 bypass_source_check("${type_id-cpp2-SOURCES}")
 bypass_source_check("${protocol-cpp2-SOURCES}")
@@ -63,7 +62,6 @@ bypass_source_check("${protocol_detail-cpp2-SOURCES}")
 bypass_source_check("${type_system-cpp2-SOURCES}")
 bypass_source_check("${schema-cpp2-SOURCES}")
 bypass_source_check("${record-cpp2-SOURCES}")
-bypass_source_check("${syntax_graph-cpp2-SOURCES}")
 bypass_source_check("${service_catalog-cpp2-SOURCES}")
 bypass_source_check("${metadata-cpp2-SOURCES}")
 add_library(
@@ -90,7 +88,7 @@ add_library(
   ${type_system-cpp2-SOURCES}
   ${schema-cpp2-SOURCES}
   ${record-cpp2-SOURCES}
-  ${syntax_graph-cpp2-SOURCES}
+  ${syntax_graph_sources}
   ${service_catalog-cpp2-SOURCES})
 add_dependencies(
   thriftmetadata
