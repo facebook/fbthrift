@@ -205,6 +205,10 @@ function (thrift_generate file)
   set(generator "mstch_${language}")
   string(REPLACE ";" "," joined_options "${options}")
   set(gen_dir "${output_dir}/gen-${language}")
+  # The compiler requires -o to exist. Ninja creates the directories of a
+  # command's outputs, but Makefiles don't, and only directories added with
+  # add_subdirectory() exist otherwise.
+  file(MAKE_DIRECTORY "${output_dir}")
   set(headers
       ${gen_dir}/${stem}_constants.h
       ${gen_dir}/${stem}_data.h
