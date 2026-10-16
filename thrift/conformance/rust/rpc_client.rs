@@ -77,6 +77,8 @@ struct Arguments {
     port: u16,
     #[clap(long, default_value = "compact")]
     protocol: String,
+    #[clap(long, default_value = "rocket")]
+    transport: String,
     #[clap(short, long, default_value = "info")]
     log: Vec<Directive>,
 }
@@ -92,6 +94,11 @@ async fn main(fb: fbinit::FacebookInit, args: Arguments) -> Result<()> {
             "binary" => thriftclient::WireProtocol::Binary,
             other => anyhow::bail!("Unknown protocol {}", other),
         },
+        transport: match args.transport.as_str() {
+            "rocket" => thriftclient::TransportType::Rocket,
+            "header" => thriftclient::TransportType::Header,
+            other => anyhow::bail!("Unknown transport {}", other),
+        },
     };
     let client = get_client(&peer).await? as Arc<_>;
     test(&*client, &peer).await?;
@@ -103,6 +110,7 @@ struct Peer {
     fb: fbinit::FacebookInit,
     port: u16,
     protocol: thriftclient::WireProtocol,
+    transport: thriftclient::TransportType,
 }
 
 impl Peer {
@@ -112,6 +120,7 @@ impl Peer {
             SocketAddr::new(std::net::Ipv6Addr::LOCALHOST.into(), self.port),
         )?
         .with_secure(false)
+        .with_transport_type(self.transport)
         .with_protocol(self.protocol.clone())
         .with_conn_timeout(30_000)
         .with_recv_timeout(30_000))

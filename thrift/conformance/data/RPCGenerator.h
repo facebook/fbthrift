@@ -26,5 +26,8 @@ TestSuite createRPCClientTestSuite();
 // that not every language's client implements yet. A client opts in by listing
 // gen-rpc-client-extended among its suite generators.
 TestSuite createRPCClientExtendedTestSuite();
+// Every request-response client case, common and extended, for a transport
+// like HTTP/2.
+TestSuite createRPCClientRequestResponseTestSuite();
 
 } // namespace apache::thrift::conformance::data

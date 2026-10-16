@@ -30,12 +30,14 @@
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceSetupService.h>
 #include <thrift/conformance/if/gen-cpp2/rpc_types.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 DEFINE_int32(port, 7777, "Port for Conformance Verification Server");
 DEFINE_string(protocol, "compact", "compact or binary");
+DEFINE_string(transport, "rocket", "rocket or header");
 
 using namespace apache::thrift;
 using namespace apache::thrift::conformance;
@@ -50,9 +52,15 @@ apache::thrift::protocol::PROTOCOL_TYPES protocolId() {
 }
 
 ClientChannel::Ptr newChannel(folly::EventBase& eb) {
-  auto channel = RocketClientChannel::newChannel(
-      folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(
-          &eb, folly::SocketAddress("::1", FLAGS_port))));
+  folly::AsyncTransport::UniquePtr socket(
+      new folly::AsyncSocket(&eb, folly::SocketAddress("::1", FLAGS_port)));
+  if (FLAGS_transport == "header") {
+    return HeaderClientChannel::newChannel(
+        std::move(socket),
+        HeaderClientChannel::Options().setProtocolId(protocolId()));
+  }
+  CHECK_EQ(FLAGS_transport, "rocket");
+  auto channel = RocketClientChannel::newChannel(std::move(socket));
   channel->setProtocolId(protocolId());
   return channel;
 }

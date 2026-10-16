@@ -7097,3 +7097,7 @@ rustbinary/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestRespon
 rustbinary/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
 rustbinary/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
 rustnativebinary/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTimeoutTest
+
+# The request-response cases over a header channel (rpc-client-header-test).
+# Same reason as for the `rust` category.
+rustheader/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseAnyExceptionTest

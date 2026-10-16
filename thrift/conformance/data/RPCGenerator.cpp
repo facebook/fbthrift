@@ -2168,6 +2168,20 @@ void addCommonRPCTests(TestSuite& suite) {
   suite.tests()->push_back(createInteractionFactoryFunctionTerminationTest());
 }
 
+void addExtendedRequestResponseTests(TestSuite& suite) {
+  suite.tests()->push_back(createRequestResponseAnyExceptionTest());
+  suite.tests()->push_back(createRequestResponseLoadsheddingTest());
+  suite.tests()->push_back(createRequestResponseTaskExpiredTest());
+  suite.tests()->push_back(createRequestResponseTooBigTest());
+  suite.tests()->push_back(createRequestResponseUnknownMethodTest());
+  suite.tests()->push_back(createRequestResponseWriteHeadersTest());
+  suite.tests()->push_back(createRequestResponsePersistentHeadersTest());
+  suite.tests()->push_back(createRequestResponseTimeoutsSentTest());
+  suite.tests()->push_back(createRequestResponseClientOnlyTimeoutsTest());
+  suite.tests()->push_back(createRequestResponsePriorityTest());
+  suite.tests()->push_back(createRequestResponseConcurrentTest());
+}
+
 } // namespace
 
 TestSuite createRPCServerTestSuite() {
@@ -2206,21 +2220,21 @@ TestSuite createRPCClientExtendedTestSuite() {
   TestSuite suite;
   suite.name() = "ThriftRPCClientTest";
   suite.tags()->emplace("spec/protocol/interface/");
-  suite.tests()->push_back(createRequestResponseAnyExceptionTest());
-  suite.tests()->push_back(createRequestResponseLoadsheddingTest());
-  suite.tests()->push_back(createRequestResponseTaskExpiredTest());
-  suite.tests()->push_back(createRequestResponseTooBigTest());
-  suite.tests()->push_back(createRequestResponseUnknownMethodTest());
-  suite.tests()->push_back(createRequestResponseWriteHeadersTest());
-  suite.tests()->push_back(createRequestResponsePersistentHeadersTest());
-  suite.tests()->push_back(createRequestResponseTimeoutsSentTest());
-  suite.tests()->push_back(createRequestResponseClientOnlyTimeoutsTest());
-  suite.tests()->push_back(createRequestResponsePriorityTest());
-  suite.tests()->push_back(createRequestResponseConcurrentTest());
+  addExtendedRequestResponseTests(suite);
   suite.tests()->push_back(createStreamCancelTest());
   suite.tests()->push_back(createStreamMemoryBufferSizeTest());
   suite.tests()->push_back(createSinkChunkTimeoutTest());
   suite.tests()->push_back(createSinkEarlyFinalResponseTest());
+  return suite;
+}
+
+TestSuite createRPCClientRequestResponseTestSuite() {
+  TestSuite suite;
+  suite.name() = "ThriftRPCClientTest";
+  suite.tags()->emplace("spec/protocol/interface/");
+  addCommonRequestResponseTests(suite);
+  suite.tests()->push_back(createRequestResponseTimeoutTest());
+  addExtendedRequestResponseTests(suite);
   return suite;
 }
 
