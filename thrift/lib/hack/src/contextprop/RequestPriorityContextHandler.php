@@ -88,11 +88,12 @@ final class RequestPriorityContextHandler implements IContextHandler {
     // Best-effort: a throw here would abort the remaining ContextProp handlers
     // and the TFM header write for this outbound call.
     try {
+      // Destinations without their own switch fall back to the knob default.
       $sample_denom = JustKnobs::getInt(
         'upop/contextprop_priority:log_sample_denom',
         $receiver_service is null
           ? 'WWW.SENDER.no_service'
-          : 'WWW.SENDER.tagged',
+          : 'WWW.SENDER.'.$receiver_service,
       );
       if ($sample_denom <= 0 || PseudoRandom\int(1, $sample_denom) !== 1) {
         return;
