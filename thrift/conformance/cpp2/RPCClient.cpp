@@ -180,6 +180,24 @@ RequestResponseMetadataClientTestResult requestResponseMetadataTest(
   return result;
 }
 
+RequestResponseConcurrentClientTestResult requestResponseConcurrentTest(
+    const RequestResponseConcurrentClientInstruction& instruction) {
+  auto client = createClient();
+  return folly::coro::blockingWait(
+      [&]() -> folly::coro::Task<RequestResponseConcurrentClientTestResult> {
+        std::vector<folly::coro::Task<Response>> calls;
+        for (const auto& request : *instruction.requests()) {
+          calls.push_back(client->co_requestResponseBasic(request));
+        }
+        RequestResponseConcurrentClientTestResult result;
+        for (auto& response :
+             co_await folly::coro::collectAllRange(std::move(calls))) {
+          result.responses()->push_back(std::move(response));
+        }
+        co_return result;
+      }());
+}
+
 RequestResponseNoArgVoidResponseClientTestResult
 requestResponseNoArgVoidResponseTest(
     const RequestResponseNoArgVoidResponseClientInstruction&) {
@@ -829,6 +847,10 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::requestResponseMetadata:
       result.requestResponseMetadata() = requestResponseMetadataTest(
           *clientInstruction.requestResponseMetadata());
+      break;
+    case ClientInstruction::Type::requestResponseConcurrent:
+      result.requestResponseConcurrent() = requestResponseConcurrentTest(
+          *clientInstruction.requestResponseConcurrent());
       break;
     case ClientInstruction::Type::streamBasic:
       result.streamBasic() = streamBasicTest(*clientInstruction.streamBasic());

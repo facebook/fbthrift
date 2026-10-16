@@ -201,6 +201,8 @@ use rpc::rpc::RequestResponseAnyExceptionClientInstruction;
 use rpc::rpc::RequestResponseAnyExceptionClientTestResult;
 use rpc::rpc::RequestResponseBasicClientInstruction;
 use rpc::rpc::RequestResponseBasicClientTestResult;
+use rpc::rpc::RequestResponseConcurrentClientInstruction;
+use rpc::rpc::RequestResponseConcurrentClientTestResult;
 use rpc::rpc::RequestResponseDeclaredExceptionClientInstruction;
 use rpc::rpc::RequestResponseDeclaredExceptionClientTestResult;
 use rpc::rpc::RequestResponseMetadataClientInstruction;
@@ -235,6 +237,7 @@ async fn test(
         requestResponseAnyException(i) => request_response_any_exception(client, i).await,
         requestResponseServerError(i) => request_response_server_error(client, peer, i).await,
         requestResponseMetadata(i) => request_response_metadata(client, peer, i).await,
+        requestResponseConcurrent(i) => request_response_concurrent(client, peer, i).await,
         interactionConstructor(i) => interaction_constructor(client, i).await,
         interactionFactoryFunction(i) => interaction_factory_function(client, i).await,
         interactionPersistsState(i) => interaction_persists_state(client, i).await,
@@ -486,6 +489,32 @@ async fn request_response_metadata(
     let test_result =
         ClientTestResult::requestResponseMetadata(RequestResponseMetadataClientTestResult {
             response,
+            ..Default::default()
+        });
+    client.sendTestResult(&test_result).await?;
+    Ok(())
+}
+
+async fn request_response_concurrent(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    peer: &Peer,
+    instr: &RequestResponseConcurrentClientInstruction,
+) -> Result<()> {
+    let one_connection = client_of(
+        peer.channel_builder()?
+            .with_channel_pool(false)
+            .build_channel()?,
+    )?;
+    let responses = futures::future::try_join_all(
+        instr
+            .requests
+            .iter()
+            .map(|request| one_connection.requestResponseBasic(request)),
+    )
+    .await?;
+    let test_result =
+        ClientTestResult::requestResponseConcurrent(RequestResponseConcurrentClientTestResult {
+            responses,
             ..Default::default()
         });
     client.sendTestResult(&test_result).await?;

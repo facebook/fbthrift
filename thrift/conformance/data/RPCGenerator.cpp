@@ -537,6 +537,43 @@ Test createRequestResponsePriorityTest() {
   return ret;
 }
 
+Test createRequestResponseConcurrentTest() {
+  Test ret;
+  ret.name() = "RequestResponseConcurrentTest";
+  ret.tags()->emplace("spec/protocol/interface/#request-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseConcurrent/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction = rpcTest.clientInstruction()
+                                .emplace()
+                                .requestResponseConcurrent()
+                                .emplace();
+  auto& clientTestResult = rpcTest.clientTestResult()
+                               .emplace()
+                               .requestResponseConcurrent()
+                               .emplace();
+  auto& serverTestResult = rpcTest.serverTestResult()
+                               .emplace()
+                               .requestResponseConcurrent()
+                               .emplace();
+  for (int i = 0; i < 3; i++) {
+    auto data = folly::to<std::string>(i);
+    clientInstruction.requests()->emplace_back().data() = data;
+    clientTestResult.responses()->emplace_back().data() = data;
+    serverTestResult.requests()->emplace_back().data() = data;
+  }
+  serverTestResult.allInFlight() = true;
+  rpcTest.serverInstruction()
+      .emplace()
+      .requestResponseConcurrent()
+      .emplace()
+      .requestCount() = 3;
+
+  return ret;
+}
+
 Test createRequestResponseNoArgVoidResponse() {
   Test ret;
   ret.name() = "RequestResponseNoArgVoidResponseTest";
@@ -2099,6 +2136,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createRequestResponseTimeoutsSentTest());
   suite.tests()->push_back(createRequestResponseClientOnlyTimeoutsTest());
   suite.tests()->push_back(createRequestResponsePriorityTest());
+  suite.tests()->push_back(createRequestResponseConcurrentTest());
   suite.tests()->push_back(createStreamCancelTest());
   return suite;
 }

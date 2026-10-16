@@ -16,6 +16,7 @@
 
 #include <thrift/conformance/rpcclient/GTestHarnessRPCClient.h>
 
+#include <algorithm>
 #include <chrono>
 #include <memory>
 #include <stdexcept>
@@ -32,6 +33,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <fmt/core.h>
 #include <folly/CancellationToken.h>
 #include <folly/Subprocess.h>
+#include <folly/Synchronized.h>
 #include <folly/base64.h>
 #include <folly/coro/AsyncGenerator.h>
 #include <folly/coro/BlockingWait.h>
@@ -68,6 +70,17 @@ class ConformanceVerificationServer
       streamCancelled_.try_wait_for(std::chrono::seconds(5));
       serverResult_.streamCancel()->cancelled() = cancelled_.load();
     }
+    if (testCase_.serverInstruction()->requestResponseConcurrent()) {
+      auto& concurrent = serverResult_.requestResponseConcurrent().emplace();
+      concurrent.requests() = *concurrentRequests_.rlock();
+      std::sort(
+          concurrent.requests()->begin(),
+          concurrent.requests()->end(),
+          [](const Request& a, const Request& b) {
+            return *a.data() < *b.data();
+          });
+      concurrent.allInFlight() = !concurrentGaveUp_.load();
+    }
     clientResultPromise_.setValue(*result);
   }
 
@@ -78,6 +91,10 @@ class ConformanceVerificationServer
             testCase_.serverInstruction()->requestResponseServerError()) {
       serverResult_.requestResponseServerError().emplace().request() = *req;
       co_return co_await answerServerError(*serverError->error());
+    }
+    if (auto concurrent =
+            testCase_.serverInstruction()->requestResponseConcurrent()) {
+      co_return co_await answerLastToFirst(*concurrent, *req);
     }
     if (auto metadata =
             testCase_.serverInstruction()->requestResponseMetadata()) {
@@ -617,6 +634,32 @@ class ConformanceVerificationServer
     }
   }
 
+  folly::coro::Task<std::unique_ptr<Response>> answerLastToFirst(
+      const RequestResponseConcurrentServerInstruction& instruction,
+      Request req) {
+    const auto count = static_cast<size_t>(*instruction.requestCount());
+    const auto arrival = concurrentRequests_.withWLock([&](auto& requests) {
+      requests.push_back(req);
+      return requests.size() - 1;
+    });
+    const auto deadline =
+        std::chrono::steady_clock::now() + std::chrono::seconds(5);
+    while (concurrentRequests_.rlock()->size() < count) {
+      if (std::chrono::steady_clock::now() >= deadline) {
+        concurrentGaveUp_ = true;
+        break;
+      }
+      co_await folly::coro::sleep(std::chrono::milliseconds(10));
+    }
+    if (arrival < count) {
+      co_await folly::coro::sleep(
+          std::chrono::milliseconds(100 * (count - 1 - arrival)));
+    }
+    auto res = std::make_unique<Response>();
+    res->data() = *req.data();
+    co_return res;
+  }
+
   // The handler's part in a server error. Whatever it answers is thrown away.
   folly::coro::Task<std::unique_ptr<Response>> answerServerError(
       const ServerError& error) {
@@ -653,6 +696,8 @@ class ConformanceVerificationServer
   ServerTestResult serverResult_;
   std::atomic<bool> cancelled_{false};
   folly::Baton<> streamCancelled_;
+  folly::Synchronized<std::vector<Request>> concurrentRequests_;
+  std::atomic<bool> concurrentGaveUp_{false};
 };
 
 // What some cases need set on the server before it starts.
