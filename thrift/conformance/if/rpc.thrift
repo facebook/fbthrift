@@ -595,6 +595,13 @@ struct RequestResponseConcurrentClientInstruction {
 struct StreamBasicClientInstruction {
   1: Request request;
   2: i64 bufferSize;
+  3: optional StreamMemoryBufferSize memoryBufferSize;
+}
+
+struct StreamMemoryBufferSize {
+  1: i64 targetBytes;
+  2: i32 initialChunks;
+  3: i32 maxChunks;
 }
 
 struct StreamChunkTimeoutClientInstruction {

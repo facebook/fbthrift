@@ -750,6 +750,45 @@ Test createStreamCancelTest() {
   return ret;
 }
 
+Test createStreamMemoryBufferSizeTest() {
+  Test ret;
+  ret.name() = "StreamMemoryBufferSizeTest";
+  ret.tags()->emplace("spec/protocol/interface/#stream-flow-control");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "StreamMemoryBufferSize/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().streamBasic().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  auto& memoryBufferSize = clientInstruction.memoryBufferSize().emplace();
+  memoryBufferSize.targetBytes() = 16 * 1024;
+  memoryBufferSize.initialChunks() = 2;
+  memoryBufferSize.maxChunks() = 8;
+  auto& serverInstruction =
+      rpcTest.serverInstruction().emplace().streamBasic().emplace();
+  for (int i = 0; i < 64; i++) {
+    serverInstruction.streamPayloads()->emplace_back().data() =
+        std::string(2048, static_cast<char>('a' + i % 26));
+  }
+  rpcTest.clientTestResult()
+      .emplace()
+      .streamBasic()
+      .emplace()
+      .streamPayloads()
+      .copy_from(serverInstruction.streamPayloads());
+  rpcTest.serverTestResult()
+      .emplace()
+      .streamBasic()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+
+  return ret;
+}
+
 Test createStreamChunkTimeoutTest() {
   Test ret;
   ret.name() = "StreamChunkTimeoutTest";
@@ -2138,6 +2177,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createRequestResponsePriorityTest());
   suite.tests()->push_back(createRequestResponseConcurrentTest());
   suite.tests()->push_back(createStreamCancelTest());
+  suite.tests()->push_back(createStreamMemoryBufferSizeTest());
   return suite;
 }
 

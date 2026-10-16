@@ -231,7 +231,14 @@ StreamBasicClientTestResult streamBasicTest(
     StreamBasicClientInstruction& instruction) {
   auto client = createClient();
   apache::thrift::RpcOptions rpcOptions{};
-  rpcOptions.setChunkBufferSize(*instruction.bufferSize());
+  if (auto memoryBufferSize = instruction.memoryBufferSize()) {
+    rpcOptions.setMemoryBufferSize(
+        static_cast<size_t>(*memoryBufferSize->targetBytes()),
+        *memoryBufferSize->initialChunks(),
+        *memoryBufferSize->maxChunks());
+  } else {
+    rpcOptions.setChunkBufferSize(*instruction.bufferSize());
+  }
   return folly::coro::blockingWait(
       [&]() -> folly::coro::Task<StreamBasicClientTestResult> {
         auto gen = (co_await client->co_streamBasic(

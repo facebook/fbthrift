@@ -577,7 +577,18 @@ async fn stream_basic(
     instr: &StreamBasicClientInstruction,
 ) -> Result<()> {
     let mut opts = rust_types::RpcOptions::default();
-    opts.set_chunk_buffer_size(instr.bufferSize as i32);
+    match &instr.memoryBufferSize {
+        Some(size) => {
+            opts.set_memory_buffer_size(
+                size.targetBytes.try_into()?,
+                size.initialChunks,
+                size.maxChunks,
+            );
+        }
+        None => {
+            opts.set_chunk_buffer_size(instr.bufferSize as i32);
+        }
+    }
 
     let mut stream = client
         .streamBasic_with_rpc_opts(&instr.request, opts)
