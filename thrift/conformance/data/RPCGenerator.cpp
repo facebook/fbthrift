@@ -461,6 +461,45 @@ Test createRequestResponseTimeoutsSentTest() {
   return ret;
 }
 
+Test createRequestResponseClientOnlyTimeoutsTest() {
+  Test ret;
+  ret.name() = "RequestResponseClientOnlyTimeoutsTest";
+  ret.tags()->emplace("spec/protocol/interface/#client-timeout");
+  ret.tags()->emplace("spec/protocol/interface/#queue-timeout");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseClientOnlyTimeouts/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().requestResponseMetadata().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.timeoutMs() = 7000;
+  clientInstruction.queueTimeoutMs() = 5000;
+  clientInstruction.clientOnlyTimeouts() = true;
+  rpcTest.clientTestResult()
+      .emplace()
+      .requestResponseMetadata()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+  rpcTest.serverInstruction()
+      .emplace()
+      .requestResponseMetadata()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().requestResponseMetadata().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.clientTimeoutMs() = 0;
+  serverTestResult.queueTimeoutMs() = 0;
+
+  return ret;
+}
+
 Test createRequestResponseNoArgVoidResponse() {
   Test ret;
   ret.name() = "RequestResponseNoArgVoidResponseTest";
@@ -1993,6 +2032,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createRequestResponseWriteHeadersTest());
   suite.tests()->push_back(createRequestResponsePersistentHeadersTest());
   suite.tests()->push_back(createRequestResponseTimeoutsSentTest());
+  suite.tests()->push_back(createRequestResponseClientOnlyTimeoutsTest());
   return suite;
 }
 

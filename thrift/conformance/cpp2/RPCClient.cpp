@@ -159,6 +159,7 @@ RequestResponseMetadataClientTestResult requestResponseMetadataTest(
   if (auto queueTimeoutMs = instruction.queueTimeoutMs()) {
     rpcOptions.setQueueTimeout(std::chrono::milliseconds(*queueTimeoutMs));
   }
+  rpcOptions.setClientOnlyTimeouts(*instruction.clientOnlyTimeouts());
   auto client = std::make_unique<Client<RPCConformanceService>>(
       PooledRequestChannel::newChannel(
           [headers = *instruction.persistentHeaders()](folly::EventBase& eb) {

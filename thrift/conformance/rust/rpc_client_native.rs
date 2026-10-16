@@ -462,6 +462,7 @@ async fn request_response_metadata(
     if let Some(timeout) = instr.queueTimeoutMs {
         opts.set_queue_timeout_ms(timeout.try_into()?);
     }
+    opts.set_client_only_timeouts(instr.clientOnlyTimeouts);
     let mut builder = peer.channel_builder()?;
     for header in &instr.persistentHeaders {
         builder = builder.with_persistent_header(header);

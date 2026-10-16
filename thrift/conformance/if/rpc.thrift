@@ -557,6 +557,7 @@ struct RequestResponseMetadataClientInstruction {
   3: map<string, string> persistentHeaders;
   4: optional i64 timeoutMs;
   5: optional i64 queueTimeoutMs;
+  6: bool clientOnlyTimeouts;
 }
 
 struct StreamBasicClientInstruction {
