@@ -38,6 +38,8 @@ use rpc::rpc::SinkUndeclaredExceptionClientInstruction;
 use rpc::rpc::SinkUndeclaredExceptionClientTestResult;
 use rpc::rpc::StreamBasicClientInstruction;
 use rpc::rpc::StreamBasicClientTestResult;
+use rpc::rpc::StreamCancelClientInstruction;
+use rpc::rpc::StreamCancelClientTestResult;
 use rpc::rpc::StreamChunkTimeoutClientInstruction;
 use rpc::rpc::StreamChunkTimeoutClientTestResult;
 use rpc::rpc::StreamCreditTimeoutClientInstruction;
@@ -211,6 +213,7 @@ async fn test(
         streamInitialDeclaredException(i) => stream_initial_declared_exception(client, i).await,
         streamInitialUndeclaredException(i) => stream_initial_undeclared_exception(client, i).await,
         streamInitialTimeout(i) => stream_initial_timeout(client, i).await,
+        streamCancel(i) => stream_cancel(client, i).await,
         sinkBasic(i) => sink_basic(client, i).await,
         sinkChunkTimeout(i) => sink_chunk_timeout(client, i).await,
         sinkInitialResponse(i) => sink_initial_response(client, i).await,
@@ -559,6 +562,25 @@ async fn stream_basic(
     }
     client
         .sendTestResult(&ClientTestResult::streamBasic(test_result))
+        .await?;
+    Ok(())
+}
+
+async fn stream_cancel(
+    client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>,
+    instr: &StreamCancelClientInstruction,
+) -> Result<()> {
+    let mut stream = client.streamBasic(&instr.request).await?;
+    let mut test_result = StreamCancelClientTestResult::default();
+    while (test_result.streamPayloads.len() as i64) < instr.consumeCount {
+        match stream.next().await {
+            Some(response) => test_result.streamPayloads.push(response?),
+            None => break,
+        }
+    }
+    drop(stream);
+    client
+        .sendTestResult(&ClientTestResult::streamCancel(test_result))
         .await?;
     Ok(())
 }

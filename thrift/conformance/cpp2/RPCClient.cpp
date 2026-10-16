@@ -227,6 +227,26 @@ StreamBasicClientTestResult streamBasicTest(
       }());
 }
 
+StreamCancelClientTestResult streamCancelTest(
+    const StreamCancelClientInstruction& instruction) {
+  auto client = createClient();
+  return folly::coro::blockingWait(
+      [&]() -> folly::coro::Task<StreamCancelClientTestResult> {
+        StreamCancelClientTestResult result;
+        auto gen = (co_await client->co_streamBasic(*instruction.request()))
+                       .toAsyncGenerator();
+        while (static_cast<int64_t>(result.streamPayloads()->size()) <
+               *instruction.consumeCount()) {
+          auto val = co_await gen.next();
+          if (!val) {
+            break;
+          }
+          result.streamPayloads()->push_back(std::move(*val));
+        }
+        co_return result;
+      }());
+}
+
 StreamChunkTimeoutClientTestResult streamChunkTimeoutTest(
     StreamChunkTimeoutClientInstruction& instruction) {
   auto client = createClient();
@@ -846,6 +866,10 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::streamInitialTimeout:
       result.streamInitialTimeout() =
           streamInitialTimeoutTest(*clientInstruction.streamInitialTimeout());
+      break;
+    case ClientInstruction::Type::streamCancel:
+      result.streamCancel() =
+          streamCancelTest(*clientInstruction.streamCancel());
       break;
     case ClientInstruction::Type::sinkBasic:
       result.sinkBasic() = sinkBasicTest(*clientInstruction.sinkBasic());

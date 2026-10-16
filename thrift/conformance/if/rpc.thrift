@@ -66,6 +66,7 @@ union ServerTestResult {
   106: StreamInitialDeclaredExceptionServerTestResult streamInitialDeclaredException;
   107: StreamInitialUndeclaredExceptionServerTestResult streamInitialUndeclaredException;
   108: StreamInitialTimeoutServerTestResult streamInitialTimeout;
+  109: StreamCancelServerTestResult streamCancel;
   200: SinkBasicServerTestResult sinkBasic;
   201: SinkChunkTimeoutServerTestResult sinkChunkTimeout;
   202: SinkInitialResponseServerTestResult sinkInitialResponse;
@@ -105,6 +106,7 @@ union ClientTestResult {
   106: StreamInitialDeclaredExceptionClientTestResult streamInitialDeclaredException;
   107: StreamInitialUndeclaredExceptionClientTestResult streamInitialUndeclaredException;
   108: StreamInitialTimeoutClientTestResult streamInitialTimeout;
+  109: StreamCancelClientTestResult streamCancel;
   200: SinkBasicClientTestResult sinkBasic;
   201: SinkChunkTimeoutClientTestResult sinkChunkTimeout;
   202: SinkInitialResponseClientTestResult sinkInitialResponse;
@@ -194,6 +196,11 @@ struct StreamInitialUndeclaredExceptionServerTestResult {
 
 struct StreamInitialTimeoutServerTestResult {
   1: Request request;
+}
+
+struct StreamCancelServerTestResult {
+  1: Request request;
+  2: bool cancelled;
 }
 
 struct SinkBasicServerTestResult {
@@ -366,6 +373,10 @@ struct StreamInitialTimeoutClientTestResult {
   1: bool timeoutException;
 }
 
+struct StreamCancelClientTestResult {
+  1: list<Response> streamPayloads;
+}
+
 struct SinkBasicClientTestResult {
   1: Response finalResponse;
 }
@@ -464,6 +475,7 @@ union ClientInstruction {
   106: StreamInitialDeclaredExceptionClientInstruction streamInitialDeclaredException;
   107: StreamInitialUndeclaredExceptionClientInstruction streamInitialUndeclaredException;
   108: StreamInitialTimeoutClientInstruction streamInitialTimeout;
+  109: StreamCancelClientInstruction streamCancel;
   200: SinkBasicClientInstruction sinkBasic;
   201: SinkChunkTimeoutClientInstruction sinkChunkTimeout;
   202: SinkInitialResponseClientInstruction sinkInitialResponse;
@@ -503,6 +515,7 @@ union ServerInstruction {
   106: StreamInitialDeclaredExceptionServerInstruction streamInitialDeclaredException;
   107: StreamInitialUndeclaredExceptionServerInstruction streamInitialUndeclaredException;
   108: StreamInitialTimeoutServerInstruction streamInitialTimeout;
+  109: StreamCancelServerInstruction streamCancel;
   200: SinkBasicServerInstruction sinkBasic;
   201: SinkChunkTimeoutServerInstruction sinkChunkTimeout;
   202: SinkInitialResponseServerInstruction sinkInitialResponse;
@@ -600,6 +613,11 @@ struct StreamInitialUndeclaredExceptionClientInstruction {
 struct StreamInitialTimeoutClientInstruction {
   1: Request request;
   2: i64 timeoutMs;
+}
+
+struct StreamCancelClientInstruction {
+  1: Request request;
+  2: i64 consumeCount;
 }
 
 struct SinkBasicClientInstruction {
@@ -788,6 +806,8 @@ struct StreamInitialUndeclaredExceptionServerInstruction {
 struct StreamInitialTimeoutServerInstruction {
   1: i64 timeoutMs;
 }
+
+struct StreamCancelServerInstruction {}
 
 struct SinkBasicServerInstruction {
   1: Response finalResponse;

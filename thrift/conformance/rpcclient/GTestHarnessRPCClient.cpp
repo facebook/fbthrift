@@ -30,12 +30,15 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #endif
 
 #include <fmt/core.h>
+#include <folly/CancellationToken.h>
 #include <folly/Subprocess.h>
 #include <folly/base64.h>
 #include <folly/coro/AsyncGenerator.h>
 #include <folly/coro/BlockingWait.h>
+#include <folly/coro/CurrentExecutor.h>
 #include <folly/coro/Sleep.h>
 #include <folly/futures/Future.h>
+#include <folly/synchronization/Baton.h>
 #include <thrift/conformance/PluggableFunctions.h>
 #include <thrift/conformance/RpcStructComparator.h>
 #include <thrift/conformance/Utils.h>
@@ -61,6 +64,10 @@ class ConformanceVerificationServer
   }
 
   void sendTestResult(std::unique_ptr<ClientTestResult> result) override {
+    if (serverResult_.getType() == ServerTestResult::Type::streamCancel) {
+      streamCancelled_.try_wait_for(std::chrono::seconds(5));
+      serverResult_.streamCancel()->cancelled() = cancelled_.load();
+    }
     clientResultPromise_.setValue(*result);
   }
 
@@ -123,6 +130,20 @@ class ConformanceVerificationServer
   // =================== Stream ===================
   apache::thrift::ServerStream<Response> streamBasic(
       std::unique_ptr<Request> req) override {
+    if (testCase_.serverInstruction()->streamCancel()) {
+      serverResult_.streamCancel().emplace().request() = *req;
+      folly::CancellationCallback onCancel(
+          co_await folly::coro::co_current_cancellation_token, [this] {
+            if (!cancelled_.exchange(true)) {
+              streamCancelled_.post();
+            }
+          });
+      for (int64_t i = 0;; ++i) {
+        Response payload;
+        payload.data() = folly::to<std::string>(i);
+        co_yield std::move(payload);
+      }
+    }
     serverResult_.streamBasic().emplace().request() = *req;
     for (auto payload :
          *testCase_.serverInstruction()->streamBasic()->streamPayloads()) {
@@ -630,6 +651,8 @@ class ConformanceVerificationServer
   folly::Promise<folly::Unit> getTestReceivedPromise_;
   folly::Promise<ClientTestResult> clientResultPromise_;
   ServerTestResult serverResult_;
+  std::atomic<bool> cancelled_{false};
+  folly::Baton<> streamCancelled_;
 };
 
 // What some cases need set on the server before it starts.

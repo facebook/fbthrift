@@ -685,6 +685,34 @@ Test createStreamBasicTest() {
   return ret;
 }
 
+Test createStreamCancelTest() {
+  Test ret;
+  ret.name() = "StreamCancelTest";
+  ret.tags()->emplace("spec/protocol/interface/#stream-cancellation");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "StreamCancel/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().streamCancel().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.consumeCount() = 5;
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().streamCancel().emplace();
+  for (int i = 0; i < 5; i++) {
+    clientTestResult.streamPayloads()->emplace_back().data() =
+        folly::to<std::string>(i);
+  }
+  rpcTest.serverInstruction().emplace().streamCancel().emplace();
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().streamCancel().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.cancelled() = true;
+
+  return ret;
+}
+
 Test createStreamChunkTimeoutTest() {
   Test ret;
   ret.name() = "StreamChunkTimeoutTest";
@@ -2071,6 +2099,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createRequestResponseTimeoutsSentTest());
   suite.tests()->push_back(createRequestResponseClientOnlyTimeoutsTest());
   suite.tests()->push_back(createRequestResponsePriorityTest());
+  suite.tests()->push_back(createStreamCancelTest());
   return suite;
 }
 
