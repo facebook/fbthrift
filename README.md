@@ -2,11 +2,11 @@ Facebook Thrift
 ---------------
 
 [![Linux Build Status](
-  https://github.com/facebook/fbthrift/actions/workflows/getdeps_linux.yml/badge.svg)](
-  https://github.com/facebook/fbthrift/actions/workflows/getdeps_linux.yml)
+  https://github.com/facebook/fbthrift/actions/workflows/linux.yml/badge.svg)](
+  https://github.com/facebook/fbthrift/actions/workflows/linux.yml)
 [![macOS Build Status](
-  https://github.com/facebook/fbthrift/actions/workflows/getdeps_mac.yml/badge.svg)](
-  https://github.com/facebook/fbthrift/actions/workflows/getdeps_mac.yml)
+  https://github.com/facebook/fbthrift/actions/workflows/macos.yml/badge.svg)](
+  https://github.com/facebook/fbthrift/actions/workflows/macos.yml)
 [![Windows Build Status](
   https://github.com/facebook/fbthrift/actions/workflows/getdeps_windows.yml/badge.svg)](
   https://github.com/facebook/fbthrift/actions/workflows/getdeps_windows.yml)
@@ -123,8 +123,9 @@ CMake options:
 
 ### `getdeps.py`
 
-`getdeps.py` also builds Thrift's sibling projects and is what CI uses. Prefer
-the CMake build above unless you need that.
+`getdeps.py` also builds Thrift's sibling projects and is what the Windows and
+Python CI use; the Linux and macOS CI use the CMake build above. Prefer the
+CMake build unless you need that.
 
     # Build, using system dependencies if available
     ./build/fbcode_builder/getdeps.py --allow-system-packages build fbthrift
