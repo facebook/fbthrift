@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-include "thrift/annotation/thrift.thrift"
-
-@thrift.AllowLegacyMissingUris
-package;
+package "facebook.com/thrift/conformance/protocol"
 
 namespace cpp2 apache.thrift.conformance
 namespace php apache_thrift
