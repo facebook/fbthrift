@@ -146,6 +146,18 @@ RequestResponseServerErrorClientTestResult requestResponseServerErrorTest(
   return result;
 }
 
+RequestResponseMetadataClientTestResult requestResponseMetadataTest(
+    const RequestResponseMetadataClientInstruction& instruction) {
+  RequestResponseMetadataClientTestResult result;
+  apache::thrift::RpcOptions rpcOptions;
+  for (const auto& [key, value] : *instruction.writeHeaders()) {
+    rpcOptions.setWriteHeader(key, value);
+  }
+  createClient()->sync_requestResponseBasic(
+      rpcOptions, result.response().emplace(), *instruction.request());
+  return result;
+}
+
 RequestResponseNoArgVoidResponseClientTestResult
 requestResponseNoArgVoidResponseTest(
     const RequestResponseNoArgVoidResponseClientInstruction&) {
@@ -771,6 +783,10 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::requestResponseServerError:
       result.requestResponseServerError() = requestResponseServerErrorTest(
           *clientInstruction.requestResponseServerError());
+      break;
+    case ClientInstruction::Type::requestResponseMetadata:
+      result.requestResponseMetadata() = requestResponseMetadataTest(
+          *clientInstruction.requestResponseMetadata());
       break;
     case ClientInstruction::Type::streamBasic:
       result.streamBasic() = streamBasicTest(*clientInstruction.streamBasic());

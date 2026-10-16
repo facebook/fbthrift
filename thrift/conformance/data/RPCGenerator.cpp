@@ -349,6 +349,43 @@ Test createRequestResponseUnknownMethodTest() {
   return ret;
 }
 
+Test createRequestResponseWriteHeadersTest() {
+  Test ret;
+  ret.name() = "RequestResponseWriteHeadersTest";
+  ret.tags()->emplace("spec/protocol/interface/#request");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseWriteHeaders/Success";
+
+  const std::map<std::string, std::string> headers{
+      {"conformance-first", "one"}, {"conformance-second", "two"}};
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().requestResponseMetadata().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.writeHeaders() = headers;
+  rpcTest.clientTestResult()
+      .emplace()
+      .requestResponseMetadata()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+  rpcTest.serverInstruction()
+      .emplace()
+      .requestResponseMetadata()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().requestResponseMetadata().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.headers() = headers;
+
+  return ret;
+}
+
 Test createRequestResponseNoArgVoidResponse() {
   Test ret;
   ret.name() = "RequestResponseNoArgVoidResponseTest";
@@ -1878,6 +1915,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createRequestResponseTaskExpiredTest());
   suite.tests()->push_back(createRequestResponseTooBigTest());
   suite.tests()->push_back(createRequestResponseUnknownMethodTest());
+  suite.tests()->push_back(createRequestResponseWriteHeadersTest());
   return suite;
 }
 

@@ -56,6 +56,7 @@ union ServerTestResult {
   5: RequestResponseTimeoutServerTestResult requestResponseTimeout;
   6: RequestResponseAnyExceptionServerTestResult requestResponseAnyException;
   7: RequestResponseServerErrorServerTestResult requestResponseServerError;
+  8: RequestResponseMetadataServerTestResult requestResponseMetadata;
   100: StreamBasicServerTestResult streamBasic;
   101: StreamChunkTimeoutServerTestResult streamChunkTimeout;
   102: StreamInitialResponseServerTestResult streamInitialResponse;
@@ -94,6 +95,7 @@ union ClientTestResult {
   5: RequestResponseTimeoutClientTestResult requestResponseTimeout;
   6: RequestResponseAnyExceptionClientTestResult requestResponseAnyException;
   7: RequestResponseServerErrorClientTestResult requestResponseServerError;
+  8: RequestResponseMetadataClientTestResult requestResponseMetadata;
   100: StreamBasicClientTestResult streamBasic;
   101: StreamChunkTimeoutClientTestResult streamChunkTimeout;
   102: StreamInitialResponseClientTestResult streamInitialResponse;
@@ -148,6 +150,11 @@ struct RequestResponseAnyExceptionServerTestResult {
 
 struct RequestResponseServerErrorServerTestResult {
   1: Request request;
+}
+
+struct RequestResponseMetadataServerTestResult {
+  1: Request request;
+  2: map<string, string> headers;
 }
 
 struct StreamBasicServerTestResult {
@@ -310,6 +317,10 @@ struct RequestResponseServerErrorClientTestResult {
   2: string exceptionMessage;
 }
 
+struct RequestResponseMetadataClientTestResult {
+  1: Response response;
+}
+
 struct StreamBasicClientTestResult {
   1: list<Response> streamPayloads;
 }
@@ -440,6 +451,7 @@ union ClientInstruction {
   5: RequestResponseTimeoutClientInstruction requestResponseTimeout;
   6: RequestResponseAnyExceptionClientInstruction requestResponseAnyException;
   7: RequestResponseServerErrorClientInstruction requestResponseServerError;
+  8: RequestResponseMetadataClientInstruction requestResponseMetadata;
   100: StreamBasicClientInstruction streamBasic;
   101: StreamChunkTimeoutClientInstruction streamChunkTimeout;
   102: StreamInitialResponseClientInstruction streamInitialResponse;
@@ -478,6 +490,7 @@ union ServerInstruction {
   5: RequestResponseTimeoutServerInstruction requestResponseTimeout;
   6: RequestResponseAnyExceptionServerInstruction requestResponseAnyException;
   7: RequestResponseServerErrorServerInstruction requestResponseServerError;
+  8: RequestResponseMetadataServerInstruction requestResponseMetadata;
   100: StreamBasicServerInstruction streamBasic;
   101: StreamChunkTimeoutServerInstruction streamChunkTimeout;
   102: StreamInitialResponseServerInstruction streamInitialResponse;
@@ -534,6 +547,11 @@ struct RequestResponseAnyExceptionClientInstruction {
 struct RequestResponseServerErrorClientInstruction {
   1: Request request;
   2: bool unknownMethod;
+}
+
+struct RequestResponseMetadataClientInstruction {
+  1: Request request;
+  2: map<string, string> writeHeaders;
 }
 
 struct StreamBasicClientInstruction {
@@ -714,6 +732,10 @@ struct ResponseTooBigServerError {
 
 struct RequestResponseServerErrorServerInstruction {
   1: ServerError error;
+}
+
+struct RequestResponseMetadataServerInstruction {
+  1: Response response;
 }
 
 struct StreamBasicServerInstruction {

@@ -163,6 +163,8 @@ use rpc::rpc::RequestResponseBasicClientInstruction;
 use rpc::rpc::RequestResponseBasicClientTestResult;
 use rpc::rpc::RequestResponseDeclaredExceptionClientInstruction;
 use rpc::rpc::RequestResponseDeclaredExceptionClientTestResult;
+use rpc::rpc::RequestResponseMetadataClientInstruction;
+use rpc::rpc::RequestResponseMetadataClientTestResult;
 use rpc::rpc::RequestResponseNoArgVoidResponseClientTestResult;
 use rpc::rpc::RequestResponseServerErrorClientInstruction;
 use rpc::rpc::RequestResponseServerErrorClientTestResult;
@@ -190,6 +192,7 @@ async fn test(
         requestResponseTimeout(i) => request_response_timeout(client, i).await,
         requestResponseAnyException(i) => request_response_any_exception(client, i).await,
         requestResponseServerError(i) => request_response_server_error(client, peer, i).await,
+        requestResponseMetadata(i) => request_response_metadata(client, i).await,
         interactionConstructor(i) => interaction_constructor(client, i).await,
         interactionFactoryFunction(i) => interaction_factory_function(client, i).await,
         interactionPersistsState(i) => interaction_persists_state(client, i).await,
@@ -395,6 +398,26 @@ async fn unknown_method(peer: &Peer) -> Result<fbthrift::ApplicationException> {
             r
         )),
     }
+}
+
+async fn request_response_metadata(
+    client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>,
+    instr: &RequestResponseMetadataClientInstruction,
+) -> Result<()> {
+    let mut opts = rust_types::RpcOptions::default();
+    for (key, value) in &instr.writeHeaders {
+        opts.set_write_header(key, value);
+    }
+    let response = client
+        .requestResponseBasic_with_rpc_opts(&instr.request, opts)
+        .await?;
+    let test_result =
+        ClientTestResult::requestResponseMetadata(RequestResponseMetadataClientTestResult {
+            response,
+            ..Default::default()
+        });
+    client.sendTestResult(&test_result).await?;
+    Ok(())
 }
 
 async fn request_response_no_arg_void_response(

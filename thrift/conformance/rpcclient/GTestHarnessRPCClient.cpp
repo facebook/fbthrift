@@ -72,6 +72,13 @@ class ConformanceVerificationServer
       serverResult_.requestResponseServerError().emplace().request() = *req;
       co_return co_await answerServerError(*serverError->error());
     }
+    if (auto metadata =
+            testCase_.serverInstruction()->requestResponseMetadata()) {
+      auto& result = serverResult_.requestResponseMetadata().emplace();
+      result.request() = *req;
+      recordMetadata(result);
+      co_return std::make_unique<Response>(*metadata->response());
+    }
     serverResult_.requestResponseBasic().emplace().request() = *req;
     co_return std::make_unique<Response>(
         *testCase_.serverInstruction()->requestResponseBasic()->response());
@@ -571,6 +578,16 @@ class ConformanceVerificationServer
     throw TApplicationException(*instruction.exceptionMessage());
   }
 
+  void recordMetadata(RequestResponseMetadataServerTestResult& result) {
+    for (const auto& [key, value] :
+         getRequestContext()->getHeader()->getHeaders()) {
+      if (key.starts_with("conformance-")) {
+        result.headers()[key] = value;
+      }
+    }
+  }
+
+  // The handler's part in a server error. Whatever it answers is thrown away.
   folly::coro::Task<std::unique_ptr<Response>> answerServerError(
       const ServerError& error) {
     auto res = std::make_unique<Response>();
