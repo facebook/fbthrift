@@ -206,9 +206,11 @@ class alignas(64) ContextImpl {
   /**
    * Register this handler to receive onWriteReady() callback.
    *
-   * Call this when returning Result::Backpressure from onWrite() to be
-   * notified when the pipeline can accept writes again. The handler must
-   * have a writeReadyHook_ member (detected at compile time).
+   * Call this only after a fireWrite() that returned Result::Backpressure.
+   * The transport calls onWriteReady() only after it returned Backpressure
+   * to a write, so a handler that registers for any other reason may never
+   * get onWriteReady(). The handler must have a writeReadyHook_ member
+   * (detected at compile time).
    *
    * No-op if the handler doesn't have a writeReadyHook_ or is already
    * registered.

@@ -788,18 +788,8 @@ class BufferingHandler {
 The pipeline automatically detects this hook via `requires` expressions when
 the handler is added, enabling O(1) registration/unregistration.
 
-### Context API for Write Ready Notifications
-
-| Method | Description |
-|--------|-------------|
-| `ctx.awaitWriteReady()` | Register for `onWriteReady()` callback |
-| `ctx.cancelAwaitWriteReady()` | Unregister from write ready list |
-
-### Handler Callback Method
-
-| Method | Called When |
-|--------|-------------|
-| `onWriteReady(ctx)` | Transport becomes writable (socket buffer drained) |
+[`detail/ContextImpl.h`](detail/ContextImpl.h) documents the context calls that
+register a handler for `onWriteReady()` and unregister it.
 
 ### Read Backpressure
 
