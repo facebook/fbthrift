@@ -38,13 +38,11 @@ macro (thrift_py3_test filename services)
   endif ()
 
   thrift_generate(
-    ${filename}
-    ${services}
-    "py3"
-    "${_py3_thrift_flags}"
-    "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${CMAKE_CURRENT_BINARY_DIR}"
-    "test")
+    ${filename}.thrift
+    LANGUAGE py3
+    SERVICES ${services}
+    OPTIONS ${_py3_thrift_flags}
+    INCLUDE_PREFIX test)
 
   foreach (_src "types" "clients" "services")
     set(_pyx "gen-py3/${filename}/${_src}.pyx")

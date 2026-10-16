@@ -58,8 +58,8 @@ include(GNUInstallDirs)
 #       CMAKE_CURRENT_BINARY_DIR. Defaults to the file's directory under
 #       PROJECT_BINARY_DIR.
 #   INCLUDE_PREFIX - (cpp2, py3) The prefix generated code uses to include
-#       generated headers. Defaults to the file's directory relative to
-#       PROJECT_SOURCE_DIR.
+#       generated headers; empty for none. Defaults to the file's directory
+#       relative to PROJECT_SOURCE_DIR.
 #   NAMESPACE - (python) Must match the "namespace py3" directive in the file.
 #       Dot-separated (e.g. "example.sum") maps to output directory structure
 #       (example/sum/<file>/).
@@ -73,188 +73,136 @@ include(GNUInstallDirs)
 #
 # Using the generated sources from another directory needs bypass_source_check()
 # there under policies older than CMake 3.20 (CMP0118).
-#
-# Positional form:
-#
-#   thrift_generate(file_name services language options file_path output_path
-#                   include_prefix [TARGET_NAME_BASE <base>]
-#                   [THRIFT_INCLUDE_DIRECTORIES <dir>...]
-#                   [NAMESPACE <py.namespace>])
-#
-#   @file_name - Input file name, without .thrift. Will be used for naming the
-#       CMake target if TARGET_NAME_BASE is not specified.
-#   @services  - A list of services that are declared in the thrift file
-#   @language  - The generator to use (cpp2, py3, or python)
-#   @options   - Extra options to pass to the generator, comma-separated
-#   @file_path - The directory where the thrift file lives
-#   @output_path - The directory where gen-<language> is created
-#   @include_prefix - Prefix to use for thrift includes in generated sources
-#   @TARGET_NAME_BASE (optional) - name used for target instead of real filename
-#   @THRIFT_INCLUDE_DIRECTORIES (optional) path to thrift include directories
-#   @NAMESPACE (optional) - As above.
-#
-# If any of the positional fields is empty, it is still required to provide an
-# empty string.
-#
-# Output:
-#  <base>-<language>-target     - A custom target to add a dependency
-#  ${<base>-<language>-HEADERS} - The generated Header Files.
-#  ${<base>-<language>-SOURCES} - The generated Source Files.
-# where <base> is TARGET_NAME_BASE or file_name. Except for python, it also
-# installs gen-<language> from the current source directory.
-#
-# Using the sources from another directory needs bypass_source_check() there,
-# under the same conditions as above.
-#
-# Both forms are parsed in this function: forwarding ${ARGV} to another
-# function would drop empty arguments and split lists, and positional calls
-# pass both.
-function (thrift_generate)
-  if ("${ARGV0}" MATCHES "\\.thrift$")
-    set(keyword_form TRUE)
-    set(one_value_keywords
-        LANGUAGE
-        NAME
-        OUTPUT_DIRECTORY
-        INCLUDE_PREFIX
-        NAMESPACE
-        OUT_SOURCES)
-    cmake_parse_arguments(
-      PARSE_ARGV 1 THRIFT_GENERATE "" "${one_value_keywords}"
-      "SERVICES;OPTIONS;INCLUDE_DIRECTORIES")
-    if (DEFINED THRIFT_GENERATE_UNPARSED_ARGUMENTS)
-      message(
-        FATAL_ERROR
-          "thrift_generate: unexpected arguments: "
-          "${THRIFT_GENERATE_UNPARSED_ARGUMENTS}")
-    endif ()
-    foreach (keyword ${THRIFT_GENERATE_KEYWORDS_MISSING_VALUES})
-      if (keyword IN_LIST one_value_keywords)
-        message(FATAL_ERROR "thrift_generate: ${keyword} needs a value")
+function (thrift_generate file)
+  if (NOT "${file}" MATCHES "\\.thrift$")
+    message(
+      FATAL_ERROR
+        "thrift_generate: expected a .thrift file, got '${file}'. The "
+        "positional form was removed; use thrift_generate(<file>.thrift "
+        "LANGUAGE ...) or thrift_object().")
+  endif ()
+  set(one_value_keywords
+      LANGUAGE
+      NAME
+      OUTPUT_DIRECTORY
+      INCLUDE_PREFIX
+      NAMESPACE
+      OUT_SOURCES)
+  # Before CMP0174 (CMake 3.31), cmake_parse_arguments() drops a keyword whose
+  # value is an empty string, so find those here.
+  set(empty_keywords)
+  math(EXPR last "${ARGC} - 2")
+  if (last GREATER_EQUAL 1)
+    foreach (i RANGE 1 ${last})
+      math(EXPR next "${i} + 1")
+      if ("${ARGV${i}}" IN_LIST one_value_keywords AND "${ARGV${next}}"
+                                                       STREQUAL "")
+        list(APPEND empty_keywords "${ARGV${i}}")
       endif ()
     endforeach ()
-    set(language "${THRIFT_GENERATE_LANGUAGE}")
-    if (NOT language MATCHES "^(cpp2|py3|python)$")
-      message(
-        FATAL_ERROR "thrift_generate: LANGUAGE must be cpp2, py3 or python")
+  endif ()
+  cmake_policy(PUSH)
+  if (POLICY CMP0174)
+    cmake_policy(SET CMP0174 NEW)
+  endif ()
+  cmake_parse_arguments(
+    PARSE_ARGV 1 THRIFT_GENERATE "" "${one_value_keywords}"
+    "SERVICES;OPTIONS;INCLUDE_DIRECTORIES")
+  cmake_policy(POP)
+  if (DEFINED THRIFT_GENERATE_UNPARSED_ARGUMENTS)
+    message(
+      FATAL_ERROR
+        "thrift_generate: unexpected arguments: "
+        "${THRIFT_GENERATE_UNPARSED_ARGUMENTS}")
+  endif ()
+  foreach (keyword ${THRIFT_GENERATE_KEYWORDS_MISSING_VALUES} ${empty_keywords})
+    # Only an explicit "" means empty. A keyword with no argument at all is
+    # also in KEYWORDS_MISSING_VALUES, and under CMP0174 it is DEFINED too.
+    if (keyword MATCHES "^(INCLUDE_PREFIX|NAMESPACE)$"
+        AND keyword IN_LIST empty_keywords)
+      continue()
     endif ()
-    if (DEFINED THRIFT_GENERATE_NAMESPACE AND NOT language STREQUAL "python")
-      message(FATAL_ERROR "thrift_generate: NAMESPACE requires LANGUAGE python")
+    if (keyword IN_LIST one_value_keywords)
+      message(FATAL_ERROR "thrift_generate: ${keyword} needs a value")
     endif ()
-    if (DEFINED THRIFT_GENERATE_INCLUDE_PREFIX AND language STREQUAL "python")
-      message(
-        FATAL_ERROR "thrift_generate: INCLUDE_PREFIX does not apply to python")
-    endif ()
+  endforeach ()
+  set(language "${THRIFT_GENERATE_LANGUAGE}")
+  if (NOT language MATCHES "^(cpp2|py3|python)$")
+    message(
+      FATAL_ERROR "thrift_generate: LANGUAGE must be cpp2, py3 or python")
+  endif ()
+  set(namespace "${THRIFT_GENERATE_NAMESPACE}")
+  if (NOT namespace STREQUAL "" AND NOT language STREQUAL "python")
+    message(FATAL_ERROR "thrift_generate: NAMESPACE requires LANGUAGE python")
+  endif ()
+  if (NOT "${THRIFT_GENERATE_INCLUDE_PREFIX}" STREQUAL ""
+      AND language STREQUAL "python")
+    message(
+      FATAL_ERROR "thrift_generate: INCLUDE_PREFIX does not apply to python")
+  endif ()
 
-    get_filename_component(thrift_file "${ARGV0}" ABSOLUTE BASE_DIR
-                           "${CMAKE_CURRENT_SOURCE_DIR}")
-    get_filename_component(stem "${thrift_file}" NAME_WLE)
-    get_filename_component(thrift_dir "${thrift_file}" DIRECTORY)
-    file(RELATIVE_PATH rel "${PROJECT_SOURCE_DIR}" "${thrift_dir}")
-    set(outside FALSE)
-    if (rel MATCHES "^\\.\\.(/|$)" OR IS_ABSOLUTE "${rel}")
-      set(outside TRUE)
-    endif ()
+  get_filename_component(thrift_file "${file}" ABSOLUTE BASE_DIR
+                         "${CMAKE_CURRENT_SOURCE_DIR}")
+  get_filename_component(stem "${thrift_file}" NAME_WLE)
+  get_filename_component(thrift_dir "${thrift_file}" DIRECTORY)
+  file(RELATIVE_PATH rel "${PROJECT_SOURCE_DIR}" "${thrift_dir}")
+  set(outside FALSE)
+  if (rel MATCHES "^\\.\\.(/|$)" OR IS_ABSOLUTE "${rel}")
+    set(outside TRUE)
+  endif ()
 
-    set(name "${stem}")
-    if (DEFINED THRIFT_GENERATE_NAME)
-      set(name "${THRIFT_GENERATE_NAME}")
-    endif ()
-    if (DEFINED THRIFT_GENERATE_OUTPUT_DIRECTORY)
-      get_filename_component(
-        output_dir "${THRIFT_GENERATE_OUTPUT_DIRECTORY}" ABSOLUTE BASE_DIR
-        "${CMAKE_CURRENT_BINARY_DIR}")
-    elseif (outside)
-      message(
-        FATAL_ERROR
-          "thrift_generate: ${ARGV0} is outside PROJECT_SOURCE_DIR, so "
-          "OUTPUT_DIRECTORY is required")
-    elseif (rel STREQUAL "")
-      set(output_dir "${PROJECT_BINARY_DIR}")
-    else ()
-      set(output_dir "${PROJECT_BINARY_DIR}/${rel}")
-    endif ()
-    if (DEFINED THRIFT_GENERATE_INCLUDE_PREFIX)
-      set(include_prefix "${THRIFT_GENERATE_INCLUDE_PREFIX}")
-    elseif (language STREQUAL "python")
-      set(include_prefix "")
-    elseif (outside)
-      message(
-        FATAL_ERROR
-          "thrift_generate: ${ARGV0} is outside PROJECT_SOURCE_DIR, so "
-          "INCLUDE_PREFIX is required")
-    else ()
-      set(include_prefix "${rel}")
-    endif ()
-    set(include_args)
-    foreach (dir ${THRIFT_GENERATE_INCLUDE_DIRECTORIES})
-      get_filename_component(dir "${dir}" ABSOLUTE BASE_DIR
-                             "${CMAKE_CURRENT_SOURCE_DIR}")
-      list(APPEND include_args "-I" "${dir}")
-    endforeach ()
-    if (NOT include_args)
-      set(include_args "-I" "${PROJECT_SOURCE_DIR}")
-    endif ()
-    set(namespace "${THRIFT_GENERATE_NAMESPACE}")
-    set(services "${THRIFT_GENERATE_SERVICES}")
-    set(options "${THRIFT_GENERATE_OPTIONS}")
-    set(layouts FALSE)
-    if ("layouts" IN_LIST options)
-      set(layouts TRUE)
-    endif ()
-    set(no_metadata FALSE)
-    if ("no_metadata" IN_LIST options)
-      set(no_metadata TRUE)
-    endif ()
+  set(name "${stem}")
+  if (DEFINED THRIFT_GENERATE_NAME)
+    set(name "${THRIFT_GENERATE_NAME}")
+  endif ()
+  if (DEFINED THRIFT_GENERATE_OUTPUT_DIRECTORY)
+    get_filename_component(
+      output_dir "${THRIFT_GENERATE_OUTPUT_DIRECTORY}" ABSOLUTE BASE_DIR
+      "${CMAKE_CURRENT_BINARY_DIR}")
+  elseif (outside)
+    message(
+      FATAL_ERROR
+        "thrift_generate: ${file} is outside PROJECT_SOURCE_DIR, so "
+        "OUTPUT_DIRECTORY is required")
+  elseif (rel STREQUAL "")
+    set(output_dir "${PROJECT_BINARY_DIR}")
   else ()
-    set(keyword_form FALSE)
-    if (ARGC LESS 7)
-      message(
-        FATAL_ERROR
-          "thrift_generate: expected <file>.thrift and keywords, or seven "
-          "positional arguments; got ${ARGC} arguments")
-    endif ()
-    set(stem "${ARGV0}")
-    set(services "${ARGV1}")
-    set(language "${ARGV2}")
-    set(options "${ARGV3}")
-    set(thrift_file "${ARGV4}/${ARGV0}.thrift")
-    set(output_dir "${ARGV5}")
-    set(include_prefix "${ARGV6}")
-    set(trailing)
-    if (ARGC GREATER 7)
-      math(EXPR last "${ARGC} - 1")
-      foreach (i RANGE 7 ${last})
-        list(APPEND trailing "${ARGV${i}}")
-      endforeach ()
-    endif ()
-    cmake_parse_arguments(
-      THRIFT_GENERATE "" "TARGET_NAME_BASE;NAMESPACE"
-      "THRIFT_INCLUDE_DIRECTORIES" "${trailing}")
-    set(name "${stem}")
-    if (DEFINED THRIFT_GENERATE_TARGET_NAME_BASE
-        AND NOT THRIFT_GENERATE_TARGET_NAME_BASE STREQUAL "")
-      set(name "${THRIFT_GENERATE_TARGET_NAME_BASE}")
-    endif ()
-    set(namespace "${THRIFT_GENERATE_NAMESPACE}")
-    set(include_args)
-    foreach (dir ${THRIFT_GENERATE_THRIFT_INCLUDE_DIRECTORIES})
-      list(APPEND include_args "-I" "${dir}")
-    endforeach ()
-    set(layouts FALSE)
-    if ("${options}" MATCHES "layouts")
-      set(layouts TRUE)
-    endif ()
-    set(no_metadata FALSE)
-    if ("${options}" MATCHES "no_metadata")
-      set(no_metadata TRUE)
-    endif ()
+    set(output_dir "${PROJECT_BINARY_DIR}/${rel}")
+  endif ()
+  if (DEFINED THRIFT_GENERATE_INCLUDE_PREFIX OR "INCLUDE_PREFIX" IN_LIST
+                                                 empty_keywords)
+    set(include_prefix "${THRIFT_GENERATE_INCLUDE_PREFIX}")
+  elseif (language STREQUAL "python")
+    set(include_prefix "")
+  elseif (outside)
+    message(
+      FATAL_ERROR
+        "thrift_generate: ${file} is outside PROJECT_SOURCE_DIR, so "
+        "INCLUDE_PREFIX is required")
+  else ()
+    set(include_prefix "${rel}")
+  endif ()
+  set(include_args)
+  foreach (dir ${THRIFT_GENERATE_INCLUDE_DIRECTORIES})
+    get_filename_component(dir "${dir}" ABSOLUTE BASE_DIR
+                           "${CMAKE_CURRENT_SOURCE_DIR}")
+    list(APPEND include_args "-I" "${dir}")
+  endforeach ()
+  if (NOT include_args)
+    set(include_args "-I" "${PROJECT_SOURCE_DIR}")
+  endif ()
+  set(services "${THRIFT_GENERATE_SERVICES}")
+  set(options "${THRIFT_GENERATE_OPTIONS}")
+  set(layouts FALSE)
+  if ("layouts" IN_LIST options)
+    set(layouts TRUE)
+  endif ()
+  set(no_metadata FALSE)
+  if ("no_metadata" IN_LIST options)
+    set(no_metadata TRUE)
   endif ()
 
-  set(generator "${language}")
-  if (language MATCHES "^(cpp2|py3|python)$")
-    set(generator "mstch_${language}")
-  endif ()
+  set(generator "mstch_${language}")
   string(REPLACE ";" "," joined_options "${options}")
   set(gen_dir "${output_dir}/gen-${language}")
   set(headers
@@ -347,29 +295,8 @@ function (thrift_generate)
                                                             ${sources})
   endif ()
 
-  if (keyword_form)
-    if (DEFINED THRIFT_GENERATE_OUT_SOURCES)
-      set(${THRIFT_GENERATE_OUT_SOURCES}
-          "${sources}"
-          PARENT_SCOPE)
-    endif ()
-  else ()
-    if (NOT "${language}" STREQUAL "python")
-      install(
-        DIRECTORY gen-${language}
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${include_prefix}
-        FILES_MATCHING
-        PATTERN "*.h")
-      install(
-        DIRECTORY gen-${language}
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${include_prefix}
-        FILES_MATCHING
-        PATTERN "*.tcc")
-    endif ()
-    set("${name}-${language}-HEADERS"
-        "${headers}"
-        PARENT_SCOPE)
-    set("${name}-${language}-SOURCES"
+  if (DEFINED THRIFT_GENERATE_OUT_SOURCES)
+    set(${THRIFT_GENERATE_OUT_SOURCES}
         "${sources}"
         PARENT_SCOPE)
   endif ()
@@ -379,17 +306,25 @@ endfunction ()
 # dependencies to generate and compile thrift generated files
 #
 # Params:
-#   @file_name - The name of the thrift file
+#   @file_name - The name of the thrift file, without .thrift
 #   @services  - A list of services that are declared in the thrift file
-#   @language  - The generator to use (cpp, cpp2, or python)
-#   @options   - Extra options to pass to the generator
+#   @language  - The generator to use (cpp2 or python)
+#   @options   - Extra options to pass to the generator, comma-separated
 #   @file_path - The directory where the thrift file lives
 #   @output_path - The directory where the thrift objects will be built
 #   @include_prefix - The last part of output_path, relative include prefix
+#   @TARGET_NAME_BASE (optional) - name used for target instead of real filename
+#   @THRIFT_INCLUDE_DIRECTORIES (optional) path to thrift include directories
+#   @NAMESPACE (optional) - As in thrift_generate (python).
 #
 # Output:
 #  A object file named `${file-name}-${language}-obj` to include into your
 #  project's library
+#  ${<base>-<language>-SOURCES} - The generated sources, where <base> is
+#  TARGET_NAME_BASE or file_name.
+#
+# Except for python, it also installs gen-<language> from the current source
+# directory.
 #
 # Notes:
 # If any of the fields is empty, it is still required to provide an empty string
@@ -405,7 +340,7 @@ endfunction ()
 #     #include_prefix
 #   )
 #   add_library(somelib $<TARGET_OBJECTS:${file_name}-${language}-obj> ...)
-macro (
+function (
   thrift_object
   file_name
   services
@@ -414,22 +349,54 @@ macro (
   file_path
   output_path
   include_prefix)
-  thrift_generate(
-    "${file_name}"
-    "${services}"
-    "${language}"
-    "${options}"
-    "${file_path}"
-    "${output_path}"
-    "${include_prefix}"
+  cmake_parse_arguments(
+    THRIFT_OBJECT "" "TARGET_NAME_BASE;NAMESPACE" "THRIFT_INCLUDE_DIRECTORIES"
     ${ARGN})
+  set(name "${file_name}")
+  if (NOT "${THRIFT_OBJECT_TARGET_NAME_BASE}" STREQUAL "")
+    set(name "${THRIFT_OBJECT_TARGET_NAME_BASE}")
+  endif ()
+  string(REPLACE "," ";" option_list "${options}")
+  set(prefix "${include_prefix}")
+  set(extra_args)
+  if ("${language}" STREQUAL "python")
+    set(prefix "")
+    if (NOT "${THRIFT_OBJECT_NAMESPACE}" STREQUAL "")
+      list(APPEND extra_args NAMESPACE "${THRIFT_OBJECT_NAMESPACE}")
+    endif ()
+  endif ()
+  if (NOT "${output_path}" STREQUAL "")
+    list(APPEND extra_args OUTPUT_DIRECTORY "${output_path}")
+  endif ()
+  thrift_generate(
+    "${file_path}/${file_name}.thrift"
+    LANGUAGE "${language}"
+    SERVICES ${services}
+    OPTIONS ${option_list}
+    INCLUDE_DIRECTORIES ${THRIFT_OBJECT_THRIFT_INCLUDE_DIRECTORIES}
+    NAME "${name}"
+    INCLUDE_PREFIX "${prefix}"
+    ${extra_args}
+    OUT_SOURCES sources)
+  set("${name}-${language}-SOURCES"
+      "${sources}"
+      PARENT_SCOPE)
   if ("${language}" STREQUAL "python")
     # Python: generated .py files are the artifacts
     message("Thrift will generate Python files for : ${file_name}-${language}")
   else ()
-    bypass_source_check(${${file_name}-${language}-SOURCES})
-    add_library("${file_name}-${language}-obj" OBJECT
-                ${${file_name}-${language}-SOURCES})
+    install(
+      DIRECTORY gen-${language}
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${include_prefix}
+      FILES_MATCHING
+      PATTERN "*.h")
+    install(
+      DIRECTORY gen-${language}
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${include_prefix}
+      FILES_MATCHING
+      PATTERN "*.tcc")
+    bypass_source_check(${sources})
+    add_library("${file_name}-${language}-obj" OBJECT ${sources})
     # $<TARGET_OBJECTS:...> and add_dependencies() carry no usage
     # requirements, so the generated sources need the roots directly.
     target_include_directories(
@@ -440,7 +407,7 @@ macro (
                      "${file_name}-${language}-target")
     message("Thrift will create the Object file : ${file_name}-${language}-obj")
   endif ()
-endmacro ()
+endfunction ()
 
 # Same as thrift object in terms of usage but creates the library instead of
 # object so that you can use to link against your library instead of including
