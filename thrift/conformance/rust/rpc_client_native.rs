@@ -463,6 +463,16 @@ async fn request_response_metadata(
         opts.set_queue_timeout_ms(timeout.try_into()?);
     }
     opts.set_client_only_timeouts(instr.clientOnlyTimeouts);
+    if let Some(priority) = instr.priority {
+        opts.set_priority(match priority {
+            0 => nativeclient::Priority::HighImportant,
+            1 => nativeclient::Priority::High,
+            2 => nativeclient::Priority::Important,
+            3 => nativeclient::Priority::Normal,
+            4 => nativeclient::Priority::BestEffort,
+            p => anyhow::bail!("Unknown priority {}", p),
+        });
+    }
     let mut builder = peer.channel_builder()?;
     for header in &instr.persistentHeaders {
         builder = builder.with_persistent_header(header);

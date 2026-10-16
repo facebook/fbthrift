@@ -160,6 +160,10 @@ RequestResponseMetadataClientTestResult requestResponseMetadataTest(
     rpcOptions.setQueueTimeout(std::chrono::milliseconds(*queueTimeoutMs));
   }
   rpcOptions.setClientOnlyTimeouts(*instruction.clientOnlyTimeouts());
+  if (auto priority = instruction.priority()) {
+    rpcOptions.setPriority(
+        static_cast<apache::thrift::concurrency::PRIORITY>(*priority));
+  }
   auto client = std::make_unique<Client<RPCConformanceService>>(
       PooledRequestChannel::newChannel(
           [headers = *instruction.persistentHeaders()](folly::EventBase& eb) {

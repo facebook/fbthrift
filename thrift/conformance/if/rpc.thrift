@@ -157,6 +157,7 @@ struct RequestResponseMetadataServerTestResult {
   2: map<string, string> headers;
   3: optional i64 clientTimeoutMs;
   4: optional i64 queueTimeoutMs;
+  5: optional i32 priority;
 }
 
 struct StreamBasicServerTestResult {
@@ -558,6 +559,7 @@ struct RequestResponseMetadataClientInstruction {
   4: optional i64 timeoutMs;
   5: optional i64 queueTimeoutMs;
   6: bool clientOnlyTimeouts;
+  7: optional i32 priority;
 }
 
 struct StreamBasicClientInstruction {

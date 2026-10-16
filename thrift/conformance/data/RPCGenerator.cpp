@@ -500,6 +500,43 @@ Test createRequestResponseClientOnlyTimeoutsTest() {
   return ret;
 }
 
+Test createRequestResponsePriorityTest() {
+  Test ret;
+  ret.name() = "RequestResponsePriorityTest";
+  ret.tags()->emplace("spec/protocol/interface/#request");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponsePriority/Success";
+
+  // apache::thrift::concurrency::BEST_EFFORT, not the default NORMAL.
+  const int32_t priority = 4;
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().requestResponseMetadata().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.priority() = priority;
+  rpcTest.clientTestResult()
+      .emplace()
+      .requestResponseMetadata()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+  rpcTest.serverInstruction()
+      .emplace()
+      .requestResponseMetadata()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().requestResponseMetadata().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.priority() = priority;
+
+  return ret;
+}
+
 Test createRequestResponseNoArgVoidResponse() {
   Test ret;
   ret.name() = "RequestResponseNoArgVoidResponseTest";
@@ -2033,6 +2070,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createRequestResponsePersistentHeadersTest());
   suite.tests()->push_back(createRequestResponseTimeoutsSentTest());
   suite.tests()->push_back(createRequestResponseClientOnlyTimeoutsTest());
+  suite.tests()->push_back(createRequestResponsePriorityTest());
   return suite;
 }
 

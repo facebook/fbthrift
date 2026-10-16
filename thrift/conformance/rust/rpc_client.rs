@@ -421,6 +421,9 @@ async fn request_response_metadata(
         opts.set_queue_timeout_ms(timeout.try_into()?);
     }
     opts.set_client_only_timeouts(instr.clientOnlyTimeouts);
+    if let Some(priority) = instr.priority {
+        opts.set_priority(rust_types::PRIORITY { repr: priority });
+    }
     let mut builder = peer.channel_builder()?;
     for header in &instr.persistentHeaders {
         builder = builder.with_persistent_header(header);

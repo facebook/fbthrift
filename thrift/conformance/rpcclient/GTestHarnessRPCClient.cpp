@@ -591,6 +591,9 @@ class ConformanceVerificationServer
       result.clientTimeoutMs() = header->getClientTimeout().count();
       result.queueTimeoutMs() = header->getClientQueueTimeout().count();
     }
+    if (sent.priority().has_value()) {
+      result.priority() = static_cast<int32_t>(header->getCallPriority());
+    }
   }
 
   // The handler's part in a server error. Whatever it answers is thrown away.
