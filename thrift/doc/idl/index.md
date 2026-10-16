@@ -323,6 +323,7 @@ Let `namespace_path` denote `path` where every `/` is replaced with `.` and `rev
 * Hack: The namespace is the value of `namespace_path`.
 * Java (`java.swift`): The namespace is a concatenation of `reverse(domain)` and `namespace_path` separated by a period.
 * Swift (`swift`, experimental): The module name is formed by joining the components of `domain_prefix` and `path` with underscores (`_`), flattening the `.`-separated domain and `/`-separated path into a single identifier. Since package segments are already lowercase alphanumeric (path segments may also contain `_`), no further character rewriting is needed; only a leading digit or a name matching a reserved Swift keyword is prefixed with `_`. Unlike Python, the file-name path component is retained. An explicit `namespace swift` directive overrides this derivation.
+* Go (`go`): The Go namespace is not derived from the package name. Without an explicit `namespace go` directive, it defaults to the Thrift file name without extension, converted to lowercase. Use `namespace go` to specify the generated package's import path.
 
 Other Thrift implementations must define their own mappings from package names to namespaces.
 
@@ -342,6 +343,7 @@ This gives the following default namespaces:
 | Hack        | `hack`          | `meta.search.query`     |
 | Java        | `java.swift`    | `com.meta.search.query` |
 | Swift       | `swift`         | `meta_search_query`     |
+| Go          | `go`            | `query`                 |
 
 Here is an example with the package name not containing the file name component:
 
@@ -357,8 +359,9 @@ package "meta.com/search"
 | Hack        | `hack`          | `meta.search`     |
 | Java        | `java.swift`    | `com.meta.search` |
 | Swift       | `swift`         | `meta_search`     |
+| Go          | `go`            | `query`           |
 
-In both cases the Python namespaces don't include the file name component.
+In both cases the Python namespaces don't include the file name component. The Go namespace is `query` in both cases because it defaults to the file name, independently of the package declaration.
 
 The default namespace can be overriden for individual target languages with the [namespace directive](#namespace-directives).
 
@@ -414,8 +417,8 @@ namespace cpp2 facebook.peoplesearch
 // `Meta.PeopleSearch`.
 namespace csharp Meta.PeopleSearch
 
-// Directs the compiler to generate Go code inside the package
-// `facebook.peoplesearch`.
+// Directs the compiler to generate Go code with import path
+// `facebook/peoplesearch`.
 namespace go facebook.peoplesearch
 
 // Directs the compiler to generate Java code inside the package
