@@ -153,7 +153,18 @@ RequestResponseMetadataClientTestResult requestResponseMetadataTest(
   for (const auto& [key, value] : *instruction.writeHeaders()) {
     rpcOptions.setWriteHeader(key, value);
   }
-  createClient()->sync_requestResponseBasic(
+  auto client = std::make_unique<Client<RPCConformanceService>>(
+      PooledRequestChannel::newChannel(
+          [headers = *instruction.persistentHeaders()](folly::EventBase& eb) {
+            auto channel = RocketClientChannel::newChannel(
+                folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(
+                    &eb, folly::SocketAddress("::1", FLAGS_port))));
+            for (const auto& [key, value] : headers) {
+              channel->setPersistentHeader(key, value);
+            }
+            return channel;
+          }));
+  client->sync_requestResponseBasic(
       rpcOptions, result.response().emplace(), *instruction.request());
   return result;
 }

@@ -552,6 +552,7 @@ struct RequestResponseServerErrorClientInstruction {
 struct RequestResponseMetadataClientInstruction {
   1: Request request;
   2: map<string, string> writeHeaders;
+  3: map<string, string> persistentHeaders;
 }
 
 struct StreamBasicClientInstruction {

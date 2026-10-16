@@ -114,8 +114,13 @@ async fn get_client(
     // TODO: Why aren't we using the SRclient builder here? It has more functionality it seems
     // over the bareclient (specifically the ability to configure the RPC options without specying
     // a serialization protocol)
-    let channel = peer.channel_builder()?.build_channel()?;
+    client_of(peer.channel_builder()?.build_channel()?)
+}
 
+fn client_of(
+    channel: thriftclient::ThriftChannel,
+) -> Result<Arc<dyn RPCConformanceServiceExt<thriftclient::ThriftChannel> + Send + Sync + 'static>>
+{
     match channel.protocol_id() {
         fbthrift::ProtocolID::BinaryProtocol => Ok(<dyn RPCConformanceServiceExt<_>>::new(
             fbthrift::BinaryProtocol,
@@ -192,7 +197,7 @@ async fn test(
         requestResponseTimeout(i) => request_response_timeout(client, i).await,
         requestResponseAnyException(i) => request_response_any_exception(client, i).await,
         requestResponseServerError(i) => request_response_server_error(client, peer, i).await,
-        requestResponseMetadata(i) => request_response_metadata(client, i).await,
+        requestResponseMetadata(i) => request_response_metadata(client, peer, i).await,
         interactionConstructor(i) => interaction_constructor(client, i).await,
         interactionFactoryFunction(i) => interaction_factory_function(client, i).await,
         interactionPersistsState(i) => interaction_persists_state(client, i).await,
@@ -402,13 +407,18 @@ async fn unknown_method(peer: &Peer) -> Result<fbthrift::ApplicationException> {
 
 async fn request_response_metadata(
     client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>,
+    peer: &Peer,
     instr: &RequestResponseMetadataClientInstruction,
 ) -> Result<()> {
     let mut opts = rust_types::RpcOptions::default();
     for (key, value) in &instr.writeHeaders {
         opts.set_write_header(key, value);
     }
-    let response = client
+    let mut builder = peer.channel_builder()?;
+    for header in &instr.persistentHeaders {
+        builder = builder.with_persistent_header(header);
+    }
+    let response = client_of(builder.build_channel()?)?
         .requestResponseBasic_with_rpc_opts(&instr.request, opts)
         .await?;
     let test_result =
