@@ -2178,6 +2178,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createRequestResponseConcurrentTest());
   suite.tests()->push_back(createStreamCancelTest());
   suite.tests()->push_back(createStreamMemoryBufferSizeTest());
+  suite.tests()->push_back(createSinkChunkTimeoutTest());
   return suite;
 }
 

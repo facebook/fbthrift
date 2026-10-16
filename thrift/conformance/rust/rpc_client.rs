@@ -844,9 +844,14 @@ async fn sink_chunk_timeout(
     instr: &SinkChunkTimeoutClientInstruction,
 ) -> Result<()> {
     let sink_result = client.sinkChunkTimeout(&instr.request).await?;
+    let pause = futures::stream::once(tokio::time::sleep(Duration::from_millis(
+        instr.chunkTimeoutMs.try_into()?,
+    )))
+    .filter_map(|()| async { None });
     let final_response = (sink_result.sink)(
         futures::stream::iter(instr.sinkPayloads.clone())
             .map(Ok)
+            .chain(pause)
             .boxed(),
     )
     .await;

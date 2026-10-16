@@ -7062,6 +7062,10 @@ rust/ThriftRPCClientTest/BidiMethodUndeclaredException/Success.BidiMethodUndecla
 # the message and nothing else. The `rustnative` category reads the exception
 # itself.
 rust/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseAnyExceptionTest
+# When the server fails a sink with its chunk timeout, bareclient's Rust side
+# reports "Sink generator was aborted" instead of the TIMEOUT exception its
+# C++ client raised.
+rust/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
 
 # Rust nativeclient RPC client tests
 #

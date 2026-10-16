@@ -32,6 +32,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 
 #include <fmt/core.h>
 #include <folly/CancellationToken.h>
+#include <folly/ScopeGuard.h>
 #include <folly/Subprocess.h>
 #include <folly/Synchronized.h>
 #include <folly/base64.h>
@@ -69,6 +70,9 @@ class ConformanceVerificationServer
     if (serverResult_.getType() == ServerTestResult::Type::streamCancel) {
       streamCancelled_.try_wait_for(std::chrono::seconds(5));
       serverResult_.streamCancel()->cancelled() = cancelled_.load();
+    }
+    if (serverResult_.getType() == ServerTestResult::Type::sinkChunkTimeout) {
+      sinkConsumerDone_.try_wait_for(std::chrono::seconds(5));
     }
     if (testCase_.serverInstruction()->requestResponseConcurrent()) {
       auto& concurrent = serverResult_.requestResponseConcurrent().emplace();
@@ -272,6 +276,35 @@ class ConformanceVerificationServer
         },
         static_cast<uint64_t>(
             *testCase_.serverInstruction()->sinkBasic()->bufferSize())};
+  }
+
+  apache::thrift::SinkConsumer<Request, Response> sinkChunkTimeout(
+      std::unique_ptr<Request> req) override {
+    serverResult_.sinkChunkTimeout().emplace().request() = *req;
+    return apache::thrift::SinkConsumer<Request, Response>{
+        [&](folly::coro::AsyncGenerator<Request&&> gen)
+            -> folly::coro::Task<Response> {
+          SCOPE_EXIT {
+            sinkConsumerDone_.post();
+          };
+          try {
+            while (auto item = co_await gen.next()) {
+              serverResult_.sinkChunkTimeout()->sinkPayloads()->push_back(
+                  std::move(*item));
+            }
+          } catch (const TApplicationException& e) {
+            if (e.getType() == TApplicationException::TIMEOUT) {
+              serverResult_.sinkChunkTimeout()->chunkTimeoutException() = true;
+            }
+          }
+          co_return *testCase_.serverInstruction()
+              ->sinkChunkTimeout()
+              ->finalResponse();
+        }}
+        .setChunkTimeout(
+            std::chrono::milliseconds{*testCase_.serverInstruction()
+                                           ->sinkChunkTimeout()
+                                           ->chunkTimeoutMs()});
   }
 
   apache::thrift::ResponseAndSinkConsumer<Response, Request, Response>
@@ -696,6 +729,7 @@ class ConformanceVerificationServer
   ServerTestResult serverResult_;
   std::atomic<bool> cancelled_{false};
   folly::Baton<> streamCancelled_;
+  folly::Baton<> sinkConsumerDone_;
   folly::Synchronized<std::vector<Request>> concurrentRequests_;
   std::atomic<bool> concurrentGaveUp_{false};
 };

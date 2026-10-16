@@ -450,6 +450,29 @@ SinkBasicClientTestResult sinkBasicTest(
       }());
 }
 
+SinkChunkTimeoutClientTestResult sinkChunkTimeoutTest(
+    const SinkChunkTimeoutClientInstruction& instruction) {
+  SinkChunkTimeoutClientTestResult result;
+  auto client = createClient();
+  try {
+    folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+      auto sink = co_await client->co_sinkChunkTimeout(*instruction.request());
+      co_await sink.sink([&]() -> folly::coro::AsyncGenerator<Request&&> {
+        for (auto payload : *instruction.sinkPayloads()) {
+          co_yield std::move(payload);
+        }
+        co_await folly::coro::sleep(
+            std::chrono::milliseconds{*instruction.chunkTimeoutMs()});
+      }());
+    }());
+  } catch (const TApplicationException& e) {
+    if (e.getType() == TApplicationException::TIMEOUT) {
+      result.chunkTimeoutException() = true;
+    }
+  }
+  return result;
+}
+
 SinkInitialResponseClientTestResult sinkInitialResponseTest(
     SinkInitialResponseClientInstruction& instruction) {
   auto client = createClient();
@@ -906,6 +929,10 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::sinkInitialResponse:
       result.sinkInitialResponse() =
           sinkInitialResponseTest(*clientInstruction.sinkInitialResponse());
+      break;
+    case ClientInstruction::Type::sinkChunkTimeout:
+      result.sinkChunkTimeout() =
+          sinkChunkTimeoutTest(*clientInstruction.sinkChunkTimeout());
       break;
     case ClientInstruction::Type::sinkDeclaredException:
       result.sinkDeclaredException() =
