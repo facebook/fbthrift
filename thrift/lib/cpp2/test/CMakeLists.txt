@@ -19,21 +19,14 @@ if (NOT THRIFT_BENCHMARKS)
   return()
 endif ()
 
-# Obtain paths to other generated thrift files from the global property space.
-get_property(protocol-cpp2-SOURCES GLOBAL PROPERTY protocol-cpp2-SOURCES)
-get_property(protocol_detail-cpp2-SOURCES GLOBAL
-             PROPERTY protocol_detail-cpp2-SOURCES)
-get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
-get_property(field_mask-cpp2-SOURCES GLOBAL PROPERTY field_mask-cpp2-SOURCES)
-
 # Generate Thrift files for this benchmark.
 thrift_generate(ProtocolBenchData.thrift LANGUAGE cpp2 OPTIONS frozen2 layouts
                 OUT_SOURCES bench_data_sources)
 
 set(GENERATED_THRIFT_SOURCES
-    ${bench_data_sources} ${protocol-cpp2-SOURCES}
-    ${protocol_detail-cpp2-SOURCES} ${field_mask-cpp2-SOURCES}
-    ${frozen-cpp2-SOURCES})
+    ${bench_data_sources} ${protocol_sources}
+    ${protocol_detail_sources} ${field_mask_sources}
+    ${frozen_sources})
 set(SOURCE_FILES ProtocolBench.cpp)
 set(ADDITIONAL_SOURCE_FILES ../../thrift/detail/protocol.cpp
                             ../../thrift/TypeToMaskAdapter.cpp)

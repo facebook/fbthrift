@@ -18,55 +18,88 @@ set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 thrift_generate(schema/syntax_graph.thrift LANGUAGE cpp2 OPTIONS no_metadata
                 OUT_SOURCES syntax_graph_sources)
 
+thrift_generate(../thrift/any_rep.thrift LANGUAGE cpp2 OPTIONS json no_metadata
+                OUT_SOURCES any_rep_sources)
+
+thrift_generate(../thrift/metadata.thrift LANGUAGE cpp2
+                OUT_SOURCES metadata_sources)
+
+thrift_generate(../thrift/frozen.thrift LANGUAGE cpp2
+                OUT_SOURCES frozen_sources)
+
+thrift_generate(
+  ../thrift/RpcMetadata.thrift
+  LANGUAGE cpp2
+  OPTIONS json no_metadata
+  OUT_SOURCES RpcMetadata_sources)
+
+thrift_generate(
+  ../thrift/RocketUpgrade.thrift
+  LANGUAGE cpp2
+  SERVICES RocketUpgrade
+  OPTIONS no_metadata
+  OUT_SOURCES RocketUpgrade_sources)
+
+thrift_generate(../thrift/id.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES id_sources)
+
+thrift_generate(../thrift/standard.thrift LANGUAGE cpp2 OPTIONS json no_metadata
+                OUT_SOURCES standard_sources)
+
+thrift_generate(../thrift/type_rep.thrift LANGUAGE cpp2 OPTIONS json no_metadata
+                OUT_SOURCES type_rep_sources)
+
+thrift_generate(../thrift/type.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES type_sources)
+
+thrift_generate(
+  ../thrift/serverdbginfo.thrift
+  LANGUAGE cpp2
+  OPTIONS json no_metadata
+  OUT_SOURCES serverdbginfo_sources)
+
+thrift_generate(../thrift/protocol.thrift LANGUAGE cpp2
+                OUT_SOURCES protocol_sources)
+
+thrift_generate(../thrift/protocol_detail.thrift LANGUAGE cpp2
+                OUT_SOURCES protocol_detail_sources)
+
+thrift_generate(../thrift/field_mask.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES field_mask_sources)
+
+thrift_generate(../thrift/record.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES record_sources)
+
+thrift_generate(../thrift/schema.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES schema_sources)
+
+thrift_generate(../thrift/type_id.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES type_id_sources)
+
+thrift_generate(../thrift/type_system.thrift LANGUAGE cpp2 OPTIONS no_metadata
+                OUT_SOURCES type_system_sources)
+
+thrift_generate(
+  ../thrift/service_catalog.thrift
+  LANGUAGE cpp2
+  OPTIONS no_metadata
+  OUT_SOURCES service_catalog_sources)
+
+thrift_generate(
+  ../thrift/thrift_catalog_service.thrift
+  LANGUAGE cpp2
+  SERVICES ThriftCatalogService
+  OPTIONS no_metadata
+  OUT_SOURCES thrift_catalog_service_sources)
+
 if (THRIFT_TESTS)
   add_subdirectory(protocol/test)
   add_subdirectory(test)
 endif ()
 
-#######
-# CMAKE variables only have local/subdirectory scope
-# So even though this is defined in ../thrift/CMakeLists.txt as a variable
-# it's not accessible here and silently defaults to ""
-#
-# Using global properties gets around this; probably better to restructure
-# the directories/files to avoid this type of hack
-#
-get_property(any_rep-cpp2-SOURCES GLOBAL PROPERTY any_rep-cpp2-SOURCES)
-get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
-get_property(metadata-cpp2-SOURCES GLOBAL PROPERTY metadata-cpp2-SOURCES)
-get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
-get_property(RocketUpgrade-cpp2-SOURCES GLOBAL
-             PROPERTY RocketUpgrade-cpp2-SOURCES)
-get_property(id-cpp2-SOURCES GLOBAL PROPERTY id-cpp2-SOURCES)
-get_property(standard-cpp2-SOURCES GLOBAL PROPERTY standard-cpp2-SOURCES)
-get_property(type_rep-cpp2-SOURCES GLOBAL PROPERTY type_rep-cpp2-SOURCES)
-get_property(type-cpp2-SOURCES GLOBAL PROPERTY type-cpp2-SOURCES)
-get_property(serverdbginfo-cpp2-SOURCES GLOBAL
-             PROPERTY serverdbginfo-cpp2-SOURCES)
-get_property(protocol-cpp2-SOURCES GLOBAL PROPERTY protocol-cpp2-SOURCES)
-get_property(protocol_detail-cpp2-SOURCES GLOBAL
-             PROPERTY protocol_detail-cpp2-SOURCES)
-get_property(record-cpp2-SOURCES GLOBAL PROPERTY record-cpp2-SOURCES)
-
-get_property(schema-cpp2-SOURCES GLOBAL PROPERTY schema-cpp2-SOURCES)
-get_property(type_id-cpp2-SOURCES GLOBAL PROPERTY type_id-cpp2-SOURCES)
-get_property(type_system-cpp2-SOURCES GLOBAL PROPERTY type_system-cpp2-SOURCES)
-get_property(service_catalog-cpp2-SOURCES GLOBAL
-             PROPERTY service_catalog-cpp2-SOURCES)
-get_property(thrift_catalog_service-cpp2-SOURCES GLOBAL
-             PROPERTY thrift_catalog_service-cpp2-SOURCES)
-
-bypass_source_check("${type_id-cpp2-SOURCES}")
-bypass_source_check("${protocol-cpp2-SOURCES}")
-bypass_source_check("${protocol_detail-cpp2-SOURCES}")
-bypass_source_check("${type_system-cpp2-SOURCES}")
-bypass_source_check("${schema-cpp2-SOURCES}")
-bypass_source_check("${record-cpp2-SOURCES}")
-bypass_source_check("${service_catalog-cpp2-SOURCES}")
-bypass_source_check("${metadata-cpp2-SOURCES}")
 add_library(
   thriftmetadata
-  ${metadata-cpp2-SOURCES}
+  ${metadata_sources}
   gen/module_types_cpp.cpp
   detail/Enum.cpp
   dynamic/SerializableRecord.cpp
@@ -82,14 +115,14 @@ add_library(
   ../thrift/detail/protocol.cpp
   ../thrift/detail/TypeIdAdapter.cpp
   ../thrift/detail/TypeSystemAdapter.cpp
-  ${protocol-cpp2-SOURCES}
-  ${protocol_detail-cpp2-SOURCES}
-  ${type_id-cpp2-SOURCES}
-  ${type_system-cpp2-SOURCES}
-  ${schema-cpp2-SOURCES}
-  ${record-cpp2-SOURCES}
+  ${protocol_sources}
+  ${protocol_detail_sources}
+  ${type_id_sources}
+  ${type_system_sources}
+  ${schema_sources}
+  ${record_sources}
   ${syntax_graph_sources}
-  ${service_catalog-cpp2-SOURCES})
+  ${service_catalog_sources})
 add_dependencies(
   thriftmetadata
   metadata-cpp2-target
@@ -163,28 +196,22 @@ if (MSVC)
   target_compile_options(thrift_dynamic_value PRIVATE /bigobj)
 endif ()
 
-bypass_source_check("${frozen-cpp2-SOURCES}")
 add_library(thriftfrozen2 frozen/Frozen.cpp frozen/FrozenUtil.cpp
-                          frozen/schema/MemorySchema.cpp ${frozen-cpp2-SOURCES})
+                          frozen/schema/MemorySchema.cpp ${frozen_sources})
 add_dependencies(thriftfrozen2 frozen-cpp2-target thriftmetadata)
 target_link_libraries(thriftfrozen2 PUBLIC Folly::folly thriftmetadata
                                            thriftprotocol glog::glog gflags)
 
-bypass_source_check("${id-cpp2-SOURCES}")
-bypass_source_check("${standard-cpp2-SOURCES}")
-bypass_source_check("${type_rep-cpp2-SOURCES}")
-add_library(thrifttyperep ${id-cpp2-SOURCES} ${standard-cpp2-SOURCES}
-                          ${type_rep-cpp2-SOURCES})
+add_library(thrifttyperep ${id_sources} ${standard_sources}
+                          ${type_rep_sources})
 add_dependencies(thrifttyperep id-cpp2-target standard-cpp2-target
                  type_rep-cpp2-target thriftannotation)
 target_link_libraries(thrifttyperep PUBLIC Folly::folly thriftannotation)
 
-bypass_source_check("${type-cpp2-SOURCES}")
-bypass_source_check("${any_rep-cpp2-SOURCES}")
 add_library(
   thrifttype
-  ${any_rep-cpp2-SOURCES}
-  ${type-cpp2-SOURCES}
+  ${any_rep_sources}
+  ${type_sources}
   op/Serializer.cpp
   type/Any.cpp
   type/BaseType.cpp
@@ -206,13 +233,11 @@ file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/thriftanyrep_stub.cpp" "")
 add_library(thriftanyrep "${CMAKE_CURRENT_BINARY_DIR}/thriftanyrep_stub.cpp")
 target_link_libraries(thriftanyrep PUBLIC thrifttype)
 
-bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
-add_library(rpcmetadata ${RpcMetadata-cpp2-SOURCES})
+add_library(rpcmetadata ${RpcMetadata_sources})
 add_dependencies(rpcmetadata RpcMetadata-cpp2-target)
 target_link_libraries(rpcmetadata PUBLIC Folly::folly thriftprotocol)
 
-bypass_source_check("${serverdbginfo-cpp2-SOURCES}")
-add_library(serverdbginfo ${serverdbginfo-cpp2-SOURCES})
+add_library(serverdbginfo ${serverdbginfo_sources})
 thrift_configure_target(serverdbginfo PUBLIC)
 add_dependencies(serverdbginfo serverdbginfo-cpp2-target)
 target_link_libraries(serverdbginfo PUBLIC Folly::folly)
@@ -258,8 +283,6 @@ target_link_libraries(thriftprotocol PUBLIC fmt::fmt Folly::folly glog::glog
                                             thrift-core)
 
 if (THRIFT_RPC)
-  bypass_source_check("${RocketUpgrade-cpp2-SOURCES}")
-  bypass_source_check("${thrift_catalog_service-cpp2-SOURCES}")
   add_library(
     thriftcpp2
     FieldRef.cpp
@@ -446,8 +469,8 @@ if (THRIFT_RPC)
     util/SchemaToMetadata.cpp
     util/ScopedServerInterfaceThread.cpp
     util/ScopedServerThread.cpp
-    ${RocketUpgrade-cpp2-SOURCES}
-    ${thrift_catalog_service-cpp2-SOURCES})
+    ${RocketUpgrade_sources}
+    ${thrift_catalog_service_sources})
   add_dependencies(
     thriftcpp2
     field_mask-cpp2-target

@@ -17,7 +17,6 @@ find_package(Boost REQUIRED)
 
 set(LIB_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_subdirectory(thrift)
 add_subdirectory(cpp)
 add_subdirectory(cpp2)
 if (THRIFT_PYTHON)
