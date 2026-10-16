@@ -840,6 +840,7 @@ struct StreamCancelServerInstruction {}
 struct SinkBasicServerInstruction {
   1: Response finalResponse;
   2: i64 bufferSize;
+  3: optional i64 consumeCount;
 }
 
 struct SinkChunkTimeoutServerInstruction {

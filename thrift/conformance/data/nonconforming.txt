@@ -7066,6 +7066,10 @@ rust/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseAnyE
 # reports "Sink generator was aborted" instead of the TIMEOUT exception its
 # C++ client raised.
 rust/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
+# When the server answers a sink before the client has sent everything,
+# bareclient's Rust side reports "Sink generator was aborted" instead of the
+# final response.
+rust/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
 
 # Rust nativeclient RPC client tests
 #

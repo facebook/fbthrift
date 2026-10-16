@@ -1308,6 +1308,47 @@ Test createSinkSubsequentCreditsTest() {
   return ret;
 }
 
+Test createSinkEarlyFinalResponseTest() {
+  Test ret;
+  ret.name() = "SinkEarlyFinalResponseTest";
+  ret.tags()->emplace("spec/protocol/interface/#sink-final-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "SinkEarlyFinalResponse/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().sinkBasic().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  for (int i = 0; i < 10; i++) {
+    clientInstruction.sinkPayloads()->emplace_back().data() =
+        folly::to<std::string>(i);
+  }
+  rpcTest.clientTestResult()
+      .emplace()
+      .sinkBasic()
+      .emplace()
+      .finalResponse()
+      .emplace()
+      .data() = "world";
+
+  auto& serverInstruction =
+      rpcTest.serverInstruction().emplace().sinkBasic().emplace();
+  serverInstruction.finalResponse().emplace().data() = "world";
+  serverInstruction.bufferSize() = 2;
+  serverInstruction.consumeCount() = 2;
+
+  auto& serverResult =
+      rpcTest.serverTestResult().emplace().sinkBasic().emplace();
+  serverResult.request().emplace().data() = "hello";
+  serverResult.sinkPayloads()->push_back(
+      (*clientInstruction.sinkPayloads())[0]);
+  serverResult.sinkPayloads()->push_back(
+      (*clientInstruction.sinkPayloads())[1]);
+
+  return ret;
+}
+
 Test createSinkChunkTimeoutTest() {
   Test ret;
   ret.name() = "SinkChunkTimeoutTest";
@@ -2179,6 +2220,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createStreamCancelTest());
   suite.tests()->push_back(createStreamMemoryBufferSizeTest());
   suite.tests()->push_back(createSinkChunkTimeoutTest());
+  suite.tests()->push_back(createSinkEarlyFinalResponseTest());
   return suite;
 }
 

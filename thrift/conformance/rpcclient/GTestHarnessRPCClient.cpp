@@ -266,13 +266,18 @@ class ConformanceVerificationServer
     return apache::thrift::SinkConsumer<Request, Response>{
         [&](folly::coro::AsyncGenerator<Request&&> gen)
             -> folly::coro::Task<Response> {
-          while (auto item = co_await gen.next()) {
-            serverResult_.sinkBasic()->sinkPayloads()->push_back(
-                std::move(*item));
+          const auto& instruction = *testCase_.serverInstruction()->sinkBasic();
+          auto& payloads = *serverResult_.sinkBasic()->sinkPayloads();
+          while (!instruction.consumeCount().has_value() ||
+                 static_cast<int64_t>(payloads.size()) <
+                     *instruction.consumeCount()) {
+            auto item = co_await gen.next();
+            if (!item) {
+              break;
+            }
+            payloads.push_back(std::move(*item));
           }
-          co_return *testCase_.serverInstruction()
-              ->sinkBasic()
-              ->finalResponse();
+          co_return *instruction.finalResponse();
         },
         static_cast<uint64_t>(
             *testCase_.serverInstruction()->sinkBasic()->bufferSize())};
