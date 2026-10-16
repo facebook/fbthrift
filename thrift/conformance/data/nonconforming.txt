@@ -7081,3 +7081,19 @@ rust/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTe
 # Same reason as the `rust` category above: the case needs the server
 # configured for it, which the client side of the harness cannot do.
 rustnative/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTimeoutTest
+
+# The same cases with Binary on the wire (rpc-client-binary-test), which fail
+# for the same reasons as their Compact counterparts above.
+rustbinary/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTimeoutTest
+rustbinary/ThriftRPCClientTest/BidiBasic/Success.BidiBasicTest
+rustbinary/ThriftRPCClientTest/BidiInitialResponse/Success.BidiInitialResponseTest
+rustbinary/ThriftRPCClientTest/BidiStreamDeclaredException/Success.BidiStreamDeclaredExceptionTest
+rustbinary/ThriftRPCClientTest/BidiStreamUndeclaredException/Success.BidiStreamUndeclaredExceptionTest
+rustbinary/ThriftRPCClientTest/BidiSinkDeclaredException/Success.BidiSinkDeclaredExceptionTest
+rustbinary/ThriftRPCClientTest/BidiSinkUndeclaredException/Success.BidiSinkUndeclaredExceptionTest
+rustbinary/ThriftRPCClientTest/BidiMethodDeclaredException/Success.BidiMethodDeclaredExceptionTest
+rustbinary/ThriftRPCClientTest/BidiMethodUndeclaredException/Success.BidiMethodUndeclaredExceptionTest
+rustbinary/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseAnyExceptionTest
+rustbinary/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
+rustbinary/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
+rustnativebinary/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTimeoutTest

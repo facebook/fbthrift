@@ -35,27 +35,41 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 DEFINE_int32(port, 7777, "Port for Conformance Verification Server");
+DEFINE_string(protocol, "compact", "compact or binary");
 
 using namespace apache::thrift;
 using namespace apache::thrift::conformance;
 using apache::thrift::transport::TTransportException;
 
+apache::thrift::protocol::PROTOCOL_TYPES protocolId() {
+  if (FLAGS_protocol == "binary") {
+    return apache::thrift::protocol::T_BINARY_PROTOCOL;
+  }
+  CHECK_EQ(FLAGS_protocol, "compact");
+  return apache::thrift::protocol::T_COMPACT_PROTOCOL;
+}
+
+ClientChannel::Ptr newChannel(folly::EventBase& eb) {
+  auto channel = RocketClientChannel::newChannel(
+      folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(
+          &eb, folly::SocketAddress("::1", FLAGS_port))));
+  channel->setProtocolId(protocolId());
+  return channel;
+}
+
+RequestChannel::Ptr newPooledChannel(
+    folly::Function<ClientChannel::Ptr(folly::EventBase&)> factory =
+        newChannel) {
+  return PooledRequestChannel::newChannel(std::move(factory), 1, protocolId());
+}
+
 std::unique_ptr<Client<RPCConformanceService>> createClient() {
-  return std::make_unique<Client<RPCConformanceService>>(
-      PooledRequestChannel::newChannel([](folly::EventBase& eb) {
-        return RocketClientChannel::newChannel(
-            folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(
-                &eb, folly::SocketAddress("::1", FLAGS_port))));
-      }));
+  return std::make_unique<Client<RPCConformanceService>>(newPooledChannel());
 }
 
 std::unique_ptr<Client<RPCConformanceSetupService>> createSetupClient() {
   return std::make_unique<Client<RPCConformanceSetupService>>(
-      PooledRequestChannel::newChannel([](folly::EventBase& eb) {
-        return RocketClientChannel::newChannel(
-            folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(
-                &eb, folly::SocketAddress("::1", FLAGS_port))));
-      }));
+      newPooledChannel());
 }
 
 template <class InteractionClientInstruction>
@@ -164,12 +178,10 @@ RequestResponseMetadataClientTestResult requestResponseMetadataTest(
     rpcOptions.setPriority(
         static_cast<apache::thrift::concurrency::PRIORITY>(*priority));
   }
-  auto client = std::make_unique<Client<RPCConformanceService>>(
-      PooledRequestChannel::newChannel(
+  auto client =
+      std::make_unique<Client<RPCConformanceService>>(newPooledChannel(
           [headers = *instruction.persistentHeaders()](folly::EventBase& eb) {
-            auto channel = RocketClientChannel::newChannel(
-                folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(
-                    &eb, folly::SocketAddress("::1", FLAGS_port))));
+            auto channel = newChannel(eb);
             for (const auto& [key, value] : headers) {
               channel->setPersistentHeader(key, value);
             }

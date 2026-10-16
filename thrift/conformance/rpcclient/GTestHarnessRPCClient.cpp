@@ -775,6 +775,14 @@ void configureServer(
   }
 }
 
+std::vector<std::string> clientArgs() {
+  std::vector<std::string> args;
+  if (const char* joined = std::getenv("THRIFT_CONFORMANCE_CLIENT_ARGS")) {
+    folly::split(' ', joined, args, /* ignoreEmpty */ true);
+  }
+  return args;
+}
+
 void createClient(
     std::string_view serviceName, std::string ipAddress, std::string port) {
   auto client = create_rpc_conformance_setup_service_client_(serviceName);
@@ -831,6 +839,9 @@ class RPCClientConformanceTest : public testing::Test {
                                           : std::vector<std::string>{cmd};
         args.emplace_back("--port");
         args.push_back(port);
+        for (auto& arg : clientArgs()) {
+          args.push_back(std::move(arg));
+        }
         clientProcess_ = launch_client_process_(args);
       }
     } catch (const std::exception& e) {

@@ -75,6 +75,8 @@ use tracing_subscriber::layer::SubscriberExt;
 struct Arguments {
     #[clap(short, long, default_value = "7777")]
     port: u16,
+    #[clap(long, default_value = "compact")]
+    protocol: String,
     #[clap(short, long, default_value = "info")]
     log: Vec<Directive>,
 }
@@ -85,6 +87,11 @@ async fn main(fb: fbinit::FacebookInit, args: Arguments) -> Result<()> {
     let peer = Peer {
         fb,
         port: args.port,
+        protocol: match args.protocol.as_str() {
+            "compact" => thriftclient::WireProtocol::Compact,
+            "binary" => thriftclient::WireProtocol::Binary,
+            other => anyhow::bail!("Unknown protocol {}", other),
+        },
     };
     let client = get_client(&peer).await? as Arc<_>;
     test(&*client, &peer).await?;
@@ -95,6 +102,7 @@ async fn main(fb: fbinit::FacebookInit, args: Arguments) -> Result<()> {
 struct Peer {
     fb: fbinit::FacebookInit,
     port: u16,
+    protocol: thriftclient::WireProtocol,
 }
 
 impl Peer {
@@ -104,6 +112,7 @@ impl Peer {
             SocketAddr::new(std::net::Ipv6Addr::LOCALHOST.into(), self.port),
         )?
         .with_secure(false)
+        .with_protocol(self.protocol.clone())
         .with_conn_timeout(30_000)
         .with_recv_timeout(30_000))
     }
