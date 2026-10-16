@@ -321,6 +321,34 @@ Test createRequestResponseTooBigTest() {
   return ret;
 }
 
+Test createRequestResponseUnknownMethodTest() {
+  Test ret;
+  ret.name() = "RequestResponseUnknownMethodTest";
+  ret.tags()->emplace("spec/protocol/interface/#internal-server-error");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseUnknownMethod/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction = rpcTest.clientInstruction()
+                                .emplace()
+                                .requestResponseServerError()
+                                .emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.unknownMethod() = true;
+  auto& clientTestResult = rpcTest.clientTestResult()
+                               .emplace()
+                               .requestResponseServerError()
+                               .emplace();
+  clientTestResult.exceptionType() = TApplicationException::UNKNOWN_METHOD;
+  clientTestResult.exceptionMessage() =
+      "Method name createRPCConformanceServiceClient not found";
+  rpcTest.serverInstruction().emplace().requestResponseServerError().emplace();
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
 Test createRequestResponseNoArgVoidResponse() {
   Test ret;
   ret.name() = "RequestResponseNoArgVoidResponseTest";
@@ -1849,6 +1877,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createRequestResponseLoadsheddingTest());
   suite.tests()->push_back(createRequestResponseTaskExpiredTest());
   suite.tests()->push_back(createRequestResponseTooBigTest());
+  suite.tests()->push_back(createRequestResponseUnknownMethodTest());
   return suite;
 }
 

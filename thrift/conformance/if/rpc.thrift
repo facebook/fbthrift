@@ -533,6 +533,7 @@ struct RequestResponseAnyExceptionClientInstruction {
 
 struct RequestResponseServerErrorClientInstruction {
   1: Request request;
+  2: bool unknownMethod;
 }
 
 struct StreamBasicClientInstruction {

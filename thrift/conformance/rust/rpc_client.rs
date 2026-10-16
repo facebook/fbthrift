@@ -60,6 +60,8 @@ use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkDeclaredExceptionSi
 use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkUndeclaredExceptionSinkError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamDeclaredExceptionStreamError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamInitialDeclaredExceptionError;
+use rpc_clients::rpc_setup::RPCConformanceSetupServiceExt;
+use rpc_clients::rpc_setup::errors::r_p_c_conformance_setup_service::CreateRPCConformanceServiceClientError;
 use tracing_glog::Glog;
 use tracing_glog::GlogFields;
 use tracing_subscriber::EnvFilter;
@@ -78,29 +80,41 @@ struct Arguments {
 #[cli::main("rpc-client")]
 async fn main(fb: fbinit::FacebookInit, args: Arguments) -> Result<()> {
     init_logging(args.log.clone());
-    let client = get_client(fb, args.port).await? as Arc<_>;
-    test(&*client).await?;
+    let peer = Peer {
+        fb,
+        port: args.port,
+    };
+    let client = get_client(&peer).await? as Arc<_>;
+    test(&*client, &peer).await?;
 
     Ok(())
 }
 
-async fn get_client(
+struct Peer {
     fb: fbinit::FacebookInit,
     port: u16,
+}
+
+impl Peer {
+    fn channel_builder(&self) -> Result<thriftclient::ThriftChannelBuilder> {
+        Ok(thriftclient::ThriftChannelBuilder::from_sock_addr(
+            self.fb,
+            SocketAddr::new(std::net::Ipv6Addr::LOCALHOST.into(), self.port),
+        )?
+        .with_secure(false)
+        .with_conn_timeout(30_000)
+        .with_recv_timeout(30_000))
+    }
+}
+
+async fn get_client(
+    peer: &Peer,
 ) -> Result<Arc<dyn RPCConformanceServiceExt<thriftclient::ThriftChannel> + Send + Sync + 'static>>
 {
     // TODO: Why aren't we using the SRclient builder here? It has more functionality it seems
     // over the bareclient (specifically the ability to configure the RPC options without specying
     // a serialization protocol)
-
-    let channel = thriftclient::ThriftChannelBuilder::from_sock_addr(
-        fb,
-        SocketAddr::new(std::net::Ipv6Addr::LOCALHOST.into(), port),
-    )?
-    .with_secure(false)
-    .with_conn_timeout(30_000)
-    .with_recv_timeout(30_000)
-    .build_channel()?;
+    let channel = peer.channel_builder()?.build_channel()?;
 
     match channel.protocol_id() {
         fbthrift::ProtocolID::BinaryProtocol => Ok(<dyn RPCConformanceServiceExt<_>>::new(
@@ -162,7 +176,10 @@ use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseDeclared
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseTimeoutError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseUndeclaredExceptionError;
 
-async fn test(client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>) -> Result<()> {
+async fn test(
+    client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>,
+    peer: &Peer,
+) -> Result<()> {
     use ClientInstruction::*;
 
     match &client.getTestCase().await?.clientInstruction {
@@ -172,7 +189,7 @@ async fn test(client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>
         requestResponseNoArgVoidResponse(_) => request_response_no_arg_void_response(client).await,
         requestResponseTimeout(i) => request_response_timeout(client, i).await,
         requestResponseAnyException(i) => request_response_any_exception(client, i).await,
-        requestResponseServerError(i) => request_response_server_error(client, i).await,
+        requestResponseServerError(i) => request_response_server_error(client, peer, i).await,
         interactionConstructor(i) => interaction_constructor(client, i).await,
         interactionFactoryFunction(i) => interaction_factory_function(client, i).await,
         interactionPersistsState(i) => interaction_persists_state(client, i).await,
@@ -333,22 +350,48 @@ async fn request_response_any_exception(
 /// and the call fails with the `ApplicationException` its error code maps to.
 async fn request_response_server_error(
     client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>,
+    peer: &Peer,
     instr: &RequestResponseServerErrorClientInstruction,
 ) -> Result<()> {
-    match client.requestResponseBasic(&instr.request).await {
-        Err(RequestResponseBasicError::ApplicationException(exn)) => {
-            let test_result = ClientTestResult::requestResponseServerError(
-                RequestResponseServerErrorClientTestResult {
-                    exceptionType: exn.type_ as i32,
-                    exceptionMessage: exn.message,
-                    ..Default::default()
-                },
-            );
-            client.sendTestResult(&test_result).await?;
-            Ok(())
+    let exn = if instr.unknownMethod {
+        unknown_method(peer).await?
+    } else {
+        match client.requestResponseBasic(&instr.request).await {
+            Err(RequestResponseBasicError::ApplicationException(exn)) => exn,
+            r => {
+                return Err(anyhow!(
+                    "request_response_server_error: unexpected server response: {:?}",
+                    r
+                ));
+            }
         }
+    };
+    let test_result =
+        ClientTestResult::requestResponseServerError(RequestResponseServerErrorClientTestResult {
+            exceptionType: exn.type_ as i32,
+            exceptionMessage: exn.message,
+            ..Default::default()
+        });
+    client.sendTestResult(&test_result).await?;
+    Ok(())
+}
+
+async fn unknown_method(peer: &Peer) -> Result<fbthrift::ApplicationException> {
+    let channel = peer.channel_builder()?.build_channel()?;
+    let setup: Arc<dyn RPCConformanceSetupServiceExt<thriftclient::ThriftChannel> + Send + Sync> =
+        match channel.protocol_id() {
+            fbthrift::ProtocolID::BinaryProtocol => {
+                <dyn RPCConformanceSetupServiceExt<_>>::new(fbthrift::BinaryProtocol, channel)
+            }
+            fbthrift::ProtocolID::CompactProtocol => {
+                <dyn RPCConformanceSetupServiceExt<_>>::new(fbthrift::CompactProtocol, channel)
+            }
+            p => anyhow::bail!("Unsupported protocol: {:?}", p),
+        };
+    match setup.createRPCConformanceServiceClient("", "").await {
+        Err(CreateRPCConformanceServiceClientError::ApplicationException(exn)) => Ok(exn),
         r => Err(anyhow!(
-            "request_response_server_error: unexpected server response: {:?}",
+            "unknown_method: unexpected server response: {:?}",
             r
         )),
     }

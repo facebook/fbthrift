@@ -28,6 +28,7 @@
 #include <folly/io/async/AsyncTransport.h>
 
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
+#include <thrift/conformance/if/gen-cpp2/RPCConformanceSetupService.h>
 #include <thrift/conformance/if/gen-cpp2/rpc_types.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
@@ -41,6 +42,15 @@ using apache::thrift::transport::TTransportException;
 
 std::unique_ptr<Client<RPCConformanceService>> createClient() {
   return std::make_unique<Client<RPCConformanceService>>(
+      PooledRequestChannel::newChannel([](folly::EventBase& eb) {
+        return RocketClientChannel::newChannel(
+            folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(
+                &eb, folly::SocketAddress("::1", FLAGS_port))));
+      }));
+}
+
+std::unique_ptr<Client<RPCConformanceSetupService>> createSetupClient() {
+  return std::make_unique<Client<RPCConformanceSetupService>>(
       PooledRequestChannel::newChannel([](folly::EventBase& eb) {
         return RocketClientChannel::newChannel(
             folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(
@@ -121,10 +131,14 @@ RequestResponseAnyExceptionClientTestResult requestResponseAnyExceptionTest(
 RequestResponseServerErrorClientTestResult requestResponseServerErrorTest(
     const RequestResponseServerErrorClientInstruction& instruction) {
   RequestResponseServerErrorClientTestResult result;
-  auto client = createClient();
   try {
-    Response response;
-    client->sync_requestResponseBasic(response, *instruction.request());
+    if (*instruction.unknownMethod()) {
+      createSetupClient()->sync_createRPCConformanceServiceClient("", "");
+    } else {
+      Response response;
+      createClient()->sync_requestResponseBasic(
+          response, *instruction.request());
+    }
   } catch (const TApplicationException& e) {
     result.exceptionType() = static_cast<int32_t>(e.getType());
     result.exceptionMessage() = e.getMessage();
