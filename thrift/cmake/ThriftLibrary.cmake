@@ -39,21 +39,21 @@ include(GNUInstallDirs)
 #     LANGUAGE <cpp2|py3|python>
 #     [SERVICES <service>...]
 #     [OPTIONS <option>...]
+#     [TARGET <target>]
+#     [OUT_SOURCES <var>]
 #     [INCLUDE_DIRECTORIES <dir>...]
-#     [NAME <base>]
 #     [OUTPUT_DIRECTORY <dir>]
 #     [INCLUDE_PREFIX <prefix>]
-#     [NAMESPACE <py.namespace>]
-#     [OUT_SOURCES <var>])
+#     [NAMESPACE <py.namespace>])
 #
 #   <file>.thrift - The file to compile, relative to CMAKE_CURRENT_SOURCE_DIR.
 #   LANGUAGE - The generator to use.
 #   SERVICES - The services declared in the file.
 #   OPTIONS - Generator options, e.g. `OPTIONS json no_metadata`.
+#   TARGET - A target to add the generated files to as sources.
+#   OUT_SOURCES - A variable to set to the generated sources.
 #   INCLUDE_DIRECTORIES - Where the compiler looks for included .thrift files,
 #       relative to CMAKE_CURRENT_SOURCE_DIR. Defaults to PROJECT_SOURCE_DIR.
-#   NAME - Base name of the generation target. Defaults to the file name
-#       without .thrift.
 #   OUTPUT_DIRECTORY - Where gen-<language> is created, relative to
 #       CMAKE_CURRENT_BINARY_DIR. Defaults to the file's directory under
 #       PROJECT_BINARY_DIR.
@@ -63,16 +63,16 @@ include(GNUInstallDirs)
 #   NAMESPACE - (python) Must match the "namespace py3" directive in the file.
 #       Dot-separated (e.g. "example.sum") maps to output directory structure
 #       (example/sum/<file>/).
-#   OUT_SOURCES - A variable to set to the generated sources.
 #
 # For a file outside PROJECT_SOURCE_DIR, OUTPUT_DIRECTORY is required, and so
 # is INCLUDE_PREFIX for cpp2 and py3.
 #
-# Creates the target <NAME>-<LANGUAGE>-target, part of ALL, that generates the
-# files. Adds no install rules.
-#
-# Using the generated sources from another directory needs bypass_source_check()
-# there under policies older than CMake 3.20 (CMP0118).
+# Like protobuf_generate(), creates no targets and adds no install rules. A
+# target in the calling directory that lists the generated files as sources,
+# with TARGET or OUT_SOURCES, generates them; CMake gives the rule only to
+# targets in that directory. With Makefiles, targets that both list the files
+# can run the compiler twice in parallel, so list them in one and make the
+# others depend on it.
 function (thrift_generate file)
   if (NOT "${file}" MATCHES "\\.thrift$")
     message(
@@ -83,11 +83,11 @@ function (thrift_generate file)
   endif ()
   set(one_value_keywords
       LANGUAGE
-      NAME
+      TARGET
+      OUT_SOURCES
       OUTPUT_DIRECTORY
       INCLUDE_PREFIX
-      NAMESPACE
-      OUT_SOURCES)
+      NAMESPACE)
   # Before CMP0174 (CMake 3.31), cmake_parse_arguments() drops a keyword whose
   # value is an empty string, so find those here.
   set(empty_keywords)
@@ -151,10 +151,6 @@ function (thrift_generate file)
     set(outside TRUE)
   endif ()
 
-  set(name "${stem}")
-  if (DEFINED THRIFT_GENERATE_NAME)
-    set(name "${THRIFT_GENERATE_NAME}")
-  endif ()
   if (DEFINED THRIFT_GENERATE_OUTPUT_DIRECTORY)
     get_filename_component(
       output_dir "${THRIFT_GENERATE_OUTPUT_DIRECTORY}" ABSOLUTE BASE_DIR
@@ -276,8 +272,7 @@ function (thrift_generate file)
       COMMAND ${THRIFT_COMPILER} --gen "${gen}" -o ${output_dir} ${include_args}
               "${thrift_file}"
       DEPENDS ${THRIFT_COMPILER} "${thrift_file}"
-      COMMENT "Generating ${name} thrift-python files. Output: ${output_dir}")
-    add_custom_target(${name}-${language}-target ALL DEPENDS ${sources})
+      COMMENT "Generating ${stem} thrift-python files. Output: ${output_dir}")
   else ()
     if ("${language}" STREQUAL "py3")
       file(WRITE "${gen_dir}/${stem}/__init__.py")
@@ -294,9 +289,11 @@ function (thrift_generate file)
       COMMAND ${THRIFT_COMPILER} --gen "${gen}" -o ${output_dir} ${include_args}
               "${thrift_file}"
       DEPENDS ${THRIFT_COMPILER} "${thrift_file}"
-      COMMENT "Generating ${name} files. Output: ${output_dir}")
-    add_custom_target(${name}-${language}-target ALL DEPENDS ${headers}
-                                                            ${sources})
+      COMMENT "Generating ${stem} files. Output: ${output_dir}")
+  endif ()
+
+  if (DEFINED THRIFT_GENERATE_TARGET)
+    target_sources(${THRIFT_GENERATE_TARGET} PRIVATE ${headers} ${sources})
   endif ()
 
   if (DEFINED THRIFT_GENERATE_OUT_SOURCES)
@@ -317,7 +314,8 @@ endfunction ()
 #   @file_path - The directory where the thrift file lives
 #   @output_path - The directory where the thrift objects will be built
 #   @include_prefix - The last part of output_path, relative include prefix
-#   @TARGET_NAME_BASE (optional) - name used for target instead of real filename
+#   @TARGET_NAME_BASE (optional) - <base> in the variable below, instead of
+#       file_name
 #   @THRIFT_INCLUDE_DIRECTORIES (optional) path to thrift include directories
 #   @NAMESPACE (optional) - As in thrift_generate (python).
 #
@@ -328,7 +326,8 @@ endfunction ()
 #  TARGET_NAME_BASE or file_name.
 #
 # Except for python, it also installs gen-<language> from the current source
-# directory.
+# directory. For python, nothing generates the files until a target lists the
+# sources, as thrift_library() does.
 #
 # Notes:
 # If any of the fields is empty, it is still required to provide an empty string
@@ -378,7 +377,6 @@ function (
     SERVICES ${services}
     OPTIONS ${option_list}
     INCLUDE_DIRECTORIES ${THRIFT_OBJECT_THRIFT_INCLUDE_DIRECTORIES}
-    NAME "${name}"
     INCLUDE_PREFIX "${prefix}"
     ${extra_args}
     OUT_SOURCES sources)
@@ -407,8 +405,6 @@ function (
       "${file_name}-${language}-obj"
       PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
              $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>)
-    add_dependencies("${file_name}-${language}-obj"
-                     "${file_name}-${language}-target")
     message("Thrift will create the Object file : ${file_name}-${language}-obj")
   endif ()
 endfunction ()
@@ -464,10 +460,14 @@ macro (
     "${include_prefix}"
     ${ARGN})
   if ("${language}" STREQUAL "python")
-    # Python: create an alias target so users can depend on <name>-python
-    add_custom_target("${file_name}-${language}" ALL)
-    add_dependencies("${file_name}-${language}"
-                     "${file_name}-${language}-target")
+    # Users depend on <name>-python, which generates the files.
+    cmake_parse_arguments(THRIFT_LIBRARY "" "TARGET_NAME_BASE" "" ${ARGN})
+    set(thrift_library_base "${file_name}")
+    if (NOT "${THRIFT_LIBRARY_TARGET_NAME_BASE}" STREQUAL "")
+      set(thrift_library_base "${THRIFT_LIBRARY_TARGET_NAME_BASE}")
+    endif ()
+    add_custom_target("${file_name}-${language}" ALL
+                      DEPENDS ${${thrift_library_base}-${language}-SOURCES})
     message("Thrift will create the Python library : ${file_name}-${language}")
   else ()
     add_library("${file_name}-${language}"

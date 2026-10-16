@@ -123,18 +123,8 @@ add_library(
   ${record_sources}
   ${syntax_graph_sources}
   ${service_catalog_sources})
-add_dependencies(
-  thriftmetadata
-  metadata-cpp2-target
-  any_rep-cpp2-target
-  protocol-cpp2-target
-  protocol_detail-cpp2-target
-  type_id-cpp2-target
-  type_system-cpp2-target
-  schema-cpp2-target
-  record-cpp2-target
-  syntax_graph-cpp2-target
-  service_catalog-cpp2-target)
+# For the headers generated for thrifttype and thrifttyperep.
+add_dependencies(thriftmetadata thrifttype)
 target_link_libraries(thriftmetadata PUBLIC Folly::folly thriftprotocol)
 target_link_libraries(thriftmetadata PUBLIC ${thrift_xxhash})
 # SerializableRecord.cpp includes F14Map and instantiates PrimitiveDatum for
@@ -198,20 +188,21 @@ endif ()
 
 add_library(thriftfrozen2 frozen/Frozen.cpp frozen/FrozenUtil.cpp
                           frozen/schema/MemorySchema.cpp ${frozen_sources})
-add_dependencies(thriftfrozen2 frozen-cpp2-target thriftmetadata)
+add_dependencies(thriftfrozen2 thriftmetadata)
 target_link_libraries(thriftfrozen2 PUBLIC Folly::folly thriftmetadata
                                            thriftprotocol glog::glog gflags)
 
 add_library(thrifttyperep ${id_sources} ${standard_sources}
                           ${type_rep_sources})
-add_dependencies(thrifttyperep id-cpp2-target standard-cpp2-target
-                 type_rep-cpp2-target thriftannotation)
+add_dependencies(thrifttyperep thriftannotation)
 target_link_libraries(thrifttyperep PUBLIC Folly::folly thriftannotation)
 
 add_library(
   thrifttype
   ${any_rep_sources}
+  ${field_mask_sources}
   ${type_sources}
+  ../thrift/TypeToMaskAdapter.cpp
   op/Serializer.cpp
   type/Any.cpp
   type/BaseType.cpp
@@ -220,8 +211,7 @@ add_library(
   type/Type.cpp
   type/TypeRegistry.cpp
   type/UniversalName.cpp)
-add_dependencies(thrifttype any_rep-cpp2-target type-cpp2-target
-                 thriftannotation thrifttyperep thriftprotocol)
+add_dependencies(thrifttype thriftannotation thrifttyperep thriftprotocol)
 target_link_libraries(
   thrifttype PUBLIC common Folly::folly thriftannotation thrifttyperep
                     thriftprotocol ${thrift_openssl_crypto})
@@ -234,12 +224,10 @@ add_library(thriftanyrep "${CMAKE_CURRENT_BINARY_DIR}/thriftanyrep_stub.cpp")
 target_link_libraries(thriftanyrep PUBLIC thrifttype)
 
 add_library(rpcmetadata ${RpcMetadata_sources})
-add_dependencies(rpcmetadata RpcMetadata-cpp2-target)
 target_link_libraries(rpcmetadata PUBLIC Folly::folly thriftprotocol)
 
 add_library(serverdbginfo ${serverdbginfo_sources})
 thrift_configure_target(serverdbginfo PUBLIC)
-add_dependencies(serverdbginfo serverdbginfo-cpp2-target)
 target_link_libraries(serverdbginfo PUBLIC Folly::folly)
 
 add_library(
@@ -473,10 +461,7 @@ if (THRIFT_RPC)
     ${thrift_catalog_service_sources})
   add_dependencies(
     thriftcpp2
-    field_mask-cpp2-target
     rpcmetadata
-    RocketUpgrade-cpp2-target
-    thrift_catalog_service-cpp2-target
     thriftannotation
     thriftmetadata
     thrift_path

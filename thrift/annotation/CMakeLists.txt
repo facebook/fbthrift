@@ -26,9 +26,7 @@ foreach (
   scope
   thrift)
   thrift_generate(${name}.thrift LANGUAGE cpp2 OPTIONS templates no_metadata
-                  OUT_SOURCES sources)
-  target_sources(thriftannotation PRIVATE ${sources})
-  add_dependencies(thriftannotation ${name}-cpp2-target)
+                  TARGET thriftannotation)
 endforeach ()
 
 install(

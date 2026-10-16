@@ -23,13 +23,9 @@ endif ()
 thrift_generate(ProtocolBenchData.thrift LANGUAGE cpp2 OPTIONS frozen2 layouts
                 OUT_SOURCES bench_data_sources)
 
-set(GENERATED_THRIFT_SOURCES
-    ${bench_data_sources} ${protocol_sources}
-    ${protocol_detail_sources} ${field_mask_sources}
-    ${frozen_sources})
+set(GENERATED_THRIFT_SOURCES ${bench_data_sources})
 set(SOURCE_FILES ProtocolBench.cpp)
-set(ADDITIONAL_SOURCE_FILES ../../thrift/detail/protocol.cpp
-                            ../../thrift/TypeToMaskAdapter.cpp)
+set(ADDITIONAL_SOURCE_FILES ../../thrift/detail/protocol.cpp)
 
 # Generate conformance Thrift files.
 foreach (conf_name "protocol" "type" "any" "serialization" "patch_data"
@@ -38,7 +34,6 @@ foreach (conf_name "protocol" "type" "any" "serialization" "patch_data"
     ../../../conformance/if/${conf_name}.thrift
     LANGUAGE cpp2
     OPTIONS frozen2
-    NAME ${conf_name}conformance
     OUT_SOURCES conformance_sources)
   set(GENERATED_THRIFT_SOURCES ${GENERATED_THRIFT_SOURCES}
                                ${conformance_sources})
