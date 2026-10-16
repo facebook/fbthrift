@@ -17,6 +17,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <array>
 #include <atomic>
 #include <chrono>
@@ -30,11 +31,16 @@
 #include <utility>
 #include <vector>
 
+#include <pthread.h>
+#include <sched.h>
+
 #include <fizz/client/AsyncFizzClient.h>
 #include <fizz/client/FizzClientContext.h>
 #include <folly/ExceptionWrapper.h>
+#include <folly/ScopeGuard.h>
 #include <folly/SocketAddress.h>
 #include <folly/Synchronized.h>
+#include <folly/futures/Future.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/synchronization/Baton.h>
@@ -43,6 +49,7 @@
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/async/RpcOptions.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
+#include <thrift/lib/cpp2/fast_thrift/connection/util/ReusePortBpfProgram.h>
 #include <thrift/lib/cpp2/fast_thrift/security/FizzServerCertConfig.h>
 #include <thrift/lib/cpp2/fast_thrift/security/test/TestCert.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServer.h>
@@ -471,6 +478,112 @@ TEST_F(FastThriftServerTest, PingRoundTrip) {
   auto client = createClient();
   syncCall([&] { return client->semifuture_ping(); });
   destroyClientOnEvb(client);
+}
+
+TEST(FastThriftServerReusePortTest, RoundRobinConnectionsCompleteRpcs) {
+  constexpr size_t kNumWorkers = 3;
+  constexpr size_t kNumConnections = 30;
+  using connection::ReusePortBpfMode;
+  using connection::ReusePortBpfProgram;
+
+  if (!ReusePortBpfProgram::createRoundRobin(kNumWorkers)) {
+    GTEST_SKIP() << "BPF program loading is unavailable";
+  }
+  THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
+
+  class RecordingHandler final : public TestHandler {
+   public:
+    void async_tm_ping(ftt::FastHandlerCallbackPtr<void> cb) override {
+      workers.withWLock(
+          [&](auto& evbs) { evbs.push_back(cb->getEventBase()); });
+      cb->done();
+    }
+
+    folly::Synchronized<std::vector<folly::EventBase*>> workers;
+  };
+  auto handler = std::make_shared<RecordingHandler>();
+  ftt::FastThriftServerConfig config;
+  config.address = folly::SocketAddress("::1", 0);
+  config.numIOThreads = kNumWorkers;
+  config.numConnectionSetupThreads = 0;
+  ftt::FastThriftServer server(std::move(config));
+  server.setInterface(handler);
+  server.setReusePortBpfMode(ReusePortBpfMode::RoundRobin);
+  server.start();
+
+  folly::ScopedEventBaseThread clientThread;
+  auto* clientEvb = clientThread.getEventBase();
+  cpu_set_t originalAffinity;
+  int affinityError = 0;
+  bool affinityPinned = false;
+  SCOPE_EXIT {
+    if (affinityPinned) {
+      clientEvb->runInEventBaseThreadAndWait([&] {
+        EXPECT_EQ(
+            ::pthread_setaffinity_np(
+                ::pthread_self(), sizeof(originalAffinity), &originalAffinity),
+            0);
+      });
+    }
+  };
+  clientEvb->runInEventBaseThreadAndWait([&] {
+    affinityError = ::pthread_getaffinity_np(
+        ::pthread_self(), sizeof(originalAffinity), &originalAffinity);
+    if (affinityError != 0) {
+      return;
+    }
+    const int cpu = ::sched_getcpu();
+    ASSERT_GE(cpu, 0);
+    cpu_set_t oneCpu;
+    CPU_ZERO(&oneCpu);
+    CPU_SET(cpu, &oneCpu);
+    affinityError =
+        ::pthread_setaffinity_np(::pthread_self(), sizeof(oneCpu), &oneCpu);
+    affinityPinned = affinityError == 0;
+  });
+  if (!affinityPinned) {
+    GTEST_SKIP() << "Unable to pin client thread: " << affinityError;
+  }
+
+  for (size_t i = 0; i < kNumConnections; ++i) {
+    SCOPED_TRACE(i);
+    std::unique_ptr<apache::thrift::Client<integration::FastThriftServer>>
+        client;
+    SCOPE_EXIT {
+      clientEvb->runInEventBaseThreadAndWait([&] { client.reset(); });
+    };
+    auto reply = folly::SemiFuture<folly::Unit>::makeEmpty();
+    clientEvb->runInEventBaseThreadAndWait([&] {
+      auto socket =
+          folly::AsyncSocket::newSocket(clientEvb, server.getAddress());
+      auto channel =
+          apache::thrift::RocketClientChannel::newChannel(std::move(socket));
+      client = std::make_unique<
+          apache::thrift::Client<integration::FastThriftServer>>(
+          std::move(channel));
+      apache::thrift::RpcOptions options;
+      options.setTimeout(std::chrono::seconds(2));
+      reply = client->semifuture_ping(options);
+    });
+    ASSERT_NO_THROW(std::move(reply).get(std::chrono::seconds(5)));
+  }
+
+  const auto workers = handler->workers.copy();
+  ASSERT_EQ(workers.size(), kNumConnections);
+  const auto serverWorkers = server.getIOThreadPool()->getAllEventBases();
+  EXPECT_EQ(
+      (std::set<folly::EventBase*>(
+           workers.begin(), workers.begin() + kNumWorkers)
+           .size()),
+      kNumWorkers);
+  for (size_t i = kNumWorkers; i < workers.size(); ++i) {
+    EXPECT_EQ(workers[i], workers[i % kNumWorkers]) << "connection " << i;
+  }
+  for (const auto& worker : serverWorkers) {
+    EXPECT_EQ(
+        std::count(workers.begin(), workers.end(), worker.get()),
+        kNumConnections / kNumWorkers);
+  }
 }
 
 TEST_F(FastThriftServerTest, AddReturnsSum) {

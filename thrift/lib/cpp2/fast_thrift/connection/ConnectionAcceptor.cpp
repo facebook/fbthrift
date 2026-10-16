@@ -35,12 +35,14 @@ ConnectionAcceptor::ConnectionAcceptor(
     folly::EventBase& evb,
     folly::SocketAddress address,
     SocketOptions socketOptions,
-    bool enableReusePortBpfSpread,
+    ReusePortBpfMode reusePortBpfMode,
+    std::shared_ptr<const ReusePortBpfProgram> reusePortBpfProgram,
     std::vector<ConnectionWorkerTarget> workers)
     : evb_(folly::getKeepAliveToken(&evb)),
       address_(std::move(address)),
       socketOptions_(std::move(socketOptions)),
-      enableReusePortBpfSpread_(enableReusePortBpfSpread),
+      reusePortBpfMode_(reusePortBpfMode),
+      reusePortBpfProgram_(std::move(reusePortBpfProgram)),
       workers_(std::move(workers)),
       socket_(new folly::AsyncServerSocket(evb_.get())),
       boundAddress_(address_) {
@@ -88,8 +90,30 @@ void ConnectionAcceptor::start() {
     }
   }
   socket_->listen(static_cast<int>(socketOptions_.listenBacklog));
-  if (enableReusePortBpfSpread_) {
-    attachReusePortBpfSpread();
+  switch (reusePortBpfMode_) {
+    case ReusePortBpfMode::Disabled:
+      break;
+    case ReusePortBpfMode::Random:
+      attachRandomReusePortBpf();
+      break;
+    case ReusePortBpfMode::RoundRobin: {
+      const auto sockets = socket_->getNetworkSockets();
+      size_t failedAttachments = 0;
+      for (auto fd : sockets) {
+        if (!reusePortBpfProgram_ || !reusePortBpfProgram_->attach(fd)) {
+          ++failedAttachments;
+        }
+      }
+      if (failedAttachments != 0) {
+        XLOGF(
+            WARNING,
+            "Round-robin eBPF attachment failed for {} of {} listening "
+            "sockets; reuseport groups retain their existing selectors",
+            failedAttachments,
+            sockets.size());
+      }
+      break;
+    }
   }
   for (const auto& target : workers_) {
     socket_->addAcceptCallback(
@@ -146,7 +170,7 @@ size_t ConnectionAcceptor::getNumDroppedConnections() const {
   return socket_->getNumDroppedConnections();
 }
 
-void ConnectionAcceptor::attachReusePortBpfSpread() noexcept {
+void ConnectionAcceptor::attachRandomReusePortBpf() noexcept {
   // Replace the kernel's default 4-tuple-hash REUSEPORT selection with a
   // 2-instruction cBPF program returning a random u32. A failed attach leaves
   // the kernel's default selector in place.

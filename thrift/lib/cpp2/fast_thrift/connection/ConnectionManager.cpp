@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/fast_thrift/connection/ConnectionManager.h>
 
+#include <limits>
 #include <utility>
 #include <vector>
 
@@ -61,6 +62,15 @@ void ConnectionManager::start() {
   CHECK(configureHandler_)
       << "ConnectionManager::start called before setConnectionFactory";
   DCHECK(state_.load() != State::STARTED);
+  const bool acceptsOnWorkerExecutor =
+      acceptorExecutor_.get() == workerExecutor_.get();
+  if (acceptsOnWorkerExecutor &&
+      reusePortBpfMode_ == ReusePortBpfMode::RoundRobin) {
+    const auto groupSize = acceptorExecutor_->numThreads();
+    CHECK_LE(groupSize, std::numeric_limits<uint32_t>::max());
+    reusePortBpfProgram_ =
+        ReusePortBpfProgram::createRoundRobin(static_cast<uint32_t>(groupSize));
+  }
   // Workers must exist before listeners start: an acceptor snapshots its
   // dispatch targets when it is registered.
   state_.store(State::STARTED);
@@ -196,7 +206,9 @@ void ConnectionManager::registerAcceptorEventBase(folly::EventBase& evb) {
         evb,
         address_,
         socketOptions_,
-        enableReusePortBpfSpread_ && acceptsOnWorkerExecutor,
+        acceptsOnWorkerExecutor ? reusePortBpfMode_
+                                : ReusePortBpfMode::Disabled,
+        acceptsOnWorkerExecutor ? reusePortBpfProgram_ : nullptr,
         std::move(workers));
     acceptor->setConnectionEventCallback(connectionEventCallback_);
     acceptor->start();

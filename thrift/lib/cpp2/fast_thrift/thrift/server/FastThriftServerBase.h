@@ -413,18 +413,19 @@ class FastThriftServerBase {
   void setCPUExecutor(folly::Executor::KeepAlive<> executor);
 
   /**
-   * Attach a cBPF program to the SO_REUSEPORT group that replaces the
-   * kernel's default 4-tuple hash selection with uniform random across
-   * acceptor listening sockets. Mitigates per-worker pile-up when client
-   * source IPs / ports are concentrated (a single hash bucket would
-   * funnel most conns to one worker). Linux-only; silently no-op'd at
-   * startAccepting() time on platforms where SO_ATTACH_REUSEPORT_CBPF
-   * isn't available. Only applies when connection acceptance is colocated
-   * with the data IO workers; a dedicated acceptor pool retains the kernel's
-   * default selection, matching classic Thrift.
+   * Configure BPF selection within the acceptor SO_REUSEPORT group. Random
+   * uses the existing cBPF selector. RoundRobin uses one shared eBPF program
+   * with a per-CPU cursor, avoiding contention between CPUs while cycling each
+   * CPU's connections across every acceptor. If BPF is unavailable, startup
+   * continues with the kernel's default reuseport hash selection. Only applies
+   * when connection acceptance is colocated with the data IO workers; a
+   * dedicated acceptor pool retains the kernel's default selection.
    *
    * Must be called before start()/serve().
    */
+  void setReusePortBpfMode(connection::ReusePortBpfMode mode);
+
+  /** Compatibility wrapper: true selects ReusePortBpfMode::Random. */
   void setEnableReusePortBpfSpread(bool enable);
 
   /**
@@ -633,7 +634,8 @@ class FastThriftServerBase {
   OnConnectionAcceptedFn onConnectionAccepted_;
   std::optional<security::FizzServerCertConfig> sslConfig_;
   security::ThriftTlsConfig thriftConfig_{};
-  bool enableReusePortBpfSpread_{false};
+  connection::ReusePortBpfMode reusePortBpfMode_{
+      connection::ReusePortBpfMode::Disabled};
   std::vector<FastServerModule::PendingConnectionCallbacks>
       pendingConnectionCallbacks_;
   std::shared_ptr<PendingConnectionEventCallback>

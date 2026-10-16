@@ -146,7 +146,8 @@ TEST(ConnectionAcceptorTest, DispatchesAcceptedFdToWorker) {
         *acceptorEvb,
         folly::SocketAddress("::1", 0),
         socketOptions,
-        /*enableReusePortBpfSpread=*/false,
+        ReusePortBpfMode::Disabled,
+        nullptr,
         std::move(workers));
     acceptor->setConnectionEventCallback(eventCallback);
     acceptor->start();
@@ -207,7 +208,8 @@ TEST(ConnectionAcceptorTest, ReportsDirectAcceptWithoutQueueEvents) {
         *acceptorEvb,
         folly::SocketAddress("::1", 0),
         SocketOptions{},
-        /*enableReusePortBpfSpread=*/false,
+        ReusePortBpfMode::Disabled,
+        nullptr,
         std::move(workers));
     acceptor->setConnectionEventCallback(eventCallback);
     acceptor->start();
@@ -269,7 +271,8 @@ TEST(ConnectionAcceptorTest, BoundsPendingFdsWhenWorkerStalls) {
         *acceptorEvb,
         folly::SocketAddress("127.0.0.1", 0),
         socketOptions,
-        /*enableReusePortBpfSpread=*/false,
+        ReusePortBpfMode::Disabled,
+        nullptr,
         std::move(workers));
     acceptor->start();
     address = acceptor->getAddress();

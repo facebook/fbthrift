@@ -25,6 +25,13 @@
 
 namespace apache::thrift::fast_thrift::connection {
 
+// Selection policy for the listening sockets in a worker SO_REUSEPORT group.
+enum class ReusePortBpfMode : uint8_t {
+  Disabled,
+  Random,
+  RoundRobin,
+};
+
 /**
  * Listening-socket and accept-path tuning knobs. Pure data — set on the
  * embedder via the server's setSocketOptions and forwarded through

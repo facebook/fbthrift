@@ -27,6 +27,7 @@
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/fast_thrift/connection/SocketOptions.h>
+#include <thrift/lib/cpp2/fast_thrift/connection/util/ReusePortBpfProgram.h>
 
 namespace apache::thrift::fast_thrift::connection {
 
@@ -48,7 +49,8 @@ class ConnectionAcceptor {
       folly::EventBase& evb,
       folly::SocketAddress address,
       SocketOptions socketOptions,
-      bool enableReusePortBpfSpread,
+      ReusePortBpfMode reusePortBpfMode,
+      std::shared_ptr<const ReusePortBpfProgram> reusePortBpfProgram,
       std::vector<ConnectionWorkerTarget> workers);
 
   ~ConnectionAcceptor();
@@ -73,12 +75,13 @@ class ConnectionAcceptor {
 
  private:
   void stopOnEvb();
-  void attachReusePortBpfSpread() noexcept;
+  void attachRandomReusePortBpf() noexcept;
 
   folly::Executor::KeepAlive<folly::EventBase> evb_;
   folly::SocketAddress address_;
   SocketOptions socketOptions_;
-  bool enableReusePortBpfSpread_;
+  ReusePortBpfMode reusePortBpfMode_;
+  std::shared_ptr<const ReusePortBpfProgram> reusePortBpfProgram_;
   std::vector<ConnectionWorkerTarget> workers_;
   // Declared before socket_ so it outlives every callback from the socket.
   std::shared_ptr<folly::AsyncServerSocket::ConnectionEventCallback>

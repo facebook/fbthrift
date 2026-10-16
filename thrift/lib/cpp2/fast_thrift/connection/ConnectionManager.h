@@ -152,8 +152,13 @@ class ConnectionManager : public folly::DelayedDestruction {
   // Only applies when acceptors are colocated with connection workers. A
   // dedicated acceptor pool retains the kernel's default reuse-port hashing,
   // matching the classic Thrift accept-offload path.
-  void setEnableReusePortBpfSpread(bool e) noexcept {
-    enableReusePortBpfSpread_ = e;
+  void setReusePortBpfMode(ReusePortBpfMode mode) noexcept {
+    reusePortBpfMode_ = mode;
+  }
+
+  void setEnableReusePortBpfSpread(bool enable) noexcept {
+    reusePortBpfMode_ =
+        enable ? ReusePortBpfMode::Random : ReusePortBpfMode::Disabled;
   }
 
   /**
@@ -276,7 +281,8 @@ class ConnectionManager : public folly::DelayedDestruction {
   folly::Synchronized<
       folly::F14FastMap<folly::EventBase*, ConnectionAcceptor::Ptr>>
       acceptors_;
-  bool enableReusePortBpfSpread_{false};
+  ReusePortBpfMode reusePortBpfMode_{ReusePortBpfMode::Disabled};
+  std::shared_ptr<const ReusePortBpfProgram> reusePortBpfProgram_;
   std::shared_ptr<folly::AsyncServerSocket::ConnectionEventCallback>
       connectionEventCallback_;
   // Borrowed; null unless the corresponding setter was called. Each per-EVB

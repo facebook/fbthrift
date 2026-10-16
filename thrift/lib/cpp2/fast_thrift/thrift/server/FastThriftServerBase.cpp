@@ -445,7 +445,17 @@ void detail::FastThriftServerBase::setEnableReusePortBpfSpread(bool enable) {
   CHECK(state_ == State::kNotStarted)
       << "FastThriftServer::setEnableReusePortBpfSpread must be called before "
          "start()/serve()";
-  enableReusePortBpfSpread_ = enable;
+  reusePortBpfMode_ = enable ? connection::ReusePortBpfMode::Random
+                             : connection::ReusePortBpfMode::Disabled;
+}
+
+void detail::FastThriftServerBase::setReusePortBpfMode(
+    connection::ReusePortBpfMode mode) {
+  std::lock_guard<std::mutex> lock(lifecycleMutex_);
+  CHECK(state_ == State::kNotStarted)
+      << "FastThriftServer::setReusePortBpfMode must be called before "
+         "start()/serve()";
+  reusePortBpfMode_ = mode;
 }
 
 void detail::FastThriftServerBase::setSocketOptions(
@@ -623,7 +633,7 @@ void detail::FastThriftServerBase::start() {
       std::move(tlsParams),
       socketOptions_,
       folly::getKeepAliveToken(getConnectionSetupThreadPool().get()));
-  connectionManager_->setEnableReusePortBpfSpread(enableReusePortBpfSpread_);
+  connectionManager_->setReusePortBpfMode(reusePortBpfMode_);
   if (config_.numConnectionSetupThreads > 0 &&
       !pendingConnectionCallbacks_.empty()) {
     pendingConnectionEventCallback_ =
