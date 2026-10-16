@@ -24,6 +24,7 @@ abstract class LazyAnyTestBase extends WWWTest {
   abstract const ?apache_thrift_StandardProtocol THRIFT_PROTOCOL;
   abstract const string CPP_HEX_BINARY_SERIALIZED;
 
+  <<__NeedsConcrete>>
   private static function getClassnameObject(): IThriftStruct {
     $t = static::CLASSNAME;
     return new $t();
@@ -108,6 +109,7 @@ abstract class LazyAnyTestBase extends WWWTest {
     );
   }
 
+  <<__NeedsConcrete>>
   public static function getTestCases(
   ): dict<string, (mixed, unicorn_test_ExampleStruct, string)> {
     // Inner class represented by LazyAny
