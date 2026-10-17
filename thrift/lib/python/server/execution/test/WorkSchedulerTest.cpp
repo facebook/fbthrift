@@ -22,6 +22,7 @@
 #include <mutex>
 #include <optional>
 #include <stdexcept>
+#include <thread>
 #include <utility>
 #include <vector>
 
@@ -57,6 +58,28 @@ class KeepAliveTrackingExecutor final : public folly::Executor {
  private:
   folly::Executor& delegate_;
   std::size_t keepAliveCount_{0};
+};
+
+// Lets a test freeze the scheduler mid-dispatch: each add() call waits until
+// the test releases it.
+class AddGateExecutor final : public folly::Executor {
+ public:
+  explicit AddGateExecutor(folly::Executor& delegate) : delegate_(delegate) {}
+
+  void add(folly::Func callback) override {
+    addEntered_.post();
+    addReleased_.wait();
+    delegate_.add(std::move(callback));
+  }
+
+  void waitForAdd() { addEntered_.wait(); }
+
+  void releaseAdd() { addReleased_.post(); }
+
+ private:
+  folly::Executor& delegate_;
+  folly::Baton<> addEntered_;
+  folly::Baton<> addReleased_;
 };
 
 class CallbackGateExecutor final : public folly::Executor {
@@ -121,6 +144,64 @@ TEST(WorkSchedulerTest, CloseReleasesRegisteredWorkerExecutorKeepAlive) {
   // THEN
   EXPECT_EQ(expectedKeepAliveCountBeforeClose, actualKeepAliveCountBeforeClose);
   EXPECT_EQ(expectedKeepAliveCountAfterClose, actualKeepAliveCountAfterClose);
+}
+
+TEST(
+    WorkSchedulerTest,
+    UnregisterWorkerReturnsOnlyAfterItReleasesTheExecutorKeepAlive) {
+  // GIVEN
+  const std::size_t expectedKeepAliveCountAfterUnregister = 0;
+  // A dispatch to this worker waits in its add(), which freezes the scheduler.
+  folly::ManualExecutor busyWorkerEventLoop;
+  AddGateExecutor busyWorkerExecutor(busyWorkerEventLoop);
+  // Only the registration keeps the idle worker's executor alive, so its count
+  // drops to zero exactly when unregistration releases it.
+  folly::ManualExecutor idleWorkerEventLoop;
+  KeepAliveTrackingExecutor idleWorkerExecutor(idleWorkerEventLoop);
+  WorkScheduler workScheduler;
+  const auto busyWorker = workScheduler.registerWorker(
+      folly::Executor::getKeepAliveToken(busyWorkerExecutor));
+  const auto idleWorker = workScheduler.registerWorker(
+      folly::Executor::getKeepAliveToken(idleWorkerExecutor));
+  // Only the busy worker has capacity, so the work below goes to it.
+  workScheduler.makeWorkerCapacityAvailable(busyWorker);
+  // Make the scheduler busy on another thread. The scheduler has no thread of
+  // its own, so this thread, which submits first, runs the dispatch and freezes
+  // in the busy worker's add().
+  std::thread schedulerThread([&] {
+    workScheduler.addAsynchronousWorkWithPriority(
+        [](const WorkerHandle&, std::shared_ptr<WorkerCapacityLease>) {},
+        folly::Executor::MID_PRI);
+  });
+  // Continue only after the scheduler freezes.
+  busyWorkerExecutor.waitForAdd();
+
+  // WHEN
+  std::size_t actualKeepAliveCountAfterUnregister = 0;
+  folly::Baton<> unregisterReturned;
+  // The scheduler is busy, so this removal waits behind the frozen dispatch.
+  // Record the count the moment unregisterWorker() returns.
+  std::thread unregisterThread([&] {
+    workScheduler.unregisterWorker(idleWorker);
+    actualKeepAliveCountAfterUnregister = idleWorkerExecutor.keepAliveCount();
+    unregisterReturned.post();
+  });
+  // Give an early return time to show up: an unregisterWorker() that returns
+  // before its removal runs records a count of 1 here. Correct code blocks
+  // until the release, so it passes however long this wait lasts.
+  unregisterReturned.try_wait_for(std::chrono::milliseconds(200));
+  // Release the frozen dispatch. The scheduler thread then runs the queued
+  // removal, which releases the keep-alive and lets unregisterWorker() return.
+  busyWorkerExecutor.releaseAdd();
+  unregisterThread.join();
+  schedulerThread.join();
+  // Run the dispatched work so it drops its capacity lease before teardown.
+  busyWorkerEventLoop.drain();
+
+  // THEN
+  EXPECT_EQ(
+      expectedKeepAliveCountAfterUnregister,
+      actualKeepAliveCountAfterUnregister);
 }
 
 TEST(WorkSchedulerTest, LeaseReleasedAfterCloseDoesNotRestoreRegistration) {

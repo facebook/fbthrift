@@ -40,11 +40,24 @@ WorkerHandle WorkScheduler::registerWorker(
 }
 
 void WorkScheduler::unregisterWorker(WorkerHandle worker) {
+  // This wait always completes. Only this library calls the scheduler, and its
+  // contract rules out both ways the wait could hang:
+  // - Queued scheduler work always runs. An idle scheduler runs it on this
+  //   thread; a busy one runs it on the thread that already works through its
+  //   queue. close() clears registrations but never stops that executor.
+  // - The contract forbids calls from inside scheduler work, as for close():
+  //   such a call would wait on itself.
+  folly::Baton<> unregistered;
   scheduler_->add([self = folly::Executor::getKeepAliveToken(*this),
-                   worker = std::move(worker)] {
+                   worker = std::move(worker),
+                   &unregistered] {
+    // Neither erase can throw, so the post below always runs: the handle's
+    // hash, comparison, and moves never throw, and erasure never allocates.
     self->workers_.erase(worker);
     std::erase(self->workersWithAvailableCapacity_, worker);
+    unregistered.post();
   });
+  unregistered.wait();
 }
 
 void WorkScheduler::close() noexcept {

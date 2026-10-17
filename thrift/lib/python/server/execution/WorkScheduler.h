@@ -88,7 +88,10 @@ class WorkScheduler final : public folly::DefaultKeepAliveExecutor {
   WorkScheduler& operator=(WorkScheduler&&) = delete;
 
   WorkerHandle registerWorker(folly::Executor::KeepAlive<> executor);
+  // Returns only after the registration, including its executor keep-alive,
+  // is released. Call only from outside scheduler work.
   void unregisterWorker(WorkerHandle worker);
+  // Call only from outside scheduler work.
   void close() noexcept;
 
   using AsynchronousWork =
