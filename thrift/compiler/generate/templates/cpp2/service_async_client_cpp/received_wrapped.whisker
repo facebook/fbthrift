@@ -29,6 +29,12 @@ folly::exception_wrapper {{#partial client.client_class_name service=interface p
   }
 
   using result = ::{{interface.cpp_qualified_namespace}}::{{service_cpp_name}}_{{function.prefixed_name}}_presult;
+  {{#if interface.program.iobuf_chain_decoders?}}
+  if (state.serializedResponse().usesIOBufChain()) {
+    return apache::thrift::detail::ac::recv_wrapped_with_chain<result>(
+        state{{#if function.cpp_recv_arg?}}, _return{{/if}});
+  }
+  {{/if interface.program.iobuf_chain_decoders?}}
   return apache::thrift::detail::ac::withProtocolReader(state.protocolId(), [&](auto&& reader) {
     return apache::thrift::detail::ac::recv_wrapped<result>(
         &reader, state{{#if function.cpp_recv_arg?}}, _return{{/if}});

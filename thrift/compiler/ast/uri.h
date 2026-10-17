@@ -116,6 +116,8 @@ inline constexpr auto kCppPackIssetUri =
 inline constexpr auto kCppRefUri = "facebook.com/thrift/annotation/cpp/Ref";
 inline constexpr auto kCppUseOpEncodeUri =
     "facebook.com/thrift/annotation/cpp/UseOpEncode";
+inline constexpr auto kCppEnableIOBufChainSupportUri =
+    "facebook.com/thrift/annotation/cpp/EnableIOBufChainSupport";
 inline constexpr auto kCppFrozen2ExcludeUri =
     "facebook.com/thrift/annotation/cpp/Frozen2Exclude";
 inline constexpr auto kCppAllowCustomDefaultInAllocCtorUri =

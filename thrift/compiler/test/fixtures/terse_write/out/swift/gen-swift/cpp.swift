@@ -571,6 +571,36 @@ public struct UseOpEncode: ThriftSerializable, Hashable {
     }
 }
 
+/// Auto-generated from EnableIOBufChainSupport
+public struct EnableIOBufChainSupport: ThriftSerializable, Hashable {
+
+    public init() {}
+
+    /// Resets every field to its intrinsic (standard) default, per the Object
+    /// Model `clear()` (guide 2.1.22). Unlike `init()`, this ignores custom
+    /// IDL defaults: optional fields become nil, others their type's zero value.
+    public mutating func clear() {
+    }
+
+    public func write<W: ProtocolWriter>(to writer: W) {
+        writer.writeFieldStop()
+    }
+
+    public init<R: ProtocolReader>(from reader: R) throws {
+        self.init()
+        while true {
+            let (fieldType, fieldId) = try reader.readFieldBegin()
+            if fieldType == .stop {
+                break
+            }
+            switch fieldId {
+            default:
+                try reader.skip(fieldType)
+            }
+        }
+    }
+}
+
 /// Auto-generated from EnumType
 public struct EnumType: ThriftSerializable, Hashable {
     public var type: EnumUnderlyingType = .init(rawValue: 0)

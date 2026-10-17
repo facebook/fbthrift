@@ -1369,6 +1369,86 @@ class UseOpEncode implements \IThriftSyncStruct, \IThriftStructMetadata {
 }
 
 /**
+ * Enables compilation of C++ support for decoding RPC messages stored in
+ * apache::thrift::IOBufChain:
+ * - Requests sent by clients and received by servers.
+ * - Responses sent by servers and received by clients, for RPCs that return
+ *   one response.
+ * 
+ * Applies to services defined in this IDL file.
+ * 
+ * This annotation only compiles in support. Runtime use requires configuring
+ * the receiving Rocket connection to use the "iobuf_chain" frame parser.
+ * IOBufChain decoding currently supports only the Binary protocol.
+ *
+ * Original thrift struct:-
+ * EnableIOBufChainSupport
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/cpp/EnableIOBufChainSupport'))>>
+class EnableIOBufChainSupport implements \IThriftSyncStruct, \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct()[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'EnableIOBufChainSupport';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "cpp.EnableIOBufChainSupport",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\facebook\thrift\annotation\Program' => \facebook\thrift\annotation\Program::withDefaultValues(),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = PHP\json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+
+/**
  * Indicates an integer type for C++ to use as the underlying type of enum, for example:
  * 
  *     @cpp.EnumType{type = cpp.EnumUnderlyingType.I8}

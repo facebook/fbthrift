@@ -26,6 +26,7 @@ namespace facebook::thrift::annotation::cpp {
   ::apache::thrift::detail::md::StructMetadata<ScopedEnumAsUnionType>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<FieldInterceptor>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<UseOpEncode>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<EnableIOBufChainSupport>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<EnumType>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Frozen2Exclude>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Frozen2RequiresCompleteContainerParams>::gen(metadata);

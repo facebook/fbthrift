@@ -133,6 +133,13 @@ inline void reset_field<::facebook::thrift::annotation::cpp::UseOpEncode>(
 }
 
 template<>
+inline void reset_field<::facebook::thrift::annotation::cpp::EnableIOBufChainSupport>(
+    ::facebook::thrift::annotation::cpp::EnableIOBufChainSupport& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
 inline void reset_field<::facebook::thrift::annotation::cpp::EnumType>(
     ::facebook::thrift::annotation::cpp::EnumType& obj, uint16_t index) {
   switch (index) {
@@ -367,6 +374,16 @@ inline const std::unordered_map<std::string_view, std::string_view>& PyStructTra
 template<>
 inline const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::cpp::UseOpEncode>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+inline const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::cpp::EnableIOBufChainSupport>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

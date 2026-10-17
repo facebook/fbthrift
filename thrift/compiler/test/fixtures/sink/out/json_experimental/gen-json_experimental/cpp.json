@@ -53,36 +53,36 @@
           "I8" : {
             "name" : "I8",
             "docstring" : "::std::int8_t\n",
-            "lineno" : 276,
+            "lineno" : 292,
             "value" : 0
           },
           "U8" : {
             "name" : "U8",
             "docstring" : "::std::uint8_t\n",
-            "lineno" : 278,
+            "lineno" : 294,
             "value" : 1
           },
           "I16" : {
             "name" : "I16",
             "docstring" : "::std::int16_t\n",
-            "lineno" : 280,
+            "lineno" : 296,
             "value" : 2
           },
           "U16" : {
             "name" : "U16",
             "docstring" : "::std::uint16_t\n",
-            "lineno" : 282,
+            "lineno" : 298,
             "value" : 3
           },
           "U32" : {
             "name" : "U32",
             "docstring" : "::std::uint32_t\n",
-            "lineno" : 284,
+            "lineno" : 300,
             "value" : 4
           }
         },
         "docstring" : "Enum in C++ by default uses signed 32 bit integer. There is no need to specify\nunderlying type for signed 32 bit integer.\n64-bit is not supported to avoid truncation since enums are sent as 32-bit integers over the wire.\n",
-        "lineno" : 274
+        "lineno" : 290
       }
   },
   "structs" :
@@ -453,6 +453,23 @@
         "is_union" : false,
         "lineno" : 265
       },
+      "EnableIOBufChainSupport" : {
+        "name" : "EnableIOBufChainSupport",
+        "structured_annotations": {
+          "scope.Program" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Program",
+            "path" : "thrift/annotation/scope.thrift"
+          },
+            "value" : {}
+          }
+        },
+        "docstring" : "Enables compilation of C++ support for decoding RPC messages stored in\napache::thrift::IOBufChain:\n- Requests sent by clients and received by servers.\n- Responses sent by servers and received by clients, for RPCs that return\n  one response.\n\nApplies to services defined in this IDL file.\n\nThis annotation only compiles in support. Runtime use requires configuring\nthe receiving Rocket connection to use the \"iobuf_chain\" frame parser.\nIOBufChain decoding currently supports only the Binary protocol.\n",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 282
+      },
       "EnumType" : {
         "name" : "EnumType",
         "structured_annotations": {
@@ -470,7 +487,7 @@
           "type" : {
             "name" : "type",
             "key" : 1,
-            "lineno" : 306,
+            "lineno" : 322,
             "required" : "opt-in-req-out",
             "type" : {
       "type" : "enum",
@@ -480,7 +497,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 304
+        "lineno" : 320
       },
       "Frozen2Exclude" : {
         "name" : "Frozen2Exclude",
@@ -505,7 +522,7 @@
         "docstring" : "When applied to a struct or union, indicates that frozen types should not be\ngenerated for that type.\n\nWhen applied to a field, indicates that the field should be omitted from the\nfrozen layout. The field's value is not laid out, not frozen, and not\ncarried in the frozen blob; a populated excluded field will throw\n`LayoutExcludedException` on freeze, exactly as struct-level\n`@cpp.Frozen2Exclude` does when its type is used as a populated non-nullable\nfield. Field-level `@cpp.Frozen2Exclude` is supported only on `optional`\nnon-ref, non-adapted, non-boxed value fields; other shapes are rejected at\ncompile time.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 322
+        "lineno" : 338
       },
       "Frozen2RequiresCompleteContainerParams" : {
         "name" : "Frozen2RequiresCompleteContainerParams",
@@ -522,7 +539,7 @@
         "docstring" : "Indicates that the container params must be complete at the time this type is instantiated.\nOnly required in rare cases where the build fails with a frozen-related assert failure.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 330
+        "lineno" : 346
       },
       "ProcessInEbThreadUnsafe" : {
         "name" : "ProcessInEbThreadUnsafe",
@@ -547,7 +564,7 @@
         "docstring" : "Causes C++ handler code to run inline on the EventBase thread.\nDisables overload protection, use with caution.\nCannot be applied to individual functions in interactions.\n\nCauses the request to be executed on the event base thread directly instead of rescheduling onto a thread manager thread, provided the async_eb_ handler method is implemented.\nYou should only execute the request on the event base thread if it is very fast and you have measured that rescheduling is a substantial chunk of your service's CPU usage.\nIf a request executing on the event base thread blocks or takes a long time, all other requests sharing the same event base are affected and latency will increase significantly.\nWe strongly discourage the use of this annotation unless strictly necessary. You will have to implement the harder-to-use async_eb_ handler method.\nThis also disables queue timeouts, an important form of overload protection.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 344
+        "lineno" : 360
       },
       "UseCursorSerialization" : {
         "name" : "UseCursorSerialization",
@@ -595,7 +612,7 @@
         "docstring" : "Causes uses of the given structured type to be replaced with `CursorSerializationWrapper` to allow use of cursor-based serialization.\nMust add `cpp_include \"thrift/lib/cpp2/protocol/CursorBasedSerializer.h\"` to files that use this annotation.\nSee documentation for this class in CursorBasedSerializer.h\nCan only be applied to top-level structs (used as return type or sole argument to an RPC or serialized directly), not to types used as struct fields or container elements.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 354
+        "lineno" : 370
       },
       "GenerateDeprecatedHeaderClientMethods" : {
         "name" : "GenerateDeprecatedHeaderClientMethods",
@@ -620,7 +637,7 @@
         "docstring" : "Given either of the following Thrift service definitions:\n\n    @cpp.GenerateDeprecatedHeaderClientMethods\n    service Foo {\n      void bar();\n    }\n\n    service Foo {\n      @cpp.GenerateDeprecatedHeaderClientMethods\n      void bar();\n    }\n\nThis annotation instructs the compiler to generate the following (now deprecated) client method variants:\n  - apache::thrift::Client<Foo>::header_future_bar\n  - apache::thrift::Client<Foo>::header_semifuture_bar\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 378
+        "lineno" : 394
       },
       "AllowLegacyNonOptionalRef" : {
         "name" : "AllowLegacyNonOptionalRef",
@@ -637,7 +654,7 @@
         "docstring" : "Allows the field to be annotated @cpp.Ref (or cpp[2].ref[_type]) even if it\nis not optional (or in a union, which is effectively optional).\n\nThis annotation is provided for a limited time, to exempt pre-existing fields\nwhile rolling out a stricter enforcement of the condition above.\n\nReminder: reference fields should be optional because the corresponding smart\npointers (std::unique_ptr, std::shared_ptr) can always be reset or set to\nnullptr by the clients. If the field is not optional, this leads to a\nconfusing (or non-sensical) situation, wherein a field that should always\nhave a value has nullptr instead.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 395
+        "lineno" : 411
       },
       "DeprecatedTerseWrite" : {
         "name" : "DeprecatedTerseWrite",
@@ -654,7 +671,7 @@
         "docstring" : "Changes the serialization behavior of the field to skip serialization if its value is equal to standard default\nfor bool, integers, enums, and floating points, and intrinsic default for string, binary, and containers.\nIf an unqualified field with structured type has @cpp.Ref, the serilaization skips the field if the pointer is empty.\n\nThis annotation is only applicable to an unqualified field with bool, integers, enums, floating points, string, binary, and containers\nbut not for structs, unions, and exceptions.\n\nNote, this is a deprecated feature. Use @thrift.TerseWrite instead.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 408
+        "lineno" : 424
       },
       "AllowLegacyDeprecatedTerseWritesRef" : {
         "name" : "AllowLegacyDeprecatedTerseWritesRef",
@@ -671,7 +688,7 @@
         "docstring" : "Allows the field to be annotated @cpp.Ref (or cpp[2].ref[_type]) even if it\nis deprecated_terse_writes field.\n\nThis annotation is provided for a limited time, to exempt pre-existing fields\nwhile rolling out a stricter enforcement of the condition above.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 418
+        "lineno" : 434
       },
       "EnableCustomTypeOrdering" : {
         "name" : "EnableCustomTypeOrdering",
@@ -696,7 +713,7 @@
         "docstring" : "If there are custom types in thrift structure (e.g., `std::unordered_map` field),\nWe won't define `operator<` automatically (unless URI exists, but that's about\nto change). Note that `operator<` is always declared, unless `@cpp.NonOrderable` is used.\nThis annotation ensures the `operator<` is always defined. For types that\ndon't have `operator<`, such as `std::unordered_map`, we will convert it to\na sorted `std::vector<pair<K*, V*>>` to do the comparison.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 429
+        "lineno" : 445
       },
       "GenerateServiceMethodDecorator" : {
         "name" : "GenerateServiceMethodDecorator",
@@ -713,7 +730,7 @@
         "docstring" : "When applied to a service, this annotation will cause the thrift compiler\nto generate the method decorator interface for the class.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 437
+        "lineno" : 453
       },
       "FastClient" : {
         "name" : "FastClient",
@@ -730,7 +747,7 @@
         "docstring" : "When applied to a service, generates only a FastClient instead of the\nstandard AsyncClient. The FastClient uses the fast_thrift pipeline for\nlower latency serialization and deserialization.\n\nOnly request/response functions are supported. Functions using streams,\nsinks, oneway, or interactions are skipped.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 448
+        "lineno" : 464
       },
       "FastServer" : {
         "name" : "FastServer",
@@ -747,7 +764,7 @@
         "docstring" : "When applied to a service, generates an\napache::thrift::FastServiceHandler<Service> specialization and a\nper-connection <Service>AppAdapter instead of the standard SvIf and\nAsyncProcessor. The generated server uses the fast_thrift pipeline for\nlower latency serialization and deserialization.\n\nUsers implement apache::thrift::FastServiceHandler<MyService> and share\na std::shared_ptr across per-connection <Service>AppAdapter instances.\n\nOnly request/response functions are supported. Functions using streams,\nsinks, oneway, or interactions are skipped.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 464
+        "lineno" : 480
       },
       "NonOrderable" : {
         "name" : "NonOrderable",
@@ -764,7 +781,7 @@
         "docstring" : "Marks a structured type as non-orderable, marking `operator<` as deleted.\nThis is useful when types should never be ordered. By default, `operator<` is\nalways declared, but depending on whether or not the type's shape is considered\norderable, it may or may not be defined. See `EnableCustomTypeOrdering` for more\ndetails.\nNote: The unstructured `cpp_noncomparable` annotation has priority over this one &\nwill cause `operator==` && `operator<` to *not* be declared or defined.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 476
+        "lineno" : 492
       },
       "DeclareHashSpecialization" : {
         "name" : "DeclareHashSpecialization",
@@ -789,7 +806,7 @@
         "docstring" : "Declares a specialization of `std::hash` for the struct or type.\nThis is equivalent to the unstructured `cpp.declare_hash` annotation.\nThe generated code will include a forward declaration of the hash specialization in the std namespace.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 484
+        "lineno" : 500
       },
       "DeclareEqualToSpecialization" : {
         "name" : "DeclareEqualToSpecialization",
@@ -814,7 +831,7 @@
         "docstring" : "Declares a specialization of `std::equal_to` for the struct or type.\nThis is equivalent to the unstructured `cpp.declare_equal_to` annotation.\nThe generated code will include a forward declaration of the equal_to specialization in the std namespace.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 493
+        "lineno" : 509
       },
       "AllowCustomDefaultInAllocCtor" : {
         "name" : "AllowCustomDefaultInAllocCtor",
@@ -833,14 +850,14 @@
           "legacy_ignore_custom_default" : {
             "name" : "legacy_ignore_custom_default",
             "key" : 1,
-            "lineno" : 511,
+            "lineno" : 527,
             "required" : "opt-in-req-out",
             "type" : "bool"
                   }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 509
+        "lineno" : 525
       },
       "InternalExperimentalAllowAllocatorOnUnion" : {
         "name" : "InternalExperimentalAllowAllocatorOnUnion",
@@ -865,7 +882,7 @@
         "docstring" : "Allows the unstructured `cpp.allocator` annotation on this union, which\nunions otherwise reject.\n\nInternal and experimental: Thrift's own unit tests use it while support for\n`cpp.allocator` unions is incomplete. Do not use it elsewhere; it may change\nor go away without notice.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 522
+        "lineno" : 538
       }
   },
   "source_path" : "thrift/annotation/cpp",

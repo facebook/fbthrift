@@ -1087,6 +1087,9 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
     auto def = whisker::dsl::prototype_builder<h_program>::extends(base);
     def.property(
         "cpp_qualified_namespace", &cpp2::get_gen_unprefixed_namespace);
+    def.property("iobuf_chain_decoders?", [](const t_program& self) {
+      return self.has_structured_annotation(kCppEnableIOBufChainSupportUri);
+    });
     def.property(
         "const_referenced_in_field_default?", [this](const t_program& program) {
           return cpp_context_->field_default_const_ref_programs().contains(
