@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <cstddef>
+#include <memory>
+
 #include <folly/Range.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 
@@ -25,14 +28,23 @@ class IOBuf;
 
 namespace apache::thrift {
 
+class IOBufChain;
+
 /**
  * Structure representing a serialized message, encoded with the given
  * protocol in the given buffer.
  */
 struct SerializedMessage {
   protocol::PROTOCOL_TYPES protocolType;
-  const folly::IOBuf* buffer;
+  const folly::IOBuf* buffer{nullptr};
   folly::StringPiece methodName;
+  const IOBufChain* chainBuffer{nullptr};
+
+  bool hasBuffer() const noexcept {
+    return buffer != nullptr || chainBuffer != nullptr;
+  }
+  size_t computeChainDataLength() const noexcept;
+  std::unique_ptr<folly::IOBuf> cloneBuffer() const;
 };
 
 } // namespace apache::thrift

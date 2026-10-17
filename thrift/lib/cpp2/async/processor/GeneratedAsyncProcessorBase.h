@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <type_traits>
+
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/TrustedServerException.h>
 #include <thrift/lib/cpp2/async/processor/AsyncProcessor.h>
@@ -23,10 +25,16 @@
 #include <thrift/lib/cpp2/async/processor/RequestTask.h>
 #include <thrift/lib/cpp2/async/processor/ServerInterface.h>
 #include <thrift/lib/cpp2/async/processor/ServerRequest.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 
 namespace apache::thrift {
 
 class ServerInterface;
+
+namespace detail {
+struct IOBufRequestReader;
+struct IOBufChainRequestReader;
+} // namespace detail
 
 class GeneratedAsyncProcessorBase : public AsyncProcessor,
                                     public AsyncProcessorFunc {
@@ -37,7 +45,10 @@ class GeneratedAsyncProcessorBase : public AsyncProcessor,
   static bool validateRpcKind(const ServerRequest& req);
 
  protected:
-  template <typename ProtocolIn, typename Args>
+  template <
+      typename ProtocolIn,
+      typename Args,
+      typename RequestReader = detail::IOBufRequestReader>
   static void deserializeRequest(
       Args& args,
       folly::StringPiece methodName,
@@ -140,37 +151,106 @@ class GeneratedAsyncProcessorBase : public AsyncProcessor,
       Cpp2ConnContext& conn, folly::EventBase&) noexcept final;
 };
 
-template <typename ProtocolIn, typename Args>
-void GeneratedAsyncProcessorBase::deserializeRequest(
-    Args& args,
-    folly::StringPiece methodName,
-    const SerializedRequest& serializedRequest,
-    ContextStack* c) {
-  ProtocolIn iprot;
-  iprot.setInput(serializedRequest.buffer.get());
-  if (c) {
-    c->preRead();
-  }
-  SerializedMessage smsg;
-  smsg.protocolType = iprot.protocolType();
-  smsg.buffer = serializedRequest.buffer.get();
-  smsg.methodName = methodName;
-  if (c) {
-    c->onReadData(smsg);
-  }
-  uint32_t bytes = 0;
+namespace detail {
+
+template <typename Protocol, typename Args>
+uint32_t deserializeRequestBodyOrThrow(Protocol& iprot, Args& args) {
   try {
-    bytes = apache::thrift::detail::deserializeRequestBody(&iprot, &args);
+    const auto bytes =
+        apache::thrift::detail::deserializeRequestBody(&iprot, &args);
     iprot.readMessageEnd();
+    return bytes;
   } catch (const std::exception& ex) {
     throw TrustedServerException::requestParsingError(ex.what());
   } catch (...) {
     throw TrustedServerException::requestParsingError(
         folly::exceptionStr(folly::current_exception()).c_str());
   }
-  if (c) {
-    c->postRead(nullptr, bytes);
+}
+
+inline void notifyRequestContext(
+    ContextStack& context,
+    SerializedMessage& message,
+    const SerializedRequest& request) {
+  if (request.usesIOBufChain()) {
+    message.chainBuffer = &*request.chainBuffer;
+  } else {
+    message.buffer = request.buffer.get();
   }
+  context.onReadData(message);
+}
+
+template <typename ProtocolIn, typename F>
+void withIOBufRequestReader(
+    const SerializedRequest& serializedRequest, F&& callback) {
+  if (serializedRequest.usesIOBufChain()) {
+    throw TrustedServerException::requestParsingError(
+        "IOBufChain request decoding is not enabled");
+  }
+  ProtocolIn iprot;
+  iprot.setInput(serializedRequest.buffer.get());
+  std::forward<F>(callback)(iprot);
+}
+
+template <typename ProtocolIn, typename F>
+void withRequestReader(
+    const SerializedRequest& serializedRequest, F&& callback) {
+  if (serializedRequest.usesIOBufChain()) {
+    if constexpr (std::is_same_v<ProtocolIn, BinaryProtocolReader>) {
+      BinaryProtocolChainReader iprot;
+      iprot.setInput(&*serializedRequest.chainBuffer);
+      std::forward<F>(callback)(iprot);
+      return;
+    } else {
+      throw TrustedServerException::requestParsingError(
+          "Protocol does not support IOBufChain input");
+    }
+  }
+  withIOBufRequestReader<ProtocolIn>(
+      serializedRequest, std::forward<F>(callback));
+}
+
+struct IOBufRequestReader {
+  template <typename ProtocolIn, typename F>
+  static void withReader(
+      const SerializedRequest& serializedRequest, F&& callback) {
+    withIOBufRequestReader<ProtocolIn>(
+        serializedRequest, std::forward<F>(callback));
+  }
+};
+
+struct IOBufChainRequestReader {
+  template <typename ProtocolIn, typename F>
+  static void withReader(
+      const SerializedRequest& serializedRequest, F&& callback) {
+    withRequestReader<ProtocolIn>(serializedRequest, std::forward<F>(callback));
+  }
+};
+
+} // namespace detail
+
+template <typename ProtocolIn, typename Args, typename RequestReader>
+void GeneratedAsyncProcessorBase::deserializeRequest(
+    Args& args,
+    folly::StringPiece methodName,
+    const SerializedRequest& serializedRequest,
+    ContextStack* c) {
+  RequestReader::template withReader<ProtocolIn>(
+      serializedRequest, [&](auto& iprot) {
+        if (c) {
+          c->preRead();
+        }
+        SerializedMessage smsg;
+        smsg.protocolType = iprot.protocolType();
+        smsg.methodName = methodName;
+        if (c) {
+          detail::notifyRequestContext(*c, smsg, serializedRequest);
+        }
+        const auto bytes = detail::deserializeRequestBodyOrThrow(iprot, args);
+        if (c) {
+          c->postRead(nullptr, bytes);
+        }
+      });
 }
 
 template <typename ProtocolIn, typename Args>
@@ -178,15 +258,7 @@ void GeneratedAsyncProcessorBase::simpleDeserializeRequest(
     Args& args, const SerializedRequest& serializedRequest) {
   ProtocolIn iprot;
   iprot.setInput(serializedRequest.buffer.get());
-  try {
-    apache::thrift::detail::deserializeRequestBody(&iprot, &args);
-    iprot.readMessageEnd();
-  } catch (const std::exception& ex) {
-    throw TrustedServerException::requestParsingError(ex.what());
-  } catch (...) {
-    throw TrustedServerException::requestParsingError(
-        folly::exceptionStr(folly::current_exception()).c_str());
-  }
+  detail::deserializeRequestBodyOrThrow(iprot, args);
 }
 
 template <typename Response, typename ProtocolOut, typename Result>

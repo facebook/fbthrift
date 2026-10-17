@@ -249,9 +249,7 @@ class RecordingEventHandler : public apache::thrift::TProcessorEventHandler {
       const apache::thrift::SerializedMessage& message) override {
     log_->calls.emplace_back("onReadData");
     log_->readMethodName = message.methodName.str();
-    log_->readBytes = message.buffer == nullptr
-        ? 0
-        : message.buffer->computeChainDataLength();
+    log_->readBytes = message.computeChainDataLength();
     log_->readProtocol = message.protocolType;
   }
 

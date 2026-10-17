@@ -22,7 +22,9 @@
 
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp2/IOBufChain.h>
+#include <thrift/lib/cpp2/async/processor/GeneratedAsyncProcessorBase.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/ChainService.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/ChainService.tcc>
 
@@ -31,6 +33,8 @@ namespace {
 using apache::thrift::BinaryProtocolChainReader;
 using apache::thrift::BinaryProtocolReader;
 using apache::thrift::BinaryProtocolWriter;
+using apache::thrift::CompactProtocolReader;
+using apache::thrift::CompactProtocolWriter;
 using apache::thrift::FieldData;
 using apache::thrift::IOBufChain;
 using apache::thrift::test::iobuf_chain_rpc::ChainService_echo_pargs;
@@ -99,6 +103,80 @@ TEST(IOBufChainRpcCodegenTest, DecodesGeneratedPargsWithBothBinaryReaders) {
   EXPECT_EQ(
       chainString(*input.chainBinary()),
       chainString(*legacyOutput.chainBinary()));
+}
+
+class RequestDeserializer : public apache::thrift::GeneratedAsyncProcessorBase {
+ public:
+  using GeneratedAsyncProcessorBase::deserializeRequest;
+};
+
+template <typename Reader, typename Writer>
+void testRequestReaderSelection() {
+  Payload input;
+  *input.sequence() = 123456789;
+  *input.text() = "request reader";
+  *input.ordinaryBinary() = "ordinary binary";
+  *input.chainBinary() = IOBufChain{folly::IOBuf::copyBuffer("chain binary")};
+  ChainService_echo_pargs inputArgs;
+  inputArgs.get<0>().value = &input;
+
+  folly::IOBufQueue queue;
+  Writer writer;
+  writer.setOutput(&queue);
+  inputArgs.write(&writer);
+  auto serialized = queue.move();
+
+  auto decode = [&](apache::thrift::SerializedRequest request) {
+    Payload output;
+    ChainService_echo_pargs outputArgs;
+    outputArgs.get<0>().value = &output;
+    RequestDeserializer::deserializeRequest<
+        Reader,
+        ChainService_echo_pargs,
+        apache::thrift::detail::IOBufChainRequestReader>(
+        outputArgs, "echo", request, nullptr);
+    EXPECT_EQ(*input.sequence(), *output.sequence());
+    EXPECT_EQ(*input.text(), *output.text());
+    EXPECT_EQ(*input.ordinaryBinary(), *output.ordinaryBinary());
+    EXPECT_EQ(
+        chainString(*input.chainBinary()), chainString(*output.chainBinary()));
+  };
+  decode(apache::thrift::SerializedRequest{serialized->clone()});
+
+  IOBufChain chain;
+  const auto bytes = serialized->toString();
+  for (char byte : bytes) {
+    chain.append(folly::IOBuf::copyBuffer(&byte, 1));
+  }
+  apache::thrift::SerializedRequest chainRequest{std::move(chain)};
+  Payload output;
+  ChainService_echo_pargs outputArgs;
+  outputArgs.get<0>().value = &output;
+  EXPECT_THROW(
+      (RequestDeserializer::deserializeRequest<Reader, ChainService_echo_pargs>(
+          outputArgs, "echo", chainRequest, nullptr)),
+      apache::thrift::TrustedServerException);
+  if constexpr (std::is_same_v<Reader, BinaryProtocolReader>) {
+    decode(std::move(chainRequest));
+  } else {
+    EXPECT_THROW(
+        (RequestDeserializer::deserializeRequest<
+            Reader,
+            ChainService_echo_pargs,
+            apache::thrift::detail::IOBufChainRequestReader>(
+            outputArgs, "echo", chainRequest, nullptr)),
+        apache::thrift::TrustedServerException);
+  }
+}
+
+TEST(
+    IOBufChainRpcCodegenTest,
+    SelectsBinaryReaderFromRequestBufferRepresentation) {
+  testRequestReaderSelection<BinaryProtocolReader, BinaryProtocolWriter>();
+}
+
+TEST(IOBufChainRpcCodegenTest, RejectsChainRequestForCompactProtocol) {
+  testRequestReaderSelection<CompactProtocolReader, CompactProtocolWriter>();
 }
 
 } // namespace

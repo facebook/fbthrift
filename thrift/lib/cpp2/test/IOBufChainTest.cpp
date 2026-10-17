@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp/SerializedMessage.h>
 #include <thrift/lib/cpp2/IOBufChain.h>
 
 #include <array>
@@ -841,4 +842,49 @@ TEST(IOBufChain, SplitBufferSharesOwnership) {
   EXPECT_EQ(0, tracker.count);
   chain.clear();
   EXPECT_EQ(1, tracker.count);
+}
+
+TEST(SerializedMessage, ClonesIOBufRepresentation) {
+  auto buffer = IOBuf::copyBuffer("hello");
+  apache::thrift::SerializedMessage message{};
+  message.buffer = buffer.get();
+
+  EXPECT_TRUE(message.hasBuffer());
+  EXPECT_EQ(5, message.computeChainDataLength());
+  auto clone = message.cloneBuffer();
+  ASSERT_NE(nullptr, clone);
+  EXPECT_EQ("hello", clone->to<std::string>());
+}
+
+TEST(SerializedMessage, ClonesIOBufChainRepresentation) {
+  auto chain = chainOf({"hel", "lo"});
+  apache::thrift::SerializedMessage message{};
+  message.chainBuffer = &chain;
+
+  EXPECT_TRUE(message.hasBuffer());
+  EXPECT_EQ(5, message.computeChainDataLength());
+  auto clone = message.cloneBuffer();
+  ASSERT_NE(nullptr, clone);
+  EXPECT_EQ("hello", clone->to<std::string>());
+}
+
+TEST(SerializedMessage, ClonesEmptyPayload) {
+  IOBuf buffer;
+  IOBufChain chain;
+  apache::thrift::SerializedMessage message{};
+  message.buffer = &buffer;
+
+  EXPECT_TRUE(message.hasBuffer());
+  EXPECT_EQ(0, message.computeChainDataLength());
+  auto clone = message.cloneBuffer();
+  ASSERT_NE(nullptr, clone);
+  EXPECT_EQ(0, clone->computeChainDataLength());
+
+  message.buffer = nullptr;
+  message.chainBuffer = &chain;
+  EXPECT_TRUE(message.hasBuffer());
+  EXPECT_EQ(0, message.computeChainDataLength());
+  clone = message.cloneBuffer();
+  ASSERT_NE(nullptr, clone);
+  EXPECT_EQ(0, clone->computeChainDataLength());
 }
