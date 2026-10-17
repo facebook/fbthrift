@@ -88,6 +88,17 @@ std::string IOBufChainCursor::readFixedString(size_t length) {
   return result;
 }
 
+void IOBufChainCursor::retreatSlow(size_t length) {
+  if (length > position_) {
+    throw std::out_of_range(
+        "IOBufChain cursor retreat exceeds current position");
+  }
+
+  const auto destination = position_ - length;
+  reset(chain_);
+  skip(destination);
+}
+
 void IOBufChainCursor::clone(
     apache::thrift::IOBufChain& destination,
     size_t length,

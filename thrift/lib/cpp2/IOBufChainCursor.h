@@ -46,6 +46,13 @@ class IOBufChainCursor {
   template <typename T>
   T readBE();
 
+  template <typename T>
+    requires std::is_arithmetic_v<T>
+  bool tryRead(T& value);
+
+  template <typename T>
+  bool tryReadBE(T& value);
+
   const uint8_t* data() const noexcept {
     return isAtEnd() ? nullptr : current_->data() + offset_;
   }
@@ -94,6 +101,14 @@ class IOBufChainCursor {
     offset_ += length;
     position_ += length;
   }
+  void retreat(size_t length) {
+    if (length <= offset_) {
+      offset_ -= length;
+      position_ -= length;
+      return;
+    }
+    retreatSlow(length);
+  }
   std::string readFixedString(size_t length);
 
   void clone(
@@ -118,6 +133,7 @@ class IOBufChainCursor {
   size_t pullAtMostSlow(void* destination, size_t length);
   void pullSlow(void* destination, size_t length);
   void skipSlow(size_t length);
+  void retreatSlow(size_t length);
   void advanceWithinCurrentBuffer(size_t length) noexcept {
     DCHECK_LE(length, this->length());
     offset_ += length;
@@ -153,6 +169,24 @@ T IOBufChainCursor::read() {
 template <typename T>
 T IOBufChainCursor::readBE() {
   return folly::Endian::big(read<T>());
+}
+
+template <typename T>
+  requires std::is_arithmetic_v<T>
+bool IOBufChainCursor::tryRead(T& value) {
+  if (FOLLY_LIKELY(sizeof(T) <= length())) {
+    value = folly::loadUnaligned<T>(data());
+    advanceWithinCurrentBuffer(sizeof(T));
+    return true;
+  }
+  return pullAtMostSlow(&value, sizeof(T)) == sizeof(T);
+}
+
+template <typename T>
+bool IOBufChainCursor::tryReadBE(T& value) {
+  const bool success = tryRead(value);
+  value = folly::Endian::big(value);
+  return success;
 }
 
 } // namespace apache::thrift::io

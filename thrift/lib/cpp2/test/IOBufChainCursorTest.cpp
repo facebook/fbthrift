@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/IOBufChainCursor.h>
 
 #include <array>
+#include <cstdint>
 #include <cstring>
 #include <iterator>
 #include <memory>
@@ -125,6 +126,90 @@ TEST(IOBufChainCursor, ContiguousOperations) {
   cursor.skip(1);
   EXPECT_EQ('h', cursor.read<char>());
   EXPECT_TRUE(cursor.isAtEnd());
+}
+
+TEST(IOBufChainCursor, TryReadMatchesFollyAcrossFragments) {
+  auto chain = chainOf({"", "\x01", "", "\x02\x03", "\x04\x05\x06\x07", ""});
+  auto referenceChain = chain.clone();
+  auto referenceBuffer = std::move(referenceChain).moveToIOBuf();
+  folly::io::Cursor reference(referenceBuffer.get());
+  IOBufChainCursor cursor(chain);
+
+  uint32_t value = 0;
+  uint32_t referenceValue = 0;
+  EXPECT_TRUE(cursor.tryReadBE(value));
+  EXPECT_TRUE(reference.tryReadBE(referenceValue));
+  EXPECT_EQ(0x01020304, value);
+  EXPECT_EQ(referenceValue, value);
+  EXPECT_EQ(reference.getCurrentPosition(), cursor.getCurrentPosition());
+
+  value = referenceValue = 0xAABBCCDD;
+  EXPECT_FALSE(cursor.tryReadBE(value));
+  EXPECT_FALSE(reference.tryReadBE(referenceValue));
+  EXPECT_EQ(referenceValue, value);
+  EXPECT_EQ(reference.getCurrentPosition(), cursor.getCurrentPosition());
+  EXPECT_TRUE(cursor.isAtEnd());
+
+  cursor.retreat(3);
+  reference.retreat(3);
+  uint16_t smallValue = 0;
+  uint16_t referenceSmallValue = 0;
+  EXPECT_TRUE(cursor.tryReadBE(smallValue));
+  EXPECT_TRUE(reference.tryReadBE(referenceSmallValue));
+  EXPECT_EQ(0x0506, smallValue);
+  EXPECT_EQ(referenceSmallValue, smallValue);
+
+  uint8_t lastByte = 0;
+  EXPECT_TRUE(cursor.tryRead(lastByte));
+  EXPECT_EQ(7, lastByte);
+  EXPECT_TRUE(cursor.isAtEnd());
+
+  EXPECT_FALSE(cursor.tryRead(value));
+  EXPECT_EQ(chain.chainLength(), cursor.getCurrentPosition());
+}
+
+TEST(IOBufChainCursor, RetreatWithinFragmentAndBeforeStart) {
+  auto chain = chainOf({"abcdef"});
+  IOBufChainCursor cursor(chain);
+  cursor.skip(3);
+  cursor.retreat(2);
+  EXPECT_EQ(1, cursor.getCurrentPosition());
+  EXPECT_EQ(chain.begin()->data() + 1, cursor.data());
+
+  EXPECT_THROW(cursor.retreat(2), std::out_of_range);
+  EXPECT_EQ(1, cursor.getCurrentPosition());
+  EXPECT_EQ('b', cursor.read<char>());
+
+  cursor.retreat(2);
+  EXPECT_EQ(0, cursor.getCurrentPosition());
+  EXPECT_EQ('a', cursor.read<char>());
+
+  cursor.reset();
+  EXPECT_NO_THROW(cursor.retreat(0));
+  EXPECT_THROW(cursor.retreat(1), std::out_of_range);
+  EXPECT_EQ(0, cursor.getCurrentPosition());
+}
+
+TEST(IOBufChainCursor, RetreatAcrossFragmentsAndEnd) {
+  auto chain = chainOf({"", "ab", "", "c", "de", "", "f", ""});
+  IOBufChainCursor cursor(chain);
+  cursor.skip(5);
+  cursor.retreat(4);
+  EXPECT_EQ(1, cursor.getCurrentPosition());
+  EXPECT_EQ("bcde", cursor.readFixedString(4));
+
+  cursor.skip(1);
+  ASSERT_TRUE(cursor.isAtEnd());
+  cursor.retreat(1);
+  EXPECT_EQ('f', cursor.read<char>());
+  EXPECT_TRUE(cursor.isAtEnd());
+
+  EXPECT_THROW(cursor.retreat(7), std::out_of_range);
+  EXPECT_EQ(6, cursor.getCurrentPosition());
+  EXPECT_TRUE(cursor.isAtEnd());
+
+  cursor.retreat(chain.chainLength());
+  EXPECT_EQ("abcdef", cursor.readFixedString(chain.chainLength()));
 }
 
 TEST(IOBufChainCursor, PeekPullSkipAndReset) {
