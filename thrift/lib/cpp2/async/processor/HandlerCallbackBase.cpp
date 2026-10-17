@@ -570,12 +570,16 @@ HandlerCallbackBase::processServiceInterceptorsOnRequest(
       serviceInterceptors = server->getServiceInterceptors();
   std::vector<std::pair<std::size_t, folly::exception_wrapper>> exceptions;
 
+  const folly::IOBuf* serializedBuffer = serializedRequest.buffer.get();
+  const IOBufChain* serializedChain =
+      serializedRequest.chainBuffer ? &*serializedRequest.chainBuffer : nullptr;
+
   // Construct LazyDynamicArguments if schema is available
   std::optional<LazyDynamicArguments> lazyArgs;
-  if (serializedRequest.buffer) {
+  if (serializedBuffer) {
     if (auto* fn = reqCtx_->getFunctionNode()) {
       lazyArgs.emplace(
-          serializedRequest.buffer.get(),
+          serializedBuffer,
           fn,
           static_cast<protocol::PROTOCOL_TYPES>(
               reqCtx_->getHeader()->getProtocolId()));
@@ -599,7 +603,8 @@ HandlerCallbackBase::processServiceInterceptorsOnRequest(
         .qualifiedMethodName = methodNameInfo_.qualifiedMethodName,
         .frameworkMetadata = reqCtx_->getInterceptorFrameworkMetadata(),
         .decoratorData = &decoratorData,
-        .serializedRequestBuffer = serializedRequest.buffer.get(),
+        .serializedRequestBuffer = serializedBuffer,
+        .serializedRequestChain = serializedChain,
         .dynamicArguments = lazyArgs.has_value() ? &*lazyArgs : nullptr,
     };
     // Use co_awaitTry so that an interceptor which reports failure via

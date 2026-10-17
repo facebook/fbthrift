@@ -34,6 +34,7 @@
 
 namespace apache::thrift {
 
+class IOBufChain;
 class ServiceInterceptorBase;
 
 #if FOLLY_HAS_COROUTINES
@@ -129,11 +130,12 @@ class ServiceInterceptorBase {
     const server::DecoratorData* decoratorData = nullptr;
 
     /**
-     * This is the raw bytes buffer of the serialized request. Deserialized
+     * These are the raw bytes buffer of the serialized request. Deserialized
      * arguments are already available via `RequestInfo.arguments`. However,
      * this is made available for logging purposes.
      */
     const folly::IOBuf* serializedRequestBuffer = nullptr;
+    const IOBufChain* serializedRequestChain = nullptr;
 
     /**
      * Provides lazy access to method arguments as DynamicValue objects.

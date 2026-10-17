@@ -3246,7 +3246,11 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
       auto requestPayload =
           rocket::PayloadSerializer::getInstance()->unpack<RequestPayload>(
               stub.clonePayload(), false /* decodeMetadataUsingBinary */);
-      payload_ = std::move(*requestPayload->payload);
+      if (requestPayload->payload) {
+        payload_ = std::move(*requestPayload->payload);
+      } else if (requestPayload->payloadChain) {
+        payloadChain_.emplace(std::move(*requestPayload->payloadChain));
+      }
       auto& metadata = requestPayload->metadata;
       if (metadata.otherMetadata()) {
         headers_ = std::move(*requestPayload->metadata.otherMetadata());
@@ -3283,6 +3287,10 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
      */
     const folly::IOBuf& getPayload() const { return payload_; }
 
+    const std::optional<IOBufChain>& getPayloadChain() const {
+      return payloadChain_;
+    }
+
     const transport::THeader::StringToStringMap& getHeaders() const {
       return headers_;
     }
@@ -3314,6 +3322,7 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
     const std::chrono::steady_clock::time_point finishedTimestamp_;
     const protocol::PROTOCOL_TYPES protoId_;
     folly::IOBuf payload_;
+    std::optional<IOBufChain> payloadChain_;
     transport::THeader::StringToStringMap headers_;
     std::optional<std::string> clientId_;
     std::optional<std::string> tenantId_;
