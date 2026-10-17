@@ -84,11 +84,7 @@ cdef extern from "thrift/lib/python/server/PythonAsyncProcessor.h" namespace "::
 
 cdef extern from "thrift/lib/python/server/execution/ExecutionSystem.h" namespace "::apache::thrift::python::execution":
     cdef cppclass cExecutionSystem "::apache::thrift::python::execution::ExecutionSystem":
-        cExecutionSystem(
-            cAsyncioExecutor* controlExecutor,
-            cLaunchControlRequest launchControlRequest,
-            cmap[string, PyObjPtr] controlMethods,
-        ) except +
+        pass
 
     shared_ptr[cExecutionSystem] makeControlOnlyExecutionSystem(
         cAsyncioExecutor* controlExecutor,

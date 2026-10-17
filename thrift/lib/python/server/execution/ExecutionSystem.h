@@ -18,15 +18,19 @@
 
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <utility>
 
 #include <folly/Executor.h>
 #include <thrift/lib/python/server/execution/RequestDispatch.h>
+#include <thrift/lib/python/server/execution/WorkScheduler.h>
 
 namespace apache::thrift::python::execution {
 
 using LaunchControlRequest = folly::Function<int(_object*) const>;
+using LaunchWorkerRequest =
+    folly::Function<int(_object*, std::shared_ptr<WorkerCapacityLease>)>;
 
 /**
  * Owns the resources that dispatch Python requests and releases those
@@ -44,19 +48,11 @@ using LaunchControlRequest = folly::Function<int(_object*) const>;
  */
 class ExecutionSystem final {
  public:
-  ExecutionSystem(
+  friend std::shared_ptr<ExecutionSystem> makeControlOnlyExecutionSystem(
       folly::Executor* controlExecutor,
       LaunchControlRequest launchControlRequest,
-      std::map<std::string, PyObject*> controlMethods)
-      : controlExecutor_(folly::Executor::getKeepAliveToken(controlExecutor)),
-        launchControlRequest_(std::move(launchControlRequest).asSharedProxy()),
-        controlMethods_(
-            std::make_shared<const std::map<std::string, PyObject*>>(
-                std::move(controlMethods))) {
-    for (const auto& [method, _] : *controlMethods_) {
-      executeOn_.emplace(method, &ExecutionSystem::executeOnControl);
-    }
-  }
+      std::map<std::string, PyObject*> controlMethods);
+  friend std::shared_ptr<ExecutionSystem> makeReleasedExecutionSystem();
 
   ~ExecutionSystem() = default;
   ExecutionSystem(const ExecutionSystem&) = delete;
@@ -72,6 +68,25 @@ class ExecutionSystem final {
   void execute(std::string method, RequestDispatch requestDispatch) const;
 
  private:
+  // Every method runs on control; the scheduler, worker launcher, and worker
+  // methods do not affect dispatch.
+  ExecutionSystem(
+      folly::Executor* controlExecutor,
+      LaunchControlRequest launchControlRequest,
+      std::map<std::string, PyObject*> controlMethods,
+      [[maybe_unused]] std::shared_ptr<WorkScheduler> workScheduler,
+      [[maybe_unused]] LaunchWorkerRequest launchWorkerRequest,
+      [[maybe_unused]] const std::set<std::string>& workerCapableMethodNames)
+      : controlExecutor_(folly::Executor::getKeepAliveToken(controlExecutor)),
+        launchControlRequest_(std::move(launchControlRequest).asSharedProxy()),
+        controlMethods_(
+            std::make_shared<const std::map<std::string, PyObject*>>(
+                std::move(controlMethods))) {
+    for (const auto& [method, _] : *controlMethods_) {
+      executeOn_.emplace(method, &ExecutionSystem::executeOnControl);
+    }
+  }
+
   using ExecuteOn =
       void (ExecutionSystem::*)(std::string, RequestDispatch) const;
 
@@ -92,10 +107,13 @@ inline std::shared_ptr<ExecutionSystem> makeControlOnlyExecutionSystem(
     folly::Executor* controlExecutor,
     LaunchControlRequest launchControlRequest,
     std::map<std::string, PyObject*> controlMethods) {
-  return std::make_shared<ExecutionSystem>(
+  return std::shared_ptr<ExecutionSystem>(new ExecutionSystem(
       controlExecutor,
       std::move(launchControlRequest),
-      std::move(controlMethods));
+      std::move(controlMethods),
+      nullptr,
+      LaunchWorkerRequest{},
+      {}));
 }
 
 // Builds an execution system that holds no executor or handler references and
