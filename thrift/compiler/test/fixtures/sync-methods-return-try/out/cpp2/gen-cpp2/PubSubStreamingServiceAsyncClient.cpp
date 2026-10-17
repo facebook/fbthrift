@@ -282,8 +282,7 @@ apache::thrift::Client<::cpp2::PubSubStreamingService>::sync_complete_returnstre
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();
@@ -516,8 +515,7 @@ apache::thrift::Client<::cpp2::PubSubStreamingService>::sync_complete_streamthro
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();
@@ -750,8 +748,7 @@ apache::thrift::Client<::cpp2::PubSubStreamingService>::sync_complete_servicethr
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();
@@ -984,8 +981,7 @@ apache::thrift::Client<::cpp2::PubSubStreamingService>::sync_complete_servicethr
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();
@@ -1218,8 +1214,7 @@ apache::thrift::Client<::cpp2::PubSubStreamingService>::sync_complete_boththrows
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();
@@ -1452,8 +1447,7 @@ apache::thrift::Client<::cpp2::PubSubStreamingService>::sync_complete_responsean
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();
@@ -1686,8 +1680,7 @@ apache::thrift::Client<::cpp2::PubSubStreamingService>::sync_complete_responsean
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();
@@ -1920,8 +1913,7 @@ apache::thrift::Client<::cpp2::PubSubStreamingService>::sync_complete_responsean
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();

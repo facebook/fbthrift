@@ -200,8 +200,7 @@ apache::thrift::Client<::cpp2::MyServiceFast>::sync_complete_hasDataById(
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();
@@ -441,8 +440,7 @@ apache::thrift::Client<::cpp2::MyServiceFast>::sync_complete_getDataById(
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();
@@ -681,8 +679,7 @@ apache::thrift::Client<::cpp2::MyServiceFast>::sync_complete_putDataById(
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();

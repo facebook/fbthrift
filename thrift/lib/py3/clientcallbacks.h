@@ -41,7 +41,6 @@ class FutureCallback : public apache::thrift::FutureCallbackBase<Result> {
 
   void replyReceived(apache::thrift::ClientReceiveState&& state) override {
     CHECK(!state.isException());
-    CHECK(state.hasResponseBuffer());
 
     Result result;
     folly::exception_wrapper ew;

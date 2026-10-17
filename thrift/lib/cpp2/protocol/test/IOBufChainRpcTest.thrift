@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/cpp.thrift"
+
+@cpp.EnableIOBufChainSupport
 package "apache.org/thrift/test/iobuf_chain_rpc"
 
 cpp_include "thrift/lib/cpp2/IOBufChain.h"
 
-include "thrift/annotation/cpp.thrift"
+union Choice {
+  1: i64 number;
+  2: string text;
+}
 
 struct Payload {
   1: i64 sequence;
@@ -26,6 +32,7 @@ struct Payload {
   3: binary ordinaryBinary;
   @cpp.Type{name = "::apache::thrift::IOBufChain"}
   4: binary chainBinary;
+  5: Choice choice;
 }
 
 service ChainService {

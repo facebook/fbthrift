@@ -162,8 +162,7 @@ folly::Try<apache::thrift::RpcResponseComplete<{{#partial client.return_type fun
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();

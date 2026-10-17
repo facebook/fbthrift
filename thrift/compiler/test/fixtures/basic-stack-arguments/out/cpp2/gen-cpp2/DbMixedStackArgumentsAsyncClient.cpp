@@ -173,8 +173,7 @@ apache::thrift::Client<::cpp2::DbMixedStackArguments>::sync_complete_getDataByKe
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();
@@ -412,8 +411,7 @@ apache::thrift::Client<::cpp2::DbMixedStackArguments>::sync_complete_getDataByKe
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
-  if (!returnState.hasResponseBuffer()) {
-    assert(returnState.isException());
+  if (returnState.isException()) {
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();

@@ -75,6 +75,11 @@
     if (auto ew = apache::thrift::detail::ac::check_recv_state(state)) {
       return ew;
     }
+    if (state.serializedResponse().usesIOBufChain()) {
+      return folly::make_exception_wrapper<apache::thrift::TApplicationException>(
+          apache::thrift::TApplicationException::PROTOCOL_ERROR,
+          "Fast client does not support IOBufChain responses");
+    }
     return ::{{interface.cpp_qualified_namespace}}::{{interface.cpp_name}}FastClientInternal::deserialize_{{function.cpp_name}}(
         state.protocolId(),
         state.serializedResponse().buffer.get());
@@ -92,6 +97,11 @@
       ::apache::thrift::ClientReceiveState& state) {
     if (auto ew = apache::thrift::detail::ac::check_recv_state(state)) {
       return ew;
+    }
+    if (state.serializedResponse().usesIOBufChain()) {
+      return folly::make_exception_wrapper<apache::thrift::TApplicationException>(
+          apache::thrift::TApplicationException::PROTOCOL_ERROR,
+          "Fast client does not support IOBufChain responses");
     }
     return ::{{interface.cpp_qualified_namespace}}::{{interface.cpp_name}}FastClientInternal::deserialize_{{function.cpp_name}}(
         _return,

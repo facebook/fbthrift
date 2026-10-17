@@ -162,7 +162,6 @@ class FutureCallback : public FutureCallbackBase<Result> {
 
   void replyReceived(ClientReceiveState&& state) override {
     CHECK(!state.isException());
-    CHECK(state.hasResponseBuffer());
 
     Result result;
     folly::exception_wrapper ew;
@@ -205,7 +204,6 @@ class HeaderFutureCallback
 
   void replyReceived(ClientReceiveState&& state) override {
     CHECK(!state.isException());
-    CHECK(state.hasResponseBuffer());
 
     Result result;
     folly::exception_wrapper ew;
@@ -328,7 +326,6 @@ makeSemiFutureCallback(
           std::move(promise), std::move(channel)),
       std::move(future).deferValue([processor](ClientReceiveState&& state) {
         CHECK(!state.isException());
-        CHECK(state.hasResponseBuffer());
 
         Result result;
         auto ew = processor(result, state);
@@ -354,7 +351,6 @@ makeSemiFutureCallback(
           std::move(promise), std::move(channel)),
       std::move(future).deferValue([processor](ClientReceiveState&& state) {
         CHECK(!state.isException());
-        CHECK(state.hasResponseBuffer());
 
         auto ew = processor(state);
 
@@ -380,7 +376,6 @@ makeHeaderSemiFutureCallback(
           std::move(promise), std::move(channel)),
       std::move(future).deferValue([processor](ClientReceiveState&& state) {
         CHECK(!state.isException());
-        CHECK(state.hasResponseBuffer());
 
         Result result;
         auto ew = processor(result, state);
@@ -411,7 +406,6 @@ makeHeaderSemiFutureCallback(
           std::move(promise), std::move(channel)),
       std::move(future).deferValue([processor](ClientReceiveState&& state) {
         CHECK(!state.isException());
-        CHECK(state.hasResponseBuffer());
 
         auto ew = processor(state);
 

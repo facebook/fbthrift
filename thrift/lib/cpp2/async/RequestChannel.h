@@ -275,7 +275,6 @@ class ClientBatonCallback : public RequestClientCallback {
 
   void onResponse(ClientReceiveState&& rs) noexcept override {
     if constexpr (!IsOneway) {
-      DCHECK(rs.hasResponseBuffer());
       *rs_ = std::move(rs);
     }
     doneBaton_.post();

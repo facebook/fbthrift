@@ -123,7 +123,7 @@ class ClientReceiveState {
 
   uint16_t protocolId() const { return protocolId_; }
 
-  bool hasResponseBuffer() const { return (bool)response_.buffer; }
+  bool hasResponseBuffer() const { return response_.buffer != nullptr; }
 
   MessageType messageType() const { return messageType_; }
 

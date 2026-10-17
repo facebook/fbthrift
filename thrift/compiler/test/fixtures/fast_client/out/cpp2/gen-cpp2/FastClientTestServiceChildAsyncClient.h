@@ -89,6 +89,11 @@ class FastClient<::cpp2::test::FastClientTestServiceChild, AppAdapter>
     if (auto ew = apache::thrift::detail::ac::check_recv_state(state)) {
       return ew;
     }
+    if (state.serializedResponse().usesIOBufChain()) {
+      return folly::make_exception_wrapper<apache::thrift::TApplicationException>(
+          apache::thrift::TApplicationException::PROTOCOL_ERROR,
+          "Fast client does not support IOBufChain responses");
+    }
     return ::cpp2::test::FastClientTestServiceChildFastClientInternal::deserialize_greet(
         _return,
         state.protocolId(),

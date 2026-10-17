@@ -48,6 +48,7 @@
 #include <thrift/lib/cpp2/detail/meta.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/op/Encode.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
@@ -433,7 +434,8 @@ inline folly::exception_wrapper check_recv_state(ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.hasResponseBuffer()) {
+  if (!state.hasResponseBuffer() &&
+      !state.serializedResponse().usesIOBufChain()) {
     return folly::make_exception_wrapper<TApplicationException>(
         "recv_ called without result");
   }
@@ -464,16 +466,35 @@ folly::exception_wrapper extract_exn(PResult& result) {
 folly::exception_wrapper try_extract_any_exception(
     const apache::thrift::transport::THeader::StringToStringMap& headers);
 
+inline void notifyContextOnReadData(
+    ContextStack& context,
+    SerializedMessage& message,
+    const SerializedResponse& response) {
+  if (response.usesIOBufChain()) {
+    message.chainBuffer = &*response.chainBuffer;
+  } else {
+    message.buffer = response.buffer.get();
+  }
+  context.onReadData(message);
+}
+
+inline size_t bufferLength(const SerializedResponse& response) noexcept {
+  return response.usesIOBufChain() ? response.chainBuffer->chainLength()
+                                   : response.buffer->computeChainDataLength();
+}
+
 template <typename Protocol, typename PResult>
 folly::exception_wrapper recv_wrapped_helper(
-    Protocol* prot, ClientReceiveState& state, PResult& result) {
+    Protocol* prot,
+    ClientReceiveState& state,
+    const SerializedResponse& response,
+    PResult& result) {
   ContextStack* ctx = state.ctx();
   MessageType mtype = state.messageType();
   if (ctx) {
     ctx->preRead();
   }
   try {
-    const folly::IOBuf& buffer = *state.serializedResponse().buffer;
     // TODO: re-enable checksumming after we properly adjust checksum on the
     // server to exclude the envelope.
     // if (state.header() && state.header()->getCrc32c().has_value() &&
@@ -501,14 +522,12 @@ folly::exception_wrapper recv_wrapped_helper(
     }
     SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
-    smsg.buffer = &buffer;
     if (ctx) {
-      ctx->onReadData(smsg);
+      notifyContextOnReadData(*ctx, smsg, response);
     }
     apache::thrift::detail::deserializeRequestBody(prot, &result);
     if (ctx) {
-      ctx->postRead(
-          state.header(), folly::to_narrow(buffer.computeChainDataLength()));
+      ctx->postRead(state.header(), folly::to_narrow(bufferLength(response)));
     }
     return folly::exception_wrapper();
   } catch (...) {
@@ -569,24 +588,24 @@ ClientBufferedStream<StreamType> createStream(ClientReceiveState& state) {
 template <
     typename PResult,
     typename ProtocolReader,
-    typename InitialResponse = void,
-    typename Sink = void,
-    typename Stream = void>
-folly::exception_wrapper recv_wrapped_impl(
+    typename InitialResponse,
+    typename Sink,
+    typename Stream,
+    typename StreamProtocolReader = ProtocolReader>
+folly::exception_wrapper recv_wrapped_impl_with_buffer(
     ProtocolReader* prot,
     ClientReceiveState& state,
-    InitialResponse* resp = nullptr,
-    Sink* sink = nullptr,
-    Stream* stream = nullptr) {
-  prot->setInput(state.serializedResponse().buffer.get());
-  auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
+    InitialResponse* resp,
+    Sink* sink,
+    Stream* stream) {
   apache::thrift::ContextStack* ctx = state.ctx();
   typename PResult::InitialResponsePResultType result;
   constexpr bool kHasReturnType = !std::is_void_v<InitialResponse>;
   if constexpr (kHasReturnType) {
     result.template get<0>().value = resp;
   }
-  auto ew = recv_wrapped_helper(prot, state, result);
+  auto ew =
+      recv_wrapped_helper(prot, state, state.serializedResponse(), result);
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<kHasReturnType>(result);
   }
@@ -598,8 +617,8 @@ folly::exception_wrapper recv_wrapped_impl(
   }
   if constexpr (!std::is_void_v<Sink>) {
     *sink = createSink<
-        ProtocolReader,
-        typename ProtocolReader::ProtocolWriter,
+        StreamProtocolReader,
+        typename StreamProtocolReader::ProtocolWriter,
         typename PResult::SinkPResultType,
         typename Sink::ElementType,
         typename PResult::FinalResponsePResultType,
@@ -607,12 +626,55 @@ folly::exception_wrapper recv_wrapped_impl(
   }
   if constexpr (!std::is_void_v<Stream>) {
     *stream = createStream<
-        ProtocolReader,
+        StreamProtocolReader,
         typename PResult::StreamPResultType,
         typename Stream::ElementType>(state);
   }
 
   return ew; // empty
+}
+
+template <
+    typename PResult,
+    typename ProtocolReader,
+    typename InitialResponse = void,
+    typename Sink = void,
+    typename Stream = void>
+folly::exception_wrapper recv_wrapped_impl(
+    ProtocolReader* prot,
+    ClientReceiveState& state,
+    InitialResponse* resp = nullptr,
+    Sink* sink = nullptr,
+    Stream* stream = nullptr) {
+  const auto& response = state.serializedResponse();
+  if constexpr (std::is_same_v<ProtocolReader, BinaryProtocolChainReader>) {
+    if (!response.usesIOBufChain()) {
+      return folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+          "Chain reader requires IOBufChain input");
+    }
+    prot->setInput(&*response.chainBuffer);
+  } else {
+    if (response.usesIOBufChain()) {
+      return folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+          "Client decoder does not support IOBufChain input");
+    }
+    prot->setInput(response.buffer.get());
+  }
+  auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
+  // Stream and sink payloads still use IOBuf after the first response.
+  using StreamProtocolReader = std::conditional_t<
+      std::is_same_v<ProtocolReader, BinaryProtocolChainReader>,
+      BinaryProtocolReader,
+      ProtocolReader>;
+  return recv_wrapped_impl_with_buffer<
+      PResult,
+      ProtocolReader,
+      InitialResponse,
+      Sink,
+      Stream,
+      StreamProtocolReader>(prot, state, resp, sink, stream);
 }
 
 template <typename PResult, typename ProtocolReader, typename Response = void>
@@ -729,6 +791,18 @@ folly::exception_wrapper recv_wrapped(
     apache::thrift::BidirectionalStream<SinkElement, StreamElement>& _return) {
   return recv_wrapped_impl<PResult>(
       prot, state, (void*)nullptr, &_return.sink, &_return.stream);
+}
+
+template <typename PResult, typename... Response>
+folly::exception_wrapper recv_wrapped_with_chain(
+    ClientReceiveState& state, Response&... response) {
+  if (state.protocolId() != protocol::T_BINARY_PROTOCOL) {
+    return folly::make_exception_wrapper<TApplicationException>(
+        TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+        "IOBufChain decoding requires Binary protocol");
+  }
+  BinaryProtocolChainReader reader;
+  return recv_wrapped<PResult>(&reader, state, response...);
 }
 
 [[noreturn]] void throw_app_exn(const char* msg);
