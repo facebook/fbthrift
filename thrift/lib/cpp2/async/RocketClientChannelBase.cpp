@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/async/RocketClientChannelBase.h>
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include <fmt/core.h>
@@ -36,6 +37,8 @@
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/async/RpcTypes.h>
+#include <thrift/lib/cpp2/op/Encode.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -77,11 +80,12 @@ struct LegacyResponseSerializationHandler {
     return LegacySerializedResponse(protocolId, methodName, ex).buffer;
   }
 
-  std::unique_ptr<folly::IOBuf> handleReply(
-      std::unique_ptr<folly::IOBuf> buffer) {
-    return LegacySerializedResponse(
-               protocolId, methodName, SerializedResponse(std::move(buffer)))
-        .buffer;
+  void handleReply(FirstResponsePayload& response) {
+    response.payload = LegacySerializedResponse(
+                           protocolId,
+                           methodName,
+                           SerializedResponse(std::move(response.payload)))
+                           .buffer;
   }
 
   uint16_t protocolId;
@@ -99,10 +103,7 @@ struct ResponseSerializationHandler {
         static_cast<protocol::PROTOCOL_TYPES>(protocolId), ex);
   }
 
-  std::unique_ptr<folly::IOBuf> handleReply(
-      std::unique_ptr<folly::IOBuf> buffer) {
-    return buffer;
-  }
+  void handleReply(FirstResponsePayload&) {}
 
   uint16_t protocolId;
   MessageType mtype{MessageType::T_REPLY};
@@ -248,12 +249,47 @@ folly::Try<FirstResponsePayload> decodeResponseError(
       std::move(metadata)));
 }
 
+std::string encodeBase64(FirstResponsePayload& response) {
+  auto bytes = response.payloadChain ? response.payloadChain->coalesce()
+                                     : response.payload->coalesce();
+  return protocol::base64Encode(bytes);
+}
+
+template <typename T>
+void deserializeExceptionPayload(
+    uint16_t protocolId, const FirstResponsePayload& response, T& output) {
+  if (protocolId == protocol::T_COMPACT_PROTOCOL) {
+    CompactSerializer::deserialize(response.payload.get(), output);
+  } else if (protocolId == protocol::T_BINARY_PROTOCOL) {
+    if (!response.payloadChain) {
+      BinarySerializer::deserialize(response.payload.get(), output);
+    } else {
+      BinaryProtocolChainReader reader;
+      reader.setInput(&*response.payloadChain);
+      op::decode<type::struct_t<T>>(reader, output);
+    }
+  } else {
+    throw TApplicationException(
+        TApplicationException::PROTOCOL_ERROR,
+        fmt::format(
+            "Unsupported exception payload protocol ID: {}", protocolId));
+  }
+}
+
 template <class Handler>
 [[nodiscard]] folly::exception_wrapper processFirstResponse(
     uint16_t protocolId,
     ResponseRpcMetadata& metadata,
-    std::unique_ptr<folly::IOBuf>& payload,
+    FirstResponsePayload& response,
     Handler& handler) {
+  if constexpr (std::is_same_v<Handler, LegacyResponseSerializationHandler>) {
+    if (response.payloadChain) {
+      return TApplicationException(
+          TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+          "Legacy response decoding does not support IOBufChain input");
+    }
+  }
+  auto& payload = response.payload;
   (void)protocolId;
   static const std::string kEmptyExceptionWhat;
   if (auto payloadMetadataRef = metadata.payloadMetadata()) {
@@ -262,7 +298,7 @@ template <class Handler>
 
     switch (payloadMetadataRef->getType()) {
       case PayloadMetadata::Type::responseMetadata:
-        payload = handler.handleReply(std::move(payload));
+        handler.handleReply(response);
         break;
       case PayloadMetadata::Type::exceptionMetadata: {
         auto& exceptionMetadataBase =
@@ -297,25 +333,29 @@ template <class Handler>
                 (*otherMetadataRef)[std::string(detail::kHeaderExMeta)] =
                     std::move(metaStr);
               }
-              payload = handler.handleReply(std::move(payload));
+              handler.handleReply(response);
               break;
-            case PayloadExceptionMetadata::Type::DEPRECATED_proxyException:
+            case PayloadExceptionMetadata::Type::DEPRECATED_proxyException: {
               (*otherMetadataRef)
                   [isProxiedResponse ? detail::kHeaderProxiedAnyex
                                      : detail::kHeaderAnyex] =
-                      protocol::base64Encode(payload->coalesce());
+                      encodeBase64(response);
               payload = handler.handleException(
                   TApplicationException(exceptionWhatRef.value_or("")));
+              response.payloadChain.reset();
               break;
+            }
 #ifdef THRIFT_ANY_AVAILABLE
             case PayloadExceptionMetadata::Type::anyException: {
               type::SemiAnyStruct anyException;
+              if (response.payloadChain &&
+                  protocolId != protocol::T_BINARY_PROTOCOL) {
+                return TApplicationException(
+                    TApplicationException::PROTOCOL_ERROR,
+                    "IOBufChain exception payload requires Binary protocol");
+              }
               try {
-                if (protocolId == protocol::T_COMPACT_PROTOCOL) {
-                  CompactSerializer::deserialize(payload.get(), anyException);
-                } else {
-                  BinarySerializer::deserialize(payload.get(), anyException);
-                }
+                deserializeExceptionPayload(protocolId, response, anyException);
               } catch (...) {
                 return TApplicationException(
                     "anyException deserialization failure: " +
@@ -344,6 +384,7 @@ template <class Handler>
               }
               payload = handler.handleException(
                   TApplicationException(exceptionWhatRef.value_or("")));
+              response.payloadChain.reset();
               break;
             }
 #endif
@@ -379,6 +420,7 @@ template <class Handler>
                   exceptionWhatRef ? *exceptionWhatRef : kEmptyExceptionWhat;
               payload =
                   handler.handleException(TApplicationException(exceptionWhat));
+              response.payloadChain.reset();
           }
         } else {
           return TApplicationException("Missing payload exception metadata");
@@ -390,6 +432,27 @@ template <class Handler>
     }
   }
   return {};
+}
+
+size_t responsePayloadLength(const FirstResponsePayload& response) noexcept {
+  if (response.payloadChain) {
+    return response.payloadChain->chainLength();
+  }
+  return response.payload->computeChainDataLength();
+}
+
+SerializedResponse extractSerializedResponse(FirstResponsePayload& response) {
+  if (response.payloadChain) {
+    return SerializedResponse(std::move(*response.payloadChain));
+  }
+  return SerializedResponse(std::move(response.payload));
+}
+
+template <typename Buffer>
+void uncompressBufferImpl(
+    Buffer& buffer, CompressionAlgorithm compressionAlgorithm) {
+  buffer = rocket::CompressionManager().uncompressBuffer(
+      std::move(buffer), compressionAlgorithm);
 }
 
 // Decompresses a compressed exception first response inline, when response
@@ -414,8 +477,11 @@ template <class Handler>
     return {};
   }
   try {
-    firstResponse.payload = rocket::CompressionManager().uncompressBuffer(
-        std::move(firstResponse.payload), *compression);
+    if (firstResponse.payloadChain) {
+      uncompressBufferImpl(*firstResponse.payloadChain, *compression);
+    } else {
+      uncompressBufferImpl(firstResponse.payload, *compression);
+    }
     // Clear the algorithm so the caller-thread decompressResponse() hook (e.g.
     // PooledRequestChannel's) does not decompress these bytes a second time.
     firstResponse.metadata.compression().reset();
@@ -455,7 +521,7 @@ class FirstRequestProcessorStream : public StreamClientCallback,
         firstResponse, apache::thrift::clientCompressRequestOnCpu());
     if (!error) {
       error = processFirstResponse(
-          protocolId_, firstResponse.metadata, firstResponse.payload, handler);
+          protocolId_, firstResponse.metadata, firstResponse, handler);
     }
     if (error) {
       serverCallback->onStreamCancel();
@@ -539,7 +605,7 @@ class FirstRequestProcessorSink : public SinkClientCallback,
         firstResponse, apache::thrift::clientCompressRequestOnCpu());
     if (!error) {
       error = processFirstResponse(
-          protocolId_, firstResponse.metadata, firstResponse.payload, handler);
+          protocolId_, firstResponse.metadata, firstResponse, handler);
     }
     if (error) {
       serverCallback->onSinkError(
@@ -639,7 +705,7 @@ class FirstRequestProcessorBiDi : public BiDiClientCallback,
         firstResponse, apache::thrift::clientCompressRequestOnCpu());
     if (!error) {
       error = processFirstResponse(
-          protocolId_, firstResponse.metadata, firstResponse.payload, handler);
+          protocolId_, firstResponse.metadata, firstResponse, handler);
     }
     if (error) {
       clientCallback_->onFirstResponseError(std::move(error));
@@ -837,8 +903,9 @@ class RocketClientChannelBase::SingleRequestSingleResponseCallback final
         return;
       }
 
-      if (auto error = processFirstResponse(
-              protocolId_, response->metadata, response->payload, handler)) {
+      auto error = processFirstResponse(
+          protocolId_, response->metadata, *response, handler);
+      if (error) {
         cb_.release()->onResponseError(std::move(error));
         return;
       }
@@ -851,7 +918,7 @@ class RocketClientChannelBase::SingleRequestSingleResponseCallback final
     }
 
     stats_.responseSerializedSizeBytes =
-        response->payload->computeChainDataLength();
+        static_cast<uint32_t>(responsePayloadLength(*response));
 
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
@@ -880,10 +947,11 @@ class RocketClientChannelBase::SingleRequestSingleResponseCallback final
         tHeader->setResponseCompressionAlgorithm(*compression);
       }
     }
+    auto serializedResponse = extractSerializedResponse(*response);
     cb_.release()->onResponse(ClientReceiveState(
         protocolId_,
         handler.mtype,
-        SerializedResponse(std::move(response->payload)),
+        std::move(serializedResponse),
         std::move(tHeader),
         nullptr, /* ctx */
         stats_));
@@ -1077,14 +1145,16 @@ void RocketClientChannelBase::decompressResponse(ClientReceiveState& state) {
   }
 
   auto& response = state.serializedResponse();
-  if (!response.buffer) {
+  if (!response.buffer && !response.usesIOBufChain()) {
     return;
   }
 
   try {
-    rocket::CompressionManager compressionMgr;
-    response.buffer =
-        compressionMgr.uncompressBuffer(std::move(response.buffer), algorithm);
+    if (response.usesIOBufChain()) {
+      uncompressBufferImpl(*response.chainBuffer, algorithm);
+    } else {
+      uncompressBufferImpl(response.buffer, algorithm);
+    }
   } catch (const std::exception& ex) {
     // Surface the failure via ClientReceiveState rather than rethrowing —
     // callers reach this from contexts that cannot tolerate an exception

@@ -76,6 +76,13 @@ InteractionState::Ptr getInteractionGuard(const RpcOptions& options) {
   }
   return nullptr;
 }
+
+template <typename Buffer>
+void uncompressBufferImpl(
+    Buffer& buffer, CompressionAlgorithm compressionAlgorithm) {
+  buffer = rocket::CompressionManager().uncompressBuffer(
+      std::move(buffer), compressionAlgorithm);
+}
 } // namespace
 
 folly::Executor::KeepAlive<folly::EventBase> PooledRequestChannel::getEvb(
@@ -113,14 +120,16 @@ void PooledRequestChannel::decompressResponse(ClientReceiveState& state) {
   }
 
   auto& response = state.serializedResponse();
-  if (!response.buffer) {
+  if (!response.buffer && !response.usesIOBufChain()) {
     return;
   }
 
   try {
-    rocket::CompressionManager compressionMgr;
-    response.buffer =
-        compressionMgr.uncompressBuffer(std::move(response.buffer), algorithm);
+    if (response.usesIOBufChain()) {
+      uncompressBufferImpl(*response.chainBuffer, algorithm);
+    } else {
+      uncompressBufferImpl(response.buffer, algorithm);
+    }
   } catch (const std::exception& ex) {
     XLOG(ERR) << "Response decompression failed: " << ex.what();
     state.exception() =
