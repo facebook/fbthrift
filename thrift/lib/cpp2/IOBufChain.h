@@ -99,6 +99,7 @@ class IOBufChain {
   const_iterator end() const noexcept;
 
   IOBufChain clone() const;
+  folly::ByteRange coalesce();
   std::unique_ptr<folly::IOBuf> moveToIOBuf() &&;
 
  private:

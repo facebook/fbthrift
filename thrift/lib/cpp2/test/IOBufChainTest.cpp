@@ -189,6 +189,73 @@ TEST(IOBufChain, FromIOBufNull) {
   checkConsistency(std::move(chain), "");
 }
 
+TEST(IOBufChain, CoalesceEmpty) {
+  IOBufChain chain{1};
+  EXPECT_TRUE(chain.coalesce().empty());
+  EXPECT_TRUE(chain.empty());
+  chain.append(IOBuf::copyBuffer(""));
+  chain.append(std::make_unique<IOBuf>());
+  EXPECT_TRUE(chain.coalesce().empty());
+  EXPECT_EQ(1, chain.chainElements());
+  checkConsistency(chain);
+}
+
+TEST(IOBufChain, CoalesceSingleFragmentDoesNotCopy) {
+  auto chain = chainOf({"abc"});
+  auto shared = chain.clone();
+  const auto* data = chain.begin()->data();
+
+  const auto range = chain.coalesce();
+
+  EXPECT_EQ(data, range.data());
+  EXPECT_EQ(3, range.size());
+  EXPECT_EQ(data, shared.begin()->data());
+  EXPECT_EQ("abc", chainString(chain));
+  EXPECT_EQ(range.data(), chain.coalesce().data());
+  checkConsistency(chain);
+}
+
+TEST(IOBufChain, CoalesceAcrossBlocksAfterPop) {
+  IOBufChain chain{1};
+  for (const auto& part : {"removed", "", "ab", "", "c", "def", ""}) {
+    chain.append(IOBuf::copyBuffer(part), 1);
+  }
+  chain.pop();
+
+  const auto range = chain.coalesce();
+
+  EXPECT_EQ(6, range.size());
+  EXPECT_EQ("abcdef", chainString(chain));
+  ASSERT_EQ(1, chain.chainElements());
+  EXPECT_EQ(chain.begin()->data(), range.data());
+  EXPECT_EQ(range.data(), chain.coalesce().data());
+  checkConsistency(chain);
+
+  chain.trimStart(2);
+  chain.append(IOBuf::copyBuffer("g"));
+  EXPECT_EQ("cdefg", chainString(chain));
+  checkConsistency(chain);
+}
+
+TEST(IOBufChain, CoalescePreservesSharedOwners) {
+  auto allocation = std::make_shared<TestAllocation>("abcd");
+  IOBufChain chain{makeSlice(allocation, 0, 2)};
+  chain.append(makeSlice(allocation, 2, 2));
+  auto shared = chain.clone();
+
+  chain.coalesce();
+
+  EXPECT_EQ("abcd", chainString(chain));
+  EXPECT_EQ("abcd", chainString(shared));
+  EXPECT_EQ(1, chain.chainElements());
+  EXPECT_EQ(2, shared.chainElements());
+  EXPECT_EQ(0, allocation->releases);
+  shared.clear();
+  EXPECT_EQ(2, allocation->releases);
+  EXPECT_EQ("abcd", chainString(chain));
+  checkConsistency(chain);
+}
+
 TEST(IOBufChain, ComputeChainInfo) {
   IOBuf head{IOBuf::COPY_BUFFER, "abc"};
   head.appendToChain(IOBuf::copyBuffer(""));

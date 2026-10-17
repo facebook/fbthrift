@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/IOBufChain.h>
 
+#include <cstring>
 #include <new>
 #include <stdexcept>
 #include <utility>
@@ -420,6 +421,35 @@ IOBufChain IOBufChain::clone() const {
     }
   }
   return result;
+}
+
+folly::ByteRange IOBufChain::coalesce() {
+  if (empty()) {
+    return {};
+  }
+  if (chainElements() == 1) {
+    const auto& buffer = *begin();
+    return {buffer.data(), buffer.length()};
+  }
+
+  folly::IOBuf buffer{folly::IOBuf::CREATE, byteLength_};
+  auto* output = buffer.writableData();
+  for (const auto& fragment : *this) {
+    if (fragment.length() != 0) {
+      std::memcpy(output, fragment.data(), fragment.length());
+      output += fragment.length();
+    }
+  }
+  buffer.append(byteLength_);
+
+  head_->clear();
+  Block::destroyChain(std::exchange(head_->next, nullptr));
+  tail_ = head_;
+  byteLength_ = 0;
+  elementCount_ = 0;
+  emplaceIOBuf(std::move(buffer));
+  const auto& result = *begin();
+  return {result.data(), result.length()};
 }
 
 std::unique_ptr<folly::IOBuf> IOBufChain::moveToIOBuf() && {
