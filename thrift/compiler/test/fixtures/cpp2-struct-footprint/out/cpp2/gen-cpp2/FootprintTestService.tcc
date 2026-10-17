@@ -53,7 +53,7 @@ typedef apache::thrift::ThriftPResultStream<
 //
 // Method 'processIOBuf'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_processIOBuf(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -75,11 +75,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_processIOBuf(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_processIOBuf<ProtocolIn_, ProtocolOut_>,
+          executeRequest_processIOBuf<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_processIOBuf(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -116,7 +116,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_processIOBuf(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "processIOBuf",
         serializedRequest,
@@ -237,7 +237,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_processIOBuf(
 //
 // Method 'getStruct'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_getStruct(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -259,11 +259,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_getStruct(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_getStruct<ProtocolIn_, ProtocolOut_>,
+          executeRequest_getStruct<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_getStruct(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -291,7 +291,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_getStruct(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getStruct",
         serializedRequest,
@@ -415,7 +415,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_getStruct(
 //
 // Method 'setStruct'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_setStruct(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -437,11 +437,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_setStruct(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_setStruct<ProtocolIn_, ProtocolOut_>,
+          executeRequest_setStruct<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_setStruct(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -472,7 +472,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_setStruct(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "setStruct",
         serializedRequest,
@@ -593,7 +593,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_setStruct(
 //
 // Method 'setStructList'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_setStructList(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -615,11 +615,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_setStructList(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_setStructList<ProtocolIn_, ProtocolOut_>,
+          executeRequest_setStructList<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_setStructList(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -650,7 +650,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_setStructList(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "setStructList",
         serializedRequest,
@@ -771,7 +771,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_setStructList(
 //
 // Method 'getStructList'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_getStructList(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -793,11 +793,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_getStructList(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_getStructList<ProtocolIn_, ProtocolOut_>,
+          executeRequest_getStructList<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_getStructList(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -825,7 +825,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_getStructList(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getStructList",
         serializedRequest,
@@ -949,7 +949,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_getStructList(
 //
 // Method 'getNestedContainer'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_getNestedContainer(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -971,11 +971,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_getNestedContainer(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_getNestedContainer<ProtocolIn_, ProtocolOut_>,
+          executeRequest_getNestedContainer<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_getNestedContainer(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1003,7 +1003,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_getNestedContainer(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getNestedContainer",
         serializedRequest,
@@ -1127,7 +1127,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_getNestedContainer(
 //
 // Method 'getTypedefStruct'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_getTypedefStruct(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1149,11 +1149,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_getTypedefStruct(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_getTypedefStruct<ProtocolIn_, ProtocolOut_>,
+          executeRequest_getTypedefStruct<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_getTypedefStruct(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1181,7 +1181,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_getTypedefStruct(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getTypedefStruct",
         serializedRequest,
@@ -1305,7 +1305,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_getTypedefStruct(
 //
 // Method 'getTypedefList'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_getTypedefList(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1327,11 +1327,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_getTypedefList(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_getTypedefList<ProtocolIn_, ProtocolOut_>,
+          executeRequest_getTypedefList<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_getTypedefList(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1359,7 +1359,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_getTypedefList(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getTypedefList",
         serializedRequest,
@@ -1483,7 +1483,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_getTypedefList(
 //
 // Method 'getUnion'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_getUnion(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1505,11 +1505,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_getUnion(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_getUnion<ProtocolIn_, ProtocolOut_>,
+          executeRequest_getUnion<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_getUnion(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1537,7 +1537,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_getUnion(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getUnion",
         serializedRequest,
@@ -1661,7 +1661,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_getUnion(
 //
 // Method 'getCalculator'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_getCalculator(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1683,11 +1683,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_getCalculator(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_getCalculator<ProtocolIn_, ProtocolOut_>,
+          executeRequest_getCalculator<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_getCalculator(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -1716,7 +1716,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_getCalculator(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getCalculator",
         serializedRequest,
@@ -1837,7 +1837,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_getCalculator(
 //
 // Method 'streamStructs'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_streamStructs(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1859,11 +1859,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_streamStructs(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_streamStructs<ProtocolIn_, ProtocolOut_>,
+          executeRequest_streamStructs<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_streamStructs(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1891,7 +1891,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_streamStructs(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "streamStructs",
         serializedRequest,
@@ -2017,7 +2017,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_streamStructs(
 //
 // Method 'streamWithSinkInitial'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_streamWithSinkInitial(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -2039,11 +2039,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_streamWithSinkInitial(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_streamWithSinkInitial<ProtocolIn_, ProtocolOut_>,
+          executeRequest_streamWithSinkInitial<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_streamWithSinkInitial(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -2074,7 +2074,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_streamWithSinkInitial(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "streamWithSinkInitial",
         serializedRequest,
@@ -2202,7 +2202,7 @@ void FootprintTestServiceAsyncProcessor::throw_wrapped_streamWithSinkInitial(
 //
 // Method 'streamWithSinkException'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_streamWithSinkException(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -2224,11 +2224,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_streamWithSinkException
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_streamWithSinkException<ProtocolIn_, ProtocolOut_>,
+          executeRequest_streamWithSinkException<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_streamWithSinkException(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -2259,7 +2259,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_streamWithSinkException(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "streamWithSinkException",
         serializedRequest,
@@ -2415,7 +2415,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'add'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::setUpAndProcess_Calculator_add(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -2437,11 +2437,11 @@ void FootprintTestServiceAsyncProcessor::setUpAndProcess_Calculator_add(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FootprintTestServiceAsyncProcessor::
-          executeRequest_Calculator_add<ProtocolIn_, ProtocolOut_>,
+          executeRequest_Calculator_add<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FootprintTestServiceAsyncProcessor::executeRequest_Calculator_add(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -2477,7 +2477,7 @@ void FootprintTestServiceAsyncProcessor::executeRequest_Calculator_add(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "Calculator.add",
         serializedRequest,

@@ -20,7 +20,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'bar'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void GoodServiceAsyncProcessor::setUpAndProcess_bar(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -42,11 +42,11 @@ void GoodServiceAsyncProcessor::setUpAndProcess_bar(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &GoodServiceAsyncProcessor::
-          executeRequest_bar<ProtocolIn_, ProtocolOut_>,
+          executeRequest_bar<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void GoodServiceAsyncProcessor::executeRequest_bar(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -74,7 +74,7 @@ void GoodServiceAsyncProcessor::executeRequest_bar(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "bar",
         serializedRequest,
@@ -208,7 +208,7 @@ typedef apache::thrift::ThriftPresult<true> GoodService_BadInteraction_foo_presu
 //
 // Method 'foo'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void GoodServiceAsyncProcessor::setUpAndProcess_BadInteraction_foo(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -230,11 +230,11 @@ void GoodServiceAsyncProcessor::setUpAndProcess_BadInteraction_foo(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &GoodServiceAsyncProcessor::
-          executeRequest_BadInteraction_foo<ProtocolIn_, ProtocolOut_>,
+          executeRequest_BadInteraction_foo<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void GoodServiceAsyncProcessor::executeRequest_BadInteraction_foo(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -264,7 +264,7 @@ void GoodServiceAsyncProcessor::executeRequest_BadInteraction_foo(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "BadInteraction.foo",
         serializedRequest,

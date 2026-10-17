@@ -26,7 +26,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'doBland'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void RaiserAsyncProcessor::setUpAndProcess_doBland(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -48,11 +48,11 @@ void RaiserAsyncProcessor::setUpAndProcess_doBland(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &RaiserAsyncProcessor::
-          executeRequest_doBland<ProtocolIn_, ProtocolOut_>,
+          executeRequest_doBland<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void RaiserAsyncProcessor::executeRequest_doBland(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -80,7 +80,7 @@ void RaiserAsyncProcessor::executeRequest_doBland(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "doBland",
         serializedRequest,
@@ -201,7 +201,7 @@ void RaiserAsyncProcessor::throw_wrapped_doBland(
 //
 // Method 'doRaise'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void RaiserAsyncProcessor::setUpAndProcess_doRaise(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -223,11 +223,11 @@ void RaiserAsyncProcessor::setUpAndProcess_doRaise(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &RaiserAsyncProcessor::
-          executeRequest_doRaise<ProtocolIn_, ProtocolOut_>,
+          executeRequest_doRaise<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void RaiserAsyncProcessor::executeRequest_doRaise(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -255,7 +255,7 @@ void RaiserAsyncProcessor::executeRequest_doRaise(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "doRaise",
         serializedRequest,
@@ -394,7 +394,7 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(
 //
 // Method 'get200'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void RaiserAsyncProcessor::setUpAndProcess_get200(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -416,11 +416,11 @@ void RaiserAsyncProcessor::setUpAndProcess_get200(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &RaiserAsyncProcessor::
-          executeRequest_get200<ProtocolIn_, ProtocolOut_>,
+          executeRequest_get200<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void RaiserAsyncProcessor::executeRequest_get200(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -448,7 +448,7 @@ void RaiserAsyncProcessor::executeRequest_get200(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "get200",
         serializedRequest,
@@ -572,7 +572,7 @@ void RaiserAsyncProcessor::throw_wrapped_get200(
 //
 // Method 'get500'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void RaiserAsyncProcessor::setUpAndProcess_get500(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -594,11 +594,11 @@ void RaiserAsyncProcessor::setUpAndProcess_get500(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &RaiserAsyncProcessor::
-          executeRequest_get500<ProtocolIn_, ProtocolOut_>,
+          executeRequest_get500<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void RaiserAsyncProcessor::executeRequest_get500(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -626,7 +626,7 @@ void RaiserAsyncProcessor::executeRequest_get500(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "get500",
         serializedRequest,

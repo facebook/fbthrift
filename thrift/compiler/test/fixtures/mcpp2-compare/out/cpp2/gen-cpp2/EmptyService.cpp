@@ -46,6 +46,10 @@ void EmptyServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& 
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using EmptyServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const EmptyServiceAsyncProcessor::ProcessMap& EmptyServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }

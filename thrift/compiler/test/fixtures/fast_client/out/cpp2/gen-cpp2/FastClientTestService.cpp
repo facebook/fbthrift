@@ -808,36 +808,40 @@ void FastClientTestServiceAsyncProcessor::executeRequest(apache::thrift::ServerR
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using FastClientTestServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const FastClientTestServiceAsyncProcessor::ProcessMap& FastClientTestServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const FastClientTestServiceAsyncProcessor::ProcessMap FastClientTestServiceAsyncProcessor::kOwnProcessMap_ {
   {"ping",
-    {&FastClientTestServiceAsyncProcessor::setUpAndProcess_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::setUpAndProcess_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::executeRequest_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::executeRequest_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&FastClientTestServiceAsyncProcessor::setUpAndProcess_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::setUpAndProcess_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::executeRequest_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::executeRequest_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceRequestReader>}},
   {"echo",
-    {&FastClientTestServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::executeRequest_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::executeRequest_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&FastClientTestServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::executeRequest_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::executeRequest_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceRequestReader>}},
   {"add",
-    {&FastClientTestServiceAsyncProcessor::setUpAndProcess_add<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::setUpAndProcess_add<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::executeRequest_add<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::executeRequest_add<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&FastClientTestServiceAsyncProcessor::setUpAndProcess_add<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::setUpAndProcess_add<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::executeRequest_add<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::executeRequest_add<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceRequestReader>}},
   {"getData",
-    {&FastClientTestServiceAsyncProcessor::setUpAndProcess_getData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::setUpAndProcess_getData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::executeRequest_getData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::executeRequest_getData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&FastClientTestServiceAsyncProcessor::setUpAndProcess_getData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::setUpAndProcess_getData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::executeRequest_getData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::executeRequest_getData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceRequestReader>}},
   {"processData",
-    {&FastClientTestServiceAsyncProcessor::setUpAndProcess_processData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::setUpAndProcess_processData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::executeRequest_processData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceAsyncProcessor::executeRequest_processData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&FastClientTestServiceAsyncProcessor::setUpAndProcess_processData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::setUpAndProcess_processData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::executeRequest_processData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceRequestReader>,
+     &FastClientTestServiceAsyncProcessor::executeRequest_processData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& FastClientTestServiceServiceInfoHolder::requestInfoMap() const {

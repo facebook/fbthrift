@@ -22,7 +22,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'first'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceAsyncProcessor::setUpAndProcess_first(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -44,11 +44,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_first(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &MyServiceAsyncProcessor::
-          executeRequest_first<ProtocolIn_, ProtocolOut_>,
+          executeRequest_first<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceAsyncProcessor::executeRequest_first(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -76,7 +76,7 @@ void MyServiceAsyncProcessor::executeRequest_first(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "first",
         serializedRequest,
@@ -200,7 +200,7 @@ void MyServiceAsyncProcessor::throw_wrapped_first(
 //
 // Method 'second'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceAsyncProcessor::setUpAndProcess_second(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -222,11 +222,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_second(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &MyServiceAsyncProcessor::
-          executeRequest_second<ProtocolIn_, ProtocolOut_>,
+          executeRequest_second<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceAsyncProcessor::executeRequest_second(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -257,7 +257,7 @@ void MyServiceAsyncProcessor::executeRequest_second(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "second",
         serializedRequest,

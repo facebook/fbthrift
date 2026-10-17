@@ -120,7 +120,7 @@ class MyServicePrioChildAsyncProcessor : public ::cpp2::MyServicePrioParentAsync
   //
   // Method 'pang'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_pang(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -128,7 +128,7 @@ class MyServicePrioChildAsyncProcessor : public ::cpp2::MyServicePrioParentAsync
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_pang(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>

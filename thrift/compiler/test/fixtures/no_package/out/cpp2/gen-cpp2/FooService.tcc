@@ -20,7 +20,7 @@ typedef apache::thrift::ThriftPresult<true> FooService_simple_rpc_presult;
 //
 // Method 'simple_rpc'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FooServiceAsyncProcessor::setUpAndProcess_simple_rpc(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -42,11 +42,11 @@ void FooServiceAsyncProcessor::setUpAndProcess_simple_rpc(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FooServiceAsyncProcessor::
-          executeRequest_simple_rpc<ProtocolIn_, ProtocolOut_>,
+          executeRequest_simple_rpc<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FooServiceAsyncProcessor::executeRequest_simple_rpc(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -74,7 +74,7 @@ void FooServiceAsyncProcessor::executeRequest_simple_rpc(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "simple_rpc",
         serializedRequest,

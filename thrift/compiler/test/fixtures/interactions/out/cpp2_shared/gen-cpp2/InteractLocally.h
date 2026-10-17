@@ -184,7 +184,7 @@ class InteractLocallyAsyncProcessor : public ::apache::thrift::GeneratedAsyncPro
   //
   // Method 'init'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_SharedInteraction_init(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -192,7 +192,7 @@ class InteractLocallyAsyncProcessor : public ::apache::thrift::GeneratedAsyncPro
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_SharedInteraction_init(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -214,7 +214,7 @@ class InteractLocallyAsyncProcessor : public ::apache::thrift::GeneratedAsyncPro
   //
   // Method 'do_something'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_SharedInteraction_do_something(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -222,7 +222,7 @@ class InteractLocallyAsyncProcessor : public ::apache::thrift::GeneratedAsyncPro
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_SharedInteraction_do_something(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -244,7 +244,7 @@ class InteractLocallyAsyncProcessor : public ::apache::thrift::GeneratedAsyncPro
   //
   // Method 'tear_down'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_SharedInteraction_tear_down(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -252,7 +252,7 @@ class InteractLocallyAsyncProcessor : public ::apache::thrift::GeneratedAsyncPro
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_SharedInteraction_tear_down(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>

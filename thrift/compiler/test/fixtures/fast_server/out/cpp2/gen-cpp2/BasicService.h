@@ -238,7 +238,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
   // Method 'ping'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_ping(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -246,7 +246,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_ping(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -267,7 +267,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
   // Method 'add'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_add(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -275,7 +275,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_add(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -297,7 +297,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
   // Method 'buildItem'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_buildItem(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -305,7 +305,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_buildItem(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -327,7 +327,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
   // Method 'lookup'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_lookup(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -335,7 +335,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_lookup(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -357,7 +357,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
   // Method 'secureLookup'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_secureLookup(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -365,7 +365,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_secureLookup(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -387,7 +387,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
   // Method 'ebLookup'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_ebLookup(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -395,7 +395,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_ebLookup(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -417,7 +417,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
   // Method 'streamItems'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_streamItems(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -425,7 +425,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_streamItems(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -448,7 +448,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
   // Method 'streamItemsWithResponse'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_streamItemsWithResponse(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -456,7 +456,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_streamItemsWithResponse(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -479,7 +479,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
   // Method 'ebStreamItems'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_ebStreamItems(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -487,7 +487,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_ebStreamItems(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -510,7 +510,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
   // Method 'fireAndForget'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_fireAndForget(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -518,7 +518,7 @@ class BasicServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_fireAndForget(apache::thrift::ServerRequest&& serverRequest);
 
   //

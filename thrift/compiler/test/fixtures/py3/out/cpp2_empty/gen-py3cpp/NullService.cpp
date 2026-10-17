@@ -46,6 +46,10 @@ void NullServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& r
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using NullServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const NullServiceAsyncProcessor::ProcessMap& NullServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }

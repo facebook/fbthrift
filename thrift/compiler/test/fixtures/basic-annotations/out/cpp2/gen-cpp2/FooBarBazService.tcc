@@ -24,7 +24,7 @@ typedef apache::thrift::ThriftPresult<true> FooBarBazService_baz_presult;
 //
 // Method 'foo'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FooBarBazServiceAsyncProcessor::setUpAndProcess_foo(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -46,11 +46,11 @@ void FooBarBazServiceAsyncProcessor::setUpAndProcess_foo(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FooBarBazServiceAsyncProcessor::
-          executeRequest_foo<ProtocolIn_, ProtocolOut_>,
+          executeRequest_foo<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FooBarBazServiceAsyncProcessor::executeRequest_foo(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -78,7 +78,7 @@ void FooBarBazServiceAsyncProcessor::executeRequest_foo(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "foo",
         serializedRequest,
@@ -199,7 +199,7 @@ void FooBarBazServiceAsyncProcessor::throw_wrapped_foo(
 //
 // Method 'bar'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FooBarBazServiceAsyncProcessor::setUpAndProcess_bar(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -221,11 +221,11 @@ void FooBarBazServiceAsyncProcessor::setUpAndProcess_bar(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FooBarBazServiceAsyncProcessor::
-          executeRequest_bar<ProtocolIn_, ProtocolOut_>,
+          executeRequest_bar<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FooBarBazServiceAsyncProcessor::executeRequest_bar(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -253,7 +253,7 @@ void FooBarBazServiceAsyncProcessor::executeRequest_bar(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "bar",
         serializedRequest,
@@ -374,7 +374,7 @@ void FooBarBazServiceAsyncProcessor::throw_wrapped_bar(
 //
 // Method 'baz'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FooBarBazServiceAsyncProcessor::setUpAndProcess_baz(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -396,11 +396,11 @@ void FooBarBazServiceAsyncProcessor::setUpAndProcess_baz(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FooBarBazServiceAsyncProcessor::
-          executeRequest_baz<ProtocolIn_, ProtocolOut_>,
+          executeRequest_baz<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FooBarBazServiceAsyncProcessor::executeRequest_baz(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -428,7 +428,7 @@ void FooBarBazServiceAsyncProcessor::executeRequest_baz(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "baz",
         serializedRequest,

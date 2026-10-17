@@ -491,26 +491,30 @@ void BiDiServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& r
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using BiDiServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const BiDiServiceAsyncProcessor::ProcessMap& BiDiServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const BiDiServiceAsyncProcessor::ProcessMap BiDiServiceAsyncProcessor::kOwnProcessMap_ {
   {"simple",
-    {&BiDiServiceAsyncProcessor::setUpAndProcess_simple<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &BiDiServiceAsyncProcessor::setUpAndProcess_simple<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &BiDiServiceAsyncProcessor::executeRequest_simple<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &BiDiServiceAsyncProcessor::executeRequest_simple<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&BiDiServiceAsyncProcessor::setUpAndProcess_simple<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, BiDiServiceRequestReader>,
+     &BiDiServiceAsyncProcessor::setUpAndProcess_simple<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, BiDiServiceRequestReader>,
+     &BiDiServiceAsyncProcessor::executeRequest_simple<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, BiDiServiceRequestReader>,
+     &BiDiServiceAsyncProcessor::executeRequest_simple<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, BiDiServiceRequestReader>}},
   {"response",
-    {&BiDiServiceAsyncProcessor::setUpAndProcess_response<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &BiDiServiceAsyncProcessor::setUpAndProcess_response<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &BiDiServiceAsyncProcessor::executeRequest_response<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &BiDiServiceAsyncProcessor::executeRequest_response<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&BiDiServiceAsyncProcessor::setUpAndProcess_response<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, BiDiServiceRequestReader>,
+     &BiDiServiceAsyncProcessor::setUpAndProcess_response<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, BiDiServiceRequestReader>,
+     &BiDiServiceAsyncProcessor::executeRequest_response<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, BiDiServiceRequestReader>,
+     &BiDiServiceAsyncProcessor::executeRequest_response<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, BiDiServiceRequestReader>}},
   {"canThrow",
-    {&BiDiServiceAsyncProcessor::setUpAndProcess_canThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &BiDiServiceAsyncProcessor::setUpAndProcess_canThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &BiDiServiceAsyncProcessor::executeRequest_canThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &BiDiServiceAsyncProcessor::executeRequest_canThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&BiDiServiceAsyncProcessor::setUpAndProcess_canThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, BiDiServiceRequestReader>,
+     &BiDiServiceAsyncProcessor::setUpAndProcess_canThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, BiDiServiceRequestReader>,
+     &BiDiServiceAsyncProcessor::executeRequest_canThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, BiDiServiceRequestReader>,
+     &BiDiServiceAsyncProcessor::executeRequest_canThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, BiDiServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& BiDiServiceServiceInfoHolder::requestInfoMap() const {

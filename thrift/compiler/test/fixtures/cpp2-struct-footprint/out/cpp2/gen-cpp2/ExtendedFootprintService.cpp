@@ -205,16 +205,20 @@ void ExtendedFootprintServiceAsyncProcessor::executeRequest(apache::thrift::Serv
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using ExtendedFootprintServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const ExtendedFootprintServiceAsyncProcessor::ProcessMap& ExtendedFootprintServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const ExtendedFootprintServiceAsyncProcessor::ProcessMap ExtendedFootprintServiceAsyncProcessor::kOwnProcessMap_ {
   {"getComplexMap",
-    {&ExtendedFootprintServiceAsyncProcessor::setUpAndProcess_getComplexMap<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &ExtendedFootprintServiceAsyncProcessor::setUpAndProcess_getComplexMap<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &ExtendedFootprintServiceAsyncProcessor::executeRequest_getComplexMap<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &ExtendedFootprintServiceAsyncProcessor::executeRequest_getComplexMap<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&ExtendedFootprintServiceAsyncProcessor::setUpAndProcess_getComplexMap<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, ExtendedFootprintServiceRequestReader>,
+     &ExtendedFootprintServiceAsyncProcessor::setUpAndProcess_getComplexMap<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, ExtendedFootprintServiceRequestReader>,
+     &ExtendedFootprintServiceAsyncProcessor::executeRequest_getComplexMap<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, ExtendedFootprintServiceRequestReader>,
+     &ExtendedFootprintServiceAsyncProcessor::executeRequest_getComplexMap<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, ExtendedFootprintServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& ExtendedFootprintServiceServiceInfoHolder::requestInfoMap() const {

@@ -203,16 +203,20 @@ void DerivedServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using DerivedServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const DerivedServiceAsyncProcessor::ProcessMap& DerivedServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const DerivedServiceAsyncProcessor::ProcessMap DerivedServiceAsyncProcessor::kOwnProcessMap_ {
   {"get_six",
-    {&DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DerivedServiceAsyncProcessor::executeRequest_get_six<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DerivedServiceAsyncProcessor::executeRequest_get_six<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DerivedServiceRequestReader>,
+     &DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DerivedServiceRequestReader>,
+     &DerivedServiceAsyncProcessor::executeRequest_get_six<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DerivedServiceRequestReader>,
+     &DerivedServiceAsyncProcessor::executeRequest_get_six<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DerivedServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& DerivedServiceServiceInfoHolder::requestInfoMap() const {

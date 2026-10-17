@@ -1566,56 +1566,60 @@ void DecoratedServiceAsyncProcessor::executeRequest(apache::thrift::ServerReques
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using DecoratedServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const DecoratedServiceAsyncProcessor::ProcessMap& DecoratedServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const DecoratedServiceAsyncProcessor::ProcessMap DecoratedServiceAsyncProcessor::kOwnProcessMap_ {
   {"noop",
-    {&DecoratedServiceAsyncProcessor::setUpAndProcess_noop<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::setUpAndProcess_noop<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_noop<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_noop<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedServiceAsyncProcessor::setUpAndProcess_noop<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::setUpAndProcess_noop<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_noop<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_noop<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>}},
   {"echo",
-    {&DecoratedServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>}},
   {"increment",
-    {&DecoratedServiceAsyncProcessor::setUpAndProcess_increment<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::setUpAndProcess_increment<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_increment<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_increment<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedServiceAsyncProcessor::setUpAndProcess_increment<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::setUpAndProcess_increment<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_increment<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_increment<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>}},
   {"sum",
-    {&DecoratedServiceAsyncProcessor::setUpAndProcess_sum<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::setUpAndProcess_sum<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_sum<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_sum<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedServiceAsyncProcessor::setUpAndProcess_sum<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::setUpAndProcess_sum<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_sum<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_sum<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>}},
   {"withStruct",
-    {&DecoratedServiceAsyncProcessor::setUpAndProcess_withStruct<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::setUpAndProcess_withStruct<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_withStruct<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_withStruct<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedServiceAsyncProcessor::setUpAndProcess_withStruct<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::setUpAndProcess_withStruct<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_withStruct<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_withStruct<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>}},
   {"multiParam",
-    {&DecoratedServiceAsyncProcessor::setUpAndProcess_multiParam<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::setUpAndProcess_multiParam<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_multiParam<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_multiParam<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedServiceAsyncProcessor::setUpAndProcess_multiParam<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::setUpAndProcess_multiParam<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_multiParam<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_multiParam<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>}},
   {"echoInteraction",
-    {&DecoratedServiceAsyncProcessor::setUpAndProcess_echoInteraction<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::setUpAndProcess_echoInteraction<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_echoInteraction<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_echoInteraction<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedServiceAsyncProcessor::setUpAndProcess_echoInteraction<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::setUpAndProcess_echoInteraction<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_echoInteraction<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_echoInteraction<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>}},
   {"LegacyPerforms.perform",
-    {&DecoratedServiceAsyncProcessor::setUpAndProcess_LegacyPerforms_perform<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::setUpAndProcess_LegacyPerforms_perform<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_LegacyPerforms_perform<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_LegacyPerforms_perform<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedServiceAsyncProcessor::setUpAndProcess_LegacyPerforms_perform<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::setUpAndProcess_LegacyPerforms_perform<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_LegacyPerforms_perform<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_LegacyPerforms_perform<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>}},
   {"EchoInteraction.interactionEcho",
-    {&DecoratedServiceAsyncProcessor::setUpAndProcess_EchoInteraction_interactionEcho<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::setUpAndProcess_EchoInteraction_interactionEcho<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_EchoInteraction_interactionEcho<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedServiceAsyncProcessor::executeRequest_EchoInteraction_interactionEcho<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedServiceAsyncProcessor::setUpAndProcess_EchoInteraction_interactionEcho<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::setUpAndProcess_EchoInteraction_interactionEcho<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_EchoInteraction_interactionEcho<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedServiceRequestReader>,
+     &DecoratedServiceAsyncProcessor::executeRequest_EchoInteraction_interactionEcho<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& DecoratedServiceServiceInfoHolder::requestInfoMap() const {
@@ -2817,46 +2821,50 @@ void UndecoratedServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequ
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using UndecoratedServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const UndecoratedServiceAsyncProcessor::ProcessMap& UndecoratedServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const UndecoratedServiceAsyncProcessor::ProcessMap UndecoratedServiceAsyncProcessor::kOwnProcessMap_ {
   {"noop",
-    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_noop<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::setUpAndProcess_noop<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_noop<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_noop<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_noop<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::setUpAndProcess_noop<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_noop<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_noop<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>}},
   {"echo",
-    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::setUpAndProcess_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>}},
   {"increment",
-    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_increment<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::setUpAndProcess_increment<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_increment<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_increment<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_increment<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::setUpAndProcess_increment<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_increment<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_increment<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>}},
   {"sum",
-    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_sum<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::setUpAndProcess_sum<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_sum<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_sum<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_sum<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::setUpAndProcess_sum<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_sum<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_sum<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>}},
   {"withStruct",
-    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_withStruct<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::setUpAndProcess_withStruct<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_withStruct<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_withStruct<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_withStruct<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::setUpAndProcess_withStruct<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_withStruct<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_withStruct<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>}},
   {"multiParam",
-    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_multiParam<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::setUpAndProcess_multiParam<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_multiParam<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_multiParam<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_multiParam<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::setUpAndProcess_multiParam<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_multiParam<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_multiParam<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>}},
   {"adaptedRequest",
-    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_adaptedRequest<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::setUpAndProcess_adaptedRequest<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_adaptedRequest<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedServiceAsyncProcessor::executeRequest_adaptedRequest<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&UndecoratedServiceAsyncProcessor::setUpAndProcess_adaptedRequest<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::setUpAndProcess_adaptedRequest<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_adaptedRequest<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedServiceRequestReader>,
+     &UndecoratedServiceAsyncProcessor::executeRequest_adaptedRequest<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& UndecoratedServiceServiceInfoHolder::requestInfoMap() const {
@@ -3266,16 +3274,20 @@ void DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::executeRequest(ap
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using DecoratedService_ExtendsUndecoratedServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::ProcessMap& DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::ProcessMap DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::kOwnProcessMap_ {
   {"extension",
-    {&DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedService_ExtendsUndecoratedServiceRequestReader>,
+     &DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedService_ExtendsUndecoratedServiceRequestReader>,
+     &DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedService_ExtendsUndecoratedServiceRequestReader>,
+     &DecoratedService_ExtendsUndecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedService_ExtendsUndecoratedServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& DecoratedService_ExtendsUndecoratedServiceServiceInfoHolder::requestInfoMap() const {
@@ -3687,16 +3699,20 @@ void DecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest(apac
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using DecoratedService_ExtendsDecoratedServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const DecoratedService_ExtendsDecoratedServiceAsyncProcessor::ProcessMap& DecoratedService_ExtendsDecoratedServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const DecoratedService_ExtendsDecoratedServiceAsyncProcessor::ProcessMap DecoratedService_ExtendsDecoratedServiceAsyncProcessor::kOwnProcessMap_ {
   {"extension",
-    {&DecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedService_ExtendsDecoratedServiceRequestReader>,
+     &DecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedService_ExtendsDecoratedServiceRequestReader>,
+     &DecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedService_ExtendsDecoratedServiceRequestReader>,
+     &DecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedService_ExtendsDecoratedServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& DecoratedService_ExtendsDecoratedServiceServiceInfoHolder::requestInfoMap() const {
@@ -3916,16 +3932,20 @@ void UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest(ap
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using UndecoratedService_ExtendsDecoratedServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::ProcessMap& UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::ProcessMap UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::kOwnProcessMap_ {
   {"extension",
-    {&UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedService_ExtendsDecoratedServiceRequestReader>,
+     &UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedService_ExtendsDecoratedServiceRequestReader>,
+     &UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, UndecoratedService_ExtendsDecoratedServiceRequestReader>,
+     &UndecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_extension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, UndecoratedService_ExtendsDecoratedServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& UndecoratedService_ExtendsDecoratedServiceServiceInfoHolder::requestInfoMap() const {
@@ -4355,16 +4375,20 @@ void DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProc
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::ProcessMap& DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::ProcessMap DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::kOwnProcessMap_ {
   {"secondExtension",
-    {&DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_secondExtension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_secondExtension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_secondExtension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_secondExtension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_secondExtension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceRequestReader>,
+     &DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::setUpAndProcess_secondExtension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceRequestReader>,
+     &DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_secondExtension<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceRequestReader>,
+     &DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::executeRequest_secondExtension<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceServiceInfoHolder::requestInfoMap() const {

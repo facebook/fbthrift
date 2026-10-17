@@ -24,7 +24,7 @@ typedef apache::thrift::ThriftPresult<true> PrimitivesService_return_void_method
 //
 // Method 'init'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PrimitivesServiceAsyncProcessor::setUpAndProcess_init(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -46,11 +46,11 @@ void PrimitivesServiceAsyncProcessor::setUpAndProcess_init(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &PrimitivesServiceAsyncProcessor::
-          executeRequest_init<ProtocolIn_, ProtocolOut_>,
+          executeRequest_init<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PrimitivesServiceAsyncProcessor::executeRequest_init(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -84,7 +84,7 @@ void PrimitivesServiceAsyncProcessor::executeRequest_init(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "init",
         serializedRequest,
@@ -208,7 +208,7 @@ void PrimitivesServiceAsyncProcessor::throw_wrapped_init(
 //
 // Method 'method_that_throws'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PrimitivesServiceAsyncProcessor::setUpAndProcess_method_that_throws(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -230,11 +230,11 @@ void PrimitivesServiceAsyncProcessor::setUpAndProcess_method_that_throws(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &PrimitivesServiceAsyncProcessor::
-          executeRequest_method_that_throws<ProtocolIn_, ProtocolOut_>,
+          executeRequest_method_that_throws<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PrimitivesServiceAsyncProcessor::executeRequest_method_that_throws(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -262,7 +262,7 @@ void PrimitivesServiceAsyncProcessor::executeRequest_method_that_throws(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "method_that_throws",
         serializedRequest,
@@ -404,7 +404,7 @@ void PrimitivesServiceAsyncProcessor::throw_wrapped_method_that_throws(
 //
 // Method 'return_void_method'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PrimitivesServiceAsyncProcessor::setUpAndProcess_return_void_method(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -426,11 +426,11 @@ void PrimitivesServiceAsyncProcessor::setUpAndProcess_return_void_method(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &PrimitivesServiceAsyncProcessor::
-          executeRequest_return_void_method<ProtocolIn_, ProtocolOut_>,
+          executeRequest_return_void_method<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PrimitivesServiceAsyncProcessor::executeRequest_return_void_method(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -464,7 +464,7 @@ void PrimitivesServiceAsyncProcessor::executeRequest_return_void_method(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "return_void_method",
         serializedRequest,

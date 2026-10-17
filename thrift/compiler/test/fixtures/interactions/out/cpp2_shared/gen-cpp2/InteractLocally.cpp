@@ -458,26 +458,30 @@ void InteractLocallyAsyncProcessor::executeRequest(apache::thrift::ServerRequest
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using InteractLocallyRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const InteractLocallyAsyncProcessor::ProcessMap& InteractLocallyAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const InteractLocallyAsyncProcessor::ProcessMap InteractLocallyAsyncProcessor::kOwnProcessMap_ {
   {"SharedInteraction.init",
-    {&InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, InteractLocallyRequestReader>,
+     &InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, InteractLocallyRequestReader>,
+     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, InteractLocallyRequestReader>,
+     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, InteractLocallyRequestReader>}},
   {"SharedInteraction.do_something",
-    {&InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_do_something<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_do_something<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_do_something<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_do_something<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_do_something<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, InteractLocallyRequestReader>,
+     &InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_do_something<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, InteractLocallyRequestReader>,
+     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_do_something<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, InteractLocallyRequestReader>,
+     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_do_something<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, InteractLocallyRequestReader>}},
   {"SharedInteraction.tear_down",
-    {&InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_tear_down<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_tear_down<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_tear_down<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_tear_down<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_tear_down<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, InteractLocallyRequestReader>,
+     &InteractLocallyAsyncProcessor::setUpAndProcess_SharedInteraction_tear_down<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, InteractLocallyRequestReader>,
+     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_tear_down<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, InteractLocallyRequestReader>,
+     &InteractLocallyAsyncProcessor::executeRequest_SharedInteraction_tear_down<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, InteractLocallyRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& InteractLocallyServiceInfoHolder::requestInfoMap() const {

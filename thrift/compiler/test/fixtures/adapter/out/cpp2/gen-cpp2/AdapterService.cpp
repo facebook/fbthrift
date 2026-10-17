@@ -205,16 +205,20 @@ void AdapterServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using AdapterServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const AdapterServiceAsyncProcessor::ProcessMap& AdapterServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const AdapterServiceAsyncProcessor::ProcessMap AdapterServiceAsyncProcessor::kOwnProcessMap_ {
   {"count",
-    {&AdapterServiceAsyncProcessor::setUpAndProcess_count<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &AdapterServiceAsyncProcessor::setUpAndProcess_count<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &AdapterServiceAsyncProcessor::executeRequest_count<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &AdapterServiceAsyncProcessor::executeRequest_count<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&AdapterServiceAsyncProcessor::setUpAndProcess_count<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, AdapterServiceRequestReader>,
+     &AdapterServiceAsyncProcessor::setUpAndProcess_count<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, AdapterServiceRequestReader>,
+     &AdapterServiceAsyncProcessor::executeRequest_count<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, AdapterServiceRequestReader>,
+     &AdapterServiceAsyncProcessor::executeRequest_count<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, AdapterServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& AdapterServiceServiceInfoHolder::requestInfoMap() const {

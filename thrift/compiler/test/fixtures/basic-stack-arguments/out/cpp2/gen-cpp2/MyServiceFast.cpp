@@ -104,31 +104,35 @@ void MyServiceFastAsyncProcessor::executeRequest(apache::thrift::ServerRequest&&
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using MyServiceFastRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const MyServiceFastAsyncProcessor::ProcessMap& MyServiceFastAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const MyServiceFastAsyncProcessor::ProcessMap MyServiceFastAsyncProcessor::kOwnProcessMap_ {
   {"hasDataById",
-    {&MyServiceFastAsyncProcessor::setUpAndProcess_hasDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceFastAsyncProcessor::setUpAndProcess_hasDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &MyServiceFastAsyncProcessor::executeRequest_hasDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceFastAsyncProcessor::executeRequest_hasDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&MyServiceFastAsyncProcessor::setUpAndProcess_hasDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::setUpAndProcess_hasDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::executeRequest_hasDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::executeRequest_hasDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceFastRequestReader>}},
   {"getDataById",
-    {&MyServiceFastAsyncProcessor::setUpAndProcess_getDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceFastAsyncProcessor::setUpAndProcess_getDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &MyServiceFastAsyncProcessor::executeRequest_getDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceFastAsyncProcessor::executeRequest_getDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&MyServiceFastAsyncProcessor::setUpAndProcess_getDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::setUpAndProcess_getDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::executeRequest_getDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::executeRequest_getDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceFastRequestReader>}},
   {"putDataById",
-    {&MyServiceFastAsyncProcessor::setUpAndProcess_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceFastAsyncProcessor::setUpAndProcess_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &MyServiceFastAsyncProcessor::executeRequest_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceFastAsyncProcessor::executeRequest_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&MyServiceFastAsyncProcessor::setUpAndProcess_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::setUpAndProcess_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::executeRequest_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::executeRequest_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceFastRequestReader>}},
   {"lobDataById",
-    {&MyServiceFastAsyncProcessor::setUpAndProcess_lobDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceFastAsyncProcessor::setUpAndProcess_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &MyServiceFastAsyncProcessor::executeRequest_lobDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceFastAsyncProcessor::executeRequest_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&MyServiceFastAsyncProcessor::setUpAndProcess_lobDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::setUpAndProcess_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::executeRequest_lobDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceFastRequestReader>,
+     &MyServiceFastAsyncProcessor::executeRequest_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceFastRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& MyServiceFastServiceInfoHolder::requestInfoMap() const {

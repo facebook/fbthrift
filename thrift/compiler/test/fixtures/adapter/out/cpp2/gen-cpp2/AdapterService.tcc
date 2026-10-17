@@ -20,7 +20,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'count'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void AdapterServiceAsyncProcessor::setUpAndProcess_count(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -42,11 +42,11 @@ void AdapterServiceAsyncProcessor::setUpAndProcess_count(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &AdapterServiceAsyncProcessor::
-          executeRequest_count<ProtocolIn_, ProtocolOut_>,
+          executeRequest_count<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void AdapterServiceAsyncProcessor::executeRequest_count(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -74,7 +74,7 @@ void AdapterServiceAsyncProcessor::executeRequest_count(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "count",
         serializedRequest,

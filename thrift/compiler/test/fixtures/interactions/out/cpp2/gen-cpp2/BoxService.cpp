@@ -338,21 +338,25 @@ void BoxServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& re
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using BoxServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const BoxServiceAsyncProcessor::ProcessMap& BoxServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const BoxServiceAsyncProcessor::ProcessMap BoxServiceAsyncProcessor::kOwnProcessMap_ {
   {"getABoxSession",
-    {&BoxServiceAsyncProcessor::setUpAndProcess_getABoxSession<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &BoxServiceAsyncProcessor::setUpAndProcess_getABoxSession<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &BoxServiceAsyncProcessor::executeRequest_getABoxSession<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &BoxServiceAsyncProcessor::executeRequest_getABoxSession<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&BoxServiceAsyncProcessor::setUpAndProcess_getABoxSession<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, BoxServiceRequestReader>,
+     &BoxServiceAsyncProcessor::setUpAndProcess_getABoxSession<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, BoxServiceRequestReader>,
+     &BoxServiceAsyncProcessor::executeRequest_getABoxSession<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, BoxServiceRequestReader>,
+     &BoxServiceAsyncProcessor::executeRequest_getABoxSession<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, BoxServiceRequestReader>}},
   {"BoxedInteraction.getABox",
-    {&BoxServiceAsyncProcessor::setUpAndProcess_BoxedInteraction_getABox<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &BoxServiceAsyncProcessor::setUpAndProcess_BoxedInteraction_getABox<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &BoxServiceAsyncProcessor::executeRequest_BoxedInteraction_getABox<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &BoxServiceAsyncProcessor::executeRequest_BoxedInteraction_getABox<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&BoxServiceAsyncProcessor::setUpAndProcess_BoxedInteraction_getABox<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, BoxServiceRequestReader>,
+     &BoxServiceAsyncProcessor::setUpAndProcess_BoxedInteraction_getABox<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, BoxServiceRequestReader>,
+     &BoxServiceAsyncProcessor::executeRequest_BoxedInteraction_getABox<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, BoxServiceRequestReader>,
+     &BoxServiceAsyncProcessor::executeRequest_BoxedInteraction_getABox<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, BoxServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& BoxServiceServiceInfoHolder::requestInfoMap() const {

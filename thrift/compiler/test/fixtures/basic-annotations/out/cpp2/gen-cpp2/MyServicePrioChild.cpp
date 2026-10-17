@@ -204,16 +204,20 @@ void MyServicePrioChildAsyncProcessor::executeRequest(apache::thrift::ServerRequ
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using MyServicePrioChildRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const MyServicePrioChildAsyncProcessor::ProcessMap& MyServicePrioChildAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const MyServicePrioChildAsyncProcessor::ProcessMap MyServicePrioChildAsyncProcessor::kOwnProcessMap_ {
   {"pang",
-    {&MyServicePrioChildAsyncProcessor::setUpAndProcess_pang<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServicePrioChildAsyncProcessor::setUpAndProcess_pang<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &MyServicePrioChildAsyncProcessor::executeRequest_pang<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServicePrioChildAsyncProcessor::executeRequest_pang<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&MyServicePrioChildAsyncProcessor::setUpAndProcess_pang<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServicePrioChildRequestReader>,
+     &MyServicePrioChildAsyncProcessor::setUpAndProcess_pang<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServicePrioChildRequestReader>,
+     &MyServicePrioChildAsyncProcessor::executeRequest_pang<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServicePrioChildRequestReader>,
+     &MyServicePrioChildAsyncProcessor::executeRequest_pang<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServicePrioChildRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& MyServicePrioChildServiceInfoHolder::requestInfoMap() const {

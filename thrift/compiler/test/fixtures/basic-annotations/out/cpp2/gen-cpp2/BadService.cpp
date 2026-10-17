@@ -348,21 +348,25 @@ void GoodServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& r
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using GoodServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const GoodServiceAsyncProcessor::ProcessMap& GoodServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const GoodServiceAsyncProcessor::ProcessMap GoodServiceAsyncProcessor::kOwnProcessMap_ {
   {"bar",
-    {&GoodServiceAsyncProcessor::setUpAndProcess_bar<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &GoodServiceAsyncProcessor::setUpAndProcess_bar<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &GoodServiceAsyncProcessor::executeRequest_bar<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &GoodServiceAsyncProcessor::executeRequest_bar<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&GoodServiceAsyncProcessor::setUpAndProcess_bar<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, GoodServiceRequestReader>,
+     &GoodServiceAsyncProcessor::setUpAndProcess_bar<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, GoodServiceRequestReader>,
+     &GoodServiceAsyncProcessor::executeRequest_bar<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, GoodServiceRequestReader>,
+     &GoodServiceAsyncProcessor::executeRequest_bar<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, GoodServiceRequestReader>}},
   {"BadInteraction.foo",
-    {&GoodServiceAsyncProcessor::setUpAndProcess_BadInteraction_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &GoodServiceAsyncProcessor::setUpAndProcess_BadInteraction_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &GoodServiceAsyncProcessor::executeRequest_BadInteraction_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &GoodServiceAsyncProcessor::executeRequest_BadInteraction_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&GoodServiceAsyncProcessor::setUpAndProcess_BadInteraction_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, GoodServiceRequestReader>,
+     &GoodServiceAsyncProcessor::setUpAndProcess_BadInteraction_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, GoodServiceRequestReader>,
+     &GoodServiceAsyncProcessor::executeRequest_BadInteraction_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, GoodServiceRequestReader>,
+     &GoodServiceAsyncProcessor::executeRequest_BadInteraction_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, GoodServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& GoodServiceServiceInfoHolder::requestInfoMap() const {

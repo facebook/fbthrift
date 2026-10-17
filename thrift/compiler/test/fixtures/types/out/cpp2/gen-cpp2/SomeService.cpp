@@ -357,21 +357,25 @@ void SomeServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& r
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using SomeServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const SomeServiceAsyncProcessor::ProcessMap& SomeServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const SomeServiceAsyncProcessor::ProcessMap SomeServiceAsyncProcessor::kOwnProcessMap_ {
   {"bounce_map",
-    {&SomeServiceAsyncProcessor::setUpAndProcess_bounce_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &SomeServiceAsyncProcessor::setUpAndProcess_bounce_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &SomeServiceAsyncProcessor::executeRequest_bounce_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &SomeServiceAsyncProcessor::executeRequest_bounce_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&SomeServiceAsyncProcessor::setUpAndProcess_bounce_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, SomeServiceRequestReader>,
+     &SomeServiceAsyncProcessor::setUpAndProcess_bounce_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, SomeServiceRequestReader>,
+     &SomeServiceAsyncProcessor::executeRequest_bounce_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, SomeServiceRequestReader>,
+     &SomeServiceAsyncProcessor::executeRequest_bounce_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, SomeServiceRequestReader>}},
   {"binary_keyed_map",
-    {&SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &SomeServiceAsyncProcessor::executeRequest_binary_keyed_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &SomeServiceAsyncProcessor::executeRequest_binary_keyed_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, SomeServiceRequestReader>,
+     &SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, SomeServiceRequestReader>,
+     &SomeServiceAsyncProcessor::executeRequest_binary_keyed_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, SomeServiceRequestReader>,
+     &SomeServiceAsyncProcessor::executeRequest_binary_keyed_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, SomeServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& SomeServiceServiceInfoHolder::requestInfoMap() const {

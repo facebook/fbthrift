@@ -204,16 +204,20 @@ void FooServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& re
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using FooServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const FooServiceAsyncProcessor::ProcessMap& FooServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const FooServiceAsyncProcessor::ProcessMap FooServiceAsyncProcessor::kOwnProcessMap_ {
   {"simple_rpc",
-    {&FooServiceAsyncProcessor::setUpAndProcess_simple_rpc<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FooServiceAsyncProcessor::setUpAndProcess_simple_rpc<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &FooServiceAsyncProcessor::executeRequest_simple_rpc<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FooServiceAsyncProcessor::executeRequest_simple_rpc<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&FooServiceAsyncProcessor::setUpAndProcess_simple_rpc<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FooServiceRequestReader>,
+     &FooServiceAsyncProcessor::setUpAndProcess_simple_rpc<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FooServiceRequestReader>,
+     &FooServiceAsyncProcessor::executeRequest_simple_rpc<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FooServiceRequestReader>,
+     &FooServiceAsyncProcessor::executeRequest_simple_rpc<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FooServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& FooServiceServiceInfoHolder::requestInfoMap() const {

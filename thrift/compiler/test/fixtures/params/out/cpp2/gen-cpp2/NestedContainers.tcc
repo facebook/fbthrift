@@ -28,7 +28,7 @@ typedef apache::thrift::ThriftPresult<true> NestedContainers_turtles_presult;
 //
 // Method 'mapList'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void NestedContainersAsyncProcessor::setUpAndProcess_mapList(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -50,11 +50,11 @@ void NestedContainersAsyncProcessor::setUpAndProcess_mapList(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &NestedContainersAsyncProcessor::
-          executeRequest_mapList<ProtocolIn_, ProtocolOut_>,
+          executeRequest_mapList<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void NestedContainersAsyncProcessor::executeRequest_mapList(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -85,7 +85,7 @@ void NestedContainersAsyncProcessor::executeRequest_mapList(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "mapList",
         serializedRequest,
@@ -206,7 +206,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapList(
 //
 // Method 'mapSet'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void NestedContainersAsyncProcessor::setUpAndProcess_mapSet(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -228,11 +228,11 @@ void NestedContainersAsyncProcessor::setUpAndProcess_mapSet(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &NestedContainersAsyncProcessor::
-          executeRequest_mapSet<ProtocolIn_, ProtocolOut_>,
+          executeRequest_mapSet<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void NestedContainersAsyncProcessor::executeRequest_mapSet(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -263,7 +263,7 @@ void NestedContainersAsyncProcessor::executeRequest_mapSet(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "mapSet",
         serializedRequest,
@@ -384,7 +384,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapSet(
 //
 // Method 'listMap'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void NestedContainersAsyncProcessor::setUpAndProcess_listMap(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -406,11 +406,11 @@ void NestedContainersAsyncProcessor::setUpAndProcess_listMap(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &NestedContainersAsyncProcessor::
-          executeRequest_listMap<ProtocolIn_, ProtocolOut_>,
+          executeRequest_listMap<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void NestedContainersAsyncProcessor::executeRequest_listMap(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -441,7 +441,7 @@ void NestedContainersAsyncProcessor::executeRequest_listMap(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "listMap",
         serializedRequest,
@@ -562,7 +562,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_listMap(
 //
 // Method 'listSet'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void NestedContainersAsyncProcessor::setUpAndProcess_listSet(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -584,11 +584,11 @@ void NestedContainersAsyncProcessor::setUpAndProcess_listSet(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &NestedContainersAsyncProcessor::
-          executeRequest_listSet<ProtocolIn_, ProtocolOut_>,
+          executeRequest_listSet<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void NestedContainersAsyncProcessor::executeRequest_listSet(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -619,7 +619,7 @@ void NestedContainersAsyncProcessor::executeRequest_listSet(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "listSet",
         serializedRequest,
@@ -740,7 +740,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_listSet(
 //
 // Method 'turtles'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void NestedContainersAsyncProcessor::setUpAndProcess_turtles(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -762,11 +762,11 @@ void NestedContainersAsyncProcessor::setUpAndProcess_turtles(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &NestedContainersAsyncProcessor::
-          executeRequest_turtles<ProtocolIn_, ProtocolOut_>,
+          executeRequest_turtles<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void NestedContainersAsyncProcessor::executeRequest_turtles(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -797,7 +797,7 @@ void NestedContainersAsyncProcessor::executeRequest_turtles(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "turtles",
         serializedRequest,

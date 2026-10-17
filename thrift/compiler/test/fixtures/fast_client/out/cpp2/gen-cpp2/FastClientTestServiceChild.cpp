@@ -205,16 +205,20 @@ void FastClientTestServiceChildAsyncProcessor::executeRequest(apache::thrift::Se
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using FastClientTestServiceChildRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const FastClientTestServiceChildAsyncProcessor::ProcessMap& FastClientTestServiceChildAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const FastClientTestServiceChildAsyncProcessor::ProcessMap FastClientTestServiceChildAsyncProcessor::kOwnProcessMap_ {
   {"greet",
-    {&FastClientTestServiceChildAsyncProcessor::setUpAndProcess_greet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceChildAsyncProcessor::setUpAndProcess_greet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &FastClientTestServiceChildAsyncProcessor::executeRequest_greet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FastClientTestServiceChildAsyncProcessor::executeRequest_greet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&FastClientTestServiceChildAsyncProcessor::setUpAndProcess_greet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceChildRequestReader>,
+     &FastClientTestServiceChildAsyncProcessor::setUpAndProcess_greet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceChildRequestReader>,
+     &FastClientTestServiceChildAsyncProcessor::executeRequest_greet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FastClientTestServiceChildRequestReader>,
+     &FastClientTestServiceChildAsyncProcessor::executeRequest_greet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FastClientTestServiceChildRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& FastClientTestServiceChildServiceInfoHolder::requestInfoMap() const {

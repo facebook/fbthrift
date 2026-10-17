@@ -515,26 +515,30 @@ void PrimitivesServiceAsyncProcessor::executeRequest(apache::thrift::ServerReque
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using PrimitivesServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const PrimitivesServiceAsyncProcessor::ProcessMap& PrimitivesServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const PrimitivesServiceAsyncProcessor::ProcessMap PrimitivesServiceAsyncProcessor::kOwnProcessMap_ {
   {"init",
-    {&PrimitivesServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &PrimitivesServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &PrimitivesServiceAsyncProcessor::executeRequest_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &PrimitivesServiceAsyncProcessor::executeRequest_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&PrimitivesServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PrimitivesServiceRequestReader>,
+     &PrimitivesServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PrimitivesServiceRequestReader>,
+     &PrimitivesServiceAsyncProcessor::executeRequest_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PrimitivesServiceRequestReader>,
+     &PrimitivesServiceAsyncProcessor::executeRequest_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PrimitivesServiceRequestReader>}},
   {"method_that_throws",
-    {&PrimitivesServiceAsyncProcessor::setUpAndProcess_method_that_throws<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &PrimitivesServiceAsyncProcessor::setUpAndProcess_method_that_throws<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &PrimitivesServiceAsyncProcessor::executeRequest_method_that_throws<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &PrimitivesServiceAsyncProcessor::executeRequest_method_that_throws<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&PrimitivesServiceAsyncProcessor::setUpAndProcess_method_that_throws<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PrimitivesServiceRequestReader>,
+     &PrimitivesServiceAsyncProcessor::setUpAndProcess_method_that_throws<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PrimitivesServiceRequestReader>,
+     &PrimitivesServiceAsyncProcessor::executeRequest_method_that_throws<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PrimitivesServiceRequestReader>,
+     &PrimitivesServiceAsyncProcessor::executeRequest_method_that_throws<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PrimitivesServiceRequestReader>}},
   {"return_void_method",
-    {&PrimitivesServiceAsyncProcessor::setUpAndProcess_return_void_method<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &PrimitivesServiceAsyncProcessor::setUpAndProcess_return_void_method<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &PrimitivesServiceAsyncProcessor::executeRequest_return_void_method<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &PrimitivesServiceAsyncProcessor::executeRequest_return_void_method<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&PrimitivesServiceAsyncProcessor::setUpAndProcess_return_void_method<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PrimitivesServiceRequestReader>,
+     &PrimitivesServiceAsyncProcessor::setUpAndProcess_return_void_method<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PrimitivesServiceRequestReader>,
+     &PrimitivesServiceAsyncProcessor::executeRequest_return_void_method<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PrimitivesServiceRequestReader>,
+     &PrimitivesServiceAsyncProcessor::executeRequest_return_void_method<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PrimitivesServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& PrimitivesServiceServiceInfoHolder::requestInfoMap() const {

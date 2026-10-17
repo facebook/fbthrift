@@ -22,7 +22,7 @@ typedef apache::thrift::ThriftPresult<true> MyService_has_arg_docs_presult;
 //
 // Method 'query'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceAsyncProcessor::setUpAndProcess_query(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -44,11 +44,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_query(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &MyServiceAsyncProcessor::
-          executeRequest_query<ProtocolIn_, ProtocolOut_>,
+          executeRequest_query<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceAsyncProcessor::executeRequest_query(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -82,7 +82,7 @@ void MyServiceAsyncProcessor::executeRequest_query(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "query",
         serializedRequest,
@@ -203,7 +203,7 @@ void MyServiceAsyncProcessor::throw_wrapped_query(
 //
 // Method 'has_arg_docs'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceAsyncProcessor::setUpAndProcess_has_arg_docs(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -225,11 +225,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_has_arg_docs(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &MyServiceAsyncProcessor::
-          executeRequest_has_arg_docs<ProtocolIn_, ProtocolOut_>,
+          executeRequest_has_arg_docs<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceAsyncProcessor::executeRequest_has_arg_docs(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -263,7 +263,7 @@ void MyServiceAsyncProcessor::executeRequest_has_arg_docs(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "has_arg_docs",
         serializedRequest,

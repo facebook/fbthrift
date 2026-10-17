@@ -20,7 +20,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'get_six'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void DerivedServiceAsyncProcessor::setUpAndProcess_get_six(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -42,11 +42,11 @@ void DerivedServiceAsyncProcessor::setUpAndProcess_get_six(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &DerivedServiceAsyncProcessor::
-          executeRequest_get_six<ProtocolIn_, ProtocolOut_>,
+          executeRequest_get_six<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void DerivedServiceAsyncProcessor::executeRequest_get_six(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -74,7 +74,7 @@ void DerivedServiceAsyncProcessor::executeRequest_get_six(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "get_six",
         serializedRequest,

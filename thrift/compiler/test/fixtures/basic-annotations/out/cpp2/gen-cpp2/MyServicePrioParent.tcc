@@ -22,7 +22,7 @@ typedef apache::thrift::ThriftPresult<true> MyServicePrioParent_pong_presult;
 //
 // Method 'ping'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServicePrioParentAsyncProcessor::setUpAndProcess_ping(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -44,11 +44,11 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_ping(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &MyServicePrioParentAsyncProcessor::
-          executeRequest_ping<ProtocolIn_, ProtocolOut_>,
+          executeRequest_ping<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServicePrioParentAsyncProcessor::executeRequest_ping(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -76,7 +76,7 @@ void MyServicePrioParentAsyncProcessor::executeRequest_ping(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "ping",
         serializedRequest,
@@ -197,7 +197,7 @@ void MyServicePrioParentAsyncProcessor::throw_wrapped_ping(
 //
 // Method 'pong'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServicePrioParentAsyncProcessor::setUpAndProcess_pong(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -219,11 +219,11 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_pong(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &MyServicePrioParentAsyncProcessor::
-          executeRequest_pong<ProtocolIn_, ProtocolOut_>,
+          executeRequest_pong<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServicePrioParentAsyncProcessor::executeRequest_pong(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -251,7 +251,7 @@ void MyServicePrioParentAsyncProcessor::executeRequest_pong(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "pong",
         serializedRequest,

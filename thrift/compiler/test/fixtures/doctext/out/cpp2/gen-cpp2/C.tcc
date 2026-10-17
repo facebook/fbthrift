@@ -27,7 +27,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'f'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void CAsyncProcessor::setUpAndProcess_f(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -49,11 +49,11 @@ void CAsyncProcessor::setUpAndProcess_f(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &CAsyncProcessor::
-          executeRequest_f<ProtocolIn_, ProtocolOut_>,
+          executeRequest_f<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void CAsyncProcessor::executeRequest_f(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -81,7 +81,7 @@ void CAsyncProcessor::executeRequest_f(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "f",
         serializedRequest,
@@ -202,7 +202,7 @@ void CAsyncProcessor::throw_wrapped_f(
 //
 // Method 'numbers'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void CAsyncProcessor::setUpAndProcess_numbers(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -224,11 +224,11 @@ void CAsyncProcessor::setUpAndProcess_numbers(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &CAsyncProcessor::
-          executeRequest_numbers<ProtocolIn_, ProtocolOut_>,
+          executeRequest_numbers<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void CAsyncProcessor::executeRequest_numbers(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -256,7 +256,7 @@ void CAsyncProcessor::executeRequest_numbers(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "numbers",
         serializedRequest,
@@ -382,7 +382,7 @@ void CAsyncProcessor::throw_wrapped_numbers(
 //
 // Method 'thing'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void CAsyncProcessor::setUpAndProcess_thing(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -404,11 +404,11 @@ void CAsyncProcessor::setUpAndProcess_thing(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &CAsyncProcessor::
-          executeRequest_thing<ProtocolIn_, ProtocolOut_>,
+          executeRequest_thing<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void CAsyncProcessor::executeRequest_thing(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -445,7 +445,7 @@ void CAsyncProcessor::executeRequest_thing(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "thing",
         serializedRequest,

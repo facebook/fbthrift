@@ -20,7 +20,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'greet'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceChildAsyncProcessor::setUpAndProcess_greet(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -42,11 +42,11 @@ void FastClientTestServiceChildAsyncProcessor::setUpAndProcess_greet(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FastClientTestServiceChildAsyncProcessor::
-          executeRequest_greet<ProtocolIn_, ProtocolOut_>,
+          executeRequest_greet<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceChildAsyncProcessor::executeRequest_greet(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -77,7 +77,7 @@ void FastClientTestServiceChildAsyncProcessor::executeRequest_greet(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "greet",
         serializedRequest,

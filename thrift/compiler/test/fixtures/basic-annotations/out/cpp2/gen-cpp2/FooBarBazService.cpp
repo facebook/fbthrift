@@ -506,26 +506,30 @@ void FooBarBazServiceAsyncProcessor::executeRequest(apache::thrift::ServerReques
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using FooBarBazServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const FooBarBazServiceAsyncProcessor::ProcessMap& FooBarBazServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const FooBarBazServiceAsyncProcessor::ProcessMap FooBarBazServiceAsyncProcessor::kOwnProcessMap_ {
   {"foo",
-    {&FooBarBazServiceAsyncProcessor::setUpAndProcess_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FooBarBazServiceAsyncProcessor::setUpAndProcess_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &FooBarBazServiceAsyncProcessor::executeRequest_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FooBarBazServiceAsyncProcessor::executeRequest_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&FooBarBazServiceAsyncProcessor::setUpAndProcess_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FooBarBazServiceRequestReader>,
+     &FooBarBazServiceAsyncProcessor::setUpAndProcess_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FooBarBazServiceRequestReader>,
+     &FooBarBazServiceAsyncProcessor::executeRequest_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FooBarBazServiceRequestReader>,
+     &FooBarBazServiceAsyncProcessor::executeRequest_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FooBarBazServiceRequestReader>}},
   {"bar",
-    {&FooBarBazServiceAsyncProcessor::setUpAndProcess_bar<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FooBarBazServiceAsyncProcessor::setUpAndProcess_bar<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &FooBarBazServiceAsyncProcessor::executeRequest_bar<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FooBarBazServiceAsyncProcessor::executeRequest_bar<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&FooBarBazServiceAsyncProcessor::setUpAndProcess_bar<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FooBarBazServiceRequestReader>,
+     &FooBarBazServiceAsyncProcessor::setUpAndProcess_bar<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FooBarBazServiceRequestReader>,
+     &FooBarBazServiceAsyncProcessor::executeRequest_bar<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FooBarBazServiceRequestReader>,
+     &FooBarBazServiceAsyncProcessor::executeRequest_bar<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FooBarBazServiceRequestReader>}},
   {"baz",
-    {&FooBarBazServiceAsyncProcessor::setUpAndProcess_baz<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FooBarBazServiceAsyncProcessor::setUpAndProcess_baz<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &FooBarBazServiceAsyncProcessor::executeRequest_baz<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FooBarBazServiceAsyncProcessor::executeRequest_baz<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&FooBarBazServiceAsyncProcessor::setUpAndProcess_baz<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FooBarBazServiceRequestReader>,
+     &FooBarBazServiceAsyncProcessor::setUpAndProcess_baz<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FooBarBazServiceRequestReader>,
+     &FooBarBazServiceAsyncProcessor::executeRequest_baz<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FooBarBazServiceRequestReader>,
+     &FooBarBazServiceAsyncProcessor::executeRequest_baz<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FooBarBazServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& FooBarBazServiceServiceInfoHolder::requestInfoMap() const {

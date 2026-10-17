@@ -20,7 +20,7 @@ typedef apache::thrift::ThriftPresult<true> MyLeaf_do_leaf_presult;
 //
 // Method 'do_leaf'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyLeafAsyncProcessor::setUpAndProcess_do_leaf(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -42,11 +42,11 @@ void MyLeafAsyncProcessor::setUpAndProcess_do_leaf(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &MyLeafAsyncProcessor::
-          executeRequest_do_leaf<ProtocolIn_, ProtocolOut_>,
+          executeRequest_do_leaf<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyLeafAsyncProcessor::executeRequest_do_leaf(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -74,7 +74,7 @@ void MyLeafAsyncProcessor::executeRequest_do_leaf(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "do_leaf",
         serializedRequest,

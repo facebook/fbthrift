@@ -25,7 +25,7 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apac
 //
 // Method 'hasDataById'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceFastAsyncProcessor::setUpAndProcess_hasDataById(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -50,10 +50,10 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_hasDataById(
       {},
       {},
       {}};
-  executeRequest_hasDataById<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
+  executeRequest_hasDataById<ProtocolIn_, ProtocolOut_, RequestReader_>(std::move(serverRequest));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceFastAsyncProcessor::executeRequest_hasDataById(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -84,7 +84,7 @@ void MyServiceFastAsyncProcessor::executeRequest_hasDataById(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "hasDataById",
         serializedRequest,
@@ -208,7 +208,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_hasDataById(
 //
 // Method 'getDataById'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceFastAsyncProcessor::setUpAndProcess_getDataById(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -233,10 +233,10 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_getDataById(
       {},
       {},
       {}};
-  executeRequest_getDataById<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
+  executeRequest_getDataById<ProtocolIn_, ProtocolOut_, RequestReader_>(std::move(serverRequest));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceFastAsyncProcessor::executeRequest_getDataById(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -267,7 +267,7 @@ void MyServiceFastAsyncProcessor::executeRequest_getDataById(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getDataById",
         serializedRequest,
@@ -391,7 +391,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_getDataById(
 //
 // Method 'putDataById'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceFastAsyncProcessor::setUpAndProcess_putDataById(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -416,10 +416,10 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_putDataById(
       {},
       {},
       {}};
-  executeRequest_putDataById<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
+  executeRequest_putDataById<ProtocolIn_, ProtocolOut_, RequestReader_>(std::move(serverRequest));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceFastAsyncProcessor::executeRequest_putDataById(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -453,7 +453,7 @@ void MyServiceFastAsyncProcessor::executeRequest_putDataById(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "putDataById",
         serializedRequest,
@@ -574,7 +574,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_putDataById(
 //
 // Method 'lobDataById'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceFastAsyncProcessor::setUpAndProcess_lobDataById(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -593,10 +593,10 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_lobDataById(
       {},
       {},
       {}};
-  executeRequest_lobDataById<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
+  executeRequest_lobDataById<ProtocolIn_, ProtocolOut_, RequestReader_>(std::move(serverRequest));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServiceFastAsyncProcessor::executeRequest_lobDataById(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -630,7 +630,7 @@ void MyServiceFastAsyncProcessor::executeRequest_lobDataById(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "lobDataById",
         serializedRequest,

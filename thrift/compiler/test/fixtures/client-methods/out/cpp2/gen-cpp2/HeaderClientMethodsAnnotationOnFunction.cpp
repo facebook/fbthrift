@@ -357,21 +357,25 @@ void HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest(apach
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using HeaderClientMethodsAnnotationOnFunctionRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::ProcessMap& HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::ProcessMap HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::kOwnProcessMap_ {
   {"echo",
-    {&HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, HeaderClientMethodsAnnotationOnFunctionRequestReader>,
+     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, HeaderClientMethodsAnnotationOnFunctionRequestReader>,
+     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, HeaderClientMethodsAnnotationOnFunctionRequestReader>,
+     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, HeaderClientMethodsAnnotationOnFunctionRequestReader>}},
   {"echo_2",
-    {&HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo_2<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo_2<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo_2<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo_2<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo_2<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, HeaderClientMethodsAnnotationOnFunctionRequestReader>,
+     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo_2<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, HeaderClientMethodsAnnotationOnFunctionRequestReader>,
+     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo_2<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, HeaderClientMethodsAnnotationOnFunctionRequestReader>,
+     &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo_2<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, HeaderClientMethodsAnnotationOnFunctionRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& HeaderClientMethodsAnnotationOnFunctionServiceInfoHolder::requestInfoMap() const {

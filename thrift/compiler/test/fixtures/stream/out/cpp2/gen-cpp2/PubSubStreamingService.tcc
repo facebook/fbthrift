@@ -63,7 +63,7 @@ typedef apache::thrift::ThriftPResultStream<
 //
 // Method 'returnstream'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstream(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -85,11 +85,11 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstream(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &PubSubStreamingServiceAsyncProcessor::
-          executeRequest_returnstream<ProtocolIn_, ProtocolOut_>,
+          executeRequest_returnstream<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstream(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -123,7 +123,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstream(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "returnstream",
         serializedRequest,
@@ -249,7 +249,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_returnstream(
 //
 // Method 'streamthrows'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_streamthrows(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -271,11 +271,11 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_streamthrows(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &PubSubStreamingServiceAsyncProcessor::
-          executeRequest_streamthrows<ProtocolIn_, ProtocolOut_>,
+          executeRequest_streamthrows<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::executeRequest_streamthrows(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -306,7 +306,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_streamthrows(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "streamthrows",
         serializedRequest,
@@ -432,7 +432,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_streamthrows(
 //
 // Method 'servicethrows'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_servicethrows(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -454,11 +454,11 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_servicethrows(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &PubSubStreamingServiceAsyncProcessor::
-          executeRequest_servicethrows<ProtocolIn_, ProtocolOut_>,
+          executeRequest_servicethrows<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::executeRequest_servicethrows(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -489,7 +489,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_servicethrows(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "servicethrows",
         serializedRequest,
@@ -633,7 +633,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_servicethrows(
 //
 // Method 'servicethrows2'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_servicethrows2(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -655,11 +655,11 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_servicethrows2(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &PubSubStreamingServiceAsyncProcessor::
-          executeRequest_servicethrows2<ProtocolIn_, ProtocolOut_>,
+          executeRequest_servicethrows2<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::executeRequest_servicethrows2(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -690,7 +690,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_servicethrows2(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "servicethrows2",
         serializedRequest,
@@ -834,7 +834,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_servicethrows2(
 //
 // Method 'boththrows'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_boththrows(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -856,11 +856,11 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_boththrows(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &PubSubStreamingServiceAsyncProcessor::
-          executeRequest_boththrows<ProtocolIn_, ProtocolOut_>,
+          executeRequest_boththrows<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::executeRequest_boththrows(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -891,7 +891,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_boththrows(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "boththrows",
         serializedRequest,
@@ -1035,7 +1035,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_boththrows(
 //
 // Method 'responseandstreamstreamthrows'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamstreamthrows(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1057,11 +1057,11 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamstre
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &PubSubStreamingServiceAsyncProcessor::
-          executeRequest_responseandstreamstreamthrows<ProtocolIn_, ProtocolOut_>,
+          executeRequest_responseandstreamstreamthrows<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamstreamthrows(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1092,7 +1092,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamstrea
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "responseandstreamstreamthrows",
         serializedRequest,
@@ -1220,7 +1220,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_responseandstreamstream
 //
 // Method 'responseandstreamservicethrows'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamservicethrows(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1242,11 +1242,11 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamserv
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &PubSubStreamingServiceAsyncProcessor::
-          executeRequest_responseandstreamservicethrows<ProtocolIn_, ProtocolOut_>,
+          executeRequest_responseandstreamservicethrows<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamservicethrows(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1277,7 +1277,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamservi
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "responseandstreamservicethrows",
         serializedRequest,
@@ -1423,7 +1423,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_responseandstreamservic
 //
 // Method 'responseandstreamboththrows'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamboththrows(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1445,11 +1445,11 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamboth
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &PubSubStreamingServiceAsyncProcessor::
-          executeRequest_responseandstreamboththrows<ProtocolIn_, ProtocolOut_>,
+          executeRequest_responseandstreamboththrows<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamboththrows(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1480,7 +1480,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreambotht
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "responseandstreamboththrows",
         serializedRequest,
@@ -1626,7 +1626,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_responseandstreambothth
 //
 // Method 'returnstreamFast'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstreamFast(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1651,10 +1651,10 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstreamFast(
       {},
       {},
       {}};
-  executeRequest_returnstreamFast<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
+  executeRequest_returnstreamFast<ProtocolIn_, ProtocolOut_, RequestReader_>(std::move(serverRequest));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstreamFast(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1688,7 +1688,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstreamFast(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "returnstreamFast",
         serializedRequest,

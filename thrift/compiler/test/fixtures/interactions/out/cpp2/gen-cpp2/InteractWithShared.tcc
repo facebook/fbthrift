@@ -20,7 +20,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'do_some_similar_things'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::setUpAndProcess_do_some_similar_things(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -42,11 +42,11 @@ void InteractWithSharedAsyncProcessor::setUpAndProcess_do_some_similar_things(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &InteractWithSharedAsyncProcessor::
-          executeRequest_do_some_similar_things<ProtocolIn_, ProtocolOut_>,
+          executeRequest_do_some_similar_things<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::executeRequest_do_some_similar_things(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -74,7 +74,7 @@ void InteractWithSharedAsyncProcessor::executeRequest_do_some_similar_things(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "do_some_similar_things",
         serializedRequest,
@@ -220,7 +220,7 @@ typedef apache::thrift::ThriftPResultSink<
 //
 // Method 'frobnicate'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::setUpAndProcess_MyInteraction_frobnicate(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -242,11 +242,11 @@ void InteractWithSharedAsyncProcessor::setUpAndProcess_MyInteraction_frobnicate(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &InteractWithSharedAsyncProcessor::
-          executeRequest_MyInteraction_frobnicate<ProtocolIn_, ProtocolOut_>,
+          executeRequest_MyInteraction_frobnicate<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::executeRequest_MyInteraction_frobnicate(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -276,7 +276,7 @@ void InteractWithSharedAsyncProcessor::executeRequest_MyInteraction_frobnicate(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "MyInteraction.frobnicate",
         serializedRequest,
@@ -421,7 +421,7 @@ void InteractWithSharedAsyncProcessor::throw_wrapped_MyInteraction_frobnicate(
 //
 // Method 'ping'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::setUpAndProcess_MyInteraction_ping(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -443,11 +443,11 @@ void InteractWithSharedAsyncProcessor::setUpAndProcess_MyInteraction_ping(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
       &InteractWithSharedAsyncProcessor::
-          executeRequest_MyInteraction_ping<ProtocolIn_, ProtocolOut_>,
+          executeRequest_MyInteraction_ping<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::executeRequest_MyInteraction_ping(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -477,7 +477,7 @@ void InteractWithSharedAsyncProcessor::executeRequest_MyInteraction_ping(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "MyInteraction.ping",
         serializedRequest,
@@ -567,7 +567,7 @@ void InteractWithSharedAsyncProcessor::executeRequest_MyInteraction_ping(
 //
 // Method 'truthify'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::setUpAndProcess_MyInteraction_truthify(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -589,11 +589,11 @@ void InteractWithSharedAsyncProcessor::setUpAndProcess_MyInteraction_truthify(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       &InteractWithSharedAsyncProcessor::
-          executeRequest_MyInteraction_truthify<ProtocolIn_, ProtocolOut_>,
+          executeRequest_MyInteraction_truthify<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::executeRequest_MyInteraction_truthify(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -623,7 +623,7 @@ void InteractWithSharedAsyncProcessor::executeRequest_MyInteraction_truthify(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "MyInteraction.truthify",
         serializedRequest,
@@ -752,7 +752,7 @@ void InteractWithSharedAsyncProcessor::throw_wrapped_MyInteraction_truthify(
 //
 // Method 'encode'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::setUpAndProcess_MyInteraction_encode(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -774,11 +774,11 @@ void InteractWithSharedAsyncProcessor::setUpAndProcess_MyInteraction_encode(
       tm,
       apache::thrift::RpcKind::SINK,
       &InteractWithSharedAsyncProcessor::
-          executeRequest_MyInteraction_encode<ProtocolIn_, ProtocolOut_>,
+          executeRequest_MyInteraction_encode<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::executeRequest_MyInteraction_encode(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -808,7 +808,7 @@ void InteractWithSharedAsyncProcessor::executeRequest_MyInteraction_encode(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "MyInteraction.encode",
         serializedRequest,
@@ -961,7 +961,7 @@ typedef apache::thrift::ThriftPresult<true> InteractWithShared_SharedInteraction
 //
 // Method 'init'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::setUpAndProcess_SharedInteraction_init(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -983,11 +983,11 @@ void InteractWithSharedAsyncProcessor::setUpAndProcess_SharedInteraction_init(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &InteractWithSharedAsyncProcessor::
-          executeRequest_SharedInteraction_init<ProtocolIn_, ProtocolOut_>,
+          executeRequest_SharedInteraction_init<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::executeRequest_SharedInteraction_init(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -1017,7 +1017,7 @@ void InteractWithSharedAsyncProcessor::executeRequest_SharedInteraction_init(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "SharedInteraction.init",
         serializedRequest,
@@ -1144,7 +1144,7 @@ void InteractWithSharedAsyncProcessor::throw_wrapped_SharedInteraction_init(
 //
 // Method 'do_something'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::setUpAndProcess_SharedInteraction_do_something(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1166,11 +1166,11 @@ void InteractWithSharedAsyncProcessor::setUpAndProcess_SharedInteraction_do_some
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &InteractWithSharedAsyncProcessor::
-          executeRequest_SharedInteraction_do_something<ProtocolIn_, ProtocolOut_>,
+          executeRequest_SharedInteraction_do_something<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::executeRequest_SharedInteraction_do_something(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -1200,7 +1200,7 @@ void InteractWithSharedAsyncProcessor::executeRequest_SharedInteraction_do_somet
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "SharedInteraction.do_something",
         serializedRequest,
@@ -1327,7 +1327,7 @@ void InteractWithSharedAsyncProcessor::throw_wrapped_SharedInteraction_do_someth
 //
 // Method 'tear_down'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::setUpAndProcess_SharedInteraction_tear_down(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1349,11 +1349,11 @@ void InteractWithSharedAsyncProcessor::setUpAndProcess_SharedInteraction_tear_do
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &InteractWithSharedAsyncProcessor::
-          executeRequest_SharedInteraction_tear_down<ProtocolIn_, ProtocolOut_>,
+          executeRequest_SharedInteraction_tear_down<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void InteractWithSharedAsyncProcessor::executeRequest_SharedInteraction_tear_down(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -1383,7 +1383,7 @@ void InteractWithSharedAsyncProcessor::executeRequest_SharedInteraction_tear_dow
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "SharedInteraction.tear_down",
         serializedRequest,

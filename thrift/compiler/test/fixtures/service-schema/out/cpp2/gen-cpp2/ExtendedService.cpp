@@ -214,16 +214,20 @@ void ExtendedServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using ExtendedServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const ExtendedServiceAsyncProcessor::ProcessMap& ExtendedServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const ExtendedServiceAsyncProcessor::ProcessMap ExtendedServiceAsyncProcessor::kOwnProcessMap_ {
   {"init",
-    {&ExtendedServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &ExtendedServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &ExtendedServiceAsyncProcessor::executeRequest_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &ExtendedServiceAsyncProcessor::executeRequest_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&ExtendedServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, ExtendedServiceRequestReader>,
+     &ExtendedServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, ExtendedServiceRequestReader>,
+     &ExtendedServiceAsyncProcessor::executeRequest_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, ExtendedServiceRequestReader>,
+     &ExtendedServiceAsyncProcessor::executeRequest_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, ExtendedServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& ExtendedServiceServiceInfoHolder::requestInfoMap() const {

@@ -20,7 +20,7 @@ typedef apache::thrift::ThriftPresult<true> MyNode_do_mid_presult;
 //
 // Method 'do_mid'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyNodeAsyncProcessor::setUpAndProcess_do_mid(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -42,11 +42,11 @@ void MyNodeAsyncProcessor::setUpAndProcess_do_mid(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &MyNodeAsyncProcessor::
-          executeRequest_do_mid<ProtocolIn_, ProtocolOut_>,
+          executeRequest_do_mid<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyNodeAsyncProcessor::executeRequest_do_mid(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -74,7 +74,7 @@ void MyNodeAsyncProcessor::executeRequest_do_mid(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "do_mid",
         serializedRequest,

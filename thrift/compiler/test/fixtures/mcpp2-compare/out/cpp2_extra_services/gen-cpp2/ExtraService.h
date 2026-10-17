@@ -285,7 +285,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
   // Method 'simple_function'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_simple_function(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -293,7 +293,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_simple_function(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -315,7 +315,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
   // Method 'throws_function'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_throws_function(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -323,7 +323,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_throws_function(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -344,7 +344,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
   // Method 'throws_function2'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_throws_function2(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -352,7 +352,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_throws_function2(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -374,7 +374,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
   // Method 'throws_function3'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_throws_function3(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -382,7 +382,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_throws_function3(apache::thrift::ServerRequest&& serverRequest);
 
   template <class ProtocolIn_, class ProtocolOut_>
@@ -404,7 +404,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
   // Method 'oneway_void_ret'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_oneway_void_ret(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -412,7 +412,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_oneway_void_ret(apache::thrift::ServerRequest&& serverRequest);
 
   //
@@ -422,7 +422,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
   // Method 'oneway_void_ret_i32_i32_i32_i32_i32_param'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_oneway_void_ret_i32_i32_i32_i32_i32_param(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -430,7 +430,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::ServerRequest&& serverRequest);
 
   //
@@ -440,7 +440,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
   // Method 'oneway_void_ret_map_setlist_param'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_oneway_void_ret_map_setlist_param(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -448,7 +448,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_oneway_void_ret_map_setlist_param(apache::thrift::ServerRequest&& serverRequest);
 
   //
@@ -458,7 +458,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
   // Method 'oneway_void_ret_struct_param'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_oneway_void_ret_struct_param(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -466,7 +466,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_oneway_void_ret_struct_param(apache::thrift::ServerRequest&& serverRequest);
 
   //
@@ -476,7 +476,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
   // Method 'oneway_void_ret_listunion_param'
   //
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void setUpAndProcess_oneway_void_ret_listunion_param(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -484,7 +484,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
 
-  template <typename ProtocolIn_, typename ProtocolOut_>
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
   void executeRequest_oneway_void_ret_listunion_param(apache::thrift::ServerRequest&& serverRequest);
 
   //

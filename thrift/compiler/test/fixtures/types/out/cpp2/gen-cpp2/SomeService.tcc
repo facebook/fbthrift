@@ -22,7 +22,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'bounce_map'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void SomeServiceAsyncProcessor::setUpAndProcess_bounce_map(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -44,11 +44,11 @@ void SomeServiceAsyncProcessor::setUpAndProcess_bounce_map(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &SomeServiceAsyncProcessor::
-          executeRequest_bounce_map<ProtocolIn_, ProtocolOut_>,
+          executeRequest_bounce_map<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void SomeServiceAsyncProcessor::executeRequest_bounce_map(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -79,7 +79,7 @@ void SomeServiceAsyncProcessor::executeRequest_bounce_map(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "bounce_map",
         serializedRequest,
@@ -203,7 +203,7 @@ void SomeServiceAsyncProcessor::throw_wrapped_bounce_map(
 //
 // Method 'binary_keyed_map'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -225,11 +225,11 @@ void SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &SomeServiceAsyncProcessor::
-          executeRequest_binary_keyed_map<ProtocolIn_, ProtocolOut_>,
+          executeRequest_binary_keyed_map<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void SomeServiceAsyncProcessor::executeRequest_binary_keyed_map(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -260,7 +260,7 @@ void SomeServiceAsyncProcessor::executeRequest_binary_keyed_map(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "binary_keyed_map",
         serializedRequest,

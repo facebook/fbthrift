@@ -20,7 +20,7 @@ typedef apache::thrift::ThriftPresult<true> MyServicePrioChild_pang_presult;
 //
 // Method 'pang'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServicePrioChildAsyncProcessor::setUpAndProcess_pang(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -42,11 +42,11 @@ void MyServicePrioChildAsyncProcessor::setUpAndProcess_pang(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &MyServicePrioChildAsyncProcessor::
-          executeRequest_pang<ProtocolIn_, ProtocolOut_>,
+          executeRequest_pang<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyServicePrioChildAsyncProcessor::executeRequest_pang(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -74,7 +74,7 @@ void MyServicePrioChildAsyncProcessor::executeRequest_pang(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "pang",
         serializedRequest,

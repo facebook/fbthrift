@@ -36,7 +36,7 @@ typedef apache::thrift::ThriftPResultBiDi<
 //
 // Method 'simple'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void BiDiServiceAsyncProcessor::setUpAndProcess_simple(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -58,11 +58,11 @@ void BiDiServiceAsyncProcessor::setUpAndProcess_simple(
       tm,
       apache::thrift::RpcKind::BIDIRECTIONAL_STREAM,
       &BiDiServiceAsyncProcessor::
-          executeRequest_simple<ProtocolIn_, ProtocolOut_>,
+          executeRequest_simple<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void BiDiServiceAsyncProcessor::executeRequest_simple(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -90,7 +90,7 @@ void BiDiServiceAsyncProcessor::executeRequest_simple(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "simple",
         serializedRequest,
@@ -218,7 +218,7 @@ void BiDiServiceAsyncProcessor::throw_wrapped_simple(
 //
 // Method 'response'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void BiDiServiceAsyncProcessor::setUpAndProcess_response(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -240,11 +240,11 @@ void BiDiServiceAsyncProcessor::setUpAndProcess_response(
       tm,
       apache::thrift::RpcKind::BIDIRECTIONAL_STREAM,
       &BiDiServiceAsyncProcessor::
-          executeRequest_response<ProtocolIn_, ProtocolOut_>,
+          executeRequest_response<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void BiDiServiceAsyncProcessor::executeRequest_response(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -272,7 +272,7 @@ void BiDiServiceAsyncProcessor::executeRequest_response(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "response",
         serializedRequest,
@@ -402,7 +402,7 @@ void BiDiServiceAsyncProcessor::throw_wrapped_response(
 //
 // Method 'canThrow'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void BiDiServiceAsyncProcessor::setUpAndProcess_canThrow(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -424,11 +424,11 @@ void BiDiServiceAsyncProcessor::setUpAndProcess_canThrow(
       tm,
       apache::thrift::RpcKind::BIDIRECTIONAL_STREAM,
       &BiDiServiceAsyncProcessor::
-          executeRequest_canThrow<ProtocolIn_, ProtocolOut_>,
+          executeRequest_canThrow<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void BiDiServiceAsyncProcessor::executeRequest_canThrow(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -456,7 +456,7 @@ void BiDiServiceAsyncProcessor::executeRequest_canThrow(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "canThrow",
         serializedRequest,

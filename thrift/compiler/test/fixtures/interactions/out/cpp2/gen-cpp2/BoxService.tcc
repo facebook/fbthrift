@@ -20,7 +20,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'getABoxSession'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void BoxServiceAsyncProcessor::setUpAndProcess_getABoxSession(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -42,11 +42,11 @@ void BoxServiceAsyncProcessor::setUpAndProcess_getABoxSession(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &BoxServiceAsyncProcessor::
-          executeRequest_getABoxSession<ProtocolIn_, ProtocolOut_>,
+          executeRequest_getABoxSession<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void BoxServiceAsyncProcessor::executeRequest_getABoxSession(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -78,7 +78,7 @@ void BoxServiceAsyncProcessor::executeRequest_getABoxSession(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getABoxSession",
         serializedRequest,
@@ -212,7 +212,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'getABox'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void BoxServiceAsyncProcessor::setUpAndProcess_BoxedInteraction_getABox(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -234,11 +234,11 @@ void BoxServiceAsyncProcessor::setUpAndProcess_BoxedInteraction_getABox(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &BoxServiceAsyncProcessor::
-          executeRequest_BoxedInteraction_getABox<ProtocolIn_, ProtocolOut_>,
+          executeRequest_BoxedInteraction_getABox<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void BoxServiceAsyncProcessor::executeRequest_BoxedInteraction_getABox(
     apache::thrift::ServerRequest&& serverRequest) {
   auto tile = serverRequest.requestContext()->releaseTile();
@@ -268,7 +268,7 @@ void BoxServiceAsyncProcessor::executeRequest_BoxedInteraction_getABox(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "BoxedInteraction.getABox",
         serializedRequest,

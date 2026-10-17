@@ -205,16 +205,20 @@ void FB303ServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& 
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using FB303ServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const FB303ServiceAsyncProcessor::ProcessMap& FB303ServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const FB303ServiceAsyncProcessor::ProcessMap FB303ServiceAsyncProcessor::kOwnProcessMap_ {
   {"simple_rpc",
-    {&FB303ServiceAsyncProcessor::setUpAndProcess_simple_rpc<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FB303ServiceAsyncProcessor::setUpAndProcess_simple_rpc<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &FB303ServiceAsyncProcessor::executeRequest_simple_rpc<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &FB303ServiceAsyncProcessor::executeRequest_simple_rpc<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&FB303ServiceAsyncProcessor::setUpAndProcess_simple_rpc<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FB303ServiceRequestReader>,
+     &FB303ServiceAsyncProcessor::setUpAndProcess_simple_rpc<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FB303ServiceRequestReader>,
+     &FB303ServiceAsyncProcessor::executeRequest_simple_rpc<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, FB303ServiceRequestReader>,
+     &FB303ServiceAsyncProcessor::executeRequest_simple_rpc<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, FB303ServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& FB303ServiceServiceInfoHolder::requestInfoMap() const {

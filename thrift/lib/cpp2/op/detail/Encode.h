@@ -1085,28 +1085,29 @@ inline constexpr bool kUsePrecompiledPath =
     !std::is_same_v<Protocol, json5::detail::Json5ProtocolReader> &&
     !std::is_same_v<Protocol, BinaryProtocolChainReader>;
 
+// MSVC workaround: keep the constrained precompiled overload in its own base,
+// rather than declaring it in Decode alongside an inherited operator().
+// Inheriting both overloads also avoids a forwarding instantiation for each
+// nested struct or union in generic decoding.
 template <typename T>
-struct Decode<type::struct_t<T>> {
+struct PrecompiledDecode {
   template <typename Protocol>
-  void operator()(Protocol& prot, T& s) const {
-    if constexpr (!kUsePrecompiledPath<Protocol>) {
-      StructDecode<T>{}(prot, s);
-    } else {
-      s.read(&prot);
-    }
+    requires kUsePrecompiledPath<Protocol>
+  void operator()(Protocol& prot, T& value) const {
+    value.read(&prot);
   }
 };
 
 template <typename T>
-struct Decode<type::union_t<T>> {
-  template <typename Protocol>
-  void operator()(Protocol& prot, T& value) const {
-    if constexpr (!kUsePrecompiledPath<Protocol>) {
-      UnionDecode<T>{}(prot, value);
-    } else {
-      Decode<type::struct_t<T>>{}(prot, value);
-    }
-  }
+struct Decode<type::struct_t<T>> : StructDecode<T>, PrecompiledDecode<T> {
+  using StructDecode<T>::operator();
+  using PrecompiledDecode<T>::operator();
+};
+
+template <typename T>
+struct Decode<type::union_t<T>> : UnionDecode<T>, PrecompiledDecode<T> {
+  using UnionDecode<T>::operator();
+  using PrecompiledDecode<T>::operator();
 };
 
 template <typename T>

@@ -355,21 +355,25 @@ void MyServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& req
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using MyServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::kOwnProcessMap_ {
   {"first",
-    {&MyServiceAsyncProcessor::setUpAndProcess_first<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceAsyncProcessor::setUpAndProcess_first<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &MyServiceAsyncProcessor::executeRequest_first<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceAsyncProcessor::executeRequest_first<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&MyServiceAsyncProcessor::setUpAndProcess_first<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceRequestReader>,
+     &MyServiceAsyncProcessor::setUpAndProcess_first<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceRequestReader>,
+     &MyServiceAsyncProcessor::executeRequest_first<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceRequestReader>,
+     &MyServiceAsyncProcessor::executeRequest_first<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceRequestReader>}},
   {"second",
-    {&MyServiceAsyncProcessor::setUpAndProcess_second<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceAsyncProcessor::setUpAndProcess_second<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &MyServiceAsyncProcessor::executeRequest_second<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyServiceAsyncProcessor::executeRequest_second<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&MyServiceAsyncProcessor::setUpAndProcess_second<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceRequestReader>,
+     &MyServiceAsyncProcessor::setUpAndProcess_second<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceRequestReader>,
+     &MyServiceAsyncProcessor::executeRequest_second<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyServiceRequestReader>,
+     &MyServiceAsyncProcessor::executeRequest_second<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& MyServiceServiceInfoHolder::requestInfoMap() const {

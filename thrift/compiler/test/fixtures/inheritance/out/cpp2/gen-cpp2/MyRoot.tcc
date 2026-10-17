@@ -20,7 +20,7 @@ typedef apache::thrift::ThriftPresult<true> MyRoot_do_root_presult;
 //
 // Method 'do_root'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyRootAsyncProcessor::setUpAndProcess_do_root(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -42,11 +42,11 @@ void MyRootAsyncProcessor::setUpAndProcess_do_root(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &MyRootAsyncProcessor::
-          executeRequest_do_root<ProtocolIn_, ProtocolOut_>,
+          executeRequest_do_root<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void MyRootAsyncProcessor::executeRequest_do_root(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -74,7 +74,7 @@ void MyRootAsyncProcessor::executeRequest_do_root(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "do_root",
         serializedRequest,

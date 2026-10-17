@@ -35,7 +35,7 @@
 //
 // Method '{{function.name}}'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void {{service_cpp_name}}AsyncProcessor::setUpAndProcess_{{function.prefixed_name}}(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -59,7 +59,7 @@ void {{service_cpp_name}}AsyncProcessor::setUpAndProcess_{{function.prefixed_nam
       tm,
       {{#partial rpc.function_kind function=function}},
       &{{service_cpp_name}}AsyncProcessor::
-          executeRequest_{{function.prefixed_name}}<ProtocolIn_, ProtocolOut_>,
+          executeRequest_{{function.prefixed_name}}<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
       {{#else if in_or_creates_interaction?}}
   processInThread(
@@ -70,7 +70,7 @@ void {{service_cpp_name}}AsyncProcessor::setUpAndProcess_{{function.prefixed_nam
       nullptr,
       {{#partial rpc.function_kind function=function}},
       &{{service_cpp_name}}AsyncProcessor::
-          executeRequest_{{function.prefixed_name}}<ProtocolIn_, ProtocolOut_>,
+          executeRequest_{{function.prefixed_name}}<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
       {{#else}}
         {{#if (not function.oneway?)}}
@@ -89,11 +89,11 @@ void {{service_cpp_name}}AsyncProcessor::setUpAndProcess_{{function.prefixed_nam
       {},
       {},
       {}};
-  executeRequest_{{function.prefixed_name}}<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
+  executeRequest_{{function.prefixed_name}}<ProtocolIn_, ProtocolOut_, RequestReader_>(std::move(serverRequest));
       {{/if (not function.event_based?)}}
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void {{service_cpp_name}}AsyncProcessor::executeRequest_{{#if interface.interaction?}}{{interface.name}}_{{/if}}{{function.cpp_name}}(
     apache::thrift::ServerRequest&& serverRequest) {
       {{#if in_or_creates_interaction?}}
@@ -148,7 +148,7 @@ void {{service_cpp_name}}AsyncProcessor::executeRequest_{{#if interface.interact
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "{{#partial rpc.function_name service=interface function=function}}",
         serializedRequest,

@@ -28,7 +28,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'ping'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceAsyncProcessor::setUpAndProcess_ping(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -50,11 +50,11 @@ void FastClientTestServiceAsyncProcessor::setUpAndProcess_ping(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FastClientTestServiceAsyncProcessor::
-          executeRequest_ping<ProtocolIn_, ProtocolOut_>,
+          executeRequest_ping<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceAsyncProcessor::executeRequest_ping(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -82,7 +82,7 @@ void FastClientTestServiceAsyncProcessor::executeRequest_ping(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "ping",
         serializedRequest,
@@ -203,7 +203,7 @@ void FastClientTestServiceAsyncProcessor::throw_wrapped_ping(
 //
 // Method 'echo'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceAsyncProcessor::setUpAndProcess_echo(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -225,11 +225,11 @@ void FastClientTestServiceAsyncProcessor::setUpAndProcess_echo(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FastClientTestServiceAsyncProcessor::
-          executeRequest_echo<ProtocolIn_, ProtocolOut_>,
+          executeRequest_echo<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceAsyncProcessor::executeRequest_echo(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -260,7 +260,7 @@ void FastClientTestServiceAsyncProcessor::executeRequest_echo(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "echo",
         serializedRequest,
@@ -384,7 +384,7 @@ void FastClientTestServiceAsyncProcessor::throw_wrapped_echo(
 //
 // Method 'add'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceAsyncProcessor::setUpAndProcess_add(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -406,11 +406,11 @@ void FastClientTestServiceAsyncProcessor::setUpAndProcess_add(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FastClientTestServiceAsyncProcessor::
-          executeRequest_add<ProtocolIn_, ProtocolOut_>,
+          executeRequest_add<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceAsyncProcessor::executeRequest_add(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -444,7 +444,7 @@ void FastClientTestServiceAsyncProcessor::executeRequest_add(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "add",
         serializedRequest,
@@ -568,7 +568,7 @@ void FastClientTestServiceAsyncProcessor::throw_wrapped_add(
 //
 // Method 'getData'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceAsyncProcessor::setUpAndProcess_getData(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -590,11 +590,11 @@ void FastClientTestServiceAsyncProcessor::setUpAndProcess_getData(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FastClientTestServiceAsyncProcessor::
-          executeRequest_getData<ProtocolIn_, ProtocolOut_>,
+          executeRequest_getData<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceAsyncProcessor::executeRequest_getData(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -625,7 +625,7 @@ void FastClientTestServiceAsyncProcessor::executeRequest_getData(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getData",
         serializedRequest,
@@ -749,7 +749,7 @@ void FastClientTestServiceAsyncProcessor::throw_wrapped_getData(
 //
 // Method 'processData'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceAsyncProcessor::setUpAndProcess_processData(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -771,11 +771,11 @@ void FastClientTestServiceAsyncProcessor::setUpAndProcess_processData(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &FastClientTestServiceAsyncProcessor::
-          executeRequest_processData<ProtocolIn_, ProtocolOut_>,
+          executeRequest_processData<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void FastClientTestServiceAsyncProcessor::executeRequest_processData(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -809,7 +809,7 @@ void FastClientTestServiceAsyncProcessor::executeRequest_processData(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "processData",
         serializedRequest,

@@ -22,7 +22,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'echo'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -44,11 +44,11 @@ void HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::
-          executeRequest_echo<ProtocolIn_, ProtocolOut_>,
+          executeRequest_echo<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -79,7 +79,7 @@ void HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "echo",
         serializedRequest,
@@ -203,7 +203,7 @@ void HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::throw_wrapped_echo(
 //
 // Method 'echo_2'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo_2(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -225,11 +225,11 @@ void HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::setUpAndProcess_echo
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::
-          executeRequest_echo_2<ProtocolIn_, ProtocolOut_>,
+          executeRequest_echo_2<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo_2(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -260,7 +260,7 @@ void HeaderClientMethodsAnnotationOnFunctionAsyncProcessor::executeRequest_echo_
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "echo_2",
         serializedRequest,

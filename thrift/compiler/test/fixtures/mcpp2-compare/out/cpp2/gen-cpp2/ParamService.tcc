@@ -78,7 +78,7 @@ typedef apache::thrift::ThriftPresult<true> ParamService_annotatedParams_presult
 //
 // Method 'void_ret_i16_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_i16_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -103,10 +103,10 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_i16_param(
       {},
       {},
       {}};
-  executeRequest_void_ret_i16_param<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
+  executeRequest_void_ret_i16_param<ProtocolIn_, ProtocolOut_, RequestReader_>(std::move(serverRequest));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_void_ret_i16_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -137,7 +137,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_i16_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "void_ret_i16_param",
         serializedRequest,
@@ -258,7 +258,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_i16_param(
 //
 // Method 'void_ret_byte_i16_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_byte_i16_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -280,11 +280,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_byte_i16_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_void_ret_byte_i16_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_void_ret_byte_i16_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_void_ret_byte_i16_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -318,7 +318,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_byte_i16_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "void_ret_byte_i16_param",
         serializedRequest,
@@ -439,7 +439,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_byte_i16_param(
 //
 // Method 'void_ret_map_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -461,11 +461,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_void_ret_map_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_void_ret_map_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_void_ret_map_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -496,7 +496,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_map_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "void_ret_map_param",
         serializedRequest,
@@ -617,7 +617,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_map_param(
 //
 // Method 'void_ret_map_setlist_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_setlist_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -639,11 +639,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_setlist_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_void_ret_map_setlist_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_void_ret_map_setlist_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_void_ret_map_setlist_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -677,7 +677,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_map_setlist_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "void_ret_map_setlist_param",
         serializedRequest,
@@ -798,7 +798,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_map_setlist_param(
 //
 // Method 'void_ret_map_typedef_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_typedef_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -820,11 +820,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_typedef_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_void_ret_map_typedef_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_void_ret_map_typedef_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_void_ret_map_typedef_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -855,7 +855,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_map_typedef_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "void_ret_map_typedef_param",
         serializedRequest,
@@ -976,7 +976,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_map_typedef_param(
 //
 // Method 'void_ret_enum_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_enum_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -998,11 +998,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_enum_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_void_ret_enum_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_void_ret_enum_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_void_ret_enum_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1033,7 +1033,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_enum_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "void_ret_enum_param",
         serializedRequest,
@@ -1154,7 +1154,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_enum_param(
 //
 // Method 'void_ret_struct_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_struct_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1176,11 +1176,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_struct_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_void_ret_struct_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_void_ret_struct_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_void_ret_struct_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1211,7 +1211,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_struct_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "void_ret_struct_param",
         serializedRequest,
@@ -1332,7 +1332,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_struct_param(
 //
 // Method 'void_ret_listunion_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_listunion_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1354,11 +1354,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_listunion_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_void_ret_listunion_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_void_ret_listunion_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_void_ret_listunion_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1389,7 +1389,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_listunion_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "void_ret_listunion_param",
         serializedRequest,
@@ -1510,7 +1510,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_listunion_param(
 //
 // Method 'bool_ret_i32_i64_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_i32_i64_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1532,11 +1532,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_i32_i64_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_bool_ret_i32_i64_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_bool_ret_i32_i64_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_bool_ret_i32_i64_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1570,7 +1570,7 @@ void ParamServiceAsyncProcessor::executeRequest_bool_ret_i32_i64_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "bool_ret_i32_i64_param",
         serializedRequest,
@@ -1694,7 +1694,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_bool_ret_i32_i64_param(
 //
 // Method 'bool_ret_map_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_map_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1716,11 +1716,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_map_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_bool_ret_map_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_bool_ret_map_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_bool_ret_map_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1751,7 +1751,7 @@ void ParamServiceAsyncProcessor::executeRequest_bool_ret_map_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "bool_ret_map_param",
         serializedRequest,
@@ -1875,7 +1875,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_bool_ret_map_param(
 //
 // Method 'bool_ret_union_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_union_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -1897,11 +1897,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_union_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_bool_ret_union_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_bool_ret_union_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_bool_ret_union_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -1932,7 +1932,7 @@ void ParamServiceAsyncProcessor::executeRequest_bool_ret_union_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "bool_ret_union_param",
         serializedRequest,
@@ -2056,7 +2056,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_bool_ret_union_param(
 //
 // Method 'i64_ret_float_double_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_float_double_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -2078,11 +2078,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_float_double_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_i64_ret_float_double_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_i64_ret_float_double_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_i64_ret_float_double_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -2116,7 +2116,7 @@ void ParamServiceAsyncProcessor::executeRequest_i64_ret_float_double_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "i64_ret_float_double_param",
         serializedRequest,
@@ -2240,7 +2240,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_i64_ret_float_double_param(
 //
 // Method 'i64_ret_string_typedef_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_string_typedef_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -2262,11 +2262,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_string_typedef_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_i64_ret_string_typedef_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_i64_ret_string_typedef_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_i64_ret_string_typedef_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -2300,7 +2300,7 @@ void ParamServiceAsyncProcessor::executeRequest_i64_ret_string_typedef_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "i64_ret_string_typedef_param",
         serializedRequest,
@@ -2424,7 +2424,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_i64_ret_string_typedef_param(
 //
 // Method 'i64_ret_i32_i32_i32_i32_i32_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_i32_i32_i32_i32_i32_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -2449,10 +2449,10 @@ void ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_i32_i32_i32_i32_i32_par
       {},
       {},
       {}};
-  executeRequest_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
+  executeRequest_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_, RequestReader_>(std::move(serverRequest));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_i64_ret_i32_i32_i32_i32_i32_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -2495,7 +2495,7 @@ void ParamServiceAsyncProcessor::executeRequest_i64_ret_i32_i32_i32_i32_i32_para
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "i64_ret_i32_i32_i32_i32_i32_param",
         serializedRequest,
@@ -2619,7 +2619,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param
 //
 // Method 'double_ret_setstruct_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_double_ret_setstruct_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -2641,11 +2641,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_double_ret_setstruct_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_double_ret_setstruct_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_double_ret_setstruct_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_double_ret_setstruct_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -2676,7 +2676,7 @@ void ParamServiceAsyncProcessor::executeRequest_double_ret_setstruct_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "double_ret_setstruct_param",
         serializedRequest,
@@ -2800,7 +2800,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_double_ret_setstruct_param(
 //
 // Method 'string_ret_string_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_string_ret_string_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -2822,11 +2822,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_string_ret_string_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_string_ret_string_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_string_ret_string_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_string_ret_string_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -2857,7 +2857,7 @@ void ParamServiceAsyncProcessor::executeRequest_string_ret_string_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "string_ret_string_param",
         serializedRequest,
@@ -2981,7 +2981,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_string_ret_string_param(
 //
 // Method 'binary_ret_binary_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_binary_ret_binary_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -3003,11 +3003,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_binary_ret_binary_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_binary_ret_binary_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_binary_ret_binary_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_binary_ret_binary_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -3038,7 +3038,7 @@ void ParamServiceAsyncProcessor::executeRequest_binary_ret_binary_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "binary_ret_binary_param",
         serializedRequest,
@@ -3162,7 +3162,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_binary_ret_binary_param(
 //
 // Method 'map_ret_bool_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_map_ret_bool_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -3184,11 +3184,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_map_ret_bool_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_map_ret_bool_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_map_ret_bool_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_map_ret_bool_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -3219,7 +3219,7 @@ void ParamServiceAsyncProcessor::executeRequest_map_ret_bool_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "map_ret_bool_param",
         serializedRequest,
@@ -3343,7 +3343,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_map_ret_bool_param(
 //
 // Method 'list_ret_map_setlist_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_list_ret_map_setlist_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -3365,11 +3365,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_list_ret_map_setlist_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_list_ret_map_setlist_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_list_ret_map_setlist_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_list_ret_map_setlist_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -3403,7 +3403,7 @@ void ParamServiceAsyncProcessor::executeRequest_list_ret_map_setlist_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "list_ret_map_setlist_param",
         serializedRequest,
@@ -3527,7 +3527,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_list_ret_map_setlist_param(
 //
 // Method 'mapsetlistmapliststring_ret_listlistlist_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_mapsetlistmapliststring_ret_listlistlist_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -3549,11 +3549,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_mapsetlistmapliststring_ret_lis
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_mapsetlistmapliststring_ret_listlistlist_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -3584,7 +3584,7 @@ void ParamServiceAsyncProcessor::executeRequest_mapsetlistmapliststring_ret_list
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "mapsetlistmapliststring_ret_listlistlist_param",
         serializedRequest,
@@ -3708,7 +3708,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_mapsetlistmapliststring_ret_listl
 //
 // Method 'typedef_ret_i32_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_typedef_ret_i32_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -3730,11 +3730,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_typedef_ret_i32_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_typedef_ret_i32_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_typedef_ret_i32_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_typedef_ret_i32_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -3765,7 +3765,7 @@ void ParamServiceAsyncProcessor::executeRequest_typedef_ret_i32_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "typedef_ret_i32_param",
         serializedRequest,
@@ -3889,7 +3889,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_typedef_ret_i32_param(
 //
 // Method 'listtypedef_ret_typedef_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_listtypedef_ret_typedef_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -3914,10 +3914,10 @@ void ParamServiceAsyncProcessor::setUpAndProcess_listtypedef_ret_typedef_param(
       {},
       {},
       {}};
-  executeRequest_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
+  executeRequest_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_, RequestReader_>(std::move(serverRequest));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_listtypedef_ret_typedef_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -3948,7 +3948,7 @@ void ParamServiceAsyncProcessor::executeRequest_listtypedef_ret_typedef_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "listtypedef_ret_typedef_param",
         serializedRequest,
@@ -4072,7 +4072,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_listtypedef_ret_typedef_param(
 //
 // Method 'enum_ret_double_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -4094,11 +4094,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_enum_ret_double_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_enum_ret_double_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_enum_ret_double_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -4129,7 +4129,7 @@ void ParamServiceAsyncProcessor::executeRequest_enum_ret_double_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "enum_ret_double_param",
         serializedRequest,
@@ -4253,7 +4253,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_enum_ret_double_param(
 //
 // Method 'enum_ret_double_enum_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_enum_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -4275,11 +4275,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_enum_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_enum_ret_double_enum_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_enum_ret_double_enum_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_enum_ret_double_enum_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -4313,7 +4313,7 @@ void ParamServiceAsyncProcessor::executeRequest_enum_ret_double_enum_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "enum_ret_double_enum_param",
         serializedRequest,
@@ -4437,7 +4437,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_enum_ret_double_enum_param(
 //
 // Method 'listenum_ret_map_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_listenum_ret_map_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -4459,11 +4459,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_listenum_ret_map_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_listenum_ret_map_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_listenum_ret_map_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_listenum_ret_map_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -4494,7 +4494,7 @@ void ParamServiceAsyncProcessor::executeRequest_listenum_ret_map_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "listenum_ret_map_param",
         serializedRequest,
@@ -4618,7 +4618,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_listenum_ret_map_param(
 //
 // Method 'struct_ret_i16_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_struct_ret_i16_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -4643,10 +4643,10 @@ void ParamServiceAsyncProcessor::setUpAndProcess_struct_ret_i16_param(
       {},
       {},
       {}};
-  executeRequest_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
+  executeRequest_struct_ret_i16_param<ProtocolIn_, ProtocolOut_, RequestReader_>(std::move(serverRequest));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_struct_ret_i16_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -4677,7 +4677,7 @@ void ParamServiceAsyncProcessor::executeRequest_struct_ret_i16_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "struct_ret_i16_param",
         serializedRequest,
@@ -4801,7 +4801,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_struct_ret_i16_param(
 //
 // Method 'setstruct_ret_set_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_setstruct_ret_set_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -4823,11 +4823,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_setstruct_ret_set_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_setstruct_ret_set_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_setstruct_ret_set_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_setstruct_ret_set_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -4858,7 +4858,7 @@ void ParamServiceAsyncProcessor::executeRequest_setstruct_ret_set_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "setstruct_ret_set_param",
         serializedRequest,
@@ -4982,7 +4982,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_setstruct_ret_set_param(
 //
 // Method 'union_ret_i32_i32_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_union_ret_i32_i32_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -5004,11 +5004,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_union_ret_i32_i32_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_union_ret_i32_i32_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_union_ret_i32_i32_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_union_ret_i32_i32_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -5042,7 +5042,7 @@ void ParamServiceAsyncProcessor::executeRequest_union_ret_i32_i32_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "union_ret_i32_i32_param",
         serializedRequest,
@@ -5166,7 +5166,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_union_ret_i32_i32_param(
 //
 // Method 'listunion_string_param'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_listunion_string_param(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -5188,11 +5188,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_listunion_string_param(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_listunion_string_param<ProtocolIn_, ProtocolOut_>,
+          executeRequest_listunion_string_param<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_listunion_string_param(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -5223,7 +5223,7 @@ void ParamServiceAsyncProcessor::executeRequest_listunion_string_param(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "listunion_string_param",
         serializedRequest,
@@ -5347,7 +5347,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_listunion_string_param(
 //
 // Method 'annotatedParams'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::setUpAndProcess_annotatedParams(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -5369,11 +5369,11 @@ void ParamServiceAsyncProcessor::setUpAndProcess_annotatedParams(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &ParamServiceAsyncProcessor::
-          executeRequest_annotatedParams<ProtocolIn_, ProtocolOut_>,
+          executeRequest_annotatedParams<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void ParamServiceAsyncProcessor::executeRequest_annotatedParams(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -5461,7 +5461,7 @@ void ParamServiceAsyncProcessor::executeRequest_annotatedParams(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "annotatedParams",
         serializedRequest,

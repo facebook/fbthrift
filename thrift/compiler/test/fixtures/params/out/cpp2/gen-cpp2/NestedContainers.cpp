@@ -808,36 +808,40 @@ void NestedContainersAsyncProcessor::executeRequest(apache::thrift::ServerReques
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using NestedContainersRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const NestedContainersAsyncProcessor::ProcessMap& NestedContainersAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const NestedContainersAsyncProcessor::ProcessMap NestedContainersAsyncProcessor::kOwnProcessMap_ {
   {"mapList",
-    {&NestedContainersAsyncProcessor::setUpAndProcess_mapList<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &NestedContainersAsyncProcessor::setUpAndProcess_mapList<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &NestedContainersAsyncProcessor::executeRequest_mapList<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &NestedContainersAsyncProcessor::executeRequest_mapList<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&NestedContainersAsyncProcessor::setUpAndProcess_mapList<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::setUpAndProcess_mapList<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::executeRequest_mapList<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::executeRequest_mapList<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, NestedContainersRequestReader>}},
   {"mapSet",
-    {&NestedContainersAsyncProcessor::setUpAndProcess_mapSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &NestedContainersAsyncProcessor::setUpAndProcess_mapSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &NestedContainersAsyncProcessor::executeRequest_mapSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &NestedContainersAsyncProcessor::executeRequest_mapSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&NestedContainersAsyncProcessor::setUpAndProcess_mapSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::setUpAndProcess_mapSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::executeRequest_mapSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::executeRequest_mapSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, NestedContainersRequestReader>}},
   {"listMap",
-    {&NestedContainersAsyncProcessor::setUpAndProcess_listMap<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &NestedContainersAsyncProcessor::setUpAndProcess_listMap<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &NestedContainersAsyncProcessor::executeRequest_listMap<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &NestedContainersAsyncProcessor::executeRequest_listMap<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&NestedContainersAsyncProcessor::setUpAndProcess_listMap<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::setUpAndProcess_listMap<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::executeRequest_listMap<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::executeRequest_listMap<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, NestedContainersRequestReader>}},
   {"listSet",
-    {&NestedContainersAsyncProcessor::setUpAndProcess_listSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &NestedContainersAsyncProcessor::setUpAndProcess_listSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &NestedContainersAsyncProcessor::executeRequest_listSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &NestedContainersAsyncProcessor::executeRequest_listSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&NestedContainersAsyncProcessor::setUpAndProcess_listSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::setUpAndProcess_listSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::executeRequest_listSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::executeRequest_listSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, NestedContainersRequestReader>}},
   {"turtles",
-    {&NestedContainersAsyncProcessor::setUpAndProcess_turtles<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &NestedContainersAsyncProcessor::setUpAndProcess_turtles<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &NestedContainersAsyncProcessor::executeRequest_turtles<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &NestedContainersAsyncProcessor::executeRequest_turtles<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&NestedContainersAsyncProcessor::setUpAndProcess_turtles<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::setUpAndProcess_turtles<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::executeRequest_turtles<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, NestedContainersRequestReader>,
+     &NestedContainersAsyncProcessor::executeRequest_turtles<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, NestedContainersRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& NestedContainersServiceInfoHolder::requestInfoMap() const {

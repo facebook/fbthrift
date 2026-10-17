@@ -204,16 +204,20 @@ void MyNodeAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& reques
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using MyNodeRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const MyNodeAsyncProcessor::ProcessMap& MyNodeAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const MyNodeAsyncProcessor::ProcessMap MyNodeAsyncProcessor::kOwnProcessMap_ {
   {"do_mid",
-    {&MyNodeAsyncProcessor::setUpAndProcess_do_mid<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyNodeAsyncProcessor::setUpAndProcess_do_mid<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &MyNodeAsyncProcessor::executeRequest_do_mid<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &MyNodeAsyncProcessor::executeRequest_do_mid<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&MyNodeAsyncProcessor::setUpAndProcess_do_mid<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyNodeRequestReader>,
+     &MyNodeAsyncProcessor::setUpAndProcess_do_mid<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyNodeRequestReader>,
+     &MyNodeAsyncProcessor::executeRequest_do_mid<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, MyNodeRequestReader>,
+     &MyNodeAsyncProcessor::executeRequest_do_mid<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, MyNodeRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& MyNodeServiceInfoHolder::requestInfoMap() const {

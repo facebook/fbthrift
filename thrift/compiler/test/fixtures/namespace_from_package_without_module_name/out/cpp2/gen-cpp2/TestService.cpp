@@ -203,16 +203,20 @@ void TestServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& r
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 
+namespace {
+using TestServiceRequestReader = apache::thrift::detail::IOBufRequestReader;
+} // namespace
+
 const TestServiceAsyncProcessor::ProcessMap& TestServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const TestServiceAsyncProcessor::ProcessMap TestServiceAsyncProcessor::kOwnProcessMap_ {
   {"init",
-    {&TestServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &TestServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &TestServiceAsyncProcessor::executeRequest_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &TestServiceAsyncProcessor::executeRequest_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&TestServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, TestServiceRequestReader>,
+     &TestServiceAsyncProcessor::setUpAndProcess_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, TestServiceRequestReader>,
+     &TestServiceAsyncProcessor::executeRequest_init<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, TestServiceRequestReader>,
+     &TestServiceAsyncProcessor::executeRequest_init<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, TestServiceRequestReader>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& TestServiceServiceInfoHolder::requestInfoMap() const {

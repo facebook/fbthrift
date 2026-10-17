@@ -22,7 +22,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 //
 // Method 'getDataByKey0'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey0(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -44,11 +44,11 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey0(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &DbMixedStackArgumentsAsyncProcessor::
-          executeRequest_getDataByKey0<ProtocolIn_, ProtocolOut_>,
+          executeRequest_getDataByKey0<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey0(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -79,7 +79,7 @@ void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey0(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getDataByKey0",
         serializedRequest,
@@ -203,7 +203,7 @@ void DbMixedStackArgumentsAsyncProcessor::throw_wrapped_getDataByKey0(
 //
 // Method 'getDataByKey1'
 //
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
@@ -225,11 +225,11 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1(
       tm,
       apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       &DbMixedStackArgumentsAsyncProcessor::
-          executeRequest_getDataByKey1<ProtocolIn_, ProtocolOut_>,
+          executeRequest_getDataByKey1<ProtocolIn_, ProtocolOut_, RequestReader_>,
       this);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
 void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey1(
     apache::thrift::ServerRequest&& serverRequest) {
   // make sure getRequestContext is null
@@ -260,7 +260,7 @@ void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey1(
     auto pargs = args.pargs();
     serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
         std::move(serverRequest)).uncompress();
-    deserializeRequest<ProtocolIn_>(
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
         pargs,
         "getDataByKey1",
         serializedRequest,
