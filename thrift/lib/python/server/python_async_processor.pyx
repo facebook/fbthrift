@@ -679,8 +679,8 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
             lifecycle.push_back(<PyObject*>lifecycle_func)
 
         cdef cAsyncioExecutor* controlExecutor = get_executor()
-        cdef shared_ptr[cExecutionSystem] executionSystem = make_shared[cExecutionSystem](
-            controlExecutor, launchControlTask, cmove(controlMethods)
+        cdef shared_ptr[cExecutionSystem] executionSystem = makeControlOnlyExecutionSystem(
+            controlExecutor, <cLaunchControlRequest>launchControlTask, cmove(controlMethods)
         )
         cdef PythonAsyncProcessorFactory inst = PythonAsyncProcessorFactory.__new__(PythonAsyncProcessorFactory)
         inst.funcMap = funcMap

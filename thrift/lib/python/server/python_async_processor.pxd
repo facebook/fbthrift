@@ -90,6 +90,12 @@ cdef extern from "thrift/lib/python/server/execution/ExecutionSystem.h" namespac
             cmap[string, PyObjPtr] controlMethods,
         ) except +
 
+    shared_ptr[cExecutionSystem] makeControlOnlyExecutionSystem(
+        cAsyncioExecutor* controlExecutor,
+        cLaunchControlRequest launchControlRequest,
+        cmap[string, PyObjPtr] controlMethods,
+    ) except +
+
 cdef extern from "thrift/lib/python/server/PythonAsyncProcessorFactory.h" namespace "::apache::thrift::python":
     cdef cppclass cPythonAsyncProcessorFactory "::apache::thrift::python::PythonAsyncProcessorFactory"(cAsyncProcessorFactory):
         void releaseOwnedResources() noexcept

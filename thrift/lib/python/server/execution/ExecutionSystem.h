@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <cassert>
 #include <map>
 #include <memory>
 #include <string>
@@ -45,12 +44,6 @@ using LaunchControlRequest = folly::Function<int(_object*) const>;
  */
 class ExecutionSystem final {
  public:
-  static std::shared_ptr<ExecutionSystem> createWithEmptyExecutor(
-      [[maybe_unused]] const folly::Executor::KeepAlive<>& controlExecutor) {
-    assert(!controlExecutor);
-    return std::shared_ptr<ExecutionSystem>(new ExecutionSystem());
-  }
-
   ExecutionSystem(
       folly::Executor* controlExecutor,
       LaunchControlRequest launchControlRequest,
@@ -79,8 +72,6 @@ class ExecutionSystem final {
   void execute(std::string method, RequestDispatch requestDispatch) const;
 
  private:
-  ExecutionSystem() = default;
-
   using ExecuteOn =
       void (ExecutionSystem::*)(std::string, RequestDispatch) const;
 
@@ -95,5 +86,23 @@ class ExecutionSystem final {
   // methods that may run elsewhere.
   std::map<std::string, ExecuteOn> executeOn_;
 };
+
+// Builds an execution system that dispatches every method on control.
+inline std::shared_ptr<ExecutionSystem> makeControlOnlyExecutionSystem(
+    folly::Executor* controlExecutor,
+    LaunchControlRequest launchControlRequest,
+    std::map<std::string, PyObject*> controlMethods) {
+  return std::make_shared<ExecutionSystem>(
+      controlExecutor,
+      std::move(launchControlRequest),
+      std::move(controlMethods));
+}
+
+// Builds an execution system that holds no executor or handler references and
+// rejects every request. A factory keeps one after it releases its execution
+// resources.
+inline std::shared_ptr<ExecutionSystem> makeReleasedExecutionSystem() {
+  return makeControlOnlyExecutionSystem(nullptr, LaunchControlRequest{}, {});
+}
 
 } // namespace apache::thrift::python::execution

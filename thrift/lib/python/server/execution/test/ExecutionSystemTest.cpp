@@ -112,7 +112,7 @@ TEST(ExecutionSystemTest, ExecuteStartsSelectedRequestOnExecutor) {
   folly::ManualExecutor selectedExecutor;
   const std::string methodName = "selected_method";
   auto* const selectedHandlerFunction = reinterpret_cast<PyObject*>(42);
-  ExecutionSystem executionSystem(
+  auto executionSystem = makeControlOnlyExecutionSystem(
       &selectedExecutor,
       [&events](PyObject* coroutineFactory) {
         events.push_back({RequestEvent::Kind::RequestStart, coroutineFactory});
@@ -134,7 +134,7 @@ TEST(ExecutionSystemTest, ExecuteStartsSelectedRequestOnExecutor) {
   };
 
   // WHEN
-  executionSystem.execute(
+  executionSystem->execute(
       methodName,
       RequestDispatch([pendingHandlerFuture = std::move(handlerResultFuture),
                        &events,
@@ -168,7 +168,7 @@ TEST(ExecutionSystemTest, AcceptedWorkCompletesAfterShutdown) {
   folly::ManualExecutor controlExecutor;
   const std::string methodName{"selected_method"};
   auto* const dummySelectedHandlerFunction = reinterpret_cast<PyObject*>(42);
-  ExecutionSystem executionSystem(
+  auto executionSystem = makeControlOnlyExecutionSystem(
       &controlExecutor,
       [](PyObject*) { return 0; },
       {{methodName, dummySelectedHandlerFunction}});
@@ -178,7 +178,7 @@ TEST(ExecutionSystemTest, AcceptedWorkCompletesAfterShutdown) {
   const std::optional<int> expected = 42;
 
   // WHEN
-  executionSystem.execute(
+  executionSystem->execute(
       methodName,
       RequestDispatch([pendingHandlerFuture = std::move(handlerResultFuture),
                        &responseCallback](PyObject*, LaunchRequest) mutable {
@@ -187,7 +187,7 @@ TEST(ExecutionSystemTest, AcceptedWorkCompletesAfterShutdown) {
               responseCallback.complete(std::move(result));
             });
       }));
-  executionSystem.shutdown();
+  executionSystem->shutdown();
   // The first drain starts the request. The handler result queues the callback,
   // and the second drain runs it.
   controlExecutor.drain();
@@ -206,7 +206,7 @@ TEST(
   folly::ManualExecutor controlExecutor;
   const std::string methodName{"selected_method"};
   auto* const dummySelectedHandlerFunction = reinterpret_cast<PyObject*>(42);
-  ExecutionSystem executionSystem(
+  auto executionSystem = makeControlOnlyExecutionSystem(
       &controlExecutor,
       [](PyObject*) { return 0; },
       {{methodName, dummySelectedHandlerFunction}});
@@ -216,14 +216,14 @@ TEST(
   };
 
   // WHEN
-  executionSystem.execute(
+  executionSystem->execute(
       methodName, RequestDispatch([](PyObject*, LaunchRequest) {
         return folly::makeSemiFuture<folly::Unit>(
             folly::make_exception_wrapper<std::runtime_error>(
                 "request dispatch test failure"));
       }));
   bool nextWorkExecuted = false;
-  executionSystem.execute(
+  executionSystem->execute(
       methodName,
       RequestDispatch([&nextWorkExecuted](PyObject*, LaunchRequest) {
         nextWorkExecuted = true;
@@ -249,7 +249,7 @@ TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
   folly::ManualExecutor controlExecutor;
   const std::string methodName{"selected_method"};
   auto* const dummySelectedHandlerFunction = reinterpret_cast<PyObject*>(42);
-  ExecutionSystem executionSystem(
+  auto executionSystem = makeControlOnlyExecutionSystem(
       &controlExecutor,
       [](PyObject*) { return 0; },
       {{methodName, dummySelectedHandlerFunction}});
@@ -261,7 +261,7 @@ TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
   };
 
   // WHEN
-  executionSystem.execute(
+  executionSystem->execute(
       methodName,
       RequestDispatch(
           [&shouldThrow](
@@ -273,7 +273,7 @@ TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
             return folly::makeSemiFuture();
           }));
   bool nextWorkExecuted = false;
-  executionSystem.execute(
+  executionSystem->execute(
       methodName,
       RequestDispatch([&nextWorkExecuted](PyObject*, LaunchRequest) {
         nextWorkExecuted = true;

@@ -81,15 +81,14 @@ PythonAsyncProcessorFactory::semifuture_onStopRequested() {
   // In free-threaded Python, AsyncioExecutor::drop() can run before the factory
   // destructor and make destructor-time executor release unsafe. Factory
   // context exit prevents that race by retaining resources through native stop
-  // and active-request drain. Hosts that do not yet enter the factory context
-  // use this stop-time release as a temporary workaround. It is incomplete:
-  // connections can still arrive concurrently after the release. Migrate those
-  // hosts to the factory context for the correct lifetime boundary.
+  // and active-request drain. Hosts that never enter the factory context
+  // release those resources here, at stop, instead. This release cannot cover
+  // connections that arrive after it; the factory context gives a host the
+  // exact lifetime boundary.
   if (!factoryContextEntered_) {
     std::lock_guard lock(executionResourcesMutex_);
     controlExecutor_ = folly::Executor::KeepAlive<>{};
-    executionSystem_ =
-        execution::ExecutionSystem::createWithEmptyExecutor(controlExecutor_);
+    executionSystem_ = execution::makeReleasedExecutionSystem();
   }
 #endif
 

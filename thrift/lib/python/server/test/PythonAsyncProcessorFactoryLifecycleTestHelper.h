@@ -67,10 +67,11 @@ inline bool isFreeThreadedBuild() noexcept {
 inline std::size_t createProcessorsWhileLegacyStopRuns(
     ForwardingKeepAliveTrackingExecutor& controlExecutor,
     const std::size_t iterationCount) {
-  auto executionSystem = std::make_shared<execution::ExecutionSystem>(
-      &controlExecutor,
-      [](PyObject*) { return 0; },
-      std::map<std::string, PyObject*>{});
+  std::shared_ptr<execution::ExecutionSystem> executionSystem =
+      execution::makeControlOnlyExecutionSystem(
+          &controlExecutor,
+          [](PyObject*) { return 0; },
+          std::map<std::string, PyObject*>{});
   auto factory = PythonAsyncProcessorFactory::create(
       nullptr,
       {},
@@ -114,10 +115,11 @@ inline std::shared_ptr<PythonAsyncProcessorFactory> createHostedTestFactory(
   for (const auto& [name, function] : functions) {
     controlMethods.emplace(std::string(name), function.funcObject);
   }
-  auto executionSystem = std::make_shared<execution::ExecutionSystem>(
-      &controlExecutor,
-      std::move(launchControlRequest),
-      std::move(controlMethods));
+  std::shared_ptr<execution::ExecutionSystem> executionSystem =
+      execution::makeControlOnlyExecutionSystem(
+          &controlExecutor,
+          std::move(launchControlRequest),
+          std::move(controlMethods));
   return PythonAsyncProcessorFactory::create(
       pythonServer,
       std::move(functions),
