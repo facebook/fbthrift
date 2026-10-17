@@ -67,6 +67,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerTransportAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/MethodMetadata.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerCompressionHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionCloseHandler.h>
@@ -432,6 +433,7 @@ struct ChannelBenchFixture {
 struct AppAdapterBenchFixture {
   folly::EventBase evb;
   BenchAsyncTransport* testTransport{nullptr};
+  thrift::ThriftServerMethodMetadataRegistry methodMetadata;
 
   // Thrift pipeline (transport adapter → app adapter)
   std::unique_ptr<thrift::server::ThriftServerTransportAdapter>
@@ -486,6 +488,13 @@ struct AppAdapterBenchFixture {
         SimpleBufferAllocator>;
 
     if (withContextHandlers) {
+      methodMetadata.add(
+          thrift::ThriftServerMethodMetadata{
+              .serviceName = "BenchService",
+              .definingServiceName = "BenchService",
+              .methodName = "benchMethod",
+              .qualifiedMethodName = "BenchService.benchMethod",
+          });
       connContext = new thrift::ThriftConnContext();
       thriftPipeline = Builder()
                            .setEventBase(&evb)
@@ -499,6 +508,7 @@ struct AppAdapterBenchFixture {
                            .addNextDuplex<ReqCtxHandler>(
                                thrift_server_request_context_handler_tag,
                                /*requestExtensionLayout=*/nullptr,
+                               &methodMetadata,
                                connContext,
                                /*enableRequestHeaders=*/false)
                            .addNextDuplex<ServerSetupHandler>(

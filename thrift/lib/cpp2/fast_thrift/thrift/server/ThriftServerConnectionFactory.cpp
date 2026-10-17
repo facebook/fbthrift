@@ -420,6 +420,7 @@ PipelineOwner buildStaticThriftPipeline(
             .template addNextDuplexTemplate<ThriftServerRequestContextHandler>(
                 thrift_server_request_context_handler_tag,
                 config.requestExtensionLayout.get(),
+                config.methodMetadata.get(),
                 std::move(connContext),
                 WithHeaders),
         config,
@@ -430,6 +431,7 @@ PipelineOwner buildStaticThriftPipeline(
             .template addNextDuplexTemplate<ThriftServerRequestContextHandler>(
                 thrift_server_request_context_handler_tag,
                 config.requestExtensionLayout.get(),
+                config.methodMetadata.get(),
                 std::move(connContext),
                 WithHeaders),
         config,
@@ -956,6 +958,7 @@ detail::ThriftServerConnectionFactoryT<Mode>::buildConnectionImpl(
     thriftPipelineBuilder.template addNextDuplex<ReqCtxHandler>(
         thrift_server_request_context_handler_tag,
         config_.requestExtensionLayout.get(),
+        config_.methodMetadata.get(),
         std::move(connContext),
         config_.enableRequestHeaders);
     // Inbound decompression precedes checksum verification. Outbound traverses

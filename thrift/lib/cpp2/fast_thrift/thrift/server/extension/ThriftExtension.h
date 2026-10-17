@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/common/ThriftResponsePayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/extension/ThriftConnectionExtension.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::fast_thrift::thrift {
@@ -160,6 +161,27 @@ class ThriftRequestView {
     return {};
   }
 
+  std::string_view qualifiedMethodName() const noexcept {
+    if (request_.requestContext != nullptr) {
+      if (const auto* metadata = request_.requestContext->getMethodMetadata()) {
+        return metadata->qualifiedMethodName;
+      }
+    }
+    return methodName();
+  }
+
+  bool hasResolvedMethod() const noexcept {
+    return request_.requestContext != nullptr &&
+        request_.requestContext->getMethodMetadata() != nullptr;
+  }
+
+  ThriftConnectionView connection() const noexcept {
+    return ThriftConnectionView(
+        request_.requestContext == nullptr
+            ? nullptr
+            : request_.requestContext->getConnectionContext());
+  }
+
   // Taken from the payload variant's discriminator rather than the optional
   // metadata field, so it is always well-defined.
   apache::thrift::RpcKind rpcKind() const noexcept {
@@ -196,7 +218,14 @@ class ThriftRequestView {
   // otherwise this reads empty. The lookup is free of temporaries — the
   // context's map is searchable by string_view.
   const std::string* header(std::string_view key) const noexcept {
-    return request_.requestContext->getHeader(key);
+    return request_.requestContext == nullptr
+        ? nullptr
+        : request_.requestContext->getHeader(key);
+  }
+
+  bool hasHeaders() const noexcept {
+    return request_.requestContext != nullptr &&
+        !request_.requestContext->getHeaders().empty();
   }
 
   // Rocket stream id correlating this request with its response.
@@ -205,7 +234,18 @@ class ThriftRequestView {
   // State published on this request by another installed extension.
   template <class Ext>
   typename Ext::RequestState* tryState() const noexcept {
-    return request_.requestContext->template tryState<Ext>();
+    return request_.requestContext == nullptr
+        ? nullptr
+        : request_.requestContext->template tryState<Ext>();
+  }
+
+  template <class Ext>
+  typename Ext::ConnState* tryConnectionState() const noexcept {
+    const auto* connection = request_.requestContext == nullptr
+        ? nullptr
+        : request_.requestContext->getConnectionContext();
+    return connection == nullptr ? nullptr
+                                 : connection->template tryState<Ext>();
   }
 
  private:
@@ -238,6 +278,11 @@ class ThriftRequestMutator final : public ThriftRequestView {
     request_.requestContext->template adoptState<Ext>(state);
   }
 
+  void setResponseHeader(std::string key, std::string value) noexcept {
+    request_.requestContext->setResponseHeader(
+        std::move(key), std::move(value));
+  }
+
  private:
   ThriftServerRequestMessage& request_;
 };
@@ -268,6 +313,29 @@ class ThriftResponseView {
     return response_.payload.is<ThriftErrorPayload>();
   }
 
+  std::string_view methodName() const noexcept {
+    return response_.requestContext == nullptr
+        ? std::string_view{}
+        : std::string_view(response_.requestContext->getMethodName());
+  }
+
+  std::string_view qualifiedMethodName() const noexcept {
+    if (response_.requestContext != nullptr) {
+      if (const auto* metadata =
+              response_.requestContext->getMethodMetadata()) {
+        return metadata->qualifiedMethodName;
+      }
+    }
+    return methodName();
+  }
+
+  ThriftConnectionView connection() const noexcept {
+    return ThriftConnectionView(
+        response_.requestContext == nullptr
+            ? nullptr
+            : response_.requestContext->getConnectionContext());
+  }
+
   // Value of custom response header `key`, or nullptr if absent.
   //
   // Reads the headers the response is going to carry, off the per-request
@@ -278,6 +346,33 @@ class ThriftResponseView {
       return nullptr;
     }
     return response_.requestContext->getResponseHeader(key);
+  }
+
+  const std::string* requestHeader(std::string_view key) const noexcept {
+    return response_.requestContext == nullptr
+        ? nullptr
+        : response_.requestContext->getHeader(key);
+  }
+
+  bool hasRequestHeaders() const noexcept {
+    return response_.requestContext != nullptr &&
+        !response_.requestContext->getHeaders().empty();
+  }
+
+  template <class Ext>
+  typename Ext::RequestState* tryState() const noexcept {
+    return response_.requestContext == nullptr
+        ? nullptr
+        : response_.requestContext->template tryState<Ext>();
+  }
+
+  template <class Ext>
+  typename Ext::ConnState* tryConnectionState() const noexcept {
+    const auto* connection = response_.requestContext == nullptr
+        ? nullptr
+        : response_.requestContext->getConnectionContext();
+    return connection == nullptr ? nullptr
+                                 : connection->template tryState<Ext>();
   }
 
  private:

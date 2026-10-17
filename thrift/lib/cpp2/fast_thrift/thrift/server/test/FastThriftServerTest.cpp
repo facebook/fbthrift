@@ -1287,7 +1287,7 @@ struct RejectingExtension {
   std::atomic<int>* rejections{nullptr};
 
   ftt::RequestVerdict onRequest(ftt::ThriftRequestMutator& request) noexcept {
-    request.setHeader(
+    request.setResponseHeader(
         "x-rejected-by-extension", std::string(request.methodName()));
     if (rejections) {
       rejections->fetch_add(1, std::memory_order_relaxed);
@@ -1434,6 +1434,9 @@ struct ClassicContextCheckingExtension {
 
   ftt::RequestVerdict onRequest(
       const ftt::ThriftRequestView& request) noexcept {
+    EXPECT_TRUE(request.hasResolvedMethod());
+    EXPECT_EQ(request.methodName(), "add");
+    EXPECT_EQ(request.qualifiedMethodName(), "FastThriftServer.add");
     requestReady->store(
         ftt::server::tryGetCpp2RequestContext(request) != nullptr,
         std::memory_order_relaxed);

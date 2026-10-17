@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/MethodMetadata.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
@@ -55,13 +56,23 @@ class ThriftServerRequestContextHandler {
   // on a server with no extensions. It outlives every connection.
   explicit ThriftServerRequestContextHandler(
       const ExtensionLayout* FOLLY_NULLABLE requestExtensionLayout) noexcept
-      : requestExtensionLayout_(requestExtensionLayout) {}
+      : ThriftServerRequestContextHandler(
+            requestExtensionLayout, /*methodMetadata=*/nullptr) {}
 
   ThriftServerRequestContextHandler(
       const ExtensionLayout* FOLLY_NULLABLE requestExtensionLayout,
+      const ThriftServerMethodMetadataRegistry* FOLLY_NULLABLE
+          methodMetadata) noexcept
+      : requestExtensionLayout_(requestExtensionLayout),
+        methodMetadata_(methodMetadata) {}
+
+  ThriftServerRequestContextHandler(
+      const ExtensionLayout* FOLLY_NULLABLE requestExtensionLayout,
+      const ThriftServerMethodMetadataRegistry* FOLLY_NULLABLE methodMetadata,
       boost::intrusive_ptr<ThriftConnContext> connContext,
       bool enableRequestHeaders) noexcept
       : requestExtensionLayout_(requestExtensionLayout),
+        methodMetadata_(methodMetadata),
         connContext_(std::move(connContext)),
         enableRequestHeaders_(enableRequestHeaders) {}
 
@@ -92,6 +103,10 @@ class ThriftServerRequestContextHandler {
           request.payload.template get<ThriftServerRequestResponsePayload>()
               .metadata;
       if (metadata != nullptr && metadata->name().has_value()) {
+        const auto methodName = metadata->name()->view();
+        request.requestContext->setMethodMetadata(
+            methodMetadata_ == nullptr ? nullptr
+                                       : methodMetadata_->find(methodName));
         request.requestContext->setMethodName(
             std::move(*metadata->name()).str());
       }
@@ -125,6 +140,8 @@ class ThriftServerRequestContextHandler {
 
  private:
   const ExtensionLayout* FOLLY_NULLABLE requestExtensionLayout_{nullptr};
+  const ThriftServerMethodMetadataRegistry* FOLLY_NULLABLE methodMetadata_{
+      nullptr};
   boost::intrusive_ptr<ThriftConnContext> connContext_;
   bool enableRequestHeaders_{false};
 };

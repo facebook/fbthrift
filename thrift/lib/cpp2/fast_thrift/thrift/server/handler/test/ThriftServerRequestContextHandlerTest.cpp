@@ -28,8 +28,10 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/MethodMetadata.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/extension/ThriftExtension.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::fast_thrift::thrift {
@@ -129,6 +131,37 @@ TEST(ThriftServerRequestContextHandlerTest, StampsTheMethodName) {
   EXPECT_EQ(forwarded.requestContext->getMethodName(), "Service.method");
 }
 
+TEST(ThriftServerRequestContextHandlerTest, ResolvesMethodMetadataOnce) {
+  ThriftServerMethodMetadataRegistry methods;
+  methods.add(
+      ThriftServerMethodMetadata{
+          .serviceName = "Service",
+          .definingServiceName = "Service",
+          .methodName = "method",
+          .qualifiedMethodName = "Service.method",
+      });
+  ThriftServerRequestContextHandler<FakeContext> handler{nullptr, &methods};
+  FakeContext ctx;
+
+  auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
+  metadata->name() = "method";
+  auto req = makeRequestWithMetadata(
+      *ctx.eventBase(), /*streamId=*/1, std::move(metadata));
+
+  EXPECT_EQ(
+      handler.onRead(ctx, erase_and_box(std::move(req))), Result::Success);
+
+  const auto& forwarded =
+      ctx.forwarded.front().get<ThriftServerRequestMessage>();
+  const auto* resolved = forwarded.requestContext->getMethodMetadata();
+  ASSERT_NE(resolved, nullptr);
+  EXPECT_EQ(resolved->qualifiedMethodName, "Service.method");
+  EXPECT_EQ(resolved, methods.find("method"));
+  const ThriftRequestView view(forwarded);
+  EXPECT_EQ(view.methodName(), "method");
+  EXPECT_EQ(view.qualifiedMethodName(), "Service.method");
+}
+
 // A request whose metadata names no method leaves the context without one,
 // rather than an empty name that reads as if it had been set.
 TEST(ThriftServerRequestContextHandlerTest, NoMethodNameLeavesItEmpty) {
@@ -171,7 +204,7 @@ TEST(ThriftServerRequestContextHandlerTest, PopulatesConnectionAndHeaders) {
   boost::intrusive_ptr<ThriftConnContext> connContext{new ThriftConnContext()};
   connContext->setSecurityProtocol("TLS1.3");
   ThriftServerRequestContextHandler<FakeContext> handler{
-      nullptr, connContext, true};
+      nullptr, nullptr, connContext, true};
   FakeContext ctx;
 
   auto metadata = std::make_unique<apache::thrift::RequestRpcMetadata>();
@@ -198,6 +231,7 @@ TEST(ThriftServerRequestContextHandlerTest, PopulatesConnectionAndHeaders) {
 
 TEST(ThriftServerRequestContextHandlerTest, DisabledHeadersStayInMetadata) {
   ThriftServerRequestContextHandler<FakeContext> handler{
+      nullptr,
       nullptr,
       boost::intrusive_ptr<ThriftConnContext>{new ThriftConnContext()},
       false};

@@ -21,8 +21,10 @@
 #include <string_view>
 #include <utility>
 
+#include <folly/CppAttributes.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/SocketAddress.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/AsyncTransportCertificate.h>
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/SetupResponseBuilder.h>
@@ -102,10 +104,17 @@ class ConnectionVerdict {
  * Read-only view of a connection, limited to what is true at every point in
  * its life. Valid only for the duration of the callback — do not retain it or
  * anything it hands out.
+ *
+ * A view can be empty when no connection context exists. Check operator bool()
+ * before calling any accessor; accessors require a nonempty view.
  */
 class ThriftConnectionView {
  public:
   explicit ThriftConnectionView(const ThriftConnContext& connContext) noexcept
+      : ThriftConnectionView(&connContext) {}
+
+  explicit ThriftConnectionView(
+      const ThriftConnContext* FOLLY_NULLABLE connContext) noexcept
       : connContext_(connContext) {}
 
   ThriftConnectionView(const ThriftConnectionView&) = delete;
@@ -114,34 +123,49 @@ class ThriftConnectionView {
   ThriftConnectionView& operator=(ThriftConnectionView&&) = delete;
   ~ThriftConnectionView() = default;
 
+  explicit operator bool() const noexcept { return connContext_ != nullptr; }
+
   // Peer address of the accepted socket. Empty if it could not be read.
   const folly::SocketAddress& peerAddress() const noexcept {
-    return connContext_.getPeerAddress();
+    return connContext_->getPeerAddress();
   }
 
   // Negotiated TLS protocol ("TLS1.3", ...). Empty on plaintext.
   std::string_view securityProtocol() const noexcept {
-    return connContext_.getSecurityProtocol();
+    return connContext_->getSecurityProtocol();
   }
 
   // Peer's TLS leaf certificate, or null on plaintext.
   const folly::AsyncTransportCertificate* peerCertificate() const noexcept {
-    return connContext_.getPeerCertificate();
+    return connContext_->getPeerCertificate();
+  }
+
+  const folly::AsyncTransport* FOLLY_NULLABLE transport() const noexcept {
+    return connContext_->getTransport();
   }
 
   // The opaque per-connection slot the embedder populated at accept time via
   // ThriftConnContext::setUserData, or null if it set none. This is where a
   // service hangs the state its per-connection decisions are made against.
-  void* userData() const noexcept { return connContext_.getUserData(); }
+  void* userData() const noexcept { return connContext_->getUserData(); }
+
+  const apache::thrift::ClientMetadata* FOLLY_NULLABLE
+  clientMetadata() const noexcept {
+    return connContext_->getClientMetadata();
+  }
+
+  void* FOLLY_NULLABLE peerIdentities() const noexcept {
+    return connContext_->getPeerIdentities();
+  }
 
   // State published on this connection by another installed extension.
   template <class Ext>
   typename Ext::ConnState* tryState() const noexcept {
-    return connContext_.template tryState<Ext>();
+    return connContext_->template tryState<Ext>();
   }
 
  private:
-  const ThriftConnContext& connContext_;
+  const ThriftConnContext* FOLLY_NULLABLE connContext_;
 };
 
 /**

@@ -692,6 +692,7 @@ void detail::FastThriftServerBase::start() {
       .zeroCopyThreshold = config_.zeroCopyThreshold,
       .connExtensionLayout = connExtensionLayout_,
       .requestExtensionLayout = requestExtensionLayout_,
+      .methodMetadata = methodMetadataRegistry_,
       .enableRequestHeaders = config_.enableRequestHeaders,
       .enableChecksum = config_.enableChecksum,
       .enableCancellation = config_.enableCancellation,

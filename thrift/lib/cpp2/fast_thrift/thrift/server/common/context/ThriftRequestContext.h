@@ -31,6 +31,7 @@
 #include <folly/CppAttributes.h>
 
 #include <thrift/lib/cpp2/fast_thrift/common/allocator/EvbAllocator.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/MethodMetadata.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -126,6 +127,16 @@ class ThriftRequestContext {
   }
 
   const std::string& getMethodName() const noexcept { return methodName_; }
+
+  void setMethodMetadata(
+      const ThriftServerMethodMetadata* FOLLY_NULLABLE metadata) noexcept {
+    methodMetadata_ = metadata;
+  }
+
+  const ThriftServerMethodMetadata* FOLLY_NULLABLE
+  getMethodMetadata() const noexcept {
+    return methodMetadata_;
+  }
 
   // Inbound custom request headers (RequestRpcMetadata.otherMetadata), moved
   // into the request context when request headers are enabled. Empty otherwise.
@@ -243,6 +254,7 @@ class ThriftRequestContext {
   folly::CancellationSource cancellationSource_{
       folly::CancellationSource::invalid()};
   std::string methodName_;
+  const ThriftServerMethodMetadata* methodMetadata_{nullptr};
   HeaderMap headers_;
   HeaderMap writeHeaders_;
   apache::thrift::ChecksumAlgorithm checksumAlgorithm_{

@@ -48,6 +48,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerAppAdapterFactory.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerTransportAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/util/ThriftServerCompositeRoutingTable.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/MethodMetadata.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ThriftServerConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/framework/ThriftPipelineHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
@@ -92,6 +93,7 @@ struct ThriftServerConnectionFactoryConfig {
   // registered, in which case contexts carry no slots and allocate nothing.
   std::shared_ptr<const ExtensionLayout> connExtensionLayout;
   std::shared_ptr<const ExtensionLayout> requestExtensionLayout;
+  std::shared_ptr<const ThriftServerMethodMetadataRegistry> methodMetadata;
 
   // When true, populate each request's ThriftRequestContext with the inbound
   // custom headers (RequestRpcMetadata.otherMetadata).

@@ -1329,6 +1329,7 @@ class ThriftRequestContextIntegrationTest
             .addNextDuplex<ReqCtxHandler>(
                 thrift_server_request_context_handler_tag,
                 /*requestExtensionLayout=*/nullptr,
+                /*methodMetadata=*/nullptr,
                 connContext_,
                 /*enableRequestHeaders=*/false)
             .build();
