@@ -121,10 +121,9 @@ struct Arguments {
 }
 
 #[cli::main("rpc-client-native")]
-async fn main(fb: fbinit::FacebookInit, args: Arguments) -> Result<()> {
+async fn main(args: Arguments) -> Result<()> {
     init_logging(args.log.clone());
     let peer = Peer {
-        fb,
         port: args.port,
         protocol: match args.protocol.as_str() {
             "compact" => nativeclient::WireProtocol::Compact,
@@ -144,7 +143,6 @@ async fn main(fb: fbinit::FacebookInit, args: Arguments) -> Result<()> {
 }
 
 struct Peer {
-    fb: fbinit::FacebookInit,
     port: u16,
     protocol: nativeclient::WireProtocol,
     transport: nativeclient::TransportType,
@@ -152,15 +150,13 @@ struct Peer {
 
 impl Peer {
     fn channel_builder(&self) -> Result<nativeclient::NativeChannelBuilder> {
-        Ok(nativeclient::NativeChannelBuilder::from_sock_addr(
-            self.fb,
-            SocketAddr::new(std::net::Ipv6Addr::LOCALHOST.into(), self.port),
-        )?
-        .with_secure(false)
-        .with_transport_type(self.transport)
-        .with_protocol(self.protocol)
-        .with_conn_timeout(30_000)
-        .with_recv_timeout(30_000))
+        let address = SocketAddr::new(std::net::Ipv6Addr::LOCALHOST.into(), self.port);
+        Ok(nativeclient::NativeChannelBuilder::from_sock_addr(address)?
+            .with_secure(false)
+            .with_transport_type(self.transport)
+            .with_protocol(self.protocol)
+            .with_conn_timeout(30_000)
+            .with_recv_timeout(30_000))
     }
 }
 
