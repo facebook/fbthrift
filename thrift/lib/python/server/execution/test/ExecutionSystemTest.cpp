@@ -18,6 +18,7 @@
 
 #include <array>
 #include <cstddef>
+#include <memory>
 #include <optional>
 #include <ostream>
 #include <stdexcept>
@@ -30,6 +31,7 @@
 #include <folly/executors/ManualExecutor.h>
 #include <folly/futures/Future.h>
 #include <folly/portability/GTest.h>
+#include <thrift/lib/python/server/execution/WorkScheduler.h>
 
 namespace apache::thrift::python::execution {
 namespace {
@@ -293,6 +295,129 @@ TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
 
   // THEN
   EXPECT_EQ(expected, actual);
+}
+
+// Lets a test see where its work runs: runs queued work only when drained,
+// like ManualExecutor, and reports itself in a shared tracker while
+// each callback runs.
+class ExecutorThatReportsItself final : public folly::Executor {
+ public:
+  explicit ExecutorThatReportsItself(
+      const folly::Executor*& currentExecutorTracker)
+      : currentExecutorTracker_(currentExecutorTracker) {}
+
+  void add(folly::Func callback) override {
+    queue_.add([this, callback = std::move(callback)]() mutable {
+      currentExecutorTracker_ = this;
+      callback();
+      currentExecutorTracker_ = nullptr;
+    });
+  }
+
+  void drain() { queue_.drain(); }
+
+ private:
+  const folly::Executor*& currentExecutorTracker_;
+  folly::ManualExecutor queue_;
+};
+
+enum class Launcher { Control, Worker };
+
+void PrintTo(Launcher launcher, std::ostream* out) {
+  *out << (launcher == Launcher::Control ? "Control" : "Worker");
+}
+
+struct PlacedRequest {
+  const folly::Executor* ranOn;
+  PyObject* selectedFunction;
+  std::optional<Launcher> launcher;
+  bool leaseHeld;
+
+  bool operator==(const PlacedRequest&) const = default;
+
+  friend void PrintTo(const PlacedRequest& request, std::ostream* out) {
+    *out << "{ranOn: " << request.ranOn
+         << ", selectedFunction: " << request.selectedFunction
+         << ", launcher: " << ::testing::PrintToString(request.launcher)
+         << ", leaseHeld: " << request.leaseHeld << '}';
+  }
+};
+
+TEST(
+    ExecutionSystemTest, WorkerCapableMethodsStartOnWorkersAndOthersOnControl) {
+  // GIVEN
+  const folly::Executor* currentExecutorTracker = nullptr;
+  ExecutorThatReportsItself controlExecutor(currentExecutorTracker);
+  ExecutorThatReportsItself workerExecutor(currentExecutorTracker);
+  const std::string workerCapableMethod{"worker_capable_method"};
+  const std::string controlMethod{"control_method"};
+  // Each handler has a function for both methods, so a wrong route selects a
+  // visibly wrong function.
+  struct HandlerFunctions {
+    PyObject* workerCapableMethod;
+    PyObject* controlMethod;
+  };
+  const HandlerFunctions controlHandler{
+      reinterpret_cast<PyObject*>(41), reinterpret_cast<PyObject*>(42)};
+  const HandlerFunctions workerHandler{
+      reinterpret_cast<PyObject*>(43), reinterpret_cast<PyObject*>(44)};
+  auto* const coroutineFactory = reinterpret_cast<PyObject*>(84);
+  std::vector<PlacedRequest> placedRequests;
+  auto workScheduler = std::make_shared<WorkScheduler>();
+  const auto worker = workScheduler->registerWorker(
+      folly::Executor::getKeepAliveToken(workerExecutor));
+  auto executionSystem = makeWorkerCapableExecutionSystem(
+      &controlExecutor,
+      [&placedRequests](PyObject*) {
+        placedRequests.back().launcher = Launcher::Control;
+        return 0;
+      },
+      {{workerCapableMethod, controlHandler.workerCapableMethod},
+       {controlMethod, controlHandler.controlMethod}},
+      workScheduler,
+      [&placedRequests](PyObject*, std::shared_ptr<WorkerCapacityLease> lease) {
+        placedRequests.back().launcher = Launcher::Worker;
+        placedRequests.back().leaseHeld = lease != nullptr;
+        return 0;
+      },
+      {workerCapableMethod});
+  executionSystem->bindWorkerMethods(
+      worker,
+      {{workerCapableMethod, workerHandler.workerCapableMethod},
+       {controlMethod, workerHandler.controlMethod}});
+  workScheduler->makeWorkerCapacityAvailable(worker);
+  const auto recordDispatch = [&currentExecutorTracker,
+                               &placedRequests,
+                               coroutineFactory]() {
+    return RequestDispatch(
+        [&currentExecutorTracker, &placedRequests, coroutineFactory](
+            PyObject* selectedFunction, LaunchRequest launchRequest) {
+          placedRequests.push_back(
+              {currentExecutorTracker, selectedFunction, std::nullopt, false});
+          std::move(launchRequest)(coroutineFactory);
+          return folly::makeSemiFuture();
+        });
+  };
+  const std::vector<PlacedRequest> expected{
+      {&controlExecutor,
+       controlHandler.controlMethod,
+       Launcher::Control,
+       false},
+      {&workerExecutor,
+       workerHandler.workerCapableMethod,
+       Launcher::Worker,
+       true},
+  };
+
+  // WHEN
+  executionSystem->execute(workerCapableMethod, recordDispatch());
+  executionSystem->execute(controlMethod, recordDispatch());
+  controlExecutor.drain();
+  workerExecutor.drain();
+  workScheduler->close();
+
+  // THEN
+  EXPECT_EQ(expected, placedRequests);
 }
 
 } // namespace

@@ -16,10 +16,21 @@
 
 #include <thrift/lib/python/server/execution/ExecutionSystem.h>
 
+#include <folly/executors/InlineExecutor.h>
+
 namespace apache::thrift::python::execution {
 
 void ExecutionSystem::shutdown() noexcept {
   controlExecutor_.reset();
+  workScheduler_.reset();
+  workerMethods_.clear();
+}
+
+void ExecutionSystem::bindWorkerMethods(
+    WorkerHandle worker, std::map<std::string, PyObject*> methods) {
+  workerMethods_[std::move(worker)] =
+      std::make_shared<const std::map<std::string, PyObject*>>(
+          std::move(methods));
 }
 
 void ExecutionSystem::execute(
@@ -59,6 +70,48 @@ void ExecutionSystem::executeOnControl(
             selectedHandlerFunction, std::move(launchRequest));
       })
       .via(controlExecutor_);
+}
+
+void ExecutionSystem::executeOnWorker(
+    std::string method, RequestDispatch requestDispatch) const {
+  workScheduler_->addAsynchronousWorkWithPriority(
+      [method = std::move(method),
+       requestDispatch = std::move(requestDispatch),
+       launchWorkerRequest = launchWorkerRequest_,
+       this](
+          const WorkerHandle& worker,
+          const folly::Executor::KeepAlive<>&,
+          std::shared_ptr<WorkerCapacityLease> lease) mutable {
+        auto* const selectedFunction = getWorkerHandlerFunction(worker, method);
+        LaunchRequest launchRequest(
+            [lease = std::move(lease),
+             launchWorkerRequest](_object* coroutineFactory) mutable {
+              return launchWorkerRequest(coroutineFactory, std::move(lease));
+            });
+        // Drive the dispatch future inline; dropping it undriven cancels
+        // the request. The dispatch reports each outcome to the client
+        // itself, as it does on control, so nothing reads this future.
+        folly::makeSemiFutureWith(
+            [requestDispatch = std::move(requestDispatch),
+             selectedFunction = selectedFunction,
+             launchRequest = std::move(launchRequest)]() mutable {
+              return std::move(requestDispatch)(
+                  selectedFunction, std::move(launchRequest));
+            })
+            .via(
+                folly::Executor::getKeepAliveToken(
+                    folly::InlineExecutor::instance()));
+      },
+      folly::Executor::MID_PRI);
+}
+
+PyObject* ExecutionSystem::getWorkerHandlerFunction(
+    const WorkerHandle& worker, const std::string& method) const {
+  // Both lookups succeed on every valid path. Each worker binds its table
+  // before it publishes capacity, so work reaches only bound workers. Every
+  // table comes from the same service, so it lists every routed method. And
+  // shutdown clears the tables only after worker teardown.
+  return workerMethods_.at(worker)->at(method);
 }
 
 } // namespace apache::thrift::python::execution

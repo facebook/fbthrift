@@ -20,6 +20,7 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <unordered_map>
 #include <utility>
 
 #include <folly/Executor.h>
@@ -52,6 +53,13 @@ class ExecutionSystem final {
       folly::Executor* controlExecutor,
       LaunchControlRequest launchControlRequest,
       std::map<std::string, PyObject*> controlMethods);
+  friend std::shared_ptr<ExecutionSystem> makeWorkerCapableExecutionSystem(
+      folly::Executor* controlExecutor,
+      LaunchControlRequest launchControlRequest,
+      std::map<std::string, PyObject*> controlMethods,
+      std::shared_ptr<WorkScheduler> workScheduler,
+      LaunchWorkerRequest launchWorkerRequest,
+      const std::set<std::string>& workerCapableMethodNames);
   friend std::shared_ptr<ExecutionSystem> makeReleasedExecutionSystem();
 
   ~ExecutionSystem() = default;
@@ -67,23 +75,36 @@ class ExecutionSystem final {
   // Supports concurrent calls while active. Call only before shutdown starts.
   void execute(std::string method, RequestDispatch requestDispatch) const;
 
+  // Binds a worker handle to its method table: the handler functions that
+  // requests on that worker call. Call once per worker, before its capacity
+  // becomes available. Workers bind one at a time during factory context
+  // entry, before any request can arrive, so binding needs no lock.
+  void bindWorkerMethods(
+      WorkerHandle worker, std::map<std::string, PyObject*> methods);
+
  private:
-  // Every method runs on control; the scheduler, worker launcher, and worker
-  // methods do not affect dispatch.
+  // Methods in workerCapableMethodNames run on workers through workScheduler
+  // and launchWorkerRequest; every other method runs on control.
   ExecutionSystem(
       folly::Executor* controlExecutor,
       LaunchControlRequest launchControlRequest,
       std::map<std::string, PyObject*> controlMethods,
-      [[maybe_unused]] std::shared_ptr<WorkScheduler> workScheduler,
-      [[maybe_unused]] LaunchWorkerRequest launchWorkerRequest,
-      [[maybe_unused]] const std::set<std::string>& workerCapableMethodNames)
+      std::shared_ptr<WorkScheduler> workScheduler,
+      LaunchWorkerRequest launchWorkerRequest,
+      const std::set<std::string>& workerCapableMethodNames)
       : controlExecutor_(folly::Executor::getKeepAliveToken(controlExecutor)),
         launchControlRequest_(std::move(launchControlRequest).asSharedProxy()),
         controlMethods_(
             std::make_shared<const std::map<std::string, PyObject*>>(
-                std::move(controlMethods))) {
+                std::move(controlMethods))),
+        workScheduler_(std::move(workScheduler)),
+        launchWorkerRequest_(std::move(launchWorkerRequest).asSharedProxy()) {
     for (const auto& [method, _] : *controlMethods_) {
-      executeOn_.emplace(method, &ExecutionSystem::executeOnControl);
+      executeOn_.emplace(
+          method,
+          workerCapableMethodNames.contains(method)
+              ? &ExecutionSystem::executeOnWorker
+              : &ExecutionSystem::executeOnControl);
     }
   }
 
@@ -93,13 +114,38 @@ class ExecutionSystem final {
   void executeOnControl(
       std::string method, RequestDispatch requestDispatch) const;
 
+  // Runs one request on an assigned worker. Call only when a scheduler is
+  // present.
+  void executeOnWorker(
+      std::string method, RequestDispatch requestDispatch) const;
+
+  // Returns the handler function that a worker bound for a method. Call only
+  // for bound workers while active. Lookups only read the tables, so they
+  // need no lock.
+  PyObject* getWorkerHandlerFunction(
+      const WorkerHandle& worker, const std::string& method) const;
+
   folly::Executor::KeepAlive<> controlExecutor_;
   LaunchControlRequest::SharedProxy launchControlRequest_{nullptr};
   // The Python factory's function table owns the callable references.
   std::shared_ptr<const std::map<std::string, PyObject*>> controlMethods_;
-  // Every known method starts on control. A later step flips entries for
-  // methods that may run elsewhere.
+  // Each method's destination, fixed at construction from its route.
   std::map<std::string, ExecuteOn> executeOn_;
+
+  // Per-worker method tables borrow their callables from the worker
+  // handlers, exactly like the shared table above. They need no lock because
+  // of their order guarantees: workers bind one at a time during factory
+  // context entry, before any request can arrive; requests only read the
+  // tables; and shutdown clears them only after worker teardown.
+  std::unordered_map<
+      WorkerHandle,
+      std::shared_ptr<const std::map<std::string, PyObject*>>,
+      WorkerHandle::Hash>
+      workerMethods_;
+
+  // Null without workers. Worker dispatch needs both set.
+  std::shared_ptr<WorkScheduler> workScheduler_;
+  LaunchWorkerRequest::SharedProxy launchWorkerRequest_{nullptr};
 };
 
 // Builds an execution system that dispatches every method on control.
@@ -116,9 +162,27 @@ inline std::shared_ptr<ExecutionSystem> makeControlOnlyExecutionSystem(
       {}));
 }
 
-// Builds an execution system that holds no executor or handler references and
-// rejects every request. A factory keeps one after it releases its execution
-// resources.
+// Builds an execution system that runs the methods in workerCapableMethodNames
+// on workers and every other method on control.
+inline std::shared_ptr<ExecutionSystem> makeWorkerCapableExecutionSystem(
+    folly::Executor* controlExecutor,
+    LaunchControlRequest launchControlRequest,
+    std::map<std::string, PyObject*> controlMethods,
+    std::shared_ptr<WorkScheduler> workScheduler,
+    LaunchWorkerRequest launchWorkerRequest,
+    const std::set<std::string>& workerCapableMethodNames) {
+  return std::shared_ptr<ExecutionSystem>(new ExecutionSystem(
+      controlExecutor,
+      std::move(launchControlRequest),
+      std::move(controlMethods),
+      std::move(workScheduler),
+      std::move(launchWorkerRequest),
+      workerCapableMethodNames));
+}
+
+// Builds an execution system that holds no executor, scheduler, or handler
+// references and rejects every request. A factory keeps one after it releases
+// its execution resources.
 inline std::shared_ptr<ExecutionSystem> makeReleasedExecutionSystem() {
   return makeControlOnlyExecutionSystem(nullptr, LaunchControlRequest{}, {});
 }

@@ -34,14 +34,14 @@ class WorkerHandle final {
  public:
   bool operator==(const WorkerHandle&) const = default;
 
- private:
-  struct Identity final {};
-
   struct Hash final {
     std::size_t operator()(const WorkerHandle& worker) const {
       return std::hash<const Identity*>{}(worker.identity_.get());
     }
   };
+
+ private:
+  struct Identity final {};
 
   explicit WorkerHandle(std::shared_ptr<const Identity> identity)
       : identity_(std::move(identity)) {}
