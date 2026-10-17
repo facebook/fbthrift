@@ -22,6 +22,8 @@
 #include <folly/Utility.h>
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/IOBufChain.h>
+#include <thrift/lib/cpp2/op/detail/AllocatorPropagation.h>
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 
 namespace apache {
 namespace thrift {
@@ -97,66 +99,6 @@ struct Reserver<C, std::void_t<typename reserve_result<C>::type>> {
     container.reserve(size);
   }
 };
-
-template <typename Cont, typename Elem, typename Enable = void>
-inline constexpr bool alloc_is_recursive = false;
-template <typename Cont, typename Elem>
-inline constexpr bool alloc_is_recursive<
-    Cont,
-    Elem,
-    std::void_t<typename Cont::allocator_type, typename Elem::allocator_type>> =
-    std::uses_allocator<Elem, typename Cont::allocator_type>::value;
-template <typename Cont, typename Elem>
-inline constexpr bool alloc_should_propagate = alloc_is_recursive<Cont, Elem> &&
-    !std::uses_allocator<Cont, std::allocator<char>>::value;
-
-template <typename Map>
-inline constexpr bool alloc_should_propagate_map =
-    alloc_should_propagate<Map, typename Map::key_type> ||
-    alloc_should_propagate<Map, typename Map::mapped_type>;
-
-template <typename C>
-std::enable_if_t<
-    alloc_should_propagate<C, typename C::value_type>,
-    typename C::value_type>
-default_set_element(C& c) {
-  return typename C::value_type(c.get_allocator());
-}
-template <typename C>
-std::enable_if_t<
-    !alloc_should_propagate<C, typename C::value_type>,
-    typename C::value_type>
-default_set_element(C&) {
-  return typename C::value_type{};
-}
-template <typename Map>
-std::enable_if_t<
-    alloc_should_propagate<Map, typename Map::key_type>,
-    typename Map::key_type>
-default_map_key(Map& m) {
-  return typename Map::key_type(m.get_allocator());
-}
-template <typename Map>
-std::enable_if_t<
-    !alloc_should_propagate<Map, typename Map::key_type>,
-    typename Map::key_type>
-default_map_key(Map&) {
-  return typename Map::key_type{};
-}
-template <typename C>
-std::enable_if_t<
-    alloc_should_propagate<C, typename C::mapped_type>,
-    typename C::mapped_type>
-default_map_value(C& map) {
-  return typename C::mapped_type(map.get_allocator());
-}
-template <typename C>
-std::enable_if_t<
-    !alloc_should_propagate<C, typename C::mapped_type>,
-    typename C::mapped_type>
-default_map_value(C&) {
-  return typename C::mapped_type{};
-}
 
 } // namespace detail
 
