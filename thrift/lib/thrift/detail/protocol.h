@@ -21,6 +21,7 @@
 #include <folly/container/F14Set-fwd.h>
 #include <folly/json/dynamic.h>
 #include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/type/detail/Wrap.h>
 
 namespace apache::thrift::protocol::detail {
