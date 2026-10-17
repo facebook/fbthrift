@@ -170,7 +170,9 @@ TEST(
   // in the busy worker's add().
   std::thread schedulerThread([&] {
     workScheduler.addAsynchronousWorkWithPriority(
-        [](const WorkerHandle&, std::shared_ptr<WorkerCapacityLease>) {},
+        [](const WorkerHandle&,
+           const folly::Executor::KeepAlive<>&,
+           std::shared_ptr<WorkerCapacityLease>) {},
         folly::Executor::MID_PRI);
   });
   // Continue only after the scheduler freezes.
@@ -216,7 +218,9 @@ TEST(WorkSchedulerTest, LeaseReleasedAfterCloseDoesNotRestoreRegistration) {
       folly::Executor::getKeepAliveToken(workerExecutor));
   workScheduler.makeWorkerCapacityAvailable(worker);
   workScheduler.addAsynchronousWorkWithPriority(
-      [&](WorkerHandle, std::shared_ptr<WorkerCapacityLease> lease) {
+      [&](WorkerHandle,
+          const folly::Executor::KeepAlive<>&,
+          std::shared_ptr<WorkerCapacityLease> lease) {
         activeLease = std::move(lease);
       },
       folly::Executor::MID_PRI);
@@ -255,16 +259,18 @@ TEST(
       folly::Executor::getKeepAliveToken(workerExecutor));
   workScheduler.makeWorkerCapacityAvailable(worker);
   workScheduler.addAsynchronousWorkWithPriority(
-      [&](WorkerHandle, std::shared_ptr<WorkerCapacityLease> lease) {
+      [&](WorkerHandle,
+          const folly::Executor::KeepAlive<>&,
+          std::shared_ptr<WorkerCapacityLease> lease) {
         firstWorkExecuted = true;
         referenceToLease = std::move(lease);
         additionalReferenceToLease = referenceToLease;
       },
       folly::Executor::MID_PRI);
   workScheduler.addAsynchronousWorkWithPriority(
-      [&](WorkerHandle, std::shared_ptr<WorkerCapacityLease>) {
-        secondWorkExecuted = true;
-      },
+      [&](WorkerHandle,
+          const folly::Executor::KeepAlive<>&,
+          std::shared_ptr<WorkerCapacityLease>) { secondWorkExecuted = true; },
       folly::Executor::MID_PRI);
   workerExecutor.drain();
   const bool firstWorkExecutedAfterDispatch = firstWorkExecuted;
@@ -314,7 +320,9 @@ TEST(WorkSchedulerTest, NormalAsynchronousAndOpaqueWorkPreserveFifoOrder) {
   const auto worker = workScheduler.registerWorker(
       folly::Executor::getKeepAliveToken(workerExecutor));
   workScheduler.addAsynchronousWorkWithPriority(
-      [&](WorkerHandle, std::shared_ptr<WorkerCapacityLease>) {
+      [&](WorkerHandle,
+          const folly::Executor::KeepAlive<>&,
+          std::shared_ptr<WorkerCapacityLease>) {
         executionOrder.push_back(1);
       },
       folly::Executor::MID_PRI);
@@ -374,7 +382,9 @@ TEST(WorkSchedulerTest, ConcurrentCapacityReturnAndGeneralWorkMakeProgress) {
       folly::Executor::getKeepAliveToken(workerExecutor));
   workScheduler.makeWorkerCapacityAvailable(worker);
   workScheduler.addAsynchronousWorkWithPriority(
-      [&](WorkerHandle, std::shared_ptr<WorkerCapacityLease> execution) {
+      [&](WorkerHandle,
+          const folly::Executor::KeepAlive<>&,
+          std::shared_ptr<WorkerCapacityLease> execution) {
         workerStarted.post();
         startConcurrentCalls.wait();
         execution.reset();
@@ -385,9 +395,9 @@ TEST(WorkSchedulerTest, ConcurrentCapacityReturnAndGeneralWorkMakeProgress) {
       workerStarted.try_wait_for(std::chrono::seconds(5));
   startConcurrentCalls.post();
   workScheduler.addAsynchronousWorkWithPriority(
-      [&](WorkerHandle, std::shared_ptr<WorkerCapacityLease>) {
-        generalWorkFinished.post();
-      },
+      [&](WorkerHandle,
+          const folly::Executor::KeepAlive<>&,
+          std::shared_ptr<WorkerCapacityLease>) { generalWorkFinished.post(); },
       folly::Executor::MID_PRI);
   const bool capacityReturnFinishedBeforeTimeout =
       capacityReturnFinished.try_wait_for(std::chrono::seconds(5));
@@ -571,7 +581,9 @@ TEST(WorkSchedulerTest, TwoWorkersRunGeneralWorkConcurrently) {
   workScheduler.makeWorkerCapacityAvailable(firstWorker);
   workScheduler.makeWorkerCapacityAvailable(secondWorker);
   workScheduler.addAsynchronousWorkWithPriority(
-      [&](WorkerHandle, std::shared_ptr<WorkerCapacityLease>) {
+      [&](WorkerHandle,
+          const folly::Executor::KeepAlive<>&,
+          std::shared_ptr<WorkerCapacityLease>) {
         recordWorkEvent(WorkEvent::FirstWorkEntered);
         firstWorkEntered.post();
         firstWorkObservedSecondEntry =
@@ -581,7 +593,9 @@ TEST(WorkSchedulerTest, TwoWorkersRunGeneralWorkConcurrently) {
       },
       folly::Executor::MID_PRI);
   workScheduler.addAsynchronousWorkWithPriority(
-      [&](WorkerHandle, std::shared_ptr<WorkerCapacityLease>) {
+      [&](WorkerHandle,
+          const folly::Executor::KeepAlive<>&,
+          std::shared_ptr<WorkerCapacityLease>) {
         recordWorkEvent(WorkEvent::SecondWorkEntered);
         secondWorkEntered.post();
         secondWorkObservedFirstEntry =
@@ -649,6 +663,35 @@ TEST(WorkSchedulerTest, TwoWorkersRunGeneralWorkConcurrently) {
   EXPECT_LT(firstWorkEntry, secondWorkExit);
   EXPECT_LT(secondWorkEntry, firstWorkExit);
   EXPECT_LT(secondWorkEntry, secondWorkExit);
+}
+
+TEST(WorkSchedulerTest, AssignedWorkReceivesItsWorkersExecutor) {
+  // GIVEN
+  folly::ManualExecutor firstWorkerExecutor;
+  folly::ManualExecutor secondWorkerExecutor;
+  WorkScheduler workScheduler;
+  workScheduler.registerWorker(
+      folly::Executor::getKeepAliveToken(firstWorkerExecutor));
+  const auto secondWorker = workScheduler.registerWorker(
+      folly::Executor::getKeepAliveToken(secondWorkerExecutor));
+  // Only the second worker has capacity, so the work below goes to it.
+  workScheduler.makeWorkerCapacityAvailable(secondWorker);
+  folly::Executor* const expectedExecutor = &secondWorkerExecutor;
+  folly::Executor* actualExecutor = nullptr;
+
+  // WHEN
+  workScheduler.addAsynchronousWorkWithPriority(
+      [&](const WorkerHandle&,
+          const folly::Executor::KeepAlive<>& executor,
+          std::shared_ptr<WorkerCapacityLease>) {
+        actualExecutor = executor.get();
+      },
+      folly::Executor::MID_PRI);
+  secondWorkerExecutor.drain();
+  workScheduler.close();
+
+  // THEN
+  EXPECT_EQ(expectedExecutor, actualExecutor);
 }
 
 } // namespace

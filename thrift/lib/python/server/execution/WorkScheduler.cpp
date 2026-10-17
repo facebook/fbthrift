@@ -93,8 +93,14 @@ void WorkScheduler::add(folly::Func workItem) {
 void WorkScheduler::addWithPriority(folly::Func workItem, int8_t priority) {
   addAsynchronousWorkWithPriority(
       [workItem = std::move(workItem)](
-          WorkerHandle, std::shared_ptr<WorkerCapacityLease> lease) mutable {
-        auto executor = lease->executor_;
+          WorkerHandle,
+          const folly::Executor::KeepAlive<>& executor,
+          std::shared_ptr<WorkerCapacityLease> lease) mutable {
+        // While this worker runs the work, the scheduler must not assign it
+        // more, or new work would queue behind this work instead of reaching
+        // an idle worker. The lease holds that capacity. A task on the same
+        // worker takes the lease and runs on a later turn, after workItem()
+        // returns or throws, so the capacity returns only once the work ends.
         executor->add([lease = std::move(lease)] {});
         workItem();
       },
@@ -135,8 +141,10 @@ bool WorkScheduler::dispatchOne(std::deque<AsynchronousWork>& queue) {
   queue.pop_front();
   executor->add([workItem = std::move(workItem),
                  worker,
+                 executor,
                  lease = std::move(lease)]() mutable {
-    std::move(workItem)(std::move(worker), std::move(lease));
+    std::move(workItem)(
+        std::move(worker), std::move(executor), std::move(lease));
   });
   return true;
 }

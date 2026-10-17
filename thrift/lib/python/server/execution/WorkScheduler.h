@@ -94,8 +94,10 @@ class WorkScheduler final : public folly::DefaultKeepAliveExecutor {
   // Call only from outside scheduler work.
   void close() noexcept;
 
-  using AsynchronousWork =
-      folly::Function<void(WorkerHandle, std::shared_ptr<WorkerCapacityLease>)>;
+  using AsynchronousWork = folly::Function<void(
+      WorkerHandle,
+      folly::Executor::KeepAlive<>,
+      std::shared_ptr<WorkerCapacityLease>)>;
 
   void makeWorkerCapacityAvailable(WorkerHandle worker);
   void addAsynchronousWorkWithPriority(
