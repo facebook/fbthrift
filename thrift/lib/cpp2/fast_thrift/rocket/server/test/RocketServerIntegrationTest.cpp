@@ -677,17 +677,15 @@ using RejectionTransportHandler =
         RocketServerEventFactory,
         apache::thrift::fast_thrift::frame::read::FrameLengthParser>;
 // Both batcher specializations used by production subscribe to FlushWrites,
-// independently of write-completion tracking and backpressure.
-using BackpressureBatcher = apache::thrift::fast_thrift::frame::write::handler::
+// independently of write-completion tracking.
+using TrackedBatcher = apache::thrift::fast_thrift::frame::write::handler::
     IntervalBatchingFrameHandlerT<
         apache::thrift::fast_thrift::frame::write::handler::
             WriteCompletionTrackerT<RocketServerEventFactory>>;
-using NoBackpressureBatcher = apache::thrift::fast_thrift::frame::write::
-    handler::IntervalBatchingFrameHandlerT<
+using UntrackedBatcher = apache::thrift::fast_thrift::frame::write::handler::
+    IntervalBatchingFrameHandlerT<
         apache::thrift::fast_thrift::frame::write::handler::
             NoOpWriteCompletionTracker,
-        apache::thrift::fast_thrift::frame::write::handler::
-            BackpressureDisabled,
         FlushWritesEvent>;
 
 template <typename RejectionBatcher>
@@ -783,8 +781,7 @@ class RocketServerSetupRejectionTest : public ::testing::Test {
   TestAllocator allocator_;
 };
 
-using RejectionBatchers =
-    ::testing::Types<BackpressureBatcher, NoBackpressureBatcher>;
+using RejectionBatchers = ::testing::Types<TrackedBatcher, UntrackedBatcher>;
 TYPED_TEST_SUITE(RocketServerSetupRejectionTest, RejectionBatchers);
 
 // The bug this guards: the ERROR frame used to be discarded by the batcher

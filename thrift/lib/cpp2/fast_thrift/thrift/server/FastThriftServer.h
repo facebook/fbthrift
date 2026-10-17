@@ -71,7 +71,6 @@ class FastThriftServerBase::FastThriftServerT : public FastThriftServerBase {
         ModuleMode == ChannelPipelineMode::Static)
   void addModule(module_detail::FastServerModuleT<ModuleMode> module) {
     auto name = module.name();
-    const bool controlsReads = module.controlsReads();
     const bool requiresHeaders = module.requiresHeaders();
     auto callbacks = module.pendingConnectionCallbacks();
     auto factories = std::move(module).handlers();
@@ -82,7 +81,6 @@ class FastThriftServerBase::FastThriftServerT : public FastThriftServerBase {
     }
     addModuleRegistrations(
         std::move(name),
-        controlsReads,
         requiresHeaders,
         std::move(callbacks),
         std::move(registrations));
@@ -91,14 +89,12 @@ class FastThriftServerBase::FastThriftServerT : public FastThriftServerBase {
   template <typename... Entry>
   void addModule(StaticFastServerModule<Entry...> module) {
     auto name = module.name();
-    const bool controlsReads = module.controlsReads();
     const bool requiresHeaders = module.requiresHeaders();
     auto pendingConnectionCallbacks = module.pendingConnectionCallbacks();
     std::vector<server::ThriftPipelineRegistration> registrations;
     registrations.push_back(std::move(module).registration());
     addModuleRegistrations(
         std::move(name),
-        controlsReads,
         requiresHeaders,
         std::move(pendingConnectionCallbacks),
         std::move(registrations));

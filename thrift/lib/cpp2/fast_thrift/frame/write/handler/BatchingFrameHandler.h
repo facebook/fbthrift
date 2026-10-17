@@ -35,7 +35,6 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/BatchingHandlerConfig.h>
-#include <thrift/lib/cpp2/fast_thrift/frame/write/handler/BackpressurePolicy.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/WriteCompletionTracker.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/util/BatchFlushScheduler.h>
 
@@ -63,14 +62,10 @@ namespace apache::thrift::fast_thrift::frame::write::handler {
  */
 template <
     WriteCompletionTracker Tracker = NoOpWriteCompletionTracker,
-    BackpressurePolicy Backpressure = BackpressureEnabled,
     typename FlushEvent = typename Tracker::FlushWritesEventType>
-class BatchingFrameHandlerT : public Backpressure {
+class BatchingFrameHandlerT {
  public:
-  // Backpressure state (writeReadyHook_, backpressured_) is inherited from the
-  // policy and reached through `this->`. With BackpressureDisabled the policy
-  // is empty and hook-less, so this handler is never linked into the
-  // pipeline's writeReadyList_ and every touchpoint below compiles out.
+  channel_pipeline::WriteReadyHook writeReadyHook_;
 
   explicit BatchingFrameHandlerT(BatchingHandlerConfig config = {}) noexcept
       : config_(config),
@@ -128,11 +123,9 @@ class BatchingFrameHandlerT : public Backpressure {
 
     // Downstream is backpressured: buffer and propagate backpressure upstream.
     // Do not attempt to flush until onWriteReady is called.
-    if constexpr (Backpressure::kBackpressureEnabled) {
-      if (this->backpressured_) {
-        return apache::thrift::fast_thrift::channel_pipeline::Result::
-            Backpressure;
-      }
+    if (backpressured_) {
+      return apache::thrift::fast_thrift::channel_pipeline::Result::
+          Backpressure;
     }
 
     // Check flush thresholds
@@ -151,17 +144,11 @@ class BatchingFrameHandlerT : public Backpressure {
     clearPendingState();
   }
 
-  // Never invoked when backpressure is disabled: the policy contributes no
-  // writeReadyHook_, so makeHandlerNode never registers this handler and the
-  // pipeline has no way to reach it. The method still has to exist to satisfy
-  // the OutboundHandler concept.
   template <typename Context>
   void onWriteReady(Context& ctx) noexcept {
-    if constexpr (Backpressure::kBackpressureEnabled) {
-      this->backpressured_ = false;
-      ctx.cancelAwaitWriteReady();
-      flushAndPropagateErrors(ctx);
-    }
+    backpressured_ = false;
+    ctx.cancelAwaitWriteReady();
+    flushAndPropagateErrors(ctx);
   }
 
   using PublishedEvents = typename Tracker::PublishedEvents;
@@ -218,13 +205,7 @@ class BatchingFrameHandlerT : public Backpressure {
     return scheduler_.hasScheduledDeferredFlush();
   }
   bool hasPendingData() const noexcept { return batch_ != nullptr; }
-  bool isBackpressured() const noexcept {
-    if constexpr (Backpressure::kBackpressureEnabled) {
-      return this->backpressured_;
-    } else {
-      return false;
-    }
-  }
+  bool isBackpressured() const noexcept { return backpressured_; }
   Tracker& tracker() noexcept { return tracker_; }
 
  private:
@@ -255,9 +236,7 @@ class BatchingFrameHandlerT : public Backpressure {
     pendingBytes_ = 0;
     pendingFrames_ = 0;
     tracker_.onDiscard();
-    if constexpr (Backpressure::kBackpressureEnabled) {
-      this->backpressured_ = false;
-    }
+    backpressured_ = false;
   }
 
   template <typename Context>
@@ -297,12 +276,10 @@ class BatchingFrameHandlerT : public Backpressure {
         apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox(
             std::move(batchToSend)));
 
-    if constexpr (Backpressure::kBackpressureEnabled) {
-      if (result ==
-          apache::thrift::fast_thrift::channel_pipeline::Result::Backpressure) {
-        this->backpressured_ = true;
-        ctx.awaitWriteReady();
-      }
+    if (result ==
+        apache::thrift::fast_thrift::channel_pipeline::Result::Backpressure) {
+      backpressured_ = true;
+      ctx.awaitWriteReady();
     }
 
     return result;
@@ -317,6 +294,8 @@ class BatchingFrameHandlerT : public Backpressure {
   // The accumulated batch of frames (IOBuf chain)
   std::unique_ptr<folly::IOBuf> batch_;
 
+  bool backpressured_{false};
+
   // Per-write tracker mixin; NoOp by default.
   [[no_unique_address]] Tracker tracker_{};
 };
@@ -324,27 +303,5 @@ class BatchingFrameHandlerT : public Backpressure {
 // Default specialization preserves the existing class name for callers that
 // don't opt into per-write tracking.
 using BatchingFrameHandler = BatchingFrameHandlerT<NoOpWriteCompletionTracker>;
-
-// Batches identically, but declines to participate in write backpressure:
-// no writeReadyHook_, no saturation flag, no awaitWriteReady. Selected by
-// FastThriftServerConfig::enableBackpressure.
-using BatchingFrameHandlerNoBackpressure =
-    BatchingFrameHandlerT<NoOpWriteCompletionTracker, BackpressureDisabled>;
-
-// The zero-cost claim. makeHandlerNode registers a handler for write-ready
-// notification only when it exposes writeReadyHook_, so its absence is what
-// keeps the no-backpressure specialization out of the pipeline's
-// writeReadyList_ entirely. Losing the hook must also shrink the handler.
-static_assert(
-    HasWriteReadyHook<BatchingFrameHandler>,
-    "BatchingFrameHandler must expose writeReadyHook_ so the pipeline can "
-    "drive onWriteReady");
-static_assert(
-    !HasWriteReadyHook<BatchingFrameHandlerNoBackpressure>,
-    "BatchingFrameHandlerNoBackpressure must not expose writeReadyHook_, or "
-    "the pipeline would register it anyway");
-static_assert(
-    sizeof(BatchingFrameHandlerNoBackpressure) < sizeof(BatchingFrameHandler),
-    "disabling backpressure must remove per-handler state, not just branches");
 
 } // namespace apache::thrift::fast_thrift::frame::write::handler

@@ -38,6 +38,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ConnectionPayloads.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ReadBackpressureArbiter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/extension/ThriftBackpressureExtension.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/extension/ThriftConnectionExtension.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/extension/ThriftExtension.h>
@@ -96,6 +97,7 @@ using ConnectionEventSet = ConcatEvents<
 struct BackpressureStateEnabled {
   std::shared_ptr<backpressure_detail::ResumeControl> resumeControl_;
   channel_pipeline::PipelineRef pipeline_;
+  ReadBackpressureArbiter* arbiter_{nullptr};
   bool paused_{false};
 };
 struct BackpressureStateDisabled {};
@@ -190,6 +192,9 @@ class ThriftExtensionPipelineHandler {
       // is latched here for every family that presents it later — not just
       // connection extensions.
       connContext_ = setup.connContext;
+      if constexpr (ThriftBackpressureExtensionHandler<H>) {
+        bp_.arbiter_ = &connContext_->readBackpressureArbiter();
+      }
       if constexpr (ThriftConnectionExtensionHandler<H>) {
         return onConnectionAttempted(ctx, std::move(msg), setup);
       } else {
@@ -361,7 +366,8 @@ class ThriftExtensionPipelineHandler {
       return;
     }
     bp_.paused_ = false;
-    if (FOLLY_LIKELY(bp_.pipeline_ != nullptr)) {
+    if (DCHECK_NOTNULL(bp_.arbiter_)->release() &&
+        FOLLY_LIKELY(bp_.pipeline_ != nullptr)) {
       bp_.pipeline_.onReadReady();
     }
   }
@@ -371,8 +377,12 @@ class ThriftExtensionPipelineHandler {
   void detachResumer() noexcept
     requires ThriftBackpressureExtensionHandler<H>
   {
-    bp_.paused_ = false;
+    if (bp_.paused_) {
+      bp_.paused_ = false;
+      (void)DCHECK_NOTNULL(bp_.arbiter_)->release();
+    }
     bp_.pipeline_.reset();
+    bp_.arbiter_ = nullptr;
     if (bp_.resumeControl_ != nullptr) {
       bp_.resumeControl_->owner = nullptr;
     }
@@ -406,6 +416,7 @@ class ThriftExtensionPipelineHandler {
         // being read without a further request having to arrive first.
         if constexpr (ThriftBackpressureExtensionHandler<H>) {
           bp_.paused_ = true;
+          DCHECK_NOTNULL(bp_.arbiter_)->acquire();
         } else {
           DCHECK(false)
               << "RequestVerdict::backpressure() from an extension that "
@@ -519,7 +530,7 @@ class ThriftExtensionPipelineHandler {
   // Latched from the setup messages so the payload-less ConnectionClosed can
   // still present the connection. Non-owning: the connection-context handler
   // outlives this pipeline's teardown.
-  const ThriftConnContext* connContext_{nullptr};
+  ThriftConnContext* connContext_{nullptr};
   // Whether this connection reached ConnectionEstablished. Gates
   // onConnectionClosed so it never fires for a connection that died mid-setup.
   bool established_{false};

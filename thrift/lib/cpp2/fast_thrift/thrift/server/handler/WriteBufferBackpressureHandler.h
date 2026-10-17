@@ -30,6 +30,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ReadBackpressureArbiter.h>
 
 namespace apache::thrift::fast_thrift::thrift {
 
@@ -69,6 +70,9 @@ class WriteBufferBackpressureHandler {
       channel_pipeline::Events<ThriftServerRequestCancellationEvent>;
 
   WriteBufferBackpressureHandler() = default;
+  explicit WriteBufferBackpressureHandler(
+      ReadBackpressureArbiter* arbiter) noexcept
+      : arbiter_(arbiter) {}
 
   // Detected by makeHandlerNode — registers this handler in the
   // pipeline's writeReadyList so onWriteReady() actually fires.
@@ -111,6 +115,7 @@ class WriteBufferBackpressureHandler {
     auto result = ctx.fireWrite(std::move(msg));
     if (FOLLY_UNLIKELY(result == channel_pipeline::Result::Backpressure)) {
       backpressured_ = true;
+      arbiter(ctx).acquire();
       ctx.awaitWriteReady();
     }
     return result;
@@ -131,9 +136,9 @@ class WriteBufferBackpressureHandler {
     }
     backpressured_ = false;
     ctx.cancelAwaitWriteReady();
-    // Reads were paused upstream via onRead returning Backpressure while
-    // the buffer was filling. Now that it has fully drained, resume them.
-    ctx.pipeline()->onReadReady();
+    if (DCHECK_NOTNULL(arbiter_)->release()) {
+      ctx.pipeline()->onReadReady();
+    }
   }
 
   // Pipeline tear-down: the wire is gone, so buffered responses can't go
@@ -148,7 +153,10 @@ class WriteBufferBackpressureHandler {
             ctx, ThriftServerRequestCompletedEvent{.streamId = streamId});
       }
     }
-    backpressured_ = false;
+    if (backpressured_) {
+      backpressured_ = false;
+      (void)DCHECK_NOTNULL(arbiter_)->release();
+    }
     ctx.cancelAwaitWriteReady();
   }
 
@@ -177,6 +185,17 @@ class WriteBufferBackpressureHandler {
   }
 
  private:
+  ReadBackpressureArbiter& arbiter(Context& ctx) noexcept {
+    if (arbiter_ == nullptr) {
+      if constexpr (requires {
+                      ctx.template state<ReadBackpressureArbiter>();
+                    }) {
+        arbiter_ = &ctx.template state<ReadBackpressureArbiter>();
+      }
+    }
+    return *DCHECK_NOTNULL(arbiter_);
+  }
+
   static uint32_t responseStreamId(
       const ThriftServerResponseMessage& response) noexcept {
     if (response.payload.template is<ThriftInitialResponsePayload>()) {
@@ -191,6 +210,7 @@ class WriteBufferBackpressureHandler {
 
   std::deque<ThriftServerResponseMessage> pendingResponses_;
   bool backpressured_{false};
+  ReadBackpressureArbiter* arbiter_{nullptr};
 };
 
 } // namespace apache::thrift::fast_thrift::thrift

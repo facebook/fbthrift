@@ -593,7 +593,6 @@ class FastThriftServerBase {
  protected:
   void addModuleRegistrations(
       std::string name,
-      bool controlsReads,
       bool requiresHeaders,
       std::vector<FastServerModule::PendingConnectionCallbacks>
           pendingConnectionCallbacks,

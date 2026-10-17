@@ -75,17 +75,6 @@ struct FastThriftServerConfig {
   // available at runtime. With the flag off (or the schema not bundled),
   // Fiddle will report no functions for the service. Default off.
   bool enableMetadataService{false};
-
-  // When true, the outbound write-path handlers (batching, fragmentation)
-  // participate in pipeline write backpressure: they buffer while the
-  // transport's write buffer is saturated and drain when it reports ready.
-  //
-  // When false, those handlers still batch and still fragment, but their
-  // backpressure participation is compiled out entirely — no write-ready hook,
-  // no saturation state, no per-write check. Outbound data is pushed straight
-  // through and queues in AsyncSocket instead, so a slow peer grows that queue
-  // unbounded.
-  bool enableBackpressure{true};
 };
 
 /**
@@ -581,38 +570,18 @@ FastThriftServerT<Stats>::buildRocketPipeline(
                      .setTail(appAdapter)
                      .setAllocator(&rocketAllocator_)
                      .addState<rocket::RocketStreamContexts>();
-  // Batching and fragmentation are always present, but which specialization
-  // is spliced depends on enableBackpressure. The no-backpressure variants
-  // batch and fragment identically; they simply carry no write-ready hook, so
-  // makeHandlerNode never registers them and the pipeline's writeReadyList_
-  // stays empty. The choice costs one branch per connection, not per message.
-  if (config_.enableBackpressure) {
-    builder.addNextOutbound<frame::write::handler::BatchingFrameHandlerT<
-        frame::write::handler::NoOpWriteCompletionTracker,
-        frame::write::handler::BackpressureEnabled,
-        rocket::server::FlushWritesEvent>>(batching_frame_handler_tag);
-  } else {
-    builder.addNextOutbound<frame::write::handler::BatchingFrameHandlerT<
-        frame::write::handler::NoOpWriteCompletionTracker,
-        frame::write::handler::BackpressureDisabled,
-        rocket::server::FlushWritesEvent>>(batching_frame_handler_tag);
-  }
+  builder.addNextOutbound<frame::write::handler::BatchingFrameHandlerT<
+      frame::write::handler::NoOpWriteCompletionTracker,
+      rocket::server::FlushWritesEvent>>(batching_frame_handler_tag);
   builder
       .addNextOutbound<frame::write::handler::FrameLengthEncoderHandler>(
           frame_length_encoder_handler_tag)
       .addNextDuplex<frame::handler::FrameCodecHandler>(frame_codec_handler_tag)
       .addNextInbound<frame::read::handler::FrameDefragmentationHandler>(
           frame_defragmentation_handler_tag);
-  if (config_.enableBackpressure) {
-    builder.addNextOutbound<frame::write::handler::FrameFragmentationHandler>(
-        frame_fragmentation_handler_tag,
-        frame::write::FragmentationHandlerConfig{});
-  } else {
-    builder.addNextOutbound<
-        frame::write::handler::FrameFragmentationHandlerNoBackpressure>(
-        frame_fragmentation_handler_tag,
-        frame::write::FragmentationHandlerConfig{});
-  }
+  builder.addNextOutbound<frame::write::handler::FrameFragmentationHandler>(
+      frame_fragmentation_handler_tag,
+      frame::write::FragmentationHandlerConfig{});
   builder
       .addNextDuplex<
           rocket::server::handler::RocketServerMessageMarshalHandler>(

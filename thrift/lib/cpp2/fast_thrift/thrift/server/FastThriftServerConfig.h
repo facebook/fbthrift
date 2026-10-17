@@ -115,21 +115,6 @@ struct FastThriftServerConfig {
   // flags. Default off while server streaming is still being built out.
   bool enableStreamMux{false};
 
-  // When true, the outbound write-path handlers (batching, fragmentation)
-  // participate in pipeline write backpressure: they buffer while the
-  // transport's write buffer is saturated and drain when it reports ready.
-  //
-  // When false, those handlers still batch and still fragment, but their
-  // backpressure participation is compiled out entirely — no write-ready hook,
-  // no saturation state, no per-write check. Outbound data is pushed straight
-  // through and queues in AsyncSocket instead.
-  //
-  // Disabling this removes rocket-layer flow control. Nothing else in the
-  // rocket write path absorbs Result::Backpressure, so it will propagate up
-  // into the thrift pipeline; set enableWriteBufferBackpressure to absorb it
-  // there, or accept that a slow peer grows the socket write queue unbounded.
-  bool enableBackpressure{true};
-
   // When true, the server owns its counters: it materializes the message,
   // connection and TLS stats at start() and wires the corresponding metrics
   // handlers into every pipeline. Reach them afterwards via getStats() /

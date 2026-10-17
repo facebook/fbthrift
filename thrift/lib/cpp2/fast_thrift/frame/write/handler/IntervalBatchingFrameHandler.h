@@ -44,7 +44,6 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/IntervalBatchingHandlerConfig.h>
-#include <thrift/lib/cpp2/fast_thrift/frame/write/handler/BackpressurePolicy.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/WriteCompletionTracker.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/util/BatchFlushScheduler.h>
 
@@ -56,14 +55,10 @@ namespace apache::thrift::fast_thrift::frame::write::handler {
 
 template <
     WriteCompletionTracker Tracker = NoOpWriteCompletionTracker,
-    BackpressurePolicy Backpressure = BackpressureEnabled,
     typename FlushEvent = typename Tracker::FlushWritesEventType>
-class IntervalBatchingFrameHandlerT : public Backpressure {
+class IntervalBatchingFrameHandlerT {
  public:
-  // Backpressure state (writeReadyHook_, backpressured_) is inherited from the
-  // policy and reached through `this->`. With BackpressureDisabled the policy
-  // is empty and hook-less, so this handler is never linked into the
-  // pipeline's writeReadyList_ and every touchpoint below compiles out.
+  channel_pipeline::WriteReadyHook writeReadyHook_;
 
   explicit IntervalBatchingFrameHandlerT(
       IntervalBatchingHandlerConfig config = {}) noexcept
@@ -123,10 +118,8 @@ class IntervalBatchingFrameHandlerT : public Backpressure {
 
     // While downstream is backpressured we still buffer, but don't schedule
     // any flush — onWriteReady will drain when downstream is ready.
-    if constexpr (Backpressure::kBackpressureEnabled) {
-      if (this->backpressured_) {
-        return channel_pipeline::Result::Backpressure;
-      }
+    if (backpressured_) {
+      return channel_pipeline::Result::Backpressure;
     }
 
     if (wasEmpty) {
@@ -145,17 +138,11 @@ class IntervalBatchingFrameHandlerT : public Backpressure {
     clearPendingState();
   }
 
-  // Never invoked when backpressure is disabled: the policy contributes no
-  // writeReadyHook_, so makeHandlerNode never registers this handler and the
-  // pipeline has no way to reach it. The method still has to exist to satisfy
-  // the OutboundHandler concept.
   template <typename Context>
   void onWriteReady(Context& ctx) noexcept {
-    if constexpr (Backpressure::kBackpressureEnabled) {
-      this->backpressured_ = false;
-      ctx.cancelAwaitWriteReady();
-      flushAndPropagateErrors(ctx);
-    }
+    backpressured_ = false;
+    ctx.cancelAwaitWriteReady();
+    flushAndPropagateErrors(ctx);
   }
 
   using PublishedEvents = typename Tracker::PublishedEvents;
@@ -225,13 +212,7 @@ class IntervalBatchingFrameHandlerT : public Backpressure {
   size_t pendingBytes() const noexcept { return totalBytesBuffered_; }
   size_t pendingFrames() const noexcept { return bufferedWritesCount_; }
   bool empty() const noexcept { return bufferedWritesQueue_.empty(); }
-  bool isBackpressured() const noexcept {
-    if constexpr (Backpressure::kBackpressureEnabled) {
-      return this->backpressured_;
-    } else {
-      return false;
-    }
-  }
+  bool isBackpressured() const noexcept { return backpressured_; }
   Tracker& tracker() noexcept { return tracker_; }
 
  private:
@@ -289,11 +270,9 @@ class IntervalBatchingFrameHandlerT : public Backpressure {
     auto result =
         ctx.fireWrite(channel_pipeline::TypeErasedBox(std::move(batchToSend)));
 
-    if constexpr (Backpressure::kBackpressureEnabled) {
-      if (result == channel_pipeline::Result::Backpressure) {
-        this->backpressured_ = true;
-        ctx.awaitWriteReady();
-      }
+    if (result == channel_pipeline::Result::Backpressure) {
+      backpressured_ = true;
+      ctx.awaitWriteReady();
     }
 
     return result;
@@ -305,9 +284,7 @@ class IntervalBatchingFrameHandlerT : public Backpressure {
     bufferedWritesCount_ = 0;
     totalBytesBuffered_ = 0;
     tracker_.onDiscard();
-    if constexpr (Backpressure::kBackpressureEnabled) {
-      this->backpressured_ = false;
-    }
+    backpressured_ = false;
   }
 
   IntervalBatchingHandlerConfig config_;
@@ -321,6 +298,8 @@ class IntervalBatchingFrameHandlerT : public Backpressure {
   size_t bufferedWritesCount_{0};
   size_t totalBytesBuffered_{0};
 
+  bool backpressured_{false};
+
   // Per-write tracker mixin; NoOp by default.
   [[no_unique_address]] Tracker tracker_{};
 };
@@ -330,41 +309,10 @@ class IntervalBatchingFrameHandlerT : public Backpressure {
 using IntervalBatchingFrameHandler =
     IntervalBatchingFrameHandlerT<NoOpWriteCompletionTracker>;
 
-// Batches identically, but declines to participate in write backpressure:
-// no writeReadyHook_, no saturation flag, no awaitWriteReady. Selected by
-// FastThriftServerConfig::enableBackpressure.
-using IntervalBatchingFrameHandlerNoBackpressure =
-    IntervalBatchingFrameHandlerT<
-        NoOpWriteCompletionTracker,
-        BackpressureDisabled>;
-
 static_assert(
     apache::thrift::fast_thrift::channel_pipeline::OutboundHandler<
         IntervalBatchingFrameHandler,
         apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>,
     "IntervalBatchingFrameHandler must satisfy OutboundHandler concept");
 
-static_assert(
-    apache::thrift::fast_thrift::channel_pipeline::OutboundHandler<
-        IntervalBatchingFrameHandlerNoBackpressure,
-        apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl>,
-    "IntervalBatchingFrameHandlerNoBackpressure must satisfy OutboundHandler "
-    "concept");
-
-// The zero-cost claim. makeHandlerNode registers a handler for write-ready
-// notification only when it exposes writeReadyHook_, so its absence is what
-// keeps the no-backpressure specialization out of the pipeline's
-// writeReadyList_ entirely. Losing the hook must also shrink the handler.
-static_assert(
-    HasWriteReadyHook<IntervalBatchingFrameHandler>,
-    "IntervalBatchingFrameHandler must expose writeReadyHook_ so the pipeline "
-    "can drive onWriteReady");
-static_assert(
-    !HasWriteReadyHook<IntervalBatchingFrameHandlerNoBackpressure>,
-    "IntervalBatchingFrameHandlerNoBackpressure must not expose "
-    "writeReadyHook_, or the pipeline would register it anyway");
-static_assert(
-    sizeof(IntervalBatchingFrameHandlerNoBackpressure) <
-        sizeof(IntervalBatchingFrameHandler),
-    "disabling backpressure must remove per-handler state, not just branches");
 } // namespace apache::thrift::fast_thrift::frame::write::handler

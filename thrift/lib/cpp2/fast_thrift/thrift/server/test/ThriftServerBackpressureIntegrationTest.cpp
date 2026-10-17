@@ -55,6 +55,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ReadBackpressureArbiter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionCloseHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestContextHandler.h>
@@ -112,7 +113,7 @@ class ThriftServerBackpressureIntegrationTest : public ::testing::Test {
             new ft::ThriftConnContext{}),
         /*enableRequestHeaders=*/false);
     auto closeHandler = std::make_unique<CloseHandler>();
-    auto writeBuffer = std::make_unique<WriteBufferHandler>();
+    auto writeBuffer = std::make_unique<WriteBufferHandler>(&arbiter_);
 
     closeHandler_ = closeHandler.get();
     writeBuffer_ = writeBuffer.get();
@@ -158,6 +159,7 @@ class ThriftServerBackpressureIntegrationTest : public ::testing::Test {
   cp::test::MockHeadHandler head_;
   cp::test::MockTailHandler tail_;
   cp::test::TestAllocator allocator_;
+  ft::ReadBackpressureArbiter arbiter_;
   cp::PipelineImpl::Ptr pipeline_;
   CloseHandler* closeHandler_{nullptr};
   WriteBufferHandler* writeBuffer_{nullptr};

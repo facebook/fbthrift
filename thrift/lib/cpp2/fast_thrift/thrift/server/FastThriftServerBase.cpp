@@ -333,7 +333,6 @@ void detail::FastThriftServerBase::addServerEventHandler(
 
 void detail::FastThriftServerBase::addModuleRegistrations(
     std::string name,
-    bool controlsReads,
     bool requiresHeaders,
     std::vector<FastServerModule::PendingConnectionCallbacks>
         pendingConnectionCallbacks,
@@ -365,18 +364,6 @@ void detail::FastThriftServerBase::addModuleRegistrations(
         fmt::format(
             "FastThriftServer::addModule: module '{}' registers an extension "
             "that uses headers, which requires enableRequestHeaders",
-            name));
-  }
-  // Two independent things pausing and resuming the same connection's reads,
-  // with nothing arbitrating between them: WriteBufferBackpressureHandler
-  // resumes as soon as its own buffer drains, which would lift a pause the
-  // extension still wants held. Fail loudly rather than intermittently.
-  if (controlsReads && config_.enableWriteBufferBackpressure) {
-    throw std::logic_error(
-        fmt::format(
-            "FastThriftServer::addModule: module '{}' registers an extension "
-            "that controls reads, which cannot be combined with "
-            "enableWriteBufferBackpressure",
             name));
   }
   pendingConnectionCallbacks_.reserve(
@@ -698,7 +685,6 @@ void detail::FastThriftServerBase::start() {
       .enableCancellation = config_.enableCancellation,
       .enableWriteBufferBackpressure = config_.enableWriteBufferBackpressure,
       .enableStreamMux = config_.enableStreamMux,
-      .enableBackpressure = config_.enableBackpressure,
       .batchingConfig = config_.batchingConfig,
       .drainTimeout = config_.drainTimeout,
       .reapTimeout = config_.reapTimeout,

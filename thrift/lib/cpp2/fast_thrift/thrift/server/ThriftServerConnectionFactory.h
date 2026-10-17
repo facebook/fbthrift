@@ -122,14 +122,6 @@ struct ThriftServerConnectionFactoryConfig {
   // context.
   bool enableStreamMux{false};
 
-  // When true, the outbound write-path handlers (batching, fragmentation)
-  // participate in pipeline write backpressure. When false, their
-  // backpressure participation is compiled out: the no-backpressure
-  // specializations carry no write-ready hook, so they are never linked into
-  // the pipeline's writeReadyList_. See FastThriftServerConfig for the
-  // flow-control implications of turning this off.
-  bool enableBackpressure{true};
-
   // Outbound write batching. Default zero-interval flushes via LoopCallback
   // at end of each event loop iteration. Set batchingInterval > 0 to use
   // an HHWheelTimer-driven flush instead.

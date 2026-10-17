@@ -326,6 +326,7 @@ class FastThriftServerTest : public ::testing::Test {
     server_ = std::make_unique<ftt::FastThriftServer>(std::move(config));
     server_->setInterface(handler_);
     server_->start();
+    ASSERT_TRUE(server_->isRunning());
 
     clientThread_ = std::make_unique<folly::ScopedEventBaseThread>();
   }
@@ -2627,6 +2628,8 @@ TEST(FastThriftServerBackpressureExtensionTest, ResumerIsInertAfterClose) {
   THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
 
   BackpressureRecorder rec;
+  rec.pauseOnce.store(true, std::memory_order_relaxed);
+  rec.resumeAfterPause.store(false, std::memory_order_relaxed);
   auto handler = std::make_shared<TestHandler>();
 
   ftt::FastThriftServer server(makeLoopbackConfig());
@@ -2692,21 +2695,14 @@ TEST(FastThriftServerBackpressureExtensionTest, ConceptsAreIndependent) {
       "one extension may implement both families");
 }
 
-// WriteBufferBackpressureHandler resumes reads the moment its own buffer
-// drains, with nothing arbitrating against the extension's pause. Refuse the
-// combination outright instead of letting it lift the pause intermittently.
-TEST(
-    FastThriftServerBackpressureExtensionTest, RejectsWriteBufferBackpressure) {
+TEST(FastThriftServerBackpressureExtensionTest, AcceptsBackpressureExtension) {
   BackpressureRecorder rec;
   auto config = makeLoopbackConfig();
   config.enableWriteBufferBackpressure = true;
-
   ftt::FastThriftServer server(std::move(config));
-  EXPECT_THROW(
-      server.addModule(
-          ftt::FastServerModule("backpressure")
-              .addThriftExtension<BackpressureExtension>(&rec)),
-      std::logic_error);
+  EXPECT_NO_THROW(server.addModule(
+      ftt::FastServerModule("backpressure")
+          .addThriftExtension<BackpressureExtension>(&rec)));
 }
 
 // Registering two modules with the same name on the server is rejected.

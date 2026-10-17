@@ -715,39 +715,6 @@ TEST_F(BatchingFrameHandlerTest, FlushListUnlinksOnHandlerTeardown) {
   EXPECT_TRUE(flushList.empty());
 }
 
-// ============================================================================
-// Backpressure disabled
-// ============================================================================
-
-TEST_F(
-    BatchingFrameHandlerTest,
-    NoBackpressure_DownstreamSaturationNeitherParksNorStrands) {
-  BatchingHandlerConfig config{
-      .maxPendingBytes = 100,
-      .maxPendingFrames = 2,
-  };
-  BatchingFrameHandlerNoBackpressure handler(config);
-  handler.handlerAdded(*ctx_);
-
-  ctx_->setBackpressureAt(0); // every flush reports saturation
-
-  (void)handler.onWrite(*ctx_, wrapFrame(makePayload(50)));
-  (void)handler.onWrite(*ctx_, wrapFrame(makePayload(50)));
-
-  // The threshold flush went downstream, but the handler neither recorded
-  // saturation nor registered for a write-ready callback it can never receive.
-  ASSERT_EQ(ctx_->writtenBatches().size(), 1);
-  EXPECT_FALSE(ctx_->awaitWriteReadyCalled());
-  EXPECT_FALSE(handler.isBackpressured());
-
-  // Later writes keep flowing rather than being stranded behind a saturation
-  // flag that nothing would ever clear.
-  (void)handler.onWrite(*ctx_, wrapFrame(makePayload(50, 'B')));
-  runEventBaseLoop();
-  EXPECT_EQ(ctx_->writtenBatches().size(), 2);
-  EXPECT_FALSE(handler.hasPendingData());
-}
-
 } // namespace
 } // namespace apache::thrift::fast_thrift::frame::write::handler
 
@@ -986,11 +953,7 @@ TEST_F(BatchingFrameHandlerTrackerTest, TrackerHooksFireOnWriteAndFlush) {
 // A teardown is imminent and the batch is still buffered: FlushWrites has to
 // push it downstream there and then, or the frame dies with the connection.
 TEST_F(BatchingFrameHandlerTrackerTest, FlushWritesEventFlushesPendingBatch) {
-  BatchingFrameHandlerT<
-      NoOpWriteCompletionTracker,
-      BackpressureEnabled,
-      FlushWritesEvent>
-      handler;
+  BatchingFrameHandlerT<NoOpWriteCompletionTracker, FlushWritesEvent> handler;
   handler.handlerAdded(*ctx_);
 
   ASSERT_EQ(
@@ -1008,11 +971,7 @@ TEST_F(BatchingFrameHandlerTrackerTest, FlushWritesEventFlushesPendingBatch) {
 
 // Nothing buffered is not an error, and must not manufacture an empty write.
 TEST_F(BatchingFrameHandlerTrackerTest, FlushWritesEventOnEmptyBatchIsNoOp) {
-  BatchingFrameHandlerT<
-      NoOpWriteCompletionTracker,
-      BackpressureEnabled,
-      FlushWritesEvent>
-      handler;
+  BatchingFrameHandlerT<NoOpWriteCompletionTracker, FlushWritesEvent> handler;
   handler.handlerAdded(*ctx_);
 
   handler.on<FlushWritesEvent>(*ctx_);
@@ -1047,42 +1006,6 @@ TEST_F(BatchingFrameHandlerTrackerTest, TypedEventDelegatesToTracker) {
   handler.on<CapturingEvent>(*ctx_, 0);
 
   EXPECT_EQ(handler.tracker().eventCount, 2u);
-}
-
-// The zero-cost claim, observed through a real pipeline. The no-backpressure
-// specialization has no writeReadyHook_, so makeHandlerNode's compile-time
-// detection skips it and PipelineImpl never links it into writeReadyList_ —
-// hasPendingWriteReady() must stay false even while the transport reports
-// saturation on every write. This is the counterpart to
-// HookRegisteredOnBackpressure above.
-TEST_F(BatchingFrameHandlerPipelineTest, NoBackpressure_HookNeverRegistered) {
-  BatchingHandlerConfig config{
-      .maxPendingBytes = 100,
-      .maxPendingFrames = 10,
-  };
-  transport_.setWriteResult(cp::Result::Backpressure);
-
-  auto pipeline =
-      cp::PipelineBuilder<MockHeadHandler, MockTailHandler, TestAllocator>()
-          .setEventBase(&evb_)
-          .setHead(&transport_)
-          .setTail(&app_)
-          .setAllocator(&allocator_)
-          .addNextOutbound<BatchingFrameHandlerNoBackpressure>(
-              batching_tag,
-              std::make_unique<BatchingFrameHandlerNoBackpressure>(config))
-          .build();
-
-  // Threshold flush hits a saturated transport.
-  (void)pipeline->fireWrite(wrapFrame(makePayload(60)));
-  (void)pipeline->fireWrite(wrapFrame(makePayload(60)));
-
-  EXPECT_FALSE(pipeline->hasPendingWriteReady());
-
-  // And onWriteReady has nothing to dispatch, so it is inert rather than
-  // crashing on a half-registered handler.
-  pipeline->onWriteReady();
-  EXPECT_FALSE(pipeline->hasPendingWriteReady());
 }
 
 } // namespace apache::thrift::fast_thrift::frame::write::handler

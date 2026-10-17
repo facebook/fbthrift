@@ -229,7 +229,6 @@ class FastServerModuleT {
           });
     }
     if constexpr (server::ThriftPerConnectionExtensionHandler<H>) {
-      controlsReads_ |= ThriftBackpressureExtensionHandler<H>;
       requiresHeaders_ |= UsesHeaders<H>;
       addFactory([&](channel_pipeline::HandlerId id) {
         return server::makeThriftExtensionHandlerFactory<H>(
@@ -238,15 +237,6 @@ class FastServerModuleT {
     }
     return *this;
   }
-
-  /**
-   * Whether any extension in this module pauses and resumes reads on a
-   * connection. Checked by FastThriftServer::addModule against
-   * enableWriteBufferBackpressure, which resumes reads the moment its own
-   * buffer drains: the two arbitrate nothing between them, so a write-buffer
-   * drain would silently lift an extension's pause.
-   */
-  bool controlsReads() const { return controlsReads_; }
 
   /**
    * Whether any extension in this module declares kUsesHeaders. Checked by
@@ -290,7 +280,6 @@ class FastServerModuleT {
   std::string name_;
   std::vector<HandlerFactory> factories_;
   std::vector<PendingConnectionCallbacks> pendingConnectionCallbacks_;
-  bool controlsReads_{false};
   bool requiresHeaders_{false};
 };
 
@@ -320,12 +309,10 @@ class StaticFastServerModule {
                 id,
                 std::tuple<std::decay_t<Args>...>(
                     std::forward<Args>(args)...)})),
-        controlsReads_ || ThriftBackpressureExtensionHandler<H>,
         requiresHeaders_ || UsesHeaders<H>);
   }
 
   const std::string& name() const noexcept { return name_; }
-  bool controlsReads() const noexcept { return controlsReads_; }
   bool requiresHeaders() const noexcept { return requiresHeaders_; }
 
   std::vector<FastServerModule::PendingConnectionCallbacks>
@@ -359,18 +346,13 @@ class StaticFastServerModule {
   friend class StaticFastServerModule;
 
   StaticFastServerModule(
-      std::string name,
-      std::tuple<Entry...> entries,
-      bool controlsReads,
-      bool requiresHeaders)
+      std::string name, std::tuple<Entry...> entries, bool requiresHeaders)
       : name_(std::move(name)),
         entries_(std::move(entries)),
-        controlsReads_(controlsReads),
         requiresHeaders_(requiresHeaders) {}
 
   std::string name_;
   std::tuple<Entry...> entries_;
-  bool controlsReads_{false};
   bool requiresHeaders_{false};
 };
 

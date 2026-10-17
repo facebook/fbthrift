@@ -58,6 +58,12 @@ struct FakePipeline {
 
 class FakeContext {
  public:
+  template <typename T>
+  T& state() noexcept {
+    static_assert(std::same_as<T, ReadBackpressureArbiter>);
+    return arbiter;
+  }
+
   Result fireRead(TypeErasedBox&& msg) noexcept {
     reads.push_back(std::move(msg));
     return Result::Success;
@@ -111,6 +117,7 @@ class FakeContext {
   size_t cancelAwaitWriteReadyCalls{0};
   bool awaitingWriteReady{false};
   FakePipeline fakePipeline;
+  ReadBackpressureArbiter arbiter;
 };
 
 ThriftServerResponseMessage makeResponse(uint32_t streamId) {
@@ -227,6 +234,24 @@ TEST(
   EXPECT_TRUE(handler.isBackpressured());
   EXPECT_EQ(handler.pendingResponseCount(), 1u)
       << "Second queued response must remain after BP re-assertion";
+}
+
+TEST(
+    WriteBufferBackpressureHandlerTest,
+    OnWriteReadyDoesNotResumeReadsWhileAnotherHolderRemains) {
+  WriteBufferBackpressureHandler<FakeContext> handler;
+  FakeContext ctx;
+  ctx.arbiter.acquire();
+  ctx.nextWriteResult = Result::Backpressure;
+
+  (void)handler.onWrite(ctx, erase_and_box(makeResponse(1)));
+  ASSERT_EQ(ctx.arbiter.holderCount(), 2u);
+
+  ctx.nextWriteResult = Result::Success;
+  handler.onWriteReady(ctx);
+
+  EXPECT_EQ(ctx.arbiter.holderCount(), 1u);
+  EXPECT_EQ(ctx.fakePipeline.onReadReadyCalls, 0u);
 }
 
 // =============================================================================
@@ -474,7 +499,7 @@ class WriteBufferBackpressureHandlerPipelineTest : public ::testing::Test {
         ThriftServerRequestLifecycleHandler<cp::detail::ContextImpl>;
     auto closeHandler = std::make_unique<CloseHandler>();
     closeHandler_ = closeHandler.get();
-    auto writeBuffer = std::make_unique<Handler>();
+    auto writeBuffer = std::make_unique<Handler>(&arbiter_);
     writeBuffer_ = writeBuffer.get();
     auto lifecycle = std::make_unique<LifecycleHandler>();
     lifecycle_ = lifecycle.get();
@@ -528,6 +553,7 @@ class WriteBufferBackpressureHandlerPipelineTest : public ::testing::Test {
   cp::test::MockHeadHandler head_;
   cp::test::MockTailHandler tail_;
   cp::test::TestAllocator allocator_;
+  ReadBackpressureArbiter arbiter_;
   ThriftServerConnectionCloseHandler<cp::detail::ContextImpl>* closeHandler_{};
   Handler* writeBuffer_{};
   ThriftServerRequestLifecycleHandler<cp::detail::ContextImpl>* lifecycle_{};
@@ -542,7 +568,7 @@ class WriteBufferBackpressureHandlerPipelineTest : public ::testing::Test {
 TEST_F(
     WriteBufferBackpressureHandlerPipelineTest,
     HandlerRegistersOnPipelineWriteReadyList) {
-  auto handler = std::make_unique<Handler>();
+  auto handler = std::make_unique<Handler>(&arbiter_);
   head_.setOnWriteCallback(
       [](cp::TypeErasedBox&&) noexcept { return cp::Result::Backpressure; });
 
@@ -563,7 +589,7 @@ TEST_F(
 TEST_F(
     WriteBufferBackpressureHandlerPipelineTest,
     OnWriteReadyFullDrainsAndResumesHeadReads) {
-  auto handler = std::make_unique<Handler>();
+  auto handler = std::make_unique<Handler>(&arbiter_);
   auto* handlerPtr = handler.get();
 
   // Phase 1: head saturated — buffer fills.
@@ -603,7 +629,7 @@ TEST_F(
 TEST_F(
     WriteBufferBackpressureHandlerPipelineTest,
     OnWriteReadyPartialDrainKeepsBackpressureAndDoesNotResumeReads) {
-  auto handler = std::make_unique<Handler>();
+  auto handler = std::make_unique<Handler>(&arbiter_);
   auto* handlerPtr = handler.get();
 
   head_.setOnWriteCallback(

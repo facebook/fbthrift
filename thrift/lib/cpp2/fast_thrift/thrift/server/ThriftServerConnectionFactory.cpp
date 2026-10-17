@@ -34,7 +34,6 @@
 #include <thrift/lib/cpp2/fast_thrift/frame/read/AlignedParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/handler/FrameDefragmentationHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/frame/write/handler/BackpressurePolicy.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FragmentCompletionTracker.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FrameFragmentationHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FrameLengthEncoderHandler.h>
@@ -55,6 +54,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/MetadataAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerCompositeAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ReadBackpressureArbiter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerChecksumHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerCompressionHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionCloseHandler.h>
@@ -72,8 +72,8 @@ using channel_pipeline::PipelineImpl;
 using channel_pipeline::PipelineOwner;
 using channel_pipeline::SimpleBufferAllocator;
 
-// Both write-path handlers always carry their completion tracker; backpressure
-// participation is the one axis that varies. The trackers form a chain — the
+// Both write-path handlers carry their completion tracker. The trackers form a
+// chain — the
 // transport's per-writev completion becomes the batcher's per-batch event,
 // which the fragmenter resolves into the per-frame completion the rocket layer
 // consumes — and each stage's only subscriber is the next one, so a NoOp
@@ -84,33 +84,19 @@ using ServerBatchingFrameHandler =
     frame::write::handler::IntervalBatchingFrameHandlerT<
         frame::write::handler::WriteCompletionTrackerT<
             rocket::server::RocketServerEventFactory>>;
-using ServerBatchingFrameHandlerNoBackpressure =
-    frame::write::handler::IntervalBatchingFrameHandlerT<
-        frame::write::handler::WriteCompletionTrackerT<
-            rocket::server::RocketServerEventFactory>,
-        frame::write::handler::BackpressureDisabled>;
 using ServerFragmentationFrameHandler =
     frame::write::handler::FrameFragmentationHandlerT<
         frame::write::handler::FragmentCompletionTrackerT<
             rocket::server::RocketServerEventFactory>>;
-using ServerFragmentationFrameHandlerNoBackpressure =
-    frame::write::handler::FrameFragmentationHandlerT<
-        frame::write::handler::FragmentCompletionTrackerT<
-            rocket::server::RocketServerEventFactory>,
-        frame::write::handler::BackpressureDisabled>;
 
 // Catch an accidentally disabled fragment completion tracker at the pipeline
 // assembly seam, where it would otherwise strand batch completion events.
 static_assert(
     !std::same_as<
         typename ServerFragmentationFrameHandler::SubscribedEvents,
-        channel_pipeline::Events<>> &&
-        !std::same_as<
-            typename ServerFragmentationFrameHandlerNoBackpressure::
-                SubscribedEvents,
-            channel_pipeline::Events<>>,
+        channel_pipeline::Events<>>,
     "the fragmenter is the batcher's only BatchWriteComplete subscriber in "
-    "both backpressure configurations; a NoOp tracker here would strand it");
+    "the server pipeline; a NoOp tracker here would strand it");
 
 HANDLER_TAG(batching_frame_handler);
 HANDLER_TAG(frame_length_encoder_handler);
@@ -132,7 +118,7 @@ HANDLER_TAG(write_buffer_backpressure_handler);
 HANDLER_TAG(thrift_server_setup_handler);
 HANDLER_TAG(thrift_server_stream_mux_handler);
 
-template <bool Backpressure, bool WithStats, typename TransportHandler>
+template <bool WithStats, typename TransportHandler>
 PipelineOwner buildStaticRocketPipeline(
     const ThriftServerConnectionFactoryConfig& config,
     SimpleBufferAllocator* allocator,
@@ -140,15 +126,6 @@ PipelineOwner buildStaticRocketPipeline(
     TransportHandler* transportHandler,
     rocket::server::RocketServerAppAdapter* appAdapter,
     ServerStatsShard* FOLLY_NULLABLE statsShard) {
-  using BatchingHandler = std::conditional_t<
-      Backpressure,
-      ServerBatchingFrameHandler,
-      ServerBatchingFrameHandlerNoBackpressure>;
-  using FragmentationHandler = std::conditional_t<
-      Backpressure,
-      ServerFragmentationFrameHandler,
-      ServerFragmentationFrameHandlerNoBackpressure>;
-
   auto builder =
       channel_pipeline::StaticPipelineBuilder<
           TransportHandler,
@@ -159,7 +136,7 @@ PipelineOwner buildStaticRocketPipeline(
           .setTail(appAdapter)
           .setAllocator(allocator)
           .template addState<rocket::RocketStreamContexts>()
-          .template addNextOutbound<BatchingHandler>(
+          .template addNextOutbound<ServerBatchingFrameHandler>(
               batching_frame_handler_tag, config.batchingConfig)
           .template addNextOutbound<
               frame::write::handler::FrameLengthEncoderHandler>(
@@ -169,7 +146,7 @@ PipelineOwner buildStaticRocketPipeline(
           .template addNextInbound<
               frame::read::handler::FrameDefragmentationHandler>(
               frame_defragmentation_handler_tag)
-          .template addNextOutbound<FragmentationHandler>(
+          .template addNextOutbound<ServerFragmentationFrameHandler>(
               frame_fragmentation_handler_tag, config.fragmentationConfig)
           .template addNextDuplex<
               rocket::server::handler::RocketServerWriteCompletionHandler>(
@@ -201,7 +178,7 @@ PipelineOwner buildStaticRocketPipeline(
   }
 }
 
-template <bool Backpressure, typename TransportHandler>
+template <typename TransportHandler>
 PipelineOwner selectStaticRocketStats(
     const ThriftServerConnectionFactoryConfig& config,
     SimpleBufferAllocator* allocator,
@@ -210,10 +187,10 @@ PipelineOwner selectStaticRocketStats(
     rocket::server::RocketServerAppAdapter* appAdapter,
     ServerStatsShard* FOLLY_NULLABLE statsShard) {
   if (statsShard != nullptr) {
-    return buildStaticRocketPipeline<Backpressure, true>(
+    return buildStaticRocketPipeline<true>(
         config, allocator, evb, transportHandler, appAdapter, statsShard);
   }
-  return buildStaticRocketPipeline<Backpressure, false>(
+  return buildStaticRocketPipeline<false>(
       config, allocator, evb, transportHandler, appAdapter, statsShard);
 }
 
@@ -323,12 +300,14 @@ template <bool WithWriteBuffer, bool WithExtensions, typename Builder>
 PipelineOwner addStaticWriteBuffer(
     Builder&& builder,
     const ThriftServerConnectionFactoryConfig& config,
-    ExtensionStateStore& extensionStates) {
+    ExtensionStateStore& extensionStates,
+    ReadBackpressureArbiter& readBackpressureArbiter) {
   if constexpr (WithWriteBuffer) {
     return finishStaticThriftPipeline<WithExtensions>(
         std::forward<Builder>(builder)
             .template addNextDuplexTemplate<WriteBufferBackpressureHandler>(
-                write_buffer_backpressure_handler_tag),
+                write_buffer_backpressure_handler_tag,
+                &readBackpressureArbiter),
         config,
         extensionStates);
   } else {
@@ -345,7 +324,8 @@ template <
 PipelineOwner addStaticChecksum(
     Builder&& builder,
     const ThriftServerConnectionFactoryConfig& config,
-    ExtensionStateStore& extensionStates) {
+    ExtensionStateStore& extensionStates,
+    ReadBackpressureArbiter& readBackpressureArbiter) {
   if constexpr (WithChecksum) {
     return addStaticWriteBuffer<WithWriteBuffer, WithExtensions>(
         std::forward<Builder>(builder)
@@ -356,7 +336,8 @@ PipelineOwner addStaticChecksum(
                 config.drainTimeout,
                 config.reapTimeout),
         config,
-        extensionStates);
+        extensionStates,
+        readBackpressureArbiter);
   } else {
     return addStaticWriteBuffer<WithWriteBuffer, WithExtensions>(
         std::forward<Builder>(builder)
@@ -365,7 +346,8 @@ PipelineOwner addStaticChecksum(
                 config.drainTimeout,
                 config.reapTimeout),
         config,
-        extensionStates);
+        extensionStates,
+        readBackpressureArbiter);
   }
 }
 
@@ -377,13 +359,15 @@ template <
 PipelineOwner addStaticCompression(
     Builder&& builder,
     const ThriftServerConnectionFactoryConfig& config,
-    ExtensionStateStore& extensionStates) {
+    ExtensionStateStore& extensionStates,
+    ReadBackpressureArbiter& readBackpressureArbiter) {
   return addStaticChecksum<WithChecksum, WithWriteBuffer, WithExtensions>(
       std::forward<Builder>(builder)
           .template addNextDuplexTemplate<ThriftServerCompressionHandler>(
               thrift_server_compression_handler_tag),
       config,
-      extensionStates);
+      extensionStates,
+      readBackpressureArbiter);
 }
 
 template <
@@ -402,15 +386,15 @@ PipelineOwner buildStaticThriftPipeline(
     ExtensionStateStore& extensionStates,
     const ThriftServerConnectionFactoryConfig& config,
     ServerStatsShard* statsShard) {
-  channel_pipeline::StaticPipelineBuilder<
-      ThriftServerTransportAdapter,
-      TailAdapter,
-      SimpleBufferAllocator>
-      builder;
-  builder.setEventBase(evb)
-      .setHead(transportAdapter)
-      .setTail(tailAdapter)
-      .setAllocator(allocator);
+  auto builder = channel_pipeline::StaticPipelineBuilder<
+                     ThriftServerTransportAdapter,
+                     TailAdapter,
+                     SimpleBufferAllocator>()
+                     .setEventBase(evb)
+                     .setHead(transportAdapter)
+                     .setTail(tailAdapter)
+                     .setAllocator(allocator);
+  auto& readBackpressureArbiter = connContext->readBackpressureArbiter();
   if constexpr (WithStats) {
     return addStaticCompression<WithChecksum, WithWriteBuffer, WithExtensions>(
         std::move(builder)
@@ -424,7 +408,8 @@ PipelineOwner buildStaticThriftPipeline(
                 std::move(connContext),
                 WithHeaders),
         config,
-        extensionStates);
+        extensionStates,
+        readBackpressureArbiter);
   } else {
     return addStaticCompression<WithChecksum, WithWriteBuffer, WithExtensions>(
         std::move(builder)
@@ -435,7 +420,8 @@ PipelineOwner buildStaticThriftPipeline(
                 std::move(connContext),
                 WithHeaders),
         config,
-        extensionStates);
+        extensionStates,
+        readBackpressureArbiter);
   }
 }
 
@@ -934,6 +920,7 @@ detail::ThriftServerConnectionFactoryT<Mode>::buildConnectionImpl(
         conn.extensionStates,
         statsShard);
   } else {
+    auto& readBackpressureArbiter = connContext->readBackpressureArbiter();
     PipelineBuilder<
         ThriftServerTransportAdapter,
         TailAdapter,
@@ -989,7 +976,7 @@ detail::ThriftServerConnectionFactoryT<Mode>::buildConnectionImpl(
     // head.
     if (config_.enableWriteBufferBackpressure) {
       thriftPipelineBuilder.template addNextDuplex<WriteBufferHandler>(
-          write_buffer_backpressure_handler_tag);
+          write_buffer_backpressure_handler_tag, &readBackpressureArbiter);
     }
     // Embedder-registered handlers go after all built-ins, in registration
     // order — the first sits closest to the head, the last immediately above
@@ -1045,16 +1032,7 @@ PipelineOwner detail::ThriftServerConnectionFactoryT<Mode>::buildRocketPipeline(
     rocket::server::RocketServerAppAdapter* appAdapter,
     ServerStatsShard* FOLLY_NULLABLE statsShard) {
   if constexpr (Mode == ChannelPipelineMode::Static) {
-    if (config_.enableBackpressure) {
-      return selectStaticRocketStats<true>(
-          config_,
-          &rocketAllocator_,
-          evb,
-          transportHandler,
-          appAdapter,
-          statsShard);
-    }
-    return selectStaticRocketStats<false>(
+    return selectStaticRocketStats(
         config_,
         &rocketAllocator_,
         evb,
@@ -1077,25 +1055,11 @@ PipelineOwner detail::ThriftServerConnectionFactoryT<Mode>::buildRocketPipeline(
                        .setTail(appAdapter)
                        .setAllocator(&rocketAllocator_)
                        .template addState<rocket::RocketStreamContexts>();
-    // Batching and fragmentation are always present, but which specialization
-    // is spliced depends on enableBackpressure. The no-backpressure variants
-    // batch and fragment identically; they simply carry no write-ready hook, so
-    // makeHandlerNode never registers them and the pipeline's writeReadyList_
-    // stays empty. The choice costs one branch per connection, not per message.
-    if (config_.enableBackpressure) {
-      builder
-          // Batcher composed with the write-completion tracker: the tracker
-          // turns the transport's per-writev completions into one event per
-          // rocket-frame batch. The fragmentation handler below turns that into
-          // the rocket-level completion the app adapter relays up to the thrift
-          // pipeline.
-          .template addNextOutbound<ServerBatchingFrameHandler>(
-              batching_frame_handler_tag, config_.batchingConfig);
-    } else {
-      builder
-          .template addNextOutbound<ServerBatchingFrameHandlerNoBackpressure>(
-              batching_frame_handler_tag, config_.batchingConfig);
-    }
+    // The completion tracker turns the transport's per-writev completions into
+    // one event per rocket-frame batch. The fragmentation handler below turns
+    // that into the rocket-level completion relayed to the thrift pipeline.
+    builder.template addNextOutbound<ServerBatchingFrameHandler>(
+        batching_frame_handler_tag, config_.batchingConfig);
     builder
         .template addNextOutbound<
             frame::write::handler::FrameLengthEncoderHandler>(
@@ -1111,14 +1075,8 @@ PipelineOwner detail::ThriftServerConnectionFactoryT<Mode>::buildRocketPipeline(
     // batcher's batch event back out into one completion per original frame. It
     // is also the only handler that can narrow the batcher's quiescence
     // verdict, since the frames it is still holding are invisible from below.
-    if (config_.enableBackpressure) {
-      builder.template addNextOutbound<ServerFragmentationFrameHandler>(
-          frame_fragmentation_handler_tag, config_.fragmentationConfig);
-    } else {
-      builder.template addNextOutbound<
-          ServerFragmentationFrameHandlerNoBackpressure>(
-          frame_fragmentation_handler_tag, config_.fragmentationConfig);
-    }
+    builder.template addNextOutbound<ServerFragmentationFrameHandler>(
+        frame_fragmentation_handler_tag, config_.fragmentationConfig);
     builder
         // Restates the fragmenter's frame-layer completion as the rocket
         // layer's own, so nothing above the rocket boundary subscribes to a

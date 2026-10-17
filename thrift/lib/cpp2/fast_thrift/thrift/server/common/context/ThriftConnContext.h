@@ -32,6 +32,7 @@
 #include <folly/CppAttributes.h>
 
 #include <thrift/lib/cpp2/fast_thrift/rocket/common/TypeErasedPtr.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ReadBackpressureArbiter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ExtensionSlots.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -157,6 +158,10 @@ class ThriftConnContext : public boost::intrusive_ref_counter<
     extensionSlots_.set(Ext::kId, state);
   }
 
+  ReadBackpressureArbiter& readBackpressureArbiter() noexcept {
+    return readBackpressureArbiter_;
+  }
+
   void setPeerAddress(folly::SocketAddress addr) noexcept {
     peerAddress_ = std::move(addr);
   }
@@ -180,6 +185,7 @@ class ThriftConnContext : public boost::intrusive_ref_counter<
   std::optional<apache::thrift::ClientMetadata> clientMetadata_;
   void* peerIdentities_{nullptr};
   ExtensionSlots extensionSlots_;
+  ReadBackpressureArbiter readBackpressureArbiter_;
 };
 
 } // namespace apache::thrift::fast_thrift::thrift

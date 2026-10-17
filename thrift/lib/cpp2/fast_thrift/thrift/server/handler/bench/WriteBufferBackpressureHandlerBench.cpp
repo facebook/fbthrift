@@ -85,7 +85,8 @@ ThriftServerResponseMessage makeResponse(uint32_t streamId) {
 BENCHMARK(OnWrite_PassThrough, iters) {
   BenchmarkSuspender suspender;
 
-  WriteBufferBackpressureHandler<BenchCtx> handler;
+  ReadBackpressureArbiter arbiter;
+  WriteBufferBackpressureHandler<BenchCtx> handler(&arbiter);
   BenchCtx ctx;
 
   std::vector<TypeErasedBox> requests;
@@ -109,7 +110,8 @@ BENCHMARK(OnWrite_PassThrough, iters) {
 BENCHMARK(OnWrite_BufferWhileBackpressured, iters) {
   BenchmarkSuspender suspender;
 
-  WriteBufferBackpressureHandler<BenchCtx> handler;
+  ReadBackpressureArbiter arbiter;
+  WriteBufferBackpressureHandler<BenchCtx> handler(&arbiter);
   BenchCtx ctx;
 
   // Arm the backpressure flag with one priming write.
@@ -141,7 +143,8 @@ constexpr size_t kDrainBatch = 8;
 BENCHMARK(OnWriteReady_DrainBatched, iters) {
   BenchmarkSuspender suspender;
 
-  WriteBufferBackpressureHandler<BenchCtx> handler;
+  ReadBackpressureArbiter arbiter;
+  WriteBufferBackpressureHandler<BenchCtx> handler(&arbiter);
   BenchCtx ctx;
 
   const size_t cycles = (iters + kDrainBatch - 1) / kDrainBatch;
