@@ -48,21 +48,20 @@ void WorkScheduler::unregisterWorker(WorkerHandle worker) {
   // - The contract forbids calls from inside scheduler work, as for close():
   //   such a call would wait on itself.
   folly::Baton<> unregistered;
-  scheduler_->add([self = folly::Executor::getKeepAliveToken(*this),
-                   worker = std::move(worker),
-                   &unregistered] {
-    // Neither erase can throw, so the post below always runs: the handle's
-    // hash, comparison, and moves never throw, and erasure never allocates.
-    self->workers_.erase(worker);
-    std::erase(self->workersWithAvailableCapacity_, worker);
-    unregistered.post();
-  });
+  scheduler_->add(
+      [self = shared_from_this(), worker = std::move(worker), &unregistered] {
+        // Neither erase can throw, so the post below always runs: the handle's
+        // hash, comparison, and moves never throw, and erasure never allocates.
+        self->workers_.erase(worker);
+        std::erase(self->workersWithAvailableCapacity_, worker);
+        unregistered.post();
+      });
   unregistered.wait();
 }
 
 void WorkScheduler::close() noexcept {
   folly::Baton<> closed;
-  scheduler_->add([self = folly::Executor::getKeepAliveToken(*this), &closed] {
+  scheduler_->add([self = shared_from_this(), &closed] {
     self->workersWithAvailableCapacity_.clear();
     self->workers_.clear();
     // The contract guarantees that this cleanup runs only after the server
@@ -79,14 +78,14 @@ void WorkScheduler::close() noexcept {
 }
 
 void WorkScheduler::makeWorkerCapacityAvailable(WorkerHandle worker) {
-  scheduler_->add([self = folly::Executor::getKeepAliveToken(*this),
-                   worker = std::move(worker)]() mutable {
-    if (!self->workers_.contains(worker)) {
-      return;
-    }
-    self->workersWithAvailableCapacity_.push_back(std::move(worker));
-    self->dispatchNextAvailableWorkItem();
-  });
+  scheduler_->add(
+      [self = shared_from_this(), worker = std::move(worker)]() mutable {
+        if (!self->workers_.contains(worker)) {
+          return;
+        }
+        self->workersWithAvailableCapacity_.push_back(std::move(worker));
+        self->dispatchNextAvailableWorkItem();
+      });
 }
 
 void WorkScheduler::addAsynchronousWorkWithPriority(
@@ -127,7 +126,7 @@ std::deque<WorkScheduler::AsynchronousWork>& WorkScheduler::selectQueue(
 }
 
 void WorkScheduler::enqueue(AsynchronousWork workItem, WorkPriority priority) {
-  scheduler_->add([self = folly::Executor::getKeepAliveToken(*this),
+  scheduler_->add([self = shared_from_this(),
                    workItem = std::move(workItem),
                    priority]() mutable {
     self->selectQueue(priority).push_back(std::move(workItem));
@@ -143,8 +142,8 @@ bool WorkScheduler::dispatchOne(std::deque<AsynchronousWork>& queue) {
   auto worker = std::move(workersWithAvailableCapacity_.front());
   workersWithAvailableCapacity_.pop_front();
   auto executor = workers_.at(worker);
-  auto lease = std::shared_ptr<WorkerCapacityLease>(new WorkerCapacityLease(
-      executor, folly::Executor::getKeepAliveToken(*this), this, worker));
+  auto lease = std::shared_ptr<WorkerCapacityLease>(
+      new WorkerCapacityLease(executor, shared_from_this(), worker));
   auto workItem = std::move(queue.front());
   queue.pop_front();
   executor->add([workItem = std::move(workItem),

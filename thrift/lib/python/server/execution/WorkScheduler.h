@@ -22,7 +22,6 @@
 #include <unordered_map>
 #include <utility>
 
-#include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/Executor.h>
 
 namespace apache::thrift::python::execution {
@@ -62,26 +61,27 @@ class WorkerCapacityLease final {
  private:
   WorkerCapacityLease(
       folly::Executor::KeepAlive<> executor,
-      folly::Executor::KeepAlive<> workSchedulerKeepAlive,
-      WorkScheduler* workScheduler,
+      std::shared_ptr<WorkScheduler> workScheduler,
       WorkerHandle worker)
       : executor_(std::move(executor)),
-        workSchedulerKeepAlive_(std::move(workSchedulerKeepAlive)),
-        workScheduler_(workScheduler),
+        workScheduler_(std::move(workScheduler)),
         worker_(std::move(worker)) {}
 
   folly::Executor::KeepAlive<> executor_;
-  folly::Executor::KeepAlive<> workSchedulerKeepAlive_;
-  WorkScheduler* workScheduler_;
+  std::shared_ptr<WorkScheduler> workScheduler_;
   WorkerHandle worker_;
 
   friend class WorkScheduler;
 };
 
-class WorkScheduler final : public folly::DefaultKeepAliveExecutor {
+// Owned through std::shared_ptr; create it only with std::make_shared. Every
+// operation, including close(), takes a share of that ownership through
+// shared_from_this(). In-flight scheduler work and leases share ownership too,
+// so the scheduler stays alive until all of them finish.
+class WorkScheduler final : public std::enable_shared_from_this<WorkScheduler> {
  public:
   WorkScheduler();
-  ~WorkScheduler() override { joinKeepAlive(); }
+  ~WorkScheduler() = default;
   WorkScheduler(const WorkScheduler&) = delete;
   WorkScheduler& operator=(const WorkScheduler&) = delete;
   WorkScheduler(WorkScheduler&&) = delete;
@@ -104,9 +104,9 @@ class WorkScheduler final : public folly::DefaultKeepAliveExecutor {
   void addAsynchronousWorkWithPriority(
       AsynchronousWork workItem, int8_t priority);
 
-  void add(folly::Func workItem) override;
-  void addWithPriority(folly::Func workItem, int8_t priority) override;
-  uint8_t getNumPriorities() const override { return 2; }
+  void add(folly::Func workItem);
+  void addWithPriority(folly::Func workItem, int8_t priority);
+  uint8_t getNumPriorities() const { return 2; }
 
  private:
   using WorkerRegistry = std::unordered_map<

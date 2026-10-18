@@ -132,13 +132,13 @@ TEST(WorkSchedulerTest, CloseReleasesRegisteredWorkerExecutorKeepAlive) {
   const std::size_t expectedKeepAliveCountAfterClose = 0;
   folly::ManualExecutor workerEventLoop;
   KeepAliveTrackingExecutor workerExecutor(workerEventLoop);
-  WorkScheduler workScheduler;
-  workScheduler.registerWorker(
+  auto workScheduler = std::make_shared<WorkScheduler>();
+  workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(workerExecutor));
 
   // WHEN
   const auto actualKeepAliveCountBeforeClose = workerExecutor.keepAliveCount();
-  workScheduler.close();
+  workScheduler->close();
   const auto actualKeepAliveCountAfterClose = workerExecutor.keepAliveCount();
 
   // THEN
@@ -158,18 +158,18 @@ TEST(
   // drops to zero exactly when unregistration releases it.
   folly::ManualExecutor idleWorkerEventLoop;
   KeepAliveTrackingExecutor idleWorkerExecutor(idleWorkerEventLoop);
-  WorkScheduler workScheduler;
-  const auto busyWorker = workScheduler.registerWorker(
+  auto workScheduler = std::make_shared<WorkScheduler>();
+  const auto busyWorker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(busyWorkerExecutor));
-  const auto idleWorker = workScheduler.registerWorker(
+  const auto idleWorker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(idleWorkerExecutor));
   // Only the busy worker has capacity, so the work below goes to it.
-  workScheduler.makeWorkerCapacityAvailable(busyWorker);
+  workScheduler->makeWorkerCapacityAvailable(busyWorker);
   // Make the scheduler busy on another thread. The scheduler has no thread of
   // its own, so this thread, which submits first, runs the dispatch and freezes
   // in the busy worker's add().
   std::thread schedulerThread([&] {
-    workScheduler.addAsynchronousWorkWithPriority(
+    workScheduler->addAsynchronousWorkWithPriority(
         [](const WorkerHandle&,
            const folly::Executor::KeepAlive<>&,
            std::shared_ptr<WorkerCapacityLease>) {},
@@ -184,7 +184,7 @@ TEST(
   // The scheduler is busy, so this removal waits behind the frozen dispatch.
   // Record the count the moment unregisterWorker() returns.
   std::thread unregisterThread([&] {
-    workScheduler.unregisterWorker(idleWorker);
+    workScheduler->unregisterWorker(idleWorker);
     actualKeepAliveCountAfterUnregister = idleWorkerExecutor.keepAliveCount();
     unregisterReturned.post();
   });
@@ -212,12 +212,12 @@ TEST(WorkSchedulerTest, LeaseReleasedAfterCloseDoesNotRestoreRegistration) {
   const std::size_t expectedKeepAliveCountAfterLeaseRelease = 0;
   folly::ManualExecutor workerEventLoop;
   KeepAliveTrackingExecutor workerExecutor(workerEventLoop);
-  WorkScheduler workScheduler;
+  auto workScheduler = std::make_shared<WorkScheduler>();
   std::shared_ptr<WorkerCapacityLease> activeLease;
-  const auto worker = workScheduler.registerWorker(
+  const auto worker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(workerExecutor));
-  workScheduler.makeWorkerCapacityAvailable(worker);
-  workScheduler.addAsynchronousWorkWithPriority(
+  workScheduler->makeWorkerCapacityAvailable(worker);
+  workScheduler->addAsynchronousWorkWithPriority(
       [&](WorkerHandle,
           const folly::Executor::KeepAlive<>&,
           std::shared_ptr<WorkerCapacityLease> lease) {
@@ -227,7 +227,7 @@ TEST(WorkSchedulerTest, LeaseReleasedAfterCloseDoesNotRestoreRegistration) {
   workerEventLoop.drain();
 
   // WHEN
-  workScheduler.close();
+  workScheduler->close();
   const auto actualKeepAliveCountWhileLeaseIsActive =
       workerExecutor.keepAliveCount();
   activeLease.reset();
@@ -282,17 +282,17 @@ TEST(
     CapacityRemainsUnavailableUntilFinalLeaseReferenceRelease) {
   // GIVEN
   folly::ManualExecutor workerExecutor;
-  WorkScheduler workScheduler;
+  auto workScheduler = std::make_shared<WorkScheduler>();
   bool firstWorkExecuted = false;
   bool secondWorkExecuted = false;
   std::shared_ptr<WorkerCapacityLease> referenceToLease;
   std::shared_ptr<WorkerCapacityLease> additionalReferenceToLease;
 
   // WHEN
-  const auto worker = workScheduler.registerWorker(
+  const auto worker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(workerExecutor));
-  workScheduler.makeWorkerCapacityAvailable(worker);
-  workScheduler.addAsynchronousWorkWithPriority(
+  workScheduler->makeWorkerCapacityAvailable(worker);
+  workScheduler->addAsynchronousWorkWithPriority(
       [&](WorkerHandle,
           const folly::Executor::KeepAlive<>&,
           std::shared_ptr<WorkerCapacityLease> lease) {
@@ -301,7 +301,7 @@ TEST(
         additionalReferenceToLease = referenceToLease;
       },
       folly::Executor::MID_PRI);
-  workScheduler.addAsynchronousWorkWithPriority(
+  workScheduler->addAsynchronousWorkWithPriority(
       [&](WorkerHandle,
           const folly::Executor::KeepAlive<>&,
           std::shared_ptr<WorkerCapacityLease>) { secondWorkExecuted = true; },
@@ -326,17 +326,17 @@ TEST(
 TEST(WorkSchedulerTest, OpaqueExecutorWorkReturnsWorkerAndHonorsPriority) {
   // GIVEN
   folly::ManualExecutor workerExecutor;
-  WorkScheduler workScheduler;
+  auto workScheduler = std::make_shared<WorkScheduler>();
   std::vector<int> executionOrder;
   const std::vector<int> expected{2, 1};
 
   // WHEN
-  const auto worker = workScheduler.registerWorker(
+  const auto worker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(workerExecutor));
-  workScheduler.addWithPriority(
+  workScheduler->addWithPriority(
       [&] { executionOrder.push_back(1); }, folly::Executor::LO_PRI);
-  workScheduler.add([&] { executionOrder.push_back(2); });
-  workScheduler.makeWorkerCapacityAvailable(worker);
+  workScheduler->add([&] { executionOrder.push_back(2); });
+  workScheduler->makeWorkerCapacityAvailable(worker);
   workerExecutor.drain();
 
   // THEN
@@ -346,22 +346,22 @@ TEST(WorkSchedulerTest, OpaqueExecutorWorkReturnsWorkerAndHonorsPriority) {
 TEST(WorkSchedulerTest, NormalAsynchronousAndOpaqueWorkPreserveFifoOrder) {
   // GIVEN
   folly::ManualExecutor workerExecutor;
-  WorkScheduler workScheduler;
+  auto workScheduler = std::make_shared<WorkScheduler>();
   std::vector<int> executionOrder;
   const std::vector<int> expected{1, 2};
 
   // WHEN
-  const auto worker = workScheduler.registerWorker(
+  const auto worker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(workerExecutor));
-  workScheduler.addAsynchronousWorkWithPriority(
+  workScheduler->addAsynchronousWorkWithPriority(
       [&](WorkerHandle,
           const folly::Executor::KeepAlive<>&,
           std::shared_ptr<WorkerCapacityLease>) {
         executionOrder.push_back(1);
       },
       folly::Executor::MID_PRI);
-  workScheduler.add([&] { executionOrder.push_back(2); });
-  workScheduler.makeWorkerCapacityAvailable(worker);
+  workScheduler->add([&] { executionOrder.push_back(2); });
+  workScheduler->makeWorkerCapacityAvailable(worker);
   workerExecutor.drain();
 
   // THEN
@@ -371,19 +371,19 @@ TEST(WorkSchedulerTest, NormalAsynchronousAndOpaqueWorkPreserveFifoOrder) {
 TEST(WorkSchedulerTest, WorkItemThatThrowsReleasesCapacityForNextWorkItem) {
   // GIVEN
   folly::ManualExecutor workerExecutor;
-  WorkScheduler workScheduler;
+  auto workScheduler = std::make_shared<WorkScheduler>();
   bool shouldThrow = true;
   bool nextWorkExecuted = false;
   // WHEN
-  const auto worker = workScheduler.registerWorker(
+  const auto worker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(workerExecutor));
-  workScheduler.add([&] {
+  workScheduler->add([&] {
     if (shouldThrow) {
       throw std::runtime_error("opaque work failed");
     }
   });
-  workScheduler.add([&] { nextWorkExecuted = true; });
-  workScheduler.makeWorkerCapacityAvailable(worker);
+  workScheduler->add([&] { nextWorkExecuted = true; });
+  workScheduler->makeWorkerCapacityAvailable(worker);
   bool exceptionEscaped = false;
   try {
     workerExecutor.drain();
@@ -405,17 +405,17 @@ TEST(WorkSchedulerTest, WorkItemThatThrowsReleasesCapacityForNextWorkItem) {
 TEST(WorkSchedulerTest, ConcurrentCapacityReturnAndGeneralWorkMakeProgress) {
   // GIVEN
   folly::CPUThreadPoolExecutor workerExecutor(1);
-  WorkScheduler workScheduler;
+  auto workScheduler = std::make_shared<WorkScheduler>();
   folly::Baton<> workerStarted;
   folly::Baton<> startConcurrentCalls;
   folly::Baton<> capacityReturnFinished;
   folly::Baton<> generalWorkFinished;
 
   // WHEN
-  const auto worker = workScheduler.registerWorker(
+  const auto worker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(workerExecutor));
-  workScheduler.makeWorkerCapacityAvailable(worker);
-  workScheduler.addAsynchronousWorkWithPriority(
+  workScheduler->makeWorkerCapacityAvailable(worker);
+  workScheduler->addAsynchronousWorkWithPriority(
       [&](WorkerHandle,
           const folly::Executor::KeepAlive<>&,
           std::shared_ptr<WorkerCapacityLease> execution) {
@@ -428,7 +428,7 @@ TEST(WorkSchedulerTest, ConcurrentCapacityReturnAndGeneralWorkMakeProgress) {
   const bool workerStartedBeforeTimeout =
       workerStarted.try_wait_for(std::chrono::seconds(5));
   startConcurrentCalls.post();
-  workScheduler.addAsynchronousWorkWithPriority(
+  workScheduler->addAsynchronousWorkWithPriority(
       [&](WorkerHandle,
           const folly::Executor::KeepAlive<>&,
           std::shared_ptr<WorkerCapacityLease>) { generalWorkFinished.post(); },
@@ -457,7 +457,7 @@ TEST(WorkSchedulerTest, YieldedRequestContinuesAfterNextRequestRuns) {
       RequestEvent::Request1Continued,
   };
   folly::ManualExecutor workerExecutor;
-  WorkScheduler workScheduler;
+  auto workScheduler = std::make_shared<WorkScheduler>();
   folly::coro::Baton request1MayContinue;
   std::vector<RequestEvent> actualEvents;
   std::optional<folly::Try<void>> request1Result;
@@ -466,23 +466,23 @@ TEST(WorkSchedulerTest, YieldedRequestContinuesAfterNextRequestRuns) {
     co_await request1MayContinue;
     actualEvents.push_back(RequestEvent::Request1Continued);
   };
-  const auto worker = workScheduler.registerWorker(
+  const auto worker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(workerExecutor));
-  workScheduler.add([&] {
+  workScheduler->add([&] {
     folly::coro::co_withExecutor(&workerExecutor, request1())
         .startInlineUnsafe([&](folly::Try<void>&& result) {
           request1Result.emplace(std::move(result));
         });
   });
-  workScheduler.add([&] {
+  workScheduler->add([&] {
     actualEvents.push_back(RequestEvent::Request2Ran);
     request1MayContinue.post();
   });
 
   // WHEN
-  workScheduler.makeWorkerCapacityAvailable(worker);
+  workScheduler->makeWorkerCapacityAvailable(worker);
   workerExecutor.drain();
-  workScheduler.close();
+  workScheduler->close();
 
   // THEN
   EXPECT_EQ(expectedEvents, actualEvents);
@@ -497,7 +497,7 @@ TEST(
   folly::ManualExecutor workerEventLoop;
   CallbackGateExecutor workerExecutor(
       workerEventLoop, /* callbacksToPassBeforeGateCloses */ 2);
-  WorkScheduler workScheduler;
+  auto workScheduler = std::make_shared<WorkScheduler>();
   const std::size_t expectedSingleStepCount = 1;
   const std::size_t expectedCallbackCountBehindGate = 1;
   const std::size_t expectedCallbackCountBehindGateAfterDrain = 0;
@@ -517,18 +517,18 @@ TEST(
         workerExecutor.callbackCountBehindGate();
     request1ThirdContinuationReached = true;
   };
-  const auto worker = workScheduler.registerWorker(
+  const auto worker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(workerExecutor));
-  workScheduler.add([&] {
+  workScheduler->add([&] {
     folly::coro::co_withExecutor(&workerEventLoop, request1())
         .startInlineUnsafe([&](folly::Try<void>&& result) {
           request1Result.emplace(std::move(result));
         });
   });
-  workScheduler.add([&] { request2Executed = true; });
+  workScheduler->add([&] { request2Executed = true; });
 
   // WHEN
-  workScheduler.makeWorkerCapacityAvailable(worker);
+  workScheduler->makeWorkerCapacityAvailable(worker);
   const auto callbackCountForRequest1FirstTurn = workerEventLoop.step();
   const auto callbackCountForRequest1CapacityReturn = workerEventLoop.step();
   const auto callbackCountBehindGateAfterRequest2Assignment =
@@ -538,7 +538,7 @@ TEST(
   // the gate, so request 3 must remain in the scheduler queue. Request 1's
   // existing coroutine continuations must remain free to run on the Worker
   // event loop.
-  workScheduler.add([&] { request3Executed = true; });
+  workScheduler->add([&] { request3Executed = true; });
   const auto callbackCountBehindGateAfterRequest3Accepted =
       workerExecutor.callbackCountBehindGate();
   const bool request3ExecutedWhilePending = request3Executed;
@@ -547,7 +547,7 @@ TEST(
   const auto callbackCountForRequest1ThirdContinuation = workerEventLoop.step();
   workerExecutor.openGateAndForwardCallbacks();
   workerEventLoop.drain();
-  workScheduler.close();
+  workScheduler->close();
   workerEventLoop.drain();
   const auto callbackCountBehindGateAfterDrain =
       workerExecutor.callbackCountBehindGate();
@@ -593,7 +593,7 @@ TEST(WorkSchedulerTest, TwoWorkersRunGeneralWorkConcurrently) {
   const int expectedEventCount = 1;
   folly::CPUThreadPoolExecutor firstExecutor(1);
   folly::CPUThreadPoolExecutor secondExecutor(1);
-  WorkScheduler workScheduler;
+  auto workScheduler = std::make_shared<WorkScheduler>();
   std::mutex workEventsMutex;
   std::vector<WorkEvent> workEvents;
   folly::Baton<> firstWorkEntered;
@@ -608,13 +608,13 @@ TEST(WorkSchedulerTest, TwoWorkersRunGeneralWorkConcurrently) {
   };
 
   // WHEN
-  const auto firstWorker = workScheduler.registerWorker(
+  const auto firstWorker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(firstExecutor));
-  const auto secondWorker = workScheduler.registerWorker(
+  const auto secondWorker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(secondExecutor));
-  workScheduler.makeWorkerCapacityAvailable(firstWorker);
-  workScheduler.makeWorkerCapacityAvailable(secondWorker);
-  workScheduler.addAsynchronousWorkWithPriority(
+  workScheduler->makeWorkerCapacityAvailable(firstWorker);
+  workScheduler->makeWorkerCapacityAvailable(secondWorker);
+  workScheduler->addAsynchronousWorkWithPriority(
       [&](WorkerHandle,
           const folly::Executor::KeepAlive<>&,
           std::shared_ptr<WorkerCapacityLease>) {
@@ -626,7 +626,7 @@ TEST(WorkSchedulerTest, TwoWorkersRunGeneralWorkConcurrently) {
         firstWorkFinished.post();
       },
       folly::Executor::MID_PRI);
-  workScheduler.addAsynchronousWorkWithPriority(
+  workScheduler->addAsynchronousWorkWithPriority(
       [&](WorkerHandle,
           const folly::Executor::KeepAlive<>&,
           std::shared_ptr<WorkerCapacityLease>) {
@@ -703,18 +703,18 @@ TEST(WorkSchedulerTest, AssignedWorkReceivesItsWorkersExecutor) {
   // GIVEN
   folly::ManualExecutor firstWorkerExecutor;
   folly::ManualExecutor secondWorkerExecutor;
-  WorkScheduler workScheduler;
-  workScheduler.registerWorker(
+  auto workScheduler = std::make_shared<WorkScheduler>();
+  workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(firstWorkerExecutor));
-  const auto secondWorker = workScheduler.registerWorker(
+  const auto secondWorker = workScheduler->registerWorker(
       folly::Executor::getKeepAliveToken(secondWorkerExecutor));
   // Only the second worker has capacity, so the work below goes to it.
-  workScheduler.makeWorkerCapacityAvailable(secondWorker);
+  workScheduler->makeWorkerCapacityAvailable(secondWorker);
   folly::Executor* const expectedExecutor = &secondWorkerExecutor;
   folly::Executor* actualExecutor = nullptr;
 
   // WHEN
-  workScheduler.addAsynchronousWorkWithPriority(
+  workScheduler->addAsynchronousWorkWithPriority(
       [&](const WorkerHandle&,
           const folly::Executor::KeepAlive<>& executor,
           std::shared_ptr<WorkerCapacityLease>) {
@@ -722,7 +722,7 @@ TEST(WorkSchedulerTest, AssignedWorkReceivesItsWorkersExecutor) {
       },
       folly::Executor::MID_PRI);
   secondWorkerExecutor.drain();
-  workScheduler.close();
+  workScheduler->close();
 
   // THEN
   EXPECT_EQ(expectedExecutor, actualExecutor);
