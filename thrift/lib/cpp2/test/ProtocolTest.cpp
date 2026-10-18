@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 #include <folly/Benchmark.h>
 
+#include <thrift/lib/cpp2/op/Encode.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/ProtocolBenchmark_types.h>
@@ -83,7 +84,7 @@ void writerBenchmark(const BenchmarkObject& obj, int iters) {
     Writer writer;
     writer.setOutput(&queue);
 
-    Cpp2Ops<BenchmarkObject>::write(&writer, &obj);
+    op::encode<type::struct_t<BenchmarkObject>>(writer, obj);
   }
 }
 

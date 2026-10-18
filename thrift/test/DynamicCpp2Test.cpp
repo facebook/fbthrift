@@ -198,16 +198,17 @@ TEST_P(RoundtripTestFixture, RoundtripContainer) {
   *expected.data() = GetParam();
 
   BinaryProtocolWriter protWriter;
-  size_t bufSize = Cpp2Ops<Container>::serializedSize(&protWriter, &expected);
+  size_t bufSize = op::serialized_size<false, type::struct_t<Container>>(
+      protWriter, expected);
   folly::IOBufQueue queue;
   protWriter.setOutput(&queue, bufSize);
-  Cpp2Ops<Container>::write(&protWriter, &expected);
+  op::encode<type::struct_t<Container>>(protWriter, expected);
 
   auto buf = queue.move();
   BinaryProtocolReader protReader;
   protReader.setInput(buf.get());
   Container actual;
-  Cpp2Ops<Container>::read(&protReader, &actual);
+  op::decode<type::struct_t<Container>>(protReader, actual);
   EXPECT_EQ(expected, actual) << "Expected: " << toJson(**expected.data())
                               << " Actual: " << toJson(**actual.data());
 }

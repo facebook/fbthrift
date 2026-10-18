@@ -15,6 +15,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <thrift/lib/cpp2/op/Encode.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 
 #include <thrift/test/gen-cpp2/enum_types.h>
@@ -28,16 +29,17 @@ TEST(QualifiedEnums, Defaults) {
 
   BinaryProtocolWriter protWriter;
   size_t bufSize =
-      Cpp2Ops<MyQualifiedStruct>::serializedSize(&protWriter, &emptyStruct);
+      op::serialized_size<false, type::struct_t<MyQualifiedStruct>>(
+          protWriter, emptyStruct);
   folly::IOBufQueue queue;
   protWriter.setOutput(&queue, bufSize);
-  Cpp2Ops<MyQualifiedStruct>::write(&protWriter, &emptyStruct);
+  op::encode<type::struct_t<MyQualifiedStruct>>(protWriter, emptyStruct);
 
   auto buf = queue.move();
   BinaryProtocolReader protReader;
   protReader.setInput(buf.get());
   MyQualifiedStruct actual;
-  Cpp2Ops<MyQualifiedStruct>::read(&protReader, &actual);
+  op::decode<type::struct_t<MyQualifiedStruct>>(protReader, actual);
 
   EXPECT_EQ(MyQualifiedEnum::BAR, actual.field1());
   EXPECT_EQ(MyQualifiedEnum::FOO, actual.field2());
