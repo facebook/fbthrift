@@ -111,11 +111,17 @@ DefaultPayloadSerializerStrategy::packWithFds<StreamPayloadMetadata>(
     folly::IOBufFactory*,
     bool);
 
+bool DefaultPayloadSerializerStrategy::isHeadroomCandidate(
+    const std::unique_ptr<folly::IOBuf>& data) const {
+  return data && !data->isChained() && !data->isSharedOne() &&
+      data->headroom() >= kHeadroomBytes;
+}
+
 bool DefaultPayloadSerializerStrategy::
     canSerializeMetadataIntoDataBufferHeadroom(
         const std::unique_ptr<folly::IOBuf>& data, const size_t serSize) const {
-  return data && !data->isChained() &&
-      data->headroom() >= serSize + kHeadroomBytes && !data->isSharedOne();
+  return isHeadroomCandidate(data) &&
+      data->headroom() >= serSize + kHeadroomBytes;
 }
 
 template <class Metadata, class ProtocolWriter>
@@ -150,7 +156,7 @@ Payload DefaultPayloadSerializerStrategy::makePayloadWithHeadroom(
 
 template <class Metadata, class ProtocolWriter>
 Payload DefaultPayloadSerializerStrategy::makePayloadWithoutHeadroom(
-    size_t serSize,
+    size_t allocSize,
     ProtocolWriter& writer,
     const Metadata& metadata,
     std::unique_ptr<folly::IOBuf> data,
@@ -159,8 +165,6 @@ Payload DefaultPayloadSerializerStrategy::makePayloadWithoutHeadroom(
   if (ioBufFactory) {
     queue.setIOBufFactory(ioBufFactory);
   }
-  constexpr size_t kMinAllocBytes = 1024;
-  auto allocSize = std::max(kHeadroomBytes + serSize, kMinAllocBytes);
   auto buf = ioBufFactory ? (*ioBufFactory)(allocSize)
                           : folly::IOBuf::create(allocSize);
   buf->advance(kHeadroomBytes);
@@ -177,17 +181,25 @@ Payload DefaultPayloadSerializerStrategy::makePayload(
     std::unique_ptr<folly::IOBuf> data,
     folly::IOBufFactory* ioBufFactory) {
   ProtocolWriter writer;
-  // Default is to leave some headroom for rsocket headers
-  size_t serSize = metadata.serializedSizeZC(&writer);
 
-  // If possible, serialize metadata into the headeroom of data.
-  if (canSerializeMetadataIntoDataBufferHeadroom(data, serSize)) {
-    return makePayloadWithHeadroom(
-        writer, metadata, std::move(data), ioBufFactory);
-  } else {
+  // Only compute the serialized metadata size when metadata could fit in
+  // data's headroom; otherwise allocate a minimally-sized buffer and let
+  // IOBufQueue grow to accommodate oversized metadata.
+  if (isHeadroomCandidate(data)) {
+    size_t serSize = metadata.serializedSizeZC(&writer);
+    if (canSerializeMetadataIntoDataBufferHeadroom(data, serSize)) {
+      return makePayloadWithHeadroom(
+          writer, metadata, std::move(data), ioBufFactory);
+    }
     return makePayloadWithoutHeadroom(
-        serSize, writer, metadata, std::move(data), ioBufFactory);
+        std::max(kHeadroomBytes + serSize, kMinAllocBytes),
+        writer,
+        metadata,
+        std::move(data),
+        ioBufFactory);
   }
+  return makePayloadWithoutHeadroom(
+      kMinAllocBytes, writer, metadata, std::move(data), ioBufFactory);
 }
 
 template Payload DefaultPayloadSerializerStrategy::

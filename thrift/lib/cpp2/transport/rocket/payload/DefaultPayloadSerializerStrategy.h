@@ -175,6 +175,7 @@ class DefaultPayloadSerializerStrategy final
 
  private:
   static constexpr size_t kHeadroomBytes = 16;
+  static constexpr size_t kMinAllocBytes = 1024;
 
   template <typename Metadata>
   rocket::Payload finalizePayload(
@@ -183,6 +184,8 @@ class DefaultPayloadSerializerStrategy final
       folly::SocketFds fds,
       bool encodeMetadataUsingBinary,
       folly::IOBufFactory* ioBufFactory);
+
+  bool isHeadroomCandidate(const std::unique_ptr<folly::IOBuf>& data) const;
 
   bool canSerializeMetadataIntoDataBufferHeadroom(
       const std::unique_ptr<folly::IOBuf>& data, const size_t serSize) const;
@@ -196,7 +199,7 @@ class DefaultPayloadSerializerStrategy final
 
   template <class Metadata, class ProtocolWriter>
   Payload makePayloadWithoutHeadroom(
-      size_t serSize,
+      size_t allocSize,
       ProtocolWriter& writer,
       const Metadata& metadata,
       std::unique_ptr<folly::IOBuf> data,
