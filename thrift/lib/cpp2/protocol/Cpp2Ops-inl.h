@@ -18,12 +18,15 @@
 
 #include <type_traits>
 
+#include <folly/CPortability.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/IOBufChain.h>
+#include <thrift/lib/cpp2/op/Encode.h>
 #include <thrift/lib/cpp2/op/detail/AllocatorPropagation.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
+#include <thrift/lib/cpp2/type/Tag.h>
 
 namespace apache {
 namespace thrift {
@@ -100,341 +103,108 @@ struct Reserver<C, std::void_t<typename reserve_result<C>::type>> {
   }
 };
 
+#if defined(__clang__) && __clang_major__ >= 17
+#define FBTHRIFT_ALWAYS_INLINE_CALLSITE(...)            \
+  do {                                                  \
+    FOLLY_PUSH_WARNING                                  \
+    FOLLY_CLANG_DISABLE_WARNING("-Wignored-attributes") \
+    [[clang::always_inline]] __VA_ARGS__;               \
+    FOLLY_POP_WARNING                                   \
+  } while (false)
+#else
+#define FBTHRIFT_ALWAYS_INLINE_CALLSITE(...) \
+  do {                                       \
+    __VA_ARGS__;                             \
+  } while (false)
+#endif
+
+// Cpp2Ops for a type that op::encode/op::decode serialize as Tag.
+template <class T, class Tag>
+class Cpp2OpsViaOp {
+ public:
+  using Type = T;
+  static constexpr protocol::TType thriftType() {
+    return op::typeTagToTType<Tag>;
+  }
+  template <class Protocol>
+  FOLLY_ALWAYS_INLINE static uint32_t write(Protocol* prot, const Type* value) {
+    FBTHRIFT_ALWAYS_INLINE_CALLSITE(
+        return static_cast<uint32_t>(op::encode<Tag>(*prot, *value)));
+  }
+  template <class Protocol>
+  FOLLY_ALWAYS_INLINE static void read(Protocol* prot, Type* value) {
+    FBTHRIFT_ALWAYS_INLINE_CALLSITE(op::decode<Tag>(*prot, *value));
+  }
+  template <class Protocol>
+  static uint32_t serializedSize(Protocol* prot, const Type* value) {
+    return static_cast<uint32_t>(
+        op::serialized_size<false, Tag>(*prot, *value));
+  }
+  template <class Protocol>
+  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
+    return static_cast<uint32_t>(op::serialized_size<true, Tag>(*prot, *value));
+  }
+};
+
+#undef FBTHRIFT_ALWAYS_INLINE_CALLSITE
+
 } // namespace detail
 
 template <>
-class Cpp2Ops<folly::fbstring> {
- public:
-  using Type = folly::fbstring;
-  static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeString(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readString(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeString(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeString(*value);
-  }
-};
-
+class Cpp2Ops<folly::fbstring>
+    : public detail::Cpp2OpsViaOp<folly::fbstring, type::string_t> {};
 template <>
-class Cpp2Ops<std::string> {
- public:
-  using Type = std::string;
-  static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeString(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readString(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeString(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeString(*value);
-  }
-};
-
+class Cpp2Ops<std::string>
+    : public detail::Cpp2OpsViaOp<std::string, type::string_t> {};
 template <>
-class Cpp2Ops<int8_t> {
- public:
-  using Type = int8_t;
-  static constexpr protocol::TType thriftType() { return protocol::T_BYTE; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeByte(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readByte(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeByte(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeByte(*value);
-  }
-};
-
+class Cpp2Ops<bool> : public detail::Cpp2OpsViaOp<bool, type::bool_t> {};
 template <>
-class Cpp2Ops<int16_t> {
- public:
-  using Type = int16_t;
-  static constexpr protocol::TType thriftType() { return protocol::T_I16; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeI16(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readI16(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI16(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI16(*value);
-  }
-};
-
+class Cpp2Ops<int8_t> : public detail::Cpp2OpsViaOp<int8_t, type::byte_t> {};
 template <>
-class Cpp2Ops<int32_t> {
- public:
-  using Type = int32_t;
-  static constexpr protocol::TType thriftType() { return protocol::T_I32; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeI32(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readI32(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI32(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI32(*value);
-  }
-};
-
+class Cpp2Ops<int16_t> : public detail::Cpp2OpsViaOp<int16_t, type::i16_t> {};
 template <>
-class Cpp2Ops<int64_t> {
- public:
-  using Type = int64_t;
-  static constexpr protocol::TType thriftType() { return protocol::T_I64; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeI64(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readI64(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI64(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI64(*value);
-  }
-};
-
+class Cpp2Ops<int32_t> : public detail::Cpp2OpsViaOp<int32_t, type::i32_t> {};
 template <>
-class Cpp2Ops<uint8_t> {
- public:
-  using Type = uint8_t;
-  using SignedType = std::make_signed_t<Type>;
-  static constexpr protocol::TType thriftType() { return protocol::T_BYTE; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeByte(folly::to_signed(*value));
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    SignedType signedValue;
-    prot->readByte(signedValue);
-    *value = folly::to_unsigned(signedValue);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeByte(folly::to_signed(*value));
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeByte(folly::to_signed(*value));
-  }
-};
-
+class Cpp2Ops<int64_t> : public detail::Cpp2OpsViaOp<int64_t, type::i64_t> {};
 template <>
-class Cpp2Ops<uint16_t> {
- public:
-  using Type = uint16_t;
-  using SignedType = std::make_signed_t<Type>;
-  static constexpr protocol::TType thriftType() { return protocol::T_I16; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeI16(folly::to_signed(*value));
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    SignedType signedValue;
-    prot->readI16(signedValue);
-    *value = folly::to_unsigned(signedValue);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI16(folly::to_signed(*value));
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI16(folly::to_signed(*value));
-  }
-};
-
+class Cpp2Ops<uint8_t> : public detail::Cpp2OpsViaOp<uint8_t, type::byte_t> {};
 template <>
-class Cpp2Ops<uint32_t> {
- public:
-  using Type = uint32_t;
-  using SignedType = std::make_signed_t<Type>;
-  static constexpr protocol::TType thriftType() { return protocol::T_I32; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeI32(folly::to_signed(*value));
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    SignedType signedValue;
-    prot->readI32(signedValue);
-    *value = folly::to_unsigned(signedValue);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI32(folly::to_signed(*value));
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI32(folly::to_signed(*value));
-  }
-};
-
+class Cpp2Ops<uint16_t> : public detail::Cpp2OpsViaOp<uint16_t, type::i16_t> {};
 template <>
-class Cpp2Ops<uint64_t> {
- public:
-  using Type = uint64_t;
-  using SignedType = std::make_signed_t<Type>;
-  static constexpr protocol::TType thriftType() { return protocol::T_I64; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeI64(folly::to_signed(*value));
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    SignedType signedValue;
-    prot->readI64(signedValue);
-    *value = folly::to_unsigned(signedValue);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI64(folly::to_signed(*value));
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI64(folly::to_signed(*value));
-  }
-};
-
+class Cpp2Ops<uint32_t> : public detail::Cpp2OpsViaOp<uint32_t, type::i32_t> {};
 template <>
-class Cpp2Ops<bool> {
- public:
-  using Type = bool;
-  static constexpr protocol::TType thriftType() { return protocol::T_BOOL; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeBool(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readBool(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeBool(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeBool(*value);
-  }
-};
-
+class Cpp2Ops<uint64_t> : public detail::Cpp2OpsViaOp<uint64_t, type::i64_t> {};
 template <>
-class Cpp2Ops<double> {
- public:
-  using Type = double;
-  static constexpr protocol::TType thriftType() { return protocol::T_DOUBLE; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeDouble(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readDouble(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeDouble(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeDouble(*value);
-  }
-};
+class Cpp2Ops<float> : public detail::Cpp2OpsViaOp<float, type::float_t> {};
+template <>
+class Cpp2Ops<double> : public detail::Cpp2OpsViaOp<double, type::double_t> {};
 
+// Every enum is an i32 on the wire, whatever its underlying type.
 template <class E>
 class Cpp2Ops<E, typename std::enable_if<std::is_enum<E>::value>::type> {
  public:
   using Type = E;
   static constexpr protocol::TType thriftType() { return protocol::T_I32; }
   template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeI32(static_cast<int32_t>(*value));
+  FOLLY_ALWAYS_INLINE static uint32_t write(Protocol* prot, const Type* value) {
+    const auto val = static_cast<int32_t>(*value);
+    return Cpp2Ops<int32_t>::write(prot, &val);
   }
   template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
+  FOLLY_ALWAYS_INLINE static void read(Protocol* prot, Type* value) {
     int32_t val;
-    prot->readI32(val);
+    Cpp2Ops<int32_t>::read(prot, &val);
     *value = static_cast<Type>(val);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI32(static_cast<int32_t>(*value));
+    return static_cast<uint32_t>(op::serialized_size<false, type::i32_t>(
+        *prot, static_cast<int32_t>(*value)));
   }
   template <class Protocol>
   static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeI32(static_cast<int32_t>(*value));
-  }
-};
-
-template <>
-class Cpp2Ops<float> {
- public:
-  using Type = float;
-  static constexpr protocol::TType thriftType() { return protocol::T_FLOAT; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeFloat(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readFloat(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeFloat(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeFloat(*value);
+    return static_cast<uint32_t>(op::serialized_size<true, type::i32_t>(
+        *prot, static_cast<int32_t>(*value)));
   }
 };
 
@@ -744,73 +514,15 @@ class Cpp2Ops<
 };
 
 template <>
-class Cpp2Ops<folly::IOBuf> {
- public:
-  using Type = folly::IOBuf;
-  static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeBinary(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readBinary(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeBinary(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeZCBinary(*value);
-  }
-};
-
+class Cpp2Ops<folly::IOBuf>
+    : public detail::Cpp2OpsViaOp<folly::IOBuf, type::binary_t> {};
 template <>
-class Cpp2Ops<IOBufChain> {
- public:
-  using Type = IOBufChain;
-  static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeBinary(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readBinary(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeBinary(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeZCBinary(*value);
-  }
-};
-
+class Cpp2Ops<IOBufChain>
+    : public detail::Cpp2OpsViaOp<IOBufChain, type::binary_t> {};
 template <>
-class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
- public:
-  using Type = std::unique_ptr<folly::IOBuf>;
-  static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
-  template <class Protocol>
-  static uint32_t write(Protocol* prot, const Type* value) {
-    return prot->writeBinary(*value);
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    prot->readBinary(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return prot->serializedSizeBinary(*value);
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return prot->serializedSizeZCBinary(*value);
-  }
-};
+class Cpp2Ops<std::unique_ptr<folly::IOBuf>>
+    : public detail::
+          Cpp2OpsViaOp<std::unique_ptr<folly::IOBuf>, type::binary_t> {};
 
 template <class T>
 class Cpp2Ops<
