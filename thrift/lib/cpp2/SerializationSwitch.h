@@ -24,7 +24,7 @@ namespace apache::thrift::detail {
 
 template <typename Protocol, typename Args>
 void deserializeRequestBodySimple(Protocol* prot, Args* args) {
-  ::apache::thrift::Cpp2Ops<Args>::read(prot, args);
+  args->read(prot);
 }
 
 template <typename Protocol, typename Args>
@@ -36,12 +36,12 @@ uint32_t deserializeRequestBody(Protocol* prot, Args* args) {
 
 template <typename Protocol, typename Args>
 uint32_t serializeResponseBody(Protocol* prot, const Args* args) {
-  return ::apache::thrift::Cpp2Ops<Args>::write(prot, args);
+  return args->write(prot);
 }
 
 template <typename Protocol, typename Args>
 uint32_t serializedResponseBodySizeZC(Protocol* prot, const Args* args) {
-  return ::apache::thrift::Cpp2Ops<Args>::serializedSizeZC(prot, args);
+  return args->serializedSizeZC(prot);
 }
 
 template <typename Protocol, typename Args>
