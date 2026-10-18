@@ -336,21 +336,6 @@ class apache::thrift::Cpp2Ops<
     return Cpp2Ops<Base>::write(
         prot, ::apache::thrift::protocol::detail::into_inner_object(value));
   }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    return Cpp2Ops::read(
-        prot, ::apache::thrift::protocol::detail::into_inner_object(value));
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return Cpp2Ops::serializedSize(
-        prot, ::apache::thrift::protocol::detail::into_inner_object(value));
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return Cpp2Ops::serializedSizeZC(
-        prot, ::apache::thrift::protocol::detail::into_inner_object(value));
-  }
 };
 
 template <class Base>
@@ -365,11 +350,6 @@ class apache::thrift::Cpp2Ops<
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return Cpp2Ops<Base>::write(
-        prot, ::apache::thrift::protocol::detail::into_inner_value(value));
-  }
-  template <class Protocol>
-  static void read(Protocol* prot, Type* value) {
-    return Cpp2Ops<Base>::read(
         prot, ::apache::thrift::protocol::detail::into_inner_value(value));
   }
   template <class Protocol>
