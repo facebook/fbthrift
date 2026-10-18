@@ -243,6 +243,40 @@ TEST(WorkSchedulerTest, LeaseReleasedAfterCloseDoesNotRestoreRegistration) {
       actualKeepAliveCountAfterLeaseRelease);
 }
 
+TEST(WorkSchedulerTest, CloseReleasesWorkThatNoWorkerTook) {
+  // GIVEN
+  folly::CPUThreadPoolExecutor workerExecutor(1);
+  auto workScheduler = std::make_shared<WorkScheduler>();
+  const auto worker = workScheduler->registerWorker(
+      folly::Executor::getKeepAliveToken(workerExecutor));
+  workScheduler->makeWorkerCapacityAvailable(worker);
+  folly::Baton<> workerBusy;
+  folly::Baton<> releaseWorker;
+  workScheduler->addWithPriority(
+      [&] {
+        workerBusy.post();
+        releaseWorker.wait();
+      },
+      folly::Executor::MID_PRI);
+  workerBusy.wait();
+  // While the only worker is busy, this item waits for capacity, like the
+  // server's low-priority dequeue for a request that already timed out in the
+  // server's queue.
+  auto pendingWork = std::make_shared<bool>(false);
+  std::weak_ptr<bool> pendingWorkObserver = pendingWork;
+  workScheduler->addWithPriority(
+      [pendingWork = std::move(pendingWork)] { *pendingWork = true; },
+      folly::Executor::LO_PRI);
+
+  // WHEN
+  workScheduler->close();
+  releaseWorker.post();
+  workerExecutor.join();
+
+  // THEN
+  EXPECT_TRUE(pendingWorkObserver.expired());
+}
+
 TEST(
     WorkSchedulerTest,
     CapacityRemainsUnavailableUntilFinalLeaseReferenceRelease) {

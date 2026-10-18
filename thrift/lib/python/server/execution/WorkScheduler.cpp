@@ -65,6 +65,14 @@ void WorkScheduler::close() noexcept {
   scheduler_->add([self = folly::Executor::getKeepAliveToken(*this), &closed] {
     self->workersWithAvailableCapacity_.clear();
     self->workers_.clear();
+    // The contract guarantees that this cleanup runs only after the server
+    // drains, so every request a worker took has already finished, and the
+    // normal queue is empty. Any work that remains in a queue belongs to a
+    // request that the server already rejected with a queue-timeout error, and
+    // no worker remains to run it. Clear both queues: no client still expects
+    // this work.
+    self->normalPriorityWork_.clear();
+    self->lowPriorityWork_.clear();
     closed.post();
   });
   closed.wait();
