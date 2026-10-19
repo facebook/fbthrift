@@ -7081,8 +7081,6 @@ rust/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
 # so implementing one turns its test red until the line is deleted.
 
 # The server's credit timeout. Each of these has to change before it passes:
-# * the timeout comes in an APPLICATION_ERROR frame, whose `StreamRpcError`
-#   nativeclient does not read
 # * a zero chunk buffer never grants the credit the first chunk needs
 # * credit is asked for when a chunk is handed over rather than when the caller
 #   asks for the next one, so a slow caller gets another chunk before the
