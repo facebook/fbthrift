@@ -8,8 +8,8 @@ Facebook Thrift
   https://github.com/facebook/fbthrift/actions/workflows/macos.yml/badge.svg)](
   https://github.com/facebook/fbthrift/actions/workflows/macos.yml)
 [![Windows Build Status](
-  https://github.com/facebook/fbthrift/actions/workflows/getdeps_windows.yml/badge.svg)](
-  https://github.com/facebook/fbthrift/actions/workflows/getdeps_windows.yml)
+  https://github.com/facebook/fbthrift/actions/workflows/windows.yml/badge.svg)](
+  https://github.com/facebook/fbthrift/actions/workflows/windows.yml)
 [![Python Build Status](
   https://github.com/facebook/fbthrift/actions/workflows/getdeps_python_linux_container.yml/badge.svg)](
   https://github.com/facebook/fbthrift/actions/workflows/getdeps_python_linux_container.yml)
@@ -86,8 +86,8 @@ This needs CMake 3.24 or newer, a C++20 compiler, and zlib and
 [Fizz](https://github.com/facebookincubator/fizz),
 [Wangle](https://github.com/facebook/wangle),
 [mvfst](https://github.com/facebook/mvfst) and their dependencies, is used
-as-is if already on the system and fetched otherwise. Alternatively, install
-the system packages first:
+as-is if already on the system and fetched otherwise. On Windows, libsodium has
+to be installed too. Alternatively, install the system packages first:
 
     ./build/fbcode_builder/getdeps.py install-system-deps --recursive fbthrift
 
@@ -123,8 +123,8 @@ CMake options:
 
 ### `getdeps.py`
 
-`getdeps.py` also builds Thrift's sibling projects and is what the Windows and
-Python CI use; the Linux and macOS CI use the CMake build above. Prefer the
+`getdeps.py` also builds Thrift's sibling projects and is what the Python CI
+uses; the Linux, macOS and Windows CI use the CMake build above. Prefer the
 CMake build unless you need that.
 
     # Build, using system dependencies if available
