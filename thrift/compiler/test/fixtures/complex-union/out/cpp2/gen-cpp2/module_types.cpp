@@ -103,22 +103,22 @@ bool ComplexUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::intValue:
-        set_intValue(rhs.value_.intValue);
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
         break;
       case Type::stringValue:
-        set_stringValue(rhs.value_.stringValue);
+        stringValue_ref().emplace(rhs.value_.stringValue);
         break;
       case Type::intListValue:
-        set_intListValue(rhs.value_.intListValue);
+        intListValue_ref().emplace(rhs.value_.intListValue);
         break;
       case Type::stringListValue:
-        set_stringListValue(rhs.value_.stringListValue);
+        stringListValue_ref().emplace(rhs.value_.stringListValue);
         break;
       case Type::typedefValue:
-        set_typedefValue(rhs.value_.typedefValue);
+        typedefValue_ref().emplace(rhs.value_.typedefValue);
         break;
       case Type::stringRef:
-        set_stringRef(::apache::thrift::detail::st::copy_field<
+        stringRef_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::string>(rhs.value_.stringRef));
         break;
       default:
@@ -133,22 +133,22 @@ bool ComplexUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::intValue:
-        set_intValue(rhs.value_.intValue);
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
         break;
       case Type::stringValue:
-        set_stringValue(rhs.value_.stringValue);
+        stringValue_ref().emplace(rhs.value_.stringValue);
         break;
       case Type::intListValue:
-        set_intListValue(rhs.value_.intListValue);
+        intListValue_ref().emplace(rhs.value_.intListValue);
         break;
       case Type::stringListValue:
-        set_stringListValue(rhs.value_.stringListValue);
+        stringListValue_ref().emplace(rhs.value_.stringListValue);
         break;
       case Type::typedefValue:
-        set_typedefValue(rhs.value_.typedefValue);
+        typedefValue_ref().emplace(rhs.value_.typedefValue);
         break;
       case Type::stringRef:
-        set_stringRef(::apache::thrift::detail::st::copy_field<
+        stringRef_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::string>(rhs.value_.stringRef));
         break;
       default:
@@ -234,10 +234,10 @@ bool ListUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::intListValue:
-        set_intListValue(rhs.value_.intListValue);
+        intListValue_ref().emplace(rhs.value_.intListValue);
         break;
       case Type::stringListValue:
-        set_stringListValue(rhs.value_.stringListValue);
+        stringListValue_ref().emplace(rhs.value_.stringListValue);
         break;
       default:
         assert(false);
@@ -251,10 +251,10 @@ bool ListUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::intListValue:
-        set_intListValue(rhs.value_.intListValue);
+        intListValue_ref().emplace(rhs.value_.intListValue);
         break;
       case Type::stringListValue:
-        set_stringListValue(rhs.value_.stringListValue);
+        stringListValue_ref().emplace(rhs.value_.stringListValue);
         break;
       default:
         __fbthrift_clear();
@@ -339,10 +339,10 @@ bool DataUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::binaryData:
-        set_binaryData(rhs.value_.binaryData);
+        binaryData_ref().emplace(rhs.value_.binaryData);
         break;
       case Type::stringData:
-        set_stringData(rhs.value_.stringData);
+        stringData_ref().emplace(rhs.value_.stringData);
         break;
       default:
         assert(false);
@@ -356,10 +356,10 @@ bool DataUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::binaryData:
-        set_binaryData(rhs.value_.binaryData);
+        binaryData_ref().emplace(rhs.value_.binaryData);
         break;
       case Type::stringData:
-        set_stringData(rhs.value_.stringData);
+        stringData_ref().emplace(rhs.value_.stringData);
         break;
       default:
         __fbthrift_clear();
@@ -538,10 +538,10 @@ bool ValUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::v1:
-        set_v1(rhs.value_.v1);
+        v1_ref().emplace(rhs.value_.v1);
         break;
       case Type::v2:
-        set_v2(rhs.value_.v2);
+        v2_ref().emplace(rhs.value_.v2);
         break;
       default:
         assert(false);
@@ -555,10 +555,10 @@ bool ValUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::v1:
-        set_v1(rhs.value_.v1);
+        v1_ref().emplace(rhs.value_.v1);
         break;
       case Type::v2:
-        set_v2(rhs.value_.v2);
+        v2_ref().emplace(rhs.value_.v2);
         break;
       default:
         __fbthrift_clear();
@@ -655,10 +655,10 @@ bool VirtualComplexUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::thingOne:
-        set_thingOne(rhs.value_.thingOne);
+        thingOne_ref().emplace(rhs.value_.thingOne);
         break;
       case Type::thingTwo:
-        set_thingTwo(rhs.value_.thingTwo);
+        thingTwo_ref().emplace(rhs.value_.thingTwo);
         break;
       default:
         assert(false);
@@ -672,10 +672,10 @@ bool VirtualComplexUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::thingOne:
-        set_thingOne(rhs.value_.thingOne);
+        thingOne_ref().emplace(rhs.value_.thingOne);
         break;
       case Type::thingTwo:
-        set_thingTwo(rhs.value_.thingTwo);
+        thingTwo_ref().emplace(rhs.value_.thingTwo);
         break;
       default:
         __fbthrift_clear();

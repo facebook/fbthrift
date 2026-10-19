@@ -215,32 +215,32 @@ class ComplexUnion final  {
       }
       case Type::intValue:
       {
-        set_intValue(std::move(rhs.value_.intValue));
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
         break;
       }
       case Type::stringValue:
       {
-        set_stringValue(std::move(rhs.value_.stringValue));
+        stringValue_ref().emplace(std::move(rhs.value_.stringValue));
         break;
       }
       case Type::intListValue:
       {
-        set_intListValue(std::move(rhs.value_.intListValue));
+        intListValue_ref().emplace(std::move(rhs.value_.intListValue));
         break;
       }
       case Type::stringListValue:
       {
-        set_stringListValue(std::move(rhs.value_.stringListValue));
+        stringListValue_ref().emplace(std::move(rhs.value_.stringListValue));
         break;
       }
       case Type::typedefValue:
       {
-        set_typedefValue(std::move(rhs.value_.typedefValue));
+        typedefValue_ref().emplace(std::move(rhs.value_.typedefValue));
         break;
       }
       case Type::stringRef:
       {
-        set_stringRef(std::move(*rhs.value_.stringRef));
+        stringRef_ref().emplace(std::move(*rhs.value_.stringRef));
         break;
       }
       default:
@@ -844,12 +844,12 @@ class ListUnion final  {
       }
       case Type::intListValue:
       {
-        set_intListValue(std::move(rhs.value_.intListValue));
+        intListValue_ref().emplace(std::move(rhs.value_.intListValue));
         break;
       }
       case Type::stringListValue:
       {
-        set_stringListValue(std::move(rhs.value_.stringListValue));
+        stringListValue_ref().emplace(std::move(rhs.value_.stringListValue));
         break;
       }
       default:
@@ -1134,12 +1134,12 @@ class DataUnion final  {
       }
       case Type::binaryData:
       {
-        set_binaryData(std::move(rhs.value_.binaryData));
+        binaryData_ref().emplace(std::move(rhs.value_.binaryData));
         break;
       }
       case Type::stringData:
       {
-        set_stringData(std::move(rhs.value_.stringData));
+        stringData_ref().emplace(std::move(rhs.value_.stringData));
         break;
       }
       default:
@@ -1673,12 +1673,12 @@ class ValUnion final  {
       }
       case Type::v1:
       {
-        set_v1(std::move(rhs.value_.v1));
+        v1_ref().emplace(std::move(rhs.value_.v1));
         break;
       }
       case Type::v2:
       {
-        set_v2(std::move(rhs.value_.v2));
+        v2_ref().emplace(std::move(rhs.value_.v2));
         break;
       }
       default:
@@ -1963,12 +1963,12 @@ class VirtualComplexUnion  {
       }
       case Type::thingOne:
       {
-        set_thingOne(std::move(rhs.value_.thingOne));
+        thingOne_ref().emplace(std::move(rhs.value_.thingOne));
         break;
       }
       case Type::thingTwo:
       {
-        set_thingTwo(std::move(rhs.value_.thingTwo));
+        thingTwo_ref().emplace(std::move(rhs.value_.thingTwo));
         break;
       }
       default:
@@ -2377,7 +2377,7 @@ class NonCopyableUnion final  {
       }
       case Type::s:
       {
-        set_s(std::move(rhs.value_.s));
+        s_ref().emplace(std::move(rhs.value_.s));
         break;
       }
       default:

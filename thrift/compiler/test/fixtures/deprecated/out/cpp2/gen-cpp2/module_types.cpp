@@ -196,13 +196,17 @@ bool ExampleUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::stringValue:
-        set_stringValue(rhs.value_.stringValue);
+        stringValue_ref().emplace(rhs.value_.stringValue);
         break;
       case Type::intValue:
-        set_intValue(rhs.value_.intValue);
+        FOLLY_PUSH_WARNING
+        FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+        FOLLY_MSVC_DISABLE_WARNING(4996)
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
+        FOLLY_POP_WARNING
         break;
       case Type::doubleValue:
-        set_doubleValue(rhs.value_.doubleValue);
+        doubleValue_ref().emplace(folly::copy(rhs.value_.doubleValue));
         break;
       default:
         assert(false);
@@ -216,13 +220,17 @@ bool ExampleUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::stringValue:
-        set_stringValue(rhs.value_.stringValue);
+        stringValue_ref().emplace(rhs.value_.stringValue);
         break;
       case Type::intValue:
-        set_intValue(rhs.value_.intValue);
+        FOLLY_PUSH_WARNING
+        FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+        FOLLY_MSVC_DISABLE_WARNING(4996)
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
+        FOLLY_POP_WARNING
         break;
       case Type::doubleValue:
-        set_doubleValue(rhs.value_.doubleValue);
+        doubleValue_ref().emplace(folly::copy(rhs.value_.doubleValue));
         break;
       default:
         __fbthrift_clear();

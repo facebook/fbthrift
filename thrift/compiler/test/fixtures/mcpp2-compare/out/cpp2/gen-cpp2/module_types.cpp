@@ -562,10 +562,10 @@ bool SimpleUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::intValue:
-        set_intValue(rhs.value_.intValue);
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
         break;
       case Type::stringValue:
-        set_stringValue(rhs.value_.stringValue);
+        stringValue_ref().emplace(rhs.value_.stringValue);
         break;
       default:
         assert(false);
@@ -579,10 +579,10 @@ bool SimpleUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::intValue:
-        set_intValue(rhs.value_.intValue);
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
         break;
       case Type::stringValue:
-        set_stringValue(rhs.value_.stringValue);
+        stringValue_ref().emplace(rhs.value_.stringValue);
         break;
       default:
         __fbthrift_clear();
@@ -745,89 +745,89 @@ bool ComplexUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::intValue:
-        set_intValue(rhs.value_.intValue);
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
         break;
       case Type::opt_intValue:
-        set_opt_intValue(rhs.value_.opt_intValue);
+        opt_intValue_ref().emplace(folly::copy(rhs.value_.opt_intValue));
         break;
       case Type::stringValue:
-        set_stringValue(rhs.value_.stringValue);
+        stringValue_ref().emplace(rhs.value_.stringValue);
         break;
       case Type::opt_stringValue:
-        set_opt_stringValue(rhs.value_.opt_stringValue);
+        opt_stringValue_ref().emplace(rhs.value_.opt_stringValue);
         break;
       case Type::intValue2:
-        set_intValue2(rhs.value_.intValue2);
+        intValue2_ref().emplace(folly::copy(rhs.value_.intValue2));
         break;
       case Type::intValue3:
-        set_intValue3(rhs.value_.intValue3);
+        intValue3_ref().emplace(folly::copy(rhs.value_.intValue3));
         break;
       case Type::doubelValue:
-        set_doubelValue(rhs.value_.doubelValue);
+        doubelValue_ref().emplace(folly::copy(rhs.value_.doubelValue));
         break;
       case Type::boolValue:
-        set_boolValue(rhs.value_.boolValue);
+        boolValue_ref().emplace(folly::copy(rhs.value_.boolValue));
         break;
       case Type::union_list:
-        set_union_list(rhs.value_.union_list);
+        union_list_ref().emplace(rhs.value_.union_list);
         break;
       case Type::union_set:
-        set_union_set(rhs.value_.union_set);
+        union_set_ref().emplace(rhs.value_.union_set);
         break;
       case Type::union_map:
-        set_union_map(rhs.value_.union_map);
+        union_map_ref().emplace(rhs.value_.union_map);
         break;
       case Type::opt_union_map:
-        set_opt_union_map(rhs.value_.opt_union_map);
+        opt_union_map_ref().emplace(rhs.value_.opt_union_map);
         break;
       case Type::enum_field:
-        set_enum_field(rhs.value_.enum_field);
+        enum_field_ref().emplace(folly::copy(rhs.value_.enum_field));
         break;
       case Type::enum_container:
-        set_enum_container(rhs.value_.enum_container);
+        enum_container_ref().emplace(rhs.value_.enum_container);
         break;
       case Type::a_struct:
-        set_a_struct(rhs.value_.a_struct);
+        a_struct_ref().emplace(rhs.value_.a_struct);
         break;
       case Type::a_set_struct:
-        set_a_set_struct(rhs.value_.a_set_struct);
+        a_set_struct_ref().emplace(rhs.value_.a_set_struct);
         break;
       case Type::a_union:
-        set_a_union(rhs.value_.a_union);
+        a_union_ref().emplace(rhs.value_.a_union);
         break;
       case Type::opt_a_union:
-        set_opt_a_union(rhs.value_.opt_a_union);
+        opt_a_union_ref().emplace(rhs.value_.opt_a_union);
         break;
       case Type::a_union_list:
-        set_a_union_list(rhs.value_.a_union_list);
+        a_union_list_ref().emplace(rhs.value_.a_union_list);
         break;
       case Type::a_union_typedef:
-        set_a_union_typedef(rhs.value_.a_union_typedef);
+        a_union_typedef_ref().emplace(rhs.value_.a_union_typedef);
         break;
       case Type::a_union_typedef_list:
-        set_a_union_typedef_list(rhs.value_.a_union_typedef_list);
+        a_union_typedef_list_ref().emplace(rhs.value_.a_union_typedef_list);
         break;
       case Type::MyBinaryField:
-        set_MyBinaryField(rhs.value_.MyBinaryField);
+        MyBinaryField_ref().emplace(rhs.value_.MyBinaryField);
         break;
       case Type::MyBinaryField2:
-        set_MyBinaryField2(rhs.value_.MyBinaryField2);
+        MyBinaryField2_ref().emplace(rhs.value_.MyBinaryField2);
         break;
       case Type::MyBinaryListField4:
-        set_MyBinaryListField4(rhs.value_.MyBinaryListField4);
+        MyBinaryListField4_ref().emplace(rhs.value_.MyBinaryListField4);
         break;
       case Type::ref_field:
-        set_ref_field(::apache::thrift::detail::st::copy_field<
+        ref_field_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::structure>(rhs.value_.ref_field));
         break;
       case Type::ref_field2:
-        set_ref_field2(*rhs.value_.ref_field2);
+        ref_field2_ref().emplace(*rhs.value_.ref_field2);
         break;
       case Type::excp_field:
-        set_excp_field(rhs.value_.excp_field);
+        excp_field_ref().emplace(rhs.value_.excp_field);
         break;
       case Type::MyCustomField:
-        set_MyCustomField(rhs.value_.MyCustomField);
+        MyCustomField_ref().emplace(rhs.value_.MyCustomField);
         break;
       default:
         assert(false);
@@ -841,89 +841,89 @@ bool ComplexUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::intValue:
-        set_intValue(rhs.value_.intValue);
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
         break;
       case Type::opt_intValue:
-        set_opt_intValue(rhs.value_.opt_intValue);
+        opt_intValue_ref().emplace(folly::copy(rhs.value_.opt_intValue));
         break;
       case Type::stringValue:
-        set_stringValue(rhs.value_.stringValue);
+        stringValue_ref().emplace(rhs.value_.stringValue);
         break;
       case Type::opt_stringValue:
-        set_opt_stringValue(rhs.value_.opt_stringValue);
+        opt_stringValue_ref().emplace(rhs.value_.opt_stringValue);
         break;
       case Type::intValue2:
-        set_intValue2(rhs.value_.intValue2);
+        intValue2_ref().emplace(folly::copy(rhs.value_.intValue2));
         break;
       case Type::intValue3:
-        set_intValue3(rhs.value_.intValue3);
+        intValue3_ref().emplace(folly::copy(rhs.value_.intValue3));
         break;
       case Type::doubelValue:
-        set_doubelValue(rhs.value_.doubelValue);
+        doubelValue_ref().emplace(folly::copy(rhs.value_.doubelValue));
         break;
       case Type::boolValue:
-        set_boolValue(rhs.value_.boolValue);
+        boolValue_ref().emplace(folly::copy(rhs.value_.boolValue));
         break;
       case Type::union_list:
-        set_union_list(rhs.value_.union_list);
+        union_list_ref().emplace(rhs.value_.union_list);
         break;
       case Type::union_set:
-        set_union_set(rhs.value_.union_set);
+        union_set_ref().emplace(rhs.value_.union_set);
         break;
       case Type::union_map:
-        set_union_map(rhs.value_.union_map);
+        union_map_ref().emplace(rhs.value_.union_map);
         break;
       case Type::opt_union_map:
-        set_opt_union_map(rhs.value_.opt_union_map);
+        opt_union_map_ref().emplace(rhs.value_.opt_union_map);
         break;
       case Type::enum_field:
-        set_enum_field(rhs.value_.enum_field);
+        enum_field_ref().emplace(folly::copy(rhs.value_.enum_field));
         break;
       case Type::enum_container:
-        set_enum_container(rhs.value_.enum_container);
+        enum_container_ref().emplace(rhs.value_.enum_container);
         break;
       case Type::a_struct:
-        set_a_struct(rhs.value_.a_struct);
+        a_struct_ref().emplace(rhs.value_.a_struct);
         break;
       case Type::a_set_struct:
-        set_a_set_struct(rhs.value_.a_set_struct);
+        a_set_struct_ref().emplace(rhs.value_.a_set_struct);
         break;
       case Type::a_union:
-        set_a_union(rhs.value_.a_union);
+        a_union_ref().emplace(rhs.value_.a_union);
         break;
       case Type::opt_a_union:
-        set_opt_a_union(rhs.value_.opt_a_union);
+        opt_a_union_ref().emplace(rhs.value_.opt_a_union);
         break;
       case Type::a_union_list:
-        set_a_union_list(rhs.value_.a_union_list);
+        a_union_list_ref().emplace(rhs.value_.a_union_list);
         break;
       case Type::a_union_typedef:
-        set_a_union_typedef(rhs.value_.a_union_typedef);
+        a_union_typedef_ref().emplace(rhs.value_.a_union_typedef);
         break;
       case Type::a_union_typedef_list:
-        set_a_union_typedef_list(rhs.value_.a_union_typedef_list);
+        a_union_typedef_list_ref().emplace(rhs.value_.a_union_typedef_list);
         break;
       case Type::MyBinaryField:
-        set_MyBinaryField(rhs.value_.MyBinaryField);
+        MyBinaryField_ref().emplace(rhs.value_.MyBinaryField);
         break;
       case Type::MyBinaryField2:
-        set_MyBinaryField2(rhs.value_.MyBinaryField2);
+        MyBinaryField2_ref().emplace(rhs.value_.MyBinaryField2);
         break;
       case Type::MyBinaryListField4:
-        set_MyBinaryListField4(rhs.value_.MyBinaryListField4);
+        MyBinaryListField4_ref().emplace(rhs.value_.MyBinaryListField4);
         break;
       case Type::ref_field:
-        set_ref_field(::apache::thrift::detail::st::copy_field<
+        ref_field_ref().emplace(::apache::thrift::detail::st::copy_field<
           ::apache::thrift::type_class::structure>(rhs.value_.ref_field));
         break;
       case Type::ref_field2:
-        set_ref_field2(*rhs.value_.ref_field2);
+        ref_field2_ref().emplace(*rhs.value_.ref_field2);
         break;
       case Type::excp_field:
-        set_excp_field(rhs.value_.excp_field);
+        excp_field_ref().emplace(rhs.value_.excp_field);
         break;
       case Type::MyCustomField:
-        set_MyCustomField(rhs.value_.MyCustomField);
+        MyCustomField_ref().emplace(rhs.value_.MyCustomField);
         break;
       default:
         __fbthrift_clear();
@@ -3057,10 +3057,10 @@ bool FloatUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::floatSide:
-        set_floatSide(rhs.value_.floatSide);
+        floatSide_ref().emplace(folly::copy(rhs.value_.floatSide));
         break;
       case Type::doubleSide:
-        set_doubleSide(rhs.value_.doubleSide);
+        doubleSide_ref().emplace(folly::copy(rhs.value_.doubleSide));
         break;
       default:
         assert(false);
@@ -3074,10 +3074,10 @@ bool FloatUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::floatSide:
-        set_floatSide(rhs.value_.floatSide);
+        floatSide_ref().emplace(folly::copy(rhs.value_.floatSide));
         break;
       case Type::doubleSide:
-        set_doubleSide(rhs.value_.doubleSide);
+        doubleSide_ref().emplace(folly::copy(rhs.value_.doubleSide));
         break;
       default:
         __fbthrift_clear();

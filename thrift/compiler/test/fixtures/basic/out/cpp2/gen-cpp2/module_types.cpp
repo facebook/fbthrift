@@ -476,16 +476,16 @@ bool MyUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::myEnum:
-        set_myEnum(rhs.value_.myEnum);
+        myEnum_ref().emplace(folly::copy(rhs.value_.myEnum));
         break;
       case Type::myStruct:
-        set_myStruct(rhs.value_.myStruct);
+        myStruct_ref().emplace(rhs.value_.myStruct);
         break;
       case Type::myDataItem:
-        set_myDataItem(rhs.value_.myDataItem);
+        myDataItem_ref().emplace(rhs.value_.myDataItem);
         break;
       case Type::floatSet:
-        set_floatSet(rhs.value_.floatSet);
+        floatSet_ref().emplace(rhs.value_.floatSet);
         break;
       default:
         assert(false);
@@ -499,16 +499,16 @@ bool MyUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::myEnum:
-        set_myEnum(rhs.value_.myEnum);
+        myEnum_ref().emplace(folly::copy(rhs.value_.myEnum));
         break;
       case Type::myStruct:
-        set_myStruct(rhs.value_.myStruct);
+        myStruct_ref().emplace(rhs.value_.myStruct);
         break;
       case Type::myDataItem:
-        set_myDataItem(rhs.value_.myDataItem);
+        myDataItem_ref().emplace(rhs.value_.myDataItem);
         break;
       case Type::floatSet:
-        set_floatSet(rhs.value_.floatSet);
+        floatSet_ref().emplace(rhs.value_.floatSet);
         break;
       default:
         __fbthrift_clear();
@@ -897,7 +897,7 @@ bool UnionToBeRenamed::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::reserved_field:
-        set_reserved_field(rhs.value_.reserved_field);
+        reserved_field_ref().emplace(folly::copy(rhs.value_.reserved_field));
         break;
       default:
         assert(false);
@@ -911,7 +911,7 @@ bool UnionToBeRenamed::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::reserved_field:
-        set_reserved_field(rhs.value_.reserved_field);
+        reserved_field_ref().emplace(folly::copy(rhs.value_.reserved_field));
         break;
       default:
         __fbthrift_clear();

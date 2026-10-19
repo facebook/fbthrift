@@ -4359,32 +4359,32 @@ class MyUnion final  {
       }
       case Type::myEnum:
       {
-        set_myEnum(std::move(rhs.value_.myEnum));
+        myEnum_ref().emplace(folly::copy(rhs.value_.myEnum));
         break;
       }
       case Type::myStruct:
       {
-        set_myStruct(std::move(rhs.value_.myStruct));
+        myStruct_ref().emplace(std::move(rhs.value_.myStruct));
         break;
       }
       case Type::myDataItem:
       {
-        set_myDataItem(std::move(rhs.value_.myDataItem));
+        myDataItem_ref().emplace(std::move(rhs.value_.myDataItem));
         break;
       }
       case Type::complexNestedStruct:
       {
-        set_complexNestedStruct(std::move(rhs.value_.complexNestedStruct));
+        complexNestedStruct_ref().emplace(std::move(rhs.value_.complexNestedStruct));
         break;
       }
       case Type::longValue:
       {
-        set_longValue(std::move(rhs.value_.longValue));
+        longValue_ref().emplace(folly::copy(rhs.value_.longValue));
         break;
       }
       case Type::intValue:
       {
-        set_intValue(std::move(rhs.value_.intValue));
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
         break;
       }
       default:
@@ -6779,22 +6779,22 @@ class MyUnionFloatFieldThrowExp final  {
       }
       case Type::myEnum:
       {
-        set_myEnum(std::move(rhs.value_.myEnum));
+        myEnum_ref().emplace(folly::copy(rhs.value_.myEnum));
         break;
       }
       case Type::setFloat:
       {
-        set_setFloat(std::move(rhs.value_.setFloat));
+        setFloat_ref().emplace(std::move(rhs.value_.setFloat));
         break;
       }
       case Type::myDataItem:
       {
-        set_myDataItem(std::move(rhs.value_.myDataItem));
+        myDataItem_ref().emplace(std::move(rhs.value_.myDataItem));
         break;
       }
       case Type::complexNestedStruct:
       {
-        set_complexNestedStruct(std::move(rhs.value_.complexNestedStruct));
+        complexNestedStruct_ref().emplace(std::move(rhs.value_.complexNestedStruct));
         break;
       }
       default:

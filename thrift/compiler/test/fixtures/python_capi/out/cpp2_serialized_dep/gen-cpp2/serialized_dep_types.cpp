@@ -186,10 +186,10 @@ bool SerializedUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::s:
-        set_s(rhs.value_.s);
+        s_ref().emplace(rhs.value_.s);
         break;
       case Type::i:
-        set_i(rhs.value_.i);
+        i_ref().emplace(folly::copy(rhs.value_.i));
         break;
       default:
         assert(false);
@@ -203,10 +203,10 @@ bool SerializedUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::s:
-        set_s(rhs.value_.s);
+        s_ref().emplace(rhs.value_.s);
         break;
       case Type::i:
-        set_i(rhs.value_.i);
+        i_ref().emplace(folly::copy(rhs.value_.i));
         break;
       default:
         __fbthrift_clear();
@@ -473,10 +473,10 @@ bool MarshalUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::s:
-        set_s(rhs.value_.s);
+        s_ref().emplace(rhs.value_.s);
         break;
       case Type::i:
-        set_i(rhs.value_.i);
+        i_ref().emplace(folly::copy(rhs.value_.i));
         break;
       default:
         assert(false);
@@ -490,10 +490,10 @@ bool MarshalUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::s:
-        set_s(rhs.value_.s);
+        s_ref().emplace(rhs.value_.s);
         break;
       case Type::i:
-        set_i(rhs.value_.i);
+        i_ref().emplace(folly::copy(rhs.value_.i));
         break;
       default:
         __fbthrift_clear();

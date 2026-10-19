@@ -164,10 +164,10 @@ bool U::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::i:
-        set_i(rhs.value_.i);
+        i_ref().emplace(folly::copy(rhs.value_.i));
         break;
       case Type::s:
-        set_s(rhs.value_.s);
+        s_ref().emplace(rhs.value_.s);
         break;
       default:
         assert(false);
@@ -181,10 +181,10 @@ bool U::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::i:
-        set_i(rhs.value_.i);
+        i_ref().emplace(folly::copy(rhs.value_.i));
         break;
       case Type::s:
-        set_s(rhs.value_.s);
+        s_ref().emplace(rhs.value_.s);
         break;
       default:
         __fbthrift_clear();

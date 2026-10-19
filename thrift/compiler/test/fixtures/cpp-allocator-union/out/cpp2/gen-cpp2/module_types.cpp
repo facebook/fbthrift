@@ -86,17 +86,17 @@ bool AllocUnion::__fbthrift_is_empty() const {
         return;
       case Type::aa_string:
       {
-        set_aa_string(std::move(rhs.value_.aa_string));
+        aa_string_ref().emplace(std::move(rhs.value_.aa_string));
         break;
       }
       case Type::aa_list:
       {
-        set_aa_list(std::move(rhs.value_.aa_list));
+        aa_list_ref().emplace(std::move(rhs.value_.aa_list));
         break;
       }
       case Type::plain_int:
       {
-        set_plain_int(std::move(rhs.value_.plain_int));
+        plain_int_ref().emplace(folly::copy(rhs.value_.plain_int));
         break;
       }
       default:
@@ -112,13 +112,13 @@ bool AllocUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::aa_string:
-        set_aa_string(rhs.value_.aa_string);
+        aa_string_ref().emplace(rhs.value_.aa_string);
         break;
       case Type::aa_list:
-        set_aa_list(rhs.value_.aa_list);
+        aa_list_ref().emplace(rhs.value_.aa_list);
         break;
       case Type::plain_int:
-        set_plain_int(rhs.value_.plain_int);
+        plain_int_ref().emplace(folly::copy(rhs.value_.plain_int));
         break;
       default:
         assert(false);
@@ -132,13 +132,13 @@ bool AllocUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::aa_string:
-        set_aa_string(rhs.value_.aa_string);
+        aa_string_ref().emplace(rhs.value_.aa_string);
         break;
       case Type::aa_list:
-        set_aa_list(rhs.value_.aa_list);
+        aa_list_ref().emplace(rhs.value_.aa_list);
         break;
       case Type::plain_int:
-        set_plain_int(rhs.value_.plain_int);
+        plain_int_ref().emplace(folly::copy(rhs.value_.plain_int));
         break;
       default:
         assert(false);
@@ -154,13 +154,13 @@ bool AllocUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::aa_string:
-        set_aa_string(rhs.value_.aa_string);
+        aa_string_ref().emplace(rhs.value_.aa_string);
         break;
       case Type::aa_list:
-        set_aa_list(rhs.value_.aa_list);
+        aa_list_ref().emplace(rhs.value_.aa_list);
         break;
       case Type::plain_int:
-        set_plain_int(rhs.value_.plain_int);
+        plain_int_ref().emplace(folly::copy(rhs.value_.plain_int));
         break;
       default:
         __fbthrift_clear();

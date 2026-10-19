@@ -524,17 +524,21 @@ class ExampleUnion final  {
       }
       case Type::stringValue:
       {
-        set_stringValue(std::move(rhs.value_.stringValue));
+        stringValue_ref().emplace(std::move(rhs.value_.stringValue));
         break;
       }
       case Type::intValue:
       {
-        set_intValue(std::move(rhs.value_.intValue));
+        FOLLY_PUSH_WARNING
+        FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+        FOLLY_MSVC_DISABLE_WARNING(4996)
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
+        FOLLY_POP_WARNING
         break;
       }
       case Type::doubleValue:
       {
-        set_doubleValue(std::move(rhs.value_.doubleValue));
+        doubleValue_ref().emplace(folly::copy(rhs.value_.doubleValue));
         break;
       }
       default:

@@ -1262,7 +1262,7 @@ class AdaptedUnion final  {
       }
       case Type::best:
       {
-        set_best(std::move(rhs.value_.best));
+        best_ref().emplace(folly::copy(rhs.value_.best));
         break;
       }
       default:
@@ -3261,7 +3261,7 @@ class BinaryUnion final  {
       }
       case Type::iobuf_val:
       {
-        set_iobuf_val(std::move(rhs.value_.iobuf_val));
+        iobuf_val_ref().emplace(std::move(rhs.value_.iobuf_val));
         break;
       }
       default:

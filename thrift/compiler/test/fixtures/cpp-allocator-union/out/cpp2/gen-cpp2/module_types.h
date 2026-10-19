@@ -132,17 +132,17 @@ class AllocUnion final  {
       }
       case Type::aa_string:
       {
-        set_aa_string(std::move(rhs.value_.aa_string));
+        aa_string_ref().emplace(std::move(rhs.value_.aa_string));
         break;
       }
       case Type::aa_list:
       {
-        set_aa_list(std::move(rhs.value_.aa_list));
+        aa_list_ref().emplace(std::move(rhs.value_.aa_list));
         break;
       }
       case Type::plain_int:
       {
-        set_plain_int(std::move(rhs.value_.plain_int));
+        plain_int_ref().emplace(folly::copy(rhs.value_.plain_int));
         break;
       }
       default:

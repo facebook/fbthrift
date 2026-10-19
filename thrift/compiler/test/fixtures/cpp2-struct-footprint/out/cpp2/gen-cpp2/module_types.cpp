@@ -460,10 +460,10 @@ bool TestUnion::__fbthrift_is_empty() const {
       case Type::__EMPTY__:
         return;
       case Type::int_value:
-        set_int_value(rhs.value_.int_value);
+        int_value_ref().emplace(folly::copy(rhs.value_.int_value));
         break;
       case Type::struct_value:
-        set_struct_value(rhs.value_.struct_value);
+        struct_value_ref().emplace(rhs.value_.struct_value);
         break;
       default:
         assert(false);
@@ -477,10 +477,10 @@ bool TestUnion::__fbthrift_is_empty() const {
         __fbthrift_clear();
         return *this;
       case Type::int_value:
-        set_int_value(rhs.value_.int_value);
+        int_value_ref().emplace(folly::copy(rhs.value_.int_value));
         break;
       case Type::struct_value:
-        set_struct_value(rhs.value_.struct_value);
+        struct_value_ref().emplace(rhs.value_.struct_value);
         break;
       default:
         __fbthrift_clear();
