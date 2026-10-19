@@ -7080,13 +7080,7 @@ rust/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
 # These are inverted expectations: whatever is listed here is expected to fail,
 # so implementing one turns its test red until the line is deleted.
 
-# An undeclared exception on a stream reaches the caller as an untyped error
-# carrying its message rather than the `ApplicationException` C++ raises.
-rustnative/ThriftRPCClientTest/StreamUndeclaredException/Success.StreamUndeclaredExceptionTest
-rustnative/ThriftRPCClientTest/BidiStreamUndeclaredException/Success.BidiStreamUndeclaredExceptionTest
-
 # The server's credit timeout. Each of these has to change before it passes:
-# * every error on a stream reaches the caller untyped, as above
 # * the timeout comes in an APPLICATION_ERROR frame, whose `StreamRpcError`
 #   nativeclient does not read
 # * a zero chunk buffer never grants the credit the first chunk needs
@@ -7115,8 +7109,6 @@ rustbinary/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestRespon
 rustbinary/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
 rustbinary/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
 rustbinary/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
-rustnativebinary/ThriftRPCClientTest/StreamUndeclaredException/Success.StreamUndeclaredExceptionTest
-rustnativebinary/ThriftRPCClientTest/BidiStreamUndeclaredException/Success.BidiStreamUndeclaredExceptionTest
 rustnativebinary/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTimeoutTest
 rustnativebinary/ThriftRPCClientTest/SinkInitialDeclaredException/Success.SinkInitialDeclaredExceptionTest
 
@@ -7150,7 +7142,5 @@ rusttls/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseA
 rusttls/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
 rusttls/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
 rusttls/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
-rustnativetls/ThriftRPCClientTest/StreamUndeclaredException/Success.StreamUndeclaredExceptionTest
-rustnativetls/ThriftRPCClientTest/BidiStreamUndeclaredException/Success.BidiStreamUndeclaredExceptionTest
 rustnativetls/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTimeoutTest
 rustnativetls/ThriftRPCClientTest/SinkInitialDeclaredException/Success.SinkInitialDeclaredExceptionTest
