@@ -21,8 +21,11 @@ foreach (thrift_file Module CompactProtocolTestStructs cursor)
   else ()
     set(thrift_options frozen2 layouts)
   endif ()
-  thrift_generate(${thrift_file}.thrift LANGUAGE cpp2 OPTIONS ${thrift_options}
-                  OUT_SOURCES sources)
+  thrift_generate(
+    ${thrift_file}.thrift
+    LANGUAGE cpp2
+    OUT_SOURCES sources
+    OPTIONS ${thrift_options})
   set_source_files_properties(${thrift_file} PROPERTIES GENERATED TRUE)
   set(GENERATED_THRIFT_SOURCES ${GENERATED_THRIFT_SOURCES} ${sources})
 endforeach ()

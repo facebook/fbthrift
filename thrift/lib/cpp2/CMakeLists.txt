@@ -15,82 +15,123 @@
 # Set the cpp2 directory
 set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 
-thrift_generate(schema/syntax_graph.thrift LANGUAGE cpp2 OPTIONS no_metadata
-                OUT_SOURCES syntax_graph_sources)
+thrift_generate(
+  schema/syntax_graph.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES syntax_graph_sources
+  OPTIONS no_metadata)
 
-thrift_generate(../thrift/any_rep.thrift LANGUAGE cpp2 OPTIONS json no_metadata
-                OUT_SOURCES any_rep_sources)
+thrift_generate(
+  ../thrift/any_rep.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES any_rep_sources
+  OPTIONS json no_metadata)
 
-thrift_generate(../thrift/metadata.thrift LANGUAGE cpp2
-                OUT_SOURCES metadata_sources)
+thrift_generate(
+  ../thrift/metadata.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES metadata_sources)
 
-thrift_generate(../thrift/frozen.thrift LANGUAGE cpp2
-                OUT_SOURCES frozen_sources)
+thrift_generate(
+  ../thrift/frozen.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES frozen_sources)
 
 thrift_generate(
   ../thrift/RpcMetadata.thrift
   LANGUAGE cpp2
-  OPTIONS json no_metadata
-  OUT_SOURCES RpcMetadata_sources)
+  OUT_SOURCES RpcMetadata_sources
+  OPTIONS json no_metadata)
 
 thrift_generate(
   ../thrift/RocketUpgrade.thrift
   LANGUAGE cpp2
+  OUT_SOURCES RocketUpgrade_sources
   SERVICES RocketUpgrade
-  OPTIONS no_metadata
-  OUT_SOURCES RocketUpgrade_sources)
+  OPTIONS no_metadata)
 
-thrift_generate(../thrift/id.thrift LANGUAGE cpp2 OPTIONS no_metadata
-                OUT_SOURCES id_sources)
+thrift_generate(
+  ../thrift/id.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES id_sources
+  OPTIONS no_metadata)
 
-thrift_generate(../thrift/standard.thrift LANGUAGE cpp2 OPTIONS json no_metadata
-                OUT_SOURCES standard_sources)
+thrift_generate(
+  ../thrift/standard.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES standard_sources
+  OPTIONS json no_metadata)
 
-thrift_generate(../thrift/type_rep.thrift LANGUAGE cpp2 OPTIONS json no_metadata
-                OUT_SOURCES type_rep_sources)
+thrift_generate(
+  ../thrift/type_rep.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES type_rep_sources
+  OPTIONS json no_metadata)
 
-thrift_generate(../thrift/type.thrift LANGUAGE cpp2 OPTIONS no_metadata
-                OUT_SOURCES type_sources)
+thrift_generate(
+  ../thrift/type.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES type_sources
+  OPTIONS no_metadata)
 
 thrift_generate(
   ../thrift/serverdbginfo.thrift
   LANGUAGE cpp2
-  OPTIONS json no_metadata
-  OUT_SOURCES serverdbginfo_sources)
+  OUT_SOURCES serverdbginfo_sources
+  OPTIONS json no_metadata)
 
-thrift_generate(../thrift/protocol.thrift LANGUAGE cpp2
-                OUT_SOURCES protocol_sources)
+thrift_generate(
+  ../thrift/protocol.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES protocol_sources)
 
-thrift_generate(../thrift/protocol_detail.thrift LANGUAGE cpp2
-                OUT_SOURCES protocol_detail_sources)
+thrift_generate(
+  ../thrift/protocol_detail.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES protocol_detail_sources)
 
-thrift_generate(../thrift/field_mask.thrift LANGUAGE cpp2 OPTIONS no_metadata
-                OUT_SOURCES field_mask_sources)
+thrift_generate(
+  ../thrift/field_mask.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES field_mask_sources
+  OPTIONS no_metadata)
 
-thrift_generate(../thrift/record.thrift LANGUAGE cpp2 OPTIONS no_metadata
-                OUT_SOURCES record_sources)
+thrift_generate(
+  ../thrift/record.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES record_sources
+  OPTIONS no_metadata)
 
-thrift_generate(../thrift/schema.thrift LANGUAGE cpp2 OPTIONS no_metadata
-                OUT_SOURCES schema_sources)
+thrift_generate(
+  ../thrift/schema.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES schema_sources
+  OPTIONS no_metadata)
 
-thrift_generate(../thrift/type_id.thrift LANGUAGE cpp2 OPTIONS no_metadata
-                OUT_SOURCES type_id_sources)
+thrift_generate(
+  ../thrift/type_id.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES type_id_sources
+  OPTIONS no_metadata)
 
-thrift_generate(../thrift/type_system.thrift LANGUAGE cpp2 OPTIONS no_metadata
-                OUT_SOURCES type_system_sources)
+thrift_generate(
+  ../thrift/type_system.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES type_system_sources
+  OPTIONS no_metadata)
 
 thrift_generate(
   ../thrift/service_catalog.thrift
   LANGUAGE cpp2
-  OPTIONS no_metadata
-  OUT_SOURCES service_catalog_sources)
+  OUT_SOURCES service_catalog_sources
+  OPTIONS no_metadata)
 
 thrift_generate(
   ../thrift/thrift_catalog_service.thrift
   LANGUAGE cpp2
+  OUT_SOURCES thrift_catalog_service_sources
   SERVICES ThriftCatalogService
-  OPTIONS no_metadata
-  OUT_SOURCES thrift_catalog_service_sources)
+  OPTIONS no_metadata)
 
 if (THRIFT_TESTS)
   add_subdirectory(protocol/test)

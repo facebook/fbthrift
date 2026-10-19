@@ -25,8 +25,11 @@ foreach (
   go
   scope
   thrift)
-  thrift_generate(${name}.thrift LANGUAGE cpp2 OPTIONS templates no_metadata
-                  TARGET thriftannotation)
+  thrift_generate(
+    ${name}.thrift
+    LANGUAGE cpp2
+    TARGET thriftannotation
+    OPTIONS templates no_metadata)
 endforeach ()
 
 install(

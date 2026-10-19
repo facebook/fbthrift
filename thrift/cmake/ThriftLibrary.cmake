@@ -37,10 +37,10 @@ include(GNUInstallDirs)
 #
 #   thrift_generate(<file>.thrift
 #     LANGUAGE <cpp2|py3|python>
-#     [SERVICES <service>...]
-#     [OPTIONS <option>...]
 #     [TARGET <target>]
 #     [OUT_SOURCES <var>]
+#     [SERVICES <service>...]
+#     [OPTIONS <option>...]
 #     [INCLUDE_DIRECTORIES <dir>...]
 #     [OUTPUT_DIRECTORY <dir>]
 #     [INCLUDE_PREFIX <prefix>]
@@ -48,10 +48,10 @@ include(GNUInstallDirs)
 #
 #   <file>.thrift - The file to compile, relative to CMAKE_CURRENT_SOURCE_DIR.
 #   LANGUAGE - The generator to use.
-#   SERVICES - The services declared in the file.
-#   OPTIONS - Generator options, e.g. `OPTIONS json no_metadata`.
 #   TARGET - A target to add the generated files to as sources.
 #   OUT_SOURCES - A variable to set to the generated sources.
+#   SERVICES - The services declared in the file.
+#   OPTIONS - Generator options, e.g. `OPTIONS json no_metadata`.
 #   INCLUDE_DIRECTORIES - Where the compiler looks for included .thrift files,
 #       relative to CMAKE_CURRENT_SOURCE_DIR. Defaults to PROJECT_SOURCE_DIR.
 #   OUTPUT_DIRECTORY - Where gen-<language> is created, relative to
@@ -375,12 +375,12 @@ function (
   thrift_generate(
     "${file_path}/${file_name}.thrift"
     LANGUAGE "${language}"
+    OUT_SOURCES sources
     SERVICES ${services}
     OPTIONS ${option_list}
     INCLUDE_DIRECTORIES ${THRIFT_LIBRARY_THRIFT_INCLUDE_DIRECTORIES}
     INCLUDE_PREFIX "${prefix}"
-    ${extra_args}
-    OUT_SOURCES sources)
+    ${extra_args})
   set("${name}-${language}-SOURCES"
       "${sources}"
       PARENT_SCOPE)

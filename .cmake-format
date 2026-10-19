@@ -2,3 +2,17 @@ format:
   separate_ctrl_name_with_space: true
 markup:
   enable_markup: false
+parse:
+  additional_commands:
+    thrift_generate:
+      pargs: 1
+      kwargs:
+        LANGUAGE: 1
+        TARGET: 1
+        OUT_SOURCES: 1
+        SERVICES: +
+        OPTIONS: +
+        INCLUDE_DIRECTORIES: +
+        OUTPUT_DIRECTORY: 1
+        INCLUDE_PREFIX: 1
+        NAMESPACE: 1

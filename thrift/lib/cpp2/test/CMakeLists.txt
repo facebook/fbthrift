@@ -20,8 +20,11 @@ if (NOT THRIFT_BENCHMARKS)
 endif ()
 
 # Generate Thrift files for this benchmark.
-thrift_generate(ProtocolBenchData.thrift LANGUAGE cpp2 OPTIONS frozen2 layouts
-                OUT_SOURCES bench_data_sources)
+thrift_generate(
+  ProtocolBenchData.thrift
+  LANGUAGE cpp2
+  OUT_SOURCES bench_data_sources
+  OPTIONS frozen2 layouts)
 
 set(GENERATED_THRIFT_SOURCES ${bench_data_sources})
 set(SOURCE_FILES ProtocolBench.cpp)
@@ -33,8 +36,8 @@ foreach (conf_name "protocol" "type" "any" "serialization" "patch_data"
   thrift_generate(
     ../../../conformance/if/${conf_name}.thrift
     LANGUAGE cpp2
-    OPTIONS frozen2
-    OUT_SOURCES conformance_sources)
+    OUT_SOURCES conformance_sources
+    OPTIONS frozen2)
   set(GENERATED_THRIFT_SOURCES ${GENERATED_THRIFT_SOURCES}
                                ${conformance_sources})
 endforeach ()
