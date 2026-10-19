@@ -27,6 +27,8 @@
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 
+#include <folly/io/async/AsyncSSLSocket.h>
+#include <folly/io/async/SSLContext.h>
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceSetupService.h>
 #include <thrift/conformance/if/gen-cpp2/rpc_types.h>
@@ -39,6 +41,10 @@
 DEFINE_int32(port, 7777, "Port for Conformance Verification Server");
 DEFINE_string(protocol, "compact", "compact or binary");
 DEFINE_string(transport, "rocket", "rocket, header or http2");
+DEFINE_bool(tls, false, "Connect over TLS, presenting --tls-cert");
+DEFINE_string(tls_cert, "", "The client's certificate");
+DEFINE_string(tls_key, "", "The client certificate's key");
+DEFINE_string(tls_ca, "", "The CA the server's certificate must be signed by");
 
 using namespace apache::thrift;
 using namespace apache::thrift::conformance;
@@ -52,9 +58,26 @@ apache::thrift::protocol::PROTOCOL_TYPES protocolId() {
   return apache::thrift::protocol::T_COMPACT_PROTOCOL;
 }
 
+folly::AsyncTransport::UniquePtr connect(folly::EventBase& eb) {
+  const folly::SocketAddress address("::1", FLAGS_port);
+  if (!FLAGS_tls) {
+    return folly::AsyncTransport::UniquePtr(
+        new folly::AsyncSocket(&eb, address));
+  }
+  CHECK_EQ(FLAGS_transport, "rocket");
+  auto context = std::make_shared<folly::SSLContext>();
+  context->loadCertKeyPairFromFiles(
+      FLAGS_tls_cert.c_str(), FLAGS_tls_key.c_str());
+  context->loadTrustedCertificates(FLAGS_tls_ca.c_str());
+  context->setVerificationOption(folly::SSLContext::SSLVerifyPeerEnum::VERIFY);
+  context->setAdvertisedNextProtocols({"rs"});
+  auto socket = folly::AsyncSSLSocket::newSocket(context, &eb);
+  socket->connect(nullptr, address);
+  return folly::AsyncTransport::UniquePtr(socket.release());
+}
+
 ClientChannel::Ptr newChannel(folly::EventBase& eb) {
-  folly::AsyncTransport::UniquePtr socket(
-      new folly::AsyncSocket(&eb, folly::SocketAddress("::1", FLAGS_port)));
+  auto socket = connect(eb);
   if (FLAGS_transport == "header") {
     return HeaderClientChannel::newChannel(
         std::move(socket),

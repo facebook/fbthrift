@@ -115,6 +115,14 @@ struct Arguments {
     protocol: String,
     #[clap(long, default_value = "rocket")]
     transport: String,
+    #[clap(long)]
+    tls: bool,
+    #[clap(long)]
+    tls_cert: Option<String>,
+    #[clap(long)]
+    tls_key: Option<String>,
+    #[clap(long)]
+    tls_ca: Option<String>,
     #[clap(short, long, default_value = "info")]
     log: Vec<Directive>,
 }
@@ -135,6 +143,21 @@ async fn main(args: Arguments) -> Result<()> {
             "http2" => nativeclient::TransportType::Http,
             other => anyhow::bail!("Unknown transport {}", other),
         },
+        tls: if args.tls {
+            Some(Tls {
+                cert_path: args
+                    .tls_cert
+                    .ok_or_else(|| anyhow::anyhow!("--tls needs --tls-cert"))?,
+                key_path: args
+                    .tls_key
+                    .ok_or_else(|| anyhow::anyhow!("--tls needs --tls-key"))?,
+                ca_path: args
+                    .tls_ca
+                    .ok_or_else(|| anyhow::anyhow!("--tls needs --tls-ca"))?,
+            })
+        } else {
+            None
+        },
     };
     let client = get_client(&peer).await? as Arc<_>;
     test(&*client, &peer).await?;
@@ -146,19 +169,37 @@ struct Peer {
     port: u16,
     protocol: nativeclient::WireProtocol,
     transport: nativeclient::TransportType,
+    tls: Option<Tls>,
+}
+
+struct Tls {
+    cert_path: String,
+    key_path: String,
+    ca_path: String,
 }
 
 impl Peer {
     fn channel_builder(&self) -> Result<nativeclient::NativeChannelBuilder> {
         let address = SocketAddr::new(std::net::Ipv6Addr::LOCALHOST.into(), self.port);
-        Ok(nativeclient::NativeChannelBuilder::from_sock_addr(address)?
+        let builder = nativeclient::NativeChannelBuilder::from_sock_addr(address)?
             .with_secure(false)
             .with_transport_type(self.transport)
             .with_http_host("localhost")
             .with_http_url("/")
             .with_protocol(self.protocol)
             .with_conn_timeout(30_000)
-            .with_recv_timeout(30_000))
+            .with_recv_timeout(30_000);
+        Ok(match &self.tls {
+            Some(tls) => builder
+                .with_secure(true)
+                .with_certificate_paths(nativeclient::CertificatePaths {
+                    cert_path: tls.cert_path.clone(),
+                    key_path: tls.key_path.clone(),
+                    ca_path: tls.ca_path.clone(),
+                })
+                .with_enforce_peer_identity(false),
+            None => builder,
+        })
     }
 }
 

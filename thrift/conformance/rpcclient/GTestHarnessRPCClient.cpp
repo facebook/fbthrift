@@ -53,6 +53,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
+#include <wangle/ssl/SSLContextConfig.h>
 
 namespace apache::thrift::conformance {
 
@@ -749,6 +750,23 @@ std::unique_ptr<apache::thrift::HTTP2RoutingHandler> http2RoutingHandler(
       std::move(options), server.getThriftProcessor(), server);
 }
 
+void configureTls(apache::thrift::ThriftServer& server) {
+  const char* cert = std::getenv("THRIFT_CONFORMANCE_SERVER_TLS_CERT");
+  if (cert == nullptr) {
+    return;
+  }
+  auto ssl = std::make_shared<wangle::SSLContextConfig>();
+  ssl->setCertificate(
+      cert, getEnvOrThrow("THRIFT_CONFORMANCE_SERVER_TLS_KEY"), "");
+  ssl->clientCAFiles = std::vector<std::string>{
+      getEnvOrThrow("THRIFT_CONFORMANCE_SERVER_TLS_CLIENT_CA")};
+  ssl->sessionContext = "thrift_conformance";
+  ssl->setNextProtocols(**apache::thrift::ThriftServer::defaultNextProtocols());
+  server.setSSLConfig(std::move(ssl));
+  server.setSSLPolicy(apache::thrift::SSLPolicy::REQUIRED);
+  server.setAllowPlaintextOnLoopback(false);
+}
+
 // What some cases need set on the server before it starts.
 void configureServer(
     apache::thrift::ThriftServer& server,
@@ -829,6 +847,7 @@ class RPCClientConformanceTest : public testing::Test {
                   // never be rejected by load shedding in a test environment.
                   server.setQueueTimeout(std::chrono::milliseconds(0));
                   server.addRoutingHandler(http2RoutingHandler(server));
+                  configureTls(server);
                   configureServer(
                       server, *testCase_.rpc()->serverInstruction());
                 })),
