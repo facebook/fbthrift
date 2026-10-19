@@ -53,6 +53,14 @@ if (NOT TARGET FBThrift::thriftcpp2)
   include("${CMAKE_CURRENT_LIST_DIR}/FBThriftTargets.cmake")
 endif()
 
+# The old name of FBThrift::thrift_annotation, kept for compatibility. Exports
+# can't carry an ALIAS, so define it here.
+if (NOT TARGET FBThrift::thriftannotation)
+  add_library(FBThrift::thriftannotation INTERFACE IMPORTED)
+  target_link_libraries(FBThrift::thriftannotation
+                        INTERFACE FBThrift::thrift_annotation)
+endif()
+
 # FBTHRIFT_COMPILER is deprecated. A libraries-only install exports no compiler;
 # NOTFOUND keeps a consumer's COMMAND from silently receiving an empty argument.
 if (TARGET FBThrift::thrift)

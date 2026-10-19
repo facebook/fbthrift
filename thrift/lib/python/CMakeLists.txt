@@ -582,7 +582,7 @@ target_link_libraries(
          "-Wl,--allow-multiple-definition"
          thriftcpp2
          rpcmetadata
-         thriftannotation
+         thrift_annotation
          thriftmetadata
          thriftfrozen2
          thriftprotocol

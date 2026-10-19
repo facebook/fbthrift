@@ -235,8 +235,8 @@ target_link_libraries(thriftfrozen2 PUBLIC Folly::folly thriftmetadata
 
 add_library(thrifttyperep ${id_sources} ${standard_sources}
                           ${type_rep_sources})
-add_dependencies(thrifttyperep thriftannotation)
-target_link_libraries(thrifttyperep PUBLIC Folly::folly thriftannotation)
+add_dependencies(thrifttyperep thrift_annotation)
+target_link_libraries(thrifttyperep PUBLIC Folly::folly thrift_annotation)
 
 add_library(
   thrifttype
@@ -252,9 +252,9 @@ add_library(
   type/Type.cpp
   type/TypeRegistry.cpp
   type/UniversalName.cpp)
-add_dependencies(thrifttype thriftannotation thrifttyperep thriftprotocol)
+add_dependencies(thrifttype thrift_annotation thrifttyperep thriftprotocol)
 target_link_libraries(
-  thrifttype PUBLIC common Folly::folly thriftannotation thrifttyperep
+  thrifttype PUBLIC common Folly::folly thrift_annotation thrifttyperep
                     thriftprotocol ${thrift_openssl_crypto})
 
 # thriftanyrep sources are now compiled into thrifttype to avoid a circular
@@ -503,7 +503,7 @@ if (THRIFT_RPC)
   add_dependencies(
     thriftcpp2
     rpcmetadata
-    thriftannotation
+    thrift_annotation
     thriftmetadata
     thrift_path
     thrift_dynamic_value
@@ -517,7 +517,7 @@ if (THRIFT_RPC)
     PUBLIC fmt::fmt
            thrift-cpp
            rpcmetadata
-           thriftannotation
+           thrift_annotation
            thriftmetadata
            thrift_path
            thrift_dynamic_value
@@ -554,7 +554,7 @@ install(
 if (BUILD_SHARED_LIBS)
   set_target_properties(
     rpcmetadata
-    thriftannotation
+    thrift_annotation
     thriftmetadata
     thrift_path
     thrift_dynamic_value
