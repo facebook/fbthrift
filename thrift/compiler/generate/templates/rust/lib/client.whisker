@@ -309,7 +309,6 @@ where
                 sink_processor,
             } = call_sink.await?;
 
-          {{#if function.sink_has_first_response?}}
             let de = P::deserializer(_initial_response);
             let res = ::fbthrift::help::async_deserialize_response_envelope::<P, {{program.crate}}::errors::{{interface.snake}}::{{function.upcamel}}Reader, S>(de).await?;
 
@@ -319,9 +318,6 @@ where
                     ::std::result::Result::Err({{program.crate}}::errors::{{interface.snake}}::{{function.upcamel}}Error::ApplicationException(aexn))
                 }
             }?;
-          {{#else}}
-            let initial_response = ();
-          {{/if function.sink_has_first_response?}}
 
             let sink_helper_fn = move |stream: ::futures::stream::BoxStream<'static, ::std::result::Result<
                 {{#partial types.type_name type=function.sink.elem_type}},

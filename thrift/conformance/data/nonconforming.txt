@@ -7080,11 +7080,6 @@ rust/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
 # These are inverted expectations: whatever is listed here is expected to fail,
 # so implementing one turns its test red until the line is deleted.
 
-# Rust codegen never reads the initial response of a sink that has no first
-# response, so the declared exception the server raises there is dropped and
-# the call opens a sink instead of failing as it does in C++.
-rustnative/ThriftRPCClientTest/SinkInitialDeclaredException/Success.SinkInitialDeclaredExceptionTest
-
 # The same cases with Binary on the wire (rpc-client-binary-test), which fail
 # for the same reasons as their Compact counterparts above.
 rustbinary/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTimeoutTest
@@ -7100,7 +7095,6 @@ rustbinary/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestRespon
 rustbinary/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
 rustbinary/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
 rustbinary/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
-rustnativebinary/ThriftRPCClientTest/SinkInitialDeclaredException/Success.SinkInitialDeclaredExceptionTest
 
 # The request-response cases over a header channel (rpc-client-header-test).
 # Same reason as for the `rust` category.
@@ -7132,4 +7126,3 @@ rusttls/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseA
 rusttls/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
 rusttls/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
 rusttls/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
-rustnativetls/ThriftRPCClientTest/SinkInitialDeclaredException/Success.SinkInitialDeclaredExceptionTest
