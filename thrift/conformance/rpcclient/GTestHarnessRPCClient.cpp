@@ -51,6 +51,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/PreprocessParams.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 namespace apache::thrift::conformance {
@@ -739,6 +740,15 @@ class ConformanceVerificationServer
   std::atomic<bool> concurrentGaveUp_{false};
 };
 
+std::unique_ptr<apache::thrift::HTTP2RoutingHandler> http2RoutingHandler(
+    apache::thrift::ThriftServer& server) {
+  auto options = std::make_unique<proxygen::HTTPServerOptions>();
+  options->threads = static_cast<size_t>(server.getNumIOWorkerThreads());
+  options->idleTimeout = server.getIdleTimeout();
+  return std::make_unique<apache::thrift::HTTP2RoutingHandler>(
+      std::move(options), server.getThriftProcessor(), server);
+}
+
 // What some cases need set on the server before it starts.
 void configureServer(
     apache::thrift::ThriftServer& server,
@@ -818,6 +828,7 @@ class RPCClientConformanceTest : public testing::Test {
                   // (especially Erlang/BEAM VM) may be slow to start and should
                   // never be rejected by load shedding in a test environment.
                   server.setQueueTimeout(std::chrono::milliseconds(0));
+                  server.addRoutingHandler(http2RoutingHandler(server));
                   configureServer(
                       server, *testCase_.rpc()->serverInstruction());
                 })),

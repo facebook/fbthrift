@@ -7101,3 +7101,14 @@ rustnativebinary/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTim
 # The request-response cases over a header channel (rpc-client-header-test).
 # Same reason as for the `rust` category.
 rustheader/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseAnyExceptionTest
+
+# The request-response cases over HTTP/2 (rpc-client-http2-test). A C++ server
+# runs its preprocess functions only for Rocket and header requests
+# (ThriftRocketServerHandler, Cpp2Connection), never for HTTP/2, so nothing
+# sheds the call under test and every client gets the handler's answer instead,
+# the C++ one included.
+cpp2http2/ThriftRPCClientTest/RequestResponseLoadshedding/Success.RequestResponseLoadsheddingTest
+rusthttp2/ThriftRPCClientTest/RequestResponseLoadshedding/Success.RequestResponseLoadsheddingTest
+rustnativehttp2/ThriftRPCClientTest/RequestResponseLoadshedding/Success.RequestResponseLoadsheddingTest
+# Same reason as for the `rust` category.
+rusthttp2/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseAnyExceptionTest

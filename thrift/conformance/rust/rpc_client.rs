@@ -97,6 +97,7 @@ async fn main(fb: fbinit::FacebookInit, args: Arguments) -> Result<()> {
         transport: match args.transport.as_str() {
             "rocket" => thriftclient::TransportType::Rocket,
             "header" => thriftclient::TransportType::Header,
+            "http2" => thriftclient::TransportType::Http,
             other => anyhow::bail!("Unknown transport {}", other),
         },
     };
@@ -121,6 +122,8 @@ impl Peer {
         )?
         .with_secure(false)
         .with_transport_type(self.transport)
+        .with_http_host("localhost")
+        .with_http_url("/")
         .with_protocol(self.protocol.clone())
         .with_conn_timeout(30_000)
         .with_recv_timeout(30_000))

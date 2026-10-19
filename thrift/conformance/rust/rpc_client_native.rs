@@ -113,7 +113,6 @@ struct Arguments {
     port: u16,
     #[clap(long, default_value = "compact")]
     protocol: String,
-    /// rocket or header
     #[clap(long, default_value = "rocket")]
     transport: String,
     #[clap(short, long, default_value = "info")]
@@ -133,6 +132,7 @@ async fn main(args: Arguments) -> Result<()> {
         transport: match args.transport.as_str() {
             "rocket" => nativeclient::TransportType::Rocket,
             "header" => nativeclient::TransportType::Header,
+            "http2" => nativeclient::TransportType::Http,
             other => anyhow::bail!("Unknown transport {}", other),
         },
     };
@@ -154,6 +154,8 @@ impl Peer {
         Ok(nativeclient::NativeChannelBuilder::from_sock_addr(address)?
             .with_secure(false)
             .with_transport_type(self.transport)
+            .with_http_host("localhost")
+            .with_http_url("/")
             .with_protocol(self.protocol)
             .with_conn_timeout(30_000)
             .with_recv_timeout(30_000))
