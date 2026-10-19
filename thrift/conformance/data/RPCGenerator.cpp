@@ -818,6 +818,29 @@ Test createStreamCancelBeforeInitialResponseTest() {
   return ret;
 }
 
+Test createStreamCancelUnreadInitialResponseTest() {
+  Test ret;
+  ret.name() = "StreamCancelUnreadInitialResponseTest";
+  ret.tags()->emplace("spec/protocol/interface/#stream-cancellation");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "StreamCancelUnreadInitialResponse/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().streamCancel().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.dropUnreadAfterMs() = 200;
+  rpcTest.clientTestResult().emplace().streamCancel().emplace();
+  rpcTest.serverInstruction().emplace().streamCancel().emplace();
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().streamCancel().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.cancelled() = true;
+
+  return ret;
+}
+
 Test createStreamLoadsheddingTest() {
   Test ret;
   ret.name() = "StreamLoadsheddingTest";
@@ -1502,6 +1525,29 @@ Test createSinkAbortBeforeInitialResponseTest() {
   return ret;
 }
 
+Test createSinkAbortUnreadInitialResponseTest() {
+  Test ret;
+  ret.name() = "SinkAbortUnreadInitialResponseTest";
+  ret.tags()->emplace("spec/protocol/interface/#sink");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "SinkAbortUnreadInitialResponse/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().sinkAbort().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.dropUnreadAfterMs() = 200;
+  rpcTest.clientTestResult().emplace().sinkAbort().emplace();
+  rpcTest.serverInstruction().emplace().sinkAbort().emplace();
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().sinkAbort().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.aborted() = true;
+
+  return ret;
+}
+
 Test createSinkChunkTimeoutTest() {
   Test ret;
   ret.name() = "SinkChunkTimeoutTest";
@@ -2151,6 +2197,29 @@ Test createBidiAbortBeforeInitialResponseTest() {
   return ret;
 }
 
+Test createBidiAbortUnreadInitialResponseTest() {
+  Test ret;
+  ret.name() = "BidiAbortUnreadInitialResponseTest";
+  ret.tags()->emplace("spec/protocol/interface/#bidi");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "BidiAbortUnreadInitialResponse/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().bidiAbort().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.dropUnreadAfterMs() = 200;
+  rpcTest.clientTestResult().emplace().bidiAbort().emplace();
+  rpcTest.serverInstruction().emplace().bidiAbort().emplace();
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().bidiAbort().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.sinkAborted() = true;
+
+  return ret;
+}
+
 // =================== Interactions ===================
 Test createInteractionConstructorTest() {
   Test ret;
@@ -2430,14 +2499,17 @@ TestSuite createRPCClientExtendedTestSuite() {
   addExtendedRequestResponseTests(suite);
   suite.tests()->push_back(createStreamCancelTest());
   suite.tests()->push_back(createStreamCancelBeforeInitialResponseTest());
+  suite.tests()->push_back(createStreamCancelUnreadInitialResponseTest());
   suite.tests()->push_back(createStreamLoadsheddingTest());
   suite.tests()->push_back(createStreamMemoryBufferSizeTest());
   suite.tests()->push_back(createSinkChunkTimeoutTest());
   suite.tests()->push_back(createSinkEarlyFinalResponseTest());
   suite.tests()->push_back(createSinkAbortTest());
   suite.tests()->push_back(createSinkAbortBeforeInitialResponseTest());
+  suite.tests()->push_back(createSinkAbortUnreadInitialResponseTest());
   suite.tests()->push_back(createBidiAbortTest());
   suite.tests()->push_back(createBidiAbortBeforeInitialResponseTest());
+  suite.tests()->push_back(createBidiAbortUnreadInitialResponseTest());
   return suite;
 }
 

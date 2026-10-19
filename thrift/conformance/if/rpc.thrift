@@ -678,6 +678,7 @@ struct StreamCancelClientInstruction {
   1: Request request;
   2: i64 consumeCount;
   3: optional i64 giveUpAfterMs;
+  4: optional i64 dropUnreadAfterMs;
 }
 
 struct StreamServerErrorClientInstruction {
@@ -723,6 +724,7 @@ struct SinkServerDeclaredExceptionClientInstruction {
 struct SinkAbortClientInstruction {
   1: Request request;
   2: optional i64 giveUpAfterMs;
+  3: optional i64 dropUnreadAfterMs;
 }
 
 struct InteractionConstructorClientInstruction {}
@@ -785,6 +787,7 @@ struct BidiMethodUndeclaredExceptionClientInstruction {
 struct BidiAbortClientInstruction {
   1: Request request;
   2: optional i64 giveUpAfterMs;
+  3: optional i64 dropUnreadAfterMs;
 }
 
 struct RequestResponseBasicServerInstruction {

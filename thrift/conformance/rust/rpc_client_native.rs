@@ -34,6 +34,7 @@
 //! `rpc_client.rs` is more relaxed and e.g. checks an error via text rather
 //! than by it's type.
 
+use std::future::Future;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
@@ -41,6 +42,7 @@ use std::time::Duration;
 use anyhow::Result;
 use anyhow::anyhow;
 use clap::Parser;
+use futures::FutureExt;
 use futures::stream::StreamExt;
 use rpc::rpc::BidiAbortClientInstruction;
 use rpc::rpc::BidiAbortClientTestResult;
@@ -360,6 +362,11 @@ async fn create_interaction(
         Some(value) => client.basicInteractionFactoryFunction(*value).await?,
         None => client.createBasicInteraction()? as Arc<_>,
     })
+}
+
+async fn drop_unread<F: Future + Unpin>(mut call: F, after_ms: i64) {
+    let _ = (&mut call).now_or_never();
+    tokio::time::sleep(Duration::from_millis(after_ms as u64)).await;
 }
 
 // ---
@@ -760,11 +767,12 @@ async fn stream_cancel(
 ) -> Result<()> {
     let call = client.streamBasic(&instr.request);
     let mut test_result = StreamCancelClientTestResult::default();
-    match instr.giveUpAfterMs {
-        Some(give_up_after_ms) => {
+    match (instr.giveUpAfterMs, instr.dropUnreadAfterMs) {
+        (Some(give_up_after_ms), _) => {
             drop(tokio::time::timeout(Duration::from_millis(give_up_after_ms as u64), call).await)
         }
-        None => {
+        (None, Some(drop_unread_after_ms)) => drop_unread(call, drop_unread_after_ms).await,
+        (None, None) => {
             let mut stream = call.await?;
             while (test_result.streamPayloads.len() as i64) < instr.consumeCount {
                 match stream.next().await {
@@ -1026,11 +1034,12 @@ async fn sink_abort(
     instr: &SinkAbortClientInstruction,
 ) -> Result<()> {
     let call = client.sinkBasic(&instr.request);
-    match instr.giveUpAfterMs {
-        Some(give_up_after_ms) => {
+    match (instr.giveUpAfterMs, instr.dropUnreadAfterMs) {
+        (Some(give_up_after_ms), _) => {
             drop(tokio::time::timeout(Duration::from_millis(give_up_after_ms as u64), call).await)
         }
-        None => drop(call.await?),
+        (None, Some(drop_unread_after_ms)) => drop_unread(call, drop_unread_after_ms).await,
+        (None, None) => drop(call.await?),
     }
     client
         .sendTestResult(&ClientTestResult::sinkAbort(
@@ -1479,11 +1488,12 @@ async fn bidi_abort(
     instr: &BidiAbortClientInstruction,
 ) -> Result<()> {
     let call = client.bidiBasic(&instr.request);
-    match instr.giveUpAfterMs {
-        Some(give_up_after_ms) => {
+    match (instr.giveUpAfterMs, instr.dropUnreadAfterMs) {
+        (Some(give_up_after_ms), _) => {
             drop(tokio::time::timeout(Duration::from_millis(give_up_after_ms as u64), call).await)
         }
-        None => drop(call.await?),
+        (None, Some(drop_unread_after_ms)) => drop_unread(call, drop_unread_after_ms).await,
+        (None, None) => drop(call.await?),
     }
     client
         .sendTestResult(&ClientTestResult::bidiAbort(

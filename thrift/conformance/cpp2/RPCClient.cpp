@@ -25,6 +25,7 @@
 #include <folly/coro/Collect.h>
 #include <folly/coro/Sleep.h>
 #include <folly/coro/Timeout.h>
+#include <folly/executors/GlobalExecutor.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 
@@ -305,6 +306,14 @@ StreamBasicClientTestResult streamBasicTest(
       }());
 }
 
+template <typename T>
+folly::coro::Task<void> dropUnread(folly::coro::Task<T> call, int64_t afterMs) {
+  auto onCpu = folly::coro::co_withExecutor(
+      folly::getGlobalCPUExecutor(), std::move(call));
+  auto started = std::move(onCpu).start();
+  co_await folly::coro::sleep(std::chrono::milliseconds(afterMs));
+}
+
 StreamCancelClientTestResult streamCancelTest(
     Client<RPCConformanceService>& client,
     const StreamCancelClientInstruction& instruction) {
@@ -316,6 +325,10 @@ StreamCancelClientTestResult streamCancelTest(
           auto giveUpAfter = std::chrono::milliseconds(*giveUpAfterMs);
           co_await folly::coro::co_awaitTry(
               folly::coro::timeout(std::move(call), giveUpAfter));
+          co_return result;
+        }
+        if (auto dropUnreadAfterMs = instruction.dropUnreadAfterMs()) {
+          co_await dropUnread(std::move(call), *dropUnreadAfterMs);
           co_return result;
         }
         auto gen = (co_await std::move(call)).toAsyncGenerator();
@@ -559,6 +572,8 @@ SinkAbortClientTestResult sinkAbortTest(
       auto giveUpAfter = std::chrono::milliseconds(*giveUpAfterMs);
       co_await folly::coro::co_awaitTry(
           folly::coro::timeout(std::move(call), giveUpAfter));
+    } else if (auto dropUnreadAfterMs = instruction.dropUnreadAfterMs()) {
+      co_await dropUnread(std::move(call), *dropUnreadAfterMs);
     } else {
       co_await std::move(call);
     }
@@ -887,6 +902,8 @@ BidiAbortClientTestResult bidiAbortTest(
       auto giveUpAfter = std::chrono::milliseconds(*giveUpAfterMs);
       co_await folly::coro::co_awaitTry(
           folly::coro::timeout(std::move(call), giveUpAfter));
+    } else if (auto dropUnreadAfterMs = instruction.dropUnreadAfterMs()) {
+      co_await dropUnread(std::move(call), *dropUnreadAfterMs);
     } else {
       co_await std::move(call);
     }
