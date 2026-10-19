@@ -18,10 +18,10 @@ public class FactoriesRpcServerHandler
 
   private final Factories.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _fooReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _interactReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _interactFastReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _serializeReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _fooReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _interactReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _interactFastReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _serializeReaders;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<com.facebook.thrift.model.StreamResponse<Integer,Integer>> _delegate_serialize;
   private final com.facebook.thrift.server.generated.StreamWithFirstResponseHandler<Integer,Integer> _handler_serialize;
 
@@ -75,8 +75,8 @@ public class FactoriesRpcServerHandler
 
   }
 
-  private final static java.util.List<com.facebook.thrift.payload.Reader> _create_serialize_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_serialize_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -126,8 +126,8 @@ public class FactoriesRpcServerHandler
 
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_foo_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_foo_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -158,7 +158,7 @@ public class FactoriesRpcServerHandler
     _dofoo(
     Factories.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -216,10 +216,10 @@ public class FactoriesRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_interact_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_interact_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i32Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I32, Readers.i32Reader(), () -> 0));
 
     return _readerList;
   }
@@ -249,7 +249,7 @@ public class FactoriesRpcServerHandler
     _dointeract(
     Factories.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -308,8 +308,8 @@ public class FactoriesRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_interactFast_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_interactFast_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -344,7 +344,7 @@ public class FactoriesRpcServerHandler
     _dointeractFast(
     Factories.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

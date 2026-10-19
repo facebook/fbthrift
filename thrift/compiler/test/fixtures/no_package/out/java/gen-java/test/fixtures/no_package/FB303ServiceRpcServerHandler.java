@@ -18,7 +18,7 @@ public class FB303ServiceRpcServerHandler
 
   private final FB303Service.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _simpleRpcReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _simpleRpcReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -46,10 +46,10 @@ public class FB303ServiceRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_simpleRpc_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_simpleRpc_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i32Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I32, Readers.i32Reader(), () -> 0));
 
     return _readerList;
   }
@@ -83,7 +83,7 @@ public class FB303ServiceRpcServerHandler
     _dosimpleRpc(
     FB303Service.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

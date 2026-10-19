@@ -17,7 +17,7 @@
 package com.facebook.thrift.server.generated;
 
 import com.facebook.swift.service.ContextChain;
-import com.facebook.thrift.payload.Reader;
+import com.facebook.thrift.payload.FieldReader;
 import com.facebook.thrift.payload.ServerRequestPayload;
 import com.facebook.thrift.payload.ServerResponsePayload;
 import com.facebook.thrift.payload.Writer;
@@ -35,7 +35,7 @@ public class StreamResponseHandler<T> extends StreamResponseHandlerTemplate<T> {
   public StreamResponseHandler(
       SingleRequestStreamResponseDelegate<T> delegate,
       ResponseWriterFactory responseWriterFactory,
-      List<Reader> readers,
+      List<FieldReader<?>> readers,
       String name,
       Class<? extends TBaseException>[] functionExceptions,
       Integer[] functionExceptionIds,

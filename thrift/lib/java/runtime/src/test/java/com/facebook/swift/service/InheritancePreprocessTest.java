@@ -28,7 +28,7 @@ import com.facebook.thrift.example.ping.PingRequest;
 import com.facebook.thrift.example.ping.PingResponse;
 import com.facebook.thrift.example.ping.PingService;
 import com.facebook.thrift.example.ping.PingServiceRpcServerHandler;
-import com.facebook.thrift.payload.Reader;
+import com.facebook.thrift.payload.FieldReader;
 import com.facebook.thrift.payload.ServerRequestPayload;
 import com.facebook.thrift.payload.ServerResponsePayload;
 import com.facebook.thrift.payload.Writer;
@@ -268,7 +268,7 @@ public class InheritancePreprocessTest {
   // ---------------------------------------------------------------------------
 
   private static ServerRequestPayload payload(String method) {
-    Function<List<Reader>, List<Object>> readerTransformer =
+    Function<List<FieldReader<?>>, List<Object>> readerTransformer =
         readers -> Arrays.asList(new PingRequest.Builder().setRequest("hi").build());
     return ServerRequestPayload.create(
         readerTransformer,

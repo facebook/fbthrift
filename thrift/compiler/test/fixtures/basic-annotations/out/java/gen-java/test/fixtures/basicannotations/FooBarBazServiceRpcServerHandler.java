@@ -18,9 +18,9 @@ public class FooBarBazServiceRpcServerHandler
 
   private final FooBarBazService.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _fooReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _barReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _bazReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _fooReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _barReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _bazReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -52,8 +52,8 @@ public class FooBarBazServiceRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_foo_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_foo_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -84,7 +84,7 @@ public class FooBarBazServiceRpcServerHandler
     _dofoo(
     FooBarBazService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -142,8 +142,8 @@ public class FooBarBazServiceRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_bar_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_bar_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -174,7 +174,7 @@ public class FooBarBazServiceRpcServerHandler
     _dobar(
     FooBarBazService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -232,8 +232,8 @@ public class FooBarBazServiceRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_baz_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_baz_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -264,7 +264,7 @@ public class FooBarBazServiceRpcServerHandler
     _dobaz(
     FooBarBazService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

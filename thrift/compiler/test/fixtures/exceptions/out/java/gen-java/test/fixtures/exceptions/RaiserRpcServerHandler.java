@@ -18,10 +18,10 @@ public class RaiserRpcServerHandler
 
   private final Raiser.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _doBlandReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _doRaiseReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _get200Readers;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _get500Readers;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _doBlandReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _doRaiseReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _get200Readers;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _get500Readers;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -55,8 +55,8 @@ public class RaiserRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_doBland_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_doBland_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -87,7 +87,7 @@ public class RaiserRpcServerHandler
     _dodoBland(
     Raiser.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -145,8 +145,8 @@ public class RaiserRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_doRaise_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_doRaise_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -203,7 +203,7 @@ public class RaiserRpcServerHandler
     _dodoRaise(
     Raiser.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -293,8 +293,8 @@ public class RaiserRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_get200_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_get200_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -329,7 +329,7 @@ public class RaiserRpcServerHandler
     _doget200(
     Raiser.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -386,8 +386,8 @@ public class RaiserRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_get500_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_get500_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -448,7 +448,7 @@ public class RaiserRpcServerHandler
     _doget500(
     Raiser.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

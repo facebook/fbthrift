@@ -18,13 +18,13 @@ public class MyServiceRpcServerHandler
 
   private final MyService.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _pingReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _getRandomDataReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _hasDataByIdReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _getDataByIdReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _putDataByIdReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _lobDataByIdReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _doNothingReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _pingReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _getRandomDataReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _hasDataByIdReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _getDataByIdReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _putDataByIdReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _lobDataByIdReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _doNothingReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -64,8 +64,8 @@ public class MyServiceRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_ping_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_ping_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -122,7 +122,7 @@ public class MyServiceRpcServerHandler
     _doping(
     MyService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -192,8 +192,8 @@ public class MyServiceRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_getRandomData_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_getRandomData_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -228,7 +228,7 @@ public class MyServiceRpcServerHandler
     _dogetRandomData(
     MyService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -285,10 +285,10 @@ public class MyServiceRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_hasDataById_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_hasDataById_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i64Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I64, Readers.i64Reader(), () -> 0L));
 
     return _readerList;
   }
@@ -322,7 +322,7 @@ public class MyServiceRpcServerHandler
     _dohasDataById(
     MyService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -380,10 +380,10 @@ public class MyServiceRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_getDataById_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_getDataById_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i64Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I64, Readers.i64Reader(), () -> 0L));
 
     return _readerList;
   }
@@ -417,7 +417,7 @@ public class MyServiceRpcServerHandler
     _dogetDataById(
     MyService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -475,11 +475,11 @@ public class MyServiceRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_putDataById_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_putDataById_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i64Reader());
-    _readerList.add(Readers.stringReader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I64, Readers.i64Reader(), () -> 0L));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)2, TType.STRING, Readers.stringReader(), () -> ""));
 
     return _readerList;
   }
@@ -509,7 +509,7 @@ public class MyServiceRpcServerHandler
     _doputDataById(
     MyService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -569,8 +569,8 @@ public class MyServiceRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_doNothing_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_doNothing_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -601,7 +601,7 @@ public class MyServiceRpcServerHandler
     _dodoNothing(
     MyService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -660,11 +660,11 @@ public class MyServiceRpcServerHandler
           return _internalResponse;
   }
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_lobDataById_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_lobDataById_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i64Reader());
-    _readerList.add(Readers.stringReader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I64, Readers.i64Reader(), () -> 0L));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)2, TType.STRING, Readers.stringReader(), () -> ""));
 
     return _readerList;
   }
@@ -673,7 +673,7 @@ public class MyServiceRpcServerHandler
     _dolobDataById(
     MyService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
     _chain.preRead();
     java.util.List<java.lang.Object> _data;

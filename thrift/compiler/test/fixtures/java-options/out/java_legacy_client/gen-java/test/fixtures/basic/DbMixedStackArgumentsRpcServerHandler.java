@@ -18,8 +18,8 @@ public class DbMixedStackArgumentsRpcServerHandler
 
   private final DbMixedStackArguments.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _getDataByKey0Readers;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _getDataByKey1Readers;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _getDataByKey0Readers;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _getDataByKey1Readers;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -49,10 +49,10 @@ public class DbMixedStackArgumentsRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_getDataByKey0_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_getDataByKey0_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.stringReader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.STRING, Readers.stringReader(), () -> ""));
 
     return _readerList;
   }
@@ -86,7 +86,7 @@ public class DbMixedStackArgumentsRpcServerHandler
     _dogetDataByKey0(
     DbMixedStackArguments.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -144,10 +144,10 @@ public class DbMixedStackArgumentsRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_getDataByKey1_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_getDataByKey1_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.stringReader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.STRING, Readers.stringReader(), () -> ""));
 
     return _readerList;
   }
@@ -181,7 +181,7 @@ public class DbMixedStackArgumentsRpcServerHandler
     _dogetDataByKey1(
     DbMixedStackArguments.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

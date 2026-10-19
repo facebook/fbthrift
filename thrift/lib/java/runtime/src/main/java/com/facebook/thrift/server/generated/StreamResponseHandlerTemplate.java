@@ -17,7 +17,7 @@
 package com.facebook.thrift.server.generated;
 
 import com.facebook.swift.service.ContextChain;
-import com.facebook.thrift.payload.Reader;
+import com.facebook.thrift.payload.FieldReader;
 import com.facebook.thrift.payload.ServerRequestPayload;
 import com.facebook.thrift.payload.ServerResponsePayload;
 import com.facebook.thrift.payload.ThriftSerializable;
@@ -54,7 +54,7 @@ abstract class StreamResponseHandlerTemplate<T> {
   private static final Logger logger = LoggerFactory.getLogger(StreamResponseHandlerTemplate.class);
   private static final Class[] NO_KNOWN_EXCEPTIONS = new Class[0];
   private final SingleRequestStreamResponseDelegate<T> delegate;
-  private final List<Reader> readers;
+  private final List<FieldReader<?>> readers;
   private final String name;
   private final Class<? extends TBaseException>[] functionExceptions;
   private final Class<? extends TBaseException>[] streamExceptions;
@@ -64,7 +64,7 @@ abstract class StreamResponseHandlerTemplate<T> {
   @SuppressWarnings({"unchecked"})
   public StreamResponseHandlerTemplate(
       SingleRequestStreamResponseDelegate<T> delegate,
-      List<Reader> readers,
+      List<FieldReader<?>> readers,
       String name,
       Class<? extends TBaseException>[] functionExceptions,
       Integer[] functionExceptionIds,

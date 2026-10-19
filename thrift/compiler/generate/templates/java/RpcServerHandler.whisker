@@ -34,10 +34,10 @@ public class {{service.javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
   private final {{service.javaCapitalName}}.Reactive _delegate;
 
   {{#each service.single_request_functions as |func|}}
-  private final java.util.List<com.facebook.thrift.payload.Reader> _{{func.java_name}}Readers;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _{{func.java_name}}Readers;
   {{/each}}
   {{#each service.streaming_functions as |func|}}
-  private final java.util.List<com.facebook.thrift.payload.Reader> _{{func.java_name}}Readers;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _{{func.java_name}}Readers;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<{{#partial types.stream_return_type function=func}}> _delegate_{{func.java_name}};
   {{#if (not func.stream_has_first_response?)}}
   private final com.facebook.thrift.server.generated.StreamResponseHandler<{{#partial types.boxed_type type=func.stream.elem_type field_hasAdapter=false}}> _handler_{{func.java_name}};
@@ -115,11 +115,11 @@ public class {{service.javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
   }
 
   {{#each service.streaming_functions as |func|}}
-  private final static java.util.List<com.facebook.thrift.payload.Reader> _create_{{func.java_name}}_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_{{func.java_name}}_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
     {{#each func.params.fields as |field|}}
-    _readerList.add({{#partial types.type_reader type=field.type}});
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short){{field.id}}, TType.{{#partial types.ttype type=field.type}}, {{#partial types.type_reader type=field.type}}, () -> {{#partial types.param_default_value type=field.type}}));
     {{/each}}
 
     return _readerList;
@@ -177,11 +177,11 @@ public class {{service.javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
   {{/each}}
 
   {{#each service.request_response_functions as |func|}}
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_{{func.java_name}}_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_{{func.java_name}}_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
     {{#each func.params.fields as |field|}}
-    _readerList.add({{#partial types.type_reader type=field.type}});
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short){{field.id}}, TType.{{#partial types.ttype type=field.type}}, {{#partial types.type_reader type=field.type}}, () -> {{#partial types.param_default_value type=field.type}}));
     {{/each}}
 
     return _readerList;
@@ -246,7 +246,7 @@ public class {{service.javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     _do{{func.java_name}}(
     {{service.javaCapitalName}}.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -335,11 +335,11 @@ public class {{service.javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
   {{/each}}
 
   {{#each service.oneway_functions as |func|}}
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_{{func.java_name}}_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_{{func.java_name}}_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
     {{#each func.params.fields as |field|}}
-    _readerList.add({{#partial types.type_reader type=field.type}});
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short){{field.id}}, TType.{{#partial types.ttype type=field.type}}, {{#partial types.type_reader type=field.type}}, () -> {{#partial types.param_default_value type=field.type}}));
     {{/each}}
 
     return _readerList;
@@ -349,7 +349,7 @@ public class {{service.javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     _do{{func.java_name}}(
     {{service.javaCapitalName}}.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
     _chain.preRead();
     java.util.List<java.lang.Object> _data;

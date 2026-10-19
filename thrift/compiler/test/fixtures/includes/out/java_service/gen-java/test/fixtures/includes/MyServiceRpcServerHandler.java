@@ -18,8 +18,8 @@ public class MyServiceRpcServerHandler
 
   private final MyService.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _queryReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _hasArgDocsReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _queryReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _hasArgDocsReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -49,11 +49,11 @@ public class MyServiceRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_query_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_query_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.wrap(test.fixtures.includes.MyStruct.asReader()));
-    _readerList.add(Readers.wrap(test.fixtures.includes.includes.Included.asReader()));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.STRUCT, Readers.wrap(test.fixtures.includes.MyStruct.asReader()), () -> new test.fixtures.includes.MyStruct.Builder().build()));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)2, TType.STRUCT, Readers.wrap(test.fixtures.includes.includes.Included.asReader()), () -> new test.fixtures.includes.includes.Included.Builder().build()));
 
     return _readerList;
   }
@@ -83,7 +83,7 @@ public class MyServiceRpcServerHandler
     _doquery(
     MyService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -143,11 +143,11 @@ public class MyServiceRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_hasArgDocs_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_hasArgDocs_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.wrap(test.fixtures.includes.MyStruct.asReader()));
-    _readerList.add(Readers.wrap(test.fixtures.includes.includes.Included.asReader()));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.STRUCT, Readers.wrap(test.fixtures.includes.MyStruct.asReader()), () -> new test.fixtures.includes.MyStruct.Builder().build()));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)2, TType.STRUCT, Readers.wrap(test.fixtures.includes.includes.Included.asReader()), () -> new test.fixtures.includes.includes.Included.Builder().build()));
 
     return _readerList;
   }
@@ -177,7 +177,7 @@ public class MyServiceRpcServerHandler
     _dohasArgDocs(
     MyService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

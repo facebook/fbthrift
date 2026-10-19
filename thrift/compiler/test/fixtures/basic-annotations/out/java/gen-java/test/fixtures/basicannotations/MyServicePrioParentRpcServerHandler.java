@@ -18,8 +18,8 @@ public class MyServicePrioParentRpcServerHandler
 
   private final MyServicePrioParent.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _pingReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _pongReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _pingReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _pongReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -49,8 +49,8 @@ public class MyServicePrioParentRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_ping_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_ping_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -81,7 +81,7 @@ public class MyServicePrioParentRpcServerHandler
     _doping(
     MyServicePrioParent.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -139,8 +139,8 @@ public class MyServicePrioParentRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_pong_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_pong_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -171,7 +171,7 @@ public class MyServicePrioParentRpcServerHandler
     _dopong(
     MyServicePrioParent.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

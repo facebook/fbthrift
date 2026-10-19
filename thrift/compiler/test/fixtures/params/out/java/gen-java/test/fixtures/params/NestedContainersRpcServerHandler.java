@@ -18,11 +18,11 @@ public class NestedContainersRpcServerHandler
 
   private final NestedContainers.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _mapListReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _mapSetReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _listMapReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _listSetReaders;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _turtlesReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _mapListReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _mapSetReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _listMapReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _listSetReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _turtlesReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -58,10 +58,10 @@ public class NestedContainersRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_mapList_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_mapList_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.mapReader(Readers.i32Reader(),Readers.listReader(Readers.i32Reader())));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.MAP, Readers.mapReader(Readers.i32Reader(),Readers.listReader(Readers.i32Reader())), () -> new java.util.HashMap<>()));
 
     return _readerList;
   }
@@ -91,7 +91,7 @@ public class NestedContainersRpcServerHandler
     _domapList(
     NestedContainers.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -150,10 +150,10 @@ public class NestedContainersRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_mapSet_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_mapSet_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.mapReader(Readers.i32Reader(),Readers.setReader(Readers.i32Reader())));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.MAP, Readers.mapReader(Readers.i32Reader(),Readers.setReader(Readers.i32Reader())), () -> new java.util.HashMap<>()));
 
     return _readerList;
   }
@@ -183,7 +183,7 @@ public class NestedContainersRpcServerHandler
     _domapSet(
     NestedContainers.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -242,10 +242,10 @@ public class NestedContainersRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_listMap_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_listMap_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.listReader(Readers.mapReader(Readers.i32Reader(),Readers.i32Reader())));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.LIST, Readers.listReader(Readers.mapReader(Readers.i32Reader(),Readers.i32Reader())), () -> new java.util.ArrayList<>()));
 
     return _readerList;
   }
@@ -275,7 +275,7 @@ public class NestedContainersRpcServerHandler
     _dolistMap(
     NestedContainers.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -334,10 +334,10 @@ public class NestedContainersRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_listSet_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_listSet_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.listReader(Readers.setReader(Readers.i32Reader())));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.LIST, Readers.listReader(Readers.setReader(Readers.i32Reader())), () -> new java.util.ArrayList<>()));
 
     return _readerList;
   }
@@ -367,7 +367,7 @@ public class NestedContainersRpcServerHandler
     _dolistSet(
     NestedContainers.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
@@ -426,10 +426,10 @@ public class NestedContainersRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_turtles_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_turtles_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.listReader(Readers.listReader(Readers.mapReader(Readers.i32Reader(),Readers.mapReader(Readers.i32Reader(),Readers.setReader(Readers.i32Reader()))))));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.LIST, Readers.listReader(Readers.listReader(Readers.mapReader(Readers.i32Reader(),Readers.mapReader(Readers.i32Reader(),Readers.setReader(Readers.i32Reader()))))), () -> new java.util.ArrayList<>()));
 
     return _readerList;
   }
@@ -459,7 +459,7 @@ public class NestedContainersRpcServerHandler
     _doturtles(
     NestedContainers.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

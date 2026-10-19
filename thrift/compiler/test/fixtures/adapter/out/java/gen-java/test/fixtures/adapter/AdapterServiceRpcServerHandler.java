@@ -18,7 +18,7 @@ public class AdapterServiceRpcServerHandler
 
   private final AdapterService.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _countReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _countReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -46,8 +46,8 @@ public class AdapterServiceRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_count_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_count_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
@@ -82,7 +82,7 @@ public class AdapterServiceRpcServerHandler
     _docount(
     AdapterService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

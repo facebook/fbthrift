@@ -18,7 +18,7 @@ public class ServiceRpcServerHandler
 
   private final Service.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _funcReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _funcReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -46,12 +46,12 @@ public class ServiceRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_func_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_func_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.stringReader());
-    _readerList.add(Readers.stringReader());
-    _readerList.add(Readers.wrap(test.fixtures.adapter.Foo.asReader()));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.STRING, Readers.stringReader(), () -> ""));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)2, TType.STRING, Readers.stringReader(), () -> ""));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)3, TType.STRUCT, Readers.wrap(test.fixtures.adapter.Foo.asReader()), () -> new test.fixtures.adapter.Foo.Builder().build()));
 
     return _readerList;
   }
@@ -85,7 +85,7 @@ public class ServiceRpcServerHandler
     _dofunc(
     Service.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

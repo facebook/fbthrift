@@ -262,6 +262,29 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
 {{/if type.typedef?}}
 {{/let partial}}
 
+{{! Defines the value a server uses for a method parameter that is missing from
+    the request: the parameter type's default-constructed value, as in C++. Zero for
+    numbers and enums, and a new empty value for strings, binaries, containers, and
+    structured types. Primitive literals are cast so they box to the parameter's own
+    wrapper type. One deliberate gap: an enum with no value 0 has no Java
+    representation for it, so fromInteger(0) yields null where C++ holds numeric 0.
+    That matches what an unknown enum value on the wire already produces. }}
+{{#let export partial param_default_value |type| captures |boxed_type java_default_value|}}
+  {{#pragma ignore-newlines}}
+{{#if type.typedef?}}{{#partial param_default_value type=type.true_type}}
+{{#else if type.byte?}}(byte) 0
+{{#else if type.i16?}}(short) 0
+{{#else if type.string?}}""
+{{#else if type.binary?}}new byte[0]
+{{#else if type.list?}}new java.util.ArrayList<>()
+{{#else if type.set?}}new java.util.HashSet<>()
+{{#else if type.map?}}new java.util.HashMap<>()
+{{#else if type.union?}}new {{#partial boxed_type type=type field_hasAdapter=false}}()
+{{#else if type.structured?}}new {{#partial boxed_type type=type field_hasAdapter=false}}.Builder().build()
+{{#else}}{{#partial java_default_value type=type}}
+{{/if type.typedef?}}
+{{/let partial}}
+
 {{! Reads a binary value, using ByteBuf when in an adapter context
     (isAdapted from type-level propagation, or field_hasAdapter from
     field-level adapter), and byte[] otherwise. }}

@@ -18,7 +18,7 @@ public class LegacyServiceRpcServerHandler
 
   private final LegacyService.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _getPointsReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _getPointsReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -46,11 +46,11 @@ public class LegacyServiceRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_getPoints_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_getPoints_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.setReader(Readers.stringReader()));
-    _readerList.add(Readers.i64Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.SET, Readers.setReader(Readers.stringReader()), () -> new java.util.HashSet<>()));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)-1, TType.I64, Readers.i64Reader(), () -> 0L));
 
     return _readerList;
   }
@@ -99,7 +99,7 @@ public class LegacyServiceRpcServerHandler
     _dogetPoints(
     LegacyService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

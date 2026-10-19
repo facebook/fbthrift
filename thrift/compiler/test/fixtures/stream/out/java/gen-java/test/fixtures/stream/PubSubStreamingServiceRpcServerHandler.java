@@ -18,31 +18,31 @@ public class PubSubStreamingServiceRpcServerHandler
 
   private final PubSubStreamingService.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _returnstreamReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _returnstreamReaders;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<Integer> _delegate_returnstream;
   private final com.facebook.thrift.server.generated.StreamResponseHandler<Integer> _handler_returnstream;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _streamthrowsReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _streamthrowsReaders;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<Integer> _delegate_streamthrows;
   private final com.facebook.thrift.server.generated.StreamResponseHandler<Integer> _handler_streamthrows;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _servicethrowsReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _servicethrowsReaders;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<Integer> _delegate_servicethrows;
   private final com.facebook.thrift.server.generated.StreamResponseHandler<Integer> _handler_servicethrows;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _servicethrows2Readers;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _servicethrows2Readers;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<Integer> _delegate_servicethrows2;
   private final com.facebook.thrift.server.generated.StreamResponseHandler<Integer> _handler_servicethrows2;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _boththrowsReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _boththrowsReaders;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<Integer> _delegate_boththrows;
   private final com.facebook.thrift.server.generated.StreamResponseHandler<Integer> _handler_boththrows;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _responseandstreamstreamthrowsReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _responseandstreamstreamthrowsReaders;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<com.facebook.thrift.model.StreamResponse<Integer,Integer>> _delegate_responseandstreamstreamthrows;
   private final com.facebook.thrift.server.generated.StreamWithFirstResponseHandler<Integer,Integer> _handler_responseandstreamstreamthrows;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _responseandstreamservicethrowsReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _responseandstreamservicethrowsReaders;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<com.facebook.thrift.model.StreamResponse<Integer,Integer>> _delegate_responseandstreamservicethrows;
   private final com.facebook.thrift.server.generated.StreamWithFirstResponseHandler<Integer,Integer> _handler_responseandstreamservicethrows;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _responseandstreamboththrowsReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _responseandstreamboththrowsReaders;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<com.facebook.thrift.model.StreamResponse<Integer,Integer>> _delegate_responseandstreamboththrows;
   private final com.facebook.thrift.server.generated.StreamWithFirstResponseHandler<Integer,Integer> _handler_responseandstreamboththrows;
-  private final java.util.List<com.facebook.thrift.payload.Reader> _returnstreamFastReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _returnstreamFastReaders;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<Integer> _delegate_returnstreamFast;
   private final com.facebook.thrift.server.generated.StreamResponseHandler<Integer> _handler_returnstreamFast;
 
@@ -263,11 +263,11 @@ public class PubSubStreamingServiceRpcServerHandler
 
   }
 
-  private final static java.util.List<com.facebook.thrift.payload.Reader> _create_returnstream_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_returnstream_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i32Reader());
-    _readerList.add(Readers.i32Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I32, Readers.i32Reader(), () -> 0));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)2, TType.I32, Readers.i32Reader(), () -> 0));
 
     return _readerList;
   }
@@ -294,10 +294,10 @@ public class PubSubStreamingServiceRpcServerHandler
   };
 
 
-  private final static java.util.List<com.facebook.thrift.payload.Reader> _create_streamthrows_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_streamthrows_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i32Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I32, Readers.i32Reader(), () -> 0));
 
     return _readerList;
   }
@@ -324,10 +324,10 @@ public class PubSubStreamingServiceRpcServerHandler
   };
 
 
-  private final static java.util.List<com.facebook.thrift.payload.Reader> _create_servicethrows_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_servicethrows_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i32Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I32, Readers.i32Reader(), () -> 0));
 
     return _readerList;
   }
@@ -354,10 +354,10 @@ public class PubSubStreamingServiceRpcServerHandler
   };
 
 
-  private final static java.util.List<com.facebook.thrift.payload.Reader> _create_servicethrows2_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_servicethrows2_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i32Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I32, Readers.i32Reader(), () -> 0));
 
     return _readerList;
   }
@@ -384,10 +384,10 @@ public class PubSubStreamingServiceRpcServerHandler
   };
 
 
-  private final static java.util.List<com.facebook.thrift.payload.Reader> _create_boththrows_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_boththrows_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i32Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I32, Readers.i32Reader(), () -> 0));
 
     return _readerList;
   }
@@ -414,10 +414,10 @@ public class PubSubStreamingServiceRpcServerHandler
   };
 
 
-  private final static java.util.List<com.facebook.thrift.payload.Reader> _create_responseandstreamstreamthrows_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_responseandstreamstreamthrows_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i32Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I32, Readers.i32Reader(), () -> 0));
 
     return _readerList;
   }
@@ -465,10 +465,10 @@ public class PubSubStreamingServiceRpcServerHandler
   };
 
 
-  private final static java.util.List<com.facebook.thrift.payload.Reader> _create_responseandstreamservicethrows_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_responseandstreamservicethrows_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i32Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I32, Readers.i32Reader(), () -> 0));
 
     return _readerList;
   }
@@ -516,10 +516,10 @@ public class PubSubStreamingServiceRpcServerHandler
   };
 
 
-  private final static java.util.List<com.facebook.thrift.payload.Reader> _create_responseandstreamboththrows_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_responseandstreamboththrows_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i32Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I32, Readers.i32Reader(), () -> 0));
 
     return _readerList;
   }
@@ -567,11 +567,11 @@ public class PubSubStreamingServiceRpcServerHandler
   };
 
 
-  private final static java.util.List<com.facebook.thrift.payload.Reader> _create_returnstreamFast_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_returnstreamFast_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i32Reader());
-    _readerList.add(Readers.i32Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I32, Readers.i32Reader(), () -> 0));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)2, TType.I32, Readers.i32Reader(), () -> 0));
 
     return _readerList;
   }

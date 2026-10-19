@@ -18,7 +18,7 @@ public class ExtendedServiceRpcServerHandler  extends com.facebook.thrift.test.f
 
   private final ExtendedService.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _initReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _initReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -46,11 +46,11 @@ public class ExtendedServiceRpcServerHandler  extends com.facebook.thrift.test.f
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_init_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_init_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.i64Reader());
-    _readerList.add(Readers.i64Reader());
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.I64, Readers.i64Reader(), () -> 0L));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)2, TType.I64, Readers.i64Reader(), () -> 0L));
 
     return _readerList;
   }
@@ -84,7 +84,7 @@ public class ExtendedServiceRpcServerHandler  extends com.facebook.thrift.test.f
     _doinit(
     ExtendedService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;

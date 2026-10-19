@@ -18,7 +18,7 @@ public class BoxServiceRpcServerHandler
 
   private final BoxService.Reactive _delegate;
 
-  private final java.util.List<com.facebook.thrift.payload.Reader> _getABoxSessionReaders;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _getABoxSessionReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -46,10 +46,10 @@ public class BoxServiceRpcServerHandler
   }
 
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create_getABoxSession_request_readers() {
-    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_getABoxSession_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
 
-    _readerList.add(Readers.wrap(test.fixtures.interactions.ShouldBeBoxed.asReader()));
+    _readerList.add(new com.facebook.thrift.payload.FieldReader<>((short)1, TType.STRUCT, Readers.wrap(test.fixtures.interactions.ShouldBeBoxed.asReader()), () -> new test.fixtures.interactions.ShouldBeBoxed.Builder().build()));
 
     return _readerList;
   }
@@ -83,7 +83,7 @@ public class BoxServiceRpcServerHandler
     _dogetABoxSession(
     BoxService.Reactive _delegate,
     com.facebook.thrift.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readers,
     com.facebook.swift.service.ContextChain _chain) {
           _chain.preRead();
           java.util.List<java.lang.Object> _data;
