@@ -22,6 +22,8 @@ use anyhow::Result;
 use anyhow::anyhow;
 use clap::Parser;
 use futures::stream::StreamExt;
+use rpc::rpc::SinkAbortClientInstruction;
+use rpc::rpc::SinkAbortClientTestResult;
 use rpc::rpc::SinkBasicClientInstruction;
 use rpc::rpc::SinkBasicClientTestResult;
 use rpc::rpc::SinkChunkTimeoutClientInstruction;
@@ -285,6 +287,7 @@ async fn test(
         streamServerError(i) => stream_server_error(client, i).await,
         sinkBasic(i) => sink_basic(client, i).await,
         sinkChunkTimeout(i) => sink_chunk_timeout(client, i).await,
+        sinkAbort(i) => sink_abort(client, i).await,
         sinkInitialResponse(i) => sink_initial_response(client, i).await,
         sinkInitialDeclaredException(i) => sink_initial_declared_exception(client, i).await,
         sinkDeclaredException(i) => sink_declared_exception(client, i).await,
@@ -925,6 +928,20 @@ async fn sink_basic(
         .sendTestResult(&ClientTestResult::sinkBasic(test_result))
         .await?;
 
+    Ok(())
+}
+
+async fn sink_abort(
+    client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>,
+    instr: &SinkAbortClientInstruction,
+) -> Result<()> {
+    let sink = client.sinkBasic(&instr.request).await?;
+    drop(sink);
+    client
+        .sendTestResult(&ClientTestResult::sinkAbort(
+            SinkAbortClientTestResult::default(),
+        ))
+        .await?;
     Ok(())
 }
 

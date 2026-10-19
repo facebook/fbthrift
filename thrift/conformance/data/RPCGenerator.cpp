@@ -1422,6 +1422,32 @@ Test createSinkEarlyFinalResponseTest() {
   return ret;
 }
 
+Test createSinkAbortTest() {
+  Test ret;
+  ret.name() = "SinkAbortTest";
+  ret.tags()->emplace("spec/protocol/interface/#sink");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "SinkAbort/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .sinkAbort()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  rpcTest.clientTestResult().emplace().sinkAbort().emplace();
+  rpcTest.serverInstruction().emplace().sinkAbort().emplace();
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().sinkAbort().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.aborted() = true;
+
+  return ret;
+}
+
 Test createSinkChunkTimeoutTest() {
   Test ret;
   ret.name() = "SinkChunkTimeoutTest";
@@ -2300,6 +2326,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createStreamMemoryBufferSizeTest());
   suite.tests()->push_back(createSinkChunkTimeoutTest());
   suite.tests()->push_back(createSinkEarlyFinalResponseTest());
+  suite.tests()->push_back(createSinkAbortTest());
   return suite;
 }
 

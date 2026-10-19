@@ -543,6 +543,15 @@ SinkChunkTimeoutClientTestResult sinkChunkTimeoutTest(
   return result;
 }
 
+SinkAbortClientTestResult sinkAbortTest(
+    const SinkAbortClientInstruction& instruction) {
+  auto client = createClient();
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto sink = co_await client->co_sinkBasic(*instruction.request());
+  }());
+  return {};
+}
+
 SinkInitialResponseClientTestResult sinkInitialResponseTest(
     SinkInitialResponseClientInstruction& instruction) {
   auto client = createClient();
@@ -1007,6 +1016,9 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::sinkChunkTimeout:
       result.sinkChunkTimeout() =
           sinkChunkTimeoutTest(*clientInstruction.sinkChunkTimeout());
+      break;
+    case ClientInstruction::Type::sinkAbort:
+      result.sinkAbort() = sinkAbortTest(*clientInstruction.sinkAbort());
       break;
     case ClientInstruction::Type::sinkDeclaredException:
       result.sinkDeclaredException() =

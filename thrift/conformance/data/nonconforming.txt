@@ -7070,6 +7070,10 @@ rust/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
 # bareclient's Rust side reports "Sink generator was aborted" instead of the
 # final response.
 rust/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
+# A sink dropped without ever being called stays open at the server until the
+# connection closes: bareclient never destroys the C++ ClientSink whose
+# destructor would cancel it.
+rust/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
 
 # Rust nativeclient RPC client tests
 #
@@ -7096,6 +7100,7 @@ rustbinary/ThriftRPCClientTest/BidiMethodUndeclaredException/Success.BidiMethodU
 rustbinary/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseAnyExceptionTest
 rustbinary/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
 rustbinary/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
+rustbinary/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
 rustnativebinary/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTimeoutTest
 
 # The request-response cases over a header channel (rpc-client-header-test).
@@ -7127,4 +7132,5 @@ rusttls/ThriftRPCClientTest/BidiMethodUndeclaredException/Success.BidiMethodUnde
 rusttls/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseAnyExceptionTest
 rusttls/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
 rusttls/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
+rusttls/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
 rustnativetls/ThriftRPCClientTest/StreamCreditTimeout/Success.StreamCreditTimeoutTest

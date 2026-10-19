@@ -76,6 +76,11 @@ class ConformanceVerificationServer
     if (serverResult_.getType() == ServerTestResult::Type::sinkChunkTimeout) {
       sinkConsumerDone_.try_wait_for(std::chrono::seconds(5));
     }
+    if (serverResult_.getType() == ServerTestResult::Type::sinkAbort) {
+      if (sinkConsumerDone_.try_wait_for(std::chrono::seconds(5))) {
+        serverResult_.sinkAbort()->aborted() = sinkAborted_;
+      }
+    }
     if (testCase_.serverInstruction()->requestResponseConcurrent()) {
       auto& concurrent = serverResult_.requestResponseConcurrent().emplace();
       concurrent.requests() = *concurrentRequests_.rlock();
@@ -268,6 +273,10 @@ class ConformanceVerificationServer
   // =================== Sink ===================
   apache::thrift::SinkConsumer<Request, Response> sinkBasic(
       std::unique_ptr<Request> req) override {
+    if (testCase_.serverInstruction()->sinkAbort()) {
+      serverResult_.sinkAbort().emplace().request() = *req;
+      return consumeUntilAborted();
+    }
     serverResult_.sinkBasic().emplace().request() = *req;
     return apache::thrift::SinkConsumer<Request, Response>{
         [&](folly::coro::AsyncGenerator<Request&&> gen)
@@ -287,6 +296,24 @@ class ConformanceVerificationServer
         },
         static_cast<uint64_t>(
             *testCase_.serverInstruction()->sinkBasic()->bufferSize())};
+  }
+
+  apache::thrift::SinkConsumer<Request, Response> consumeUntilAborted() {
+    return apache::thrift::SinkConsumer<Request, Response>{
+        [&](folly::coro::AsyncGenerator<Request&&> gen)
+            -> folly::coro::Task<Response> {
+          SCOPE_EXIT {
+            sinkConsumerDone_.post();
+          };
+          try {
+            while (co_await gen.next()) {
+            }
+          } catch (const std::exception&) {
+            sinkAborted_ = true;
+          }
+          co_return Response{};
+        },
+        1};
   }
 
   apache::thrift::SinkConsumer<Request, Response> sinkChunkTimeout(
@@ -743,6 +770,7 @@ class ConformanceVerificationServer
   std::atomic<bool> cancelled_{false};
   folly::Baton<> streamCancelled_;
   folly::Baton<> sinkConsumerDone_;
+  bool sinkAborted_{false};
   folly::Synchronized<std::vector<Request>> concurrentRequests_;
   std::atomic<bool> concurrentGaveUp_{false};
 };

@@ -76,6 +76,7 @@ union ServerTestResult {
   204: SinkUndeclaredExceptionServerTestResult sinkUndeclaredException;
   205: SinkInitialDeclaredExceptionServerTestResult sinkInitialDeclaredException;
   206: SinkServerDeclaredExceptionServerTestResult sinkServerDeclaredException;
+  207: SinkAbortServerTestResult sinkAbort;
   300: InteractionConstructorServerTestResult interactionConstructor;
   301: InteractionFactoryFunctionServerTestResult interactionFactoryFunction;
   302: InteractionPersistsStateServerTestResult interactionPersistsState;
@@ -118,6 +119,7 @@ union ClientTestResult {
   204: SinkUndeclaredExceptionClientTestResult sinkUndeclaredException;
   205: SinkInitialDeclaredExceptionClientTestResult sinkInitialDeclaredException;
   206: SinkServerDeclaredExceptionClientTestResult sinkServerDeclaredException;
+  207: SinkAbortClientTestResult sinkAbort;
   300: InteractionConstructorClientTestResult interactionConstructor;
   301: InteractionFactoryFunctionClientTestResult interactionFactoryFunction;
   302: InteractionPersistsStateClientTestResult interactionPersistsState;
@@ -250,6 +252,11 @@ struct SinkInitialDeclaredExceptionServerTestResult {
 struct SinkServerDeclaredExceptionServerTestResult {
   1: Request request;
   2: optional string exceptionMessage;
+}
+
+struct SinkAbortServerTestResult {
+  1: Request request;
+  2: bool aborted;
 }
 
 struct InteractionConstructorServerTestResult {
@@ -428,6 +435,8 @@ struct SinkServerDeclaredExceptionClientTestResult {
   1: bool sinkThrew;
 }
 
+struct SinkAbortClientTestResult {}
+
 struct InteractionConstructorClientTestResult {}
 
 struct InteractionFactoryFunctionClientTestResult {}
@@ -507,6 +516,7 @@ union ClientInstruction {
   204: SinkUndeclaredExceptionClientInstruction sinkUndeclaredException;
   205: SinkInitialDeclaredExceptionClientInstruction sinkInitialDeclaredException;
   206: SinkServerDeclaredExceptionClientInstruction sinkServerDeclaredException;
+  207: SinkAbortClientInstruction sinkAbort;
   300: InteractionConstructorClientInstruction interactionConstructor;
   301: InteractionFactoryFunctionClientInstruction interactionFactoryFunction;
   302: InteractionPersistsStateClientInstruction interactionPersistsState;
@@ -549,6 +559,7 @@ union ServerInstruction {
   204: SinkUndeclaredExceptionServerInstruction sinkUndeclaredException;
   205: SinkInitialDeclaredExceptionServerInstruction sinkInitialDeclaredException;
   206: SinkServerDeclaredExceptionServerInstruction sinkServerDeclaredException;
+  207: SinkAbortServerInstruction sinkAbort;
   300: InteractionConstructorServerInstruction interactionConstructor;
   301: InteractionFactoryFunctionServerInstruction interactionFactoryFunction;
   302: InteractionPersistsStateServerInstruction interactionPersistsState;
@@ -695,6 +706,10 @@ struct SinkInitialDeclaredExceptionClientInstruction {
 struct SinkServerDeclaredExceptionClientInstruction {
   1: Request request;
   2: optional string exceptionMessage;
+}
+
+struct SinkAbortClientInstruction {
+  1: Request request;
 }
 
 struct InteractionConstructorClientInstruction {}
@@ -897,6 +912,8 @@ struct SinkServerDeclaredExceptionServerInstruction {
   @thrift.Box
   2: optional UserException userException;
 }
+
+struct SinkAbortServerInstruction {}
 
 struct InteractionConstructorServerInstruction {}
 
