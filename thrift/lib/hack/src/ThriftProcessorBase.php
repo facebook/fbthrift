@@ -159,8 +159,20 @@ abstract class ThriftProcessorBase implements IThriftProcessor {
     while ($should_continue !== null) {
       if ($should_continue === false) {
         // wait till stream resumes or credits are received;
-        // @lint-ignore AWAIT_IN_LOOP Intentional usage.
-        $should_continue = await $server_stream->genIsStreamReady();
+        // This wall time operation is required for low level IO calls or errors
+        // will be logged or possibly thrown. Do not put more than one statement in this try block
+        $timer = WallTimeOperation::begin();
+        try {
+          // @lint-ignore AWAIT_IN_LOOP Intentional usage.
+          $should_continue = await $server_stream->genIsStreamReady();
+        } finally {
+          $timer->end();
+          ProfilingCounters::incrDuration(
+            ProfilingCounterDuration::THRIFT_READ_DURATION,
+            $timer->getOldestRunningIODuration(),
+            static::THRIFT_SVC_NAME,
+          );
+        }
         continue;
       }
 
