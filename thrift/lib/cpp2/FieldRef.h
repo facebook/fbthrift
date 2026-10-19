@@ -1911,7 +1911,7 @@ class union_field_ref {
     if (!has_value()) {
       apache::thrift::detail::throw_on_bad_union_field_access(
           vtable_.get_class_name(),
-          field_type_,
+          folly::to_narrow(field_type_),
           vtable_.get_active_field(owner_));
     }
   }
