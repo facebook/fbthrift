@@ -113,8 +113,12 @@ use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamInitialDeclaredEx
 use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamInitialTimeoutError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamInitialUndeclaredExceptionError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamUndeclaredExceptionStreamError;
-use rpc_clients::rpc_setup::RPCConformanceSetupServiceExt;
 use rpc_clients::rpc_setup::errors::r_p_c_conformance_setup_service::CreateRPCConformanceServiceClientError;
+use rpc_nativeclients::rpc::RPCConformanceServiceExtNativeClient;
+use rpc_nativeclients::rpc::build_RPCConformanceService_ext_client_with_binary_protocol;
+use rpc_nativeclients::rpc::build_RPCConformanceService_ext_client_with_compact_protocol;
+use rpc_nativeclients::rpc_setup::build_RPCConformanceSetupService_ext_client_with_binary_protocol;
+use rpc_nativeclients::rpc_setup::build_RPCConformanceSetupService_ext_client_with_compact_protocol;
 use tracing_glog::Glog;
 use tracing_glog::GlogFields;
 use tracing_subscriber::EnvFilter;
@@ -174,7 +178,7 @@ async fn main(args: Arguments) -> Result<()> {
             None
         },
     };
-    let client = get_client(&peer).await? as Arc<_>;
+    let client = client_of(peer.protocol, peer.channel_builder()?)?;
     test(&*client, &peer).await?;
 
     Ok(())
@@ -201,7 +205,6 @@ impl Peer {
             .with_transport_type(self.transport)
             .with_http_host("localhost")
             .with_http_url("/")
-            .with_protocol(self.protocol)
             .with_conn_timeout(30_000)
             .with_recv_timeout(30_000);
         Ok(match &self.tls {
@@ -218,27 +221,17 @@ impl Peer {
     }
 }
 
-async fn get_client(
-    peer: &Peer,
-) -> Result<Arc<dyn RPCConformanceServiceExt<nativeclient::NativeChannel> + Send + Sync + 'static>>
-{
-    client_of(peer.channel_builder()?.build_channel()?)
-}
-
 fn client_of(
-    channel: nativeclient::NativeChannel,
-) -> Result<Arc<dyn RPCConformanceServiceExt<nativeclient::NativeChannel> + Send + Sync + 'static>>
-{
-    match channel.protocol_id() {
-        fbthrift::ProtocolID::BinaryProtocol => Ok(<dyn RPCConformanceServiceExt<_>>::new(
-            fbthrift::BinaryProtocol,
-            channel,
-        )),
-        fbthrift::ProtocolID::CompactProtocol => Ok(<dyn RPCConformanceServiceExt<_>>::new(
-            fbthrift::CompactProtocol,
-            channel,
-        )),
-        p => anyhow::bail!("Unsupported protocol: {:?}", p),
+    protocol: nativeclient::WireProtocol,
+    builder: nativeclient::NativeChannelBuilder,
+) -> Result<RPCConformanceServiceExtNativeClient> {
+    match protocol {
+        nativeclient::WireProtocol::Binary => {
+            build_RPCConformanceService_ext_client_with_binary_protocol(builder)
+        }
+        nativeclient::WireProtocol::Compact => {
+            build_RPCConformanceService_ext_client_with_compact_protocol(builder)
+        }
     }
 }
 
@@ -516,17 +509,15 @@ async fn request_response_server_error(
 }
 
 async fn unknown_method(peer: &Peer) -> Result<fbthrift::ApplicationException> {
-    let channel = peer.channel_builder()?.build_channel()?;
-    let setup: Arc<dyn RPCConformanceSetupServiceExt<nativeclient::NativeChannel> + Send + Sync> =
-        match channel.protocol_id() {
-            fbthrift::ProtocolID::BinaryProtocol => {
-                <dyn RPCConformanceSetupServiceExt<_>>::new(fbthrift::BinaryProtocol, channel)
-            }
-            fbthrift::ProtocolID::CompactProtocol => {
-                <dyn RPCConformanceSetupServiceExt<_>>::new(fbthrift::CompactProtocol, channel)
-            }
-            p => anyhow::bail!("Unsupported protocol: {:?}", p),
-        };
+    let builder = peer.channel_builder()?;
+    let setup = match peer.protocol {
+        nativeclient::WireProtocol::Binary => {
+            build_RPCConformanceSetupService_ext_client_with_binary_protocol(builder)?
+        }
+        nativeclient::WireProtocol::Compact => {
+            build_RPCConformanceSetupService_ext_client_with_compact_protocol(builder)?
+        }
+    };
     match setup.createRPCConformanceServiceClient("", "").await {
         Err(CreateRPCConformanceServiceClientError::ApplicationException(exn)) => Ok(exn),
         r => Err(anyhow!(
@@ -566,7 +557,7 @@ async fn request_response_metadata(
     for header in &instr.persistentHeaders {
         builder = builder.with_persistent_header(header);
     }
-    let response = client_of(builder.build_channel()?)?
+    let response = client_of(peer.protocol, builder)?
         .requestResponseBasic_with_rpc_opts(&instr.request, opts)
         .await?;
     let test_result =
@@ -584,9 +575,8 @@ async fn request_response_concurrent(
     instr: &RequestResponseConcurrentClientInstruction,
 ) -> Result<()> {
     let one_connection = client_of(
-        peer.channel_builder()?
-            .with_channel_pool(false)
-            .build_channel()?,
+        peer.protocol,
+        peer.channel_builder()?.with_channel_pool(false),
     )?;
     let responses = futures::future::try_join_all(
         instr
