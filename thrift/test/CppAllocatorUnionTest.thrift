@@ -23,12 +23,21 @@ namespace cpp2 apache.thrift.test
 
 cpp_include "thrift/test/CppAllocatorTest.h"
 
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+@cpp.Type{template = "::PropagatingStatefulVector"}
+typedef list<i32> PropagatingIntList
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+@cpp.Type{template = "::PropagatingSortedVectorSet"}
+typedef set<i32> PropagatingIntSet
+
 @thrift.DeprecatedUnvalidatedAnnotations{
   items = {"cpp.allocator": "::ScopedPropagatingStatefulAlloc<>"},
 }
 @cpp.InternalExperimentalAllowAllocatorOnUnion
 union PropagatingUnion {
+  1: PropagatingIntList aa_list;
   2: i32 n;
+  3: PropagatingIntSet aa_set;
 }
 
 @thrift.DeprecatedUnvalidatedAnnotations{

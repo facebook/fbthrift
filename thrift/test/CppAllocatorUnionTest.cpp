@@ -50,6 +50,16 @@ static_assert(std::is_constructible_v<
               EmptyUnionPmr,
               EmptyUnionPmr&&,
               const PmrByteAlloc&>);
+// Only cpp.use_allocator members' refs carry the union's allocator.
+static_assert(std::is_same_v<
+              decltype(std::declval<UnionPmr&>().aa_string_ref()),
+              union_field_ref<UPmrString&, PmrByteAlloc>>);
+static_assert(std::is_same_v<
+              decltype(std::declval<const UnionPmr&>().aa_string_ref()),
+              decltype(std::declval<UnionPmr&>().aa_string_ref().as_const())>);
+static_assert(std::is_same_v<
+              decltype(std::declval<UnionPmr&>().not_aa_pmr_string_ref()),
+              union_field_ref<NotAAPmrString&>>);
 
 namespace {
 
@@ -90,6 +100,11 @@ int stateOf(const T& t) {
 
 std::pmr::monotonic_buffer_resource makeResource() {
   return std::pmr::monotonic_buffer_resource(std::pmr::new_delete_resource());
+}
+
+PropagatingIntList propagatingList(int state) {
+  return PropagatingIntList(
+      {1, 2, 3}, ScopedPropagatingStatefulAlloc<int32_t>(state));
 }
 
 } // namespace
@@ -133,16 +148,12 @@ TEST(CppAllocatorUnionTest, AllocatorExtendedCopyAndMoveCtors) {
   const UnionPmr copy(src, PmrByteAlloc(&res2));
   EXPECT_EQ(copy, src);
   EXPECT_EQ(resourceOf(copy), &res2);
-  // FIXME(ytj): Should be &res2, the copy's allocator.
-  EXPECT_EQ(
-      resourceOf(*copy.aa_string_ref()), std::pmr::get_default_resource());
+  EXPECT_EQ(resourceOf(*copy.aa_string_ref()), &res2);
 
   const UnionPmr moved(std::move(src), PmrByteAlloc(&res2));
   EXPECT_EQ(moved, copy);
   EXPECT_EQ(resourceOf(moved), &res2);
-  // FIXME(ytj): Should be &res2: the allocators differ,
-  // so the member must be rebuilt.
-  EXPECT_EQ(resourceOf(*moved.aa_string_ref()), &res);
+  EXPECT_EQ(resourceOf(*moved.aa_string_ref()), &res2);
 }
 
 TEST(CppAllocatorUnionTest, PmrVectorOfUnions) {
@@ -181,8 +192,7 @@ TEST(CppAllocatorUnionTest, CopyAssignKeepsTargetAllocator) {
   dst = src;
   EXPECT_EQ(dst, src);
   EXPECT_EQ(resourceOf(dst), &res2);
-  // FIXME(ytj): Should be &res2, the target's allocator.
-  EXPECT_EQ(resourceOf(*dst.aa_string_ref()), std::pmr::get_default_resource());
+  EXPECT_EQ(resourceOf(*dst.aa_string_ref()), &res2);
 }
 
 TEST(CppAllocatorUnionTest, CopyAssignPropagatesPoccaAllocator) {
@@ -206,9 +216,7 @@ TEST(CppAllocatorUnionTest, MoveAssignKeepsTargetAllocator) {
   dst = std::move(src);
   EXPECT_EQ(dst, expected);
   EXPECT_EQ(resourceOf(dst), &res2);
-  // FIXME(ytj): Should be &res2: the allocators differ,
-  // so the member must be rebuilt.
-  EXPECT_EQ(resourceOf(*dst.aa_string_ref()), &res);
+  EXPECT_EQ(resourceOf(*dst.aa_string_ref()), &res2);
 }
 
 TEST(CppAllocatorUnionTest, MoveAssignPropagatesPocmaAllocator) {
@@ -236,14 +244,14 @@ TEST(CppAllocatorUnionTest, SwapUnequalAllocatorsKeepsEachSidesAllocator) {
   EXPECT_EQ(b, expectedB);
   EXPECT_EQ(resourceOf(a), &res);
   EXPECT_EQ(resourceOf(b), &res2);
-  // FIXME(ytj): Should be each union's own allocator.
-  EXPECT_EQ(resourceOf(*a.aa_string_ref()), &res2);
-  EXPECT_EQ(resourceOf(*b.aa_string_ref()), &res);
+  EXPECT_EQ(resourceOf(*a.aa_string_ref()), &res);
+  EXPECT_EQ(resourceOf(*b.aa_string_ref()), &res2);
 }
 
 // Swap is a move ctor and two move assignments, so allocators follow POCMA.
 TEST(CppAllocatorUnionTest, SwapExchangesPropagatingAllocators) {
   PropagatingUnion a(ScopedPropagatingStatefulAlloc<>(1));
+  a.aa_list_ref().emplace(size_t(3), 1);
   PropagatingUnion b(ScopedPropagatingStatefulAlloc<>(2));
   b.n_ref() = 5;
 
@@ -251,6 +259,8 @@ TEST(CppAllocatorUnionTest, SwapExchangesPropagatingAllocators) {
   EXPECT_EQ(stateOf(a), 2);
   EXPECT_EQ(*a.n_ref(), 5);
   EXPECT_EQ(stateOf(b), 1);
+  EXPECT_EQ(stateOf(*b.aa_list_ref()), 1);
+  EXPECT_EQ(*b.aa_list_ref(), PropagatingIntList(size_t(3), 1));
 }
 
 TEST(CppAllocatorUnionTest, FieldRefEnsureEmplaceAssignUseUnionAllocator) {
@@ -258,16 +268,52 @@ TEST(CppAllocatorUnionTest, FieldRefEnsureEmplaceAssignUseUnionAllocator) {
   auto res2 = makeResource();
   const UPmrString onRes2(kTooLong, &res2);
   auto u = makeOn<UnionPmr>(&res);
+  DefaultResourceGuard guard(std::pmr::null_memory_resource());
 
   u.aa_string_ref().ensure().assign(kTooLong);
-  // FIXME(ytj): Should be &res, the union's allocator; likewise below.
-  EXPECT_EQ(resourceOf(*u.aa_string_ref()), std::pmr::get_default_resource());
+  EXPECT_EQ(resourceOf(*u.aa_string_ref()), &res);
   EXPECT_EQ(u.aa_string_ref().emplace(onRes2), onRes2);
-  EXPECT_EQ(resourceOf(*u.aa_string_ref()), std::pmr::get_default_resource());
+  EXPECT_EQ(resourceOf(*u.aa_string_ref()), &res);
 
   u.not_a_container_ref() = 1;
   u.aa_string_ref() = onRes2; // inactive: emplace
-  EXPECT_EQ(resourceOf(*u.aa_string_ref()), std::pmr::get_default_resource());
+  EXPECT_EQ(resourceOf(*u.aa_string_ref()), &res);
+}
+
+// Assigning the argument would carry over its propagating allocator.
+TEST(CppAllocatorUnionTest, FieldRefEmplaceIgnoresArgumentAllocator) {
+  PropagatingUnion u(ScopedPropagatingStatefulAlloc<>(1));
+
+  EXPECT_EQ(u.aa_list_ref().emplace(propagatingList(2)), propagatingList(2));
+  EXPECT_EQ(stateOf(*u.aa_list_ref()), 1);
+  u.n_ref() = 1;
+  const auto list = propagatingList(2);
+  u.aa_list_ref() = list; // inactive: emplace
+  EXPECT_EQ(*u.aa_list_ref(), list);
+  EXPECT_EQ(stateOf(*u.aa_list_ref()), 1);
+  EXPECT_EQ(stateOf(u.aa_list_ref().emplace({1, 2, 3})), 1);
+}
+
+// A member that does not take the union's allocator is moved in as is.
+TEST(CppAllocatorUnionTest, FieldRefLeavesOtherMembersAlone) {
+  auto res = makeResource();
+  auto res2 = makeResource();
+  UnionPmr u{PmrByteAlloc(&res)};
+  std::pmr::string s(kTooLong, &res2);
+  const auto* data = s.data();
+  DefaultResourceGuard guard(std::pmr::null_memory_resource());
+
+  u.not_aa_pmr_string_ref() = std::move(s);
+
+  EXPECT_EQ(u.not_aa_pmr_string_ref()->data(), data);
+  EXPECT_EQ(resourceOf(*u.not_aa_pmr_string_ref()), &res2);
+}
+
+TEST(CppAllocatorUnionTest, FieldRefEmplaceThrowLeavesUnionEmpty) {
+  UnionPmr u{PmrByteAlloc(std::pmr::null_memory_resource())};
+  u.not_a_container_ref() = 1;
+  EXPECT_THROW(u.aa_string_ref().emplace(kTooLong), std::bad_alloc);
+  EXPECT_EQ(u.getType(), UnionPmr::Type::__EMPTY__);
 }
 
 TEST(CppAllocatorUnionTest, OpDecodeUsesUnionAllocator) {
@@ -282,11 +328,11 @@ TEST(CppAllocatorUnionTest, OpDecodeUsesUnionAllocator) {
   BinaryProtocolChainReader reader;
   reader.setInput(&input);
   auto dst = makeOn<UnionPmr>(&res);
+  DefaultResourceGuard guard(std::pmr::null_memory_resource());
 
   op::decode<type::union_t<UnionPmr>>(reader, dst);
   EXPECT_EQ(dst, src);
-  // FIXME(ytj): Should be &res, the union's allocator.
-  EXPECT_EQ(resourceOf(*dst.aa_string_ref()), std::pmr::get_default_resource());
+  EXPECT_EQ(resourceOf(*dst.aa_string_ref()), &res);
 }
 
 namespace {
@@ -307,11 +353,11 @@ TYPED_TEST(CppAllocatorUnionDeserializeTest, MembersLandOnUnionAllocator) {
   src.aa_string_ref() = kTooLong;
   const auto bytes = TypeParam::template serialize<std::string>(src);
   auto dst = makeOn<UnionPmr>(&res);
+  DefaultResourceGuard guard(std::pmr::null_memory_resource());
 
   TypeParam::deserialize(bytes, dst);
   EXPECT_EQ(dst, src);
-  // FIXME(ytj): Should be &res, the union's allocator.
-  EXPECT_EQ(resourceOf(*dst.aa_string_ref()), std::pmr::get_default_resource());
+  EXPECT_EQ(resourceOf(*dst.aa_string_ref()), &res);
 }
 
 } // namespace
