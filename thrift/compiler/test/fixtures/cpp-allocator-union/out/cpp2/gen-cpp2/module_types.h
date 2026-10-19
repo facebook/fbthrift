@@ -175,67 +175,6 @@ class AllocUnion final  {
   bool operator==(const AllocUnion&) const;
   std::partial_ordering operator<=>(const AllocUnion&) const;
 
-  /** Glean { "field": "aa_string" } */
-  template <typename... A> requires (sizeof...(A) == 0)
-  ::test::fixtures::cpp_allocator_union::PmrString& set_aa_string(::test::fixtures::cpp_allocator_union::PmrString const &t) {
-    using T0 = ::test::fixtures::cpp_allocator_union::PmrString;
-    using T = folly::type_t<T0, A...>;
-    __fbthrift_clear();
-    ::new (std::addressof(value_.aa_string)) T(t);
-    fbthrift_type_ = folly::to_underlying(Type::aa_string);
-    return value_.aa_string;
-  }
-
-  /** Glean { "field": "aa_string" } */
-  template <typename... A> requires (sizeof...(A) == 0)
-  ::test::fixtures::cpp_allocator_union::PmrString& set_aa_string(::test::fixtures::cpp_allocator_union::PmrString&& t) {
-    using T0 = ::test::fixtures::cpp_allocator_union::PmrString;
-    using T = folly::type_t<T0, A...>;
-    __fbthrift_clear();
-    ::new (std::addressof(value_.aa_string)) T(std::move(t));
-    fbthrift_type_ = folly::to_underlying(Type::aa_string);
-    return value_.aa_string;
-  }
-
-  /** Glean { "field": "aa_string" } */
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::cpp_allocator_union::PmrString, T...>> ::test::fixtures::cpp_allocator_union::PmrString& set_aa_string(T&&... t) {
-    __fbthrift_clear();
-    ::new (std::addressof(value_.aa_string)) ::test::fixtures::cpp_allocator_union::PmrString(std::forward<T>(t)...);
-    fbthrift_type_ = folly::to_underlying(Type::aa_string);
-    return value_.aa_string;
-  }
-
-
-  /** Glean { "field": "aa_list" } */
-  template <typename... A> requires (sizeof...(A) == 0)
-  ::test::fixtures::cpp_allocator_union::PmrStringList& set_aa_list(::test::fixtures::cpp_allocator_union::PmrStringList const &t) {
-    using T0 = ::test::fixtures::cpp_allocator_union::PmrStringList;
-    using T = folly::type_t<T0, A...>;
-    __fbthrift_clear();
-    ::new (std::addressof(value_.aa_list)) T(t);
-    fbthrift_type_ = folly::to_underlying(Type::aa_list);
-    return value_.aa_list;
-  }
-
-  /** Glean { "field": "aa_list" } */
-  template <typename... A> requires (sizeof...(A) == 0)
-  ::test::fixtures::cpp_allocator_union::PmrStringList& set_aa_list(::test::fixtures::cpp_allocator_union::PmrStringList&& t) {
-    using T0 = ::test::fixtures::cpp_allocator_union::PmrStringList;
-    using T = folly::type_t<T0, A...>;
-    __fbthrift_clear();
-    ::new (std::addressof(value_.aa_list)) T(std::move(t));
-    fbthrift_type_ = folly::to_underlying(Type::aa_list);
-    return value_.aa_list;
-  }
-
-  /** Glean { "field": "aa_list" } */
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::cpp_allocator_union::PmrStringList, T...>> ::test::fixtures::cpp_allocator_union::PmrStringList& set_aa_list(T&&... t) {
-    __fbthrift_clear();
-    ::new (std::addressof(value_.aa_list)) ::test::fixtures::cpp_allocator_union::PmrStringList(std::forward<T>(t)...);
-    fbthrift_type_ = folly::to_underlying(Type::aa_list);
-    return value_.aa_list;
-  }
-
   /** Glean { "field": "plain_int" } */
   template <typename... A> requires (sizeof...(A) == 0)
   ::std::int32_t& set_plain_int(::std::int32_t t = ::std::int32_t()) {
