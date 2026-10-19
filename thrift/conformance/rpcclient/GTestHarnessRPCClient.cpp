@@ -162,31 +162,44 @@ class ConformanceVerificationServer
   }
 
   // =================== Stream ===================
+  folly::coro::Task<apache::thrift::ServerStream<Response>> co_streamBasic(
+      std::unique_ptr<Request> req) override {
+    if (auto instruction = testCase_.serverInstruction()->streamCancel()) {
+      serverResult_.streamCancel().emplace().request() = *req;
+      if (auto delayMs = instruction->initialResponseDelayMs()) {
+        co_await folly::coro::sleep(std::chrono::milliseconds(*delayMs));
+      }
+      co_return streamUntilCancelled();
+    }
+    co_return sync_streamBasic(std::move(req));
+  }
+
   apache::thrift::ServerStream<Response> streamBasic(
       std::unique_ptr<Request> req) override {
     if (testCase_.serverInstruction()->streamServerError()) {
       serverResult_.streamServerError().emplace().request() = *req;
       co_return;
     }
-    if (testCase_.serverInstruction()->streamCancel()) {
-      serverResult_.streamCancel().emplace().request() = *req;
-      folly::CancellationCallback onCancel(
-          co_await folly::coro::co_current_cancellation_token, [this] {
-            if (!cancelled_.exchange(true)) {
-              streamCancelled_.post();
-            }
-          });
-      for (int64_t i = 0;; ++i) {
-        Response payload;
-        payload.data() = folly::to<std::string>(i);
-        co_yield std::move(payload);
-      }
-    }
     serverResult_.streamBasic().emplace().request() = *req;
     for (auto payload :
          *testCase_.serverInstruction()->streamBasic()->streamPayloads()) {
       co_yield std::move(payload);
     }
+  }
+
+  apache::thrift::ServerStream<Response> streamUntilCancelled() {
+    return folly::coro::co_invoke(
+        [onCancel = folly::makeGuard([this] {
+           if (!cancelled_.exchange(true)) {
+             streamCancelled_.post();
+           }
+         })]() -> folly::coro::AsyncGenerator<Response&&> {
+          for (int64_t i = 0;; ++i) {
+            Response payload;
+            payload.data() = folly::to<std::string>(i);
+            co_yield std::move(payload);
+          }
+        });
   }
 
   apache::thrift::ServerStream<Response> streamChunkTimeout(
@@ -277,12 +290,20 @@ class ConformanceVerificationServer
   }
 
   // =================== Sink ===================
+  folly::coro::Task<apache::thrift::SinkConsumer<Request, Response>>
+  co_sinkBasic(std::unique_ptr<Request> req) override {
+    if (auto instruction = testCase_.serverInstruction()->sinkAbort()) {
+      serverResult_.sinkAbort().emplace().request() = *req;
+      if (auto delayMs = instruction->initialResponseDelayMs()) {
+        co_await folly::coro::sleep(std::chrono::milliseconds(*delayMs));
+      }
+      co_return consumeUntilAborted();
+    }
+    co_return sync_sinkBasic(std::move(req));
+  }
+
   apache::thrift::SinkConsumer<Request, Response> sinkBasic(
       std::unique_ptr<Request> req) override {
-    if (testCase_.serverInstruction()->sinkAbort()) {
-      serverResult_.sinkAbort().emplace().request() = *req;
-      return consumeUntilAborted();
-    }
     serverResult_.sinkBasic().emplace().request() = *req;
     return apache::thrift::SinkConsumer<Request, Response>{
         [&](folly::coro::AsyncGenerator<Request&&> gen)
@@ -836,9 +857,10 @@ void configureTls(apache::thrift::ThriftServer& server) {
 void configureServer(
     apache::thrift::ThriftServer& server,
     const ServerInstruction& instruction) {
-  if (instruction.bidiAbort()) {
-    // sendTestResult holds one CPU thread while it waits on the bidi stream,
-    // whose delayed initial response needs another.
+  if (instruction.streamCancel() || instruction.sinkAbort() ||
+      instruction.bidiAbort()) {
+    // sendTestResult holds one CPU thread while it waits on the call, whose
+    // delayed initial response needs another.
     server.setNumCPUWorkerThreads(2);
   }
   const ServerError* serverError = nullptr;

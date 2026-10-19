@@ -7076,6 +7076,7 @@ rust/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTe
 # connection closes: bareclient never destroys the C++ ClientSink whose
 # destructor would cancel it.
 rust/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
+rust/ThriftRPCClientTest/SinkAbortBeforeInitialResponse/Success.SinkAbortBeforeInitialResponseTest
 
 # Rust nativeclient RPC client tests
 #
@@ -7099,6 +7100,7 @@ rustbinary/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestRespon
 rustbinary/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
 rustbinary/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
 rustbinary/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
+rustbinary/ThriftRPCClientTest/SinkAbortBeforeInitialResponse/Success.SinkAbortBeforeInitialResponseTest
 
 # The request-response cases over a header channel (rpc-client-header-test).
 # Same reason as for the `rust` category.
@@ -7132,3 +7134,4 @@ rusttls/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseA
 rusttls/ThriftRPCClientTest/SinkChunkTimeout/Success.SinkChunkTimeoutTest
 rusttls/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyFinalResponseTest
 rusttls/ThriftRPCClientTest/SinkAbort/Success.SinkAbortTest
+rusttls/ThriftRPCClientTest/SinkAbortBeforeInitialResponse/Success.SinkAbortBeforeInitialResponseTest

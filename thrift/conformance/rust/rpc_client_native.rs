@@ -758,15 +758,23 @@ async fn stream_cancel(
     client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
     instr: &StreamCancelClientInstruction,
 ) -> Result<()> {
-    let mut stream = client.streamBasic(&instr.request).await?;
+    let call = client.streamBasic(&instr.request);
     let mut test_result = StreamCancelClientTestResult::default();
-    while (test_result.streamPayloads.len() as i64) < instr.consumeCount {
-        match stream.next().await {
-            Some(response) => test_result.streamPayloads.push(response?),
-            None => break,
+    match instr.giveUpAfterMs {
+        Some(give_up_after_ms) => {
+            drop(tokio::time::timeout(Duration::from_millis(give_up_after_ms as u64), call).await)
+        }
+        None => {
+            let mut stream = call.await?;
+            while (test_result.streamPayloads.len() as i64) < instr.consumeCount {
+                match stream.next().await {
+                    Some(response) => test_result.streamPayloads.push(response?),
+                    None => break,
+                }
+            }
+            drop(stream);
         }
     }
-    drop(stream);
     client
         .sendTestResult(&ClientTestResult::streamCancel(test_result))
         .await?;
@@ -1017,8 +1025,13 @@ async fn sink_abort(
     client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
     instr: &SinkAbortClientInstruction,
 ) -> Result<()> {
-    let sink = client.sinkBasic(&instr.request).await?;
-    drop(sink);
+    let call = client.sinkBasic(&instr.request);
+    match instr.giveUpAfterMs {
+        Some(give_up_after_ms) => {
+            drop(tokio::time::timeout(Duration::from_millis(give_up_after_ms as u64), call).await)
+        }
+        None => drop(call.await?),
+    }
     client
         .sendTestResult(&ClientTestResult::sinkAbort(
             SinkAbortClientTestResult::default(),

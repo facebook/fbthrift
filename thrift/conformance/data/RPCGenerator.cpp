@@ -791,6 +791,33 @@ Test createStreamCancelTest() {
   return ret;
 }
 
+Test createStreamCancelBeforeInitialResponseTest() {
+  Test ret;
+  ret.name() = "StreamCancelBeforeInitialResponseTest";
+  ret.tags()->emplace("spec/protocol/interface/#stream-cancellation");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "StreamCancelBeforeInitialResponse/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().streamCancel().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.giveUpAfterMs() = 100;
+  rpcTest.clientTestResult().emplace().streamCancel().emplace();
+  rpcTest.serverInstruction()
+      .emplace()
+      .streamCancel()
+      .emplace()
+      .initialResponseDelayMs() = 500;
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().streamCancel().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.cancelled() = true;
+
+  return ret;
+}
+
 Test createStreamLoadsheddingTest() {
   Test ret;
   ret.name() = "StreamLoadsheddingTest";
@@ -1440,6 +1467,33 @@ Test createSinkAbortTest() {
       .data() = "hello";
   rpcTest.clientTestResult().emplace().sinkAbort().emplace();
   rpcTest.serverInstruction().emplace().sinkAbort().emplace();
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().sinkAbort().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.aborted() = true;
+
+  return ret;
+}
+
+Test createSinkAbortBeforeInitialResponseTest() {
+  Test ret;
+  ret.name() = "SinkAbortBeforeInitialResponseTest";
+  ret.tags()->emplace("spec/protocol/interface/#sink");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "SinkAbortBeforeInitialResponse/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().sinkAbort().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.giveUpAfterMs() = 100;
+  rpcTest.clientTestResult().emplace().sinkAbort().emplace();
+  rpcTest.serverInstruction()
+      .emplace()
+      .sinkAbort()
+      .emplace()
+      .initialResponseDelayMs() = 500;
   auto& serverTestResult =
       rpcTest.serverTestResult().emplace().sinkAbort().emplace();
   serverTestResult.request().emplace().data() = "hello";
@@ -2375,11 +2429,13 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tags()->emplace("spec/protocol/interface/");
   addExtendedRequestResponseTests(suite);
   suite.tests()->push_back(createStreamCancelTest());
+  suite.tests()->push_back(createStreamCancelBeforeInitialResponseTest());
   suite.tests()->push_back(createStreamLoadsheddingTest());
   suite.tests()->push_back(createStreamMemoryBufferSizeTest());
   suite.tests()->push_back(createSinkChunkTimeoutTest());
   suite.tests()->push_back(createSinkEarlyFinalResponseTest());
   suite.tests()->push_back(createSinkAbortTest());
+  suite.tests()->push_back(createSinkAbortBeforeInitialResponseTest());
   suite.tests()->push_back(createBidiAbortTest());
   suite.tests()->push_back(createBidiAbortBeforeInitialResponseTest());
   return suite;

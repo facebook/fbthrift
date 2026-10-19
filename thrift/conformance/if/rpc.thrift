@@ -677,6 +677,7 @@ struct StreamInitialTimeoutClientInstruction {
 struct StreamCancelClientInstruction {
   1: Request request;
   2: i64 consumeCount;
+  3: optional i64 giveUpAfterMs;
 }
 
 struct StreamServerErrorClientInstruction {
@@ -721,6 +722,7 @@ struct SinkServerDeclaredExceptionClientInstruction {
 
 struct SinkAbortClientInstruction {
   1: Request request;
+  2: optional i64 giveUpAfterMs;
 }
 
 struct InteractionConstructorClientInstruction {}
@@ -884,7 +886,9 @@ struct StreamInitialTimeoutServerInstruction {
   1: i64 timeoutMs;
 }
 
-struct StreamCancelServerInstruction {}
+struct StreamCancelServerInstruction {
+  1: optional i64 initialResponseDelayMs;
+}
 
 struct StreamServerErrorServerInstruction {
   1: ServerError error;
@@ -929,7 +933,9 @@ struct SinkServerDeclaredExceptionServerInstruction {
   2: optional UserException userException;
 }
 
-struct SinkAbortServerInstruction {}
+struct SinkAbortServerInstruction {
+  1: optional i64 initialResponseDelayMs;
+}
 
 struct InteractionConstructorServerInstruction {}
 

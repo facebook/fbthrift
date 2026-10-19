@@ -306,13 +306,19 @@ StreamBasicClientTestResult streamBasicTest(
 }
 
 StreamCancelClientTestResult streamCancelTest(
+    Client<RPCConformanceService>& client,
     const StreamCancelClientInstruction& instruction) {
-  auto client = createClient();
   return folly::coro::blockingWait(
       [&]() -> folly::coro::Task<StreamCancelClientTestResult> {
         StreamCancelClientTestResult result;
-        auto gen = (co_await client->co_streamBasic(*instruction.request()))
-                       .toAsyncGenerator();
+        auto call = client.co_streamBasic(*instruction.request());
+        if (auto giveUpAfterMs = instruction.giveUpAfterMs()) {
+          auto giveUpAfter = std::chrono::milliseconds(*giveUpAfterMs);
+          co_await folly::coro::co_awaitTry(
+              folly::coro::timeout(std::move(call), giveUpAfter));
+          co_return result;
+        }
+        auto gen = (co_await std::move(call)).toAsyncGenerator();
         while (static_cast<int64_t>(result.streamPayloads()->size()) <
                *instruction.consumeCount()) {
           auto val = co_await gen.next();
@@ -545,10 +551,17 @@ SinkChunkTimeoutClientTestResult sinkChunkTimeoutTest(
 }
 
 SinkAbortClientTestResult sinkAbortTest(
+    Client<RPCConformanceService>& client,
     const SinkAbortClientInstruction& instruction) {
-  auto client = createClient();
   folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
-    auto sink = co_await client->co_sinkBasic(*instruction.request());
+    auto call = client.co_sinkBasic(*instruction.request());
+    if (auto giveUpAfterMs = instruction.giveUpAfterMs()) {
+      auto giveUpAfter = std::chrono::milliseconds(*giveUpAfterMs);
+      co_await folly::coro::co_awaitTry(
+          folly::coro::timeout(std::move(call), giveUpAfter));
+    } else {
+      co_await std::move(call);
+    }
   }());
   return {};
 }
@@ -1017,7 +1030,7 @@ int main(int argc, char** argv) {
       break;
     case ClientInstruction::Type::streamCancel:
       result.streamCancel() =
-          streamCancelTest(*clientInstruction.streamCancel());
+          streamCancelTest(*client, *clientInstruction.streamCancel());
       break;
     case ClientInstruction::Type::streamServerError:
       result.streamServerError() =
@@ -1035,7 +1048,8 @@ int main(int argc, char** argv) {
           sinkChunkTimeoutTest(*clientInstruction.sinkChunkTimeout());
       break;
     case ClientInstruction::Type::sinkAbort:
-      result.sinkAbort() = sinkAbortTest(*clientInstruction.sinkAbort());
+      result.sinkAbort() =
+          sinkAbortTest(*client, *clientInstruction.sinkAbort());
       break;
     case ClientInstruction::Type::sinkDeclaredException:
       result.sinkDeclaredException() =
