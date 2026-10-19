@@ -319,6 +319,7 @@ async fn test(
             "bidiMethodUndeclaredException not implemented: {:?}",
             i
         )),
+        bidiAbort(i) => Err(anyhow!("bidiAbort not implemented: {:?}", i)),
         UnknownField(i) => Err(anyhow!(format!("not supported: {:?}", i))),
     }
 }

@@ -89,6 +89,7 @@ union ServerTestResult {
   405: BidiSinkUndeclaredExceptionServerTestResult bidiSinkUndeclaredException;
   406: BidiMethodDeclaredExceptionServerTestResult bidiMethodDeclaredException;
   407: BidiMethodUndeclaredExceptionServerTestResult bidiMethodUndeclaredException;
+  408: BidiAbortServerTestResult bidiAbort;
 }
 
 union ClientTestResult {
@@ -132,6 +133,7 @@ union ClientTestResult {
   405: BidiSinkUndeclaredExceptionClientTestResult bidiSinkUndeclaredException;
   406: BidiMethodDeclaredExceptionClientTestResult bidiMethodDeclaredException;
   407: BidiMethodUndeclaredExceptionClientTestResult bidiMethodUndeclaredException;
+  408: BidiAbortClientTestResult bidiAbort;
 }
 
 struct RequestResponseBasicServerTestResult {
@@ -315,6 +317,11 @@ struct BidiMethodUndeclaredExceptionServerTestResult {
   1: Request request;
 }
 
+struct BidiAbortServerTestResult {
+  1: Request request;
+  2: bool sinkAborted;
+}
+
 struct RequestResponseBasicClientTestResult {
   1: Response response;
 }
@@ -488,6 +495,8 @@ struct BidiMethodUndeclaredExceptionClientTestResult {
   1: string exceptionMessage;
 }
 
+struct BidiAbortClientTestResult {}
+
 union ClientInstruction {
   1: RequestResponseBasicClientInstruction requestResponseBasic;
   2: RequestResponseDeclaredExceptionClientInstruction requestResponseDeclaredException;
@@ -529,6 +538,7 @@ union ClientInstruction {
   405: BidiSinkUndeclaredExceptionClientInstruction bidiSinkUndeclaredException;
   406: BidiMethodDeclaredExceptionClientInstruction bidiMethodDeclaredException;
   407: BidiMethodUndeclaredExceptionClientInstruction bidiMethodUndeclaredException;
+  408: BidiAbortClientInstruction bidiAbort;
 }
 
 union ServerInstruction {
@@ -572,6 +582,7 @@ union ServerInstruction {
   405: BidiSinkUndeclaredExceptionServerInstruction bidiSinkUndeclaredException;
   406: BidiMethodDeclaredExceptionServerInstruction bidiMethodDeclaredException;
   407: BidiMethodUndeclaredExceptionServerInstruction bidiMethodUndeclaredException;
+  408: BidiAbortServerInstruction bidiAbort;
 }
 
 struct RequestResponseBasicClientInstruction {
@@ -769,6 +780,11 @@ struct BidiMethodUndeclaredExceptionClientInstruction {
   1: Request request;
 }
 
+struct BidiAbortClientInstruction {
+  1: Request request;
+  2: optional i64 giveUpAfterMs;
+}
+
 struct RequestResponseBasicServerInstruction {
   1: Response response;
 }
@@ -960,6 +976,10 @@ struct BidiMethodDeclaredExceptionServerInstruction {
 
 struct BidiMethodUndeclaredExceptionServerInstruction {
   1: string exceptionMessage;
+}
+
+struct BidiAbortServerInstruction {
+  1: optional i64 initialResponseDelayMs;
 }
 
 interaction BasicInteraction {

@@ -24,6 +24,7 @@
 #include <folly/coro/BlockingWait.h>
 #include <folly/coro/Collect.h>
 #include <folly/coro/Sleep.h>
+#include <folly/coro/Timeout.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 
@@ -864,6 +865,22 @@ BidiMethodUndeclaredExceptionClientTestResult bidiMethodUndeclaredExceptionTest(
   return result;
 }
 
+BidiAbortClientTestResult bidiAbortTest(
+    Client<RPCConformanceService>& client,
+    const BidiAbortClientInstruction& instruction) {
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto call = client.co_bidiBasic(*instruction.request());
+    if (auto giveUpAfterMs = instruction.giveUpAfterMs()) {
+      auto giveUpAfter = std::chrono::milliseconds(*giveUpAfterMs);
+      co_await folly::coro::co_awaitTry(
+          folly::coro::timeout(std::move(call), giveUpAfter));
+    } else {
+      co_await std::move(call);
+    }
+  }());
+  return {};
+}
+
 // =================== Interactions ===================
 InteractionConstructorClientTestResult interactionConstructorTest(
     InteractionConstructorClientInstruction&) {
@@ -1084,6 +1101,10 @@ int main(int argc, char** argv) {
       result.bidiMethodUndeclaredException() =
           bidiMethodUndeclaredExceptionTest(
               *clientInstruction.bidiMethodUndeclaredException());
+      break;
+    case ClientInstruction::Type::bidiAbort:
+      result.bidiAbort() =
+          bidiAbortTest(*client, *clientInstruction.bidiAbort());
       break;
     default:
       throw std::runtime_error("Invalid TestCase Type.");

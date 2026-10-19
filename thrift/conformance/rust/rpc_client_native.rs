@@ -24,7 +24,7 @@
 //!
 //! The two files cannot stay identical. `bareclient` never implemented
 //! `Transport::call_bidirectional`, so the `rust` category is listed as
-//! nonconforming for all eight bidi cases and `rpc_client.rs` still answers
+//! nonconforming for every bidi case and `rpc_client.rs` still answers
 //! them with an error. And `bareclient` gives a Rust caller no way to read an
 //! exception sent inside a Thrift `Any`, so for the any-exception case
 //! `rpc_client.rs` reports the message alone and is listed as nonconforming
@@ -42,6 +42,8 @@ use anyhow::Result;
 use anyhow::anyhow;
 use clap::Parser;
 use futures::stream::StreamExt;
+use rpc::rpc::BidiAbortClientInstruction;
+use rpc::rpc::BidiAbortClientTestResult;
 use rpc::rpc::BidiBasicClientInstruction;
 use rpc::rpc::BidiBasicClientTestResult;
 use rpc::rpc::BidiInitialResponseClientInstruction;
@@ -336,6 +338,7 @@ async fn test(
         bidiSinkUndeclaredException(i) => bidi_sink_undeclared_exception(client, i).await,
         bidiMethodDeclaredException(i) => bidi_method_declared_exception(client, i).await,
         bidiMethodUndeclaredException(i) => bidi_method_undeclared_exception(client, i).await,
+        bidiAbort(i) => bidi_abort(client, i).await,
         UnknownField(i) => Err(anyhow!(format!("not supported: {:?}", i))),
     }
 }
@@ -1453,6 +1456,25 @@ async fn bidi_method_undeclared_exception(
     client
         .sendTestResult(&ClientTestResult::bidiMethodUndeclaredException(
             test_result,
+        ))
+        .await?;
+    Ok(())
+}
+
+async fn bidi_abort(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &BidiAbortClientInstruction,
+) -> Result<()> {
+    let call = client.bidiBasic(&instr.request);
+    match instr.giveUpAfterMs {
+        Some(give_up_after_ms) => {
+            drop(tokio::time::timeout(Duration::from_millis(give_up_after_ms as u64), call).await)
+        }
+        None => drop(call.await?),
+    }
+    client
+        .sendTestResult(&ClientTestResult::bidiAbort(
+            BidiAbortClientTestResult::default(),
         ))
         .await?;
     Ok(())

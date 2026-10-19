@@ -2044,6 +2044,59 @@ Test createBidiMethodUndeclaredExceptionTest() {
   return ret;
 }
 
+Test createBidiAbortTest() {
+  Test ret;
+  ret.name() = "BidiAbortTest";
+  ret.tags()->emplace("spec/protocol/interface/#bidi");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "BidiAbort/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .bidiAbort()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  rpcTest.clientTestResult().emplace().bidiAbort().emplace();
+  rpcTest.serverInstruction().emplace().bidiAbort().emplace();
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().bidiAbort().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.sinkAborted() = true;
+
+  return ret;
+}
+
+Test createBidiAbortBeforeInitialResponseTest() {
+  Test ret;
+  ret.name() = "BidiAbortBeforeInitialResponseTest";
+  ret.tags()->emplace("spec/protocol/interface/#bidi");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "BidiAbortBeforeInitialResponse/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().bidiAbort().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.giveUpAfterMs() = 100;
+  rpcTest.clientTestResult().emplace().bidiAbort().emplace();
+  rpcTest.serverInstruction()
+      .emplace()
+      .bidiAbort()
+      .emplace()
+      .initialResponseDelayMs() = 500;
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().bidiAbort().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.sinkAborted() = true;
+
+  return ret;
+}
+
 // =================== Interactions ===================
 Test createInteractionConstructorTest() {
   Test ret;
@@ -2327,6 +2380,8 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createSinkChunkTimeoutTest());
   suite.tests()->push_back(createSinkEarlyFinalResponseTest());
   suite.tests()->push_back(createSinkAbortTest());
+  suite.tests()->push_back(createBidiAbortTest());
+  suite.tests()->push_back(createBidiAbortBeforeInitialResponseTest());
   return suite;
 }
 

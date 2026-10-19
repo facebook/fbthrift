@@ -40,6 +40,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <folly/coro/BlockingWait.h>
 #include <folly/coro/CurrentExecutor.h>
 #include <folly/coro/Sleep.h>
+#include <folly/coro/WithCancellation.h>
 #include <folly/futures/Future.h>
 #include <folly/synchronization/Baton.h>
 #include <thrift/conformance/PluggableFunctions.h>
@@ -79,6 +80,11 @@ class ConformanceVerificationServer
     if (serverResult_.getType() == ServerTestResult::Type::sinkAbort) {
       if (sinkConsumerDone_.try_wait_for(std::chrono::seconds(5))) {
         serverResult_.sinkAbort()->aborted() = sinkAborted_;
+      }
+    }
+    if (serverResult_.getType() == ServerTestResult::Type::bidiAbort) {
+      if (sinkConsumerDone_.try_wait_for(std::chrono::seconds(5))) {
+        serverResult_.bidiAbort()->sinkAborted() = sinkAborted_;
       }
     }
     if (testCase_.serverInstruction()->requestResponseConcurrent()) {
@@ -445,6 +451,13 @@ class ConformanceVerificationServer
   // =================== BiDi Streaming ===================
   folly::coro::Task<apache::thrift::StreamTransformation<Request, Response>>
   co_bidiBasic(std::unique_ptr<Request> req) override {
+    if (auto instruction = testCase_.serverInstruction()->bidiAbort()) {
+      serverResult_.bidiAbort().emplace().request() = *req;
+      if (auto delayMs = instruction->initialResponseDelayMs()) {
+        co_await folly::coro::sleep(std::chrono::milliseconds(*delayMs));
+      }
+      co_return transformUntilAborted();
+    }
     serverResult_.bidiBasic().emplace().request() = *req;
     co_return apache::thrift::StreamTransformation<Request, Response>{
         [this](folly::coro::AsyncGenerator<Request&&> input)
@@ -456,6 +469,24 @@ class ConformanceVerificationServer
           while (auto item = co_await input.next()) {
             serverResult_.bidiBasic()->sinkPayloads()->push_back(
                 std::move(*item));
+          }
+        }};
+  }
+
+  apache::thrift::StreamTransformation<Request, Response>
+  transformUntilAborted() {
+    return apache::thrift::StreamTransformation<Request, Response>{
+        [this](folly::coro::AsyncGenerator<Request&&> input)
+            -> folly::coro::AsyncGenerator<Response&&> {
+          SCOPE_EXIT {
+            sinkConsumerDone_.post();
+          };
+          try {
+            while (co_await folly::coro::co_withCancellation(
+                folly::CancellationToken{}, input.next())) {
+            }
+          } catch (const std::exception&) {
+            sinkAborted_ = true;
           }
         }};
   }
@@ -805,6 +836,11 @@ void configureTls(apache::thrift::ThriftServer& server) {
 void configureServer(
     apache::thrift::ThriftServer& server,
     const ServerInstruction& instruction) {
+  if (instruction.bidiAbort()) {
+    // sendTestResult holds one CPU thread while it waits on the bidi stream,
+    // whose delayed initial response needs another.
+    server.setNumCPUWorkerThreads(2);
+  }
   const ServerError* serverError = nullptr;
   std::string method;
   if (const auto requestResponse = instruction.requestResponseServerError()) {
