@@ -47,6 +47,8 @@ from collections.abc import (
 from typing import cast, ClassVar, Generic, NoReturn, overload, Self, TypeVar
 
 from apache.thrift.type.any_rep.thrift_types import AnyStruct
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._datum import (
     check_frozen_key,
     check_union_shape,
@@ -61,7 +63,11 @@ from thrift.lib.python.schema._datum import (
     UNSET,
     values_equal,
 )
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._errors import EncodeError
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.type_system import (
     EnumTypeRef,
     FieldDefinition,

@@ -30,14 +30,21 @@ import functools
 import json
 from typing import ClassVar, NoReturn
 
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._errors import DecodeError, EncodeError
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._protocol_common import decode_utf8
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._simple_json_scalars import (
     json_binary,
     json_double,
     json_float32,
     json_string,
 )
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._ttypes import Protocol
 
 

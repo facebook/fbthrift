@@ -26,9 +26,16 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import ClassVar, Protocol as TypingProtocol
 
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._binary_protocol import BinaryReader, BinaryWriter
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._compact_protocol import CompactReader, CompactWriter
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._simple_json_protocol import SimpleJsonWriter
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._ttypes import Protocol
 
 

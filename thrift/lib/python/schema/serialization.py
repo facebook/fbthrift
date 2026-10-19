@@ -35,6 +35,8 @@ from collections.abc import Mapping, Sequence
 from typing import cast
 
 from apache.thrift.type.any_rep.thrift_types import AnyStruct
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._datum import (
     field_default,
     freeze_key,
@@ -43,12 +45,18 @@ from thrift.lib.python.schema._datum import (
     type_name,
     UNSET,
 )
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._errors import DecodeError, EncodeError
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._protocols import (
     default_backend,
     ProtocolReader,
     ProtocolWriter,
 )
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._ttypes import (
     Protocol,
     T_BOOL,
@@ -65,11 +73,15 @@ from thrift.lib.python.schema._ttypes import (
     T_STRING,
     T_STRUCT,
 )
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.dynamic_value import (
     _handle,
     DynamicValue,
     MutableDynamicValue,
 )
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.type_system import (
     EnumTypeRef,
     FieldDefinition,

@@ -30,8 +30,13 @@ import struct
 from collections.abc import Iterator, Mapping
 from typing import ClassVar
 
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._errors import DecodeError, EncodeError
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._protocol_common import decode_utf8, INT32_MAX
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._ttypes import (
     Protocol,
     PROTOCOL_MAX_DEPTH,

@@ -46,11 +46,16 @@ from decimal import (
     ROUND_HALF_EVEN,
 )
 
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._errors import DecodeError
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._protocol_common import (
     decode_utf8 as decode_utf8,
     INT32_MAX as INT32_MAX,
 )
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._value_checks import (
     check_binary as check_binary,
     check_bool as check_bool,

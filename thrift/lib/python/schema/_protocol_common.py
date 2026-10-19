@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._errors import DecodeError
 
 INT32_MAX: int = 2**31 - 1

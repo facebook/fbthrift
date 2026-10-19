@@ -19,6 +19,7 @@ from __future__ import annotations
 import math
 import struct
 
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._errors import EncodeError
 
 _FLOAT32 = struct.Struct("<f")

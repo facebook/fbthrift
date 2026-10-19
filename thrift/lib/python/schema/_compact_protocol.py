@@ -38,12 +38,17 @@ from __future__ import annotations
 import struct
 from typing import ClassVar
 
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._binary_protocol import (
     BufferReader,
     check_binary_size,
     STRING_TTYPES,
 )
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._errors import DecodeError
+
+# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._ttypes import (
     Protocol,
     T_BOOL,
@@ -125,6 +130,7 @@ class CompactReader(BufferReader):
             pos += 1
             result |= (byte & 0x7F) << shift
             if byte < 0x80:
+                # pyrefly: ignore [missing-attribute]
                 self._pos = pos
                 return result
             shift += 7
