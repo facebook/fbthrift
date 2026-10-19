@@ -768,6 +768,7 @@ union ServerError {
   1: string loadshedding;
   2: TaskExpiredServerError taskExpired;
   3: ResponseTooBigServerError responseTooBig;
+  4: string undeclaredException;
 }
 
 struct TaskExpiredServerError {

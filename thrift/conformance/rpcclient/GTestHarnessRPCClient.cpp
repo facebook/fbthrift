@@ -713,6 +713,8 @@ class ConformanceVerificationServer
       case ServerError::Type::responseTooBig:
         res->data() = std::string(*error.responseTooBig()->responseSize(), 'x');
         break;
+      case ServerError::Type::undeclaredException:
+        throw std::runtime_error(*error.undeclaredException());
       default:
         break;
     }

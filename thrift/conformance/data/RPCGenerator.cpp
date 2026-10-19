@@ -278,6 +278,47 @@ Test createRequestResponseTaskExpiredTest() {
   return ret;
 }
 
+Test createRequestResponseUndeclaredExceptionTypeTest() {
+  Test ret;
+  ret.name() = "RequestResponseUndeclaredExceptionTypeTest";
+  ret.tags()->emplace("spec/protocol/interface/#undeclared-exception");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseUndeclaredExceptionType/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult = rpcTest.clientTestResult()
+                               .emplace()
+                               .requestResponseServerError()
+                               .emplace();
+  clientTestResult.exceptionType() = TApplicationException::UNKNOWN;
+  clientTestResult.exceptionMessage() =
+      "std::runtime_error: my undeclared exception";
+  rpcTest.serverInstruction()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .undeclaredException() = "my undeclared exception";
+  rpcTest.serverTestResult()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+
+  return ret;
+}
+
 Test createRequestResponseTooBigTest() {
   Test ret;
   ret.name() = "RequestResponseTooBigTest";
@@ -2173,6 +2214,7 @@ void addExtendedRequestResponseTests(TestSuite& suite) {
   suite.tests()->push_back(createRequestResponseLoadsheddingTest());
   suite.tests()->push_back(createRequestResponseTaskExpiredTest());
   suite.tests()->push_back(createRequestResponseTooBigTest());
+  suite.tests()->push_back(createRequestResponseUndeclaredExceptionTypeTest());
   suite.tests()->push_back(createRequestResponseUnknownMethodTest());
   suite.tests()->push_back(createRequestResponseWriteHeadersTest());
   suite.tests()->push_back(createRequestResponsePersistentHeadersTest());
