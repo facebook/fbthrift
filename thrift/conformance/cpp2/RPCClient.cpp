@@ -324,6 +324,24 @@ StreamCancelClientTestResult streamCancelTest(
       }());
 }
 
+StreamServerErrorClientTestResult streamServerErrorTest(
+    const StreamServerErrorClientInstruction& instruction) {
+  StreamServerErrorClientTestResult result;
+  auto client = createClient();
+  try {
+    folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+      auto gen = (co_await client->co_streamBasic(*instruction.request()))
+                     .toAsyncGenerator();
+      while (co_await gen.next()) {
+      }
+    }());
+  } catch (const TApplicationException& e) {
+    result.exceptionType() = e.getType();
+    result.exceptionMessage() = e.getMessage();
+  }
+  return result;
+}
+
 StreamChunkTimeoutClientTestResult streamChunkTimeoutTest(
     StreamChunkTimeoutClientInstruction& instruction) {
   auto client = createClient();
@@ -974,6 +992,10 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::streamCancel:
       result.streamCancel() =
           streamCancelTest(*clientInstruction.streamCancel());
+      break;
+    case ClientInstruction::Type::streamServerError:
+      result.streamServerError() =
+          streamServerErrorTest(*clientInstruction.streamServerError());
       break;
     case ClientInstruction::Type::sinkBasic:
       result.sinkBasic() = sinkBasicTest(*clientInstruction.sinkBasic());

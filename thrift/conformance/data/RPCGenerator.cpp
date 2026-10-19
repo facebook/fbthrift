@@ -791,6 +791,38 @@ Test createStreamCancelTest() {
   return ret;
 }
 
+Test createStreamLoadsheddingTest() {
+  Test ret;
+  ret.name() = "StreamLoadsheddingTest";
+  ret.tags()->emplace("spec/protocol/interface/#loadshedding");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "StreamLoadshedding/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .streamServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().streamServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::LOADSHEDDING;
+  clientTestResult.exceptionMessage() = "shedding the conformance call";
+  rpcTest.serverInstruction()
+      .emplace()
+      .streamServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .loadshedding() = "shedding the conformance call";
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
 Test createStreamMemoryBufferSizeTest() {
   Test ret;
   ret.name() = "StreamMemoryBufferSizeTest";
@@ -2264,6 +2296,7 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tags()->emplace("spec/protocol/interface/");
   addExtendedRequestResponseTests(suite);
   suite.tests()->push_back(createStreamCancelTest());
+  suite.tests()->push_back(createStreamLoadsheddingTest());
   suite.tests()->push_back(createStreamMemoryBufferSizeTest());
   suite.tests()->push_back(createSinkChunkTimeoutTest());
   suite.tests()->push_back(createSinkEarlyFinalResponseTest());

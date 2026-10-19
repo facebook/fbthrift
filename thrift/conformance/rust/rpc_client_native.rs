@@ -86,6 +86,8 @@ use rpc::rpc::StreamInitialTimeoutClientInstruction;
 use rpc::rpc::StreamInitialTimeoutClientTestResult;
 use rpc::rpc::StreamInitialUndeclaredExceptionClientInstruction;
 use rpc::rpc::StreamInitialUndeclaredExceptionClientTestResult;
+use rpc::rpc::StreamServerErrorClientInstruction;
+use rpc::rpc::StreamServerErrorClientTestResult;
 use rpc::rpc::StreamUndeclaredExceptionClientInstruction;
 use rpc::rpc::StreamUndeclaredExceptionClientTestResult;
 use rpc_clients::rpc::RPCConformanceServiceExt;
@@ -277,6 +279,7 @@ use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseBasicErr
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseDeclaredExceptionError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseTimeoutError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseUndeclaredExceptionError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamBasicError;
 use standard::StandardProtocol;
 use type_rep::ProtocolUnion;
 
@@ -310,6 +313,7 @@ async fn test(
         streamInitialUndeclaredException(i) => stream_initial_undeclared_exception(client, i).await,
         streamInitialTimeout(i) => stream_initial_timeout(client, i).await,
         streamCancel(i) => stream_cancel(client, i).await,
+        streamServerError(i) => stream_server_error(client, i).await,
         sinkBasic(i) => sink_basic(client, i).await,
         sinkChunkTimeout(i) => sink_chunk_timeout(client, i).await,
         sinkInitialResponse(i) => sink_initial_response(client, i).await,
@@ -710,6 +714,29 @@ async fn stream_basic(
     client
         .sendTestResult(&ClientTestResult::streamBasic(test_result))
         .await?;
+    Ok(())
+}
+
+async fn stream_server_error(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &StreamServerErrorClientInstruction,
+) -> Result<()> {
+    let exn = match client.streamBasic(&instr.request).await {
+        Err(StreamBasicError::ApplicationException(exn)) => exn,
+        Err(other) => {
+            return Err(anyhow!(
+                "stream_server_error: unexpected error: {:?}",
+                other
+            ));
+        }
+        Ok(_) => return Err(anyhow!("stream_server_error: the stream started")),
+    };
+    let test_result = ClientTestResult::streamServerError(StreamServerErrorClientTestResult {
+        exceptionType: exn.type_ as i32,
+        exceptionMessage: exn.message,
+        ..Default::default()
+    });
+    client.sendTestResult(&test_result).await?;
     Ok(())
 }
 

@@ -153,6 +153,10 @@ class ConformanceVerificationServer
   // =================== Stream ===================
   apache::thrift::ServerStream<Response> streamBasic(
       std::unique_ptr<Request> req) override {
+    if (testCase_.serverInstruction()->streamServerError()) {
+      serverResult_.streamServerError().emplace().request() = *req;
+      co_return;
+    }
     if (testCase_.serverInstruction()->streamCancel()) {
       serverResult_.streamCancel().emplace().request() = *req;
       folly::CancellationCallback onCancel(
@@ -773,17 +777,26 @@ void configureTls(apache::thrift::ThriftServer& server) {
 void configureServer(
     apache::thrift::ThriftServer& server,
     const ServerInstruction& instruction) {
-  if (const auto serverError = instruction.requestResponseServerError()) {
-    const auto& error = *serverError->error();
+  const ServerError* serverError = nullptr;
+  std::string method;
+  if (const auto requestResponse = instruction.requestResponseServerError()) {
+    serverError = &*requestResponse->error();
+    method = "requestResponseBasic";
+  } else if (const auto stream = instruction.streamServerError()) {
+    serverError = &*stream->error();
+    method = "streamBasic";
+  }
+  if (serverError != nullptr) {
+    const auto& error = *serverError;
     switch (error.getType()) {
       case ServerError::Type::loadshedding:
         // Only the call under test: the client still fetches its test case and
         // reports its result through this server.
         server.addPreprocessFunc(
             "conformance",
-            [message = *error.loadshedding()](
+            [message = *error.loadshedding(), method](
                 const server::PreprocessParams& params) -> PreprocessResult {
-              if (params.method == "requestResponseBasic") {
+              if (params.method == method) {
                 return AppOverloadedException(
                     std::string(params.method), std::string(message));
               }
