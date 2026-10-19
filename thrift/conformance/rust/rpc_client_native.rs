@@ -22,13 +22,17 @@
 //! expectations and implementing one of those features turns the corresponding
 //! test red until its line is deleted.
 //!
-//! The two files cannot stay identical in two places. `bareclient` never
-//! implemented `Transport::call_bidirectional`, so the `rust` category is
-//! listed as nonconforming for all eight bidi cases and `rpc_client.rs` still
-//! answers them with an error. And `bareclient` gives a Rust caller no way to
-//! read an exception sent inside a Thrift `Any`, so for the any-exception case
+//! The two files cannot stay identical. `bareclient` never implemented
+//! `Transport::call_bidirectional`, so the `rust` category is listed as
+//! nonconforming for all eight bidi cases and `rpc_client.rs` still answers
+//! them with an error. And `bareclient` gives a Rust caller no way to read an
+//! exception sent inside a Thrift `Any`, so for the any-exception case
 //! `rpc_client.rs` reports the message alone and is listed as nonconforming
 //! too.
+//!
+//! This file should check exactly what `RPCClient.cpp` checks even though
+//! `rpc_client.rs` is more relaxed and e.g. checks an error via text rather
+//! than by it's type.
 
 use std::net::SocketAddr;
 use std::sync::Arc;
@@ -94,14 +98,21 @@ use rpc::rpc::StreamUndeclaredExceptionClientInstruction;
 use rpc::rpc::StreamUndeclaredExceptionClientTestResult;
 use rpc_clients::rpc::RPCConformanceServiceExt;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiMethodDeclaredExceptionError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiMethodUndeclaredExceptionError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiSinkDeclaredExceptionSinkError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiSinkUndeclaredExceptionSinkError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiStreamDeclaredExceptionStreamError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiStreamUndeclaredExceptionStreamError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkChunkTimeoutSinkFinalError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkDeclaredExceptionSinkError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkUndeclaredExceptionSinkError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamChunkTimeoutStreamError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamCreditTimeoutStreamError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamDeclaredExceptionStreamError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamInitialDeclaredExceptionError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamInitialTimeoutError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamInitialUndeclaredExceptionError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamUndeclaredExceptionStreamError;
 use rpc_clients::rpc_setup::RPCConformanceSetupServiceExt;
 use rpc_clients::rpc_setup::errors::r_p_c_conformance_setup_service::CreateRPCConformanceServiceClientError;
 use tracing_glog::Glog;
@@ -337,6 +348,13 @@ async fn test(
 }
 
 // ---
+
+fn timed_out(error: &anyhow::Error) -> bool {
+    matches!(
+        error.downcast_ref::<nativeclient::ThriftError>(),
+        Some(nativeclient::ThriftError::Timeout(_) | nativeclient::ThriftError::StreamTimeout(_))
+    )
+}
 
 async fn create_interaction(
     client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
@@ -614,7 +632,7 @@ async fn request_response_timeout(
             tracing::info!("thrift error: {:?}", exn);
             let test_result =
                 ClientTestResult::requestResponseTimeout(RequestResponseTimeoutClientTestResult {
-                    timeoutException: exn.to_string().contains("TTransportException"),
+                    timeoutException: timed_out(exn),
                     ..Default::default()
                 });
             client.sendTestResult(&test_result).await?;
@@ -783,9 +801,14 @@ async fn stream_chunk_timeout(
             Ok(r) => {
                 test_result.streamPayloads.push(r);
             }
-            Err(exn) => {
-                test_result.chunkTimeoutException |=
-                    exn.to_string().contains("TTransportException");
+            Err(StreamChunkTimeoutStreamError::ThriftError(exn)) => {
+                test_result.chunkTimeoutException |= timed_out(&exn);
+            }
+            Err(other) => {
+                return Err(anyhow!(
+                    "stream_chunk_timeout: unexpected stream error: {:?}",
+                    other
+                ));
             }
         }
     }
@@ -822,24 +845,30 @@ async fn stream_credit_timeout(
     client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
     instr: &StreamCreditTimeoutClientInstruction,
 ) -> Result<()> {
-    let mut stream = client.streamCreditTimeout(&instr.request).await?;
-    let mut test_result = StreamCreditTimeoutClientTestResult {
-        creditTimeoutException: false,
+    let mut opts = nativeclient::RpcOptions::default();
+    opts.set_chunk_buffer_size(0);
+    let mut stream = client
+        .streamCreditTimeout_with_rpc_opts(&instr.request, opts)
+        .await?;
+    let first = stream.next().await;
+    tracing::info!("stream_credit_timeout: first item {:?}", first);
+    let mut credit_timeout = false;
+    if let Some(Ok(_)) = first {
+        // Sleep longer than the stream expiration time so that the server
+        // will run out of credit and throw a credit timeout exception
+        tokio::time::sleep(Duration::from_millis(instr.creditTimeoutMs as u64)).await;
+        let second = stream.next().await;
+        tracing::info!("stream_credit_timeout: second item {:?}", second);
+        credit_timeout = matches!(
+            second,
+            Some(Err(StreamCreditTimeoutStreamError::ApplicationException(aexn)))
+                if aexn.type_ == fbthrift::ApplicationExceptionErrorCode::Timeout
+        );
+    }
+    let test_result = StreamCreditTimeoutClientTestResult {
+        creditTimeoutException: credit_timeout,
         ..Default::default()
     };
-
-    while let Some(response) = stream.next().await {
-        match response {
-            Err(exn) if exn.to_string().contains("TTransportException") => {
-                test_result.creditTimeoutException = true;
-            }
-            _ => {
-                // Sleep longer than the stream expiration time so that the server
-                // will run out of credit and throw a credit timeout exception
-                tokio::time::sleep(Duration::from_millis(instr.creditTimeoutMs as u64)).await;
-            }
-        }
-    }
 
     client
         .sendTestResult(&ClientTestResult::streamCreditTimeout(test_result))
@@ -878,9 +907,13 @@ async fn stream_undeclared_exception(
         ..Default::default()
     };
     while let Some(result) = stream.next().await {
-        if let Err(err) = result {
-            test_result.exceptionMessage = err.to_string();
-        };
+        match result {
+            Err(StreamUndeclaredExceptionStreamError::ApplicationException(aexn)) => {
+                test_result.exceptionMessage = aexn.message;
+            }
+            Err(other) => tracing::info!("stream_undeclared_exception: untyped error {:?}", other),
+            Ok(_) => {}
+        }
     }
     client
         .sendTestResult(&ClientTestResult::streamUndeclaredException(test_result))
@@ -919,9 +952,16 @@ async fn stream_initial_undeclared_exception(
         exceptionMessage: "".to_string(),
         ..Default::default()
     };
-    if let Err(err) = result {
-        test_result.exceptionMessage = err.to_string();
-    };
+    match result {
+        Err(StreamInitialUndeclaredExceptionError::ApplicationException(aexn)) => {
+            test_result.exceptionMessage = aexn.message;
+        }
+        Err(other) => tracing::info!(
+            "stream_initial_undeclared_exception: untyped error {:?}",
+            other
+        ),
+        Ok(_) => {}
+    }
     client
         .sendTestResult(&ClientTestResult::streamInitialUndeclaredException(
             test_result,
@@ -943,8 +983,12 @@ async fn stream_initial_timeout(
         timeoutException: false,
         ..Default::default()
     };
-    if let Err(_err) = result {
-        test_result.timeoutException = true;
+    match &result {
+        Err(StreamInitialTimeoutError::ThriftError(exn)) => {
+            test_result.timeoutException = timed_out(exn);
+        }
+        Err(other) => tracing::info!("stream_initial_timeout: other error {:?}", other),
+        Ok(_) => {}
     }
     client
         .sendTestResult(&ClientTestResult::streamInitialTimeout(test_result))
@@ -1132,11 +1176,9 @@ async fn sink_initial_declared_exception(
 
     let sink_threw = match result {
         Err(_) => true,
-        Ok(sink_result) => {
-            // Server may have accepted the call but the error surfaces when
-            // we try to use the sink
-            let final_result = (sink_result.sink)(futures::stream::empty().boxed()).await;
-            final_result.is_err()
+        Ok(_) => {
+            tracing::info!("sink_initial_declared_exception: the call opened a sink");
+            false
         }
     };
 
@@ -1286,7 +1328,13 @@ async fn bidi_stream_undeclared_exception(
         while let Some(item) = stream.next().await {
             match item {
                 Ok(response) => payloads.push(response),
-                Err(err) => message = without_type_prefix(&err.to_string()),
+                Err(BidiStreamUndeclaredExceptionStreamError::ApplicationException(aexn)) => {
+                    message = without_type_prefix(&aexn.message)
+                }
+                Err(other) => tracing::info!(
+                    "bidi_stream_undeclared_exception: untyped error {:?}",
+                    other
+                ),
             }
         }
         (payloads, message)
@@ -1402,8 +1450,15 @@ async fn bidi_method_undeclared_exception(
     let mut test_result = BidiMethodUndeclaredExceptionClientTestResult {
         ..Default::default()
     };
-    if let Err(err) = client.bidiMethodUndeclaredException(&instr.request).await {
-        test_result.exceptionMessage = without_type_prefix(&err.to_string());
+    match client.bidiMethodUndeclaredException(&instr.request).await {
+        Err(BidiMethodUndeclaredExceptionError::ApplicationException(aexn)) => {
+            test_result.exceptionMessage = without_type_prefix(&aexn.message);
+        }
+        Err(other) => tracing::info!(
+            "bidi_method_undeclared_exception: untyped error {:?}",
+            other
+        ),
+        Ok(_) => {}
     }
     client
         .sendTestResult(&ClientTestResult::bidiMethodUndeclaredException(
