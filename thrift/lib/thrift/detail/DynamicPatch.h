@@ -273,15 +273,56 @@ class DynamicPatchBase {
 ///       // Category::StructuredPatch
 ///       void patchIfSet(FieldId, const DynamicPatch&);
 ///     }
-class DynamicUnknownPatch : public DynamicPatchBase {
+class DynamicUnknownPatch : private DynamicPatchBase {
  public:
+  DynamicUnknownPatch();
+  ~DynamicUnknownPatch();
+  DynamicUnknownPatch(const DynamicUnknownPatch&);
+  DynamicUnknownPatch(DynamicUnknownPatch&&) noexcept;
+  DynamicUnknownPatch& operator=(const DynamicUnknownPatch&);
+  DynamicUnknownPatch& operator=(DynamicUnknownPatch&&) noexcept;
+
   void assign(Object v);
   void removeMulti(ValueSet v);
   void patchIfSet(FieldId, const DynamicPatch&);
 
+  void clear() {
+    dropSubPatches();
+    DynamicPatchBase::clear();
+  }
+
   void fromObject(detail::Badge badge, Object obj) {
+    dropSubPatches();
     DynamicPatchBase::fromObject(badge, std::move(obj));
     validateAndGetCategory();
+  }
+
+  [[nodiscard]] Object toObject() const& {
+    encodeSubPatches();
+    return DynamicPatchBase::toObject();
+  }
+
+  [[nodiscard]] Object toObject() && {
+    encodeSubPatches();
+    return std::move(static_cast<DynamicPatchBase&>(*this)).toObject();
+  }
+
+  // Only touches `options_`, so it needs no sub-patch handling.
+  using DynamicPatchBase::doNotConvertStringToBinary;
+
+  [[nodiscard]] bool empty(detail::Badge badge) const {
+    return DynamicPatchBase::empty(badge) && !hasDecodedSubPatches();
+  }
+
+  [[nodiscard]] std::size_t patchedElementCount(detail::Badge badge) const {
+    encodeSubPatches();
+    return DynamicPatchBase::patchedElementCount(badge);
+  }
+
+  template <typename Protocol>
+  std::uint32_t encode(Protocol& prot) const {
+    encodeSubPatches();
+    return DynamicPatchBase::encode(prot);
   }
 
   template <class Reader, bool _>
@@ -381,6 +422,37 @@ class DynamicUnknownPatch : public DynamicPatchBase {
   bool isOneOfCategory(std::initializer_list<Category> c) const {
     return std::find(c.begin(), c.end(), validateAndGetCategory()) != c.end();
   }
+
+  // Decoded `patchPrior`/`patchAfter` sub-patches. Definition is in the .cpp
+  // because the maps hold DynamicPatch, which is incomplete here.
+  struct SubPatches;
+
+  // Moves the `patchPrior`/`patchAfter` ops out of `patch_` into `subPatches_`,
+  // decoding each sub-patch once. No-op once decoded.
+  //
+  // Why: holding the sub-patches as a serialized Object makes every
+  // `patchIfSet` decode the accumulated patch, merge, and re-encode it, so
+  // folding N sub-patches in costs O(N^2). Decoded, each fold is a merge into
+  // one map entry, the same representation DynamicStructurePatch uses.
+  //
+  // Decoding is deferred to the first mutation so that a patch which is only
+  // ever read keeps its Object byte-for-byte: `encodeSubPatches` would
+  // otherwise renormalize sub-patches that nothing asked to change.
+  void decodeSubPatches();
+
+  // Puts the decoded sub-patches back into `patch_`, restoring it as the whole
+  // patch. Every reader calls this before touching `patch_`.
+  void encodeSubPatches() const;
+
+  // Discards decoded sub-patches without writing them back. For the mutators
+  // that replace the whole patch (`assign`, `clear`, `fromObject`).
+  void dropSubPatches();
+
+  bool hasDecodedSubPatches() const;
+
+  // Mutable so the readers above can restore `patch_` from a const context:
+  // this is a representation change, not a value change.
+  mutable std::unique_ptr<SubPatches> subPatches_;
 };
 
 /// DynamicPatch for a Thrift list.
@@ -1218,6 +1290,7 @@ class DynamicUnionPatch : public DynamicStructurePatch<true> {
 
 template <class Self, class Visitor>
 void DynamicUnknownPatch::customVisitImpl(Self&& self, Visitor&& v) {
+  self.encodeSubPatches();
   // We don't need to check EnsureStruct and EnsureUnion fields since they won't
   // exists -- otherwise we are able to identify the exact patch type and it
   // should not be unknown patch.
@@ -1636,6 +1709,7 @@ void DynamicUnknownPatch::applyAllFieldsInStream(
     thrift::detail::StructuredDynamicCursorReader<Reader, _>& in,
     thrift::detail::StructuredDynamicCursorWriter<
         typename Reader::ProtocolWriter>& out) const {
+  encodeSubPatches();
   if (auto assign = get_ptr(op::PatchOp::Assign)) {
     for (const auto& [id, value] : assign->as_object()) {
       out.writeValue(id, value);

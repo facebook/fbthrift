@@ -2101,7 +2101,7 @@ auto DynamicUnknownPatch::validateAndGetCategory() const -> Category {
     return true;
   };
 
-  if (patch_.empty()) {
+  if (patch_.empty() && !hasDecodedSubPatches()) {
     return Category::EmptyPatch;
   }
 
@@ -2110,11 +2110,18 @@ auto DynamicUnknownPatch::validateAndGetCategory() const -> Category {
     return Category::StructuredOrAnyPatch;
   }
 
-  if (onlyHasOps({op::PatchOp::Clear})) {
+  // While sub-patches are decoded they are absent from `patch_`, so the
+  // Clear-only and Remove-only shapes have to rule them out explicitly. The
+  // structured check below needs no such guard: `patch_` then holds at most
+  // `clear`, and the empty case is already handled above. Deliberately does not
+  // call encodeSubPatches() -- patchIfSet asks for the category on every call,
+  // and restoring `patch_` each time would reinstate the quadratic merge.
+  if (!hasDecodedSubPatches() && onlyHasOps({op::PatchOp::Clear})) {
     return Category::ClearPatch;
   }
 
-  if (onlyHasOps({op::PatchOp::Clear, op::PatchOp::Remove})) {
+  if (!hasDecodedSubPatches() &&
+      onlyHasOps({op::PatchOp::Clear, op::PatchOp::Remove})) {
     throwExceptionIf(!get_ptr(op::PatchOp::Remove)->is_set());
     return Category::AssociativeContainerPatch;
   }
@@ -2131,12 +2138,14 @@ auto DynamicUnknownPatch::validateAndGetCategory() const -> Category {
 }
 void DynamicUnknownPatch::throwIncompatibleCategory(
     std::string_view method) const {
+  encodeSubPatches();
   folly::throw_exception<std::runtime_error>(fmt::format(
       "Modifying thrift patch in an incompatible way. operation: {}, patch content: {}",
       method,
       debugStringViaEncode(patch_)));
 }
 void DynamicUnknownPatch::throwIncompatibleConversion() const {
+  encodeSubPatches();
   folly::throw_exception<std::runtime_error>(fmt::format(
       "Converting thrift patch in an incompatible way. patch content: {}",
       debugStringViaEncode(patch_)));
@@ -2161,9 +2170,92 @@ void DynamicUnknownPatch::assign(Object v) {
     throwIncompatibleCategory("assign");
   }
 
+  dropSubPatches();
   patch_.members()->clear();
   get(op::PatchOp::Assign).emplace_object(std::move(v));
 }
+
+struct DynamicUnknownPatch::SubPatches {
+  folly::F14VectorMap<FieldId, DynamicPatch> prior;
+  folly::F14VectorMap<FieldId, DynamicPatch> after;
+};
+
+DynamicUnknownPatch::DynamicUnknownPatch() = default;
+DynamicUnknownPatch::~DynamicUnknownPatch() = default;
+DynamicUnknownPatch::DynamicUnknownPatch(DynamicUnknownPatch&&) noexcept =
+    default;
+DynamicUnknownPatch& DynamicUnknownPatch::operator=(
+    DynamicUnknownPatch&&) noexcept = default;
+
+// Copies restore `other` first and keep nothing decoded: the decoded maps are a
+// representation of `patch_`, so the copy is complete without them.
+DynamicUnknownPatch::DynamicUnknownPatch(const DynamicUnknownPatch& other)
+    : DynamicPatchBase((other.encodeSubPatches(), other)) {}
+
+DynamicUnknownPatch& DynamicUnknownPatch::operator=(
+    const DynamicUnknownPatch& other) {
+  if (this != &other) {
+    other.encodeSubPatches();
+    dropSubPatches();
+    DynamicPatchBase::operator=(other);
+  }
+  return *this;
+}
+
+bool DynamicUnknownPatch::hasDecodedSubPatches() const {
+  return subPatches_ &&
+      (!subPatches_->prior.empty() || !subPatches_->after.empty());
+}
+
+void DynamicUnknownPatch::decodeSubPatches() {
+  if (subPatches_) {
+    return;
+  }
+  subPatches_ = std::make_unique<SubPatches>();
+  auto decodeInto = [&](op::PatchOp patchOp, auto& target) {
+    if (auto* ops = get_ptr(patchOp)) {
+      for (auto& [fieldId, fieldPatch] : ops->as_object()) {
+        target.emplace(
+            static_cast<FieldId>(fieldId),
+            DynamicPatch::fromObject(std::move(fieldPatch.as_object())));
+      }
+      patch_.erase(static_cast<FieldId>(patchOp));
+    }
+  };
+  decodeInto(op::PatchOp::PatchPrior, subPatches_->prior);
+  decodeInto(op::PatchOp::PatchAfter, subPatches_->after);
+}
+
+void DynamicUnknownPatch::encodeSubPatches() const {
+  if (!subPatches_) {
+    return;
+  }
+  auto decoded = std::move(subPatches_);
+  // Restoring `patch_` from the decoded maps does not change the value this
+  // patch represents, only which of the two places holds it, which is why the
+  // readers may do it. `patch_` lives in DynamicPatchBase and is not mutable;
+  // casting here keeps that base shared with every other patch type. Sound
+  // because a patch is only ever reached through the non-const object that owns
+  // it -- DynamicPatch holds its alternatives in a heap-allocated variant --
+  // never through a const-constructed one.
+  auto& self = const_cast<DynamicUnknownPatch&>(*this);
+  auto encodeFrom = [&](op::PatchOp patchOp, auto& source) {
+    if (source.empty()) {
+      return;
+    }
+    auto& ops = self.get(patchOp).ensure_object();
+    for (auto& [fieldId, fieldPatch] : source) {
+      ops[fieldId].emplace_object(std::move(fieldPatch).toObject());
+    }
+  };
+  encodeFrom(op::PatchOp::PatchPrior, decoded->prior);
+  encodeFrom(op::PatchOp::PatchAfter, decoded->after);
+}
+
+void DynamicUnknownPatch::dropSubPatches() {
+  subPatches_.reset();
+}
+
 void DynamicUnknownPatch::patchIfSet(FieldId id, const DynamicPatch& p) {
   if (!isOneOfCategory(
           {Category::EmptyPatch,
@@ -2179,16 +2271,17 @@ void DynamicUnknownPatch::patchIfSet(FieldId id, const DynamicPatch& p) {
     return;
   }
 
-  // TODO: optimize this
-  DynamicPatch prior{DynamicPatch::fromObject(
-      get(op::PatchOp::PatchPrior).ensure_object()[id].ensure_object())};
-  DynamicPatch after{DynamicPatch::fromObject(
-      get(op::PatchOp::PatchAfter).ensure_object()[id].ensure_object())};
-  prior.merge(after);
+  decodeSubPatches();
+  // `after` applies on top of `prior`, so collapse it down before merging the
+  // incoming patch, which is newer than both. Mirrors
+  // DynamicStructurePatch::patchIfSet.
+  auto& prior = subPatches_->prior[id];
+  if (auto after = subPatches_->after.find(id);
+      after != subPatches_->after.end()) {
+    prior.merge(std::move(after->second));
+    subPatches_->after.erase(after);
+  }
   prior.merge(p);
-  get(op::PatchOp::PatchAfter).ensure_object().erase(id);
-  get(op::PatchOp::PatchPrior).ensure_object()[id].as_object() =
-      prior.toObject();
 }
 void DynamicUnknownPatch::apply(detail::Badge, Value& v) const {
   struct Visitor {

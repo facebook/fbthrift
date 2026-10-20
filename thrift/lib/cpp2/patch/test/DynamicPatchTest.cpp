@@ -953,6 +953,107 @@ TEST(DynamicPatch, FromStructOrUnionPatch) {
   }
 }
 
+// A patch that is only read must round-trip its Object unchanged: the
+// sub-patches are decoded on mutation, not on construction.
+TEST(DynamicPatch, UnknownPatchUnmutatedObjectRoundTrip) {
+  op::I32Patch fieldPatch;
+  fieldPatch += 10;
+  Object obj;
+  obj[static_cast<FieldId>(op::PatchOp::Clear)].emplace_bool(false);
+  obj[static_cast<FieldId>(op::PatchOp::PatchPrior)]
+      .emplace_object()[FieldId{2}] =
+      asValueStruct<type::infer_tag<op::I32Patch>>(fieldPatch);
+  obj[static_cast<FieldId>(op::PatchOp::PatchAfter)]
+      .emplace_object()[FieldId{3}] =
+      asValueStruct<type::infer_tag<op::I32Patch>>(fieldPatch);
+
+  DynamicPatch patch = DynamicPatch::fromObject(obj);
+  ASSERT_TRUE(patch.isPatchTypeAmbiguous());
+  EXPECT_EQ(patch.toObject(), obj);
+}
+
+namespace {
+DynamicPatch makeUnknownFieldPatch(FieldId id, const op::I32Patch& fieldPatch) {
+  Object obj;
+  obj[static_cast<FieldId>(op::PatchOp::PatchPrior)].emplace_object()[id] =
+      asValueStruct<type::infer_tag<op::I32Patch>>(fieldPatch);
+  auto patch = DynamicPatch::fromObject(std::move(obj));
+  CHECK(patch.isPatchTypeAmbiguous());
+  return patch;
+}
+} // namespace
+
+// Merging mutates the decoded sub-patches, so every reader has to see the
+// merged state and not the Object the patch was built from.
+TEST(DynamicPatch, UnknownPatchMergeVisibleThroughEveryReader) {
+  op::I32Patch addOne;
+  addOne += 1;
+  op::I32Patch addTwo;
+  addTwo += 2;
+
+  DynamicPatch merged = makeUnknownFieldPatch(FieldId{1}, addOne);
+  merged.merge(makeUnknownFieldPatch(FieldId{2}, addTwo));
+  merged.merge(makeUnknownFieldPatch(FieldId{1}, addTwo));
+  ASSERT_TRUE(merged.isPatchTypeAmbiguous());
+
+  EXPECT_FALSE(merged.empty());
+
+  auto applyTo = [&](const DynamicPatch& patch) {
+    Value value;
+    auto& members = value.ensure_object();
+    members[FieldId{1}].emplace_i32(0);
+    members[FieldId{2}].emplace_i32(0);
+    patch.apply(value);
+    return value;
+  };
+
+  auto applied = applyTo(merged);
+  EXPECT_EQ(applied.as_object()[FieldId{1}].as_i32(), 3);
+  EXPECT_EQ(applied.as_object()[FieldId{2}].as_i32(), 2);
+
+  // Serializing and re-parsing must yield an equivalent patch: the merged
+  // sub-patches have to be written back into the Object.
+  auto asObject = merged.toObject();
+  auto* prior = folly::get_ptr(
+      *asObject.members(), folly::to_underlying(op::PatchOp::PatchPrior));
+  ASSERT_NE(prior, nullptr);
+  EXPECT_EQ(prior->as_object().members()->size(), 2);
+
+  auto reparsed = DynamicPatch::fromObject(asObject);
+  auto reapplied = applyTo(reparsed);
+  EXPECT_EQ(reapplied.as_object(), applied.as_object());
+
+  EXPECT_FALSE(merged.extractMaskFromPatch().write == protocol::noneMask());
+}
+
+// patchAfter applies on top of patchPrior, and a merged-in patch is newer than
+// both. Uses assign + add so a wrong order changes the result.
+TEST(DynamicPatch, UnknownPatchMergeKeepsPriorAfterOrder) {
+  op::I32Patch assignFive;
+  assignFive = 5;
+  op::I32Patch addOne;
+  addOne += 1;
+  op::I32Patch addTwo;
+  addTwo += 2;
+
+  Object obj;
+  obj[static_cast<FieldId>(op::PatchOp::PatchPrior)]
+      .emplace_object()[FieldId{1}] =
+      asValueStruct<type::infer_tag<op::I32Patch>>(assignFive);
+  obj[static_cast<FieldId>(op::PatchOp::PatchAfter)]
+      .emplace_object()[FieldId{1}] =
+      asValueStruct<type::infer_tag<op::I32Patch>>(addOne);
+
+  DynamicPatch patch = DynamicPatch::fromObject(std::move(obj));
+  ASSERT_TRUE(patch.isPatchTypeAmbiguous());
+  patch.merge(makeUnknownFieldPatch(FieldId{1}, addTwo));
+
+  Value value;
+  value.ensure_object()[FieldId{1}].emplace_i32(100);
+  patch.apply(value);
+  EXPECT_EQ(value.as_object()[FieldId{1}].as_i32(), 8);
+}
+
 TEST(PatchMergeTest, DynamicStructPatch) {
   DynamicStructPatch p;
 
