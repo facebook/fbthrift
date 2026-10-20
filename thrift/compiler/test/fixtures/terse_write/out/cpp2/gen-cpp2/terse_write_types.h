@@ -478,7 +478,6 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -1621,7 +1620,6 @@ class MyUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyUnion>;
   friend void swap(MyUnion& a, MyUnion& b);
 };
 
@@ -1751,7 +1749,6 @@ class MyStructWithCustomDefault final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStructWithCustomDefault>;
   friend void swap(MyStructWithCustomDefault& a, MyStructWithCustomDefault& b);
 };
 
@@ -2433,7 +2430,6 @@ class StructLevelTerseStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<StructLevelTerseStruct>;
   friend void swap(StructLevelTerseStruct& a, StructLevelTerseStruct& b);
 };
 
@@ -3901,7 +3897,6 @@ class FieldLevelTerseStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<FieldLevelTerseStruct>;
   friend void swap(FieldLevelTerseStruct& a, FieldLevelTerseStruct& b);
 };
 
@@ -4106,7 +4101,6 @@ class AdaptedFields final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<AdaptedFields>;
   friend void swap(AdaptedFields& a, AdaptedFields& b);
 };
 
@@ -4239,7 +4233,6 @@ class FOLLY_EXPORT TerseException : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TerseException>;
   friend void swap(TerseException& a, TerseException& b);
 };
 

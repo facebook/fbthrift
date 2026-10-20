@@ -354,7 +354,6 @@ class SmallStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<SmallStruct>;
   friend void swap(SmallStruct& a, SmallStruct& b);
 };
 
@@ -1420,7 +1419,6 @@ class containerStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<containerStruct>;
   friend void swap(containerStruct& a, containerStruct& b);
 };
 

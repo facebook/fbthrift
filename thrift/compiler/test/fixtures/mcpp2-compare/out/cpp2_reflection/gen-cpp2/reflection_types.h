@@ -156,7 +156,6 @@ class ReflectionStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ReflectionStruct>;
   friend void swap(ReflectionStruct& a, ReflectionStruct& b);
 };
 

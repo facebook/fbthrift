@@ -534,7 +534,6 @@ class Limits final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Limits>;
   friend void swap(Limits& a, Limits& b);
 };
 

@@ -369,7 +369,6 @@ class {{#if def.exception?}}FOLLY_EXPORT {{/if}}{{def.cpp_underlying_name}} {{!
         {{/if (and field.deprecated_terse_writes? (not field.type.structured?))}}
       {{/each}}
 
-  friend class ::apache::thrift::Cpp2Ops<{{def.cpp_underlying_name}}>;
   friend void swap({{def.cpp_underlying_name}}& a, {{def.cpp_underlying_name}}& b);
       {{#if (has_compiler_option? "tablebased")}}
         {{#if def.union?}}

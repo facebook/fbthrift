@@ -239,7 +239,6 @@ class Data final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Data>;
   friend void swap(Data& a, Data& b);
 };
 

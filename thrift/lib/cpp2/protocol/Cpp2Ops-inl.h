@@ -513,7 +513,7 @@ class Cpp2Ops<
   }
   template <class Protocol>
   static void read(Protocol* prot, Type* value) {
-    value->readNoXfer(prot);
+    detail::st::private_access::read_no_xfer_fn{}(*value, prot);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {

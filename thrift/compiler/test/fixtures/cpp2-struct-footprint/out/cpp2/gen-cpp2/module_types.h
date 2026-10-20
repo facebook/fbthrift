@@ -200,7 +200,6 @@ class SimpleStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<SimpleStruct>;
   friend void swap(SimpleStruct& a, SimpleStruct& b);
 };
 
@@ -336,7 +335,6 @@ class ComplexStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ComplexStruct>;
   friend void swap(ComplexStruct& a, ComplexStruct& b);
 };
 
@@ -414,7 +412,6 @@ class Struct1 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Struct1>;
   friend void swap(Struct1& a, Struct1& b);
 };
 
@@ -492,7 +489,6 @@ class Struct2 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Struct2>;
   friend void swap(Struct2& a, Struct2& b);
 };
 
@@ -570,7 +566,6 @@ class Struct3 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Struct3>;
   friend void swap(Struct3& a, Struct3& b);
 };
 
@@ -648,7 +643,6 @@ class Struct4 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Struct4>;
   friend void swap(Struct4& a, Struct4& b);
 };
 
@@ -726,7 +720,6 @@ class Struct5 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Struct5>;
   friend void swap(Struct5& a, Struct5& b);
 };
 
@@ -879,7 +872,6 @@ class FOLLY_EXPORT ExStruct : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ExStruct>;
   friend void swap(ExStruct& a, ExStruct& b);
 };
 
@@ -1125,7 +1117,6 @@ class TestUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TestUnion>;
   friend void swap(TestUnion& a, TestUnion& b);
 };
 

@@ -256,7 +256,6 @@ class NonOrderableStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<NonOrderableStruct>;
   friend void swap(NonOrderableStruct& a, NonOrderableStruct& b);
 };
 
@@ -503,7 +502,6 @@ class NonOrderableUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<NonOrderableUnion>;
   friend void swap(NonOrderableUnion& a, NonOrderableUnion& b);
 };
 
@@ -694,7 +692,6 @@ class OrderableStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<OrderableStruct>;
   friend void swap(OrderableStruct& a, OrderableStruct& b);
 };
 
@@ -941,7 +938,6 @@ class OrderableUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<OrderableUnion>;
   friend void swap(OrderableUnion& a, OrderableUnion& b);
 };
 

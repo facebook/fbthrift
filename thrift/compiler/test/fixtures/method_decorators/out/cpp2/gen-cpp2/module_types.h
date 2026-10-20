@@ -184,7 +184,6 @@ class Request final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Request>;
   friend void swap(Request& a, Request& b);
 };
 
@@ -328,7 +327,6 @@ class AdaptedRequest final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<AdaptedRequest>;
   friend void swap(AdaptedRequest& a, AdaptedRequest& b);
 };
 
@@ -474,7 +472,6 @@ class Response final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Response>;
   friend void swap(Response& a, Response& b);
 };
 

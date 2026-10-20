@@ -1124,7 +1124,6 @@ class MyStructFloatFieldThrowExp final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStructFloatFieldThrowExp>;
   friend void swap(MyStructFloatFieldThrowExp& a, MyStructFloatFieldThrowExp& b);
 };
 
@@ -1311,7 +1310,6 @@ class MyStructMapFloatThrowExp final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStructMapFloatThrowExp>;
   friend void swap(MyStructMapFloatThrowExp& a, MyStructMapFloatThrowExp& b);
 };
 
@@ -1389,7 +1387,6 @@ class MyDataItem final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyDataItem>;
   friend void swap(MyDataItem& a, MyDataItem& b);
 };
 
@@ -2988,7 +2985,6 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -3179,7 +3175,6 @@ class SimpleStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<SimpleStruct>;
   friend void swap(SimpleStruct& a, SimpleStruct& b);
 };
 
@@ -4270,7 +4265,6 @@ class ComplexNestedStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ComplexNestedStruct>;
   friend void swap(ComplexNestedStruct& a, ComplexNestedStruct& b);
 };
 
@@ -4820,7 +4814,6 @@ class MyUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyUnion>;
   friend void swap(MyUnion& a, MyUnion& b);
 };
 
@@ -6071,7 +6064,6 @@ class defaultStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<defaultStruct>;
   friend void swap(defaultStruct& a, defaultStruct& b);
 };
 
@@ -6650,7 +6642,6 @@ class MyStructTypeDef final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStructTypeDef>;
   friend void swap(MyStructTypeDef& a, MyStructTypeDef& b);
 };
 
@@ -7066,7 +7057,6 @@ class MyUnionFloatFieldThrowExp final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyUnionFloatFieldThrowExp>;
   friend void swap(MyUnionFloatFieldThrowExp& a, MyUnionFloatFieldThrowExp& b);
 };
 
@@ -7369,7 +7359,6 @@ class TypeRemapped final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TypeRemapped>;
   friend void swap(TypeRemapped& a, TypeRemapped& b);
 };
 
@@ -7460,7 +7449,6 @@ class FOLLY_EXPORT emptyXcep : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<emptyXcep>;
   friend void swap(emptyXcep& a, emptyXcep& b);
 };
 
@@ -7659,7 +7647,6 @@ class FOLLY_EXPORT reqXcep : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<reqXcep>;
   friend void swap(reqXcep& a, reqXcep& b);
 };
 
@@ -7864,7 +7851,6 @@ class FOLLY_EXPORT optXcep : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<optXcep>;
   friend void swap(optXcep& a, optXcep& b);
 };
 
@@ -8291,7 +8277,6 @@ class FOLLY_EXPORT complexException : public virtual apache::thrift::TException 
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<complexException>;
   friend void swap(complexException& a, complexException& b);
 };
 
@@ -10446,7 +10431,6 @@ class Containers final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Containers>;
   friend void swap(Containers& a, Containers& b);
 };
 

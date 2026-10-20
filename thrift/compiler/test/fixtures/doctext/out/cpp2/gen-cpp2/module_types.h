@@ -223,7 +223,6 @@ class A final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<A>;
   friend void swap(A& a, A& b);
 };
 
@@ -470,7 +469,6 @@ class U final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<U>;
   friend void swap(U& a, U& b);
 };
 
@@ -623,7 +621,6 @@ class FOLLY_EXPORT Bang : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Bang>;
   friend void swap(Bang& a, Bang& b);
 };
 

@@ -163,7 +163,6 @@ class ByteAnnotation final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ByteAnnotation>;
   friend void swap(ByteAnnotation& a, ByteAnnotation& b);
 };
 
@@ -293,7 +292,6 @@ class Annotated final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Annotated>;
   friend void swap(Annotated& a, Annotated& b);
 };
 

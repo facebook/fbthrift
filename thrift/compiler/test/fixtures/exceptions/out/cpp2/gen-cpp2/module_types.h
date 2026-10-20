@@ -230,7 +230,6 @@ class FOLLY_EXPORT Fiery : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Fiery>;
   friend void swap(Fiery& a, Fiery& b);
 };
 
@@ -382,7 +381,6 @@ class FOLLY_EXPORT Serious : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Serious>;
   friend void swap(Serious& a, Serious& b);
 };
 
@@ -596,7 +594,6 @@ class FOLLY_EXPORT ComplexFieldNames : public virtual apache::thrift::TException
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ComplexFieldNames>;
   friend void swap(ComplexFieldNames& a, ComplexFieldNames& b);
 };
 
@@ -810,7 +807,6 @@ class FOLLY_EXPORT CustomFieldNames : public virtual apache::thrift::TException 
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<CustomFieldNames>;
   friend void swap(CustomFieldNames& a, CustomFieldNames& b);
 };
 
@@ -1012,7 +1008,6 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public virtual apache::thrift::
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ExceptionWithPrimitiveField>;
   friend void swap(ExceptionWithPrimitiveField& a, ExceptionWithPrimitiveField& b);
 };
 
@@ -1214,7 +1209,6 @@ class FOLLY_EXPORT ExceptionWithStructuredAnnotation : public virtual apache::th
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ExceptionWithStructuredAnnotation>;
   friend void swap(ExceptionWithStructuredAnnotation& a, ExceptionWithStructuredAnnotation& b);
 };
 
@@ -1305,7 +1299,6 @@ class FOLLY_EXPORT Banal : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Banal>;
   friend void swap(Banal& a, Banal& b);
 };
 

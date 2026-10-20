@@ -889,7 +889,6 @@ class StructWithDefaultStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<StructWithDefaultStruct>;
   friend void swap(StructWithDefaultStruct& a, StructWithDefaultStruct& b);
 };
 

@@ -286,7 +286,6 @@ class FOLLY_EXPORT CustomException : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<CustomException>;
   friend void swap(CustomException& a, CustomException& b);
 };
 

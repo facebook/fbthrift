@@ -206,7 +206,6 @@ class InitialResponse final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<InitialResponse>;
   friend void swap(InitialResponse& a, InitialResponse& b);
 };
 
@@ -349,7 +348,6 @@ class FinalResponse final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<FinalResponse>;
   friend void swap(FinalResponse& a, FinalResponse& b);
 };
 
@@ -492,7 +490,6 @@ class SinkPayload final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<SinkPayload>;
   friend void swap(SinkPayload& a, SinkPayload& b);
 };
 
@@ -635,7 +632,6 @@ class CompatibleWithKeywordSink final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<CompatibleWithKeywordSink>;
   friend void swap(CompatibleWithKeywordSink& a, CompatibleWithKeywordSink& b);
 };
 
@@ -788,7 +784,6 @@ class FOLLY_EXPORT InitialException : public virtual apache::thrift::TException 
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<InitialException>;
   friend void swap(InitialException& a, InitialException& b);
 };
 
@@ -941,7 +936,6 @@ class FOLLY_EXPORT SinkException1 : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<SinkException1>;
   friend void swap(SinkException1& a, SinkException1& b);
 };
 
@@ -1082,7 +1076,6 @@ class FOLLY_EXPORT SinkException2 : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<SinkException2>;
   friend void swap(SinkException2& a, SinkException2& b);
 };
 

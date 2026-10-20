@@ -427,7 +427,6 @@ class SerializedStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<SerializedStruct>;
   friend void swap(SerializedStruct& a, SerializedStruct& b);
 };
 
@@ -675,7 +674,6 @@ class SerializedUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<SerializedUnion>;
   friend void swap(SerializedUnion& a, SerializedUnion& b);
 };
 
@@ -947,7 +945,6 @@ class FOLLY_EXPORT SerializedError : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<SerializedError>;
   friend void swap(SerializedError& a, SerializedError& b);
 };
 
@@ -1257,7 +1254,6 @@ class MarshalStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MarshalStruct>;
   friend void swap(MarshalStruct& a, MarshalStruct& b);
 };
 
@@ -1505,7 +1501,6 @@ class MarshalUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MarshalUnion>;
   friend void swap(MarshalUnion& a, MarshalUnion& b);
 };
 
@@ -1777,7 +1772,6 @@ class FOLLY_EXPORT MarshalError : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MarshalError>;
   friend void swap(MarshalError& a, MarshalError& b);
 };
 

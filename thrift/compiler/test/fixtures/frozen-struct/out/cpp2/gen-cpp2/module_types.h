@@ -566,7 +566,6 @@ class ModuleA final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ModuleA>;
   friend void swap(ModuleA& a, ModuleA& b);
 };
 
@@ -744,7 +743,6 @@ class ModuleB final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ModuleB>;
   friend void swap(ModuleB& a, ModuleB& b);
 };
 
@@ -874,7 +872,6 @@ class DirectlyAdapted final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<DirectlyAdapted>;
   friend void swap(DirectlyAdapted& a, DirectlyAdapted& b);
 };
 
@@ -1170,7 +1167,6 @@ class CppRef final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<CppRef>;
   friend void swap(CppRef& a, CppRef& b);
 };
 

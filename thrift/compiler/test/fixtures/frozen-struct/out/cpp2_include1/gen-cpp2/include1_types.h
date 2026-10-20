@@ -223,7 +223,6 @@ class IncludedA final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<IncludedA>;
   friend void swap(IncludedA& a, IncludedA& b);
 };
 

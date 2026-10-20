@@ -507,7 +507,6 @@ class TrivialTypesStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TrivialTypesStruct>;
   friend void swap(TrivialTypesStruct& a, TrivialTypesStruct& b);
   friend constexpr ptrdiff_t (::apache::thrift::detail::fieldOffset<TrivialTypesStruct>)(std::int16_t fieldIndex);
   friend constexpr ptrdiff_t (::apache::thrift::detail::issetOffset<TrivialTypesStruct>)(std::int16_t fieldIndex);
@@ -1041,7 +1040,6 @@ class ContainerStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ContainerStruct>;
   friend void swap(ContainerStruct& a, ContainerStruct& b);
   friend constexpr ptrdiff_t (::apache::thrift::detail::fieldOffset<ContainerStruct>)(std::int16_t fieldIndex);
   friend constexpr ptrdiff_t (::apache::thrift::detail::issetOffset<ContainerStruct>)(std::int16_t fieldIndex);
@@ -1308,7 +1306,6 @@ class ExampleUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ExampleUnion>;
   friend void swap(ExampleUnion& a, ExampleUnion& b);
   friend constexpr ptrdiff_t (::apache::thrift::detail::unionTypeOffset<ExampleUnion>)();
 };

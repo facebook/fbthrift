@@ -224,7 +224,6 @@ class Fields final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Fields>;
   friend void swap(Fields& a, Fields& b);
 };
 
@@ -367,7 +366,6 @@ class FieldsInjectedToEmptyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<FieldsInjectedToEmptyStruct>;
   friend void swap(FieldsInjectedToEmptyStruct& a, FieldsInjectedToEmptyStruct& b);
 };
 
@@ -570,7 +568,6 @@ class FieldsInjectedToStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<FieldsInjectedToStruct>;
   friend void swap(FieldsInjectedToStruct& a, FieldsInjectedToStruct& b);
 };
 
@@ -853,7 +850,6 @@ class FieldsInjectedWithIncludedStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<FieldsInjectedWithIncludedStruct>;
   friend void swap(FieldsInjectedWithIncludedStruct& a, FieldsInjectedWithIncludedStruct& b);
 };
 
@@ -1052,7 +1048,6 @@ class FieldsInjectedWithFieldsWithIncludedStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<FieldsInjectedWithFieldsWithIncludedStruct>;
   friend void swap(FieldsInjectedWithFieldsWithIncludedStruct& a, FieldsInjectedWithFieldsWithIncludedStruct& b);
 };
 

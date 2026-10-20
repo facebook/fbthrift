@@ -101,7 +101,6 @@ class Empty final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Empty>;
   friend void swap(Empty& a, Empty& b);
 };
 
@@ -192,7 +191,6 @@ class Nada final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Nada>;
   friend void swap(Nada& a, Nada& b);
 };
 

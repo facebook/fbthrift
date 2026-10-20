@@ -299,7 +299,6 @@ class DataItem final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<DataItem>;
   friend void swap(DataItem& a, DataItem& b);
 };
 
@@ -501,7 +500,6 @@ class FOLLY_EXPORT NotFoundException : public virtual apache::thrift::TException
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<NotFoundException>;
   friend void swap(NotFoundException& a, NotFoundException& b);
 };
 
@@ -715,7 +713,6 @@ class FOLLY_EXPORT PermissionDeniedException : public virtual apache::thrift::TE
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<PermissionDeniedException>;
   friend void swap(PermissionDeniedException& a, PermissionDeniedException& b);
 };
 

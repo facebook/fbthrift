@@ -179,7 +179,6 @@ class MyAnnotation final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyAnnotation>;
   friend void swap(MyAnnotation& a, MyAnnotation& b);
 };
 
@@ -320,7 +319,6 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -461,7 +459,6 @@ class MyUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyUnion>;
   friend void swap(MyUnion& a, MyUnion& b);
 };
 
@@ -614,7 +611,6 @@ class FOLLY_EXPORT MyException : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyException>;
   friend void swap(MyException& a, MyException& b);
 };
 

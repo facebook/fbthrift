@@ -332,7 +332,6 @@ class MyDataItem final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyDataItem>;
   friend void swap(MyDataItem& a, MyDataItem& b);
 };
 
@@ -888,7 +887,6 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -1140,7 +1138,6 @@ class Containers final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Containers>;
   friend void swap(Containers& a, Containers& b);
 };
 
@@ -1557,7 +1554,6 @@ class MyUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyUnion>;
   friend void swap(MyUnion& a, MyUnion& b);
 };
 
@@ -1871,7 +1867,6 @@ class FOLLY_EXPORT MyException : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyException>;
   friend void swap(MyException& a, MyException& b);
 };
 
@@ -2186,7 +2181,6 @@ class FOLLY_EXPORT MyExceptionWithMessage : public virtual apache::thrift::TExce
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyExceptionWithMessage>;
   friend void swap(MyExceptionWithMessage& a, MyExceptionWithMessage& b);
 };
 
@@ -2316,7 +2310,6 @@ class ReservedKeyword final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ReservedKeyword>;
   friend void swap(ReservedKeyword& a, ReservedKeyword& b);
 };
 
@@ -2475,7 +2468,6 @@ class UnionToBeRenamed final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<UnionToBeRenamed>;
   friend void swap(UnionToBeRenamed& a, UnionToBeRenamed& b);
 };
 

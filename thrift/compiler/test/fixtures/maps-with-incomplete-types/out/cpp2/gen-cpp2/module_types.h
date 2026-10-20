@@ -168,7 +168,6 @@ class B final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<B>;
   friend void swap(B& a, B& b);
 };
 
@@ -309,7 +308,6 @@ class A final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<A>;
   friend void swap(A& a, A& b);
 };
 

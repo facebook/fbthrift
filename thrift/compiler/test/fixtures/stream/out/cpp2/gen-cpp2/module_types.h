@@ -115,7 +115,6 @@ class FOLLY_EXPORT FooStreamEx : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<FooStreamEx>;
   friend void swap(FooStreamEx& a, FooStreamEx& b);
 };
 
@@ -206,7 +205,6 @@ class FOLLY_EXPORT FooEx : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<FooEx>;
   friend void swap(FooEx& a, FooEx& b);
 };
 
@@ -297,7 +295,6 @@ class FOLLY_EXPORT FooEx2 : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<FooEx2>;
   friend void swap(FooEx2& a, FooEx2& b);
 };
 

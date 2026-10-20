@@ -176,7 +176,6 @@ class EchoRequest final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<EchoRequest>;
   friend void swap(EchoRequest& a, EchoRequest& b);
 };
 
@@ -319,7 +318,6 @@ class EchoResponse final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<EchoResponse>;
   friend void swap(EchoResponse& a, EchoResponse& b);
 };
 

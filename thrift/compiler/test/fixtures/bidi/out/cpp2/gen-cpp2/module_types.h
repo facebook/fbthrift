@@ -192,7 +192,6 @@ class FOLLY_EXPORT BiDiSinkException : public virtual apache::thrift::TException
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<BiDiSinkException>;
   friend void swap(BiDiSinkException& a, BiDiSinkException& b);
 };
 
@@ -345,7 +344,6 @@ class FOLLY_EXPORT BiDiStreamException : public virtual apache::thrift::TExcepti
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<BiDiStreamException>;
   friend void swap(BiDiStreamException& a, BiDiStreamException& b);
 };
 
@@ -498,7 +496,6 @@ class FOLLY_EXPORT BiDiMethodException : public virtual apache::thrift::TExcepti
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<BiDiMethodException>;
   friend void swap(BiDiMethodException& a, BiDiMethodException& b);
 };
 

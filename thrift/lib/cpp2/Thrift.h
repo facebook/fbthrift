@@ -188,6 +188,7 @@ struct struct_private_access {
 
   FOLLY_CREATE_MEMBER_INVOKER(clear_fn, __fbthrift_clear);
   FOLLY_CREATE_MEMBER_INVOKER(empty_fn, __fbthrift_is_empty);
+  FOLLY_CREATE_MEMBER_INVOKER(read_no_xfer_fn, readNoXfer);
 
   template <typename T>
   static constexpr auto num_fields = T::__fbthrift_num_fields;

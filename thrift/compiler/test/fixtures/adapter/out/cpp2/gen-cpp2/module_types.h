@@ -1407,7 +1407,6 @@ class Foo final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Foo>;
   friend void swap(Foo& a, Foo& b);
 };
 
@@ -1896,7 +1895,6 @@ class Baz final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Baz>;
   friend void swap(Baz& a, Baz& b);
 };
 
@@ -2027,7 +2025,6 @@ class DirectlyAdapted final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<DirectlyAdapted>;
   friend void swap(DirectlyAdapted& a, DirectlyAdapted& b);
 };
 
@@ -2492,7 +2489,6 @@ class Bar final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Bar>;
   friend void swap(Bar& a, Bar& b);
 };
 
@@ -2575,7 +2571,6 @@ class A final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<A>;
   friend void swap(A& a, A& b);
 };
 
@@ -2735,7 +2730,6 @@ class ThriftAdaptedStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ThriftAdaptedStruct>;
   friend void swap(ThriftAdaptedStruct& a, ThriftAdaptedStruct& b);
 };
 
@@ -2868,7 +2862,6 @@ class DirectlyAdaptedStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<DirectlyAdaptedStruct>;
   friend void swap(DirectlyAdaptedStruct& a, DirectlyAdaptedStruct& b);
 };
 
@@ -3073,7 +3066,6 @@ class MyAnnotation final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyAnnotation>;
   friend void swap(MyAnnotation& a, MyAnnotation& b);
 };
 
@@ -3204,7 +3196,6 @@ class IndependentDirectlyAdapted final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<IndependentDirectlyAdapted>;
   friend void swap(IndependentDirectlyAdapted& a, IndependentDirectlyAdapted& b);
 };
 
@@ -3455,7 +3446,6 @@ class StructWithFieldAdapter final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<StructWithFieldAdapter>;
   friend void swap(StructWithFieldAdapter& a, StructWithFieldAdapter& b);
 };
 
@@ -3657,7 +3647,6 @@ class TerseAdaptedFields final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TerseAdaptedFields>;
   friend void swap(TerseAdaptedFields& a, TerseAdaptedFields& b);
 };
 
@@ -3779,7 +3768,6 @@ class B final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<B>;
   friend void swap(B& a, B& b);
 };
 
@@ -3923,7 +3911,6 @@ class Config final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Config>;
   friend void swap(Config& a, Config& b);
 };
 
@@ -4095,7 +4082,6 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -4599,7 +4585,6 @@ class AdaptTestStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<AdaptTestStruct>;
   friend void swap(AdaptTestStruct& a, AdaptTestStruct& b);
 };
 
@@ -5563,7 +5548,6 @@ class AdaptTemplatedTestStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<AdaptTemplatedTestStruct>;
   friend void swap(AdaptTemplatedTestStruct& a, AdaptTemplatedTestStruct& b);
 };
 
@@ -5700,7 +5684,6 @@ class AdaptTemplatedNestedTestStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<AdaptTemplatedNestedTestStruct>;
   friend void swap(AdaptTemplatedNestedTestStruct& a, AdaptTemplatedNestedTestStruct& b);
 };
 
@@ -5948,7 +5931,6 @@ class ThriftAdaptTestUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ThriftAdaptTestUnion>;
   friend void swap(ThriftAdaptTestUnion& a, ThriftAdaptTestUnion& b);
 };
 
@@ -6193,7 +6175,6 @@ class StructFieldAdaptedStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<StructFieldAdaptedStruct>;
   friend void swap(StructFieldAdaptedStruct& a, StructFieldAdaptedStruct& b);
 };
 
@@ -6318,7 +6299,6 @@ class CircularStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<CircularStruct>;
   friend void swap(CircularStruct& a, CircularStruct& b);
 };
 
@@ -6455,7 +6435,6 @@ class CircularAdaptee final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<CircularAdaptee>;
   friend void swap(CircularAdaptee& a, CircularAdaptee& b);
 };
 
@@ -6535,7 +6514,6 @@ class DeclaredAfterStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<DeclaredAfterStruct>;
   friend void swap(DeclaredAfterStruct& a, DeclaredAfterStruct& b);
 };
 
@@ -6663,7 +6641,6 @@ class ReorderedStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ReorderedStruct>;
   friend void swap(ReorderedStruct& a, ReorderedStruct& b);
 };
 
@@ -6793,7 +6770,6 @@ class UnderlyingRenamedStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<UnderlyingRenamedStruct>;
   friend void swap(UnderlyingRenamedStruct& a, UnderlyingRenamedStruct& b);
 };
 
@@ -6925,7 +6901,6 @@ class UnderlyingSameNamespaceStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<UnderlyingSameNamespaceStruct>;
   friend void swap(UnderlyingSameNamespaceStruct& a, UnderlyingSameNamespaceStruct& b);
 };
 
@@ -7006,7 +6981,6 @@ class ApplyAdapter final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ApplyAdapter>;
   friend void swap(ApplyAdapter& a, ApplyAdapter& b);
 };
 
@@ -7086,7 +7060,6 @@ class TransitiveAdapted final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TransitiveAdapted>;
   friend void swap(TransitiveAdapted& a, TransitiveAdapted& b);
 };
 
@@ -7293,7 +7266,6 @@ class CountingStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<CountingStruct>;
   friend void swap(CountingStruct& a, CountingStruct& b);
 };
 
@@ -7437,7 +7409,6 @@ class Person final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Person>;
   friend void swap(Person& a, Person& b);
 };
 
@@ -7581,7 +7552,6 @@ class Person2 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Person2>;
   friend void swap(Person2& a, Person2& b);
 };
 
@@ -7704,7 +7674,6 @@ class Renamed final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Renamed>;
   friend void swap(Renamed& a, Renamed& b);
 };
 

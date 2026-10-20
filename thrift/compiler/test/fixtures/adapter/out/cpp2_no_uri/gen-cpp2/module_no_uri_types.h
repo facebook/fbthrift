@@ -215,7 +215,6 @@ class RefUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<RefUnion>;
   friend void swap(RefUnion& a, RefUnion& b);
 };
 

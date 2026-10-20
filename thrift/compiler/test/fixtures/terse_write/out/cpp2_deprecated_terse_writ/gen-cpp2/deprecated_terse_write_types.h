@@ -547,7 +547,6 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -639,7 +638,6 @@ class MyUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyUnion>;
   friend void swap(MyUnion& a, MyUnion& b);
 };
 
@@ -1321,7 +1319,6 @@ class StructLevelTerseStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<StructLevelTerseStruct>;
   friend void swap(StructLevelTerseStruct& a, StructLevelTerseStruct& b);
 };
 
@@ -2853,7 +2850,6 @@ class FieldLevelTerseStruct final  {
     return this->__fbthrift_field_iobuf_ptr_field != std::unique_ptr<folly::IOBuf>();
   }
 
-  friend class ::apache::thrift::Cpp2Ops<FieldLevelTerseStruct>;
   friend void swap(FieldLevelTerseStruct& a, FieldLevelTerseStruct& b);
 };
 
@@ -3025,7 +3021,6 @@ class CppRefStructFields final  {
     return this->__fbthrift_field_primitive_ref_field;
   }
 
-  friend class ::apache::thrift::Cpp2Ops<CppRefStructFields>;
   friend void swap(CppRefStructFields& a, CppRefStructFields& b);
 };
 
@@ -3833,7 +3828,6 @@ class DeprecatedTerseWriteWithCustomDefault final  {
     return !::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i16_t>>(this->__fbthrift_field_map_field);
   }
 
-  friend class ::apache::thrift::Cpp2Ops<DeprecatedTerseWriteWithCustomDefault>;
   friend void swap(DeprecatedTerseWriteWithCustomDefault& a, DeprecatedTerseWriteWithCustomDefault& b);
 };
 
@@ -4641,7 +4635,6 @@ class DeprecatedTerseWriteWithRedundantCustomDefault final  {
     return !::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i16_t>>(this->__fbthrift_field_map_field);
   }
 
-  friend class ::apache::thrift::Cpp2Ops<DeprecatedTerseWriteWithRedundantCustomDefault>;
   friend void swap(DeprecatedTerseWriteWithRedundantCustomDefault& a, DeprecatedTerseWriteWithRedundantCustomDefault& b);
 };
 

@@ -443,7 +443,6 @@ class User final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<User>;
   friend void swap(User& a, User& b);
 };
 
@@ -764,7 +763,6 @@ class ExampleUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ExampleUnion>;
   friend void swap(ExampleUnion& a, ExampleUnion& b);
 };
 

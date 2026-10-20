@@ -533,7 +533,6 @@ class TemplateLists final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TemplateLists>;
   friend void swap(TemplateLists& a, TemplateLists& b);
 };
 
@@ -1009,7 +1008,6 @@ class TemplateSets final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TemplateSets>;
   friend void swap(TemplateSets& a, TemplateSets& b);
 };
 
@@ -1485,7 +1483,6 @@ class TemplateMaps final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TemplateMaps>;
   friend void swap(TemplateMaps& a, TemplateMaps& b);
 };
 
@@ -1689,7 +1686,6 @@ class TWrapped final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TWrapped>;
   friend void swap(TWrapped& a, TWrapped& b);
 };
 
@@ -1829,7 +1825,6 @@ class IndirectionA final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<IndirectionA>;
   friend void swap(IndirectionA& a, IndirectionA& b);
 };
 
@@ -1969,7 +1964,6 @@ class IndirectionB final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<IndirectionB>;
   friend void swap(IndirectionB& a, IndirectionB& b);
 };
 
@@ -2109,7 +2103,6 @@ class IndirectionC final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<IndirectionC>;
   friend void swap(IndirectionC& a, IndirectionC& b);
 };
 

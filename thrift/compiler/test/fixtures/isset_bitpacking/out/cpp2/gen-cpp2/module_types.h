@@ -408,7 +408,6 @@ class Default final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Default>;
   friend void swap(Default& a, Default& b);
 };
 
@@ -711,7 +710,6 @@ class NonAtomic final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<NonAtomic>;
   friend void swap(NonAtomic& a, NonAtomic& b);
 };
 
@@ -1014,7 +1012,6 @@ class Atomic final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Atomic>;
   friend void swap(Atomic& a, Atomic& b);
 };
 
@@ -1317,7 +1314,6 @@ class AtomicFoo final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<AtomicFoo>;
   friend void swap(AtomicFoo& a, AtomicFoo& b);
 };
 

@@ -547,7 +547,6 @@ class Foo final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Foo>;
   friend void swap(Foo& a, Foo& b);
 };
 
@@ -870,7 +869,6 @@ class LazyFoo final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<LazyFoo>;
   friend void swap(LazyFoo& a, LazyFoo& b);
 };
 
@@ -1185,7 +1183,6 @@ class OptionalFoo final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<OptionalFoo>;
   friend void swap(OptionalFoo& a, OptionalFoo& b);
 };
 
@@ -1512,7 +1509,6 @@ class OptionalLazyFoo final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<OptionalLazyFoo>;
   friend void swap(OptionalLazyFoo& a, OptionalLazyFoo& b);
 };
 
@@ -1761,7 +1757,6 @@ class TerseLazyFooNoChecksum final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TerseLazyFooNoChecksum>;
   friend void swap(TerseLazyFooNoChecksum& a, TerseLazyFooNoChecksum& b);
 };
 
@@ -2050,7 +2045,6 @@ class OptionalBoxedLazyFoo final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<OptionalBoxedLazyFoo>;
   friend void swap(OptionalBoxedLazyFoo& a, OptionalBoxedLazyFoo& b);
 };
 
@@ -2389,7 +2383,6 @@ class LazyCppRef final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<LazyCppRef>;
   friend void swap(LazyCppRef& a, LazyCppRef& b);
 };
 
@@ -2800,7 +2793,6 @@ class IndexedFoo final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<IndexedFoo>;
   friend void swap(IndexedFoo& a, IndexedFoo& b);
 };
 
@@ -3219,7 +3211,6 @@ class OptionalIndexedFoo final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<OptionalIndexedFoo>;
   friend void swap(OptionalIndexedFoo& a, OptionalIndexedFoo& b);
 };
 
@@ -3297,7 +3288,6 @@ class Empty final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Empty>;
   friend void swap(Empty& a, Empty& b);
 };
 

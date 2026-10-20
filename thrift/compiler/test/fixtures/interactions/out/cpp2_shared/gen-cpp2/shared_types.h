@@ -223,7 +223,6 @@ class DoSomethingResult final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<DoSomethingResult>;
   friend void swap(DoSomethingResult& a, DoSomethingResult& b);
 };
 

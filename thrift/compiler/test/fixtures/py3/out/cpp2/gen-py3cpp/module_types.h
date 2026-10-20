@@ -1183,7 +1183,6 @@ class SimpleStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<SimpleStruct>;
   friend void swap(SimpleStruct& a, SimpleStruct& b);
 };
 
@@ -1346,7 +1345,6 @@ class AdaptedUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<AdaptedUnion>;
   friend void swap(AdaptedUnion& a, AdaptedUnion& b);
 };
 
@@ -1530,7 +1528,6 @@ class FOLLY_EXPORT SimpleException : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<SimpleException>;
   friend void swap(SimpleException& a, SimpleException& b);
 };
 
@@ -1671,7 +1668,6 @@ class OptionalRefStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<OptionalRefStruct>;
   friend void swap(OptionalRefStruct& a, OptionalRefStruct& b);
 };
 
@@ -1962,7 +1958,6 @@ class Float32Struct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<Float32Struct>;
   friend void swap(Float32Struct& a, Float32Struct& b);
 };
 
@@ -2199,7 +2194,6 @@ class IssetInspectionStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<IssetInspectionStruct>;
   friend void swap(IssetInspectionStruct& a, IssetInspectionStruct& b);
 };
 
@@ -2434,7 +2428,6 @@ class HiddenTypeFieldsStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<HiddenTypeFieldsStruct>;
   friend void swap(HiddenTypeFieldsStruct& a, HiddenTypeFieldsStruct& b);
 };
 
@@ -2575,7 +2568,6 @@ class FOLLY_EXPORT HiddenException : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<HiddenException>;
   friend void swap(HiddenException& a, HiddenException& b);
 };
 
@@ -3166,7 +3158,6 @@ class ComplexStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<ComplexStruct>;
   friend void swap(ComplexStruct& a, ComplexStruct& b);
 };
 
@@ -3343,7 +3334,6 @@ class BinaryUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<BinaryUnion>;
   friend void swap(BinaryUnion& a, BinaryUnion& b);
 };
 
@@ -3476,7 +3466,6 @@ class BinaryUnionStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<BinaryUnionStruct>;
   friend void swap(BinaryUnionStruct& a, BinaryUnionStruct& b);
 };
 
@@ -4047,7 +4036,6 @@ class CustomFields final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<CustomFields>;
   friend void swap(CustomFields& a, CustomFields& b);
 };
 
@@ -4618,7 +4606,6 @@ class CustomTypedefFields final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<CustomTypedefFields>;
   friend void swap(CustomTypedefFields& a, CustomTypedefFields& b);
 };
 
@@ -5061,7 +5048,6 @@ class AdaptedTypedefFields final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<AdaptedTypedefFields>;
   friend void swap(AdaptedTypedefFields& a, AdaptedTypedefFields& b);
 };
 

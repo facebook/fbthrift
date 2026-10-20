@@ -271,7 +271,6 @@ class TrivialStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TrivialStruct>;
   friend void swap(TrivialStruct& a, TrivialStruct& b);
 };
 
@@ -450,7 +449,6 @@ class TrivialStructWithDefault final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TrivialStructWithDefault>;
   friend void swap(TrivialStructWithDefault& a, TrivialStructWithDefault& b);
 };
 
@@ -854,7 +852,6 @@ class StructWithNoCustomDefaultValues final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<StructWithNoCustomDefaultValues>;
   friend void swap(StructWithNoCustomDefaultValues& a, StructWithNoCustomDefaultValues& b);
 };
 
@@ -1374,7 +1371,6 @@ class StructWithCustomDefaultValues final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<StructWithCustomDefaultValues>;
   friend void swap(StructWithCustomDefaultValues& a, StructWithCustomDefaultValues& b);
 };
 
@@ -1794,7 +1790,6 @@ class StructWithCollectionDefaultValues final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<StructWithCollectionDefaultValues>;
   friend void swap(StructWithCollectionDefaultValues& a, StructWithCollectionDefaultValues& b);
 };
 

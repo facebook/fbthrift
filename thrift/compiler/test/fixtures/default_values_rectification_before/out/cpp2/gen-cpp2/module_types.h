@@ -142,7 +142,6 @@ class EmptyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<EmptyStruct>;
   friend void swap(EmptyStruct& a, EmptyStruct& b);
 };
 
@@ -658,7 +657,6 @@ class TestStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<TestStruct>;
   friend void swap(TestStruct& a, TestStruct& b);
 };
 

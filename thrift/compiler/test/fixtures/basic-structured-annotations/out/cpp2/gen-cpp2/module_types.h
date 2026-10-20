@@ -252,7 +252,6 @@ class runtime_annotation final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<runtime_annotation>;
   friend void swap(runtime_annotation& a, runtime_annotation& b);
 };
 
@@ -444,7 +443,6 @@ class structured_annotation_inline final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<structured_annotation_inline>;
   friend void swap(structured_annotation_inline& a, structured_annotation_inline& b);
 };
 
@@ -588,7 +586,6 @@ class structured_annotation_with_default final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<structured_annotation_with_default>;
   friend void swap(structured_annotation_with_default& a, structured_annotation_with_default& b);
 };
 
@@ -718,7 +715,6 @@ class structured_annotation_forward final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<structured_annotation_forward>;
   friend void swap(structured_annotation_forward& a, structured_annotation_forward& b);
 };
 
@@ -961,7 +957,6 @@ class structured_annotation_recursive final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<structured_annotation_recursive>;
   friend void swap(structured_annotation_recursive& a, structured_annotation_recursive& b);
 };
 
@@ -1161,7 +1156,6 @@ class structured_annotation_nested final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<structured_annotation_nested>;
   friend void swap(structured_annotation_nested& a, structured_annotation_nested& b);
 };
 
@@ -1472,7 +1466,6 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -1626,7 +1619,6 @@ class FOLLY_EXPORT MyException : public virtual apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyException>;
   friend void swap(MyException& a, MyException& b);
 };
 
@@ -1874,7 +1866,6 @@ class MyUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<MyUnion>;
   friend void swap(MyUnion& a, MyUnion& b);
 };
 

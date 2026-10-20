@@ -386,7 +386,6 @@ class AllocUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<AllocUnion>;
   friend void swap(AllocUnion& a, AllocUnion& b);
 };
 
