@@ -140,11 +140,9 @@ If you want to invoke `cmake` again to iterate, there is a helpful
 ### Thrift Files
 
 To generate code from `.thrift` files in a CMake project, find the installed
-Thrift, include `ThriftLibrary.cmake` and call `thrift_generate`:
+Thrift, which provides `thrift_generate`:
 
     find_package(FBThrift CONFIG REQUIRED)
-    list(APPEND CMAKE_MODULE_PATH "${FBTHRIFT_INCLUDE_DIR}/thrift")
-    include(ThriftLibrary)
 
     add_library(example)
     thrift_generate(if/example.thrift LANGUAGE cpp2 TARGET example)

@@ -8,7 +8,11 @@
 # Variables defined:
 #   FBTHRIFT_INCLUDE_DIR - The Thrift include directory
 #   THRIFT_COMPILER      - The Thrift compiler target, as used by
-#                          ThriftLibrary.cmake; unset if no compiler is installed
+#                          thrift_generate(); THRIFT_COMPILER-NOTFOUND if no
+#                          compiler is installed
+#
+# Also provides thrift_generate() from ThriftLibrary.cmake, unless the project
+# already defines a command with that name.
 
 @PACKAGE_INIT@
 
@@ -71,6 +75,16 @@ if (TARGET FBThrift::thrift)
   get_target_property(FBTHRIFT_COMPILER FBThrift::thrift LOCATION)
 else()
   set(FBTHRIFT_COMPILER "FBTHRIFT_COMPILER-NOTFOUND")
+  # Otherwise thrift_generate() would run whatever thrift is on PATH.
+  if (NOT DEFINED THRIFT_COMPILER)
+    set(THRIFT_COMPILER "THRIFT_COMPILER-NOTFOUND")
+  endif()
+endif()
+
+# After THRIFT_COMPILER is set: ThriftLibrary.cmake defaults it to the in-tree
+# name `thrift`. The guard keeps a project's own thrift_generate().
+if (NOT COMMAND thrift_generate)
+  include("${FBTHRIFT_INCLUDE_DIR}/thrift/ThriftLibrary.cmake")
 endif()
 
 # The name ThriftLibrary.cmake links into a cpp2 thrift_generate() TARGET, as in

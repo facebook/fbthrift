@@ -76,6 +76,10 @@ function (thrift_generate file)
         "positional form was removed; use thrift_generate(<file>.thrift "
         "LANGUAGE ...).")
   endif ()
+  if (NOT THRIFT_COMPILER)
+    message(FATAL_ERROR
+            "thrift_generate: no Thrift compiler; set THRIFT_COMPILER")
+  endif ()
   set(one_value_keywords
       LANGUAGE
       TARGET
