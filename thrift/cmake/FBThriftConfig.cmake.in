@@ -6,7 +6,7 @@
 # dependency must be found first with find_package(wangle CONFIG).
 #
 # Variables defined:
-#   FBTHRIFT_INCLUDE_DIR - The Thrift include directory
+#   THRIFT_INCLUDE_DIR   - The Thrift include directory
 #   THRIFT_COMPILER      - The Thrift compiler target, as used by
 #                          thrift_generate(); THRIFT_COMPILER-NOTFOUND if no
 #                          compiler is installed
@@ -18,7 +18,8 @@
 
 include(CMakeFindDependencyMacro)
 
-set_and_check(FBTHRIFT_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+set_and_check(THRIFT_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+set(FBTHRIFT_INCLUDE_DIR "${THRIFT_INCLUDE_DIR}")
 
 # These dependencies ship no package config, so they are found through the Find
 # modules installed next to this file. The exported Thrift targets link against
@@ -84,7 +85,7 @@ endif()
 # After THRIFT_COMPILER is set: ThriftLibrary.cmake defaults it to the in-tree
 # name `thrift`. The guard keeps a project's own thrift_generate().
 if (NOT COMMAND thrift_generate)
-  include("${FBTHRIFT_INCLUDE_DIR}/thrift/ThriftLibrary.cmake")
+  include("${THRIFT_INCLUDE_DIR}/thrift/ThriftLibrary.cmake")
 endif()
 
 # The name ThriftLibrary.cmake links into a cpp2 thrift_generate() TARGET, as in
