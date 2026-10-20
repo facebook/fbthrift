@@ -74,6 +74,13 @@ testing::AssertionResult runRoundTripTest(
       case StandardProtocol::Binary:
         return protocol::parseObject<apache::thrift::BinaryProtocolReader>(
             *a.data());
+      case StandardProtocol::SimpleJson:
+        // SimpleJson cannot be parsed without a schema, so transcode it to
+        // Compact through the registered type.
+        return protocol::parseObject<apache::thrift::CompactProtocolReader>(
+            *AnyRegistry::generated()
+                 .store(a, getStandardProtocol<StandardProtocol::Compact>())
+                 .data());
       default:
         throw std::invalid_argument(
             "Unsupported protocol: " + util::enumNameSafe(protocol));
