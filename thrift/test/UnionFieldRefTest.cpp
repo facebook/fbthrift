@@ -237,9 +237,7 @@ struct NothrowMove {
 
 static_assert(
     noexcept(std::declval<union_field_ref<NothrowMove&>&>() = NothrowMove()));
-// FIXME(ytj): Should be noexcept, since building NothrowMove with the allocator
-// can't throw.
-static_assert(!noexcept(
+static_assert(noexcept(
     std::declval<union_field_ref<NothrowMove&, ByteAlloc>&>() = NothrowMove()));
 
 TEST(UnionFieldTest, ensure) {

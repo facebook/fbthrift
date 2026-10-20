@@ -21,6 +21,7 @@
 #include <memory>
 #include <optional>
 #include <string_view>
+#include <tuple>
 #include <type_traits>
 #include <folly/CPortability.h>
 #include <folly/CppAttributes.h>
@@ -1675,6 +1676,27 @@ inline constexpr union_field_ref_owner_vtable //
         &union_field_ref_owner_vtable_impl::active_field<T>,
         &union_field_ref_owner_vtable_impl::class_name<T>};
 
+template <typename T, typename Tuple>
+inline constexpr bool is_nothrow_constructible_from_tuple_v = false;
+template <typename T, typename... Args>
+inline constexpr bool
+    is_nothrow_constructible_from_tuple_v<T, std::tuple<Args...>> =
+        std::is_nothrow_constructible_v<T, Args...>;
+
+// Whether union_field_ref builds a T from Args with allocator A without
+// throwing: as is if A is void, else by uses-allocator construction.
+template <typename T, typename A, typename... Args>
+constexpr bool is_nothrow_union_member_constructible() {
+  if constexpr (std::is_void_v<A>) {
+    return std::is_nothrow_constructible_v<T, Args...>;
+  } else {
+    return is_nothrow_constructible_from_tuple_v<
+        T,
+        decltype(std::uses_allocator_construction_args<T>(
+            std::declval<const A&>(), std::declval<Args>()...))>;
+  }
+}
+
 } // namespace detail
 
 // A reference to a union field of the possibly const-qualified type.
@@ -1749,8 +1771,8 @@ class union_field_ref {
               std::is_constructible_v<value_type, U&&>,
           int> = 0>
   FOLLY_ERASE union_field_ref& operator=(U&& other) noexcept(
-      std::is_void_v<Allocator> &&
-      std::is_nothrow_constructible_v<value_type, U> &&
+      detail::
+          is_nothrow_union_member_constructible<value_type, Allocator, U>() &&
       std::is_nothrow_assignable_v<value_type, U>) {
     if (has_value() &&
         !detail::is_shared_or_unique_ptr_v<folly::remove_cvref_t<T>>) {
