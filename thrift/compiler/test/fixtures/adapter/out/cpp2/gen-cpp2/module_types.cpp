@@ -532,6 +532,49 @@ void Baz::__fbthrift_clear() {
 bool Baz::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  Baz& Baz::operator=(Baz&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::intField:
+      {
+        intField_ref().emplace(folly::copy(rhs.value_.intField));
+        break;
+      }
+      case Type::setField:
+      {
+        setField_ref().emplace(std::move(rhs.value_.setField));
+        break;
+      }
+      case Type::mapField:
+      {
+        mapField_ref().emplace(std::move(rhs.value_.mapField));
+        break;
+      }
+      case Type::binaryField:
+      {
+        binaryField_ref().emplace(std::move(rhs.value_.binaryField));
+        break;
+      }
+      case Type::longField:
+      {
+        longField_ref().emplace(folly::copy(rhs.value_.longField));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   Baz::Baz(const Baz& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -2030,6 +2073,34 @@ void ThriftAdaptTestUnion::__fbthrift_clear() {
 bool ThriftAdaptTestUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  ThriftAdaptTestUnion& ThriftAdaptTestUnion::operator=(ThriftAdaptTestUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::delay:
+      {
+        delay_ref().emplace(folly::copy(rhs.value_.delay));
+        break;
+      }
+      case Type::custom:
+      {
+        custom_ref().emplace(std::move(rhs.value_.custom));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   ThriftAdaptTestUnion::ThriftAdaptTestUnion(const ThriftAdaptTestUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

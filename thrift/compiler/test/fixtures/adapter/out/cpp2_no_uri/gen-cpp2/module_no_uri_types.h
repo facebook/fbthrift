@@ -92,28 +92,7 @@ class RefUnion final  {
 
   RefUnion(const RefUnion& rhs);
 
-  RefUnion& operator=(RefUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::field1:
-      {
-        field1_ref().emplace(std::move(*rhs.value_.field1));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  RefUnion& operator=(RefUnion&& rhs) noexcept;
 
   RefUnion& operator=(const RefUnion& rhs);
 

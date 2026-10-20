@@ -549,38 +549,7 @@ class MyUnion final  {
 
   MyUnion(const MyUnion& rhs);
 
-  MyUnion& operator=(MyUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::myEnum:
-      {
-        myEnum_ref().emplace(folly::copy(rhs.value_.myEnum));
-        break;
-      }
-      case Type::myStruct:
-      {
-        myStruct_ref().emplace(std::move(rhs.value_.myStruct));
-        break;
-      }
-      case Type::myDataItem:
-      {
-        myDataItem_ref().emplace(std::move(rhs.value_.myDataItem));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  MyUnion& operator=(MyUnion&& rhs) noexcept;
 
   MyUnion& operator=(const MyUnion& rhs);
 

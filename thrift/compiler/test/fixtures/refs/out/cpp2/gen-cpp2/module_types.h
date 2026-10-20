@@ -511,33 +511,7 @@ class MyUnion final  {
 
   MyUnion(const MyUnion& rhs);
 
-  MyUnion& operator=(MyUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::anInteger:
-      {
-        anInteger_ref().emplace(folly::copy(*rhs.value_.anInteger));
-        break;
-      }
-      case Type::aString:
-      {
-        aString_ref().emplace(std::move(*rhs.value_.aString));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  MyUnion& operator=(MyUnion&& rhs) noexcept;
 
   MyUnion& operator=(const MyUnion& rhs);
 
@@ -795,28 +769,7 @@ class NonTriviallyDestructibleUnion final  {
 
   NonTriviallyDestructibleUnion(const NonTriviallyDestructibleUnion& rhs);
 
-  NonTriviallyDestructibleUnion& operator=(NonTriviallyDestructibleUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::int_field:
-      {
-        int_field_ref().emplace(folly::copy(*rhs.value_.int_field));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  NonTriviallyDestructibleUnion& operator=(NonTriviallyDestructibleUnion&& rhs) noexcept;
 
   NonTriviallyDestructibleUnion& operator=(const NonTriviallyDestructibleUnion& rhs);
 

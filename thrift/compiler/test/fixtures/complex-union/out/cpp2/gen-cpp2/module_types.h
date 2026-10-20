@@ -205,53 +205,7 @@ class ComplexUnion final  {
 
   ComplexUnion(const ComplexUnion& rhs);
 
-  ComplexUnion& operator=(ComplexUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::intValue:
-      {
-        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
-        break;
-      }
-      case Type::stringValue:
-      {
-        stringValue_ref().emplace(std::move(rhs.value_.stringValue));
-        break;
-      }
-      case Type::intListValue:
-      {
-        intListValue_ref().emplace(std::move(rhs.value_.intListValue));
-        break;
-      }
-      case Type::stringListValue:
-      {
-        stringListValue_ref().emplace(std::move(rhs.value_.stringListValue));
-        break;
-      }
-      case Type::typedefValue:
-      {
-        typedefValue_ref().emplace(std::move(rhs.value_.typedefValue));
-        break;
-      }
-      case Type::stringRef:
-      {
-        stringRef_ref().emplace(std::move(*rhs.value_.stringRef));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  ComplexUnion& operator=(ComplexUnion&& rhs) noexcept;
 
   ComplexUnion& operator=(const ComplexUnion& rhs);
 
@@ -834,33 +788,7 @@ class ListUnion final  {
 
   ListUnion(const ListUnion& rhs);
 
-  ListUnion& operator=(ListUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::intListValue:
-      {
-        intListValue_ref().emplace(std::move(rhs.value_.intListValue));
-        break;
-      }
-      case Type::stringListValue:
-      {
-        stringListValue_ref().emplace(std::move(rhs.value_.stringListValue));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  ListUnion& operator=(ListUnion&& rhs) noexcept;
 
   ListUnion& operator=(const ListUnion& rhs);
 
@@ -1124,33 +1052,7 @@ class DataUnion final  {
 
   DataUnion(const DataUnion& rhs);
 
-  DataUnion& operator=(DataUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::binaryData:
-      {
-        binaryData_ref().emplace(std::move(rhs.value_.binaryData));
-        break;
-      }
-      case Type::stringData:
-      {
-        stringData_ref().emplace(std::move(rhs.value_.stringData));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  DataUnion& operator=(DataUnion&& rhs) noexcept;
 
   DataUnion& operator=(const DataUnion& rhs);
 
@@ -1663,33 +1565,7 @@ class ValUnion final  {
 
   ValUnion(const ValUnion& rhs);
 
-  ValUnion& operator=(ValUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::v1:
-      {
-        v1_ref().emplace(std::move(rhs.value_.v1));
-        break;
-      }
-      case Type::v2:
-      {
-        v2_ref().emplace(std::move(rhs.value_.v2));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  ValUnion& operator=(ValUnion&& rhs) noexcept;
 
   ValUnion& operator=(const ValUnion& rhs);
 
@@ -1953,33 +1829,7 @@ class VirtualComplexUnion  {
 
   VirtualComplexUnion(const VirtualComplexUnion& rhs);
 
-  VirtualComplexUnion& operator=(VirtualComplexUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::thingOne:
-      {
-        thingOne_ref().emplace(std::move(rhs.value_.thingOne));
-        break;
-      }
-      case Type::thingTwo:
-      {
-        thingTwo_ref().emplace(std::move(rhs.value_.thingTwo));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  VirtualComplexUnion& operator=(VirtualComplexUnion&& rhs) noexcept;
 
   VirtualComplexUnion& operator=(const VirtualComplexUnion& rhs);
 
@@ -2367,28 +2217,7 @@ class NonCopyableUnion final  {
     *this = std::move(rhs);
   }
 
-  NonCopyableUnion& operator=(NonCopyableUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::s:
-      {
-        s_ref().emplace(std::move(rhs.value_.s));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  NonCopyableUnion& operator=(NonCopyableUnion&& rhs) noexcept;
 
   ~NonCopyableUnion();
 

@@ -167,6 +167,34 @@ void MyUnion::__fbthrift_clear() {
 bool MyUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  MyUnion& MyUnion::operator=(MyUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::anInteger:
+      {
+        anInteger_ref().emplace(folly::copy(*rhs.value_.anInteger));
+        break;
+      }
+      case Type::aString:
+      {
+        aString_ref().emplace(std::move(*rhs.value_.aString));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   MyUnion::MyUnion(const MyUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -273,6 +301,29 @@ void NonTriviallyDestructibleUnion::__fbthrift_clear() {
 bool NonTriviallyDestructibleUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  NonTriviallyDestructibleUnion& NonTriviallyDestructibleUnion::operator=(NonTriviallyDestructibleUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::int_field:
+      {
+        int_field_ref().emplace(folly::copy(*rhs.value_.int_field));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   NonTriviallyDestructibleUnion::NonTriviallyDestructibleUnion(const NonTriviallyDestructibleUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

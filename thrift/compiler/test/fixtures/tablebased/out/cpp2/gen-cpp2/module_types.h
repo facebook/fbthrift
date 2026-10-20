@@ -1111,33 +1111,7 @@ class ExampleUnion final  {
 
   ExampleUnion(const ExampleUnion& rhs);
 
-  ExampleUnion& operator=(ExampleUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::fieldA:
-      {
-        fieldA_ref().emplace(std::move(rhs.value_.fieldA));
-        break;
-      }
-      case Type::fieldB:
-      {
-        fieldB_ref().emplace(std::move(rhs.value_.fieldB));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  ExampleUnion& operator=(ExampleUnion&& rhs) noexcept;
 
   ExampleUnion& operator=(const ExampleUnion& rhs);
 

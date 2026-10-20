@@ -454,6 +454,34 @@ void TestUnion::__fbthrift_clear() {
 bool TestUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  TestUnion& TestUnion::operator=(TestUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::int_value:
+      {
+        int_value_ref().emplace(folly::copy(rhs.value_.int_value));
+        break;
+      }
+      case Type::struct_value:
+      {
+        struct_value_ref().emplace(std::move(rhs.value_.struct_value));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   TestUnion::TestUnion(const TestUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

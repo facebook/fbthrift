@@ -765,6 +765,34 @@ void union1::__fbthrift_clear() {
 bool union1::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  union1& union1::operator=(union1&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::i:
+      {
+        i_ref().emplace(folly::copy(rhs.value_.i));
+        break;
+      }
+      case Type::d:
+      {
+        d_ref().emplace(folly::copy(rhs.value_.d));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   union1::union1(const union1& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -876,6 +904,44 @@ void union2::__fbthrift_clear() {
 bool union2::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  union2& union2::operator=(union2&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::i:
+      {
+        i_ref().emplace(folly::copy(rhs.value_.i));
+        break;
+      }
+      case Type::d:
+      {
+        d_ref().emplace(folly::copy(rhs.value_.d));
+        break;
+      }
+      case Type::s:
+      {
+        s_ref().emplace(std::move(rhs.value_.s));
+        break;
+      }
+      case Type::u:
+      {
+        u_ref().emplace(std::move(rhs.value_.u));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   union2::union2(const union2& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

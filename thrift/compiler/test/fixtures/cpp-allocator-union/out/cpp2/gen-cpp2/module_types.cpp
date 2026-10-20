@@ -105,6 +105,40 @@ bool AllocUnion::__fbthrift_is_empty() const {
     apache::thrift::clear(rhs);
   }
 
+  AllocUnion& AllocUnion::operator=(AllocUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    ::apache::thrift::detail::move_allocator(__fbthrift_alloc, rhs.__fbthrift_alloc);
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::aa_string:
+      {
+        aa_string_ref().emplace(std::move(rhs.value_.aa_string));
+        break;
+      }
+      case Type::aa_list:
+      {
+        aa_list_ref().emplace(std::move(rhs.value_.aa_list));
+        break;
+      }
+      case Type::plain_int:
+      {
+        plain_int_ref().emplace(folly::copy(rhs.value_.plain_int));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   AllocUnion::AllocUnion(const AllocUnion& rhs)
       : __fbthrift_alloc(::std::allocator_traits<allocator_type>::select_on_container_copy_construction(rhs.__fbthrift_alloc)),
         fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {

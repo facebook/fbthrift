@@ -180,6 +180,34 @@ void SerializedUnion::__fbthrift_clear() {
 bool SerializedUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  SerializedUnion& SerializedUnion::operator=(SerializedUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::s:
+      {
+        s_ref().emplace(std::move(rhs.value_.s));
+        break;
+      }
+      case Type::i:
+      {
+        i_ref().emplace(folly::copy(rhs.value_.i));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   SerializedUnion::SerializedUnion(const SerializedUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -467,6 +495,34 @@ void MarshalUnion::__fbthrift_clear() {
 bool MarshalUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  MarshalUnion& MarshalUnion::operator=(MarshalUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::s:
+      {
+        s_ref().emplace(std::move(rhs.value_.s));
+        break;
+      }
+      case Type::i:
+      {
+        i_ref().emplace(folly::copy(rhs.value_.i));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   MarshalUnion::MarshalUnion(const MarshalUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

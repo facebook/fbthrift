@@ -556,6 +556,34 @@ void SimpleUnion::__fbthrift_clear() {
 bool SimpleUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  SimpleUnion& SimpleUnion::operator=(SimpleUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::intValue:
+      {
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
+        break;
+      }
+      case Type::stringValue:
+      {
+        stringValue_ref().emplace(std::move(rhs.value_.stringValue));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   SimpleUnion::SimpleUnion(const SimpleUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -739,6 +767,164 @@ void ComplexUnion::__fbthrift_clear() {
 bool ComplexUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  ComplexUnion& ComplexUnion::operator=(ComplexUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::intValue:
+      {
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
+        break;
+      }
+      case Type::opt_intValue:
+      {
+        opt_intValue_ref().emplace(folly::copy(rhs.value_.opt_intValue));
+        break;
+      }
+      case Type::stringValue:
+      {
+        stringValue_ref().emplace(std::move(rhs.value_.stringValue));
+        break;
+      }
+      case Type::opt_stringValue:
+      {
+        opt_stringValue_ref().emplace(std::move(rhs.value_.opt_stringValue));
+        break;
+      }
+      case Type::intValue2:
+      {
+        intValue2_ref().emplace(folly::copy(rhs.value_.intValue2));
+        break;
+      }
+      case Type::intValue3:
+      {
+        intValue3_ref().emplace(folly::copy(rhs.value_.intValue3));
+        break;
+      }
+      case Type::doubelValue:
+      {
+        doubelValue_ref().emplace(folly::copy(rhs.value_.doubelValue));
+        break;
+      }
+      case Type::boolValue:
+      {
+        boolValue_ref().emplace(folly::copy(rhs.value_.boolValue));
+        break;
+      }
+      case Type::union_list:
+      {
+        union_list_ref().emplace(std::move(rhs.value_.union_list));
+        break;
+      }
+      case Type::union_set:
+      {
+        union_set_ref().emplace(std::move(rhs.value_.union_set));
+        break;
+      }
+      case Type::union_map:
+      {
+        union_map_ref().emplace(std::move(rhs.value_.union_map));
+        break;
+      }
+      case Type::opt_union_map:
+      {
+        opt_union_map_ref().emplace(std::move(rhs.value_.opt_union_map));
+        break;
+      }
+      case Type::enum_field:
+      {
+        enum_field_ref().emplace(folly::copy(rhs.value_.enum_field));
+        break;
+      }
+      case Type::enum_container:
+      {
+        enum_container_ref().emplace(std::move(rhs.value_.enum_container));
+        break;
+      }
+      case Type::a_struct:
+      {
+        a_struct_ref().emplace(std::move(rhs.value_.a_struct));
+        break;
+      }
+      case Type::a_set_struct:
+      {
+        a_set_struct_ref().emplace(std::move(rhs.value_.a_set_struct));
+        break;
+      }
+      case Type::a_union:
+      {
+        a_union_ref().emplace(std::move(rhs.value_.a_union));
+        break;
+      }
+      case Type::opt_a_union:
+      {
+        opt_a_union_ref().emplace(std::move(rhs.value_.opt_a_union));
+        break;
+      }
+      case Type::a_union_list:
+      {
+        a_union_list_ref().emplace(std::move(rhs.value_.a_union_list));
+        break;
+      }
+      case Type::a_union_typedef:
+      {
+        a_union_typedef_ref().emplace(std::move(rhs.value_.a_union_typedef));
+        break;
+      }
+      case Type::a_union_typedef_list:
+      {
+        a_union_typedef_list_ref().emplace(std::move(rhs.value_.a_union_typedef_list));
+        break;
+      }
+      case Type::MyBinaryField:
+      {
+        MyBinaryField_ref().emplace(std::move(rhs.value_.MyBinaryField));
+        break;
+      }
+      case Type::MyBinaryField2:
+      {
+        MyBinaryField2_ref().emplace(std::move(rhs.value_.MyBinaryField2));
+        break;
+      }
+      case Type::MyBinaryListField4:
+      {
+        MyBinaryListField4_ref().emplace(std::move(rhs.value_.MyBinaryListField4));
+        break;
+      }
+      case Type::ref_field:
+      {
+        ref_field_ref().emplace(std::move(*rhs.value_.ref_field));
+        break;
+      }
+      case Type::ref_field2:
+      {
+        ref_field2_ref().emplace(std::move(*rhs.value_.ref_field2));
+        break;
+      }
+      case Type::excp_field:
+      {
+        excp_field_ref().emplace(std::move(rhs.value_.excp_field));
+        break;
+      }
+      case Type::MyCustomField:
+      {
+        MyCustomField_ref().emplace(std::move(rhs.value_.MyCustomField));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   ComplexUnion::ComplexUnion(const ComplexUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -3051,6 +3237,34 @@ void FloatUnion::__fbthrift_clear() {
 bool FloatUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  FloatUnion& FloatUnion::operator=(FloatUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::floatSide:
+      {
+        floatSide_ref().emplace(folly::copy(rhs.value_.floatSide));
+        break;
+      }
+      case Type::doubleSide:
+      {
+        doubleSide_ref().emplace(folly::copy(rhs.value_.doubleSide));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   FloatUnion::FloatUnion(const FloatUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

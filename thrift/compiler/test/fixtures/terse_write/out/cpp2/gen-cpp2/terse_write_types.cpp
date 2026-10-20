@@ -186,6 +186,94 @@ void MyUnion::__fbthrift_clear() {
 bool MyUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  MyUnion& MyUnion::operator=(MyUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::bool_field:
+      {
+        bool_field_ref().emplace(folly::copy(rhs.value_.bool_field));
+        break;
+      }
+      case Type::byte_field:
+      {
+        byte_field_ref().emplace(folly::copy(rhs.value_.byte_field));
+        break;
+      }
+      case Type::short_field:
+      {
+        short_field_ref().emplace(folly::copy(rhs.value_.short_field));
+        break;
+      }
+      case Type::int_field:
+      {
+        int_field_ref().emplace(folly::copy(rhs.value_.int_field));
+        break;
+      }
+      case Type::long_field:
+      {
+        long_field_ref().emplace(folly::copy(rhs.value_.long_field));
+        break;
+      }
+      case Type::float_field:
+      {
+        float_field_ref().emplace(folly::copy(rhs.value_.float_field));
+        break;
+      }
+      case Type::double_field:
+      {
+        double_field_ref().emplace(folly::copy(rhs.value_.double_field));
+        break;
+      }
+      case Type::string_field:
+      {
+        string_field_ref().emplace(std::move(rhs.value_.string_field));
+        break;
+      }
+      case Type::binary_field:
+      {
+        binary_field_ref().emplace(std::move(rhs.value_.binary_field));
+        break;
+      }
+      case Type::enum_field:
+      {
+        enum_field_ref().emplace(folly::copy(rhs.value_.enum_field));
+        break;
+      }
+      case Type::list_field:
+      {
+        list_field_ref().emplace(std::move(rhs.value_.list_field));
+        break;
+      }
+      case Type::set_field:
+      {
+        set_field_ref().emplace(std::move(rhs.value_.set_field));
+        break;
+      }
+      case Type::map_field:
+      {
+        map_field_ref().emplace(std::move(rhs.value_.map_field));
+        break;
+      }
+      case Type::struct_field:
+      {
+        struct_field_ref().emplace(std::move(rhs.value_.struct_field));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   MyUnion::MyUnion(const MyUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

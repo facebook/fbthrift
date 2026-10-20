@@ -290,33 +290,7 @@ class U final  {
 
   U(const U& rhs);
 
-  U& operator=(U&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::i:
-      {
-        i_ref().emplace(folly::copy(rhs.value_.i));
-        break;
-      }
-      case Type::s:
-      {
-        s_ref().emplace(std::move(rhs.value_.s));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  U& operator=(U&& rhs) noexcept;
 
   U& operator=(const U& rhs);
 

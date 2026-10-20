@@ -202,23 +202,7 @@ class YourUnion final  {
 
   YourUnion(const YourUnion& rhs);
 
-  YourUnion& operator=(YourUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  YourUnion& operator=(YourUnion&& rhs) noexcept;
 
   YourUnion& operator=(const YourUnion& rhs);
 

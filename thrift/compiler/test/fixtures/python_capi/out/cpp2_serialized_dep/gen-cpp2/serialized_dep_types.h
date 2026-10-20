@@ -495,33 +495,7 @@ class SerializedUnion final  {
 
   SerializedUnion(const SerializedUnion& rhs);
 
-  SerializedUnion& operator=(SerializedUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::s:
-      {
-        s_ref().emplace(std::move(rhs.value_.s));
-        break;
-      }
-      case Type::i:
-      {
-        i_ref().emplace(folly::copy(rhs.value_.i));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  SerializedUnion& operator=(SerializedUnion&& rhs) noexcept;
 
   SerializedUnion& operator=(const SerializedUnion& rhs);
 
@@ -1351,33 +1325,7 @@ class MarshalUnion final  {
 
   MarshalUnion(const MarshalUnion& rhs);
 
-  MarshalUnion& operator=(MarshalUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::s:
-      {
-        s_ref().emplace(std::move(rhs.value_.s));
-        break;
-      }
-      case Type::i:
-      {
-        i_ref().emplace(folly::copy(rhs.value_.i));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  MarshalUnion& operator=(MarshalUnion&& rhs) noexcept;
 
   MarshalUnion& operator=(const MarshalUnion& rhs);
 

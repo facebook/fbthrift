@@ -155,6 +155,34 @@ void NonOrderableUnion::__fbthrift_clear() {
 bool NonOrderableUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  NonOrderableUnion& NonOrderableUnion::operator=(NonOrderableUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::int_value:
+      {
+        int_value_ref().emplace(folly::copy(rhs.value_.int_value));
+        break;
+      }
+      case Type::string_value:
+      {
+        string_value_ref().emplace(std::move(rhs.value_.string_value));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   NonOrderableUnion::NonOrderableUnion(const NonOrderableUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -338,6 +366,34 @@ void OrderableUnion::__fbthrift_clear() {
 bool OrderableUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  OrderableUnion& OrderableUnion::operator=(OrderableUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::int_value:
+      {
+        int_value_ref().emplace(folly::copy(rhs.value_.int_value));
+        break;
+      }
+      case Type::string_value:
+      {
+        string_value_ref().emplace(std::move(rhs.value_.string_value));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   OrderableUnion::OrderableUnion(const OrderableUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

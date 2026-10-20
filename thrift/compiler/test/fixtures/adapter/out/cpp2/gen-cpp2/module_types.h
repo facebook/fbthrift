@@ -1488,48 +1488,7 @@ class Baz final  {
 
   Baz(const Baz& rhs);
 
-  Baz& operator=(Baz&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::intField:
-      {
-        intField_ref().emplace(folly::copy(rhs.value_.intField));
-        break;
-      }
-      case Type::setField:
-      {
-        setField_ref().emplace(std::move(rhs.value_.setField));
-        break;
-      }
-      case Type::mapField:
-      {
-        mapField_ref().emplace(std::move(rhs.value_.mapField));
-        break;
-      }
-      case Type::binaryField:
-      {
-        binaryField_ref().emplace(std::move(rhs.value_.binaryField));
-        break;
-      }
-      case Type::longField:
-      {
-        longField_ref().emplace(folly::copy(rhs.value_.longField));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  Baz& operator=(Baz&& rhs) noexcept;
 
   Baz& operator=(const Baz& rhs);
 
@@ -5809,33 +5768,7 @@ class ThriftAdaptTestUnion final  {
 
   ThriftAdaptTestUnion(const ThriftAdaptTestUnion& rhs);
 
-  ThriftAdaptTestUnion& operator=(ThriftAdaptTestUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::delay:
-      {
-        delay_ref().emplace(folly::copy(rhs.value_.delay));
-        break;
-      }
-      case Type::custom:
-      {
-        custom_ref().emplace(std::move(rhs.value_.custom));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  ThriftAdaptTestUnion& operator=(ThriftAdaptTestUnion&& rhs) noexcept;
 
   ThriftAdaptTestUnion& operator=(const ThriftAdaptTestUnion& rhs);
 

@@ -68,6 +68,29 @@ void RefUnion::__fbthrift_clear() {
 bool RefUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  RefUnion& RefUnion::operator=(RefUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::field1:
+      {
+        field1_ref().emplace(std::move(*rhs.value_.field1));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   RefUnion::RefUnion(const RefUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

@@ -5303,58 +5303,7 @@ class Shallot final  {
 
   Shallot(const Shallot& rhs);
 
-  Shallot& operator=(Shallot&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::myEnum:
-      {
-        myEnum_ref().emplace(folly::copy(rhs.value_.myEnum));
-        break;
-      }
-      case Type::myStruct:
-      {
-        myStruct_ref().emplace(std::move(rhs.value_.myStruct));
-        break;
-      }
-      case Type::intSet:
-      {
-        intSet_ref().emplace(std::move(*rhs.value_.intSet));
-        break;
-      }
-      case Type::myString:
-      {
-        myString_ref().emplace(std::move(rhs.value_.myString));
-        break;
-      }
-      case Type::doubleList:
-      {
-        doubleList_ref().emplace(std::move(*rhs.value_.doubleList));
-        break;
-      }
-      case Type::strMap:
-      {
-        strMap_ref().emplace(std::move(*rhs.value_.strMap));
-        break;
-      }
-      case Type::adapted_int:
-      {
-        adapted_int_ref().emplace(folly::copy(rhs.value_.adapted_int));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  Shallot& operator=(Shallot&& rhs) noexcept;
 
   Shallot& operator=(const Shallot& rhs);
 
@@ -5945,38 +5894,7 @@ class SomeBinary final  {
 
   SomeBinary(const SomeBinary& rhs);
 
-  SomeBinary& operator=(SomeBinary&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::iobuf:
-      {
-        iobuf_ref().emplace(std::move(rhs.value_.iobuf));
-        break;
-      }
-      case Type::iobuf_ptr:
-      {
-        iobuf_ptr_ref().emplace(std::move(rhs.value_.iobuf_ptr));
-        break;
-      }
-      case Type::iobufRef:
-      {
-        iobufRef_ref().emplace(std::move(*rhs.value_.iobufRef));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  SomeBinary& operator=(SomeBinary&& rhs) noexcept;
 
   SomeBinary& operator=(const SomeBinary& rhs);
 

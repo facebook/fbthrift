@@ -514,42 +514,7 @@ class ExampleUnion final  {
 
   ExampleUnion(const ExampleUnion& rhs);
 
-  ExampleUnion& operator=(ExampleUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::stringValue:
-      {
-        stringValue_ref().emplace(std::move(rhs.value_.stringValue));
-        break;
-      }
-      case Type::intValue:
-      {
-        FOLLY_PUSH_WARNING
-        FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
-        FOLLY_MSVC_DISABLE_WARNING(4996)
-        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
-        FOLLY_POP_WARNING
-        break;
-      }
-      case Type::doubleValue:
-      {
-        doubleValue_ref().emplace(folly::copy(rhs.value_.doubleValue));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  ExampleUnion& operator=(ExampleUnion&& rhs) noexcept;
 
   ExampleUnion& operator=(const ExampleUnion& rhs);
 

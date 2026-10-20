@@ -1870,33 +1870,7 @@ class union1 final  {
 
   union1(const union1& rhs);
 
-  union1& operator=(union1&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::i:
-      {
-        i_ref().emplace(folly::copy(rhs.value_.i));
-        break;
-      }
-      case Type::d:
-      {
-        d_ref().emplace(folly::copy(rhs.value_.d));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  union1& operator=(union1&& rhs) noexcept;
 
   union1& operator=(const union1& rhs);
 
@@ -2127,43 +2101,7 @@ class union2 final  {
 
   union2(const union2& rhs);
 
-  union2& operator=(union2&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::i:
-      {
-        i_ref().emplace(folly::copy(rhs.value_.i));
-        break;
-      }
-      case Type::d:
-      {
-        d_ref().emplace(folly::copy(rhs.value_.d));
-        break;
-      }
-      case Type::s:
-      {
-        s_ref().emplace(std::move(rhs.value_.s));
-        break;
-      }
-      case Type::u:
-      {
-        u_ref().emplace(std::move(rhs.value_.u));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  union2& operator=(union2&& rhs) noexcept;
 
   union2& operator=(const union2& rhs);
 

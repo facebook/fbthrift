@@ -158,6 +158,34 @@ void U::__fbthrift_clear() {
 bool U::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  U& U::operator=(U&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::i:
+      {
+        i_ref().emplace(folly::copy(rhs.value_.i));
+        break;
+      }
+      case Type::s:
+      {
+        s_ref().emplace(std::move(rhs.value_.s));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   U::U(const U& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

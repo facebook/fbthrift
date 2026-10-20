@@ -141,6 +141,24 @@ void MyUnion::__fbthrift_clear() {
 bool MyUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  MyUnion& MyUnion::operator=(MyUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   MyUnion::MyUnion(const MyUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

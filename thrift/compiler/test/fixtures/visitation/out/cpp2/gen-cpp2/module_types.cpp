@@ -227,6 +227,44 @@ void union1::__fbthrift_clear() {
 bool union1::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  union1& union1::operator=(union1&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::ui:
+      {
+        ui_ref().emplace(folly::copy(rhs.value_.ui));
+        break;
+      }
+      case Type::ud:
+      {
+        ud_ref().emplace(folly::copy(rhs.value_.ud));
+        break;
+      }
+      case Type::us:
+      {
+        us_ref().emplace(std::move(rhs.value_.us));
+        break;
+      }
+      case Type::ue:
+      {
+        ue_ref().emplace(folly::copy(rhs.value_.ue));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   union1::union1(const union1& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -350,6 +388,44 @@ void union2::__fbthrift_clear() {
 bool union2::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  union2& union2::operator=(union2&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::ui_2:
+      {
+        ui_2_ref().emplace(folly::copy(rhs.value_.ui_2));
+        break;
+      }
+      case Type::ud_2:
+      {
+        ud_2_ref().emplace(folly::copy(rhs.value_.ud_2));
+        break;
+      }
+      case Type::us_2:
+      {
+        us_2_ref().emplace(std::move(rhs.value_.us_2));
+        break;
+      }
+      case Type::ue_2:
+      {
+        ue_2_ref().emplace(folly::copy(rhs.value_.ue_2));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   union2::union2(const union2& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -473,6 +549,44 @@ void union3::__fbthrift_clear() {
 bool union3::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  union3& union3::operator=(union3&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::ui_3:
+      {
+        ui_3_ref().emplace(folly::copy(rhs.value_.ui_3));
+        break;
+      }
+      case Type::ud_3:
+      {
+        ud_3_ref().emplace(folly::copy(rhs.value_.ud_3));
+        break;
+      }
+      case Type::us_3:
+      {
+        us_3_ref().emplace(std::move(rhs.value_.us_3));
+        break;
+      }
+      case Type::ue_3:
+      {
+        ue_3_ref().emplace(folly::copy(rhs.value_.ue_3));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   union3::union3(const union3& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -679,6 +793,49 @@ void unionA::__fbthrift_clear() {
 bool unionA::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  unionA& unionA::operator=(unionA&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::i:
+      {
+        i_ref().emplace(folly::copy(rhs.value_.i));
+        break;
+      }
+      case Type::d:
+      {
+        d_ref().emplace(folly::copy(rhs.value_.d));
+        break;
+      }
+      case Type::s:
+      {
+        s_ref().emplace(std::move(rhs.value_.s));
+        break;
+      }
+      case Type::e:
+      {
+        e_ref().emplace(folly::copy(rhs.value_.e));
+        break;
+      }
+      case Type::a:
+      {
+        a_ref().emplace(std::move(rhs.value_.a));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   unionA::unionA(const unionA& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -2752,6 +2909,164 @@ void union_with_special_names::__fbthrift_clear() {
 bool union_with_special_names::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  union_with_special_names& union_with_special_names::operator=(union_with_special_names&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::get:
+      {
+        get_ref().emplace(folly::copy(rhs.value_.get));
+        break;
+      }
+      case Type::getter:
+      {
+        getter_ref().emplace(folly::copy(rhs.value_.getter));
+        break;
+      }
+      case Type::lists:
+      {
+        lists_ref().emplace(folly::copy(rhs.value_.lists));
+        break;
+      }
+      case Type::maps:
+      {
+        maps_ref().emplace(folly::copy(rhs.value_.maps));
+        break;
+      }
+      case Type::name:
+      {
+        name_ref().emplace(folly::copy(rhs.value_.name));
+        break;
+      }
+      case Type::name_to_value:
+      {
+        name_to_value_ref().emplace(folly::copy(rhs.value_.name_to_value));
+        break;
+      }
+      case Type::names:
+      {
+        names_ref().emplace(folly::copy(rhs.value_.names));
+        break;
+      }
+      case Type::prefix_tree:
+      {
+        prefix_tree_ref().emplace(folly::copy(rhs.value_.prefix_tree));
+        break;
+      }
+      case Type::sets:
+      {
+        sets_ref().emplace(folly::copy(rhs.value_.sets));
+        break;
+      }
+      case Type::setter:
+      {
+        setter_ref().emplace(folly::copy(rhs.value_.setter));
+        break;
+      }
+      case Type::str:
+      {
+        str_ref().emplace(folly::copy(rhs.value_.str));
+        break;
+      }
+      case Type::strings:
+      {
+        strings_ref().emplace(folly::copy(rhs.value_.strings));
+        break;
+      }
+      case Type::type:
+      {
+        type_ref().emplace(folly::copy(rhs.value_.type));
+        break;
+      }
+      case Type::value:
+      {
+        value_ref().emplace(folly::copy(rhs.value_.value));
+        break;
+      }
+      case Type::value_to_name:
+      {
+        value_to_name_ref().emplace(folly::copy(rhs.value_.value_to_name));
+        break;
+      }
+      case Type::values:
+      {
+        values_ref().emplace(folly::copy(rhs.value_.values));
+        break;
+      }
+      case Type::id:
+      {
+        id_ref().emplace(folly::copy(rhs.value_.id));
+        break;
+      }
+      case Type::ids:
+      {
+        ids_ref().emplace(folly::copy(rhs.value_.ids));
+        break;
+      }
+      case Type::descriptor:
+      {
+        descriptor_ref().emplace(folly::copy(rhs.value_.descriptor));
+        break;
+      }
+      case Type::descriptors:
+      {
+        descriptors_ref().emplace(folly::copy(rhs.value_.descriptors));
+        break;
+      }
+      case Type::key:
+      {
+        key_ref().emplace(folly::copy(rhs.value_.key));
+        break;
+      }
+      case Type::keys:
+      {
+        keys_ref().emplace(folly::copy(rhs.value_.keys));
+        break;
+      }
+      case Type::annotation:
+      {
+        annotation_ref().emplace(folly::copy(rhs.value_.annotation));
+        break;
+      }
+      case Type::annotations:
+      {
+        annotations_ref().emplace(folly::copy(rhs.value_.annotations));
+        break;
+      }
+      case Type::member:
+      {
+        member_ref().emplace(folly::copy(rhs.value_.member));
+        break;
+      }
+      case Type::members:
+      {
+        members_ref().emplace(folly::copy(rhs.value_.members));
+        break;
+      }
+      case Type::field:
+      {
+        field_ref().emplace(folly::copy(rhs.value_.field));
+        break;
+      }
+      case Type::fields:
+      {
+        fields_ref().emplace(folly::copy(rhs.value_.fields));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   union_with_special_names::union_with_special_names(const union_with_special_names& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

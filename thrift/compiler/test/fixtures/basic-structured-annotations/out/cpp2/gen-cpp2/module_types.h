@@ -1694,33 +1694,7 @@ class MyUnion final  {
 
   MyUnion(const MyUnion& rhs);
 
-  MyUnion& operator=(MyUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      case Type::first:
-      {
-        first_ref().emplace(std::move(rhs.value_.first));
-        break;
-      }
-      case Type::second:
-      {
-        second_ref().emplace(folly::copy(rhs.value_.second));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  MyUnion& operator=(MyUnion&& rhs) noexcept;
 
   MyUnion& operator=(const MyUnion& rhs);
 

@@ -922,6 +922,29 @@ void AdaptedUnion::__fbthrift_clear() {
 bool AdaptedUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  AdaptedUnion& AdaptedUnion::operator=(AdaptedUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::best:
+      {
+        best_ref().emplace(folly::copy(rhs.value_.best));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   AdaptedUnion::AdaptedUnion(const AdaptedUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -1249,6 +1272,29 @@ void BinaryUnion::__fbthrift_clear() {
 bool BinaryUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  BinaryUnion& BinaryUnion::operator=(BinaryUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::iobuf_val:
+      {
+        iobuf_val_ref().emplace(std::move(rhs.value_.iobuf_val));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   BinaryUnion::BinaryUnion(const BinaryUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

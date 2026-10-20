@@ -1534,6 +1534,54 @@ void MyUnion::__fbthrift_clear() {
 bool MyUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  MyUnion& MyUnion::operator=(MyUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::myEnum:
+      {
+        myEnum_ref().emplace(folly::copy(rhs.value_.myEnum));
+        break;
+      }
+      case Type::myStruct:
+      {
+        myStruct_ref().emplace(std::move(rhs.value_.myStruct));
+        break;
+      }
+      case Type::myDataItem:
+      {
+        myDataItem_ref().emplace(std::move(rhs.value_.myDataItem));
+        break;
+      }
+      case Type::complexNestedStruct:
+      {
+        complexNestedStruct_ref().emplace(std::move(rhs.value_.complexNestedStruct));
+        break;
+      }
+      case Type::longValue:
+      {
+        longValue_ref().emplace(folly::copy(rhs.value_.longValue));
+        break;
+      }
+      case Type::intValue:
+      {
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   MyUnion::MyUnion(const MyUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
@@ -1687,6 +1735,44 @@ void MyUnionFloatFieldThrowExp::__fbthrift_clear() {
 bool MyUnionFloatFieldThrowExp::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  MyUnionFloatFieldThrowExp& MyUnionFloatFieldThrowExp::operator=(MyUnionFloatFieldThrowExp&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::myEnum:
+      {
+        myEnum_ref().emplace(folly::copy(rhs.value_.myEnum));
+        break;
+      }
+      case Type::setFloat:
+      {
+        setFloat_ref().emplace(std::move(rhs.value_.setFloat));
+        break;
+      }
+      case Type::myDataItem:
+      {
+        myDataItem_ref().emplace(std::move(rhs.value_.myDataItem));
+        break;
+      }
+      case Type::complexNestedStruct:
+      {
+        complexNestedStruct_ref().emplace(std::move(rhs.value_.complexNestedStruct));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   MyUnionFloatFieldThrowExp::MyUnionFloatFieldThrowExp(const MyUnionFloatFieldThrowExp& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

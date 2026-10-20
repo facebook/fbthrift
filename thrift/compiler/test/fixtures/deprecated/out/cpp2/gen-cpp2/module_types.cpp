@@ -190,6 +190,43 @@ void ExampleUnion::__fbthrift_clear() {
 bool ExampleUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
+  ExampleUnion& ExampleUnion::operator=(ExampleUnion&& rhs) noexcept {
+    if (this == &rhs) { return *this; }
+    switch (rhs.getType()) {
+      case Type::__EMPTY__:
+      {
+        __fbthrift_clear();
+        return *this;
+      }
+      case Type::stringValue:
+      {
+        stringValue_ref().emplace(std::move(rhs.value_.stringValue));
+        break;
+      }
+      case Type::intValue:
+      {
+        FOLLY_PUSH_WARNING
+        FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+        FOLLY_MSVC_DISABLE_WARNING(4996)
+        intValue_ref().emplace(folly::copy(rhs.value_.intValue));
+        FOLLY_POP_WARNING
+        break;
+      }
+      case Type::doubleValue:
+      {
+        doubleValue_ref().emplace(folly::copy(rhs.value_.doubleValue));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        __fbthrift_clear();
+      }
+    }
+    apache::thrift::clear(rhs);
+    return *this;
+  }
+
   ExampleUnion::ExampleUnion(const ExampleUnion& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {

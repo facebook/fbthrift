@@ -609,23 +609,7 @@ class MyUnion final  {
 
   MyUnion(const MyUnion& rhs);
 
-  MyUnion& operator=(MyUnion&& rhs) noexcept {
-    if (this == &rhs) { return *this; }
-    switch (rhs.getType()) {
-      case Type::__EMPTY__:
-      {
-        __fbthrift_clear();
-        return *this;
-      }
-      default:
-      {
-        assert(false);
-        __fbthrift_clear();
-      }
-    }
-    apache::thrift::clear(rhs);
-    return *this;
-  }
+  MyUnion& operator=(MyUnion&& rhs) noexcept;
 
   MyUnion& operator=(const MyUnion& rhs);
 
