@@ -82,6 +82,18 @@ struct HasUnionPmr {
   3: UnionPmr heap_u;
 }
 
+@cpp.Type{name = "std::unique_ptr<folly::IOBuf>"}
+typedef binary IOBufPtr
+
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "PmrByteAlloc"},
+}
+@cpp.InternalExperimentalAllowAllocatorOnUnion
+union IOBufUnionPmr {
+  1: IOBufPtr buf;
+  2: list<IOBufPtr> bufs;
+}
+
 @thrift.DeprecatedUnvalidatedAnnotations{
   items = {"cpp.allocator": "PmrByteAlloc", "cpp.noncopyable": "1"},
 }

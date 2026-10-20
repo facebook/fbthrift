@@ -182,6 +182,35 @@ TEST(CppAllocatorUnionTest, UnionFieldOfAllocatorAwareStruct) {
   EXPECT_EQ(resourceOf(*copy.u()), &res2);
 }
 
+TEST(CppAllocatorUnionTest, SetterOfIOBufMember) {
+  IOBufUnionPmr u;
+  auto buf = folly::IOBuf::copyBuffer(kTooLong);
+  const auto* data = buf.get();
+  EXPECT_EQ(u.set_buf(std::move(buf)).get(), data);
+}
+
+// With a propagating allocator, assigning through the member can leave it on
+// another allocator than the union's; moves rebuild it on the union's.
+TEST(CppAllocatorUnionTest, MovesRebuildMemberOnUnionAllocator) {
+  PropagatingUnion u(ScopedPropagatingStatefulAlloc<>(1));
+  u.aa_list_ref().ensure() = propagatingList(2);
+  ASSERT_EQ(stateOf(*u.aa_list_ref()), 2);
+
+  PropagatingUnion moved(std::move(u));
+  EXPECT_EQ(stateOf(moved), 1);
+  EXPECT_EQ(stateOf(*moved.aa_list_ref()), 1);
+  const auto* data = moved.aa_list_ref()->data();
+
+  PropagatingUnion assigned(ScopedPropagatingStatefulAlloc<>(3));
+  assigned = std::move(moved);
+  EXPECT_EQ(stateOf(assigned), 1);
+  EXPECT_EQ(assigned.aa_list_ref()->data(), data);
+
+  const auto alloc = assigned.get_allocator();
+  const PropagatingUnion withAlloc(std::move(assigned), alloc);
+  EXPECT_EQ(withAlloc.aa_list_ref()->data(), data);
+}
+
 TEST(CppAllocatorUnionTest, CopyAssignKeepsTargetAllocator) {
   auto res = makeResource();
   auto res2 = makeResource();
@@ -195,6 +224,30 @@ TEST(CppAllocatorUnionTest, CopyAssignKeepsTargetAllocator) {
   EXPECT_EQ(resourceOf(*dst.aa_string_ref()), &res2);
 }
 
+// Copies deep-copy members that hold std::unique_ptr<folly::IOBuf>.
+TEST(CppAllocatorUnionTest, CopiesDeepCopyIOBufMembers) {
+  auto res = makeResource();
+  auto res2 = makeResource();
+  IOBufUnionPmr buf{PmrByteAlloc(&res)};
+  buf.buf_ref().emplace(*folly::IOBuf::copyBuffer(kTooLong));
+  IOBufUnionPmr bufs{PmrByteAlloc(&res)};
+  bufs.bufs_ref().emplace().push_back(folly::IOBuf::copyBuffer(kTooLong));
+
+  const IOBufUnionPmr bufCopy(buf);
+  EXPECT_NE(&*bufCopy.buf_ref(), &*buf.buf_ref());
+  EXPECT_TRUE(folly::IOBufEqualTo{}(*bufCopy.buf_ref(), *buf.buf_ref()));
+  IOBufUnionPmr bufsCopy(bufs, PmrByteAlloc(&res2));
+  IOBufUnionPmr bufsAssigned{PmrByteAlloc(&res2)};
+  bufsAssigned = bufs;
+  for (const IOBufUnionPmr* u : {&bufsCopy, &bufsAssigned}) {
+    ASSERT_EQ(u->bufs_ref()->size(), 1);
+    EXPECT_NE(u->bufs_ref()->front().get(), bufs.bufs_ref()->front().get());
+    EXPECT_TRUE(
+        folly::IOBufEqualTo{}(
+            *u->bufs_ref()->front(), *bufs.bufs_ref()->front()));
+  }
+}
+
 TEST(CppAllocatorUnionTest, CopyAssignPropagatesPoccaAllocator) {
   PropagatingUnion src(ScopedPropagatingStatefulAlloc<>(1));
   src.n_ref() = 5;
@@ -203,6 +256,12 @@ TEST(CppAllocatorUnionTest, CopyAssignPropagatesPoccaAllocator) {
   dst = src;
   EXPECT_EQ(stateOf(dst), 1);
   EXPECT_EQ(dst, src);
+
+  // The member is copied after the allocator propagates.
+  src.aa_list_ref().emplace(size_t(3), 1);
+  PropagatingUnion listDst(ScopedPropagatingStatefulAlloc<>(2));
+  listDst = src;
+  EXPECT_EQ(stateOf(*listDst.aa_list_ref()), 1);
 }
 
 TEST(CppAllocatorUnionTest, MoveAssignKeepsTargetAllocator) {
@@ -217,6 +276,23 @@ TEST(CppAllocatorUnionTest, MoveAssignKeepsTargetAllocator) {
   EXPECT_EQ(dst, expected);
   EXPECT_EQ(resourceOf(dst), &res2);
   EXPECT_EQ(resourceOf(*dst.aa_string_ref()), &res2);
+}
+
+TEST(CppAllocatorUnionTest, UnequalAllocatorMovesOfIOBufMembers) {
+  auto res = makeResource();
+  auto res2 = makeResource();
+  IOBufUnionPmr buf{PmrByteAlloc(&res)};
+  buf.buf_ref().emplace(*folly::IOBuf::copyBuffer(kTooLong));
+  const IOBufUnionPmr movedBuf(std::move(buf), PmrByteAlloc(&res2));
+  EXPECT_TRUE(
+      folly::IOBufEqualTo{}(
+          *movedBuf.buf_ref(), *folly::IOBuf::copyBuffer(kTooLong)));
+
+  IOBufUnionPmr bufs{PmrByteAlloc(&res)};
+  bufs.bufs_ref().emplace().push_back(folly::IOBuf::copyBuffer(kTooLong));
+  const auto* data = bufs.bufs_ref()->front().get();
+  const IOBufUnionPmr movedBufs(std::move(bufs), PmrByteAlloc(&res2));
+  EXPECT_EQ(movedBufs.bufs_ref()->front().get(), data);
 }
 
 TEST(CppAllocatorUnionTest, MoveAssignPropagatesPocmaAllocator) {
