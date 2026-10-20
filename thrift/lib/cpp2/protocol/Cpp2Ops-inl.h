@@ -178,35 +178,9 @@ template <>
 class Cpp2Ops<float> : public detail::Cpp2OpsViaOp<float, type::float_t> {};
 template <>
 class Cpp2Ops<double> : public detail::Cpp2OpsViaOp<double, type::double_t> {};
-
-// Every enum is an i32 on the wire, whatever its underlying type.
 template <class E>
-class Cpp2Ops<E, typename std::enable_if<std::is_enum<E>::value>::type> {
- public:
-  using Type = E;
-  static constexpr protocol::TType thriftType() { return protocol::T_I32; }
-  template <class Protocol>
-  FOLLY_ALWAYS_INLINE static uint32_t write(Protocol* prot, const Type* value) {
-    const auto val = static_cast<int32_t>(*value);
-    return Cpp2Ops<int32_t>::write(prot, &val);
-  }
-  template <class Protocol>
-  FOLLY_ALWAYS_INLINE static void read(Protocol* prot, Type* value) {
-    int32_t val;
-    Cpp2Ops<int32_t>::read(prot, &val);
-    *value = static_cast<Type>(val);
-  }
-  template <class Protocol>
-  static uint32_t serializedSize(Protocol* prot, const Type* value) {
-    return static_cast<uint32_t>(op::serialized_size<false, type::i32_t>(
-        *prot, static_cast<int32_t>(*value)));
-  }
-  template <class Protocol>
-  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
-    return static_cast<uint32_t>(op::serialized_size<true, type::i32_t>(
-        *prot, static_cast<int32_t>(*value)));
-  }
-};
+class Cpp2Ops<E, typename std::enable_if<std::is_enum<E>::value>::type>
+    : public detail::Cpp2OpsViaOp<E, type::enum_t<E>> {};
 
 namespace detail {
 
