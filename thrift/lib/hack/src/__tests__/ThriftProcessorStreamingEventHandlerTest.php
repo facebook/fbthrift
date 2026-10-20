@@ -36,7 +36,11 @@ final class ThriftProcessorStreamingEventHandlerTest extends WWWTest {
   ): shape('input' => TProtocol, 'output' => TProtocol) {
     self::mockFunction(PHP\gen_start_thrift_stream<>)
       ->mockYield($server_stream);
+    return $this->mockProtocolsAroundStreamStart();
+  }
 
+  private function mockProtocolsAroundStreamStart(
+  ): shape('input' => TProtocol, 'output' => TProtocol) {
     self::mockFunction(PHP\hphp_set_error_page<>);
     self::mockFunction(php_root<>)->mockReturn('/var/www');
     self::mockFunction(request_stats_total_wall<>)->mockReturn(0);
@@ -146,6 +150,63 @@ final class ThriftProcessorStreamingEventHandlerTest extends WWWTest {
     expect($event_handler->postStreamPayloadGenerateCalled)->toBeTrue();
     expect($event_handler->postStreamPayloadExceptionCalled)->toBeTrue();
     expect($event_handler->postStreamPayloadErrorCalled)->toBeFalse();
+  }
+
+  /**
+   * The stream start, the wait for client credits and each payload send block
+   * on the stream's I/O thread. Each fake below suspends the way the native
+   * wait handle does, then records whether a WallTimeOperation is open while
+   * the wait is pending. Without one, the wall time profiler logs
+   * `UnattributedIOTimeException` for every streamed request.
+   */
+  <<JKBoolDataProvider('thrift/hack:thrift_use_method_metadata_processor')>>
+  public async function testNativeStreamWaitsRunInsideWallTimeOperation(
+  ): Awaitable<void> {
+    $open_while_pending = new Ref(dict<string, bool>[]);
+    $record_while_pending = async (string $wait): Awaitable<void> ==> {
+      await stop_eager_execution();
+      $root = WallTimeProfiler::getRoot();
+      $open_while_pending->value[$wait] = $root->getNext() !== $root;
+    };
+    $server_stream = mock(TServerStream::class);
+    $server_stream->mockImplementation(
+      'genIsStreamReady',
+      async () ==> {
+        await $record_while_pending('genIsStreamReady');
+        return true;
+      },
+    );
+    $server_stream->mockImplementation(
+      'genSendStreamPayload',
+      async ($_payload) ==> {
+        await $record_while_pending('genSendStreamPayload');
+        return true;
+      },
+    );
+    $server_stream->mockReturn('sendStreamComplete', null);
+    self::mockFunction(PHP\gen_start_thrift_stream<>)->mockImplementation(
+      async ($_first_response) ==> {
+        await $record_while_pending('gen_start_thrift_stream');
+        return $server_stream;
+      },
+    );
+    $protocols = $this->mockProtocolsAroundStreamStart();
+    $processor = new TestStreamingApplicationProcessor(
+      new TestStreamingExampleThriftHandler(),
+    );
+
+    await $processor->processAsync(
+      $protocols['input'],
+      $protocols['output'],
+      self::TEST_STREAMING_SERVICE_METHOD_NAME,
+      1,
+    );
+
+    expect($open_while_pending->value)->toEqual(dict[
+      'gen_start_thrift_stream' => true,
+      'genIsStreamReady' => true,
+      'genSendStreamPayload' => true,
+    ]);
   }
 }
 
