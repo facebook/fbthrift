@@ -3529,7 +3529,7 @@ TEST(ThriftServer, RocketOverQuic) {
   EXPECT_EQ(response, "test64");
 }
 
-#if FOLLY_HAS_MEMORY_RESOURCE
+#if FOLLY_HAS_MEMORY_RESOURCE && defined(__cpp_lib_memory_resource)
 class AccountingMemoryPool : public std::pmr::memory_resource {
  public:
   size_t allocated = 0;

@@ -40,7 +40,7 @@ enum class ParserMode { STRATEGY, ALLOCATING, ALIGNED };
 ParserMode stringToMode(const std::string& modeStr) noexcept;
 ParserAllocatorType& getDefaultAllocator();
 
-#if FOLLY_HAS_MEMORY_RESOURCE
+#if FOLLY_HAS_MEMORY_RESOURCE && defined(__cpp_lib_memory_resource)
 void setDefaultParserMemoryResource(std::pmr::memory_resource* resource);
 #endif
 } // namespace detail
@@ -67,8 +67,9 @@ void setDefaultParserMemoryResource(std::pmr::memory_resource* resource);
 // Passing nullptr leaves the standard default resource in place.
 //
 // Declared only when std::pmr::memory_resource is available; callers must
-// guard call sites with FOLLY_HAS_MEMORY_RESOURCE.
-#if FOLLY_HAS_MEMORY_RESOURCE
+// guard call sites with FOLLY_HAS_MEMORY_RESOURCE &&
+// defined(__cpp_lib_memory_resource).
+#if FOLLY_HAS_MEMORY_RESOURCE && defined(__cpp_lib_memory_resource)
 void setDefaultParserMemoryResource(std::pmr::memory_resource* resource);
 #endif
 
