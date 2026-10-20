@@ -25,7 +25,7 @@
 #include <folly/Traits.h>
 #include <folly/container/F14Map.h>
 #include <folly/io/Cursor.h>
-#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
+#include <thrift/lib/cpp2/op/Encode.h>
 #include <thrift/lib/cpp2/protocol/LazyDeserializationFlags.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
@@ -380,7 +380,7 @@ class ProtocolReaderStructReadStateWithIndexImpl
       return;
     }
 
-    Cpp2Ops<FieldIdToSize>::read(&p, &fieldIdToSize_);
+    op::decode<type::map<type::i16_t, type::i64_t>>(p, fieldIdToSize_);
 
     if (randomNumber_) {
       auto i = fieldIdToSize_.find(kActualRandomNumberFieldId);
