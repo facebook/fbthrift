@@ -408,7 +408,6 @@ function (
       DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${include_prefix}
       FILES_MATCHING
       PATTERN "*.tcc")
-    bypass_source_check(${sources})
     add_library("${file_name}-${language}-obj" OBJECT ${sources})
     # $<TARGET_OBJECTS:...> carries no usage requirements, so the generated
     # sources need the roots directly.
@@ -422,13 +421,3 @@ function (
     message("Thrift will create the Library file : ${file_name}-${language}")
   endif ()
 endfunction ()
-
-# This tells cmake to ignore if it doesn't see the following sources in
-# the library that will be installed. Thrift files are generated at compile
-# time so they do not exist at source check time
-#
-# Params:
-#   @sources - The list of files to ignore in source check
-macro (bypass_source_check sources)
-  set_source_files_properties(${sources} PROPERTIES GENERATED TRUE)
-endmacro ()

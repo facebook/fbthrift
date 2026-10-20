@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set(COMPILER_DIR ${CMAKE_CURRENT_BINARY_DIR})
-
 add_library(common detail/string.cc tree_printer.cc universal_name.cc)
 thrift_configure_target(common PUBLIC)
 

@@ -12,9 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Set the compiler directory.
-set(COMPILER_DIR ${CMAKE_CURRENT_BINARY_DIR})
-
 # Override the default install path for `make install` step.
 set(CMAKE_INSTALL_PREFIX ${THRIFT_SOURCE_DIR})
 
