@@ -248,7 +248,7 @@ TEST_F(BackpressureTest, HeadEndpointReceivesWriteReadyBeforeHandlers) {
         return ctx.fireWrite(std::move(msg));
       });
   middle_handler_->setOnWriteReady([&](detail::ContextImpl& ctx) {
-    readinessOrder.push_back("handler");
+    readinessOrder.emplace_back("handler");
     ctx.cancelAwaitWriteReady();
   });
   app_.setOnWriteWithContextCallback(
@@ -257,7 +257,7 @@ TEST_F(BackpressureTest, HeadEndpointReceivesWriteReadyBeforeHandlers) {
         return Result::Backpressure;
       });
   app_.setOnWriteReadyCallback([&](detail::ContextImpl& ctx) {
-    readinessOrder.push_back("head");
+    readinessOrder.emplace_back("head");
     ctx.cancelAwaitWriteReady();
   });
 
