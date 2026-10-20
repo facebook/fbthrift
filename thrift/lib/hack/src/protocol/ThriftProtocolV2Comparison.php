@@ -71,16 +71,14 @@ abstract final class ThriftProtocolV2Comparison {
       );
     }
     $v2_bytes = self::encode($base_roundtrip, $spec, $compact, true, $version);
-    if ($v2_bytes is Throwable) {
-      // If the base protocol fails too, the value is at fault rather than V2.
-      return self::compareFailures(
-        self::encode($base_roundtrip, $spec, $compact, false, $version),
-        $v2_bytes,
-      );
+    $base_bytes =
+      self::encode($base_roundtrip, $spec, $compact, false, $version);
+    // If the base protocol fails too, the value is at fault rather than V2.
+    if ($base_bytes is Throwable || $v2_bytes is Throwable) {
+      return self::compareFailures($base_bytes, $v2_bytes);
     }
-    return $v2_bytes === $bytes_written_by_base
-      ? null
-      : 'V2 differs from the base protocol';
+    return
+      $v2_bytes === $base_bytes ? null : 'V2 differs from the base protocol';
   }
 
   <<__TestsBypassVisibility>>

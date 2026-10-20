@@ -136,7 +136,7 @@ final class ThriftProtocolV2ComparisonTest extends WWWTest {
 
   // Both protocols skip the unknown field, so their reads agree, but no Hack
   // round trip reproduces the input bytes.
-  public function testUnknownFieldComparesEqualOnReadOnly(): void {
+  public function testUnknownFieldComparesEqual(): void {
     $input = "\x08\x7f\xff\x00\x00\x00\x01\x00";
     $spec = shape('type' => TType::STRUCT, 'class' => CompactTestStruct::class);
     expect(
@@ -144,7 +144,79 @@ final class ThriftProtocolV2ComparisonTest extends WWWTest {
     )->toBeNull();
     expect(
       ThriftProtocolV2Comparison::compareWrite($input, $spec, false, null, 0),
-    )->toEqual('V2 differs from the base protocol');
+    )->toBeNull();
+  }
+
+  <<DataProvider('providerProtocols')>>
+  public function testDefaultValuesCompareEqualOnWrite(bool $compact): void {
+    $input = "\x00";
+    $spec =
+      shape('type' => TType::STRUCT, 'class' => thriftshim_Pokemon::class);
+    $sides = self::sides($input, $spec, $compact);
+    expect($sides['expected'] is string)->toBeTrue();
+    expect($sides['expected'])->toNotEqual($input);
+    expect($sides['write'])->toEqual($sides['expected']);
+    expect(
+      ThriftProtocolV2Comparison::compareWrite(
+        $input,
+        $spec,
+        $compact,
+        self::version($compact),
+        0,
+      ),
+    )->toBeNull();
+  }
+
+  <<DataProvider('providerProtocols')>>
+  public function testSameEncodeFailureComparesEqual(bool $compact): void {
+    $spec = shape(
+      'type' => TType::LST,
+      'elem' => shape('type' => TType::I64),
+      'format' => 'harray',
+    );
+    $version = self::version($compact);
+    $input = ThriftProtocolV2Comparison::encode(
+      vec[],
+      shape(
+        'type' => TType::LST,
+        'etype' => TType::I64,
+        'elem' => shape('type' => TType::I64),
+        'format' => 'harray',
+      ),
+      $compact,
+      false,
+      $version,
+    );
+    expect($input is string)->toBeTrue();
+    $value = ThriftProtocolV2Comparison::decode(
+      $input as string,
+      $spec,
+      $compact,
+      false,
+      $version,
+      0,
+    );
+    expect($value)->toEqual(vec[]);
+    foreach (vec[false, true] as $v2) {
+      expect(
+        ThriftProtocolV2Comparison::encode(
+          $value,
+          $spec,
+          $compact,
+          $v2,
+          $version,
+        ),
+      )->toBeInstanceOf(nameof Throwable);
+    }
+    expect(
+      ThriftProtocolV2Comparison::compareWrite(
+        $input,
+        $spec,
+        $compact,
+        $version,
+        0,
+      ),
+    )->toBeNull();
   }
 
   <<DataProvider('providerProtocols')>>
