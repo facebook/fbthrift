@@ -87,7 +87,7 @@ add_library(compiler_base STATIC detail/system.cc detail/pluggable_functions.cc
                                  diagnostic.cc source_location.cc)
 set_target_properties(compiler_base PROPERTIES POSITION_INDEPENDENT_CODE
                                                "${BUILD_SHARED_LIBS}")
-target_link_libraries(compiler_base fmt::fmt Folly::folly common
+target_link_libraries(compiler_base fmt::fmt Folly::folly thrift_common
                       ${FBTHRIFT_COMPILER_LINK_CXXFS})
 
 # The base Thrift compiler library.
@@ -192,7 +192,7 @@ install(
           compiler_lib
           compiler
           whisker
-          common
+          thrift_common
   EXPORT fbthrift-exports
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

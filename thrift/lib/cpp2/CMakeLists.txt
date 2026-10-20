@@ -254,7 +254,7 @@ add_library(
   type/UniversalName.cpp)
 add_dependencies(thrifttype thrift_annotation thrifttyperep thriftprotocol)
 target_link_libraries(
-  thrifttype PUBLIC common Folly::folly thrift_annotation thrifttyperep
+  thrifttype PUBLIC thrift_common Folly::folly thrift_annotation thrifttyperep
                     thriftprotocol ${thrift_openssl_crypto})
 
 # thriftanyrep sources are now compiled into thrifttype to avoid a circular

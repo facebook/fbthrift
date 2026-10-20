@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_library(common detail/string.cc tree_printer.cc universal_name.cc)
-thrift_configure_target(common PUBLIC)
+add_library(thrift_common detail/string.cc tree_printer.cc universal_name.cc)
+target_link_libraries(thrift_common fmt::fmt)
+thrift_configure_target(thrift_common PUBLIC)
 
 install(
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
@@ -21,5 +22,3 @@ install(
   FILES_MATCHING
   PATTERN "*.h"
   PATTERN "*.tcc")
-
-target_link_libraries(common fmt::fmt)
