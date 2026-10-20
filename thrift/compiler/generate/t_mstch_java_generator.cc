@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <algorithm>
 #include <cctype>
 #include <filesystem>
 #include <iomanip>
@@ -187,25 +186,6 @@ void collect_types_from_service_functions(
     }
   }
 }
-
-whisker::object batch_whisker_array(
-    whisker::array::raw items, size_t batch_size) {
-  if (items.empty()) {
-    return whisker::make::array(whisker::array::raw{});
-  }
-  whisker::array::raw batches;
-  for (size_t i = 0; i < items.size(); i += batch_size) {
-    whisker::array::raw batch;
-    auto end = std::min(i + batch_size, items.size());
-    for (size_t j = i; j < end; ++j) {
-      batch.emplace_back(std::move(items[j]));
-    }
-    batches.emplace_back(whisker::make::array(std::move(batch)));
-  }
-  return whisker::make::array(std::move(batches));
-}
-
-constexpr size_t kValueBatchSize = 200;
 
 struct service_referenced_types {
   std::vector<const t_structured*> structs;
@@ -466,16 +446,6 @@ class t_mstch_java_generator : public t_whisker_generator {
       }
       return whisker::make::null;
     });
-    def.property("value_batches", [&proto](const t_enum& self) {
-      whisker::array::raw all_values;
-      for (const auto& ev : self.values()) {
-        all_values.emplace_back(proto.create<t_enum_value>(ev));
-      }
-      return batch_whisker_array(std::move(all_values), kValueBatchSize);
-    });
-    def.property("has_multiple_value_batches?", [](const t_enum& self) {
-      return self.values().size() > kValueBatchSize;
-    });
     return std::move(def).make();
   }
 
@@ -687,30 +657,20 @@ class t_mstch_java_generator : public t_whisker_generator {
     auto def = whisker::dsl::prototype_builder<h_program>::extends(base);
     def.property("javaPackage", &get_namespace_or_default);
     def.property("constantClassName", &get_constants_class_name);
-    def.property("type_list_batches", [&proto](const t_program& self) {
-      constexpr int32_t BATCH_SIZE = 512;
-      whisker::array::raw all_types;
+    def.property("types_with_uris", [&proto](const t_program& self) {
+      whisker::array::raw types;
+      types.reserve(self.structured_definitions().size() + self.enums().size());
       for (const auto* s : self.structured_definitions()) {
         if (!s->uri().empty()) {
-          all_types.emplace_back(resolve_derived_t_type(proto, *s));
+          types.emplace_back(resolve_derived_t_type(proto, *s));
         }
       }
       for (const auto* e : self.enums()) {
         if (!e->uri().empty()) {
-          all_types.emplace_back(resolve_derived_t_type(proto, *e));
+          types.emplace_back(resolve_derived_t_type(proto, *e));
         }
       }
-      whisker::array::raw batches;
-      for (size_t i = 0; i < all_types.size(); i += BATCH_SIZE) {
-        whisker::array::raw batch;
-        auto end =
-            std::min(i + static_cast<size_t>(BATCH_SIZE), all_types.size());
-        for (size_t j = i; j < end; ++j) {
-          batch.emplace_back(std::move(all_types[j]));
-        }
-        batches.emplace_back(whisker::make::array(std::move(batch)));
-      }
-      return whisker::make::array(std::move(batches));
+      return whisker::make::array(std::move(types));
     });
     def.property("type_list_hash", [](const t_program& self) {
       return compute_type_list_hash(self);
@@ -722,67 +682,28 @@ class t_mstch_java_generator : public t_whisker_generator {
       const prototype_database& proto) const override {
     auto base = t_whisker_generator::make_prototype_for_interface(proto);
     auto def = whisker::dsl::prototype_builder<h_interface>::extends(base);
-    def.property("function_batches", [&proto](const t_interface& self) {
-      constexpr int32_t BATCH_SIZE = 100;
-      whisker::array::raw all_funcs;
-      for (const auto& func : self.functions()) {
+    def.property("metadata_functions", [&proto](const t_interface& self) {
+      whisker::array::raw funcs;
+      for (const t_function& func : self.functions()) {
         if (!func.is_interaction_constructor()) {
-          all_funcs.emplace_back(proto.create<t_function>(func));
+          funcs.emplace_back(proto.create<t_function>(func));
         }
       }
-      whisker::array::raw batches;
-      for (size_t i = 0; i < all_funcs.size(); i += BATCH_SIZE) {
-        whisker::array::raw batch;
-        auto end =
-            std::min(i + static_cast<size_t>(BATCH_SIZE), all_funcs.size());
-        for (size_t j = i; j < end; ++j) {
-          batch.emplace_back(std::move(all_funcs[j]));
-        }
-        batches.emplace_back(whisker::make::array(std::move(batch)));
-      }
-      return whisker::make::array(std::move(batches));
+      return whisker::make::array(std::move(funcs));
     });
 
     def.property(
         "referenced_exceptions", [this, &proto](const t_interface& self) {
-          const auto& types = get_service_types(self);
-          whisker::array::raw result;
-          for (const auto* s : types.exceptions) {
-            result.emplace_back(proto.create<t_structured>(*s));
-          }
-          return whisker::make::array(std::move(result));
+          return to_type_array(get_service_types(self).exceptions, proto);
         });
 
-    def.property(
-        "referenced_struct_batches", [this, &proto](const t_interface& self) {
-          const auto& types = get_service_types(self);
-          whisker::array::raw items;
-          for (const auto* s : types.structs) {
-            items.emplace_back(proto.create<t_structured>(*s));
-          }
-          return batch_whisker_array(std::move(items), 20);
-        });
+    def.property("referenced_structs", [this, &proto](const t_interface& self) {
+      return to_type_array(get_service_types(self).structs, proto);
+    });
 
-    def.property(
-        "referenced_enum_batches", [this, &proto](const t_interface& self) {
-          const auto& types = get_service_types(self);
-          whisker::array::raw items;
-          for (const auto* e : types.enums) {
-            items.emplace_back(proto.create<t_enum>(*e));
-          }
-          return batch_whisker_array(std::move(items), 1);
-        });
-
-    def.property(
-        "referenced_exception_batches",
-        [this, &proto](const t_interface& self) {
-          const auto& types = get_service_types(self);
-          whisker::array::raw items;
-          for (const auto* s : types.exceptions) {
-            items.emplace_back(proto.create<t_structured>(*s));
-          }
-          return batch_whisker_array(std::move(items), 50);
-        });
+    def.property("referenced_enums", [this, &proto](const t_interface& self) {
+      return to_type_array(get_service_types(self).enums, proto);
+    });
 
     def.property("oneway_functions", [&proto](const t_interface& self) {
       whisker::array::raw funcs;
