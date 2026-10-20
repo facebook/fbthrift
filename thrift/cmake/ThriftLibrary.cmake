@@ -18,20 +18,13 @@
 # a host thrift on PATH -- which a baked-in path to the unrunnable
 # target-architecture binary would defeat.
 
-# The in-tree target names. A project building against an installed Thrift
-# overrides these before including this file: its exported targets carry a
-# namespace prefix, and some such projects point THRIFT_COMPILER at a thrift
-# binary found on PATH instead.
+# The in-tree compiler target. A project building against an installed Thrift
+# overrides it before including this file: its exported targets carry a
+# namespace prefix, and some such projects point it at a thrift binary found on
+# PATH instead.
 if (NOT DEFINED THRIFT_COMPILER)
   set(THRIFT_COMPILER thrift)
 endif ()
-if (NOT DEFINED THRIFTCPP2)
-  set(THRIFTCPP2 thriftcpp2)
-endif ()
-
-# Consumers include this file directly, so it cannot assume the includer has
-# already pulled in the standard install directory variables.
-include(GNUInstallDirs)
 
 # Generates code from a .thrift file with the Thrift compiler.
 #
@@ -81,7 +74,7 @@ function (thrift_generate file)
       FATAL_ERROR
         "thrift_generate: expected a .thrift file, got '${file}'. The "
         "positional form was removed; use thrift_generate(<file>.thrift "
-        "LANGUAGE ...) or thrift_library().")
+        "LANGUAGE ...).")
   endif ()
   set(one_value_keywords
       LANGUAGE
@@ -310,114 +303,5 @@ function (thrift_generate file)
     set(${THRIFT_GENERATE_OUT_SOURCES}
         "${sources}"
         PARENT_SCOPE)
-  endif ()
-endfunction ()
-
-# Generates code from a .thrift file and builds it into a library to link
-# against.
-#
-# Params:
-#   @file_name - The name of the thrift file, without .thrift
-#   @services  - A list of services that are declared in the thrift file
-#   @language  - The generator to use (cpp2 or python)
-#   @options   - Extra options to pass to the generator, comma-separated
-#   @file_path - The directory where the thrift file lives
-#   @output_path - The directory where the thrift objects will be built
-#   @include_prefix - The last part of output_path, relative include prefix
-#   @TARGET_NAME_BASE (optional) - <base> in the variable below, instead of
-#       file_name
-#   @THRIFT_INCLUDE_DIRECTORIES (optional) path to thrift include directories
-#   @NAMESPACE (optional) - As in thrift_generate (python).
-#
-# Output:
-#  A library named `${file_name}-${language}` to link against, built from the
-#  object library `${file_name}-${language}-obj`. For python, a target named
-#  `${file_name}-python` that generates the files.
-#  ${<base>-<language>-SOURCES} - The generated sources, where <base> is
-#  TARGET_NAME_BASE or file_name.
-#
-# Except for python, it also installs gen-<language> from the current source
-# directory.
-#
-# Notes:
-# If any of the fields is empty, it is still required to provide an empty string
-#
-# Usage:
-#   thrift_library(
-#     #file_name
-#     #services
-#     #language
-#     #options
-#     #file_path
-#     #output_path
-#     #include_prefix
-#   )
-#   add_library(somelib ...)
-#   target_link_libraries(somelib ${file_name}-${language} ...)
-function (
-  thrift_library
-  file_name
-  services
-  language
-  options
-  file_path
-  output_path
-  include_prefix)
-  cmake_parse_arguments(
-    THRIFT_LIBRARY "" "TARGET_NAME_BASE;NAMESPACE" "THRIFT_INCLUDE_DIRECTORIES"
-    ${ARGN})
-  set(name "${file_name}")
-  if (NOT "${THRIFT_LIBRARY_TARGET_NAME_BASE}" STREQUAL "")
-    set(name "${THRIFT_LIBRARY_TARGET_NAME_BASE}")
-  endif ()
-  string(REPLACE "," ";" option_list "${options}")
-  set(prefix "${include_prefix}")
-  set(extra_args)
-  if ("${language}" STREQUAL "python")
-    set(prefix "")
-    if (NOT "${THRIFT_LIBRARY_NAMESPACE}" STREQUAL "")
-      list(APPEND extra_args NAMESPACE "${THRIFT_LIBRARY_NAMESPACE}")
-    endif ()
-  endif ()
-  if (NOT "${output_path}" STREQUAL "")
-    list(APPEND extra_args OUTPUT_DIRECTORY "${output_path}")
-  endif ()
-  thrift_generate(
-    "${file_path}/${file_name}.thrift"
-    LANGUAGE "${language}"
-    OUT_SOURCES sources
-    SERVICES ${services}
-    OPTIONS ${option_list}
-    INCLUDE_DIRECTORIES ${THRIFT_LIBRARY_THRIFT_INCLUDE_DIRECTORIES}
-    INCLUDE_PREFIX "${prefix}"
-    ${extra_args})
-  set("${name}-${language}-SOURCES"
-      "${sources}"
-      PARENT_SCOPE)
-  if ("${language}" STREQUAL "python")
-    add_custom_target("${file_name}-${language}" ALL DEPENDS ${sources})
-    message("Thrift will create the Python library : ${file_name}-${language}")
-  else ()
-    install(
-      DIRECTORY gen-${language}
-      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${include_prefix}
-      FILES_MATCHING
-      PATTERN "*.h")
-    install(
-      DIRECTORY gen-${language}
-      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${include_prefix}
-      FILES_MATCHING
-      PATTERN "*.tcc")
-    add_library("${file_name}-${language}-obj" OBJECT ${sources})
-    # $<TARGET_OBJECTS:...> carries no usage requirements, so the generated
-    # sources need the roots directly.
-    target_include_directories(
-      "${file_name}-${language}-obj"
-      PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
-             $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>)
-    add_library("${file_name}-${language}"
-                $<TARGET_OBJECTS:${file_name}-${language}-obj>)
-    target_link_libraries("${file_name}-${language}" ${THRIFTCPP2})
-    message("Thrift will create the Library file : ${file_name}-${language}")
   endif ()
 endfunction ()

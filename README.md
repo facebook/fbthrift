@@ -139,22 +139,23 @@ If you want to invoke `cmake` again to iterate, there is a helpful
 
 ### Thrift Files
 
-When using thrift and the CMake build system, include: `ThriftLibrary.cmake` in
-your project. This includes the following macro to help building Thrift files:
+To generate code from `.thrift` files in a CMake project, find the installed
+Thrift, include `ThriftLibrary.cmake` and call `thrift_generate`:
 
-    thrift_library(
-      #file_name
-      #services
-      #language
-      #options
-      #file_path
-      #output_path
-    )
+    find_package(FBThrift CONFIG REQUIRED)
+    list(APPEND CMAKE_MODULE_PATH "${FBTHRIFT_INCLUDE_DIR}/thrift")
+    include(ThriftLibrary)
 
-This generates a library called `file_name-<language>`. That is, for
-`Test.thrift` compiled as cpp2, it will generate the library `Test-cpp2`.
-This should be added as a dependency to any source or header file that contains
-an include to generated code.
+    add_library(example)
+    thrift_generate(if/example.thrift LANGUAGE cpp2 TARGET example)
+    target_include_directories(example PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+    target_link_libraries(example PUBLIC FBThrift::thriftprotocol)
+
+`TARGET` adds the generated sources to `example`; the comment above
+`thrift_generate` in `ThriftLibrary.cmake` describes the other options. Code
+generated for services also needs `FBThrift::thriftcpp2`, whose
+`wangle::wangle` dependency must be found first with
+`find_package(wangle CONFIG)`.
 
 ### Python Build (thrift-python)
 
