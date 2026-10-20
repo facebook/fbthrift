@@ -310,6 +310,8 @@ add_library(
   gen/module_types_cpp.cpp)
 target_link_libraries(thriftprotocol PUBLIC fmt::fmt Folly::folly glog::glog
                                             thrift-core)
+# The name thrift_generate() links into a cpp2 TARGET, as for installed Thrift.
+add_library(FBThrift::protocol ALIAS thriftprotocol)
 
 if (THRIFT_RPC)
   add_library(

@@ -15,8 +15,6 @@
 add_library(thrift_annotation)
 # The old name, kept for compatibility.
 add_library(thriftannotation ALIAS thrift_annotation)
-thrift_configure_target(thrift_annotation PUBLIC)
-target_link_libraries(thrift_annotation PUBLIC Folly::folly)
 
 foreach (
   name

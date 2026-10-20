@@ -73,6 +73,14 @@ else()
   set(FBTHRIFT_COMPILER "FBTHRIFT_COMPILER-NOTFOUND")
 endif()
 
+# The name ThriftLibrary.cmake links into a cpp2 thrift_generate() TARGET, as in
+# Thrift's own build.
+if (NOT TARGET FBThrift::protocol)
+  add_library(FBThrift::protocol INTERFACE IMPORTED)
+  target_link_libraries(FBThrift::protocol
+                        INTERFACE FBThrift::thriftprotocol)
+endif()
+
 # Components, checked with find_package(FBThrift COMPONENTS ...).
 # cpp2 is always built; py is the deprecated predecessor of python.
 set(FBThrift_cpp2_FOUND True)

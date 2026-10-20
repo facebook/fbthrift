@@ -48,7 +48,9 @@ include(GNUInstallDirs)
 #
 #   <file>.thrift - The file to compile, relative to CMAKE_CURRENT_SOURCE_DIR.
 #   LANGUAGE - The generator to use.
-#   TARGET - A target to add the generated files to as sources.
+#   TARGET - A target to add the generated files to as sources. For cpp2, it
+#       also links FBThrift::protocol publicly, which provides the
+#       include directories and runtime the generated code needs.
 #   OUT_SOURCES - A variable to set to the generated sources.
 #   SERVICES - The services declared in the file.
 #   OPTIONS - Generator options, e.g. `OPTIONS json no_metadata`.
@@ -294,6 +296,14 @@ function (thrift_generate file)
 
   if (DEFINED THRIFT_GENERATE_TARGET)
     target_sources(${THRIFT_GENERATE_TARGET} PRIVATE ${headers} ${sources})
+    if (language STREQUAL "cpp2")
+      # Several calls can share a target.
+      get_target_property(links ${THRIFT_GENERATE_TARGET} LINK_LIBRARIES)
+      if (NOT "FBThrift::protocol" IN_LIST links)
+        target_link_libraries(${THRIFT_GENERATE_TARGET}
+                              PUBLIC FBThrift::protocol)
+      endif ()
+    endif ()
   endif ()
 
   if (DEFINED THRIFT_GENERATE_OUT_SOURCES)
