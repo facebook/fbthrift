@@ -16,6 +16,7 @@ namespace ident {
 struct aa_string;
 struct aa_list;
 struct plain_int;
+struct aa_shared_string;
 } // namespace ident
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_aa_string
@@ -29,6 +30,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(aa_list);
 #ifndef APACHE_THRIFT_ACCESSOR_plain_int
 #define APACHE_THRIFT_ACCESSOR_plain_int
 APACHE_THRIFT_DEFINE_ACCESSOR(plain_int);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_aa_shared_string
+#define APACHE_THRIFT_ACCESSOR_aa_shared_string
+APACHE_THRIFT_DEFINE_ACCESSOR(aa_shared_string);
 #endif
 } // namespace detail
 } // namespace apache::thrift
@@ -70,20 +75,22 @@ class AllocUnion final  {
   FOLLY_ERASE static constexpr std::string_view __fbthrift_get_module_name() noexcept {
     return "module";
   }
-  static constexpr std::size_t __fbthrift_num_fields = 3;
+  static constexpr std::size_t __fbthrift_num_fields = 4;
 
-  static constexpr const int16_t __fbthrift_reflection_field_ids[] = {0,1,2,3};
+  static constexpr const int16_t __fbthrift_reflection_field_ids[] = {0,1,2,3,4};
 
   using __fbthrift_reflection_idents = folly::tag_t<
     ::apache::thrift::ident::aa_string,
     ::apache::thrift::ident::aa_list,
-    ::apache::thrift::ident::plain_int
+    ::apache::thrift::ident::plain_int,
+    ::apache::thrift::ident::aa_shared_string
   >;
 
   using __fbthrift_reflection_type_tags = folly::tag_t<
     ::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_union::PmrStringList, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::string_t>>>,
-    ::apache::thrift::type::i32_t
+    ::apache::thrift::type::i32_t,
+    ::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::string_t>
   >;
   void __fbthrift_clear();
   void __fbthrift_destruct();
@@ -108,6 +115,7 @@ class AllocUnion final  {
     aa_string = 1,
     aa_list = 2,
     plain_int = 3,
+    aa_shared_string = 4,
   } ;
 
   AllocUnion()
@@ -135,6 +143,7 @@ class AllocUnion final  {
     ::test::fixtures::cpp_allocator_union::PmrString aa_string;
     ::test::fixtures::cpp_allocator_union::PmrStringList aa_list;
     ::std::int32_t plain_int;
+    ::std::shared_ptr<::test::fixtures::cpp_allocator_union::PmrString> aa_shared_string;
 
     storage_type() {}
     ~storage_type() {}
@@ -179,6 +188,14 @@ class AllocUnion final  {
     return value_.plain_int;
   }
 
+  /** Glean { "field": "aa_shared_string" } */
+  ::std::shared_ptr<::test::fixtures::cpp_allocator_union::PmrString> const& get_aa_shared_string() const [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+    if (getType() != Type::aa_shared_string) {
+      ::apache::thrift::detail::throw_on_bad_union_field_access();
+    }
+    return value_.aa_shared_string;
+  }
+
   ::test::fixtures::cpp_allocator_union::PmrString& mutable_aa_string() {
     assert(getType() == Type::aa_string);
     return value_.aa_string;
@@ -192,6 +209,11 @@ class AllocUnion final  {
   ::std::int32_t& mutable_plain_int() {
     assert(getType() == Type::plain_int);
     return value_.plain_int;
+  }
+
+  ::std::shared_ptr<::test::fixtures::cpp_allocator_union::PmrString>& mutable_aa_shared_string() {
+    assert(getType() == Type::aa_shared_string);
+    return value_.aa_shared_string;
   }
 
   template <typename..., typename T = ::test::fixtures::cpp_allocator_union::PmrString>
@@ -210,6 +232,12 @@ class AllocUnion final  {
   T move_plain_int() {
     assert(getType() == Type::plain_int);
     return std::move(value_.plain_int);
+  }
+
+  template <typename..., typename T = ::std::shared_ptr<::test::fixtures::cpp_allocator_union::PmrString>>
+  T move_aa_shared_string() {
+    assert(getType() == Type::aa_shared_string);
+    return std::move(value_.aa_shared_string);
   }
 
   /** Glean { "field": "aa_string" } */
@@ -308,6 +336,38 @@ class AllocUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<::std::int32_t&&> plain_int() && [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
     return {std::move(value_.plain_int), fbthrift_type_, folly::to_underlying(Type::plain_int), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
+  /** Glean { "field": "aa_shared_string" } */
+  template <typename..., typename T = ::std::shared_ptr<::test::fixtures::cpp_allocator_union::PmrString>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&, allocator_type> aa_shared_string_ref() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+    return {value_.aa_shared_string, fbthrift_type_, folly::to_underlying(Type::aa_shared_string), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>, __fbthrift_alloc};
+  }
+
+  /** Glean { "field": "aa_shared_string" } */
+  template <typename..., typename T = ::std::shared_ptr<::test::fixtures::cpp_allocator_union::PmrString>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&, allocator_type> aa_shared_string_ref() & [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+    return {value_.aa_shared_string, fbthrift_type_, folly::to_underlying(Type::aa_shared_string), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>, __fbthrift_alloc};
+  }
+
+  /** Glean { "field": "aa_shared_string" } */
+  template <typename..., typename T = ::std::shared_ptr<::test::fixtures::cpp_allocator_union::PmrString>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&, allocator_type> aa_shared_string_ref() && [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+    return {std::move(value_.aa_shared_string), fbthrift_type_, folly::to_underlying(Type::aa_shared_string), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>, __fbthrift_alloc};
+  }
+
+  /** Glean { "field": "aa_shared_string" } */
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const ::std::shared_ptr<::test::fixtures::cpp_allocator_union::PmrString>&, allocator_type> aa_shared_string() const& [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+    return {value_.aa_shared_string, fbthrift_type_, folly::to_underlying(Type::aa_shared_string), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>, __fbthrift_alloc};
+  }
+
+  /** Glean { "field": "aa_shared_string" } */
+  FOLLY_ERASE ::apache::thrift::union_field_ref<::std::shared_ptr<::test::fixtures::cpp_allocator_union::PmrString>&, allocator_type> aa_shared_string() & [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+    return {value_.aa_shared_string, fbthrift_type_, folly::to_underlying(Type::aa_shared_string), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>, __fbthrift_alloc};
+  }
+
+  /** Glean { "field": "aa_shared_string" } */
+  FOLLY_ERASE ::apache::thrift::union_field_ref<::std::shared_ptr<::test::fixtures::cpp_allocator_union::PmrString>&&, allocator_type> aa_shared_string() && [[FOLLY_ATTR_CLANG_LIFETIMEBOUND]] {
+    return {std::move(value_.aa_shared_string), fbthrift_type_, folly::to_underlying(Type::aa_shared_string), this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>, __fbthrift_alloc};
+  }
   Type getType() const { return static_cast<Type>(fbthrift_type_); }
 
   template <class Protocol_>
@@ -347,7 +407,7 @@ template <> struct TEnumDataStorage<::test::fixtures::cpp_allocator_union::Alloc
 template <> struct TEnumTraits<::test::fixtures::cpp_allocator_union::AllocUnion::Type> {
   using type = ::test::fixtures::cpp_allocator_union::AllocUnion::Type;
 
-  static constexpr std::size_t const size = 3;
+  static constexpr std::size_t const size = 4;
   static folly::Range<type const*> const values;
   static folly::Range<std::string_view const*> const names;
 
@@ -361,14 +421,14 @@ template <> struct TEnumTraits<::test::fixtures::cpp_allocator_union::AllocUnion
   }
 
   static constexpr type min() { return type::aa_string; }
-  static constexpr type max() { return type::plain_int; }
+  static constexpr type max() { return type::aa_shared_string; }
 };
 } // namespace apache::thrift
 
 namespace apache::thrift::detail {
 template <> struct TSchemaAssociation<::test::fixtures::cpp_allocator_union::AllocUnion, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -1977679674428096677;
-  static constexpr ::std::string_view definitionKey = {"\xba\xbd\x65\x57\x3b\xb8\x67\xea\xd6\x21\x18\x30\xfd\xab\x13\x2d", 16};
+  static constexpr int64_t programId = 4642372315285474294;
+  static constexpr ::std::string_view definitionKey = {"\x2f\x4e\xfc\x2a\xe7\xcb\x83\x98\x32\xa5\x63\xf3\x11\x2a\xb1\xe8", 16};
 };
 } // namespace apache::thrift::detail

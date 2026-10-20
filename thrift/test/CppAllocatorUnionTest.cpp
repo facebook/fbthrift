@@ -750,6 +750,53 @@ TYPED_TEST(CppAllocatorUnionDeserializeTest, StatefulUnionRoundTrip) {
   }
 }
 
+TEST(CppAllocatorUnionTest, SharedRefMembersUseUnionAllocator) {
+  auto res = makeResource();
+  auto res2 = makeResource();
+  DefaultResourceGuard guard(std::pmr::null_memory_resource());
+  SharedRefUnionPmr u{PmrByteAlloc(&res)};
+  u.const_s_ref().ensure();
+  EXPECT_EQ(resourceOf(*u.const_s_ref()), &res);
+  u.shared_s_ref().emplace(kTooLong);
+  EXPECT_EQ(resourceOf(*u.shared_s_ref()), &res);
+
+  const SharedRefUnionPmr copy(u, PmrByteAlloc(&res2));
+  EXPECT_NE(&*copy.shared_s_ref(), &*u.shared_s_ref());
+  EXPECT_EQ(resourceOf(*copy.shared_s_ref()), &res2);
+}
+
+// Moves take the pointer over between equal allocators, and otherwise copy the
+// pointee, which other owners may share, onto the target's allocator.
+TEST(CppAllocatorUnionTest, MovesOfSharedRefMembers) {
+  auto res = makeResource();
+  auto res2 = makeResource();
+  DefaultResourceGuard guard(std::pmr::null_memory_resource());
+  SharedRefUnionPmr u{PmrByteAlloc(&res)};
+  const auto* s = &u.shared_s_ref().emplace(kTooLong);
+
+  SharedRefUnionPmr moved(std::move(u));
+  EXPECT_EQ(&*moved.shared_s_ref(), s);
+  SharedRefUnionPmr assigned{PmrByteAlloc(&res2)};
+  assigned = std::move(moved);
+  EXPECT_NE(&*assigned.shared_s_ref(), s);
+  EXPECT_EQ(resourceOf(*assigned.shared_s_ref()), &res2);
+  EXPECT_EQ(*assigned.shared_s_ref(), kTooLong);
+}
+
+TYPED_TEST(
+    CppAllocatorUnionDeserializeTest, SharedRefMemberLandsOnUnionAllocator) {
+  auto res = makeResource();
+  SharedRefUnionPmr src;
+  src.shared_s_ref().emplace(kTooLong);
+  const auto bytes = TypeParam::template serialize<std::string>(src);
+  DefaultResourceGuard guard(std::pmr::null_memory_resource());
+  SharedRefUnionPmr dst{PmrByteAlloc(&res)};
+
+  TypeParam::deserialize(bytes, dst);
+  EXPECT_EQ(*dst.shared_s_ref(), kTooLong);
+  EXPECT_EQ(resourceOf(*dst.shared_s_ref()), &res);
+}
+
 } // namespace
 
 } // namespace apache::thrift::test

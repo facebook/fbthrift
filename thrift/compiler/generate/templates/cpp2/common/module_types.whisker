@@ -186,16 +186,23 @@ case Type::{{field.cpp_name}}:
 {{#let export partial union_move_field_cases |struct src| captures |union_push_deprecated_warning|}}
   {{#each struct.fields as |field|}}
     {{#let scalar? = (and (or field.type.primitive? field.type.enum?) (not field.type.string_or_binary?))}}
+    {{#let use_alloc? = (and (object.notnull? struct.cpp_allocator) field.cpp_use_allocator?)}}
 case Type::{{field.cpp_name}}:
 {
     {{#if field.deprecated?}}
   {{#partial union_push_deprecated_warning}}
     {{/if field.deprecated?}}
-    {{#if scalar?}}
+    {{#if (and use_alloc? field.cpp_ref?)}}
+  if ({{src}}.get_allocator() == get_allocator()) {
+    {{field.cpp_name}}_ref().emplace(std::move({{src}}.value_.{{field.cpp_name}}));
+  } else {
+    {{field.cpp_name}}_ref().emplace(*{{src}}.value_.{{field.cpp_name}});
+  }
+    {{#else if scalar?}}
   {{field.cpp_name}}_ref().emplace(folly::copy({{#if field.cpp_ref?}}*{{/if}}{{src}}.value_.{{field.cpp_name}}));
     {{#else}}
   {{field.cpp_name}}_ref().emplace(std::move({{#if field.cpp_ref?}}*{{/if}}{{src}}.value_.{{field.cpp_name}}));
-    {{/if scalar?}}
+    {{/if (and use_alloc? field.cpp_ref?)}}
     {{#if field.deprecated?}}
   FOLLY_POP_WARNING
     {{/if field.deprecated?}}

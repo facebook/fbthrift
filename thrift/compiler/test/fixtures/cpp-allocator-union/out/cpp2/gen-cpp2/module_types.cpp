@@ -56,6 +56,9 @@ void AllocUnion::__fbthrift_destruct() {
     case Type::plain_int:
       ::std::destroy_at(::std::addressof(value_.plain_int));
       break;
+    case Type::aa_shared_string:
+      ::std::destroy_at(::std::addressof(value_.aa_shared_string));
+      break;
     default:
       assert(false);
       break;
@@ -99,6 +102,15 @@ bool AllocUnion::__fbthrift_is_empty() const {
         plain_int_ref().emplace(folly::copy(rhs.value_.plain_int));
         break;
       }
+      case Type::aa_shared_string:
+      {
+        if (rhs.get_allocator() == get_allocator()) {
+          aa_shared_string_ref().emplace(std::move(rhs.value_.aa_shared_string));
+        } else {
+          aa_shared_string_ref().emplace(*rhs.value_.aa_shared_string);
+        }
+        break;
+      }
       default:
         assert(false);
     }
@@ -129,6 +141,15 @@ bool AllocUnion::__fbthrift_is_empty() const {
         plain_int_ref().emplace(folly::copy(rhs.value_.plain_int));
         break;
       }
+      case Type::aa_shared_string:
+      {
+        if (rhs.get_allocator() == get_allocator()) {
+          aa_shared_string_ref().emplace(std::move(rhs.value_.aa_shared_string));
+        } else {
+          aa_shared_string_ref().emplace(*rhs.value_.aa_shared_string);
+        }
+        break;
+      }
       default:
       {
         assert(false);
@@ -154,6 +175,9 @@ bool AllocUnion::__fbthrift_is_empty() const {
       case Type::plain_int:
         plain_int_ref().emplace(folly::copy(rhs.value_.plain_int));
         break;
+      case Type::aa_shared_string:
+        aa_shared_string_ref().emplace(*rhs.value_.aa_shared_string);
+        break;
       default:
         assert(false);
     }
@@ -173,6 +197,9 @@ bool AllocUnion::__fbthrift_is_empty() const {
         break;
       case Type::plain_int:
         plain_int_ref().emplace(folly::copy(rhs.value_.plain_int));
+        break;
+      case Type::aa_shared_string:
+        aa_shared_string_ref().emplace(*rhs.value_.aa_shared_string);
         break;
       default:
         assert(false);
@@ -195,6 +222,9 @@ bool AllocUnion::__fbthrift_is_empty() const {
         break;
       case Type::plain_int:
         plain_int_ref().emplace(folly::copy(rhs.value_.plain_int));
+        break;
+      case Type::aa_shared_string:
+        aa_shared_string_ref().emplace(*rhs.value_.aa_shared_string);
         break;
       default:
         __fbthrift_clear();

@@ -14,13 +14,13 @@ namespace test::fixtures::cpp_allocator_union {
 namespace module_constants {
 
 
-::std::string_view _fbthrift_schema_e48dded07633ff5b() {
+::std::string_view _fbthrift_schema_406d05063fb2cbf6() {
   return "";
 }
-::folly::Range<const ::std::string_view*> _fbthrift_schema_e48dded07633ff5b_includes() {
+::folly::Range<const ::std::string_view*> _fbthrift_schema_406d05063fb2cbf6_includes() {
   return {};
 }
-::folly::Range<const ::std::string_view*> _fbthrift_schema_e48dded07633ff5b_uris() {
+::folly::Range<const ::std::string_view*> _fbthrift_schema_406d05063fb2cbf6_uris() {
   return {};
 }
 

@@ -1708,7 +1708,7 @@ constexpr bool is_nothrow_union_member_constructible() {
 //
 // If Allocator is not void (the default), ensure(), emplace() and
 // assignment to an inactive field build the value with it, by uses-allocator
-// construction.
+// construction, or for a std::shared_ptr field with std::allocate_shared.
 template <typename T, typename Allocator>
 class union_field_ref {
   static_assert(std::is_reference_v<T>, "not a reference");
@@ -1736,7 +1736,9 @@ class union_field_ref {
           (!is_cpp_ref_or_boxed::value &&
            std::uses_allocator_v<
                std::remove_cv_t<storage_value_type>,
-               Allocator>),
+               Allocator>) ||
+          (detail::is_shared_ptr_v<std::remove_cv_t<storage_value_type>> &&
+           std::uses_allocator_v<std::remove_cv_t<element_type>, Allocator>),
       "only a field whose value uses Allocator can carry it");
 
  public:
@@ -1965,8 +1967,14 @@ class union_field_ref {
 
   template <class... Args>
   FOLLY_ERASE void emplace_impl(std::true_type, Args&&... args) {
-    ::new (&storage_value_) storage_value_type();
-    storage_value_.reset(new element_type(static_cast<Args&&>(args)...));
+    if constexpr (std::is_void_v<Allocator>) {
+      ::new (&storage_value_) storage_value_type();
+      storage_value_.reset(new element_type(static_cast<Args&&>(args)...));
+    } else {
+      ::new (&storage_value_) storage_value_type(
+          std::allocate_shared<element_type>(
+              alloc_, static_cast<Args&&>(args)...));
+    }
   }
 
   FOLLY_ERASE void emplace_impl(

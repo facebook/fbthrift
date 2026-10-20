@@ -193,3 +193,14 @@ union NoncopyableUnionPmr {
 }
 @cpp.InternalExperimentalAllowAllocatorOnUnion
 union EmptyUnionPmr {}
+
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "PmrByteAlloc"},
+}
+@cpp.InternalExperimentalAllowAllocatorOnUnion
+union SharedRefUnionPmr {
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  1: UPmrString shared_s;
+  @cpp.Ref{type = cpp.RefType.Shared}
+  2: UPmrString const_s;
+}
