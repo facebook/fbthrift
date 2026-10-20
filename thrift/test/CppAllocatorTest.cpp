@@ -526,6 +526,7 @@ TEST(CppAllocatorTest, PropagateAllAlloc) {
     PropagateAllAllocStruct src(alloc1);
     PropagateAllAllocStruct dst(alloc2);
     dst = std::move(src);
+    // NOLINTNEXTLINE(bugprone-use-after-move): checks the moved-from allocator
     EXPECT_EQ(src.get_allocator(), alloc1);
     EXPECT_EQ(dst.get_allocator(), alloc1);
   }
@@ -555,6 +556,7 @@ TEST(CppAllocatorTest, PropagateNoneAlloc) {
     PropagateNoneAllocStruct src(alloc1);
     PropagateNoneAllocStruct dst(alloc2);
     dst = std::move(src);
+    // NOLINTNEXTLINE(bugprone-use-after-move): checks the moved-from allocator
     EXPECT_EQ(src.get_allocator(), alloc1);
     EXPECT_EQ(dst.get_allocator(), alloc2);
   }
@@ -584,6 +586,7 @@ TEST(CppAllocatorTest, PropagateOnlyCopyAlloc) {
     PropagateOnlyCopyAllocStruct src(alloc1);
     PropagateOnlyCopyAllocStruct dst(alloc2);
     dst = std::move(src);
+    // NOLINTNEXTLINE(bugprone-use-after-move): checks the moved-from allocator
     EXPECT_EQ(src.get_allocator(), alloc1);
     EXPECT_EQ(dst.get_allocator(), alloc2);
   }
@@ -638,6 +641,7 @@ TEST(CppAllocatorTest, PropagateOnlyMoveAlloc) {
     PropagateOnlyMoveAllocStruct src(alloc1);
     PropagateOnlyMoveAllocStruct dst(alloc2);
     dst = std::move(src);
+    // NOLINTNEXTLINE(bugprone-use-after-move): checks the moved-from allocator
     EXPECT_EQ(src.get_allocator(), alloc1);
     EXPECT_EQ(dst.get_allocator(), alloc1);
   }
@@ -667,6 +671,7 @@ TEST(CppAllocatorTest, PropagateOnlySwapAlloc) {
     PropagateOnlySwapAllocStruct src(alloc1);
     PropagateOnlySwapAllocStruct dst(alloc2);
     dst = std::move(src);
+    // NOLINTNEXTLINE(bugprone-use-after-move): checks the moved-from allocator
     EXPECT_EQ(src.get_allocator(), alloc1);
     EXPECT_EQ(dst.get_allocator(), alloc2);
   }
@@ -696,6 +701,7 @@ TEST(CppAllocatorTest, PropagateCopyMoveAlloc) {
     PropagateCopyMoveAllocStruct src(alloc1);
     PropagateCopyMoveAllocStruct dst(alloc2);
     dst = std::move(src);
+    // NOLINTNEXTLINE(bugprone-use-after-move): checks the moved-from allocator
     EXPECT_EQ(src.get_allocator(), alloc1);
     EXPECT_EQ(dst.get_allocator(), alloc1);
   }
@@ -725,6 +731,7 @@ TEST(CppAllocatorTest, PropagateCopySwapAlloc) {
     PropagateCopySwapAllocStruct src(alloc1);
     PropagateCopySwapAllocStruct dst(alloc2);
     dst = std::move(src);
+    // NOLINTNEXTLINE(bugprone-use-after-move): checks the moved-from allocator
     EXPECT_EQ(src.get_allocator(), alloc1);
     EXPECT_EQ(dst.get_allocator(), alloc2);
   }
@@ -754,6 +761,7 @@ TEST(CppAllocatorTest, PropagateMoveSwapAlloc) {
     PropagateMoveSwapAllocStruct src(alloc1);
     PropagateMoveSwapAllocStruct dst(alloc2);
     dst = std::move(src);
+    // NOLINTNEXTLINE(bugprone-use-after-move): checks the moved-from allocator
     EXPECT_EQ(src.get_allocator(), alloc1);
     EXPECT_EQ(dst.get_allocator(), alloc1);
   }
@@ -807,6 +815,7 @@ TEST(CppAllocatorTest, MoveConstructorPropagatesAllocator) {
   ScopedStatefulAlloc<> alloc(42);
   AAStruct s1(alloc);
   AAStruct s2(std::move(s1));
+  // NOLINTNEXTLINE(bugprone-use-after-move): checks the moved-from allocator
   EXPECT_EQ(s1.get_allocator(), alloc);
   EXPECT_EQ(s2.get_allocator(), alloc);
 }
