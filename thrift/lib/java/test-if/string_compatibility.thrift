@@ -42,6 +42,13 @@ typedef string UTF8AdaptedStringReport
 @compat.Strings{onInvalidUtf8 = compat.CodingErrorAction.Legacy}
 typedef string UTF8String
 
+@java.BinaryString
+typedef string BinaryStringData
+
+struct TestBinaryStringStruct {
+  1: BinaryStringData data;
+}
+
 @thrift.AllowLegacyTypedefUri
 @java.Adapter{
   adapterClassName = "com.facebook.thrift.adapter.test.StringToLongTypeAdapter",

@@ -184,7 +184,7 @@ public boolean equals(java.lang.Object o) {
         {{#else if field.type.hasAdapter?}}
         __{{field.type.name}}_Adapter.equals({{field.javaName}}, other.{{field.javaName}}) &&
         {{#else}}
-        {{#if (and (not field.type.java_type?) field.type.binary?)}}Arrays{{#else}}Objects{{/if (and (not field.type.java_type?) field.type.binary?)}}.equals({{field.javaName}}, other.{{field.javaName}}) &&
+        {{#if (and (not field.type.java_type?) (or field.type.binary? field.type.isBinaryString?))}}Arrays{{#else}}Objects{{/if (and (not field.type.java_type?) (or field.type.binary? field.type.isBinaryString?))}}.equals({{field.javaName}}, other.{{field.javaName}}) &&
         {{/if field.hasWrapper?}}
         {{/each}}
         true;
@@ -242,7 +242,7 @@ public int hashCode() {
     {{#else}}
     _hashCode = 31 * _hashCode + Float.hashCode({{field.javaName}});
     {{/if field.optional?}}
-    {{#else if field.type.binary?}}
+    {{#else if (and (not field.type.java_type?) (or field.type.binary? field.type.isBinaryString?))}}
     _hashCode = 31 * _hashCode + Arrays.hashCode({{field.javaName}});
     {{#else}}
     _hashCode = 31 * _hashCode + Objects.hashCode({{field.javaName}});

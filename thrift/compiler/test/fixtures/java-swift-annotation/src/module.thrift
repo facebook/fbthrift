@@ -67,6 +67,11 @@ struct BinaryMapping {
   4: map<string, binary> regularBinary;
 }
 
+struct BinaryStringStruct {
+  1: binary_string binaryStringField;
+  2: binary binaryField;
+}
+
 // The following were automatically generated and may benefit from renaming.
 @thrift.DeprecatedUnvalidatedAnnotations{
   items = {"java.swift.binary_string": "1"},
