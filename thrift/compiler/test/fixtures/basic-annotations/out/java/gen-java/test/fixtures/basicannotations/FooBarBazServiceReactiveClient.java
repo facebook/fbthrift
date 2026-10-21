@@ -77,14 +77,7 @@ public class FooBarBazServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createfooWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _foo_READER = Readers.voidReader();
@@ -125,14 +118,7 @@ public class FooBarBazServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createbarWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _bar_READER = Readers.voidReader();
@@ -173,14 +159,7 @@ public class FooBarBazServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createbazWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _baz_READER = Readers.voidReader();

@@ -19,6 +19,12 @@ pub mod my_interaction {
                 if let ::std::option::Option::Some(FailstreaminitError::boom(e)) = cause.downcast_ref::<FailstreaminitError>() {
                     return ::std::option::Option::Some(e);
                 }
+                if let ::std::option::Option::Some(FrobnicateWithArgError::ex(e)) = cause.downcast_ref::<FrobnicateWithArgError>() {
+                    return ::std::option::Option::Some(e);
+                }
+                if let ::std::option::Option::Some(StreamWithArgError::boom(e)) = cause.downcast_ref::<StreamWithArgError>() {
+                    return ::std::option::Option::Some(e);
+                }
                 if let ::std::option::Option::Some(FailstreamStreamError::boom(e)) = cause.downcast_ref::<FailstreamStreamError>() {
                     return ::std::option::Option::Some(e);
                 }
@@ -765,6 +771,392 @@ pub mod my_interaction {
                 ::fbthrift::ApplicationException::new(
                     ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
                     format!("Empty union {}", "FailstreaminitStreamError"),
+                )
+                .into(),
+            )
+        }
+    }
+
+    /// Errors for frobnicateWithArg (client side).
+    #[derive(Debug)]
+    pub enum FrobnicateWithArgError {
+        ex(crate::types::CustomException),
+        ApplicationException(::fbthrift::ApplicationException),
+        ThriftError(::anyhow::Error),
+    }
+
+    /// Human-readable string representation of the Thrift client error.
+    ///
+    /// By default, this will not print the full cause chain. If you would like to print the underlying error
+    /// cause, either use `format!("{:?}", anyhow::Error::from(client_err))` or print this using the
+    /// alternate formatter `{:#}` instead of just `{}`.
+    impl ::std::fmt::Display for FrobnicateWithArgError {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::result::Result<(), ::std::fmt::Error> {
+            match self {
+                Self::ex(inner) => {
+                    if f.alternate() {
+                        write!(f, "MyInteraction::frobnicateWithArg failed with variant `ex`: {:#}", inner)?;
+                    } else {
+                        write!(f, "MyInteraction::frobnicateWithArg failed with ex(CustomException)")?;
+                    }
+                }
+                Self::ApplicationException(inner) => {
+                    write!(f, "MyInteraction::frobnicateWithArg failed with ApplicationException")?;
+
+                    if f.alternate() {
+                      write!(f, ": {:#}", inner)?;
+                    }
+                }
+                Self::ThriftError(inner) => {
+                    write!(f, "MyInteraction::frobnicateWithArg failed with ThriftError")?;
+
+                    if f.alternate() {
+                      write!(f, ": {:#}", inner)?;
+                    }
+                }
+            }
+
+            ::std::result::Result::Ok(())
+        }
+    }
+
+    impl ::std::error::Error for FrobnicateWithArgError {
+        fn source(&self) -> ::std::option::Option<&(dyn ::std::error::Error + 'static)> {
+            match self {
+                Self::ex(inner) => {
+                    ::std::option::Option::Some(inner)
+                }
+                Self::ApplicationException(inner) => {
+                    ::std::option::Option::Some(inner)
+                }
+                Self::ThriftError(inner) => {
+                    ::std::option::Option::Some(inner.as_ref())
+                }
+            }
+        }
+    }
+
+    impl ::std::convert::From<crate::types::CustomException> for FrobnicateWithArgError {
+        fn from(e: crate::types::CustomException) -> Self {
+            Self::ex(e)
+        }
+    }
+
+    impl AsCustomException for FrobnicateWithArgError {
+        fn as_custom_exception(&self) -> ::std::option::Option<&crate::types::CustomException> {
+            match self {
+                Self::ex(inner) => ::std::option::Option::Some(inner),
+                _ => ::std::option::Option::None,
+            }
+        }
+    }
+
+    impl ::std::convert::From<::anyhow::Error> for FrobnicateWithArgError {
+        fn from(err: ::anyhow::Error) -> Self {
+            Self::ThriftError(err)
+        }
+    }
+
+    impl ::std::convert::From<::fbthrift::ApplicationException> for FrobnicateWithArgError {
+        fn from(ae: ::fbthrift::ApplicationException) -> Self {
+            Self::ApplicationException(ae)
+        }
+    }
+
+    impl ::std::convert::From<crate::services::my_interaction::FrobnicateWithArgExn> for FrobnicateWithArgError {
+        fn from(e: crate::services::my_interaction::FrobnicateWithArgExn) -> Self {
+            match e {
+                crate::services::my_interaction::FrobnicateWithArgExn::ApplicationException(aexn) =>
+                    FrobnicateWithArgError::ApplicationException(aexn),
+                crate::services::my_interaction::FrobnicateWithArgExn::ex(exn) =>
+                    FrobnicateWithArgError::ex(exn),
+            }
+        }
+    }
+
+    impl ::std::convert::From<FrobnicateWithArgError> for crate::services::my_interaction::FrobnicateWithArgExn {
+        fn from(err: FrobnicateWithArgError) -> Self {
+            match err {
+                FrobnicateWithArgError::ex(err) => crate::services::my_interaction::FrobnicateWithArgExn::ex(err),
+                FrobnicateWithArgError::ApplicationException(aexn) => crate::services::my_interaction::FrobnicateWithArgExn::ApplicationException(aexn),
+                FrobnicateWithArgError::ThriftError(err) => crate::services::my_interaction::FrobnicateWithArgExn::ApplicationException(::fbthrift::ApplicationException {
+                    message: err.to_string(),
+                    type_: ::fbthrift::ApplicationExceptionErrorCode::InternalError,
+                }),
+            }
+        }
+    }
+
+    pub(crate) enum FrobnicateWithArgReader {}
+
+    impl ::fbthrift::help::DeserializeExn for FrobnicateWithArgReader {
+        type Success = ::std::primitive::i32;
+        type Error = FrobnicateWithArgError;
+
+        fn read_result<P>(p: &mut P) -> ::anyhow::Result<::std::result::Result<Self::Success, Self::Error>>
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            static RETURNS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("Success", ::fbthrift::TType::I32, 0),
+                ::fbthrift::Field::new("ex", ::fbthrift::TType::Struct, 1),
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = ::std::option::Option::None;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                match ((fty, fid as ::std::primitive::i32), once) {
+                    ((::fbthrift::TType::Stop, _), _) => {
+                        p.read_field_end()?;
+                        break;
+                    }
+                    ((::fbthrift::TType::I32, 0i32), false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(::std::result::Result::Ok(::fbthrift::Deserialize::rs_thrift_read(p)?));
+                    }
+                    ((::fbthrift::TType::Struct, 1), false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(::std::result::Result::Err(Self::Error::ex(::fbthrift::Deserialize::rs_thrift_read(p)?)));
+                    }
+                    ((ty, _id), false) => p.skip(ty)?,
+                    ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                        ::fbthrift::ApplicationException::new(
+                            ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                            format!(
+                                "unwanted extra union {} field ty {:?} id {}",
+                                "FrobnicateWithArgError",
+                                badty,
+                                badid,
+                            ),
+                        )
+                    )),
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            alt.ok_or_else(||
+                ::fbthrift::ApplicationException::new(
+                    ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                    format!("Empty union {}", "FrobnicateWithArgError"),
+                )
+                .into(),
+            )
+        }
+    }
+
+    /// Errors for streamWithArg (client side).
+    #[derive(Debug)]
+    pub enum StreamWithArgError {
+        boom(crate::types::CustomException),
+        ApplicationException(::fbthrift::ApplicationException),
+        ThriftError(::anyhow::Error),
+    }
+
+    /// Human-readable string representation of the Thrift client error.
+    ///
+    /// By default, this will not print the full cause chain. If you would like to print the underlying error
+    /// cause, either use `format!("{:?}", anyhow::Error::from(client_err))` or print this using the
+    /// alternate formatter `{:#}` instead of just `{}`.
+    impl ::std::fmt::Display for StreamWithArgError {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::result::Result<(), ::std::fmt::Error> {
+            match self {
+                Self::boom(inner) => {
+                    if f.alternate() {
+                        write!(f, "MyInteraction::streamWithArg failed with variant `boom`: {:#}", inner)?;
+                    } else {
+                        write!(f, "MyInteraction::streamWithArg failed with boom(CustomException)")?;
+                    }
+                }
+                Self::ApplicationException(inner) => {
+                    write!(f, "MyInteraction::streamWithArg failed with ApplicationException")?;
+
+                    if f.alternate() {
+                      write!(f, ": {:#}", inner)?;
+                    }
+                }
+                Self::ThriftError(inner) => {
+                    write!(f, "MyInteraction::streamWithArg failed with ThriftError")?;
+
+                    if f.alternate() {
+                      write!(f, ": {:#}", inner)?;
+                    }
+                }
+            }
+
+            ::std::result::Result::Ok(())
+        }
+    }
+
+    impl ::std::error::Error for StreamWithArgError {
+        fn source(&self) -> ::std::option::Option<&(dyn ::std::error::Error + 'static)> {
+            match self {
+                Self::boom(inner) => {
+                    ::std::option::Option::Some(inner)
+                }
+                Self::ApplicationException(inner) => {
+                    ::std::option::Option::Some(inner)
+                }
+                Self::ThriftError(inner) => {
+                    ::std::option::Option::Some(inner.as_ref())
+                }
+            }
+        }
+    }
+
+    impl ::std::convert::From<crate::types::CustomException> for StreamWithArgError {
+        fn from(e: crate::types::CustomException) -> Self {
+            Self::boom(e)
+        }
+    }
+
+    impl AsCustomException for StreamWithArgError {
+        fn as_custom_exception(&self) -> ::std::option::Option<&crate::types::CustomException> {
+            match self {
+                Self::boom(inner) => ::std::option::Option::Some(inner),
+                _ => ::std::option::Option::None,
+            }
+        }
+    }
+
+    impl ::std::convert::From<::anyhow::Error> for StreamWithArgError {
+        fn from(err: ::anyhow::Error) -> Self {
+            Self::ThriftError(err)
+        }
+    }
+
+    impl ::std::convert::From<::fbthrift::ApplicationException> for StreamWithArgError {
+        fn from(ae: ::fbthrift::ApplicationException) -> Self {
+            Self::ApplicationException(ae)
+        }
+    }
+
+    impl ::std::convert::From<crate::services::my_interaction::StreamWithArgExn> for StreamWithArgError {
+        fn from(e: crate::services::my_interaction::StreamWithArgExn) -> Self {
+            match e {
+                crate::services::my_interaction::StreamWithArgExn::ApplicationException(aexn) =>
+                    StreamWithArgError::ApplicationException(aexn),
+                crate::services::my_interaction::StreamWithArgExn::boom(exn) =>
+                    StreamWithArgError::boom(exn),
+            }
+        }
+    }
+
+    impl ::std::convert::From<StreamWithArgError> for crate::services::my_interaction::StreamWithArgExn {
+        fn from(err: StreamWithArgError) -> Self {
+            match err {
+                StreamWithArgError::boom(err) => crate::services::my_interaction::StreamWithArgExn::boom(err),
+                StreamWithArgError::ApplicationException(aexn) => crate::services::my_interaction::StreamWithArgExn::ApplicationException(aexn),
+                StreamWithArgError::ThriftError(err) => crate::services::my_interaction::StreamWithArgExn::ApplicationException(::fbthrift::ApplicationException {
+                    message: err.to_string(),
+                    type_: ::fbthrift::ApplicationExceptionErrorCode::InternalError,
+                }),
+            }
+        }
+    }
+
+    pub(crate) enum StreamWithArgReader {}
+
+    impl ::fbthrift::help::DeserializeExn for StreamWithArgReader {
+        type Success = ();
+        type Error = StreamWithArgError;
+
+        fn read_result<P>(p: &mut P) -> ::anyhow::Result<::std::result::Result<Self::Success, Self::Error>>
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            static RETURNS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ::fbthrift::Field::new("boom", ::fbthrift::TType::Struct, 1),
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = ::std::result::Result::Ok(());
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                match ((fty, fid as ::std::primitive::i32), once) {
+                    ((::fbthrift::TType::Stop, _), _) => {
+                        p.read_field_end()?;
+                        break;
+                    }
+                    ((::fbthrift::TType::Void, 0i32), false) => {
+                        once = true;
+                        alt = ::std::result::Result::Ok(::fbthrift::Deserialize::rs_thrift_read(p)?);
+                    }
+                    ((::fbthrift::TType::Struct, 1), false) => {
+                        once = true;
+                        alt = ::std::result::Result::Err(Self::Error::boom(::fbthrift::Deserialize::rs_thrift_read(p)?));
+                    }
+                    ((ty, _id), false) => p.skip(ty)?,
+                    ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                        ::fbthrift::ApplicationException::new(
+                            ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                            format!(
+                                "unwanted extra union {} field ty {:?} id {}",
+                                "StreamWithArgError",
+                                badty,
+                                badid,
+                            ),
+                        )
+                    )),
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(alt)
+        }
+    }
+
+    pub type StreamWithArgStreamError = ::fbthrift::NonthrowingFunctionError;
+
+    pub(crate) enum StreamWithArgStreamReader {}
+
+    impl ::fbthrift::help::DeserializeExn for StreamWithArgStreamReader {
+        type Success = ::std::primitive::i32;
+        type Error = StreamWithArgStreamError;
+
+        fn read_result<P>(p: &mut P) -> ::anyhow::Result<::std::result::Result<Self::Success, Self::Error>>
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            static RETURNS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ::fbthrift::Field::new("boom", ::fbthrift::TType::Struct, 1),
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = ::std::option::Option::None;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                match ((fty, fid as ::std::primitive::i32), once) {
+                    ((::fbthrift::TType::Stop, _), _) => {
+                        p.read_field_end()?;
+                        break;
+                    }
+                    ((::fbthrift::TType::I32, 0i32), false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(::std::result::Result::Ok(::fbthrift::Deserialize::rs_thrift_read(p)?));
+                    }
+                    ((ty, _id), false) => p.skip(ty)?,
+                    ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                        ::fbthrift::ApplicationException::new(
+                            ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                            format!(
+                                "unwanted extra union {} field ty {:?} id {}",
+                                "StreamWithArgStreamError",
+                                badty,
+                                badid,
+                            ),
+                        )
+                    )),
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            alt.ok_or_else(||
+                ::fbthrift::ApplicationException::new(
+                    ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                    format!("Empty union {}", "StreamWithArgStreamError"),
                 )
                 .into(),
             )

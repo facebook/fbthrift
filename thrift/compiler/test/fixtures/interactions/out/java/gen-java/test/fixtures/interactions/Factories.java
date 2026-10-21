@@ -132,6 +132,19 @@ public interface Factories extends java.io.Closeable, com.facebook.thrift.util.B
 
             ListenableFuture<ResponseWrapper<Void>> pingWrapper(
                 RpcOptions rpcOptions);
+            @ThriftMethod(value = "frobnicateWithArg",
+                exception = { 
+                    @ThriftException(type=test.fixtures.interactions.CustomException.class, id=1)
+                })
+            ListenableFuture<Integer> frobnicateWithArg( int arg);
+
+            ListenableFuture<Integer> frobnicateWithArg(
+                @com.facebook.swift.codec.ThriftField(value=1, name="arg", requiredness=Requiredness.NONE) final int arg,
+                RpcOptions rpcOptions);
+
+            ListenableFuture<ResponseWrapper<Integer>> frobnicateWithArgWrapper(
+                @com.facebook.swift.codec.ThriftField(value=1, name="arg", requiredness=Requiredness.NONE) final int arg,
+                RpcOptions rpcOptions);
 
             @java.lang.Override
             void close();
@@ -310,6 +323,16 @@ public interface Factories extends java.io.Closeable, com.facebook.thrift.util.B
 
             reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions);
 
+            @ThriftMethod(value = "frobnicateWithArg",
+                exception = { 
+                    @ThriftException(type=test.fixtures.interactions.CustomException.class, id=1)
+                })
+            reactor.core.publisher.Mono<Integer> frobnicateWithArg( final int arg);
+
+            reactor.core.publisher.Mono<Integer> frobnicateWithArg(final int arg, RpcOptions rpcOptions);
+
+            reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWithArgWrapper(final int arg, RpcOptions rpcOptions);
+
             reactor.core.publisher.Flux<Boolean> truthify();
 
             default reactor.core.publisher.Flux<Boolean> truthify(RpcOptions rpcOptions) {
@@ -337,6 +360,16 @@ public interface Factories extends java.io.Closeable, com.facebook.thrift.util.B
             }
 
             default reactor.core.publisher.Flux<ResponseWrapper<Integer>> failstreaminitWrapper(RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
+
+            reactor.core.publisher.Flux<Integer> streamWithArg(final String query);
+
+            default reactor.core.publisher.Flux<Integer> streamWithArg(final String query, RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
+
+            default reactor.core.publisher.Flux<ResponseWrapper<Integer>> streamWithArgWrapper(final String query, RpcOptions rpcOptions) {
                 throw new UnsupportedOperationException();
             }
 
@@ -417,6 +450,20 @@ public interface Factories extends java.io.Closeable, com.facebook.thrift.util.B
 
         ResponseWrapper<Void> pingWrapper(
             RpcOptions rpcOptions) throws org.apache.thrift.TException;
+        @ThriftMethod(value = "frobnicateWithArg",
+                      exception = { 
+                          @ThriftException(type=test.fixtures.interactions.CustomException.class, id=1)
+                      })
+        int frobnicateWithArg(
+        @com.facebook.swift.codec.ThriftField(value=1, name="arg", requiredness=Requiredness.NONE) final int arg) throws test.fixtures.interactions.CustomException, org.apache.thrift.TException;
+
+        int frobnicateWithArg(
+            @com.facebook.swift.codec.ThriftField(value=1, name="arg", requiredness=Requiredness.NONE) final int arg,
+            RpcOptions rpcOptions) throws test.fixtures.interactions.CustomException, org.apache.thrift.TException;
+
+        ResponseWrapper<Integer> frobnicateWithArgWrapper(
+            @com.facebook.swift.codec.ThriftField(value=1, name="arg", requiredness=Requiredness.NONE) final int arg,
+            RpcOptions rpcOptions) throws test.fixtures.interactions.CustomException, org.apache.thrift.TException;
 
         @java.lang.Override void close();
     }

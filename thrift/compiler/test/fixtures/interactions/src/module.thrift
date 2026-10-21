@@ -36,6 +36,8 @@ interaction MyInteraction {
   stream<bool> truthify();
   stream<i32 throws (1: CustomException boom)> failstream();
   stream<i32> failstreaminit() throws (1: CustomException boom);
+  i32 frobnicateWithArg(1: i32 arg) throws (1: CustomException ex);
+  stream<i32> streamWithArg(1: string query) throws (1: CustomException boom);
   set<i32>, sink<string, binary> encode();
 }
 

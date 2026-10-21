@@ -335,6 +335,77 @@ class _fbthrift_MyInteraction_failstreaminit_result_stream_elem(_fbthrift_python
         ]]]: ...
 
 
+class _fbthrift_MyInteraction_frobnicateWithArg_args(_fbthrift_python_mutable_types.MutableStruct):
+    arg: _typing.Final[builtins.int] = ...
+
+    def __init__(
+        self, *,
+        arg: _typing.Optional[builtins.int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None, builtins.int]]]: ...
+
+
+class _fbthrift_MyInteraction_frobnicateWithArg_result(_fbthrift_python_mutable_types.MutableStruct):
+    success: _typing.Final[builtins.int]
+    ex: _typing.Final[_fbthrift_CustomException]
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ..., _ex0__ex: _typing.Optional[_fbthrift_CustomException]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+            _fbthrift_CustomException,
+        ]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_args(_fbthrift_python_mutable_types.MutableStruct):
+    query: _typing.Final[builtins.str] = ...
+
+    def __init__(
+        self, *,
+        query: _typing.Optional[builtins.str]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None, builtins.str]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_result(_fbthrift_python_mutable_types.MutableStruct):
+    success: _typing.Final[None]
+    boom: _typing.Final[_fbthrift_CustomException]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ..., _ex0__boom: _typing.Optional[_fbthrift_CustomException]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            None,
+            _fbthrift_CustomException,
+        ]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_result_stream_elem(_fbthrift_python_mutable_types._fbthrift_MutableResponseStreamResult[builtins.int]):
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
 class _fbthrift_MyInteraction_encode_args(_fbthrift_python_mutable_types.MutableStruct):
 
     def __init__(
@@ -815,6 +886,77 @@ class _fbthrift_MyInteraction_failstreaminit_result_stream_elem(_fbthrift_python
         ]]]: ...
 
 
+class _fbthrift_MyInteraction_frobnicateWithArg_args(_fbthrift_python_mutable_types.MutableStruct):
+    arg: _typing.Final[builtins.int] = ...
+
+    def __init__(
+        self, *,
+        arg: _typing.Optional[builtins.int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None, builtins.int]]]: ...
+
+
+class _fbthrift_MyInteraction_frobnicateWithArg_result(_fbthrift_python_mutable_types.MutableStruct):
+    success: _typing.Final[builtins.int]
+    ex: _typing.Final[_fbthrift_CustomException]
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ..., _ex0__ex: _typing.Optional[_fbthrift_CustomException]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+            _fbthrift_CustomException,
+        ]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_args(_fbthrift_python_mutable_types.MutableStruct):
+    query: _typing.Final[builtins.str] = ...
+
+    def __init__(
+        self, *,
+        query: _typing.Optional[builtins.str]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None, builtins.str]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_result(_fbthrift_python_mutable_types.MutableStruct):
+    success: _typing.Final[None]
+    boom: _typing.Final[_fbthrift_CustomException]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ..., _ex0__boom: _typing.Optional[_fbthrift_CustomException]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            None,
+            _fbthrift_CustomException,
+        ]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_result_stream_elem(_fbthrift_python_mutable_types._fbthrift_MutableResponseStreamResult[builtins.int]):
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
 class _fbthrift_MyInteraction_encode_args(_fbthrift_python_mutable_types.MutableStruct):
 
     def __init__(
@@ -1205,6 +1347,77 @@ class _fbthrift_MyInteraction_failstreaminit_result_stream_elem(_fbthrift_python
         ]]]: ...
 
 
+class _fbthrift_MyInteraction_frobnicateWithArg_args(_fbthrift_python_mutable_types.MutableStruct):
+    arg: _typing.Final[builtins.int] = ...
+
+    def __init__(
+        self, *,
+        arg: _typing.Optional[builtins.int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None, builtins.int]]]: ...
+
+
+class _fbthrift_MyInteraction_frobnicateWithArg_result(_fbthrift_python_mutable_types.MutableStruct):
+    success: _typing.Final[builtins.int]
+    ex: _typing.Final[_fbthrift_CustomException]
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ..., _ex0__ex: _typing.Optional[_fbthrift_CustomException]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+            _fbthrift_CustomException,
+        ]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_args(_fbthrift_python_mutable_types.MutableStruct):
+    query: _typing.Final[builtins.str] = ...
+
+    def __init__(
+        self, *,
+        query: _typing.Optional[builtins.str]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None, builtins.str]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_result(_fbthrift_python_mutable_types.MutableStruct):
+    success: _typing.Final[None]
+    boom: _typing.Final[_fbthrift_CustomException]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ..., _ex0__boom: _typing.Optional[_fbthrift_CustomException]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            None,
+            _fbthrift_CustomException,
+        ]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_result_stream_elem(_fbthrift_python_mutable_types._fbthrift_MutableResponseStreamResult[builtins.int]):
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
 class _fbthrift_MyInteraction_encode_args(_fbthrift_python_mutable_types.MutableStruct):
 
     def __init__(
@@ -1583,6 +1796,77 @@ class _fbthrift_MyInteraction_failstreaminit_result(_fbthrift_python_mutable_typ
 
 
 class _fbthrift_MyInteraction_failstreaminit_result_stream_elem(_fbthrift_python_mutable_types._fbthrift_MutableResponseStreamResult[builtins.int]):
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_MyInteraction_frobnicateWithArg_args(_fbthrift_python_mutable_types.MutableStruct):
+    arg: _typing.Final[builtins.int] = ...
+
+    def __init__(
+        self, *,
+        arg: _typing.Optional[builtins.int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None, builtins.int]]]: ...
+
+
+class _fbthrift_MyInteraction_frobnicateWithArg_result(_fbthrift_python_mutable_types.MutableStruct):
+    success: _typing.Final[builtins.int]
+    ex: _typing.Final[_fbthrift_CustomException]
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ..., _ex0__ex: _typing.Optional[_fbthrift_CustomException]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+            _fbthrift_CustomException,
+        ]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_args(_fbthrift_python_mutable_types.MutableStruct):
+    query: _typing.Final[builtins.str] = ...
+
+    def __init__(
+        self, *,
+        query: _typing.Optional[builtins.str]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None, builtins.str]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_result(_fbthrift_python_mutable_types.MutableStruct):
+    success: _typing.Final[None]
+    boom: _typing.Final[_fbthrift_CustomException]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ..., _ex0__boom: _typing.Optional[_fbthrift_CustomException]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            None,
+            _fbthrift_CustomException,
+        ]]]: ...
+
+
+class _fbthrift_MyInteraction_streamWithArg_result_stream_elem(_fbthrift_python_mutable_types._fbthrift_MutableResponseStreamResult[builtins.int]):
 
     def __init__(
         self, *, success: _typing.Optional[builtins.int] = ...

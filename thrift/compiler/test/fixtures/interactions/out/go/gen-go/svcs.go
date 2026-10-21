@@ -37,6 +37,8 @@ type MyInteraction interface {
     Truthify(ctx context.Context) (func(context.Context, chan<- bool) error, error)
     Failstream(ctx context.Context) (func(context.Context, chan<- int32) error, error)
     Failstreaminit(ctx context.Context) (func(context.Context, chan<- int32) error, error)
+    FrobnicateWithArg(ctx context.Context, arg int32) (int32, error)
+    StreamWithArg(ctx context.Context, query string) (func(context.Context, chan<- int32) error, error)
     Encode(ctx context.Context) ([]int32, func(context.Context, iter.Seq2[string, error]) ([]byte, error), error)
 }
 
@@ -47,6 +49,8 @@ type MyInteractionClient interface {
     Truthify(ctx context.Context) (thrift.StreamingHandle[bool], error)
     Failstream(ctx context.Context) (thrift.StreamingHandle[int32], error)
     Failstreaminit(ctx context.Context) (thrift.StreamingHandle[int32], error)
+    FrobnicateWithArg(ctx context.Context, arg int32) (int32, error)
+    StreamWithArg(ctx context.Context, query string) (thrift.StreamingHandle[int32], error)
     Encode(ctx context.Context) ([]int32, func(iter.Seq2[string, error]) ([]byte, error), error)
 }
 
@@ -186,6 +190,56 @@ func (c *myInteractionClientImpl) Failstreaminit(ctx context.Context) (thrift.St
     return fbthriftHandle, nil
 }
 
+func (c *myInteractionClientImpl) FrobnicateWithArg(ctx context.Context, arg int32) (int32, error) {
+    fbthriftReq := &reqMyInteractionFrobnicateWithArg{
+        Arg: arg,
+    }
+    fbthriftChannel := c.ch
+    fbthriftResp := newRespMyInteractionFrobnicateWithArg()
+    fbthriftErr := fbthriftChannel.SendRequestResponse(
+        ctx,
+        "MyInteraction.frobnicateWithArg",
+        fbthriftReq,
+        fbthriftResp,
+    )
+    if fbthriftErr != nil {
+        return 0, fbthriftErr
+    }
+    return fbthriftResp.GetSuccess(), nil
+}
+
+func (c *myInteractionClientImpl) StreamWithArg(ctx context.Context, query string) (thrift.StreamingHandle[int32], error) {
+    fbthriftReq := &reqMyInteractionStreamWithArg{
+        Query: query,
+    }
+    fbthriftResp := newRespMyInteractionStreamWithArg()
+
+    fbthriftChannel := c.ch
+
+    fbthriftNewStreamElemFn := func() thrift.ReadableResult {
+        return newStreamMyInteractionStreamWithArg()
+    }
+
+    fbthriftRawHandle, fbthriftErr := fbthriftChannel.SendRequestStream(
+        ctx,
+        "MyInteraction.streamWithArg",
+        fbthriftReq,
+        fbthriftResp,
+        fbthriftNewStreamElemFn,
+    )
+    if fbthriftErr != nil {
+        return nil, fbthriftErr
+    }
+    fbthriftHandle := thrift.AdaptStreamingHandle(fbthriftRawHandle, func(elem thrift.ReadableStruct) (int32, error) {
+        fbthriftRes, ok := elem.(*streamMyInteractionStreamWithArg)
+        if !ok {
+            return 0, fmt.Errorf("thrift: unexpected stream element type %T", elem)
+        }
+        return fbthriftRes.GetSuccess(), nil
+    })
+    return fbthriftHandle, nil
+}
+
 func (c *myInteractionClientImpl) Encode(ctx context.Context) ([]int32, func(iter.Seq2[string, error]) ([]byte, error), error) {
     var fbthriftFirstRespZero []int32
     fbthriftReq := &reqMyInteractionEncode{
@@ -247,12 +301,16 @@ func NewMyInteractionProcessor(handler MyInteraction) *MyInteractionProcessor {
     p.AddToProcessorFunctionMap("MyInteraction.truthify", &procFuncMyInteractionTruthify{handler: handler})
     p.AddToProcessorFunctionMap("MyInteraction.failstream", &procFuncMyInteractionFailstream{handler: handler})
     p.AddToProcessorFunctionMap("MyInteraction.failstreaminit", &procFuncMyInteractionFailstreaminit{handler: handler})
+    p.AddToProcessorFunctionMap("MyInteraction.frobnicateWithArg", &procFuncMyInteractionFrobnicateWithArg{handler: handler})
+    p.AddToProcessorFunctionMap("MyInteraction.streamWithArg", &procFuncMyInteractionStreamWithArg{handler: handler})
     p.AddToProcessorFunctionMap("MyInteraction.encode", &procFuncMyInteractionEncode{handler: handler})
     p.AddToFunctionServiceMap("MyInteraction.frobnicate", "MyInteraction")
     p.AddToFunctionServiceMap("MyInteraction.ping", "MyInteraction")
     p.AddToFunctionServiceMap("MyInteraction.truthify", "MyInteraction")
     p.AddToFunctionServiceMap("MyInteraction.failstream", "MyInteraction")
     p.AddToFunctionServiceMap("MyInteraction.failstreaminit", "MyInteraction")
+    p.AddToFunctionServiceMap("MyInteraction.frobnicateWithArg", "MyInteraction")
+    p.AddToFunctionServiceMap("MyInteraction.streamWithArg", "MyInteraction")
     p.AddToFunctionServiceMap("MyInteraction.encode", "MyInteraction")
 
     return p
@@ -494,6 +552,95 @@ func (p *procFuncMyInteractionFailstreaminit) RunStreamContext(
         defer senderWg.Done()
         for elem := range fbthriftElemChan {
             streamWrapStruct := newStreamMyInteractionFailstreaminit()
+            streamWrapStruct.Success = &elem
+            onStreamNext(streamWrapStruct, nil)
+        }
+    }()
+
+    streamErr := elemProducerFunc(ctx, fbthriftElemChan)
+    // Stream is complete. Close the channel and wait for the sender goroutine to finish.
+    close(fbthriftElemChan)
+    senderWg.Wait()
+    if streamErr != nil {
+        onStreamNext(nil, streamErr)
+    }
+    onStreamComplete()
+}
+
+type procFuncMyInteractionFrobnicateWithArg struct {
+    handler MyInteraction
+}
+// Compile time interface enforcer
+var _ thrift.ProcessorFunction = (*procFuncMyInteractionFrobnicateWithArg)(nil)
+
+func (p *procFuncMyInteractionFrobnicateWithArg) NewReqArgs() thrift.ReadableStruct {
+    return newReqMyInteractionFrobnicateWithArg()
+}
+
+func (p *procFuncMyInteractionFrobnicateWithArg) RunContext(ctx context.Context, reqStruct thrift.ReadableStruct) (thrift.WritableResult, error) {
+    args := reqStruct.(*reqMyInteractionFrobnicateWithArg)
+    result := newRespMyInteractionFrobnicateWithArg()
+    retval, err := p.handler.FrobnicateWithArg(ctx, args.Arg)
+    if err != nil {
+        switch v := err.(type) {
+        case *CustomException:
+            result.Ex = v
+            return result, nil
+        default:
+            return nil, err
+        }
+    }
+
+    result.Success = &retval
+    return result, nil
+}
+
+type procFuncMyInteractionStreamWithArg struct {
+    handler MyInteraction
+}
+// Compile time interface enforcer
+var _ thrift.ProcessorFunction = (*procFuncMyInteractionStreamWithArg)(nil)
+
+func (p *procFuncMyInteractionStreamWithArg) NewReqArgs() thrift.ReadableStruct {
+    return newReqMyInteractionStreamWithArg()
+}
+
+func (p *procFuncMyInteractionStreamWithArg) RunContext(ctx context.Context, reqStruct thrift.ReadableStruct) (thrift.WritableResult, error) {
+    return nil, errors.New("not supported")
+}
+
+func (p *procFuncMyInteractionStreamWithArg) RunStreamContext(
+    ctx context.Context,
+    reqStruct thrift.ReadableStruct,
+    onFirstResponse func(thrift.WritableResult, error),
+    onStreamNext func(thrift.WritableResult, error),
+    onStreamComplete func(),
+) {
+    args := reqStruct.(*reqMyInteractionStreamWithArg)
+    firstResponse := newRespMyInteractionStreamWithArg()
+    elemProducerFunc, initialErr := p.handler.StreamWithArg(ctx, args.Query)
+    if initialErr != nil {
+        switch v := initialErr.(type) {
+        case *CustomException:
+            firstResponse.Boom = v
+            onFirstResponse(firstResponse, nil)
+        default:
+            onFirstResponse(nil, initialErr)
+        }
+        onStreamComplete()
+        return
+    }
+
+    onFirstResponse(firstResponse, nil)
+
+    fbthriftElemChan := make(chan int32, thrift.DefaultStreamBufferSize)
+    var senderWg sync.WaitGroup
+    senderWg.Add(1)
+    // Sender goroutine (receives elements on the channel and sends them out via onStreamNext)
+    go func() {
+        defer senderWg.Done()
+        for elem := range fbthriftElemChan {
+            streamWrapStruct := newStreamMyInteractionStreamWithArg()
             streamWrapStruct.Success = &elem
             onStreamNext(streamWrapStruct, nil)
         }

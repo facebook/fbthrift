@@ -128,6 +128,30 @@ pub trait MyInteraction: ::std::marker::Send + ::std::marker::Sync + 'static {
             ),
         ))
     }
+    async fn frobnicateWithArg(
+        &self,
+        _arg: ::std::primitive::i32,
+    ) -> ::std::result::Result<::std::primitive::i32, crate::services::my_interaction::FrobnicateWithArgExn> {
+        ::std::result::Result::Err(crate::services::my_interaction::FrobnicateWithArgExn::ApplicationException(
+            ::fbthrift::ApplicationException::unimplemented_method(
+                "MyInteraction",
+                "frobnicateWithArg",
+            ),
+        ))
+    }
+    async fn streamWithArg(
+        &self,
+        _query: ::std::string::String,
+    ) -> ::std::result::Result<
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::my_interaction::StreamWithArgStreamExn>>
+, crate::services::my_interaction::StreamWithArgExn> {
+        ::std::result::Result::Err(crate::services::my_interaction::StreamWithArgExn::ApplicationException(
+            ::fbthrift::ApplicationException::unimplemented_method(
+                "MyInteraction",
+                "streamWithArg",
+            ),
+        ))
+    }
     async fn encode(
         &self,
     ) -> ::std::result::Result<crate::services::my_interaction::EncodeSinkResult, crate::services::my_interaction::EncodeExn> {
@@ -182,6 +206,24 @@ where
         (**self).failstreaminit(
         ).await
     }
+    async fn frobnicateWithArg(
+        &self,
+        arg: ::std::primitive::i32,
+    ) -> ::std::result::Result<::std::primitive::i32, crate::services::my_interaction::FrobnicateWithArgExn> {
+        (**self).frobnicateWithArg(
+            arg,
+        ).await
+    }
+    async fn streamWithArg(
+        &self,
+        query: ::std::string::String,
+    ) -> ::std::result::Result<
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::my_interaction::StreamWithArgStreamExn>>
+, crate::services::my_interaction::StreamWithArgExn> {
+        (**self).streamWithArg(
+            query,
+        ).await
+    }
     async fn encode(
         &self,
     ) -> ::std::result::Result<crate::services::my_interaction::EncodeSinkResult, crate::services::my_interaction::EncodeExn> {
@@ -232,6 +274,24 @@ where
     ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::my_interaction::FailstreaminitStreamExn>>
 , crate::services::my_interaction::FailstreaminitExn> {
         (**self).failstreaminit(
+        ).await
+    }
+    async fn frobnicateWithArg(
+        &self,
+        arg: ::std::primitive::i32,
+    ) -> ::std::result::Result<::std::primitive::i32, crate::services::my_interaction::FrobnicateWithArgExn> {
+        (**self).frobnicateWithArg(
+            arg,
+        ).await
+    }
+    async fn streamWithArg(
+        &self,
+        query: ::std::string::String,
+    ) -> ::std::result::Result<
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::my_interaction::StreamWithArgStreamExn>>
+, crate::services::my_interaction::StreamWithArgExn> {
+        (**self).streamWithArg(
+            query,
         ).await
     }
     async fn encode(
@@ -365,6 +425,66 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_My
         }
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
+        })
+    }
+}
+
+
+struct Args_MyInteraction_frobnicateWithArg {
+    arg: ::std::primitive::i32,
+}
+
+impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyInteraction_frobnicateWithArg {
+    #[inline]
+    #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyInteraction.frobnicateWithArg"))]
+    fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
+        static ARGS: &[::fbthrift::Field] = &[
+            ::fbthrift::Field::new("arg", ::fbthrift::TType::I32, 1),
+        ];
+        let mut field_arg = ::std::option::Option::None;
+        let _ = p.read_struct_begin(|_| ())?;
+        loop {
+            let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+            match (fty, fid as ::std::primitive::i32) {
+                (::fbthrift::TType::Stop, _) => break,
+                (::fbthrift::TType::I32, 1) => field_arg = ::std::option::Option::Some(::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingArgError { arg: "arg", function: "frobnicateWithArg"})?),
+                (fty, _) => p.skip(fty)?,
+            }
+            p.read_field_end()?;
+        }
+        p.read_struct_end()?;
+        ::std::result::Result::Ok(Self {
+            arg: field_arg.unwrap_or_default(),
+        })
+    }
+}
+
+
+struct Args_MyInteraction_streamWithArg {
+    query: ::std::string::String,
+}
+
+impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyInteraction_streamWithArg {
+    #[inline]
+    #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyInteraction.streamWithArg"))]
+    fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
+        static ARGS: &[::fbthrift::Field] = &[
+            ::fbthrift::Field::new("query", ::fbthrift::TType::String, 1),
+        ];
+        let mut field_query = ::std::option::Option::None;
+        let _ = p.read_struct_begin(|_| ())?;
+        loop {
+            let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+            match (fty, fid as ::std::primitive::i32) {
+                (::fbthrift::TType::Stop, _) => break,
+                (::fbthrift::TType::String, 1) => field_query = ::std::option::Option::Some(::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingArgError { arg: "query", function: "streamWithArg"})?),
+                (fty, _) => p.skip(fty)?,
+            }
+            p.read_field_end()?;
+        }
+        p.read_struct_end()?;
+        ::std::result::Result::Ok(Self {
+            query: field_query.unwrap_or_default(),
         })
     }
 }
@@ -1246,6 +1366,177 @@ pub mod my_service {
             ::std::result::Result::Ok(())
         }
 
+        #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.frobnicateWithArg"))]
+        async fn handle_frobnicateWithArg(
+            &self,
+            mut p: P::Deserializer,
+            req: ::fbthrift::ProtocolDecoded<P>,
+            req_ctxt: &R,
+            reply_state: ::std::sync::Arc<RS>,
+            _seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<()> {
+            use ::futures::FutureExt as _;
+            use ::fbthrift::ExceptionInfo;
+            use ::fbthrift::ProtocolReader as _;
+
+            const SERVICE_NAME: &::std::ffi::CStr = c"MyService";
+            const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.frobnicateWithArg";
+            const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"MyService.MyInteraction.frobnicateWithArg";
+            let mut ctx_stack = req_ctxt.get_context_stack(SERVICE_NAME, SERVICE_METHOD_NAME)?;
+            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+            let _args: self::Args_MyInteraction_frobnicateWithArg = ::fbthrift::Deserialize::rs_thrift_read(&mut p)?;
+            let bytes_read = ::fbthrift::help::buf_len(&req)?;
+            ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, ::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME,
+                buffer: req,
+            })?;
+            ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
+            p.read_message_end()?;
+            // drop the deserializer buffer since we already have the relevant data pulled out and placed into the _args variable
+            ::std::mem::drop(p);
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.frobnicateWithArg(
+                    _args.arg,
+                )
+            )
+            .catch_unwind()
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::trace!(method = "MyInteraction.frobnicateWithArg", "success");
+                    ::std::result::Result::Ok(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::tracing::error!(method = "MyInteraction.frobnicateWithArg", exception = ?exn, error = exn.exn_value());
+                    ::std::result::Result::Err(exn)
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.frobnicateWithArg", exn);
+                    ::tracing::error!(method = "MyInteraction.frobnicateWithArg", panic = ?aexn, error = aexn.exn_value());
+                    ::std::result::Result::Err(crate::services::my_interaction::FrobnicateWithArgExn::ApplicationException(aexn))
+                }
+            };
+
+            let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::FrobnicateWithArgExn>(
+                "frobnicateWithArg",
+                METHOD_NAME,
+                _seqid,
+                req_ctxt,
+                &mut ctx_stack,
+                res,
+            )?;
+            reply_state.send_reply(env);
+            ::std::result::Result::Ok(())
+        }
+
+        #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.streamWithArg"))]
+        async fn handle_streamWithArg(
+            &self,
+            mut p: P::Deserializer,
+            req: ::fbthrift::ProtocolDecoded<P>,
+            req_ctxt: &R,
+            reply_state: ::std::sync::Arc<RS>,
+            _seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<()> {
+            use ::futures::FutureExt as _;
+            use ::fbthrift::ExceptionInfo;
+            use ::fbthrift::ProtocolReader as _;
+
+            const SERVICE_NAME: &::std::ffi::CStr = c"MyService";
+            const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.streamWithArg";
+            const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"MyService.MyInteraction.streamWithArg";
+            let mut ctx_stack = req_ctxt.get_context_stack(SERVICE_NAME, SERVICE_METHOD_NAME)?;
+            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+            let _args: self::Args_MyInteraction_streamWithArg = ::fbthrift::Deserialize::rs_thrift_read(&mut p)?;
+            let bytes_read = ::fbthrift::help::buf_len(&req)?;
+            ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, ::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME,
+                buffer: req,
+            })?;
+            ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
+            p.read_message_end()?;
+            // drop the deserializer buffer since we already have the relevant data pulled out and placed into the _args variable
+            ::std::mem::drop(p);
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.streamWithArg(
+                    _args.query,
+                )
+            )
+            .catch_unwind()
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::trace!(method = "MyInteraction.streamWithArg", "success");
+                    ::std::result::Result::Ok(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::std::result::Result::Err(exn)
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.streamWithArg", exn);
+                    ::tracing::error!(method = "MyInteraction.streamWithArg", panic = ?aexn, error = aexn.exn_value());
+                    ::std::result::Result::Err(crate::services::my_interaction::StreamWithArgExn::ApplicationException(aexn))
+                }
+            };
+
+            use ::futures::StreamExt as _;
+
+            let (response, stream) = match res {
+                ::std::result::Result::Ok(res) => {
+                    let response = ::std::result::Result::Ok(());
+                    let stream = res;
+
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(success)) => {
+                                    let payload = ::fbthrift::help::serialize_stream_item::<P, crate::services::my_interaction::StreamWithArgStreamExn>(
+                                        ::std::result::Result::Ok(success),
+                                        "streamWithArg",
+                                    );
+                                    ::fbthrift::SerializedStreamElement::Success(payload)
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_interaction::StreamWithArgStreamExn::ApplicationException(aexn))) => {
+                                    tracing::info!(?aexn, method="MyInteraction.streamWithArg", "Streaming ApplicationException");
+                                    ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
+                                }
+                                ::std::result::Result::Err(exn) => {
+                                    tracing::error!(?exn, method="MyInteraction.streamWithArg", "Streaming unwind");
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.streamWithArg", exn);
+                                    ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
+                                }
+                            }
+                        })
+                        .boxed();
+                    (response, ::std::option::Option::Some(stream))
+                },
+                ::std::result::Result::Err(exn) => (::std::result::Result::Err(exn), ::std::option::Option::None),
+            };
+
+            let response = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::StreamWithArgExn>(
+                "streamWithArg",
+                METHOD_NAME,
+                _seqid,
+                req_ctxt,
+                &mut ctx_stack,
+                response,
+            )?;
+
+            reply_state.set_stream_method_name("MyInteraction.streamWithArg");
+            reply_state.set_stream_context_stack(ctx_stack);
+            let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
+            ::std::result::Result::Ok(())
+        }
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.encode"))]
         async fn handle_encode(
             &self,
@@ -1409,7 +1700,9 @@ pub mod my_service {
                 b"MyInteraction.truthify" => ::std::result::Result::Ok(2usize),
                 b"MyInteraction.failstream" => ::std::result::Result::Ok(3usize),
                 b"MyInteraction.failstreaminit" => ::std::result::Result::Ok(4usize),
-                b"MyInteraction.encode" => ::std::result::Result::Ok(5usize),
+                b"MyInteraction.frobnicateWithArg" => ::std::result::Result::Ok(5usize),
+                b"MyInteraction.streamWithArg" => ::std::result::Result::Ok(6usize),
+                b"MyInteraction.encode" => ::std::result::Result::Ok(7usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -1441,6 +1734,12 @@ pub mod my_service {
                     self.handle_failstreaminit(_p, _req, _req_ctxt, _reply_state, _seqid).await
                 }
                 5usize => {
+                    self.handle_frobnicateWithArg(_p, _req, _req_ctxt, _reply_state, _seqid).await
+                }
+                6usize => {
+                    self.handle_streamWithArg(_p, _req, _req_ctxt, _reply_state, _seqid).await
+                }
+                7usize => {
                     self.handle_encode(_p, _req, _req_ctxt, _reply_state, _seqid).await
                 }
                 bad => panic!(
@@ -3265,6 +3564,20 @@ where
             },
             ::fbthrift::processor::MethodMetadata{
               interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
+              rpc_kind: ::fbthrift::processor::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+              name: "MyInteraction.frobnicateWithArg",
+              starts_interaction: false,
+              interaction_name: Some("MyInteraction"),
+            },
+            ::fbthrift::processor::MethodMetadata{
+              interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
+              rpc_kind: ::fbthrift::processor::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+              name: "MyInteraction.streamWithArg",
+              starts_interaction: false,
+              interaction_name: Some("MyInteraction"),
+            },
+            ::fbthrift::processor::MethodMetadata{
+              interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
               rpc_kind: ::fbthrift::processor::RpcKind::SINK,
               name: "MyInteraction.encode",
               starts_interaction: false,
@@ -3837,6 +4150,177 @@ pub mod factories {
             ::std::result::Result::Ok(())
         }
 
+        #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.frobnicateWithArg"))]
+        async fn handle_frobnicateWithArg(
+            &self,
+            mut p: P::Deserializer,
+            req: ::fbthrift::ProtocolDecoded<P>,
+            req_ctxt: &R,
+            reply_state: ::std::sync::Arc<RS>,
+            _seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<()> {
+            use ::futures::FutureExt as _;
+            use ::fbthrift::ExceptionInfo;
+            use ::fbthrift::ProtocolReader as _;
+
+            const SERVICE_NAME: &::std::ffi::CStr = c"Factories";
+            const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.frobnicateWithArg";
+            const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Factories.MyInteraction.frobnicateWithArg";
+            let mut ctx_stack = req_ctxt.get_context_stack(SERVICE_NAME, SERVICE_METHOD_NAME)?;
+            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+            let _args: self::Args_MyInteraction_frobnicateWithArg = ::fbthrift::Deserialize::rs_thrift_read(&mut p)?;
+            let bytes_read = ::fbthrift::help::buf_len(&req)?;
+            ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, ::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME,
+                buffer: req,
+            })?;
+            ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
+            p.read_message_end()?;
+            // drop the deserializer buffer since we already have the relevant data pulled out and placed into the _args variable
+            ::std::mem::drop(p);
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.frobnicateWithArg(
+                    _args.arg,
+                )
+            )
+            .catch_unwind()
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::trace!(method = "MyInteraction.frobnicateWithArg", "success");
+                    ::std::result::Result::Ok(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::tracing::error!(method = "MyInteraction.frobnicateWithArg", exception = ?exn, error = exn.exn_value());
+                    ::std::result::Result::Err(exn)
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.frobnicateWithArg", exn);
+                    ::tracing::error!(method = "MyInteraction.frobnicateWithArg", panic = ?aexn, error = aexn.exn_value());
+                    ::std::result::Result::Err(crate::services::my_interaction::FrobnicateWithArgExn::ApplicationException(aexn))
+                }
+            };
+
+            let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::FrobnicateWithArgExn>(
+                "frobnicateWithArg",
+                METHOD_NAME,
+                _seqid,
+                req_ctxt,
+                &mut ctx_stack,
+                res,
+            )?;
+            reply_state.send_reply(env);
+            ::std::result::Result::Ok(())
+        }
+
+        #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.streamWithArg"))]
+        async fn handle_streamWithArg(
+            &self,
+            mut p: P::Deserializer,
+            req: ::fbthrift::ProtocolDecoded<P>,
+            req_ctxt: &R,
+            reply_state: ::std::sync::Arc<RS>,
+            _seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<()> {
+            use ::futures::FutureExt as _;
+            use ::fbthrift::ExceptionInfo;
+            use ::fbthrift::ProtocolReader as _;
+
+            const SERVICE_NAME: &::std::ffi::CStr = c"Factories";
+            const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.streamWithArg";
+            const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Factories.MyInteraction.streamWithArg";
+            let mut ctx_stack = req_ctxt.get_context_stack(SERVICE_NAME, SERVICE_METHOD_NAME)?;
+            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+            let _args: self::Args_MyInteraction_streamWithArg = ::fbthrift::Deserialize::rs_thrift_read(&mut p)?;
+            let bytes_read = ::fbthrift::help::buf_len(&req)?;
+            ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, ::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME,
+                buffer: req,
+            })?;
+            ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
+            p.read_message_end()?;
+            // drop the deserializer buffer since we already have the relevant data pulled out and placed into the _args variable
+            ::std::mem::drop(p);
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.streamWithArg(
+                    _args.query,
+                )
+            )
+            .catch_unwind()
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::trace!(method = "MyInteraction.streamWithArg", "success");
+                    ::std::result::Result::Ok(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::std::result::Result::Err(exn)
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.streamWithArg", exn);
+                    ::tracing::error!(method = "MyInteraction.streamWithArg", panic = ?aexn, error = aexn.exn_value());
+                    ::std::result::Result::Err(crate::services::my_interaction::StreamWithArgExn::ApplicationException(aexn))
+                }
+            };
+
+            use ::futures::StreamExt as _;
+
+            let (response, stream) = match res {
+                ::std::result::Result::Ok(res) => {
+                    let response = ::std::result::Result::Ok(());
+                    let stream = res;
+
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(success)) => {
+                                    let payload = ::fbthrift::help::serialize_stream_item::<P, crate::services::my_interaction::StreamWithArgStreamExn>(
+                                        ::std::result::Result::Ok(success),
+                                        "streamWithArg",
+                                    );
+                                    ::fbthrift::SerializedStreamElement::Success(payload)
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_interaction::StreamWithArgStreamExn::ApplicationException(aexn))) => {
+                                    tracing::info!(?aexn, method="MyInteraction.streamWithArg", "Streaming ApplicationException");
+                                    ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
+                                }
+                                ::std::result::Result::Err(exn) => {
+                                    tracing::error!(?exn, method="MyInteraction.streamWithArg", "Streaming unwind");
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.streamWithArg", exn);
+                                    ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
+                                }
+                            }
+                        })
+                        .boxed();
+                    (response, ::std::option::Option::Some(stream))
+                },
+                ::std::result::Result::Err(exn) => (::std::result::Result::Err(exn), ::std::option::Option::None),
+            };
+
+            let response = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::StreamWithArgExn>(
+                "streamWithArg",
+                METHOD_NAME,
+                _seqid,
+                req_ctxt,
+                &mut ctx_stack,
+                response,
+            )?;
+
+            reply_state.set_stream_method_name("MyInteraction.streamWithArg");
+            reply_state.set_stream_context_stack(ctx_stack);
+            let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
+            ::std::result::Result::Ok(())
+        }
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.encode"))]
         async fn handle_encode(
             &self,
@@ -4000,7 +4484,9 @@ pub mod factories {
                 b"MyInteraction.truthify" => ::std::result::Result::Ok(2usize),
                 b"MyInteraction.failstream" => ::std::result::Result::Ok(3usize),
                 b"MyInteraction.failstreaminit" => ::std::result::Result::Ok(4usize),
-                b"MyInteraction.encode" => ::std::result::Result::Ok(5usize),
+                b"MyInteraction.frobnicateWithArg" => ::std::result::Result::Ok(5usize),
+                b"MyInteraction.streamWithArg" => ::std::result::Result::Ok(6usize),
+                b"MyInteraction.encode" => ::std::result::Result::Ok(7usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -4032,6 +4518,12 @@ pub mod factories {
                     self.handle_failstreaminit(_p, _req, _req_ctxt, _reply_state, _seqid).await
                 }
                 5usize => {
+                    self.handle_frobnicateWithArg(_p, _req, _req_ctxt, _reply_state, _seqid).await
+                }
+                6usize => {
+                    self.handle_streamWithArg(_p, _req, _req_ctxt, _reply_state, _seqid).await
+                }
+                7usize => {
                     self.handle_encode(_p, _req, _req_ctxt, _reply_state, _seqid).await
                 }
                 bad => panic!(
@@ -5775,6 +6267,20 @@ where
             },
             ::fbthrift::processor::MethodMetadata{
               interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
+              rpc_kind: ::fbthrift::processor::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+              name: "MyInteraction.frobnicateWithArg",
+              starts_interaction: false,
+              interaction_name: Some("MyInteraction"),
+            },
+            ::fbthrift::processor::MethodMetadata{
+              interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
+              rpc_kind: ::fbthrift::processor::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+              name: "MyInteraction.streamWithArg",
+              starts_interaction: false,
+              interaction_name: Some("MyInteraction"),
+            },
+            ::fbthrift::processor::MethodMetadata{
+              interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
               rpc_kind: ::fbthrift::processor::RpcKind::SINK,
               name: "MyInteraction.encode",
               starts_interaction: false,
@@ -6347,6 +6853,177 @@ pub mod perform {
             ::std::result::Result::Ok(())
         }
 
+        #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.frobnicateWithArg"))]
+        async fn handle_frobnicateWithArg(
+            &self,
+            mut p: P::Deserializer,
+            req: ::fbthrift::ProtocolDecoded<P>,
+            req_ctxt: &R,
+            reply_state: ::std::sync::Arc<RS>,
+            _seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<()> {
+            use ::futures::FutureExt as _;
+            use ::fbthrift::ExceptionInfo;
+            use ::fbthrift::ProtocolReader as _;
+
+            const SERVICE_NAME: &::std::ffi::CStr = c"Perform";
+            const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.frobnicateWithArg";
+            const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Perform.MyInteraction.frobnicateWithArg";
+            let mut ctx_stack = req_ctxt.get_context_stack(SERVICE_NAME, SERVICE_METHOD_NAME)?;
+            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+            let _args: self::Args_MyInteraction_frobnicateWithArg = ::fbthrift::Deserialize::rs_thrift_read(&mut p)?;
+            let bytes_read = ::fbthrift::help::buf_len(&req)?;
+            ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, ::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME,
+                buffer: req,
+            })?;
+            ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
+            p.read_message_end()?;
+            // drop the deserializer buffer since we already have the relevant data pulled out and placed into the _args variable
+            ::std::mem::drop(p);
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.frobnicateWithArg(
+                    _args.arg,
+                )
+            )
+            .catch_unwind()
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::trace!(method = "MyInteraction.frobnicateWithArg", "success");
+                    ::std::result::Result::Ok(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::tracing::error!(method = "MyInteraction.frobnicateWithArg", exception = ?exn, error = exn.exn_value());
+                    ::std::result::Result::Err(exn)
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.frobnicateWithArg", exn);
+                    ::tracing::error!(method = "MyInteraction.frobnicateWithArg", panic = ?aexn, error = aexn.exn_value());
+                    ::std::result::Result::Err(crate::services::my_interaction::FrobnicateWithArgExn::ApplicationException(aexn))
+                }
+            };
+
+            let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::FrobnicateWithArgExn>(
+                "frobnicateWithArg",
+                METHOD_NAME,
+                _seqid,
+                req_ctxt,
+                &mut ctx_stack,
+                res,
+            )?;
+            reply_state.send_reply(env);
+            ::std::result::Result::Ok(())
+        }
+
+        #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.streamWithArg"))]
+        async fn handle_streamWithArg(
+            &self,
+            mut p: P::Deserializer,
+            req: ::fbthrift::ProtocolDecoded<P>,
+            req_ctxt: &R,
+            reply_state: ::std::sync::Arc<RS>,
+            _seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<()> {
+            use ::futures::FutureExt as _;
+            use ::fbthrift::ExceptionInfo;
+            use ::fbthrift::ProtocolReader as _;
+
+            const SERVICE_NAME: &::std::ffi::CStr = c"Perform";
+            const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.streamWithArg";
+            const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Perform.MyInteraction.streamWithArg";
+            let mut ctx_stack = req_ctxt.get_context_stack(SERVICE_NAME, SERVICE_METHOD_NAME)?;
+            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+            let _args: self::Args_MyInteraction_streamWithArg = ::fbthrift::Deserialize::rs_thrift_read(&mut p)?;
+            let bytes_read = ::fbthrift::help::buf_len(&req)?;
+            ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, ::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME,
+                buffer: req,
+            })?;
+            ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
+            p.read_message_end()?;
+            // drop the deserializer buffer since we already have the relevant data pulled out and placed into the _args variable
+            ::std::mem::drop(p);
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.streamWithArg(
+                    _args.query,
+                )
+            )
+            .catch_unwind()
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::trace!(method = "MyInteraction.streamWithArg", "success");
+                    ::std::result::Result::Ok(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::std::result::Result::Err(exn)
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.streamWithArg", exn);
+                    ::tracing::error!(method = "MyInteraction.streamWithArg", panic = ?aexn, error = aexn.exn_value());
+                    ::std::result::Result::Err(crate::services::my_interaction::StreamWithArgExn::ApplicationException(aexn))
+                }
+            };
+
+            use ::futures::StreamExt as _;
+
+            let (response, stream) = match res {
+                ::std::result::Result::Ok(res) => {
+                    let response = ::std::result::Result::Ok(());
+                    let stream = res;
+
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(success)) => {
+                                    let payload = ::fbthrift::help::serialize_stream_item::<P, crate::services::my_interaction::StreamWithArgStreamExn>(
+                                        ::std::result::Result::Ok(success),
+                                        "streamWithArg",
+                                    );
+                                    ::fbthrift::SerializedStreamElement::Success(payload)
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_interaction::StreamWithArgStreamExn::ApplicationException(aexn))) => {
+                                    tracing::info!(?aexn, method="MyInteraction.streamWithArg", "Streaming ApplicationException");
+                                    ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
+                                }
+                                ::std::result::Result::Err(exn) => {
+                                    tracing::error!(?exn, method="MyInteraction.streamWithArg", "Streaming unwind");
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.streamWithArg", exn);
+                                    ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
+                                }
+                            }
+                        })
+                        .boxed();
+                    (response, ::std::option::Option::Some(stream))
+                },
+                ::std::result::Result::Err(exn) => (::std::result::Result::Err(exn), ::std::option::Option::None),
+            };
+
+            let response = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::StreamWithArgExn>(
+                "streamWithArg",
+                METHOD_NAME,
+                _seqid,
+                req_ctxt,
+                &mut ctx_stack,
+                response,
+            )?;
+
+            reply_state.set_stream_method_name("MyInteraction.streamWithArg");
+            reply_state.set_stream_context_stack(ctx_stack);
+            let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
+            ::std::result::Result::Ok(())
+        }
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.encode"))]
         async fn handle_encode(
             &self,
@@ -6510,7 +7187,9 @@ pub mod perform {
                 b"MyInteraction.truthify" => ::std::result::Result::Ok(2usize),
                 b"MyInteraction.failstream" => ::std::result::Result::Ok(3usize),
                 b"MyInteraction.failstreaminit" => ::std::result::Result::Ok(4usize),
-                b"MyInteraction.encode" => ::std::result::Result::Ok(5usize),
+                b"MyInteraction.frobnicateWithArg" => ::std::result::Result::Ok(5usize),
+                b"MyInteraction.streamWithArg" => ::std::result::Result::Ok(6usize),
+                b"MyInteraction.encode" => ::std::result::Result::Ok(7usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -6542,6 +7221,12 @@ pub mod perform {
                     self.handle_failstreaminit(_p, _req, _req_ctxt, _reply_state, _seqid).await
                 }
                 5usize => {
+                    self.handle_frobnicateWithArg(_p, _req, _req_ctxt, _reply_state, _seqid).await
+                }
+                6usize => {
+                    self.handle_streamWithArg(_p, _req, _req_ctxt, _reply_state, _seqid).await
+                }
+                7usize => {
                     self.handle_encode(_p, _req, _req_ctxt, _reply_state, _seqid).await
                 }
                 bad => panic!(
@@ -7922,6 +8607,20 @@ where
             },
             ::fbthrift::processor::MethodMetadata{
               interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
+              rpc_kind: ::fbthrift::processor::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+              name: "MyInteraction.frobnicateWithArg",
+              starts_interaction: false,
+              interaction_name: Some("MyInteraction"),
+            },
+            ::fbthrift::processor::MethodMetadata{
+              interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
+              rpc_kind: ::fbthrift::processor::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+              name: "MyInteraction.streamWithArg",
+              starts_interaction: false,
+              interaction_name: Some("MyInteraction"),
+            },
+            ::fbthrift::processor::MethodMetadata{
+              interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
               rpc_kind: ::fbthrift::processor::RpcKind::SINK,
               name: "MyInteraction.encode",
               starts_interaction: false,
@@ -8494,6 +9193,177 @@ pub mod interact_with_shared {
             ::std::result::Result::Ok(())
         }
 
+        #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.frobnicateWithArg"))]
+        async fn handle_frobnicateWithArg(
+            &self,
+            mut p: P::Deserializer,
+            req: ::fbthrift::ProtocolDecoded<P>,
+            req_ctxt: &R,
+            reply_state: ::std::sync::Arc<RS>,
+            _seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<()> {
+            use ::futures::FutureExt as _;
+            use ::fbthrift::ExceptionInfo;
+            use ::fbthrift::ProtocolReader as _;
+
+            const SERVICE_NAME: &::std::ffi::CStr = c"InteractWithShared";
+            const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.frobnicateWithArg";
+            const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"InteractWithShared.MyInteraction.frobnicateWithArg";
+            let mut ctx_stack = req_ctxt.get_context_stack(SERVICE_NAME, SERVICE_METHOD_NAME)?;
+            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+            let _args: self::Args_MyInteraction_frobnicateWithArg = ::fbthrift::Deserialize::rs_thrift_read(&mut p)?;
+            let bytes_read = ::fbthrift::help::buf_len(&req)?;
+            ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, ::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME,
+                buffer: req,
+            })?;
+            ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
+            p.read_message_end()?;
+            // drop the deserializer buffer since we already have the relevant data pulled out and placed into the _args variable
+            ::std::mem::drop(p);
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.frobnicateWithArg(
+                    _args.arg,
+                )
+            )
+            .catch_unwind()
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::trace!(method = "MyInteraction.frobnicateWithArg", "success");
+                    ::std::result::Result::Ok(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::tracing::error!(method = "MyInteraction.frobnicateWithArg", exception = ?exn, error = exn.exn_value());
+                    ::std::result::Result::Err(exn)
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.frobnicateWithArg", exn);
+                    ::tracing::error!(method = "MyInteraction.frobnicateWithArg", panic = ?aexn, error = aexn.exn_value());
+                    ::std::result::Result::Err(crate::services::my_interaction::FrobnicateWithArgExn::ApplicationException(aexn))
+                }
+            };
+
+            let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::FrobnicateWithArgExn>(
+                "frobnicateWithArg",
+                METHOD_NAME,
+                _seqid,
+                req_ctxt,
+                &mut ctx_stack,
+                res,
+            )?;
+            reply_state.send_reply(env);
+            ::std::result::Result::Ok(())
+        }
+
+        #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.streamWithArg"))]
+        async fn handle_streamWithArg(
+            &self,
+            mut p: P::Deserializer,
+            req: ::fbthrift::ProtocolDecoded<P>,
+            req_ctxt: &R,
+            reply_state: ::std::sync::Arc<RS>,
+            _seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<()> {
+            use ::futures::FutureExt as _;
+            use ::fbthrift::ExceptionInfo;
+            use ::fbthrift::ProtocolReader as _;
+
+            const SERVICE_NAME: &::std::ffi::CStr = c"InteractWithShared";
+            const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.streamWithArg";
+            const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"InteractWithShared.MyInteraction.streamWithArg";
+            let mut ctx_stack = req_ctxt.get_context_stack(SERVICE_NAME, SERVICE_METHOD_NAME)?;
+            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+            let _args: self::Args_MyInteraction_streamWithArg = ::fbthrift::Deserialize::rs_thrift_read(&mut p)?;
+            let bytes_read = ::fbthrift::help::buf_len(&req)?;
+            ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, ::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME,
+                buffer: req,
+            })?;
+            ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
+            p.read_message_end()?;
+            // drop the deserializer buffer since we already have the relevant data pulled out and placed into the _args variable
+            ::std::mem::drop(p);
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.streamWithArg(
+                    _args.query,
+                )
+            )
+            .catch_unwind()
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::trace!(method = "MyInteraction.streamWithArg", "success");
+                    ::std::result::Result::Ok(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::std::result::Result::Err(exn)
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.streamWithArg", exn);
+                    ::tracing::error!(method = "MyInteraction.streamWithArg", panic = ?aexn, error = aexn.exn_value());
+                    ::std::result::Result::Err(crate::services::my_interaction::StreamWithArgExn::ApplicationException(aexn))
+                }
+            };
+
+            use ::futures::StreamExt as _;
+
+            let (response, stream) = match res {
+                ::std::result::Result::Ok(res) => {
+                    let response = ::std::result::Result::Ok(());
+                    let stream = res;
+
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(success)) => {
+                                    let payload = ::fbthrift::help::serialize_stream_item::<P, crate::services::my_interaction::StreamWithArgStreamExn>(
+                                        ::std::result::Result::Ok(success),
+                                        "streamWithArg",
+                                    );
+                                    ::fbthrift::SerializedStreamElement::Success(payload)
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_interaction::StreamWithArgStreamExn::ApplicationException(aexn))) => {
+                                    tracing::info!(?aexn, method="MyInteraction.streamWithArg", "Streaming ApplicationException");
+                                    ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
+                                }
+                                ::std::result::Result::Err(exn) => {
+                                    tracing::error!(?exn, method="MyInteraction.streamWithArg", "Streaming unwind");
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.streamWithArg", exn);
+                                    ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
+                                }
+                            }
+                        })
+                        .boxed();
+                    (response, ::std::option::Option::Some(stream))
+                },
+                ::std::result::Result::Err(exn) => (::std::result::Result::Err(exn), ::std::option::Option::None),
+            };
+
+            let response = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::StreamWithArgExn>(
+                "streamWithArg",
+                METHOD_NAME,
+                _seqid,
+                req_ctxt,
+                &mut ctx_stack,
+                response,
+            )?;
+
+            reply_state.set_stream_method_name("MyInteraction.streamWithArg");
+            reply_state.set_stream_context_stack(ctx_stack);
+            let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
+            ::std::result::Result::Ok(())
+        }
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.encode"))]
         async fn handle_encode(
             &self,
@@ -8657,7 +9527,9 @@ pub mod interact_with_shared {
                 b"MyInteraction.truthify" => ::std::result::Result::Ok(2usize),
                 b"MyInteraction.failstream" => ::std::result::Result::Ok(3usize),
                 b"MyInteraction.failstreaminit" => ::std::result::Result::Ok(4usize),
-                b"MyInteraction.encode" => ::std::result::Result::Ok(5usize),
+                b"MyInteraction.frobnicateWithArg" => ::std::result::Result::Ok(5usize),
+                b"MyInteraction.streamWithArg" => ::std::result::Result::Ok(6usize),
+                b"MyInteraction.encode" => ::std::result::Result::Ok(7usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -8689,6 +9561,12 @@ pub mod interact_with_shared {
                     self.handle_failstreaminit(_p, _req, _req_ctxt, _reply_state, _seqid).await
                 }
                 5usize => {
+                    self.handle_frobnicateWithArg(_p, _req, _req_ctxt, _reply_state, _seqid).await
+                }
+                6usize => {
+                    self.handle_streamWithArg(_p, _req, _req_ctxt, _reply_state, _seqid).await
+                }
+                7usize => {
                     self.handle_encode(_p, _req, _req_ctxt, _reply_state, _seqid).await
                 }
                 bad => panic!(
@@ -9603,6 +10481,20 @@ where
               interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
               rpc_kind: ::fbthrift::processor::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
               name: "MyInteraction.failstreaminit",
+              starts_interaction: false,
+              interaction_name: Some("MyInteraction"),
+            },
+            ::fbthrift::processor::MethodMetadata{
+              interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
+              rpc_kind: ::fbthrift::processor::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+              name: "MyInteraction.frobnicateWithArg",
+              starts_interaction: false,
+              interaction_name: Some("MyInteraction"),
+            },
+            ::fbthrift::processor::MethodMetadata{
+              interaction_type: ::fbthrift::processor::InteractionType::InteractionV1,
+              rpc_kind: ::fbthrift::processor::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+              name: "MyInteraction.streamWithArg",
               starts_interaction: false,
               interaction_name: Some("MyInteraction"),
             },

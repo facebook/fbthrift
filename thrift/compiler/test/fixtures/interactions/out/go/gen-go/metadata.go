@@ -50,17 +50,17 @@ var (
             TPrimitive:
                 new(metadata.ThriftPrimitiveType_THRIFT_BOOL_TYPE),
         }
+    premadeThriftType_string =
+        &metadata.ThriftType{
+            TPrimitive:
+                new(metadata.ThriftPrimitiveType_THRIFT_STRING_TYPE),
+        }
     premadeThriftType_set_i32 =
         &metadata.ThriftType{
             TSet:
                 &metadata.ThriftSetType{
                     ValueType: premadeThriftType_i32,
                 },
-        }
-    premadeThriftType_string =
-        &metadata.ThriftType{
-            TPrimitive:
-                new(metadata.ThriftPrimitiveType_THRIFT_STRING_TYPE),
         }
     premadeThriftType_binary =
         &metadata.ThriftType{

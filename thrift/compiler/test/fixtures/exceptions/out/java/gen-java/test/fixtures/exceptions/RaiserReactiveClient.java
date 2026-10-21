@@ -90,14 +90,7 @@ public class RaiserReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createdoBlandWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _doBland_READER = Readers.voidReader();
@@ -138,14 +131,7 @@ public class RaiserReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createdoRaiseWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _doRaise_READER = Readers.voidReader();
@@ -186,14 +172,7 @@ public class RaiserReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createget200Writer() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _get200_READER = Readers.stringReader();
@@ -234,14 +213,7 @@ public class RaiserReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createget500Writer() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _get500_READER = Readers.stringReader();

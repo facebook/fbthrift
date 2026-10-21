@@ -61,14 +61,7 @@ public class MyServicePrioChildReactiveClient extends test.fixtures.basicannotat
   }
 
   private com.facebook.thrift.payload.Writer _createpangWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _pang_READER = Readers.voidReader();

@@ -851,6 +851,262 @@ determineInvocationType:
 //
 
 //
+// Method 'frobnicateWithArg'
+//
+
+::std::int32_t apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::frobnicateWithArg(::std::int32_t /*arg*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("frobnicateWithArg");
+}
+
+::std::int32_t apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::sync_frobnicateWithArg(::std::int32_t p_arg) {
+  return frobnicateWithArg(p_arg);
+}
+
+folly::SemiFuture<::std::int32_t>
+apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::semifuture_frobnicateWithArg(::std::int32_t p_arg) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_frobnicateWithArg.compare_exchange_strong(
+      expected,
+      apache::thrift::detail::si::InvocationType::Sync,
+      std::memory_order_relaxed);
+  return sync_frobnicateWithArg(p_arg);
+}
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<::std::int32_t>
+apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::co_frobnicateWithArg(::std::int32_t p_arg) {
+  auto expected{apache::thrift::detail::si::InvocationType::Coro};
+  __fbthrift_invocation_frobnicateWithArg.compare_exchange_strong(
+      expected,
+      apache::thrift::detail::si::InvocationType::SemiFuture,
+      std::memory_order_relaxed);
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::
+                             withCapturedArgs<::std::int32_t /*arg*/>(p_arg));
+}
+
+folly::coro::Task<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::co_frobnicateWithArg(
+    apache::thrift::RequestParams /* params */, ::std::int32_t p_arg) {
+  auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
+  __fbthrift_invocation_frobnicateWithArg.compare_exchange_strong(
+      expected,
+      apache::thrift::detail::si::InvocationType::Coro,
+      std::memory_order_relaxed);
+  return co_frobnicateWithArg(p_arg);
+}
+#endif // FOLLY_HAS_COROUTINES
+
+void apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::async_tm_frobnicateWithArg(
+    apache::thrift::HandlerCallbackPtr<::std::int32_t> callback, ::std::int32_t p_arg) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
+  auto invocationType =
+      __fbthrift_invocation_frobnicateWithArg.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm: {
+#if FOLLY_HAS_COROUTINES
+        __fbthrift_invocation_frobnicateWithArg.compare_exchange_strong(
+            invocationType,
+            apache::thrift::detail::si::InvocationType::CoroParam,
+            std::memory_order_relaxed);
+        apache::thrift::RequestParams params{
+            callback->getRequestContext(),
+            callback->getThreadManager_deprecated(),
+            callback->getEventBase(),
+            callback->getHandlerExecutor()};
+        auto task = co_frobnicateWithArg(params, p_arg);
+        apache::thrift::detail::si::async_tm_coro(
+            std::move(callback), std::move(task));
+        return;
+#else // FOLLY_HAS_COROUTINES
+        __fbthrift_invocation_frobnicateWithArg.compare_exchange_strong(
+            invocationType,
+            apache::thrift::detail::si::InvocationType::SemiFuture,
+            std::memory_order_relaxed);
+        [[fallthrough]];
+#endif // FOLLY_HAS_COROUTINES
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture: {
+        auto fut = semifuture_frobnicateWithArg(p_arg);
+        apache::thrift::detail::si::async_tm_semifuture(
+            std::move(callback), std::move(fut));
+        return;
+      }
+#if FOLLY_HAS_COROUTINES
+      case apache::thrift::detail::si::InvocationType::CoroParam: {
+        apache::thrift::RequestParams params{
+            callback->getRequestContext(),
+            callback->getThreadManager_deprecated(),
+            callback->getEventBase(),
+            callback->getHandlerExecutor()};
+        auto task = co_frobnicateWithArg(params, p_arg);
+        apache::thrift::detail::si::async_tm_coro(
+            std::move(callback), std::move(task));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Coro: {
+        auto task = co_frobnicateWithArg(p_arg);
+        apache::thrift::detail::si::async_tm_coro(
+            std::move(callback), std::move(task));
+        return;
+      }
+#endif // FOLLY_HAS_COROUTINES
+      case apache::thrift::detail::si::InvocationType::Sync: {
+        callback->result(sync_frobnicateWithArg(p_arg));
+        return;
+      }
+      default: {
+        folly::assume_unreachable();
+      }
+    }
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod& ex) {
+    std::tie(p_arg) = std::move(ex).restoreArgs<::std::int32_t /*arg*/>();
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+}
+//
+// End of Method 'frobnicateWithArg'
+//
+
+//
+// Method 'streamWithArg'
+//
+
+::apache::thrift::ServerStream<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::streamWithArg(std::unique_ptr<::std::string> /*query*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("streamWithArg");
+}
+
+::apache::thrift::ServerStream<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::sync_streamWithArg(std::unique_ptr<::std::string> p_query) {
+  return streamWithArg(std::move(p_query));
+}
+
+folly::SemiFuture<::apache::thrift::ServerStream<::std::int32_t>>
+apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::semifuture_streamWithArg(std::unique_ptr<::std::string> p_query) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_streamWithArg.compare_exchange_strong(
+      expected,
+      apache::thrift::detail::si::InvocationType::Sync,
+      std::memory_order_relaxed);
+  return sync_streamWithArg(std::move(p_query));
+}
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<::apache::thrift::ServerStream<::std::int32_t>>
+apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::co_streamWithArg(std::unique_ptr<::std::string> p_query) {
+  auto expected{apache::thrift::detail::si::InvocationType::Coro};
+  __fbthrift_invocation_streamWithArg.compare_exchange_strong(
+      expected,
+      apache::thrift::detail::si::InvocationType::SemiFuture,
+      std::memory_order_relaxed);
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::
+                             withCapturedArgs<std::unique_ptr<::std::string> /*query*/>(std::move(p_query)));
+}
+
+folly::coro::Task<::apache::thrift::ServerStream<::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::co_streamWithArg(
+    apache::thrift::RequestParams /* params */, std::unique_ptr<::std::string> p_query) {
+  auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
+  __fbthrift_invocation_streamWithArg.compare_exchange_strong(
+      expected,
+      apache::thrift::detail::si::InvocationType::Coro,
+      std::memory_order_relaxed);
+  return co_streamWithArg(std::move(p_query));
+}
+#endif // FOLLY_HAS_COROUTINES
+
+void apache::thrift::ServiceHandler<::cpp2::Perform>::MyInteractionIf::async_tm_streamWithArg(
+    apache::thrift::HandlerCallbackPtr<::apache::thrift::ServerStream<::std::int32_t>> callback, std::unique_ptr<::std::string> p_query) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
+  auto invocationType =
+      __fbthrift_invocation_streamWithArg.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm: {
+#if FOLLY_HAS_COROUTINES
+        __fbthrift_invocation_streamWithArg.compare_exchange_strong(
+            invocationType,
+            apache::thrift::detail::si::InvocationType::CoroParam,
+            std::memory_order_relaxed);
+        apache::thrift::RequestParams params{
+            callback->getRequestContext(),
+            callback->getThreadManager_deprecated(),
+            callback->getEventBase(),
+            callback->getHandlerExecutor()};
+        auto task = co_streamWithArg(params, std::move(p_query));
+        apache::thrift::detail::si::async_tm_coro(
+            std::move(callback), std::move(task));
+        return;
+#else // FOLLY_HAS_COROUTINES
+        __fbthrift_invocation_streamWithArg.compare_exchange_strong(
+            invocationType,
+            apache::thrift::detail::si::InvocationType::SemiFuture,
+            std::memory_order_relaxed);
+        [[fallthrough]];
+#endif // FOLLY_HAS_COROUTINES
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture: {
+        auto fut = semifuture_streamWithArg(std::move(p_query));
+        apache::thrift::detail::si::async_tm_semifuture(
+            std::move(callback), std::move(fut));
+        return;
+      }
+#if FOLLY_HAS_COROUTINES
+      case apache::thrift::detail::si::InvocationType::CoroParam: {
+        apache::thrift::RequestParams params{
+            callback->getRequestContext(),
+            callback->getThreadManager_deprecated(),
+            callback->getEventBase(),
+            callback->getHandlerExecutor()};
+        auto task = co_streamWithArg(params, std::move(p_query));
+        apache::thrift::detail::si::async_tm_coro(
+            std::move(callback), std::move(task));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Coro: {
+        auto task = co_streamWithArg(std::move(p_query));
+        apache::thrift::detail::si::async_tm_coro(
+            std::move(callback), std::move(task));
+        return;
+      }
+#endif // FOLLY_HAS_COROUTINES
+      case apache::thrift::detail::si::InvocationType::Sync: {
+        callback->result(sync_streamWithArg(std::move(p_query)));
+        return;
+      }
+      default: {
+        folly::assume_unreachable();
+      }
+    }
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod& ex) {
+    std::tie(p_query) = std::move(ex).restoreArgs<std::unique_ptr<::std::string> /*query*/>();
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+}
+//
+// End of Method 'streamWithArg'
+//
+
+//
 // Method 'encode'
 //
 
@@ -1238,6 +1494,16 @@ const PerformAsyncProcessor::ProcessMap PerformAsyncProcessor::kOwnProcessMap_ {
      &PerformAsyncProcessor::setUpAndProcess_MyInteraction_failstreaminit<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PerformRequestReader>,
      &PerformAsyncProcessor::executeRequest_MyInteraction_failstreaminit<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PerformRequestReader>,
      &PerformAsyncProcessor::executeRequest_MyInteraction_failstreaminit<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PerformRequestReader>}},
+  {"MyInteraction.frobnicateWithArg",
+    {&PerformAsyncProcessor::setUpAndProcess_MyInteraction_frobnicateWithArg<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PerformRequestReader>,
+     &PerformAsyncProcessor::setUpAndProcess_MyInteraction_frobnicateWithArg<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PerformRequestReader>,
+     &PerformAsyncProcessor::executeRequest_MyInteraction_frobnicateWithArg<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PerformRequestReader>,
+     &PerformAsyncProcessor::executeRequest_MyInteraction_frobnicateWithArg<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PerformRequestReader>}},
+  {"MyInteraction.streamWithArg",
+    {&PerformAsyncProcessor::setUpAndProcess_MyInteraction_streamWithArg<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PerformRequestReader>,
+     &PerformAsyncProcessor::setUpAndProcess_MyInteraction_streamWithArg<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PerformRequestReader>,
+     &PerformAsyncProcessor::executeRequest_MyInteraction_streamWithArg<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PerformRequestReader>,
+     &PerformAsyncProcessor::executeRequest_MyInteraction_streamWithArg<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PerformRequestReader>}},
   {"MyInteraction.encode",
     {&PerformAsyncProcessor::setUpAndProcess_MyInteraction_encode<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter, PerformRequestReader>,
      &PerformAsyncProcessor::setUpAndProcess_MyInteraction_encode<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter, PerformRequestReader>,
@@ -1325,6 +1591,22 @@ apache::thrift::ServiceRequestInfoMap PerformServiceInfoHolder::staticRequestInf
      apache::thrift::concurrency::NORMAL,
      std::nullopt,
      ::apache::thrift::detail::getInteractionFunctionNode<::cpp2::Perform>("MyInteraction", "failstreaminit")}},
+  {"MyInteraction.frobnicateWithArg",
+    { false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "Perform.MyInteraction.frobnicateWithArg",
+     "MyInteraction",
+     apache::thrift::concurrency::NORMAL,
+     std::nullopt,
+     ::apache::thrift::detail::getInteractionFunctionNode<::cpp2::Perform>("MyInteraction", "frobnicateWithArg")}},
+  {"MyInteraction.streamWithArg",
+    { false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "Perform.MyInteraction.streamWithArg",
+     "MyInteraction",
+     apache::thrift::concurrency::NORMAL,
+     std::nullopt,
+     ::apache::thrift::detail::getInteractionFunctionNode<::cpp2::Perform>("MyInteraction", "streamWithArg")}},
   {"MyInteraction.encode",
     { false,
      apache::thrift::RpcKind::SINK,

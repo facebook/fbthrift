@@ -126,6 +126,10 @@ cdef extern from "thrift/compiler/test/fixtures/interactions/gen-py3/module/clie
     cFollyFuture[cClientBufferedStream[cbool]] truthify(cRpcOptions, )
     cFollyFuture[cClientBufferedStream[cint32_t]] failstream(cRpcOptions, )
     cFollyFuture[cClientBufferedStream[cint32_t]] failstreaminit(cRpcOptions, )
+    cFollyFuture[cint32_t] frobnicateWithArg(cRpcOptions, 
+      cint32_t arg_arg,)
+    cFollyFuture[cClientBufferedStream[cint32_t]] streamWithArg(cRpcOptions, 
+      string arg_query,)
 
   cdef cppclass cMyServiceClientWrapper_MyInteractionFastInteractionWrapper "::cpp2::MyServiceClientWrapper::MyInteractionFastInteractionWrapper"(cClientWrapper):
     void setPersistentHeader(const string& key, const string& value)
@@ -171,6 +175,10 @@ cdef extern from "thrift/compiler/test/fixtures/interactions/gen-py3/module/clie
     cFollyFuture[cClientBufferedStream[cbool]] truthify(cRpcOptions, )
     cFollyFuture[cClientBufferedStream[cint32_t]] failstream(cRpcOptions, )
     cFollyFuture[cClientBufferedStream[cint32_t]] failstreaminit(cRpcOptions, )
+    cFollyFuture[cint32_t] frobnicateWithArg(cRpcOptions, 
+      cint32_t arg_arg,)
+    cFollyFuture[cClientBufferedStream[cint32_t]] streamWithArg(cRpcOptions, 
+      string arg_query,)
 
   cdef cppclass cPerformClientWrapper_MyInteractionFastInteractionWrapper "::cpp2::PerformClientWrapper::MyInteractionFastInteractionWrapper"(cClientWrapper):
     void setPersistentHeader(const string& key, const string& value)
@@ -204,6 +212,10 @@ cdef extern from "thrift/compiler/test/fixtures/interactions/gen-py3/module/clie
     cFollyFuture[cClientBufferedStream[cbool]] truthify(cRpcOptions, )
     cFollyFuture[cClientBufferedStream[cint32_t]] failstream(cRpcOptions, )
     cFollyFuture[cClientBufferedStream[cint32_t]] failstreaminit(cRpcOptions, )
+    cFollyFuture[cint32_t] frobnicateWithArg(cRpcOptions, 
+      cint32_t arg_arg,)
+    cFollyFuture[cClientBufferedStream[cint32_t]] streamWithArg(cRpcOptions, 
+      string arg_query,)
 
   cdef cppclass cInteractWithSharedClientWrapper_SharedInteractionInteractionWrapper "::cpp2::InteractWithSharedClientWrapper::SharedInteractionInteractionWrapper"(cClientWrapper):
     void setPersistentHeader(const string& key, const string& value)

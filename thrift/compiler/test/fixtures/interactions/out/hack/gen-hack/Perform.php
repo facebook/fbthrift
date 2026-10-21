@@ -196,6 +196,44 @@ class Perform_MyInteraction extends \ThriftClientBase {
 
   /**
    * Original thrift definition:-
+   * i32
+   *   frobnicateWithArg(1: i32 arg)
+   *   throws (1: CustomException ex);
+   */
+  public async function frobnicateWithArg(int $arg): Awaitable<int> {
+    $rpc_options = $this->getAndResetOptions() ?? new \RpcOptions();
+    $rpc_options = $rpc_options->setInteractionId($this->interactionId);
+    $args = Perform_MyInteraction_frobnicateWithArg_args::fromShape(shape(
+      'arg' => $arg,
+    ));
+    await $this->asyncHandler_->genBefore("Perform", "MyInteraction.frobnicateWithArg", $args);
+    $currentseqid = $this->sendImplHelper($args, "MyInteraction.frobnicateWithArg", false, "Perform" );
+    return (await $this->genAwaitResponse(Perform_MyInteraction_frobnicateWithArg_result::class, "frobnicateWithArg", false, $currentseqid, $rpc_options))[0];
+  }
+
+  /**
+   * Original thrift definition:-
+   * void, stream<i32>
+   *   streamWithArg(1: string query)
+   *   throws (1: CustomException boom);
+   */
+  public async function streamWithArg(string $query): Awaitable<\ResponseAndStream<null, int>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? new \RpcOptions();
+    $rpc_options = $rpc_options->setInteractionId($this->interactionId);
+    $args = Perform_MyInteraction_streamWithArg_args::fromShape(shape(
+      'query' => $query,
+    ));
+    await $this->asyncHandler_->genBefore("Perform", "MyInteraction.streamWithArg", $args);
+    $currentseqid = $this->sendImplHelper($args, "MyInteraction.streamWithArg", false, "Perform" );
+    return await $this->genAwaitStreamResponse(Perform_MyInteraction_streamWithArg_FirstResponse::class, Perform_MyInteraction_streamWithArg_StreamResponse::class, "streamWithArg", true, $currentseqid, $rpc_options);
+  }
+
+  /**
+   * Original thrift definition:-
    * set<i32>, sink<string, binary>
    *   encode();
    */
@@ -1219,6 +1257,438 @@ class Perform_MyInteraction_failstreaminit_FirstResponse extends \ThriftSyncStru
     return tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.Perform_MyInteraction_failstreaminit_FirstResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.CustomException",
+                    )
+                  ),
+                )
+              ),
+              "name" => "boom",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function checkForException(): ?\TException {
+    if ($this->boom !== null) {
+      return $this->boom;
+    }
+    return null;
+  }
+  
+  public function setException(\Exception $e): bool {
+    if ($e is CustomException) {
+      $this->boom = $e;
+      return true;
+    }
+    return false;
+  }
+}
+
+class Perform_MyInteraction_frobnicateWithArg_args implements \IThriftSyncStruct, \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+    1 => shape(
+      'var' => 'arg',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'arg' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'arg' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 6728112171188210860;
+  public int $arg;
+
+  public function __construct(?int $arg = null)[] {
+    $this->arg = $arg ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'arg'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Perform_MyInteraction_frobnicateWithArg_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.frobnicateWithArg_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "arg",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class Perform_MyInteraction_frobnicateWithArg_result extends \ThriftSyncStructWithResult implements \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const type TResult = int;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::I32,
+    ),
+    1 => shape(
+      'var' => 'ex',
+      'type' => \TType::STRUCT,
+      'class' => CustomException::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+    'ex' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?this::TResult,
+    ?'ex' => ?CustomException,
+  );
+
+  const int STRUCTURAL_ID = 183699341556999437;
+  public ?this::TResult $success;
+  public ?CustomException $ex;
+
+  public function __construct(?this::TResult $success = null, ?CustomException $ex = null)[] {
+    $this->success = $success;
+    $this->ex = $ex;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+      Shapes::idx($shape, 'ex'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Perform_MyInteraction_frobnicateWithArg_result';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Perform_MyInteraction_frobnicateWithArg_result",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.CustomException",
+                    )
+                  ),
+                )
+              ),
+              "name" => "ex",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function checkForException(): ?\TException {
+    if ($this->ex !== null) {
+      return $this->ex;
+    }
+    return null;
+  }
+  
+  public function setException(\Exception $e): bool {
+    if ($e is CustomException) {
+      $this->ex = $e;
+      return true;
+    }
+    return false;
+  }
+}
+
+class Perform_MyInteraction_streamWithArg_args implements \IThriftSyncStruct, \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+    1 => shape(
+      'var' => 'query',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'query' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'query' => ?string,
+  );
+
+  const int STRUCTURAL_ID = 7916401568045287565;
+  public string $query;
+
+  public function __construct(?string $query = null)[] {
+    $this->query = $query ?? '';
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'query'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Perform_MyInteraction_streamWithArg_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.streamWithArg_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "query",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class Perform_MyInteraction_streamWithArg_StreamResponse extends \ThriftSyncStructWithResult implements \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const type TResult = int;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?this::TResult,
+  );
+
+  const int STRUCTURAL_ID = 413702039226145291;
+  public ?this::TResult $success;
+
+  public function __construct(?this::TResult $success = null)[] {
+    $this->success = $success;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Perform_MyInteraction_streamWithArg_StreamResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Perform_MyInteraction_streamWithArg_StreamResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+class Perform_MyInteraction_streamWithArg_FirstResponse extends \ThriftSyncStructWithoutResult implements \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+    1 => shape(
+      'var' => 'boom',
+      'type' => \TType::STRUCT,
+      'class' => CustomException::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'boom' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'boom' => ?CustomException,
+  );
+
+  const int STRUCTURAL_ID = 4848420257322985341;
+  public ?CustomException $boom;
+
+  public function __construct(?CustomException $boom = null)[] {
+    $this->boom = $boom;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'boom'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Perform_MyInteraction_streamWithArg_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Perform_MyInteraction_streamWithArg_FirstResponse",
         "fields" => vec[
           tmeta_ThriftField::fromShape(
             shape(

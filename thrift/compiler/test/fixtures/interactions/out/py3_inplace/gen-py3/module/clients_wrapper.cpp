@@ -247,6 +247,54 @@ MyServiceClientWrapper::MyInteractionInteractionWrapper::failstreaminit(
 }
 
 folly::Future<int32_t>
+MyServiceClientWrapper::MyInteractionInteractionWrapper::frobnicateWithArg(
+    apache::thrift::RpcOptions& rpcOptions,
+    int32_t arg_arg) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient::MyInteraction*>(async_client_.get());
+  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<int32_t>;
+  folly::Promise<CallbackHelper::PromiseResult> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_frobnicateWithArg, channel_);
+  try {
+    client->frobnicateWithArg(
+      rpcOptions,
+      std::move(callback),
+      arg_arg
+    );
+  } catch (...) {
+    return folly::makeFuture<int32_t>(folly::exception_wrapper(
+      std::current_exception()
+    ));
+  }
+  return std::move(_future).thenValue(CallbackHelper::extractResult);
+}
+
+folly::Future<apache::thrift::ClientBufferedStream<int32_t>>
+MyServiceClientWrapper::MyInteractionInteractionWrapper::streamWithArg(
+    apache::thrift::RpcOptions& rpcOptions,
+    std::string arg_query) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient::MyInteraction*>(async_client_.get());
+  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<apache::thrift::ClientBufferedStream<int32_t>>;
+  folly::Promise<CallbackHelper::PromiseResult> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_streamWithArg, channel_);
+  try {
+    client->streamWithArg(
+      rpcOptions,
+      std::move(callback),
+      arg_query
+    );
+  } catch (...) {
+    return folly::makeFuture<apache::thrift::ClientBufferedStream<int32_t>>(folly::exception_wrapper(
+      std::current_exception()
+    ));
+  }
+  return std::move(_future).thenValue(CallbackHelper::extractResult);
+}
+
+folly::Future<int32_t>
 MyServiceClientWrapper::MyInteractionFastInteractionWrapper::frobnicate(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::MyServiceAsyncClient::MyInteractionFast*>(async_client_.get());
@@ -593,6 +641,54 @@ PerformClientWrapper::MyInteractionInteractionWrapper::failstreaminit(
 }
 
 folly::Future<int32_t>
+PerformClientWrapper::MyInteractionInteractionWrapper::frobnicateWithArg(
+    apache::thrift::RpcOptions& rpcOptions,
+    int32_t arg_arg) {
+  auto* client = static_cast<::cpp2::PerformAsyncClient::MyInteraction*>(async_client_.get());
+  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<int32_t>;
+  folly::Promise<CallbackHelper::PromiseResult> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_frobnicateWithArg, channel_);
+  try {
+    client->frobnicateWithArg(
+      rpcOptions,
+      std::move(callback),
+      arg_arg
+    );
+  } catch (...) {
+    return folly::makeFuture<int32_t>(folly::exception_wrapper(
+      std::current_exception()
+    ));
+  }
+  return std::move(_future).thenValue(CallbackHelper::extractResult);
+}
+
+folly::Future<apache::thrift::ClientBufferedStream<int32_t>>
+PerformClientWrapper::MyInteractionInteractionWrapper::streamWithArg(
+    apache::thrift::RpcOptions& rpcOptions,
+    std::string arg_query) {
+  auto* client = static_cast<::cpp2::PerformAsyncClient::MyInteraction*>(async_client_.get());
+  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<apache::thrift::ClientBufferedStream<int32_t>>;
+  folly::Promise<CallbackHelper::PromiseResult> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_streamWithArg, channel_);
+  try {
+    client->streamWithArg(
+      rpcOptions,
+      std::move(callback),
+      arg_query
+    );
+  } catch (...) {
+    return folly::makeFuture<apache::thrift::ClientBufferedStream<int32_t>>(folly::exception_wrapper(
+      std::current_exception()
+    ));
+  }
+  return std::move(_future).thenValue(CallbackHelper::extractResult);
+}
+
+folly::Future<int32_t>
 PerformClientWrapper::MyInteractionFastInteractionWrapper::frobnicate(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::PerformAsyncClient::MyInteractionFast*>(async_client_.get());
@@ -827,6 +923,54 @@ InteractWithSharedClientWrapper::MyInteractionInteractionWrapper::failstreaminit
     client->failstreaminit(
       rpcOptions,
       std::move(callback)
+    );
+  } catch (...) {
+    return folly::makeFuture<apache::thrift::ClientBufferedStream<int32_t>>(folly::exception_wrapper(
+      std::current_exception()
+    ));
+  }
+  return std::move(_future).thenValue(CallbackHelper::extractResult);
+}
+
+folly::Future<int32_t>
+InteractWithSharedClientWrapper::MyInteractionInteractionWrapper::frobnicateWithArg(
+    apache::thrift::RpcOptions& rpcOptions,
+    int32_t arg_arg) {
+  auto* client = static_cast<::cpp2::InteractWithSharedAsyncClient::MyInteraction*>(async_client_.get());
+  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<int32_t>;
+  folly::Promise<CallbackHelper::PromiseResult> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_frobnicateWithArg, channel_);
+  try {
+    client->frobnicateWithArg(
+      rpcOptions,
+      std::move(callback),
+      arg_arg
+    );
+  } catch (...) {
+    return folly::makeFuture<int32_t>(folly::exception_wrapper(
+      std::current_exception()
+    ));
+  }
+  return std::move(_future).thenValue(CallbackHelper::extractResult);
+}
+
+folly::Future<apache::thrift::ClientBufferedStream<int32_t>>
+InteractWithSharedClientWrapper::MyInteractionInteractionWrapper::streamWithArg(
+    apache::thrift::RpcOptions& rpcOptions,
+    std::string arg_query) {
+  auto* client = static_cast<::cpp2::InteractWithSharedAsyncClient::MyInteraction*>(async_client_.get());
+  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<apache::thrift::ClientBufferedStream<int32_t>>;
+  folly::Promise<CallbackHelper::PromiseResult> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_streamWithArg, channel_);
+  try {
+    client->streamWithArg(
+      rpcOptions,
+      std::move(callback),
+      arg_query
     );
   } catch (...) {
     return folly::makeFuture<apache::thrift::ClientBufferedStream<int32_t>>(folly::exception_wrapper(

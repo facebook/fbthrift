@@ -118,6 +118,39 @@ public class PerformBlockingReactiveWrapper
         }
 
         @java.lang.Override
+        public reactor.core.publisher.Mono<Integer> frobnicateWithArg(final int arg) {
+                reactor.core.publisher.Mono<Integer> _m = reactor.core.publisher.Mono.create(_sink -> {
+                    try {
+                        reactor.util.context.ContextView _contextView = _sink.contextView();
+                        com.facebook.nifty.core.RequestContext
+                            .tryContextView(_contextView)
+                            .ifPresent(com.facebook.nifty.core.RequestContexts::setCurrentContext);
+                        _sink.success(_delegateInteraction.frobnicateWithArg(arg));
+                    } catch (Throwable _e) {
+                        _sink.error(_e);
+                    }
+                });
+
+                if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+                    _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+                }
+
+                return _m;
+        }
+
+        @java.lang.Override
+        public reactor.core.publisher.Mono<Integer> frobnicateWithArg(
+        final int arg, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        @java.lang.Override
+        public reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWithArgWrapper(
+        final int arg, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        @java.lang.Override
         public reactor.core.publisher.Flux<Boolean> truthify() {
             throw new UnsupportedOperationException();
         }
@@ -129,6 +162,11 @@ public class PerformBlockingReactiveWrapper
 
         @java.lang.Override
         public reactor.core.publisher.Flux<Integer> failstreaminit() {
+            throw new UnsupportedOperationException();
+        }
+
+        @java.lang.Override
+        public reactor.core.publisher.Flux<Integer> streamWithArg(final String query) {
             throw new UnsupportedOperationException();
         }
 

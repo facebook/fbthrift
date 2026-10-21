@@ -33,7 +33,7 @@ public class BoxServiceReactiveClient
 
   private static final TField _getABoxSession_REQ_FIELD_DESC = new TField("req", TType.STRUCT, (short)1);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _getABoxSession_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _getABox_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _BoxedInteraction_getABox_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
 
   static {
   }
@@ -142,17 +142,8 @@ public class BoxServiceReactiveClient
       com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionCreated("BoxedInteraction");
     }
 
-    private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _getABox_EXCEPTION_READERS = java.util.Collections.emptyMap();
-
     private com.facebook.thrift.payload.Writer _creategetABoxWriter() {
-      return oprot -> {
-        try {
-
-        } catch (Throwable _e) {
-          com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-          throw reactor.core.Exceptions.propagate(_e);
-        }
-      };
+      return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
     }
 
     private final com.facebook.thrift.payload.Reader _getABox_READER = Readers.wrap(test.fixtures.interactions.ShouldBeBoxed.asReader());
@@ -197,7 +188,7 @@ public class BoxServiceReactiveClient
                   "BoxedInteraction",
                   _creategetABoxWriter(),
                   _getABox_READER,
-                  _getABox_EXCEPTION_READERS_INT,
+                  _BoxedInteraction_getABox_EXCEPTION_READERS_INT,
                   _metadata,
                   java.util.Collections.emptyMap());
 

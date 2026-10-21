@@ -102,14 +102,7 @@ public class SinkServiceReactiveClient
 
 
   private com.facebook.thrift.payload.Writer _createmethodWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private com.facebook.thrift.payload.Writer _createmethodSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
@@ -181,14 +174,7 @@ public class SinkServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createmethodAndReponseWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private com.facebook.thrift.payload.Writer _createmethodAndReponseSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
@@ -262,14 +248,7 @@ public class SinkServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createmethodThrowWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private com.facebook.thrift.payload.Writer _createmethodThrowSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
@@ -341,14 +320,7 @@ public class SinkServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createmethodSinkThrowWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private com.facebook.thrift.payload.Writer _createmethodSinkThrowSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
@@ -420,14 +392,7 @@ public class SinkServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createmethodFinalThrowWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private com.facebook.thrift.payload.Writer _createmethodFinalThrowSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
@@ -499,14 +464,7 @@ public class SinkServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createmethodBothThrowWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private com.facebook.thrift.payload.Writer _createmethodBothThrowSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
@@ -578,14 +536,7 @@ public class SinkServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createmethodFastWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private com.facebook.thrift.payload.Writer _createmethodFastSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {

@@ -87,24 +87,24 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   {{#each service.interactions as |interaction|}}
   {{#each interaction.single_request_functions as |func|}}
   {{#each func.params.fields as |field|}}
-  private static final TField _{{func.java_name}}_{{field.javaTFieldName}}_INT = new TField("{{field.name}}", TType.{{#partial types.ttype type=field.type}}, (short){{field.id}});
+  private static final TField _{{interaction.name}}_{{func.java_name}}_{{field.javaTFieldName}}_INT = new TField("{{field.name}}", TType.{{#partial types.ttype type=field.type}}, (short){{field.id}});
   {{/each}}
-  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{func.java_name}}_EXCEPTION_READERS_INT = {{#if func.exceptions?}}new HashMap<>();{{#else}}java.util.Collections.emptyMap();{{/if func.exceptions?}}
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{interaction.name}}_{{func.java_name}}_EXCEPTION_READERS_INT = {{#if func.exceptions?}}new HashMap<>();{{#else}}java.util.Collections.emptyMap();{{/if func.exceptions?}}
   {{#each (array.enumerate func.exceptions) as |i field|}}
-  private static final com.facebook.thrift.payload.Reader _{{func.java_name}}_EXCEPTION_READER_INT{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
+  private static final com.facebook.thrift.payload.Reader _{{interaction.name}}_{{func.java_name}}_EXCEPTION_READER_INT{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
   {{/each}}
   {{/each}}
   {{#each interaction.streaming_functions as |func|}}
   {{#each func.params.fields as |field|}}
-  private static final TField _{{func.java_name}}_{{field.javaTFieldName}}_INT = new TField("{{field.name}}", TType.{{#partial types.ttype type=field.type}}, (short){{field.id}});
+  private static final TField _{{interaction.name}}_{{func.java_name}}_{{field.javaTFieldName}}_INT = new TField("{{field.name}}", TType.{{#partial types.ttype type=field.type}}, (short){{field.id}});
   {{/each}}
-  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{func.java_name}}_EXCEPTION_READERS_INT = {{#if func.exceptions?}}new HashMap<>();{{#else}}java.util.Collections.emptyMap();{{/if func.exceptions?}}
-  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{func.java_name}}_STREAM_EXCEPTION_READERS_INT = {{#if (array.empty? func.stream.exceptions)}}java.util.Collections.emptyMap();{{#else}}new HashMap<>();{{/if}}
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{interaction.name}}_{{func.java_name}}_EXCEPTION_READERS_INT = {{#if func.exceptions?}}new HashMap<>();{{#else}}java.util.Collections.emptyMap();{{/if func.exceptions?}}
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{interaction.name}}_{{func.java_name}}_STREAM_EXCEPTION_READERS_INT = {{#if (array.empty? func.stream.exceptions)}}java.util.Collections.emptyMap();{{#else}}new HashMap<>();{{/if}}
   {{#each (array.enumerate func.exceptions) as |i field|}}
-  private static final com.facebook.thrift.payload.Reader _{{func.java_name}}_EXCEPTION_READER_INT{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
+  private static final com.facebook.thrift.payload.Reader _{{interaction.name}}_{{func.java_name}}_EXCEPTION_READER_INT{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
   {{/each}}
   {{#each (array.enumerate func.stream.exceptions) as |i field|}}
-  private static final com.facebook.thrift.payload.Reader _{{func.java_name}}_STREAM_EXCEPTION_READER_INT{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
+  private static final com.facebook.thrift.payload.Reader _{{interaction.name}}_{{func.java_name}}_STREAM_EXCEPTION_READER_INT{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
   {{/each}}
   {{/each}}
   {{/each}}
@@ -124,11 +124,11 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     _{{func.java_name}}_STREAM_EXCEPTION_READERS.put((short){{field.id}}, _{{func.java_name}}_STREAM_EXCEPTION_READER{{i}});
     {{/each}}{{/each}}
     {{#each service.interactions as |interaction|}}{{#each interaction.single_request_functions as |func|}}{{#each (array.enumerate func.exceptions) as |i field|}}
-    _{{func.java_name}}_EXCEPTION_READERS_INT.put((short){{field.id}}, _{{func.java_name}}_EXCEPTION_READER_INT{{i}});
+    _{{interaction.name}}_{{func.java_name}}_EXCEPTION_READERS_INT.put((short){{field.id}}, _{{interaction.name}}_{{func.java_name}}_EXCEPTION_READER_INT{{i}});
     {{/each}}{{/each}}{{#each interaction.streaming_functions as |func|}}{{#each (array.enumerate func.exceptions) as |i field|}}
-    _{{func.java_name}}_EXCEPTION_READERS_INT.put((short){{field.id}}, _{{func.java_name}}_EXCEPTION_READER_INT{{i}});
+    _{{interaction.name}}_{{func.java_name}}_EXCEPTION_READERS_INT.put((short){{field.id}}, _{{interaction.name}}_{{func.java_name}}_EXCEPTION_READER_INT{{i}});
     {{/each}}{{#each (array.enumerate func.stream.exceptions) as |i field|}}
-    _{{func.java_name}}_STREAM_EXCEPTION_READERS_INT.put((short){{field.id}}, _{{func.java_name}}_STREAM_EXCEPTION_READER_INT{{i}});
+    _{{interaction.name}}_{{func.java_name}}_STREAM_EXCEPTION_READERS_INT.put((short){{field.id}}, _{{interaction.name}}_{{func.java_name}}_STREAM_EXCEPTION_READER_INT{{i}});
     {{/each}}{{/each}}{{/each}}
   }
 
@@ -180,7 +180,7 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
   {{#each service.single_request_functions as |func|}}
   private com.facebook.thrift.payload.Writer _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
-    return oprot -> {
+    {{#if (array.empty? func.params.fields)}}return com.facebook.thrift.payload.Writer.EMPTY_WRITER;{{#else}}return oprot -> {
       try {
         {{#each func.params.fields as |field|}}
         {
@@ -198,7 +198,7 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
         com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
         throw reactor.core.Exceptions.propagate(_e);
       }
-    };
+    };{{/if (array.empty? func.params.fields)}}
   }
 
   private static final com.facebook.thrift.payload.Reader _{{func.java_name}}_READER = {{!
@@ -246,7 +246,7 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   {{/each}}
   {{#each service.streaming_functions as |func|}}
   private com.facebook.thrift.payload.Writer _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
-    return oprot -> {
+    {{#if (array.empty? func.params.fields)}}return com.facebook.thrift.payload.Writer.EMPTY_WRITER;{{#else}}return oprot -> {
       try {
         {{#each func.params.fields as |field|}}
         {
@@ -264,7 +264,7 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
         com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
         throw reactor.core.Exceptions.propagate(_e);
       }
-    };
+    };{{/if (array.empty? func.params.fields)}}
   }
 
   private static final com.facebook.thrift.payload.Reader _{{func.java_name}}_READER = {{!
@@ -319,7 +319,7 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
   {{#each service.sink_functions as |func|}}
   private com.facebook.thrift.payload.Writer _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
-    return oprot -> {
+    {{#if (array.empty? func.params.fields)}}return com.facebook.thrift.payload.Writer.EMPTY_WRITER;{{#else}}return oprot -> {
       try {
         {{#each func.params.fields as |field|}}
         {
@@ -337,7 +337,7 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
         com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
         throw reactor.core.Exceptions.propagate(_e);
       }
-    };
+    };{{/if (array.empty? func.params.fields)}}
   }
 
   private com.facebook.thrift.payload.Writer _create{{func.java_name}}SinkWriter({{#partial types.boxed_type type=func.sink.elem_type field_hasAdapter=false}} _fbthriftVar0) {
@@ -426,20 +426,12 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     }
 
     {{#each interaction.single_request_functions as |func|}}
-    private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{func.java_name}}_EXCEPTION_READERS = {{#if func.exceptions?}}new HashMap<>();{{#else}}java.util.Collections.emptyMap();{{/if func.exceptions?}}
-    {{#each (array.enumerate func.exceptions) as |i field|}}
-    private final com.facebook.thrift.payload.Reader _{{func.java_name}}_EXCEPTION_READER_INT{{i}} = Readers.wrap({{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.asReader());
-
-    {{/each}}
-    {{/each}}
-
-    {{#each interaction.single_request_functions as |func|}}
     private com.facebook.thrift.payload.Writer _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
-      return oprot -> {
+      {{#if (array.empty? func.params.fields)}}return com.facebook.thrift.payload.Writer.EMPTY_WRITER;{{#else}}return oprot -> {
         try {
           {{#each func.params.fields as |field|}}
           {
-            oprot.writeFieldBegin(_{{func.java_name}}_{{field.javaTFieldName}}_INT);
+            oprot.writeFieldBegin(_{{interaction.name}}_{{func.java_name}}_{{field.javaTFieldName}}_INT);
 
             {{#partial types.field_type field=field}} _fbthriftVar0 = {{field.javaName}};
 
@@ -453,7 +445,7 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
           com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
           throw reactor.core.Exceptions.propagate(_e);
         }
-      };
+      };{{/if (array.empty? func.params.fields)}}
     }
 
     private final com.facebook.thrift.payload.Reader _{{func.java_name}}_READER = {{!
@@ -505,7 +497,7 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
                   "{{interaction.name}}",
                   _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}),
                   _{{func.java_name}}_READER,
-                  _{{func.java_name}}_EXCEPTION_READERS_INT,
+                  _{{interaction.name}}_{{func.java_name}}_EXCEPTION_READERS_INT,
                   _metadata,
                   java.util.Collections.emptyMap());
 
@@ -518,11 +510,11 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     {{/each}}
     {{#each interaction.streaming_functions as |func|}}
     private com.facebook.thrift.payload.Writer _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}final {{#partial types.java_type type=field.type has_adapter_override=field.hasAdapter?}} {{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}) {
-      return oprot -> {
+      {{#if (array.empty? func.params.fields)}}return com.facebook.thrift.payload.Writer.EMPTY_WRITER;{{#else}}return oprot -> {
         try {
           {{#each func.params.fields as |field|}}
           {
-            oprot.writeFieldBegin(_{{func.java_name}}_{{field.javaTFieldName}}_INT);
+            oprot.writeFieldBegin(_{{interaction.name}}_{{func.java_name}}_{{field.javaTFieldName}}_INT);
 
             {{#partial types.field_type field=field}} _fbthriftVar0 = {{field.javaName}};
 
@@ -536,7 +528,7 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
           com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
           throw reactor.core.Exceptions.propagate(_e);
         }
-      };
+      };{{/if (array.empty? func.params.fields)}}
     }
 
     private final com.facebook.thrift.payload.Reader _{{func.java_name}}_READER = {{!
@@ -578,8 +570,8 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
                   _create{{func.java_name}}Writer({{#each (array.enumerate func.params.fields with_last=true) as |i field last?|}}{{field.javaName}}{{#if (not last?)}}, {{/if (not last?)}}{{/each}}),
                   _{{func.java_name}}_READER,{{#if func.stream_has_first_response?}}
                   _{{func.java_name}}_FIRST_READER,{{/if func.stream_has_first_response?}}
-                  _{{func.java_name}}_EXCEPTION_READERS_INT,
-                  _{{func.java_name}}_STREAM_EXCEPTION_READERS_INT,
+                  _{{interaction.name}}_{{func.java_name}}_EXCEPTION_READERS_INT,
+                  _{{interaction.name}}_{{func.java_name}}_STREAM_EXCEPTION_READERS_INT,
                   _metadataBuilder.build(),
                   java.util.Collections.emptyMap());
 

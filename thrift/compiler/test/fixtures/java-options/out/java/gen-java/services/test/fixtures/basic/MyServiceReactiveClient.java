@@ -78,14 +78,7 @@ public class MyServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createpingWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _ping_READER = Readers.voidReader();
@@ -126,14 +119,7 @@ public class MyServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _creategetRandomDataWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _getRandomData_READER = Readers.stringReader();

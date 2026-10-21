@@ -75,14 +75,7 @@ public class AdapterServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createcountWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _count_READER = Readers.wrap(test.fixtures.adapter.CountingStruct.asReader());

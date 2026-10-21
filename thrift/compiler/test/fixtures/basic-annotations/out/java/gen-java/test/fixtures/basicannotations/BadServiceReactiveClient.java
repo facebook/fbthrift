@@ -32,7 +32,7 @@ public class BadServiceReactiveClient
   protected final Set<Long> _activeInteractions;
 
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _bar_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _foo_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _BadInteraction_foo_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
 
   static {
   }
@@ -76,14 +76,7 @@ public class BadServiceReactiveClient
   }
 
   private com.facebook.thrift.payload.Writer _createbarWriter() {
-    return oprot -> {
-      try {
-
-      } catch (Throwable _e) {
-        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    };
+    return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
   }
 
   private static final com.facebook.thrift.payload.Reader _bar_READER = Readers.i32Reader();
@@ -132,17 +125,8 @@ public class BadServiceReactiveClient
       com.facebook.thrift.client.ThriftClientStatsHolder.getThriftClientStats().interactionCreated("BadInteraction");
     }
 
-    private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _foo_EXCEPTION_READERS = java.util.Collections.emptyMap();
-
     private com.facebook.thrift.payload.Writer _createfooWriter() {
-      return oprot -> {
-        try {
-
-        } catch (Throwable _e) {
-          com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
-          throw reactor.core.Exceptions.propagate(_e);
-        }
-      };
+      return com.facebook.thrift.payload.Writer.EMPTY_WRITER;
     }
 
     private final com.facebook.thrift.payload.Reader _foo_READER = Readers.voidReader();
@@ -187,7 +171,7 @@ public class BadServiceReactiveClient
                   "BadInteraction",
                   _createfooWriter(),
                   _foo_READER,
-                  _foo_EXCEPTION_READERS_INT,
+                  _BadInteraction_foo_EXCEPTION_READERS_INT,
                   _metadata,
                   java.util.Collections.emptyMap());
 
