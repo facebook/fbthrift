@@ -21,6 +21,7 @@
 #include <gtest/gtest.h>
 #include <folly/Range.h>
 #include <folly/String.h>
+#include <thrift/conformance/Utils.h>
 #include <thrift/conformance/if/gen-cpp2/test_suite_types.h>
 
 // Registers the given conformance test suites with gtest
@@ -36,7 +37,7 @@ namespace apache::thrift::conformance {
 void registerTests(
     std::string_view name,
     const TestSuite& suite,
-    const std::set<std::string>& nonconforming,
+    const Nonconforming& nonconforming,
     std::pair<std::string_view, bool> clientCmd,
     const char* file = "",
     int line = 0);
@@ -48,7 +49,7 @@ class RPCClientConformanceTestRegistration {
   RPCClientConformanceTestRegistration(
       std::vector<TestSuite> suites,
       std::map<std::string_view, std::pair<std::string_view, bool>> clientCmds,
-      const std::set<std::string>& nonconforming,
+      const Nonconforming& nonconforming,
       const char* file = "",
       int line = 0)
       : suites_(std::move(suites)) {

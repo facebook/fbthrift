@@ -935,12 +935,12 @@ class RPCClientConformanceTest : public testing::Test {
       const TestSuite& suite,
       const conformance::Test& test,
       const TestCase& testCase,
-      bool conforming,
+      std::string nonconforming,
       bool connectViaServer)
       : suite_(suite),
         test_(test),
         testCase_(testCase),
-        conforming_(conforming),
+        nonconforming_(std::move(nonconforming)),
         handler_(
             std::make_shared<ConformanceVerificationServer>(*testCase_.rpc())),
         server_(
@@ -1002,18 +1002,15 @@ class RPCClientConformanceTest : public testing::Test {
 
  private:
   void verifyConformanceResult(testing::AssertionResult conforming) {
-    if (conforming_) {
+    if (nonconforming_.empty()) {
       EXPECT_TRUE(conforming) << "For more detail see:"
                               << std::endl
                               // Most specific to least specific.
                               << genTagLinks(testCase_) << genTagLinks(test_)
                               << genTagLinks(suite_);
     } else {
-      EXPECT_FALSE(conforming)
-          << "If intentional, please remove the associated entry from:"
-          << std::endl
-          // TODO: create separate nonconforming.txt file for client rpc tests
-          << "    thrift/conformance/data/nonconforming.txt" << std::endl;
+      // TODO: create separate nonconforming.txt file for client rpc tests
+      EXPECT_FALSE(conforming) << nonconforming_ << std::endl;
     }
   }
   testing::AssertionResult runTest() {
@@ -1078,7 +1075,7 @@ class RPCClientConformanceTest : public testing::Test {
   const TestSuite& suite_;
   const conformance::Test& test_;
   const TestCase& testCase_;
-  bool conforming_;
+  std::string nonconforming_;
   std::shared_ptr<ConformanceVerificationServer> handler_;
   apache::thrift::ScopedServerInterfaceThread server_;
   folly::Subprocess clientProcess_;
@@ -1088,7 +1085,7 @@ class RPCClientConformanceTest : public testing::Test {
 void registerTests(
     std::string_view category,
     const TestSuite& suite,
-    const std::set<std::string>& nonconforming,
+    const Nonconforming& nonconforming,
     std::pair<std::string_view, bool> clientCmd,
     const char* file,
     int line) {
@@ -1097,22 +1094,20 @@ void registerTests(
       std::string suiteName =
           fmt::format("{}/{}/{}", category, *suite.name(), *testCase.name());
       std::string fullName = fmt::format("{}.{}", suiteName, *test.name());
-      bool conforming = nonconforming.find(fullName) == nonconforming.end();
+      auto entry = nonconforming.find(fullName);
+      std::string where =
+          entry ? fmt::format("nonconforming.txt:{}", entry->line) : "";
+      std::string why = entry ? entry->explainConforming(fullName) : "";
       registerTest(
           suiteName.c_str(),
           test.name()->c_str(),
           nullptr,
-          conforming ? nullptr : "nonconforming",
+          entry ? where.c_str() : nullptr,
           file,
           line,
-          [clientCmd, &suite, &test, &testCase, conforming]() {
+          [clientCmd, &suite, &test, &testCase, why]() {
             return new RPCClientConformanceTest(
-                clientCmd.first,
-                suite,
-                test,
-                testCase,
-                conforming,
-                clientCmd.second);
+                clientCmd.first, suite, test, testCase, why, clientCmd.second);
           });
     }
   }
