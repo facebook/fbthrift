@@ -256,6 +256,17 @@ struct OptionalRefPmr {
   3: ChildPmr s;
 }
 
+// A `shared_ptr<const T>` field whose pointee uses the struct's allocator.
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "PmrByteAlloc"},
+}
+struct ConstRefPmr {
+  // @lint-ignore THRIFTCHECKS thrift-parser
+  @cpp.Ref{type = cpp.RefType.Shared}
+  @cpp.AllowLegacyNonOptionalRef
+  1: ChildPmr_7470 c;
+}
+
 @thrift.DeprecatedUnvalidatedAnnotations{
   items = {"cpp.allocator": "PmrByteAlloc"},
 }

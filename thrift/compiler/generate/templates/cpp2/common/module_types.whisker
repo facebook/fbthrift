@@ -54,7 +54,7 @@ class {{struct.cpp_underlying_name}};
 {{#pragma ignore-newlines}}
   {{#if field.cpp_ref_unique?}}
 {{#if field.type.cpp_use_allocator?}}folly::allocate_unique{{#else}}std::make_unique{{/if}}
-  {{#else if field.cpp_ref_shared?}}
+  {{#else}}
 {{#if field.type.cpp_use_allocator?}}std::allocate_shared{{#else}}std::make_shared{{/if}}
   {{/if field.cpp_ref_unique?}}
 <{{field.cpp_type}}>

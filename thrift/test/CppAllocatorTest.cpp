@@ -956,6 +956,70 @@ TEST(CppAllocatorTest, AllocExtendedMoveTakesOverRefs) {
   EXPECT_EQ(counting.allocations(), before);
 }
 
+namespace {
+// A const pointee on `alloc`, holding kTooLong.
+std::shared_ptr<const ChildPmr> makeConstChild(const PmrByteAlloc& alloc) {
+  auto child = std::allocate_shared<ChildPmr>(alloc);
+  child->aa_string() = kTooLong;
+  return child;
+}
+} // namespace
+
+// A `shared_ptr<const T>` field is built with the struct's allocator by every
+// constructor and assignment that builds a pointee, as a `shared_ptr<T>` one
+// is.
+TEST(CppAllocatorTest, ConstSharedRefPointeeUsesAllocator) {
+  std::pmr::monotonic_buffer_resource res1;
+  std::pmr::monotonic_buffer_resource res2;
+
+  const ConstRefPmr built{PmrByteAlloc(&res1)};
+  ASSERT_NE(built.c_ref(), nullptr);
+  EXPECT_EQ(built.c_ref()->get_allocator().resource(), &res1);
+
+  ConstRefPmr src{PmrByteAlloc(&res1)};
+  src.c_ref() = makeConstChild(PmrByteAlloc(&res1));
+
+  const ConstRefPmr copied(src, PmrByteAlloc(&res2));
+  EXPECT_EQ(*copied.c_ref()->aa_string(), kTooLong);
+  EXPECT_EQ(copied.c_ref()->get_allocator().resource(), &res2);
+  EXPECT_EQ(copied.c_ref()->aa_string()->get_allocator().resource(), &res2);
+
+  ConstRefPmr assigned{PmrByteAlloc(&res2)};
+  assigned = src;
+  EXPECT_EQ(*assigned.c_ref()->aa_string(), kTooLong);
+  EXPECT_EQ(assigned.c_ref()->get_allocator().resource(), &res2);
+
+  ConstRefPmr moveAssigned{PmrByteAlloc(&res2)};
+  moveAssigned = ConstRefPmr(src, PmrByteAlloc(&res1));
+  EXPECT_EQ(*moveAssigned.c_ref()->aa_string(), kTooLong);
+  EXPECT_EQ(moveAssigned.c_ref()->get_allocator().resource(), &res2);
+
+  const auto* pointee = src.c_ref().get();
+  const ConstRefPmr sameResource(std::move(src), PmrByteAlloc(&res1));
+  EXPECT_EQ(sameResource.c_ref().get(), pointee);
+
+  const ConstRefPmr otherResource(
+      ConstRefPmr(sameResource, PmrByteAlloc(&res1)), PmrByteAlloc(&res2));
+  EXPECT_EQ(*otherResource.c_ref()->aa_string(), kTooLong);
+  EXPECT_EQ(otherResource.c_ref()->get_allocator().resource(), &res2);
+}
+
+TEST(CppAllocatorTest, ConstSharedRefDeserializesOntoAllocator) {
+  ConstRefPmr src;
+  src.c_ref() = makeConstChild(PmrByteAlloc());
+  const auto bytes = CompactSerializer::serialize<std::string>(src);
+
+  auto prev = set_default_resource(std::pmr::null_memory_resource());
+  auto guard = folly::makeGuard([&] { set_default_resource(prev); });
+  std::pmr::monotonic_buffer_resource res(std::pmr::new_delete_resource());
+  ConstRefPmr dst{PmrByteAlloc(&res)};
+  CompactSerializer::deserialize(bytes, dst);
+
+  EXPECT_EQ(*dst.c_ref()->aa_string(), kTooLong);
+  EXPECT_EQ(dst.c_ref()->get_allocator().resource(), &res);
+  EXPECT_EQ(dst.c_ref()->aa_string()->get_allocator().resource(), &res);
+}
+
 // Other owners may share the pointee, so it is copied rather than moved from.
 TEST(CppAllocatorTest, AllocExtendedMoveCopiesSharedRefPointee) {
   std::pmr::monotonic_buffer_resource res1;
