@@ -429,7 +429,8 @@ class ThriftExtensionPipelineHandler {
       }
       return ctx.fireRead(std::move(msg));
     }
-    auto response = makeUnknownExceptionMessage(streamId, verdict.cause());
+    auto response = makeRejectionMessage(streamId, verdict.cause());
+    response.requestContext = std::move(request.requestContext);
     return ctx.fireWrite(channel_pipeline::erase_and_box(std::move(response)));
   }
 

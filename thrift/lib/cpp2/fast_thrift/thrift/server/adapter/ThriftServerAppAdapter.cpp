@@ -85,18 +85,20 @@ void ThriftServerAppAdapter::fireCloseCallback() noexcept {
 
 channel_pipeline::Result ThriftServerAppAdapter::dispatchRequest(
     channel_pipeline::TypeErasedBox&& msg) noexcept {
-  const auto& request = msg.get<ThriftServerRequestMessage>();
+  auto& request = msg.get<ThriftServerRequestMessage>();
   DCHECK(request.streamId != 0) << "Invalid stream ID";
 
   const auto routing = getServerRequestRoutingMetadata(request);
   if (FOLLY_UNLIKELY(
           routing.status == ServerRequestRoutingStatus::MissingMetadata)) {
-    handleUnknownMethod(request.streamId, {});
+    handleUnknownMethod(
+        request.streamId, {}, std::move(request.requestContext));
     return channel_pipeline::Result::Success;
   }
   if (FOLLY_UNLIKELY(
           routing.status == ServerRequestRoutingStatus::UnsupportedRpcKind)) {
-    handleWrongRpcKind(request.streamId, routing.kind);
+    handleWrongRpcKind(
+        request.streamId, routing.kind, std::move(request.requestContext));
     return channel_pipeline::Result::Success;
   }
 
@@ -111,7 +113,8 @@ channel_pipeline::Result ThriftServerAppAdapter::dispatchRequest(
       }
     }
   }
-  handleUnknownMethod(request.streamId, routing.methodName);
+  handleUnknownMethod(
+      request.streamId, routing.methodName, std::move(request.requestContext));
   return channel_pipeline::Result::Success;
 }
 
@@ -161,14 +164,22 @@ bool ThriftServerAppAdapter::hasMethod(std::string_view name) const noexcept {
 }
 
 void ThriftServerAppAdapter::handleWrongRpcKind(
-    uint32_t streamId, apache::thrift::RpcKind kind) noexcept {
+    uint32_t streamId,
+    apache::thrift::RpcKind kind,
+    ThriftRequestContextPtr requestContext) noexcept {
   XLOG(ERR) << "Unsupported RPC kind: " << static_cast<int>(kind);
-  writeResponseOnEventBase(makeWrongRpcKindMessage(streamId, kind));
+  auto response = makeWrongRpcKindMessage(streamId, kind);
+  response.requestContext = std::move(requestContext);
+  writeResponseOnEventBase(std::move(response));
 }
 
 void ThriftServerAppAdapter::handleUnknownMethod(
-    uint32_t streamId, std::string_view methodName) noexcept {
-  writeResponseOnEventBase(makeUnknownMethodMessage(streamId, methodName));
+    uint32_t streamId,
+    std::string_view methodName,
+    ThriftRequestContextPtr requestContext) noexcept {
+  auto response = makeUnknownMethodMessage(streamId, methodName);
+  response.requestContext = std::move(requestContext);
+  writeResponseOnEventBase(std::move(response));
 }
 
 void ThriftServerAppAdapter::writeResponse(
@@ -236,7 +247,7 @@ void ThriftServerAppAdapter::writeResponseOnEventBase(
     handleMissingPipeline();
     return;
   }
-  auto result =
+  const auto result =
       pipeline_.fireWrite(channel_pipeline::erase_and_box(std::move(message)));
   // A failed write means the response can't reach the wire — pipeline
   // is in a broken or torn-down state. Tear down immediately rather

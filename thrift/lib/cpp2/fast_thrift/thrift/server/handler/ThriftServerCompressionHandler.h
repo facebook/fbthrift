@@ -84,7 +84,8 @@ class ThriftServerCompressionHandler {
     auto& payload =
         request.payload.template get<ThriftServerRequestResponsePayload>();
     if (auto error = decompressRequest(payload)) {
-      return writeParsingFailure(ctx, streamId, std::move(*error));
+      return writeParsingFailure(
+          ctx, streamId, std::move(request.requestContext), std::move(*error));
     }
 
     if (payload.metadata != nullptr) {
@@ -391,7 +392,10 @@ class ThriftServerCompressionHandler {
     const auto compression = compressionForConfig(config);
     if (FOLLY_UNLIKELY(!compression.has_value())) {
       return writeCompressionFailure(
-          ctx, payload.streamId, "Unsupported response compression config");
+          ctx,
+          payload.streamId,
+          std::move(msg.get<ThriftServerResponseMessage>().requestContext),
+          "Unsupported response compression config");
     }
     if (*compression == apache::thrift::CompressionAlgorithm::NONE ||
         *compression == apache::thrift::CompressionAlgorithm::CUSTOM) {
@@ -407,7 +411,10 @@ class ThriftServerCompressionHandler {
     const auto codec = codecForAlgorithm(*compression);
     if (FOLLY_UNLIKELY(!codec.has_value())) {
       return writeCompressionFailure(
-          ctx, payload.streamId, "Unsupported response compression algorithm");
+          ctx,
+          payload.streamId,
+          std::move(msg.get<ThriftServerResponseMessage>().requestContext),
+          "Unsupported response compression algorithm");
     }
 
     try {
@@ -416,7 +423,10 @@ class ThriftServerCompressionHandler {
               ->compress(payload.data.get());
       if (FOLLY_UNLIKELY(compressed == nullptr)) {
         return writeCompressionFailure(
-            ctx, payload.streamId, "Response compression returned no data");
+            ctx,
+            payload.streamId,
+            std::move(msg.get<ThriftServerResponseMessage>().requestContext),
+            "Response compression returned no data");
       }
       payload.data = std::move(compressed);
       payload.metadata->compression() = *compression;
@@ -424,10 +434,14 @@ class ThriftServerCompressionHandler {
       return writeCompressionFailure(
           ctx,
           payload.streamId,
+          std::move(msg.get<ThriftServerResponseMessage>().requestContext),
           std::string("Response compression failed: ") + ex.what());
     } catch (...) {
       return writeCompressionFailure(
-          ctx, payload.streamId, "Response compression failed");
+          ctx,
+          payload.streamId,
+          std::move(msg.get<ThriftServerResponseMessage>().requestContext),
+          "Response compression failed");
     }
 
     return ctx.fireWrite(std::move(msg));
@@ -444,21 +458,29 @@ class ThriftServerCompressionHandler {
         folly::compression::CodecType::LZ4_VARINT_SIZE);
   }
   static channel_pipeline::Result writeParsingFailure(
-      Context& ctx, uint32_t streamId, std::string message) noexcept {
-    return ctx.fireWrite(
-        channel_pipeline::erase_and_box(makeFrameworkErrorMessage(
-            streamId,
-            apache::thrift::ResponseRpcErrorCode::REQUEST_PARSING_FAILURE,
-            std::move(message))));
+      Context& ctx,
+      uint32_t streamId,
+      ThriftRequestContextPtr requestContext,
+      std::string message) noexcept {
+    auto response = makeFrameworkErrorMessage(
+        streamId,
+        apache::thrift::ResponseRpcErrorCode::REQUEST_PARSING_FAILURE,
+        std::move(message));
+    response.requestContext = std::move(requestContext);
+    return ctx.fireWrite(channel_pipeline::erase_and_box(std::move(response)));
   }
 
   static channel_pipeline::Result writeCompressionFailure(
-      Context& ctx, uint32_t streamId, std::string message) noexcept {
-    return ctx.fireWrite(
-        channel_pipeline::erase_and_box(makeFrameworkErrorMessage(
-            streamId,
-            apache::thrift::ResponseRpcErrorCode::UNKNOWN,
-            std::move(message))));
+      Context& ctx,
+      uint32_t streamId,
+      ThriftRequestContextPtr requestContext,
+      std::string message) noexcept {
+    auto response = makeFrameworkErrorMessage(
+        streamId,
+        apache::thrift::ResponseRpcErrorCode::UNKNOWN,
+        std::move(message));
+    response.requestContext = std::move(requestContext);
+    return ctx.fireWrite(channel_pipeline::erase_and_box(std::move(response)));
   }
 
   size_t maxDecompressedRequestSize_;

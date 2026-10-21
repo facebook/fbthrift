@@ -63,8 +63,8 @@ static_assert(
  * `requestContext` is the response's originating per-request context, moved
  * onto the message by FastHandlerCallback so write-side handlers can read
  * request-derived state (e.g. the checksum algorithm) without correlating.
- * Null for framework-generated responses (parse errors, wrong RPC kind) that
- * have no per-request context.
+ * Null only for responses generated before a request context exists, such as
+ * request-metadata parse failures.
  */
 struct ThriftServerResponseMessage {
   ThriftRequestContextPtr requestContext{};

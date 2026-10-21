@@ -285,9 +285,13 @@ class ThriftServerAppAdapter : public folly::DelayedDestruction {
 
  private:
   FOLLY_NOINLINE void handleWrongRpcKind(
-      uint32_t streamId, apache::thrift::RpcKind kind) noexcept;
+      uint32_t streamId,
+      apache::thrift::RpcKind kind,
+      ThriftRequestContextPtr requestContext) noexcept;
   FOLLY_NOINLINE void handleUnknownMethod(
-      uint32_t streamId, std::string_view methodName) noexcept;
+      uint32_t streamId,
+      std::string_view methodName,
+      ThriftRequestContextPtr requestContext) noexcept;
   FOLLY_NOINLINE void handleMissingPipeline() noexcept;
 
   void onConnectionClosed() noexcept;

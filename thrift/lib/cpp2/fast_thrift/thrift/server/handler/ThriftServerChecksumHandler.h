@@ -55,7 +55,8 @@ namespace apache::thrift::fast_thrift::thrift {
  * response's `requestContext` (forwarded onto the message by
  * FastHandlerCallback). When non-NONE, stamps `metadata->checksum()` with that
  * algorithm and computes the value over the response data IOBuf. Responses with
- * no requestContext (framework errors) or a non-initial payload pass through.
+ * no requestContext (for example, pre-context framework errors) or a
+ * non-initial payload pass through.
  *
  * Pipeline order: MUST sit downstream of ThriftServerRequestContextHandler
  * (which allocates the per-request ThriftRequestContext).
@@ -90,11 +91,13 @@ class ThriftServerChecksumHandler {
       // error response toward head from here; it never re-enters our own
       // onWrite and never reaches the tail, so the request is dropped with
       // nothing dispatched.
+      auto response = makeFrameworkErrorMessage(
+          request.streamId,
+          apache::thrift::ResponseRpcErrorCode::CHECKSUM_MISMATCH,
+          std::move(*error));
+      response.requestContext = std::move(request.requestContext);
       return ctx.fireWrite(
-          channel_pipeline::erase_and_box(makeFrameworkErrorMessage(
-              request.streamId,
-              apache::thrift::ResponseRpcErrorCode::CHECKSUM_MISMATCH,
-              std::move(*error))));
+          channel_pipeline::erase_and_box(std::move(response)));
     }
 
     request.requestContext->setChecksumAlgorithm(checksum.algorithm().value());

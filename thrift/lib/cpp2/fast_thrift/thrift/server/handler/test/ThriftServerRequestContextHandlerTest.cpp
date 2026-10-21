@@ -363,8 +363,8 @@ TEST(ThriftServerRequestContextHandlerTest, DrainsResponseHeadersOnWrite) {
   EXPECT_EQ(*metadata.otherMetadata(), expected);
 }
 
-// A response with no per-request context behind it — a framework-generated
-// error, say — still goes out untouched.
+// A response created before request-context construction still goes out
+// untouched.
 TEST(ThriftServerRequestContextHandlerTest, WriteWithoutContextIsPassThrough) {
   ThriftServerRequestContextHandler<FakeContext> handler{nullptr};
   FakeContext ctx;

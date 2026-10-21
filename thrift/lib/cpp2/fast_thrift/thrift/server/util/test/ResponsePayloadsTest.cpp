@@ -113,7 +113,7 @@ TEST(ResponsePayloadsTest, HeadersAreExtractedFromTheContext) {
   EXPECT_FALSE(requestContextPtr->hasResponseHeaders());
 }
 
-// Framework errors (unknown method, wrong RPC kind) carry no request context.
+// Responses created before request-context construction carry no context.
 TEST(ResponsePayloadsTest, MissingRequestContextIsIgnored) {
   auto message = makeResponseMessage(
       kStreamId,

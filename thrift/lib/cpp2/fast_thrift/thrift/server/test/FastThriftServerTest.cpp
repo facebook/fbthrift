@@ -45,7 +45,10 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/synchronization/Baton.h>
 
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/async/RpcOptions.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
@@ -62,6 +65,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/FastThriftServerAsyncClient.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersClientExtension.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersContext.h>
+#include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 THRIFT_FLAG_DECLARE_bool(rocket_client_binary_rpc_metadata_encoding);
@@ -1293,10 +1297,36 @@ struct RejectingExtension {
     if (rejections) {
       rejections->fetch_add(1, std::memory_order_relaxed);
     }
-    return ftt::RequestVerdict::reject<std::runtime_error>(
-        "denied by extension");
+    return ftt::RequestVerdict::reject<apache::thrift::AppClientError>(
+        "TypedExtensionRejection", "denied by extension");
   }
 };
+
+struct RejectionObservation {
+  bool failed{false};
+  std::string message;
+  apache::thrift::transport::THeader::StringToStringMap headers;
+};
+
+RejectionObservation addRoundTripObservingRejection(
+    const folly::SocketAddress& addr) {
+  folly::EventBase evb;
+  auto channel = apache::thrift::RocketClientChannel::newChannel(
+      folly::AsyncSocket::newSocket(&evb, addr));
+  apache::thrift::Client<integration::FastThriftServer> client(
+      std::move(channel));
+
+  apache::thrift::RpcOptions options;
+  RejectionObservation observation;
+  try {
+    (void)client.sync_add(options, 7, 35);
+  } catch (const apache::thrift::TApplicationException& ex) {
+    observation.failed = true;
+    observation.message = ex.what();
+  }
+  observation.headers = options.getReadHeaders();
+  return observation;
+}
 
 // Drives one `add(7, 35)` RPC against `addr` and returns the result, so tests
 // that only care about exercising the server pipeline stay tight.
@@ -2376,8 +2406,32 @@ TEST(FastThriftServerExtensionTest, ModifierRejectionShortCircuitsService) {
           &rejections));
   server.start();
 
-  EXPECT_TRUE(addRoundTripFails(server.getAddress()));
+  const auto observation = addRoundTripObservingRejection(server.getAddress());
+  EXPECT_TRUE(observation.failed);
+  EXPECT_EQ(observation.message, "denied by extension");
+  EXPECT_EQ(
+      observation.headers.at(std::string(apache::thrift::detail::kHeaderUex)),
+      "TypedExtensionRejection");
+  EXPECT_EQ(
+      observation.headers.at(std::string(apache::thrift::detail::kHeaderEx)),
+      kAppClientErrorCode);
+  EXPECT_EQ(observation.headers.at("x-rejected-by-extension"), "add");
   EXPECT_GE(rejections.load(), 1);
+}
+
+TEST(FastThriftServerExtensionTest, ResponseViewClassifiesApplicationErrors) {
+  auto appError = ftt::makeAppErrorMessage(
+      1,
+      "TypedExtensionRejection",
+      "denied by extension",
+      apache::thrift::ErrorBlame::CLIENT);
+  const ftt::ThriftResponseView appErrorView(appError);
+  EXPECT_TRUE(appErrorView.isApplicationError());
+
+  auto success = ftt::makeResponseMessage(
+      1, nullptr, std::make_unique<apache::thrift::ResponseRpcMetadata>());
+  const ftt::ThriftResponseView successView(success);
+  EXPECT_FALSE(successView.isApplicationError());
 }
 
 // The connection callbacks bracket the SETUP exchange: attempted fires once

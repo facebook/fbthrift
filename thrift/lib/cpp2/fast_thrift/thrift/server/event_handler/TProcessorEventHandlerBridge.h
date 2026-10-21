@@ -174,23 +174,6 @@ inline std::uint32_t payloadBytes(
       : static_cast<std::uint32_t>(data->computeChainDataLength());
 }
 
-inline bool isAppUnknownException(
-    const ThriftInitialResponsePayload& reply) noexcept {
-  if (reply.metadata == nullptr ||
-      !reply.metadata->payloadMetadata().has_value()) {
-    return false;
-  }
-  const auto& payloadMetadata = *reply.metadata->payloadMetadata();
-  if (payloadMetadata.getType() !=
-      apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
-    return false;
-  }
-  const auto& exceptionMetadata = *payloadMetadata.exceptionMetadata();
-  return !exceptionMetadata.metadata().has_value() ||
-      exceptionMetadata.metadata()->getType() ==
-      apache::thrift::PayloadExceptionMetadata::Type::appUnknownException;
-}
-
 // Moves what the handlers wrote onto the outgoing reply. Only the normal reply
 // carries metadata; an error frame has nowhere to put them.
 inline void stampWriteHeaders(
@@ -324,12 +307,14 @@ class TProcessorEventHandlerBridge {
 
     const uint32_t streamId = request.streamId;
     if (FOLLY_UNLIKELY(methodMetadata_ == nullptr)) {
+      auto response = makeAppErrorMessage(
+          streamId,
+          "TProcessorEventHandlerBridgeMisconfigured",
+          "event handlers are installed but the server has no method "
+          "metadata registry");
+      response.requestContext = std::move(request.requestContext);
       return ctx.fireWrite(
-          channel_pipeline::erase_and_box(makeAppErrorMessage(
-              streamId,
-              "TProcessorEventHandlerBridgeMisconfigured",
-              "event handlers are installed but the server has no method "
-              "metadata registry")));
+          channel_pipeline::erase_and_box(std::move(response)));
     }
     const auto* method = methodMetadata_->find(routing.methodName);
     if (FOLLY_UNLIKELY(method == nullptr)) {
@@ -342,12 +327,14 @@ class TProcessorEventHandlerBridge {
     if (FOLLY_UNLIKELY(
             request.requestContext == nullptr ||
             connectionContext_ == nullptr)) {
+      auto response = makeAppErrorMessage(
+          streamId,
+          "TProcessorEventHandlerBridgeMisconfigured",
+          "event handlers are installed but the pipeline provided no "
+          "request or connection context");
+      response.requestContext = std::move(request.requestContext);
       return ctx.fireWrite(
-          channel_pipeline::erase_and_box(makeAppErrorMessage(
-              streamId,
-              "TProcessorEventHandlerBridgeMisconfigured",
-              "event handlers are installed but the pipeline provided no "
-              "request or connection context")));
+          channel_pipeline::erase_and_box(std::move(response)));
     }
 
     auto ownedState =
@@ -457,8 +444,7 @@ class TProcessorEventHandlerBridge {
         // served, so there is no verdict left to honour and swallowing would
         // hide a handler bug. An escape terminates, as it would on a classic
         // server.
-        if ((exception == nullptr &&
-             !event_handler_detail::isAppUnknownException(*reply)) ||
+        if ((exception == nullptr && !isAppUnknownException(*reply)) ||
             (exception != nullptr && exception->declared)) {
           state->chain.preWrite();
           state->chain.onWriteData(state->protocolType, reply->data.get());

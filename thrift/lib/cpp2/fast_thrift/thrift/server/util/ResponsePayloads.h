@@ -143,6 +143,23 @@ inline ThriftServerResponseMessage makeUnknownMethodMessage(
       std::string("Unknown method: ") + std::string(methodName));
 }
 
+inline bool isAppUnknownException(
+    const ThriftInitialResponsePayload& response) noexcept {
+  if (response.metadata == nullptr ||
+      !response.metadata->payloadMetadata().has_value()) {
+    return false;
+  }
+  const auto& payloadMetadata = *response.metadata->payloadMetadata();
+  if (payloadMetadata.getType() !=
+      apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
+    return false;
+  }
+  const auto& exceptionMetadata = *payloadMetadata.exceptionMetadata();
+  return !exceptionMetadata.metadata().has_value() ||
+      exceptionMetadata.metadata()->getType() ==
+      apache::thrift::PayloadExceptionMetadata::Type::appUnknownException;
+}
+
 // PAYLOAD frame with null data + appUnknownException metadata carrying
 // name/what/blame. Client surfaces this as TApplicationException.
 inline ThriftServerResponseMessage makeAppErrorMessage(

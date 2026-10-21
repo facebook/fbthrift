@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftRequestContext.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/extension/ThriftConnectionExtension.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ResponsePayloads.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::fast_thrift::thrift {
@@ -289,8 +290,8 @@ class ThriftRequestMutator final : public ThriftRequestView {
 
 /**
  * Read-only view of an outbound response. Header access is only meaningful for
- * a response that has a per-request context behind it: framework-generated
- * responses (parse errors, wrong RPC kind) have none and report empty.
+ * a response that has a per-request context behind it. Responses generated
+ * before request-context construction report empty.
  *
  * Base of ThriftResponseMutator; see ThriftRequestView for the non-virtual
  * destructor rationale.
@@ -311,6 +312,12 @@ class ThriftResponseView {
   // reply.
   bool isError() const noexcept {
     return response_.payload.is<ThriftErrorPayload>();
+  }
+
+  bool isApplicationError() const noexcept {
+    return response_.payload.is<ThriftInitialResponsePayload>() &&
+        isAppUnknownException(
+               response_.payload.get<ThriftInitialResponsePayload>());
   }
 
   std::string_view methodName() const noexcept {
