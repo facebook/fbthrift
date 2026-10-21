@@ -113,6 +113,15 @@ class ConformanceVerificationServer
             testCase_.serverInstruction()->requestResponseConcurrent()) {
       co_return co_await answerLastToFirst(*concurrent, *req);
     }
+    if (auto badContentLength =
+            testCase_.serverInstruction()->requestResponseBadContentLength()) {
+      serverResult_.requestResponseBadContentLength().emplace().request() =
+          *req;
+      getRequestContext()->getHeader()->setHeader(
+          "content-length",
+          folly::to<std::string>(*badContentLength->contentLength()));
+      co_return std::make_unique<Response>(*badContentLength->response());
+    }
     if (auto metadata =
             testCase_.serverInstruction()->requestResponseMetadata()) {
       auto& result = serverResult_.requestResponseMetadata().emplace();

@@ -7120,6 +7120,9 @@ rusthttp2/ThriftRPCClientTest/RequestResponseLoadshedding/Success.RequestRespons
 rustnativehttp2/ThriftRPCClientTest/RequestResponseLoadshedding/Success.RequestResponseLoadsheddingTest
 # Same reason as for the `rust` category.
 rusthttp2/ThriftRPCClientTest/RequestResponseAnyException/Success.RequestResponseAnyExceptionTest
+# bareclient hands its Rust caller only the text of the TTransportException its
+# C++ client raised, so `rpc_client.rs` cannot report the exception's type.
+rusthttp2/ThriftRPCClientTest/RequestResponseBadContentLength/Success.RequestResponseBadContentLengthTest
 
 # The same cases over TLS (rpc-client-tls-test), which fail for the same
 # reasons as over plaintext.

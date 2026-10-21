@@ -58,6 +58,7 @@ union ServerTestResult {
   7: RequestResponseServerErrorServerTestResult requestResponseServerError;
   8: RequestResponseMetadataServerTestResult requestResponseMetadata;
   9: RequestResponseConcurrentServerTestResult requestResponseConcurrent;
+  10: RequestResponseBadContentLengthServerTestResult requestResponseBadContentLength;
   100: StreamBasicServerTestResult streamBasic;
   101: StreamChunkTimeoutServerTestResult streamChunkTimeout;
   102: StreamInitialResponseServerTestResult streamInitialResponse;
@@ -102,6 +103,7 @@ union ClientTestResult {
   7: RequestResponseServerErrorClientTestResult requestResponseServerError;
   8: RequestResponseMetadataClientTestResult requestResponseMetadata;
   9: RequestResponseConcurrentClientTestResult requestResponseConcurrent;
+  10: RequestResponseBadContentLengthClientTestResult requestResponseBadContentLength;
   100: StreamBasicClientTestResult streamBasic;
   101: StreamChunkTimeoutClientTestResult streamChunkTimeout;
   102: StreamInitialResponseClientTestResult streamInitialResponse;
@@ -173,6 +175,10 @@ struct RequestResponseMetadataServerTestResult {
 struct RequestResponseConcurrentServerTestResult {
   1: list<Request> requests;
   2: bool allInFlight;
+}
+
+struct RequestResponseBadContentLengthServerTestResult {
+  1: Request request;
 }
 
 struct StreamBasicServerTestResult {
@@ -362,6 +368,10 @@ struct RequestResponseConcurrentClientTestResult {
   1: list<Response> responses;
 }
 
+struct RequestResponseBadContentLengthClientTestResult {
+  1: optional i32 transportExceptionType;
+}
+
 struct StreamBasicClientTestResult {
   1: list<Response> streamPayloads;
 }
@@ -507,6 +517,7 @@ union ClientInstruction {
   7: RequestResponseServerErrorClientInstruction requestResponseServerError;
   8: RequestResponseMetadataClientInstruction requestResponseMetadata;
   9: RequestResponseConcurrentClientInstruction requestResponseConcurrent;
+  10: RequestResponseBadContentLengthClientInstruction requestResponseBadContentLength;
   100: StreamBasicClientInstruction streamBasic;
   101: StreamChunkTimeoutClientInstruction streamChunkTimeout;
   102: StreamInitialResponseClientInstruction streamInitialResponse;
@@ -551,6 +562,7 @@ union ServerInstruction {
   7: RequestResponseServerErrorServerInstruction requestResponseServerError;
   8: RequestResponseMetadataServerInstruction requestResponseMetadata;
   9: RequestResponseConcurrentServerInstruction requestResponseConcurrent;
+  10: RequestResponseBadContentLengthServerInstruction requestResponseBadContentLength;
   100: StreamBasicServerInstruction streamBasic;
   101: StreamChunkTimeoutServerInstruction streamChunkTimeout;
   102: StreamInitialResponseServerInstruction streamInitialResponse;
@@ -625,6 +637,10 @@ struct RequestResponseMetadataClientInstruction {
 
 struct RequestResponseConcurrentClientInstruction {
   1: list<Request> requests;
+}
+
+struct RequestResponseBadContentLengthClientInstruction {
+  1: Request request;
 }
 
 struct StreamBasicClientInstruction {
@@ -844,6 +860,11 @@ struct RequestResponseMetadataServerInstruction {
 
 struct RequestResponseConcurrentServerInstruction {
   1: i64 requestCount;
+}
+
+struct RequestResponseBadContentLengthServerInstruction {
+  1: Response response;
+  2: i64 contentLength;
 }
 
 struct StreamBasicServerInstruction {

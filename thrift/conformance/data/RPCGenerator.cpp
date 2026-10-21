@@ -17,6 +17,7 @@
 #include <thrift/conformance/data/RPCGenerator.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace apache::thrift::conformance::data {
 
@@ -611,6 +612,45 @@ Test createRequestResponseConcurrentTest() {
       .requestResponseConcurrent()
       .emplace()
       .requestCount() = 3;
+
+  return ret;
+}
+
+Test createRequestResponseBadContentLengthTest() {
+  Test ret;
+  ret.name() = "RequestResponseBadContentLengthTest";
+  ret.tags()->emplace("spec/protocol/interface/#request-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseBadContentLength/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .requestResponseBadContentLength()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  rpcTest.clientTestResult()
+      .emplace()
+      .requestResponseBadContentLength()
+      .emplace()
+      .transportExceptionType() = transport::TTransportException::UNKNOWN;
+
+  auto& serverInstruction = rpcTest.serverInstruction()
+                                .emplace()
+                                .requestResponseBadContentLength()
+                                .emplace();
+  serverInstruction.response().emplace().data() = "world";
+  serverInstruction.contentLength() = 1;
+  rpcTest.serverTestResult()
+      .emplace()
+      .requestResponseBadContentLength()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
 
   return ret;
 }
@@ -2520,6 +2560,14 @@ TestSuite createRPCClientRequestResponseTestSuite() {
   addCommonRequestResponseTests(suite);
   suite.tests()->push_back(createRequestResponseTimeoutTest());
   addExtendedRequestResponseTests(suite);
+  return suite;
+}
+
+TestSuite createRPCClientHTTP2TestSuite() {
+  TestSuite suite;
+  suite.name() = "ThriftRPCClientTest";
+  suite.tags()->emplace("spec/protocol/interface/");
+  suite.tests()->push_back(createRequestResponseBadContentLengthTest());
   return suite;
 }
 

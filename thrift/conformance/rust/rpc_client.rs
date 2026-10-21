@@ -234,6 +234,8 @@ use rpc::rpc::InteractionTerminationClientInstruction;
 use rpc::rpc::InteractionTerminationClientTestResult;
 use rpc::rpc::RequestResponseAnyExceptionClientInstruction;
 use rpc::rpc::RequestResponseAnyExceptionClientTestResult;
+use rpc::rpc::RequestResponseBadContentLengthClientInstruction;
+use rpc::rpc::RequestResponseBadContentLengthClientTestResult;
 use rpc::rpc::RequestResponseBasicClientInstruction;
 use rpc::rpc::RequestResponseBasicClientTestResult;
 use rpc::rpc::RequestResponseConcurrentClientInstruction;
@@ -272,6 +274,7 @@ async fn test(
         requestResponseServerError(i) => request_response_server_error(client, peer, i).await,
         requestResponseMetadata(i) => request_response_metadata(client, peer, i).await,
         requestResponseConcurrent(i) => request_response_concurrent(client, peer, i).await,
+        requestResponseBadContentLength(i) => request_response_bad_content_length(client, i).await,
         interactionConstructor(i) => interaction_constructor(client, i).await,
         interactionFactoryFunction(i) => interaction_factory_function(client, i).await,
         interactionPersistsState(i) => interaction_persists_state(client, i).await,
@@ -588,6 +591,20 @@ async fn request_response_timeout(
             r
         )),
     }
+}
+
+async fn request_response_bad_content_length(
+    client: &dyn RPCConformanceServiceExt<thriftclient::ThriftChannel>,
+    instr: &RequestResponseBadContentLengthClientInstruction,
+) -> Result<()> {
+    if let Err(exn) = client.requestResponseBasic(&instr.request).await {
+        tracing::info!("thrift error: {:?}", exn);
+    }
+    let test_result = ClientTestResult::requestResponseBadContentLength(
+        RequestResponseBadContentLengthClientTestResult::default(),
+    );
+    client.sendTestResult(&test_result).await?;
+    Ok(())
 }
 
 async fn interaction_constructor(

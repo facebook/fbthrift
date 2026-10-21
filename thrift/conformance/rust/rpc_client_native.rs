@@ -269,6 +269,8 @@ use rpc::rpc::InteractionTerminationClientInstruction;
 use rpc::rpc::InteractionTerminationClientTestResult;
 use rpc::rpc::RequestResponseAnyExceptionClientInstruction;
 use rpc::rpc::RequestResponseAnyExceptionClientTestResult;
+use rpc::rpc::RequestResponseBadContentLengthClientInstruction;
+use rpc::rpc::RequestResponseBadContentLengthClientTestResult;
 use rpc::rpc::RequestResponseBasicClientInstruction;
 use rpc::rpc::RequestResponseBasicClientTestResult;
 use rpc::rpc::RequestResponseConcurrentClientInstruction;
@@ -309,6 +311,7 @@ async fn test(
         requestResponseServerError(i) => request_response_server_error(client, peer, i).await,
         requestResponseMetadata(i) => request_response_metadata(client, peer, i).await,
         requestResponseConcurrent(i) => request_response_concurrent(client, peer, i).await,
+        requestResponseBadContentLength(i) => request_response_bad_content_length(client, i).await,
         interactionConstructor(i) => interaction_constructor(client, i).await,
         interactionFactoryFunction(i) => interaction_factory_function(client, i).await,
         interactionPersistsState(i) => interaction_persists_state(client, i).await,
@@ -352,6 +355,19 @@ fn timed_out(error: &anyhow::Error) -> bool {
         error.downcast_ref::<nativeclient::ThriftError>(),
         Some(nativeclient::ThriftError::Timeout(_) | nativeclient::ThriftError::StreamTimeout(_))
     )
+}
+
+/// mirrors `TTransportException::UNKNOWN`
+const UNKNOWN: i32 = 0;
+/// mirrors `TTransportException::NOT_OPEN`
+const NOT_OPEN: i32 = 1;
+
+fn transport_exception_type(error: &anyhow::Error) -> Option<i32> {
+    match error.downcast_ref::<nativeclient::ThriftError>()? {
+        nativeclient::ThriftError::Transport(_) => Some(UNKNOWN),
+        nativeclient::ThriftError::ConnectionClosed(_) => Some(NOT_OPEN),
+        _ => None,
+    }
 }
 
 async fn create_interaction(
@@ -643,6 +659,27 @@ async fn request_response_timeout(
             r
         )),
     }
+}
+
+async fn request_response_bad_content_length(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &RequestResponseBadContentLengthClientInstruction,
+) -> Result<()> {
+    let transport_exception_type = match client.requestResponseBasic(&instr.request).await {
+        Err(RequestResponseBasicError::ThriftError(exn)) => {
+            tracing::info!("thrift error: {:?}", exn);
+            transport_exception_type(&exn)
+        }
+        _ => None,
+    };
+    let test_result = ClientTestResult::requestResponseBadContentLength(
+        RequestResponseBadContentLengthClientTestResult {
+            transportExceptionType: transport_exception_type,
+            ..Default::default()
+        },
+    );
+    client.sendTestResult(&test_result).await?;
+    Ok(())
 }
 
 async fn interaction_constructor(

@@ -280,6 +280,20 @@ RequestResponseTimeoutClientTestResult runRequestResponseTimeoutTest(
   return result;
 }
 
+RequestResponseBadContentLengthClientTestResult
+requestResponseBadContentLengthTest(
+    const RequestResponseBadContentLengthClientInstruction& instruction) {
+  RequestResponseBadContentLengthClientTestResult result;
+  auto client = createClient();
+  try {
+    Response response;
+    client->sync_requestResponseBasic(response, *instruction.request());
+  } catch (const TTransportException& e) {
+    result.transportExceptionType() = static_cast<int32_t>(e.getType());
+  }
+  return result;
+}
+
 // =================== Stream ===================
 StreamBasicClientTestResult streamBasicTest(
     StreamBasicClientInstruction& instruction) {
@@ -1007,6 +1021,11 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::requestResponseConcurrent:
       result.requestResponseConcurrent() = requestResponseConcurrentTest(
           *clientInstruction.requestResponseConcurrent());
+      break;
+    case ClientInstruction::Type::requestResponseBadContentLength:
+      result.requestResponseBadContentLength() =
+          requestResponseBadContentLengthTest(
+              *clientInstruction.requestResponseBadContentLength());
       break;
     case ClientInstruction::Type::streamBasic:
       result.streamBasic() = streamBasicTest(*clientInstruction.streamBasic());
