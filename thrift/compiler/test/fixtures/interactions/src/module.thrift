@@ -34,6 +34,8 @@ interaction MyInteraction {
   i32 frobnicate() throws (1: CustomException ex);
   oneway void ping();
   stream<bool> truthify();
+  stream<i32 throws (1: CustomException boom)> failstream();
+  stream<i32> failstreaminit() throws (1: CustomException boom);
   set<i32>, sink<string, binary> encode();
 }
 

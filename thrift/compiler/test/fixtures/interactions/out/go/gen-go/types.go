@@ -3505,6 +3505,718 @@ func (x *streamMyInteractionTruthify) setDefaults() *streamMyInteractionTruthify
     return x
 }
 
+type reqMyInteractionFailstream struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*reqMyInteractionFailstream)(nil)
+
+// Deprecated: MyInteractionFailstreamArgsDeprecated is deprecated, since it is supposed to be internal.
+type MyInteractionFailstreamArgsDeprecated = reqMyInteractionFailstream
+
+func newReqMyInteractionFailstream() *reqMyInteractionFailstream {
+    return (&reqMyInteractionFailstream{}).setDefaults()
+}
+
+
+
+
+func (x *reqMyInteractionFailstream) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("reqMyInteractionFailstream"); err != nil {
+        return fmt.Errorf("reqMyInteractionFailstream write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("reqMyInteractionFailstream write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("reqMyInteractionFailstream write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *reqMyInteractionFailstream) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("reqMyInteractionFailstream read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("reqMyInteractionFailstream field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("reqMyInteractionFailstream read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *reqMyInteractionFailstream) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *reqMyInteractionFailstream) setDefaults() *reqMyInteractionFailstream {
+    return x
+}
+
+type respMyInteractionFailstream struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*respMyInteractionFailstream)(nil)
+var _ thrift.WritableResult = (*respMyInteractionFailstream)(nil)
+
+// Deprecated: MyInteractionFailstreamResultDeprecated is deprecated, since it is supposed to be internal.
+type MyInteractionFailstreamResultDeprecated = respMyInteractionFailstream
+
+func newRespMyInteractionFailstream() *respMyInteractionFailstream {
+    return (&respMyInteractionFailstream{}).setDefaults()
+}
+
+
+
+
+func (x *respMyInteractionFailstream) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *respMyInteractionFailstream) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("respMyInteractionFailstream"); err != nil {
+        return fmt.Errorf("respMyInteractionFailstream write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("respMyInteractionFailstream write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("respMyInteractionFailstream write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respMyInteractionFailstream) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("respMyInteractionFailstream read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("respMyInteractionFailstream field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("respMyInteractionFailstream read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *respMyInteractionFailstream) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *respMyInteractionFailstream) setDefaults() *respMyInteractionFailstream {
+    return x
+}
+
+type streamMyInteractionFailstream struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+    Boom *CustomException `thrift:"boom,1,optional" json:"boom,omitempty" db:"boom"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*streamMyInteractionFailstream)(nil)
+var _ thrift.WritableResult = (*streamMyInteractionFailstream)(nil)
+
+// Deprecated: streamMyInteractionFailstreamResultDeprecated is deprecated, since it is supposed to be internal.
+type streamMyInteractionFailstreamResultDeprecated = streamMyInteractionFailstream
+
+func newStreamMyInteractionFailstream() *streamMyInteractionFailstream {
+    return (&streamMyInteractionFailstream{}).setDefaults()
+}
+
+func (x *streamMyInteractionFailstream) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *streamMyInteractionFailstream) SetSuccessNonCompat(value int32) *streamMyInteractionFailstream {
+    x.Success = &value
+    return x
+}
+
+func (x *streamMyInteractionFailstream) SetSuccess(value *int32) *streamMyInteractionFailstream {
+    x.Success = value
+    return x
+}
+
+func (x *streamMyInteractionFailstream) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *streamMyInteractionFailstream) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstream write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstream write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamMyInteractionFailstream) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+func (x *streamMyInteractionFailstream) GetBoom() *CustomException {
+    if !x.IsSetBoom() {
+        return nil
+    }
+    return x.Boom
+}
+
+func (x *streamMyInteractionFailstream) SetBoomNonCompat(value *CustomException) *streamMyInteractionFailstream {
+    x.Boom = value
+    return x
+}
+
+func (x *streamMyInteractionFailstream) SetBoom(value *CustomException) *streamMyInteractionFailstream {
+    x.Boom = value
+    return x
+}
+
+func (x *streamMyInteractionFailstream) IsSetBoom() bool {
+    return x != nil && x.Boom != nil
+}
+
+func (x *streamMyInteractionFailstream) writeField1(p thrift.Encoder) error {  // Boom
+    if !x.IsSetBoom() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("boom", thrift.STRUCT, 1); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstream write field begin error: %w", err)
+    }
+
+    item := x.Boom
+    if err := item.Write(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstream write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamMyInteractionFailstream) readField1(p thrift.Decoder) error {  // Boom
+    result := NewCustomException()
+    err := result.Read(p)
+    if err != nil {
+        return err
+    }
+
+    x.Boom = result
+    return nil
+}
+
+
+
+
+func (x *streamMyInteractionFailstream) Exception() thrift.WritableException {
+    if x.Boom != nil {
+        return x.Boom
+    }
+    return nil
+}
+
+func (x *streamMyInteractionFailstream) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("streamMyInteractionFailstream"); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstream write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+    if err := x.writeField1(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstream write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstream write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamMyInteractionFailstream) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstream read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("streamMyInteractionFailstream field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        case ((id == 1 && wireType == thrift.STRUCT) || (id == thrift.NO_FIELD_ID && fieldName == "boom")):  // boom
+            fieldReadErr = x.readField1(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstream read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *streamMyInteractionFailstream) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *streamMyInteractionFailstream) setDefaults() *streamMyInteractionFailstream {
+    return x
+}
+
+type reqMyInteractionFailstreaminit struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*reqMyInteractionFailstreaminit)(nil)
+
+// Deprecated: MyInteractionFailstreaminitArgsDeprecated is deprecated, since it is supposed to be internal.
+type MyInteractionFailstreaminitArgsDeprecated = reqMyInteractionFailstreaminit
+
+func newReqMyInteractionFailstreaminit() *reqMyInteractionFailstreaminit {
+    return (&reqMyInteractionFailstreaminit{}).setDefaults()
+}
+
+
+
+
+func (x *reqMyInteractionFailstreaminit) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("reqMyInteractionFailstreaminit"); err != nil {
+        return fmt.Errorf("reqMyInteractionFailstreaminit write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("reqMyInteractionFailstreaminit write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("reqMyInteractionFailstreaminit write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *reqMyInteractionFailstreaminit) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("reqMyInteractionFailstreaminit read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("reqMyInteractionFailstreaminit field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("reqMyInteractionFailstreaminit read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *reqMyInteractionFailstreaminit) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *reqMyInteractionFailstreaminit) setDefaults() *reqMyInteractionFailstreaminit {
+    return x
+}
+
+type respMyInteractionFailstreaminit struct {
+    Boom *CustomException `thrift:"boom,1,optional" json:"boom,omitempty" db:"boom"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*respMyInteractionFailstreaminit)(nil)
+var _ thrift.WritableResult = (*respMyInteractionFailstreaminit)(nil)
+
+// Deprecated: MyInteractionFailstreaminitResultDeprecated is deprecated, since it is supposed to be internal.
+type MyInteractionFailstreaminitResultDeprecated = respMyInteractionFailstreaminit
+
+func newRespMyInteractionFailstreaminit() *respMyInteractionFailstreaminit {
+    return (&respMyInteractionFailstreaminit{}).setDefaults()
+}
+
+func (x *respMyInteractionFailstreaminit) GetBoom() *CustomException {
+    if !x.IsSetBoom() {
+        return nil
+    }
+    return x.Boom
+}
+
+func (x *respMyInteractionFailstreaminit) SetBoomNonCompat(value *CustomException) *respMyInteractionFailstreaminit {
+    x.Boom = value
+    return x
+}
+
+func (x *respMyInteractionFailstreaminit) SetBoom(value *CustomException) *respMyInteractionFailstreaminit {
+    x.Boom = value
+    return x
+}
+
+func (x *respMyInteractionFailstreaminit) IsSetBoom() bool {
+    return x != nil && x.Boom != nil
+}
+
+func (x *respMyInteractionFailstreaminit) writeField1(p thrift.Encoder) error {  // Boom
+    if !x.IsSetBoom() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("boom", thrift.STRUCT, 1); err != nil {
+        return fmt.Errorf("respMyInteractionFailstreaminit write field begin error: %w", err)
+    }
+
+    item := x.Boom
+    if err := item.Write(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("respMyInteractionFailstreaminit write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respMyInteractionFailstreaminit) readField1(p thrift.Decoder) error {  // Boom
+    result := NewCustomException()
+    err := result.Read(p)
+    if err != nil {
+        return err
+    }
+
+    x.Boom = result
+    return nil
+}
+
+
+
+
+func (x *respMyInteractionFailstreaminit) Exception() thrift.WritableException {
+    if x.Boom != nil {
+        return x.Boom
+    }
+    return nil
+}
+
+func (x *respMyInteractionFailstreaminit) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("respMyInteractionFailstreaminit"); err != nil {
+        return fmt.Errorf("respMyInteractionFailstreaminit write struct begin error: %w", err)
+    }
+
+    if err := x.writeField1(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("respMyInteractionFailstreaminit write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("respMyInteractionFailstreaminit write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respMyInteractionFailstreaminit) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("respMyInteractionFailstreaminit read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("respMyInteractionFailstreaminit field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 1 && wireType == thrift.STRUCT) || (id == thrift.NO_FIELD_ID && fieldName == "boom")):  // boom
+            fieldReadErr = x.readField1(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("respMyInteractionFailstreaminit read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *respMyInteractionFailstreaminit) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *respMyInteractionFailstreaminit) setDefaults() *respMyInteractionFailstreaminit {
+    return x
+}
+
+type streamMyInteractionFailstreaminit struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*streamMyInteractionFailstreaminit)(nil)
+var _ thrift.WritableResult = (*streamMyInteractionFailstreaminit)(nil)
+
+// Deprecated: streamMyInteractionFailstreaminitResultDeprecated is deprecated, since it is supposed to be internal.
+type streamMyInteractionFailstreaminitResultDeprecated = streamMyInteractionFailstreaminit
+
+func newStreamMyInteractionFailstreaminit() *streamMyInteractionFailstreaminit {
+    return (&streamMyInteractionFailstreaminit{}).setDefaults()
+}
+
+func (x *streamMyInteractionFailstreaminit) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *streamMyInteractionFailstreaminit) SetSuccessNonCompat(value int32) *streamMyInteractionFailstreaminit {
+    x.Success = &value
+    return x
+}
+
+func (x *streamMyInteractionFailstreaminit) SetSuccess(value *int32) *streamMyInteractionFailstreaminit {
+    x.Success = value
+    return x
+}
+
+func (x *streamMyInteractionFailstreaminit) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *streamMyInteractionFailstreaminit) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstreaminit write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstreaminit write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamMyInteractionFailstreaminit) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *streamMyInteractionFailstreaminit) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *streamMyInteractionFailstreaminit) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("streamMyInteractionFailstreaminit"); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstreaminit write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstreaminit write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstreaminit write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamMyInteractionFailstreaminit) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstreaminit read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("streamMyInteractionFailstreaminit field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("streamMyInteractionFailstreaminit read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *streamMyInteractionFailstreaminit) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *streamMyInteractionFailstreaminit) setDefaults() *streamMyInteractionFailstreaminit {
+    return x
+}
+
 type reqMyInteractionEncode struct {
 }
 // Compile time interface enforcer

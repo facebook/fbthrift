@@ -42,6 +42,12 @@ public class MyServiceReactiveClient
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _truthify_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _truthify_STREAM_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _failstream_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _failstream_STREAM_EXCEPTION_READERS_INT = new HashMap<>();
+  private static final com.facebook.thrift.payload.Reader _failstream_STREAM_EXCEPTION_READER_INT0 = Readers.wrap(test.fixtures.interactions.CustomException.asReader());
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _failstreaminit_EXCEPTION_READERS_INT = new HashMap<>();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _failstreaminit_STREAM_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
+  private static final com.facebook.thrift.payload.Reader _failstreaminit_EXCEPTION_READER_INT0 = Readers.wrap(test.fixtures.interactions.CustomException.asReader());
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _truthify_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
@@ -49,6 +55,9 @@ public class MyServiceReactiveClient
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
 
   static {
+    _frobnicate_EXCEPTION_READERS_INT.put((short)1, _frobnicate_EXCEPTION_READER_INT0);
+    _failstream_STREAM_EXCEPTION_READERS_INT.put((short)1, _failstream_STREAM_EXCEPTION_READER_INT0);
+    _failstreaminit_EXCEPTION_READERS_INT.put((short)1, _failstreaminit_EXCEPTION_READER_INT0);
   }
 
   public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, RpcClientBinding _clientBinding) {
@@ -500,6 +509,142 @@ public class MyServiceReactiveClient
     @java.lang.Override
     public reactor.core.publisher.Flux<Boolean> truthify() {
       return truthify( com.facebook.thrift.client.RpcOptions.EMPTY);
+    }
+
+    private com.facebook.thrift.payload.Writer _createfailstreamWriter() {
+      return oprot -> {
+        try {
+
+        } catch (Throwable _e) {
+          com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
+          throw reactor.core.Exceptions.propagate(_e);
+        }
+      };
+    }
+
+    private final com.facebook.thrift.payload.Reader _failstream_READER = Readers.i32Reader();
+
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<Integer>> failstreamWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return _clientBinding.acquire()
+        .contextWrite(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
+        .flatMapMany(_rpc -> getHeaders(rpcOptions).flatMapMany(headers -> {
+          String interactionName = "MyInteraction.failstream";
+          org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
+                  .setName(interactionName)
+                  .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
+                  .setOtherMetadata(headers)
+                  .setProtocol(_protocolId);
+
+          if (_activeInteractions.contains(interactionId)) {
+            _metadataBuilder.setInteractionId(interactionId);
+          } else {
+            _metadataBuilder.setInteractionCreate(
+              new InteractionCreate.Builder()
+                  .setInteractionId(interactionId)
+                  .setInteractionName("MyInteraction")
+                  .build());
+            _metadataBuilder.setInteractionId(0L);
+            _activeInteractions.add(interactionId);
+          }
+
+
+          com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
+              com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "MyInteraction",
+                  _createfailstreamWriter(),
+                  _failstream_READER,
+                  _failstream_EXCEPTION_READERS_INT,
+                  _failstream_STREAM_EXCEPTION_READERS_INT,
+                  _metadataBuilder.build(),
+                  java.util.Collections.emptyMap());
+
+          return _rpc
+              .singleRequestStreamingResponse(_crp, rpcOptions)
+              .transform(com.facebook.thrift.util.FluxPublishingTransformer.getInstance())
+              .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
+              .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
+              .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
+        }));
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Integer> failstream( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+        return failstreamWrapper( rpcOptions).map(_p -> _p.getData());
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Integer> failstream() {
+      return failstream( com.facebook.thrift.client.RpcOptions.EMPTY);
+    }
+
+    private com.facebook.thrift.payload.Writer _createfailstreaminitWriter() {
+      return oprot -> {
+        try {
+
+        } catch (Throwable _e) {
+          com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
+          throw reactor.core.Exceptions.propagate(_e);
+        }
+      };
+    }
+
+    private final com.facebook.thrift.payload.Reader _failstreaminit_READER = Readers.i32Reader();
+
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<Integer>> failstreaminitWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return _clientBinding.acquire()
+        .contextWrite(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
+        .flatMapMany(_rpc -> getHeaders(rpcOptions).flatMapMany(headers -> {
+          String interactionName = "MyInteraction.failstreaminit";
+          org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
+                  .setName(interactionName)
+                  .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
+                  .setOtherMetadata(headers)
+                  .setProtocol(_protocolId);
+
+          if (_activeInteractions.contains(interactionId)) {
+            _metadataBuilder.setInteractionId(interactionId);
+          } else {
+            _metadataBuilder.setInteractionCreate(
+              new InteractionCreate.Builder()
+                  .setInteractionId(interactionId)
+                  .setInteractionName("MyInteraction")
+                  .build());
+            _metadataBuilder.setInteractionId(0L);
+            _activeInteractions.add(interactionId);
+          }
+
+
+          com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
+              com.facebook.thrift.payload.ClientRequestPayload.create(
+                  "MyInteraction",
+                  _createfailstreaminitWriter(),
+                  _failstreaminit_READER,
+                  _failstreaminit_EXCEPTION_READERS_INT,
+                  _failstreaminit_STREAM_EXCEPTION_READERS_INT,
+                  _metadataBuilder.build(),
+                  java.util.Collections.emptyMap());
+
+          return _rpc
+              .singleRequestStreamingResponse(_crp, rpcOptions)
+              .transform(com.facebook.thrift.util.FluxPublishingTransformer.getInstance())
+              .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
+              .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
+              .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
+        }));
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Integer> failstreaminit( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+        return failstreaminitWrapper( rpcOptions).map(_p -> _p.getData());
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Integer> failstreaminit() {
+      return failstreaminit( com.facebook.thrift.client.RpcOptions.EMPTY);
     }
 
     @java.lang.Override

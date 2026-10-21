@@ -320,6 +320,26 @@ public interface Factories extends java.io.Closeable, com.facebook.thrift.util.B
                 throw new UnsupportedOperationException();
             }
 
+            reactor.core.publisher.Flux<Integer> failstream();
+
+            default reactor.core.publisher.Flux<Integer> failstream(RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
+
+            default reactor.core.publisher.Flux<ResponseWrapper<Integer>> failstreamWrapper(RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
+
+            reactor.core.publisher.Flux<Integer> failstreaminit();
+
+            default reactor.core.publisher.Flux<Integer> failstreaminit(RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
+
+            default reactor.core.publisher.Flux<ResponseWrapper<Integer>> failstreaminitWrapper(RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
+
             @java.lang.Override
             void dispose();
         }

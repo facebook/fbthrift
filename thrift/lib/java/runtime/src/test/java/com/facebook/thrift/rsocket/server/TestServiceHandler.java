@@ -16,6 +16,8 @@
 
 package com.facebook.thrift.rsocket.server;
 
+import com.facebook.thrift.client.ResponseWrapper;
+import com.facebook.thrift.client.RpcOptions;
 import com.facebook.thrift.model.StreamResponse;
 import com.facebook.thrift.test.rocket.InitialTestResponse;
 import com.facebook.thrift.test.rocket.TestAnnotatedMessageException;
@@ -219,6 +221,40 @@ public class TestServiceHandler implements TestService.Reactive {
   public Flux<StreamResponse<InitialTestResponse, TestResponse>>
       streamInitialResponseInvalidFirstResponse(TestRequest testRequest) {
     return Flux.just(createInvalidFirstResponse());
+  }
+
+  @Override
+  public TestSession createTestSession() {
+    return new TestSession() {
+      @Override
+      public Mono<TestResponse> interactionUnaryDeclaredException() {
+        return Mono.error(new TestException("exc"));
+      }
+
+      @Override
+      public Mono<TestResponse> interactionUnaryDeclaredException(RpcOptions rpcOptions) {
+        return interactionUnaryDeclaredException();
+      }
+
+      @Override
+      public Mono<ResponseWrapper<TestResponse>> interactionUnaryDeclaredExceptionWrapper(
+          RpcOptions rpcOptions) {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public Flux<TestResponse> streamDeclaredException() {
+        return Flux.error(new TestException("exc"));
+      }
+
+      @Override
+      public Flux<TestResponse> streamInitDeclaredException() {
+        return Flux.error(new TestException("exc"));
+      }
+
+      @Override
+      public void dispose() {}
+    };
   }
 
   @SuppressWarnings("unchecked")

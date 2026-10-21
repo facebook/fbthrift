@@ -123,6 +123,13 @@ public class {{service.javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     {{/each}}{{#each (array.enumerate func.sink.final_response_exceptions) as |i field|}}
     _{{func.java_name}}_STREAM_EXCEPTION_READERS.put((short){{field.id}}, _{{func.java_name}}_STREAM_EXCEPTION_READER{{i}});
     {{/each}}{{/each}}
+    {{#each service.interactions as |interaction|}}{{#each interaction.single_request_functions as |func|}}{{#each (array.enumerate func.exceptions) as |i field|}}
+    _{{func.java_name}}_EXCEPTION_READERS_INT.put((short){{field.id}}, _{{func.java_name}}_EXCEPTION_READER_INT{{i}});
+    {{/each}}{{/each}}{{#each interaction.streaming_functions as |func|}}{{#each (array.enumerate func.exceptions) as |i field|}}
+    _{{func.java_name}}_EXCEPTION_READERS_INT.put((short){{field.id}}, _{{func.java_name}}_EXCEPTION_READER_INT{{i}});
+    {{/each}}{{#each (array.enumerate func.stream.exceptions) as |i field|}}
+    _{{func.java_name}}_STREAM_EXCEPTION_READERS_INT.put((short){{field.id}}, _{{func.java_name}}_STREAM_EXCEPTION_READER_INT{{i}});
+    {{/each}}{{/each}}{{/each}}
   }
 
   public {{service.javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, RpcClientBinding _clientBinding) {

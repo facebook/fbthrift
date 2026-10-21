@@ -345,12 +345,12 @@ unsigned long ShouldBeBoxed::read(Protocol_* iprot) {
 namespace apache::thrift::detail {
 template <> struct TSchemaAssociation<::cpp2::CustomException, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5332076339143014214;
-  static constexpr ::std::string_view definitionKey = {"\x6d\xf7\xf7\x52\xf1\x0e\xc6\x2d\x16\x2a\x96\xfd\x3a\x52\xfd\xc8", 16};
+  static constexpr int64_t programId = 4972072090844118219;
+  static constexpr ::std::string_view definitionKey = {"\xc0\xde\x90\xf9\x4d\xe5\xe5\x60\xb0\x9c\x28\x60\x6b\xf4\x05\x0a", 16};
 };
 template <> struct TSchemaAssociation<::cpp2::ShouldBeBoxed, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5332076339143014214;
-  static constexpr ::std::string_view definitionKey = {"\x5f\xd2\x52\xff\x8c\x5f\x08\x5c\xce\x10\xe8\x7b\x23\xbf\x3d\xbf", 16};
+  static constexpr int64_t programId = 4972072090844118219;
+  static constexpr ::std::string_view definitionKey = {"\x93\x9b\x02\xd7\xdd\xd5\x8e\x92\xff\x3c\x52\x13\xb9\xba\x6f\x9e", 16};
 };
 } // namespace apache::thrift::detail

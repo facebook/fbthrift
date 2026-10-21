@@ -124,6 +124,8 @@ cdef extern from "thrift/compiler/test/fixtures/interactions/gen-py3/module/clie
     cFollyFuture[cint32_t] frobnicate(cRpcOptions, )
     cFollyFuture[cFollyUnit] ping(cRpcOptions, )
     cFollyFuture[cClientBufferedStream[cbool]] truthify(cRpcOptions, )
+    cFollyFuture[cClientBufferedStream[cint32_t]] failstream(cRpcOptions, )
+    cFollyFuture[cClientBufferedStream[cint32_t]] failstreaminit(cRpcOptions, )
 
   cdef cppclass cMyServiceClientWrapper_MyInteractionFastInteractionWrapper "::cpp2::MyServiceClientWrapper::MyInteractionFastInteractionWrapper"(cClientWrapper):
     void setPersistentHeader(const string& key, const string& value)
@@ -167,6 +169,8 @@ cdef extern from "thrift/compiler/test/fixtures/interactions/gen-py3/module/clie
     cFollyFuture[cint32_t] frobnicate(cRpcOptions, )
     cFollyFuture[cFollyUnit] ping(cRpcOptions, )
     cFollyFuture[cClientBufferedStream[cbool]] truthify(cRpcOptions, )
+    cFollyFuture[cClientBufferedStream[cint32_t]] failstream(cRpcOptions, )
+    cFollyFuture[cClientBufferedStream[cint32_t]] failstreaminit(cRpcOptions, )
 
   cdef cppclass cPerformClientWrapper_MyInteractionFastInteractionWrapper "::cpp2::PerformClientWrapper::MyInteractionFastInteractionWrapper"(cClientWrapper):
     void setPersistentHeader(const string& key, const string& value)
@@ -198,6 +202,8 @@ cdef extern from "thrift/compiler/test/fixtures/interactions/gen-py3/module/clie
     cFollyFuture[cint32_t] frobnicate(cRpcOptions, )
     cFollyFuture[cFollyUnit] ping(cRpcOptions, )
     cFollyFuture[cClientBufferedStream[cbool]] truthify(cRpcOptions, )
+    cFollyFuture[cClientBufferedStream[cint32_t]] failstream(cRpcOptions, )
+    cFollyFuture[cClientBufferedStream[cint32_t]] failstreaminit(cRpcOptions, )
 
   cdef cppclass cInteractWithSharedClientWrapper_SharedInteractionInteractionWrapper "::cpp2::InteractWithSharedClientWrapper::SharedInteractionInteractionWrapper"(cClientWrapper):
     void setPersistentHeader(const string& key, const string& value)

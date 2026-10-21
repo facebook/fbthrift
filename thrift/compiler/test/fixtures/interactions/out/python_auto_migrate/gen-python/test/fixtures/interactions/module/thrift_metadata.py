@@ -146,6 +146,16 @@ def _fbthrift_gen_metadata_service_MyService_MyInteraction(metadata_struct: _fbt
         ], exceptions = [
         ], is_oneway=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftFunction(name="failstream", return_type=_fbthrift_metadata.ThriftType(t_stream=_fbthrift_metadata.ThriftStreamType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), arguments=[
+        ], exceptions = [
+        ], is_oneway=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftFunction(name="failstreaminit", return_type=_fbthrift_metadata.ThriftType(t_stream=_fbthrift_metadata.ThriftStreamType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), arguments=[
+        ], exceptions = [
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.CustomException")), name="boom", is_optional=False, structured_annotations=[
+            ]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="encode", return_type=_fbthrift_metadata.ThriftType(t_sink=_fbthrift_metadata.ThriftSinkType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),finalResponseType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE),initialResponseType=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))))), arguments=[
         ], exceptions = [
         ], is_oneway=False, structured_annotations=[
@@ -169,6 +179,19 @@ def _fbthrift_gen_metadata_service_MyService_MyInteraction(metadata_struct: _fbt
 
 
 
+
+     # elem
+     # response  # return value
+
+
+
+
+     # elem
+     # response  # return value
+
+
+
+    new_struct = _fbthrift_gen_metadata_exception_CustomException(new_struct) # boom
 
      # elem
      # response  # return value
@@ -358,6 +381,16 @@ def _fbthrift_gen_metadata_service_Factories_MyInteraction(metadata_struct: _fbt
         ], exceptions = [
         ], is_oneway=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftFunction(name="failstream", return_type=_fbthrift_metadata.ThriftType(t_stream=_fbthrift_metadata.ThriftStreamType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), arguments=[
+        ], exceptions = [
+        ], is_oneway=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftFunction(name="failstreaminit", return_type=_fbthrift_metadata.ThriftType(t_stream=_fbthrift_metadata.ThriftStreamType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), arguments=[
+        ], exceptions = [
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.CustomException")), name="boom", is_optional=False, structured_annotations=[
+            ]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="encode", return_type=_fbthrift_metadata.ThriftType(t_sink=_fbthrift_metadata.ThriftSinkType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),finalResponseType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE),initialResponseType=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))))), arguments=[
         ], exceptions = [
         ], is_oneway=False, structured_annotations=[
@@ -381,6 +414,19 @@ def _fbthrift_gen_metadata_service_Factories_MyInteraction(metadata_struct: _fbt
 
 
 
+
+     # elem
+     # response  # return value
+
+
+
+
+     # elem
+     # response  # return value
+
+
+
+    new_struct = _fbthrift_gen_metadata_exception_CustomException(new_struct) # boom
 
      # elem
      # response  # return value
@@ -539,6 +585,16 @@ def _fbthrift_gen_metadata_service_Perform_MyInteraction(metadata_struct: _fbthr
         ], exceptions = [
         ], is_oneway=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftFunction(name="failstream", return_type=_fbthrift_metadata.ThriftType(t_stream=_fbthrift_metadata.ThriftStreamType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), arguments=[
+        ], exceptions = [
+        ], is_oneway=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftFunction(name="failstreaminit", return_type=_fbthrift_metadata.ThriftType(t_stream=_fbthrift_metadata.ThriftStreamType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), arguments=[
+        ], exceptions = [
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.CustomException")), name="boom", is_optional=False, structured_annotations=[
+            ]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="encode", return_type=_fbthrift_metadata.ThriftType(t_sink=_fbthrift_metadata.ThriftSinkType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),finalResponseType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE),initialResponseType=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))))), arguments=[
         ], exceptions = [
         ], is_oneway=False, structured_annotations=[
@@ -562,6 +618,19 @@ def _fbthrift_gen_metadata_service_Perform_MyInteraction(metadata_struct: _fbthr
 
 
 
+
+     # elem
+     # response  # return value
+
+
+
+
+     # elem
+     # response  # return value
+
+
+
+    new_struct = _fbthrift_gen_metadata_exception_CustomException(new_struct) # boom
 
      # elem
      # response  # return value
@@ -720,6 +789,16 @@ def _fbthrift_gen_metadata_service_InteractWithShared_MyInteraction(metadata_str
         ], exceptions = [
         ], is_oneway=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftFunction(name="failstream", return_type=_fbthrift_metadata.ThriftType(t_stream=_fbthrift_metadata.ThriftStreamType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), arguments=[
+        ], exceptions = [
+        ], is_oneway=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftFunction(name="failstreaminit", return_type=_fbthrift_metadata.ThriftType(t_stream=_fbthrift_metadata.ThriftStreamType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), arguments=[
+        ], exceptions = [
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.CustomException")), name="boom", is_optional=False, structured_annotations=[
+            ]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="encode", return_type=_fbthrift_metadata.ThriftType(t_sink=_fbthrift_metadata.ThriftSinkType(elemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),finalResponseType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE),initialResponseType=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))))), arguments=[
         ], exceptions = [
         ], is_oneway=False, structured_annotations=[
@@ -743,6 +822,19 @@ def _fbthrift_gen_metadata_service_InteractWithShared_MyInteraction(metadata_str
 
 
 
+
+     # elem
+     # response  # return value
+
+
+
+
+     # elem
+     # response  # return value
+
+
+
+    new_struct = _fbthrift_gen_metadata_exception_CustomException(new_struct) # boom
 
      # elem
      # response  # return value

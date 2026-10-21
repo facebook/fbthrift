@@ -64,7 +64,14 @@ transient server exception TestServerException {
   1: string msg;
 }
 
+interaction TestSession {
+  stream<TestResponse throws (21: TestException e)> streamDeclaredException();
+  TestResponse interactionUnaryDeclaredException() throws (22: TestException e);
+  stream<TestResponse> streamInitDeclaredException() throws (23: TestException e);
+}
+
 service TestService {
+  performs TestSession;
   void requestResponseVoid(1: TestRequest request);
   TestResponse requestResponse(1: TestRequest request);
 

@@ -122,6 +122,16 @@ public class InteractWithSharedBlockingReactiveWrapper
         }
 
         @java.lang.Override
+        public reactor.core.publisher.Flux<Integer> failstream() {
+            throw new UnsupportedOperationException();
+        }
+
+        @java.lang.Override
+        public reactor.core.publisher.Flux<Integer> failstreaminit() {
+            throw new UnsupportedOperationException();
+        }
+
+        @java.lang.Override
         public void dispose() {}
     }
 

@@ -80,7 +80,9 @@ cdef class ClientBufferedStream__bool(ClientBufferedStream):
         cdef __cOptional[cbool] opt_val
         cdef cbool _value
         stream, pyfuture, rpc_options = <object> userdata
-        if result.hasException():
+        if result.hasException[_test_fixtures_interactions_module_cbindings.cCustomException]():
+            pyfuture.set_exception(CustomException.from_python(_test_fixtures_interactions_module_thrift_converter.CustomException_from_cpp(thrift.py3.exceptions.unwrap_exception[_test_fixtures_interactions_module_cbindings.cCustomException](result.exception()))))
+        elif result.hasException():
             pyfuture.set_exception(
                 thrift.python.exceptions.create_py_exception(result.exception(), <__RpcOptions>rpc_options)
             )
@@ -128,7 +130,9 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
         cdef __cOptional[cint32_t] opt_val
         cdef cint32_t _value
         stream, pyfuture, rpc_options = <object> userdata
-        if result.hasException():
+        if result.hasException[_test_fixtures_interactions_module_cbindings.cCustomException]():
+            pyfuture.set_exception(CustomException.from_python(_test_fixtures_interactions_module_thrift_converter.CustomException_from_cpp(thrift.py3.exceptions.unwrap_exception[_test_fixtures_interactions_module_cbindings.cCustomException](result.exception()))))
+        elif result.hasException():
             pyfuture.set_exception(
                 thrift.python.exceptions.create_py_exception(result.exception(), <__RpcOptions>rpc_options)
             )

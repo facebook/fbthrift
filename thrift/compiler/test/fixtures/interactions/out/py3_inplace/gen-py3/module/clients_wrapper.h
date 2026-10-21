@@ -74,6 +74,10 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
           apache::thrift::RpcOptions& rpcOptions);
         folly::Future<apache::thrift::ClientBufferedStream<bool>> truthify(
           apache::thrift::RpcOptions& rpcOptions);
+        folly::Future<apache::thrift::ClientBufferedStream<int32_t>> failstream(
+          apache::thrift::RpcOptions& rpcOptions);
+        folly::Future<apache::thrift::ClientBufferedStream<int32_t>> failstreaminit(
+          apache::thrift::RpcOptions& rpcOptions);
     };
 
     class MyInteractionFastInteractionWrapper : public ClientWrapper {
@@ -143,6 +147,10 @@ class PerformClientWrapper : public ::thrift::py3::ClientWrapper {
           apache::thrift::RpcOptions& rpcOptions);
         folly::Future<apache::thrift::ClientBufferedStream<bool>> truthify(
           apache::thrift::RpcOptions& rpcOptions);
+        folly::Future<apache::thrift::ClientBufferedStream<int32_t>> failstream(
+          apache::thrift::RpcOptions& rpcOptions);
+        folly::Future<apache::thrift::ClientBufferedStream<int32_t>> failstreaminit(
+          apache::thrift::RpcOptions& rpcOptions);
     };
 
     class MyInteractionFastInteractionWrapper : public ClientWrapper {
@@ -195,6 +203,10 @@ class InteractWithSharedClientWrapper : public ::thrift::py3::ClientWrapper {
         folly::Future<folly::Unit> ping(
           apache::thrift::RpcOptions& rpcOptions);
         folly::Future<apache::thrift::ClientBufferedStream<bool>> truthify(
+          apache::thrift::RpcOptions& rpcOptions);
+        folly::Future<apache::thrift::ClientBufferedStream<int32_t>> failstream(
+          apache::thrift::RpcOptions& rpcOptions);
+        folly::Future<apache::thrift::ClientBufferedStream<int32_t>> failstreaminit(
           apache::thrift::RpcOptions& rpcOptions);
     };
 

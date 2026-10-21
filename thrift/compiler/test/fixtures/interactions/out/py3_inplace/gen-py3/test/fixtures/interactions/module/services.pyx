@@ -258,6 +258,22 @@ cdef class Promise_cServerStream__cbool:
         return inst
 
 @cython.auto_pickle(False)
+cdef class Promise_cServerStream__cint32_t:
+    cdef cFollyPromise[cServerStream[cint32_t]]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cServerStream[cint32_t]](cFollyPromise[cServerStream[cint32_t]].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
+
+    @staticmethod
+    cdef _fbthrift_create(cFollyPromise[cServerStream[cint32_t]] cPromise):
+        cdef Promise_cServerStream__cint32_t inst = Promise_cServerStream__cint32_t.__new__(Promise_cServerStream__cint32_t)
+        inst.cPromise[0] = cmove(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
 cdef class Promise_cint32_t:
     cdef cFollyPromise[cint32_t]* cPromise
 
