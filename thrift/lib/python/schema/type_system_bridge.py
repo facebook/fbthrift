@@ -53,11 +53,7 @@ from collections.abc import Mapping, Sequence
 from typing import Protocol
 
 from apache.thrift.protocol.detail.protocol_detail.thrift_types import Value
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema import syntax_graph as _ast
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._record import (
     BoolRecord,
     ByteArrayRecord,
@@ -74,8 +70,6 @@ from thrift.lib.python.schema._record import (
     SetRecord,
     TextRecord,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.type_system import (
     _type_ref_for_node,
     DefinitionNode,
@@ -297,7 +291,6 @@ def _record_from_annotation_value(ast_ref: object, value: object) -> Serializabl
     """Convert a decoded annotation value to a ``SerializableRecord``,
     type-directed by the (typedef-erased) AST type."""
     assert isinstance(ast_ref, _ast.TypeRef)
-    # pyrefly: ignore [missing-attribute]
     true_ref = ast_ref.true_type  # typedef erasure
     if isinstance(true_ref, _ast.PrimitiveTypeRef):
         return _primitive_record(true_ref.primitive, value)
@@ -518,7 +511,6 @@ class SyntaxGraphBridge(TypeSystem):
         referenced_by: str | None = None,
     ) -> TypeRef:
         assert isinstance(ast_ref, _ast.TypeRef)
-        # pyrefly: ignore [missing-attribute]
         true_ref = ast_ref.true_type  # typedef erasure happens here
 
         if isinstance(true_ref, _ast.PrimitiveTypeRef):

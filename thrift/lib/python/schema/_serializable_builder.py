@@ -28,15 +28,11 @@ from apache.thrift.type_system.type_system.thrift_types import (
     SerializableTypeDefinitionEntry,
     SerializableTypeSystem,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._serializable import (
     annotations_from_wire,
     from_wire_record,
     resolve_type_id,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.type_system import (
     DefinitionNode,
     EnumerableTypeSystem,
@@ -53,8 +49,6 @@ from thrift.lib.python.schema.type_system import (
     TypeSystem,
     UnionNode,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.type_system_builder import (
     _is_user_defined,
     _validate_enum_values,

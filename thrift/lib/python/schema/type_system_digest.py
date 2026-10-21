@@ -66,15 +66,11 @@ from apache.thrift.type_system.type_system.thrift_types import (
     SerializableTypeSystem,
     SerializableUnionDefinition,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._digest_common import (
     _Hasher,
     DigestMode,
     TYPE_SYSTEM_DIGEST_VERSION,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.type_system import InvalidTypeError
 
 

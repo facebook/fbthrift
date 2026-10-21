@@ -41,8 +41,6 @@ from thrift.lib.python.schema._serializable import (
 from thrift.lib.python.schema._serializable_builder import (
     from_serializable as type_system_from_serializable,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.service_descriptor import (
     DeclaredException,
     Function,

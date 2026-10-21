@@ -34,15 +34,12 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import assert_never
 
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._digest_common import (
     _Hasher,
     DigestMode,
     is_standard_annotation,
     TYPE_SYSTEM_DIGEST_VERSION,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._record import (
     BoolRecord,
     ByteArrayRecord,
@@ -60,8 +57,6 @@ from thrift.lib.python.schema._record import (
     SetRecord,
     TextRecord,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.type_system import (
     DefinitionNode,
     EnumNode,

@@ -24,8 +24,6 @@ from typing import Any
 from apache.thrift.type.schema.thrift_types import ErrorBlame, ErrorKind, ErrorSafety
 from thrift.lib.python.schema import syntax_graph as _ast
 from thrift.lib.python.schema._record import SerializableRecord
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.schema_registry import SchemaRegistry
 from thrift.lib.python.schema.type_system import (
     FieldDefinition,

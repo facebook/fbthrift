@@ -77,11 +77,7 @@ from apache.thrift.type_system.type_system.thrift_types import (
     SerializableUnionDefinition,
 )
 from folly.iobuf import IOBuf
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._digest_common import is_standard_annotation
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._record import (
     BoolRecord,
     ByteArrayRecord,
@@ -98,8 +94,6 @@ from thrift.lib.python.schema._record import (
     SetRecord,
     TextRecord,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.type_system import (
     _collect_closure,
     _index_by_source,

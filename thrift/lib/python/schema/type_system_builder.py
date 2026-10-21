@@ -40,7 +40,6 @@ from collections.abc import Iterator, Mapping
 from types import MappingProxyType
 from typing import assert_never, Sequence
 
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.type_system import (
     _collect_closure,
     _index_by_source,

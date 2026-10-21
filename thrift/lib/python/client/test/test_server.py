@@ -21,7 +21,6 @@ import tempfile
 import typing
 from multiprocessing import Event, Process, synchronize
 
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.client.test.http2_helper import install_http2_routing_handler
 from thrift.py3.server import get_context, SocketAddress
 from thrift.python.leaf.thrift_services import LeafServiceInterface
@@ -173,7 +172,6 @@ def server_in_another_process() -> typing.Generator[str, None, None]:
 async def _server_in_event_loop(
     handler: TestServiceInterface,
 ) -> typing.AsyncGenerator[SocketAddress, None]:
-    # pyrefly: ignore [bad-specialization]
     server = ThriftServer(handler, ip="::1")
     install_http2_routing_handler(server)
     serve_task = asyncio.get_running_loop().create_task(server.serve())

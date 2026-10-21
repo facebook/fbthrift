@@ -27,8 +27,6 @@ from apache.thrift.syntax_graph.syntax_graph.thrift_types import Primitive
 from apache.thrift.type.schema import thrift_types as _schema_types
 from apache.thrift.type.standard import thrift_types as _standard_types
 from apache.thrift.type.type_rep import thrift_types as _type_rep_types
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.syntax_graph import (
     _Lazy,
     _Resolver,

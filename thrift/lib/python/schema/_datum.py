@@ -35,11 +35,7 @@ from collections.abc import Sequence
 from typing import Final, Literal, NoReturn, TypeVar
 
 from apache.thrift.type.any_rep.thrift_types import AnyStruct
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._errors import EncodeError
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._record import (
     BoolRecord,
     ByteArrayRecord,
@@ -56,8 +52,6 @@ from thrift.lib.python.schema._record import (
     SetRecord,
     TextRecord,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._value_checks import (
     check_binary,
     check_bool,
@@ -67,8 +61,6 @@ from thrift.lib.python.schema._value_checks import (
     check_string,
     int_in_range,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.type_system import (
     EnumTypeRef,
     FieldDefinition,

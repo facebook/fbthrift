@@ -39,8 +39,6 @@ from thrift.lib.python.schema.runtime_digest import (
     _hash_type_id_native,
     runtime_type_system_digest,
 )
-
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema.service_descriptor import (
     DeclaredException,
     Function,

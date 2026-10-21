@@ -42,7 +42,6 @@ from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
 from types import MappingProxyType
 from typing import assert_never, Generic, TypeVar
 
-# pyrefly: ignore [missing-import]
 from thrift.lib.python.schema._record import SerializableRecord
 
 

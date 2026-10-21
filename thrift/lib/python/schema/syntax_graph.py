@@ -1246,7 +1246,6 @@ class SyntaxGraph:
         schema: _schema_types.Schema, *, validate: bool = True
     ) -> SyntaxGraph:
         """Build from a deserialized Schema object."""
-        # pyrefly: ignore [missing-import]
         from thrift.lib.python.schema.syntax_graph_builder import _GraphBuilder
 
         return _GraphBuilder(
