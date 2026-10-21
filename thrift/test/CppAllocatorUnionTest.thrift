@@ -154,8 +154,10 @@ struct HasUnionPmr {
   items = {"cpp.allocator": "PmrByteAlloc"},
 }
 struct RefChildPmr {
+  // @lint-ignore THRIFTCHECKS thrift-parser
   @cpp.Ref{type = cpp.RefType.SharedMutable}
-  1: optional UPmrString s;
+  @cpp.AllowLegacyNonOptionalRef
+  1: UPmrString s;
 }
 @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
 typedef RefChildPmr RefChildPmrAA

@@ -2753,6 +2753,28 @@ void forbid_allocator_ignoring_ref_fields(
   }
 }
 
+// The constructors of a `cpp.allocator` struct build a value for every
+// reference field, so an optional one starts out set, unlike in a struct
+// without `cpp.allocator`.
+void forbid_optional_ref_fields_on_allocator_aware(
+    sema_context& ctx, const t_field& field) {
+  const auto& parent = dynamic_cast<const t_structured&>(*ctx.parent());
+  const auto ref = gen::cpp::find_ref_type(field);
+  const bool ref_not_boxed = ref == gen::cpp::reference_type::unique ||
+      ref == gen::cpp::reference_type::shared_const ||
+      ref == gen::cpp::reference_type::shared_mutable;
+  if (ref_not_boxed && field.qualifier() == t_field_qualifier::optional &&
+      parent.has_unstructured_annotation("cpp.allocator")) {
+    ctx.report(
+        field,
+        diagnostic_level::error,
+        "Optional reference field `{}` of `cpp.allocator` type `{}` is not "
+        "supported.",
+        field.name(),
+        parent.name());
+  }
+}
+
 // The allocator-extended copy and move constructors carry over the fields and
 // __isset and nothing else. The lazy deserialization state is only handled by
 // the constructors that take no allocator, so a lazy field reads back empty
@@ -2862,6 +2884,7 @@ void t_mstch_cpp2_generator::fill_validator_visitors(
   validator.add_union_visitor(forbid_allocator_via_on_union);
   validator.add_union_visitor(forbid_allocator_on_union);
   validator.add_field_visitor(forbid_allocator_ignoring_ref_fields);
+  validator.add_field_visitor(forbid_optional_ref_fields_on_allocator_aware);
   validator.add_structured_definition_visitor(
       validate_alloc_ctor_custom_defaults);
   validator.add_program_visitor(validate_splits(

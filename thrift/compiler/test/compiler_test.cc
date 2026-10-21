@@ -3196,6 +3196,45 @@ TEST(CompilerTest, cpp_deprecated_terse_write_ref) {
   )");
 }
 
+TEST(CompilerTest, cpp_allocator_optional_ref) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/cpp.thrift"
+    include "thrift/annotation/thrift.thrift"
+
+    struct Child {}
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    struct Bad {
+      @cpp.Ref{type = cpp.RefType.SharedMutable}
+      1: optional Child shared;
+        # expected-error@-2: Optional reference field `shared` of `cpp.allocator` type `Bad` is not supported.
+      @cpp.Ref{type = cpp.RefType.Shared}
+      2: optional Child shared_const;
+        # expected-error@-2: Optional reference field `shared_const` of `cpp.allocator` type `Bad` is not supported.
+    }
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    struct Good {
+      @cpp.Ref{type = cpp.RefType.SharedMutable}
+      @cpp.AllowLegacyNonOptionalRef
+      1: Child non_optional;
+        # expected-warning@-3: Field with @cpp.Ref annotation should be optional: `non_optional` (in `Good`).
+      @thrift.Box
+      2: optional Child boxed;
+    }
+
+    struct NoAllocator {
+      @cpp.Ref{type = cpp.RefType.SharedMutable}
+      1: optional Child shared;
+    }
+  )");
+}
+
 TEST(CompilerTest, cpp_allocator_on_union) {
   check_compile(R"(
     package "facebook.com/thrift/test"
@@ -3265,24 +3304,29 @@ TEST(CompilerTest, cpp_use_allocator_ref_fields) {
       1: optional AAString unique;
         # expected-warning@-2: @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `unique`.
         # expected-error@-3: Reference field `unique` of `cpp.allocator` type `Struct` doesn't support `cpp.use_allocator`.
+        # expected-error@-4: Optional reference field `unique` of `cpp.allocator` type `Struct` is not supported.
       @cpp.Ref{type = cpp.RefType.Unique}
       @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
       2: optional string field_annotated_unique;
         # expected-warning@-3: @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field_annotated_unique`.
         # expected-error@-4: Reference field `field_annotated_unique` of `cpp.allocator` type `Struct` doesn't support `cpp.use_allocator`.
+        # expected-error@-5: Optional reference field `field_annotated_unique` of `cpp.allocator` type `Struct` is not supported.
       @thrift.InternBox
       3: AAInner intern_boxed;
         # expected-error@-2: Reference field `intern_boxed` of `cpp.allocator` type `Struct` doesn't support `cpp.use_allocator`.
       @cpp.Ref{type = cpp.RefType.Shared}
       4: optional AAString shared;
+        # expected-error@-2: Optional reference field `shared` of `cpp.allocator` type `Struct` is not supported.
       @cpp.Ref{type = cpp.RefType.SharedMutable}
       5: optional AAString shared_mutable;
+        # expected-error@-2: Optional reference field `shared_mutable` of `cpp.allocator` type `Struct` is not supported.
       @thrift.Box
       6: optional AAString boxed;
         # expected-error@-2: Reference field `boxed` of `cpp.allocator` type `Struct` doesn't support `cpp.use_allocator`.
       @cpp.Ref{type = cpp.RefType.Unique}
       7: optional string heap_unique;
         # expected-warning@-2: @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `heap_unique`.
+        # expected-error@-3: Optional reference field `heap_unique` of `cpp.allocator` type `Struct` is not supported.
     }
 
     @thrift.DeprecatedUnvalidatedAnnotations{

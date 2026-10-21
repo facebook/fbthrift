@@ -245,11 +245,15 @@ struct HasContainerFieldsPmr {
   items = {"cpp.allocator": "PmrByteAlloc"},
 }
 struct OptionalRefPmr {
+  // @lint-ignore THRIFTCHECKS thrift-parser
   @cpp.Ref{type = cpp.RefType.SharedMutable}
-  1: optional ChildPmr_7470 c;
+  @cpp.AllowLegacyNonOptionalRef
+  1: ChildPmr_7470 c;
   2: list_ChildPmr_9632 l;
+  // @lint-ignore THRIFTCHECKS thrift-parser
   @cpp.Ref{type = cpp.RefType.SharedMutable}
-  3: optional ChildPmr s;
+  @cpp.AllowLegacyNonOptionalRef
+  3: ChildPmr s;
 }
 
 @thrift.DeprecatedUnvalidatedAnnotations{
@@ -600,6 +604,8 @@ struct CopyPropagatingParent {
   @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
   @cpp.Type{name = "::CopyPropagatingString"}
   1: string s;
+  // @lint-ignore THRIFTCHECKS thrift-parser
   @cpp.Ref{type = cpp.RefType.SharedMutable}
-  2: optional CopyPropagatingChildAA c;
+  @cpp.AllowLegacyNonOptionalRef
+  2: CopyPropagatingChildAA c;
 }
