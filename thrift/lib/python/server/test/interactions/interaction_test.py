@@ -162,6 +162,13 @@ class CalculatorInteractionTest(unittest.IsolatedAsyncioTestCase):
                     await c.add(4)
                     self.assertEqual(await c.get(), 7)
 
+    async def test_reqresp_carries_persistent_headers(self) -> None:
+        async with _InProcessServer(CalculatorHandler()) as addr:
+            async with await self._client(addr) as calc:
+                calc.set_persistent_header("x-test", "value")
+                async with calc.createCounter() as c:
+                    self.assertEqual(await c.readHeader("x-test"), "value")
+
     async def test_reqresp_struct(self) -> None:
         async with _InProcessServer(CalculatorHandler()) as addr:
             async with await self._client(addr) as calc:

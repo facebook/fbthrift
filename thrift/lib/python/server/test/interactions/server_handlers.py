@@ -39,6 +39,7 @@ from calculator.thrift_services import (
     SinkOnlyInterface,
 )
 from calculator.thrift_types import CounterSnapshot, NegativeError, Point
+from thrift.py3.server import get_context
 from thrift.python.exceptions import ApplicationError, ApplicationErrorType
 
 # Sentinel `start` for `initializedCounter` that makes the factory raise an
@@ -73,6 +74,9 @@ class CounterHandler(CounterInterface):
 
     async def get(self) -> int:
         return self._value
+
+    async def readHeader(self, key: str) -> str:
+        return get_context().read_headers.get(key, "")
 
     async def reset(self) -> None:
         self._value = 0
