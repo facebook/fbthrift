@@ -548,6 +548,7 @@ add_library(
   server/interceptor/PythonServiceInterceptor.cpp
   server/PythonAsyncProcessor.cpp
   server/execution/ExecutionSystem.cpp
+  server/execution/WorkScheduler.cpp
   server/PythonAsyncProcessorFactory.cpp
   server/RequestContextExtractor.cpp
   std_libcpp.cpp
