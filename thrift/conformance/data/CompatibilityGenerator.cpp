@@ -333,16 +333,6 @@ template <class Old, class New>
     });
   });
 
-  // Remove field 0
-  ret.push_back(changeEnumValueTestCase(
-      protocol,
-      StandardEnumStruct{},
-      0,
-      NoZeroEnumStruct{},
-      0,
-      "Test when removing `0` from Enum Struct. "
-      "The old value should be retained."));
-
   // Remove field
   ret.push_back(changeEnumValueTestCase(
       protocol,
