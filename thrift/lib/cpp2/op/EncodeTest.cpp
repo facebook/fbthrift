@@ -16,10 +16,13 @@
 
 #include <cstddef>
 #include <functional>
+#include <iterator>
 #include <limits>
 #include <map>
 #include <memory>
+#include <memory_resource>
 #include <set>
+#include <string>
 #include <type_traits>
 #include <vector>
 #include <gtest/gtest.h>
@@ -1004,6 +1007,103 @@ TEST(DecodeTest, DecodeUnsignedTypes) {
 TEST(DecodeTest, DecodeContainers) {
   testDecodeContainers<conformance::StandardProtocol::Binary>();
   testDecodeContainers<conformance::StandardProtocol::Compact>();
+}
+
+TEST(DecodeTest, SetReadParity) {
+  using Tag = type::set<type::i32_t>;
+  using Methods = apache::thrift::detail::pm::protocol_methods<
+      type_class::set<type_class::integral>,
+      std::set<int32_t>,
+      Tag>;
+  for (auto wireType : {TType::T_I32, TType::T_I64}) {
+    folly::IOBufQueue queue;
+    BinaryProtocolWriter writer;
+    writer.setOutput(&queue);
+    writer.writeSetBegin(wireType, 3);
+    for (auto value : {2, 1, 2}) {
+      if (wireType == TType::T_I32) {
+        writer.writeI32(value);
+      } else {
+        writer.writeI64(value);
+      }
+    }
+    writer.writeSetEnd();
+    writer.writeI32(42);
+    for (bool useOp : {false, true}) {
+      SCOPED_TRACE(useOp);
+      BinaryProtocolReader reader;
+      reader.setInput(queue.front());
+      std::set<int32_t> result{99};
+      if (useOp) {
+        op::decode<Tag>(reader, result);
+      } else {
+        Methods::read(reader, result);
+      }
+      EXPECT_EQ(
+          result,
+          wireType == TType::T_I32 ? (std::set<int32_t>{1, 2})
+                                   : std::set<int32_t>{});
+      int32_t next;
+      reader.readI32(next);
+      EXPECT_EQ(next, 42);
+    }
+  }
+}
+
+TEST(DecodeTest, SetTruncatedInput) {
+  using Tag = type::set<type::i32_t>;
+  using Methods = apache::thrift::detail::pm::protocol_methods<
+      type_class::set<type_class::integral>,
+      std::set<int32_t>,
+      Tag>;
+  folly::IOBufQueue queue;
+  BinaryProtocolWriter writer;
+  writer.setOutput(&queue);
+  writer.writeSetBegin(TType::T_I32, 5);
+  writer.writeI32(1);
+  for (bool useOp : {false, true}) {
+    BinaryProtocolReader reader;
+    reader.setInput(queue.front());
+    std::set<int32_t> result{99};
+    if (useOp) {
+      EXPECT_THROW(op::decode<Tag>(reader, result), TProtocolException);
+    } else {
+      EXPECT_THROW(Methods::read(reader, result), TProtocolException);
+    }
+    EXPECT_TRUE(result.empty());
+  }
+}
+
+TEST(DecodeTest, SetUnknownSizeAllocator) {
+  using Set = std::pmr::set<std::pmr::string>;
+  using Tag = type::set<type::string_t>;
+  using Methods = apache::thrift::detail::pm::
+      protocol_methods<type_class::set<type_class::string>, Set, Tag>;
+  struct Reader : SimpleJSONProtocolReader {
+    std::pmr::memory_resource* resource = nullptr;
+    void readString(std::pmr::string& value) {
+      EXPECT_EQ(value.get_allocator().resource(), resource);
+      SimpleJSONProtocolReader::readString(value);
+    }
+  };
+  const auto input = folly::IOBuf::copyBuffer(R"(["one","two"])");
+  for (bool useOp : {false, true}) {
+    std::pmr::monotonic_buffer_resource resource;
+    Set result(&resource);
+    result.emplace("old");
+    Reader reader;
+    reader.resource = &resource;
+    reader.setInput(input.get());
+    if (useOp) {
+      op::decode<Tag>(reader, result);
+    } else {
+      Methods::read(reader, result);
+    }
+    ASSERT_EQ(result.size(), 2);
+    EXPECT_EQ(*result.begin(), "one");
+    EXPECT_EQ(*std::next(result.begin()), "two");
+    EXPECT_EQ(result.get_allocator().resource(), &resource);
+  }
 }
 
 TEST(DecodeTest, DecodeListWithConstReference) {

@@ -395,44 +395,12 @@ struct protocol_methods<type_class::set<ElemClass>, Type, ExpectedTag> {
       expected_value_tag_or_void_t<ExpectedTag>>;
   using elem_ttype = protocol_type<ElemClass, elem_type>;
 
- private:
-  template <typename Protocol>
-  static void consume_elem(Protocol& protocol, Type& out) {
-    auto tmp = detail::default_set_element(out);
-    elem_methods::read(protocol, tmp);
-    out.insert(std::move(tmp));
-  }
-
- public:
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
-    std::uint32_t set_size = -1;
-
-    using WireTypeInfo = ProtocolReaderWireTypeInfo<Protocol>;
-    using WireType = typename WireTypeInfo::WireType;
-
-    WireType reported_type = WireTypeInfo::defaultValue();
-
-    protocol.readSetBegin(reported_type, set_size);
-    out.clear();
-    if (protocol.kOmitsContainerSizes()) {
-      while (protocol.peekSet()) {
-        consume_elem(protocol, out);
-      }
-    } else {
-      if (reported_type != WireTypeInfo::fromTType(elem_ttype::value)) {
-        apache::thrift::skip_n(protocol, set_size, {reported_type});
-      } else {
-        if (!canReadNElements(protocol, set_size, {reported_type})) {
-          protocol::TProtocolException::throwTruncatedData();
-        }
-        const auto vreader = [&protocol](auto& value) {
+    op::detail::SetDecodeImpl<elem_ttype::value>{}(
+        protocol, out, [&](auto& value) {
           elem_methods::read(protocol, value);
-        };
-        deserialize_known_length_set(out, set_size, vreader);
-      }
-    }
-    protocol.readSetEnd();
+        });
   }
 
   template <typename Protocol>

@@ -34,6 +34,7 @@
 #include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/op/detail/EncodeHelpers.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/detail/TypeClassFromTypeTag.h>
@@ -1221,31 +1222,41 @@ struct Decode<type::list<Tag>> {
   }
 };
 
-template <typename Tag>
-struct Decode<type::set<Tag>> {
-  template <typename Protocol, typename SetType>
-  void operator()(Protocol& prot, SetType& set) const {
-    TType t;
-    uint32_t s;
+template <TType ElemType>
+struct SetDecodeImpl {
+  template <typename Protocol, typename SetType, typename ElementRead>
+  void operator()(Protocol& prot, SetType& set, ElementRead elementRead) const {
+    using WireTypeInfo =
+        apache::thrift::detail::ProtocolReaderWireTypeInfo<Protocol>;
+    auto t = WireTypeInfo::defaultValue();
+    uint32_t s = static_cast<uint32_t>(-1);
     prot.readSetBegin(t, s);
     set.clear();
     if (prot.kOmitsContainerSizes()) {
       while (prot.peekSet()) {
-        typename SetType::value_type value;
-        Decode<Tag>{}(prot, value);
+        auto value = apache::thrift::detail::default_set_element(set);
+        elementRead(value);
         set.insert(std::move(value));
       }
-    } else if (typeTagToTType<Tag> == t) {
+    } else if (WireTypeInfo::fromTType(ElemType) == t) {
       if (!canReadNElements(prot, s, {t})) {
         TProtocolException::throwTruncatedData();
       }
-      deserialize_known_length_set(
-          set, s, [&prot](auto& value) { Decode<Tag>{}(prot, value); });
+      deserialize_known_length_set(set, s, elementRead);
     } else {
       apache::thrift::skip_n(prot, s, {t});
     }
 
     prot.readSetEnd();
+  }
+};
+
+template <typename Tag>
+struct Decode<type::set<Tag>> {
+  template <typename Protocol, typename SetType>
+  void operator()(Protocol& prot, SetType& set) const {
+    SetDecodeImpl<typeTagToTType<Tag>>{}(
+        prot, set, [&](auto& value) { Decode<Tag>{}(prot, value); });
   }
 };
 
