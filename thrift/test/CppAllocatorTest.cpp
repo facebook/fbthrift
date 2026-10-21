@@ -820,6 +820,33 @@ TEST(CppAllocatorTest, MoveConstructorPropagatesAllocator) {
   EXPECT_EQ(s2.get_allocator(), alloc);
 }
 
+// The FragileConstructor has no allocator parameter, so cpp.allocator structs
+// don't have one.
+static_assert(std::is_constructible_v<
+              BoxedPayload,
+              apache::thrift::FragileConstructor,
+              int32_t>);
+static_assert(!std::is_constructible_v<
+              HasContainerFields,
+              apache::thrift::FragileConstructor,
+              StatefulAllocVector<int32_t>,
+              StatefulAllocSet<int32_t>,
+              StatefulAllocMap<int32_t, int32_t>>);
+static_assert(!std::is_constructible_v<
+              HasContainerFieldsPmr,
+              apache::thrift::FragileConstructor,
+              std::pmr::vector<int32_t>,
+              std::pmr::set<int32_t>,
+              std::pmr::map<int32_t, int32_t>>);
+static_assert(!std::is_constructible_v<
+              YesAllocatorVia,
+              apache::thrift::FragileConstructor,
+              AAStruct>);
+static_assert(!std::is_constructible_v<
+              YesAllocatorViaPmr,
+              apache::thrift::FragileConstructor,
+              AAStructPmr>);
+
 TEST(CppAllocatorTest, DefaultConstructor1allocator) {
   CountingParent s;
   ScopedCountingAlloc<> alloc = s.get_allocator();

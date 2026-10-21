@@ -68,10 +68,10 @@
 
   {{/if (not struct.is_eligible_for_constexpr?)}}
 
-  {{#if struct.legacy_api?}}
+  {{#if (and struct.legacy_api? (object.eq? null struct.cpp_allocator))}}
 {{> module_types_cpp/fragile_ctor}}
-  {{/if struct.legacy_api?}}
 
+  {{/if (and struct.legacy_api? (object.eq? null struct.cpp_allocator))}}
 void {{struct.cpp_underlying_name}}::__fbthrift_clear() {
   // clear all fields
   {{#each struct.fields as |field|}}

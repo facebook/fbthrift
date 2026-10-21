@@ -2624,21 +2624,6 @@ AllocatorAware& AllocatorAware::operator=([[maybe_unused]] AllocatorAware&& othe
 }
 
 
-AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::list_i32_9187 aa_list__arg, ::apache::thrift::fixtures::types::set_i32_7070 aa_set__arg, ::apache::thrift::fixtures::types::map_i32_i32_9565 aa_map__arg, ::apache::thrift::fixtures::types::string_5252 aa_string__arg, ::std::int32_t not_a_container__arg, ::std::unique_ptr<::std::int32_t> aa_unique__arg, ::std::shared_ptr<::apache::thrift::fixtures::types::i32_9314> aa_shared__arg) :
-    __fbthrift_field_aa_list(std::move(aa_list__arg)),
-    __fbthrift_field_aa_set(std::move(aa_set__arg)),
-    __fbthrift_field_aa_map(std::move(aa_map__arg)),
-    __fbthrift_field_aa_string(std::move(aa_string__arg)),
-    __fbthrift_field_not_a_container(std::move(not_a_container__arg)),
-    __fbthrift_field_aa_unique(std::move(aa_unique__arg)),
-    __fbthrift_field_aa_shared(std::move(aa_shared__arg)) { 
-  __isset.set(folly::index_constant<0>(), true);
-  __isset.set(folly::index_constant<1>(), true);
-  __isset.set(folly::index_constant<2>(), true);
-  __isset.set(folly::index_constant<3>(), true);
-  __isset.set(folly::index_constant<4>(), true);
-}
-
 void AllocatorAware::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_aa_list.clear();
@@ -2789,12 +2774,6 @@ AllocatorAware2& AllocatorAware2::operator=([[maybe_unused]] AllocatorAware2&& o
     return *this;
 }
 
-
-AllocatorAware2::AllocatorAware2(apache::thrift::FragileConstructor, ::std::int32_t not_a_container__arg, ::apache::thrift::detail::boxed_value_ptr<::std::int32_t> box_field__arg) :
-    __fbthrift_field_not_a_container(std::move(not_a_container__arg)),
-    __fbthrift_field_box_field(std::move(box_field__arg)) { 
-  __isset.set(folly::index_constant<0>(), true);
-}
 
 void AllocatorAware2::__fbthrift_clear() {
   // clear all fields

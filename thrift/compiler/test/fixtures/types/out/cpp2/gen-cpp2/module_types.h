@@ -5774,10 +5774,6 @@ class AllocatorAware final  {
 
   AllocatorAware();
 
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  AllocatorAware(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::list_i32_9187 aa_list__arg, ::apache::thrift::fixtures::types::set_i32_7070 aa_set__arg, ::apache::thrift::fixtures::types::map_i32_i32_9565 aa_map__arg, ::apache::thrift::fixtures::types::string_5252 aa_string__arg, ::std::int32_t not_a_container__arg, ::std::unique_ptr<::std::int32_t> aa_unique__arg, ::std::shared_ptr<::apache::thrift::fixtures::types::i32_9314> aa_shared__arg);
-
   AllocatorAware(AllocatorAware&&) noexcept;
   AllocatorAware(const AllocatorAware& src);
 
@@ -6217,10 +6213,6 @@ class AllocatorAware2 final  {
  public:
 
   AllocatorAware2();
-
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  AllocatorAware2(apache::thrift::FragileConstructor, ::std::int32_t not_a_container__arg, ::apache::thrift::detail::boxed_value_ptr<::std::int32_t> box_field__arg);
 
   AllocatorAware2(AllocatorAware2&&) noexcept;
   AllocatorAware2(const AllocatorAware2& src);

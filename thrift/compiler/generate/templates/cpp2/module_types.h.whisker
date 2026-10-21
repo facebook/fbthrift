@@ -269,12 +269,14 @@ class {{#if def.exception?}}FOLLY_EXPORT {{/if}}{{def.cpp_underlying_name}} {{!
         {{#else}}
   {{#partial module_types.base_ctor struct=def}}
         {{/if def.is_large?}}
+        {{! The FragileConstructor has no allocator parameter, so it can't build
+            a cpp.allocator struct on a given allocator. }}
+        {{#if (and def.legacy_api? (object.eq? null def.cpp_allocator))}}
 
-        {{#if def.legacy_api?}}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   {{def.cpp_underlying_name}}(apache::thrift::FragileConstructor{{#partial module_types.fragile_ctor_param_list struct=def}});
-        {{/if def.legacy_api?}}
+        {{/if (and def.legacy_api? (object.eq? null def.cpp_allocator))}}
 
   {{def.cpp_underlying_name}}({{def.cpp_underlying_name}}&&) {{#if def.is_eligible_for_constexpr?}}= default{{#else}}noexcept{{/if}};
         {{#if (not def.cpp_noncopyable)}}
