@@ -1361,15 +1361,14 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
     });
     // Applying a default can allocate, so the allocator-extended constructor
     // that does it cannot be noexcept.
-    def.property(
-        "cpp_alloc_ctor_default_fields?", [](const t_structured& strct) {
-          for (const auto& field : strct.fields()) {
-            if (cpp2::alloc_ctor_applies_custom_default(field)) {
-              return true;
-            }
-          }
+    def.property("cpp_alloc_ctor_noexcept?", [](const t_structured& strct) {
+      for (const auto& field : strct.fields()) {
+        if (cpp2::alloc_ctor_applies_custom_default(field)) {
           return false;
-        });
+        }
+      }
+      return true;
+    });
     // Whether some non-boxed `cpp.ref` field's pointee is `cpp.use_allocator`.
     def.property(
         "cpp_use_allocator_ref_fields?", [](const t_structured& strct) {
@@ -1749,12 +1748,7 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
       assert(parent != nullptr);
       return cpp_context_->resolver().get_native_type(field, *parent);
     });
-    // True if `cpp.use_allocator` is set on the field or its (typedef) type.
-    def.property("cpp_use_allocator?", [](const t_field& field) {
-      return field.has_unstructured_annotation("cpp.use_allocator") ||
-          !!t_typedef::get_first_unstructured_annotation_or_null(
-                 &field.type().deref(), {"cpp.use_allocator"});
-    });
+    def.property("cpp_use_allocator?", &cpp2::uses_allocator);
     def.property("cpp_alloc_ctor_applies_default?", [](const t_field& field) {
       return cpp2::alloc_ctor_applies_custom_default(field);
     });
@@ -2740,9 +2734,7 @@ void forbid_allocator_ignoring_ref_fields(
       ref == gen::cpp::reference_type::boxed ||
       ref == gen::cpp::reference_type::boxed_intern;
   if (unsupported && parent.has_unstructured_annotation("cpp.allocator") &&
-      (field.has_unstructured_annotation("cpp.use_allocator") ||
-       t_typedef::get_first_unstructured_annotation_or_null(
-           &field.type().deref(), {"cpp.use_allocator"}))) {
+      cpp2::uses_allocator(field)) {
     ctx.report(
         field,
         diagnostic_level::error,

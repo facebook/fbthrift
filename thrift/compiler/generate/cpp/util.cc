@@ -371,6 +371,12 @@ bool field_transitively_refers_to_unique(const t_field* field) {
   return false;
 }
 
+bool uses_allocator(const t_field& field) {
+  return field.has_unstructured_annotation("cpp.use_allocator") ||
+      t_typedef::get_first_unstructured_annotation_or_null(
+          &field.type().deref(), {"cpp.use_allocator"}) != nullptr;
+}
+
 bool is_eligible_for_constexpr::operator()(const t_type* type) {
   enum class eligible { unknown, yes, no };
   auto check = [this](const t_type* t) {

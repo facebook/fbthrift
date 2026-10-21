@@ -156,6 +156,9 @@ inline bool alloc_ctor_applies_custom_default(const t_field& field) {
   return true;
 }
 
+// Whether `cpp.use_allocator` is set on the field or its (typedef) type.
+bool uses_allocator(const t_field& field);
+
 bool field_transitively_refers_to_unique(const t_field* field);
 
 /**

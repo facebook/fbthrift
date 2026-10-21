@@ -29,7 +29,7 @@
     {{/if (object.notnull? field.cpp_first_adapter)}}
   {{/each}}
 {{/let partial}}
-{{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const allocator_type& alloc){{#if (not struct.cpp_alloc_ctor_default_fields?)}} noexcept{{/if}} :
+{{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const allocator_type& alloc){{#if struct.cpp_alloc_ctor_noexcept?}} noexcept{{/if}} :
   {{#if (object.eq? null struct.cpp_allocator_via)}}
     __fbthrift_alloc(alloc),
   {{/if (object.eq? null struct.cpp_allocator_via)}}
