@@ -293,7 +293,6 @@ class AllocatorVia final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops<AllocatorVia>;
   friend void swap(AllocatorVia& a, AllocatorVia& b);
 };
 
