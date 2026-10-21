@@ -356,8 +356,9 @@ struct protocol_methods<type_class::list<ElemClass>, Type, ExpectedTag> {
 
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
-    ListDecodeImpl<elem_ttype::value>{}(
-        protocol, out, [&](auto& elem) { elem_methods::read(protocol, elem); });
+    ListDecodeImpl<elem_ttype::value>{}(protocol, out, [&](auto&& elem) {
+      elem_methods::read(protocol, elem);
+    });
   }
 
   template <typename Protocol>

@@ -1196,9 +1196,7 @@ struct ListDecodeImpl {
         }
       } else if constexpr (should_resize) {
         list.resize(s);
-        for (auto&& elem : list) {
-          elementRead(elem);
-        }
+        std::for_each_n(list.begin(), s, elementRead);
       } else {
         folly::reserve_if_available(list, s);
         while (s--) {
