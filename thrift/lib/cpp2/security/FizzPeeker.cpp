@@ -188,6 +188,7 @@ void ThriftFizzAcceptorHandshakeHelper::stopTLSSuccess(
 
 void ThriftFizzAcceptorHandshakeHelper::pspSuccess(
     folly::NetworkSocket, std::unique_ptr<folly::IOBuf> postTlsData) noexcept {
+  detail::onThriftPspEvent(detail::PspEvent::UpgradeSuccess, folly::none);
   auto applicationProtocol = transport_->getApplicationProtocol();
 
   auto plaintextTransport =
@@ -209,6 +210,7 @@ void ThriftFizzAcceptorHandshakeHelper::pspSuccess(
 
 void ThriftFizzAcceptorHandshakeHelper::pspError(
     const folly::exception_wrapper& ew) noexcept {
+  detail::onThriftPspEvent(detail::PspEvent::UpgradeError, ew);
   return callback_->connectionError(transport_.get(), ew, sslError_);
 }
 
