@@ -91,6 +91,15 @@ inline constexpr bool has_subscript_key_v<
     C,
     std::void_t<typename subscript_key_result<C>::type>> = true;
 
+// Strings have push_back. This keeps them out of the list specialization, which
+// would otherwise be ambiguous with the string one.
+template <typename C>
+inline constexpr bool is_char_string_v = false;
+template <typename Alloc>
+inline constexpr bool
+    is_char_string_v<std::basic_string<char, std::char_traits<char>, Alloc>> =
+        true;
+
 template <typename C, typename = void>
 struct Reserver {
   static void reserve(C&, typename C::size_type) {}
@@ -153,9 +162,11 @@ class Cpp2OpsViaOp {
 template <>
 class Cpp2Ops<folly::fbstring>
     : public detail::Cpp2OpsViaOp<folly::fbstring, type::string_t> {};
-template <>
-class Cpp2Ops<std::string>
-    : public detail::Cpp2OpsViaOp<std::string, type::string_t> {};
+template <class Alloc>
+class Cpp2Ops<std::basic_string<char, std::char_traits<char>, Alloc>>
+    : public detail::Cpp2OpsViaOp<
+          std::basic_string<char, std::char_traits<char>, Alloc>,
+          type::string_t> {};
 template <>
 class Cpp2Ops<bool> : public detail::Cpp2OpsViaOp<bool, type::bool_t> {};
 template <>
@@ -252,7 +263,11 @@ uint32_t forEachElement(Protocol* prot, const std::vector<bool>* vec) {
 } // namespace detail
 
 template <class L>
-class Cpp2Ops<L, std::enable_if_t<apache::thrift::detail::has_push_back_v<L>>> {
+class Cpp2Ops<
+    L,
+    std::enable_if_t<
+        apache::thrift::detail::has_push_back_v<L> &&
+        !apache::thrift::detail::is_char_string_v<L>>> {
  private:
   // Need a resize func instead of c.resize(size, defaultElement(C)), because
   // some non-standard vectors do not support resize(size_type, T value = T()).
