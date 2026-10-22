@@ -94,20 +94,6 @@ if (THRIFT_RPC)
                          Folly::folly glog::glog)
 endif () # THRIFT_RPC
 
-set(THRIFT1_HEADER_DIRS async concurrency protocol server transport)
-foreach (dir ${THRIFT1_HEADER_DIRS})
-  install(
-    DIRECTORY ${dir}
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift/lib/cpp
-    FILES_MATCHING
-    PATTERN "*.h")
-  install(
-    DIRECTORY ${dir}
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift/lib/cpp
-    FILES_MATCHING
-    PATTERN "*.tcc")
-endforeach ()
-
 if (BUILD_SHARED_LIBS)
   # all but thrift-cpp since it's an interface
   set_target_properties(thrift-core concurrency PROPERTIES VERSION

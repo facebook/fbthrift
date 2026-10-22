@@ -537,22 +537,6 @@ if (THRIFT_RPC)
                                                ${thrift_mvfst_server})
 endif () # THRIFT_RPC
 
-# Install includes
-set(THRIFT2_HEADER_DIRS
-    async
-    fast_thrift
-    frozen
-    protocol
-    server
-    transport
-    util)
-install(
-  DIRECTORY ${THRIFT2_HEADER_DIRS}
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift/lib/cpp2
-  FILES_MATCHING
-  PATTERN "*.h"
-  PATTERN "*.tcc")
-
 if (BUILD_SHARED_LIBS)
   set_target_properties(
     rpcmetadata
