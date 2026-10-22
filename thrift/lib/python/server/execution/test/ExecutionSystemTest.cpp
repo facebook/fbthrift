@@ -138,18 +138,23 @@ TEST(ExecutionSystemTest, ExecuteStartsSelectedRequestOnExecutor) {
   // WHEN
   executionSystem->execute(
       methodName,
-      RequestDispatch([pendingHandlerFuture = std::move(handlerResultFuture),
-                       &events,
-                       coroutineFactory = coroutineFactory](
-                          PyObject* selectedFunction,
-                          LaunchRequest launchRequest) mutable {
-        events.push_back({RequestEvent::Kind::Dispatch, selectedFunction});
-        std::move(launchRequest)(coroutineFactory);
-        return std::move(pendingHandlerFuture).defer([&events](auto&& result) {
-          events.push_back(
-              {RequestEvent::Kind::Response, std::move(result).value()});
-        });
-      }));
+      RequestDispatch(
+          folly::Executor::KeepAlive<>{},
+          [pendingHandlerFuture = std::move(handlerResultFuture),
+           &events,
+           coroutineFactory = coroutineFactory](
+              PyObject* selectedFunction,
+              const folly::Executor::KeepAlive<>&,
+              LaunchRequest launchRequest) mutable {
+            events.push_back({RequestEvent::Kind::Dispatch, selectedFunction});
+            std::move(launchRequest)(coroutineFactory);
+            return std::move(pendingHandlerFuture)
+                .defer([&events](auto&& result) {
+                  events.push_back(
+                      {RequestEvent::Kind::Response,
+                       std::move(result).value()});
+                });
+          }));
   events.push_back({RequestEvent::Kind::BeforeDispatchDrain, std::monostate{}});
   selectedExecutor.drain();
   events.push_back({RequestEvent::Kind::AfterDispatchDrain, std::monostate{}});
@@ -182,13 +187,18 @@ TEST(ExecutionSystemTest, AcceptedWorkCompletesAfterShutdown) {
   // WHEN
   executionSystem->execute(
       methodName,
-      RequestDispatch([pendingHandlerFuture = std::move(handlerResultFuture),
-                       &responseCallback](PyObject*, LaunchRequest) mutable {
-        return std::move(pendingHandlerFuture)
-            .defer([&responseCallback](auto&& result) {
-              responseCallback.complete(std::move(result));
-            });
-      }));
+      RequestDispatch(
+          folly::Executor::KeepAlive<>{},
+          [pendingHandlerFuture = std::move(handlerResultFuture),
+           &responseCallback](
+              PyObject*,
+              const folly::Executor::KeepAlive<>&,
+              LaunchRequest) mutable {
+            return std::move(pendingHandlerFuture)
+                .defer([&responseCallback](auto&& result) {
+                  responseCallback.complete(std::move(result));
+                });
+          }));
   executionSystem->shutdown();
   // The first drain starts the request. The handler result queues the callback,
   // and the second drain runs it.
@@ -219,18 +229,24 @@ TEST(
 
   // WHEN
   executionSystem->execute(
-      methodName, RequestDispatch([](PyObject*, LaunchRequest) {
-        return folly::makeSemiFuture<folly::Unit>(
-            folly::make_exception_wrapper<std::runtime_error>(
-                "request dispatch test failure"));
-      }));
+      methodName,
+      RequestDispatch(
+          folly::Executor::KeepAlive<>{},
+          [](PyObject*, const folly::Executor::KeepAlive<>&, LaunchRequest) {
+            return folly::makeSemiFuture<folly::Unit>(
+                folly::make_exception_wrapper<std::runtime_error>(
+                    "request dispatch test failure"));
+          }));
   bool nextWorkExecuted = false;
   executionSystem->execute(
       methodName,
-      RequestDispatch([&nextWorkExecuted](PyObject*, LaunchRequest) {
-        nextWorkExecuted = true;
-        return folly::makeSemiFuture();
-      }));
+      RequestDispatch(
+          folly::Executor::KeepAlive<>{},
+          [&nextWorkExecuted](
+              PyObject*, const folly::Executor::KeepAlive<>&, LaunchRequest) {
+            nextWorkExecuted = true;
+            return folly::makeSemiFuture();
+          }));
   bool exceptionEscaped = false;
   try {
     controlExecutor.drain();
@@ -266,8 +282,11 @@ TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
   executionSystem->execute(
       methodName,
       RequestDispatch(
+          folly::Executor::KeepAlive<>{},
+
           [&shouldThrow](
-              PyObject*, LaunchRequest) -> folly::SemiFuture<folly::Unit> {
+              PyObject*, const folly::Executor::KeepAlive<>&, LaunchRequest)
+              -> folly::SemiFuture<folly::Unit> {
             if (std::exchange(shouldThrow, false)) {
               throw std::runtime_error(
                   "synchronous request dispatch test failure");
@@ -277,10 +296,13 @@ TEST(ExecutionSystemTest, SynchronousDispatchFailureDoesNotEscape) {
   bool nextWorkExecuted = false;
   executionSystem->execute(
       methodName,
-      RequestDispatch([&nextWorkExecuted](PyObject*, LaunchRequest) {
-        nextWorkExecuted = true;
-        return folly::makeSemiFuture();
-      }));
+      RequestDispatch(
+          folly::Executor::KeepAlive<>{},
+          [&nextWorkExecuted](
+              PyObject*, const folly::Executor::KeepAlive<>&, LaunchRequest) {
+            nextWorkExecuted = true;
+            return folly::makeSemiFuture();
+          }));
   bool exceptionEscaped = false;
   try {
     controlExecutor.drain();
@@ -390,8 +412,12 @@ TEST(
                                &placedRequests,
                                coroutineFactory]() {
     return RequestDispatch(
+        folly::Executor::KeepAlive<>{},
+
         [&currentExecutorTracker, &placedRequests, coroutineFactory](
-            PyObject* selectedFunction, LaunchRequest launchRequest) {
+            PyObject* selectedFunction,
+            const folly::Executor::KeepAlive<>&,
+            LaunchRequest launchRequest) {
           placedRequests.push_back(
               {currentExecutorTracker, selectedFunction, std::nullopt, false});
           std::move(launchRequest)(coroutineFactory);
@@ -418,6 +444,66 @@ TEST(
 
   // THEN
   EXPECT_EQ(expected, placedRequests);
+}
+
+TEST(ExecutionSystemTest, DispatchReceivesRequestExecutorAsFollowUpExecutor) {
+  // GIVEN a control method and a worker-capable method, each request with its
+  // own request executor
+  folly::ManualExecutor controlExecutor;
+  folly::ManualExecutor workerExecutor;
+  folly::ManualExecutor controlRequestExecutor;
+  folly::ManualExecutor workerRequestExecutor;
+  const std::string workerCapableMethod{"worker_capable_method"};
+  const std::string controlMethod{"control_method"};
+  auto* const handlerFunction = reinterpret_cast<PyObject*>(42);
+  auto* const coroutineFactory = reinterpret_cast<PyObject*>(84);
+  auto workScheduler = std::make_shared<WorkScheduler>();
+  const auto worker = workScheduler->registerWorker(
+      folly::Executor::getKeepAliveToken(workerExecutor));
+  auto executionSystem = makeWorkerCapableExecutionSystem(
+      &controlExecutor,
+      [](PyObject*) { return 0; },
+      {{workerCapableMethod, handlerFunction},
+       {controlMethod, handlerFunction}},
+      workScheduler,
+      [](PyObject*, std::shared_ptr<WorkerCapacityLease>) { return 0; },
+      {workerCapableMethod});
+  executionSystem->bindWorkerMethods(
+      worker,
+      {{workerCapableMethod, handlerFunction},
+       {controlMethod, handlerFunction}});
+  workScheduler->makeWorkerCapacityAvailable(worker);
+  std::vector<const folly::Executor*> followUpExecutors;
+  const auto recordFollowUpExecutor =
+      [&followUpExecutors, coroutineFactory](folly::Executor& requestExecutor) {
+        return RequestDispatch(
+            folly::Executor::getKeepAliveToken(requestExecutor),
+            [&followUpExecutors, coroutineFactory](
+                PyObject*,
+                const folly::Executor::KeepAlive<>& followUpExecutor,
+                LaunchRequest launchRequest) {
+              followUpExecutors.push_back(followUpExecutor.get());
+              std::move(launchRequest)(coroutineFactory);
+              return folly::makeSemiFuture();
+            });
+      };
+  // Every request gets back its request executor. A future change will make
+  // the worker route pass the worker's executor, so follow-up work stays on the
+  // worker.
+  const std::vector<const folly::Executor*> expected{
+      &controlRequestExecutor, &workerRequestExecutor};
+
+  // WHEN
+  executionSystem->execute(
+      controlMethod, recordFollowUpExecutor(controlRequestExecutor));
+  executionSystem->execute(
+      workerCapableMethod, recordFollowUpExecutor(workerRequestExecutor));
+  controlExecutor.drain();
+  workerExecutor.drain();
+  workScheduler->close();
+
+  // THEN
+  EXPECT_EQ(expected, followUpExecutors);
 }
 
 } // namespace

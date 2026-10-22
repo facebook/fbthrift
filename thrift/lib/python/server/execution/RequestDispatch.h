@@ -19,6 +19,7 @@
 #include <string>
 
 #include <Python.h>
+#include <folly/Executor.h>
 #include <folly/Function.h>
 #include <folly/futures/Future.h>
 
@@ -28,7 +29,41 @@ namespace apache::thrift::python::execution {
 // coroutine factory is borrowed only for the call.
 using LaunchRequest = folly::Function<int(_object*)>;
 
-using RequestDispatch = folly::Function<folly::SemiFuture<folly::Unit>(
-    PyObject* selectedHandlerFunction, LaunchRequest launchRequest)>;
+// Carries one request to the execution system. The server supplies the request
+// executor, which keeps the server alive while follow-up work holds it. When
+// the execution system dispatches the request, it passes the follow-up
+// executor that the request's native follow-up work runs on. Today both are
+// the same executor; a future change will make the follow-up executor
+// material.
+class RequestDispatch {
+ public:
+  using Function = folly::Function<folly::SemiFuture<folly::Unit>(
+      PyObject* selectedHandlerFunction,
+      folly::Executor::KeepAlive<> followUpExecutor,
+      LaunchRequest launchRequest)>;
+
+  RequestDispatch(
+      folly::Executor::KeepAlive<> requestExecutor, Function function)
+      : requestExecutor_(std::move(requestExecutor)),
+        function_(std::move(function)) {}
+
+  const folly::Executor::KeepAlive<>& getRequestExecutor() const {
+    return requestExecutor_;
+  }
+
+  folly::SemiFuture<folly::Unit> operator()(
+      PyObject* selectedHandlerFunction,
+      folly::Executor::KeepAlive<> followUpExecutor,
+      LaunchRequest launchRequest) && {
+    return function_(
+        selectedHandlerFunction,
+        std::move(followUpExecutor),
+        std::move(launchRequest));
+  }
+
+ private:
+  folly::Executor::KeepAlive<> requestExecutor_;
+  Function function_;
+};
 
 } // namespace apache::thrift::python::execution

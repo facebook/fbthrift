@@ -66,8 +66,11 @@ void ExecutionSystem::executeOnControl(
         // a worker to take up the work. To prepare for that future, look
         // up the function by method name in today's single shared context.
         auto* selectedHandlerFunction = controlMethods->at(method);
+        auto requestExecutor = requestDispatch.getRequestExecutor();
         return std::move(requestDispatch)(
-            selectedHandlerFunction, std::move(launchRequest));
+            selectedHandlerFunction,
+            std::move(requestExecutor),
+            std::move(launchRequest));
       })
       .via(controlExecutor_);
 }
@@ -95,8 +98,11 @@ void ExecutionSystem::executeOnWorker(
             [requestDispatch = std::move(requestDispatch),
              selectedFunction = selectedFunction,
              launchRequest = std::move(launchRequest)]() mutable {
+              auto requestExecutor = requestDispatch.getRequestExecutor();
               return std::move(requestDispatch)(
-                  selectedFunction, std::move(launchRequest));
+                  selectedFunction,
+                  std::move(requestExecutor),
+                  std::move(launchRequest));
             })
             .via(
                 folly::Executor::getKeepAliveToken(
