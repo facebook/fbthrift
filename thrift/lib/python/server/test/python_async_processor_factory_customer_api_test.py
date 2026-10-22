@@ -38,6 +38,13 @@ class PythonAsyncProcessorFactoryCustomerApiTest(later.unittest.TestCase):
     async def test_factory_context_composes_handler_context(self) -> None:
         await CTests(self).test_factory_context_composes_handler_context()
 
+    async def test_handler_that_returns_true_still_suppresses_the_callers_exception(
+        self,
+    ) -> None:
+        await CTests(
+            self
+        ).test_handler_that_returns_true_still_suppresses_the_callers_exception()
+
     async def test_unary_rpc_round_trips(self) -> None:
         await CTests(self).test_unary_rpc_round_trips()
 

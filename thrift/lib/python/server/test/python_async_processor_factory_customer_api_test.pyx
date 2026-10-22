@@ -130,6 +130,17 @@ class ContextHandler(Handler):
         self.events.append("exit")
 
 
+class SuppressingContextHandler(ContextHandler):
+    def __init__(self):
+        super().__init__()
+        self.exit_error = None
+
+    async def __aexit__(self, exc_type, exc, traceback):
+        self.events.append("exit")
+        self.exit_error = exc
+        return True
+
+
 class NoopContextPythonAsyncProcessorFactory(PythonAsyncProcessorFactory):
     def __init__(self):
         self.context_enter_count = 0
@@ -479,6 +490,25 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
 
         # THEN
         self.ut.assertEqual(expected, handler.events)
+
+    async def test_handler_that_returns_true_still_suppresses_the_callers_exception(
+        self,
+    ):
+        # GIVEN
+        handler = SuppressingContextHandler()
+        cdef PythonAsyncProcessorFactory factory = (
+            PythonAsyncProcessorFactory.create(<cServiceInterface>handler)
+        )
+        caller_failure = ValueError("caller failed")
+        expected_events = ["enter", "exit"]
+
+        # WHEN
+        async with factory:
+            raise caller_failure
+
+        # THEN
+        self.ut.assertEqual(expected_events, handler.events)
+        self.ut.assertIs(caller_failure, handler.exit_error)
 
     async def test_unary_rpc_round_trips(self):
         # GIVEN
