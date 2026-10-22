@@ -66,6 +66,8 @@ void ExecutionSystem::executeOnControl(
         // a worker to take up the work. To prepare for that future, look
         // up the function by method name in today's single shared context.
         auto* selectedHandlerFunction = controlMethods->at(method);
+        // Follow-up work stays on the server's request executor, which the
+        // server joins at destruction in both modes.
         auto requestExecutor = requestDispatch.getRequestExecutor();
         return std::move(requestDispatch)(
             selectedHandlerFunction,
@@ -83,7 +85,7 @@ void ExecutionSystem::executeOnWorker(
        launchWorkerRequest = launchWorkerRequest_,
        this](
           const WorkerHandle& worker,
-          const folly::Executor::KeepAlive<>&,
+          const folly::Executor::KeepAlive<>& workerExecutor,
           std::shared_ptr<WorkerCapacityLease> lease) mutable {
         auto* const selectedFunction = getWorkerHandlerFunction(worker, method);
         LaunchRequest launchRequest(
@@ -97,11 +99,11 @@ void ExecutionSystem::executeOnWorker(
         folly::makeSemiFutureWith(
             [requestDispatch = std::move(requestDispatch),
              selectedFunction = selectedFunction,
+             workerExecutor = workerExecutor,
              launchRequest = std::move(launchRequest)]() mutable {
-              auto requestExecutor = requestDispatch.getRequestExecutor();
               return std::move(requestDispatch)(
                   selectedFunction,
-                  std::move(requestExecutor),
+                  std::move(workerExecutor),
                   std::move(launchRequest));
             })
             .via(

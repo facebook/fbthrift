@@ -18,6 +18,7 @@
 
 #include <array>
 #include <cstddef>
+#include <map>
 #include <memory>
 #include <optional>
 #include <ostream>
@@ -446,16 +447,17 @@ TEST(
   EXPECT_EQ(expected, placedRequests);
 }
 
-TEST(ExecutionSystemTest, DispatchReceivesRequestExecutorAsFollowUpExecutor) {
-  // GIVEN a control method and a worker-capable method, each request with its
-  // own request executor
-  folly::ManualExecutor controlExecutor;
-  folly::ManualExecutor workerExecutor;
-  folly::ManualExecutor controlRequestExecutor;
-  folly::ManualExecutor workerRequestExecutor;
+TEST(
+    ExecutionSystemTest,
+    WorkerCapableMethodsSendFollowUpWorkToWorkersAndOthersKeepTheirExecutor) {
+  // GIVEN
+  const folly::Executor* currentExecutorTracker = nullptr;
+  ExecutorThatReportsItself controlExecutor(currentExecutorTracker);
+  ExecutorThatReportsItself workerExecutor(currentExecutorTracker);
+  folly::ManualExecutor serverRequestExecutor;
   const std::string workerCapableMethod{"worker_capable_method"};
   const std::string controlMethod{"control_method"};
-  auto* const handlerFunction = reinterpret_cast<PyObject*>(42);
+  auto* const handlerFunction = reinterpret_cast<PyObject*>(41);
   auto* const coroutineFactory = reinterpret_cast<PyObject*>(84);
   auto workScheduler = std::make_shared<WorkScheduler>();
   const auto worker = workScheduler->registerWorker(
@@ -473,31 +475,31 @@ TEST(ExecutionSystemTest, DispatchReceivesRequestExecutorAsFollowUpExecutor) {
       {{workerCapableMethod, handlerFunction},
        {controlMethod, handlerFunction}});
   workScheduler->makeWorkerCapacityAvailable(worker);
-  std::vector<const folly::Executor*> followUpExecutors;
-  const auto recordFollowUpExecutor =
-      [&followUpExecutors, coroutineFactory](folly::Executor& requestExecutor) {
-        return RequestDispatch(
-            folly::Executor::getKeepAliveToken(requestExecutor),
-            [&followUpExecutors, coroutineFactory](
-                PyObject*,
-                const folly::Executor::KeepAlive<>& followUpExecutor,
-                LaunchRequest launchRequest) {
-              followUpExecutors.push_back(followUpExecutor.get());
-              std::move(launchRequest)(coroutineFactory);
-              return folly::makeSemiFuture();
-            });
-      };
-  // Every request gets back its request executor. A future change will make
-  // the worker route pass the worker's executor, so follow-up work stays on the
-  // worker.
-  const std::vector<const folly::Executor*> expected{
-      &controlRequestExecutor, &workerRequestExecutor};
+  std::map<std::string, const folly::Executor*> followUpExecutors;
+  const auto recordFollowUpExecutor = [&followUpExecutors,
+                                       &serverRequestExecutor,
+                                       coroutineFactory](std::string method) {
+    return RequestDispatch(
+        folly::Executor::getKeepAliveToken(serverRequestExecutor),
+        [&followUpExecutors, method = std::move(method), coroutineFactory](
+            PyObject*,
+            const folly::Executor::KeepAlive<>& followUpExecutor,
+            LaunchRequest launchRequest) {
+          followUpExecutors[method] = followUpExecutor.get();
+          std::move(launchRequest)(coroutineFactory);
+          return folly::makeSemiFuture();
+        });
+  };
+  const std::map<std::string, const folly::Executor*> expected{
+      {workerCapableMethod, &workerExecutor},
+      {controlMethod, &serverRequestExecutor},
+  };
 
   // WHEN
   executionSystem->execute(
-      controlMethod, recordFollowUpExecutor(controlRequestExecutor));
+      workerCapableMethod, recordFollowUpExecutor(workerCapableMethod));
   executionSystem->execute(
-      workerCapableMethod, recordFollowUpExecutor(workerRequestExecutor));
+      controlMethod, recordFollowUpExecutor(controlMethod));
   controlExecutor.drain();
   workerExecutor.drain();
   workScheduler->close();
