@@ -32,9 +32,9 @@ using LaunchRequest = folly::Function<int(_object*)>;
 // Carries one request to the execution system. The server supplies the request
 // executor, which keeps the server alive while follow-up work holds it. When
 // the execution system dispatches the request, it passes the follow-up
-// executor that the request's native follow-up work runs on. Today both are
-// the same executor; a future change will make the follow-up executor
-// material.
+// executor that the request's native follow-up work runs on: the request
+// executor for a request placed on control, and the Worker's executor for a
+// request placed on a Worker.
 class RequestDispatch {
  public:
   using Function = folly::Function<folly::SemiFuture<folly::Unit>(
