@@ -168,7 +168,8 @@ add_library(
   ${service_catalog_sources})
 # For the headers generated for thrifttype and thrifttyperep.
 add_dependencies(thriftmetadata thrifttype)
-target_link_libraries(thriftmetadata PUBLIC Folly::folly thriftprotocol)
+target_link_libraries(thriftmetadata PUBLIC Folly::folly thriftprotocol
+                                            thrifttyperep thrifttype thrift_common)
 target_link_libraries(thriftmetadata PUBLIC ${thrift_xxhash})
 # SerializableRecord.cpp includes F14Map and instantiates PrimitiveDatum for
 # every primitive type; on MSVC this exceeds the default COFF section limit.

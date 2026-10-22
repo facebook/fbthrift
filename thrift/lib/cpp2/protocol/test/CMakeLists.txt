@@ -17,7 +17,8 @@
 add_library(protocol_test_fixtures OBJECT)
 target_compile_options(protocol_test_fixtures
                        PRIVATE -Wno-shadow-compatible-local)
-target_link_libraries(protocol_test_fixtures PUBLIC thriftcpp2)
+target_link_libraries(protocol_test_fixtures PUBLIC thrift_annotation
+                                                    thriftfrozen2 thriftmetadata)
 # cursor.thrift's adapters are in thrift/test/AdapterTest.h, which uses GTest.
 target_link_libraries(protocol_test_fixtures PRIVATE GTest::gtest)
 foreach (thrift_file Module CompactProtocolTestStructs cursor)
@@ -55,6 +56,6 @@ foreach (test_name ${PROTOCOL_TESTS})
   add_executable(${test_name} ${test_name}.cpp)
   target_compile_options(${test_name} PUBLIC -Wno-shadow-compatible-local)
   target_link_libraries(${test_name} protocol_test_fixtures GTest::gtest_main
-                        thriftcpp2 Folly::folly fmt::fmt)
+                        Folly::folly fmt::fmt)
   gtest_discover_tests(${test_name})
 endforeach ()

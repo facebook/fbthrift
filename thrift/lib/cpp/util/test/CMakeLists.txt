@@ -32,7 +32,7 @@ if (THRIFT_TESTS)
   foreach (test_name ${PROTOCOL_TESTS})
     add_executable(${test_name} ${test_name}.cpp)
     target_compile_options(${test_name} PUBLIC -Wno-shadow-compatible-local)
-    target_link_libraries(${test_name} GTest::gtest_main thriftcpp2
+    target_link_libraries(${test_name} GTest::gtest_main thriftprotocol
                           Folly::folly)
     gtest_discover_tests(${test_name})
   endforeach ()
