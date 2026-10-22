@@ -21,9 +21,9 @@ project(
 
 # Build rules should still use $<TARGET_FILE...> instead of these paths:
 # multi-config generators add a per-config subdirectory they do not carry.
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 include(GNUInstallDirs)
 
@@ -335,9 +335,12 @@ endif ()
 add_subdirectory(thrift)
 
 # include(CPack) snapshots the CPACK_* variables where it is called, so keep it
-# after every target, install rule and CPACK_* setting.
-if (NOT DEFINED CPACK_GENERATOR)
-  set(CPACK_GENERATOR RPM)
+# after every target, install rule and CPACK_* setting. A parent project that
+# adds Thrift with add_subdirectory() or FetchContent does its own packaging.
+if (PROJECT_IS_TOP_LEVEL)
+  if (NOT DEFINED CPACK_GENERATOR)
+    set(CPACK_GENERATOR RPM)
+  endif ()
+  set(CPACK_RPM_PACKAGE_PROVIDES thrift)
+  include(CPack)
 endif ()
-set(CPACK_RPM_PACKAGE_PROVIDES thrift)
-include(CPack)
