@@ -44,8 +44,6 @@ target_link_libraries(compiler_ast fmt::fmt Folly::folly)
 # The base compiler infrastructure library
 add_library(compiler_base STATIC detail/system.cc detail/pluggable_functions.cc
                                  diagnostic.cc source_location.cc)
-set_target_properties(compiler_base PROPERTIES POSITION_INDEPENDENT_CODE
-                                               "${BUILD_SHARED_LIBS}")
 target_link_libraries(compiler_base fmt::fmt Folly::folly thrift_common)
 
 # The base Thrift compiler library.
@@ -69,8 +67,6 @@ add_library(
   sema/schematizer.cc
   sema/standard_validator.cc
   sema/resolution_mismatch.cc)
-set_target_properties(compiler_lib PROPERTIES POSITION_INDEPENDENT_CODE
-                                              "${BUILD_SHARED_LIBS}")
 target_compile_definitions(compiler_lib PRIVATE THRIFT_OSS)
 target_link_libraries(compiler_lib compiler_base compiler_ast fmt::fmt
                       Folly::folly OpenSSL::Crypto)
@@ -108,8 +104,6 @@ add_library(
   whisker/render.cc
   whisker/standard_library.cc
   whisker/token.cc)
-set_target_properties(whisker PROPERTIES POSITION_INDEPENDENT_CODE
-                                         "${BUILD_SHARED_LIBS}")
 target_link_libraries(whisker fmt::fmt Folly::folly compiler_base)
 
 add_subdirectory(generate)
