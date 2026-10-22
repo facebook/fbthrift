@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import asyncio
+import functools
+import threading
 
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport shared_ptr
@@ -22,8 +24,20 @@ from thrift.python.server_impl.python_async_processor cimport (
     cLaunchControlRequest,
     makeControlOnlyExecutionSystem,
     makeHandlerFunc,
+    WorkerSystem,
 )
+from thrift.python.server_impl.python_async_processor import SharedWorkerInitializer
 from thrift.python.std_libcpp cimport bytes_to_string_view
+from thrift.python.types import FunctionEntry
+
+
+cdef extern from "thrift/lib/python/server/test/WorkerInitializerTestHelper.h" namespace "apache::thrift::python::test":
+    void startSelectedFunctionForTest(
+        cExecutionSystem& executionSystem, string method
+    ) except +
+
+
+WORKER_METHOD = b"worker_method"
 
 
 cdef int launchControlTask(object coroutine_factory) except -1:
@@ -62,6 +76,45 @@ cdef cCreateMethodMetadataResult create(bytes function_name, RpcKind rpc_kind):
     return deref(obj).createMethodMetadata()
 
 
+class RecordingHandler:
+    def __init__(self, served):
+        self.events = []
+        self.threads = set()
+        self._served = served
+
+    def _record(self, event):
+        self.events.append(event)
+        self.threads.add(threading.get_ident())
+
+    async def __aenter__(self):
+        self._record("enter")
+        return self
+
+    async def __aexit__(self, *exc_info):
+        self._record("exit")
+
+    def getFunctionTable(self):
+        return {
+            WORKER_METHOD: FunctionEntry(
+                RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE, self.serve
+            )
+        }
+
+    async def serve(self):
+        self._record("request")
+        self._served.release()
+
+
+async def wait_for_requests(served, count):
+    return await asyncio.to_thread(
+        lambda: all(served.acquire(timeout=10) for _ in range(count))
+    )
+
+
+cdef start_request(WorkerSystem worker_system, bytes method):
+    startSelectedFunctionForTest(deref(worker_system.executionSystem.get()), method)
+
+
 cdef class PythonAsyncProcessorFactoryCTest:
     def __cinit__(self, object unit_test):
         self.ut = unit_test
@@ -89,3 +142,34 @@ cdef class PythonAsyncProcessorFactoryCTest:
             function_name_view,
         )
         self.ut.assertEqual(expected, handler_func.fullName)
+
+    async def test_workers_serve_requests_from_a_shared_table(self):
+        # GIVEN
+        forbidden_worker_thread = threading.get_ident()
+        served = threading.Semaphore(0)
+        shared_handler = RecordingHandler(served)
+        function_table = shared_handler.getFunctionTable()
+        expected_events = ["request", "request"]
+        expected_worker_thread_count = 2
+        cdef WorkerSystem worker_system = WorkerSystem.create(
+            get_executor(), function_table, {WORKER_METHOD}
+        )
+
+        # WHEN
+        try:
+            worker_system.start(
+                2, functools.partial(SharedWorkerInitializer, funcMap=function_table)
+            )
+            # Each worker publishes one capacity slot, so the two requests go to
+            # the two workers in turn.
+            start_request(worker_system, WORKER_METHOD)
+            start_request(worker_system, WORKER_METHOD)
+            served_in_time = await wait_for_requests(served, 2)
+        finally:
+            worker_system.close()
+
+        # THEN
+        self.ut.assertTrue(served_in_time)
+        self.ut.assertEqual(expected_events, shared_handler.events)
+        self.ut.assertEqual(expected_worker_thread_count, len(shared_handler.threads))
+        self.ut.assertNotIn(forbidden_worker_thread, shared_handler.threads)

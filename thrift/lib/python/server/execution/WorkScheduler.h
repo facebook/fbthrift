@@ -133,4 +133,13 @@ class WorkScheduler final : public std::enable_shared_from_this<WorkScheduler> {
   folly::Executor::KeepAlive<> scheduler_;
 };
 
+// Convenience for callers holding only a raw executor. The executor must
+// outlive registration; prefer the KeepAlive form when one is available.
+// Returns shared ownership since the handle has no default constructor.
+inline std::shared_ptr<WorkerHandle> registerWorkerExecutor(
+    WorkScheduler& workScheduler, folly::Executor* executor) {
+  return std::make_shared<WorkerHandle>(workScheduler.registerWorker(
+      folly::Executor::getKeepAliveToken(executor)));
+}
+
 } // namespace apache::thrift::python::execution

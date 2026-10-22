@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import contextlib
 import functools
 import sys
 import traceback
@@ -55,6 +56,12 @@ from thrift.python.server_impl.request_context cimport (
 from thrift.python.server_impl.request_context import (
     RequestContext,
     SocketAddress,
+)
+from thrift.python.server_impl.execution.asyncio_worker import (
+    launch_worker_task,
+)
+from thrift.python.server_impl.execution.asyncio_worker_pool import (
+    AsyncioWorkerPool,
 )
 
 cdef extern from "thrift/lib/python/server/PythonAsyncProcessor.h" namespace "apache::thrift::python":
@@ -392,6 +399,17 @@ cdef api int launchControlTask(object coroutine_factory) except -1:
     asyncio.get_running_loop().create_task(coroutine_factory())
     return 0
 
+
+cdef int launchWorkerTask(
+    object coroutine_factory,
+    shared_ptr[cWorkerCapacityLease] lease,
+) except -1:
+    def release_lease():
+        lease.reset()
+
+    launch_worker_task(release_lease, coroutine_factory)
+    return 0
+
 cdef int combinedHandler(
     object func,
     object interaction_self,
@@ -611,6 +629,131 @@ cdef api void scheduleInteractionTermination(object handler):
     the connection closed before an explicit terminate (nothing awaits it). Must
     be called on the loop thread (GIL held)."""
     _schedule_termination(handler, None)
+
+cdef cmap[string, PyObjPtr] buildHandlerMethods(dict funcMap):
+    cdef cmap[string, PyObjPtr] methods
+    cdef FunctionEntry entry
+    for name, entry in funcMap.items():
+        methods[<bytes>name] = <PyObject*>entry.handler
+    return methods
+
+
+cdef class WorkerSystem:
+    """Carries what the worker subsystem shares from factory creation to
+    shutdown: the control executor and the function table it starts from, and,
+    once started, the work scheduler, the worker-capable execution system, and
+    the worker pool. Callers skip worker setup entirely when no method is
+    worker-capable."""
+
+    @staticmethod
+    cdef WorkerSystem create(
+        cAsyncioExecutor* controlExecutor,
+        dict funcMap,
+        set workerCapableMethodNames,
+    ):
+        """Workers must send control methods to the executor that control
+        dispatch already uses, so the factory passes that executor in when it
+        is created."""
+        cdef WorkerSystem workerSystem = WorkerSystem.__new__(WorkerSystem)
+        workerSystem.controlExecutor = controlExecutor
+        workerSystem.funcMap = funcMap
+        workerSystem.workerCapableMethodNames = workerCapableMethodNames
+        return workerSystem
+
+    cdef start(self, int workerCount, object makeInitializer):
+        """Builds the work scheduler and the worker-capable execution system,
+        then starts workerCount workers, each with the initializer that
+        makeInitializer builds from this worker system. If the workers fail to
+        start, closes what it built and re-raises."""
+        cdef cmap[string, PyObjPtr] controlMethods = buildHandlerMethods(
+            self.funcMap
+        )
+        cdef cset[string] workerCapable
+        for name in self.workerCapableMethodNames:
+            workerCapable.insert(<bytes>name)
+        self.scheduler = make_shared[cWorkScheduler]()
+        self.executionSystem = makeWorkerCapableExecutionSystem(
+            self.controlExecutor,
+            <cLaunchControlRequest>launchControlTask,
+            cmove(controlMethods),
+            self.scheduler,
+            <cLaunchWorkerRequest>launchWorkerTask,
+            cmove(workerCapable),
+        )
+        try:
+            workerPool = AsyncioWorkerPool(workerCount, makeInitializer(self))
+            # On failure the pool rolls back the workers it started.
+            workerPool.start()
+        except BaseException:
+            self.close()
+            raise
+        self.workerPool = workerPool
+
+    cdef close(self):
+        """Closes the workers, so each cleans up on its own loop, then the work
+        scheduler, the order that work_scheduler.md requires, and then releases
+        the execution system, which holds the control executor alive. Does
+        nothing if start() never ran."""
+        # The pool's initializers hold this worker system; drop the pool to
+        # break that cycle.
+        workerPool, self.workerPool = self.workerPool, None
+        try:
+            if workerPool is not None:
+                workerPool.close()
+        finally:
+            if self.scheduler.get() != NULL:
+                self.scheduler.get().close()
+            self.scheduler.reset()
+            self.executionSystem.reset()
+
+
+# Each worker unregisters on its own loop, before that loop closes: the
+# registration keeps the loop's executor alive, and an executor's destructor
+# never returns while something still keeps it alive.
+cdef object makeWorkerUnregisterer(
+    shared_ptr[cWorkScheduler] scheduler, shared_ptr[cWorkerHandle] worker
+):
+    def unregister_worker():
+        cdef cWorkScheduler* workScheduler = scheduler.get()
+        cdef cWorkerHandle* workerHandle = worker.get()
+        with nogil:
+            workScheduler.unregisterWorker(dereference(workerHandle))
+
+    return unregister_worker
+
+
+cdef class SharedWorkerInitializer:
+    """Starts a shared-mode worker: the worker binds funcMap's handler
+    functions, and control owns the one handler."""
+
+    cdef WorkerSystem workerSystem
+    cdef cmap[string, PyObjPtr] workerMethods
+
+    def __cinit__(self, WorkerSystem workerSystem, dict funcMap):
+        self.workerSystem = workerSystem
+        # Shared table only; control owns the handler lifecycle. The caller
+        # keeps funcMap alive for the borrowed bindings.
+        self.workerMethods = buildHandlerMethods(funcMap)
+
+    async def __call__(self):
+        cdef shared_ptr[cWorkerHandle] worker
+        # A failed start unwinds the stack; a successful one hands it to the
+        # pool, which closes it when the worker leaves.
+        async with contextlib.AsyncExitStack() as cleanup:
+            worker = registerWorkerExecutor(
+                dereference(self.workerSystem.scheduler), get_executor()
+            )
+            cleanup.callback(
+                makeWorkerUnregisterer(self.workerSystem.scheduler, worker)
+            )
+            self.workerSystem.executionSystem.get().bindWorkerMethods(
+                dereference(worker), self.workerMethods
+            )
+            self.workerSystem.scheduler.get().makeWorkerCapacityAvailable(
+                dereference(worker)
+            )
+            return cleanup.pop_all()
+
 
 cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
     cdef void releaseOwnedResources(self) noexcept:

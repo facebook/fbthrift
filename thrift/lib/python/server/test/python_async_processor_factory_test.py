@@ -13,8 +13,7 @@
 # limitations under the License.
 
 
-import unittest
-
+from later.unittest import TestCase
 from parameterized import parameterized
 from thrift.python.server import RpcKind
 from thrift.python.test.python_async_processor_factory_test import (
@@ -22,7 +21,7 @@ from thrift.python.test.python_async_processor_factory_test import (
 )
 
 
-class PythonAsyncProcessorFactoryTest(unittest.TestCase):
+class PythonAsyncProcessorFactoryTest(TestCase):
     @parameterized.expand(
         [
             (
@@ -97,3 +96,6 @@ class PythonAsyncProcessorFactoryTest(unittest.TestCase):
             RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE,
             b"PythonService.createResponsesStream",
         )
+
+    async def test_workers_serve_requests_from_a_shared_table(self) -> None:
+        await CTests(self).test_workers_serve_requests_from_a_shared_table()
