@@ -110,7 +110,6 @@ add_library(
   sema/sema_context.cc
   sema/schematizer.cc
   sema/standard_validator.cc
-  sema/sema_context.cc
   sema/resolution_mismatch.cc)
 set_target_properties(compiler_lib PROPERTIES POSITION_INDEPENDENT_CODE
                                               "${BUILD_SHARED_LIBS}")

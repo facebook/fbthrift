@@ -432,7 +432,6 @@ if (THRIFT_RPC)
     server/ServiceInterceptorControl.cpp
     server/ServiceInterceptorOnDrop.cpp
     server/ServiceInterceptorOnReceived.cpp
-    server/ServiceInterceptorQualifiedName.cpp
     server/ThriftCatalogServerInterface.cpp
     server/ThriftProcessor.cpp
     server/ThriftServer.cpp
