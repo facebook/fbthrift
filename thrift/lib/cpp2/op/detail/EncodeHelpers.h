@@ -165,8 +165,8 @@ inline constexpr bool sorted_unique_constructible_v =
 FOLLY_CREATE_MEMBER_INVOKER(emplace_hint_invoker, emplace_hint);
 FOLLY_CREATE_MEMBER_INVOKER(try_emplace_invoker, try_emplace);
 
-template <typename T>
-using detect_key_compare = typename T::key_compare;
+template <typename Container>
+concept is_ordered_container = requires { typename Container::key_compare; };
 
 template <typename T>
 constexpr bool map_emplace_hint_is_invocable_v = std::is_invocable_v<
@@ -183,8 +183,7 @@ constexpr bool map_try_emplace_is_invocable_v =
 // Unordered maps that do not propagate their allocator can deserialize the
 // mapped value in place via try_emplace rather than through a temporary.
 template <typename T>
-constexpr bool map_supports_in_place_deserialize_v =
-    !folly::is_detected_v<detect_key_compare, T> &&
+constexpr bool map_supports_in_place_deserialize_v = !is_ordered_container<T> &&
     !apache::thrift::detail::alloc_should_propagate_map<T> &&
     map_try_emplace_is_invocable_v<T>;
 
@@ -426,11 +425,10 @@ inline constexpr bool should_process_as_arithmetic_vector_v =
 template <typename Tag, typename Protocol, typename Container, typename WriteFn>
 void encodeSetElements(
     Protocol& protocol, const Container& set, WriteFn writeElem) {
-  constexpr bool kContainerIsOrdered =
-      folly::is_detected_v<detect_key_compare, Container>;
   const KeyOrder keyOrder = protocol.keyOrder();
   const bool shouldSort = keyOrder == KeyOrder::StableAscending ||
-      (keyOrder == KeyOrder::NativeAscending && !kContainerIsOrdered);
+      (keyOrder == KeyOrder::NativeAscending &&
+       !is_ordered_container<Container>);
 
   if (shouldSort) {
     std::vector<typename Container::const_iterator> iters;
@@ -469,11 +467,10 @@ template <
     typename WriteFn>
 void encodeMapElements(
     Protocol& protocol, const Container& map, WriteFn writeEntry) {
-  constexpr bool kContainerIsOrdered =
-      folly::is_detected_v<detect_key_compare, Container>;
   const KeyOrder keyOrder = protocol.keyOrder();
   const bool shouldSort = keyOrder == KeyOrder::StableAscending ||
-      (keyOrder == KeyOrder::NativeAscending && !kContainerIsOrdered);
+      (keyOrder == KeyOrder::NativeAscending &&
+       !is_ordered_container<Container>);
 
   if (shouldSort) {
     std::vector<typename Container::const_iterator> iters;

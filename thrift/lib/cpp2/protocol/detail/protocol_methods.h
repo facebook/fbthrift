@@ -87,7 +87,8 @@ using op::detail::checked_container_size;
 using op::detail::deserialize_key_val_into_map;
 using op::detail::deserialize_known_length_map;
 using op::detail::deserialize_known_length_set;
-using op::detail::detect_key_compare;
+// NOLINTNEXTLINE(facebook-hte-DetailCall)
+using op::detail::is_ordered_container;
 using op::detail::ListDecodeImpl;
 // NOLINTNEXTLINE(facebook-hte-DetailCall)
 using op::detail::ListEncodeImpl;
