@@ -12,9 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Override the default install path for `make install` step.
-set(CMAKE_INSTALL_PREFIX ${THRIFT_SOURCE_DIR})
-
 check_cxx_source_compiles(
   "
   #include <type_traits>
