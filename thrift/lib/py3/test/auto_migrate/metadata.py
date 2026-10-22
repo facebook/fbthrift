@@ -16,6 +16,7 @@
 
 import unittest
 
+# pyrefly: ignore [missing-import]
 import test_thrift.metadata
 from apache.thrift.metadata.types import ThriftPrimitiveType
 from test_thrift.clients import TestingService, TestingServiceChild
