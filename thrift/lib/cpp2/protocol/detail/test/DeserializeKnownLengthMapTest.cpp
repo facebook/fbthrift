@@ -384,6 +384,44 @@ TEST_F(DeserializeKnownLengthMapTest, EmplaceHintConstuctCountVecAlloc) {
                            /* destroyed */ 0}));
 }
 
+TEST_F(DeserializeKnownLengthMapTest, SortedUniqueConstuctCountVecAlloc) {
+  using Map =
+      folly::pmr::sorted_vector_map<TrackedKey, std::pmr::vector<TrackedValue>>;
+
+  static_assert(detail::pm::sorted_unique_constructible_v<Map>);
+  static_assert(detail::alloc_should_propagate_map<Map>);
+
+  std::pmr::monotonic_buffer_resource resource;
+  Map map{Map::allocator_type(&resource)};
+  detail::pm::deserialize_known_length_map(
+      map,
+      1,
+      deserializeTrackedKey,
+      deserializeVecOfTrackedValues<std::pmr::vector<TrackedValue>>);
+  ASSERT_EQ(map.size(), 1);
+  EXPECT_EQ(map.begin()->second.get_allocator().resource(), &resource);
+  EXPECT_EQ(
+      TrackedKey::counts(),
+      (folly::test::Counts{/* copyConstruct */ 0,
+                           /* moveConstruct */ 0,
+                           /* copyConvert */ 0,
+                           /* moveConvert */ 0,
+                           /* copyAssign */ 0,
+                           /* moveAssign */ 0,
+                           /* defaultConstruct */ 1,
+                           /* destroyed */ 0}));
+  EXPECT_EQ(
+      TrackedValue::counts(),
+      (folly::test::Counts{/* copyConstruct */ 0,
+                           /* moveConstruct */ 0,
+                           /* copyConvert */ 0,
+                           /* moveConvert */ 0,
+                           /* copyAssign */ 0,
+                           /* moveAssign */ 0,
+                           /* defaultConstruct */ 1,
+                           /* destroyed */ 0}));
+}
+
 TEST_F(DeserializeKnownLengthMapTest, EmplaceConstuctCountVecAlloc) {
   using Vec = std::pmr::vector<TrackedValue>;
   using Allocator =

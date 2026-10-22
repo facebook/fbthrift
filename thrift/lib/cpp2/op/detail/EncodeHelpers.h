@@ -108,22 +108,6 @@ typename Container::reference emplace_back_default(Container& c) {
   return c.emplace_back();
 }
 
-template <typename Container, typename Map>
-typename Container::reference emplace_back_default_map(Container& c, Map& m) {
-  constexpr auto passAlloc =
-      apache::thrift::detail::
-          alloc_should_propagate<Map, typename Map::key_type> ||
-      apache::thrift::detail::
-          alloc_should_propagate<Map, typename Map::mapped_type>;
-  if constexpr (passAlloc) {
-    return c.emplace_back(
-        apache::thrift::detail::default_map_key(m),
-        apache::thrift::detail::default_map_value(m));
-  } else {
-    return c.emplace_back();
-  }
-}
-
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
   requires(apache::thrift::detail::alloc_should_propagate_map<Map>)
 void deserialize_key_val_into_map(
@@ -209,12 +193,12 @@ void deserialize_known_length_map(
   typename Map::container_type tmp(map.get_allocator());
   folly::reserve_if_available(tmp, mapSize);
   {
-    decltype(auto) elem0 = emplace_back_default_map(tmp, map);
+    decltype(auto) elem0 = tmp.emplace_back();
     kr(elem0.first);
     mr(elem0.second);
   }
   for (size_t i = 1; i < mapSize; ++i) {
-    decltype(auto) elem = emplace_back_default_map(tmp, map);
+    decltype(auto) elem = tmp.emplace_back();
     kr(elem.first);
     mr(elem.second);
     sorted = sorted && map.key_comp()(tmp[i - 1].first, elem.first);
