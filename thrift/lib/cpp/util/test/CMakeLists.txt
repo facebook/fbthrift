@@ -1,4 +1,4 @@
-# Copyright (c) Meta Platforms, Inc. and affiliates and Contributors
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,12 +25,15 @@ if (THRIFT_BENCHMARKS)
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif ()
 
-set(PROTOCOL_TESTS VarintUtilsTest)
+if (THRIFT_TESTS)
+  set(PROTOCOL_TESTS VarintUtilsTest)
 
-# Build each test independently.
-foreach (test_name ${PROTOCOL_TESTS})
-  add_executable(${test_name} ${test_name}.cpp)
-  target_compile_options(${test_name} PUBLIC -Wno-shadow-compatible-local)
-  target_link_libraries(${test_name} GTest::gtest_main thriftcpp2 Folly::folly)
-  gtest_discover_tests(${test_name})
-endforeach ()
+  # Build each test independently.
+  foreach (test_name ${PROTOCOL_TESTS})
+    add_executable(${test_name} ${test_name}.cpp)
+    target_compile_options(${test_name} PUBLIC -Wno-shadow-compatible-local)
+    target_link_libraries(${test_name} GTest::gtest_main thriftcpp2
+                          Folly::folly)
+    gtest_discover_tests(${test_name})
+  endforeach ()
+endif ()

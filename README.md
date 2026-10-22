@@ -116,8 +116,8 @@ CMake options:
 * `THRIFT_RPC` (default `ON`): build the RPC transport stack and its
   dependencies (Fizz, Wangle, mvfst).
 * `THRIFT_TESTS` (default `OFF`): build the tests.
-* `THRIFT_BENCHMARKS` (default `ON`): build the benchmarks along with the
-  tests.
+* `THRIFT_BENCHMARKS` (default: the value of `THRIFT_TESTS`): build the
+  benchmarks; needs Google Benchmark.
 * `THRIFT_PYTHON` (default `OFF`): build the thrift-python library and
   extensions; requires Cython.
 

@@ -135,6 +135,8 @@ thrift_generate(
 
 if (THRIFT_TESTS)
   add_subdirectory(protocol/test)
+endif ()
+if (THRIFT_BENCHMARKS)
   add_subdirectory(test)
 endif ()
 

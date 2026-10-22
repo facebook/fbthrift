@@ -83,8 +83,10 @@ option(
   THRIFT_RPC
   "Enable the RPC transport stack and its dependencies (fizz, wangle, mvfst)."
   ON)
-option(THRIFT_BENCHMARKS "Enable benchmarks (requires google/benchmark)." ON)
 option(THRIFT_TESTS "Enable tests (requires GTest)." OFF)
+option(THRIFT_BENCHMARKS
+       "Enable benchmarks (requires google/benchmark). Defaults to THRIFT_TESTS."
+       ${THRIFT_TESTS})
 option(THRIFT_PY_DEPRECATED
        "Enable the deprecated thrift-py library; use thrift-python instead" ON)
 option(THRIFT_PYTHON

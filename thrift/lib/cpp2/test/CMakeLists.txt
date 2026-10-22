@@ -15,10 +15,6 @@
 # This CMakeLists.txt takes care of building a selection of benchmarks and tests
 # in this folder. Currently, it only builds ProtocolBench with its dependencies.
 
-if (NOT THRIFT_BENCHMARKS)
-  return()
-endif ()
-
 # Generate Thrift files for this benchmark.
 thrift_generate(
   ProtocolBenchData.thrift
