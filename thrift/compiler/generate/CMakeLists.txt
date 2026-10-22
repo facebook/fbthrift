@@ -14,8 +14,6 @@
 
 add_executable(compiler_generate_build_templates build_templates.cc)
 thrift_configure_target(compiler_generate_build_templates PRIVATE)
-target_link_libraries(compiler_generate_build_templates
-                      ${FBTHRIFT_COMPILER_LINK_CXXFS})
 
 file(
   GLOB_RECURSE TEMPLATE_FILES CONFIGURE_DEPENDS

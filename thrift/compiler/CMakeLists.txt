@@ -12,44 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-check_cxx_source_compiles(
-  "
-  #include <type_traits>
-  #if _GLIBCXX_RELEASE
-  int main() {}
-  #endif"
-  FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX)
-check_cxx_source_compiles(
-  "
-  #include <type_traits>
-  #if _GLIBCXX_RELEASE >= 9
-  int main() {}
-  #endif"
-  FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX_GE_9)
-check_cxx_source_compiles(
-  "
-  #include <type_traits>
-  #if _LIBCPP_VERSION
-  int main() {}
-  #endif"
-  FBTHRIFT_COMPILER_STDLIB_LIBCXX)
-check_cxx_source_compiles(
-  "
-  #include <type_traits>
-  #if _LIBCPP_VERSION >= 9000
-  int main() {}
-  #endif"
-  FBTHRIFT_COMPILER_STDLIB_LIBCXX_GE_9)
-
-if (FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX
-    AND NOT FBTHRIFT_COMPILER_STDLIB_LIBSTDCXX_GE_9)
-  list(APPEND FBTHRIFT_COMPILER_LINK_CXXFS stdc++fs)
-endif ()
-if (FBTHRIFT_COMPILER_STDLIB_LIBCXX AND NOT
-                                        FBTHRIFT_COMPILER_STDLIB_LIBCXX_GE_9)
-  list(APPEND FBTHRIFT_COMPILER_LINK_CXXFS c++fs)
-endif ()
-
 # The Thrift AST library.
 add_library(
   compiler_ast
@@ -84,8 +46,7 @@ add_library(compiler_base STATIC detail/system.cc detail/pluggable_functions.cc
                                  diagnostic.cc source_location.cc)
 set_target_properties(compiler_base PROPERTIES POSITION_INDEPENDENT_CODE
                                                "${BUILD_SHARED_LIBS}")
-target_link_libraries(compiler_base fmt::fmt Folly::folly thrift_common
-                      ${FBTHRIFT_COMPILER_LINK_CXXFS})
+target_link_libraries(compiler_base fmt::fmt Folly::folly thrift_common)
 
 # The base Thrift compiler library.
 add_library(
@@ -132,8 +93,7 @@ target_link_libraries(
   compiler_base
   fmt::fmt
   Folly::folly
-  OpenSSL::Crypto
-  ${FBTHRIFT_COMPILER_LINK_CXXFS})
+  OpenSSL::Crypto)
 
 add_library(
   whisker STATIC
@@ -166,8 +126,7 @@ endif ()
 
 # Create the Thrift compiler binary.
 add_executable(thrift main.cc compiler.cc)
-target_link_libraries(thrift compiler_ast compiler_lib
-                      ${FBTHRIFT_COMPILER_LINK_CXXFS} ${GENERATE_LINKED})
+target_link_libraries(thrift compiler_ast compiler_lib ${GENERATE_LINKED})
 # Force compiler_generators linking (compiler will optimize it out otherwise).
 if (MSVC)
   set_target_properties(thrift PROPERTIES LINK_FLAGS
