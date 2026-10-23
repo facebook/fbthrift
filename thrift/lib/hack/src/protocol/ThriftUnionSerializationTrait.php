@@ -221,15 +221,12 @@ trait ThriftUnionSerializationTrait implements IThriftStruct {
 
       $field_type = $field['type'];
       $xfer += $protocol->writeFieldBegin($field_name, $field_type, $field_id);
-      $adapter = Shapes::idx($field, 'adapter');
-      if ($field_value is nonnull && $adapter is nonnull) {
-        $field_value = $adapter::toThrift($field_value);
-      }
       $xfer += ThriftSerializationHelper::writeStructHelper(
         $protocol,
         $field_type,
         $field_value,
         $field,
+        true,
       );
       $xfer += $protocol->writeFieldEnd();
       $num_field_count++;

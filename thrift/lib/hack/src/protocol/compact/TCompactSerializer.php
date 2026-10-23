@@ -232,10 +232,15 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
   )[write_props]: string {
     $transport = new TMemoryBuffer();
     $protocol = new TCompactProtocolAccelerated($transport);
-    if ($type_spec['type'] === TType::BOOL && $object is bool) {
+    // A top-level bool can't go through writeStructHelper, so the adapter is
+    // applied here.
+    $bool = $type_spec['type'] === TType::BOOL
+      ? ThriftSerializationHelper::unwrapApplyAdapter($object, $type_spec)
+      : $object;
+    if ($type_spec['type'] === TType::BOOL && $bool is bool) {
       HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
         ()[defaults] ==> $protocol->writeByte(
-          $object
+          $bool
             ? TCompactProtocolBase::COMPACT_TRUE
             : TCompactProtocolBase::COMPACT_FALSE,
         ),
@@ -280,9 +285,12 @@ final class TCompactSerializer extends TProtocolWritePropsSerializer {
     if ($type_spec['type'] === TType::BOOL) {
       return HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
         ()[defaults] ==> {
-          $result = -1;
+          $result = 0;
           $protocol->readByte(inout $result);
-          return $result !== 0;
+          return ThriftSerializationHelper::applyAdapterFromThrift(
+            $result === TCompactProtocolBase::COMPACT_TRUE,
+            $type_spec,
+          );
         },
         '[T133628451] Compact with memory buffer would have write_props, but Hack doesn\'t '.
         'have a way to express this atm.',

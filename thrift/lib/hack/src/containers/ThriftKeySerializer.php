@@ -38,26 +38,10 @@ abstract final class ThriftKeySerializer {
 
   public static function deserialize(
     string $bytes,
-    TType $type,
+    TType $_type,
     ThriftStructTypes::TGenericSpec $spec,
   )[write_props]: mixed {
-    return HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-      ()[defaults] ==> {
-        if ($type === TType::BOOL) {
-          $transport = new TMemoryBuffer();
-          $transport->write($bytes);
-          $protocol = new TCompactProtocolAccelerated($transport);
-          $byte = 0;
-          $protocol->readByte(inout $byte);
-          return ThriftSerializationHelper::applyAdapterFromThrift(
-            $byte === TCompactProtocolBase::COMPACT_TRUE,
-            $spec,
-          );
-        }
-        return TCompactSerializer::deserializeData($bytes, $spec);
-      },
-      'Thrift key deserialization reads from in-memory compact key bytes.',
-    );
+    return TCompactSerializer::deserializeData($bytes, $spec);
   }
 
   // Use after writeSetBegin/writeMapBegin when the element/key bytes were

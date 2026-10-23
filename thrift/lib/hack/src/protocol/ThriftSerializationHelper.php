@@ -507,8 +507,7 @@ abstract final class ThriftSerializationHelper {
       }
 
       $xfer += $protocol->writeFieldBegin($field_name, $field_type, $field_id);
-      $xfer +=
-        self::writeStructHelper($protocol, $field_type, $field_value, $fspec);
+      $xfer += self::writeValue($protocol, $field_type, $field_value, $fspec);
       $xfer += $protocol->writeFieldEnd();
     }
     $xfer += $protocol->writeFieldStop();
@@ -652,7 +651,32 @@ abstract final class ThriftSerializationHelper {
     return $field_value;
   }
 
+  /**
+   * Writes $object as the thrift type described by $tspec.
+   *
+   * With $migration_only_apply_adapter, a top-level wrapper and adapter in
+   * $tspec are applied first, so $object is the value Hack code holds and
+   * readStructHelper returns. Without it, $object must already be the thrift
+   * value; passing an adapted value then writes wrong or unreadable bytes.
+   * New callers must pass true: false only exists until existing callers are
+   * migrated, after which the flag is removed.
+   */
   public static function writeStructHelper(
+    TProtocol $protocol,
+    TType $field_type,
+    mixed $object,
+    ThriftStructTypes::TGenericSpec $tspec,
+    bool $migration_only_apply_adapter = false,
+  )[$protocol::CReadWriteDefault, write_props]: int {
+    if ($migration_only_apply_adapter) {
+      $object = self::unwrapApplyAdapter($object, $tspec);
+    }
+    return self::writeValue($protocol, $field_type, $object, $tspec);
+  }
+
+  // Field and element values are converted by the caller, since their specs
+  // keep the adapter.
+  private static function writeValue(
     TProtocol $protocol,
     TType $field_type,
     mixed $object,
@@ -707,7 +731,7 @@ abstract final class ThriftSerializationHelper {
           ) {
             $espec = Shapes::at($tspec, 'elem');
             $iter = self::unwrapApplyAdapter($iter, $espec);
-            $xfer += self::writeStructHelper(
+            $xfer += self::writeValue(
               $protocol,
               Shapes::at($tspec, 'etype'),
               $iter,
@@ -731,8 +755,7 @@ abstract final class ThriftSerializationHelper {
           ) {
             foreach ($object as $elem) {
               $elem = self::unwrapApplyAdapter($elem, $espec);
-              $xfer +=
-                self::writeStructHelper($protocol, $etype, $elem, $espec);
+              $xfer += self::writeValue($protocol, $etype, $elem, $espec);
             }
           } else {
             foreach (
@@ -746,7 +769,7 @@ abstract final class ThriftSerializationHelper {
                 ),
               ) as $key => $iter
             ) {
-              $xfer += self::writeStructHelper(
+              $xfer += self::writeValue(
                 $protocol,
                 $etype,
                 Shapes::at($tspec, 'format') === 'array' ? $key : $iter,
@@ -775,10 +798,8 @@ abstract final class ThriftSerializationHelper {
             foreach ($object as $kiter => $viter) {
               $kiter = self::unwrapApplyAdapter($kiter, $kspec);
               $viter = self::unwrapApplyAdapter($viter, $vspec);
-              $xfer +=
-                self::writeStructHelper($protocol, $ktype, $kiter, $kspec);
-              $xfer +=
-                self::writeStructHelper($protocol, $vtype, $viter, $vspec);
+              $xfer += self::writeValue($protocol, $ktype, $kiter, $kspec);
+              $xfer += self::writeValue($protocol, $vtype, $viter, $vspec);
             }
           } else {
             foreach (
@@ -793,10 +814,8 @@ abstract final class ThriftSerializationHelper {
               ) as $kiter => $viter
             ) {
               $viter = self::unwrapApplyAdapter($viter, $vspec);
-              $xfer +=
-                self::writeStructHelper($protocol, $ktype, $kiter, $kspec);
-              $xfer +=
-                self::writeStructHelper($protocol, $vtype, $viter, $vspec);
+              $xfer += self::writeValue($protocol, $ktype, $kiter, $kspec);
+              $xfer += self::writeValue($protocol, $vtype, $viter, $vspec);
             }
           }
         }

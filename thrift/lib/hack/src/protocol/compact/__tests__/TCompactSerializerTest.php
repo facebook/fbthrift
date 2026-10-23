@@ -110,4 +110,13 @@ final class TCompactSerializerTest extends WWWTest {
     );
     expect($overflow->charizard)->toEqual(4611686018427387904);
   }
+
+  public function testTopLevelBoolRoundTrip(): void {
+    $bool = shape('type' => TType::BOOL);
+    foreach (vec[true, false] as $value) {
+      $data = TCompactSerializer::serializeData($value, $bool);
+      expect(TCompactSerializer::deserializeData($data, $bool))
+        ->toEqual($value);
+    }
+  }
 }
