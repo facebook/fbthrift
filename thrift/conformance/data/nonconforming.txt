@@ -149,33 +149,12 @@ hack/CompatibilityTest/testset.i32.i64/ChangeFieldType/min.*
 hack/CompatibilityTest/testset.i32.i64/ChangeFieldType/neg_one.*
 hack/CompatibilityTest/testset.i32.i64/ChangeFieldType/one.*
 hack/CompatibilityTest/testset.i32.i64/ChangeFieldType/zero.*
-hack/CompatibilityTest/testset/ChangeEnumType/MissingField.?.MissingField.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/MissingField.?.NameMismatch.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/MissingField.?.NoZero.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/MissingField.?.Standard.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/MissingField.?.ValueMismatch.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/NameMismatch.?.MissingField.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/NameMismatch.?.NameMismatch.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/NameMismatch.?.NoZero.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/NameMismatch.?.Standard.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/NameMismatch.?.ValueMismatch.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/NoZero.?.MissingField.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/NoZero.?.NameMismatch.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/NoZero.?.NoZero.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/NoZero.?.Standard.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/NoZero.?.ValueMismatch.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/Standard.?.MissingField.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/Standard.?.NameMismatch.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/Standard.?.NoZero.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/Standard.?.Standard.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/Standard.?.ValueMismatch.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/ValueMismatch.?.MissingField.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/ValueMismatch.?.NameMismatch.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/ValueMismatch.?.NoZero.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/ValueMismatch.?.Standard.?.*
-hack/CompatibilityTest/testset/ChangeEnumType/ValueMismatch.?.ValueMismatch.?.*
 
 ## Hack client
+
+# www never ThriftSync'd thrift/test/testset/Enum.thrift, so the Hack
+# ConformanceService can't load these structs ("Unknown lazy type").
+hack/CompatibilityTest/testset/ChangeEnumType/*
 
 # fragmentation and factory function interactions are not yet supported by the
 # Hack client
@@ -247,38 +226,16 @@ go/ThriftRPCServerTest/InteractionConstructorTest/Success.InteractionConstructor
 ###
 
 # round-trip-test
+# Rust codegen ignores @thrift.TerseWrite when serializing, so it writes a terse
+# field even at its default.
 rust/RoundTripTest/testset.Terse.bool/false.*
-rust/RoundTripTest/testset.Terse.binary/empty.*
-rust/RoundTripTest/testset.Terse.list<binary>/empty.*
-rust/RoundTripTest/testset.Terse.list<byte>/empty.*
-rust/RoundTripTest/testset.Terse.list<double>/empty.*
-rust/RoundTripTest/testset.Terse.list<float>/empty.*
-rust/RoundTripTest/testset.Terse.list<i??>/empty.*
-rust/RoundTripTest/testset.Terse.list<string>/empty.*
-rust/RoundTripTest/testset.Terse.map<i64,binary>/empty.*
-rust/RoundTripTest/testset.Terse.map<i64,bool>/empty.*
-rust/RoundTripTest/testset.Terse.map<i64,byte>/empty.*
-rust/RoundTripTest/testset.Terse.map<i64,double>/empty.*
-rust/RoundTripTest/testset.Terse.map<i64,float>/empty.*
-rust/RoundTripTest/testset.Terse.map<i64,i??>/empty.*
-rust/RoundTripTest/testset.Terse.map<i64,string>/empty.*
-rust/RoundTripTest/testset.Terse.map<string,binary>/empty.*
-rust/RoundTripTest/testset.Terse.map<string,bool>/empty.*
-rust/RoundTripTest/testset.Terse.map<string,byte>/empty.*
-rust/RoundTripTest/testset.Terse.map<string,double>/empty.*
-rust/RoundTripTest/testset.Terse.map<string,float>/empty.*
-rust/RoundTripTest/testset.Terse.map<string,i??>/empty.*
-rust/RoundTripTest/testset.Terse.map<string,string>/empty.*
-rust/RoundTripTest/testset.Terse.set<i64>/empty.*
-rust/RoundTripTest/testset.Terse.set<string>/empty.*
-rust/RoundTripTest/testset.Terse.string/empty.*
-rust/RoundTripTest/testset.Terse.byte/zero.*
-rust/RoundTripTest/testset.Terse.double/zero.*
-rust/RoundTripTest/testset.Terse.float/zero.*
-rust/RoundTripTest/testset.Terse.i??/zero.*
+rust/RoundTripTest/testset.Terse.*/empty.*
+rust/RoundTripTest/testset.Terse.*/zero.*
 
 # compatibility-test
 rust/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.*
+# Also the @thrift.TerseWrite bug: an empty value read into a terse field is
+# written back.
 rust/CompatibilityTest/testset.Unqualified.Terse/ChangeQualifier/empty.*
 rust/CompatibilityTest/testset.Optional.Terse/ChangeQualifier/empty.*
 
