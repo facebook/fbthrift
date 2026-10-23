@@ -204,35 +204,17 @@ inline constexpr auto kHackAdapterUri =
     "facebook.com/thrift/annotation/hack/Adapter";
 inline constexpr auto kHackAttributeUri =
     "facebook.com/thrift/annotation/hack/Attributes";
-inline constexpr auto kHackFieldWrapperUri =
-    "facebook.com/thrift/annotation/hack/FieldWrapper";
 inline constexpr auto kHackNameUri = "facebook.com/thrift/annotation/hack/Name";
 inline constexpr auto kHackNamePrefixUri =
     "facebook.com/thrift/annotation/hack/NamePrefix";
 inline constexpr auto kHackSkipCodegenUri =
     "facebook.com/thrift/annotation/hack/SkipCodegen";
-inline constexpr auto kHackStructAsTraitUri =
-    "facebook.com/thrift/annotation/hack/StructAsTrait";
-inline constexpr auto kHackStructTraitUri =
-    "facebook.com/thrift/annotation/hack/StructTrait";
 inline constexpr auto kHackConstantsClassUri =
     "facebook.com/thrift/annotation/hack/ConstantsClass";
-inline constexpr auto kHackUnionEnumAttributesUri =
-    "facebook.com/thrift/annotation/hack/UnionEnumAttributes";
 inline constexpr auto kHackWrapperUri =
     "facebook.com/thrift/annotation/hack/Wrapper";
-inline constexpr auto kHackModuleInternalUri =
-    "facebook.com/thrift/annotation/hack/ModuleInternal";
-inline constexpr auto kHackGenerateClientMethodsWithHeaders =
-    "facebook.com/thrift/annotation/hack/GenerateClientMethodsWithHeaders";
-inline constexpr auto kHackMigrationBlockingAllowInheritance =
-    "facebook.com/thrift/annotation/hack/MigrationBlockingAllowInheritance";
 inline constexpr auto kHackMigrationBlockingLegacyJSONSerialization =
     "facebook.com/thrift/annotation/hack/MigrationBlockingLegacyJSONSerialization";
-inline constexpr auto kHackFixmeWrongTypeUri =
-    "facebook.com/thrift/annotation/hack/FixmeWrongType";
-inline constexpr auto kHackUnsafeArrayUri =
-    "facebook.com/thrift/annotation/hack/UnsafeArray";
 inline constexpr auto kLegacyOmitPrefixInNameStringUri =
     "facebook.com/thrift/annotation/hack/LegacyOmitPrefixInNameString";
 inline constexpr auto kLegacyAlwaysIncludeNamePrefixInProcessor =
