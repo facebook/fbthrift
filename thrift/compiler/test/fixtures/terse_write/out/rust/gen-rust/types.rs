@@ -365,6 +365,13 @@ impl ::fbthrift::ThriftStruct for self::MyStruct {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::MyStruct {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyStruct
 where
     P: ::fbthrift::ProtocolWriter,
@@ -934,6 +941,27 @@ impl ::fbthrift::ThriftStruct for self::StructLevelTerseStruct {
             ::fbthrift::Field::new("union_field", ::fbthrift::TType::Struct, 15),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::StructLevelTerseStruct {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.bool_field).is_empty()
+            && ::fbthrift::help::Terse(&self.byte_field).is_empty()
+            && ::fbthrift::help::Terse(&self.short_field).is_empty()
+            && ::fbthrift::help::Terse(&self.int_field).is_empty()
+            && ::fbthrift::help::Terse(&self.long_field).is_empty()
+            && ::fbthrift::help::Terse(&self.float_field).is_empty()
+            && ::fbthrift::help::Terse(&self.double_field).is_empty()
+            && ::fbthrift::help::Terse(&self.string_field).is_empty()
+            && ::fbthrift::help::Terse(&self.binary_field).is_empty()
+            && ::fbthrift::help::Terse(&self.enum_field).is_empty()
+            && ::fbthrift::help::Terse(&self.list_field).is_empty()
+            && ::fbthrift::help::Terse(&self.set_field).is_empty()
+            && ::fbthrift::help::Terse(&self.map_field).is_empty()
+            && ::fbthrift::help::Terse(&self.struct_field).is_empty()
+            && ::fbthrift::help::Terse(&self.union_field).is_empty()
     }
 }
 
@@ -2059,6 +2087,15 @@ impl ::fbthrift::ThriftStruct for self::AdaptedFields {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::AdaptedFields {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.field1).is_empty()
+            && ::fbthrift::help::Terse(&self.field2).is_empty()
+            && ::fbthrift::help::Terse(&self.field3).is_empty()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::AdaptedFields
 where
     P: ::fbthrift::ProtocolWriter,
@@ -2280,6 +2317,13 @@ impl ::fbthrift::ThriftStruct for self::TerseException {
             ::fbthrift::Field::new("msg", ::fbthrift::TType::String, 1),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::TerseException {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.msg).is_empty()
     }
 }
 

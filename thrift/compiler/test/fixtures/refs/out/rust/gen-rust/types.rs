@@ -1799,6 +1799,13 @@ impl ::fbthrift::ThriftStruct for self::RecursiveStruct {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::RecursiveStruct {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.mes.is_none()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::RecursiveStruct
 where
     P: ::fbthrift::ProtocolWriter,
@@ -2502,6 +2509,13 @@ impl ::fbthrift::ThriftStruct for self::Empty {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::Empty {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::Empty
 where
     P: ::fbthrift::ProtocolWriter,
@@ -2846,6 +2860,15 @@ impl ::fbthrift::ThriftStruct for self::StructWithBox {
             ::fbthrift::Field::new("c", ::fbthrift::TType::Struct, 3),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::StructWithBox {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.a.is_none()
+            && self.b.is_none()
+            && self.c.is_none()
     }
 }
 
@@ -3206,6 +3229,14 @@ impl ::fbthrift::ThriftStruct for self::StructWithTerseInternBox {
             ::fbthrift::Field::new("field2", ::fbthrift::TType::Struct, 2),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::StructWithTerseInternBox {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.field1).is_empty()
+            && ::fbthrift::help::Terse(&self.field2).is_empty()
     }
 }
 
@@ -3611,6 +3642,14 @@ impl ::fbthrift::ThriftStruct for self::AdaptedStructWithTerseInternBox {
             ::fbthrift::Field::new("field2", ::fbthrift::TType::Struct, 2),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::AdaptedStructWithTerseInternBox {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.field1).is_empty()
+            && ::fbthrift::help::Terse(&self.field2).is_empty()
     }
 }
 

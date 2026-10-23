@@ -1611,6 +1611,13 @@ impl ::fbthrift::ThriftStruct for self::T6 {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::T6 {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::T6
 where
     P: ::fbthrift::ProtocolWriter,
@@ -2804,6 +2811,13 @@ impl ::fbthrift::ThriftStruct for self::TransitiveDerives {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::TransitiveDerives {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::TransitiveDerives
 where
     P: ::fbthrift::ProtocolWriter,
@@ -2951,6 +2965,13 @@ impl ::fbthrift::ThriftStruct for self::StructWithTransitiveDerives {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::StructWithTransitiveDerives {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::StructWithTransitiveDerives
 where
     P: ::fbthrift::ProtocolWriter,
@@ -3072,6 +3093,13 @@ impl ::fbthrift::ThriftStruct for self::SomeError {
         static FIELDS: &[::fbthrift::Field] = &[
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::SomeError {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
     }
 }
 

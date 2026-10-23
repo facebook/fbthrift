@@ -973,6 +973,13 @@ impl ::fbthrift::ThriftStruct for self::empty_struct {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::empty_struct {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::empty_struct
 where
     P: ::fbthrift::ProtocolWriter,
@@ -2899,6 +2906,17 @@ impl ::fbthrift::ThriftStruct for self::MinPaddingWithCustomType {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::MinPaddingWithCustomType {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.small).is_empty()
+            && ::fbthrift::help::Terse(&self.biggish).is_empty()
+            && ::fbthrift::help::Terse(&self.medium).is_empty()
+            && ::fbthrift::help::Terse(&self.big).is_empty()
+            && ::fbthrift::help::Terse(&self.tiny).is_empty()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MinPaddingWithCustomType
 where
     P: ::fbthrift::ProtocolWriter,
@@ -3336,6 +3354,13 @@ impl ::fbthrift::ThriftStruct for self::MyDataItem {
         static FIELDS: &[::fbthrift::Field] = &[
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::MyDataItem {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
     }
 }
 
@@ -3810,6 +3835,14 @@ impl ::fbthrift::ThriftStruct for self::ForwardUsageRoot {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::ForwardUsageRoot {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.ForwardUsageStruct.is_none()
+            && self.ForwardUsageByRef.is_none()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::ForwardUsageRoot
 where
     P: ::fbthrift::ProtocolWriter,
@@ -3971,6 +4004,13 @@ impl ::fbthrift::ThriftStruct for self::ForwardUsageStruct {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::ForwardUsageStruct {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.foo.is_none()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::ForwardUsageStruct
 where
     P: ::fbthrift::ProtocolWriter,
@@ -4115,6 +4155,13 @@ impl ::fbthrift::ThriftStruct for self::ForwardUsageByRef {
             ::fbthrift::Field::new("foo", ::fbthrift::TType::Struct, 1),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::ForwardUsageByRef {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.foo.is_none()
     }
 }
 
@@ -4265,6 +4312,13 @@ impl ::fbthrift::ThriftStruct for self::IncompleteMap {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::IncompleteMap {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.field.is_none()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::IncompleteMap
 where
     P: ::fbthrift::ProtocolWriter,
@@ -4396,6 +4450,13 @@ impl ::fbthrift::ThriftStruct for self::IncompleteMapDep {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::IncompleteMapDep {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::IncompleteMapDep
 where
     P: ::fbthrift::ProtocolWriter,
@@ -4513,6 +4574,13 @@ impl ::fbthrift::ThriftStruct for self::CompleteMap {
             ::fbthrift::Field::new("field", ::fbthrift::TType::Map, 1),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::CompleteMap {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.field.is_none()
     }
 }
 
@@ -4674,6 +4742,13 @@ impl ::fbthrift::ThriftStruct for self::CompleteMapDep {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::CompleteMapDep {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::CompleteMapDep
 where
     P: ::fbthrift::ProtocolWriter,
@@ -4791,6 +4866,13 @@ impl ::fbthrift::ThriftStruct for self::IncompleteList {
             ::fbthrift::Field::new("field", ::fbthrift::TType::List, 1),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::IncompleteList {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.field.is_none()
     }
 }
 
@@ -4939,6 +5021,13 @@ impl ::fbthrift::ThriftStruct for self::IncompleteListDep {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::IncompleteListDep {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::IncompleteListDep
 where
     P: ::fbthrift::ProtocolWriter,
@@ -5056,6 +5145,13 @@ impl ::fbthrift::ThriftStruct for self::CompleteList {
             ::fbthrift::Field::new("field", ::fbthrift::TType::List, 1),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::CompleteList {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.field.is_none()
     }
 }
 
@@ -5204,6 +5300,13 @@ impl ::fbthrift::ThriftStruct for self::CompleteListDep {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::CompleteListDep {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::CompleteListDep
 where
     P: ::fbthrift::ProtocolWriter,
@@ -5321,6 +5424,13 @@ impl ::fbthrift::ThriftStruct for self::AdaptedList {
             ::fbthrift::Field::new("field", ::fbthrift::TType::List, 1),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::AdaptedList {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.field.is_none()
     }
 }
 
@@ -5607,6 +5717,13 @@ impl ::fbthrift::ThriftStruct for self::DependentAdaptedList {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::DependentAdaptedList {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.field.is_none()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::DependentAdaptedList
 where
     P: ::fbthrift::ProtocolWriter,
@@ -5738,6 +5855,13 @@ impl ::fbthrift::ThriftStruct for self::DependentAdaptedListDep {
             ::fbthrift::Field::new("field", ::fbthrift::TType::I16, 1),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::DependentAdaptedListDep {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.field.is_none()
     }
 }
 

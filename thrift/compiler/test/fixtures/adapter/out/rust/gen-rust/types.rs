@@ -3383,6 +3383,15 @@ impl ::fbthrift::ThriftStruct for self::TerseAdaptedFields {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::TerseAdaptedFields {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.int_field).is_empty()
+            && ::fbthrift::help::Terse(&self.string_field).is_empty()
+            && ::fbthrift::help::Terse(&self.set_field).is_empty()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::TerseAdaptedFields
 where
     P: ::fbthrift::ProtocolWriter,
@@ -3764,6 +3773,13 @@ impl ::fbthrift::ThriftStruct for self::A {
         static FIELDS: &[::fbthrift::Field] = &[
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::A {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
     }
 }
 
@@ -6178,6 +6194,13 @@ impl ::fbthrift::ThriftStruct for self::CircularStruct {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::CircularStruct {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.field.is_none()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::CircularStruct
 where
     P: ::fbthrift::ProtocolWriter,
@@ -6474,6 +6497,13 @@ impl ::fbthrift::ThriftStruct for self::DeclaredAfterStruct {
         static FIELDS: &[::fbthrift::Field] = &[
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::DeclaredAfterStruct {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
     }
 }
 
@@ -6909,6 +6939,13 @@ impl ::fbthrift::ThriftStruct for self::ApplyAdapter {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::ApplyAdapter {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::ApplyAdapter
 where
     P: ::fbthrift::ProtocolWriter,
@@ -7052,6 +7089,13 @@ impl ::fbthrift::ThriftStruct for self::TransitiveAdapted {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::TransitiveAdapted {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::TransitiveAdapted
 where
     P: ::fbthrift::ProtocolWriter,
@@ -7188,6 +7232,15 @@ impl ::fbthrift::ThriftStruct for self::CountingStruct {
             ::fbthrift::Field::new("regularString", ::fbthrift::TType::String, 3),
         ];
         FIELDS
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for self::CountingStruct {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.regularInt.is_none()
+            && self.countingInt.is_none()
+            && self.regularString.is_none()
     }
 }
 

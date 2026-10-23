@@ -244,12 +244,6 @@ go/ThriftRPCServerTest/InteractionConstructorTest/Success.InteractionConstructor
 # Language: Rust
 ###
 
-# round-trip-test
-# Rust codegen writes a terse struct or exception field even when every field
-# in it is unset or empty.
-rust/RoundTripTest/testset.Terse.exception/empty.*
-rust/RoundTripTest/testset.Terse.struct/empty.*
-
 # compatibility-test
 rust/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.*
 

@@ -137,6 +137,24 @@ impl ::fbthrift::ThriftStruct for self::{{structured.rust_name}} {
     }
 }
 
+{{#if (not structured.has_non_optional_and_non_terse_field?)}}
+{{#if structured.has_deprecated_fields?}}
+#[allow(deprecated)]{{! this struct's own deprecated fields are unavoidable here }}
+{{/if structured.has_deprecated_fields?}}
+impl ::fbthrift::help::IsEmpty for self::{{structured.rust_name}} {
+    #[inline]
+    fn is_empty(&self) -> bool {
+  {{#if structured.fields?}}
+    {{#each (array.enumerate structured.fields with_first=true) as |_index field first?|}}
+        {{#if (not first?)}}    && {{/if}}{{#if field.optional?}}self.{{field.rust_name}}.is_none(){{#else if field.has_adapter?}}::fbthrift::help::NeverEmpty.is_empty(){{#else}}::fbthrift::help::Terse(&self.{{field.rust_name}}).is_empty(){{/if field.optional?}}
+    {{/each}}
+  {{#else}}
+        true
+  {{/if structured.fields?}}
+    }
+}
+
+{{/if (not structured.has_non_optional_and_non_terse_field?)}}
 {{#if structured.has_deprecated_fields?}}
 #[allow(deprecated)]{{! this struct's own deprecated fields are unavoidable here }}
 {{/if structured.has_deprecated_fields?}}

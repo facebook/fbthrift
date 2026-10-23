@@ -596,6 +596,13 @@ impl ::fbthrift::ThriftStruct for self::MyDataItem {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::MyDataItem {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyDataItem
 where
     P: ::fbthrift::ProtocolWriter,

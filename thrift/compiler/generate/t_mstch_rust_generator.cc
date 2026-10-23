@@ -1427,6 +1427,16 @@ class t_mstch_rust_generator : public t_whisker_generator {
       }
       return true;
     });
+    def.property(
+        "has_non_optional_and_non_terse_field?", [](const t_structured& self) {
+          for (const auto& field : self.fields()) {
+            if (field.qualifier() != t_field_qualifier::optional &&
+                field.qualifier() != t_field_qualifier::terse) {
+              return true;
+            }
+          }
+          return false;
+        });
     def.property("has_adapter?", &node_has_adapter);
     def.property("adapter_name", [this](const t_structured& self) {
       auto adapter_annotation = find_structured_adapter_annotation(self);

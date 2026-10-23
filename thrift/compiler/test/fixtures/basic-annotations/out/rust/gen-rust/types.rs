@@ -558,6 +558,13 @@ impl ::fbthrift::ThriftStruct for self::MyException {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::MyException {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::MyException
 where
     P: ::fbthrift::ProtocolWriter,

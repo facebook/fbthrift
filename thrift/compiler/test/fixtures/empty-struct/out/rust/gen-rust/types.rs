@@ -63,6 +63,13 @@ impl ::fbthrift::ThriftStruct for self::Empty {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for self::Empty {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        true
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for self::Empty
 where
     P: ::fbthrift::ProtocolWriter,
