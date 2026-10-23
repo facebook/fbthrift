@@ -1584,6 +1584,13 @@ impl ::std::default::Default for union1 {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for union1 {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::std::matches!(self, Self::UnknownField(_))
+    }
+}
+
 impl ::fbthrift::GetTType for union1 {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
@@ -1702,6 +1709,13 @@ impl ::fbthrift::metadata::ThriftAnnotations for union1 {
 impl ::std::default::Default for union2 {
     fn default() -> Self {
         Self::UnknownField(-1)
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for union2 {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::std::matches!(self, Self::UnknownField(_))
     }
 }
 

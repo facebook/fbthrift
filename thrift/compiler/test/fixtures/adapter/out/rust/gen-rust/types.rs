@@ -1894,6 +1894,13 @@ impl ::std::default::Default for Baz {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for Baz {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::std::matches!(self, Self::UnknownField(_))
+    }
+}
+
 impl ::fbthrift::GetTType for Baz {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
@@ -5352,6 +5359,13 @@ impl ::fbthrift::metadata::ThriftAnnotations for AdaptTemplatedNestedTestStruct 
 impl ::std::default::Default for AdaptTestUnion {
     fn default() -> Self {
         Self::UnknownField(-1)
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for AdaptTestUnion {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::std::matches!(self, Self::UnknownField(_))
     }
 }
 

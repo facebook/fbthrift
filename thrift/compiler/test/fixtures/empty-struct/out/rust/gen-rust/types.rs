@@ -140,6 +140,13 @@ impl ::std::default::Default for Nada {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for Nada {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::std::matches!(self, Self::UnknownField(_))
+    }
+}
+
 impl ::fbthrift::GetTType for Nada {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }

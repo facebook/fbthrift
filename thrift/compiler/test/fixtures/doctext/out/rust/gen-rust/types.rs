@@ -385,6 +385,13 @@ impl ::std::default::Default for U {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for U {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::std::matches!(self, Self::UnknownField(_))
+    }
+}
+
 impl ::fbthrift::GetTType for U {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }

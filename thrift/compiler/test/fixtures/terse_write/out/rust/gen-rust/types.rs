@@ -442,6 +442,13 @@ impl ::std::default::Default for MyUnion {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for MyUnion {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::std::matches!(self, Self::UnknownField(_))
+    }
+}
+
 impl ::fbthrift::GetTType for MyUnion {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }

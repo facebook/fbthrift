@@ -270,6 +270,13 @@ impl ::std::default::Default for ExampleUnion {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for ExampleUnion {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::std::matches!(self, Self::UnknownField(_))
+    }
+}
+
 impl ::fbthrift::GetTType for ExampleUnion {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }

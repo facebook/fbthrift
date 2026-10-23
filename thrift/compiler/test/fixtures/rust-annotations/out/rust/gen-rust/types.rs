@@ -2556,6 +2556,13 @@ impl ::std::default::Default for U11 {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for U11 {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::std::matches!(self, Self::UnknownField(_))
+    }
+}
+
 impl ::fbthrift::GetTType for U11 {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
@@ -3121,6 +3128,13 @@ impl ::fbthrift::metadata::ThriftAnnotations for SomeError {
 impl ::std::default::Default for Bar {
     fn default() -> Self {
         Self::UnknownField(-1)
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for Bar {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::std::matches!(self, Self::UnknownField(_))
     }
 }
 
