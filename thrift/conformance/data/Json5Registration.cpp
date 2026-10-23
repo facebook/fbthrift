@@ -98,6 +98,9 @@ void registerRoundTripJson5Serializers(AnyRegistry& registry) {
   registerJson5<TerseEmptiableStruct>(registry);
   registerJson5<TerseNonEmptiableStruct>(registry);
   registerJson5<TerseEmptiableExceptionStruct>(registry);
+  registerJson5<TerseAdaptedFieldStruct>(registry);
+  registerJson5<TerseAdaptedTypedefStruct>(registry);
+  registerJson5<TerseNestedAdaptedFieldStruct>(registry);
 }
 
 } // namespace apache::thrift::conformance::data

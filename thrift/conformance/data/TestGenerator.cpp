@@ -173,6 +173,15 @@ Test createTerseRoundTripTest(
           [](auto& data) { data.field()->message() = ""; }),
       "exception/optional_empty");
 
+  addTerseValueTestCases<type::string_t, TerseAdaptedFieldStruct>(
+      addTestCase, "RustAdapter", setField);
+  addTerseValueTestCases<type::string_t, TerseAdaptedTypedefStruct>(
+      addTestCase, "RustAdapter.typedef", setField);
+  addTerseValueTestCases<type::string_t, TerseNestedAdaptedFieldStruct>(
+      addTestCase,
+      "struct.Terse.RustAdapter",
+      [](auto& data, const auto& value) { data.field()->field() = value; });
+
   return test;
 }
 

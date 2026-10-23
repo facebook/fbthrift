@@ -162,6 +162,8 @@ hack/RoundTripTest/testset.Terse.union/*
 hack/RoundTripTest/testset.Terse.NewType.*
 hack/RoundTripTest/testset.Terse.exception/*
 hack/RoundTripTest/testset.Terse.struct/*
+hack/RoundTripTest/testset.Terse.RustAdapter.*
+hack/RoundTripTest/testset.Terse.struct.Terse.RustAdapter.*
 
 # fragmentation and factory function interactions are not yet supported by the
 # Hack client
@@ -243,6 +245,13 @@ go/ThriftRPCServerTest/InteractionConstructorTest/Success.InteractionConstructor
 ###
 # Language: Rust
 ###
+
+# round-trip-test
+# Rust codegen writes a terse `@rust.Adapter` field even when its value is
+# empty, and never treats a struct holding one as empty.
+rust/RoundTripTest/testset.Terse.RustAdapter.string/empty.*
+rust/RoundTripTest/testset.Terse.RustAdapter.typedef.string/empty.*
+rust/RoundTripTest/testset.Terse.struct.Terse.RustAdapter.string/empty.*
 
 # compatibility-test
 rust/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.*

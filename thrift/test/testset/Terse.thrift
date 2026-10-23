@@ -97,3 +97,22 @@ struct TerseEmptiableExceptionStruct {
   @thrift.TerseWrite
   1: EmptiableException field;
 }
+
+@rust.Adapter{name = "::fbthrift::adapter::IdentityAdapter<>"}
+typedef string AdaptedString
+
+struct TerseAdaptedFieldStruct {
+  @rust.Adapter{name = "::fbthrift::adapter::IdentityAdapter<>"}
+  @thrift.TerseWrite
+  1: string field;
+}
+
+struct TerseAdaptedTypedefStruct {
+  @thrift.TerseWrite
+  1: AdaptedString field;
+}
+
+struct TerseNestedAdaptedFieldStruct {
+  @thrift.TerseWrite
+  1: TerseAdaptedFieldStruct field;
+}
