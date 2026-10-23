@@ -24,6 +24,7 @@ namespace go thrift.test.testset.Enum
 namespace csharp Apache.Thrift.Test.Enum
 
 include "thrift/annotation/compat.thrift"
+include "thrift/annotation/thrift.thrift"
 
 enum Standard {
   value_0 = 0,
@@ -75,4 +76,9 @@ struct DifferentNameEnumStruct {
 
 struct DifferentValueEnumStruct {
   1: optional ValueMismatch field;
+}
+
+struct TerseStandardEnumStruct {
+  @thrift.TerseWrite
+  1: Standard field;
 }

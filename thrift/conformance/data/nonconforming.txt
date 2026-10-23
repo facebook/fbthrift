@@ -199,6 +199,7 @@ go/RoundTripTest/testset.Terse.*/empty.*
 # Go does not support Terse [WONTFIX]
 go/CompatibilityTest/testset.Unqualified.Terse/ChangeQualifier/empty.*
 go/CompatibilityTest/testset.Optional.Terse/ChangeQualifier/empty.*
+go/CompatibilityTest/testset/ChangeEnumType/Standard.0.TerseStandard.0.*
 
 # Go Data conformance compatibility tests [FAILED]
 # Failed tests related to optional defaults T162510833
@@ -234,6 +235,10 @@ rust/RoundTripTest/testset.Terse.enum/zero.*
 
 # compatibility-test
 rust/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.*
+
+# Under deprecated_default_enum_min_i32 an absent enum field reads back as
+# i32::MIN so Rust writes a terse enum field even when the value is 0.
+rust/CompatibilityTest/testset/ChangeEnumType/Standard.0.TerseStandard.0.*
 
 ## Rust server
 
