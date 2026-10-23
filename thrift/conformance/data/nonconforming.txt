@@ -152,19 +152,6 @@ hack/CompatibilityTest/testset.i32.i64/ChangeFieldType/zero.*
 
 ## Hack client
 
-# www never ThriftSync'd thrift/test/testset/Enum.thrift, so the Hack
-# ConformanceService can't load these structs ("Unknown lazy type").
-hack/CompatibilityTest/testset/ChangeEnumType/*
-
-# Same for thrift/test/testset/Terse.thrift, which these round trips use.
-hack/RoundTripTest/testset.Terse.enum/*
-hack/RoundTripTest/testset.Terse.union/*
-hack/RoundTripTest/testset.Terse.NewType.*
-hack/RoundTripTest/testset.Terse.exception/*
-hack/RoundTripTest/testset.Terse.struct/*
-hack/RoundTripTest/testset.Terse.RustAdapter.*
-hack/RoundTripTest/testset.Terse.struct.Terse.RustAdapter.*
-
 # fragmentation and factory function interactions are not yet supported by the
 # Hack client
 hack/ThriftRPCClientTest/StreamFragmentation/Success.StreamFragmentationTest
