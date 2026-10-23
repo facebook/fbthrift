@@ -661,9 +661,18 @@ ${_cybld}/thrift/python/server_impl/interceptor/${_target_file} -> ${_src}")
 endforeach ()
 
 #####
-# Generate thrift-python test types
+# Tests follow THRIFT_TESTS. setup.py builds the test extensions, which compile
+# from the test/ symlinks, only when THRIFT_BUILD_TESTS is 1.
 #####
-add_subdirectory(test)
+set(_python_test_bindings)
+if (THRIFT_TESTS)
+  set(_setup_py_build_tests 1)
+  add_subdirectory(test)
+  set(_python_test_bindings create_binding_symlink_test
+                            create_binding_symlink_lib_test)
+else ()
+  set(_setup_py_build_tests 0)
+endif ()
 
 #####
 # Now build everything else in lib/python, including all remaining Cython
@@ -676,7 +685,7 @@ add_custom_target(
           create_binding_symlink_python
           create_binding_symlink_py3
           create_binding_symlink_server_impl
-          create_binding_symlink_lib_test
+          ${_python_test_bindings}
           thriftcpp2
           thrift_python_cpp
           thrift_python_types_bindings
@@ -713,7 +722,7 @@ add_custom_command(
     "CXXFLAGS=${CMAKE_CXX_FLAGS}" "CC=${_setup_py_cc}" "CXX=${_setup_py_cxx}"
     "LDFLAGS=${SETUP_LDFLAGS}" "CYTHON_INCLUDE_PATH=${cython_include_path}"
     "LIBRARY_DIRS=${library_dirs_str}"
-    "THRIFT_BUILD_TESTS=${THRIFT_BUILD_TESTS}" ${Python3_EXECUTABLE}
+    "THRIFT_BUILD_TESTS=${_setup_py_build_tests}" ${Python3_EXECUTABLE}
     ${_lib_dir}/setup.py -v build_ext --parallel ${_setup_py_parallel_jobs}
     bdist_wheel --libpython ${python_libname}
   WORKING_DIRECTORY ${_cybld})

@@ -465,9 +465,13 @@ else:
         ),
     ]
 
-    # Test extension modules - only built if THRIFT_BUILD_TESTS=1
-    # (set by add_subdirectory(test) in CMakeLists.txt)
-    if os.environ.get("THRIFT_BUILD_TESTS", "0") == "1":
+    # CMake passes THRIFT_BUILD_TESTS=1 when THRIFT_TESTS is on.
+    build_tests_flag = os.environ.get("THRIFT_BUILD_TESTS", "0")
+    if build_tests_flag not in ("0", "1"):
+        sys.exit(f"THRIFT_BUILD_TESTS must be 0 or 1, not {build_tests_flag!r}")
+    build_tests = build_tests_flag == "1"
+
+    if build_tests:
         test_extensions = [
             Extension(
                 "thrift.python.test.request_context_extractor.request_context_extractor",
@@ -551,7 +555,7 @@ else:
         print(f"Building {len(available)} test extension(s)")
         exts.extend(available)
     else:
-        print("Skipping test extensions (THRIFT_BUILD_TESTS not set)")
+        print("Skipping test extensions (THRIFT_BUILD_TESTS=0)")
 
     # Base packages always included
     packages = [
@@ -577,7 +581,7 @@ else:
     ]
 
     # Test-only package (directory created by test symlinks)
-    if os.environ.get("THRIFT_BUILD_TESTS", "0") == "1":
+    if build_tests:
         packages.extend(["thrift.lib.python.client", "thrift.lib.python.client.test"])
 
     setup(
@@ -585,6 +589,9 @@ else:
         version="0.0.1",
         packages=packages,
         package_data={"": ["*.pxd", "*.h", "*.so"]},
+        # bdist_wheel packages everything under build/lib, so a tests-off
+        # build must not reuse the one a tests-on build filled.
+        options={"build": {"build_base": "build" if build_tests else "build-notests"}},
         setup_requires=["cython"],
         zip_safe=False,
         ext_modules=cythonize(

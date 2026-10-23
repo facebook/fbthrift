@@ -14,11 +14,6 @@
 
 # Generate thrift-python test types
 
-# Signal to setup.py that test extensions should be built
-set(THRIFT_BUILD_TESTS
-    "1"
-    PARENT_SCOPE)
-
 # Include ThriftLibrary macros
 # (for standalone builds, CMAKE_MODULE_PATH must be set)
 include(ThriftLibrary OPTIONAL)
