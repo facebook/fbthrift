@@ -45,6 +45,13 @@ impl ::fbthrift::GetTType for MapType {
     const MAP_KEY_TYPE: ::fbthrift::MapKeyType = <::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32> as ::fbthrift::GetTType>::MAP_KEY_TYPE;
 }
 
+impl ::fbthrift::help::IsEmpty for MapType {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.0).is_empty()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for MapType
 where
     P: ::fbthrift::ProtocolWriter,
@@ -70,6 +77,13 @@ impl ::fbthrift::GetTType for BinType {
     const MAP_KEY_TYPE: ::fbthrift::MapKeyType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::MAP_KEY_TYPE;
 }
 
+impl ::fbthrift::help::IsEmpty for BinType {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.0).is_empty()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for BinType
 where
     P: ::fbthrift::ProtocolWriter,
@@ -93,6 +107,13 @@ where
 impl ::fbthrift::GetTType for BytesType {
     const TTYPE: ::fbthrift::TType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::TTYPE;
     const MAP_KEY_TYPE: ::fbthrift::MapKeyType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::MAP_KEY_TYPE;
+}
+
+impl ::fbthrift::help::IsEmpty for BytesType {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.0).is_empty()
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for BytesType

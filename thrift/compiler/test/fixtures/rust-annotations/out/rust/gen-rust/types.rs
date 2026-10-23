@@ -674,6 +674,13 @@ impl ::fbthrift::GetTType for binary_t {
     const MAP_KEY_TYPE: ::fbthrift::MapKeyType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::MAP_KEY_TYPE;
 }
 
+impl ::fbthrift::help::IsEmpty for binary_t {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.0).is_empty()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for binary_t
 where
     P: ::fbthrift::ProtocolWriter,
@@ -699,6 +706,13 @@ impl ::fbthrift::GetTType for Generation {
     const MAP_KEY_TYPE: ::fbthrift::MapKeyType = <::std::primitive::i64 as ::fbthrift::GetTType>::MAP_KEY_TYPE;
 }
 
+impl ::fbthrift::help::IsEmpty for Generation {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.0).is_empty()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for Generation
 where
     P: ::fbthrift::ProtocolWriter,
@@ -722,6 +736,13 @@ where
 impl ::fbthrift::GetTType for binary_t2 {
     const TTYPE: ::fbthrift::TType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::TTYPE;
     const MAP_KEY_TYPE: ::fbthrift::MapKeyType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::MAP_KEY_TYPE;
+}
+
+impl ::fbthrift::help::IsEmpty for binary_t2 {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.0).is_empty()
+    }
 }
 
 impl<P> ::fbthrift::Serialize<P> for binary_t2

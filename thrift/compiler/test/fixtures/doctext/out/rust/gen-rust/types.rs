@@ -231,6 +231,13 @@ impl ::fbthrift::GetTType for number {
     const MAP_KEY_TYPE: ::fbthrift::MapKeyType = <::std::primitive::i32 as ::fbthrift::GetTType>::MAP_KEY_TYPE;
 }
 
+impl ::fbthrift::help::IsEmpty for number {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        ::fbthrift::help::Terse(&self.0).is_empty()
+    }
+}
+
 impl<P> ::fbthrift::Serialize<P> for number
 where
     P: ::fbthrift::ProtocolWriter,

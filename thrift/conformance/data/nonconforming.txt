@@ -231,13 +231,6 @@ go/ThriftRPCServerTest/InteractionConstructorTest/Success.InteractionConstructor
 # Language: Rust
 ###
 
-# round-trip-test
-# Rust codegen writes a terse `@rust.NewType` field even when the value it
-# wraps is empty.
-rust/RoundTripTest/testset.Terse.NewType.i32/zero.*
-rust/RoundTripTest/testset.Terse.NewType.list<i32>/empty.*
-rust/RoundTripTest/testset.Terse.NewType.string/empty.*
-
 # compatibility-test
 rust/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.*
 
