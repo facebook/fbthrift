@@ -227,10 +227,10 @@ abstract class ThriftProcessorBase implements IThriftProcessor {
   }
 
   /**
-   * Awaits one native stream wait: the stream start or a payload send. These
-   * block on the stream's I/O thread, and without a WallTimeOperation the wall
-   * time profiler has nothing to blame the wait on and logs
-   * `UnattributedIOTimeException`.
+   * Awaits one native stream or sink wait: a stream, sink or bidi stream start,
+   * a payload send, or a wait for the client's sink payloads. These block on the
+   * stream's I/O thread, and without a WallTimeOperation the wall time profiler
+   * has nothing to blame the wait on and logs `UnattributedIOTimeException`.
    */
   private static async function genAwaitStreamIO<T>(
     Awaitable<T> $stream_io,
@@ -261,7 +261,7 @@ abstract class ThriftProcessorBase implements IThriftProcessor {
     try {
       while (true) {
         // @lint-ignore AWAIT_IN_LOOP Intentional usage.
-        $ready = await $server_sink->genIsSinkReady();
+        $ready = await self::genAwaitStreamIO($server_sink->genIsSinkReady());
         if ($ready !== true) {
           // This will return false / null when sink is no longer active. This typically
           // will be the case once the final payload is received from the user in
@@ -337,11 +337,11 @@ abstract class ThriftProcessorBase implements IThriftProcessor {
       );
       $encoded_first_response = $transport->getBuffer();
       $transport->resetBuffer();
-      $server_sink = await gen_start_thrift_sink(
+      $server_sink = await self::genAwaitStreamIO(gen_start_thrift_sink(
         $encoded_first_response,
         $buffer_size,
         $chunk_timeout_ms,
-      );
+      ));
 
       if ($server_sink === null) {
         // Sink was cancelled by the client.
@@ -431,8 +431,9 @@ abstract class ThriftProcessorBase implements IThriftProcessor {
     );
     $encoded_first_response = $transport->getBuffer();
     $transport->resetBuffer();
-    $bidi_stream =
-      await gen_start_thrift_bidi_stream($encoded_first_response, 100);
+    $bidi_stream = await self::genAwaitStreamIO(
+      gen_start_thrift_bidi_stream($encoded_first_response, 100),
+    );
 
     if ($bidi_stream === null) {
       // Stream was cancelled by the client.
