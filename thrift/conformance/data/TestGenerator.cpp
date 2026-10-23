@@ -16,12 +16,15 @@
 
 #include <thrift/conformance/data/TestGenerator.h>
 
+#include <string_view>
+
 #include <fmt/core.h>
 
 #include <thrift/conformance/data/TestUtil.h>
 #include <thrift/conformance/data/ValueGenerator.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/test/testset/Testset.h>
+#include <thrift/test/testset/gen-cpp2/Terse_types.h>
 
 namespace mp11 = boost::mp11;
 using apache::thrift::protocol::asValueStruct;
@@ -98,6 +101,36 @@ Test createRoundTripTest(
   return test;
 }
 
+template <typename T, typename Set>
+T make(Set set) {
+  T value;
+  set(value);
+  return value;
+}
+
+Test createTerseRoundTripTest(
+    const AnyRegistry& registry, const Protocol& protocol) {
+  using namespace apache::thrift::test::testset;
+
+  Test test;
+  test.name() = protocol.name();
+  test.tags()->emplace("idl/");
+  auto addTestCase = [&](const auto& data, std::string_view name) {
+    RoundTripTestCase roundTrip;
+    roundTrip.request()->value() = registry.store(data, protocol);
+    auto& testCase = test.testCases()->emplace_back();
+    testCase.name() = fmt::format("testset.Terse.{}", name);
+    testCase.test()->roundTrip() = std::move(roundTrip);
+  };
+
+  addTestCase(TerseEnumStruct{}, "enum/zero");
+  addTestCase(
+      make<TerseEnumStruct>([](auto& data) { data.field() = TerseEnum::one; }),
+      "enum/one");
+
+  return test;
+}
+
 void addRoundTripToSuite(
     const AnyRegistry& registry, const Protocol& protocol, TestSuite& suite) {
   mp11::mp_for_each<detail::PrimaryTypeTags>([&](auto element_tag) {
@@ -120,6 +153,7 @@ void addRoundTripToSuite(
     suite.tests()->emplace_back(
         createRoundTripTest<type::set<KeyTag>>(registry, protocol));
   });
+  suite.tests()->emplace_back(createTerseRoundTripTest(registry, protocol));
 }
 
 } // namespace

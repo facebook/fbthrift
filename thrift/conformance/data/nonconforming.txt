@@ -156,6 +156,9 @@ hack/CompatibilityTest/testset.i32.i64/ChangeFieldType/zero.*
 # ConformanceService can't load these structs ("Unknown lazy type").
 hack/CompatibilityTest/testset/ChangeEnumType/*
 
+# Same for thrift/test/testset/Terse.thrift, which these round trips use.
+hack/RoundTripTest/testset.Terse.enum/*
+
 # fragmentation and factory function interactions are not yet supported by the
 # Hack client
 hack/ThriftRPCClientTest/StreamFragmentation/Success.StreamFragmentationTest
@@ -224,6 +227,10 @@ go/ThriftRPCServerTest/InteractionConstructorTest/Success.InteractionConstructor
 ###
 # Language: Rust
 ###
+
+# round-trip-test
+# Rust codegen writes a terse enum field even at 0.
+rust/RoundTripTest/testset.Terse.enum/zero.*
 
 # compatibility-test
 rust/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.*
