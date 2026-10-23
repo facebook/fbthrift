@@ -288,6 +288,13 @@ impl ::std::default::Default for E1 {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for E1 {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.0 == 0
+    }
+}
+
 impl<'a> ::std::convert::From<&'a E1> for ::std::primitive::i32 {
     #[inline]
     fn from(x: &'a E1) -> Self {
@@ -418,6 +425,13 @@ impl ::fbthrift::ThriftEnum for F2 {
 impl ::std::default::Default for F2 {
     fn default() -> Self {
         Self(0)
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for F2 {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.0 == 0
     }
 }
 
@@ -555,6 +569,13 @@ impl ::fbthrift::ThriftEnum for EnumWithDerives {
 impl ::std::default::Default for EnumWithDerives {
     fn default() -> Self {
         Self(0)
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for EnumWithDerives {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.0 == 0
     }
 }
 

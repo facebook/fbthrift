@@ -548,6 +548,13 @@ impl ::std::default::Default for Color {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for Color {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.0 == 0
+    }
+}
+
 impl<'a> ::std::convert::From<&'a Color> for ::std::primitive::i32 {
     #[inline]
     fn from(x: &'a Color) -> Self {
@@ -696,6 +703,13 @@ impl ::fbthrift::ThriftEnum for ThriftAdaptedEnum {
 impl ::std::default::Default for ThriftAdaptedEnum {
     fn default() -> Self {
         Self(0)
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for ThriftAdaptedEnum {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.0 == 0
     }
 }
 

@@ -160,6 +160,13 @@ impl ::std::default::Default for EmptyEnum {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for EmptyEnum {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.0 == 0
+    }
+}
+
 impl<'a> ::std::convert::From<&'a EmptyEnum> for ::std::primitive::i32 {
     #[inline]
     fn from(x: &'a EmptyEnum) -> Self {
@@ -302,6 +309,13 @@ impl ::fbthrift::ThriftEnum for City {
 impl ::std::default::Default for City {
     fn default() -> Self {
         Self(0)
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for City {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.0 == 0
     }
 }
 
@@ -459,6 +473,13 @@ impl ::fbthrift::ThriftEnum for Company {
 impl ::std::default::Default for Company {
     fn default() -> Self {
         Self(0)
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for Company {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.0 == 0
     }
 }
 

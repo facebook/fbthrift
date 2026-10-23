@@ -508,6 +508,13 @@ impl ::std::default::Default for has_bitwise_ops {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for has_bitwise_ops {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.0 == 0
+    }
+}
+
 impl<'a> ::std::convert::From<&'a has_bitwise_ops> for ::std::primitive::i32 {
     #[inline]
     fn from(x: &'a has_bitwise_ops) -> Self {
@@ -661,6 +668,13 @@ impl ::std::default::Default for is_unscoped {
     }
 }
 
+impl ::fbthrift::help::IsEmpty for is_unscoped {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.0 == 0
+    }
+}
+
 impl<'a> ::std::convert::From<&'a is_unscoped> for ::std::primitive::i32 {
     #[inline]
     fn from(x: &'a is_unscoped) -> Self {
@@ -805,6 +819,13 @@ impl ::fbthrift::ThriftEnum for MyForwardRefEnum {
 impl ::std::default::Default for MyForwardRefEnum {
     fn default() -> Self {
         Self(0)
+    }
+}
+
+impl ::fbthrift::help::IsEmpty for MyForwardRefEnum {
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.0 == 0
     }
 }
 

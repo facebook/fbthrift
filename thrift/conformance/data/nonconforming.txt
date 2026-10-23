@@ -229,10 +229,6 @@ go/ThriftRPCServerTest/InteractionConstructorTest/Success.InteractionConstructor
 # Language: Rust
 ###
 
-# round-trip-test
-# Rust codegen writes a terse enum field even at 0.
-rust/RoundTripTest/testset.Terse.enum/zero.*
-
 # compatibility-test
 rust/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.*
 
