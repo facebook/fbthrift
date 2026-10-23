@@ -300,6 +300,7 @@ add_library(
   ../cpp/protocol/TProtocolException.cpp
   ../cpp/protocol/TType.cpp
   ../cpp/util/VarintUtils.cpp
+  patch/detail/PatchLogging.cpp
   # Required by protocol/BinaryProtocol.cpp, which instantiates
   # BinaryProtocolReaderBase<io::IOBufChainCursor>.
   IOBufChain.cpp

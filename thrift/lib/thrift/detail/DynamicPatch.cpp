@@ -32,6 +32,7 @@
 #include <thrift/lib/thrift/gen-cpp2/any_patch_types.h>
 
 #include <thrift/lib/cpp2/patch/detail/PatchBadge.h>
+#include <thrift/lib/cpp2/patch/detail/PatchLogging.h>
 
 namespace apache::thrift::protocol {
 using detail::badge;
@@ -2082,8 +2083,10 @@ DynamicPatch DynamicPatch::fromObject(Object obj) {
 }
 
 auto DynamicUnknownPatch::validateAndGetCategory() const -> Category {
-  auto throwExceptionIf = [&](bool b) {
+  auto throwExceptionIf = [&](bool b, std::string_view reason) {
     if (b) {
+      detail::logUnclassifiedUnknownPatch(reason);
+      // FIXME(T293821351): The exception is never thrown.
       std::runtime_error(
           "Unclassified unknown patch. "
           "Either there is a bug in the Unknown Patch implementation "
@@ -2106,7 +2109,7 @@ auto DynamicUnknownPatch::validateAndGetCategory() const -> Category {
   }
 
   if (auto assign = get_ptr(op::PatchOp::Assign)) {
-    throwExceptionIf(!assign->is_object());
+    throwExceptionIf(!assign->is_object(), "assign_is_not_object");
     return Category::StructuredOrAnyPatch;
   }
 
@@ -2122,7 +2125,8 @@ auto DynamicUnknownPatch::validateAndGetCategory() const -> Category {
 
   if (!hasDecodedSubPatches() &&
       onlyHasOps({op::PatchOp::Clear, op::PatchOp::Remove})) {
-    throwExceptionIf(!get_ptr(op::PatchOp::Remove)->is_set());
+    throwExceptionIf(
+        !get_ptr(op::PatchOp::Remove)->is_set(), "remove_is_not_set");
     return Category::AssociativeContainerPatch;
   }
 
@@ -2133,7 +2137,7 @@ auto DynamicUnknownPatch::validateAndGetCategory() const -> Category {
     return Category::StructuredPatch;
   }
 
-  throwExceptionIf(true);
+  throwExceptionIf(true, "unexpected_operations");
   return {};
 }
 void DynamicUnknownPatch::throwIncompatibleCategory(
