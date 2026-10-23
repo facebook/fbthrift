@@ -23,6 +23,7 @@ namespace java.swift org.apache.thrift.test
 namespace go thrift.test.testset.Terse
 namespace csharp Apache.Thrift.Test.Terse
 
+include "thrift/annotation/rust.thrift"
 include "thrift/annotation/thrift.thrift"
 
 enum TerseEnum {
@@ -42,4 +43,28 @@ union TerseUnion {
 struct TerseUnionStruct {
   @thrift.TerseWrite
   1: TerseUnion field;
+}
+
+@rust.NewType
+typedef i32 NewTypeI32
+
+@rust.NewType
+typedef string NewTypeString
+
+@rust.NewType
+typedef list<i32> NewTypeListI32
+
+struct TerseNewTypeI32Struct {
+  @thrift.TerseWrite
+  1: NewTypeI32 field;
+}
+
+struct TerseNewTypeStringStruct {
+  @thrift.TerseWrite
+  1: NewTypeString field;
+}
+
+struct TerseNewTypeListI32Struct {
+  @thrift.TerseWrite
+  1: NewTypeListI32 field;
 }

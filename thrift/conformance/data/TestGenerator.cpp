@@ -108,6 +108,21 @@ T make(Set set) {
   return value;
 }
 
+template <
+    typename ElementTag,
+    typename Struct,
+    typename AddTestCase,
+    typename Set>
+void addTerseValueTestCases(
+    AddTestCase& addTestCase, std::string_view kind, Set set) {
+  for (const auto& value : ValueGenerator<ElementTag>::getInterestingValues()) {
+    addTestCase(
+        make<Struct>([&](auto& data) { set(data, value.value); }),
+        fmt::format(
+            "{}.{}/{}", kind, getTestTypeName<ElementTag>(), value.name));
+  }
+}
+
 Test createTerseRoundTripTest(
     const AnyRegistry& registry, const Protocol& protocol) {
   using namespace apache::thrift::test::testset;
@@ -122,6 +137,7 @@ Test createTerseRoundTripTest(
     testCase.name() = fmt::format("testset.Terse.{}", name);
     testCase.test()->roundTrip() = std::move(roundTrip);
   };
+  auto setField = [](auto& data, const auto& value) { data.field() = value; };
 
   addTestCase(TerseEnumStruct{}, "enum/zero");
   addTestCase(
@@ -132,6 +148,13 @@ Test createTerseRoundTripTest(
   addTestCase(
       make<TerseUnionStruct>([](auto& data) { data.field()->set_field_1(); }),
       "union/default_member");
+
+  addTerseValueTestCases<type::i32_t, TerseNewTypeI32Struct>(
+      addTestCase, "NewType", setField);
+  addTerseValueTestCases<type::string_t, TerseNewTypeStringStruct>(
+      addTestCase, "NewType", setField);
+  addTerseValueTestCases<type::list<type::i32_t>, TerseNewTypeListI32Struct>(
+      addTestCase, "NewType", setField);
 
   return test;
 }
