@@ -3188,12 +3188,16 @@ where
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_struct_begin("StructWithTerseInternBox");
-        p.write_field_begin("field1", ::fbthrift::TType::Struct, 1);
-        ::fbthrift::Serialize::rs_thrift_write(&self.field1, p);
-        p.write_field_end();
-        p.write_field_begin("field2", ::fbthrift::TType::Struct, 2);
-        ::fbthrift::Serialize::rs_thrift_write(&self.field2, p);
-        p.write_field_end();
+        if !::fbthrift::help::Terse(&self.field1).is_empty() {
+            p.write_field_begin("field1", ::fbthrift::TType::Struct, 1);
+            ::fbthrift::Serialize::rs_thrift_write(&self.field1, p);
+            p.write_field_end();
+        }
+        if !::fbthrift::help::Terse(&self.field2).is_empty() {
+            p.write_field_begin("field2", ::fbthrift::TType::Struct, 2);
+            ::fbthrift::Serialize::rs_thrift_write(&self.field2, p);
+            p.write_field_end();
+        }
         p.write_field_stop();
         p.write_struct_end();
     }
@@ -3589,12 +3593,16 @@ where
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_struct_begin("AdaptedStructWithTerseInternBox");
-        p.write_field_begin("field1", ::fbthrift::TType::Struct, 1);
-        ::fbthrift::Serialize::rs_thrift_write(&self.field1, p);
-        p.write_field_end();
-        p.write_field_begin("field2", ::fbthrift::TType::Struct, 2);
-        ::fbthrift::Serialize::rs_thrift_write(&self.field2, p);
-        p.write_field_end();
+        if !::fbthrift::help::Terse(&self.field1).is_empty() {
+            p.write_field_begin("field1", ::fbthrift::TType::Struct, 1);
+            ::fbthrift::Serialize::rs_thrift_write(&self.field1, p);
+            p.write_field_end();
+        }
+        if !::fbthrift::help::Terse(&self.field2).is_empty() {
+            p.write_field_begin("field2", ::fbthrift::TType::Struct, 2);
+            ::fbthrift::Serialize::rs_thrift_write(&self.field2, p);
+            p.write_field_end();
+        }
         p.write_field_stop();
         p.write_struct_end();
     }

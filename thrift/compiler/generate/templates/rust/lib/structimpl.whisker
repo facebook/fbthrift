@@ -160,6 +160,12 @@ where
       {{/if field.has_adapter?}}
             p.write_field_end();
         }
+    {{#else if (and field.terse? (not field.has_adapter?))}}
+        if !::fbthrift::help::Terse(&self.{{field.rust_name}}).is_empty() {
+            p.write_field_begin("{{field.name}}", {{#partial types.protocol_ttype type=field.type}}, {{field.id}});
+            {{#partial fields.write field=field}}(&self.{{field.rust_name}}, p);
+            p.write_field_end();
+        }
     {{#else}}
         p.write_field_begin("{{field.name}}", {{#partial types.protocol_ttype type=field.type}}, {{field.id}});
       {{#if field.has_adapter?}}

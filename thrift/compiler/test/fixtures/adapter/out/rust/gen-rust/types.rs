@@ -3369,15 +3369,21 @@ where
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_struct_begin("TerseAdaptedFields");
-        p.write_field_begin("int_field", ::fbthrift::TType::I32, 1);
-        ::fbthrift::Serialize::rs_thrift_write(&self.int_field, p);
-        p.write_field_end();
-        p.write_field_begin("string_field", ::fbthrift::TType::String, 2);
-        ::fbthrift::Serialize::rs_thrift_write(&self.string_field, p);
-        p.write_field_end();
-        p.write_field_begin("set_field", ::fbthrift::TType::Set, 3);
-        ::fbthrift::Serialize::rs_thrift_write(&self.set_field, p);
-        p.write_field_end();
+        if !::fbthrift::help::Terse(&self.int_field).is_empty() {
+            p.write_field_begin("int_field", ::fbthrift::TType::I32, 1);
+            ::fbthrift::Serialize::rs_thrift_write(&self.int_field, p);
+            p.write_field_end();
+        }
+        if !::fbthrift::help::Terse(&self.string_field).is_empty() {
+            p.write_field_begin("string_field", ::fbthrift::TType::String, 2);
+            ::fbthrift::Serialize::rs_thrift_write(&self.string_field, p);
+            p.write_field_end();
+        }
+        if !::fbthrift::help::Terse(&self.set_field).is_empty() {
+            p.write_field_begin("set_field", ::fbthrift::TType::Set, 3);
+            ::fbthrift::Serialize::rs_thrift_write(&self.set_field, p);
+            p.write_field_end();
+        }
         p.write_field_stop();
         p.write_struct_end();
     }

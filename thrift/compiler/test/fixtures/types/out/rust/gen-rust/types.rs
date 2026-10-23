@@ -2885,21 +2885,31 @@ where
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_struct_begin("MinPaddingWithCustomType");
-        p.write_field_begin("small", ::fbthrift::TType::Byte, 1);
-        ::fbthrift::Serialize::rs_thrift_write(&self.small, p);
-        p.write_field_end();
-        p.write_field_begin("biggish", ::fbthrift::TType::I32, 2);
-        ::fbthrift::Serialize::rs_thrift_write(&self.biggish, p);
-        p.write_field_end();
-        p.write_field_begin("medium", ::fbthrift::TType::I16, 3);
-        ::fbthrift::Serialize::rs_thrift_write(&self.medium, p);
-        p.write_field_end();
-        p.write_field_begin("big", ::fbthrift::TType::I64, 4);
-        ::fbthrift::Serialize::rs_thrift_write(&self.big, p);
-        p.write_field_end();
-        p.write_field_begin("tiny", ::fbthrift::TType::Byte, 5);
-        ::fbthrift::Serialize::rs_thrift_write(&self.tiny, p);
-        p.write_field_end();
+        if !::fbthrift::help::Terse(&self.small).is_empty() {
+            p.write_field_begin("small", ::fbthrift::TType::Byte, 1);
+            ::fbthrift::Serialize::rs_thrift_write(&self.small, p);
+            p.write_field_end();
+        }
+        if !::fbthrift::help::Terse(&self.biggish).is_empty() {
+            p.write_field_begin("biggish", ::fbthrift::TType::I32, 2);
+            ::fbthrift::Serialize::rs_thrift_write(&self.biggish, p);
+            p.write_field_end();
+        }
+        if !::fbthrift::help::Terse(&self.medium).is_empty() {
+            p.write_field_begin("medium", ::fbthrift::TType::I16, 3);
+            ::fbthrift::Serialize::rs_thrift_write(&self.medium, p);
+            p.write_field_end();
+        }
+        if !::fbthrift::help::Terse(&self.big).is_empty() {
+            p.write_field_begin("big", ::fbthrift::TType::I64, 4);
+            ::fbthrift::Serialize::rs_thrift_write(&self.big, p);
+            p.write_field_end();
+        }
+        if !::fbthrift::help::Terse(&self.tiny).is_empty() {
+            p.write_field_begin("tiny", ::fbthrift::TType::Byte, 5);
+            ::fbthrift::Serialize::rs_thrift_write(&self.tiny, p);
+            p.write_field_end();
+        }
         p.write_field_stop();
         p.write_struct_end();
     }
