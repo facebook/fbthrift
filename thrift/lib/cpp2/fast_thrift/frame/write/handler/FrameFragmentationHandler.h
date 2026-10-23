@@ -159,7 +159,10 @@ class FrameFragmentationHandlerT : public folly::EventBase::LoopCallback {
     }
 
     scheduleFlushIfNeeded();
-    return apache::thrift::fast_thrift::channel_pipeline::Result::Success;
+    if (backpressured_) {
+      return channel_pipeline::Result::Backpressure;
+    }
+    return channel_pipeline::Result::Success;
   }
 
   template <typename Context>
@@ -234,6 +237,13 @@ class FrameFragmentationHandlerT : public folly::EventBase::LoopCallback {
     if (result !=
         apache::thrift::fast_thrift::channel_pipeline::Result::Error) {
       tracker_.onFragment(streamId, /*isLastFragment=*/true);
+    }
+    if (result == channel_pipeline::Result::Backpressure) {
+      backpressured_ = true;
+      ctx.awaitWriteReady();
+    }
+    if (result != channel_pipeline::Result::Error && backpressured_) {
+      return channel_pipeline::Result::Backpressure;
     }
     return result;
   }
@@ -358,7 +368,6 @@ class FrameFragmentationHandlerT : public folly::EventBase::LoopCallback {
           apache::thrift::fast_thrift::channel_pipeline::Result::Backpressure) {
         backpressured_ = true;
         ctx.awaitWriteReady();
-        return result;
       }
     }
 
@@ -395,7 +404,6 @@ class FrameFragmentationHandlerT : public folly::EventBase::LoopCallback {
           apache::thrift::fast_thrift::channel_pipeline::Result::Backpressure) {
         backpressured_ = true;
         ctx.awaitWriteReady();
-        return result;
       }
 
       if (!state.hasMore()) {
@@ -404,7 +412,10 @@ class FrameFragmentationHandlerT : public folly::EventBase::LoopCallback {
     }
 
     tracker_.onFlush();
-    return apache::thrift::fast_thrift::channel_pipeline::Result::Success;
+    if (backpressured_) {
+      return channel_pipeline::Result::Backpressure;
+    }
+    return channel_pipeline::Result::Success;
   }
 
   FragmentationHandlerConfig config_;

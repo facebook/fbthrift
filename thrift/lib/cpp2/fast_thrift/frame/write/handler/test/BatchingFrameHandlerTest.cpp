@@ -326,7 +326,7 @@ TEST_F(BatchingFrameHandlerTest, BackpressureHandled) {
   EXPECT_FALSE(handler.isScheduled());
 }
 
-TEST_F(BatchingFrameHandlerTest, BackpressureBuffersFramesUntilWriteReady) {
+TEST_F(BatchingFrameHandlerTest, BackpressureStillSchedulesAcceptedFrames) {
   BatchingHandlerConfig config{
       .maxPendingBytes = 100,
       .maxPendingFrames = 10,
@@ -344,16 +344,20 @@ TEST_F(BatchingFrameHandlerTest, BackpressureBuffersFramesUntilWriteReady) {
   EXPECT_FALSE(handler.isScheduled());
   EXPECT_EQ(ctx_->writtenBatches().size(), 1);
 
-  // New frames must buffer without flushing or scheduling loop callback
+  // Pressure is reported upstream while accepted data keeps flushing.
   auto r = handler.onWrite(*ctx_, wrapFrame(makePayload(30)));
   EXPECT_EQ(
       r, apache::thrift::fast_thrift::channel_pipeline::Result::Backpressure);
   EXPECT_TRUE(handler.hasPendingData());
   EXPECT_EQ(handler.pendingFrames(), 1);
-  EXPECT_FALSE(handler.isScheduled());
+  EXPECT_TRUE(handler.isScheduled());
   EXPECT_EQ(ctx_->writtenBatches().size(), 1);
+  runEventBaseLoop();
+  EXPECT_FALSE(handler.hasPendingData());
+  EXPECT_EQ(ctx_->writtenBatches().size(), 2);
+  EXPECT_TRUE(handler.isBackpressured());
 
-  // Write ready: flush the buffered data
+  // Readiness clears pressure without retransmitting accepted data.
   ctx_->setBackpressureAt(SIZE_MAX);
   handler.onWriteReady(*ctx_);
 
@@ -361,6 +365,23 @@ TEST_F(BatchingFrameHandlerTest, BackpressureBuffersFramesUntilWriteReady) {
   EXPECT_FALSE(handler.isBackpressured());
   ASSERT_EQ(ctx_->writtenBatches().size(), 2);
   EXPECT_EQ(ctx_->totalBytesWritten(), 150);
+}
+
+TEST_F(BatchingFrameHandlerTest, ThresholdFlushContinuesUnderBackpressure) {
+  BatchingHandlerConfig config{.maxPendingBytes = 100, .maxPendingFrames = 10};
+  BatchingFrameHandler handler(config);
+  handler.handlerAdded(*ctx_);
+  ctx_->setBackpressureAt(0);
+
+  for (int i = 0; i < 3; ++i) {
+    EXPECT_EQ(
+        handler.onWrite(*ctx_, wrapFrame(makePayload(100))),
+        channel_pipeline::Result::Backpressure);
+  }
+
+  EXPECT_EQ(ctx_->writtenBatches().size(), 3);
+  EXPECT_EQ(ctx_->totalBytesWritten(), 300);
+  EXPECT_FALSE(handler.hasPendingData());
 }
 
 TEST_F(BatchingFrameHandlerTest, WriteReadyResumesFlushing) {
@@ -824,10 +845,8 @@ TEST_F(BatchingFrameHandlerPipelineTest, WriteReadyDispatchedThroughPipeline) {
   EXPECT_EQ(transport_.writeCount(), 2);
 }
 
-// Covers the path where backpressure is first encountered via the loop-callback
-// flush (not a threshold flush). Verifies that after the loop tick fires and
-// doFlush() encounters backpressure, subsequent writes buffer correctly without
-// rescheduling the loop callback.
+// Deferred flushes can discover pressure after onWrite returned. Subsequent
+// writes report that pressure while their own flush remains scheduled.
 TEST_F(BatchingFrameHandlerPipelineTest, LoopTickBackpressureRegisters) {
   BatchingHandlerConfig config{
       .maxPendingBytes = 64 * 1024,
@@ -847,12 +866,17 @@ TEST_F(BatchingFrameHandlerPipelineTest, LoopTickBackpressureRegisters) {
   EXPECT_TRUE(handlerPtr_->isBackpressured());
   EXPECT_FALSE(handlerPtr_->isScheduled());
 
-  // Write during backpressure — must buffer, must not reschedule loop callback
-  (void)pipeline->fireWrite(wrapFrame(makePayload(50)));
+  // Accepted writes keep their normal loop flush while reporting pressure.
+  EXPECT_EQ(
+      pipeline->fireWrite(wrapFrame(makePayload(50))),
+      cp::Result::Backpressure);
   EXPECT_TRUE(handlerPtr_->hasPendingData());
-  EXPECT_FALSE(handlerPtr_->isScheduled());
+  EXPECT_TRUE(handlerPtr_->isScheduled());
+  evb_.loopOnce(EVLOOP_NONBLOCK);
+  EXPECT_FALSE(handlerPtr_->hasPendingData());
+  EXPECT_EQ(transport_.writeCount(), 2);
 
-  // Resume — onWriteReady flushes the buffered frame
+  // Readiness clears the pressure signal without retransmitting the batch.
   transport_.setWriteResult(cp::Result::Success);
   pipeline->onWriteReady();
 

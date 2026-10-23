@@ -55,10 +55,8 @@ class MockContext {
     if (errorEnabled_ && written_.size() >= errorAt_) {
       return apache::thrift::fast_thrift::channel_pipeline::Result::Error;
     }
-    if (backpressureAt_ > 0 && written_.size() >= backpressureAt_) {
-      return apache::thrift::fast_thrift::channel_pipeline::Result::
-          Backpressure;
-    }
+    const bool backpressured =
+        backpressureAt_ > 0 && written_.size() >= backpressureAt_;
 
     auto& f = msg.get<ComposedFrame>();
     CapturedFrame cap{};
@@ -67,7 +65,8 @@ class MockContext {
     cap.dataSize = f.data ? f.data->computeChainDataLength() : 0;
     cap.follows = f.follows;
     written_.push_back(cap);
-    return apache::thrift::fast_thrift::channel_pipeline::Result::Success;
+    return backpressured ? channel_pipeline::Result::Backpressure
+                         : channel_pipeline::Result::Success;
   }
 
   void fireException(folly::exception_wrapper&& e) noexcept {
@@ -316,7 +315,26 @@ TEST_F(FrameFragmentationHandlerTest, SmallFramesSentBeforeLargeFragments) {
 // Backpressure Tests
 // ============================================================================
 
-TEST_F(FrameFragmentationHandlerTest, BackpressurePausesFlush) {
+TEST_F(
+    FrameFragmentationHandlerTest, ForcedFlushReportsPressureAfterFullDrain) {
+  FragmentationHandlerConfig config{
+      .maxFragmentSize = 64 * 1024,
+      .maxPendingBytes = 64 * 1024,
+  };
+  FrameFragmentationHandler handler(config);
+  handler.handlerAdded(*ctx_);
+  ctx_->setBackpressureAt(1);
+
+  EXPECT_EQ(
+      handler.onWrite(*ctx_, makePayloadFrame(1, 192 * 1024)),
+      channel_pipeline::Result::Backpressure);
+
+  EXPECT_EQ(ctx_->written().size(), 3);
+  EXPECT_EQ(handler.pendingStreamCount(), 0);
+  EXPECT_TRUE(ctx_->awaitWriteReadyCalled());
+}
+
+TEST_F(FrameFragmentationHandlerTest, BackpressureDoesNotPauseFlush) {
   FragmentationHandlerConfig config{.maxFragmentSize = 64 * 1024};
   FrameFragmentationHandler handler(config);
   handler.handlerAdded(*ctx_);
@@ -328,11 +346,13 @@ TEST_F(FrameFragmentationHandlerTest, BackpressurePausesFlush) {
 
   runEventBaseLoop();
 
-  EXPECT_EQ(ctx_->written().size(), 2);
+  EXPECT_EQ(ctx_->written().size(), 4);
   EXPECT_TRUE(ctx_->awaitWriteReadyCalled());
 }
 
-TEST_F(FrameFragmentationHandlerTest, BackpressureResumeCompletes) {
+TEST_F(
+    FrameFragmentationHandlerTest,
+    WriteReadyDoesNotRetransmitDrainedFragments) {
   FragmentationHandlerConfig config{.maxFragmentSize = 64 * 1024};
   FrameFragmentationHandler handler(config);
   handler.handlerAdded(*ctx_);
@@ -342,14 +362,14 @@ TEST_F(FrameFragmentationHandlerTest, BackpressureResumeCompletes) {
   ctx_->setBackpressureAt(2);
 
   runEventBaseLoop();
-  EXPECT_EQ(ctx_->written().size(), 2);
+  EXPECT_EQ(ctx_->written().size(), 3);
   EXPECT_TRUE(ctx_->awaitWriteReadyCalled());
 
   ctx_->setBackpressureAt(0);
   handler.onWriteReady(*ctx_);
 
   EXPECT_EQ(handler.pendingStreamCount(), 0);
-  EXPECT_GE(ctx_->written().size(), 2);
+  EXPECT_EQ(ctx_->written().size(), 3);
 }
 
 // ============================================================================
@@ -448,7 +468,7 @@ TEST_F(FrameFragmentationHandlerTest, BackpressureOnImmediateQueueDrain) {
 
   runEventBaseLoop();
 
-  EXPECT_EQ(ctx_->written().size(), 1);
+  EXPECT_EQ(ctx_->written().size(), 6);
   EXPECT_TRUE(ctx_->awaitWriteReadyCalled());
 }
 
@@ -465,7 +485,7 @@ TEST_F(FrameFragmentationHandlerTest, BackpressureOnFirstFragment) {
 
   runEventBaseLoop();
 
-  EXPECT_EQ(ctx_->written().size(), 1);
+  EXPECT_EQ(ctx_->written().size(), 3);
   EXPECT_TRUE(ctx_->written()[0].follows);
   EXPECT_TRUE(ctx_->awaitWriteReadyCalled());
 }
@@ -483,14 +503,14 @@ TEST_F(FrameFragmentationHandlerTest, BackpressureOnContinuationFragment) {
 
   runEventBaseLoop();
 
-  EXPECT_EQ(ctx_->written().size(), 1);
+  EXPECT_EQ(ctx_->written().size(), 3);
   EXPECT_TRUE(ctx_->written()[0].follows);
   EXPECT_TRUE(ctx_->awaitWriteReadyCalled());
 
   ctx_->setBackpressureAt(0);
   handler.onWriteReady(*ctx_);
 
-  EXPECT_GE(ctx_->written().size(), 2);
+  EXPECT_EQ(ctx_->written().size(), 3);
 }
 
 // ============================================================================
@@ -704,8 +724,7 @@ TEST_F(FrameFragmentationHandlerTest, AsyncFlushStopsSrptLoopOnError) {
 TEST_F(
     FrameFragmentationHandlerTest,
     OnWriteReadyFiresExceptionOnDownstreamError) {
-  // Backpressure, then resume via onWriteReady with downstream returning
-  // Error. The onWriteReady async-discard path must fire inbound.
+  // Readiness may flush newly accepted data and must propagate errors.
   FragmentationHandlerConfig config{.maxFragmentSize = 64 * 1024};
   FrameFragmentationHandler handler(config);
   handler.handlerAdded(*ctx_);
@@ -717,6 +736,7 @@ TEST_F(
   ASSERT_TRUE(ctx_->awaitWriteReadyCalled());
   ASSERT_EQ(ctx_->fireExceptionCount(), 0);
 
+  (void)handler.onWrite(*ctx_, makePayloadFrame(2, 192 * 1024));
   ctx_->setBackpressureAt(0);
   ctx_->setErrorAt(ctx_->written().size());
   handler.onWriteReady(*ctx_);
@@ -823,14 +843,12 @@ TEST_F(
 
 TEST_F(
     FrameFragmentationHandlerTest,
-    TrackerCountsBackpressuredFragmentButDoesNotFlush) {
+    TrackerCountsAndFlushesBackpressuredFragments) {
   FragmentationHandlerConfig config{.maxFragmentSize = 64 * 1024};
   FrameFragmentationHandlerT<RecordingTracker> handler(config);
   handler.handlerAdded(*ctx_);
 
-  // Backpressure on the 3rd write: the fragment was still handed downstream, so
-  // onFragment records it (isLast=true), but the flush paused — onFlush must
-  // not run. Contrast with the error path, which skips onFragment entirely.
+  // Pressure on the final fragment still completes the accepted frame.
   (void)handler.onWrite(*ctx_, makePayloadFrame(1, 192 * 1024));
   ctx_->setBackpressureAt(2);
   runEventBaseLoop();
@@ -839,7 +857,7 @@ TEST_F(
   const auto& frags = handler.tracker().fragments;
   ASSERT_EQ(frags.size(), 3u);
   EXPECT_TRUE(frags[2].isLastFragment);
-  EXPECT_EQ(handler.tracker().flushCount, 0u);
+  EXPECT_EQ(handler.tracker().flushCount, 1u);
 }
 
 // ============================================================================

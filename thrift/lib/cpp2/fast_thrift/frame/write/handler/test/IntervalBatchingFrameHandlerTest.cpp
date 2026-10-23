@@ -409,7 +409,7 @@ TEST_F(
 
 TEST_F(
     IntervalBatchingFrameHandlerTest,
-    Backpressure_BufferedWritesReturnBackpressureAndDoNotSchedule) {
+    Backpressure_AcceptedWritesReturnBackpressureAndKeepFlushing) {
   IntervalBatchingHandlerConfig config{};
   IntervalBatchingFrameHandler handler(config);
   handler.handlerAdded(*ctx_);
@@ -419,8 +419,7 @@ TEST_F(
   runEventBaseLoop();
   ASSERT_TRUE(handler.isBackpressured());
 
-  // Further writes buffer (no flush attempt), and surface Backpressure
-  // upstream.
+  // Accepted writes surface pressure upstream and keep their normal flush.
   EXPECT_EQ(
       handler.onWrite(*ctx_, wrapFrame(makePayload(50, 'B'))),
       channel_pipeline::Result::Backpressure);
@@ -431,9 +430,11 @@ TEST_F(
   EXPECT_EQ(handler.pendingFrames(), 2);
   EXPECT_EQ(handler.pendingBytes(), 125);
 
-  // No new flush attempts while backpressured.
   runEventBaseLoop();
-  EXPECT_EQ(ctx_->writtenBatches().size(), 1);
+  EXPECT_EQ(ctx_->writtenBatches().size(), 2);
+  EXPECT_TRUE(handler.empty());
+  EXPECT_TRUE(handler.isBackpressured());
+  EXPECT_EQ(ctx_->totalBytesWritten(), 225);
 }
 
 TEST_F(

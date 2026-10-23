@@ -116,12 +116,6 @@ class IntervalBatchingFrameHandlerT {
     ++bufferedWritesCount_;
     tracker_.onWrite();
 
-    // While downstream is backpressured we still buffer, but don't schedule
-    // any flush — onWriteReady will drain when downstream is ready.
-    if (backpressured_) {
-      return channel_pipeline::Result::Backpressure;
-    }
-
     if (wasEmpty) {
       scheduleFlush();
     }
@@ -130,6 +124,9 @@ class IntervalBatchingFrameHandlerT {
       earlyFlush();
     }
 
+    if (backpressured_) {
+      return channel_pipeline::Result::Backpressure;
+    }
     return channel_pipeline::Result::Success;
   }
 
@@ -229,7 +226,7 @@ class IntervalBatchingFrameHandlerT {
   void scheduleDeferredFlush() noexcept { scheduler_.scheduleDeferredFlush(); }
 
   bool needsDeferredFlush() const noexcept {
-    if (bufferedWritesQueue_.empty() || isBackpressured()) {
+    if (bufferedWritesQueue_.empty()) {
       return false;
     }
     return config_.batchingInterval == std::chrono::milliseconds::zero() ||

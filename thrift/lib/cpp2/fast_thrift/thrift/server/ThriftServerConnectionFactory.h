@@ -109,10 +109,8 @@ struct ThriftServerConnectionFactoryConfig {
   // tokens to service handlers. Disabled requests retain an invalid source.
   bool enableCancellation{false};
 
-  // When true, insert WriteBufferBackpressureHandler into the thrift
-  // pipeline to absorb outbound Backpressure: responses queue in a FIFO
-  // when downstream is saturated and drain on onWriteReady; inbound reads
-  // surface Backpressure while buffered to pause socket reads.
+  // Pauses inbound reads while outbound writes report backpressure.
+  // Responses for accepted requests continue toward the transport.
   bool enableWriteBufferBackpressure{false};
 
   // When true, insert ThriftServerStreamMuxHandler immediately head-ward of the

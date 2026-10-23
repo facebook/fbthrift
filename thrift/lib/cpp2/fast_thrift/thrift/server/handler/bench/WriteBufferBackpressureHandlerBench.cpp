@@ -20,8 +20,7 @@
  * The hot path is `onWrite` in the unsaturated case — a single flag
  * check + forward. This bench guards that hot path against regressions
  * (e.g. accidentally adding allocation or virtual dispatch). It also
- * measures the buffering and drain paths to track the cost of
- * absorbing/releasing backpressure.
+ * measures forwarding while saturated and releasing the read pause.
  */
 
 #include <folly/Benchmark.h>
@@ -103,11 +102,8 @@ BENCHMARK(OnWrite_PassThrough, iters) {
   }
 }
 
-// Buffered path: handler is saturated; onWrite enqueues into the FIFO
-// and returns Success without forwarding. Measures the cost of
-// absorbing a single response under backpressure (queue push +
-// TypeErasedBox::take + ResponseMessage move).
-BENCHMARK(OnWrite_BufferWhileBackpressured, iters) {
+// Forward responses while the read pause is held.
+BENCHMARK(OnWrite_ForwardWhileBackpressured, iters) {
   BenchmarkSuspender suspender;
 
   ReadBackpressureArbiter arbiter;
@@ -133,14 +129,10 @@ BENCHMARK(OnWrite_BufferWhileBackpressured, iters) {
   }
 }
 
-// Drain path: cycles of (queue 8, flush). Measures amortized per-message
-// drain cost — the FIFO pop + erase_and_box + ctx.fireWrite.
-//
-// kDrainBatch tracks a typical interval-batching window; tune if real
-// backpressure batches diverge meaningfully from this.
+// Forward a group of responses, then release its read pause.
 constexpr size_t kDrainBatch = 8;
 
-BENCHMARK(OnWriteReady_DrainBatched, iters) {
+BENCHMARK(OnWriteReady_ReleaseReadPause, iters) {
   BenchmarkSuspender suspender;
 
   ReadBackpressureArbiter arbiter;
@@ -152,7 +144,7 @@ BENCHMARK(OnWriteReady_DrainBatched, iters) {
   suspender.dismiss();
 
   for (size_t c = 0; c < cycles; ++c) {
-    // Saturate + queue kDrainBatch behind it.
+    // Saturate and forward the remaining responses.
     ctx.nextWriteResult = Result::Backpressure;
     (void)handler.onWrite(
         ctx, erase_and_box(makeResponse(static_cast<uint32_t>(c))));
@@ -161,10 +153,10 @@ BENCHMARK(OnWriteReady_DrainBatched, iters) {
           ctx, erase_and_box(makeResponse(static_cast<uint32_t>(c))));
     }
 
-    // Downstream signals room; drain the full batch.
+    // Downstream signals room; release the read pause.
     ctx.nextWriteResult = Result::Success;
     handler.onWriteReady(ctx);
-    doNotOptimizeAway(handler.pendingResponseCount());
+    doNotOptimizeAway(handler.isBackpressured());
   }
 }
 

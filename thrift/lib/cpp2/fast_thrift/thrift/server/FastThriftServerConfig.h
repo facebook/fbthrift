@@ -99,11 +99,8 @@ struct FastThriftServerConfig {
   // Only takes effect on FastThriftServer.
   bool enableCancellation{false};
 
-  // When true, insert WriteBufferBackpressureHandler into the thrift
-  // pipeline. The handler buffers outbound responses when the downstream
-  // pipeline returns Result::Backpressure (e.g. transport write buffer
-  // full), drains them in FIFO on onWriteReady, and surfaces inbound
-  // Backpressure while saturated so the transport pauses socket reads.
+  // Pauses inbound reads while outbound writes report backpressure.
+  // Responses for accepted requests continue toward the transport.
   bool enableWriteBufferBackpressure{false};
 
   // When true, insert ThriftServerStreamMuxHandler immediately head-ward of the
