@@ -1082,13 +1082,14 @@ class RPCClientConformanceTest : public testing::Test {
   bool connectViaServer_ = false;
 };
 
-void registerTests(
+std::set<size_t> registerTests(
     std::string_view category,
     const TestSuite& suite,
     const Nonconforming& nonconforming,
     std::pair<std::string_view, bool> clientCmd,
     const char* file,
     int line) {
+  std::set<size_t> used;
   for (const auto& test : *suite.tests()) {
     for (const auto& testCase : *test.testCases()) {
       std::string suiteName =
@@ -1098,6 +1099,9 @@ void registerTests(
       std::string where =
           entry ? fmt::format("nonconforming.txt:{}", entry->line) : "";
       std::string why = entry ? entry->explainConforming(fullName) : "";
+      if (entry) {
+        used.insert(entry->line);
+      }
       registerTest(
           suiteName.c_str(),
           test.name()->c_str(),
@@ -1111,6 +1115,7 @@ void registerTests(
           });
     }
   }
+  return used;
 }
 
 } // namespace apache::thrift::conformance

@@ -34,7 +34,7 @@
 namespace apache::thrift::conformance {
 
 // Registers a test suite with gtest.
-void registerTests(
+std::set<size_t> registerTests(
     std::string_view name,
     const TestSuite& suite,
     const Nonconforming& nonconforming,
@@ -53,12 +53,16 @@ class RPCClientConformanceTestRegistration {
       const char* file = "",
       int line = 0)
       : suites_(std::move(suites)) {
+    std::set<std::string> scope;
+    std::set<size_t> used;
     for (const auto& entry : clientCmds) {
       for (const auto& suite : suites_) {
-        registerTests(
-            entry.first, suite, nonconforming, entry.second, file, line);
+        scope.insert(std::string(entry.first) + "/" + *suite.name());
+        used.merge(registerTests(
+            entry.first, suite, nonconforming, entry.second, file, line));
       }
     }
+    registerStaleTest(nonconforming.stale(scope, used), file, line);
   }
 
  private:

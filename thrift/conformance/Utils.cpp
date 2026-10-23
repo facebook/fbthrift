@@ -251,6 +251,12 @@ Nonconforming::Nonconforming(std::string_view data) {
           text));
     }
     Entry entry{.line = i + 1, .text = std::string(text)};
+    auto suite = name->rest.substr(0, name->rest.find('/'));
+    if (!isGlob(name->lang) && !isGlob(suite) &&
+        std::ranges::none_of(config, isGlob)) {
+      scoped_.emplace_back(
+          canonicalName(Name{name->lang, name->config, suite}), entry);
+    }
     if (isGlob(name->lang) || isGlob(name->rest) ||
         std::ranges::any_of(config, isGlob)) {
       globs_.push_back(
@@ -290,6 +296,64 @@ std::optional<Nonconforming::Entry> Nonconforming::find(
     }
   }
   return found ? std::optional(*found) : std::nullopt;
+}
+
+std::vector<Nonconforming::Entry> Nonconforming::stale(
+    const std::set<std::string>& scope, const std::set<size_t>& used) const {
+  std::set<std::string> canonical;
+  for (const auto& key : scope) {
+    if (auto name = splitName(key)) {
+      canonical.insert(canonicalName(*name));
+    }
+  }
+  std::vector<Entry> result;
+  for (const auto& [key, entry] : scoped_) {
+    if (canonical.contains(key) && !used.contains(entry.line)) {
+      result.push_back(entry);
+    }
+  }
+  return result;
+}
+
+namespace {
+
+class StaleTest : public testing::Test {
+ public:
+  explicit StaleTest(std::vector<Nonconforming::Entry> stale)
+      : stale_(std::move(stale)) {}
+
+ protected:
+  void TestBody() override {
+    std::string listed;
+    for (const auto& entry : stale_) {
+      listed += fmt::format(
+          "    thrift/conformance/data/nonconforming.txt:{}: {}\n",
+          entry.line,
+          entry.text);
+    }
+    EXPECT_TRUE(stale_.empty())
+        << "These entries name none of this target's tests, or only tests an "
+           "earlier entry names, though it runs their category and suite. "
+           "Delete them:\n"
+        << listed;
+  }
+
+ private:
+  const std::vector<Nonconforming::Entry> stale_;
+};
+
+} // namespace
+
+void registerStaleTest(
+    std::vector<Nonconforming::Entry> stale, const char* file, int line) {
+  registerTest(
+      "Nonconforming",
+      "NoStaleEntries",
+      nullptr,
+      nullptr,
+      file,
+      line,
+      [stale = std::move(stale)]() { return new StaleTest(stale); });
 }
 
 std::string Nonconforming::Entry::explainConforming(

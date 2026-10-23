@@ -21,6 +21,7 @@
 
 namespace apache::thrift::conformance {
 namespace {
+using ::testing::ElementsAre;
 using ::testing::Pair;
 using ::testing::UnorderedElementsAre;
 
@@ -98,6 +99,31 @@ TEST(UtilsTest, Nonconforming) {
       "If intentional, delete that line or narrow it so it no longer names "
       "this test (thrift/conformance/README.md shows how to list what it "
       "names).");
+}
+
+TEST(UtilsTest, Nonconforming_Stale) {
+  const Nonconforming nonconforming(
+      "go/RoundTrip/bool/true.Binary\n"
+      "go/RoundTrip/bool/true.Json5\n"
+      "go/RoundTrip/bool/*\n"
+      "go/Compatibility/x.Binary\n"
+      "rust[client=cpp,*]/Rpc/Bidi*\n"
+      "rust[tls,client=cpp]/Rpc/X.Test\n");
+  std::set<size_t> used;
+  for (auto test :
+       {"go/RoundTrip/bool/true.Binary",
+        "go/RoundTrip/bool/true.Compact",
+        "rust[client=cpp,tls]/Rpc/Y.Test"}) {
+    if (auto entry = nonconforming.find(test)) {
+      used.insert(entry->line);
+    }
+  }
+  std::vector<size_t> lines;
+  for (const auto& entry : nonconforming.stale(
+           {"go/RoundTrip", "rust[client=cpp,tls]/Rpc"}, used)) {
+    lines.push_back(entry.line);
+  }
+  EXPECT_THAT(lines, ElementsAre(2, 6));
 }
 
 TEST(UtilsTest, Nonconforming_Malformed) {

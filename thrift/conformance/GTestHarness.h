@@ -269,13 +269,14 @@ testing::AssertionResult runTestCase(Client& client, const TestCase& testCase) {
 
 // Registers a test suite with gtest.
 template <typename Client>
-void registerTests(
+std::set<size_t> registerTests(
     std::string_view category,
     const TestSuite& suite,
     const Nonconforming& nonconforming,
     std::function<Client&()> clientFn,
     const char* file,
     int line) {
+  std::set<size_t> used;
   for (const auto& test : *suite.tests()) {
     for (const auto& testCase : *test.testCases()) {
       std::string suiteName =
@@ -285,6 +286,9 @@ void registerTests(
       std::string where =
           entry ? fmt::format("nonconforming.txt:{}", entry->line) : "";
       std::string why = entry ? entry->explainConforming(fullName) : "";
+      if (entry) {
+        used.insert(entry->line);
+      }
       registerTest(
           suiteName.c_str(),
           test.name()->c_str(),
@@ -298,6 +302,7 @@ void registerTests(
           });
     }
   }
+  return used;
 }
 
 namespace detail {
@@ -312,12 +317,17 @@ class ConformanceTestRegistration {
       const char* file = "",
       int line = 0)
       : suites_(std::move(suites)) {
+    std::set<std::string> scope;
+    std::set<size_t> used;
     for (const auto& entry : clientFns) {
       for (const auto& suite : suites_) {
-        registerTests<Client>(
-            entry.first, suite, nonconforming, entry.second, file, line);
+        scope.insert(std::string(entry.first) + "/" + *suite.name());
+        used.merge(
+            registerTests<Client>(
+                entry.first, suite, nonconforming, entry.second, file, line));
       }
     }
+    registerStaleTest(nonconforming.stale(scope, used), file, line);
   }
 
  private:

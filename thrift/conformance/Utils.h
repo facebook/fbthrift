@@ -17,6 +17,7 @@
 #pragma once
 
 #include <optional>
+#include <set>
 
 #include <gtest/gtest.h>
 #include <folly/container/F14Map.h>
@@ -73,6 +74,11 @@ class Nonconforming {
   // The first entry naming the test.
   std::optional<Entry> find(std::string_view test) const;
 
+  // The entries confined to one of `scope`'s `category/suite`s whose line is
+  // not in `used`, the lines `find` returned for that scope's tests.
+  std::vector<Entry> stale(
+      const std::set<std::string>& scope, const std::set<size_t>& used) const;
+
  private:
   struct Glob {
     Entry entry;
@@ -83,7 +89,12 @@ class Nonconforming {
 
   folly::F14FastMap<std::string, Entry> exact_;
   std::vector<Glob> globs_;
+  std::vector<std::pair<std::string, Entry>> scoped_;
 };
+
+// Registers a test that fails naming the `stale` entries.
+void registerStaleTest(
+    std::vector<Nonconforming::Entry> stale, const char* file, int line);
 
 // Reads or generates the test suites to run.
 std::vector<TestSuite> getSuites();
