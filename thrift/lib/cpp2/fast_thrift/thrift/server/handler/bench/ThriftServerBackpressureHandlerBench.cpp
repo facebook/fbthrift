@@ -15,7 +15,7 @@
  */
 
 /**
- * WriteBufferBackpressureHandler microbenchmarks.
+ * ThriftServerBackpressureHandler microbenchmarks.
  *
  * The hot path is `onWrite` in the unsaturated case — a single flag
  * check + forward. This bench guards that hot path against regressions
@@ -33,7 +33,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/WriteBufferBackpressureHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerBackpressureHandler.h>
 
 using namespace folly;
 using namespace apache::thrift::fast_thrift::channel_pipeline;
@@ -85,7 +85,7 @@ BENCHMARK(OnWrite_PassThrough, iters) {
   BenchmarkSuspender suspender;
 
   ReadBackpressureArbiter arbiter;
-  WriteBufferBackpressureHandler<BenchCtx> handler(&arbiter);
+  ThriftServerBackpressureHandler<BenchCtx> handler(&arbiter);
   BenchCtx ctx;
 
   std::vector<TypeErasedBox> requests;
@@ -107,7 +107,7 @@ BENCHMARK(OnWrite_ForwardWhileBackpressured, iters) {
   BenchmarkSuspender suspender;
 
   ReadBackpressureArbiter arbiter;
-  WriteBufferBackpressureHandler<BenchCtx> handler(&arbiter);
+  ThriftServerBackpressureHandler<BenchCtx> handler(&arbiter);
   BenchCtx ctx;
 
   // Arm the backpressure flag with one priming write.
@@ -136,7 +136,7 @@ BENCHMARK(OnWriteReady_ReleaseReadPause, iters) {
   BenchmarkSuspender suspender;
 
   ReadBackpressureArbiter arbiter;
-  WriteBufferBackpressureHandler<BenchCtx> handler(&arbiter);
+  ThriftServerBackpressureHandler<BenchCtx> handler(&arbiter);
   BenchCtx ctx;
 
   const size_t cycles = (iters + kDrainBatch - 1) / kDrainBatch;

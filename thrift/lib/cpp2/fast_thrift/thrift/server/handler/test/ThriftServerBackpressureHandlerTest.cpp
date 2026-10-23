@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/WriteBufferBackpressureHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerBackpressureHandler.h>
 
 #include <vector>
 
@@ -77,8 +77,9 @@ ThriftServerResponseMessage makeResponse(uint32_t streamId) {
       .payload = ThriftInitialResponsePayload{.streamId = streamId}};
 }
 
-TEST(WriteBufferBackpressureHandlerTest, ResponsesContinueWhileReadsArePaused) {
-  WriteBufferBackpressureHandler<FakeContext> handler;
+TEST(
+    ThriftServerBackpressureHandlerTest, ResponsesContinueWhileReadsArePaused) {
+  ThriftServerBackpressureHandler<FakeContext> handler;
   FakeContext ctx;
   ctx.nextWriteResult = Result::Backpressure;
 
@@ -109,8 +110,8 @@ TEST(WriteBufferBackpressureHandlerTest, ResponsesContinueWhileReadsArePaused) {
       Result::Success);
 }
 
-TEST(WriteBufferBackpressureHandlerTest, ReadinessWaitsForOtherPauseOwners) {
-  WriteBufferBackpressureHandler<FakeContext> handler;
+TEST(ThriftServerBackpressureHandlerTest, ReadinessWaitsForOtherPauseOwners) {
+  ThriftServerBackpressureHandler<FakeContext> handler;
   FakeContext ctx;
   ctx.arbiter.acquire();
   ctx.nextWriteResult = Result::Backpressure;
@@ -122,8 +123,9 @@ TEST(WriteBufferBackpressureHandlerTest, ReadinessWaitsForOtherPauseOwners) {
   EXPECT_EQ(ctx.fakePipeline.onReadReadyCalls, 0);
 }
 
-TEST(WriteBufferBackpressureHandlerTest, InactiveReleasesPauseWithoutResuming) {
-  WriteBufferBackpressureHandler<FakeContext> handler;
+TEST(
+    ThriftServerBackpressureHandlerTest, InactiveReleasesPauseWithoutResuming) {
+  ThriftServerBackpressureHandler<FakeContext> handler;
   FakeContext ctx;
   ctx.nextWriteResult = Result::Backpressure;
   (void)handler.onWrite(ctx, erase_and_box(makeResponse(1)));
@@ -137,8 +139,8 @@ TEST(WriteBufferBackpressureHandlerTest, InactiveReleasesPauseWithoutResuming) {
   EXPECT_EQ(ctx.cancelAwaitWriteReadyCalls, 1);
 }
 
-TEST(WriteBufferBackpressureHandlerTest, ErrorsRemainTerminalUnderPressure) {
-  WriteBufferBackpressureHandler<FakeContext> handler;
+TEST(ThriftServerBackpressureHandlerTest, ErrorsRemainTerminalUnderPressure) {
+  ThriftServerBackpressureHandler<FakeContext> handler;
   FakeContext ctx;
   ctx.nextWriteResult = Result::Backpressure;
   (void)handler.onWrite(ctx, erase_and_box(makeResponse(1)));
@@ -153,17 +155,18 @@ TEST(WriteBufferBackpressureHandlerTest, ErrorsRemainTerminalUnderPressure) {
   EXPECT_EQ(ctx.arbiter.holderCount(), 1);
 }
 
-#if defined(FAST_THRIFT_WRITE_BUFFER_PIPELINE_TESTS)
+#if defined(FAST_THRIFT_SERVER_BACKPRESSURE_PIPELINE_TESTS)
 HANDLER_TAG(read_backpressure);
 
 TEST(
-    WriteBufferBackpressureHandlerPipelineTest, WritesFlowWhileReadsArePaused) {
+    ThriftServerBackpressureHandlerPipelineTest,
+    WritesFlowWhileReadsArePaused) {
   folly::EventBase evb;
   cp::test::MockHeadHandler head;
   cp::test::MockTailHandler tail;
   cp::test::TestAllocator allocator;
   ReadBackpressureArbiter arbiter;
-  using Handler = WriteBufferBackpressureHandler<cp::detail::ContextImpl>;
+  using Handler = ThriftServerBackpressureHandler<cp::detail::ContextImpl>;
   auto pipeline = cp::PipelineBuilder<
                       cp::test::MockHeadHandler,
                       cp::test::MockTailHandler,

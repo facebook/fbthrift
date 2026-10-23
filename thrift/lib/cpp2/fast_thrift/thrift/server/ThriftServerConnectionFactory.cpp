@@ -55,6 +55,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerCompositeAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ReadBackpressureArbiter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerBackpressureHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerChecksumHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerCompressionHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionCloseHandler.h>
@@ -62,7 +63,6 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestLifecycleHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerStreamMuxHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/WriteBufferBackpressureHandler.h>
 
 namespace apache::thrift::fast_thrift::thrift::server {
 
@@ -114,7 +114,7 @@ HANDLER_TAG(thrift_server_request_lifecycle_handler);
 HANDLER_TAG(thrift_server_compression_handler);
 HANDLER_TAG(thrift_server_checksum_handler);
 HANDLER_TAG(thrift_server_connection_close_handler);
-HANDLER_TAG(write_buffer_backpressure_handler);
+HANDLER_TAG(thrift_server_backpressure_handler);
 HANDLER_TAG(thrift_server_setup_handler);
 HANDLER_TAG(thrift_server_stream_mux_handler);
 
@@ -296,17 +296,17 @@ PipelineOwner finishStaticThriftPipeline(
   }
 }
 
-template <bool WithWriteBuffer, bool WithExtensions, typename Builder>
-PipelineOwner addStaticWriteBuffer(
+template <bool WithBackpressure, bool WithExtensions, typename Builder>
+PipelineOwner addStaticBackpressure(
     Builder&& builder,
     const ThriftServerConnectionFactoryConfig& config,
     ExtensionStateStore& extensionStates,
     ReadBackpressureArbiter& readBackpressureArbiter) {
-  if constexpr (WithWriteBuffer) {
+  if constexpr (WithBackpressure) {
     return finishStaticThriftPipeline<WithExtensions>(
         std::forward<Builder>(builder)
-            .template addNextDuplexTemplate<WriteBufferBackpressureHandler>(
-                write_buffer_backpressure_handler_tag,
+            .template addNextDuplexTemplate<ThriftServerBackpressureHandler>(
+                thrift_server_backpressure_handler_tag,
                 &readBackpressureArbiter),
         config,
         extensionStates);
@@ -318,7 +318,7 @@ PipelineOwner addStaticWriteBuffer(
 
 template <
     bool WithChecksum,
-    bool WithWriteBuffer,
+    bool WithBackpressure,
     bool WithExtensions,
     typename Builder>
 PipelineOwner addStaticChecksum(
@@ -327,7 +327,7 @@ PipelineOwner addStaticChecksum(
     ExtensionStateStore& extensionStates,
     ReadBackpressureArbiter& readBackpressureArbiter) {
   if constexpr (WithChecksum) {
-    return addStaticWriteBuffer<WithWriteBuffer, WithExtensions>(
+    return addStaticBackpressure<WithBackpressure, WithExtensions>(
         std::forward<Builder>(builder)
             .template addNextDuplexTemplate<ThriftServerChecksumHandler>(
                 thrift_server_checksum_handler_tag)
@@ -339,7 +339,7 @@ PipelineOwner addStaticChecksum(
         extensionStates,
         readBackpressureArbiter);
   } else {
-    return addStaticWriteBuffer<WithWriteBuffer, WithExtensions>(
+    return addStaticBackpressure<WithBackpressure, WithExtensions>(
         std::forward<Builder>(builder)
             .template addNextDuplexTemplate<ThriftServerConnectionCloseHandler>(
                 thrift_server_connection_close_handler_tag,
@@ -353,7 +353,7 @@ PipelineOwner addStaticChecksum(
 
 template <
     bool WithChecksum,
-    bool WithWriteBuffer,
+    bool WithBackpressure,
     bool WithExtensions,
     typename Builder>
 PipelineOwner addStaticCompression(
@@ -361,7 +361,7 @@ PipelineOwner addStaticCompression(
     const ThriftServerConnectionFactoryConfig& config,
     ExtensionStateStore& extensionStates,
     ReadBackpressureArbiter& readBackpressureArbiter) {
-  return addStaticChecksum<WithChecksum, WithWriteBuffer, WithExtensions>(
+  return addStaticChecksum<WithChecksum, WithBackpressure, WithExtensions>(
       std::forward<Builder>(builder)
           .template addNextDuplexTemplate<ThriftServerCompressionHandler>(
               thrift_server_compression_handler_tag),
@@ -374,7 +374,7 @@ template <
     bool WithStats,
     bool WithHeaders,
     bool WithChecksum,
-    bool WithWriteBuffer,
+    bool WithBackpressure,
     bool WithExtensions,
     typename TailAdapter>
 PipelineOwner buildStaticThriftPipeline(
@@ -396,7 +396,7 @@ PipelineOwner buildStaticThriftPipeline(
                      .setAllocator(allocator);
   auto& readBackpressureArbiter = connContext->readBackpressureArbiter();
   if constexpr (WithStats) {
-    return addStaticCompression<WithChecksum, WithWriteBuffer, WithExtensions>(
+    return addStaticCompression<WithChecksum, WithBackpressure, WithExtensions>(
         std::move(builder)
             .template addNextDuplex<
                 ThriftMetricsHandler<Direction::Server, ServerStatsShard>>(
@@ -411,7 +411,7 @@ PipelineOwner buildStaticThriftPipeline(
         extensionStates,
         readBackpressureArbiter);
   } else {
-    return addStaticCompression<WithChecksum, WithWriteBuffer, WithExtensions>(
+    return addStaticCompression<WithChecksum, WithBackpressure, WithExtensions>(
         std::move(builder)
             .template addNextDuplexTemplate<ThriftServerRequestContextHandler>(
                 thrift_server_request_context_handler_tag,
@@ -429,7 +429,7 @@ template <
     bool WithStats,
     bool WithHeaders,
     bool WithChecksum,
-    bool WithWriteBuffer,
+    bool WithBackpressure,
     typename TailAdapter>
 PipelineOwner selectStaticExtensions(
     bool withExtensions,
@@ -446,7 +446,7 @@ PipelineOwner selectStaticExtensions(
         WithStats,
         WithHeaders,
         WithChecksum,
-        WithWriteBuffer,
+        WithBackpressure,
         true>(
         evb,
         transportAdapter,
@@ -461,7 +461,7 @@ PipelineOwner selectStaticExtensions(
       WithStats,
       WithHeaders,
       WithChecksum,
-      WithWriteBuffer,
+      WithBackpressure,
       false>(
       evb,
       transportAdapter,
@@ -478,7 +478,7 @@ template <
     bool WithHeaders,
     bool WithChecksum,
     typename TailAdapter>
-PipelineOwner selectStaticWriteBuffer(
+PipelineOwner selectStaticBackpressure(
     const ThriftServerConnectionFactoryConfig& config,
     folly::EventBase* evb,
     ThriftServerTransportAdapter* transportAdapter,
@@ -523,7 +523,7 @@ PipelineOwner selectStaticChecksum(
     ExtensionStateStore& extensionStates,
     ServerStatsShard* statsShard) {
   if (config.enableChecksum) {
-    return selectStaticWriteBuffer<WithStats, WithHeaders, true>(
+    return selectStaticBackpressure<WithStats, WithHeaders, true>(
         config,
         evb,
         transportAdapter,
@@ -533,7 +533,7 @@ PipelineOwner selectStaticChecksum(
         extensionStates,
         statsShard);
   }
-  return selectStaticWriteBuffer<WithStats, WithHeaders, false>(
+  return selectStaticBackpressure<WithStats, WithHeaders, false>(
       config,
       evb,
       transportAdapter,
@@ -900,8 +900,8 @@ detail::ThriftServerConnectionFactoryT<Mode>::buildConnectionImpl(
       ThriftServerConnectionCloseHandler<channel_pipeline::detail::ContextImpl>;
   using RequestLifecycleHandler = ThriftServerRequestLifecycleHandler<
       channel_pipeline::detail::ContextImpl>;
-  using WriteBufferHandler =
-      WriteBufferBackpressureHandler<channel_pipeline::detail::ContextImpl>;
+  using BackpressureHandler =
+      ThriftServerBackpressureHandler<channel_pipeline::detail::ContextImpl>;
   using SetupHandler =
       ThriftServerSetupHandler<channel_pipeline::detail::ContextImpl>;
   using MuxHandler =
@@ -969,14 +969,14 @@ detail::ThriftServerConnectionFactoryT<Mode>::buildConnectionImpl(
         thrift_server_connection_close_handler_tag,
         config_.drainTimeout,
         config_.reapTimeout);
-    // Write-buffer handler sits between the context handler and the drain
+    // Backpressure handler sits between the context handler and the drain
     // handler. Placed above drain (closer to head) so its inbound
     // Backpressure signal propagates upstream toward the transport, and
-    // outbound responses from the tail traverse drain → write-buffer →
+    // outbound responses from the tail traverse drain → backpressure →
     // head.
     if (config_.enableWriteBufferBackpressure) {
-      thriftPipelineBuilder.template addNextDuplex<WriteBufferHandler>(
-          write_buffer_backpressure_handler_tag, &readBackpressureArbiter);
+      thriftPipelineBuilder.template addNextDuplex<BackpressureHandler>(
+          thrift_server_backpressure_handler_tag, &readBackpressureArbiter);
     }
     // Embedder-registered handlers go after all built-ins, in registration
     // order — the first sits closest to the head, the last immediately above

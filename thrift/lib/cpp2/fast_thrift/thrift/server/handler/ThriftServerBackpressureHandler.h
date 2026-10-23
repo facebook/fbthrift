@@ -30,13 +30,12 @@ namespace apache::thrift::fast_thrift::thrift {
 /**
  * Pauses inbound admission while outbound writes report backpressure.
  * Responses for accepted requests always continue toward the transport.
- * The historical name is retained for pipeline registrations.
  */
 template <typename Context>
-class WriteBufferBackpressureHandler {
+class ThriftServerBackpressureHandler {
  public:
-  WriteBufferBackpressureHandler() = default;
-  explicit WriteBufferBackpressureHandler(
+  ThriftServerBackpressureHandler() = default;
+  explicit ThriftServerBackpressureHandler(
       ReadBackpressureArbiter* arbiter) noexcept
       : arbiter_(arbiter) {}
 

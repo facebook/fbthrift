@@ -32,9 +32,9 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ReadBackpressureArbiter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/context/ThriftConnContext.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerBackpressureHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerConnectionCloseHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerRequestContextHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/WriteBufferBackpressureHandler.h>
 
 namespace apache::thrift::fast_thrift::thrift::server::test {
 
@@ -45,12 +45,12 @@ namespace {
 
 HANDLER_TAG(req_ctx);
 HANDLER_TAG(close);
-HANDLER_TAG(write_buffer);
+HANDLER_TAG(server_backpressure);
 
 using Ctx = cp::detail::ContextImpl;
 using ReqCtxHandler = ft::ThriftServerRequestContextHandler<Ctx>;
 using CloseHandler = ft::ThriftServerConnectionCloseHandler<Ctx>;
-using WriteBufferHandler = ft::WriteBufferBackpressureHandler<Ctx>;
+using BackpressureHandler = ft::ThriftServerBackpressureHandler<Ctx>;
 
 ft::ThriftServerRequestMessage makeRequest(uint32_t streamId) {
   return ft::ThriftServerRequestMessage{
@@ -88,10 +88,10 @@ class ThriftServerBackpressureIntegrationTest : public ::testing::Test {
             new ft::ThriftConnContext{}),
         /*enableRequestHeaders=*/false);
     auto closeHandler = std::make_unique<CloseHandler>();
-    auto writeBuffer = std::make_unique<WriteBufferHandler>(&arbiter_);
+    auto backpressure = std::make_unique<BackpressureHandler>(&arbiter_);
 
     closeHandler_ = closeHandler.get();
-    writeBuffer_ = writeBuffer.get();
+    backpressure_ = backpressure.get();
 
     pipeline_ =
         cp::PipelineBuilder<
@@ -104,8 +104,8 @@ class ThriftServerBackpressureIntegrationTest : public ::testing::Test {
             .setAllocator(&allocator_)
             .addNextInbound<ReqCtxHandler>(req_ctx_tag, std::move(reqCtx))
             .addNextDuplex<CloseHandler>(close_tag, std::move(closeHandler))
-            .addNextDuplex<WriteBufferHandler>(
-                write_buffer_tag, std::move(writeBuffer))
+            .addNextDuplex<BackpressureHandler>(
+                server_backpressure_tag, std::move(backpressure))
             .build();
     pipeline_->activate();
   }
@@ -137,7 +137,7 @@ class ThriftServerBackpressureIntegrationTest : public ::testing::Test {
   ft::ReadBackpressureArbiter arbiter_;
   cp::PipelineImpl::Ptr pipeline_;
   CloseHandler* closeHandler_{nullptr};
-  WriteBufferHandler* writeBuffer_{nullptr};
+  BackpressureHandler* backpressure_{nullptr};
 };
 
 TEST_F(
@@ -151,7 +151,7 @@ TEST_F(
   EXPECT_EQ(fireResponse(2), cp::Result::Success);
   EXPECT_EQ(fireResponse(3), cp::Result::Success);
 
-  EXPECT_FALSE(writeBuffer_->isBackpressured());
+  EXPECT_FALSE(backpressure_->isBackpressured());
   EXPECT_EQ(head_.writeCount(), 3);
   EXPECT_EQ(closeHandler_->inFlight(), 0u);
 }
@@ -167,7 +167,7 @@ TEST_F(
   EXPECT_EQ(fireResponse(2), cp::Result::Backpressure);
   EXPECT_EQ(fireResponse(3), cp::Result::Backpressure);
 
-  EXPECT_TRUE(writeBuffer_->isBackpressured());
+  EXPECT_TRUE(backpressure_->isBackpressured());
   EXPECT_EQ(head_.writeCount(), 3);
   EXPECT_EQ(closeHandler_->inFlight(), 0u);
   EXPECT_EQ(arbiter_.holderCount(), 1u);
@@ -176,7 +176,7 @@ TEST_F(
 
   pipeline_->onWriteReady();
 
-  EXPECT_FALSE(writeBuffer_->isBackpressured());
+  EXPECT_FALSE(backpressure_->isBackpressured());
   EXPECT_FALSE(pipeline_->hasPendingWriteReady());
   EXPECT_EQ(head_.writeCount(), 3);
   EXPECT_EQ(head_.onReadReadyCount(), 1);
