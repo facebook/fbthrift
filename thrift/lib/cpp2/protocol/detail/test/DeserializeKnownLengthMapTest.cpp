@@ -16,6 +16,7 @@
 
 #include <memory>
 #include <memory_resource>
+#include <vector>
 
 #include <gtest/gtest.h>
 #include <folly/container/F14Map.h>
@@ -462,6 +463,96 @@ TEST_F(DeserializeKnownLengthMapTest, EmplaceConstuctCountVecAlloc) {
                            /* moveAssign */ 0,
                            /* defaultConstruct */ 1,
                            /* destroyed */ 0}));
+}
+
+class CountingResource : public std::pmr::memory_resource {
+ public:
+  int allocs = 0;
+
+ private:
+  void* do_allocate(std::size_t bytes, std::size_t align) override {
+    ++allocs;
+    return std::pmr::new_delete_resource()->allocate(bytes, align);
+  }
+  void do_deallocate(void* p, std::size_t bytes, std::size_t align) override {
+    std::pmr::new_delete_resource()->deallocate(p, bytes, align);
+  }
+  bool do_is_equal(
+      const std::pmr::memory_resource& other) const noexcept override {
+    return this == &other;
+  }
+};
+
+class DefaultResourceGuard {
+ public:
+  explicit DefaultResourceGuard(std::pmr::memory_resource* r)
+      : prev_(std::pmr::set_default_resource(r)) {}
+  ~DefaultResourceGuard() { std::pmr::set_default_resource(prev_); }
+
+ private:
+  std::pmr::memory_resource* prev_;
+};
+
+// An allocator-aware mapped value that counts how it is built and destroyed.
+struct AAValue {
+  using allocator_type = std::pmr::polymorphic_allocator<>;
+
+  AAValue() : AAValue(allocator_type{}) {}
+  explicit AAValue(const allocator_type& alloc) : vals(alloc) { ++built; }
+  AAValue(const AAValue& other) : vals(other.vals) { ++built; }
+  AAValue(const AAValue& other, const allocator_type& alloc)
+      : vals(other.vals, alloc) {
+    ++built;
+  }
+  AAValue(AAValue&& other) noexcept : vals(std::move(other.vals)) { ++moved; }
+  AAValue(AAValue&& other, const allocator_type& alloc)
+      : vals(std::move(other.vals), alloc) {
+    ++moved;
+  }
+  AAValue& operator=(const AAValue&) = default;
+  AAValue& operator=(AAValue&&) = default;
+  ~AAValue() { ++destroyed; }
+
+  allocator_type get_allocator() const { return vals.get_allocator(); }
+
+  std::pmr::vector<int> vals;
+
+  static void reset() { built = moved = destroyed = 0; }
+  static inline int built = 0;
+  static inline int moved = 0;
+  static inline int destroyed = 0;
+};
+
+TEST_F(DeserializeKnownLengthMapTest, EmplaceConstuctCountAllocAwareValue) {
+  using Map = MinimalMap<
+      TrackedKey,
+      AAValue,
+      TransparentTrackedKeyHash,
+      TransparentTrackedKeyEqual,
+      std::pmr::polymorphic_allocator<std::pair<const TrackedKey, AAValue>>>;
+
+  static_assert(!detail::pm::map_emplace_hint_is_invocable_v<Map>);
+  static_assert(detail::alloc_should_propagate_map<Map>);
+
+  CountingResource arena;
+  DefaultResourceGuard arenaGuard(&arena);
+  Map map;
+  CountingResource heap;
+  DefaultResourceGuard heapGuard(&heap);
+  AAValue::reset();
+  detail::pm::deserialize_known_length_map(
+      map, 1, deserializeTrackedKey, [](AAValue& value) {
+        value.vals.assign({1, 2, 3});
+      });
+
+  EXPECT_EQ(AAValue::built, 1);
+  EXPECT_EQ(AAValue::moved, 0);
+  EXPECT_EQ(AAValue::destroyed, 0);
+  EXPECT_EQ(heap.allocs, 0);
+  ASSERT_EQ(map.size(), 1);
+  TrackedKey key;
+  deserializeTrackedKey(key);
+  EXPECT_EQ(map[key].get_allocator().resource(), &arena);
 }
 
 #endif

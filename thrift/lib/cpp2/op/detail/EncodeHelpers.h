@@ -109,22 +109,9 @@ typename Container::reference emplace_back_default(Container& c) {
 }
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
-  requires(apache::thrift::detail::alloc_should_propagate_map<Map>)
 void deserialize_key_val_into_map(
     Map& m, const KeyDeserializer& kr, const MappedDeserializer& mr) {
   typename Map::key_type key = apache::thrift::detail::default_map_key(m);
-  typename Map::mapped_type value =
-      apache::thrift::detail::default_map_value(m);
-  kr(key);
-  mr(value);
-  m.emplace(std::move(key), std::move(value));
-}
-
-template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
-  requires(!apache::thrift::detail::alloc_should_propagate_map<Map>)
-void deserialize_key_val_into_map(
-    Map& m, const KeyDeserializer& kr, const MappedDeserializer& mr) {
-  typename Map::key_type key;
   kr(key);
   mr(m[std::move(key)]);
 }
