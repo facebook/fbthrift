@@ -183,8 +183,13 @@ cdef object _get_src_union_field_value(object src_union, FieldInfo field):
     except AttributeError:
         pass
 
+    # The caller reaches this line for every inactive field at every depth of the
+    # union and discards the error, so any cost here multiplies on large, deeply
+    # nested unions. Therefore, keep this message cheap. For example, no full repr
+    # of the union.
     raise AttributeError(
-        f"{src_union} doesn't have field with id {field.id} or name {field.py_name}"
+        f"{type(src_union).__module__}.{type(src_union).__qualname__} "
+        f"doesn't have field with id {field.id} or name {field.py_name}"
     )
 
 cdef object _to_mutable_python_field_value(

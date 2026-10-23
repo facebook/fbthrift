@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest import mock
 
 import convertible.thrift_mutable_types as python_mutable_types
 import convertible.thrift_types as python_types
@@ -365,6 +366,26 @@ class PyDeprecatedToPythonConverterTest(unittest.TestCase):
         self.assertEqual(to.type, python_types.Potahto.Type.to)
         self.assertEqual(to.value, True)
 
+    def test_union_conversion_does_not_format_source_union(self) -> None:
+        # GIVEN
+        source = py_deprecated_types.Potayto(tay="tay")
+        expected_type = python_types.Potahto.Type.EMPTY
+
+        with mock.patch.object(
+            py_deprecated_types.Potayto,
+            "__repr__",
+            autospec=True,
+            wraps=py_deprecated_types.Potayto.__repr__,
+        ) as mock_repr:
+            # WHEN
+            # Potahto has no field that matches `tay`. Convert to it on purpose, so the
+            # converter raises and discards its AttributeError for every field.
+            actual = to_python_struct(python_types.Potahto, source)
+
+        # THEN
+        self.assertEqual(expected_type, actual.type)
+        mock_repr.assert_not_called()
+
     def test_exception(self) -> None:
         exception = py_deprecated_types.SimpleException(
             message="Test error", code=42
@@ -601,6 +622,28 @@ class PyDeprecatedToMutablePythonConverterTest(unittest.TestCase):
             python_mutable_types.Potahto.FbThriftUnionFieldEnum.to,
         )
         self.assertEqual(to.fbthrift_current_value, True)
+
+    def test_union_conversion_does_not_format_source_union(self) -> None:
+        # GIVEN
+        source = py_deprecated_types.Potayto(tay="tay")
+        expected_field = python_mutable_types.Potahto.FbThriftUnionFieldEnum.EMPTY
+
+        with mock.patch.object(
+            py_deprecated_types.Potayto,
+            "__repr__",
+            autospec=True,
+            wraps=py_deprecated_types.Potayto.__repr__,
+        ) as mock_repr:
+            # WHEN
+            # Potahto has no field that matches `tay`. Convert to it on purpose, so the
+            # converter raises and discards its AttributeError for every field.
+            actual = to_mutable_python_struct_or_union(
+                python_mutable_types.Potahto, source
+            )
+
+        # THEN
+        self.assertEqual(expected_field, actual.fbthrift_current_field)
+        mock_repr.assert_not_called()
 
     def test_exception(self) -> None:
         exception = py_deprecated_types.SimpleException(
