@@ -158,6 +158,7 @@ hack/CompatibilityTest/testset/ChangeEnumType/*
 
 # Same for thrift/test/testset/Terse.thrift, which these round trips use.
 hack/RoundTripTest/testset.Terse.enum/*
+hack/RoundTripTest/testset.Terse.union/*
 
 # fragmentation and factory function interactions are not yet supported by the
 # Hack client
@@ -228,6 +229,10 @@ go/ThriftRPCServerTest/InteractionConstructorTest/Success.InteractionConstructor
 ###
 # Language: Rust
 ###
+
+# round-trip-test
+# Rust codegen writes a terse union field even when no member is set.
+rust/RoundTripTest/testset.Terse.union/empty.*
 
 # compatibility-test
 rust/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.*

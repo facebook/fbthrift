@@ -128,6 +128,11 @@ Test createTerseRoundTripTest(
       make<TerseEnumStruct>([](auto& data) { data.field() = TerseEnum::one; }),
       "enum/one");
 
+  addTestCase(TerseUnionStruct{}, "union/empty");
+  addTestCase(
+      make<TerseUnionStruct>([](auto& data) { data.field()->set_field_1(); }),
+      "union/default_member");
+
   return test;
 }
 

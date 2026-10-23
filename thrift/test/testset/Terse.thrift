@@ -34,3 +34,12 @@ struct TerseEnumStruct {
   @thrift.TerseWrite
   1: TerseEnum field;
 }
+
+union TerseUnion {
+  1: i32 field_1;
+}
+
+struct TerseUnionStruct {
+  @thrift.TerseWrite
+  1: TerseUnion field;
+}

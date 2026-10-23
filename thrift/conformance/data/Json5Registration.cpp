@@ -91,6 +91,7 @@ void registerRoundTripJson5Serializers(AnyRegistry& registry) {
 
   using namespace apache::thrift::test::testset;
   registerJson5<TerseEnumStruct>(registry);
+  registerJson5<TerseUnionStruct>(registry);
 }
 
 } // namespace apache::thrift::conformance::data
