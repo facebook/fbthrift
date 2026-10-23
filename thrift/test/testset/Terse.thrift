@@ -68,3 +68,32 @@ struct TerseNewTypeListI32Struct {
   @thrift.TerseWrite
   1: NewTypeListI32 field;
 }
+
+struct Emptiable {
+  1: optional i32 optional_field;
+  @thrift.TerseWrite
+  2: string terse_field;
+}
+
+struct NonEmptiable {
+  1: i32 field;
+}
+
+exception EmptiableException {
+  1: optional string message;
+}
+
+struct TerseEmptiableStruct {
+  @thrift.TerseWrite
+  1: Emptiable field;
+}
+
+struct TerseNonEmptiableStruct {
+  @thrift.TerseWrite
+  1: NonEmptiable field;
+}
+
+struct TerseEmptiableExceptionStruct {
+  @thrift.TerseWrite
+  1: EmptiableException field;
+}

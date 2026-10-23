@@ -160,6 +160,8 @@ hack/CompatibilityTest/testset/ChangeEnumType/*
 hack/RoundTripTest/testset.Terse.enum/*
 hack/RoundTripTest/testset.Terse.union/*
 hack/RoundTripTest/testset.Terse.NewType.*
+hack/RoundTripTest/testset.Terse.exception/*
+hack/RoundTripTest/testset.Terse.struct/*
 
 # fragmentation and factory function interactions are not yet supported by the
 # Hack client
@@ -188,6 +190,15 @@ erlang/ThriftRPCClientTest/Interaction*
 erlang/ThriftRPCClientTest/Bidi*
 
 ###
+# Language: C#
+###
+
+# C#'s `__fbthrift_is_empty()` counts an unqualified field at its default as
+# empty, so it leaves out a terse field holding such a struct. C++ never treats
+# a struct with an unqualified field as empty.
+csharp/RoundTripTest/testset.Terse.struct/unqualified_zero.*
+
+###
 # Language: Go
 ###
 
@@ -196,6 +207,8 @@ erlang/ThriftRPCClientTest/Bidi*
 go/RoundTripTest/testset.Terse.bool/false.*
 go/RoundTripTest/testset.Terse.*/zero.*
 go/RoundTripTest/testset.Terse.*/empty.*
+# Go also writes the nested struct's empty terse field.
+go/RoundTripTest/testset.Terse.struct/optional_zero.*
 
 # Go Data conformance compatibility tests [FAILED]
 # Go does not support Terse [WONTFIX]
@@ -230,6 +243,12 @@ go/ThriftRPCServerTest/InteractionConstructorTest/Success.InteractionConstructor
 ###
 # Language: Rust
 ###
+
+# round-trip-test
+# Rust codegen writes a terse struct or exception field even when every field
+# in it is unset or empty.
+rust/RoundTripTest/testset.Terse.exception/empty.*
+rust/RoundTripTest/testset.Terse.struct/empty.*
 
 # compatibility-test
 rust/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.*

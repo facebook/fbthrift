@@ -156,6 +156,23 @@ Test createTerseRoundTripTest(
   addTerseValueTestCases<type::list<type::i32_t>, TerseNewTypeListI32Struct>(
       addTestCase, "NewType", setField);
 
+  addTestCase(TerseEmptiableStruct{}, "struct/empty");
+  addTestCase(
+      make<TerseEmptiableStruct>(
+          [](auto& data) { data.field()->optional_field() = 0; }),
+      "struct/optional_zero");
+  addTestCase(
+      make<TerseEmptiableStruct>(
+          [](auto& data) { data.field()->terse_field() = "a"; }),
+      "struct/terse_lower");
+  addTestCase(TerseNonEmptiableStruct{}, "struct/unqualified_zero");
+
+  addTestCase(TerseEmptiableExceptionStruct{}, "exception/empty");
+  addTestCase(
+      make<TerseEmptiableExceptionStruct>(
+          [](auto& data) { data.field()->message() = ""; }),
+      "exception/optional_empty");
+
   return test;
 }
 
