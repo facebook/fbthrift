@@ -26,7 +26,10 @@ from thrift.python.server_impl.python_async_processor cimport (
     makeHandlerFunc,
     WorkerSystem,
 )
-from thrift.python.server_impl.python_async_processor import SharedWorkerInitializer
+from thrift.python.server_impl.python_async_processor import (
+    PerLoopWorkerInitializer,
+    SharedWorkerInitializer,
+)
 from thrift.python.std_libcpp cimport bytes_to_string_view
 from thrift.python.types import FunctionEntry
 
@@ -78,8 +81,10 @@ cdef cCreateMethodMetadataResult create(bytes function_name, RpcKind rpc_kind):
 
 class RecordingHandler:
     def __init__(self, served):
+        self.created_on = threading.get_ident()
         self.events = []
         self.threads = set()
+        self.exit_error = None
         self._served = served
 
     def _record(self, event):
@@ -90,7 +95,8 @@ class RecordingHandler:
         self._record("enter")
         return self
 
-    async def __aexit__(self, *exc_info):
+    async def __aexit__(self, exc_type, exc, traceback):
+        self.exit_error = exc
         self._record("exit")
 
     def getFunctionTable(self):
@@ -103,6 +109,19 @@ class RecordingHandler:
     async def serve(self):
         self._record("request")
         self._served.release()
+
+
+class FailingTableHandler(RecordingHandler):
+    def __init__(self, served, exit_result):
+        super().__init__(served)
+        self._exit_result = exit_result
+
+    def getFunctionTable(self):
+        raise RuntimeError("no function table")
+
+    async def __aexit__(self, exc_type, exc, traceback):
+        await super().__aexit__(exc_type, exc, traceback)
+        return self._exit_result
 
 
 async def wait_for_requests(served, count):
@@ -173,3 +192,74 @@ cdef class PythonAsyncProcessorFactoryCTest:
         self.ut.assertEqual(expected_events, shared_handler.events)
         self.ut.assertEqual(expected_worker_thread_count, len(shared_handler.threads))
         self.ut.assertNotIn(forbidden_worker_thread, shared_handler.threads)
+
+    async def test_each_worker_serves_requests_with_its_own_handler(self):
+        # GIVEN
+        forbidden_worker_thread = threading.get_ident()
+        served = threading.Semaphore(0)
+        handlers = []
+        control_table = RecordingHandler(served).getFunctionTable()
+        expected_events = [["enter", "request", "exit"], ["enter", "request", "exit"]]
+        expected_worker_thread_count = 2
+
+        def make_handler():
+            handler = RecordingHandler(served)
+            handlers.append(handler)
+            return handler
+
+        cdef WorkerSystem worker_system = WorkerSystem.create(
+            get_executor(), control_table, {WORKER_METHOD}
+        )
+
+        # WHEN
+        try:
+            worker_system.start(
+                2, functools.partial(PerLoopWorkerInitializer, factory=make_handler)
+            )
+            # Each worker publishes one capacity slot, so the two requests go to
+            # the two workers in turn.
+            start_request(worker_system, WORKER_METHOD)
+            start_request(worker_system, WORKER_METHOD)
+            served_in_time = await wait_for_requests(served, 2)
+        finally:
+            worker_system.close()
+
+        # THEN
+        creation_threads = [handler.created_on for handler in handlers]
+        self.ut.assertTrue(served_in_time)
+        self.ut.assertEqual(expected_events, [handler.events for handler in handlers])
+        # Each handler does everything on the worker thread that created it.
+        self.ut.assertEqual(
+            [{thread} for thread in creation_threads],
+            [handler.threads for handler in handlers],
+        )
+        self.ut.assertEqual(expected_worker_thread_count, len(set(creation_threads)))
+        self.ut.assertNotIn(forbidden_worker_thread, creation_threads)
+
+    async def test_failed_worker_start_propagates_and_the_worker_handler_exits(
+        self, exit_result
+    ):
+        # GIVEN
+        served = threading.Semaphore(0)
+        handler = FailingTableHandler(served, exit_result)
+        control_table = RecordingHandler(served).getFunctionTable()
+        expected_events = ["enter", "exit"]
+        cdef WorkerSystem worker_system = WorkerSystem.create(
+            get_executor(), control_table, {WORKER_METHOD}
+        )
+
+        # WHEN
+        try:
+            with self.ut.assertRaisesRegex(
+                RuntimeError, "^no function table$"
+            ) as failure:
+                worker_system.start(
+                    1,
+                    functools.partial(PerLoopWorkerInitializer, factory=lambda: handler),
+                )
+        finally:
+            worker_system.close()
+
+        # THEN
+        self.ut.assertEqual(expected_events, handler.events)
+        self.ut.assertIs(failure.exception, handler.exit_error)

@@ -99,3 +99,20 @@ class PythonAsyncProcessorFactoryTest(TestCase):
 
     async def test_workers_serve_requests_from_a_shared_table(self) -> None:
         await CTests(self).test_workers_serve_requests_from_a_shared_table()
+
+    async def test_each_worker_serves_requests_with_its_own_handler(self) -> None:
+        await CTests(self).test_each_worker_serves_requests_with_its_own_handler()
+
+    async def test_failed_worker_start_propagates_when_the_worker_handler_does_not_suppress(
+        self,
+    ) -> None:
+        await CTests(
+            self
+        ).test_failed_worker_start_propagates_and_the_worker_handler_exits(None)
+
+    async def test_failed_worker_start_propagates_even_when_the_worker_handler_suppresses(
+        self,
+    ) -> None:
+        await CTests(
+            self
+        ).test_failed_worker_start_propagates_and_the_worker_handler_exits(True)

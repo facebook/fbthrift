@@ -722,6 +722,56 @@ cdef object makeWorkerUnregisterer(
     return unregister_worker
 
 
+# The stack ignores the value a handler's exit returns, so a handler that
+# suppresses exceptions cannot hide a failed worker start.
+async def exitThatPropagatesErrors(handler, exc_type, exc, traceback):
+    await handler.__aexit__(exc_type, exc, traceback)
+    return False
+
+
+cdef class PerLoopWorkerInitializer:
+    """Starts a per-loop worker: the worker calls factory on its own loop and
+    serves requests with that handler."""
+
+    cdef WorkerSystem workerSystem
+    cdef object factory
+
+    def __cinit__(self, WorkerSystem workerSystem, object factory):
+        self.workerSystem = workerSystem
+        self.factory = factory
+
+    async def __call__(self):
+        cdef shared_ptr[cWorkerHandle] worker
+        cdef cmap[string, PyObjPtr] workerMethods
+        # A failed start unwinds the stack; a successful one hands it to the
+        # pool, which closes it when the worker leaves. Until then the stack
+        # also keeps this worker's handler and function table alive.
+        async with contextlib.AsyncExitStack() as cleanup:
+            handler = self.factory()
+            await handler.__aenter__()
+            cleanup.push_async_exit(
+                functools.partial(exitThatPropagatesErrors, handler)
+            )
+            # getFunctionTable builds fresh entries per call, and the bindings
+            # below borrow them.
+            workerFuncMap = handler.getFunctionTable()
+            cleanup.callback(workerFuncMap.clear)
+            worker = registerWorkerExecutor(
+                dereference(self.workerSystem.scheduler), get_executor()
+            )
+            cleanup.callback(
+                makeWorkerUnregisterer(self.workerSystem.scheduler, worker)
+            )
+            workerMethods = buildHandlerMethods(workerFuncMap)
+            self.workerSystem.executionSystem.get().bindWorkerMethods(
+                dereference(worker), cmove(workerMethods)
+            )
+            self.workerSystem.scheduler.get().makeWorkerCapacityAvailable(
+                dereference(worker)
+            )
+            return cleanup.pop_all()
+
+
 cdef class SharedWorkerInitializer:
     """Starts a shared-mode worker: the worker binds funcMap's handler
     functions, and control owns the one handler."""
