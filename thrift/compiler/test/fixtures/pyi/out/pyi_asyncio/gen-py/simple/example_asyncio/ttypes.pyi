@@ -15,6 +15,7 @@ from thrift.protocol.TProtocol import TProtocolBase
 __property__ = property  # sometimes `property` is used as a field name
 
 import simple.dependent_asyncio.ttypes
+import simple.transitive_asyncio.ttypes
 
 UTF8STRINGS: bool
 

@@ -122,6 +122,52 @@ std::set<std::string> get_distinct_adapters(const t_program* program) {
   return adapters;
 }
 
+// Adds the programs that define the types which `type` is rendered as by the
+// `type_name` template. Typedefs are rendered as the types they resolve to, so
+// these can be programs that the rendered program only includes transitively.
+void collect_rendered_programs(
+    const t_type& type, std::set<const t_program*>& programs) {
+  if (get_py_adapter(&type) != nullptr) {
+    return; // Rendered as the adapter's type, whose module is imported.
+  }
+  const t_type* true_type = type.get_true_type();
+  if (const auto* list = true_type->try_as<t_list>()) {
+    collect_rendered_programs(*list->elem_type(), programs);
+  } else if (const auto* set = true_type->try_as<t_set>()) {
+    collect_rendered_programs(*set->elem_type(), programs);
+  } else if (const auto* map = true_type->try_as<t_map>()) {
+    collect_rendered_programs(*map->key_type(), programs);
+    collect_rendered_programs(*map->val_type(), programs);
+  } else if (true_type->is<t_structured>() || true_type->is<t_enum>()) {
+    programs.insert(true_type->program());
+  }
+}
+
+// The programs whose types the stubs of `program` refer to.
+std::set<const t_program*> gather_rendered_programs(const t_program* program) {
+  std::set<const t_program*> programs;
+  for (const t_structured* structured : program->structured_definitions()) {
+    for (const t_field& field : structured->fields()) {
+      collect_rendered_programs(*field.type(), programs);
+    }
+  }
+  for (const t_typedef* typedef_ : program->typedefs()) {
+    collect_rendered_programs(*typedef_, programs);
+  }
+  for (const t_const* const_ : program->consts()) {
+    collect_rendered_programs(*const_->type(), programs);
+  }
+  for (const t_service* service : program->services()) {
+    for (const t_function& function : service->functions()) {
+      collect_rendered_programs(*function.return_type(), programs);
+      for (const t_field& param : function.params().fields()) {
+        collect_rendered_programs(*param.type(), programs);
+      }
+    }
+  }
+  return programs;
+}
+
 std::vector<std::string> gather_import_modules(
     const t_program* program, bool is_asyncio) {
   assert(program != nullptr);
@@ -146,6 +192,26 @@ std::vector<std::string> gather_import_modules(
   for (const auto& adapter : adapters) {
     import_modules.push_back(adapter);
   }
+
+  // Also import the modules of types that are only reachable through
+  // typedefs of included programs, which the includes above do not cover.
+  std::set<std::string> transitive_modules;
+  for (const t_program* prog : gather_rendered_programs(program)) {
+    if (prog == nullptr || prog->path() == program->path()) {
+      continue;
+    }
+    std::string module = fmt::format(
+        "{}",
+        fmt::join(get_py_namespaces_raw(prog, is_asyncio, "ttypes"), "."));
+    if (std::find(import_modules.begin(), import_modules.end(), module) ==
+        import_modules.end()) {
+      transitive_modules.insert(std::move(module));
+    }
+  }
+  import_modules.insert(
+      import_modules.end(),
+      transitive_modules.begin(),
+      transitive_modules.end());
 
   return import_modules;
 }
