@@ -18,7 +18,7 @@ The following outlines the compatibility for changes to data:
 |---    |---    |---    |---    |
 |Add a field    |yes    |yes    |Dropped by old    |
 |Remove a field    |yes    |no    |Dropped by new    |
-|Rename a field    |yes    |no    |Only affect code gen and text format    |
+|Rename a field    |by id only    |no    |Binary, Compact and JSON protocols write the field id. SimpleJSON and JSON5 write the field name, so a reader with the other name loses the field. See [Serialization by name](#serialization-by-name)    |
 |Change field type    |rarely    |no    |1. Changes between utf-8 encoded string and binary are wire compatible for Binary/Compact protocol. <br/>2. Changes between i32 and enum are wire compatible.    |
 |Add enum value    |yes    |yes    |Preserved by old    |
 |Remove enum value    |yes    |no    |Preserved by new    |
@@ -60,10 +60,14 @@ Thrift fields using **"[default requiredness](../idl/field-qualifiers#fields-tha
 
 ### **Serialization by name**
 
+SimpleJSON and JSON5 serialize by name, and so does C++ conversion to and from `folly::dynamic`. Binary, Compact and JSON protocols serialize by id.
+
 When serializing by name, the id of the field is not used, and can be ignored.  For two Thrift struct types **Struct1** and **Struct2** to be compatible in this case, the following conditions must hold:
 
 * If **Struct1** has an **optional** field with name **n** of type **T**, then **Struct2** can have a field with name **n**, but is not required to have a field with this name.  However if the field is present, then its type must be **T** and it should be either **optional** or **unqualified**.
 * If **Struct1** has an **unqualified** field with name **n** of type **T**, then **S2** can have a field with name **n**, but is not required to have a field with this name.  However if the field is present, then its type must be **T** (and can be any of **required**, **optional**, or **unqualified**).
+
+When a reader deserializes by name, it skips a field name that its struct does not have. The field then keeps its default value. Readers in C++, thrift-python, thrift-py-deprecated, Java and Rust raise no error. The Go reader returns an error, and C++ `from_dynamic()` throws for a union. So after a rename, a reader with the other definition loses the field. Every rollout order leaves a time when one side loses it.
 
 ### **Serialization by id**
 
