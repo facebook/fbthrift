@@ -32,14 +32,14 @@ The following outlines the compatibility for changes to data:
 |Required to unspecified    |yes    |no    |    |
 |Unspecified to required    |yes    |no    |    |
 |Optional to unspecified    |yes    |no    |    |
-|Unspecified to optional    |yes    |no    |    |
+|Unspecified to optional    |yes    |no    |A new reader sees the field as set, also when an old writer never set it. See [caution](#caution_unqualified_to_optional)    |
 |Optional to required    |yes    |no    |    |
 |Required to optional    |yes    |no    |    |
 |Required to terse    |yes    |no    |    |
 |Terse to required    |yes    |no    |    |
-|Optional to terse    |yes    |no    |    |
+|Optional to terse    |yes    |no    |An old reader sees a field set to the intrinsic default as unset. See [caution](#caution_optional_to_terse)    |
 |Terse to optional    |yes    |no    |    |
-|Unspecified to terse    |yes    |no    |    |
+|Unspecified to terse    |yes    |no    |If the field has a custom default, an old reader gets it where the writer set the intrinsic default. See [caution](#caution_unqualified_to_terse)    |
 |Terse to unspecified    |yes    |no    |    |
 |Mixin to non-mixin    |yes    |no    |Only code gen changes    |
 |Non-mixin to mixin    |yes    |yes    |Only code gen changes    |
@@ -129,19 +129,34 @@ Given the rules above, the following changes to Thrift structs will maintain com
 
 :::caution
 
-<a id="caution_unqualified_to_optional"></a>The **unqualified** to **optional** migration, while compatible from the protocol standpoint, is potentially unsafe because it changes access semantics. For example, in C++ reading an unset optional field may throw. Also if any C++ code uses legacy field writes (`s.field = ..`) to set a newly optional field, field values will be silently dropped during serialization after making the field optional. Migrate all clients to setters (`s.field_ref() = ..`) first.
+<a id="caution_unqualified_to_optional"></a>The **unqualified** to **optional** migration is compatible from the protocol standpoint, but it is not safe:
+
+* An old writer always writes an **unqualified** field, also when its code never set it. So a new reader sees the field as set.
+* In C++, `value()`, `*` and `->` on an unset **optional** field throw `apache::thrift::bad_optional_field_access`. An unset field compares like `std::nullopt`, so `== 0` is false. After the migration, a writer leaves out a field that C++ code cleared with `apache::thrift::unset_unsafe()`.
+* In Java, `int c = s.getCount()` still compiles because of autoboxing. But it throws `NullPointerException` when the field is unset.
+* Rust and Go code that uses the field as a plain value does not compile. In thrift-python, an unset field reads as `None`.
 
 :::
 
 :::caution
 
-<a id="caution_unqualified_to_terse"></a>The **unqualified** to **terse** migration, while compatible from the protocol standpoint, is potentially dangerous if the field has a [custom default value](./#pre-defined-value). A **terse** field can not distinguish whether a field was absent due to IDL version mismatch or skipped serialization as it was equal to the intrinsic default value. Therefore, if a field is missing in the serialized binary, a **terse** field is cleared to the intrinsic default value; meanwhile, an **unqualified** field holds the custom default value.
+<a id="caution_unqualified_to_terse"></a>The **unqualified** to **terse** migration is compatible from the protocol standpoint. But it changes the values that readers get if the field has a [custom default value](./#pre-defined-value). A **terse** field cannot have a custom default, so the migration removes it.
+
+* A new writer leaves out a **terse** field that holds the intrinsic default, for example 0. An old reader then puts its custom default in the missing field. So a 0 that the new writer set arrives at the old reader as the custom default.
+* A new reader puts the intrinsic default in a missing field, where an old reader put the custom default.
+* Go, thrift-py-deprecated and `java_deprecated` have no terse write, so their writers still write the field.
+* `@thrift.TerseWrite` on a package or a struct makes every **unqualified** field in it **terse**.
+* In C++, code that calls `is_set()`, `ensure()` or the deprecated getter or setter of the field no longer compiles. In Java, a string, binary, container or struct field starts empty instead of `null`. A `null` value makes the write throw.
 
 :::
 
 :::caution
 
-<a id="caution_optional_to_terse"></a>The **optional** to **terse** migration, while compatible from the protocol standpoint, is potentially dangerous as a terse field does not distinguish the difference between unset and the [intrinsic default](./#intrinsic-default-values). For example, an **optional** field can explicitly set to the intrinsic default value (`s.intField() = 0`); meanwhile, the same operation is equal to clearing the field in a **terse** field.
+<a id="caution_optional_to_terse"></a>The **optional** to **terse** migration is compatible from the protocol standpoint. But a **terse** field cannot tell an unset field from one that holds the [intrinsic default](./#intrinsic-default-values). `@thrift.TerseWrite` is an error on an **optional** field, so the migration removes `optional`.
+
+* A new writer leaves out a field set to the intrinsic default, for example after `s.intField() = 0`. An old reader sees that field as unset, and C++ `value()` on it throws `apache::thrift::bad_optional_field_access`.
+* A new Go writer writes the field also when it was never set. An old reader then sees the field as set to the intrinsic default.
+* Code that checks whether the field is set breaks. It does not compile in C++ (`has_value()`, `reset()`), Rust, Go, or Java for a number field (`== null`). In thrift-python, the field never reads as `None` again.
 
 :::
 
