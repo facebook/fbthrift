@@ -38,6 +38,7 @@
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/IOBufChainCursor.h>
 #include <thrift/lib/cpp2/transport/core/TryUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/FdSocket.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
@@ -206,10 +207,9 @@ RocketClient::Ptr RocketClient::create(
       std::move(allocatorPtr)));
 }
 
-void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
+template <typename FrameBuffer, typename Cursor>
+void RocketClient::handleFrameImpl(FrameBuffer& frame, Cursor& cursor) {
   DestructorGuard dg(this);
-
-  folly::io::Cursor cursor(frame.get());
 
   const auto streamId = readStreamId(cursor);
   FrameType frameType;
@@ -296,6 +296,16 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
   }
 
   handleStreamChannelFrame(streamId, frameType, std::move(frame));
+}
+
+void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
+  handleFrameImpl(frame, cursor);
+}
+
+void RocketClient::handleFrame(IOBufChain frame) {
+  io::IOBufChainCursor cursor(frame);
+  handleFrameImpl(frame, cursor);
 }
 
 void RocketClient::handleSetupResponse(const ServerPushMetadata& serverMeta) {
@@ -386,10 +396,9 @@ RocketClient::handleSetupResponseCustomCompression(
   return folly::unit;
 }
 
+template <typename FrameBuffer>
 void RocketClient::handleRequestResponseFrame(
-    RequestContext& ctx,
-    FrameType frameType,
-    std::unique_ptr<folly::IOBuf> frame) {
+    RequestContext& ctx, FrameType frameType, FrameBuffer frame) {
   switch (frameType) {
     case FrameType::PAYLOAD: {
       PayloadFrame payloadFrame(std::move(frame));
@@ -436,10 +445,9 @@ void RocketClient::handleRequestResponseFrame(
   }
 }
 
+template <typename FrameBuffer>
 void RocketClient::handleStreamChannelFrame(
-    StreamId streamId,
-    FrameType frameType,
-    std::unique_ptr<folly::IOBuf> frame) {
+    StreamId streamId, FrameType frameType, FrameBuffer frame) {
   auto it = streams_.find(streamId);
   if (it == streams_.end()) {
     notifyIfDetachable();
@@ -470,9 +478,9 @@ void RocketClient::handleStreamChannelFrame(
   });
 }
 
-template <typename CallbackType>
+template <typename CallbackType, typename FrameBuffer>
 void RocketClient::handlePayloadFrame(
-    CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
+    CallbackType& serverCallback, FrameBuffer frame) {
   PayloadFrame payloadFrame{std::move(frame)};
   const auto streamId = payloadFrame.streamId();
   // Note that if the payload frame arrives in fragments, we rely on the
@@ -523,6 +531,14 @@ void RocketClient::handleFirstResponse(
             std::move(fullPayload), encodeMetadataUsingBinary_);
   if (firstResponse.hasException()) {
     serverCallback.onInitialError(std::move(firstResponse.exception()));
+    freeStream(streamId);
+    return;
+  }
+  if (firstResponse->payloadChain) {
+    serverCallback.onInitialError(
+        folly::make_exception_wrapper<TApplicationException>(
+            TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+            "IOBufChain stream responses are not supported"));
     freeStream(streamId);
     return;
   }
@@ -781,9 +797,9 @@ void RocketClient::handleBiDiResponse(
   contractViolation(kErrorMsg);
 }
 
-template <typename CallbackType>
+template <typename CallbackType, typename FrameBuffer>
 void RocketClient::handleErrorFrame(
-    CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
+    CallbackType& serverCallback, FrameBuffer frame) {
   ErrorFrame errorFrame{std::move(frame)};
   const auto streamId = errorFrame.streamId();
   auto ew = folly::make_exception_wrapper<RocketException>(
@@ -807,9 +823,9 @@ void RocketClient::handleErrorFrame(
   freeStream(streamId);
 }
 
-template <typename CallbackType>
+template <typename CallbackType, typename FrameBuffer>
 void RocketClient::handleRequestNFrame(
-    CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
+    CallbackType& serverCallback, FrameBuffer frame) {
   RequestNFrame requestNFrame{std::move(frame)};
   auto streamId = requestNFrame.streamId();
   if (isFirstResponse(streamId)) {
@@ -830,9 +846,9 @@ void RocketClient::handleRequestNFrame(
   }
 }
 
-template <typename CallbackType>
+template <typename CallbackType, typename FrameBuffer>
 void RocketClient::handleCancelFrame(
-    CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
+    CallbackType& serverCallback, FrameBuffer frame) {
   CancelFrame cancelFrame{std::move(frame)};
   auto streamId = cancelFrame.streamId();
   if (isFirstResponse(streamId)) {
@@ -866,9 +882,9 @@ void RocketClient::handleCancelFrame(
   contractViolation(kErrorMsg);
 }
 
-template <typename CallbackType>
+template <typename CallbackType, typename FrameBuffer>
 void RocketClient::handleExtFrame(
-    CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
+    CallbackType& serverCallback, FrameBuffer frame) {
   ExtFrame extFrame{std::move(frame)};
   auto streamId = extFrame.streamId();
   if (isFirstResponse(streamId)) {
