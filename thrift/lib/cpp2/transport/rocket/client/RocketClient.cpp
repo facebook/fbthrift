@@ -144,11 +144,15 @@ RocketClient::RocketClient(
     folly::AsyncTransport::UniquePtr socket,
     RequestSetupMetadata&& setupMetadata,
     int32_t keepAliveTimeoutMs,
-    std::shared_ptr<rocket::ParserAllocatorType> allocatorPtr)
+    std::shared_ptr<rocket::ParserAllocatorType> allocatorPtr,
+    std::optional<std::string> frameParser)
     : evb_(&evb),
       writeLoopCallback_(*this),
       socket_(std::move(socket)),
-      parser_(*this, THRIFT_FLAG(rocket_frame_parser), allocatorPtr),
+      parser_(
+          *this,
+          frameParser ? *frameParser : THRIFT_FLAG(rocket_frame_parser),
+          allocatorPtr),
       detachableLoopCallback_(*this),
       closeLoopCallback_(*this),
       eventBaseDestructionCallback_(*this),
@@ -198,13 +202,15 @@ RocketClient::Ptr RocketClient::create(
     folly::AsyncTransport::UniquePtr socket,
     RequestSetupMetadata&& setupMetadata,
     int32_t keepAliveTimeoutMs,
-    std::shared_ptr<rocket::ParserAllocatorType> allocatorPtr) {
+    std::shared_ptr<rocket::ParserAllocatorType> allocatorPtr,
+    std::optional<std::string> frameParser) {
   return Ptr(new RocketClient(
       evb,
       std::move(socket),
       std::move(setupMetadata),
       keepAliveTimeoutMs,
-      std::move(allocatorPtr)));
+      std::move(allocatorPtr),
+      std::move(frameParser)));
 }
 
 template <typename FrameBuffer, typename Cursor>

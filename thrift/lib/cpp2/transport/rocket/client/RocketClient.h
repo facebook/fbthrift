@@ -18,6 +18,8 @@
 
 #include <chrono>
 #include <memory>
+#include <optional>
+#include <string>
 #include <utility>
 
 #include <folly/ExceptionWrapper.h>
@@ -87,7 +89,8 @@ class RocketClient : public virtual folly::DelayedDestruction,
       folly::AsyncTransport::UniquePtr socket,
       RequestSetupMetadata&& setupMetadata,
       int32_t keepAliveTimeoutMs = 0,
-      std::shared_ptr<rocket::ParserAllocatorType> allocatorPtr = nullptr);
+      std::shared_ptr<rocket::ParserAllocatorType> allocatorPtr = nullptr,
+      std::optional<std::string> frameParser = std::nullopt);
 
   using WriteSuccessCallback = RequestContext::WriteSuccessCallback;
   class RequestResponseCallback : public WriteSuccessCallback {
@@ -484,7 +487,8 @@ class RocketClient : public virtual folly::DelayedDestruction,
       folly::AsyncTransport::UniquePtr socket,
       RequestSetupMetadata&& setupMetadata,
       int32_t keepAliveTimeoutMs = 0,
-      std::shared_ptr<rocket::ParserAllocatorType> allocatorPtr = nullptr);
+      std::shared_ptr<rocket::ParserAllocatorType> allocatorPtr = nullptr,
+      std::optional<std::string> frameParser = std::nullopt);
 
   bool encodeMetadataUsingBinary() const { return encodeMetadataUsingBinary_; }
   virtual void handleSetupResponse(const ServerPushMetadata& serverMeta);
