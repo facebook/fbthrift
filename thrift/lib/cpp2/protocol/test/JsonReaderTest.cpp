@@ -497,6 +497,10 @@ TEST_F(Json5ReaderTest, Comments) {
            "/*a*//*b*/42/**/",
            "// line\n/* block */42",
            "/*/* stars inside */42",
+           "// ends at U+2028\xE2\x80\xA8"
+           "42",
+           "// ends at U+2029\xE2\x80\xA9"
+           "42",
        }) {
     EXPECT_EQ(
         std::get<Json5Reader::Integer>(reader(s).readPrimitive()).value(), 42);

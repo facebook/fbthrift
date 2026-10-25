@@ -174,6 +174,24 @@ char readNext(folly::io::Cursor& cursor) {
   return cursor.read<char>();
 }
 
+// Returns the length of the JSON5 LineTerminatorSequence (LF, CR, CR LF, U+2028
+// or U+2029) at `cursor`, or 0.
+std::size_t lineTerminatorSize(folly::io::Cursor cursor) {
+  switch (peekNext(cursor)) {
+    case '\n':
+      return 1;
+    case '\r':
+      cursor.skip(1);
+      return peekNext(cursor) == '\n' ? 2 : 1;
+    case '\xE2': {
+      auto [codePoint, size] = peekCodePoint(cursor);
+      return codePoint == U'\u2028' || codePoint == U'\u2029' ? size : 0;
+    }
+    default:
+      return 0;
+  }
+}
+
 } // namespace
 
 // -- cursor operations ----------------------------------------------------
@@ -222,9 +240,8 @@ bool Json5Reader::skipComment() {
   switch (readChar()) {
     case '/':
       // Skip "// ..." comment
-      cursor().skipWhile([](char c) { return c != '\n' && c != '\r'; });
-      if (!cursor().isAtEnd()) {
-        cursor().skip(1); // Skip "\n"
+      while (!cursor().isAtEnd() && lineTerminatorSize(cursor()) == 0) {
+        cursor().skip(1);
       }
       return true;
     case '*': {
