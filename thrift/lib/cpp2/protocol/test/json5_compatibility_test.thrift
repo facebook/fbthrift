@@ -49,20 +49,28 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
     name = "Map",
     inputs = [
       "{\"i32AsKey\": {\"1\": 2, \"3\": 4}}",
+      "{\"i32AsKey\": {\"0x1\": 2, \"+3\": 4}}",
       "{\"i32AsKey\": [{\"key\": 1, \"value\": 2}, {\"key\": 3, \"value\": 4}]}",
     ],
     output = json5_test.Example{i32AsKey = {1: 2, 3: 4}},
   },
   // ── Integer Format Compatibility ──────────────────────────────────────────
-  // Integers should accept both JSON numbers and JSON strings.
+  // Integers should accept both JSON numbers and JSON strings, with the same
+  // JSON5 integer syntax.
   CompatibilityTestCase{
     name = "Integer42",
-    inputs = ["{\"i64Value\": 42}", "{\"i64Value\": \"42\"}"],
+    inputs = [
+      "{\"i64Value\": 42}",
+      "{\"i64Value\": \"42\"}",
+      "{\"i64Value\": \"+42\"}",
+      "{\"i64Value\": \"0x2A\"}",
+      "{\"i64Value\": \"0x002a\"}",
+    ],
     output = json5_test.Example{i64Value = 42},
   },
   CompatibilityTestCase{
     name = "IntegerNegative",
-    inputs = ["{\"i64Value\": \"-123\"}"],
+    inputs = ["{\"i64Value\": \"-123\"}", "{\"i64Value\": \"-0x7B\"}"],
     output = json5_test.Example{i64Value = -123},
   },
   // ── Float Format Compatibility ────────────────────────────────────────────
@@ -99,6 +107,10 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
       "{\"enumValue\": \"1\"}",
       "{\"enumValue\": 1}",
       "{\"enumValue\": 0x1}",
+      "{\"enumValue\": \"ONE (0x1)\"}",
+      "{\"enumValue\": \"(+1)\"}",
+      "{\"enumValue\": \"0x1\"}",
+      "{\"enumValue\": \"+1\"}",
     ],
     output = json5_test.Example{enumValue = 1},
   },
@@ -151,6 +163,7 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
       "{\"enumAsKey\": {\"ONE\": \"TWO\"}}",
       "{\"enumAsKey\": {\"(1)\": \"(2)\"}}",
       "{\"enumAsKey\": {\"1\": \"2\"}}",
+      "{\"enumAsKey\": {\"0x1\": \"TWO (0x2)\"}}",
     ],
     output = json5_test.Example{enumAsKey = {1: 2}},
   },
@@ -197,6 +210,9 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
       "{\"boolValue (30)\": true}",
       "{\"(30)\": true}",
       "{\"30\": true}",
+      "{\"boolValue (0x1E)\": true}",
+      "{\"(0x1E)\": true}",
+      "{\"+30\": true}",
     ],
     output = json5_test.Example{boolValue = true},
   },

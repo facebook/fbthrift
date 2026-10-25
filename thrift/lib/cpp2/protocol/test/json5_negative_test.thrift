@@ -83,6 +83,11 @@ const list<NegativeTestCase> enumValidationNegativeCases = [
     name = "FloatInParens",
     json = "{\"enumValue\": \"ONE (1.0)\"}",
   },
+  NegativeTestCase{name = "LeadingZeros", json = "{\"enumValue\": \"01\"}"},
+  NegativeTestCase{
+    name = "LeadingZerosInParens",
+    json = "{\"enumValue\": \"ONE (01)\"}",
+  },
   NegativeTestCase{
     name = "KeyMismatch",
     json = "{\"enumAsKey\": {\"ONE (2)\": \"TWO (2)\"}}",
@@ -121,6 +126,18 @@ const list<NegativeTestCase> typeValidationNegativeCases = [
     json = "{\"i64Value\": \"123_not_a_number\"}",
   },
   NegativeTestCase{name = "IntegerEmptyString", json = "{\"i64Value\": \"\"}"},
+  NegativeTestCase{
+    name = "IntegerLeadingZerosQuoted",
+    json = "{\"i64Value\": \"007\"}",
+  },
+  NegativeTestCase{
+    name = "IntegerWhitespaceQuoted",
+    json = "{\"i32Value\": \" 42\"}",
+  },
+  NegativeTestCase{
+    name = "IntegerMapKeyLeadingZeros",
+    json = "{\"i32AsKey\": {\"01\": 1}}",
+  },
   NegativeTestCase{name = "FloatInvalidBool", json = "{\"floatValue\": true}"},
   NegativeTestCase{
     name = "FloatInvalidString",
@@ -275,6 +292,11 @@ const list<NegativeTestCase> formatValidationNegativeCases = [
   NegativeTestCase{
     name = "FieldIdOverflowI16Negative",
     json = "{\"(-32769)\": true}",
+  },
+  NegativeTestCase{name = "FieldIdLeadingZeros", json = "{\"030\": true}"},
+  NegativeTestCase{
+    name = "FieldIdLeadingZerosInParens",
+    json = "{\"boolValue (030)\": true}",
   },
   NegativeTestCase{
     name = "UnionMultipleFields",

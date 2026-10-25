@@ -16,7 +16,6 @@
 
 #include <thrift/lib/cpp2/protocol/detail/Json5ProtocolReader.h>
 
-#include <charconv>
 #include <limits>
 #include <optional>
 #include <stdexcept>
@@ -75,6 +74,17 @@ std::string Json5ProtocolReader::takeStringValue(
             expected));
   }
   return std::move(*s);
+}
+
+template <typename T>
+T Json5ProtocolReader::parseInteger(std::string_view s) {
+  auto number =
+      Json5Reader::parseNumber(s, Json5Reader::FloatingPointPrecision::Double);
+  auto* i = std::get_if<Json5Reader::Integer>(&number);
+  if (i == nullptr) {
+    throwError(fmt::format("invalid integer '{}'", s));
+  }
+  return convertTo<T>(i->value());
 }
 
 // ============================================================================
@@ -397,19 +407,6 @@ Json5ProtocolReader::readEnumImpl() {
   return parseIdentifierString(takeStringValue(std::move(primitive), "enum"));
 }
 
-namespace {
-// Parse the entire string as an integer.
-template <typename T>
-std::optional<T> tryParseNumber(std::string_view sv) {
-  T out;
-  auto [ptr, ec] = std::from_chars(sv.data(), sv.data() + sv.size(), out);
-  if (ec == std::errc{} && ptr == sv.data() + sv.size()) {
-    return out;
-  }
-  return std::nullopt;
-}
-} // namespace
-
 template <typename T>
 Json5ProtocolReader::IdentifierReadResult<T>
 Json5ProtocolReader::parseIdentifierString(std::string_view s) {
@@ -417,19 +414,19 @@ Json5ProtocolReader::parseIdentifierString(std::string_view s) {
     throwError("Cannot parse empty string as identifier");
   }
 
-  // bare integer, e.g. "123" or "-123"
-  if (auto i = tryParseNumber<T>(s)) {
-    return {.name = {}, .value = *i};
-  }
-
   // bare identifier, e.g. "NAME"
   if (isIdentifier(s)) {
     return {.name = std::string(s), .value = std::nullopt};
   }
 
+  // bare integer, e.g. "123" or "-0x7B"
+  if (!s.ends_with(')')) {
+    return {.name = {}, .value = parseInteger<T>(s)};
+  }
+
   // "NAME (value)" or "(value)"
   auto parenOpen = s.find('(');
-  if (parenOpen == std::string_view::npos || !s.ends_with(')')) {
+  if (parenOpen == std::string_view::npos) {
     throwError(fmt::format("invalid identifier: '{}'", s));
   }
 
@@ -442,11 +439,7 @@ Json5ProtocolReader::parseIdentifierString(std::string_view s) {
   // Parsing value in "NAME (value)" or "(value)"
   auto valueStr = s.substr(parenOpen + 1); // "value)"
   valueStr.remove_suffix(1); // "value"
-  if (auto value = tryParseNumber<T>(valueStr)) {
-    return {.name = std::string(name), .value = *value};
-  }
-
-  throwError(fmt::format("invalid identifier: '{}'", s));
+  return {.name = std::string(name), .value = parseInteger<T>(valueStr)};
 }
 
 template Json5ProtocolReader::IdentifierReadResult<std::int32_t>
@@ -510,28 +503,13 @@ std::string Json5ProtocolReader::decodeBinary(
       fmt::format("Unsupported encoding type for binary object: {}", encoding));
 }
 
-namespace {
-
-std::optional<std::int64_t> tryParseI64(
-    const Json5Reader::Primitive& primitive) {
+std::int64_t Json5ProtocolReader::readIntegralValue() {
+  auto primitive = readPrimitiveOrMapKey();
   if (auto* i = std::get_if<Json5Reader::Integer>(&primitive)) {
     return i->value();
   }
-  if (auto* s = std::get_if<std::string>(&primitive)) {
-    if (auto i = folly::tryTo<std::int64_t>(*s)) {
-      return *i;
-    }
-  }
-  return std::nullopt;
-}
-
-} // namespace
-
-std::int64_t Json5ProtocolReader::readIntegralValue() {
-  if (auto i = tryParseI64(readPrimitiveOrMapKey())) {
-    return *i;
-  }
-  throwError("expected integer value");
+  return parseInteger<std::int64_t>(
+      takeStringValue(std::move(primitive), "integer"));
 }
 
 template <std::floating_point T>

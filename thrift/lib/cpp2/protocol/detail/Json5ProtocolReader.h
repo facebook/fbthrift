@@ -216,6 +216,10 @@ class Json5ProtocolReader final
   static std::string takeStringValue(
       Json5Reader::Primitive&& primitive, std::string_view expected);
 
+  // Parses all of `s` as a JSON5 integer that fits in T.
+  template <typename T>
+  static T parseInteger(std::string_view s);
+
   std::int64_t readIntegralValue();
 
   template <std::floating_point T>
