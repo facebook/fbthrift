@@ -38,6 +38,11 @@ constexpr bool isAsciiHexDigit(char c) {
   return isAsciiDigit(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
 }
 
+constexpr bool isNumberStart(char c) {
+  return isAsciiDigit(c) || c == '-' || c == '+' || c == '.' || c == 'N' ||
+      c == 'I';
+}
+
 constexpr bool isAsciiAlpha(char c) {
   return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 }
@@ -430,6 +435,19 @@ Json5Reader::Primitive Json5Reader::parseNumber(
   return parseNumberOrThrow<double>(numStr);
 }
 
+Json5Reader::Primitive Json5Reader::parseNumber(
+    std::string_view str, FloatingPointPrecision precision) {
+  auto buf = folly::IOBuf::wrapBufferAsValue(str.data(), str.size());
+  folly::io::Cursor cursor(&buf);
+  if (isNumberStart(peekNext(cursor))) {
+    auto number = parseNumber(cursor, precision);
+    if (cursor.isAtEnd()) {
+      return number;
+    }
+  }
+  throwParseError(fmt::format("invalid number '{}'", str));
+}
+
 // -- values ---------------------------------------------------------------
 
 Json5Reader::Primitive Json5Reader::readPrimitive(
@@ -440,9 +458,7 @@ Json5Reader::Primitive Json5Reader::readPrimitive(
   if (c == '"' || c == '\'') {
     cursor().skip(1);
     result = parseString(c);
-  } else if (
-      isAsciiDigit(c) || c == '-' || c == '+' || c == '.' || c == 'N' ||
-      c == 'I') {
+  } else if (isNumberStart(c)) {
     result = parseNumber(cursor(), precision);
   } else if (isIdentifierStart(c)) {
     std::string word = cursor().readWhile(isIdentifierPart);

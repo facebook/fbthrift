@@ -17,6 +17,7 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include <variant>
 
 #include <folly/io/Cursor.h>
@@ -142,9 +143,9 @@ class Json5Reader final {
   Primitive readPrimitive(
       FloatingPointPrecision precision = FloatingPointPrecision::Double);
 
-  /** Parses a JSON5 number at `cursor`, leaving trailing characters unread. */
+  /** Parses all of `str` as a JSON5 number. */
   static Primitive parseNumber(
-      folly::io::Cursor& cursor, FloatingPointPrecision precision);
+      std::string_view str, FloatingPointPrecision precision);
 
   /** Reads and returns the next object key name. */
   std::string readObjectName();
@@ -171,6 +172,10 @@ class Json5Reader final {
   void consume(char c);
 
   std::string parseString(char quote);
+
+  // Parses a JSON5 number at `cursor`, leaving trailing characters unread.
+  static Primitive parseNumber(
+      folly::io::Cursor& cursor, FloatingPointPrecision precision);
 
   // Consume a comma separator between elements. Throws if neither a comma
   // nor a closing delimiter follows the current position.

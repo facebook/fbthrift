@@ -542,13 +542,7 @@ T Json5ProtocolReader::readFloatingPointValue() {
 
   auto primitive = readPrimitiveOrMapKey(precision);
   if (auto* s = std::get_if<std::string>(&primitive)) {
-    auto buf = folly::IOBuf::wrapBufferAsValue(s->data(), s->size());
-    folly::io::Cursor cursor(&buf);
-    auto number = Json5Reader::parseNumber(cursor, precision);
-    if (!cursor.isAtEnd()) {
-      throwError(fmt::format("invalid number '{}'", *s));
-    }
-    primitive = number;
+    primitive = Json5Reader::parseNumber(*s, precision);
   }
 
   if (auto* f = std::get_if<T>(&primitive)) {
