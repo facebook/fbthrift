@@ -455,14 +455,21 @@ std::string Json5ProtocolReader::readStringValue() {
   return takeStringValue(readPrimitiveOrMapKey(), "string");
 }
 
+namespace {
+std::string_view bareStringEncoding(std::string_view encoded) {
+  return encoded.find_first_of("-_") == std::string_view::npos ? "base64"
+                                                               : "base64url";
+}
+} // namespace
+
 std::string Json5ProtocolReader::readBinaryValue() {
-  // A binary map key written as a member name is base64.
   if (auto key = tryReadObjectMapKey()) {
-    return decodeBinary("base64url", std::move(*key));
+    auto encoding = bareStringEncoding(*key);
+    return decodeBinary(encoding, std::move(*key));
   }
 
   beginReadValue();
-  std::string encoding = "base64url";
+  std::string encoding;
   std::string encoded;
   if (reader_.peekToken() == Json5Reader::Token::ObjectBegin) {
     // {"utf-8": ...}, {"base64": ...} or {"base64url": ...}
@@ -471,8 +478,8 @@ std::string Json5ProtocolReader::readBinaryValue() {
     encoded = takeStringValue(reader_.readPrimitive(), "binary");
     reader_.readObjectEnd();
   } else {
-    // A plain string is base64.
     encoded = takeStringValue(reader_.readPrimitive(), "binary");
+    encoding = bareStringEncoding(encoded);
   }
   endReadValue();
   return decodeBinary(encoding, std::move(encoded));
@@ -483,24 +490,21 @@ std::string Json5ProtocolReader::decodeBinary(
   if (encoding == "utf-8") {
     return encoded;
   }
+  if (encoding != "base64" && encoding != "base64url") {
+    throwError(
+        fmt::format(
+            "Unsupported encoding type for binary object: {}", encoding));
+  }
+  // folly::base64URLDecode accepts both alphabets, with or without padding.
+  if (encoded.find_first_of(encoding == "base64" ? "-_" : "+/") !=
+      std::string::npos) {
+    throwError(fmt::format("invalid character in {} binary value", encoding));
+  }
   try {
-    if (encoding == "base64url") {
-      // Accepts both standard and url-safe base64.
-      return folly::base64URLDecode(encoded);
-    } else if (encoding == "base64") {
-      while (encoded.size() % 4 != 0) {
-        // We want to support unpadded base64 string. Unfortunately there is no
-        // folly function to support base64 decode without padding. We have to
-        // add padding manually.
-        encoded += '=';
-      }
-      return folly::base64Decode(encoded);
-    }
+    return folly::base64URLDecode(encoded);
   } catch (const folly::base64_decode_error& e) {
     throwError(fmt::format("invalid {} binary value: {}", encoding, e.what()));
   }
-  throwError(
-      fmt::format("Unsupported encoding type for binary object: {}", encoding));
 }
 
 std::int64_t Json5ProtocolReader::readIntegralValue() {

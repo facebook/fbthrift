@@ -112,6 +112,26 @@ const list<NegativeTestCase> typeValidationNegativeCases = [
     json = "{\"binaryValue\": {\"invalid\": \"data\"}}",
   },
   NegativeTestCase{
+    name = "BinaryMixedAlphabets",
+    json = "{\"binaryValue\": \"3q2-+w\"}",
+  },
+  NegativeTestCase{
+    name = "BinaryMapKeyMixedAlphabets",
+    json = "{\"binaryAsKey\": {\"3q2-+w\": 1}}",
+  },
+  NegativeTestCase{
+    name = "BinaryBase64UrlWithStandardAlphabet",
+    json = "{\"binaryValue\": {\"base64url\": \"3q2+7w\"}}",
+  },
+  NegativeTestCase{
+    name = "BinaryBase64WithUrlAlphabet",
+    json = "{\"binaryValue\": {\"base64\": \"3q2-7w\"}}",
+  },
+  NegativeTestCase{
+    name = "BinaryBase64IncompletePadding",
+    json = "{\"binaryValue\": {\"base64\": \"3q2+7w=\"}}",
+  },
+  NegativeTestCase{
     name = "ListGotString",
     json = "{\"listValue\": \"not_an_array\"}",
   },

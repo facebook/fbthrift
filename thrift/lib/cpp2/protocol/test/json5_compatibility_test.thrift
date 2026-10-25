@@ -184,6 +184,15 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
     ],
     output = json5_test.Example{binaryValue = "~_~!"},
   },
+  CompatibilityTestCase{
+    name = "BinaryAsKeyAlphabets",
+    inputs = [
+      "{binaryAsKey: {\"fl9-IQ\": 1}}",
+      "{binaryAsKey: {\"fl9+IQ\": 1}}",
+      "{binaryAsKey: {\"fl9+IQ==\": 1}}",
+    ],
+    output = json5_test.Example{binaryAsKey = {"~_~!": 1}},
+  },
   // ── Bool as Map Key Compatibility ─────────────────────────────────────────
   // Bool keys in maps are encoded as strings "true" or "false"
   CompatibilityTestCase{
