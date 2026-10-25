@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <utility>
 
 #include <folly/ExceptionWrapper.h>
@@ -25,6 +26,7 @@
 #include <folly/io/async/AsyncTransport.h>
 
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/IOBufChain.h>
 #include <thrift/lib/cpp2/async/RpcOptions.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/parser/AlignedParserStrategy.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/parser/AllocatingParserStrategy.h>
@@ -36,7 +38,7 @@ THRIFT_FLAG_DECLARE_string(rocket_frame_parser);
 namespace apache::thrift::rocket {
 
 namespace detail {
-enum class ParserMode { STRATEGY, ALLOCATING, ALIGNED };
+enum class ParserMode { STRATEGY, IOBUF_CHAIN, ALLOCATING, ALIGNED };
 ParserMode stringToMode(const std::string& modeStr) noexcept;
 ParserAllocatorType& getDefaultAllocator();
 
@@ -76,12 +78,15 @@ void setDefaultParserMemoryResource(std::pmr::memory_resource* resource);
 template <class T>
 class Parser final : public folly::AsyncTransport::ReadCallback {
   using FrameLengthParser = ParserStrategy<T, FrameLengthParserStrategy>;
+  using IOBufChainFrameLengthParser =
+      ParserStrategy<T, FrameLengthParserStrategy, IOBufChain>;
   using AllocatingParser =
       ParserStrategy<T, AllocatingParserStrategy, ParserAllocatorType>;
   using AlignedParser = ParserStrategy<T, AlignedParserStrategy>;
   using ParserVariant = std::variant<
       std::monostate,
       FrameLengthParser,
+      IOBufChainFrameLengthParser,
       AllocatingParser,
       AlignedParser>;
 
@@ -100,6 +105,9 @@ class Parser final : public folly::AsyncTransport::ReadCallback {
     switch (mode_) {
       case detail::ParserMode::STRATEGY: {
         parser_.template emplace<FrameLengthParser>(owner_);
+      } break;
+      case detail::ParserMode::IOBUF_CHAIN: {
+        parser_.template emplace<IOBufChainFrameLengthParser>(owner_);
       } break;
       case detail::ParserMode::ALLOCATING: {
         parser_.template emplace<AllocatingParser>(
@@ -152,6 +160,10 @@ FOLLY_ALWAYS_INLINE decltype(auto) Parser<T>::visit(DelegateFunc&& delegate) {
       return std::invoke(
           std::forward<DelegateFunc>(delegate),
           std::get<FrameLengthParser>(parser_));
+    case detail::ParserMode::IOBUF_CHAIN:
+      return std::invoke(
+          std::forward<DelegateFunc>(delegate),
+          std::get<IOBufChainFrameLengthParser>(parser_));
     case detail::ParserMode::ALLOCATING:
       return std::invoke(
           std::forward<DelegateFunc>(delegate),

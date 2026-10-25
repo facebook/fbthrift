@@ -95,6 +95,8 @@ ParserAllocatorType& getDefaultAllocator() {
 ParserMode stringToMode(const std::string& modeStr) noexcept {
   if (modeStr == "strategy") {
     return ParserMode::STRATEGY;
+  } else if (modeStr == "iobuf_chain") {
+    return ParserMode::IOBUF_CHAIN;
   } else if (modeStr == "allocating") {
     return ParserMode::ALLOCATING;
   } else if (modeStr == "aligned") {
