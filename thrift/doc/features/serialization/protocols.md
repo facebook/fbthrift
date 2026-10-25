@@ -292,7 +292,7 @@ Rejects any invalid JSON5 strings, as well as strings whose contents are not wel
 Binary data is considered printable if and only if all of the following are true:
 
 1. Bytes form valid UTF-8.
-2. No C0 control characters (U+0000–U+001F) except `\b`, `\f`, `\n`, `\r`, `\t` which have JSON escape sequences.
+2. No non-printable ASCII characters, i.e. C0 control characters (U+0000–U+001F) and DEL (U+007F), except `\b`, `\f`, `\n`, `\r`, `\t` which have JSON escape sequences.
 3. No C1 control characters (U+0080–U+009F).
 
 **Deserialization**: Accepts `utf-8`, `base64`, and `base64url` encoding keys (with or without padding).

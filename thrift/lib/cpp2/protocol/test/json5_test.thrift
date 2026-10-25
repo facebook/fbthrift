@@ -512,6 +512,20 @@ const list<TestCase> testCases = [
 }",
   },
   TestCase{
+    name = "BinaryUnprintableDel",
+    example = Example{binaryValue = "a\x7fb"},
+    json = "{
+  \"binaryValue\": {
+    \"base64url\": \"YX9i\"
+  }
+}",
+    json5 = "{
+  binaryValue: {
+    base64url: \"YX9i\",
+  },
+}",
+  },
+  TestCase{
     name = "BinaryJsonEscapable",
     example = Example{binaryValue = "a\tb\nc"},
     json = "{
