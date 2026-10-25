@@ -387,6 +387,18 @@ void RefactoredRocketServerConnection::pauseSocketReading() {
   socket_->setReadCB(nullptr);
 }
 
+void RefactoredRocketServerConnection::handleFrame(IOBufChain frame) {
+  DestructorGuard dg(this);
+  if (state_ != ConnectionState::ALIVE && state_ != ConnectionState::DRAINING) {
+    return;
+  }
+
+  frameHandler_->onBeforeHandleFrame();
+
+  // Process frames inline to avoid deferred processing issues.
+  incomingFrameHandler_.handle(std::move(frame));
+}
+
 void RefactoredRocketServerConnection::handleFrame(
     std::unique_ptr<folly::IOBuf> frame) {
   DestructorGuard dg(this);

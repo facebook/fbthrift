@@ -139,6 +139,14 @@ class DefaultPayloadSerializerStrategy final
     return reader.getCursorPosition();
   }
 
+  template <typename T>
+  size_t unpackBinary(T& output, const io::IOBufChainCursor& cursor) {
+    BinaryProtocolChainReader reader;
+    reader.setInput(cursor);
+    op::decode<type::struct_t<T>>(reader, output);
+    return reader.getCursorPosition();
+  }
+
   template <class PayloadType>
   rocket::Payload pack(
       PayloadType&& payload,

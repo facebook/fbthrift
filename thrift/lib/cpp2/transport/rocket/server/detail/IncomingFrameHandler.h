@@ -60,6 +60,25 @@ parseFrameType(folly::IOBuf& frame) noexcept {
   return static_cast<FrameType>(rawFrameType >> Flags::kBits);
 }
 
+[[maybe_unused]] FOLLY_ALWAYS_INLINE FrameType
+parseFrameType(const std::unique_ptr<folly::IOBuf>& frame) noexcept {
+  return parseFrameType(*frame);
+}
+
+[[maybe_unused]] FOLLY_ALWAYS_INLINE FrameType
+parseFrameType(const IOBufChain& frame) noexcept {
+  constexpr size_t kFlagAndFrameSize = sizeof(uint16_t);
+  constexpr size_t kStreamIdSize = sizeof(uint32_t);
+  FOLLY_SAFE_DCHECK(
+      frame.chainLength() >= kFlagAndFrameSize + kStreamIdSize,
+      "frame to small for RSocket Stream Id and Flag - must be at least as long 40-bits long");
+
+  io::IOBufChainCursor cursor(frame);
+  cursor.skip(kStreamIdSize);
+  uint16_t rawFrameType = cursor.readBE<uint16_t>();
+  return static_cast<FrameType>(rawFrameType >> Flags::kBits);
+}
+
 /**
  * Handles incoming frames. Deserializes the frames and determines how to
  * delegate the handling of the frame. This is to decouple the parsing of the
@@ -118,8 +137,16 @@ class IncomingFrameHandler {
         existingStreamFrameHandler_(&existingStreamFrameHandler) {}
 
   void handle(std::unique_ptr<folly::IOBuf>&& frame) {
+    handleImpl(std::move(frame));
+  }
+
+  void handle(IOBufChain&& frame) { handleImpl(std::move(frame)); }
+
+ private:
+  template <typename FrameBuffer>
+  void handleImpl(FrameBuffer&& frame) {
     // hexDumpFrame(*frame);
-    auto frameType = parseFrameType(*frame);
+    auto frameType = parseFrameType(frame);
     switch (frameType) {
       case FrameType::SETUP:
         handleSetupFrame(std::move(frame));
@@ -168,13 +195,12 @@ class IncomingFrameHandler {
             std::move(frame), existingStreamFrameHandler_);
         break;
       default:
-        hexDumpFrame(*frame);
+        hexDumpFrame(frame);
         handleUnknownFrame(frameType);
         break;
     }
   }
 
- private:
   bool receivedSetupFrame_{false};
   Connection* connection_;
   SetupFrameAcceptor<ConnectionT, ConnectionAdapter, RocketServerHandler>*
@@ -215,7 +241,21 @@ class IncomingFrameHandler {
     //}
   }
 
-  void handleSetupFrame(std::unique_ptr<folly::IOBuf> frame) noexcept {
+  FOLLY_ALWAYS_INLINE void hexDumpFrame(
+      const std::unique_ptr<folly::IOBuf>& frame) const noexcept {
+    hexDumpFrame(*frame);
+  }
+
+  FOLLY_ALWAYS_INLINE void hexDumpFrame(IOBufChain& frame) const noexcept {
+    XLOG(INFO)
+        << "Handling Frame from: "
+        << connection_->getWrappedConnection()->getPeerAddress().describe()
+        << std::endl
+        << folly::hexDump(frame.coalesce().data(), frame.chainLength());
+  }
+
+  template <typename FrameBuffer>
+  void handleSetupFrame(FrameBuffer frame) noexcept {
     if (std::exchange(receivedSetupFrame_, true)) {
       XLOG(WARN) << "More than one SETUP frame received";
       connection_->close(
@@ -287,9 +327,8 @@ class IncomingFrameHandler {
     }
   }
 
-  template <FrameType type, typename Handler>
-  void handleFrame(
-      std::unique_ptr<folly::IOBuf> buffer, Handler* handler) noexcept {
+  template <FrameType type, typename FrameBuffer, typename Handler>
+  void handleFrame(FrameBuffer buffer, Handler* handler) noexcept {
     using Traits = frame_util::FrameTypeToTraits_t<type>;
 
     if (FOLLY_UNLIKELY(receivedSetupFrame_ == false)) {

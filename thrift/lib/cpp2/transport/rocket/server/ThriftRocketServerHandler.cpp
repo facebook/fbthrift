@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/IOBufChainCursor.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/logging/ThriftConnectionLog.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
@@ -76,6 +77,64 @@ namespace {
 bool isMetadataValid(const RequestRpcMetadata& metadata, RpcKind expectedKind) {
   return metadata.protocol() && metadata.name() && metadata.kind() &&
       metadata.kind() == expectedKind;
+}
+
+size_t unpackSetupMetadata(
+    RequestSetupMetadata& metadata,
+    const folly::io::Cursor& cursor,
+    const SetupFrame& frame) {
+  return PayloadSerializer::getInstance()->unpack(
+      metadata, cursor, frame.encodeMetadataUsingBinary());
+}
+
+size_t unpackSetupMetadata(
+    RequestSetupMetadata& metadata,
+    const io::IOBufChainCursor& cursor,
+    const SetupFrame& frame) {
+  if (frame.encodeMetadataUsingBinary()) {
+    return PayloadSerializer::getInstance()->unpack(metadata, cursor, true);
+  }
+  auto buffer = frame.payload().copyMetadataToIOBuf();
+  folly::io::Cursor metadataCursor(buffer.get());
+  metadataCursor.skip(cursor.getCurrentPosition());
+  return PayloadSerializer::getInstance()->unpack(
+      metadata, metadataCursor, false);
+}
+
+template <typename Cursor>
+bool readSetup(
+    Cursor& cursor,
+    RequestSetupMetadata& meta,
+    const SetupFrame& frame,
+    IRocketServerConnection& connection) {
+  uint32_t protocolKey = 0;
+  const bool success = cursor.template tryReadBE<uint32_t>(protocolKey);
+  constexpr uint32_t kLegacyRocketProtocolKey = 1;
+  if (!success ||
+      ((!THRIFT_FLAG(rocket_server_legacy_protocol_key) ||
+        protocolKey != kLegacyRocketProtocolKey) &&
+       protocolKey != RpcMetadata_constants::kRocketProtocolKey())) {
+    if (!frame.rocketMimeTypes()) {
+      connection.close(
+          folly::make_exception_wrapper<RocketException>(
+              ErrorCode::INVALID_SETUP, "Incompatible Thrift version"));
+      return false;
+    }
+    // If Rocket MIME types are used the protocol key is optional.
+    if (success) {
+      cursor.retreat(4);
+    }
+  }
+
+  if (unpackSetupMetadata(meta, cursor, frame) !=
+      frame.payload().metadataSize()) {
+    connection.close(
+        folly::make_exception_wrapper<RocketException>(
+            ErrorCode::INVALID_SETUP,
+            "Error deserializing SETUP payload: underflow"));
+    return false;
+  }
+  return true;
 }
 
 // The reason we have separate helper functions is for some minor perf
@@ -177,36 +236,18 @@ void ThriftRocketServerHandler::handleSetupFrame(
             "Missing required metadata in SETUP frame"));
   }
 
-  folly::io::Cursor cursor(frame.payload().buffer());
-
-  // Validate Thrift protocol key
-  uint32_t protocolKey;
-  const bool success = cursor.tryReadBE<uint32_t>(protocolKey);
-  constexpr uint32_t kLegacyRocketProtocolKey = 1;
-  if (!success ||
-      ((!THRIFT_FLAG(rocket_server_legacy_protocol_key) ||
-        protocolKey != kLegacyRocketProtocolKey) &&
-       protocolKey != RpcMetadata_constants::kRocketProtocolKey())) {
-    if (!frame.rocketMimeTypes()) {
-      return connection.close(
-          folly::make_exception_wrapper<RocketException>(
-              ErrorCode::INVALID_SETUP, "Incompatible Thrift version"));
-    }
-    // If Rocket MIME types are used the protocol key is optional.
-    if (success) {
-      cursor.retreat(4);
-    }
-  }
-
   RequestSetupMetadata meta;
   try {
-    if (PayloadSerializer::getInstance()->unpack(
-            meta, cursor, frame.encodeMetadataUsingBinary()) !=
-        frame.payload().metadataSize()) {
-      return connection.close(
-          folly::make_exception_wrapper<RocketException>(
-              ErrorCode::INVALID_SETUP,
-              "Error deserializing SETUP payload: underflow"));
+    if (frame.payload().usesIOBufChain()) {
+      io::IOBufChainCursor cursor(frame.payload().chainBuffer());
+      if (!readSetup(cursor, meta, frame, connection)) {
+        return;
+      }
+    } else {
+      folly::io::Cursor cursor(frame.payload().buffer());
+      if (!readSetup(cursor, meta, frame, connection)) {
+        return;
+      }
     }
 
     connContext_.readSetupMetadata(meta);
