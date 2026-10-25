@@ -19,6 +19,7 @@
 #include <charconv>
 #include <cstdint>
 #include <limits>
+#include <utility>
 
 #include <fmt/core.h>
 #include <folly/Conv.h>
@@ -50,6 +51,24 @@ constexpr bool isAsciiAlpha(char c) {
 constexpr bool isAsciiSpace(char c) {
   return c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' ||
       c == '\r';
+}
+
+// JSON5 WhiteSpace and LineTerminator beyond ASCII: Unicode Zs, U+2028, U+2029
+// and U+FEFF.
+constexpr bool isUnicodeSpace(char32_t c) {
+  return c == U'\u00A0' || c == U'\u1680' ||
+      (c >= U'\u2000' && c <= U'\u200A') || c == U'\u2028' || c == U'\u2029' ||
+      c == U'\u202F' || c == U'\u205F' || c == U'\u3000' || c == U'\uFEFF';
+}
+
+// Returns the code point at `cursor` and its length in bytes, or U+FFFD and 1
+// if the input there is not well-formed UTF-8.
+std::pair<char32_t, std::size_t> peekCodePoint(folly::io::Cursor cursor) {
+  unsigned char buf[4];
+  const unsigned char* p = buf;
+  const char32_t codePoint = folly::utf8ToCodePoint(
+      p, buf + cursor.pullAtMost(buf, sizeof(buf)), /*skipOnError=*/true);
+  return {codePoint, p - buf};
 }
 
 bool isIdentifierStart(char c) {
@@ -162,6 +181,10 @@ char readNext(folly::io::Cursor& cursor) {
 void Json5Reader::setCursor(folly::io::Cursor c) {
   in_ = std::move(c);
   depth_ = 0;
+  // U+FEFF is whitespace, except as a byte order mark.
+  if (peekCodePoint(cursor()).first == U'\uFEFF') {
+    throwParseError("unexpected byte order mark");
+  }
   skipWhitespaceAndComments();
 }
 
@@ -226,11 +249,23 @@ bool Json5Reader::skipComment() {
   }
 }
 
+bool Json5Reader::skipUnicodeSpace() {
+  if (static_cast<unsigned char>(peekChar()) < 0x80) {
+    return false;
+  }
+  auto [codePoint, size] = peekCodePoint(cursor());
+  if (!isUnicodeSpace(codePoint)) {
+    return false;
+  }
+  cursor().skip(size);
+  return true;
+}
+
 void Json5Reader::skipWhitespaceAndComments() {
   do {
     cursor().skipWhile(isAsciiSpace);
     // Loop to handle adjacent comments, e.g. `/*a*//*b*/`.
-  } while (skipComment());
+  } while (skipUnicodeSpace() || skipComment());
 }
 
 // -- comma handling -------------------------------------------------------

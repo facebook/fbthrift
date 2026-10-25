@@ -166,6 +166,7 @@ class Json5Reader final {
   folly::io::Cursor& cursor();
 
   bool skipComment();
+  bool skipUnicodeSpace();
   void skipWhitespaceAndComments();
   char peekChar();
   char readChar();

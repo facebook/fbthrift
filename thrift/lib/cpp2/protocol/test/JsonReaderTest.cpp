@@ -503,6 +503,17 @@ TEST_F(Json5ReaderTest, Comments) {
   }
 }
 
+TEST_F(Json5ReaderTest, UnicodeWhitespace) {
+  auto r =
+      reader("\u00A0\u1680\u2000\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF42");
+  EXPECT_EQ(std::get<Json5Reader::Integer>(r.readPrimitive()).value(), 42);
+  // U+200B ZERO WIDTH SPACE is not whitespace.
+  EXPECT_THROW(
+      reader("\u200B42").readPrimitive(), protocol::TProtocolException);
+  // The spec rejects a byte order mark at the start.
+  EXPECT_THROW(reader("\uFEFF42"), protocol::TProtocolException);
+}
+
 TEST_F(Json5ReaderTest, CommentsInStringsAndContainers) {
   auto r = reader(R"({
     // a comment
