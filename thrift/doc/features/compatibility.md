@@ -19,7 +19,8 @@ The following outlines the compatibility for changes to data:
 |Add a field    |yes    |yes    |Dropped by old    |
 |Remove a field    |yes    |no    |Dropped by new. Do not give its id to a new field. If the types match, Binary, Compact and JSON readers put old values of the removed field into the new one. Reserve the id with `@thrift.ReserveIds`, and the compiler rejects a field that uses it. For a **required** field, see [caution](#caution_required)    |
 |Rename a field    |by id only    |no    |Binary, Compact and JSON protocols write the field id. SimpleJSON and JSON5 write the field name, so a reader with the other name loses the field. See [Serialization by name](#serialization-by-name)    |
-|Change field type    |rarely    |no    |1. Changes between utf-8 encoded string and binary are wire compatible for Binary/Compact protocol. C++ JSON and SimpleJSON write binary as base64, so there the change is not wire compatible. <br/>2. Changes between i32 and enum are wire compatible. After a change from i32 to enum, a reader can get a number that the enum does not name. See [Versioning with enumeration types](#versioning-with-enumeration-types) <br/>3. Otherwise, add a new field. See [How to avoid incompatible versions](#how-to-avoid-incompatible-versions) and [Changing the type of a thrift field](/fb/troubleshooting/changing-field-types.md)    |
+|Change a field id    |by name only    |yes    |Binary, Compact and JSON readers drop the field, as for a removed field. Formats that serialize by name keep it. See [Serialization by name](#serialization-by-name)    |
+|Change field type    |rarely    |no    |1. Changes between utf-8 encoded string and binary are wire compatible for Binary/Compact protocol. C++ JSON and SimpleJSON write binary as base64, so there the change is not wire compatible. After a change from binary to string, a value that is not utf-8 can break code that reads the field. For example, thrift-python raises `UnicodeDecodeError` when code reads it. <br/>2. Changes between i32 and enum are wire compatible. After a change from i32 to enum, a reader can get a number that the enum does not name. See [Versioning with enumeration types](#versioning-with-enumeration-types) <br/>3. Otherwise, add a new field. See [How to avoid incompatible versions](#how-to-avoid-incompatible-versions) and [Changing the type of a thrift field](/fb/troubleshooting/changing-field-types.md)    |
 |Add enum value    |yes    |yes    |An old reader gets a value that it does not know, and Java returns `null` by default. See [Versioning with enumeration types](#versioning-with-enumeration-types)    |
 |Remove enum value    |yes    |no    |A new reader can get the removed value from an old writer, and Java returns `null` by default. See [Versioning with enumeration types](#versioning-with-enumeration-types)    |
 |Change enum value   |no    |no    |    |
@@ -92,10 +93,10 @@ The incompatible field will be dropped during deserialization. There will be tem
 
 Instead of modifying the name/id and type, it's recommended to
 
-1. Create a new field with desired name/id and type
+1. Create a new **optional** field with desired name/id and type, because old writers do not set it
 2. Modify writer to write to both field
 3. Push service with new changes to the fleet
-4. Remove old field
+4. Remove old field, and reserve its id with `@thrift.ReserveIds`
 
 e.g., for the following struct
 
@@ -109,7 +110,7 @@ We want to change type of `Foo.field` from `i32` to `i64`. If we change it direc
 ```
 struct Foo {
   1: i32 field;
-  2: i64 new_field;
+  2: optional i64 new_field;
 }
 ```
 ### **Changes that maintain compatibility**
@@ -131,6 +132,7 @@ Given the rules above, the following changes to Thrift structs will maintain com
 * Adding a new **unqualified** field
 * Adding a new **terse** field
 * Renaming a field but keeping its field id the same (only when serializing by field id)
+* Changing a field id but keeping its name the same (only when serializing by name)
 
 :::caution
 
