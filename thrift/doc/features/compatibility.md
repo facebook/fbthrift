@@ -20,8 +20,8 @@ The following outlines the compatibility for changes to data:
 |Remove a field    |yes    |no    |Dropped by new    |
 |Rename a field    |by id only    |no    |Binary, Compact and JSON protocols write the field id. SimpleJSON and JSON5 write the field name, so a reader with the other name loses the field. See [Serialization by name](#serialization-by-name)    |
 |Change field type    |rarely    |no    |1. Changes between utf-8 encoded string and binary are wire compatible for Binary/Compact protocol. <br/>2. Changes between i32 and enum are wire compatible.    |
-|Add enum value    |yes    |yes    |Preserved by old    |
-|Remove enum value    |yes    |no    |Preserved by new    |
+|Add enum value    |yes    |yes    |An old reader gets a value that it does not know, and Java returns `null` by default. See [Versioning with enumeration types](#versioning-with-enumeration-types)    |
+|Remove enum value    |yes    |no    |A new reader can get the removed value from an old writer, and Java returns `null` by default. See [Versioning with enumeration types](#versioning-with-enumeration-types)    |
 |Change enum value   |no    |no    |    |
 |New enum field with no 0 value    |yes    |yes    |    |
 |Default on new non-optional field    |yes    |yes    |Gets new default    |
@@ -200,6 +200,16 @@ When a Thrift struct contains fields with enumeration types, the following modif
 * Deleting an enumerator
 * Adding a new enumerator
 * Renaming an enumerator but keeping its integer value the same (only when serializing by field id)
+
+After you add an enumerator, a reader with the old definition can get a value that it does not know. After you delete one, a reader with the new definition can get it from an old writer. Each runtime handles the unknown value in its own way:
+
+* C++ keeps the number, and the value has no name. `apache::thrift::util::enumName()` returns `nullptr` for it, and `enumNameOrThrow()` throws.
+* thrift-python and thrift-py3 return a `BadEnum`, which is not a member of the enum class.
+* Java returns `null`. An enum with `@java.UseIntrinsicDefault` returns its member with value 0 instead. An enum with `@compat.Enums{type = compat.EnumType.Open}` returns `UNRECOGNIZED`, which keeps the number.
+* Hack keeps the number from Binary and Compact, and `readFromJson()` sets the field to `null`.
+* thrift-py-deprecated keeps the number. Its `readFromJson()` raises `TProtocolException` if the caller passes `relax_enum_validation=False` or `wrap_enum_constants=True`.
+
+So add an enumerator to every reader before any writer sends it. Delete one only after no writer sends it. If you cannot make sure of that, add a new enum and a new field instead.
 
 [^1]: Whether the data is changed over the wire.
 [^2]: Whether the code change is needed.
