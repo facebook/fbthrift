@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/dynamic/detail/ConcreteList.h>
 #include <thrift/lib/cpp2/dynamic/detail/Datum.h>
 #include <thrift/lib/cpp2/dynamic/fwd.h>
+#include <thrift/lib/cpp2/op/Encode.h>
 #include <thrift/lib/cpp2/protocol/JSONProtocolCommon.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
@@ -32,7 +33,9 @@
 #include <folly/lang/Assume.h>
 #include <folly/memory/not_null.h>
 
+#include <cstdint>
 #include <memory_resource>
+#include <string_view>
 
 namespace apache::thrift::dynamic {
 
@@ -62,6 +65,29 @@ struct ThrowingValidationCallbacks {
   }
 };
 
+template <typename ProtocolWriter>
+inline constexpr bool kWritesEnumNames = requires(ProtocolWriter& writer) {
+  writer.writeEnum(std::string_view{}, std::int32_t{});
+};
+
+// Returns an empty string for values that the enum does not define.
+inline std::string_view enumValueName(
+    const type_system::EnumNode& enumNode, std::int32_t value) {
+  for (const auto& enumValue : enumNode.values()) {
+    if (enumValue.i32 == value) {
+      return enumValue.name;
+    }
+  }
+  return {};
+}
+
+// Mirrors op::detail::MapEncode: string and enum keys have an alternative
+// encoding, e.g. as JSON object member names.
+inline bool hasAlternativeMapKeyForm(const type_system::TypeRef& keyType) {
+  const auto trueKeyType = keyType.trueType();
+  return trueKeyType.isString() || trueKeyType.isEnum();
+}
+
 } // namespace detail
 
 // ============================================================================
@@ -73,6 +99,19 @@ template <typename T, typename ProtocolWriter>
   requires std::is_arithmetic_v<T>
 void serialize(ProtocolWriter& writer, T value) {
   op::encode<type::infer_tag<T>>(writer, value);
+}
+
+// Enum - by name for protocols that support it, like the static path
+template <typename ProtocolWriter>
+void serializeEnum(
+    ProtocolWriter& writer,
+    const type_system::EnumNode& enumNode,
+    std::int32_t value) {
+  if constexpr (detail::kWritesEnumNames<ProtocolWriter>) {
+    writer.writeEnum(detail::enumValueName(enumNode, value), value);
+  } else {
+    serialize(writer, value);
+  }
 }
 
 // String
@@ -125,7 +164,8 @@ void serialize(ProtocolWriter& writer, const Map& map) {
   writer.writeMapBegin(
       type_system::ToTTypeFn{}(keyType),
       type_system::ToTTypeFn{}(valueType),
-      folly::to_narrow(map.size()));
+      folly::to_narrow(map.size()),
+      detail::hasAlternativeMapKeyForm(keyType));
 
   for (auto [keyRef, valueRef] : map) {
     serializeValue(writer, keyRef);
@@ -572,7 +612,12 @@ template <typename ProtocolWriter>
 void serializeValue(ProtocolWriter& prot, const DynamicConstRef& v) {
   using Kind = type_system::TypeRef::Kind;
   v.type().matchKind([&]<Kind k>(type_system::TypeRef::KindConstant<k>) {
-    serialize(prot, v.as<k>());
+    if constexpr (k == Kind::ENUM) {
+      serializeEnum(
+          prot, v.type().trueType().asEnumUnchecked(), v.as<Kind::ENUM>());
+    } else {
+      serialize(prot, v.as<k>());
+    }
   });
 }
 
@@ -591,6 +636,23 @@ void serializeListElements(
     ProtocolWriter& writer, const ConcreteList<T>& data) {
   writer.template writeArithmeticVector<T>(
       data.elements().data(), data.elements().size());
+}
+
+// i32 elements may be enums, which some protocols write by name
+template <typename ProtocolWriter>
+  requires kWritesEnumNames<ProtocolWriter>
+void serializeListElements(
+    ProtocolWriter& writer, const ConcreteList<int32_t>& data) {
+  const auto elementType = data.elementType().trueType();
+  if (!elementType.isEnum()) {
+    for (int32_t elt : data.elements()) {
+      serialize(writer, elt);
+    }
+    return;
+  }
+  for (int32_t elt : data.elements()) {
+    serializeEnum(writer, elementType.asEnumUnchecked(), elt);
+  }
 }
 
 // Specialization for bool (which uses std::byte storage)
@@ -758,16 +820,13 @@ void serialize(ProtocolWriter& writer, const Struct& structValue) {
 
   writer.writeStructBegin(structNode.uri().data());
 
-  // Iterate through fields using the type system and virtual interface
-  for (size_t i = 0; i < fieldDefs.size(); ++i) {
-    const auto& fieldDef = fieldDefs[i];
-    auto handle = type_system::FastFieldHandle{static_cast<uint16_t>(i + 1)};
-
+  auto writeField = [&](type_system::FastFieldHandle handle) {
     // Skip unset optional fields
     if (!structValue.hasField(handle)) {
-      continue;
+      return;
     }
 
+    const auto& fieldDef = fieldDefs[handle.index()];
     writer.writeFieldBegin(
         fieldDef.identity().name().data(),
         fieldDef.wireType(),
@@ -781,6 +840,16 @@ void serialize(ProtocolWriter& writer, const Struct& structValue) {
     serializeValue(writer, *fieldRef);
 
     writer.writeFieldEnd();
+  };
+
+  if (op::detail::getFieldOrder(writer) == FieldOrder::IdAscending) {
+    for (auto handle : structNode.fieldHandlesByIdAscending()) {
+      writeField(handle);
+    }
+  } else {
+    for (size_t i = 0; i < fieldDefs.size(); ++i) {
+      writeField(type_system::FastFieldHandle{static_cast<uint16_t>(i + 1)});
+    }
   }
 
   writer.writeFieldStop();
@@ -905,15 +974,15 @@ void serialize(ProtocolWriter& writer, const Union& unionValue) {
   // Serialize the active field if the union is not empty
   if (!unionValue.isEmpty()) {
     const auto& fieldDef = *unionValue.activeFieldDef_;
-    const auto& datum = *unionValue.activeFieldData_;
 
     writer.writeFieldBegin(
         fieldDef.identity().name().data(),
         fieldDef.wireType(),
         static_cast<int16_t>(fieldDef.identity().id()));
 
-    // Serialize the field value
-    datum.visit([&](const auto& value) { serialize(writer, value); });
+    // Dispatch on the field type rather than the datum, which stores enums as
+    // plain i32.
+    serializeValue(writer, unionValue.getField(unionValue.activeField()));
 
     writer.writeFieldEnd();
   }

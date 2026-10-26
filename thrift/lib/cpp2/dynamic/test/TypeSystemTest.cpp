@@ -129,6 +129,27 @@ TEST(TypeSystemTest, TrueTypeResolvesOpaqueAlias) {
   EXPECT_FALSE(aliasRef.trueType().isEqualIdentityTo(aliasRef));
 }
 
+TEST(TypeSystemTest, FieldHandlesByIdAscending) {
+  TypeSystemBuilder builder;
+  builder.addType(
+      "meta.com/thrift/test/OutOfOrder",
+      def::Struct({
+          def::Field(def::Identity(3, "c"), def::AlwaysPresent, TypeIds::I32),
+          def::Field(def::Identity(1, "a"), def::AlwaysPresent, TypeIds::I32),
+          def::Field(def::Identity(2, "b"), def::AlwaysPresent, TypeIds::I32),
+      }));
+  auto typeSystem = std::move(builder).build();
+  const auto& node =
+      typeSystem->getUserDefinedTypeOrThrow("meta.com/thrift/test/OutOfOrder")
+          .asStruct();
+
+  std::vector<std::string_view> names;
+  for (auto handle : node.fieldHandlesByIdAscending()) {
+    names.push_back(node.at(handle).identity().name());
+  }
+  EXPECT_EQ(names, (std::vector<std::string_view>{"a", "b", "c"}));
+}
+
 TEST(TypeSystemTest, NestedStructs) {
   TypeSystemBuilder builder;
 
