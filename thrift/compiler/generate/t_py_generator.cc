@@ -961,7 +961,16 @@ class ThriftEnumWrapper(int):
     return super().__new__(cls, value)
   def __init__(self, enum_class, value):    self.enum_class = enum_class
   def __repr__(self):
-    return self.enum_class.__name__ + '.' + self.enum_class._VALUES_TO_NAMES[self]
+    import keyword
+    name = self.enum_class._VALUES_TO_NAMES[self]
+    if keyword.iskeyword(name):
+      # `E.None` is not valid Python: use the alias defined for such values,
+      # or look the value up by name if it has none.
+      alias = name + '_PY_RESERVED_KEYWORD'
+      if getattr(self.enum_class, alias, None) == self:
+        return self.enum_class.__name__ + '.' + alias
+      return '%s._NAMES_TO_VALUES[%r]' % (self.enum_class.__name__, name)
+    return self.enum_class.__name__ + '.' + name
 
 )";
 }
@@ -1145,8 +1154,24 @@ void t_py_generator::generate_enum(const t_enum* tenum) {
   f_types_ << endl;
   f_types_ << "for k, v in " << name << "._NAMES_TO_VALUES.items():" << endl
            << indent(2) << "setattr(" << name << ", k, v)" << endl
-           << indent(2) << name << "._VALUES_TO_NAMES[v] = k" << endl
-           << endl;
+           << indent(2) << name << "._VALUES_TO_NAMES[v] = k" << endl;
+
+  // A value named after a Python keyword, like `None`, is set above under its
+  // own name, which only `getattr` can reach. Also make it an attribute under
+  // the name that definitions named after keywords get, unless another value
+  // already has that name. `_NAMES_TO_VALUES` and `_VALUES_TO_NAMES` keep the
+  // Thrift names.
+  std::unordered_set<std::string> value_names;
+  for (const t_enum_value& value : constants) {
+    value_names.insert(value.name());
+  }
+  for (const t_enum_value& value : constants) {
+    std::string alias = rename_reserved_keywords(value.name());
+    if (alias != value.name() && !value_names.contains(alias)) {
+      f_types_ << name << "." << alias << " = " << value.get_value() << endl;
+    }
+  }
+  f_types_ << endl;
 }
 
 /**
