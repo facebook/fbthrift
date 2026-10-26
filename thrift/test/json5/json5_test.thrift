@@ -89,6 +89,12 @@ struct Example {
   23: optional map<i64, i64> i64AsKey;
   24: optional set<i32> i32SetValue;
   25: optional ExampleUnion unionValue;
+  26: optional list<double> doubleListValue;
+  27: optional list<float> floatListValue;
+  // @lint-ignore THRIFTCHECKS bad-key-type
+  28: optional map<double, i32> doubleAsKey;
+  // @lint-ignore THRIFTCHECKS bad-key-type
+  29: optional map<float, i32> floatAsKey;
 }
 
 // --
@@ -995,6 +1001,159 @@ const list<TestCase> testCases = [
   unionValue: {
     stringValue: \"hello\",
   },
+}",
+  },
+  // Floating-point values are written in their shortest round-trip form, in
+  // fixed notation for decimal exponents in [-4, 16) and in scientific
+  // notation otherwise. Whole numbers get ".0".
+  TestCase{
+    name = "DoubleFormatting",
+    example = Example{
+      doubleListValue = [
+        0.0001,
+        0.00001,
+        1.5e-10,
+        100000.0,
+        1e15,
+        1e16,
+        1e20,
+        123456789.123,
+        0.30000000000000004,
+        1.7976931348623157e308,
+        5e-324,
+        -2.5,
+      ],
+    },
+    json = "{
+  \"doubleListValue\": [
+    0.0001,
+    1e-05,
+    1.5e-10,
+    100000.0,
+    1000000000000000.0,
+    1e+16,
+    1e+20,
+    123456789.123,
+    0.30000000000000004,
+    1.7976931348623157e+308,
+    5e-324,
+    -2.5
+  ]
+}",
+    json5 = "{
+  doubleListValue: [
+    0.0001,
+    1e-05,
+    1.5e-10,
+    100000.0,
+    1000000000000000.0,
+    1e+16,
+    1e+20,
+    123456789.123,
+    0.30000000000000004,
+    1.7976931348623157e+308,
+    5e-324,
+    -2.5,
+  ],
+}",
+  },
+  // Float values use the shortest digits that round-trip in single precision.
+  TestCase{
+    name = "FloatFormatting",
+    example = Example{
+      floatListValue = [
+        0.100000001490116119384765625,
+        0.00000999999974737875163555145263671875,
+        16777216.0,
+        1234567.0,
+        340282346638528859811704183484516925440.0,
+        0.000000000000000000000000000000000000000000001401298464324817070923729583289916131280261941876515771757068283889791082685860601486638188362121582031250,
+        -0.5,
+      ],
+    },
+    json = "{
+  \"floatListValue\": [
+    0.1,
+    1e-05,
+    16777216.0,
+    1234567.0,
+    3.4028235e+38,
+    1e-45,
+    -0.5
+  ]
+}",
+    json5 = "{
+  floatListValue: [
+    0.1,
+    1e-05,
+    16777216.0,
+    1234567.0,
+    3.4028235e+38,
+    1e-45,
+    -0.5,
+  ],
+}",
+  },
+  // Non-ASCII characters are written as raw UTF-8, never as escapes.
+  TestCase{
+    name = "NonBmpString",
+    example = Example{stringValue = "😀 café"},
+    json = "{
+  \"stringValue\": \"😀 café\"
+}",
+    json5 = "{
+  stringValue: \"😀 café\",
+}",
+  },
+  TestCase{
+    name = "FloatingPointKeys",
+    example = Example{
+      doubleAsKey = {-1.5: 1, 1e20: 2, 0.1: 3},
+      floatAsKey = {16777216.0: 1},
+    },
+    json = "{
+  \"doubleAsKey\": [
+    {
+      \"key\": -1.5,
+      \"value\": 1
+    },
+    {
+      \"key\": 0.1,
+      \"value\": 3
+    },
+    {
+      \"key\": 1e+20,
+      \"value\": 2
+    }
+  ],
+  \"floatAsKey\": [
+    {
+      \"key\": 16777216.0,
+      \"value\": 1
+    }
+  ]
+}",
+    json5 = "{
+  doubleAsKey: [
+    {
+      key: -1.5,
+      value: 1,
+    },
+    {
+      key: 0.1,
+      value: 3,
+    },
+    {
+      key: 1e+20,
+      value: 2,
+    },
+  ],
+  floatAsKey: [
+    {
+      key: 16777216.0,
+      value: 1,
+    },
+  ],
 }",
   },
 ];

@@ -359,4 +359,200 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
       unionValue = json5_test.ExampleUnion{nestedValue = json5_test.Nested{}},
     },
   },
+  // ── Strings ─────────────────────────────────────────────────────────────
+  CompatibilityTestCase{
+    name = "SurrogatePairEscape",
+    inputs = [
+      "{\"stringValue\": \"\\ud83d\\ude00\"}",
+      "{\"stringValue\": \"\\uD83D\\uDE00\"}",
+    ],
+    output = json5_test.Example{stringValue = "😀"},
+  },
+  // ── Floating-Point Keys ─────────────────────────────────────────────────
+  // Keys are decoded with the key type's rules, so integers must convert
+  // exactly.
+  CompatibilityTestCase{
+    name = "DoubleAsKeyFromInteger",
+    inputs = [
+      "{\"doubleAsKey\": {\"9007199254740992\": 1}}",
+      "{\"doubleAsKey\": {\"0x20000000000000\": 1}}",
+      "{\"doubleAsKey\": [{\"key\": 9007199254740992, \"value\": 1}]}",
+    ],
+    output = json5_test.Example{doubleAsKey = {9007199254740992.0: 1}},
+  },
+  CompatibilityTestCase{
+    name = "DoubleAsKeyFromDecimal",
+    inputs = [
+      "{\"doubleAsKey\": {\"1.5\": 1, \"1e20\": 2}}",
+      "{\"doubleAsKey\": [{\"key\": 1.5, \"value\": 1}, {\"key\": \"1e20\", \"value\": 2}]}",
+    ],
+    output = json5_test.Example{doubleAsKey = {1.5: 1, 1e20: 2}},
+  },
+  CompatibilityTestCase{
+    name = "FloatAsKeyFromInteger",
+    inputs = ["{\"floatAsKey\": {\"16777216\": 1}}"],
+    output = json5_test.Example{floatAsKey = {16777216.0: 1}},
+  },
+];
+
+// Values that thrift constants cannot express: NaN, the infinities and
+// negative zero. Each input must decode to a value that is written as `json`
+// and as `json5`.
+struct RoundTripTestCase {
+  1: string name;
+  2: list<string> inputs;
+  3: string json;
+  4: string json5;
+}
+
+// @lint-ignore-every THRIFTFORMAT
+const list<RoundTripTestCase> roundTripTestCases = [
+  RoundTripTestCase{
+    name = "Infinity",
+    inputs = [
+      "{\"infValue\": Infinity}",
+      "{\"infValue\": +Infinity}",
+      "{\"infValue\": \"Infinity\"}",
+      "{\"infValue\": \"+Infinity\"}",
+    ],
+    json = "{
+  \"infValue\": \"Infinity\"
+}",
+    json5 = "{
+  infValue: Infinity,
+}",
+  },
+  RoundTripTestCase{
+    name = "NegativeInfinity",
+    inputs = [
+      "{\"infValue\": -Infinity}",
+      "{\"infValue\": \"-Infinity\"}",
+    ],
+    json = "{
+  \"infValue\": \"-Infinity\"
+}",
+    json5 = "{
+  infValue: -Infinity,
+}",
+  },
+  RoundTripTestCase{
+    name = "NaN",
+    inputs = [
+      "{\"nanValue\": NaN}",
+      "{\"nanValue\": +NaN}",
+      "{\"nanValue\": \"NaN\"}",
+    ],
+    json = "{
+  \"nanValue\": \"NaN\"
+}",
+    json5 = "{
+  nanValue: NaN,
+}",
+  },
+  RoundTripTestCase{
+    name = "NegativeNaN",
+    inputs = ["{\"nanValue\": -NaN}", "{\"nanValue\": \"-NaN\"}"],
+    json = "{
+  \"nanValue\": \"-NaN\"
+}",
+    json5 = "{
+  nanValue: -NaN,
+}",
+  },
+  RoundTripTestCase{
+    name = "FloatSpecialValues",
+    inputs = [
+      "{\"floatListValue\": [NaN, -NaN, Infinity, -Infinity]}",
+      "{\"floatListValue\": [\"NaN\", \"-NaN\", \"Infinity\", \"-Infinity\"]}",
+    ],
+    json = "{
+  \"floatListValue\": [
+    \"NaN\",
+    \"-NaN\",
+    \"Infinity\",
+    \"-Infinity\"
+  ]
+}",
+    json5 = "{
+  floatListValue: [
+    NaN,
+    -NaN,
+    Infinity,
+    -Infinity,
+  ],
+}",
+  },
+  // SimpleJSON writes -0.0 as `-0`.
+  RoundTripTestCase{
+    name = "NegativeZero",
+    inputs = [
+      "{\"floatValue\": -0.0, \"doubleValue\": -0.0}",
+      "{\"floatValue\": -0, \"doubleValue\": -0}",
+      "{\"floatValue\": \"-0\", \"doubleValue\": \"-0\"}",
+      "{\"floatValue\": -0x0, \"doubleValue\": -0x0}",
+      "{\"floatValue\": \"-0x0\", \"doubleValue\": \"-0x0\"}",
+      "{\"floatValue\": \"-0.0\", \"doubleValue\": \"-0.0\"}",
+    ],
+    json = "{
+  \"floatValue\": -0.0,
+  \"doubleValue\": -0.0
+}",
+    json5 = "{
+  floatValue: -0.0,
+  doubleValue: -0.0,
+}",
+  },
+  RoundTripTestCase{
+    name = "PositiveZero",
+    inputs = [
+      "{\"floatValue\": 0, \"doubleValue\": 0}",
+      "{\"floatValue\": \"0\", \"doubleValue\": \"0\"}",
+      "{\"floatValue\": +0, \"doubleValue\": +0}",
+      "{\"floatValue\": 0.0, \"doubleValue\": 0.0}",
+    ],
+    json = "{
+  \"floatValue\": 0.0,
+  \"doubleValue\": 0.0
+}",
+    json5 = "{
+  floatValue: 0.0,
+  doubleValue: 0.0,
+}",
+  },
+  RoundTripTestCase{
+    name = "NegativeZeroKey",
+    inputs = [
+      "{\"doubleAsKey\": {\"-0\": 1}, \"floatAsKey\": {\"-0\": 2}}",
+      "{\"doubleAsKey\": {\"-0x0\": 1}, \"floatAsKey\": {\"-0x0\": 2}}",
+      "{\"doubleAsKey\": [{\"key\": -0, \"value\": 1}], \"floatAsKey\": [{\"key\": -0, \"value\": 2}]}",
+    ],
+    json = "{
+  \"doubleAsKey\": [
+    {
+      \"key\": -0.0,
+      \"value\": 1
+    }
+  ],
+  \"floatAsKey\": [
+    {
+      \"key\": -0.0,
+      \"value\": 2
+    }
+  ]
+}",
+    json5 = "{
+  doubleAsKey: [
+    {
+      key: -0.0,
+      value: 1,
+    },
+  ],
+  floatAsKey: [
+    {
+      key: -0.0,
+      value: 2,
+    },
+  ],
+}",
+  },
 ];

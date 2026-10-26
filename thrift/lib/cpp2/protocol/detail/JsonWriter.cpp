@@ -224,4 +224,13 @@ std::uint32_t JsonWriter::writeString(std::string_view s) {
   return n;
 }
 
+std::uint32_t JsonWriter::writeNull() {
+  std::uint32_t n = 0;
+  n += beginValue();
+  out_.value().push(folly::StringPiece("null"));
+  n += 4;
+  n += appendComma();
+  return n;
+}
+
 } // namespace apache::thrift::json5::detail

@@ -233,6 +233,23 @@ const list<NegativeTestCase> typeValidationNegativeCases = [
     name = "BoolKeyNumericString",
     json = "{\"boolAsKey\": {\"1\": 42}}",
   },
+  NegativeTestCase{
+    name = "BinaryInvalidBase64",
+    json = "{\"binaryValue\": {\"base64\": \"!!!!\"}}",
+  },
+  // 2^53 + 1 and 2^63 have no exact double; 2^24 + 1 has no exact float.
+  NegativeTestCase{
+    name = "DoubleKeyPrecisionLoss",
+    json = "{\"doubleAsKey\": {\"9007199254740993\": 1}}",
+  },
+  NegativeTestCase{
+    name = "DoubleKeyAboveInt64",
+    json = "{\"doubleAsKey\": {\"9223372036854775808\": 1}}",
+  },
+  NegativeTestCase{
+    name = "FloatKeyPrecisionLoss",
+    json = "{\"floatAsKey\": {\"16777217\": 1}}",
+  },
 ];
 
 const list<NegativeTestCase> typeMismatchNegativeCases = [
@@ -296,6 +313,11 @@ const list<NegativeTestCase> formatValidationNegativeCases = [
   NegativeTestCase{name = "ExtraComma", json = "{\"i64Value\": 42,,}"},
   NegativeTestCase{name = "EmptyInput", json = ""},
   NegativeTestCase{name = "ExtraContent", json = "{}garbage"},
+  NegativeTestCase{name = "ExtraClosingBracket", json = "{\"i64Value\": 1}]"},
+  NegativeTestCase{
+    name = "CommaAfterTopLevelValue",
+    json = "{\"i64Value\": 1},",
+  },
   NegativeTestCase{
     name = "FieldNameNotFound",
     json = "{\"NonExist (30)\": true}",
@@ -373,6 +395,14 @@ const list<NegativeTestCase> overflowValidationNegativeCases = [
     name = "I64StringNegativeOverflow",
     json = "{\"i64Value\": \"-9223372036854775809\"}",
   },
+  NegativeTestCase{
+    name = "I64LiteralPositiveOverflow",
+    json = "{\"i64Value\": 99999999999999999999}",
+  },
+  NegativeTestCase{
+    name = "I64LiteralNegativeOverflow",
+    json = "{\"i64Value\": -99999999999999999999}",
+  },
   // enum overflow (range: -2147483648 to 2147483647)
   NegativeTestCase{
     name = "EnumPositiveOverflow1",
@@ -397,5 +427,29 @@ const list<NegativeTestCase> overflowValidationNegativeCases = [
   NegativeTestCase{
     name = "EnumNegativeOverflow3",
     json = "{\"enumValue\": \"(-2147483649)\"}",
+  },
+];
+
+struct InvalidUtf8TestCase {
+  1: string name;
+  // Raw bytes, as they are not valid UTF-8.
+  2: binary json;
+}
+
+// Strings must be valid UTF-8, including map keys and the "utf-8" form of
+// binary. The base64 forms of binary may carry any bytes.
+// @lint-ignore-every THRIFTFORMAT
+const list<InvalidUtf8TestCase> invalidUtf8NegativeCases = [
+  InvalidUtf8TestCase{
+    name = "StringValue",
+    json = "{\"stringValue\": \"\x80\x81\x82\"}",
+  },
+  InvalidUtf8TestCase{
+    name = "BinaryUtf8Form",
+    json = "{\"binaryValue\": {\"utf-8\": \"\xc3\"}}",
+  },
+  InvalidUtf8TestCase{
+    name = "StringMapKey",
+    json = "{\"stringAsKey\": {\"\xe0\x80\x80\": \"x\"}}",
   },
 ];

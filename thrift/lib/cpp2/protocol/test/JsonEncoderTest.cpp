@@ -189,44 +189,6 @@ TEST_P(Json5EncoderTest, StringValueInvalidUtf8) {
   EXPECT_THROW((void)encode(data), std::runtime_error);
 }
 
-TEST_P(Json5EncoderTest, NaNInf) {
-  Example data;
-  data.infValue() = std::numeric_limits<double>::infinity();
-  data.nanValue() = std::numeric_limits<double>::quiet_NaN();
-  std::string_view expected;
-  if (!isJson5()) {
-    expected = R"RAW({
-  "infValue": "Infinity",
-  "nanValue": "NaN"
-})RAW";
-  } else {
-    expected = R"RAW({
-  infValue: Infinity,
-  nanValue: NaN,
-})RAW";
-  }
-  EXPECT_EQ(encode(data), expected);
-}
-
-TEST_P(Json5EncoderTest, NegativeNaNInf) {
-  Example data;
-  data.infValue() = -std::numeric_limits<double>::infinity();
-  data.nanValue() = -std::numeric_limits<double>::quiet_NaN();
-  std::string_view expected;
-  if (!isJson5()) {
-    expected = R"RAW({
-  "infValue": "-Infinity",
-  "nanValue": "-NaN"
-})RAW";
-  } else {
-    expected = R"RAW({
-  infValue: -Infinity,
-  nanValue: -NaN,
-})RAW";
-  }
-  EXPECT_EQ(encode(data), expected);
-}
-
 // Each level nests a struct and a list, i.e. two levels of protocol depth.
 Recursive nested(int levels) {
   Recursive value;

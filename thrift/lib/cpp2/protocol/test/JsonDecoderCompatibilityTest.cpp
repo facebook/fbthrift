@@ -20,8 +20,6 @@
 
 #include <thrift/lib/cpp2/protocol/Json5Protocol.h>
 
-#include <cmath>
-
 #include <gtest/gtest.h>
 #include <thrift/test/json5/gen-cpp2/json5_compatibility_test_constants.h>
 #include <thrift/test/json5/gen-cpp2/json5_compatibility_test_types.h>
@@ -32,6 +30,7 @@ namespace apache::thrift {
 
 using facebook::thrift::json5::CompatibilityTestCase;
 using facebook::thrift::json5::Example;
+using facebook::thrift::json5::RoundTripTestCase;
 using namespace facebook::thrift::json5::json5_compatibility_test_constants;
 
 class JsonDecoderCompatibilityTest
@@ -50,40 +49,22 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::ValuesIn(compatibilityTestCases()),
     [](const auto& info) { return *info.param.name(); });
 
-// ── Tests below cannot be represented as thrift constants ────────────────────
+class JsonDecoderRoundTripTest
+    : public ::testing::TestWithParam<RoundTripTestCase> {};
 
-namespace {
-
-template <typename T>
-T parse(std::string_view json) {
-  return Json5ProtocolUtils::fromJson5<T>(json);
-}
-
-// Infinity and NaN can't be represented as thrift constants.
-
-TEST(JsonDecoderCompatibilityExtraTest, PositiveInfinityFormats) {
-  for (auto json :
-       {R"({"infValue": Infinity})", R"({"infValue": "Infinity"})"}) {
-    auto value = parse<Example>(json).infValue().value();
-    EXPECT_TRUE(std::isinf(value)) << json;
-    EXPECT_GT(value, 0) << json;
+TEST_P(JsonDecoderRoundTripTest, WritesDecodedValue) {
+  for (const auto& json : *GetParam().inputs()) {
+    auto result = Json5ProtocolUtils::fromJson5<Example>(json);
+    EXPECT_EQ(Json5ProtocolUtils::toBasicJson(result), *GetParam().json())
+        << json;
+    EXPECT_EQ(Json5ProtocolUtils::toJson5(result), *GetParam().json5()) << json;
   }
 }
 
-TEST(JsonDecoderCompatibilityExtraTest, NegativeInfinityFormats) {
-  for (auto json :
-       {R"({"infValue": -Infinity})", R"({"infValue": "-Infinity"})"}) {
-    auto value = parse<Example>(json).infValue().value();
-    EXPECT_TRUE(std::isinf(value)) << json;
-    EXPECT_LT(value, 0) << json;
-  }
-}
+INSTANTIATE_TEST_SUITE_P(
+    RoundTrip,
+    JsonDecoderRoundTripTest,
+    ::testing::ValuesIn(roundTripTestCases()),
+    [](const auto& info) { return *info.param.name(); });
 
-TEST(JsonDecoderCompatibilityExtraTest, NaNFormats) {
-  for (auto json : {R"({"nanValue": NaN})", R"({"nanValue": "NaN"})"}) {
-    EXPECT_TRUE(std::isnan(parse<Example>(json).nanValue().value())) << json;
-  }
-}
-
-} // namespace
 } // namespace apache::thrift

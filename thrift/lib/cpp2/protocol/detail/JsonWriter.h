@@ -122,7 +122,13 @@ class JsonWriter {
   std::uint32_t writeString(std::string_view s);
 
  private:
+  friend class JsonWriterAttorney;
+
   enum class ContainerType : uint8_t { List, Object };
+
+  // Thrift values are never null; only the test transcoder writes null,
+  // through JsonWriterAttorney.
+  std::uint32_t writeNull();
 
   std::uint32_t openContainer(ContainerType type);
   std::uint32_t closeContainer(ContainerType type);
