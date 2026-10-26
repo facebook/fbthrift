@@ -849,8 +849,6 @@ class CppServerWrapper : public ThriftServer {
 };
 
 BOOST_PYTHON_MODULE(CppServerWrapper) {
-  PyEval_InitThreads();
-
   class_<CppContextData>("CppContextData")
       .def("getClientIdentity", &CppContextData::getClientIdentity)
       .def("getPeerAddress", &CppContextData::getPeerAddress)
