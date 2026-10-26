@@ -58,6 +58,12 @@ Thrift fields using **"[default requiredness](../idl/field-qualifiers#fields-tha
 
 :::
 
+:::note
+
+At Meta, the [FBTHRIFTCOMPAT](/fb/troubleshooting/linters.md#fbthriftcompat) linter checks each diff. It reports an error for some changes that this table calls wire compatible, such as **optional** to **required**. It does not flag an added or removed field.
+
+:::
+
 ### **Serialization by name**
 
 SimpleJSON and JSON5 serialize by name, and so does C++ conversion to and from `folly::dynamic`. Binary, Compact and JSON protocols serialize by id.
