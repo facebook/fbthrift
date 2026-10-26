@@ -55,6 +55,12 @@ TEST_F(Json5ReaderTest, Json5OnlyEscapes) {
     return std::get<std::string>(reader(input).readPrimitive());
   };
   EXPECT_EQ(readStr(R"("\v\0\x41\xe9")"), std::string("\v\0A\xC3\xA9", 5));
+  // Any other character escapes itself.
+  EXPECT_EQ(readStr(R"("\q\"\'\/\\")"), R"(q"'/\)");
+  EXPECT_EQ(readStr(R"("\é")"), "é");
+  // Line continuations: CR, CR LF, U+2028 and U+2029.
+  EXPECT_EQ(readStr("\"a\\\rb\\\r\nc\""), "abc");
+  EXPECT_EQ(readStr("\"x\\\u2028y\\\u2029z\""), "xyz");
   EXPECT_THROW(readStr(R"("\01")"), protocol::TProtocolException);
   EXPECT_THROW(readStr(R"("\x4")"), protocol::TProtocolException);
 }
@@ -582,6 +588,8 @@ TEST_F(Json5ReaderTest, InvalidUtf8InStrings) {
       readStr("\"\xF5\x80\x80\x80\""), TProtocolException); // > U+10FFFF
   // A raw lead byte followed by an escape does not form a sequence.
   EXPECT_THROW(readStr("\"\xC3\\u00A9\""), TProtocolException);
+  // An escaped continuation byte is not a character.
+  EXPECT_THROW(readStr("\"\\\xA0\""), TProtocolException);
   EXPECT_THROW(readStr("'\x80'"), TProtocolException); // single-quoted
 
   // Object names are strings too.
@@ -628,10 +636,7 @@ TEST_F(Json5ReaderTest, ErrorMessagesEscapeInputBytes) {
       std::string::npos);
   // Backslashes in messages are escaped too.
   EXPECT_NE(
-      message(R"("\q")").find(R"(unknown escape '\\q')"), std::string::npos);
-  EXPECT_NE(
-      message("\"\\\xA0\"").find(R"(unknown escape '\\\xa0')"),
-      std::string::npos);
+      message(R"("\1")").find(R"(unknown escape '\\1')"), std::string::npos);
 }
 
 TEST_F(Json5ReaderTest, MalformedNumbers) {
@@ -710,7 +715,7 @@ TEST_F(Json5ReaderTest, ErrorHandling) {
 
   // Unknown escape sequence in string
   {
-    auto r = reader(R"("\q")");
+    auto r = reader(R"("\1")");
     EXPECT_THROW(r.readPrimitive(), protocol::TProtocolException);
   }
 

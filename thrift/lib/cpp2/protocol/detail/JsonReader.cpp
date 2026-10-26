@@ -329,6 +329,10 @@ Json5Reader::Token Json5Reader::peekToken() {
 std::string Json5Reader::parseString(char quote) {
   std::string result;
   bool hasRawNonAscii = false;
+  auto appendRaw = [&](char ch) {
+    hasRawNonAscii |= (static_cast<unsigned char>(ch) & 0x80) != 0;
+    result.push_back(ch);
+  };
   while (true) {
     char c = readChar();
     if (c == quote) {
@@ -343,26 +347,16 @@ std::string Json5Reader::parseString(char quote) {
       throwParseError("unescaped newline in string");
     }
     if (c != '\\') {
-      hasRawNonAscii |= (static_cast<unsigned char>(c) & 0x80) != 0;
-      result.push_back(c);
+      appendRaw(c);
+      continue;
+    }
+    if (auto size = lineTerminatorSize(cursor())) {
+      // Line continuation
+      cursor().skip(size);
       continue;
     }
     char esc = readChar();
     switch (esc) {
-      case '"':
-      case '/':
-      case '\'':
-      case '\\':
-      case '\n':
-      case '\r':
-        if (esc != '\n' && esc != '\r') {
-          result.push_back(esc);
-        }
-        if (esc == '\r' && peekChar() == '\n') {
-          // handles "\r\n" (CRLF)
-          cursor().skip(1);
-        }
-        break;
       case 'b':
         result.push_back('\b');
         break;
@@ -394,7 +388,11 @@ std::string Json5Reader::parseString(char quote) {
         decodeUnicodeEscape(cursor(), result);
         break;
       default:
-        throwParseError(fmt::format("unknown escape '\\{}' in string", esc));
+        if (isAsciiDigit(esc)) {
+          throwParseError(fmt::format("unknown escape '\\{}' in string", esc));
+        }
+        // Any other character escapes itself, e.g. `\"` and `\q`.
+        appendRaw(esc);
     }
   }
 }

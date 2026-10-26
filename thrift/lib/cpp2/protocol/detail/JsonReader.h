@@ -76,8 +76,8 @@ namespace apache::thrift::json5::detail {
  * | Trailing commas (objects)        | Yes       |
  * | Trailing commas (arrays)         | Yes       |
  * | Single-quoted strings            | Yes       |
- * | Multi-line strings (escaped LF)  | Yes       |
- * | Additional escapes (\x, \v, \0)  | Yes       |
+ * | Line continuations (\ + newline) | Yes       |
+ * | All ES5 escapes (\x, \v, \0, \q) | Yes       |
  * | Infinity / NaN literals          | Yes       |
  * | Comments (//, block)             | Yes       |
  * | Hexadecimal integers             | Yes       |
