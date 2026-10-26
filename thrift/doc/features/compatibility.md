@@ -17,26 +17,26 @@ The following outlines the compatibility for changes to data:
 |Change    |Wire compatible[^1] |Code compatible[^2] |Notes    |
 |---    |---    |---    |---    |
 |Add a field    |yes    |yes    |Dropped by old    |
-|Remove a field    |yes    |no    |Dropped by new    |
+|Remove a field    |yes    |no    |Dropped by new. Do not give its id to a new field. If the types match, Binary, Compact and JSON readers put old values of the removed field into the new one. Reserve the id with `@thrift.ReserveIds`, and the compiler rejects a field that uses it. For a **required** field, see [caution](#caution_required)    |
 |Rename a field    |by id only    |no    |Binary, Compact and JSON protocols write the field id. SimpleJSON and JSON5 write the field name, so a reader with the other name loses the field. See [Serialization by name](#serialization-by-name)    |
-|Change field type    |rarely    |no    |1. Changes between utf-8 encoded string and binary are wire compatible for Binary/Compact protocol. <br/>2. Changes between i32 and enum are wire compatible.    |
+|Change field type    |rarely    |no    |1. Changes between utf-8 encoded string and binary are wire compatible for Binary/Compact protocol. C++ JSON and SimpleJSON write binary as base64, so there the change is not wire compatible. <br/>2. Changes between i32 and enum are wire compatible. After a change from i32 to enum, a reader can get a number that the enum does not name. See [Versioning with enumeration types](#versioning-with-enumeration-types) <br/>3. Otherwise, add a new field. See [How to avoid incompatible versions](#how-to-avoid-incompatible-versions) and [Changing the type of a thrift field](/fb/troubleshooting/changing-field-types.md)    |
 |Add enum value    |yes    |yes    |An old reader gets a value that it does not know, and Java returns `null` by default. See [Versioning with enumeration types](#versioning-with-enumeration-types)    |
 |Remove enum value    |yes    |no    |A new reader can get the removed value from an old writer, and Java returns `null` by default. See [Versioning with enumeration types](#versioning-with-enumeration-types)    |
 |Change enum value   |no    |no    |    |
-|New enum field with no 0 value    |yes    |yes    |    |
+|New enum field with no 0 value    |yes    |yes    |A reader does not get a member of the enum if the data does not have the field. See [Versioning with enumeration types](#versioning-with-enumeration-types)    |
 |Default on new non-optional field    |yes    |yes    |Gets new default    |
-|Default on new optional field    |yes    |yes    |Stays unset    |
-|Default changed on an non-optional field    |yes    |no    |    |
-|Default changed on an optional field    |yes    |no    |    |
+|Default on new optional field    |yes    |yes    |The compiler rejects it by default, and only some languages leave the field unset. See [caution](#caution_optional_default)    |
+|Default changed on a non-optional field    |yes    |no    |A writer sends its own default for a field that the code never set, so a reader gets the writer's default    |
+|Default changed on an optional field    |yes    |no    |See [caution](#caution_optional_default)    |
 |Constant changed    |yes    |no    |Old constant in old, new constant in new    |
-|Required to unspecified    |yes    |no    |    |
-|Unspecified to required    |yes    |no    |    |
+|Required to unspecified    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
+|Unspecified to required    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
 |Optional to unspecified    |yes    |no    |    |
 |Unspecified to optional    |yes    |no    |A new reader sees the field as set, also when an old writer never set it. See [caution](#caution_unqualified_to_optional)    |
-|Optional to required    |yes    |no    |    |
-|Required to optional    |yes    |no    |    |
-|Required to terse    |yes    |no    |    |
-|Terse to required    |yes    |no    |    |
+|Optional to required    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
+|Required to optional    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
+|Required to terse    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
+|Terse to required    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
 |Optional to terse    |yes    |no    |An old reader sees a field set to the intrinsic default as unset. See [caution](#caution_optional_to_terse)    |
 |Terse to optional    |yes    |no    |    |
 |Unspecified to terse    |yes    |no    |If the field has a custom default, an old reader gets it where the writer set the intrinsic default. See [caution](#caution_unqualified_to_terse)    |
@@ -110,15 +110,14 @@ struct Foo {
 
 Given the rules above, the following changes to Thrift structs will maintain compatibility between old and new versions:
 
-* Changing a **required** field to **unqualified**
-* Changing a **required** field to **terse**
+* Changing a **required** field to **unqualified** (see [caution](#caution_required) below)
+* Changing a **required** field to **terse** (see [caution](#caution_required) below)
 * Changing an **optional** field to **unqualified**
-* Changing an **optional** field to **terse**
-* Changing an **unqualified** field to **required**
+* Changing an **unqualified** field to **required** (see [caution](#caution_required) below)
 * Changing an **unqualified** field to **optional** (see [caution](#caution_unqualified_to_optional) below)
 * Changing an **unqualified** field to **terse** (see [caution](#caution_unqualified_to_terse) below)
-* Changing an **terse** field to **unqualified**
-* Changing an **terse** field to **optional**
+* Changing a **terse** field to **unqualified**
+* Changing a **terse** field to **optional**
 * Changing an **optional** field to **terse** (see [caution](#caution_optional_to_terse) below)
 * Deleting an **optional** field
 * Deleting an **unqualified** field
@@ -157,6 +156,35 @@ Given the rules above, the following changes to Thrift structs will maintain com
 * A new writer leaves out a field set to the intrinsic default, for example after `s.intField() = 0`. An old reader sees that field as unset, and C++ `value()` on it throws `apache::thrift::bad_optional_field_access`.
 * A new Go writer writes the field also when it was never set. An old reader then sees the field as set to the intrinsic default.
 * Code that checks whether the field is set breaks. It does not compile in C++ (`has_value()`, `reset()`), Rust, Go, or Java for a number field (`== null`). In thrift-python, the field never reads as `None` again.
+
+:::
+
+:::caution
+
+<a id="caution_required"></a>Changes to or from **required** are compatible from the protocol standpoint only if no reader enforces **required**. Most languages ignore `required`, and the compiler warns about it. Three readers still throw if the data does not have a **required** field:
+
+* `java_deprecated`
+* C++ code generated with the `deprecated_enforce_required` option
+* Hack `readFromJson()`
+
+A reader that enforces **required** breaks when a writer leaves out the field:
+
+* An **optional** writer leaves out a field that is not set.
+* A **terse** writer leaves out a field that holds the intrinsic default.
+* An **unqualified** writer leaves out a field that holds `null`. In Java, `java_deprecated` and thrift-py-deprecated, a string, container or struct field with no default is `null` until the code sets it.
+
+A `java_deprecated` writer also throws if a **required** string, binary, container, struct or enum field holds `null`.
+
+:::
+
+:::caution
+
+<a id="caution_optional_default"></a>The compiler rejects a default on an **optional** field unless the field has `@thrift.AllowUnsafeOptionalCustomDefaultValue`. With that annotation, languages do not agree on what the default means:
+
+* C++, thrift-python, Java and Rust start the field unset. If the data does not have the field, a reader sees it as unset.
+* Go, Hack, thrift-py-deprecated and `java_deprecated` put the default in the field. So a reader gets the default also when the data does not have the field.
+* Go and Hack writers send the default when the code never set the field. So do the accelerated thrift-py-deprecated writers, and `java_deprecated` for a string, binary, container, struct or enum field.
+* The thrift-py3 getter returns the default for an unset field. Rust with the `deprecated_optional_with_default_is_some` option works like Go.
 
 :::
 
@@ -210,6 +238,14 @@ After you add an enumerator, a reader with the old definition can get a value th
 * thrift-py-deprecated keeps the number. Its `readFromJson()` raises `TProtocolException` if the caller passes `relax_enum_validation=False` or `wrap_enum_constants=True`.
 
 So add an enumerator to every reader before any writer sends it. Delete one only after no writer sends it. If you cannot make sure of that, add a new enum and a new field instead.
+
+A new enum field has a similar problem if its enum has no value 0. If the data does not have the field, a reader does not get a member of the enum:
+
+* C++, Go and Rust get 0. Rust gets `i32::MIN` if the code was generated with the `deprecated_default_enum_min_i32` option.
+* thrift-python and thrift-py3 return a `BadEnum`.
+* Java, `java_deprecated` and Hack return `null`, and thrift-py-deprecated returns `None`.
+
+If the code never set the field, a C++, thrift-python, thrift-py3, Java, Go or Rust writer sends 0. Rust with that option sends `i32::MIN`. So make the new field **optional**, or give it a default. A value 0 in the enum does not help `java_deprecated`, Hack and thrift-py-deprecated, which still return `null` or `None`. It also does not help Rust with that option.
 
 [^1]: Whether the data is changed over the wire.
 [^2]: Whether the code change is needed.
