@@ -32,25 +32,11 @@ namespace apache::thrift::compiler {
 
 namespace {
 
+// The name that thrift-py-deprecated gives a field or enum value: names in
+// `get_python_reserved_names()` get a suffix, as in `t_py_generator`, so that
+// the stubs match the generated code.
 std::string get_filtered_name(const t_named& node) {
-  // Reserved Python keywords that are not blocked by thrift grammar - note that
-  // this is actually a longer list than what t_py_generator checks, but may
-  // as well fix up more of them here.
-  static const std::unordered_set<std::string> kKeywords = {
-      "async",
-      "await",
-      "from",
-      "nonlocal",
-      "DEF",
-      "ELIF",
-      "ELSE",
-      "False",
-      "IF",
-      "None",
-      "True",
-  };
-
-  return kKeywords.contains(node.name())
+  return get_python_reserved_names().contains(node.name())
       ? fmt::format("{}_PY_RESERVED_KEYWORD", node.name())
       : node.name();
 }
@@ -270,6 +256,14 @@ class t_mstch_pyi_generator : public t_whisker_generator {
       return name;
     });
 
+    return std::move(def).make();
+  }
+
+  prototype<t_enum_value>::ptr make_prototype_for_enum_value(
+      const prototype_database& proto) const override {
+    auto base = t_whisker_generator::make_prototype_for_enum_value(proto);
+    auto def = whisker::dsl::prototype_builder<h_enum_value>::extends(base);
+    def.property("py_name", &get_filtered_name);
     return std::move(def).make();
   }
 
