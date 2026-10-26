@@ -57,7 +57,7 @@ class ThriftEnumWrapper(int):
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'from_PY_RESERVED_KEYWORD', 'def_PY_RESERVED_KEYWORD', 'and_PY_RESERVED_KEYWORD']
+__all__ = ['UTF8STRINGS', 'from_PY_RESERVED_KEYWORD', 'Mode', 'def_PY_RESERVED_KEYWORD', 'and_PY_RESERVED_KEYWORD']
 warn_thrift_py_deprecated(__name__)
 
 class from_PY_RESERVED_KEYWORD:
@@ -74,6 +74,25 @@ class from_PY_RESERVED_KEYWORD:
 for k, v in from_PY_RESERVED_KEYWORD._NAMES_TO_VALUES.items():
     setattr(from_PY_RESERVED_KEYWORD, k, v)
     from_PY_RESERVED_KEYWORD._VALUES_TO_NAMES[v] = k
+
+class Mode:
+  def __getattr__(self, name): raise AttributeError(name)
+
+  _NAMES_TO_VALUES = dict(zip((
+    "None",
+    "for",
+    "OK",
+),
+(
+    0,
+    1,
+    2,
+  )))
+  _VALUES_TO_NAMES = {}
+
+for k, v in Mode._NAMES_TO_VALUES.items():
+    setattr(Mode, k, v)
+    Mode._VALUES_TO_NAMES[v] = k
 
 class def_PY_RESERVED_KEYWORD:
   r"""

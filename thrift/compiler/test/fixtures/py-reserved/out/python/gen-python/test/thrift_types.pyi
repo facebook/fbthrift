@@ -18,8 +18,10 @@ import thrift.python.exceptions as _fbthrift_python_exceptions
 
 from test.thrift_enums import (
     from_ as _fbthrift_from_,
+    Mode as _fbthrift_Mode,
 )
 from_ = _fbthrift_from_
+Mode = _fbthrift_Mode
 
 
 @_typing.final
