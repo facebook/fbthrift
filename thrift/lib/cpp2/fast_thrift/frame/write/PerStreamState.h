@@ -22,6 +22,8 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 
+#include <glog/logging.h>
+
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -32,20 +34,18 @@
 namespace apache::thrift::fast_thrift::frame::write {
 
 /**
- * One logical frame awaiting fragmentation. `originalFrame` is the
- * `ComposedFrame` the caller handed us, with its `data` buffer detached
- * into `dataQueue`. The first fragment goes out as `originalFrame` (with
- * the first chunk reattached and `follows` stamped); subsequent fragments
- * are minted as fresh `ComposedFrame{.frameType = PAYLOAD, ...}`
- * continuations from `dataQueue`.
+ * One logical frame awaiting fragmentation. Its data stays in
+ * `originalFrame.data` until `nextFragment()` emits this frame's first
+ * fragment.
  *
- * `originalComplete` is the originating frame's `isComplete()` value at
- * enqueue time — propagated to the final PAYLOAD continuation so
- * REQUEST_CHANNEL streams close properly on the receiver.
+ * `originalComplete` records whether the original frame carried COMPLETE.
+ * Only the original frame's last emitted fragment carries that flag. If the
+ * frame is not split, that fragment is the original frame. If it is split,
+ * that fragment is the final PAYLOAD continuation. Earlier fragments clear
+ * COMPLETE.
  */
 struct PendingFrame {
   ComposedFrame originalFrame{};
-  folly::IOBufQueue dataQueue{folly::IOBufQueue::cacheChainLength()};
   bool firstEmitted{false};
   bool originalComplete{false};
 
@@ -55,10 +55,6 @@ struct PendingFrame {
   PendingFrame& operator=(PendingFrame&&) noexcept = default;
   PendingFrame(const PendingFrame&) = delete;
   PendingFrame& operator=(const PendingFrame&) = delete;
-
-  [[nodiscard]] size_t remaining() const noexcept {
-    return dataQueue.chainLength();
-  }
 };
 
 /**
@@ -72,6 +68,9 @@ struct PendingFrame {
 struct PerStreamState {
   uint32_t streamId{0};
   std::deque<PendingFrame> frames;
+  // Holds the unsent data from the front frame after its first fragment. The
+  // front frame leaves `frames` only after this queue is empty.
+  folly::IOBufQueue dataQueue{folly::IOBufQueue::cacheChainLength()};
   size_t totalRemaining{0};
 
   PerStreamState() = default;
@@ -89,9 +88,7 @@ struct PerStreamState {
     PendingFrame pf;
     pf.originalFrame = std::move(originalFrame);
     pf.originalComplete = originalComplete;
-    if (data) {
-      pf.dataQueue.append(std::move(data));
-    }
+    pf.originalFrame.data = std::move(data);
     totalRemaining += size;
     frames.push_back(std::move(pf));
   }
@@ -111,40 +108,41 @@ struct PerStreamState {
   };
 
   /**
-   * Pull the next fragment from the head pending frame. Mutates state:
-   * splits `maxSize` bytes off the head's data queue, restores the
-   * original `ComposedFrame` for first fragments or mints a PAYLOAD
-   * continuation for subsequent ones, and pops the head frame if its
-   * data is exhausted. Precondition: `hasMore()`.
+   * Returns the original frame first, then PAYLOAD continuations. Each frame
+   * contains at most `maxSize` data bytes.
+   *
+   * The method removes the head frame after its final fragment.
+   * Precondition: `hasMore()`.
    */
   Fragment nextFragment(size_t maxSize) noexcept {
-    auto& head = frames.front();
-    const size_t chunkSize = std::min(maxSize, head.dataQueue.chainLength());
-    auto chunk = head.dataQueue.split(chunkSize);
-    const bool follows = !head.dataQueue.empty();
+    PendingFrame& frame = frames.front();
+    if (!frame.firstEmitted) {
+      DCHECK(dataQueue.empty());
+      if (frame.originalFrame.data != nullptr) {
+        dataQueue.append(std::move(frame.originalFrame.data));
+      }
+    }
+    const size_t chunkSize = std::min(maxSize, dataQueue.chainLength());
+    std::unique_ptr<folly::IOBuf> chunk = dataQueue.split(chunkSize);
+    const bool follows = !dataQueue.empty();
 
     totalRemaining -= chunkSize;
 
     Fragment frag;
     frag.payloadBytes = chunkSize;
     frag.currentFrameDone = !follows;
-
-    // `complete` only fires on the final emitted fragment. For unfragmented
-    // first-emit (follows=false) this preserves the caller's bit; for any
-    // fragmented case it clears it on intermediate frames and re-asserts
-    // it on the last one.
-    if (!head.firstEmitted) {
-      head.firstEmitted = true;
-      frag.outFrame = std::move(head.originalFrame);
+    if (!frame.firstEmitted) {
+      frame.firstEmitted = true;
+      frag.outFrame = std::move(frame.originalFrame);
       frag.outFrame.data = std::move(chunk);
       frag.outFrame.follows = follows;
-      frag.outFrame.complete = !follows && head.originalComplete;
+      frag.outFrame.complete = !follows && frame.originalComplete;
     } else {
       frag.outFrame.frameType = FrameType::PAYLOAD;
       frag.outFrame.streamId = streamId;
       frag.outFrame.data = std::move(chunk);
       frag.outFrame.follows = follows;
-      frag.outFrame.complete = !follows && head.originalComplete;
+      frag.outFrame.complete = !follows && frame.originalComplete;
       frag.outFrame.next = true;
     }
 
