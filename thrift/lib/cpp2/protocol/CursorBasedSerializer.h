@@ -1405,12 +1405,12 @@ void ContainerCursorReader<Tag, ProtocolReader, Contiguous>::finalize() {
   state_ = State::Done;
 
   if (remaining_ > 0) {
-    if (!lastRead_) {
-      lastRead_.emplace();
-      readItem();
-    }
-    // Skip remaining unread elements
-    skip_n(*protocol_, remaining_ - 1, detail::ContainerTraits<Tag>::wireTypes);
+    // Skip remaining unread elements. A cached lastRead_ was already consumed
+    // from the buffer.
+    skip_n(
+        *protocol_,
+        lastRead_ ? remaining_ - 1 : remaining_,
+        detail::ContainerTraits<Tag>::wireTypes);
   }
 
   if constexpr (type::is_a_v<Tag, type::list_c>) {
