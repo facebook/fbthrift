@@ -50,6 +50,15 @@ same_line")");
       std::get<std::string>(r.readPrimitive()), "line1\n\"line2\"same_line");
 }
 
+TEST_F(Json5ReaderTest, Json5OnlyEscapes) {
+  auto readStr = [this](std::string_view input) {
+    return std::get<std::string>(reader(input).readPrimitive());
+  };
+  EXPECT_EQ(readStr(R"("\v\0\x41\xe9")"), std::string("\v\0A\xC3\xA9", 5));
+  EXPECT_THROW(readStr(R"("\01")"), protocol::TProtocolException);
+  EXPECT_THROW(readStr(R"("\x4")"), protocol::TProtocolException);
+}
+
 TEST_F(Json5ReaderTest, EmptyContainers) {
   auto verify = [this](std::string_view input) {
     auto r = reader(input);

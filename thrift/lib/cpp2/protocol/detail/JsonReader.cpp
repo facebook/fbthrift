@@ -118,12 +118,12 @@ Json5Reader::Integer makeInteger(
   return {.negative = negative, .magnitude = magnitude};
 }
 
-std::uint16_t readFourHexDigits(folly::io::Cursor& cursor) {
-  if (!cursor.canAdvance(4)) {
-    throwParseError("expected 4 hex digits");
+std::uint16_t readHexDigits(folly::io::Cursor& cursor, std::size_t count) {
+  if (!cursor.canAdvance(count)) {
+    throwParseError(fmt::format("expected {} hex digits", count));
   }
   return static_cast<std::uint16_t>(
-      parseHexMagnitude(cursor.readFixedString(4)));
+      parseHexMagnitude(cursor.readFixedString(count)));
 }
 
 // The writer escapes strings with folly::json::escapeString's validate_utf8, so
@@ -143,14 +143,14 @@ void validateUtf8(std::string_view str) {
 // Decodes a `\uXXXX` escape, with the cursor just past the `u`. A code point
 // outside the BMP is written as a UTF-16 surrogate pair, i.e. two escapes.
 void decodeUnicodeEscape(folly::io::Cursor& cursor, std::string& out) {
-  const std::uint16_t first = readFourHexDigits(cursor);
+  const std::uint16_t first = readHexDigits(cursor, 4);
   char32_t codePoint = first;
 
   if (folly::utf16_code_unit_is_high_surrogate(first)) {
     if (!cursor.canAdvance(2) || cursor.readFixedString(2) != "\\u") {
       throwParseError("expected a second escape to complete surrogate pair");
     }
-    const std::uint16_t second = readFourHexDigits(cursor);
+    const std::uint16_t second = readHexDigits(cursor, 4);
     if (!folly::utf16_code_unit_is_low_surrogate(second)) {
       throwParseError("invalid second half of surrogate pair");
     }
@@ -377,6 +377,18 @@ std::string Json5Reader::parseString(char quote) {
         break;
       case 't':
         result.push_back('\t');
+        break;
+      case 'v':
+        result.push_back('\v');
+        break;
+      case '0':
+        if (isAsciiDigit(peekChar())) {
+          throwParseError("octal escape in string");
+        }
+        result.push_back('\0');
+        break;
+      case 'x':
+        folly::appendCodePointToUtf8(readHexDigits(cursor(), 2), result);
         break;
       case 'u':
         decodeUnicodeEscape(cursor(), result);
