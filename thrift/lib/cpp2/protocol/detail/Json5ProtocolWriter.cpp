@@ -333,13 +333,11 @@ std::uint32_t Json5ProtocolWriter::writeString(folly::StringPiece str) {
 
 std::uint32_t Json5ProtocolWriter::writeBinary(folly::StringPiece str) {
   std::uint32_t xfer = beginWriteValue();
-  if (options_.binaryAsBase64String) {
-    // Map keys are base64 too, like values.
+  if (options_.binaryAsBase64String ||
+      containerStack_.inObjectMapExpectingKey()) {
     auto encoded = unpaddedBase64(str);
     auto keySize = maybeWriteSimpleMapKey<type::string_t>(encoded);
     xfer += keySize ? *keySize : writer_.writeString(encoded);
-  } else if (auto keySize = maybeWriteSimpleMapKey<type::string_t>(str)) {
-    xfer += *keySize;
   } else {
     // {"utf-8": ...} or {"base64url": ...}
     xfer += writer_.writeObjectBegin();

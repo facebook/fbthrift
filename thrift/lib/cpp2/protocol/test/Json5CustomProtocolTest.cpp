@@ -158,9 +158,13 @@ TEST_F(Json5MapPrimitiveKeysTest, I64AsKey) {
 
 TEST_F(Json5MapPrimitiveKeysTest, BinaryAsKey) {
   Example example;
-  example.binaryAsKey() = {{"?~", 1}};
-  EXPECT_EQ(writeJson(example), R"RAW({"binaryAsKey":{"?~":1}})RAW");
-  EXPECT_EQ(writeJson5(example), R"RAW({binaryAsKey:{"?~":1,},})RAW");
+  example.binaryAsKey() = {{"?~", 1}, {"abcd", 2}, {"\xff", 3}};
+  auto json = writeJson(example);
+  EXPECT_EQ(json, R"RAW({"binaryAsKey":{"P34":1,"YWJjZA":2,"/w":3}})RAW");
+  EXPECT_EQ(Json5ProtocolUtils::fromJson5<Example>(json), example);
+  auto json5 = writeJson5(example);
+  EXPECT_EQ(json5, R"RAW({binaryAsKey:{P34:1,YWJjZA:2,"/w":3,},})RAW");
+  EXPECT_EQ(Json5ProtocolUtils::fromJson5<Example>(json5), example);
 }
 
 TEST_F(Json5MapPrimitiveKeysTest, BinaryAsKeyBase64) {
