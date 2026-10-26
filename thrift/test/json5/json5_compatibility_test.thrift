@@ -19,7 +19,7 @@
 // to maintain compatibility with different serialization outputs.
 // Test data is defined here so it can be shared between different languages.
 
-include "thrift/lib/cpp2/protocol/test/json5_test.thrift"
+include "thrift/test/json5/json5_test.thrift"
 
 package "facebook.com/thrift/json5"
 

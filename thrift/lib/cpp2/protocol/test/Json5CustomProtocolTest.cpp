@@ -24,11 +24,11 @@
 #include <gtest/gtest.h>
 #include <folly/json/dynamic.h>
 #include <folly/json/json.h>
-#include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_constants.h>
-#include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_types.h>
-#include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_types_custom_protocol.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/test/gen-cpp2/References_types.h>
+#include <thrift/test/json5/gen-cpp2/json5_test_constants.h>
+#include <thrift/test/json5/gen-cpp2/json5_test_types.h>
+#include <thrift/test/json5/gen-cpp2/json5_test_types_custom_protocol.h>
 
 namespace apache::thrift {
 

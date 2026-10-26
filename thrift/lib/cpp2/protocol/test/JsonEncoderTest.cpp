@@ -20,8 +20,8 @@
 #include <gtest/gtest.h>
 #include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
-#include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_constants.h>
-#include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_types.h>
+#include <thrift/test/json5/gen-cpp2/json5_test_constants.h>
+#include <thrift/test/json5/gen-cpp2/json5_test_types.h>
 
 namespace apache::thrift {
 

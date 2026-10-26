@@ -23,10 +23,10 @@
 #include <cmath>
 
 #include <gtest/gtest.h>
-#include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_compatibility_test_constants.h>
-#include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_compatibility_test_types.h>
-#include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_types.h>
-#include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_types_custom_protocol.h>
+#include <thrift/test/json5/gen-cpp2/json5_compatibility_test_constants.h>
+#include <thrift/test/json5/gen-cpp2/json5_compatibility_test_types.h>
+#include <thrift/test/json5/gen-cpp2/json5_test_types.h>
+#include <thrift/test/json5/gen-cpp2/json5_test_types_custom_protocol.h>
 
 namespace apache::thrift {
 
