@@ -234,6 +234,7 @@ class Json5NegativeTest(unittest.TestCase):
         cases = [
             ("enum", negative_types.enumValidationNegativeCases),
             ("type", negative_types.typeValidationNegativeCases),
+            ("typeMismatch", negative_types.typeMismatchNegativeCases),
             ("format", negative_types.formatValidationNegativeCases),
             ("overflow", negative_types.overflowValidationNegativeCases),
         ]
