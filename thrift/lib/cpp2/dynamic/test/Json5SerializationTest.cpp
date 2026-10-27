@@ -23,6 +23,7 @@
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp2/dynamic/DynamicValue.h>
 #include <thrift/lib/cpp2/dynamic/test/gen-cpp2/json5_serialization_test_types.h>
+#include <thrift/lib/cpp2/dynamic/test/gen-cpp2/json5_serialization_test_types_custom_protocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Json5Protocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -31,6 +32,7 @@
 #include <cstdint>
 #include <limits>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -38,6 +40,7 @@ namespace apache::thrift::dynamic {
 namespace {
 
 namespace gen = json5_test;
+using json5::detail::Json5ProtocolReader;
 using json5::detail::Json5ProtocolWriter;
 using json5::detail::JsonWriterOptions;
 using testing::HasSubstr;
@@ -54,6 +57,15 @@ DynamicValue toDynamic(const T& value) {
   CompactProtocolReader reader;
   reader.setInput(buf.get());
   return deserializeValue(reader, typeOf<T>());
+}
+
+template <typename T>
+T toStatic(const DynamicConstRef& value) {
+  folly::IOBufQueue queue;
+  CompactProtocolWriter writer;
+  writer.setOutput(&queue);
+  serializeValue(writer, value);
+  return CompactSerializer::deserialize<T>(queue.move().get());
 }
 
 Json5ProtocolWriter::Options json5Options() {
@@ -101,6 +113,36 @@ void expectSameJsonAsStatic(const T& value) {
   }
 }
 
+DynamicValue fromJson(std::string_view json, const type_system::TypeRef& type) {
+  auto buf = folly::IOBuf::copyBuffer(json);
+  Json5ProtocolReader reader;
+  reader.setInput(buf.get());
+  auto value = deserializeValue(reader, type);
+  EXPECT_TRUE(reader.getCursor().isAtEnd()) << json;
+  return value;
+}
+
+template <typename T>
+T fromJsonViaDynamic(std::string_view json) {
+  return toStatic<T>(fromJson(json, typeOf<T>()));
+}
+
+template <typename T>
+void expectSameReadAsStatic(std::string_view json) {
+  EXPECT_EQ(fromJsonViaDynamic<T>(json), Json5ProtocolUtils::fromJson5<T>(json))
+      << json;
+}
+
+template <typename T>
+void expectBothReadsThrow(std::string_view json) {
+  EXPECT_THROW(fromJson(json, typeOf<T>()), protocol::TProtocolException)
+      << json;
+  EXPECT_THROW(
+      (void)Json5ProtocolUtils::fromJson5<T>(json),
+      protocol::TProtocolException)
+      << json;
+}
+
 gen::Key makeKey(std::int32_t first, std::int32_t second) {
   gen::Key key;
   key.first() = first;
@@ -140,6 +182,37 @@ gen::Scalars makeScalars() {
   scalars.enumField() = gen::Color::BLUE;
   scalars.optionalField() = "set";
   return scalars;
+}
+
+// Multi-element containers, whose static iteration order differs from both
+// insertion order and the order of their stable comparison.
+gen::AllTypes makeAllTypes() {
+  gen::AllTypes all;
+  all.scalars() = makeScalars();
+  auto& containers = *all.containers();
+  containers.intList() = {3, 1, 2};
+  containers.enumList() = {gen::Color::BLUE, gen::Color::RED};
+  containers.unionList() = {
+      makeColorChoice(gen::Color::RED), makeTextChoice("t")};
+  containers.stringSet() = {"b", "a", "c"};
+  containers.intSet() = {5, -5, 0};
+  containers.binarySet() = {"\xff", "a", ""};
+  containers.enumSet() = {gen::Color::BLUE, gen::Color::RED};
+  containers.structSet() = {makeKey(1, 9), makeKey(2, 0), makeKey(1, 3)};
+  containers.unionSet() = {
+      makeColorChoice(gen::Color::BLUE),
+      makeNumberChoice(4),
+      makeTextChoice("z")};
+  containers.listSet() = {{1, 2}, {1}, {0, 5}};
+  containers.stringMap() = {{"b", 2}, {"a", 1}};
+  containers.intKeyMap() = {{2, "two"}, {-1, "neg"}};
+  containers.enumKeyMap() = {{gen::Color::GREEN, "g"}, {gen::Color::RED, "r"}};
+  containers.structKeyMap() = {{makeKey(5, 6), "k"}, {makeKey(1, 7), "j"}};
+  containers.binaryKeyMap() = {{"bk", 9}, {"\x01", 1}};
+  containers.enumValueMap() = {{"v", gen::Color::RED}, {"u", gen::Color::BLUE}};
+  all.choice() = makeNumberChoice(42);
+  all.key() = makeKey(7, 8);
+  return all;
 }
 
 TEST(Json5SerializationTest, WritesStructFieldsInFieldIdOrder) {
@@ -228,6 +301,124 @@ TEST(Json5SerializationTest, WritesSingleElementContainersLikeStaticPath) {
   all.choice()->text() = "chosen";
   all.key() = makeKey(7, 8);
   expectSameJsonAsStatic(all);
+}
+
+TEST(Json5SerializationTest, RoundTripsThroughJson) {
+  const auto value = toDynamic(makeAllTypes());
+  for (const auto& options : allWriterOptions()) {
+    EXPECT_EQ(fromJson(toJson(value, options), typeOf<gen::AllTypes>()), value);
+  }
+}
+
+TEST(Json5SerializationTest, ReadsStaticOutput) {
+  const auto all = makeAllTypes();
+  for (const auto& options : allWriterOptions()) {
+    EXPECT_EQ(
+        fromJsonViaDynamic<gen::AllTypes>(
+            json5::detail::toJsonImpl<type::infer_tag<gen::AllTypes>>(
+                all, options)),
+        all);
+  }
+}
+
+TEST(Json5SerializationTest, ReadsEnumsInEveryAcceptedForm) {
+  for (std::string_view json : {"\"BLUE (3)\"", "\"BLUE\"", "\"(3)\"", "3"}) {
+    EXPECT_EQ(fromJson(json, typeOf<gen::Color>()).asEnum(), 3) << json;
+  }
+  // Accepted as a value added to the enum after the reader's schema.
+  EXPECT_EQ(fromJson("\"PURPLE (99)\"", typeOf<gen::Color>()).asEnum(), 99);
+
+  expectSameReadAsStatic<gen::Containers>(R"json({
+    enumList: ["RED (1)", "GREEN", "(3)", 2],
+    enumKeyMap: {"BLUE (3)": "b", RED: "r", "(2)": "g"},
+    enumValueMap: {x: "GREEN (2)"},
+    unionList: [{color: "BLUE"}],
+  })json");
+}
+
+TEST(Json5SerializationTest, RejectsInvalidEnums) {
+  for (std::string_view json :
+       {"\"PURPLE\"", "\"RED (2)\"", "\"GREEN (1)\"", "true"}) {
+    EXPECT_THROW(
+        fromJson(json, typeOf<gen::Color>()), protocol::TProtocolException)
+        << json;
+  }
+  expectBothReadsThrow<gen::Scalars>(R"json({enumField: "PURPLE"})json");
+}
+
+TEST(Json5SerializationTest, ReadsFieldsByIdOrByNameAndId) {
+  EXPECT_EQ(
+      fromJsonViaDynamic<gen::Key>(R"json({"(1)": 10, "second (2)": 20})json"),
+      makeKey(10, 20));
+  expectSameReadAsStatic<gen::Key>(R"json({"(1)": 10, "second (2)": 20})json");
+  expectSameReadAsStatic<gen::Choice>(R"json({"(2)": "text"})json");
+  // Unknown fields are skipped, whether named or numbered.
+  expectSameReadAsStatic<gen::Key>(
+      R"json({third: [1, {a: 2}], "(3)": 2, first: 5})json");
+}
+
+TEST(Json5SerializationTest, RejectsConflictingFieldNameAndId) {
+  expectBothReadsThrow<gen::Key>(R"json({"first (2)": 1})json");
+  expectBothReadsThrow<gen::Key>(R"json({"other (1)": 1})json");
+  expectBothReadsThrow<gen::Choice>(R"json({"text (1)": "x"})json");
+}
+
+TEST(Json5SerializationTest, ReadsLenientEncodingsLikeStaticPath) {
+  expectSameReadAsStatic<gen::Scalars>(R"json({
+    boolField: "true",
+    byteField: "-8",
+    i32Field: "42",
+    i64Field: "-9000000000",
+    floatField: "-Infinity",
+    doubleField: "1e3",
+    binaryField: {"base64url": "AP8Q"},
+    stringField: 'single quoted',
+    // comments and null fields are ignored
+    optionalField: null,
+  })json");
+  expectSameReadAsStatic<gen::Scalars>(
+      R"json({binaryField: {"utf-8": "abc"}, doubleField: Infinity})json");
+  expectSameReadAsStatic<gen::Containers>(R"json({
+    stringMap: [{key: "a", value: 1}, {key: "b", value: 2}],
+    intKeyMap: {"7": "seven", "-1": "neg"},
+    stringSet: ["x", "y",],
+  })json");
+}
+
+TEST(Json5SerializationTest, RejectsMismatchedTypes) {
+  expectBothReadsThrow<gen::Scalars>(R"json({i32Field: "abc"})json");
+  expectBothReadsThrow<gen::Scalars>(R"json({stringField: 1})json");
+  expectBothReadsThrow<gen::Scalars>(R"json({boolField: 1})json");
+  expectBothReadsThrow<gen::Containers>(R"json({intList: {}})json");
+  expectBothReadsThrow<gen::Containers>(R"json({stringMap: 1})json");
+  expectBothReadsThrow<gen::AllTypes>(R"json({key: [1, 2]})json");
+}
+
+struct RecordingCallbacks {
+  std::vector<std::string> unknownFields;
+
+  void onUnknownField(
+      const type_system::StructuredNode&,
+      int16_t,
+      std::string_view name,
+      protocol::TType) {
+    unknownFields.emplace_back(name);
+  }
+  void onTypeMismatch(std::string_view, protocol::TType, protocol::TType) {}
+  void onMultipleUnionFields(const type_system::UnionNode&, uint32_t) {}
+};
+
+TEST(Json5SerializationTest, ReportsUnknownFieldsToCallbacks) {
+  auto buf = folly::IOBuf::copyBuffer(
+      R"json({first: 1, extra: [1, {a: 2}], second: 2})json");
+  Json5ProtocolReader reader;
+  reader.setInput(buf.get());
+  RecordingCallbacks callbacks;
+
+  auto value = deserializeValue(reader, typeOf<gen::Key>(), nullptr, callbacks);
+
+  EXPECT_EQ(toStatic<gen::Key>(value), makeKey(1, 2));
+  EXPECT_EQ(callbacks.unknownFields, std::vector<std::string>{"extra"});
 }
 
 } // namespace

@@ -34,7 +34,9 @@
 #include <folly/memory/not_null.h>
 
 #include <cstdint>
+#include <limits>
 #include <memory_resource>
+#include <optional>
 #include <string_view>
 
 namespace apache::thrift::dynamic {
@@ -87,6 +89,56 @@ inline bool hasAlternativeMapKeyForm(const type_system::TypeRef& keyType) {
   const auto trueKeyType = keyType.trueType();
   return trueKeyType.isString() || trueKeyType.isEnum();
 }
+
+// Readers that omit types but can peek at the JSON type of the next value
+// (e.g. SimpleJSON), so that values of the wrong type are reported to the
+// callbacks and skipped. Other readers that omit types (e.g. JSON5, which also
+// accepts quoted numbers, binary objects, and maps as key-value arrays) throw
+// on values of the wrong type instead.
+template <typename ProtocolReader>
+inline constexpr bool kPeeksJsonValueTypes = requires(ProtocolReader& reader) {
+  requires ProtocolReader::kOmitsContainerElemTypes();
+  reader.peekValueTType();
+};
+
+// Mirrors the static path (detail::st::translate_field_name_or_id): readers
+// of name-based protocols identify a field by name, by id (with an empty
+// name), or by both, which must then agree.
+inline type_system::FastFieldHandle fieldHandleForNamedField(
+    const type_system::StructuredNode& node,
+    std::string_view name,
+    int16_t id) {
+  const FieldId fieldId{id};
+  if (name.empty()) {
+    return node.fieldHandleFor(fieldId);
+  }
+  const bool hasId = id != std::numeric_limits<int16_t>::min();
+  const auto handle = node.fieldHandleFor(name);
+  const bool conflicts = handle.valid()
+      ? hasId && node.at(handle).identity().id() != fieldId
+      : hasId && node.hasField(fieldId);
+  if (conflicts) {
+    protocol::TProtocolException::throwInvalidFieldData();
+  }
+  return handle;
+}
+
+// Resolves enum names for readers that decode enums by name.
+struct EnumNodeResolver {
+  const type_system::EnumNode& enumNode;
+
+  std::string_view findName(std::int32_t value) const {
+    return enumValueName(enumNode, value);
+  }
+  std::optional<std::int32_t> findValue(std::string_view name) const {
+    for (const auto& enumValue : enumNode.values()) {
+      if (enumValue.name == name) {
+        return enumValue.i32;
+      }
+    }
+    return std::nullopt;
+  }
+};
 
 } // namespace detail
 
@@ -267,10 +319,15 @@ double deserialize(
 template <typename ProtocolReader>
 int32_t deserialize(
     ProtocolReader& reader,
-    const type_system::EnumNode&,
+    const type_system::EnumNode& enumNode,
     std::pmr::memory_resource*) {
   int32_t ret;
-  op::decode<type::i32_t>(reader, ret);
+  const detail::EnumNodeResolver resolver{enumNode};
+  if constexpr (requires { reader.readEnum(ret, resolver); }) {
+    reader.readEnum(ret, resolver);
+  } else {
+    op::decode<type::i32_t>(reader, ret);
+  }
   return ret;
 }
 
@@ -345,7 +402,7 @@ Set deserialize(
   if constexpr (ProtocolReader::kOmitsContainerSizes()) {
     auto expected = type_system::ToTTypeFn{}(type.elementType());
     while (reader.peekSet()) {
-      if constexpr (ProtocolReader::kOmitsContainerElemTypes()) {
+      if constexpr (detail::kPeeksJsonValueTypes<ProtocolReader>) {
         auto peeked = reader.peekValueTType();
         if (!isJsonTypeCompatible(peeked, expected)) {
           callbacks.onTypeMismatch("set element", expected, peeked);
@@ -427,7 +484,7 @@ Map deserialize(
     auto expectedValueTType = type_system::ToTTypeFn{}(type.valueType());
     while (reader.peekMap()) {
       // For protocols without wire type info, peek at the key's JSON type.
-      if constexpr (ProtocolReader::kOmitsContainerElemTypes()) {
+      if constexpr (detail::kPeeksJsonValueTypes<ProtocolReader>) {
         auto peekedKey = reader.peekValueTType();
         if (!isJsonTypeCompatible(
                 peekedKey, expectedKeyTType, /*isMapKey=*/true)) {
@@ -446,7 +503,7 @@ Map deserialize(
       auto key = deserializeValue(reader, type.keyType(), alloc, callbacks);
 
       // For protocols without wire type info, peek at the value's JSON type.
-      if constexpr (ProtocolReader::kOmitsContainerElemTypes()) {
+      if constexpr (detail::kPeeksJsonValueTypes<ProtocolReader>) {
         auto peekedValue = reader.peekValueTType();
         if (!isJsonTypeCompatible(peekedValue, expectedValueTType)) {
           callbacks.onTypeMismatch(
@@ -732,7 +789,7 @@ List deserialize(
         if constexpr (ProtocolReader::kOmitsContainerSizes()) {
           auto expected = type_system::ToTTypeFn{}(type.elementType());
           while (reader.peekList()) {
-            if constexpr (ProtocolReader::kOmitsContainerElemTypes()) {
+            if constexpr (detail::kPeeksJsonValueTypes<ProtocolReader>) {
               auto peeked = reader.peekValueTType();
               if (!isJsonTypeCompatible(peeked, expected)) {
                 callbacks.onTypeMismatch("list element", expected, peeked);
@@ -882,7 +939,7 @@ Struct deserialize(
     auto handle = [&]() {
       if constexpr (ProtocolReader::kUsesFieldNames()) {
         // Field name-based protocol (e.g., SimpleJSON)
-        return type.fieldHandleFor(name);
+        return detail::fieldHandleForNamedField(type, name, fid);
       } else {
         // Field ID-based protocol (e.g., Compact, Binary)
         Struct::FieldId id{fid};
@@ -917,7 +974,7 @@ Struct deserialize(
         reader.skip(ftype);
         reader.readFieldEnd();
         continue;
-      } else if constexpr (ProtocolReader::kOmitsContainerSizes()) {
+      } else if constexpr (detail::kPeeksJsonValueTypes<ProtocolReader>) {
         if (ftype == protocol::TType::T_VOID) {
           auto peeked = reader.peekValueTType();
           if (!isJsonTypeCompatible(peeked, field.wireType())) {
@@ -1019,7 +1076,7 @@ Union deserialize(
   auto handle = [&]() {
     if constexpr (ProtocolReader::kUsesFieldNames()) {
       // Field name-based protocol (e.g., SimpleJSON)
-      return type.fieldHandleFor(name);
+      return detail::fieldHandleForNamedField(type, name, fid);
     } else {
       // Field ID-based protocol (e.g., Compact, Binary)
       Union::FieldId id{fid};
@@ -1040,7 +1097,7 @@ Union deserialize(
           ftype);
       reader.skip(ftype);
       mismatch = true;
-    } else if constexpr (ProtocolReader::kOmitsContainerSizes()) {
+    } else if constexpr (detail::kPeeksJsonValueTypes<ProtocolReader>) {
       if (ftype == protocol::TType::T_VOID) {
         auto peeked = reader.peekValueTType();
         if (!isJsonTypeCompatible(peeked, field.wireType())) {
