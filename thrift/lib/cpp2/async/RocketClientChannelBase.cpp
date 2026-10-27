@@ -302,7 +302,7 @@ template <class Handler>
         break;
       case PayloadMetadata::Type::exceptionMetadata: {
         auto& exceptionMetadataBase =
-            payloadMetadataRef->get_exceptionMetadata();
+            payloadMetadataRef->exceptionMetadata().as_const().value();
         auto otherMetadataRef = metadata.otherMetadata();
         if (!otherMetadataRef) {
           otherMetadataRef.emplace();

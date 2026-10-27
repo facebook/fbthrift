@@ -470,7 +470,7 @@ TEST_F(ThriftServerChannelTest, SendErrorWrappedSetsExceptionMetadata) {
             capturedPayloadType = ref->getType();
             if (capturedPayloadType ==
                 apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
-              auto& exBase = ref->get_exceptionMetadata();
+              auto& exBase = ref->exceptionMetadata().value();
               if (exBase.what_utf8()) {
                 capturedWhat = *exBase.what_utf8();
               }
@@ -532,7 +532,7 @@ TEST_F(ThriftServerChannelTest, SendReplyPreservesDeclaredExceptionMetadata) {
             capturedPayloadType = ref->getType();
             if (capturedPayloadType ==
                 apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
-              auto& exBase = ref->get_exceptionMetadata();
+              auto& exBase = ref->exceptionMetadata().value();
               if (exBase.name_utf8()) {
                 capturedName = *exBase.name_utf8();
               }
@@ -592,13 +592,13 @@ TEST_F(ThriftServerChannelTest, SendErrorWrappedSetsClientBlame) {
           if (ref &&
               ref->getType() ==
                   apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
-            auto& exBase = ref->get_exceptionMetadata();
+            auto& exBase = ref->exceptionMetadata().value();
             auto metaRef = exBase.metadata();
             if (metaRef &&
                 metaRef->getType() ==
                     apache::thrift::PayloadExceptionMetadata::Type::
                         appUnknownException) {
-              auto& appEx = metaRef->get_appUnknownException();
+              auto& appEx = metaRef->appUnknownException().value();
               if (auto ec = appEx.errorClassification()) {
                 if (auto b = ec->blame()) {
                   hasBlame = true;
@@ -647,13 +647,13 @@ TEST_F(ThriftServerChannelTest, SendErrorWrappedSetsServerBlame) {
           if (ref &&
               ref->getType() ==
                   apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
-            auto& exBase = ref->get_exceptionMetadata();
+            auto& exBase = ref->exceptionMetadata().value();
             auto metaRef = exBase.metadata();
             if (metaRef &&
                 metaRef->getType() ==
                     apache::thrift::PayloadExceptionMetadata::Type::
                         appUnknownException) {
-              auto& appEx = metaRef->get_appUnknownException();
+              auto& appEx = metaRef->appUnknownException().value();
               if (auto ec = appEx.errorClassification()) {
                 if (auto b = ec->blame()) {
                   hasBlame = true;
@@ -720,7 +720,7 @@ TEST_F(ThriftServerChannelTest, SendErrorWrappedReadsUexHeaderAsExceptionName) {
           if (ref &&
               ref->getType() ==
                   apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
-            auto& exBase = ref->get_exceptionMetadata();
+            auto& exBase = ref->exceptionMetadata().value();
             if (auto n = exBase.name_utf8()) {
               hasName = true;
               capturedName = *n;

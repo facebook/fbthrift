@@ -133,7 +133,8 @@ TEST(GetValueOrNullTest, Union) {
     UnionStruct obj;
     EXPECT_EQ(op::get_value_or_null(obj.field()), nullptr);
     obj.field().emplace().int_field() = 2;
-    EXPECT_EQ(op::get_value_or_null(obj.field())->get_int_field(), 2);
+    EXPECT_EQ(
+        op::get_value_or_null(obj.field())->int_field().as_const().value(), 2);
   }
   {
     // test with const T&
@@ -142,7 +143,7 @@ TEST(GetValueOrNullTest, Union) {
     EXPECT_EQ(op::get_value_or_null(objConst.field()), nullptr);
     obj.field().emplace().string_field() = "foo";
     EXPECT_EQ(
-        op::get_value_or_null(objConst.field())->get_string_field(), "foo");
+        op::get_value_or_null(objConst.field())->string_field().value(), "foo");
   }
 }
 

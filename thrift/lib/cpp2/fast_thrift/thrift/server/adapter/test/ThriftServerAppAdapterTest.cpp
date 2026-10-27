@@ -745,7 +745,7 @@ TEST_F(ThriftServerAppAdapterTest, WriteAppErrorWithClientBlame) {
           if (auto pmRef = m->payloadMetadata(); pmRef &&
               pmRef->getType() ==
                   apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
-            auto& exBase = pmRef->get_exceptionMetadata();
+            auto& exBase = pmRef->exceptionMetadata().value();
             if (auto n = exBase.name_utf8()) {
               captured.name = *n;
             }
@@ -756,7 +756,7 @@ TEST_F(ThriftServerAppAdapterTest, WriteAppErrorWithClientBlame) {
                 metaRef->getType() ==
                     apache::thrift::PayloadExceptionMetadata::Type::
                         appUnknownException) {
-              auto& appEx = metaRef->get_appUnknownException();
+              auto& appEx = metaRef->appUnknownException().value();
               if (auto ec = appEx.errorClassification()) {
                 if (auto b = ec->blame()) {
                   captured.hasBlame = true;
@@ -805,7 +805,7 @@ TEST_F(ThriftServerAppAdapterTest, WriteAppErrorWithServerBlame) {
           if (auto pmRef = m->payloadMetadata(); pmRef &&
               pmRef->getType() ==
                   apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
-            auto& exBase = pmRef->get_exceptionMetadata();
+            auto& exBase = pmRef->exceptionMetadata().value();
             if (auto n = exBase.name_utf8()) {
               captured.name = *n;
             }
@@ -816,7 +816,7 @@ TEST_F(ThriftServerAppAdapterTest, WriteAppErrorWithServerBlame) {
                 metaRef->getType() ==
                     apache::thrift::PayloadExceptionMetadata::Type::
                         appUnknownException) {
-              auto& appEx = metaRef->get_appUnknownException();
+              auto& appEx = metaRef->appUnknownException().value();
               if (auto ec = appEx.errorClassification()) {
                 if (auto b = ec->blame()) {
                   captured.hasBlame = true;
@@ -964,7 +964,7 @@ TEST_F(
           if (auto pmRef = m->payloadMetadata(); pmRef &&
               pmRef->getType() ==
                   apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
-            auto& exBase = pmRef->get_exceptionMetadata();
+            auto& exBase = pmRef->exceptionMetadata().value();
             if (auto n = exBase.name_utf8()) {
               capturedName = *n;
             }
@@ -976,7 +976,7 @@ TEST_F(
                     apache::thrift::PayloadExceptionMetadata::Type::
                         declaredException) {
               hasDeclaredException = true;
-              auto& declared = metaRef->get_declaredException();
+              auto& declared = metaRef->declaredException().value();
               if (auto ec = declared.errorClassification()) {
                 if (auto b = ec->blame()) {
                   hasClassification = true;
@@ -1051,13 +1051,17 @@ TEST_F(
   const auto* md = payloadMetadata(captured);
   ASSERT_NE(md, nullptr);
   ASSERT_TRUE(md->payloadMetadata().has_value());
-  auto& base = md->payloadMetadata()->get_exceptionMetadata();
+  auto& base = md->payloadMetadata()->exceptionMetadata().value();
   ASSERT_TRUE(base.metadata().has_value());
   EXPECT_EQ(
       base.metadata()->getType(),
       apache::thrift::PayloadExceptionMetadata::Type::appUnknownException);
   EXPECT_EQ(
-      base.metadata()->get_appUnknownException().errorClassification()->blame(),
+      base.metadata()
+          ->appUnknownException()
+          .value()
+          .errorClassification()
+          ->blame(),
       apache::thrift::ErrorBlame::CLIENT);
   // exception_wrapper::what() prepends the class name; assert substring so
   // we don't pin folly's formatting.

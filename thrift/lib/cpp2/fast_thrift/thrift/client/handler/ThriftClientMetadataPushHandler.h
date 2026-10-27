@@ -150,10 +150,12 @@ class ThriftClientMetadataPushHandler {
     // NOLINTNEXTLINE(clang-diagnostic-switch-enum)
     switch (serverMeta.getType()) {
       case apache::thrift::ServerPushMetadata::Type::setupResponse:
-        return handleSetupResponse(ctx, serverMeta.get_setupResponse());
+        return handleSetupResponse(
+            ctx, serverMeta.setupResponse().as_const().value());
 
       case apache::thrift::ServerPushMetadata::Type::drainCompletePush:
-        return handleDrainComplete(ctx, serverMeta.get_drainCompletePush());
+        return handleDrainComplete(
+            ctx, serverMeta.drainCompletePush().as_const().value());
 
       case apache::thrift::ServerPushMetadata::Type::streamHeadersPush:
         XLOG(DBG2) << "Received streamHeadersPush, ignoring (not supported)";

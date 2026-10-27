@@ -498,7 +498,7 @@ TEST_F(FastThriftServerIntegrationTest, LookupDeclaredExceptionMetadata) {
   ASSERT_EQ(
       meta->payloadMetadata()->getType(),
       apache::thrift::PayloadMetadata::Type::exceptionMetadata);
-  auto& exBase = meta->payloadMetadata()->get_exceptionMetadata();
+  auto& exBase = meta->payloadMetadata()->exceptionMetadata().value();
   ASSERT_TRUE(exBase.metadata().has_value());
   EXPECT_EQ(
       exBase.metadata()->getType(),
@@ -528,7 +528,7 @@ TEST_F(FastThriftServerIntegrationTest, SecureLookupSecondExceptionInCascade) {
   ASSERT_EQ(
       meta->payloadMetadata()->getType(),
       apache::thrift::PayloadMetadata::Type::exceptionMetadata);
-  auto& exBase = meta->payloadMetadata()->get_exceptionMetadata();
+  auto& exBase = meta->payloadMetadata()->exceptionMetadata().value();
   ASSERT_TRUE(exBase.metadata().has_value());
   EXPECT_EQ(
       exBase.metadata()->getType(),
@@ -565,7 +565,7 @@ TEST_F(
   ASSERT_EQ(
       meta->payloadMetadata()->getType(),
       apache::thrift::PayloadMetadata::Type::exceptionMetadata);
-  auto& exBase = meta->payloadMetadata()->get_exceptionMetadata();
+  auto& exBase = meta->payloadMetadata()->exceptionMetadata().value();
   ASSERT_TRUE(exBase.metadata().has_value());
   EXPECT_EQ(
       exBase.metadata()->getType(),
@@ -590,7 +590,7 @@ TEST_F(FastThriftServerIntegrationTest, ParseErrorReturnsAppException) {
   ASSERT_EQ(
       meta->payloadMetadata()->getType(),
       apache::thrift::PayloadMetadata::Type::exceptionMetadata);
-  auto& exBase = meta->payloadMetadata()->get_exceptionMetadata();
+  auto& exBase = meta->payloadMetadata()->exceptionMetadata().value();
   ASSERT_TRUE(exBase.metadata().has_value());
   EXPECT_EQ(
       exBase.metadata()->getType(),
@@ -625,7 +625,7 @@ TEST_F(
   ASSERT_EQ(
       meta->payloadMetadata()->getType(),
       apache::thrift::PayloadMetadata::Type::exceptionMetadata);
-  auto& exBase = meta->payloadMetadata()->get_exceptionMetadata();
+  auto& exBase = meta->payloadMetadata()->exceptionMetadata().value();
   ASSERT_TRUE(exBase.metadata().has_value());
   EXPECT_EQ(
       exBase.metadata()->getType(),

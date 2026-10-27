@@ -239,7 +239,7 @@ const apache::thrift::PayloadExceptionMetadataBase* exceptionMetadata(
           apache::thrift::PayloadMetadata::Type::exceptionMetadata) {
     return nullptr;
   }
-  return &payloadMetadataRef->get_exceptionMetadata();
+  return &payloadMetadataRef.as_const()->exceptionMetadata().value();
 }
 
 // A recorded outbound chunk that reached the wire (MockHead), reduced to the
