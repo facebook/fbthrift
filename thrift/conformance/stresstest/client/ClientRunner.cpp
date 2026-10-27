@@ -338,6 +338,9 @@ ClientRunner::ClientRunner(const ClientConfig& config)
   THRIFT_FLAG_SET_MOCK(
       rocket_client_set_eor_flag, config.enableRocketFrameRelativeAlignment);
   auto configCopy = config;
+  if (config.enableIOBufChainParser) {
+    configCopy.connConfig.rocketFrameParser = "iobuf_chain";
+  }
   configCopy.connConfig.connectCb = this;
   const double targetQpsPerClient =
       static_cast<double>(config.targetQps) / config.numClientThreads;
