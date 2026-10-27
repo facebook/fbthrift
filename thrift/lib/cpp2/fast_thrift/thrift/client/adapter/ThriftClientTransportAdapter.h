@@ -22,7 +22,7 @@
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/logging/xlog.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/common/RocketClientConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/Messages.h>
@@ -46,7 +46,7 @@ namespace apache::thrift::fast_thrift::thrift::client {
  * Inbound path (responses):
  *   RocketClientAppAdapter delivers response → this.onTransportResponse()
  *   → converts RocketResponseMessage to ThriftResponseMessage
- *   → pipeline_->fireRead() → [thrift handlers] → ThriftClientAppAdapter
+ *   → pipeline_.fireRead() → [thrift handlers] → ThriftClientAppAdapter
  *
  * Usage:
  *   // 1. Create connection (heap-allocated for pointer stability)
@@ -82,7 +82,7 @@ class ThriftClientTransportAdapterT {
   using PublishedEvents = channel_pipeline::
       Events<ThriftClientCloseConnectionEvent, ThriftClientWriteCompleteEvent>;
   using EventPublisher =
-      channel_pipeline::EventPublisherHandle<PublishedEvents>;
+      channel_pipeline::PipelineEventPublisherRef<PublishedEvents>;
 
   explicit ThriftClientTransportAdapterT(std::unique_ptr<Connection> connection)
       : connection_(std::move(connection)) {
@@ -103,7 +103,7 @@ class ThriftClientTransportAdapterT {
     // walks the thrift pipeline's writeReadyList and notifies its tail.
     connection_->appAdapter->setOnWriteReady([this]() noexcept {
       if (pipeline_) {
-        pipeline_->onWriteReady();
+        pipeline_.onWriteReady();
       }
     });
     // Bridge the rocket transport graceful-close notification into the thrift
@@ -139,15 +139,20 @@ class ThriftClientTransportAdapterT {
   ThriftClientTransportAdapterT& operator=(ThriftClientTransportAdapterT&&) =
       delete;
 
-  void setPipeline(channel_pipeline::PipelineImpl* pipeline) noexcept {
+  template <channel_pipeline::PipelineRefTarget P>
+  void setPipeline(P* pipeline) noexcept {
+    DCHECK(pipeline != nullptr);
+    setPipeline(channel_pipeline::PipelineRef(*pipeline));
+  }
+
+  void setPipeline(channel_pipeline::PipelineRef pipeline) noexcept {
     DCHECK(pipeline);
     if (pipeline_) {
       XLOG(FATAL) << "must reset pipeline before setting a new one";
     }
     pipeline_ = pipeline;
-    eventPublisher_ = pipeline->template bindEvents<PublishedEvents>();
-    pipelineGuard_ =
-        std::make_unique<folly::DelayedDestruction::DestructorGuard>(pipeline);
+    eventPublisher_ = pipeline_.template bindEvents<PublishedEvents>();
+    pipelineGuard_ = pipeline_.guard();
   }
 
   /**
@@ -157,7 +162,7 @@ class ThriftClientTransportAdapterT {
    */
   void resetPipeline() noexcept {
     eventPublisher_ = {};
-    pipeline_ = nullptr;
+    pipeline_.reset();
     pipelineGuard_.reset();
   }
 
@@ -210,7 +215,7 @@ class ThriftClientTransportAdapterT {
       }
     }
 
-    return pipeline_->fireRead(
+    return pipeline_.fireRead(
         channel_pipeline::erase_and_box(std::move(thriftMsg)));
   }
 
@@ -223,7 +228,7 @@ class ThriftClientTransportAdapterT {
     if (FOLLY_UNLIKELY(!pipeline_)) {
       return;
     }
-    pipeline_->fireException(std::move(ew));
+    pipeline_.fireException(std::move(ew));
   }
 
   // Called when the rocket pipeline reports a per-request write completion.
@@ -251,9 +256,9 @@ class ThriftClientTransportAdapterT {
    * added to the variant, this method gains dispatch over the held
    * alternative.
    */
+  template <typename Context>
   channel_pipeline::Result onWrite(
-      channel_pipeline::detail::ContextImpl&,
-      channel_pipeline::TypeErasedBox&& msg) noexcept {
+      Context&, channel_pipeline::TypeErasedBox&& msg) noexcept {
     auto request = msg.take<ThriftRequestMessage>();
     if (auto* requestContext =
             static_cast<ThriftRequestContext*>(request.requestContext.get())) {
@@ -284,7 +289,7 @@ class ThriftClientTransportAdapterT {
           .streamType = frame::FrameType::REQUEST_RESPONSE,
           .rpcTransportStats = {},
       };
-      return pipeline_->fireRead(
+      return pipeline_.fireRead(
           channel_pipeline::erase_and_box(std::move(errMsg)));
     }
     rocket::RocketRequestMessage rocketMsg{
@@ -369,7 +374,7 @@ class ThriftClientTransportAdapterT {
     }
     connected_ = true;
     if (pipeline_) {
-      pipeline_->activate();
+      pipeline_.activate();
     }
   }
 
@@ -381,13 +386,13 @@ class ThriftClientTransportAdapterT {
     }
     connected_ = false;
     if (pipeline_) {
-      pipeline_->deactivate();
+      pipeline_.deactivate();
     }
   }
 
-  channel_pipeline::PipelineImpl* pipeline_{nullptr};
+  channel_pipeline::PipelineRef pipeline_;
   EventPublisher eventPublisher_;
-  std::unique_ptr<folly::DelayedDestruction::DestructorGuard> pipelineGuard_;
+  channel_pipeline::PipelineGuard pipelineGuard_;
   std::unique_ptr<Connection> connection_;
   bool connected_{false};
 };

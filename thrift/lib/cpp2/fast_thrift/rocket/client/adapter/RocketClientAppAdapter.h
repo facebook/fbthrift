@@ -24,7 +24,7 @@
 #include <folly/lang/Assume.h>
 #include <folly/logging/xlog.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/Messages.h>
@@ -107,15 +107,20 @@ class RocketClientAppAdapter : public folly::DelayedDestruction {
   RocketClientAppAdapter(RocketClientAppAdapter&&) = delete;
   RocketClientAppAdapter& operator=(RocketClientAppAdapter&&) = delete;
 
-  void setPipeline(channel_pipeline::PipelineImpl* pipeline) noexcept {
+  template <channel_pipeline::PipelineRefTarget P>
+  void setPipeline(P* pipeline) noexcept {
+    DCHECK(pipeline != nullptr);
+    setPipeline(channel_pipeline::PipelineRef(*pipeline));
+  }
+
+  void setPipeline(channel_pipeline::PipelineRef pipeline) noexcept {
     DCHECK(pipeline);
     if (pipeline_) {
       XLOG(FATAL) << "must reset pipeline before setting a new one";
     }
     pipeline_ = pipeline;
-    eventPublisher_ = pipeline->template bindEvents<PublishedEvents>();
-    pipelineGuard_ =
-        std::make_unique<folly::DelayedDestruction::DestructorGuard>(pipeline);
+    eventPublisher_ = pipeline_.template bindEvents<PublishedEvents>();
+    pipelineGuard_ = pipeline_.guard();
   }
 
   /**
@@ -125,7 +130,7 @@ class RocketClientAppAdapter : public folly::DelayedDestruction {
    */
   void resetPipeline() noexcept {
     eventPublisher_ = {};
-    pipeline_ = nullptr;
+    pipeline_.reset();
     pipelineGuard_.reset();
   }
 
@@ -161,7 +166,7 @@ class RocketClientAppAdapter : public folly::DelayedDestruction {
    */
   void notifyReadReady() noexcept {
     if (pipeline_) {
-      pipeline_->onReadReady();
+      pipeline_.onReadReady();
     }
   }
 
@@ -172,8 +177,7 @@ class RocketClientAppAdapter : public folly::DelayedDestruction {
    */
   channel_pipeline::Result write(RocketRequestMessage&& msg) noexcept {
     DCHECK(pipeline_);
-    return pipeline_->fireWrite(
-        channel_pipeline::erase_and_box(std::move(msg)));
+    return pipeline_.fireWrite(channel_pipeline::erase_and_box(std::move(msg)));
   }
 
   void cancelRequest(void* requestContext) noexcept {
@@ -189,9 +193,9 @@ class RocketClientAppAdapter : public folly::DelayedDestruction {
    * Called by the pipeline when a response message arrives (inbound path).
    * Forwards to the registered onResponse callback.
    */
+  template <typename Context>
   channel_pipeline::Result onRead(
-      channel_pipeline::detail::ContextImpl&,
-      channel_pipeline::TypeErasedBox&& msg) noexcept {
+      Context&, channel_pipeline::TypeErasedBox&& msg) noexcept {
     if (FOLLY_UNLIKELY(!onResponse_)) {
       return channel_pipeline::Result::Error;
     }
@@ -282,11 +286,11 @@ class RocketClientAppAdapter : public folly::DelayedDestruction {
  private:
   using PublishedEvents = channel_pipeline::Events<RocketCancelRequestEvent>;
   using EventPublisher =
-      channel_pipeline::EventPublisherHandle<PublishedEvents>;
+      channel_pipeline::PipelineEventPublisherRef<PublishedEvents>;
 
-  channel_pipeline::PipelineImpl* pipeline_{nullptr};
+  channel_pipeline::PipelineRef pipeline_;
   EventPublisher eventPublisher_;
-  std::unique_ptr<folly::DelayedDestruction::DestructorGuard> pipelineGuard_;
+  channel_pipeline::PipelineGuard pipelineGuard_;
   OnResponseFn onResponse_;
   OnErrorFn onError_;
   OnConnectFn onConnect_;

@@ -62,8 +62,7 @@ void ThriftClientAppAdapter::sendRequestResponse(
 }
 
 apache::thrift::fast_thrift::channel_pipeline::Result
-ThriftClientAppAdapter::onRead(
-    apache::thrift::fast_thrift::channel_pipeline::detail::ContextImpl&,
+ThriftClientAppAdapter::onResponse(
     apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&&
         msg) noexcept {
   auto response = msg.take<ThriftResponseMessage>();
@@ -143,7 +142,7 @@ void ThriftClientAppAdapter::onException(
 }
 
 void ThriftClientAppAdapter::submitWrite(ThriftRequestMessage msg) noexcept {
-  auto* eb = pipeline_->eventBase();
+  auto* eb = pipeline_.eventBase();
   if (eb->isInEventBaseThread()) {
     submitWriteOnEventBase(std::move(msg));
   } else {
@@ -159,7 +158,7 @@ void ThriftClientAppAdapter::submitWriteOnEventBase(
     handleNotOpen(std::move(msg));
     return;
   }
-  auto result = pipeline_->fireWrite(
+  auto result = pipeline_.fireWrite(
       apache::thrift::fast_thrift::channel_pipeline::erase_and_box(
           std::move(msg)));
   if (FOLLY_UNLIKELY(
