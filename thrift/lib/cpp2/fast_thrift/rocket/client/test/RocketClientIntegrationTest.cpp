@@ -25,8 +25,8 @@
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticPipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
@@ -46,9 +46,9 @@
 
 namespace apache::thrift::fast_thrift::rocket::client::test {
 
-using apache::thrift::fast_thrift::channel_pipeline::PipelineBuilder;
-using apache::thrift::fast_thrift::channel_pipeline::PipelineImpl;
+using apache::thrift::fast_thrift::channel_pipeline::PipelineOwner;
 using apache::thrift::fast_thrift::channel_pipeline::Result;
+using apache::thrift::fast_thrift::channel_pipeline::StaticPipelineBuilder;
 using apache::thrift::fast_thrift::channel_pipeline::test::TestAllocator;
 using apache::thrift::fast_thrift::transport::test::TestAsyncTransport;
 
@@ -198,7 +198,7 @@ class RocketClientIntegrationTest : public ::testing::Test {
         });
 
     pipeline_ =
-        PipelineBuilder<
+        StaticPipelineBuilder<
             apache::thrift::fast_thrift::transport::TransportHandlerT<
                 apache::thrift::fast_thrift::transport::
                     NoOpWriteCompleteEventFactory,
@@ -274,7 +274,7 @@ class RocketClientIntegrationTest : public ::testing::Test {
         });
 
     pipeline_ =
-        PipelineBuilder<
+        StaticPipelineBuilder<
             apache::thrift::fast_thrift::transport::TransportHandlerT<
                 apache::thrift::fast_thrift::transport::
                     NoOpWriteCompleteEventFactory,
@@ -351,7 +351,7 @@ class RocketClientIntegrationTest : public ::testing::Test {
         });
 
     pipeline_ =
-        PipelineBuilder<
+        StaticPipelineBuilder<
             apache::thrift::fast_thrift::transport::TransportHandlerT<
                 apache::thrift::fast_thrift::transport::
                     NoOpWriteCompleteEventFactory,
@@ -463,7 +463,7 @@ class RocketClientIntegrationTest : public ::testing::Test {
       apache::thrift::fast_thrift::transport::NoOpWriteCompleteEventFactory,
       apache::thrift::fast_thrift::frame::read::FrameLengthParser>::Ptr
       transportHandler_;
-  PipelineImpl::Ptr pipeline_;
+  PipelineOwner pipeline_;
   TestAllocator allocator_;
 
   // Response tracking

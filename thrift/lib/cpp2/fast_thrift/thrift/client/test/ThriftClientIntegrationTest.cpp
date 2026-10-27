@@ -25,8 +25,8 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticPipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameParser.h>
@@ -55,9 +55,9 @@
 namespace apache::thrift::fast_thrift::thrift {
 
 using apache::thrift::fast_thrift::channel_pipeline::erase_and_box;
-using apache::thrift::fast_thrift::channel_pipeline::PipelineBuilder;
-using apache::thrift::fast_thrift::channel_pipeline::PipelineImpl;
+using apache::thrift::fast_thrift::channel_pipeline::PipelineOwner;
 using apache::thrift::fast_thrift::channel_pipeline::Result;
+using apache::thrift::fast_thrift::channel_pipeline::StaticPipelineBuilder;
 using apache::thrift::fast_thrift::channel_pipeline::test::TestAllocator;
 using apache::thrift::fast_thrift::transport::test::TestAsyncTransport;
 
@@ -174,7 +174,7 @@ class ThriftClientChannelIntegrationTest : public ::testing::Test {
     auto* transportHandlerPtr = connection->transportHandler.get();
 
     connection->pipeline =
-        PipelineBuilder<
+        StaticPipelineBuilder<
             apache::thrift::fast_thrift::rocket::client::
                 RocketClientConnection::TransportHandler,
             apache::thrift::fast_thrift::rocket::client::RocketClientAppAdapter,
@@ -1257,13 +1257,8 @@ class ThriftClientAppAdapterIntegrationTest : public ::testing::Test {
     // Save raw pointer for onConnect() (called after ownership transfer)
     auto* transportHandlerPtr = connection->transportHandler.get();
 
-    auto streamStateHandler =
-        std::make_unique<apache::thrift::fast_thrift::rocket::client::handler::
-                             RocketClientStreamStateHandler>();
-    streamStateHandler_ = streamStateHandler.get();
-
-    connection->pipeline =
-        PipelineBuilder<
+    auto rocketPipeline =
+        StaticPipelineBuilder<
             apache::thrift::fast_thrift::rocket::client::
                 RocketClientConnection::TransportHandler,
             apache::thrift::fast_thrift::rocket::client::RocketClientAppAdapter,
@@ -1298,13 +1293,15 @@ class ThriftClientAppAdapterIntegrationTest : public ::testing::Test {
                 rocket_client_stats_handler_tag)
             .addNextDuplex<apache::thrift::fast_thrift::rocket::client::
                                handler::RocketClientStreamStateHandler>(
-                rocket_client_stream_state_handler_tag,
-                std::move(streamStateHandler))
+                rocket_client_stream_state_handler_tag)
             .addNextInbound<apache::thrift::fast_thrift::rocket::client::
                                 handler::RocketClientRequestResponseHandler>(
                 rocket_client_request_response_handler_tag)
             .build();
 
+    streamStateHandler_ =
+        &rocketPipeline->handler(rocket_client_stream_state_handler_tag);
+    connection->pipeline = std::move(rocketPipeline);
     connection->appAdapter->setPipeline(connection->pipeline.get());
     connection->transportHandler->setPipeline(connection->pipeline.get());
 
@@ -1314,7 +1311,7 @@ class ThriftClientAppAdapterIntegrationTest : public ::testing::Test {
 
     // Build thrift pipeline
     pipeline_ =
-        PipelineBuilder<
+        StaticPipelineBuilder<
             client::ThriftClientTransportAdapter,
             ThriftClientAppAdapter,
             TestAllocator>()
@@ -1389,7 +1386,7 @@ class ThriftClientAppAdapterIntegrationTest : public ::testing::Test {
   TestAsyncTransport* testTransport_{nullptr};
   std::unique_ptr<client::ThriftClientTransportAdapter> transportAdapter_;
   IntegrationTestClient client_;
-  PipelineImpl::Ptr pipeline_;
+  PipelineOwner pipeline_;
   TestAllocator allocator_;
   // Borrowed; the pipeline owns it. Lets a test see the shared per-stream
   // map, which is otherwise invisible from outside the pipeline.

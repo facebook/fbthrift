@@ -41,8 +41,8 @@
 #include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticPipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/test/MockAdapters.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameParser.h>
@@ -281,7 +281,7 @@ std::unique_ptr<rocket::client::RocketClientConnection> createRocketConnection(
       RocketClientConnection::TransportHandler::create(std::move(transport));
 
   connection->pipeline =
-      PipelineBuilder<
+      StaticPipelineBuilder<
           apache::thrift::fast_thrift::rocket::client::RocketClientConnection::
               TransportHandler,
           apache::thrift::fast_thrift::rocket::client::RocketClientAppAdapter,
@@ -397,7 +397,7 @@ struct AppAdapterBenchFixture {
   // Thrift pipeline (app adapter → transport adapter)
   BenchAppAdapterClient client;
   std::unique_ptr<client::ThriftClientTransportAdapter> transportAdapter;
-  PipelineImpl::Ptr thriftPipeline;
+  PipelineOwner thriftPipeline;
   TestAllocator thriftAllocator;
 
   void setup() {
@@ -409,7 +409,7 @@ struct AppAdapterBenchFixture {
         std::move(rocketConnection));
 
     // Build thrift pipeline
-    thriftPipeline = PipelineBuilder<
+    thriftPipeline = StaticPipelineBuilder<
                          client::ThriftClientTransportAdapter,
                          ThriftClientAppAdapter,
                          TestAllocator>()

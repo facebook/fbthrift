@@ -30,8 +30,8 @@
 #include <thrift/lib/cpp2/async/RpcOptions.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/BufferAllocator.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineBuilder.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/StaticPipelineBuilder.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FrameLengthEncoderHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/adapter/RocketClientAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/common/RocketClientConnection.h>
@@ -63,9 +63,9 @@
 
 namespace apache::thrift::fast_thrift::thrift::client::test {
 
-using apache::thrift::fast_thrift::channel_pipeline::PipelineBuilder;
-using apache::thrift::fast_thrift::channel_pipeline::PipelineImpl;
+using apache::thrift::fast_thrift::channel_pipeline::PipelineOwner;
 using apache::thrift::fast_thrift::channel_pipeline::SimpleBufferAllocator;
+using apache::thrift::fast_thrift::channel_pipeline::StaticPipelineBuilder;
 
 using apache::thrift::fast_thrift::thrift::test::
     BackwardsCompatibilityTestFastChildService;
@@ -305,7 +305,7 @@ class ThriftClientBackwardsCompatibilityE2ETest : public ::testing::Test {
       };
 
       connection->pipeline =
-          PipelineBuilder<
+          StaticPipelineBuilder<
               apache::thrift::fast_thrift::rocket::client::
                   RocketClientConnection::TransportHandler,
               apache::thrift::fast_thrift::rocket::client::
@@ -745,7 +745,7 @@ class BackwardsCompatibilityFastClientE2ETest : public ::testing::Test {
       };
 
       connection->pipeline =
-          PipelineBuilder<
+          StaticPipelineBuilder<
               rocket::client::RocketClientConnection::TransportHandler,
               rocket::client::RocketClientAppAdapter,
               SimpleBufferAllocator>()
@@ -784,7 +784,7 @@ class BackwardsCompatibilityFastClientE2ETest : public ::testing::Test {
               std::move(connection));
 
       thriftPipeline_ =
-          PipelineBuilder<
+          StaticPipelineBuilder<
               thrift::client::ThriftClientTransportAdapter,
               thrift::ThriftClientAppAdapter,
               SimpleBufferAllocator>()
@@ -819,7 +819,7 @@ class BackwardsCompatibilityFastClientE2ETest : public ::testing::Test {
   std::unique_ptr<folly::ScopedEventBaseThread> clientThread_;
   std::unique_ptr<thrift::client::ThriftClientTransportAdapter>
       transportAdapter_;
-  channel_pipeline::PipelineImpl::Ptr thriftPipeline_;
+  channel_pipeline::PipelineOwner thriftPipeline_;
   SimpleBufferAllocator allocator_;
   std::unique_ptr<ConnectCallback> connectCallback_;
 };

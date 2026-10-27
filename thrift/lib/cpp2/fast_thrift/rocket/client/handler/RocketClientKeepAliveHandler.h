@@ -29,7 +29,6 @@
 #include <folly/logging/xlog.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
-#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/TypeErasedBox.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ContextImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
@@ -58,9 +57,8 @@ class RocketClientKeepAliveHandler {
 
   template <typename Context>
   void handlerAdded(Context& ctx) noexcept {
-    auto& base = static_cast<channel_pipeline::detail::ContextImpl&>(ctx);
     timer_ = folly::AsyncTimeout::make(
-        *ctx.eventBase(), [this, &base]() noexcept { onTimeout(base); });
+        *ctx.eventBase(), [this, &ctx]() noexcept { onTimeout(ctx); });
   }
 
   template <typename Context>
@@ -209,8 +207,8 @@ class RocketClientKeepAliveHandler {
     timer_->scheduleTimeout(delay);
   }
 
-  void failTimer(
-      channel_pipeline::detail::ContextImpl& ctx, const char* reason) noexcept {
+  template <typename Context>
+  void failTimer(Context& ctx, const char* reason) noexcept {
     active_ = false;
     XLOG(ERR) << reason;
     ctx.fireException(
