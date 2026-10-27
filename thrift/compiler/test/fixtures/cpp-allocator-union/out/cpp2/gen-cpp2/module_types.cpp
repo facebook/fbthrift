@@ -77,10 +77,6 @@ void AllocUnion::__fbthrift_clear() {
 bool AllocUnion::__fbthrift_is_empty() const {
   return getType() == Type::__EMPTY__;
 }
-  AllocUnion::AllocUnion(const allocator_type& alloc) noexcept
-      : __fbthrift_alloc(alloc),
-        fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {}
-
   AllocUnion::AllocUnion(AllocUnion&& rhs, const allocator_type& alloc)
       : __fbthrift_alloc(alloc),
         fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {

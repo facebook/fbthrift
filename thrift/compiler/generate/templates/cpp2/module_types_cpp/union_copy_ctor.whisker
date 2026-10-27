@@ -16,10 +16,6 @@
 
 }}
   {{#if (object.notnull? struct.cpp_allocator)}}
-  {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const allocator_type& alloc) noexcept
-      : __fbthrift_alloc(alloc),
-        fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {}
-
   {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}({{struct.cpp_underlying_name}}&& rhs, const allocator_type& alloc)
       : __fbthrift_alloc(alloc),
         fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {

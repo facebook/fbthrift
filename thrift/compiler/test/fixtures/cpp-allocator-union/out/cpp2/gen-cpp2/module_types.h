@@ -133,7 +133,9 @@ class AllocUnion final  {
 
   AllocUnion& operator=(const AllocUnion& rhs);
 
-  explicit AllocUnion(const allocator_type& alloc) noexcept;
+  explicit AllocUnion(const allocator_type& alloc) noexcept
+      : __fbthrift_alloc(alloc),
+        fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {}
   explicit AllocUnion(const AllocUnion& other, const allocator_type& alloc);
   explicit AllocUnion(AllocUnion&& other, const allocator_type& alloc);
 
