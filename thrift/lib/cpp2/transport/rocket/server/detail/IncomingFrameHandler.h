@@ -147,7 +147,6 @@ class IncomingFrameHandler {
  private:
   template <typename FrameBuffer>
   void handleImpl(FrameBuffer&& frame) {
-    // hexDumpFrame(*frame);
     try {
       auto frameType = parseFrameType(frame);
       switch (frameType) {
@@ -245,28 +244,21 @@ class IncomingFrameHandler {
       RequestChannelCallback,
       RocketServerFrameContext>* existingStreamFrameHandler_;
 
-  FOLLY_ALWAYS_INLINE void hexDumpFrame(folly::IOBuf& frame) const noexcept {
-    // if constexpr (folly::kIsDebug) {
-    XLOG(INFO)
+  template <typename FrameBuffer>
+  void hexDumpFrameImpl(FrameBuffer& frame, size_t frameSize) const {
+    XLOG_EVERY_MS(INFO, 1000)
         << "Handling Frame from: "
         << connection_->getWrappedConnection()->getPeerAddress().describe()
-        << std::endl
-        << folly::hexDump(
-               frame.coalesce().data(), frame.computeChainDataLength());
-    //}
+        << " (" << frameSize << " bytes)\n"
+        << folly::hexDump(frame.coalesce().data(), frameSize);
   }
 
-  FOLLY_ALWAYS_INLINE void hexDumpFrame(
-      const std::unique_ptr<folly::IOBuf>& frame) const noexcept {
-    hexDumpFrame(*frame);
+  void hexDumpFrame(const std::unique_ptr<folly::IOBuf>& frame) const {
+    hexDumpFrameImpl(*frame, frame->computeChainDataLength());
   }
 
-  FOLLY_ALWAYS_INLINE void hexDumpFrame(IOBufChain& frame) const noexcept {
-    XLOG(INFO)
-        << "Handling Frame from: "
-        << connection_->getWrappedConnection()->getPeerAddress().describe()
-        << std::endl
-        << folly::hexDump(frame.coalesce().data(), frame.chainLength());
+  void hexDumpFrame(IOBufChain& frame) const {
+    hexDumpFrameImpl(frame, frame.chainLength());
   }
 
   template <typename FrameBuffer>
