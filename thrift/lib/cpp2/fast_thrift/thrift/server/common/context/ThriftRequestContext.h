@@ -243,6 +243,14 @@ class ThriftRequestContext {
     extensionSlots_.clearOwned(Ext::kId);
   }
 
+  // Constructs `Ext`'s state in this context, which owns and destroys it.
+  // Unlike `setState`, the extension does not manage the state's lifetime.
+  template <class Ext, class... Args>
+  typename Ext::RequestState& emplaceState(Args&&... args) {
+    return extensionSlots_.template emplace<typename Ext::RequestState>(
+        Ext::kId, std::forward<Args>(args)...);
+  }
+
  private:
   enum class CompletionState : uint8_t {
     Active,

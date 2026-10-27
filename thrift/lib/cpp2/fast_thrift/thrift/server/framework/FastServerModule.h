@@ -229,6 +229,12 @@ class FastServerModuleT {
           });
     }
     if constexpr (server::ThriftPerConnectionExtensionHandler<H>) {
+      if constexpr (HasRequestState<H>) {
+        requestStateRegistrations_.push_back(
+            +[](ExtensionLayoutBuilder& builder) {
+              builder.template addOwned<typename H::RequestState>(H::kId);
+            });
+      }
       requiresHeaders_ |= UsesHeaders<H>;
       addFactory([&](channel_pipeline::HandlerId id) {
         return server::makeThriftExtensionHandlerFactory<H>(
@@ -245,6 +251,13 @@ class FastServerModuleT {
    * it the extension would read empty.
    */
   bool requiresHeaders() const { return requiresHeaders_; }
+
+  using RequestStateRegistration = void (*)(ExtensionLayoutBuilder&);
+
+  const std::vector<RequestStateRegistration>& requestStateRegistrations()
+      const noexcept {
+    return requestStateRegistrations_;
+  }
 
   /**
    * The module's handler factories, in call order. FastThriftServer::addModule
@@ -279,6 +292,7 @@ class FastServerModuleT {
 
   std::string name_;
   std::vector<HandlerFactory> factories_;
+  std::vector<RequestStateRegistration> requestStateRegistrations_;
   std::vector<PendingConnectionCallbacks> pendingConnectionCallbacks_;
   bool requiresHeaders_{false};
 };

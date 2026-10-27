@@ -233,6 +233,10 @@ class ThriftRequestView {
   uint32_t streamId() const noexcept { return request_.streamId; }
 
   // State published on this request by another installed extension.
+  // `Ext`'s per-request state, or null for responses produced without a
+  // per-request context, such as framework and connection-level responses.
+  // `Ext`'s per-request state, or null for responses produced without a
+  // per-request context, such as framework and connection-level responses.
   template <class Ext>
   typename Ext::RequestState* tryState() const noexcept {
     return request_.requestContext == nullptr
@@ -247,6 +251,12 @@ class ThriftRequestView {
         : request_.requestContext->getConnectionContext();
     return connection == nullptr ? nullptr
                                  : connection->template tryState<Ext>();
+  }
+
+  template <class Ext, class... Args>
+  typename Ext::RequestState& emplaceState(Args&&... args) const {
+    return request_.requestContext->template emplaceState<Ext>(
+        std::forward<Args>(args)...);
   }
 
  private:
@@ -485,5 +495,8 @@ concept UsesHeaders = requires {
  */
 template <typename H>
 concept HasConnState = requires { typename H::ConnState; };
+
+template <typename H>
+concept HasRequestState = requires { typename H::RequestState; };
 
 } // namespace apache::thrift::fast_thrift::thrift

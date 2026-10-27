@@ -150,8 +150,9 @@ concept ThriftPerConnectionExtensionHandler = ThriftExtensionHandler<H> ||
  * Lifetime: one instance per connection (constructed by the pipeline handler
  * factory); H is owned by value and its constructor arguments are forwarded
  * from addThriftExtension. An H declaring a ConnState additionally receives
- * that connection's shared state as its first constructor argument, resolved
- * once here so the extension never handles the store itself.
+ * that connection's shared state as its first constructor argument. An H
+ * declaring RequestState may lazily emplace a context-owned instance, visible
+ * through both views until the response leaves the pipeline.
  */
 template <typename H, typename Context = ThriftPipelineHandlerContext>
 class ThriftExtensionPipelineHandler {

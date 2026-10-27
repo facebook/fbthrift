@@ -336,6 +336,8 @@ void detail::FastThriftServerBase::addModuleRegistrations(
     bool requiresHeaders,
     std::vector<FastServerModule::PendingConnectionCallbacks>
         pendingConnectionCallbacks,
+    const std::vector<FastServerModule::RequestStateRegistration>&
+        requestStateRegistrations,
     std::vector<server::ThriftPipelineRegistration> registrations) {
   std::lock_guard<std::mutex> lock(lifecycleMutex_);
   CHECK(state_ == State::kNotStarted)
@@ -365,6 +367,9 @@ void detail::FastThriftServerBase::addModuleRegistrations(
             "FastThriftServer::addModule: module '{}' registers an extension "
             "that uses headers, which requires enableRequestHeaders",
             name));
+  }
+  for (auto registration : requestStateRegistrations) {
+    registration(requestExtensionBuilder_);
   }
   pendingConnectionCallbacks_.reserve(
       pendingConnectionCallbacks_.size() + pendingConnectionCallbacks.size());

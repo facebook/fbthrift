@@ -73,6 +73,7 @@ class FastThriftServerBase::FastThriftServerT : public FastThriftServerBase {
     auto name = module.name();
     const bool requiresHeaders = module.requiresHeaders();
     auto callbacks = module.pendingConnectionCallbacks();
+    const auto& requestStateRegistrations = module.requestStateRegistrations();
     auto factories = std::move(module).handlers();
     std::vector<server::ThriftPipelineRegistration> registrations;
     registrations.reserve(factories.size());
@@ -83,6 +84,7 @@ class FastThriftServerBase::FastThriftServerT : public FastThriftServerBase {
         std::move(name),
         requiresHeaders,
         std::move(callbacks),
+        requestStateRegistrations,
         std::move(registrations));
   }
 
@@ -97,6 +99,7 @@ class FastThriftServerBase::FastThriftServerT : public FastThriftServerBase {
         std::move(name),
         requiresHeaders,
         std::move(pendingConnectionCallbacks),
+        {},
         std::move(registrations));
   }
 

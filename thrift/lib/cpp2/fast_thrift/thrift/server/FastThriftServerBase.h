@@ -596,6 +596,8 @@ class FastThriftServerBase {
       bool requiresHeaders,
       std::vector<FastServerModule::PendingConnectionCallbacks>
           pendingConnectionCallbacks,
+      const std::vector<FastServerModule::RequestStateRegistration>&
+          requestStateRegistrations,
       std::vector<server::ThriftPipelineRegistration> registrations);
 
  private:

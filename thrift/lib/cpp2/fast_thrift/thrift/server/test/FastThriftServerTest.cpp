@@ -1178,6 +1178,29 @@ class StaticSelectionRecordingHandler {
   std::atomic<int>* firstRead_;
 };
 
+struct RequestStateExtension {
+  EXTENSION_ID(request_state_test);
+
+  struct RequestState {
+    int value{0};
+  };
+
+  explicit RequestStateExtension(std::atomic<int>* observed)
+      : observed(observed) {}
+
+  ftt::RequestVerdict onRequest(
+      const ftt::ThriftRequestView& request) noexcept {
+    request.emplaceState<RequestStateExtension>().value = 42;
+    return ftt::RequestVerdict::proceed();
+  }
+
+  void onResponse(const ftt::ThriftResponseView& response) noexcept {
+    const auto* state = response.tryState<RequestStateExtension>();
+    observed->store(state == nullptr ? -1 : state->value);
+  }
+
+  std::atomic<int>* observed;
+};
 // Identity for a state object that outlives the object itself, so a test can
 // still tell two of them apart. An address cannot do this job: a connection's
 // store is destroyed with the connection, and the next one may be handed the
@@ -2251,6 +2274,21 @@ TEST(
   EXPECT_GT(extensionFirstRequest.load(), handlerFirstRead.load());
 }
 
+TEST(FastThriftServerExtensionTest, RequestStateSurvivesUntilResponse) {
+  THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
+
+  auto handler = std::make_shared<TestHandler>();
+  std::atomic<int> observed{0};
+  ftt::FastThriftServer server(makeLoopbackConfig());
+  server.setInterface(handler);
+  server.addModule(
+      ftt::FastServerModule("request_state")
+          .addThriftExtension<RequestStateExtension>(&observed));
+  server.start();
+
+  EXPECT_EQ(addRoundTrip(server.getAddress()), 42);
+  EXPECT_EQ(observed.load(), 42);
+}
 // Extensions are spliced in registration order (head→tail), across modules and
 // within a module: module "first" (A) runs before module "second" (B, C), and
 // within "second" B runs before C. First-request sequence numbers pin
