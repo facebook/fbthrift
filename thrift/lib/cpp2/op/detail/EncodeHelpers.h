@@ -20,7 +20,9 @@
 #include <limits>
 #include <memory_resource>
 #include <scoped_allocator>
+#include <tuple>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 #include <folly/Traits.h>
@@ -151,12 +153,31 @@ template <typename T>
 constexpr bool map_try_emplace_is_invocable_v =
     std::is_invocable_v<try_emplace_invoker, T, typename T::key_type>;
 
-// Unordered maps that do not propagate their allocator can deserialize the
-// mapped value in place via try_emplace rather than through a temporary.
+// Unordered maps that do not propagate their allocator deserialize every mapped
+// value in place via try_emplace. Other maps deserialize in place only the
+// values that aren't trivially copyable.
 template <typename T>
 constexpr bool map_supports_in_place_deserialize_v = !is_ordered_container<T> &&
     !apache::thrift::detail::alloc_should_propagate_map<T> &&
     map_try_emplace_is_invocable_v<T>;
+
+// Emplaces `key` with a default value through try_emplace or emplace_hint at
+// end(), whichever is faster for the map.
+template <typename Map>
+std::pair<typename Map::iterator, bool> emplace_default(
+    Map& map, typename Map::key_type&& key) {
+  if constexpr (map_supports_in_place_deserialize_v<Map>) {
+    return map.try_emplace(std::move(key));
+  } else {
+    const auto size = map.size();
+    auto it = map.emplace_hint(
+        map.end(),
+        std::piecewise_construct,
+        std::forward_as_tuple(std::move(key)),
+        std::tuple<>());
+    return {it, map.size() != size};
+  }
+}
 
 template <typename T>
 constexpr bool set_emplace_hint_is_invocable_v = std::is_invocable_v<
@@ -197,11 +218,13 @@ void deserialize_known_length_map(
                : Map(std::move(tmp), compare);
 }
 
+// Trivially copyable values measured faster through a temporary.
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
   requires(
       !sorted_unique_constructible_v<Map> &&
       map_emplace_hint_is_invocable_v<Map> &&
-      map_supports_in_place_deserialize_v<Map>)
+      (map_supports_in_place_deserialize_v<Map> ||
+       !std::is_trivially_copyable_v<typename Map::mapped_type>))
 void deserialize_known_length_map(
     Map& map,
     std::uint32_t mapSize,
@@ -211,7 +234,7 @@ void deserialize_known_length_map(
   for (auto i = mapSize; i--;) {
     typename Map::key_type key = apache::thrift::detail::default_map_key(map);
     kr(key);
-    auto [it, inserted] = map.try_emplace(std::move(key));
+    auto [it, inserted] = emplace_default(map, std::move(key));
     if (inserted) {
       mr(it->second);
     } else {
@@ -226,7 +249,8 @@ template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
   requires(
       !sorted_unique_constructible_v<Map> &&
       map_emplace_hint_is_invocable_v<Map> &&
-      !map_supports_in_place_deserialize_v<Map>)
+      !map_supports_in_place_deserialize_v<Map> &&
+      std::is_trivially_copyable_v<typename Map::mapped_type>)
 void deserialize_known_length_map(
     Map& map,
     std::uint32_t mapSize,

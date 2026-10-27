@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
+#include <cstdio>
+#include <map>
 #include <memory>
 #include <memory_resource>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -256,13 +261,13 @@ TEST_F(
   EXPECT_EQ(
       TrackedValue::counts(),
       (folly::test::Counts{/* copyConstruct */ 0,
-                           /* moveConstruct */ 1,
+                           /* moveConstruct */ 0,
                            /* copyConvert */ 0,
                            /* moveConvert */ 0,
                            /* copyAssign */ 0,
                            /* moveAssign */ 0,
                            /* defaultConstruct */ 1,
-                           /* destroyed */ 1}));
+                           /* destroyed */ 0}));
 }
 
 TEST_F(DeserializeKnownLengthMapTest, EmplaceConstuctCount) {
@@ -554,5 +559,178 @@ TEST_F(DeserializeKnownLengthMapTest, EmplaceConstuctCountAllocAwareValue) {
   deserializeTrackedKey(key);
   EXPECT_EQ(map[key].get_allocator().resource(), &arena);
 }
+
+// Longer than the SSO buffer, so keys allocate; zero-padded, so they come in
+// key order.
+std::string aaKey(int i) {
+  char buf[8];
+  std::snprintf(buf, sizeof(buf), "%04d", i);
+  return std::string(24, 'k') + buf;
+}
+
+std::vector<int> aaVals(int i) {
+  return std::vector<int>(i % 5, i);
+}
+
+template <typename Map>
+void deserializeAAMap(Map& map, int size) {
+  int nextKey = 0;
+  int nextVal = 0;
+  detail::pm::deserialize_known_length_map(
+      map,
+      size,
+      [&](std::pmr::string& key) { key = aaKey(nextKey++); },
+      [&](AAValue& value) {
+        const auto vals = aaVals(nextVal++);
+        value.vals.assign(vals.begin(), vals.end());
+      });
+}
+
+template <typename Map>
+class InPlaceAllocAwareMapValues : public testing::Test {};
+
+using InPlaceAllocAwareMaps = testing::Types<
+    folly::pmr::sorted_vector_map<std::pmr::string, AAValue>,
+    std::pmr::map<std::pmr::string, AAValue>,
+    std::pmr::unordered_map<std::pmr::string, AAValue>,
+    folly::pmr::F14NodeMap<std::pmr::string, AAValue>,
+    folly::pmr::F14ValueMap<std::pmr::string, AAValue>,
+    folly::pmr::F14VectorMap<std::pmr::string, AAValue>,
+    folly::pmr::F14FastMap<std::pmr::string, AAValue>>;
+TYPED_TEST_SUITE(InPlaceAllocAwareMapValues, InPlaceAllocAwareMaps);
+
+TYPED_TEST(InPlaceAllocAwareMapValues, NoTemporaryAndAllOnTheMapResource) {
+  using Map = TypeParam;
+  static_assert(detail::alloc_should_propagate_map<Map>);
+
+  constexpr int kSize = 40;
+  CountingResource heap;
+  CountingResource arena;
+  DefaultResourceGuard guard(&heap);
+  Map map{typename Map::allocator_type(&arena)};
+  AAValue::reset();
+  deserializeAAMap(map, kSize);
+
+  EXPECT_EQ(AAValue::built, kSize);
+  EXPECT_EQ(AAValue::moved, 0);
+  EXPECT_EQ(AAValue::destroyed, 0);
+  EXPECT_EQ(heap.allocs, 0);
+  ASSERT_EQ(map.size(), kSize);
+  for (int i = 0; i < kSize; ++i) {
+    const auto it = map.find(std::pmr::string(aaKey(i)));
+    ASSERT_NE(it, map.end());
+    EXPECT_EQ(it->first.get_allocator().resource(), &arena);
+    EXPECT_EQ(it->second.get_allocator().resource(), &arena);
+    EXPECT_EQ(
+        std::vector<int>(it->second.vals.begin(), it->second.vals.end()),
+        aaVals(i));
+  }
+}
+
+template <typename Map>
+void expectFirstValueKept() {
+  CountingResource arena;
+  Map map{typename Map::allocator_type(&arena)};
+  const std::string key = aaKey(7);
+  int nextVal = 1;
+  AAValue::reset();
+  detail::pm::deserialize_known_length_map(
+      map,
+      2,
+      [&](std::pmr::string& k) { k = key; },
+      [&](AAValue& value) { value.vals.assign(nextVal, nextVal), ++nextVal; });
+  ASSERT_EQ(map.size(), 1);
+  EXPECT_EQ(map.begin()->second.vals, std::pmr::vector<int>({1}));
+}
+
+TEST_F(DeserializeKnownLengthMapTest, InPlaceDuplicateKeyKeepsFirstValue) {
+  // Not sorted_vector_map: which duplicate it keeps after sorting is
+  // unspecified.
+  expectFirstValueKept<std::pmr::map<std::pmr::string, AAValue>>();
+  expectFirstValueKept<std::pmr::unordered_map<std::pmr::string, AAValue>>();
+  expectFirstValueKept<folly::pmr::F14NodeMap<std::pmr::string, AAValue>>();
+  expectFirstValueKept<folly::pmr::F14ValueMap<std::pmr::string, AAValue>>();
+  expectFirstValueKept<folly::pmr::F14VectorMap<std::pmr::string, AAValue>>();
+}
+
+template <typename Map>
+void expectValidAfterValueReaderThrows() {
+  CountingResource arena;
+  Map map{typename Map::allocator_type(&arena)};
+  int nextKey = 0;
+  int nextVal = 0;
+  EXPECT_THROW(
+      detail::pm::deserialize_known_length_map(
+          map,
+          3,
+          [&](std::pmr::string& key) { key = aaKey(nextKey++); },
+          [&](AAValue& value) {
+            if (nextVal == 1) {
+              throw std::runtime_error("bad value");
+            }
+            value.vals.assign(1, nextVal++);
+          }),
+      std::runtime_error);
+  // The entry being decoded stays, partly decoded.
+  EXPECT_EQ(map.size(), 2);
+  map.clear();
+  EXPECT_TRUE(map.empty());
+}
+
+TEST_F(DeserializeKnownLengthMapTest, InPlaceValueReaderThrowsLeavesMapValid) {
+  expectValidAfterValueReaderThrows<std::pmr::map<std::pmr::string, AAValue>>();
+  expectValidAfterValueReaderThrows<
+      std::pmr::unordered_map<std::pmr::string, AAValue>>();
+  expectValidAfterValueReaderThrows<
+      folly::pmr::F14FastMap<std::pmr::string, AAValue>>();
+}
+
+struct MoveCountedValue {
+  MoveCountedValue() = default;
+  MoveCountedValue(MoveCountedValue&&) noexcept { ++moved; }
+  MoveCountedValue& operator=(MoveCountedValue&&) noexcept {
+    ++moved;
+    return *this;
+  }
+
+  static inline int moved = 0;
+};
+
+TEST_F(DeserializeKnownLengthMapTest, InPlaceOrderedStdAllocator) {
+  using Map = std::map<int, MoveCountedValue>;
+  static_assert(!detail::alloc_should_propagate_map<Map>);
+  MoveCountedValue::moved = 0;
+  Map map;
+  int nextKey = 0;
+  detail::pm::deserialize_known_length_map(
+      map, 3, [&](int& key) { key = nextKey++; }, [](MoveCountedValue&) {});
+  EXPECT_EQ(map.size(), 3);
+  EXPECT_EQ(MoveCountedValue::moved, 0);
+}
+
+TEST_F(
+    DeserializeKnownLengthMapTest, InPlaceOrderedDuplicateKeyKeepsFirstValue) {
+  std::map<int, std::string> map;
+  int nextVal = 0;
+  detail::pm::deserialize_known_length_map(
+      map,
+      2,
+      [](int& key) { key = 7; },
+      [&](std::string& value) { value = std::to_string(nextVal++); });
+  EXPECT_EQ(map, (std::map<int, std::string>{{7, "0"}}));
+}
+
+static_assert(
+    !detail::pm::map_supports_in_place_deserialize_v<std::map<int, int>>);
+static_assert(!detail::pm::map_supports_in_place_deserialize_v<
+              std::map<std::string, int>>);
+static_assert(!detail::pm::map_supports_in_place_deserialize_v<
+              std::pmr::map<std::pmr::string, int>>);
+static_assert(detail::pm::map_supports_in_place_deserialize_v<
+              std::unordered_map<int, int>>);
+static_assert(!detail::pm::map_supports_in_place_deserialize_v<
+              std::pmr::unordered_map<std::pmr::string, int>>);
+static_assert(detail::pm::map_supports_in_place_deserialize_v<
+              std::unordered_map<int, std::string>>);
 
 #endif
