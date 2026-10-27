@@ -56,6 +56,8 @@
 
 namespace apache::thrift::fast_thrift::thrift::server {
 
+struct DefaultServerFragmenter;
+
 /**
  * Configuration consumed by ThriftServerConnectionFactory. Captured once at
  * construction time; the factory installs the resulting handler / aux
@@ -160,7 +162,9 @@ struct ThriftServerConnectionFactoryConfig {
  */
 namespace detail {
 
-template <ChannelPipelineMode Mode>
+template <
+    ChannelPipelineMode Mode,
+    typename Fragmenter = DefaultServerFragmenter>
 class ThriftServerConnectionFactoryT {
  public:
   explicit ThriftServerConnectionFactoryT(

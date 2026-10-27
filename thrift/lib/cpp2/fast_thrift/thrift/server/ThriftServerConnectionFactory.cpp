@@ -16,6 +16,12 @@
 
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/ThriftServerConnectionFactory.h>
 
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/DefaultServerFragmenter.h>
+// A test-only fragmenter. The factory members are defined and explicitly
+// instantiated in this file. So a test cannot instantiate them for its own
+// type.
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/RejectingServerFragmenter.h>
+
 #include <algorithm>
 #include <memory>
 #include <stdexcept>
@@ -34,8 +40,6 @@
 #include <thrift/lib/cpp2/fast_thrift/frame/read/AlignedParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/FrameLengthParser.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/handler/FrameDefragmentationHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FragmentCompletionTracker.h>
-#include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FrameFragmentationHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/FrameLengthEncoderHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/IntervalBatchingFrameHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/write/handler/WriteCompletionTracker.h>
@@ -72,31 +76,16 @@ using channel_pipeline::PipelineImpl;
 using channel_pipeline::PipelineOwner;
 using channel_pipeline::SimpleBufferAllocator;
 
-// Both write-path handlers carry their completion tracker. The trackers form a
-// chain — the
-// transport's per-writev completion becomes the batcher's per-batch event,
-// which the fragmenter resolves into the per-frame completion the rocket layer
-// consumes — and each stage's only subscriber is the next one, so a NoOp
-// tracker anywhere strands every event below it with nowhere to go. Both
-// batching aliases inherit their FlushWritesEvent subscription from the
-// tracker, so either backpressure policy still flushes before teardown.
+// Both write-path handlers carry completion trackers. The transport's
+// per-writev completion becomes the batcher's per-batch event. The fragmenter
+// resolves it into the per-frame completion that the rocket layer consumes.
+// Each stage has one subscriber, so a NoOp tracker strands every event below
+// it. Both batching aliases inherit their FlushWritesEvent subscription from
+// the tracker, so either backpressure policy still flushes before teardown.
 using ServerBatchingFrameHandler =
     frame::write::handler::IntervalBatchingFrameHandlerT<
         frame::write::handler::WriteCompletionTrackerT<
             rocket::server::RocketServerEventFactory>>;
-using ServerFragmentationFrameHandler =
-    frame::write::handler::FrameFragmentationHandlerT<
-        frame::write::handler::FragmentCompletionTrackerT<
-            rocket::server::RocketServerEventFactory>>;
-
-// Catch an accidentally disabled fragment completion tracker at the pipeline
-// assembly seam, where it would otherwise strand batch completion events.
-static_assert(
-    !std::same_as<
-        typename ServerFragmentationFrameHandler::SubscribedEvents,
-        channel_pipeline::Events<>>,
-    "the fragmenter is the batcher's only BatchWriteComplete subscriber in "
-    "the server pipeline; a NoOp tracker here would strand it");
 
 HANDLER_TAG(batching_frame_handler);
 HANDLER_TAG(frame_length_encoder_handler);
@@ -118,7 +107,7 @@ HANDLER_TAG(thrift_server_backpressure_handler);
 HANDLER_TAG(thrift_server_setup_handler);
 HANDLER_TAG(thrift_server_stream_mux_handler);
 
-template <bool WithStats, typename TransportHandler>
+template <typename Fragmenter, bool WithStats, typename TransportHandler>
 PipelineOwner buildStaticRocketPipeline(
     const ThriftServerConnectionFactoryConfig& config,
     SimpleBufferAllocator* allocator,
@@ -146,7 +135,7 @@ PipelineOwner buildStaticRocketPipeline(
           .template addNextInbound<
               frame::read::handler::FrameDefragmentationHandler>(
               frame_defragmentation_handler_tag)
-          .template addNextOutbound<ServerFragmentationFrameHandler>(
+          .template addNextOutbound<typename Fragmenter::Handler>(
               frame_fragmentation_handler_tag, config.fragmentationConfig)
           .template addNextDuplex<
               rocket::server::handler::RocketServerWriteCompletionHandler>(
@@ -178,7 +167,7 @@ PipelineOwner buildStaticRocketPipeline(
   }
 }
 
-template <typename TransportHandler>
+template <typename Fragmenter, typename TransportHandler>
 PipelineOwner selectStaticRocketStats(
     const ThriftServerConnectionFactoryConfig& config,
     SimpleBufferAllocator* allocator,
@@ -187,10 +176,10 @@ PipelineOwner selectStaticRocketStats(
     rocket::server::RocketServerAppAdapter* appAdapter,
     ServerStatsShard* FOLLY_NULLABLE statsShard) {
   if (statsShard != nullptr) {
-    return buildStaticRocketPipeline<true>(
+    return buildStaticRocketPipeline<Fragmenter, true>(
         config, allocator, evb, transportHandler, appAdapter, statsShard);
   }
-  return buildStaticRocketPipeline<false>(
+  return buildStaticRocketPipeline<Fragmenter, false>(
       config, allocator, evb, transportHandler, appAdapter, statsShard);
 }
 
@@ -609,9 +598,9 @@ PipelineOwner selectStaticThriftStats(
 }
 } // namespace
 
-template <ChannelPipelineMode Mode>
-detail::ThriftServerConnectionFactoryT<Mode>::ThriftServerConnectionFactoryT(
-    ThriftServerConnectionFactoryConfig config)
+template <ChannelPipelineMode Mode, typename Fragmenter>
+detail::ThriftServerConnectionFactoryT<Mode, Fragmenter>::
+    ThriftServerConnectionFactoryT(ThriftServerConnectionFactoryConfig config)
     : config_(std::move(config)),
       needsComposite_(
           static_cast<bool>(config_.monitoringHandler) ||
@@ -666,9 +655,9 @@ detail::ThriftServerConnectionFactoryT<Mode>::ThriftServerConnectionFactoryT(
   }
 }
 
-template <ChannelPipelineMode Mode>
+template <ChannelPipelineMode Mode, typename Fragmenter>
 ThriftServerConnection
-detail::ThriftServerConnectionFactoryT<Mode>::getConnection(
+detail::ThriftServerConnectionFactoryT<Mode, Fragmenter>::getConnection(
     folly::AsyncTransport::UniquePtr socket,
     const folly::SocketAddress& clientAddr,
     const std::shared_ptr<const connection::PeerSecurityInfo>& peerSecurity) {
@@ -706,17 +695,17 @@ detail::ThriftServerConnectionFactoryT<Mode>::getConnection(
   return conn;
 }
 
-template <ChannelPipelineMode Mode>
-void detail::ThriftServerConnectionFactoryT<Mode>::attachCPUExecutor(
-    ThriftServerAppAdapter& adapter) const {
+template <ChannelPipelineMode Mode, typename Fragmenter>
+void detail::ThriftServerConnectionFactoryT<Mode, Fragmenter>::
+    attachCPUExecutor(ThriftServerAppAdapter& adapter) const {
   if (config_.cpuExecutor) {
     adapter.setCPUExecutor(config_.cpuExecutor);
   }
 }
 
-template <ChannelPipelineMode Mode>
+template <ChannelPipelineMode Mode, typename Fragmenter>
 ThriftServerConnection
-detail::ThriftServerConnectionFactoryT<Mode>::buildSimpleConnection(
+detail::ThriftServerConnectionFactoryT<Mode, Fragmenter>::buildSimpleConnection(
     folly::AsyncTransport::UniquePtr socket,
     const folly::SocketAddress& clientAddr,
     boost::intrusive_ptr<ThriftConnContext> connContext) {
@@ -734,12 +723,12 @@ detail::ThriftServerConnectionFactoryT<Mode>::buildSimpleConnection(
       std::move(connContext));
 }
 
-template <ChannelPipelineMode Mode>
-ThriftServerConnection
-detail::ThriftServerConnectionFactoryT<Mode>::buildCompositeConnection(
-    folly::AsyncTransport::UniquePtr socket,
-    const folly::SocketAddress& clientAddr,
-    boost::intrusive_ptr<ThriftConnContext> connContext) {
+template <ChannelPipelineMode Mode, typename Fragmenter>
+ThriftServerConnection detail::
+    ThriftServerConnectionFactoryT<Mode, Fragmenter>::buildCompositeConnection(
+        folly::AsyncTransport::UniquePtr socket,
+        const folly::SocketAddress& clientAddr,
+        boost::intrusive_ptr<ThriftConnContext> connContext) {
   // Build the composite tail: user adapter + each wired aux + metadata.
   // children must outlive the composite (composite borrows raw T* into
   // them); ThriftServerConnection::CompositeTail field declaration order
@@ -801,13 +790,14 @@ detail::ThriftServerConnectionFactoryT<Mode>::buildCompositeConnection(
       std::move(connContext));
 }
 
-template <ChannelPipelineMode Mode>
+template <ChannelPipelineMode Mode, typename Fragmenter>
 template <transport::Parser ParserT>
-void detail::ThriftServerConnectionFactoryT<Mode>::initializeRocketConnection(
-    folly::AsyncTransport::UniquePtr socket,
-    folly::EventBase* evb,
-    rocket::server::RocketServerConnection& rocketConnection,
-    ServerStatsShard* FOLLY_NULLABLE statsShard) {
+void detail::ThriftServerConnectionFactoryT<Mode, Fragmenter>::
+    initializeRocketConnection(
+        folly::AsyncTransport::UniquePtr socket,
+        folly::EventBase* evb,
+        rocket::server::RocketServerConnection& rocketConnection,
+        ServerStatsShard* FOLLY_NULLABLE statsShard) {
   using TransportHandler = transport::
       TransportHandlerT<rocket::server::RocketServerEventFactory, ParserT>;
   typename TransportHandler::Ptr transportHandler =
@@ -832,10 +822,10 @@ void detail::ThriftServerConnectionFactoryT<Mode>::initializeRocketConnection(
   rocketConnection.pipeline = std::move(pipeline);
 }
 
-template <ChannelPipelineMode Mode>
+template <ChannelPipelineMode Mode, typename Fragmenter>
 template <typename TailAdapter, typename Storage>
 ThriftServerConnection
-detail::ThriftServerConnectionFactoryT<Mode>::buildConnectionImpl(
+detail::ThriftServerConnectionFactoryT<Mode, Fragmenter>::buildConnectionImpl(
     folly::AsyncTransport::UniquePtr socket,
     const folly::SocketAddress& clientAddr,
     std::variant<
@@ -1024,15 +1014,22 @@ detail::ThriftServerConnectionFactoryT<Mode>::buildConnectionImpl(
   return conn;
 }
 
-template <ChannelPipelineMode Mode>
+template <ChannelPipelineMode Mode, typename Fragmenter>
 template <typename Storage, typename TransportHandler>
-PipelineOwner detail::ThriftServerConnectionFactoryT<Mode>::buildRocketPipeline(
+PipelineOwner
+detail::ThriftServerConnectionFactoryT<Mode, Fragmenter>::buildRocketPipeline(
     folly::EventBase* evb,
     TransportHandler* transportHandler,
     rocket::server::RocketServerAppAdapter* appAdapter,
     ServerStatsShard* FOLLY_NULLABLE statsShard) {
+  static_assert(
+      !std::same_as<
+          typename Fragmenter::Handler::SubscribedEvents,
+          channel_pipeline::Events<>>,
+      "the fragmenter is the batcher's only BatchWriteComplete subscriber in "
+      "the server pipeline; a NoOp tracker here would strand it");
   if constexpr (Mode == ChannelPipelineMode::Static) {
-    return selectStaticRocketStats(
+    return selectStaticRocketStats<Fragmenter>(
         config_,
         &rocketAllocator_,
         evb,
@@ -1075,7 +1072,7 @@ PipelineOwner detail::ThriftServerConnectionFactoryT<Mode>::buildRocketPipeline(
     // batcher's batch event back out into one completion per original frame. It
     // is also the only handler that can narrow the batcher's quiescence
     // verdict, since the frames it is still holding are invisible from below.
-    builder.template addNextOutbound<ServerFragmentationFrameHandler>(
+    builder.template addNextOutbound<typename Fragmenter::Handler>(
         frame_fragmentation_handler_tag, config_.fragmentationConfig);
     builder
         // Restates the fragmenter's frame-layer completion as the rocket
@@ -1112,8 +1109,15 @@ PipelineOwner detail::ThriftServerConnectionFactoryT<Mode>::buildRocketPipeline(
 }
 
 template class detail::ThriftServerConnectionFactoryT<
-    ChannelPipelineMode::Static>;
+    ChannelPipelineMode::Static,
+    DefaultServerFragmenter>;
 template class detail::ThriftServerConnectionFactoryT<
-    ChannelPipelineMode::Dynamic>;
+    ChannelPipelineMode::Dynamic,
+    DefaultServerFragmenter>;
+// For a test. A test cannot instantiate the factory for its own fragmenter,
+// because the members are defined only in this file.
+template class detail::ThriftServerConnectionFactoryT<
+    ChannelPipelineMode::Static,
+    test::RejectingServerFragmenter>;
 
 } // namespace apache::thrift::fast_thrift::thrift::server
