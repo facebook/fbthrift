@@ -192,6 +192,8 @@ cdef PythonAsyncProcessorFactory create_noop_context_factory(
 cdef PythonAsyncProcessorFactory create_hosted_factory(
     cServiceInterface handler,
     ExecutorKeepAliveProbe executor_probe,
+    object on_start_serving,
+    object on_stop_requested,
 ):
     cdef dict function_map = handler.getFunctionTable()
     cdef cmap[string_view, HandlerFunc] cpp_functions
@@ -206,10 +208,7 @@ cdef PythonAsyncProcessorFactory create_hosted_factory(
             name_view,
         )
 
-    cdef list lifecycle_functions = [
-        handler.onStartServing,
-        handler.onStopRequested,
-    ]
+    cdef list lifecycle_functions = [on_start_serving, on_stop_requested]
     cdef cvector[PyObjPtr] cpp_lifecycle_functions
     cdef object lifecycle_function
     for lifecycle_function in lifecycle_functions:
@@ -304,10 +303,11 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
             handler.onStopRequested,
             executor_probe,
         )
-        handler.onStopRequested = stop_observer
         cdef PythonAsyncProcessorFactory factory = create_hosted_factory(
             <cServiceInterface>handler,
             executor_probe,
+            handler.onStartServing,
+            stop_observer,
         )
         noop_context_factory = create_noop_context_factory(factory)
         server = ThriftServer(noop_context_factory, ip="::1")
@@ -399,10 +399,11 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
             handler.onStopRequested,
             executor_probe,
         )
-        handler.onStopRequested = stop_observer
         cdef PythonAsyncProcessorFactory factory = create_hosted_factory(
             <cServiceInterface>handler,
             executor_probe,
+            handler.onStartServing,
+            stop_observer,
         )
         server = ThriftServer(factory, ip="::1")
         serve_task = None
