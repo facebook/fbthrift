@@ -190,6 +190,7 @@ add_library(
   dynamic/List.cpp
   dynamic/Map.cpp
   dynamic/Set.cpp
+  dynamic/StableCompare.cpp
   dynamic/String.cpp
   dynamic/Struct.cpp
   dynamic/Union.cpp

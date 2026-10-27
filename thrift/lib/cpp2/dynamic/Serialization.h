@@ -18,6 +18,7 @@
 
 #include <thrift/lib/cpp2/dynamic/DynamicValue.h>
 #include <thrift/lib/cpp2/dynamic/SerializableRecord.h>
+#include <thrift/lib/cpp2/dynamic/StableCompare.h>
 #include <thrift/lib/cpp2/dynamic/TypeSystem.h>
 #include <thrift/lib/cpp2/dynamic/Union.h>
 #include <thrift/lib/cpp2/dynamic/detail/ConcreteList.h>
@@ -81,6 +82,17 @@ inline std::string_view enumValueName(
     }
   }
   return {};
+}
+
+// Dynamic containers have no native ordering, so KeyOrder::NativeAscending
+// uses the stable order too.
+template <typename ProtocolWriter>
+bool sortsSetAndMapKeys(const ProtocolWriter& writer) {
+  if constexpr (requires { writer.keyOrder(); }) {
+    return writer.keyOrder() != KeyOrder::Unspecified;
+  } else {
+    return false;
+  }
 }
 
 // Mirrors op::detail::MapEncode: string and enum keys have an alternative
@@ -201,8 +213,14 @@ void serialize(ProtocolWriter& writer, const Set& set) {
   writer.writeSetBegin(
       type_system::ToTTypeFn{}(elemType), folly::to_narrow(set.size()));
 
-  for (auto elemRef : set) {
-    serializeValue(writer, elemRef);
+  if (detail::sortsSetAndMapKeys(writer)) {
+    for (const auto& elemRef : detail::sortedElements(set)) {
+      serializeValue(writer, elemRef);
+    }
+  } else {
+    for (auto elemRef : set) {
+      serializeValue(writer, elemRef);
+    }
   }
 
   writer.writeSetEnd();
@@ -219,9 +237,16 @@ void serialize(ProtocolWriter& writer, const Map& map) {
       folly::to_narrow(map.size()),
       detail::hasAlternativeMapKeyForm(keyType));
 
-  for (auto [keyRef, valueRef] : map) {
-    serializeValue(writer, keyRef);
-    serializeValue(writer, valueRef);
+  if (detail::sortsSetAndMapKeys(writer)) {
+    for (const auto& [keyRef, valueRef] : detail::sortedEntries(map)) {
+      serializeValue(writer, keyRef);
+      serializeValue(writer, valueRef);
+    }
+  } else {
+    for (auto [keyRef, valueRef] : map) {
+      serializeValue(writer, keyRef);
+      serializeValue(writer, valueRef);
+    }
   }
 
   writer.writeMapEnd();

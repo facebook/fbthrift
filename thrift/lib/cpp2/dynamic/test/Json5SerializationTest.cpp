@@ -31,6 +31,8 @@
 
 #include <cstdint>
 #include <limits>
+#include <map>
+#include <set>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -419,6 +421,44 @@ TEST(Json5SerializationTest, ReportsUnknownFieldsToCallbacks) {
 
   EXPECT_EQ(toStatic<gen::Key>(value), makeKey(1, 2));
   EXPECT_EQ(callbacks.unknownFields, std::vector<std::string>{"extra"});
+}
+
+TEST(Json5SerializationTest, WritesSetsAndMapsInStableOrderLikeStaticPath) {
+  expectSameJsonAsStatic(makeAllTypes());
+}
+
+TEST(Json5SerializationTest, SetAndMapOrderDoesNotDependOnInsertionOrder) {
+  const auto& containersNode =
+      SchemaRegistry::get().getTypeSystemNode<gen::Containers>();
+  auto ascendingSet =
+      DynamicValue::makeDefault(containersNode.at("intSet").type());
+  auto descendingSet = ascendingSet;
+  auto ascendingMap =
+      DynamicValue::makeDefault(containersNode.at("stringMap").type());
+  auto descendingMap = ascendingMap;
+  std::set<std::int64_t> expectedSet;
+  std::map<std::string, std::int32_t> expectedMap;
+  for (std::int32_t i = 0; i < 100; ++i) {
+    ascendingSet.asSet().insert(DynamicValue::makeI64(i - 50));
+    descendingSet.asSet().insert(DynamicValue::makeI64(49 - i));
+    expectedSet.insert(i - 50);
+    ascendingMap.asMap().insert(
+        DynamicValue::makeString(std::to_string(i)), DynamicValue::makeI32(i));
+    descendingMap.asMap().insert(
+        DynamicValue::makeString(std::to_string(99 - i)),
+        DynamicValue::makeI32(99 - i));
+    expectedMap.emplace(std::to_string(i), i);
+  }
+
+  const auto setJson =
+      Json5ProtocolUtils::toJson5<type::set<type::i64_t>>(expectedSet);
+  EXPECT_EQ(toJson(ascendingSet), setJson);
+  EXPECT_EQ(toJson(descendingSet), setJson);
+  const auto mapJson =
+      Json5ProtocolUtils::toJson5<type::map<type::string_t, type::i32_t>>(
+          expectedMap);
+  EXPECT_EQ(toJson(ascendingMap), mapJson);
+  EXPECT_EQ(toJson(descendingMap), mapJson);
 }
 
 } // namespace
