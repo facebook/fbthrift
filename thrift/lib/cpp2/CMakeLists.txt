@@ -312,7 +312,8 @@ add_library(
   detail/Enum.cpp
   # Required by protocol/TableBasedSerializerImpl.h's field-name lookup
   # path (used by the JSON5 protocol), which calls checkFieldIdConflict.
-  gen/module_types_cpp.cpp)
+  gen/module_types_cpp.cpp
+  pmr/ArenaResource.cpp)
 target_link_libraries(thriftprotocol PUBLIC fmt::fmt Folly::folly glog::glog
                                             thrift-core)
 # The name thrift_generate() links into a cpp2 TARGET, as for installed Thrift.
