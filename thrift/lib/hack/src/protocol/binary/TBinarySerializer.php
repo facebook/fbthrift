@@ -25,16 +25,6 @@ use namespace FlibSL\{C, Math, Str, Vec}; // @oss-enable
 // @oss-disable: <<Oncalls('thrift')>>
 final class TBinarySerializer extends TProtocolSerializer {
 
-  // Samples requests whose Hack serialization is compared against
-  // TBinaryProtocolV2 in PSP.
-  <<__Memoize>>
-  private static function shouldCompareProtocolV2()[write_props]: bool {
-    return HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-      ()[defaults] ==> JustKnobs::eval('thrift/hack:binary_protocol_v2'),
-      'Need to gate the change',
-    );
-  }
-
   // NOTE(rmarin): Because thrift_protocol_write_binary
   // adds a begin message prefix, you cannot specify
   // a transport in which to serialize an object. It has to
@@ -59,22 +49,7 @@ final class TBinarySerializer extends TProtocolSerializer {
     $protocol = new TBinaryProtocolAccelerated($transport);
 
     HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-      ()[defaults] ==> {
-        $object->write($protocol);
-        if (self::shouldCompareProtocolV2()) {
-          ThriftProtocolV2Comparison::schedule(
-            $transport->getBuffer(),
-            shape(
-              'type' => TType::STRUCT,
-              'class' => HH\classname_to_class(Classnames::getx($object)),
-            ),
-            false,
-            null,
-            0,
-            false,
-          );
-        }
-      },
+      ()[defaults] ==> $object->write($protocol),
       'Binary with memory buffer is write_props, but Hack doesn\'t have a '.
       'way to express this atm.',
     );
@@ -109,22 +84,7 @@ final class TBinarySerializer extends TProtocolSerializer {
 
     $transport->write($str);
     HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-      ()[defaults] ==> {
-        $object->read($protocol);
-        if (self::shouldCompareProtocolV2()) {
-          ThriftProtocolV2Comparison::schedule(
-            $str,
-            shape(
-              'type' => TType::STRUCT,
-              'class' => HH\classname_to_class(Classnames::getx($object)),
-            ),
-            false,
-            null,
-            $options,
-            true,
-          );
-        }
-      },
+      ()[defaults] ==> $object->read($protocol),
       'Binary with memory buffer is write_props, but Hack doesn\'t have a '.
       'way to express this atm.',
     );
@@ -152,24 +112,12 @@ final class TBinarySerializer extends TProtocolSerializer {
     $transport = new TMemoryBuffer();
     $protocol = new TBinaryProtocolAccelerated($transport);
     HH\Coeffects\fb\backdoor_from_write_props__DO_NOT_USE(
-      ()[defaults] ==> {
-        ThriftSerializationHelper::writeStructHelper(
-          $protocol,
-          $type_spec['type'],
-          $object,
-          $type_spec,
-        );
-        if (self::shouldCompareProtocolV2()) {
-          ThriftProtocolV2Comparison::schedule(
-            $transport->getBuffer(),
-            $type_spec,
-            false,
-            null,
-            0,
-            false,
-          );
-        }
-      },
+      ()[defaults] ==> ThriftSerializationHelper::writeStructHelper(
+        $protocol,
+        $type_spec['type'],
+        $object,
+        $type_spec,
+      ),
       '[T133628451] Memory buffer transport would have write_props, but Hack doesn\'t '.
       'have a way to express this atm.',
     );
@@ -195,16 +143,6 @@ final class TBinarySerializer extends TProtocolSerializer {
           $type_spec,
           inout $has_wrapper,
         );
-        if (self::shouldCompareProtocolV2()) {
-          ThriftProtocolV2Comparison::schedule(
-            $str,
-            $type_spec,
-            false,
-            null,
-            0,
-            true,
-          );
-        }
         return $result;
       },
       '[T133628451] Binary with memory buffer is write_props, but Hack doesn\'t have a '.
