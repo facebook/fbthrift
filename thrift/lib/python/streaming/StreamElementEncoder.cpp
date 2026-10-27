@@ -48,8 +48,10 @@ folly::Try<std::unique_ptr<folly::IOBuf>> decode_stream_exception(
         DCHECK_EQ(
             folly::to_underlying(payload.metadata.payloadMetadata()->getType()),
             folly::to_underlying(PayloadMetadata::Type::exceptionMetadata));
-        auto& exceptionMetadataBase =
-            payload.metadata.payloadMetadata()->get_exceptionMetadata();
+        auto& exceptionMetadataBase = payload.metadata.payloadMetadata()
+                                          ->exceptionMetadata()
+                                          .as_const()
+                                          .value();
         if (auto exceptionMetadataRef = exceptionMetadataBase.metadata()) {
           if (exceptionMetadataRef->getType() ==
               PayloadExceptionMetadata::Type::declaredException) {

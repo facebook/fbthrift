@@ -28,7 +28,7 @@ bool Type::isFull(const TypeUri& typeUri, bool validate_uri) {
   }
   if (validate_uri) {
     try {
-      checkName(typeUri.get_uri());
+      checkName(typeUri.uri().value());
     } catch (std::exception&) {
       return false;
     }

@@ -31,7 +31,7 @@ namespace apache::thrift::rocket {
 
 void SecureRocketClient::handleSetupResponse(
     const ServerPushMetadata& serverMeta) {
-  auto& setupResponse = serverMeta.get_setupResponse();
+  auto& setupResponse = serverMeta.setupResponse().value();
   if (validateSecurityPolicy(setupResponse.securityPolicy())) {
     RocketClient::handleSetupResponse(serverMeta);
   }

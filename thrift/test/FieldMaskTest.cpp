@@ -86,12 +86,12 @@ T getViaIdenticalType(const type::AnyStruct& any, const type::Type& type) {
 void convertToHashedURI(type::Type& type) {
   auto& typeUriUnion = *type.toThrift().name()->structType();
 
-  auto hashed =
-      type::getUniversalHashPrefix(
-          type::getUniversalHash(
-              type::UniversalHashAlgorithm::Sha2_256, typeUriUnion.get_uri()),
-          type::kDefaultTypeHashBytes)
-          .toString();
+  auto hashed = type::getUniversalHashPrefix(
+                    type::getUniversalHash(
+                        type::UniversalHashAlgorithm::Sha2_256,
+                        typeUriUnion.uri().as_const().value()),
+                    type::kDefaultTypeHashBytes)
+                    .toString();
   typeUriUnion.typeHashPrefixSha2_256().ensure() = hashed;
 }
 
