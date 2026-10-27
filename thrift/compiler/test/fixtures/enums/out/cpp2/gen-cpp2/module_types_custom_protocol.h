@@ -78,7 +78,7 @@ _readField_questionable:
 _readField_tags:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_tags = ::std::set<::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_tags);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>, ::apache::thrift::type::set<::apache::thrift::type::i32_t>>::read(*iprot, this->__fbthrift_field_tags);
     _readState.afterSubobject(iprot);
   }

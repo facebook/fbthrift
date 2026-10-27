@@ -1051,4 +1051,58 @@ TEST(CppAllocatorTest, AllocExtendedCtorsRunAdapterConstruct) {
   EXPECT_EQ(count, 4);
 }
 
+TEST(CppAllocatorTest, ReadIntoEmptyContainerFieldKeepsBuffer) {
+  HasContainerFieldsPmr src;
+  src.aa_list()->assign({1, 2, 3});
+  std::pmr::monotonic_buffer_resource res;
+  HasContainerFieldsPmr s{PmrByteAlloc(&res)};
+  s.aa_list()->reserve(16);
+  const auto* data = s.aa_list()->data();
+
+  CompactSerializer::deserialize(
+      CompactSerializer::serialize<std::string>(src), s);
+
+  EXPECT_EQ(s, src);
+  EXPECT_EQ(s.aa_list()->data(), data);
+  EXPECT_EQ(s.aa_list()->get_allocator().resource(), &res);
+}
+
+TEST(CppAllocatorTest, ReadReplacesNonEmptyContainerField) {
+  std::pmr::monotonic_buffer_resource res;
+  HasContainerFieldsPmr expected;
+  expected.aa_list()->assign({4, 5});
+  expected.aa_set()->insert(6);
+  expected.aa_map()->emplace(7, 8);
+  HasContainerFieldsPmr s{PmrByteAlloc(&res)};
+  s.aa_list()->assign({1, 2, 3});
+  s.aa_set()->insert(1);
+  s.aa_map()->emplace(1, 1);
+
+  CompactSerializer::deserialize(
+      CompactSerializer::serialize<std::string>(expected), s);
+
+  EXPECT_EQ(s, expected);
+  EXPECT_EQ(s.aa_list()->get_allocator().resource(), &res);
+  EXPECT_EQ(s.aa_set()->get_allocator().resource(), &res);
+  EXPECT_EQ(s.aa_map()->get_allocator().resource(), &res);
+}
+
+TEST(CppAllocatorTest, ResetContainerFieldForRead) {
+  std::pmr::vector<int> pmrEmpty;
+  pmrEmpty.reserve(16);
+  detail::reset_container_field_for_read(pmrEmpty, PmrByteAlloc());
+  EXPECT_GE(pmrEmpty.capacity(), 16);
+
+  std::vector<int> stdEmpty;
+  stdEmpty.reserve(16);
+  detail::reset_container_field_for_read(stdEmpty);
+  EXPECT_EQ(stdEmpty.capacity(), 0);
+
+  PropagatingStatefulVector<int> propagating(
+      ScopedPropagatingStatefulAlloc<int>(2));
+  detail::reset_container_field_for_read(
+      propagating, ScopedPropagatingStatefulAlloc<>(1));
+  EXPECT_EQ(propagating.get_allocator().state_, 1);
+}
+
 } // namespace apache::thrift::test

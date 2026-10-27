@@ -49,7 +49,7 @@ void AllocUnion::readNoXfer(Protocol_* iprot) {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_LIST)) {
           this->aa_list_ref().emplace();
           _readState.beforeSubobject(iprot);
-          value_.aa_list = ::test::fixtures::cpp_allocator_union::PmrStringList(this->get_allocator());
+          ::apache::thrift::detail::reset_container_field_for_read(value_.aa_list, this->get_allocator());
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::test::fixtures::cpp_allocator_union::PmrStringList, ::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_union::PmrStringList, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_union::PmrString, ::apache::thrift::type::string_t>>>>::read(*iprot, value_.aa_list);
           _readState.afterSubobject(iprot);
         } else {

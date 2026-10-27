@@ -381,7 +381,7 @@ _readField_smaller_real:
 _readField_something:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_something = ::std::unordered_map<::std::int32_t, ::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_something);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::unordered_map<::std::int32_t, ::std::int32_t>, ::apache::thrift::type::cpp_type<::std::unordered_map<::std::int32_t, ::std::int32_t>, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::i32_t>>>::read(*iprot, this->__fbthrift_field_something);
     _readState.afterSubobject(iprot);
   }
@@ -846,7 +846,7 @@ _readField_float64:
 _readField_float_list:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_float_list = ::std::vector<::py3::simple::DeferredTruncationFloat>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_float_list);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<::py3::simple::DeferredTruncationFloat>, ::apache::thrift::type::list<::apache::thrift::type::float_t>>::read(*iprot, this->__fbthrift_field_float_list);
     _readState.afterSubobject(iprot);
   }
@@ -862,7 +862,7 @@ _readField_float_list:
 _readField_float_map:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_float_map = ::std::map<::std::string, ::std::vector<::py3::simple::DeferredTruncationFloat>>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_float_map);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>>, ::std::map<::std::string, ::std::vector<::py3::simple::DeferredTruncationFloat>>, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::list<::apache::thrift::type::float_t>>>::read(*iprot, this->__fbthrift_field_float_map);
     _readState.afterSubobject(iprot);
   }
@@ -2423,7 +2423,7 @@ _readField_binary_field:
 _readField_list_field:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_list_field = ::MyType<::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_list_field);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::MyType<::std::int32_t>, ::apache::thrift::type::cpp_type<::MyType<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>::read(*iprot, this->__fbthrift_field_list_field);
     _readState.afterSubobject(iprot);
   }
@@ -2439,7 +2439,7 @@ _readField_list_field:
 _readField_set_field:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_set_field = ::MyType<::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_set_field);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::MyType<::std::int32_t>, ::apache::thrift::type::cpp_type<::MyType<::std::int32_t>, ::apache::thrift::type::set<::apache::thrift::type::i32_t>>>::read(*iprot, this->__fbthrift_field_set_field);
     _readState.afterSubobject(iprot);
   }
@@ -2455,7 +2455,7 @@ _readField_set_field:
 _readField_map_field:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_map_field = ::MyType<::std::int32_t, ::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_map_field);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::MyType<::std::int32_t, ::std::int32_t>, ::apache::thrift::type::cpp_type<::MyType<::std::int32_t, ::std::int32_t>, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::i32_t>>>::read(*iprot, this->__fbthrift_field_map_field);
     _readState.afterSubobject(iprot);
   }
@@ -2847,7 +2847,7 @@ _readField_binary_field:
 _readField_list_field:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_list_field = ::py3::simple::CustomList();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_list_field);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::py3::simple::CustomList, ::apache::thrift::type::cpp_type<::py3::simple::CustomList, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>::read(*iprot, this->__fbthrift_field_list_field);
     _readState.afterSubobject(iprot);
   }
@@ -2863,7 +2863,7 @@ _readField_list_field:
 _readField_set_field:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_set_field = ::py3::simple::CustomSet();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_set_field);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::py3::simple::CustomSet, ::apache::thrift::type::cpp_type<::py3::simple::CustomSet, ::apache::thrift::type::set<::apache::thrift::type::i32_t>>>::read(*iprot, this->__fbthrift_field_set_field);
     _readState.afterSubobject(iprot);
   }
@@ -2879,7 +2879,7 @@ _readField_set_field:
 _readField_map_field:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_map_field = ::py3::simple::CustomMap();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_map_field);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::py3::simple::CustomMap, ::apache::thrift::type::cpp_type<::py3::simple::CustomMap, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::i32_t>>>::read(*iprot, this->__fbthrift_field_map_field);
     _readState.afterSubobject(iprot);
   }

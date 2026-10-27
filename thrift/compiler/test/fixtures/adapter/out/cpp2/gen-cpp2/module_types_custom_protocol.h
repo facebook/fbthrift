@@ -350,7 +350,7 @@ _readField_doubleAdaptedField:
 _readField_adapted_list:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_adapted_list = ::std::vector<::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_adapted_list);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>::read(*iprot, this->__fbthrift_field_adapted_list);
     _readState.afterSubobject(iprot);
   }
@@ -366,7 +366,7 @@ _readField_adapted_list:
 _readField_adapted_set:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_adapted_set = ::std::set<::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_adapted_set);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>, ::apache::thrift::type::set<::apache::thrift::type::i32_t>>::read(*iprot, this->__fbthrift_field_adapted_set);
     _readState.afterSubobject(iprot);
   }
@@ -382,7 +382,7 @@ _readField_adapted_set:
 _readField_adapted_map:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_adapted_map = ::std::map<::std::string, ::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_adapted_map);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int32_t>, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::i32_t>>::read(*iprot, this->__fbthrift_field_adapted_map);
     _readState.afterSubobject(iprot);
   }
@@ -398,7 +398,7 @@ _readField_adapted_map:
 _readField_adapted_list_nested:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_adapted_list_nested = ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_adapted_list_nested);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>>>, ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>>, ::apache::thrift::type::list<::apache::thrift::type::list<::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::i32_t>>>>::read(*iprot, this->__fbthrift_field_adapted_list_nested);
     _readState.afterSubobject(iprot);
   }
@@ -1196,7 +1196,7 @@ _readField_adaptedStructField:
 _readField_structListFieldWithTypedef:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_structListFieldWithTypedef = ::facebook::thrift::test::fixtures::adapter::ListOfFooTypedef();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_structListFieldWithTypedef);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::facebook::thrift::test::fixtures::adapter::ListOfFooTypedef, ::apache::thrift::type::list<::apache::thrift::type::struct_t<::facebook::thrift::test::fixtures::adapter::Foo>>>::read(*iprot, this->__fbthrift_field_structListFieldWithTypedef);
     _readState.afterSubobject(iprot);
   }

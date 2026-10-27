@@ -151,7 +151,7 @@ _readField_unqualified_bool_field:
 _readField_unqualified_list_field:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_unqualified_list_field = ::std::vector<::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_unqualified_list_field);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>::read(*iprot, this->__fbthrift_field_unqualified_list_field);
     _readState.afterSubobject(iprot);
   }
@@ -208,7 +208,7 @@ _readField_optional_bool_field:
 _readField_optional_list_field:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_optional_list_field = ::std::vector<::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_optional_list_field);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>::read(*iprot, this->__fbthrift_field_optional_list_field);
     _readState.afterSubobject(iprot);
   }

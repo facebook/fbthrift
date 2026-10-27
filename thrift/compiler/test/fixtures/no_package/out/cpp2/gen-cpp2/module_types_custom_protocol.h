@@ -131,7 +131,7 @@ _readField_idempotent:
 _readField_floatSet:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_floatSet = ::std::set<float>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_floatSet);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>, ::apache::thrift::type::set<::apache::thrift::type::float_t>>::read(*iprot, this->__fbthrift_field_floatSet);
     _readState.afterSubobject(iprot);
   }
@@ -456,7 +456,7 @@ void Containers::readNoXfer(Protocol_* iprot) {
 _readField_I32List:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_I32List = ::std::vector<::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_I32List);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>::read(*iprot, this->__fbthrift_field_I32List);
     _readState.afterSubobject(iprot);
   }
@@ -472,7 +472,7 @@ _readField_I32List:
 _readField_StringSet:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_StringSet = ::std::set<::std::string>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_StringSet);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>, ::apache::thrift::type::set<::apache::thrift::type::string_t>>::read(*iprot, this->__fbthrift_field_StringSet);
     _readState.afterSubobject(iprot);
   }
@@ -488,7 +488,7 @@ _readField_StringSet:
 _readField_StringToI64Map:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_StringToI64Map = ::std::map<::std::string, ::std::int64_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_StringToI64Map);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int64_t>, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::i64_t>>::read(*iprot, this->__fbthrift_field_StringToI64Map);
     _readState.afterSubobject(iprot);
   }
@@ -784,7 +784,7 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_SET)) {
           this->floatSet_ref().emplace();
           _readState.beforeSubobject(iprot);
-          value_.floatSet = ::std::set<float>();
+          ::apache::thrift::detail::reset_container_field_for_read(value_.floatSet);
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>, ::apache::thrift::type::set<::apache::thrift::type::float_t>>::read(*iprot, value_.floatSet);
           _readState.afterSubobject(iprot);
         } else {

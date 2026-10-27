@@ -1265,7 +1265,7 @@ void RecursiveStruct::readNoXfer(Protocol_* iprot) {
 _readField_mes:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_mes = ::std::vector<::cpp2::RecursiveStruct>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_mes);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector<::cpp2::RecursiveStruct>, ::apache::thrift::type::list<::apache::thrift::type::struct_t<::cpp2::RecursiveStruct>>>::read(*iprot, this->__fbthrift_field_mes);
     _readState.afterSubobject(iprot);
   }

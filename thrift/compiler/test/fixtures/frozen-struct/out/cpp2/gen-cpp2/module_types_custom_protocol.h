@@ -66,7 +66,7 @@ _readField_strField:
 _readField_listField:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_listField = ::std::vector<::std::int16_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_listField);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int16_t>, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>::read(*iprot, this->__fbthrift_field_listField);
     _readState.afterSubobject(iprot);
   }
@@ -82,7 +82,7 @@ _readField_listField:
 _readField_mapField:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_mapField = ::std::map<::std::string, ::std::int32_t>();
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_mapField);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int32_t>, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::i32_t>>::read(*iprot, this->__fbthrift_field_mapField);
     _readState.afterSubobject(iprot);
   }

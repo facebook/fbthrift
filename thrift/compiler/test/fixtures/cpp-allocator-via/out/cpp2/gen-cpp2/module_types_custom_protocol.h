@@ -51,7 +51,7 @@ _readField_aa_string:
 _readField_aa_list:
   {
     _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_aa_list = ::test::fixtures::cpp_allocator_via::PmrStringList(this->get_allocator());
+    ::apache::thrift::detail::reset_container_field_for_read(this->__fbthrift_field_aa_list, this->get_allocator());
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::test::fixtures::cpp_allocator_via::PmrStringList, ::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_via::PmrStringList, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::cpp_allocator_via::PmrString, ::apache::thrift::type::string_t>>>>::read(*iprot, this->__fbthrift_field_aa_list);
     _readState.afterSubobject(iprot);
   }

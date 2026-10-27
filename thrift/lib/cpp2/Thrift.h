@@ -565,6 +565,19 @@ bool copy_assign_changes_allocator(const Alloc& dst, const Alloc& src) {
       !traits::is_always_equal::value && dst != src;
 }
 
+template <typename Field>
+void reset_container_field_for_read(Field& field) {
+  field = Field();
+}
+
+template <typename Field, typename Alloc>
+void reset_container_field_for_read(Field& field, const Alloc& alloc) {
+  using traits = std::allocator_traits<Alloc>;
+  if (traits::propagate_on_container_move_assignment::value || !field.empty()) {
+    field = Field(alloc);
+  }
+}
+
 // We identify field quailfier using different types of C++ field_ref. For
 // cpp.ref fields, we can not deduce the field qualifier information.
 namespace qualifier {
