@@ -43,6 +43,9 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <folly/coro/Sleep.h>
 #include <folly/coro/WithCancellation.h>
 #include <folly/futures/Future.h>
+#include <folly/io/Cursor.h>
+#include <folly/io/IOBufQueue.h>
+#include <folly/io/async/DecoratedAsyncTransportWrapper.h>
 #include <folly/synchronization/Baton.h>
 #include <thrift/conformance/PluggableFunctions.h>
 #include <thrift/conformance/RpcStructComparator.h>
@@ -56,6 +59,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
+#include <thrift/lib/cpp2/transport/rocket/framing/FrameType.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketBiDiClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnectionFactory.h>
@@ -96,6 +100,9 @@ class ConformanceVerificationServer
       if (sinkConsumerDone_.try_wait_for(std::chrono::seconds(5))) {
         serverResult_.bidiAbort()->sinkAborted() = sinkAborted_;
       }
+    }
+    if (testCase_.serverInstruction()->closingFrame()) {
+      serverResult_.closingFrame().emplace().frames() = closingFrames_.copy();
     }
     if (testCase_.serverInstruction()->requestResponseConcurrent()) {
       auto& concurrent = serverResult_.requestResponseConcurrent().emplace();
@@ -833,6 +840,10 @@ class ConformanceVerificationServer
 
   const ServerTestResult& serverResult() { return serverResult_; }
 
+  void recordClosingFrame(ClientFrame frame) {
+    closingFrames_.wlock()->push_back(std::move(frame));
+  }
+
  private:
   const RpcTestCase& testCase_;
   folly::Promise<folly::Unit> getTestReceivedPromise_;
@@ -844,6 +855,7 @@ class ConformanceVerificationServer
   bool sinkAborted_{false};
   folly::Synchronized<std::vector<Request>> concurrentRequests_;
   std::atomic<bool> concurrentGaveUp_{false};
+  folly::Synchronized<std::vector<ClientFrame>> closingFrames_;
 };
 
 std::unique_ptr<apache::thrift::HTTP2RoutingHandler> http2RoutingHandler(
@@ -872,15 +884,115 @@ void configureTls(apache::thrift::ThriftServer& server) {
   server.setAllowPlaintextOnLoopback(false);
 }
 
+ClientFrame clientFrame(rocket::FrameType type, folly::io::Cursor& body) {
+  ClientFrame frame;
+  frame.type() = static_cast<int32_t>(type);
+  if (type == rocket::FrameType::ERROR) {
+    frame.errorCode() = static_cast<int32_t>(body.readBE<uint32_t>());
+    frame.errorData() = body.readFixedString(body.totalLength());
+  }
+  return frame;
+}
+
+class ClosingFrameTap final
+    : public folly::DecoratedAsyncTransportWrapper<folly::AsyncTransport> {
+ public:
+  ClosingFrameTap(
+      folly::AsyncTransport::UniquePtr transport,
+      std::shared_ptr<std::optional<rocket::StreamId>> intercepted,
+      std::function<void(ClientFrame)> record)
+      : DecoratedAsyncTransportWrapper(std::move(transport)),
+        reader_(std::move(intercepted), std::move(record)) {}
+
+  ReadCallback* getReadCallback() const override { return reader_.inner; }
+
+  void setReadCB(ReadCallback* callback) override {
+    reader_.inner = callback;
+    transport_->setReadCB(callback != nullptr ? &reader_ : nullptr);
+  }
+
+ private:
+  struct Reader : ReadCallback {
+    Reader(
+        std::shared_ptr<std::optional<rocket::StreamId>> intercepted,
+        std::function<void(ClientFrame)> record)
+        : intercepted(std::move(intercepted)), record(std::move(record)) {}
+
+    void getReadBuffer(void** bufReturn, size_t* lenReturn) override {
+      inner->getReadBuffer(bufReturn, lenReturn);
+      buffer = *bufReturn;
+    }
+
+    void readDataAvailable(size_t len) noexcept override {
+      read.append(buffer, len);
+      recordFrames();
+      inner->readDataAvailable(len);
+    }
+
+    bool isBufferMovable() noexcept override {
+      return inner->isBufferMovable();
+    }
+
+    size_t maxBufferSize() const override { return inner->maxBufferSize(); }
+
+    void readBufferAvailable(
+        std::unique_ptr<folly::IOBuf> buf) noexcept override {
+      read.append(buf->clone());
+      recordFrames();
+      inner->readBufferAvailable(std::move(buf));
+    }
+
+    void readBuffersScarce(bool scarce) noexcept override {
+      inner->readBuffersScarce(scarce);
+    }
+
+    void readEOF() noexcept override { inner->readEOF(); }
+
+    void readErr(const folly::AsyncSocketException& ex) noexcept override {
+      inner->readErr(ex);
+    }
+
+    void recordFrames() {
+      while (read.chainLength() >= 3) {
+        folly::io::Cursor prefix(read.front());
+        const size_t length =
+            prefix.read<uint8_t>() << 16 | prefix.readBE<uint16_t>();
+        if (read.chainLength() < 3 + length) {
+          return;
+        }
+        read.trimStart(3);
+        const auto frame = read.split(length);
+        folly::io::Cursor cursor(frame.get());
+        const rocket::StreamId stream(cursor.readBE<uint32_t>() & 0x7fffffff);
+        const auto type =
+            static_cast<rocket::FrameType>(cursor.readBE<uint16_t>() >> 10);
+        if (*intercepted == stream) {
+          record(clientFrame(type, cursor));
+        }
+      }
+    }
+
+    ReadCallback* inner{nullptr};
+    void* buffer{nullptr};
+    folly::IOBufQueue read{folly::IOBufQueue::cacheChainLength()};
+    const std::shared_ptr<std::optional<rocket::StreamId>> intercepted;
+    const std::function<void(ClientFrame)> record;
+  };
+
+  Reader reader_;
+};
+
 class ErrorFrameHandler final : public rocket::RocketServerHandler {
  public:
   ErrorFrameHandler(
       std::unique_ptr<rocket::RocketServerHandler> inner,
       std::string method,
-      ErrorFrameServerError error)
+      ErrorFrameServerError error,
+      std::shared_ptr<std::optional<rocket::StreamId>> intercepted)
       : inner_(std::move(inner)),
         method_(std::move(method)),
-        error_(std::move(error)) {}
+        error_(std::move(error)),
+        intercepted_(std::move(intercepted)) {}
 
   void handleSetupFrame(
       rocket::SetupFrame&& frame,
@@ -970,6 +1082,7 @@ class ErrorFrameHandler final : public rocket::RocketServerHandler {
       return std::nullopt;
     }
     context.unsetMarkRequestComplete();
+    *intercepted_ = context.streamId();
     return metadata.kind().value_or(RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   }
 
@@ -981,15 +1094,20 @@ class ErrorFrameHandler final : public rocket::RocketServerHandler {
   const std::unique_ptr<rocket::RocketServerHandler> inner_;
   const std::string method_;
   const ErrorFrameServerError error_;
+  const std::shared_ptr<std::optional<rocket::StreamId>> intercepted_;
 };
 
 class ErrorFrameRoutingHandler final : public RocketRoutingHandler {
  public:
   ErrorFrameRoutingHandler(
-      ThriftServer& server, std::string method, ErrorFrameServerError error)
+      ThriftServer& server,
+      std::string method,
+      ErrorFrameServerError error,
+      std::function<void(ClientFrame)> recordClosingFrame = {})
       : RocketRoutingHandler(server),
         method_(std::move(method)),
-        error_(std::move(error)) {
+        error_(std::move(error)),
+        recordClosingFrame_(std::move(recordClosingFrame)) {
     if (auto interceptor =
             apache::thrift::detail::createSecuritySetupFrameInterceptor(
                 server)) {
@@ -1018,6 +1136,11 @@ class ErrorFrameRoutingHandler final : public RocketRoutingHandler {
     cfg.parserAllocator = server->getCustomAllocatorForParser();
     cfg.parserStrategy = apache::thrift::detail::getSocketParser(*sock, tinfo);
     auto* const transport = sock.get();
+    auto intercepted = std::make_shared<std::optional<rocket::StreamId>>();
+    if (recordClosingFrame_) {
+      sock.reset(new ClosingFrameTap(
+          std::move(sock), intercepted, recordClosingFrame_));
+    }
     auto handler = std::make_unique<ErrorFrameHandler>(
         std::make_unique<rocket::ThriftRocketServerHandler>(
             worker,
@@ -1026,7 +1149,8 @@ class ErrorFrameRoutingHandler final : public RocketRoutingHandler {
             setupFrameHandlers_,
             setupFrameInterceptors_),
         method_,
-        error_);
+        error_,
+        std::move(intercepted));
     auto connection = rocket::RocketServerConnectionFactory::create(
         std::move(sock),
         std::move(handler),
@@ -1042,6 +1166,7 @@ class ErrorFrameRoutingHandler final : public RocketRoutingHandler {
  private:
   const std::string method_;
   const ErrorFrameServerError error_;
+  const std::function<void(ClientFrame)> recordClosingFrame_;
   const std::vector<std::unique_ptr<rocket::SetupFrameHandler>>
       setupFrameHandlers_;
   std::vector<std::unique_ptr<rocket::SetupFrameInterceptor>>
@@ -1050,15 +1175,41 @@ class ErrorFrameRoutingHandler final : public RocketRoutingHandler {
   folly::ThreadLocal<MemoryTracker> egressMemoryTracker_;
 };
 
+std::string methodOf(CallKind call) {
+  switch (call) {
+    case CallKind::REQUEST_RESPONSE:
+      return "requestResponseBasic";
+    case CallKind::STREAM:
+      return "streamBasic";
+    case CallKind::SINK:
+      return "sinkBasic";
+    case CallKind::BIDI:
+      return "bidiBasic";
+  }
+  throw std::invalid_argument(
+      fmt::format("unknown call kind {}", static_cast<int>(call)));
+}
+
 // What some cases need set on the server before it starts.
 void configureServer(
     apache::thrift::ThriftServer& server,
-    const ServerInstruction& instruction) {
+    const ServerInstruction& instruction,
+    ConformanceVerificationServer& handler) {
   if (instruction.streamCancel() || instruction.sinkAbort() ||
       instruction.bidiAbort()) {
     // sendTestResult holds one CPU thread while it waits on the call, whose
     // delayed initial response needs another.
     server.setNumCPUWorkerThreads(2);
+  }
+  if (auto closingFrame = instruction.closingFrame()) {
+    server.addRoutingHandler(
+        std::make_unique<ErrorFrameRoutingHandler>(
+            server,
+            methodOf(*closingFrame->call()),
+            *closingFrame->firstResponse()->errorFrame(),
+            [&handler](ClientFrame frame) {
+              handler.recordClosingFrame(std::move(frame));
+            }));
   }
   const ServerError* serverError = nullptr;
   std::string method;
@@ -1158,7 +1309,7 @@ class RPCClientConformanceTest : public testing::Test {
                   server.addRoutingHandler(http2RoutingHandler(server));
                   configureTls(server);
                   configureServer(
-                      server, *testCase_.rpc()->serverInstruction());
+                      server, *testCase_.rpc()->serverInstruction(), *handler_);
                 })),
         connectViaServer_(connectViaServer) {
     try {

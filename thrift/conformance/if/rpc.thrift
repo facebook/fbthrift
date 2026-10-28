@@ -91,6 +91,7 @@ union ServerTestResult {
   406: BidiMethodDeclaredExceptionServerTestResult bidiMethodDeclaredException;
   407: BidiMethodUndeclaredExceptionServerTestResult bidiMethodUndeclaredException;
   408: BidiAbortServerTestResult bidiAbort;
+  500: ClosingFrameServerTestResult closingFrame;
 }
 
 union ClientTestResult {
@@ -138,6 +139,7 @@ union ClientTestResult {
   407: BidiMethodUndeclaredExceptionClientTestResult bidiMethodUndeclaredException;
   408: BidiAbortClientTestResult bidiAbort;
   409: BidiServerErrorClientTestResult bidiServerError;
+  500: ClosingFrameClientTestResult closingFrame;
 }
 
 struct RequestResponseBasicServerTestResult {
@@ -330,6 +332,16 @@ struct BidiAbortServerTestResult {
   2: bool sinkAborted;
 }
 
+struct ClosingFrameServerTestResult {
+  1: list<ClientFrame> frames;
+}
+
+struct ClientFrame {
+  1: i32 type;
+  2: optional i32 errorCode;
+  3: optional binary errorData;
+}
+
 struct RequestResponseBasicClientTestResult {
   1: Response response;
 }
@@ -519,6 +531,8 @@ struct BidiServerErrorClientTestResult {
   2: string exceptionMessage;
 }
 
+struct ClosingFrameClientTestResult {}
+
 union ClientInstruction {
   1: RequestResponseBasicClientInstruction requestResponseBasic;
   2: RequestResponseDeclaredExceptionClientInstruction requestResponseDeclaredException;
@@ -564,6 +578,7 @@ union ClientInstruction {
   407: BidiMethodUndeclaredExceptionClientInstruction bidiMethodUndeclaredException;
   408: BidiAbortClientInstruction bidiAbort;
   409: BidiServerErrorClientInstruction bidiServerError;
+  500: ClosingFrameClientInstruction closingFrame;
 }
 
 union ServerInstruction {
@@ -611,6 +626,7 @@ union ServerInstruction {
   407: BidiMethodUndeclaredExceptionServerInstruction bidiMethodUndeclaredException;
   408: BidiAbortServerInstruction bidiAbort;
   409: BidiServerErrorServerInstruction bidiServerError;
+  500: ClosingFrameServerInstruction closingFrame;
 }
 
 struct RequestResponseBasicClientInstruction {
@@ -828,6 +844,18 @@ struct BidiAbortClientInstruction {
 
 struct BidiServerErrorClientInstruction {
   1: Request request;
+}
+
+enum CallKind {
+  REQUEST_RESPONSE = 0,
+  STREAM = 1,
+  SINK = 2,
+  BIDI = 3,
+}
+
+struct ClosingFrameClientInstruction {
+  1: CallKind call;
+  2: Request request;
 }
 
 struct RequestResponseBasicServerInstruction {
@@ -1048,6 +1076,15 @@ struct BidiAbortServerInstruction {
 
 struct BidiServerErrorServerInstruction {
   1: ServerError error;
+}
+
+struct ClosingFrameServerInstruction {
+  1: CallKind call;
+  2: FirstResponse firstResponse;
+}
+
+union FirstResponse {
+  1: ErrorFrameServerError errorFrame;
 }
 
 interaction BasicInteraction {

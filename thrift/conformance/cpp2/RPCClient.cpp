@@ -951,6 +951,30 @@ BidiServerErrorClientTestResult bidiServerErrorTest(
   return result;
 }
 
+ClosingFrameClientTestResult closingFrameTest(
+    Client<RPCConformanceService>& client,
+    const ClosingFrameClientInstruction& instruction) {
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    const auto& request = *instruction.request();
+    switch (*instruction.call()) {
+      case CallKind::REQUEST_RESPONSE:
+        co_await folly::coro::co_awaitTry(
+            client.co_requestResponseBasic(request));
+        break;
+      case CallKind::STREAM:
+        co_await folly::coro::co_awaitTry(client.co_streamBasic(request));
+        break;
+      case CallKind::SINK:
+        co_await folly::coro::co_awaitTry(client.co_sinkBasic(request));
+        break;
+      case CallKind::BIDI:
+        co_await folly::coro::co_awaitTry(client.co_bidiBasic(request));
+        break;
+    }
+  }());
+  return {};
+}
+
 // =================== Interactions ===================
 InteractionConstructorClientTestResult interactionConstructorTest(
     InteractionConstructorClientInstruction&) {
@@ -1189,6 +1213,10 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::bidiServerError:
       result.bidiServerError() =
           bidiServerErrorTest(*clientInstruction.bidiServerError());
+      break;
+    case ClientInstruction::Type::closingFrame:
+      result.closingFrame() =
+          closingFrameTest(*client, *clientInstruction.closingFrame());
       break;
     default:
       throw std::runtime_error("Invalid TestCase Type.");

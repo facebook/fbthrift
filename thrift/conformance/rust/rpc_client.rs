@@ -224,8 +224,11 @@ fn init_logging(directives: Vec<Directive>) {
 
 // --
 
+use rpc::rpc::CallKind;
 use rpc::rpc::ClientInstruction;
 use rpc::rpc::ClientTestResult;
+use rpc::rpc::ClosingFrameClientInstruction;
+use rpc::rpc::ClosingFrameClientTestResult;
 use rpc::rpc::InteractionConstructorClientInstruction;
 use rpc::rpc::InteractionConstructorClientTestResult;
 use rpc::rpc::InteractionFactoryFunctionClientInstruction;
@@ -330,6 +333,7 @@ async fn test(
         )),
         bidiAbort(i) => Err(anyhow!("bidiAbort not implemented: {:?}", i)),
         bidiServerError(i) => Err(anyhow!("bidiServerError not implemented: {:?}", i)),
+        closingFrame(i) => closing_frame(peer, i).await,
         UnknownField(i) => Err(anyhow!(format!("not supported: {:?}", i))),
     }
 }
@@ -1184,6 +1188,33 @@ async fn sink_server_declared_exception(
     };
     client
         .sendTestResult(&ClientTestResult::sinkServerDeclaredException(test_result))
+        .await?;
+    Ok(())
+}
+
+async fn closing_frame(peer: &Peer, instr: &ClosingFrameClientInstruction) -> Result<()> {
+    let one_connection = client_of(
+        peer.channel_builder()?
+            .with_channel_pool(false)
+            .build_channel()?,
+    )?;
+    let failed = match instr.call {
+        CallKind::REQUEST_RESPONSE => one_connection
+            .requestResponseBasic(&instr.request)
+            .await
+            .is_err(),
+        CallKind::STREAM => one_connection.streamBasic(&instr.request).await.is_err(),
+        CallKind::SINK => one_connection.sinkBasic(&instr.request).await.is_err(),
+        CallKind::BIDI => one_connection.bidiBasic(&instr.request).await.is_err(),
+        other => return Err(anyhow!("closing_frame: unknown call {:?}", other)),
+    };
+    if !failed {
+        return Err(anyhow!("closing_frame: the call succeeded"));
+    }
+    one_connection
+        .sendTestResult(&ClientTestResult::closingFrame(
+            ClosingFrameClientTestResult::default(),
+        ))
         .await?;
     Ok(())
 }

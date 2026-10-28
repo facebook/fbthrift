@@ -26,6 +26,9 @@ const uint32_t kMaxFrameSize = (1 << 24) - 1;
 const std::string kLargeData = std::string(kMaxFrameSize * 2, 'a');
 const uint64_t kDefaultBufferSize = 100;
 const int32_t kRocketApplicationError = 0x201;
+const int32_t kRocketCanceled = 0x203;
+const int32_t kRocketCancelFrame = 0x09;
+const int32_t kRocketErrorFrame = 0x0B;
 
 // =================== Request-Response ===================
 Test createRequestResponseBasicTest() {
@@ -2467,6 +2470,47 @@ Test createBidiUnexpectedErrorCodeTest() {
   return ret;
 }
 
+ClientFrame cancelFrame() {
+  ClientFrame frame;
+  frame.type() = kRocketCancelFrame;
+  return frame;
+}
+
+ClientFrame canceledErrorFrame() {
+  ClientFrame frame;
+  frame.type() = kRocketErrorFrame;
+  frame.errorCode() = kRocketCanceled;
+  frame.errorData() = "";
+  return frame;
+}
+
+Test createClosingFrameTest(
+    const std::string& kind, CallKind call, std::vector<ClientFrame> frames) {
+  Test ret;
+  ret.name() = kind + "ClosingFrameTest";
+  ret.tags()->emplace("spec/compatibility/rocket#internal-server-error");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = kind + "ClosingFrame/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().closingFrame().emplace();
+  clientInstruction.call() = call;
+  clientInstruction.request().emplace().data() = "hello";
+  rpcTest.clientTestResult().emplace().closingFrame().emplace();
+  auto& serverInstruction =
+      rpcTest.serverInstruction().emplace().closingFrame().emplace();
+  serverInstruction.call() = call;
+  auto& errorFrame = serverInstruction.firstResponse()->errorFrame().emplace();
+  errorFrame.code() = kRocketApplicationError;
+  errorFrame.message() = "rejected before the first response";
+  rpcTest.serverTestResult().emplace().closingFrame().emplace().frames() =
+      std::move(frames);
+
+  return ret;
+}
+
 // =================== Interactions ===================
 Test createInteractionConstructorTest() {
   Test ret;
@@ -2763,6 +2807,14 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createBidiAbortUnreadInitialResponseTest());
   suite.tests()->push_back(createBidiLoadsheddingTest());
   suite.tests()->push_back(createBidiUnexpectedErrorCodeTest());
+  suite.tests()->push_back(createClosingFrameTest(
+      "RequestResponse", CallKind::REQUEST_RESPONSE, {}));
+  suite.tests()->push_back(
+      createClosingFrameTest("Stream", CallKind::STREAM, {cancelFrame()}));
+  suite.tests()->push_back(
+      createClosingFrameTest("Sink", CallKind::SINK, {canceledErrorFrame()}));
+  suite.tests()->push_back(
+      createClosingFrameTest("Bidi", CallKind::BIDI, {canceledErrorFrame()}));
   return suite;
 }
 

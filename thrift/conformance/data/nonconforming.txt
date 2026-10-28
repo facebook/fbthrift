@@ -295,6 +295,13 @@ rust[client=cpp,*]/ThriftRPCClientTest/RequestResponseUnexpectedErrorCode/Succes
 rust[client=cpp,*]/ThriftRPCClientTest/StreamUnexpectedErrorCode/Success.StreamUnexpectedErrorCodeTest
 rust[client=cpp,*]/ThriftRPCClientTest/SinkUnexpectedErrorCode/Success.SinkUnexpectedErrorCodeTest
 
+# When an error frame answers the first response of a stream, sink or bidi
+# call, C++ answers it with a CANCEL (stream) or an ERROR(CANCELED) (sink,
+# bidi) on that stream, and nativeclient sends nothing.
+rust[client=native,*]/ThriftRPCClientTest/StreamClosingFrame/Success.StreamClosingFrameTest
+rust[client=native,*]/ThriftRPCClientTest/SinkClosingFrame/Success.SinkClosingFrameTest
+rust[client=native,*]/ThriftRPCClientTest/BidiClosingFrame/Success.BidiClosingFrameTest
+
 ###
 # Transport: HTTP
 # Run every client test over HTTP/2
