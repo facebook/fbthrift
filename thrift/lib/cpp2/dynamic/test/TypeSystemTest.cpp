@@ -765,6 +765,57 @@ TEST(TypeSystemTest, UnionFieldsMustBeOptional) {
       InvalidTypeError);
 }
 
+TEST(TypeSystemTest, TerseFieldsMustNotHaveCustomDefault) {
+  const auto addTerseField = [](TypeId type, SerializableRecord customDefault) {
+    TypeSystemBuilder builder;
+    builder.addType(
+        "meta.com/thrift/test/TerseStruct",
+        def::Struct({
+            def::Field(
+                def::Identity(1, "terseField"),
+                PresenceQualifier::TERSE,
+                type,
+                std::move(customDefault)),
+        }));
+  };
+
+  // Like the Thrift compiler, a custom default known to be the intrinsic
+  // default is allowed
+  addTerseField(TypeIds::Bool, SerializableRecord::Bool(false));
+  addTerseField(TypeIds::I32, SerializableRecord::Int32(0));
+  addTerseField(TypeIds::Double, SerializableRecord::Float64(0.0));
+  addTerseField(TypeIds::String, SerializableRecord::text(""));
+  addTerseField(TypeIds::list(TypeIds::I32), SerializableRecord::List());
+  addTerseField(
+      TypeIds::uri("meta.com/thrift/test/Other"),
+      SerializableRecord::FieldSet());
+
+  EXPECT_THROW(
+      addTerseField(TypeIds::Bool, SerializableRecord::Bool(true)),
+      InvalidTypeError);
+  EXPECT_THROW(
+      addTerseField(TypeIds::I32, SerializableRecord::Int32(42)),
+      InvalidTypeError);
+  EXPECT_THROW(
+      addTerseField(TypeIds::Double, SerializableRecord::Float64(1.5)),
+      InvalidTypeError);
+  EXPECT_THROW(
+      addTerseField(TypeIds::String, SerializableRecord::text("a")),
+      InvalidTypeError);
+  EXPECT_THROW(
+      addTerseField(
+          TypeIds::list(TypeIds::I32),
+          SerializableRecord::List{SerializableRecord::Int32(0)}),
+      InvalidTypeError);
+  // A partial record is only known to be the intrinsic default when empty
+  EXPECT_THROW(
+      addTerseField(
+          TypeIds::uri("meta.com/thrift/test/Other"),
+          SerializableRecord::FieldSet(
+              {{FieldId(1), SerializableRecord::Int32(0)}})),
+      InvalidTypeError);
+}
+
 TEST(TypeSystemTest, FieldIdentitiesMustBeUnique) {
   TypeSystemBuilder builder;
 
