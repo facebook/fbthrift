@@ -54,17 +54,32 @@ void readEnum(Protocol& protocol, T& out) {
   }
 }
 
-template <typename Protocol, typename T>
-std::size_t writeEnum(Protocol& protocol, const T& in) {
-  const auto value = static_cast<std::int32_t>(in);
-  if constexpr (requires {
-                  protocol.writeEnum(std::string_view{}, std::int32_t{});
-                }) {
-    const char* name = apache::thrift::util::enumName(in);
-    return protocol.writeEnum(name ? name : "", value);
+template <typename Protocol>
+inline constexpr bool writes_enum_names_v = requires(Protocol& protocol) {
+  protocol.writeEnum(std::string_view{}, std::int32_t{});
+};
+
+// Shared with dynamic serialization, which looks names up at runtime.
+// `name()` is called only for protocols that write enum names; an empty name
+// means the enum does not define the value.
+template <typename Protocol, typename NameFn>
+std::size_t writeEnumValue(
+    Protocol& protocol, std::int32_t value, NameFn&& name) {
+  if constexpr (writes_enum_names_v<Protocol>) {
+    return protocol.writeEnum(std::string_view{name()}, value);
   } else {
     return protocol.writeI32(value);
   }
+}
+
+template <typename Protocol, typename T>
+std::size_t writeEnum(Protocol& protocol, const T& in) {
+  // Generic so that `enumName` is instantiated only for protocols that write
+  // enum names: enums that Thrift did not generate have no `TEnumTraits`.
+  return writeEnumValue(protocol, static_cast<std::int32_t>(in), [&](auto...) {
+    const char* name = apache::thrift::util::enumName(in);
+    return name ? name : "";
+  });
 }
 
 template <typename Protocol, typename T>

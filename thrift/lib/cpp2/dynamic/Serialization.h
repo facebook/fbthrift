@@ -68,11 +68,6 @@ struct ThrowingValidationCallbacks {
   }
 };
 
-template <typename ProtocolWriter>
-inline constexpr bool kWritesEnumNames = requires(ProtocolWriter& writer) {
-  writer.writeEnum(std::string_view{}, std::int32_t{});
-};
-
 // Returns an empty string for values that the enum does not define.
 inline std::string_view enumValueName(
     const type_system::EnumNode& enumNode, std::int32_t value) {
@@ -223,11 +218,8 @@ void serializeEnum(
     ProtocolWriter& writer,
     const type_system::EnumNode& enumNode,
     std::int32_t value) {
-  if constexpr (detail::kWritesEnumNames<ProtocolWriter>) {
-    writer.writeEnum(detail::enumValueName(enumNode, value), value);
-  } else {
-    serialize(writer, value);
-  }
+  op::detail::writeEnumValue(
+      writer, value, [&] { return detail::enumValueName(enumNode, value); });
 }
 
 // String
@@ -774,7 +766,7 @@ void serializeListElements(
 
 // i32 elements may be enums, which some protocols write by name
 template <typename ProtocolWriter>
-  requires kWritesEnumNames<ProtocolWriter>
+  requires op::detail::writes_enum_names_v<ProtocolWriter>
 void serializeListElements(
     ProtocolWriter& writer, const ConcreteList<int32_t>& data) {
   const auto elementType = data.elementType().trueType();

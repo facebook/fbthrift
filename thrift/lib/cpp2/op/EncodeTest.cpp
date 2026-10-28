@@ -15,6 +15,7 @@
  */
 
 #include <cstddef>
+#include <cstdint>
 #include <functional>
 #include <iterator>
 #include <limits>
@@ -23,6 +24,7 @@
 #include <memory_resource>
 #include <set>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <vector>
 #include <gtest/gtest.h>
@@ -108,6 +110,59 @@ TEST(EncodeTest, WideByteCounts) {
   EXPECT_EQ(
       expected,
       (op::serialized_size<false, type::list<type::i64_t>>)(protocol, values));
+}
+
+struct EnumNameProtocol {
+  std::string name;
+  std::int32_t value = 0;
+
+  std::size_t writeEnum(std::string_view enumName, std::int32_t enumValue) {
+    name = enumName;
+    value = enumValue;
+    return 1;
+  }
+};
+
+struct I32Protocol {
+  std::int32_t value = 0;
+
+  std::size_t writeI32(std::int32_t i32) {
+    value = i32;
+    return 4;
+  }
+};
+
+TEST(EncodeTest, WriteEnumValueLooksUpTheNameOnlyForProtocolsThatWriteIt) {
+  static_assert(writes_enum_names_v<EnumNameProtocol>);
+  static_assert(!writes_enum_names_v<I32Protocol>);
+
+  EnumNameProtocol named;
+  EXPECT_EQ(writeEnumValue(named, 7, [] { return "SEVEN"; }), 1);
+  EXPECT_EQ(named.name, "SEVEN");
+  EXPECT_EQ(named.value, 7);
+
+  I32Protocol numeric;
+  bool lookedUp = false;
+  EXPECT_EQ(
+      writeEnumValue(
+          numeric,
+          7,
+          [&] {
+            lookedUp = true;
+            return "SEVEN";
+          }),
+      4);
+  EXPECT_EQ(numeric.value, 7);
+  EXPECT_FALSE(lookedUp);
+}
+
+// Only Thrift-generated enums have `TEnumTraits` to look the name up in.
+enum class NonThriftEnum { Seven = 7 };
+
+TEST(EncodeTest, WriteEnumWritesNonThriftEnumsByValue) {
+  I32Protocol protocol;
+  EXPECT_EQ(writeEnum(protocol, NonThriftEnum::Seven), 4);
+  EXPECT_EQ(protocol.value, 7);
 }
 
 struct NoSpecialHandlingCompactWriter : CompactProtocolWriter {
