@@ -2693,24 +2693,28 @@ TEST(
 TEST(FastThriftServerBackpressureExtensionTest, PauseThenResumeKeepsServing) {
   THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
 
-  BackpressureRecorder rec;
-  rec.pauseOnce.store(true, std::memory_order_relaxed);
-  auto handler = std::make_shared<TestHandler>();
+  auto verify = []<typename Server>() {
+    BackpressureRecorder rec;
+    rec.pauseOnce.store(true, std::memory_order_relaxed);
+    auto handler = std::make_shared<TestHandler>();
 
-  auto config = makeLoopbackConfig();
-  ftt::FastThriftServer server(std::move(config));
-  server.setInterface(handler);
-  server.setIOThreadPool(makeFixedSizePool(1));
-  server.addModule(
-      ftt::FastServerModule("backpressure")
-          .addThriftExtension<BackpressureExtension>(&rec));
-  server.start();
+    auto config = makeLoopbackConfig();
+    Server server(std::move(config));
+    server.setInterface(handler);
+    server.setIOThreadPool(makeFixedSizePool(1));
+    server.addModule(
+        ftt::FastServerModule("backpressure")
+            .addThriftExtension<BackpressureExtension>(&rec));
+    server.start();
 
-  EXPECT_TRUE(roundTripsOnOneConnection(server.getAddress(), 2));
-  EXPECT_GE(rec.drained.load(), 1);
-  // The resumer named the EventBase the connection was running on, so a resume
-  // deferred onto it is guaranteed to run.
-  EXPECT_TRUE(rec.resumerEvbLooping.load(std::memory_order_relaxed));
+    EXPECT_TRUE(roundTripsOnOneConnection(server.getAddress(), 2));
+    EXPECT_GE(rec.drained.load(), 1);
+    // The resumer named the EventBase the connection was running on, so a
+    // resume deferred onto it is guaranteed to run.
+    EXPECT_TRUE(rec.resumerEvbLooping.load(std::memory_order_relaxed));
+  };
+  verify.template operator()<ftt::FastThriftServer>();
+  verify.template operator()<ftt::DynamicFastThriftServer>();
 }
 
 // The extension outlives the connection, so a resume that arrives after
@@ -2787,10 +2791,11 @@ TEST(FastThriftServerBackpressureExtensionTest, ConceptsAreIndependent) {
       "one extension may implement both families");
 }
 
-TEST(FastThriftServerBackpressureExtensionTest, AcceptsBackpressureExtension) {
+TEST(
+    FastThriftServerBackpressureExtensionTest,
+    DefaultConfigAcceptsBackpressureExtension) {
   BackpressureRecorder rec;
   auto config = makeLoopbackConfig();
-  config.enableWriteBufferBackpressure = true;
   ftt::FastThriftServer server(std::move(config));
   EXPECT_NO_THROW(server.addModule(
       ftt::FastServerModule("backpressure")

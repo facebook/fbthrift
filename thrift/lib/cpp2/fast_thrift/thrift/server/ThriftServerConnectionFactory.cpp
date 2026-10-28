@@ -285,38 +285,28 @@ PipelineOwner finishStaticThriftPipeline(
   }
 }
 
-template <bool WithBackpressure, bool WithExtensions, typename Builder>
+template <bool WithExtensions, typename Builder>
 PipelineOwner addStaticBackpressure(
     Builder&& builder,
     const ThriftServerConnectionFactoryConfig& config,
     ExtensionStateStore& extensionStates,
     ReadBackpressureArbiter& readBackpressureArbiter) {
-  if constexpr (WithBackpressure) {
-    return finishStaticThriftPipeline<WithExtensions>(
-        std::forward<Builder>(builder)
-            .template addNextDuplexTemplate<ThriftServerBackpressureHandler>(
-                thrift_server_backpressure_handler_tag,
-                &readBackpressureArbiter),
-        config,
-        extensionStates);
-  } else {
-    return finishStaticThriftPipeline<WithExtensions>(
-        std::forward<Builder>(builder), config, extensionStates);
-  }
+  return finishStaticThriftPipeline<WithExtensions>(
+      std::forward<Builder>(builder)
+          .template addNextDuplexTemplate<ThriftServerBackpressureHandler>(
+              thrift_server_backpressure_handler_tag, &readBackpressureArbiter),
+      config,
+      extensionStates);
 }
 
-template <
-    bool WithChecksum,
-    bool WithBackpressure,
-    bool WithExtensions,
-    typename Builder>
+template <bool WithChecksum, bool WithExtensions, typename Builder>
 PipelineOwner addStaticChecksum(
     Builder&& builder,
     const ThriftServerConnectionFactoryConfig& config,
     ExtensionStateStore& extensionStates,
     ReadBackpressureArbiter& readBackpressureArbiter) {
   if constexpr (WithChecksum) {
-    return addStaticBackpressure<WithBackpressure, WithExtensions>(
+    return addStaticBackpressure<WithExtensions>(
         std::forward<Builder>(builder)
             .template addNextDuplexTemplate<ThriftServerChecksumHandler>(
                 thrift_server_checksum_handler_tag)
@@ -328,7 +318,7 @@ PipelineOwner addStaticChecksum(
         extensionStates,
         readBackpressureArbiter);
   } else {
-    return addStaticBackpressure<WithBackpressure, WithExtensions>(
+    return addStaticBackpressure<WithExtensions>(
         std::forward<Builder>(builder)
             .template addNextDuplexTemplate<ThriftServerConnectionCloseHandler>(
                 thrift_server_connection_close_handler_tag,
@@ -340,17 +330,13 @@ PipelineOwner addStaticChecksum(
   }
 }
 
-template <
-    bool WithChecksum,
-    bool WithBackpressure,
-    bool WithExtensions,
-    typename Builder>
+template <bool WithChecksum, bool WithExtensions, typename Builder>
 PipelineOwner addStaticCompression(
     Builder&& builder,
     const ThriftServerConnectionFactoryConfig& config,
     ExtensionStateStore& extensionStates,
     ReadBackpressureArbiter& readBackpressureArbiter) {
-  return addStaticChecksum<WithChecksum, WithBackpressure, WithExtensions>(
+  return addStaticChecksum<WithChecksum, WithExtensions>(
       std::forward<Builder>(builder)
           .template addNextDuplexTemplate<ThriftServerCompressionHandler>(
               thrift_server_compression_handler_tag),
@@ -363,7 +349,6 @@ template <
     bool WithStats,
     bool WithHeaders,
     bool WithChecksum,
-    bool WithBackpressure,
     bool WithExtensions,
     typename TailAdapter>
 PipelineOwner buildStaticThriftPipeline(
@@ -385,7 +370,7 @@ PipelineOwner buildStaticThriftPipeline(
                      .setAllocator(allocator);
   auto& readBackpressureArbiter = connContext->readBackpressureArbiter();
   if constexpr (WithStats) {
-    return addStaticCompression<WithChecksum, WithBackpressure, WithExtensions>(
+    return addStaticCompression<WithChecksum, WithExtensions>(
         std::move(builder)
             .template addNextDuplex<
                 ThriftMetricsHandler<Direction::Server, ServerStatsShard>>(
@@ -400,7 +385,7 @@ PipelineOwner buildStaticThriftPipeline(
         extensionStates,
         readBackpressureArbiter);
   } else {
-    return addStaticCompression<WithChecksum, WithBackpressure, WithExtensions>(
+    return addStaticCompression<WithChecksum, WithExtensions>(
         std::move(builder)
             .template addNextDuplexTemplate<ThriftServerRequestContextHandler>(
                 thrift_server_request_context_handler_tag,
@@ -418,24 +403,21 @@ template <
     bool WithStats,
     bool WithHeaders,
     bool WithChecksum,
-    bool WithBackpressure,
     typename TailAdapter>
 PipelineOwner selectStaticExtensions(
-    bool withExtensions,
+    const ThriftServerConnectionFactoryConfig& config,
     folly::EventBase* evb,
     ThriftServerTransportAdapter* transportAdapter,
     TailAdapter* tailAdapter,
     SimpleBufferAllocator* allocator,
     boost::intrusive_ptr<ThriftConnContext> connContext,
     ExtensionStateStore& extensionStates,
-    const ThriftServerConnectionFactoryConfig& config,
     ServerStatsShard* statsShard) {
-  if (withExtensions) {
+  if (!config.thriftPipelineRegistrations.empty()) {
     return buildStaticThriftPipeline<
         WithStats,
         WithHeaders,
         WithChecksum,
-        WithBackpressure,
         true>(
         evb,
         transportAdapter,
@@ -446,51 +428,7 @@ PipelineOwner selectStaticExtensions(
         config,
         statsShard);
   }
-  return buildStaticThriftPipeline<
-      WithStats,
-      WithHeaders,
-      WithChecksum,
-      WithBackpressure,
-      false>(
-      evb,
-      transportAdapter,
-      tailAdapter,
-      allocator,
-      std::move(connContext),
-      extensionStates,
-      config,
-      statsShard);
-}
-
-template <
-    bool WithStats,
-    bool WithHeaders,
-    bool WithChecksum,
-    typename TailAdapter>
-PipelineOwner selectStaticBackpressure(
-    const ThriftServerConnectionFactoryConfig& config,
-    folly::EventBase* evb,
-    ThriftServerTransportAdapter* transportAdapter,
-    TailAdapter* tailAdapter,
-    SimpleBufferAllocator* allocator,
-    boost::intrusive_ptr<ThriftConnContext> connContext,
-    ExtensionStateStore& extensionStates,
-    ServerStatsShard* statsShard) {
-  const bool withExtensions = !config.thriftPipelineRegistrations.empty();
-  if (config.enableWriteBufferBackpressure) {
-    return selectStaticExtensions<WithStats, WithHeaders, WithChecksum, true>(
-        withExtensions,
-        evb,
-        transportAdapter,
-        tailAdapter,
-        allocator,
-        std::move(connContext),
-        extensionStates,
-        config,
-        statsShard);
-  }
-  return selectStaticExtensions<WithStats, WithHeaders, WithChecksum, false>(
-      withExtensions,
+  return buildStaticThriftPipeline<WithStats, WithHeaders, WithChecksum, false>(
       evb,
       transportAdapter,
       tailAdapter,
@@ -512,7 +450,7 @@ PipelineOwner selectStaticChecksum(
     ExtensionStateStore& extensionStates,
     ServerStatsShard* statsShard) {
   if (config.enableChecksum) {
-    return selectStaticBackpressure<WithStats, WithHeaders, true>(
+    return selectStaticExtensions<WithStats, WithHeaders, true>(
         config,
         evb,
         transportAdapter,
@@ -522,7 +460,7 @@ PipelineOwner selectStaticChecksum(
         extensionStates,
         statsShard);
   }
-  return selectStaticBackpressure<WithStats, WithHeaders, false>(
+  return selectStaticExtensions<WithStats, WithHeaders, false>(
       config,
       evb,
       transportAdapter,
@@ -964,10 +902,8 @@ detail::ThriftServerConnectionFactoryT<Mode, Fragmenter>::buildConnectionImpl(
     // Backpressure signal propagates upstream toward the transport, and
     // outbound responses from the tail traverse drain → backpressure →
     // head.
-    if (config_.enableWriteBufferBackpressure) {
-      thriftPipelineBuilder.template addNextDuplex<BackpressureHandler>(
-          thrift_server_backpressure_handler_tag, &readBackpressureArbiter);
-    }
+    thriftPipelineBuilder.template addNextDuplex<BackpressureHandler>(
+        thrift_server_backpressure_handler_tag, &readBackpressureArbiter);
     // Embedder-registered handlers go after all built-ins, in registration
     // order — the first sits closest to the head, the last immediately above
     // the tail adapter. Each factory constructs a fresh per-connection

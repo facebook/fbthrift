@@ -99,10 +99,6 @@ struct FastThriftServerConfig {
   // Only takes effect on FastThriftServer.
   bool enableCancellation{false};
 
-  // Pauses inbound reads while outbound writes report backpressure.
-  // Responses for accepted requests continue toward the transport.
-  bool enableWriteBufferBackpressure{false};
-
   // When true, insert ThriftServerStreamMuxHandler immediately head-ward of the
   // tail app adapter. It owns and multiplexes per-stream producing-end
   // sub-pipelines: outbound it converts the app's stream-open into a registered
