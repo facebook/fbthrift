@@ -1661,6 +1661,38 @@ Test createSinkAbortUnreadInitialResponseTest() {
   return ret;
 }
 
+Test createSinkLoadsheddingTest() {
+  Test ret;
+  ret.name() = "SinkLoadsheddingTest";
+  ret.tags()->emplace("spec/protocol/interface/#loadshedding");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "SinkLoadshedding/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .sinkServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().sinkServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::LOADSHEDDING;
+  clientTestResult.exceptionMessage() = "shedding the conformance call";
+  rpcTest.serverInstruction()
+      .emplace()
+      .sinkServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .loadshedding() = "shedding the conformance call";
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
 Test createSinkUnexpectedErrorCodeTest() {
   Test ret;
   ret.name() = "SinkUnexpectedErrorCodeTest";
@@ -2368,6 +2400,38 @@ Test createBidiAbortUnreadInitialResponseTest() {
   return ret;
 }
 
+Test createBidiLoadsheddingTest() {
+  Test ret;
+  ret.name() = "BidiLoadsheddingTest";
+  ret.tags()->emplace("spec/protocol/interface/#loadshedding");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "BidiLoadshedding/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .bidiServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().bidiServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::LOADSHEDDING;
+  clientTestResult.exceptionMessage() = "shedding the conformance call";
+  rpcTest.serverInstruction()
+      .emplace()
+      .bidiServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .loadshedding() = "shedding the conformance call";
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
 Test createBidiUnexpectedErrorCodeTest() {
   Test ret;
   ret.name() = "BidiUnexpectedErrorCodeTest";
@@ -2692,10 +2756,12 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.tests()->push_back(createSinkAbortTest());
   suite.tests()->push_back(createSinkAbortBeforeInitialResponseTest());
   suite.tests()->push_back(createSinkAbortUnreadInitialResponseTest());
+  suite.tests()->push_back(createSinkLoadsheddingTest());
   suite.tests()->push_back(createSinkUnexpectedErrorCodeTest());
   suite.tests()->push_back(createBidiAbortTest());
   suite.tests()->push_back(createBidiAbortBeforeInitialResponseTest());
   suite.tests()->push_back(createBidiAbortUnreadInitialResponseTest());
+  suite.tests()->push_back(createBidiLoadsheddingTest());
   suite.tests()->push_back(createBidiUnexpectedErrorCodeTest());
   return suite;
 }

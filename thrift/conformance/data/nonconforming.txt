@@ -300,6 +300,11 @@ rust[client=cpp,*]/ThriftRPCClientTest/SinkUnexpectedErrorCode/Success.SinkUnexp
 # of that frame.
 rust[client=native,*]/ThriftRPCClientTest/BidiUnexpectedErrorCode/Success.BidiUnexpectedErrorCodeTest
 
+# nativeclient reads the `ResponseRpcError` a bidi call is shed with as a
+# `StreamRpcError`, the struct an error frame carries after the first response,
+# and fails the call with only its text.
+rust[client=native,*]/ThriftRPCClientTest/BidiLoadshedding/Success.BidiLoadsheddingTest
+
 ###
 # Transport: HTTP
 # Run every client test over HTTP/2
