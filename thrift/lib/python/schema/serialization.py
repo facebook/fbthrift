@@ -344,7 +344,7 @@ def _read_struct(reader: ProtocolReader, node: StructNode) -> list[object]:
     values: list[object] = [_MISSING] * len(fields)
     reader.read_struct_begin()
     while True:
-        ttype, field_id = reader.read_field_begin()
+        ttype, field_id, _ = reader.read_field_begin()
         if ttype == T_STOP:
             break
         index = slots.get(field_id)
@@ -366,7 +366,7 @@ def _read_union(reader: ProtocolReader, node: UnionNode) -> list[object]:
     read_a_field = False
     reader.read_struct_begin()
     while True:
-        ttype, field_id = reader.read_field_begin()
+        ttype, field_id, _ = reader.read_field_begin()
         if ttype == T_STOP:
             break
         if read_a_field:
