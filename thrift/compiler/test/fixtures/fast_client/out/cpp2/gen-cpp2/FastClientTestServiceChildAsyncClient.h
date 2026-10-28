@@ -182,4 +182,3 @@ class Client<::cpp2::test::FastClientTestServiceChild> : public ::cpp2::test::Fa
 namespace cpp2::test {
 using FastClientTestServiceChildAsyncClient [[deprecated("Use apache::thrift::Client<FastClientTestServiceChild> instead")]] = ::apache::thrift::Client<FastClientTestServiceChild>;
 } // namespace cpp2::test
-#include "thrift/compiler/test/fixtures/fast_client/gen-cpp2/FastClientTestServiceChildFastClient.h"

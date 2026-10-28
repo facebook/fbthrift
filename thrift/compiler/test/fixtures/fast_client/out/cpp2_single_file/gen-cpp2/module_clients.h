@@ -10,8 +10,6 @@
 
 #include "thrift/compiler/test/fixtures/fast_client/gen-cpp2/module_types.h"
 
-#include "thrift/compiler/test/fixtures/fast_client/gen-cpp2/module_fast_clients.h"
-
 
 
 namespace apache { namespace thrift {

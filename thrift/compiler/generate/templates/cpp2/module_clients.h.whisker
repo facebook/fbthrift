@@ -24,10 +24,6 @@
   {{#each program.includes_for_codegen as |include|}}
 #include "{{include.program.include_prefix}}{{include.program.name}}_clients.h"
   {{/each}}
-  {{#if program.any_fast_client?}}
-
-#include "{{program.include_prefix}}{{program.name}}_fast_clients.h"
-  {{/if program.any_fast_client?}}
 
   {{#each program.cpp_includes as |cpp_include|}}
 // cpp_include's

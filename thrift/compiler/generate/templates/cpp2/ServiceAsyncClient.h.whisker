@@ -53,7 +53,3 @@ namespace apache { namespace thrift {
 }}
 
 {{> service_h/async_client}}
-  {{#if service.is_fast_client?}}
-
-#include "{{service.program.include_prefix}}{{service.name}}FastClient.h"
-  {{/if service.is_fast_client?}}
