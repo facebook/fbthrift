@@ -296,13 +296,6 @@ rust[client=cpp,*]/ThriftRPCClientTest/RequestResponseUnexpectedErrorCode/Succes
 rust[client=cpp,*]/ThriftRPCClientTest/StreamUnexpectedErrorCode/Success.StreamUnexpectedErrorCodeTest
 rust[client=cpp,*]/ThriftRPCClientTest/SinkUnexpectedErrorCode/Success.SinkUnexpectedErrorCodeTest
 
-# C++ answers a sink or bidi call whose first response fails its checksum with
-# ERROR(CANCELED), as for any first response it can't unpack. nativeclient opens
-# the call with the exception instead, and its dropped halves send "never
-# called sink object".
-rust[client=native,*]/ThriftRPCClientTest/SinkChecksumMismatchClosingFrame/Success.SinkChecksumMismatchClosingFrameTest
-rust[client=native,*]/ThriftRPCClientTest/BidiChecksumMismatchClosingFrame/Success.BidiChecksumMismatchClosingFrameTest
-
 ###
 # Transport: HTTP
 # Run every client test over HTTP/2
