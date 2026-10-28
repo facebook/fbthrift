@@ -1033,6 +1033,8 @@ class FirstResponseHandler final : public rocket::RocketServerHandler {
           std::move(frame), std::move(context), clientCallback);
     } else if (auto metadata = firstResponse_.metadata()) {
       openWith(*metadata, context);
+    } else if (auto chunkMetadata = firstResponse_.chunkMetadata()) {
+      openWithChunk(*chunkMetadata, context);
     } else {
       clientCallback->onFirstResponseError(
           folly::make_exception_wrapper<rocket::RocketException>(errorFrame()));
@@ -1049,6 +1051,8 @@ class FirstResponseHandler final : public rocket::RocketServerHandler {
           std::move(frame), std::move(context), clientCallback);
     } else if (auto metadata = firstResponse_.metadata()) {
       openWith(*metadata, context);
+    } else if (auto chunkMetadata = firstResponse_.chunkMetadata()) {
+      openWithChunk(*chunkMetadata, context);
     } else if (*kind == RpcKind::SINK) {
       clientCallback.create<rocket::RocketSinkClientCallback>()
           ->onFirstResponseError(
@@ -1104,9 +1108,10 @@ class FirstResponseHandler final : public rocket::RocketServerHandler {
         static_cast<rocket::ErrorCode>(*error.code()), *error.message());
   }
 
-  static rocket::Payload payloadWith(const std::string& metadata) {
+  static rocket::Payload payloadWith(
+      const std::string& metadata, folly::StringPiece data = {}) {
     return rocket::Payload::makeFromMetadataAndData(
-        folly::ByteRange(folly::StringPiece(metadata)), folly::ByteRange());
+        folly::ByteRange(folly::StringPiece(metadata)), folly::ByteRange(data));
   }
 
   static void openWith(
@@ -1115,6 +1120,28 @@ class FirstResponseHandler final : public rocket::RocketServerHandler {
     connection.sendPayload(
         context.streamId(), payloadWith(metadata), rocket::Flags().next(true));
     connection.freeStream(context.streamId(), false);
+  }
+
+  static void openWithChunk(
+      const std::string& chunkMetadata,
+      rocket::RocketServerFrameContext& context) {
+    static const auto kNoFields = folly::StringPiece("\0", 1);
+    auto& connection = context.connection();
+    connection.sendPayload(
+        context.streamId(),
+        payloadWith(replyMetadata(), kNoFields),
+        rocket::Flags().next(true));
+    connection.sendPayload(
+        context.streamId(),
+        payloadWith(chunkMetadata, kNoFields),
+        rocket::Flags().next(true).complete(true));
+    connection.freeStream(context.streamId(), false);
+  }
+
+  static std::string replyMetadata() {
+    ResponseRpcMetadata metadata;
+    metadata.payloadMetadata().emplace().responseMetadata().emplace();
+    return CompactSerializer::serialize<std::string>(metadata);
   }
 
   const std::unique_ptr<rocket::RocketServerHandler> inner_;
@@ -1228,6 +1255,12 @@ FirstResponse firstResponseOf(const std::string& metadata) {
   return firstResponse;
 }
 
+FirstResponse chunkResponseOf(const std::string& chunkMetadata) {
+  FirstResponse firstResponse;
+  firstResponse.chunkMetadata() = chunkMetadata;
+  return firstResponse;
+}
+
 // What some cases need set on the server before it starts.
 void configureServer(
     apache::thrift::ThriftServer& server,
@@ -1301,6 +1334,11 @@ void configureServer(
                 server,
                 method,
                 firstResponseOf(*error.firstResponseMetadata())));
+        break;
+      case ServerError::Type::chunkMetadata:
+        server.addRoutingHandler(
+            std::make_unique<FirstResponseRoutingHandler>(
+                server, method, chunkResponseOf(*error.chunkMetadata())));
         break;
       default:
         break;

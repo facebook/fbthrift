@@ -945,7 +945,12 @@ BidiServerErrorClientTestResult bidiServerErrorTest(
   BidiServerErrorClientTestResult result;
   auto client = createClient();
   try {
-    folly::coro::blockingWait(client->co_bidiBasic(*instruction.request()));
+    folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+      auto bidi = co_await client->co_bidiBasic(*instruction.request());
+      auto gen = std::move(bidi.stream).toAsyncGenerator();
+      while (co_await gen.next()) {
+      }
+    }());
   } catch (const TApplicationException& e) {
     result.exceptionType() = e.getType();
     result.exceptionMessage() = e.getMessage();

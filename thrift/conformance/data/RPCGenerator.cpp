@@ -2763,6 +2763,79 @@ Test createBidiChecksumMismatchTest() {
   return ret;
 }
 
+std::string mismatchedChunkChecksumMetadata() {
+  StreamPayloadMetadata metadata;
+  auto& checksum = metadata.checksum().emplace();
+  checksum.algorithm() = ChecksumAlgorithm::XXH3_64;
+  checksum.checksum() = 1;
+  checksum.salt() = 0;
+  return CompactSerializer::serialize<std::string>(metadata);
+}
+
+Test createStreamChunkChecksumMismatchTest() {
+  Test ret;
+  ret.name() = "StreamChunkChecksumMismatchTest";
+  ret.tags()->emplace("spec/compatibility/rocket#stream-responses");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "StreamChunkChecksumMismatch/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .streamServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().streamServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::CHECKSUM_MISMATCH;
+  clientTestResult.exceptionMessage() = "Checksum mismatch";
+  rpcTest.serverInstruction()
+      .emplace()
+      .streamServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .chunkMetadata() = mismatchedChunkChecksumMetadata();
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
+Test createBidiChunkChecksumMismatchTest() {
+  Test ret;
+  ret.name() = "BidiChunkChecksumMismatchTest";
+  ret.tags()->emplace("spec/compatibility/rocket#stream-responses");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "BidiChunkChecksumMismatch/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .bidiServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().bidiServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::CHECKSUM_MISMATCH;
+  clientTestResult.exceptionMessage() = "Checksum mismatch";
+  rpcTest.serverInstruction()
+      .emplace()
+      .bidiServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .chunkMetadata() = mismatchedChunkChecksumMetadata();
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
 Test createChecksumMismatchClosingFrameTest(
     const std::string& kind, CallKind call, std::vector<ClientFrame> frames) {
   Test ret;
@@ -3155,6 +3228,8 @@ TestSuite createRPCClientChecksumTestSuite() {
       "Sink", CallKind::SINK, {canceledErrorFrame()}));
   suite.tests()->push_back(createChecksumMismatchClosingFrameTest(
       "Bidi", CallKind::BIDI, {canceledErrorFrame()}));
+  suite.tests()->push_back(createStreamChunkChecksumMismatchTest());
+  suite.tests()->push_back(createBidiChunkChecksumMismatchTest());
   return suite;
 }
 

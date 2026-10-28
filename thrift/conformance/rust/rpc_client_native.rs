@@ -298,12 +298,14 @@ use rpc::rpc::RequestResponseUndeclaredExceptionClientInstruction;
 use rpc::rpc::RequestResponseUndeclaredExceptionClientTestResult;
 use rpc_clients::rpc::BasicInteraction;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiBasicError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiBasicStreamError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseBasicError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseDeclaredExceptionError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseTimeoutError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseUndeclaredExceptionError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkBasicError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamBasicError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamBasicStreamError;
 use standard::StandardProtocol;
 use type_rep::ProtocolUnion;
 
@@ -795,20 +797,35 @@ async fn stream_server_error(
     instr: &StreamServerErrorClientInstruction,
 ) -> Result<()> {
     let exn = match client.streamBasic(&instr.request).await {
-        Err(StreamBasicError::ApplicationException(exn)) => exn,
+        Err(StreamBasicError::ApplicationException(exn)) => Some(exn),
         Err(other) => {
             return Err(anyhow!(
                 "stream_server_error: unexpected error: {:?}",
                 other
             ));
         }
-        Ok(_) => return Err(anyhow!("stream_server_error: the stream started")),
+        Ok(mut stream) => loop {
+            match stream.next().await {
+                None => break None,
+                Some(Ok(_)) => {}
+                Some(Err(StreamBasicStreamError::ApplicationException(exn))) => break Some(exn),
+                Some(Err(other)) => {
+                    return Err(anyhow!(
+                        "stream_server_error: unexpected stream error: {:?}",
+                        other
+                    ));
+                }
+            }
+        },
     };
-    let test_result = ClientTestResult::streamServerError(StreamServerErrorClientTestResult {
-        exceptionType: exn.type_ as i32,
-        exceptionMessage: exn.message,
-        ..Default::default()
-    });
+    let test_result = ClientTestResult::streamServerError(exn.map_or_else(
+        StreamServerErrorClientTestResult::default,
+        |exn| StreamServerErrorClientTestResult {
+            exceptionType: exn.type_ as i32,
+            exceptionMessage: exn.message,
+            ..Default::default()
+        },
+    ));
     client.sendTestResult(&test_result).await?;
     Ok(())
 }
@@ -1580,17 +1597,32 @@ async fn bidi_server_error(
     instr: &BidiServerErrorClientInstruction,
 ) -> Result<()> {
     let exn = match client.bidiBasic(&instr.request).await {
-        Err(BidiBasicError::ApplicationException(exn)) => exn,
+        Err(BidiBasicError::ApplicationException(exn)) => Some(exn),
         Err(other) => {
             return Err(anyhow!("bidi_server_error: unexpected error: {:?}", other));
         }
-        Ok(_) => return Err(anyhow!("bidi_server_error: the bidi stream opened")),
+        Ok((mut stream, _sink)) => loop {
+            match stream.next().await {
+                None => break None,
+                Some(Ok(_)) => {}
+                Some(Err(BidiBasicStreamError::ApplicationException(exn))) => break Some(exn),
+                Some(Err(other)) => {
+                    return Err(anyhow!(
+                        "bidi_server_error: unexpected stream error: {:?}",
+                        other
+                    ));
+                }
+            }
+        },
     };
-    let test_result = ClientTestResult::bidiServerError(BidiServerErrorClientTestResult {
-        exceptionType: exn.type_ as i32,
-        exceptionMessage: exn.message,
-        ..Default::default()
-    });
+    let test_result = ClientTestResult::bidiServerError(exn.map_or_else(
+        BidiServerErrorClientTestResult::default,
+        |exn| BidiServerErrorClientTestResult {
+            exceptionType: exn.type_ as i32,
+            exceptionMessage: exn.message,
+            ..Default::default()
+        },
+    ));
     client.sendTestResult(&test_result).await?;
     Ok(())
 }

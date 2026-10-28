@@ -892,6 +892,7 @@ union ServerError {
   4: string undeclaredException;
   5: ErrorFrameServerError errorFrame;
   6: binary firstResponseMetadata;
+  7: binary chunkMetadata;
 }
 
 struct TaskExpiredServerError {
@@ -1087,6 +1088,7 @@ struct ClosingFrameServerInstruction {
 union FirstResponse {
   1: ErrorFrameServerError errorFrame;
   2: binary metadata;
+  3: binary chunkMetadata;
 }
 
 interaction BasicInteraction {
