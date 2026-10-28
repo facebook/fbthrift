@@ -946,10 +946,10 @@ type_system::SerializableRecord toTypeSystemAnnotation(
           case Primitive::I64:
             return {type_system::SerializableRecord::Int64(
                 static_cast<int64_t>(data.asInt()))};
-          case Primitive::DOUBLE:
+          case Primitive::FLOAT:
             return {type_system::SerializableRecord::Float32(
                 static_cast<float>(data.asDouble()))};
-          case Primitive::FLOAT:
+          case Primitive::DOUBLE:
             return {type_system::SerializableRecord::Float64(data.asDouble())};
           case Primitive::STRING:
             return {type_system::SerializableRecord::Text(data.asString())};
