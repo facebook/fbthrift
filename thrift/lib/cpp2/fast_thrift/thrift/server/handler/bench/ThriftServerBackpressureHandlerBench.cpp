@@ -17,10 +17,8 @@
 /**
  * ThriftServerBackpressureHandler microbenchmarks.
  *
- * The hot path is `onWrite` in the unsaturated case — a single flag
- * check + forward. This bench guards that hot path against regressions
- * (e.g. accidentally adding allocation or virtual dispatch). It also
- * measures forwarding while saturated and releasing the read pause.
+ * Measures accepted response writes with and without transport pressure,
+ * and releasing the read pause.
  */
 
 #include <folly/Benchmark.h>
@@ -78,9 +76,6 @@ ThriftServerResponseMessage makeResponse(uint32_t streamId) {
       }};
 }
 
-// Hot path: handler is unsaturated; onWrite is a single flag check
-// followed by ctx.fireWrite. Measures the per-write overhead the
-// handler adds to a normal response.
 BENCHMARK(OnWrite_PassThrough, iters) {
   BenchmarkSuspender suspender;
 
@@ -102,7 +97,7 @@ BENCHMARK(OnWrite_PassThrough, iters) {
   }
 }
 
-// Forward responses while the read pause is held.
+// Includes translating accepted write backpressure to Success.
 BENCHMARK(OnWrite_ForwardWhileBackpressured, iters) {
   BenchmarkSuspender suspender;
 

@@ -84,15 +84,18 @@ TEST(
   ctx.nextWriteResult = Result::Backpressure;
 
   for (uint32_t streamId : {1u, 2u, 3u}) {
+    ctx.nextWriteResult =
+        streamId == 2 ? Result::Success : Result::Backpressure;
     EXPECT_EQ(
         handler.onWrite(ctx, erase_and_box(makeResponse(streamId))),
-        Result::Backpressure);
+        Result::Success);
   }
 
   EXPECT_EQ(ctx.writtenStreamIds, (std::vector<uint32_t>{1, 2, 3}));
   EXPECT_TRUE(handler.isBackpressured());
   EXPECT_EQ(ctx.arbiter.holderCount(), 1);
   EXPECT_EQ(ctx.awaitWriteReadyCalls, 1);
+  EXPECT_EQ(ctx.fakePipeline.onReadReadyCalls, 0);
   EXPECT_EQ(
       handler.onRead(ctx, erase_and_box(ThriftServerRequestMessage{})),
       Result::Backpressure);
@@ -182,7 +185,7 @@ TEST(
   for (uint32_t streamId : {1u, 2u, 3u}) {
     EXPECT_EQ(
         pipeline->fireWrite(erase_and_box(makeResponse(streamId))),
-        Result::Backpressure);
+        Result::Success);
   }
   EXPECT_EQ(head.writeCount(), 3);
   EXPECT_EQ(

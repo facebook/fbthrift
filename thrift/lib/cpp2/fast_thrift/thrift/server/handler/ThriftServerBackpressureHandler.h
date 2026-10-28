@@ -30,6 +30,8 @@ namespace apache::thrift::fast_thrift::thrift {
 /**
  * Pauses inbound admission while outbound writes report backpressure.
  * Responses for accepted requests always continue toward the transport.
+ * Accepted writes return Success to response producers; pressure is surfaced
+ * on reads instead.
  */
 template <typename Context>
 class ThriftServerBackpressureHandler {
@@ -43,7 +45,6 @@ class ThriftServerBackpressureHandler {
   // pipeline's writeReadyList so onWriteReady() actually fires.
   channel_pipeline::WriteReadyHook writeReadyHook_;
 
-  // HandlerLifecycle
   void handlerAdded(Context& /*ctx*/) noexcept {}
   void handlerRemoved(Context& /*ctx*/) noexcept {}
   void onPipelineActive(Context& /*ctx*/) noexcept {}
@@ -55,7 +56,7 @@ class ThriftServerBackpressureHandler {
   // Error from downstream is terminal and not overridden.
   channel_pipeline::Result onRead(
       Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
-    auto result = ctx.fireRead(std::move(msg));
+    const auto result = ctx.fireRead(std::move(msg));
     if (FOLLY_UNLIKELY(
             backpressured_ && result != channel_pipeline::Result::Error)) {
       return channel_pipeline::Result::Backpressure;
@@ -70,12 +71,13 @@ class ThriftServerBackpressureHandler {
   channel_pipeline::Result onWrite(
       Context& ctx, channel_pipeline::TypeErasedBox&& msg) noexcept {
     const auto result = ctx.fireWrite(std::move(msg));
-    if (FOLLY_UNLIKELY(
-            result == channel_pipeline::Result::Backpressure &&
-            !backpressured_)) {
-      backpressured_ = true;
-      arbiter(ctx).acquire();
-      ctx.awaitWriteReady();
+    if (FOLLY_UNLIKELY(result == channel_pipeline::Result::Backpressure)) {
+      if (!backpressured_) {
+        backpressured_ = true;
+        arbiter(ctx).acquire();
+        ctx.awaitWriteReady();
+      }
+      return channel_pipeline::Result::Success;
     }
     return result;
   }
@@ -99,7 +101,6 @@ class ThriftServerBackpressureHandler {
     ctx.cancelAwaitWriteReady();
   }
 
-  // === Test accessors ===
   bool isBackpressured() const noexcept { return backpressured_; }
 
  private:

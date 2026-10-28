@@ -163,9 +163,9 @@ TEST_F(
   head_.setOnWriteCallback(
       [](cp::TypeErasedBox&&) noexcept { return cp::Result::Backpressure; });
 
-  EXPECT_EQ(fireResponse(1), cp::Result::Backpressure);
-  EXPECT_EQ(fireResponse(2), cp::Result::Backpressure);
-  EXPECT_EQ(fireResponse(3), cp::Result::Backpressure);
+  EXPECT_EQ(fireResponse(1), cp::Result::Success);
+  EXPECT_EQ(fireResponse(2), cp::Result::Success);
+  EXPECT_EQ(fireResponse(3), cp::Result::Success);
 
   EXPECT_TRUE(backpressure_->isBackpressured());
   EXPECT_EQ(head_.writeCount(), 3);
@@ -195,7 +195,7 @@ TEST_F(
       pipeline_->fireRead(cp::erase_and_box(makeRequest(99))),
       cp::Result::Backpressure);
   EXPECT_EQ(tail_.readCount(), 2);
-  EXPECT_EQ(fireResponse(99), cp::Result::Backpressure);
+  EXPECT_EQ(fireResponse(99), cp::Result::Success);
   EXPECT_EQ(closeHandler_->inFlight(), 0u);
   EXPECT_EQ(head_.writeCount(), 2);
 }
