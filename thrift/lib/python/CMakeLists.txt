@@ -263,26 +263,21 @@ log_debug("cython_include_path='${cython_include_path}'")
 #####################################################################
 # Library Path Setup
 #####################################################################
-# Auto-discover all library directories from getdeps installed packages
-# This ensures setup.py's find_static_lib() can find ALL libraries
-# in static_lib_names. Use GETDEPS_INSTALL_DIR env var if set (getdeps
-# always sets this), otherwise fall back to deriving from
-# CMAKE_INSTALL_PREFIX (works when CMAKE_INSTALL_PREFIX is in the
-# getdeps installed directory, but NOT when --project-install-prefix
-# overrides it)
-if (DEFINED ENV{GETDEPS_INSTALL_DIR})
-  set(GETDEPS_INSTALL_ROOT "$ENV{GETDEPS_INSTALL_DIR}")
-else ()
-  get_filename_component(GETDEPS_INSTALL_ROOT "${CMAKE_INSTALL_PREFIX}/.."
-                         ABSOLUTE)
-endif ()
-file(GLOB installed_packages "${GETDEPS_INSTALL_ROOT}/*")
+# Library directories for setup.py's link step and for auditwheel: the
+# prefixes of this build's dependencies, which getdeps passes through the
+# CMAKE_PREFIX_PATH environment variable. getdeps' install root also holds
+# other projects' builds of the same libraries, such as a static glog beside
+# this build's shared one, and the linker takes the first directory that has
+# the library.
+set(dep_prefixes ${CMAKE_PREFIX_PATH})
+file(TO_CMAKE_PATH "$ENV{CMAKE_PREFIX_PATH}" env_prefixes)
+list(APPEND dep_prefixes ${env_prefixes})
 
 # All thrift libraries share this directory. thrift_python_cpp is defined below;
 # generator expressions resolve at generate time, so the forward reference is
 # fine.
 set(all_lib_dirs "$<TARGET_FILE_DIR:thrift_python_cpp>")
-foreach (pkg ${installed_packages})
+foreach (pkg ${dep_prefixes})
   if (EXISTS "${pkg}/lib")
     list(APPEND all_lib_dirs "${pkg}/lib")
   endif ()
