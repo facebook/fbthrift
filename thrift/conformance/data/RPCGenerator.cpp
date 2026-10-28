@@ -2497,6 +2497,24 @@ ClientFrame processFirstResponseErrorFrame() {
   return frame;
 }
 
+ClientFrame neverCalledSinkFrame() {
+  ClientFrame frame;
+  frame.type() = kRocketErrorFrame;
+  frame.errorCode() = kRocketApplicationError;
+  frame.errorData() =
+      "apache::thrift::TApplicationException: never called sink object";
+  return frame;
+}
+
+std::string undeclaredExceptionMetadata() {
+  ResponseRpcMetadata metadata;
+  auto& exception =
+      metadata.payloadMetadata().emplace().exceptionMetadata().emplace();
+  exception.what_utf8() = "the first response is an exception";
+  exception.metadata().emplace().appUnknownException().emplace();
+  return CompactSerializer::serialize<std::string>(metadata);
+}
+
 std::string emptyPayloadMetadata() {
   ResponseRpcMetadata metadata;
   metadata.payloadMetadata().emplace();
@@ -2574,6 +2592,31 @@ Test createInvalidPayloadMetadataTest(
       rpcTest.serverInstruction().emplace().closingFrame().emplace();
   serverInstruction.call() = call;
   serverInstruction.firstResponse()->metadata() = emptyPayloadMetadata();
+  rpcTest.serverTestResult().emplace().closingFrame().emplace().frames() =
+      std::move(frames);
+
+  return ret;
+}
+
+Test createUndeclaredExceptionFirstResponseTest(
+    const std::string& kind, CallKind call, std::vector<ClientFrame> frames) {
+  Test ret;
+  ret.name() = kind + "UndeclaredExceptionFirstResponseTest";
+  ret.tags()->emplace("spec/compatibility/rocket#stream-initial-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = kind + "UndeclaredExceptionFirstResponse/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().closingFrame().emplace();
+  clientInstruction.call() = call;
+  clientInstruction.request().emplace().data() = "hello";
+  rpcTest.clientTestResult().emplace().closingFrame().emplace();
+  auto& serverInstruction =
+      rpcTest.serverInstruction().emplace().closingFrame().emplace();
+  serverInstruction.call() = call;
+  serverInstruction.firstResponse()->metadata() = undeclaredExceptionMetadata();
   rpcTest.serverTestResult().emplace().closingFrame().emplace().frames() =
       std::move(frames);
 
@@ -2902,6 +2945,14 @@ TestSuite createRPCClientExtendedTestSuite() {
       "Bidi",
       CallKind::BIDI,
       {cancelFrame(), processFirstResponseErrorFrame()}));
+  suite.tests()->push_back(createUndeclaredExceptionFirstResponseTest(
+      "RequestResponse", CallKind::REQUEST_RESPONSE, {}));
+  suite.tests()->push_back(createUndeclaredExceptionFirstResponseTest(
+      "Stream", CallKind::STREAM, {cancelFrame()}));
+  suite.tests()->push_back(createUndeclaredExceptionFirstResponseTest(
+      "Sink", CallKind::SINK, {neverCalledSinkFrame()}));
+  suite.tests()->push_back(createUndeclaredExceptionFirstResponseTest(
+      "Bidi", CallKind::BIDI, {neverCalledSinkFrame(), cancelFrame()}));
   return suite;
 }
 

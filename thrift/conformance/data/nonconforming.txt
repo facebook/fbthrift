@@ -283,6 +283,7 @@ rust[client=cpp,*]/ThriftRPCClientTest/SinkEarlyFinalResponse/Success.SinkEarlyF
 # connection closes: bareclient never destroys the C++ ClientSink whose
 # destructor would cancel it.
 rust[client=cpp,*]/ThriftRPCClientTest/SinkAbort*
+rust[client=cpp,*]/ThriftRPCClientTest/SinkUndeclaredExceptionFirstResponse/Success.SinkUndeclaredExceptionFirstResponseTest
 
 # bareclient hands its Rust caller only the text of the TTransportException its
 # C++ client raised, so `rpc_client.rs` cannot report the exception's type.
