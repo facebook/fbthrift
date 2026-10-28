@@ -28,6 +28,13 @@ class PythonAsyncProcessorFactoryCustomerApiTest(later.unittest.TestCase):
     def test_set_cpu_worker_threads_rejects_count_below_one(self) -> None:
         CTests(self).test_set_cpu_worker_threads_rejects_count_below_one()
 
+    def test_get_cpu_worker_threads_reports_the_cpp_setting_without_a_handler(
+        self,
+    ) -> None:
+        CTests(
+            self
+        ).test_get_cpu_worker_threads_reports_the_cpp_setting_without_a_handler()
+
     async def test_threads_without_factory_context_warn_and_stay_single_threaded(
         self,
     ) -> None:

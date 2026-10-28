@@ -29,6 +29,7 @@ from testing.base_service_only.thrift_clients import BaseService
 from testing.base_service_only.thrift_services import BaseServiceInterface
 from thrift.python.client import get_client
 from thrift.python.server import ThriftServer
+from thrift.py3.server cimport ThriftServer as Py3ThriftServer
 
 from thrift.python.server_impl.async_processor cimport (
     cAsyncProcessorFactory,
@@ -348,6 +349,18 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
 
         # THEN
         self.ut.assertEqual(expected_message, str(raised.exception))
+
+    def test_get_cpu_worker_threads_reports_the_cpp_setting_without_a_handler(self):
+        # GIVEN
+        server = ThriftServer(None, ip="::1")
+        (<Py3ThriftServer>server).server.get().setNumCPUWorkerThreads(42)
+        expected_count = 42
+
+        # WHEN
+        actual_count = server.get_cpu_worker_threads()
+
+        # THEN
+        self.ut.assertEqual(expected_count, actual_count)
 
     async def test_threads_without_factory_context_warn_and_stay_single_threaded(
         self,
