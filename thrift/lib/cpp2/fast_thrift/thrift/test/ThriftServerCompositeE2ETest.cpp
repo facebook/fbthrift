@@ -81,8 +81,10 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/CompositeE2EPrimaryService.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/CompositeE2EPrimaryService.tcc>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/CompositeE2EPrimaryServiceFastClient.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/CompositeE2ESecondaryService.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/CompositeE2ESecondaryService.tcc>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/CompositeE2ESecondaryServiceFastClient.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 

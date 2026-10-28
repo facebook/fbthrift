@@ -196,8 +196,10 @@ function (thrift_generate file)
   if ("no_metadata" IN_LIST options)
     set(no_metadata TRUE)
   endif ()
-
   set(generator "mstch_${language}")
+  if ("${language}" STREQUAL "cpp2")
+    list(APPEND options fast_client_stubs)
+  endif ()
   string(REPLACE ";" "," joined_options "${options}")
   set(gen_dir "${output_dir}/gen-${language}")
   # The compiler requires -o to exist. Ninja creates the directories of a
@@ -234,6 +236,10 @@ function (thrift_generate file)
       ${gen_dir}/${service}_custom_protocol.h)
     list(APPEND sources ${gen_dir}/${service}.cpp
          ${gen_dir}/${service}AsyncClient.cpp)
+    if ("${language}" STREQUAL "cpp2")
+      list(APPEND headers ${gen_dir}/${service}FastClient.h)
+      list(APPEND sources ${gen_dir}/${service}FastClient.cpp)
+    endif ()
   endforeach ()
 
   if ("${language}" STREQUAL "python")

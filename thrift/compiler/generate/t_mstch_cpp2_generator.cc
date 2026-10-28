@@ -2446,6 +2446,16 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
       "types_custom_protocol.h",
       fmt::format("{}_custom_protocol.h", name));
 
+  if (service->has_structured_annotation(kCppFastClientUri) ||
+      has_compiler_option("fast_client_stubs")) {
+    render_whisker_service_file(
+        *service, "ServiceFastClient.h", fmt::format("{}FastClient.h", name));
+    render_whisker_service_file(
+        *service,
+        "ServiceFastClient.cpp",
+        fmt::format("{}FastClient.cpp", name));
+  }
+
   auto iter = client_name_to_split_count_.find(name);
   if (iter != client_name_to_split_count_.end()) {
     auto split_count = iter->second;
@@ -2490,6 +2500,17 @@ void t_mstch_cpp2_generator::generate_out_of_line_services() {
       "module_clients_out_of_line.h", fmt::format("{}_clients.h", module_name));
   render_whisker_file(
       "module_clients_fwd.h", fmt::format("{}_clients_fwd.h", module_name));
+  if (has_compiler_option("fast_client_stubs") ||
+      std::any_of(
+          program_->services().begin(),
+          program_->services().end(),
+          [](const t_service* service) {
+            return service->has_structured_annotation(kCppFastClientUri);
+          })) {
+    render_whisker_file(
+        "module_fast_clients_out_of_line.h",
+        fmt::format("{}_fast_clients.h", module_name));
+  }
 }
 
 void t_mstch_cpp2_generator::generate_inline_services() {
@@ -2506,6 +2527,19 @@ void t_mstch_cpp2_generator::generate_inline_services() {
       "module_handlers.h", fmt::format("{}_handlers.h", module_name));
   render_whisker_file(
       "module_handlers.cpp", fmt::format("{}_handlers.cpp", module_name));
+  if (has_compiler_option("fast_client_stubs") ||
+      std::any_of(
+          program_->services().begin(),
+          program_->services().end(),
+          [](const t_service* service) {
+            return service->has_structured_annotation(kCppFastClientUri);
+          })) {
+    render_whisker_file(
+        "module_fast_clients.h", fmt::format("{}_fast_clients.h", module_name));
+    render_whisker_file(
+        "module_fast_clients.cpp",
+        fmt::format("{}_fast_clients.cpp", module_name));
+  }
 }
 
 std::string t_mstch_cpp2_generator::include_prefix(
@@ -2908,6 +2942,9 @@ deprecated_public_required_fields
   that do not have the _ref() suffix.
 disable_custom_type_ordering_if_structure_has_uri (IGNORED - ALWAYS SET)
   Without this option, custom set/map are considered orderable if parent structure has uri.
+fast_client_stubs
+  Emit empty FastClient files for unannotated services, for build systems
+  that require statically declared outputs. Does not enable FastClient symbols.
 frozen[=packed]
   Enable frozen structs. If the packed parameter is given, structure members
   will be packed with an alignment of 1 (i.e., #pragma pack(push, 1)).

@@ -15,8 +15,10 @@
   limitations under the License.
 
 }}
+{{#import "common/rpc" as rpc}}
 {{#import "service_fast_client_cpp/function_implementation" as function_implementation}}
 namespace {{service.cpp_qualified_namespace}} {
+{{#partial rpc.function_param_and_result_typedefs interface=service parent_service=null}}
 
 {{#each service.functions as |function|}}
 {{#if (and (not function.starts_interaction?) (not function.stream?) (not function.sink?) (not function.oneway?))}}

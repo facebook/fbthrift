@@ -19,9 +19,6 @@
 #pragma once
 
 #include <thrift/lib/cpp2/gen/client_h.h>
-{{#if service.is_fast_client?}}
-#include <thrift/lib/cpp2/gen/fast_client_h.h>
-{{/if service.is_fast_client?}}
 
 #include "{{service.program.include_prefix}}{{service.program.name}}_types.h"
   {{#if (object.notnull? service.extends)}}
@@ -56,7 +53,7 @@ namespace apache { namespace thrift {
 }}
 
 {{> service_h/async_client}}
-{{#if service.is_fast_client?}}
+  {{#if service.is_fast_client?}}
 
-{{> service_h/fast_client}}
-{{/if service.is_fast_client?}}
+#include "{{service.program.include_prefix}}{{service.name}}FastClient.h"
+  {{/if service.is_fast_client?}}

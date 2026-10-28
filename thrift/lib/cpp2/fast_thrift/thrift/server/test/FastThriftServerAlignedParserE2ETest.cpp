@@ -57,6 +57,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServer.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/AlignedParserServer.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/AlignedParserServer.tcc>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/AlignedParserServerFastClient.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>

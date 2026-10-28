@@ -57,7 +57,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/util/FastHandlerCallback.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/TestFastService.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/TestFastServiceAsyncClient.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/TestFastServiceFastClient.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
