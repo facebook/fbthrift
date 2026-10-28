@@ -82,6 +82,19 @@ PipelineImpl::~PipelineImpl() {
   if (pipelineStateDeleter_) {
     pipelineStateDeleter_(pipelineState_);
   }
+  // Runs after all handlers and contexts have been destroyed (derived storage
+  // is torn down before this base destructor), so an owned allocator outlives
+  // every handler that may hold buffers allocated from it. Allocator is
+  // destroyed last.
+  if (ownedHeadDeleter_) {
+    ownedHeadDeleter_(ownedHead_);
+  }
+  if (ownedTailDeleter_) {
+    ownedTailDeleter_(ownedTail_);
+  }
+  if (ownedAllocatorDeleter_) {
+    ownedAllocatorDeleter_(ownedAllocator_);
+  }
 }
 
 PipelineImpl::PipelineImpl(

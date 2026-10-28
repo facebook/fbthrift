@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/EndpointAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineRef.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ErasedStaticHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/ErasedStaticSegment.h>
@@ -327,6 +328,46 @@ class StaticEventPublisherHandle<Pipeline, Events<Evs...>> {
   Pipeline* pipeline_;
 };
 
+/**
+ * RAII storage for a pipeline-owned endpoint/allocator, co-located in the
+ * StaticPipelineImpl allocation. Constructed in place from an EndpointSource at
+ * build() and destroyed in place when the slot member is destroyed. Slots are
+ * declared before the handler storage so they are destroyed after all handlers;
+ * the allocator slot is declared first so it is destroyed last, preserving the
+ * allocator-outlives-everything invariant.
+ */
+template <typename T>
+class OwnedEndpointSlot {
+ public:
+  OwnedEndpointSlot() noexcept = default;
+  OwnedEndpointSlot(const OwnedEndpointSlot&) = delete;
+  OwnedEndpointSlot& operator=(const OwnedEndpointSlot&) = delete;
+  OwnedEndpointSlot(OwnedEndpointSlot&&) = delete;
+  OwnedEndpointSlot& operator=(OwnedEndpointSlot&&) = delete;
+  ~OwnedEndpointSlot() {
+    if (destroy_ != nullptr) {
+      destroy_(&storage_);
+    }
+  }
+
+  // Construct the owned object in place from an owning source (src.ops != null)
+  // and return its pointer. The destructor is taken from the type-erased
+  // EndpointConstructionOps rather than calling std::destroy_at<T> here, so
+  // this slot never odr-uses ~T for an endpoint that is only ever set
+  // externally — some external endpoints (e.g. SRAppAdapter) have a private
+  // destructor.
+  T* construct(const EndpointSource& src) {
+    T* obj =
+        static_cast<T*>(src.ops->constructInline(&storage_, src.args.get()));
+    destroy_ = src.ops->destroyInline;
+    return obj;
+  }
+
+ private:
+  alignas(T) std::byte storage_[sizeof(T)]{};
+  void (*destroy_)(void*) noexcept {nullptr};
+};
+
 template <
     typename HeadHandler,
     typename TailHandler,
@@ -382,23 +423,34 @@ class StaticPipelineImpl final {
   template <typename FactoryTuple>
   StaticPipelineImpl(
       folly::EventBase* eventBase,
-      HeadHandler* headHandler,
-      TailHandler* tailHandler,
-      Allocator* allocator,
+      EndpointSource headSource,
+      EndpointSource tailSource,
+      EndpointSource allocatorSource,
       StateTuple&& state,
       FactoryTuple& factories,
       std::vector<ErasedStaticHandler>&& staticHandlers,
       std::vector<ErasedStaticSegment>&& staticSegments)
       : eventBase_(eventBase),
-        headHandler_(headHandler),
-        tailHandler_(tailHandler),
-        allocator_(allocator),
+        headHandler_(static_cast<HeadHandler*>(headSource.external)),
+        tailHandler_(static_cast<TailHandler*>(tailSource.external)),
+        allocator_(static_cast<Allocator*>(allocatorSource.external)),
         stateStorage_(std::move(state)),
         handlers_(this, factories),
         staticHandlers_(std::move(staticHandlers)),
         staticSegments_(std::move(staticSegments)),
         endpointContext_(this) {
     static_assert(ValidEndpointPair<HeadHandler, TailHandler, EndpointContext>);
+    // Construct any pipeline-owned endpoints in place; external components keep
+    // the raw pointer set above.
+    if (headSource.ops) {
+      headHandler_ = ownedHead_.construct(headSource);
+    }
+    if (tailSource.ops) {
+      tailHandler_ = ownedTail_.construct(tailSource);
+    }
+    if (allocatorSource.ops) {
+      allocator_ = ownedAllocator_.construct(allocatorSource);
+    }
     bindStaticHandlerContexts();
     initializeHooks(std::make_index_sequence<kHandlerCount>{});
   }
@@ -1616,6 +1668,12 @@ class StaticPipelineImpl final {
     }
   }
 
+  // Optionally pipeline-owned endpoints/allocator, co-located in this
+  // allocation. Declared before handlers_ so they are destroyed after all
+  // handlers; the allocator slot is declared first so it is destroyed last.
+  OwnedEndpointSlot<Allocator> ownedAllocator_;
+  OwnedEndpointSlot<TailHandler> ownedTail_;
+  OwnedEndpointSlot<HeadHandler> ownedHead_;
   folly::EventBase* eventBase_;
   HeadHandler* headHandler_;
   TailHandler* tailHandler_;

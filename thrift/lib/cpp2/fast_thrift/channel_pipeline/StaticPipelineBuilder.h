@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/EndpointAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Handler.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/HandlerTag.h>
+#include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/detail/StaticPipeline.h>
 
 #include <cstddef>
@@ -71,29 +72,48 @@ class StaticPipelineBuilder {
   }
 
   StaticPipelineBuilder& setHead(HeadHandler* head) & noexcept {
-    headHandler_ = head;
+    detail::setExternalEndpoint(headSource_, head);
     return *this;
   }
   StaticPipelineBuilder&& setHead(HeadHandler* head) && noexcept {
-    headHandler_ = head;
+    detail::setExternalEndpoint(headSource_, head);
     return std::move(*this);
   }
 
   StaticPipelineBuilder& setTail(TailHandler* tail) & noexcept {
-    tailHandler_ = tail;
+    detail::setExternalEndpoint(tailSource_, tail);
     return *this;
   }
   StaticPipelineBuilder&& setTail(TailHandler* tail) && noexcept {
-    tailHandler_ = tail;
+    detail::setExternalEndpoint(tailSource_, tail);
     return std::move(*this);
   }
 
   StaticPipelineBuilder& setAllocator(Allocator* allocator) & noexcept {
-    allocator_ = allocator;
+    detail::setExternalEndpoint(allocatorSource_, allocator);
     return *this;
   }
   StaticPipelineBuilder&& setAllocator(Allocator* allocator) && noexcept {
-    allocator_ = allocator;
+    detail::setExternalEndpoint(allocatorSource_, allocator);
+    return std::move(*this);
+  }
+
+  /**
+   * Construct and own the head endpoint in place from `args`. The pipeline owns
+   * the object, co-located in the single pipeline allocation and destroyed with
+   * the pipeline. Overrides any prior setHead/emplaceHead. Arguments are
+   * decay-copied and the object is constructed at build().
+   */
+  template <typename... Args>
+  StaticPipelineBuilder& emplaceHead(Args&&... args) & {
+    detail::prepareOwnedEndpoint<HeadHandler>(
+        headSource_, std::forward<Args>(args)...);
+    return *this;
+  }
+  template <typename... Args>
+  StaticPipelineBuilder&& emplaceHead(Args&&... args) && {
+    detail::prepareOwnedEndpoint<HeadHandler>(
+        headSource_, std::forward<Args>(args)...);
     return std::move(*this);
   }
 
@@ -116,9 +136,9 @@ class StaticPipelineBuilder {
         StaticHandlerConfig>(
         detail::StaticPipelineBuilderRebindTag{},
         eventBase_,
-        headHandler_,
-        tailHandler_,
-        allocator_,
+        std::move(headSource_),
+        std::move(tailSource_),
+        std::move(allocatorSource_),
         std::tuple<>{},
         std::tuple_cat(
             std::move(stateTuple_),
@@ -192,9 +212,9 @@ class StaticPipelineBuilder {
         Entry...>(
         detail::StaticPipelineBuilderRebindTag{},
         eventBase_,
-        headHandler_,
-        tailHandler_,
-        allocator_,
+        std::move(headSource_),
+        std::move(tailSource_),
+        std::move(allocatorSource_),
         std::move(factories_),
         std::move(stateTuple_),
         std::move(handlers),
@@ -218,9 +238,9 @@ class StaticPipelineBuilder {
         Entry...>(
         detail::StaticPipelineBuilderRebindTag{},
         eventBase_,
-        headHandler_,
-        tailHandler_,
-        allocator_,
+        std::move(headSource_),
+        std::move(tailSource_),
+        std::move(allocatorSource_),
         std::move(factories_),
         std::move(stateTuple_),
         {},
@@ -239,9 +259,9 @@ class StaticPipelineBuilder {
         typename Entry::Spec...>;
     typename Impl::Ptr pipeline(new Impl(
         eventBase_,
-        headHandler_,
-        tailHandler_,
-        allocator_,
+        std::move(headSource_),
+        std::move(tailSource_),
+        std::move(allocatorSource_),
         std::move(stateTuple_),
         factories_,
         std::move(staticHandlers_),
@@ -272,9 +292,9 @@ class StaticPipelineBuilder {
         NewEntry>(
         detail::StaticPipelineBuilderRebindTag{},
         eventBase_,
-        headHandler_,
-        tailHandler_,
-        allocator_,
+        std::move(headSource_),
+        std::move(tailSource_),
+        std::move(allocatorSource_),
         std::tuple_cat(
             std::move(factories_),
             std::tuple<NewEntry>(NewEntry(std::forward<Args>(args)...))),
@@ -304,9 +324,9 @@ class StaticPipelineBuilder {
         NewEntry>(
         detail::StaticPipelineBuilderRebindTag{},
         eventBase_,
-        headHandler_,
-        tailHandler_,
-        allocator_,
+        std::move(headSource_),
+        std::move(tailSource_),
+        std::move(allocatorSource_),
         std::tuple_cat(
             std::move(factories_),
             std::tuple<NewEntry>(NewEntry(std::forward<Args>(args)...))),
@@ -319,13 +339,13 @@ class StaticPipelineBuilder {
     if (eventBase_ == nullptr) {
       throw std::runtime_error("StaticPipelineBuilder: EventBase is required");
     }
-    if (headHandler_ == nullptr) {
+    if (!headSource_.present()) {
       throw std::runtime_error("StaticPipelineBuilder: head is required");
     }
-    if (tailHandler_ == nullptr) {
+    if (!tailSource_.present()) {
       throw std::runtime_error("StaticPipelineBuilder: tail is required");
     }
-    if (allocator_ == nullptr) {
+    if (!allocatorSource_.present()) {
       throw std::runtime_error("StaticPipelineBuilder: allocator is required");
     }
   }
@@ -358,26 +378,26 @@ class StaticPipelineBuilder {
   StaticPipelineBuilder(
       detail::StaticPipelineBuilderRebindTag,
       folly::EventBase* eventBase,
-      HeadHandler* headHandler,
-      TailHandler* tailHandler,
-      Allocator* allocator,
+      detail::EndpointSource&& headSource,
+      detail::EndpointSource&& tailSource,
+      detail::EndpointSource&& allocatorSource,
       std::tuple<Entry...>&& factories,
       StateTuple&& stateTuple,
       std::vector<detail::ErasedStaticHandler>&& staticHandlers,
       std::vector<detail::ErasedStaticSegment>&& staticSegments) noexcept
       : eventBase_(eventBase),
-        headHandler_(headHandler),
-        tailHandler_(tailHandler),
-        allocator_(allocator),
+        headSource_(std::move(headSource)),
+        tailSource_(std::move(tailSource)),
+        allocatorSource_(std::move(allocatorSource)),
         factories_(std::move(factories)),
         stateTuple_(std::move(stateTuple)),
         staticHandlers_(std::move(staticHandlers)),
         staticSegments_(std::move(staticSegments)) {}
 
   folly::EventBase* eventBase_{nullptr};
-  HeadHandler* headHandler_{nullptr};
-  TailHandler* tailHandler_{nullptr};
-  Allocator* allocator_{nullptr};
+  detail::EndpointSource headSource_;
+  detail::EndpointSource tailSource_;
+  detail::EndpointSource allocatorSource_;
   std::tuple<Entry...> factories_;
   StateTuple stateTuple_;
   std::vector<detail::ErasedStaticHandler> staticHandlers_;

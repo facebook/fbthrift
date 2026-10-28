@@ -152,29 +152,50 @@ class PipelineBuilder {
   }
 
   /**
-   * Set the head endpoint handler.
+   * Set the head endpoint handler. The builder does not take ownership; the
+   * caller must keep `head` alive for the pipeline's lifetime. Overrides any
+   * prior setHead/emplaceHead.
    * Required before build().
    */
   PipelineBuilder& setHead(HeadHandler* head) noexcept {
-    headHandler_ = head;
+    detail::setExternalEndpoint(headSource_, head);
     return *this;
   }
 
   /**
-   * Set the tail endpoint handler.
+   * Set the tail endpoint handler. Non-owning; see setHead. Overrides any prior
+   * setTail/emplaceTail.
    * Required before build().
    */
   PipelineBuilder& setTail(TailHandler* tail) noexcept {
-    tailHandler_ = tail;
+    detail::setExternalEndpoint(tailSource_, tail);
     return *this;
   }
 
   /**
-   * Set the buffer allocator.
+   * Set the buffer allocator. Non-owning; see setHead. Overrides any prior
+   * setAllocator/emplaceAllocator.
    * Required before build().
    */
   PipelineBuilder& setAllocator(Allocator* allocator) noexcept {
-    allocator_ = allocator;
+    detail::setExternalEndpoint(allocatorSource_, allocator);
+    return *this;
+  }
+
+  /**
+   * Construct and own the head endpoint in place from `args`, forwarded to
+   * HeadHandler's constructor. The pipeline owns the object: it is co-located
+   * in the pipeline allocation for inline storage flavors (no separate heap
+   * allocation) or heap-allocated for Large storage, and destroyed with the
+   * pipeline. Overrides any prior setHead/emplaceHead. The arguments are
+   * decay-copied and the object is constructed at build(); pass std::ref/cref
+   * for reference semantics and keep the referent alive until build().
+   * Required before build() (unless setHead is used instead).
+   */
+  template <typename... Args>
+  PipelineBuilder& emplaceHead(Args&&... args) {
+    detail::prepareOwnedEndpoint<HeadHandler>(
+        headSource_, std::forward<Args>(args)...);
     return *this;
   }
 
@@ -379,9 +400,9 @@ class PipelineBuilder {
         NewStateTuple>(
         detail::PipelineBuilderRebindTag{},
         eventBase_,
-        headHandler_,
-        tailHandler_,
-        allocator_,
+        std::move(headSource_),
+        std::move(tailSource_),
+        std::move(allocatorSource_),
         std::move(handlers_),
         std::tuple_cat(
             std::move(stateTuple_),
@@ -425,9 +446,9 @@ class PipelineBuilder {
     auto pipeline = PipelineImpl::create<Storage>(
         eventBase_,
         std::move(handlers_),
-        static_cast<void*>(headHandler_),
-        static_cast<void*>(tailHandler_),
-        static_cast<void*>(allocator_));
+        std::move(headSource_),
+        std::move(tailSource_),
+        std::move(allocatorSource_));
 
     wireHeadHandler(pipeline.get());
     wireTailHandler(pipeline.get());
@@ -481,13 +502,13 @@ class PipelineBuilder {
     if (!eventBase_) {
       throw std::runtime_error("PipelineBuilder: EventBase is required");
     }
-    if (!headHandler_) {
+    if (!headSource_.present()) {
       throw std::runtime_error("PipelineBuilder: Head handler is required");
     }
-    if (!tailHandler_) {
+    if (!tailSource_.present()) {
       throw std::runtime_error("PipelineBuilder: Tail handler is required");
     }
-    if (!allocator_) {
+    if (!allocatorSource_.present()) {
       throw std::runtime_error("PipelineBuilder: Allocator is required");
     }
   }
@@ -652,23 +673,23 @@ class PipelineBuilder {
   PipelineBuilder(
       detail::PipelineBuilderRebindTag,
       folly::EventBase* eventBase,
-      HeadHandler* headHandler,
-      TailHandler* tailHandler,
-      Allocator* allocator,
+      detail::EndpointSource&& headSource,
+      detail::EndpointSource&& tailSource,
+      detail::EndpointSource&& allocatorSource,
       detail::HandlerStorageT<Storage>&& handlers,
       StateTuple&&
           stateTuple) noexcept(std::is_nothrow_move_constructible_v<StateTuple>)
       : eventBase_(eventBase),
-        headHandler_(headHandler),
-        tailHandler_(tailHandler),
-        allocator_(allocator),
+        headSource_(std::move(headSource)),
+        tailSource_(std::move(tailSource)),
+        allocatorSource_(std::move(allocatorSource)),
         handlers_(std::move(handlers)),
         stateTuple_(std::move(stateTuple)) {}
 
   folly::EventBase* eventBase_{nullptr};
-  HeadHandler* headHandler_{nullptr};
-  TailHandler* tailHandler_{nullptr};
-  Allocator* allocator_{nullptr};
+  detail::EndpointSource headSource_;
+  detail::EndpointSource tailSource_;
+  detail::EndpointSource allocatorSource_;
   detail::HandlerStorageT<Storage> handlers_;
   StateTuple stateTuple_{};
 };
