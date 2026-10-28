@@ -341,7 +341,9 @@ class ConformanceVerificationServer
 
   apache::thrift::SinkConsumer<Request, Response> sinkBasic(
       std::unique_ptr<Request> req) override {
-    serverResult_.sinkBasic().emplace().request() = *req;
+    auto& result = serverResult_.sinkBasic().emplace();
+    result.request() = *req;
+    result.checksum().from_optional(requestChecksum());
     return apache::thrift::SinkConsumer<Request, Response>{
         [&](folly::coro::AsyncGenerator<Request&&> gen)
             -> folly::coro::Task<Response> {

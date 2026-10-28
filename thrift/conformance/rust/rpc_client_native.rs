@@ -1093,7 +1093,9 @@ async fn sink_basic(
     client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
     instr: &SinkBasicClientInstruction,
 ) -> Result<()> {
-    let sink_result = client.sinkBasic(&instr.request).await?;
+    let mut opts = nativeclient::RpcOptions::default();
+    opts.set_checksum(checksum_of(instr.checksum));
+    let sink_result = client.sinkBasic_with_rpc_opts(&instr.request, opts).await?;
     let final_response = (sink_result.sink)(
         futures::stream::iter(instr.sinkPayloads.clone())
             .map(Ok)

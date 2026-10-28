@@ -2837,6 +2837,47 @@ Test createStreamChecksumTest(
   return ret;
 }
 
+Test createSinkChecksumTest(
+    const std::string& algorithm, ChecksumKind checksum) {
+  Test ret;
+  ret.name() = "Sink" + algorithm + "ChecksumTest";
+  ret.tags()->emplace("spec/compatibility/rocket#sink");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "Sink" + algorithm + "Checksum/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().sinkBasic().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  for (int i = 0; i < 100; i++) {
+    auto& sinkPayload = clientInstruction.sinkPayloads()->emplace_back();
+    sinkPayload.data() = folly::to<std::string>(i);
+  }
+  clientInstruction.checksum() = checksum;
+
+  rpcTest.clientTestResult()
+      .emplace()
+      .sinkBasic()
+      .emplace()
+      .finalResponse()
+      .emplace()
+      .data() = "world";
+
+  auto& serverInstruction =
+      rpcTest.serverInstruction().emplace().sinkBasic().emplace();
+  serverInstruction.finalResponse().emplace().data() = "world";
+  serverInstruction.bufferSize() = kDefaultBufferSize;
+
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().sinkBasic().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.sinkPayloads().copy_from(clientInstruction.sinkPayloads());
+  serverTestResult.checksum() = checksum;
+
+  return ret;
+}
+
 std::string mismatchedChunkChecksumMetadata() {
   StreamPayloadMetadata metadata;
   auto& checksum = metadata.checksum().emplace();
@@ -3330,6 +3371,10 @@ TestSuite createRPCClientChecksumTestSuite() {
       createStreamChecksumTest("Crc32", ChecksumKind::CRC32));
   suite.tests()->push_back(
       createStreamChecksumTest("Xxh3", ChecksumKind::XXH3_64));
+  suite.tests()->push_back(
+      createSinkChecksumTest("Crc32", ChecksumKind::CRC32));
+  suite.tests()->push_back(
+      createSinkChecksumTest("Xxh3", ChecksumKind::XXH3_64));
   suite.tests()->push_back(createRequestResponseChecksumMismatchTest());
   suite.tests()->push_back(createStreamChecksumMismatchTest());
   suite.tests()->push_back(createSinkChecksumMismatchTest());

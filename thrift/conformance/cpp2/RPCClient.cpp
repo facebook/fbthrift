@@ -547,9 +547,13 @@ StreamInitialTimeoutClientTestResult streamInitialTimeoutTest(
 SinkBasicClientTestResult sinkBasicTest(
     SinkBasicClientInstruction& instruction) {
   auto client = createClient();
+  auto rpcOptions = RpcOptions().setChecksum(
+      static_cast<RpcOptions::Checksum>(
+          instruction.checksum().value_or(ChecksumKind::NONE)));
   return folly::coro::blockingWait(
       [&]() -> folly::coro::Task<SinkBasicClientTestResult> {
-        auto sink = co_await client->co_sinkBasic(*instruction.request());
+        auto sink =
+            co_await client->co_sinkBasic(rpcOptions, *instruction.request());
         auto finalResponse =
             co_await sink.sink([&]() -> folly::coro::AsyncGenerator<Request&&> {
               for (auto& payload : *instruction.sinkPayloads()) {

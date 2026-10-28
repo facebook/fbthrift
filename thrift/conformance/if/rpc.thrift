@@ -235,6 +235,7 @@ struct StreamServerErrorServerTestResult {
 struct SinkBasicServerTestResult {
   1: Request request;
   2: list<Request> sinkPayloads;
+  3: optional ChecksumKind checksum;
 }
 
 struct SinkChunkTimeoutServerTestResult {
@@ -740,6 +741,7 @@ struct StreamServerErrorClientInstruction {
 struct SinkBasicClientInstruction {
   1: Request request;
   2: list<Request> sinkPayloads;
+  3: optional ChecksumKind checksum;
 }
 
 struct SinkChunkTimeoutClientInstruction {
