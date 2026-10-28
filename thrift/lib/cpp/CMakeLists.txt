@@ -103,12 +103,8 @@ if (BUILD_SHARED_LIBS)
   endif ()
 endif ()
 
-install(TARGETS thrift-core concurrency
-        runtime EXPORT fbthrift-exports DESTINATION ${CMAKE_INSTALL_LIBDIR})
+thrift_install_targets(thrift-core concurrency runtime)
 
 if (THRIFT_RPC)
-  install(
-    TARGETS transport async thrift-cpp
-    EXPORT fbthrift-exports
-    DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  thrift_install_targets(transport async thrift-cpp)
 endif ()

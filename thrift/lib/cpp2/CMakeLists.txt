@@ -561,22 +561,17 @@ if (BUILD_SHARED_LIBS)
   endif ()
 endif ()
 
-install(
-  TARGETS rpcmetadata
-          thriftmetadata
-          thrift_path
-          thrift_dynamic_value
-          thriftfrozen2
-          thrifttyperep
-          thrifttype
-          thriftanyrep
-          thriftprotocol
-          serverdbginfo
-  EXPORT fbthrift-exports
-  DESTINATION ${CMAKE_INSTALL_LIBDIR})
+thrift_install_targets(
+  rpcmetadata
+  thriftmetadata
+  thrift_path
+  thrift_dynamic_value
+  thriftfrozen2
+  thrifttyperep
+  thrifttype
+  thriftanyrep
+  thriftprotocol
+  serverdbginfo)
 if (THRIFT_RPC)
-  install(
-    TARGETS thriftcpp2
-    EXPORT fbthrift-exports
-    DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  thrift_install_targets(thriftcpp2)
 endif ()

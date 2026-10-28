@@ -14,6 +14,25 @@
 
 include(ThriftLibrary)
 
+# Installs the targets into fbthrift-exports. Projects that build fbthrift from
+# source also get the FBThrift:: name FBThriftTargets.cmake gives each one.
+function (thrift_install_targets)
+  install(
+    TARGETS ${ARGN}
+    EXPORT fbthrift-exports
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  foreach (target IN LISTS ARGN)
+    get_target_property(type ${target} TYPE)
+    if (type STREQUAL "EXECUTABLE")
+      add_executable(FBThrift::${target} ALIAS ${target})
+    else ()
+      add_library(FBThrift::${target} ALIAS ${target})
+    endif ()
+  endforeach ()
+endfunction ()
+
 add_subdirectory(common)
 add_subdirectory(compiler)
 add_subdirectory(annotation)
@@ -44,6 +63,16 @@ install(
   FILE FBThriftTargets.cmake
   NAMESPACE FBThrift::
   DESTINATION ${THRIFT_INSTALL_CMAKEDIR})
+
+# For projects that build fbthrift from source: the FBTHRIFT_COMPILER and
+# FBTHRIFT_INCLUDE_DIR that fbcode_builder's add_fbthrift_*_library() read.
+set(FBTHRIFT_COMPILER
+    FBThrift::thrift
+    CACHE INTERNAL "thrift compiler target")
+set(FBTHRIFT_INCLUDE_DIR
+    "${PROJECT_SOURCE_DIR}"
+    CACHE INTERNAL "fbthrift include directory")
+
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ThriftLibrary.cmake
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift)
 

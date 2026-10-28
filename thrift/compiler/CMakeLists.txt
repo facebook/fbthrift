@@ -134,18 +134,14 @@ if (BUILD_SHARED_LIBS)
     PROPERTIES VERSION ${PROJECT_VERSION})
 endif ()
 
-install(
-  TARGETS thrift
-          compiler_ast
-          compiler_base
-          compiler_lib
-          compiler
-          whisker
-          thrift_common
-  EXPORT fbthrift-exports
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+thrift_install_targets(
+  thrift
+  compiler_ast
+  compiler_base
+  compiler_lib
+  compiler
+  whisker
+  thrift_common)
 
 # Deprecated alias. The link is relative, so the install stays relocatable.
 # Windows has no dependable symlink support for an unprivileged install, so

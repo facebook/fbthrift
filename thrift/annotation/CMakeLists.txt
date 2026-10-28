@@ -32,7 +32,4 @@ foreach (
     OPTIONS templates no_metadata)
 endforeach ()
 
-install(
-  TARGETS thrift_annotation
-  EXPORT fbthrift-exports
-  DESTINATION ${CMAKE_INSTALL_LIBDIR})
+thrift_install_targets(thrift_annotation)

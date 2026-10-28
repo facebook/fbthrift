@@ -17,12 +17,7 @@ if (THRIFT_BENCHMARKS)
   target_link_libraries(VarintUtilsBench thriftprotocol Folly::folly
                         Folly::follybenchmark)
 
-  install(
-    TARGETS VarintUtilsBench
-    EXPORT fbthrift-exports
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  thrift_install_targets(VarintUtilsBench)
 endif ()
 
 if (THRIFT_TESTS)

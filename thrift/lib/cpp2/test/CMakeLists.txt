@@ -48,9 +48,4 @@ find_package(benchmark CONFIG REQUIRED)
 target_link_libraries(ProtocolBench thriftfrozen2 thriftprotocol thrifttype
                       Folly::folly benchmark::benchmark)
 
-install(
-  TARGETS ProtocolBench
-  EXPORT fbthrift-exports
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+thrift_install_targets(ProtocolBench)
