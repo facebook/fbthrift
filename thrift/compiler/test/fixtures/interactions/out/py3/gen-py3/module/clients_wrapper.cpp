@@ -472,6 +472,50 @@ FactoriesClientWrapper::serialize(
   return std::move(_future).thenValue(CallbackHelper::extractResult);
 }
 
+folly::Future<apache::thrift::ClientBufferedStream<int32_t>>
+FactoriesClientWrapper::interactWithStream(
+    apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::FactoriesAsyncClient*>(async_client_.get());
+  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<apache::thrift::ClientBufferedStream<int32_t>>;
+  folly::Promise<CallbackHelper::PromiseResult> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_interactWithStream, channel_);
+  try {
+    client->interactWithStream(
+      rpcOptions,
+      std::move(callback)
+    );
+  } catch (...) {
+    return folly::makeFuture<apache::thrift::ClientBufferedStream<int32_t>>(folly::exception_wrapper(
+      std::current_exception()
+    ));
+  }
+  return std::move(_future).thenValue(CallbackHelper::extractResult);
+}
+
+folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>
+FactoriesClientWrapper::interactWithStreamAndInitialResponse(
+    apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::FactoriesAsyncClient*>(async_client_.get());
+  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>;
+  folly::Promise<CallbackHelper::PromiseResult> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_interactWithStreamAndInitialResponse, channel_);
+  try {
+    client->interactWithStreamAndInitialResponse(
+      rpcOptions,
+      std::move(callback)
+    );
+  } catch (...) {
+    return folly::makeFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>(folly::exception_wrapper(
+      std::current_exception()
+    ));
+  }
+  return std::move(_future).thenValue(CallbackHelper::extractResult);
+}
+
 folly::Future<folly::Unit>
 PerformClientWrapper::foo(
     apache::thrift::RpcOptions& rpcOptions) {

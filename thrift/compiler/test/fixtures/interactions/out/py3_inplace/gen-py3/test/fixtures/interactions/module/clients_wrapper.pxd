@@ -155,6 +155,8 @@ cdef extern from "thrift/compiler/test/fixtures/interactions/gen-py3/module/clie
       cint32_t arg_arg,)
     cFollyFuture[cint32_t] interactFast(cRpcOptions, )
     cFollyFuture[cResponseAndClientBufferedStream[cint32_t,cint32_t]] serialize(cRpcOptions, )
+    cFollyFuture[cClientBufferedStream[cint32_t]] interactWithStream(cRpcOptions, )
+    cFollyFuture[cResponseAndClientBufferedStream[cint32_t,cint32_t]] interactWithStreamAndInitialResponse(cRpcOptions, )
 
 
   cdef cppclass cPerformClientWrapper "::cpp2::PerformClientWrapper":

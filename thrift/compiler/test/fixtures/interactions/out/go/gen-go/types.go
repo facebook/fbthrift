@@ -2132,6 +2132,2499 @@ func (x *streamFactoriesSerialize) setDefaults() *streamFactoriesSerialize {
     return x
 }
 
+type reqFactoriesInteractWithStream struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*reqFactoriesInteractWithStream)(nil)
+
+// Deprecated: FactoriesInteractWithStreamArgsDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithStreamArgsDeprecated = reqFactoriesInteractWithStream
+
+func newReqFactoriesInteractWithStream() *reqFactoriesInteractWithStream {
+    return (&reqFactoriesInteractWithStream{}).setDefaults()
+}
+
+
+
+
+func (x *reqFactoriesInteractWithStream) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("reqFactoriesInteractWithStream"); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithStream write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithStream write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithStream write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *reqFactoriesInteractWithStream) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithStream read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("reqFactoriesInteractWithStream field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithStream read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *reqFactoriesInteractWithStream) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *reqFactoriesInteractWithStream) setDefaults() *reqFactoriesInteractWithStream {
+    return x
+}
+
+type respFactoriesInteractWithStream struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*respFactoriesInteractWithStream)(nil)
+var _ thrift.WritableResult = (*respFactoriesInteractWithStream)(nil)
+
+// Deprecated: FactoriesInteractWithStreamResultDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithStreamResultDeprecated = respFactoriesInteractWithStream
+
+func newRespFactoriesInteractWithStream() *respFactoriesInteractWithStream {
+    return (&respFactoriesInteractWithStream{}).setDefaults()
+}
+
+
+
+
+func (x *respFactoriesInteractWithStream) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *respFactoriesInteractWithStream) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("respFactoriesInteractWithStream"); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStream write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStream write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStream write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFactoriesInteractWithStream) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStream read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("respFactoriesInteractWithStream field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStream read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *respFactoriesInteractWithStream) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *respFactoriesInteractWithStream) setDefaults() *respFactoriesInteractWithStream {
+    return x
+}
+
+type streamFactoriesInteractWithStream struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*streamFactoriesInteractWithStream)(nil)
+var _ thrift.WritableResult = (*streamFactoriesInteractWithStream)(nil)
+
+// Deprecated: streamFactoriesInteractWithStreamResultDeprecated is deprecated, since it is supposed to be internal.
+type streamFactoriesInteractWithStreamResultDeprecated = streamFactoriesInteractWithStream
+
+func newStreamFactoriesInteractWithStream() *streamFactoriesInteractWithStream {
+    return (&streamFactoriesInteractWithStream{}).setDefaults()
+}
+
+func (x *streamFactoriesInteractWithStream) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *streamFactoriesInteractWithStream) SetSuccessNonCompat(value int32) *streamFactoriesInteractWithStream {
+    x.Success = &value
+    return x
+}
+
+func (x *streamFactoriesInteractWithStream) SetSuccess(value *int32) *streamFactoriesInteractWithStream {
+    x.Success = value
+    return x
+}
+
+func (x *streamFactoriesInteractWithStream) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *streamFactoriesInteractWithStream) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStream write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStream write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamFactoriesInteractWithStream) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *streamFactoriesInteractWithStream) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *streamFactoriesInteractWithStream) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("streamFactoriesInteractWithStream"); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStream write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStream write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStream write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamFactoriesInteractWithStream) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStream read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("streamFactoriesInteractWithStream field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStream read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *streamFactoriesInteractWithStream) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *streamFactoriesInteractWithStream) setDefaults() *streamFactoriesInteractWithStream {
+    return x
+}
+
+type reqFactoriesInteractWithStreamAndInitialResponse struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*reqFactoriesInteractWithStreamAndInitialResponse)(nil)
+
+// Deprecated: FactoriesInteractWithStreamAndInitialResponseArgsDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithStreamAndInitialResponseArgsDeprecated = reqFactoriesInteractWithStreamAndInitialResponse
+
+func newReqFactoriesInteractWithStreamAndInitialResponse() *reqFactoriesInteractWithStreamAndInitialResponse {
+    return (&reqFactoriesInteractWithStreamAndInitialResponse{}).setDefaults()
+}
+
+
+
+
+func (x *reqFactoriesInteractWithStreamAndInitialResponse) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("reqFactoriesInteractWithStreamAndInitialResponse"); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithStreamAndInitialResponse write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithStreamAndInitialResponse write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithStreamAndInitialResponse write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *reqFactoriesInteractWithStreamAndInitialResponse) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithStreamAndInitialResponse read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("reqFactoriesInteractWithStreamAndInitialResponse field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithStreamAndInitialResponse read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *reqFactoriesInteractWithStreamAndInitialResponse) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *reqFactoriesInteractWithStreamAndInitialResponse) setDefaults() *reqFactoriesInteractWithStreamAndInitialResponse {
+    return x
+}
+
+type respFactoriesInteractWithStreamAndInitialResponse struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*respFactoriesInteractWithStreamAndInitialResponse)(nil)
+var _ thrift.WritableResult = (*respFactoriesInteractWithStreamAndInitialResponse)(nil)
+
+// Deprecated: FactoriesInteractWithStreamAndInitialResponseResultDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithStreamAndInitialResponseResultDeprecated = respFactoriesInteractWithStreamAndInitialResponse
+
+func newRespFactoriesInteractWithStreamAndInitialResponse() *respFactoriesInteractWithStreamAndInitialResponse {
+    return (&respFactoriesInteractWithStreamAndInitialResponse{}).setDefaults()
+}
+
+func (x *respFactoriesInteractWithStreamAndInitialResponse) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *respFactoriesInteractWithStreamAndInitialResponse) SetSuccessNonCompat(value int32) *respFactoriesInteractWithStreamAndInitialResponse {
+    x.Success = &value
+    return x
+}
+
+func (x *respFactoriesInteractWithStreamAndInitialResponse) SetSuccess(value *int32) *respFactoriesInteractWithStreamAndInitialResponse {
+    x.Success = value
+    return x
+}
+
+func (x *respFactoriesInteractWithStreamAndInitialResponse) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *respFactoriesInteractWithStreamAndInitialResponse) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStreamAndInitialResponse write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStreamAndInitialResponse write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFactoriesInteractWithStreamAndInitialResponse) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *respFactoriesInteractWithStreamAndInitialResponse) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *respFactoriesInteractWithStreamAndInitialResponse) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("respFactoriesInteractWithStreamAndInitialResponse"); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStreamAndInitialResponse write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStreamAndInitialResponse write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStreamAndInitialResponse write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFactoriesInteractWithStreamAndInitialResponse) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStreamAndInitialResponse read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("respFactoriesInteractWithStreamAndInitialResponse field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithStreamAndInitialResponse read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *respFactoriesInteractWithStreamAndInitialResponse) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *respFactoriesInteractWithStreamAndInitialResponse) setDefaults() *respFactoriesInteractWithStreamAndInitialResponse {
+    return x
+}
+
+type streamFactoriesInteractWithStreamAndInitialResponse struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*streamFactoriesInteractWithStreamAndInitialResponse)(nil)
+var _ thrift.WritableResult = (*streamFactoriesInteractWithStreamAndInitialResponse)(nil)
+
+// Deprecated: streamFactoriesInteractWithStreamAndInitialResponseResultDeprecated is deprecated, since it is supposed to be internal.
+type streamFactoriesInteractWithStreamAndInitialResponseResultDeprecated = streamFactoriesInteractWithStreamAndInitialResponse
+
+func newStreamFactoriesInteractWithStreamAndInitialResponse() *streamFactoriesInteractWithStreamAndInitialResponse {
+    return (&streamFactoriesInteractWithStreamAndInitialResponse{}).setDefaults()
+}
+
+func (x *streamFactoriesInteractWithStreamAndInitialResponse) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *streamFactoriesInteractWithStreamAndInitialResponse) SetSuccessNonCompat(value int32) *streamFactoriesInteractWithStreamAndInitialResponse {
+    x.Success = &value
+    return x
+}
+
+func (x *streamFactoriesInteractWithStreamAndInitialResponse) SetSuccess(value *int32) *streamFactoriesInteractWithStreamAndInitialResponse {
+    x.Success = value
+    return x
+}
+
+func (x *streamFactoriesInteractWithStreamAndInitialResponse) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *streamFactoriesInteractWithStreamAndInitialResponse) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStreamAndInitialResponse write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStreamAndInitialResponse write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamFactoriesInteractWithStreamAndInitialResponse) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *streamFactoriesInteractWithStreamAndInitialResponse) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *streamFactoriesInteractWithStreamAndInitialResponse) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("streamFactoriesInteractWithStreamAndInitialResponse"); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStreamAndInitialResponse write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStreamAndInitialResponse write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStreamAndInitialResponse write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamFactoriesInteractWithStreamAndInitialResponse) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStreamAndInitialResponse read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("streamFactoriesInteractWithStreamAndInitialResponse field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithStreamAndInitialResponse read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *streamFactoriesInteractWithStreamAndInitialResponse) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *streamFactoriesInteractWithStreamAndInitialResponse) setDefaults() *streamFactoriesInteractWithStreamAndInitialResponse {
+    return x
+}
+
+type reqFactoriesInteractWithSink struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*reqFactoriesInteractWithSink)(nil)
+
+// Deprecated: FactoriesInteractWithSinkArgsDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithSinkArgsDeprecated = reqFactoriesInteractWithSink
+
+func newReqFactoriesInteractWithSink() *reqFactoriesInteractWithSink {
+    return (&reqFactoriesInteractWithSink{}).setDefaults()
+}
+
+
+
+
+func (x *reqFactoriesInteractWithSink) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("reqFactoriesInteractWithSink"); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithSink write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithSink write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithSink write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *reqFactoriesInteractWithSink) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithSink read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("reqFactoriesInteractWithSink field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithSink read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *reqFactoriesInteractWithSink) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *reqFactoriesInteractWithSink) setDefaults() *reqFactoriesInteractWithSink {
+    return x
+}
+
+type respFactoriesInteractWithSink struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*respFactoriesInteractWithSink)(nil)
+var _ thrift.WritableResult = (*respFactoriesInteractWithSink)(nil)
+
+// Deprecated: FactoriesInteractWithSinkResultDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithSinkResultDeprecated = respFactoriesInteractWithSink
+
+func newRespFactoriesInteractWithSink() *respFactoriesInteractWithSink {
+    return (&respFactoriesInteractWithSink{}).setDefaults()
+}
+
+
+
+
+func (x *respFactoriesInteractWithSink) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *respFactoriesInteractWithSink) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("respFactoriesInteractWithSink"); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSink write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSink write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSink write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFactoriesInteractWithSink) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSink read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("respFactoriesInteractWithSink field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSink read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *respFactoriesInteractWithSink) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *respFactoriesInteractWithSink) setDefaults() *respFactoriesInteractWithSink {
+    return x
+}
+
+type sinkFactoriesInteractWithSink struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*sinkFactoriesInteractWithSink)(nil)
+var _ thrift.WritableResult = (*sinkFactoriesInteractWithSink)(nil)
+
+// Deprecated: sinkFactoriesInteractWithSinkResultDeprecated is deprecated, since it is supposed to be internal.
+type sinkFactoriesInteractWithSinkResultDeprecated = sinkFactoriesInteractWithSink
+
+func newSinkFactoriesInteractWithSink() *sinkFactoriesInteractWithSink {
+    return (&sinkFactoriesInteractWithSink{}).setDefaults()
+}
+
+func (x *sinkFactoriesInteractWithSink) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *sinkFactoriesInteractWithSink) SetSuccessNonCompat(value int32) *sinkFactoriesInteractWithSink {
+    x.Success = &value
+    return x
+}
+
+func (x *sinkFactoriesInteractWithSink) SetSuccess(value *int32) *sinkFactoriesInteractWithSink {
+    x.Success = value
+    return x
+}
+
+func (x *sinkFactoriesInteractWithSink) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *sinkFactoriesInteractWithSink) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSink write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSink write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithSink) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *sinkFactoriesInteractWithSink) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithSink) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("sinkFactoriesInteractWithSink"); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSink write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSink write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSink write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithSink) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSink read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("sinkFactoriesInteractWithSink field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSink read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithSink) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *sinkFactoriesInteractWithSink) setDefaults() *sinkFactoriesInteractWithSink {
+    return x
+}
+
+type respFinalFactoriesInteractWithSink struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*respFinalFactoriesInteractWithSink)(nil)
+var _ thrift.WritableResult = (*respFinalFactoriesInteractWithSink)(nil)
+
+// Deprecated: FinalFactoriesInteractWithSinkResultDeprecated is deprecated, since it is supposed to be internal.
+type FinalFactoriesInteractWithSinkResultDeprecated = respFinalFactoriesInteractWithSink
+
+func newRespFinalFactoriesInteractWithSink() *respFinalFactoriesInteractWithSink {
+    return (&respFinalFactoriesInteractWithSink{}).setDefaults()
+}
+
+func (x *respFinalFactoriesInteractWithSink) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *respFinalFactoriesInteractWithSink) SetSuccessNonCompat(value int32) *respFinalFactoriesInteractWithSink {
+    x.Success = &value
+    return x
+}
+
+func (x *respFinalFactoriesInteractWithSink) SetSuccess(value *int32) *respFinalFactoriesInteractWithSink {
+    x.Success = value
+    return x
+}
+
+func (x *respFinalFactoriesInteractWithSink) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *respFinalFactoriesInteractWithSink) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSink write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSink write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFinalFactoriesInteractWithSink) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *respFinalFactoriesInteractWithSink) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *respFinalFactoriesInteractWithSink) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("respFinalFactoriesInteractWithSink"); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSink write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSink write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSink write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFinalFactoriesInteractWithSink) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSink read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("respFinalFactoriesInteractWithSink field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSink read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *respFinalFactoriesInteractWithSink) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *respFinalFactoriesInteractWithSink) setDefaults() *respFinalFactoriesInteractWithSink {
+    return x
+}
+
+type reqFactoriesInteractWithSinkAndInitialResponse struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*reqFactoriesInteractWithSinkAndInitialResponse)(nil)
+
+// Deprecated: FactoriesInteractWithSinkAndInitialResponseArgsDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithSinkAndInitialResponseArgsDeprecated = reqFactoriesInteractWithSinkAndInitialResponse
+
+func newReqFactoriesInteractWithSinkAndInitialResponse() *reqFactoriesInteractWithSinkAndInitialResponse {
+    return (&reqFactoriesInteractWithSinkAndInitialResponse{}).setDefaults()
+}
+
+
+
+
+func (x *reqFactoriesInteractWithSinkAndInitialResponse) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("reqFactoriesInteractWithSinkAndInitialResponse"); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithSinkAndInitialResponse write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithSinkAndInitialResponse write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithSinkAndInitialResponse write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *reqFactoriesInteractWithSinkAndInitialResponse) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithSinkAndInitialResponse read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("reqFactoriesInteractWithSinkAndInitialResponse field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithSinkAndInitialResponse read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *reqFactoriesInteractWithSinkAndInitialResponse) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *reqFactoriesInteractWithSinkAndInitialResponse) setDefaults() *reqFactoriesInteractWithSinkAndInitialResponse {
+    return x
+}
+
+type respFactoriesInteractWithSinkAndInitialResponse struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*respFactoriesInteractWithSinkAndInitialResponse)(nil)
+var _ thrift.WritableResult = (*respFactoriesInteractWithSinkAndInitialResponse)(nil)
+
+// Deprecated: FactoriesInteractWithSinkAndInitialResponseResultDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithSinkAndInitialResponseResultDeprecated = respFactoriesInteractWithSinkAndInitialResponse
+
+func newRespFactoriesInteractWithSinkAndInitialResponse() *respFactoriesInteractWithSinkAndInitialResponse {
+    return (&respFactoriesInteractWithSinkAndInitialResponse{}).setDefaults()
+}
+
+func (x *respFactoriesInteractWithSinkAndInitialResponse) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *respFactoriesInteractWithSinkAndInitialResponse) SetSuccessNonCompat(value int32) *respFactoriesInteractWithSinkAndInitialResponse {
+    x.Success = &value
+    return x
+}
+
+func (x *respFactoriesInteractWithSinkAndInitialResponse) SetSuccess(value *int32) *respFactoriesInteractWithSinkAndInitialResponse {
+    x.Success = value
+    return x
+}
+
+func (x *respFactoriesInteractWithSinkAndInitialResponse) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *respFactoriesInteractWithSinkAndInitialResponse) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSinkAndInitialResponse write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSinkAndInitialResponse write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFactoriesInteractWithSinkAndInitialResponse) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *respFactoriesInteractWithSinkAndInitialResponse) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *respFactoriesInteractWithSinkAndInitialResponse) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("respFactoriesInteractWithSinkAndInitialResponse"); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSinkAndInitialResponse write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSinkAndInitialResponse write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSinkAndInitialResponse write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFactoriesInteractWithSinkAndInitialResponse) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSinkAndInitialResponse read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("respFactoriesInteractWithSinkAndInitialResponse field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithSinkAndInitialResponse read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *respFactoriesInteractWithSinkAndInitialResponse) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *respFactoriesInteractWithSinkAndInitialResponse) setDefaults() *respFactoriesInteractWithSinkAndInitialResponse {
+    return x
+}
+
+type sinkFactoriesInteractWithSinkAndInitialResponse struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*sinkFactoriesInteractWithSinkAndInitialResponse)(nil)
+var _ thrift.WritableResult = (*sinkFactoriesInteractWithSinkAndInitialResponse)(nil)
+
+// Deprecated: sinkFactoriesInteractWithSinkAndInitialResponseResultDeprecated is deprecated, since it is supposed to be internal.
+type sinkFactoriesInteractWithSinkAndInitialResponseResultDeprecated = sinkFactoriesInteractWithSinkAndInitialResponse
+
+func newSinkFactoriesInteractWithSinkAndInitialResponse() *sinkFactoriesInteractWithSinkAndInitialResponse {
+    return (&sinkFactoriesInteractWithSinkAndInitialResponse{}).setDefaults()
+}
+
+func (x *sinkFactoriesInteractWithSinkAndInitialResponse) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *sinkFactoriesInteractWithSinkAndInitialResponse) SetSuccessNonCompat(value int32) *sinkFactoriesInteractWithSinkAndInitialResponse {
+    x.Success = &value
+    return x
+}
+
+func (x *sinkFactoriesInteractWithSinkAndInitialResponse) SetSuccess(value *int32) *sinkFactoriesInteractWithSinkAndInitialResponse {
+    x.Success = value
+    return x
+}
+
+func (x *sinkFactoriesInteractWithSinkAndInitialResponse) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *sinkFactoriesInteractWithSinkAndInitialResponse) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSinkAndInitialResponse write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSinkAndInitialResponse write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithSinkAndInitialResponse) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *sinkFactoriesInteractWithSinkAndInitialResponse) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithSinkAndInitialResponse) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("sinkFactoriesInteractWithSinkAndInitialResponse"); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSinkAndInitialResponse write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSinkAndInitialResponse write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSinkAndInitialResponse write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithSinkAndInitialResponse) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSinkAndInitialResponse read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("sinkFactoriesInteractWithSinkAndInitialResponse field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithSinkAndInitialResponse read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithSinkAndInitialResponse) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *sinkFactoriesInteractWithSinkAndInitialResponse) setDefaults() *sinkFactoriesInteractWithSinkAndInitialResponse {
+    return x
+}
+
+type respFinalFactoriesInteractWithSinkAndInitialResponse struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*respFinalFactoriesInteractWithSinkAndInitialResponse)(nil)
+var _ thrift.WritableResult = (*respFinalFactoriesInteractWithSinkAndInitialResponse)(nil)
+
+// Deprecated: FinalFactoriesInteractWithSinkAndInitialResponseResultDeprecated is deprecated, since it is supposed to be internal.
+type FinalFactoriesInteractWithSinkAndInitialResponseResultDeprecated = respFinalFactoriesInteractWithSinkAndInitialResponse
+
+func newRespFinalFactoriesInteractWithSinkAndInitialResponse() *respFinalFactoriesInteractWithSinkAndInitialResponse {
+    return (&respFinalFactoriesInteractWithSinkAndInitialResponse{}).setDefaults()
+}
+
+func (x *respFinalFactoriesInteractWithSinkAndInitialResponse) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *respFinalFactoriesInteractWithSinkAndInitialResponse) SetSuccessNonCompat(value int32) *respFinalFactoriesInteractWithSinkAndInitialResponse {
+    x.Success = &value
+    return x
+}
+
+func (x *respFinalFactoriesInteractWithSinkAndInitialResponse) SetSuccess(value *int32) *respFinalFactoriesInteractWithSinkAndInitialResponse {
+    x.Success = value
+    return x
+}
+
+func (x *respFinalFactoriesInteractWithSinkAndInitialResponse) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *respFinalFactoriesInteractWithSinkAndInitialResponse) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSinkAndInitialResponse write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSinkAndInitialResponse write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFinalFactoriesInteractWithSinkAndInitialResponse) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *respFinalFactoriesInteractWithSinkAndInitialResponse) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *respFinalFactoriesInteractWithSinkAndInitialResponse) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("respFinalFactoriesInteractWithSinkAndInitialResponse"); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSinkAndInitialResponse write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSinkAndInitialResponse write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSinkAndInitialResponse write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFinalFactoriesInteractWithSinkAndInitialResponse) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSinkAndInitialResponse read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("respFinalFactoriesInteractWithSinkAndInitialResponse field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("respFinalFactoriesInteractWithSinkAndInitialResponse read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *respFinalFactoriesInteractWithSinkAndInitialResponse) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *respFinalFactoriesInteractWithSinkAndInitialResponse) setDefaults() *respFinalFactoriesInteractWithSinkAndInitialResponse {
+    return x
+}
+
+type reqFactoriesInteractWithBidi struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*reqFactoriesInteractWithBidi)(nil)
+
+// Deprecated: FactoriesInteractWithBidiArgsDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithBidiArgsDeprecated = reqFactoriesInteractWithBidi
+
+func newReqFactoriesInteractWithBidi() *reqFactoriesInteractWithBidi {
+    return (&reqFactoriesInteractWithBidi{}).setDefaults()
+}
+
+
+
+
+func (x *reqFactoriesInteractWithBidi) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("reqFactoriesInteractWithBidi"); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithBidi write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithBidi write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithBidi write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *reqFactoriesInteractWithBidi) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithBidi read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("reqFactoriesInteractWithBidi field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithBidi read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *reqFactoriesInteractWithBidi) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *reqFactoriesInteractWithBidi) setDefaults() *reqFactoriesInteractWithBidi {
+    return x
+}
+
+type respFactoriesInteractWithBidi struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*respFactoriesInteractWithBidi)(nil)
+var _ thrift.WritableResult = (*respFactoriesInteractWithBidi)(nil)
+
+// Deprecated: FactoriesInteractWithBidiResultDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithBidiResultDeprecated = respFactoriesInteractWithBidi
+
+func newRespFactoriesInteractWithBidi() *respFactoriesInteractWithBidi {
+    return (&respFactoriesInteractWithBidi{}).setDefaults()
+}
+
+
+
+
+func (x *respFactoriesInteractWithBidi) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *respFactoriesInteractWithBidi) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("respFactoriesInteractWithBidi"); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidi write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidi write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidi write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFactoriesInteractWithBidi) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidi read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("respFactoriesInteractWithBidi field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidi read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *respFactoriesInteractWithBidi) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *respFactoriesInteractWithBidi) setDefaults() *respFactoriesInteractWithBidi {
+    return x
+}
+
+type streamFactoriesInteractWithBidi struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*streamFactoriesInteractWithBidi)(nil)
+var _ thrift.WritableResult = (*streamFactoriesInteractWithBidi)(nil)
+
+// Deprecated: streamFactoriesInteractWithBidiResultDeprecated is deprecated, since it is supposed to be internal.
+type streamFactoriesInteractWithBidiResultDeprecated = streamFactoriesInteractWithBidi
+
+func newStreamFactoriesInteractWithBidi() *streamFactoriesInteractWithBidi {
+    return (&streamFactoriesInteractWithBidi{}).setDefaults()
+}
+
+func (x *streamFactoriesInteractWithBidi) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *streamFactoriesInteractWithBidi) SetSuccessNonCompat(value int32) *streamFactoriesInteractWithBidi {
+    x.Success = &value
+    return x
+}
+
+func (x *streamFactoriesInteractWithBidi) SetSuccess(value *int32) *streamFactoriesInteractWithBidi {
+    x.Success = value
+    return x
+}
+
+func (x *streamFactoriesInteractWithBidi) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *streamFactoriesInteractWithBidi) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidi write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidi write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamFactoriesInteractWithBidi) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *streamFactoriesInteractWithBidi) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *streamFactoriesInteractWithBidi) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("streamFactoriesInteractWithBidi"); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidi write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidi write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidi write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamFactoriesInteractWithBidi) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidi read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("streamFactoriesInteractWithBidi field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidi read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *streamFactoriesInteractWithBidi) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *streamFactoriesInteractWithBidi) setDefaults() *streamFactoriesInteractWithBidi {
+    return x
+}
+
+type sinkFactoriesInteractWithBidi struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*sinkFactoriesInteractWithBidi)(nil)
+var _ thrift.WritableResult = (*sinkFactoriesInteractWithBidi)(nil)
+
+// Deprecated: sinkFactoriesInteractWithBidiResultDeprecated is deprecated, since it is supposed to be internal.
+type sinkFactoriesInteractWithBidiResultDeprecated = sinkFactoriesInteractWithBidi
+
+func newSinkFactoriesInteractWithBidi() *sinkFactoriesInteractWithBidi {
+    return (&sinkFactoriesInteractWithBidi{}).setDefaults()
+}
+
+func (x *sinkFactoriesInteractWithBidi) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *sinkFactoriesInteractWithBidi) SetSuccessNonCompat(value int32) *sinkFactoriesInteractWithBidi {
+    x.Success = &value
+    return x
+}
+
+func (x *sinkFactoriesInteractWithBidi) SetSuccess(value *int32) *sinkFactoriesInteractWithBidi {
+    x.Success = value
+    return x
+}
+
+func (x *sinkFactoriesInteractWithBidi) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *sinkFactoriesInteractWithBidi) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidi write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidi write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithBidi) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *sinkFactoriesInteractWithBidi) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithBidi) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("sinkFactoriesInteractWithBidi"); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidi write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidi write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidi write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithBidi) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidi read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("sinkFactoriesInteractWithBidi field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidi read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithBidi) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *sinkFactoriesInteractWithBidi) setDefaults() *sinkFactoriesInteractWithBidi {
+    return x
+}
+
+type reqFactoriesInteractWithBidiAndInitialResponse struct {
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*reqFactoriesInteractWithBidiAndInitialResponse)(nil)
+
+// Deprecated: FactoriesInteractWithBidiAndInitialResponseArgsDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithBidiAndInitialResponseArgsDeprecated = reqFactoriesInteractWithBidiAndInitialResponse
+
+func newReqFactoriesInteractWithBidiAndInitialResponse() *reqFactoriesInteractWithBidiAndInitialResponse {
+    return (&reqFactoriesInteractWithBidiAndInitialResponse{}).setDefaults()
+}
+
+
+
+
+func (x *reqFactoriesInteractWithBidiAndInitialResponse) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("reqFactoriesInteractWithBidiAndInitialResponse"); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithBidiAndInitialResponse write struct begin error: %w", err)
+    }
+
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithBidiAndInitialResponse write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithBidiAndInitialResponse write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *reqFactoriesInteractWithBidiAndInitialResponse) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithBidiAndInitialResponse read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("reqFactoriesInteractWithBidiAndInitialResponse field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("reqFactoriesInteractWithBidiAndInitialResponse read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *reqFactoriesInteractWithBidiAndInitialResponse) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *reqFactoriesInteractWithBidiAndInitialResponse) setDefaults() *reqFactoriesInteractWithBidiAndInitialResponse {
+    return x
+}
+
+type respFactoriesInteractWithBidiAndInitialResponse struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*respFactoriesInteractWithBidiAndInitialResponse)(nil)
+var _ thrift.WritableResult = (*respFactoriesInteractWithBidiAndInitialResponse)(nil)
+
+// Deprecated: FactoriesInteractWithBidiAndInitialResponseResultDeprecated is deprecated, since it is supposed to be internal.
+type FactoriesInteractWithBidiAndInitialResponseResultDeprecated = respFactoriesInteractWithBidiAndInitialResponse
+
+func newRespFactoriesInteractWithBidiAndInitialResponse() *respFactoriesInteractWithBidiAndInitialResponse {
+    return (&respFactoriesInteractWithBidiAndInitialResponse{}).setDefaults()
+}
+
+func (x *respFactoriesInteractWithBidiAndInitialResponse) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *respFactoriesInteractWithBidiAndInitialResponse) SetSuccessNonCompat(value int32) *respFactoriesInteractWithBidiAndInitialResponse {
+    x.Success = &value
+    return x
+}
+
+func (x *respFactoriesInteractWithBidiAndInitialResponse) SetSuccess(value *int32) *respFactoriesInteractWithBidiAndInitialResponse {
+    x.Success = value
+    return x
+}
+
+func (x *respFactoriesInteractWithBidiAndInitialResponse) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *respFactoriesInteractWithBidiAndInitialResponse) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidiAndInitialResponse write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidiAndInitialResponse write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFactoriesInteractWithBidiAndInitialResponse) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *respFactoriesInteractWithBidiAndInitialResponse) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *respFactoriesInteractWithBidiAndInitialResponse) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("respFactoriesInteractWithBidiAndInitialResponse"); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidiAndInitialResponse write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidiAndInitialResponse write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidiAndInitialResponse write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *respFactoriesInteractWithBidiAndInitialResponse) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidiAndInitialResponse read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("respFactoriesInteractWithBidiAndInitialResponse field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("respFactoriesInteractWithBidiAndInitialResponse read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *respFactoriesInteractWithBidiAndInitialResponse) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *respFactoriesInteractWithBidiAndInitialResponse) setDefaults() *respFactoriesInteractWithBidiAndInitialResponse {
+    return x
+}
+
+type streamFactoriesInteractWithBidiAndInitialResponse struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*streamFactoriesInteractWithBidiAndInitialResponse)(nil)
+var _ thrift.WritableResult = (*streamFactoriesInteractWithBidiAndInitialResponse)(nil)
+
+// Deprecated: streamFactoriesInteractWithBidiAndInitialResponseResultDeprecated is deprecated, since it is supposed to be internal.
+type streamFactoriesInteractWithBidiAndInitialResponseResultDeprecated = streamFactoriesInteractWithBidiAndInitialResponse
+
+func newStreamFactoriesInteractWithBidiAndInitialResponse() *streamFactoriesInteractWithBidiAndInitialResponse {
+    return (&streamFactoriesInteractWithBidiAndInitialResponse{}).setDefaults()
+}
+
+func (x *streamFactoriesInteractWithBidiAndInitialResponse) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *streamFactoriesInteractWithBidiAndInitialResponse) SetSuccessNonCompat(value int32) *streamFactoriesInteractWithBidiAndInitialResponse {
+    x.Success = &value
+    return x
+}
+
+func (x *streamFactoriesInteractWithBidiAndInitialResponse) SetSuccess(value *int32) *streamFactoriesInteractWithBidiAndInitialResponse {
+    x.Success = value
+    return x
+}
+
+func (x *streamFactoriesInteractWithBidiAndInitialResponse) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *streamFactoriesInteractWithBidiAndInitialResponse) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidiAndInitialResponse write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidiAndInitialResponse write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamFactoriesInteractWithBidiAndInitialResponse) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *streamFactoriesInteractWithBidiAndInitialResponse) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *streamFactoriesInteractWithBidiAndInitialResponse) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("streamFactoriesInteractWithBidiAndInitialResponse"); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidiAndInitialResponse write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidiAndInitialResponse write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidiAndInitialResponse write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *streamFactoriesInteractWithBidiAndInitialResponse) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidiAndInitialResponse read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("streamFactoriesInteractWithBidiAndInitialResponse field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("streamFactoriesInteractWithBidiAndInitialResponse read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *streamFactoriesInteractWithBidiAndInitialResponse) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *streamFactoriesInteractWithBidiAndInitialResponse) setDefaults() *streamFactoriesInteractWithBidiAndInitialResponse {
+    return x
+}
+
+type sinkFactoriesInteractWithBidiAndInitialResponse struct {
+    Success *int32 `thrift:"success,0,optional" json:"success,omitempty" db:"success"`
+}
+// Compile time interface enforcer
+var _ thrift.Struct = (*sinkFactoriesInteractWithBidiAndInitialResponse)(nil)
+var _ thrift.WritableResult = (*sinkFactoriesInteractWithBidiAndInitialResponse)(nil)
+
+// Deprecated: sinkFactoriesInteractWithBidiAndInitialResponseResultDeprecated is deprecated, since it is supposed to be internal.
+type sinkFactoriesInteractWithBidiAndInitialResponseResultDeprecated = sinkFactoriesInteractWithBidiAndInitialResponse
+
+func newSinkFactoriesInteractWithBidiAndInitialResponse() *sinkFactoriesInteractWithBidiAndInitialResponse {
+    return (&sinkFactoriesInteractWithBidiAndInitialResponse{}).setDefaults()
+}
+
+func (x *sinkFactoriesInteractWithBidiAndInitialResponse) GetSuccess() int32 {
+    if !x.IsSetSuccess() {
+        return 0
+    }
+    return *x.Success
+}
+
+func (x *sinkFactoriesInteractWithBidiAndInitialResponse) SetSuccessNonCompat(value int32) *sinkFactoriesInteractWithBidiAndInitialResponse {
+    x.Success = &value
+    return x
+}
+
+func (x *sinkFactoriesInteractWithBidiAndInitialResponse) SetSuccess(value *int32) *sinkFactoriesInteractWithBidiAndInitialResponse {
+    x.Success = value
+    return x
+}
+
+func (x *sinkFactoriesInteractWithBidiAndInitialResponse) IsSetSuccess() bool {
+    return x != nil && x.Success != nil
+}
+
+func (x *sinkFactoriesInteractWithBidiAndInitialResponse) writeField0(p thrift.Encoder) error {  // Success
+    if !x.IsSetSuccess() {
+        return nil
+    }
+
+    if err := p.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidiAndInitialResponse write field begin error: %w", err)
+    }
+
+    item := *x.Success
+    if err := p.WriteI32(item); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidiAndInitialResponse write field end error: %w", err)
+    }
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithBidiAndInitialResponse) readField0(p thrift.Decoder) error {  // Success
+    result, err := p.ReadI32()
+    if err != nil {
+        return err
+    }
+
+    x.Success = &result
+    return nil
+}
+
+
+
+
+func (x *sinkFactoriesInteractWithBidiAndInitialResponse) Exception() thrift.WritableException {
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithBidiAndInitialResponse) Write(p thrift.Encoder) error {
+    if err := p.WriteStructBegin("sinkFactoriesInteractWithBidiAndInitialResponse"); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidiAndInitialResponse write struct begin error: %w", err)
+    }
+
+    if err := x.writeField0(p); err != nil {
+        return err
+    }
+
+    if err := p.WriteFieldStop(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidiAndInitialResponse write field stop error: %w", err)
+    }
+
+    if err := p.WriteStructEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidiAndInitialResponse write struct end error: %w", err)
+    }
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithBidiAndInitialResponse) Read(p thrift.Decoder) error {
+    if _, err := p.ReadStructBegin(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidiAndInitialResponse read error: %w", err)
+    }
+
+    for {
+        fieldName, wireType, id, err := p.ReadFieldBegin()
+        if err != nil {
+            return fmt.Errorf("sinkFactoriesInteractWithBidiAndInitialResponse field %d ('%s') read error: %w", id, fieldName, err)
+        }
+
+        if wireType == thrift.STOP {
+            break;
+        }
+
+        var fieldReadErr error
+        switch {
+        case ((id == 0 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "success")):  // success
+            fieldReadErr = x.readField0(p)
+        default:
+            fieldReadErr = p.Skip(wireType)
+        }
+
+        if fieldReadErr != nil {
+            return fieldReadErr
+        }
+
+        if err := p.ReadFieldEnd(); err != nil {
+            return err
+        }
+    }
+
+    if err := p.ReadStructEnd(); err != nil {
+        return fmt.Errorf("sinkFactoriesInteractWithBidiAndInitialResponse read struct end error: %w", err)
+    }
+
+    return nil
+}
+
+func (x *sinkFactoriesInteractWithBidiAndInitialResponse) String() string {
+    return thrift.StructToString(reflect.ValueOf(x))
+}
+
+func (x *sinkFactoriesInteractWithBidiAndInitialResponse) setDefaults() *sinkFactoriesInteractWithBidiAndInitialResponse {
+    return x
+}
+
 type reqPerformFoo struct {
 }
 // Compile time interface enforcer

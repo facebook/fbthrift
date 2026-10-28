@@ -308,8 +308,8 @@ class SerialInteractionIf : public apache::thrift::SerialInteractionTile, public
 namespace detail {
 template <> struct TSchemaAssociation<::cpp2::Perform, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 879819273462543070;
-  static constexpr ::std::string_view definitionKey = {"\x52\x6f\x6e\x13\xa3\xb7\x24\xbb\x92\xe9\x9c\x2d\xcb\xf5\x00\xf3", 16};
+  static constexpr int64_t programId = 6123796942301299643;
+  static constexpr ::std::string_view definitionKey = {"\x68\x17\x1c\xce\x83\xf7\x04\xbd\x3c\x3e\x9f\xcb\xd2\x9e\x48\x01", 16};
 };
 }
 } // namespace apache::thrift

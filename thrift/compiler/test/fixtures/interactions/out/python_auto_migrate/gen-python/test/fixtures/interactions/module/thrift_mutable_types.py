@@ -56,7 +56,7 @@ class CustomException(metaclass=_fbthrift_python_mutable_exceptions.MutableGener
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\xc0\x06\x04\x98\xa0\x26\x49\x2d\xc0\x82\x97\xc8\xd4\x37\x25\xaa"
+        return b"\x65\x21\xca\x44\x45\x45\xa4\x0b\x77\x3e\xcf\x05\x3f\x1b\x26\x2f"
 
     @staticmethod
     def __get_metadata__():
@@ -111,7 +111,7 @@ class ShouldBeBoxed(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
 
     @staticmethod
     def __get_thrift_definition_key__() -> bytes:
-        return b"\x63\x27\x6e\x44\xb8\x10\x4d\x24\x98\x29\xec\x24\x89\xb5\x9e\xee"
+        return b"\xc6\x38\xfd\x02\x47\x9e\xa2\x7c\x03\xcf\xdf\x09\x46\x7a\x44\x3d"
 
     @staticmethod
     def __get_metadata__():
@@ -802,6 +802,332 @@ class _fbthrift_Factories_serialize_result_stream_elem(metaclass=_fbthrift_pytho
             True, # field type is primitive
         ),
     )
+
+
+class _fbthrift_Factories_interactWithStream_args(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Factories_interactWithStream_result(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Factories_interactWithStream_result_stream_elem(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift__rpc_kind = _fbthrift__RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+
+class _fbthrift_Factories_interactWithStreamAndInitialResponse_args(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Factories_interactWithStreamAndInitialResponse_result(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+
+class _fbthrift_Factories_interactWithStreamAndInitialResponse_result_stream_elem(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift__rpc_kind = _fbthrift__RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+
+class _fbthrift_Factories_interactWithSink_args(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Factories_interactWithSink_result(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Factories_interactWithSink_result_sink_elem(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift__rpc_kind = _fbthrift__RpcKind.SINK
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+    @classmethod
+    def _fbthrift__sink_elem_handler(
+        cls,
+        sink_agen: _typing_AsyncGenerator[builtins.int, None],
+        protocol: _fbthrift__Protocol,
+    ) -> _fbthrift__CloseableGenerator:
+        return _fbthrift__CloseableGenerator(
+            sink_agen,
+            protocol,
+            cls,
+            (),
+        )
+
+
+class _fbthrift_Factories_interactWithSink_result_sink_final(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+
+class _fbthrift_Factories_interactWithSinkAndInitialResponse_args(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Factories_interactWithSinkAndInitialResponse_result(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+
+class _fbthrift_Factories_interactWithSinkAndInitialResponse_result_sink_elem(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift__rpc_kind = _fbthrift__RpcKind.SINK
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+    @classmethod
+    def _fbthrift__sink_elem_handler(
+        cls,
+        sink_agen: _typing_AsyncGenerator[builtins.int, None],
+        protocol: _fbthrift__Protocol,
+    ) -> _fbthrift__CloseableGenerator:
+        return _fbthrift__CloseableGenerator(
+            sink_agen,
+            protocol,
+            cls,
+            (),
+        )
+
+
+class _fbthrift_Factories_interactWithSinkAndInitialResponse_result_sink_final(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+
+class _fbthrift_Factories_interactWithBidi_args(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Factories_interactWithBidi_result(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Factories_interactWithBidi_result_stream_elem(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift__rpc_kind = _fbthrift__RpcKind.BIDIRECTIONAL_STREAM
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+
+class _fbthrift_Factories_interactWithBidi_result_sink_elem(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift__rpc_kind = _fbthrift__RpcKind.BIDIRECTIONAL_STREAM
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+    @classmethod
+    def _fbthrift__sink_elem_handler(
+        cls,
+        sink_agen: _typing_AsyncGenerator[builtins.int, None],
+        protocol: _fbthrift__Protocol,
+    ) -> _fbthrift__CloseableGenerator:
+        return _fbthrift__CloseableGenerator(
+            sink_agen,
+            protocol,
+            cls,
+            (),
+        )
+
+
+
+
+class _fbthrift_Factories_interactWithBidiAndInitialResponse_args(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Factories_interactWithBidiAndInitialResponse_result(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+
+class _fbthrift_Factories_interactWithBidiAndInitialResponse_result_stream_elem(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift__rpc_kind = _fbthrift__RpcKind.BIDIRECTIONAL_STREAM
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+
+class _fbthrift_Factories_interactWithBidiAndInitialResponse_result_sink_elem(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):
+    _fbthrift_disable_field_cache_DO_NOT_USE = True
+    _fbthrift__rpc_kind = _fbthrift__RpcKind.BIDIRECTIONAL_STREAM
+    _fbthrift_SPEC = (
+        _fbthrift_python_types.FieldInfo(
+            0,  # id
+            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            "success", # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter info
+            True, # field type is primitive
+        ),
+    )
+
+    @classmethod
+    def _fbthrift__sink_elem_handler(
+        cls,
+        sink_agen: _typing_AsyncGenerator[builtins.int, None],
+        protocol: _fbthrift__Protocol,
+    ) -> _fbthrift__CloseableGenerator:
+        return _fbthrift__CloseableGenerator(
+            sink_agen,
+            protocol,
+            cls,
+            (),
+        )
+
+
 
 
 
@@ -2233,6 +2559,28 @@ _fbthrift_python_mutable_types.fill_specs(
     _fbthrift_Factories_serialize_args,
     _fbthrift_Factories_serialize_result,
     _fbthrift_Factories_serialize_result_stream_elem,
+    _fbthrift_Factories_interactWithStream_args,
+    _fbthrift_Factories_interactWithStream_result,
+    _fbthrift_Factories_interactWithStream_result_stream_elem,
+    _fbthrift_Factories_interactWithStreamAndInitialResponse_args,
+    _fbthrift_Factories_interactWithStreamAndInitialResponse_result,
+    _fbthrift_Factories_interactWithStreamAndInitialResponse_result_stream_elem,
+    _fbthrift_Factories_interactWithSink_args,
+    _fbthrift_Factories_interactWithSink_result,
+    _fbthrift_Factories_interactWithSink_result_sink_elem,
+    _fbthrift_Factories_interactWithSink_result_sink_final,
+    _fbthrift_Factories_interactWithSinkAndInitialResponse_args,
+    _fbthrift_Factories_interactWithSinkAndInitialResponse_result,
+    _fbthrift_Factories_interactWithSinkAndInitialResponse_result_sink_elem,
+    _fbthrift_Factories_interactWithSinkAndInitialResponse_result_sink_final,
+    _fbthrift_Factories_interactWithBidi_args,
+    _fbthrift_Factories_interactWithBidi_result,
+    _fbthrift_Factories_interactWithBidi_result_stream_elem,
+    _fbthrift_Factories_interactWithBidi_result_sink_elem,
+    _fbthrift_Factories_interactWithBidiAndInitialResponse_args,
+    _fbthrift_Factories_interactWithBidiAndInitialResponse_result,
+    _fbthrift_Factories_interactWithBidiAndInitialResponse_result_stream_elem,
+    _fbthrift_Factories_interactWithBidiAndInitialResponse_result_sink_elem,
     _fbthrift_MyInteraction_frobnicate_args,
     _fbthrift_MyInteraction_frobnicate_result,
     _fbthrift_MyInteraction_ping_args,

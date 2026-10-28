@@ -111,8 +111,8 @@ class BoxedInteractionIf : public apache::thrift::Tile, public apache::thrift::S
 namespace detail {
 template <> struct TSchemaAssociation<::cpp2::BoxService, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 879819273462543070;
-  static constexpr ::std::string_view definitionKey = {"\x7f\x7e\x28\x9a\x70\x3d\xb7\xf7\xba\x9b\x2e\xee\x9e\xa9\x3e\x38", 16};
+  static constexpr int64_t programId = 6123796942301299643;
+  static constexpr ::std::string_view definitionKey = {"\x9a\xc2\x0c\x91\x4c\xe4\x4c\xc5\x6a\x08\x1d\x7c\xb3\xfc\xbb\x59", 16};
 };
 }
 } // namespace apache::thrift

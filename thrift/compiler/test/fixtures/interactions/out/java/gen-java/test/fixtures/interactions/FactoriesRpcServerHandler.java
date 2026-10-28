@@ -24,6 +24,12 @@ public class FactoriesRpcServerHandler
   private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _serializeReaders;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<com.facebook.thrift.model.StreamResponse<Integer,Integer>> _delegate_serialize;
   private final com.facebook.thrift.server.generated.StreamWithFirstResponseHandler<Integer,Integer> _handler_serialize;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _interactWithStreamReaders;
+  private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<Integer> _delegate_interactWithStream;
+  private final com.facebook.thrift.server.generated.StreamResponseHandler<Integer> _handler_interactWithStream;
+  private final java.util.List<com.facebook.thrift.payload.FieldReader<?>> _interactWithStreamAndInitialResponseReaders;
+  private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<com.facebook.thrift.model.StreamResponse<Integer,Integer>> _delegate_interactWithStreamAndInitialResponse;
+  private final com.facebook.thrift.server.generated.StreamWithFirstResponseHandler<Integer,Integer> _handler_interactWithStreamAndInitialResponse;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -72,6 +78,47 @@ public class FactoriesRpcServerHandler
       new Integer[]{  }
     );
 
+    _methodMap.put("interactWithStream", this);
+    _interactWithStreamReaders = _create_interactWithStream_request_readers();
+    _delegate_interactWithStream = (java.util.List<Object> _list) -> {
+        java.util.Iterator _iterator = _list.iterator();
+
+        return _delegate.interactWithStream();
+    };
+
+    _handler_interactWithStream =
+    new com.facebook.thrift.server.generated.StreamResponseHandler<>(
+      _delegate_interactWithStream,
+      _ResponseWriterFactory_interactWithStream,
+      _interactWithStreamReaders,
+      "interactWithStream",
+      new Class[]{  },
+      new Integer[]{  },
+      new Class[]{  },
+      new Integer[]{  }
+    );
+
+    _methodMap.put("interactWithStreamAndInitialResponse", this);
+    _interactWithStreamAndInitialResponseReaders = _create_interactWithStreamAndInitialResponse_request_readers();
+    _delegate_interactWithStreamAndInitialResponse = (java.util.List<Object> _list) -> {
+        java.util.Iterator _iterator = _list.iterator();
+
+        return _delegate.interactWithStreamAndInitialResponse();
+    };
+
+    _handler_interactWithStreamAndInitialResponse =
+    new com.facebook.thrift.server.generated.StreamWithFirstResponseHandler<>(
+      _delegate_interactWithStreamAndInitialResponse,
+      _first_ResponseWriterFactory_interactWithStreamAndInitialResponse,
+      _ResponseWriterFactory_interactWithStreamAndInitialResponse,
+      _interactWithStreamAndInitialResponseReaders,
+      "interactWithStreamAndInitialResponse",
+      new Class[]{  },
+      new Integer[]{  },
+      new Class[]{  },
+      new Integer[]{  }
+    );
+
 
   }
 
@@ -104,6 +151,85 @@ public class FactoriesRpcServerHandler
   };
 
   private final static com.facebook.thrift.server.generated.ResponseWriterFactory _first_ResponseWriterFactory_serialize = (java.lang.Object _o, com.facebook.swift.service.ContextChain _chain, com.facebook.thrift.payload.ServerRequestPayload _requestPayload) -> {
+    return oprot -> {
+      try {
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
+
+        int _fbthriftVar0 = (int)_o;
+        oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
+        oprot.writeI32(_fbthriftVar0);
+        oprot.writeFieldEnd();
+
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+
+        _chain.postWrite(_o);
+      } catch (Throwable _e) {
+        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  };
+
+
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_interactWithStream_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
+
+
+    return _readerList;
+  }
+
+  private final static com.facebook.thrift.server.generated.ResponseWriterFactory _ResponseWriterFactory_interactWithStream = (java.lang.Object _o, com.facebook.swift.service.ContextChain _chain, com.facebook.thrift.payload.ServerRequestPayload _requestPayload) -> {
+    return oprot -> {
+      try {
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
+
+        int _fbthriftVar0 = (int)_o;
+        oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
+        oprot.writeI32(_fbthriftVar0);
+        oprot.writeFieldEnd();
+
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+
+        _chain.postWrite(_o);
+      } catch (Throwable _e) {
+        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  };
+
+
+  private final static java.util.List<com.facebook.thrift.payload.FieldReader<?>> _create_interactWithStreamAndInitialResponse_request_readers() {
+    java.util.List<com.facebook.thrift.payload.FieldReader<?>> _readerList = new java.util.ArrayList<>();
+
+
+    return _readerList;
+  }
+
+  private final static com.facebook.thrift.server.generated.ResponseWriterFactory _ResponseWriterFactory_interactWithStreamAndInitialResponse = (java.lang.Object _o, com.facebook.swift.service.ContextChain _chain, com.facebook.thrift.payload.ServerRequestPayload _requestPayload) -> {
+    return oprot -> {
+      try {
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
+
+        int _fbthriftVar0 = (int)_o;
+        oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
+        oprot.writeI32(_fbthriftVar0);
+        oprot.writeFieldEnd();
+
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+
+        _chain.postWrite(_o);
+      } catch (Throwable _e) {
+        com.facebook.thrift.util.NettyUtil.releaseIfByteBufTProtocol(oprot);
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  };
+
+  private final static com.facebook.thrift.server.generated.ResponseWriterFactory _first_ResponseWriterFactory_interactWithStreamAndInitialResponse = (java.lang.Object _o, com.facebook.swift.service.ContextChain _chain, com.facebook.thrift.payload.ServerRequestPayload _requestPayload) -> {
     return oprot -> {
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
@@ -435,6 +561,12 @@ public class FactoriesRpcServerHandler
       switch(_name) {
         case "serialize":
           _result = _handler_serialize.handleStream(_payload, _chain);
+          break;
+        case "interactWithStream":
+          _result = _handler_interactWithStream.handleStream(_payload, _chain);
+          break;
+        case "interactWithStreamAndInitialResponse":
+          _result = _handler_interactWithStreamAndInitialResponse.handleStream(_payload, _chain);
           break;
         default: {
             _chain.preRead();

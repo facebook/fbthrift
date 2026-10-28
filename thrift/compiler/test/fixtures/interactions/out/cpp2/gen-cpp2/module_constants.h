@@ -14,9 +14,9 @@ namespace cpp2 {
 /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift"} */
 namespace module_constants {
 
-  FOLLY_EXPORT ::std::string_view _fbthrift_schema_c35bef7bd46f2de();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_c35bef7bd46f2de_includes();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_c35bef7bd46f2de_uris();
+  FOLLY_EXPORT ::std::string_view _fbthrift_schema_54fc18dfae7e03bb();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_54fc18dfae7e03bb_includes();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_54fc18dfae7e03bb_uris();
 
 } // namespace module_constants
 } // namespace cpp2

@@ -1771,6 +1771,332 @@ class SerialInteraction final : public apache::thrift::InteractionHandle {
   template <typename CallbackType>
   folly::SemiFuture<std::pair<apache::thrift::Client<::cpp2::Factories>::SerialInteraction, apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>> fbthrift_semifuture_serialize(apache::thrift::RpcOptions& rpcOptions);
  public:
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStream"} */
+  void interactWithStream(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const apache::thrift::InteractionHandle& handle);
+ protected:
+  void fbthrift_serialize_and_send_interactWithStream(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback, const apache::thrift::InteractionHandle& handle, bool stealRpcOptions = false);
+ public:
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStream"} */
+  std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientBufferedStream<::std::int32_t>> sync_interactWithStream();
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStream"} */
+  std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientBufferedStream<::std::int32_t>> sync_interactWithStream(apache::thrift::RpcOptions& rpcOptions);
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStream"} */
+  folly::SemiFuture<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientBufferedStream<::std::int32_t>>> semifuture_interactWithStream();
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStream"} */
+  folly::SemiFuture<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientBufferedStream<::std::int32_t>>> semifuture_interactWithStream(apache::thrift::RpcOptions& rpcOptions);
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStream"} */
+  std::pair<
+    apache::thrift::Client<::cpp2::Factories>::MyInteraction,
+    folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>>
+  > eager_semifuture_interactWithStream(apache::thrift::RpcOptions& rpcOptions);
+
+#if FOLLY_HAS_COROUTINES
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStream"} */
+  template <int = 0>
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientBufferedStream<::std::int32_t>>> co_interactWithStream() {
+    return co_interactWithStream<false>(nullptr);
+  }
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStream"} */
+  template <int = 0>
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientBufferedStream<::std::int32_t>>> co_interactWithStream(apache::thrift::RpcOptions& rpcOptions) {
+    return co_interactWithStream<true>(&rpcOptions);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientBufferedStream<::std::int32_t>>> co_interactWithStream(apache::thrift::RpcOptions* rpcOptions) {
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientCoroCallback<false> callback(&returnState, co_await folly::coro::co_current_executor);
+    auto channelShared = apache::thrift::GeneratedAsyncClient::getChannelShared();
+    auto protocolId = channelShared->getProtocolId();
+    std::weak_ptr<apache::thrift::RequestChannel> channelWeak = std::move(channelShared);
+    auto [ctx, header] = interactWithStreamCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static apache::thrift::RpcOptions* defaultRpcOptions = new apache::thrift::RpcOptions();
+    auto wrappedCallback = apache::thrift::createStreamClientCallback(
+        apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback),
+      hasRpcOptions ? rpcOptions->getBufferOptions() : defaultRpcOptions->getBufferOptions());
+    MyInteraction interactionHandle(channel_, "MyInteraction", ctx ? ctx->getClientInterceptors() : nullptr);
+    if (ctx != nullptr) {
+      auto argsAsRefs = std::tie();
+      auto interceptorTry = ctx->processClientInterceptorsOnRequest(apache::thrift::ClientInterceptorOnRequestArguments(argsAsRefs), header.get(), hasRpcOptions ? *rpcOptions : *defaultRpcOptions);
+      if (interceptorTry.hasException()) {
+        co_yield folly::coro::co_error(std::move(interceptorTry.exception()));
+      }
+    }
+    if constexpr (hasRpcOptions) {
+      fbthrift_serialize_and_send_interactWithStream(*rpcOptions, header, ctx.get(), std::move(wrappedCallback), interactionHandle);
+    } else {
+      fbthrift_serialize_and_send_interactWithStream(*defaultRpcOptions, header, ctx.get(), std::move(wrappedCallback), interactionHandle);
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::move(ctx));
+    apache::thrift::ClientBufferedStream<::std::int32_t> _return;
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
+      }
+    };
+    if (auto channel = channelWeak.lock()) {
+      channel->decompressResponse(returnState);
+    }
+    auto ew = recv_wrapped_interactWithStream(_return, returnState);
+    if (returnState.ctx()) {
+      auto interceptorResult = returnState.ctx()->processClientInterceptorsOnResponse(returnState.header(), ew, _return);
+      folly::Try<void> interceptorTry;
+      if (!apache::thrift::ContextStack::tryResolveInterceptorResultSync(interceptorResult, interceptorTry)) {
+        interceptorTry = co_await std::get<folly::coro::Task<folly::Try<void>>>(std::move(interceptorResult));
+      }
+      interceptorTry.throwUnlessValue();
+    }
+    // Attach interceptor context to stream for automatic interception
+    if (returnState.ctx()) {
+      _return.setInterceptorContext(
+          apache::thrift::makeClientStreamInterceptorContextFromContextStack(
+              *returnState.ctx()));
+    }
+    if (ew) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+    co_return std::make_pair(std::move(interactionHandle), std::move(_return));
+  }
+ public:
+#endif // FOLLY_HAS_COROUTINES
+
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStream"} */
+  static folly::exception_wrapper recv_wrapped_interactWithStream(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStream"} */
+  static apache::thrift::ClientBufferedStream<::std::int32_t> recv_interactWithStream(::apache::thrift::ClientReceiveState& state);
+ private:
+  apache::thrift::SerializedRequest fbthrift_serialize_interactWithStream(const RpcOptions& rpcOptions, apache::thrift::transport::THeader& header, apache::thrift::ContextStack* contextStack);
+  template <typename RpcOptions>
+  void fbthrift_send_interactWithStream(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::StreamClientCallback* callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata, const apache::thrift::InteractionHandle& handle);
+  std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::thrift::transport::THeader>> interactWithStreamCtx(apache::thrift::RpcOptions* rpcOptions);
+  template <typename CallbackType>
+  folly::SemiFuture<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientBufferedStream<::std::int32_t>>> fbthrift_semifuture_interactWithStream(apache::thrift::RpcOptions& rpcOptions);
+ public:
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStreamAndInitialResponse"} */
+  void interactWithStreamAndInitialResponse(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const apache::thrift::InteractionHandle& handle);
+ protected:
+  void fbthrift_serialize_and_send_interactWithStreamAndInitialResponse(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback, const apache::thrift::InteractionHandle& handle, bool stealRpcOptions = false);
+ public:
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStreamAndInitialResponse"} */
+  std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> sync_interactWithStreamAndInitialResponse();
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStreamAndInitialResponse"} */
+  std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> sync_interactWithStreamAndInitialResponse(apache::thrift::RpcOptions& rpcOptions);
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStreamAndInitialResponse"} */
+  folly::SemiFuture<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>> semifuture_interactWithStreamAndInitialResponse();
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStreamAndInitialResponse"} */
+  folly::SemiFuture<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>> semifuture_interactWithStreamAndInitialResponse(apache::thrift::RpcOptions& rpcOptions);
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStreamAndInitialResponse"} */
+  std::pair<
+    apache::thrift::Client<::cpp2::Factories>::MyInteraction,
+    folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>
+  > eager_semifuture_interactWithStreamAndInitialResponse(apache::thrift::RpcOptions& rpcOptions);
+
+#if FOLLY_HAS_COROUTINES
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStreamAndInitialResponse"} */
+  template <int = 0>
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>> co_interactWithStreamAndInitialResponse() {
+    return co_interactWithStreamAndInitialResponse<false>(nullptr);
+  }
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStreamAndInitialResponse"} */
+  template <int = 0>
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>> co_interactWithStreamAndInitialResponse(apache::thrift::RpcOptions& rpcOptions) {
+    return co_interactWithStreamAndInitialResponse<true>(&rpcOptions);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>> co_interactWithStreamAndInitialResponse(apache::thrift::RpcOptions* rpcOptions) {
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientCoroCallback<false> callback(&returnState, co_await folly::coro::co_current_executor);
+    auto channelShared = apache::thrift::GeneratedAsyncClient::getChannelShared();
+    auto protocolId = channelShared->getProtocolId();
+    std::weak_ptr<apache::thrift::RequestChannel> channelWeak = std::move(channelShared);
+    auto [ctx, header] = interactWithStreamAndInitialResponseCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static apache::thrift::RpcOptions* defaultRpcOptions = new apache::thrift::RpcOptions();
+    auto wrappedCallback = apache::thrift::createStreamClientCallback(
+        apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback),
+      hasRpcOptions ? rpcOptions->getBufferOptions() : defaultRpcOptions->getBufferOptions());
+    MyInteraction interactionHandle(channel_, "MyInteraction", ctx ? ctx->getClientInterceptors() : nullptr);
+    if (ctx != nullptr) {
+      auto argsAsRefs = std::tie();
+      auto interceptorTry = ctx->processClientInterceptorsOnRequest(apache::thrift::ClientInterceptorOnRequestArguments(argsAsRefs), header.get(), hasRpcOptions ? *rpcOptions : *defaultRpcOptions);
+      if (interceptorTry.hasException()) {
+        co_yield folly::coro::co_error(std::move(interceptorTry.exception()));
+      }
+    }
+    if constexpr (hasRpcOptions) {
+      fbthrift_serialize_and_send_interactWithStreamAndInitialResponse(*rpcOptions, header, ctx.get(), std::move(wrappedCallback), interactionHandle);
+    } else {
+      fbthrift_serialize_and_send_interactWithStreamAndInitialResponse(*defaultRpcOptions, header, ctx.get(), std::move(wrappedCallback), interactionHandle);
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::move(ctx));
+    apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> _return;
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
+      }
+    };
+    if (auto channel = channelWeak.lock()) {
+      channel->decompressResponse(returnState);
+    }
+    auto ew = recv_wrapped_interactWithStreamAndInitialResponse(_return, returnState);
+    if (returnState.ctx()) {
+      auto interceptorResult = returnState.ctx()->processClientInterceptorsOnResponse(returnState.header(), ew, _return);
+      folly::Try<void> interceptorTry;
+      if (!apache::thrift::ContextStack::tryResolveInterceptorResultSync(interceptorResult, interceptorTry)) {
+        interceptorTry = co_await std::get<folly::coro::Task<folly::Try<void>>>(std::move(interceptorResult));
+      }
+      interceptorTry.throwUnlessValue();
+    }
+    // Attach interceptor context to stream for automatic interception
+    if (returnState.ctx()) {
+      _return.stream.setInterceptorContext(
+          apache::thrift::makeClientStreamInterceptorContextFromContextStack(
+              *returnState.ctx()));
+    }
+    if (ew) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+    co_return std::make_pair(std::move(interactionHandle), std::move(_return));
+  }
+ public:
+#endif // FOLLY_HAS_COROUTINES
+
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStreamAndInitialResponse"} */
+  static folly::exception_wrapper recv_wrapped_interactWithStreamAndInitialResponse(apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithStreamAndInitialResponse"} */
+  static apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> recv_interactWithStreamAndInitialResponse(::apache::thrift::ClientReceiveState& state);
+ private:
+  apache::thrift::SerializedRequest fbthrift_serialize_interactWithStreamAndInitialResponse(const RpcOptions& rpcOptions, apache::thrift::transport::THeader& header, apache::thrift::ContextStack* contextStack);
+  template <typename RpcOptions>
+  void fbthrift_send_interactWithStreamAndInitialResponse(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::StreamClientCallback* callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata, const apache::thrift::InteractionHandle& handle);
+  std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::thrift::transport::THeader>> interactWithStreamAndInitialResponseCtx(apache::thrift::RpcOptions* rpcOptions);
+  template <typename CallbackType>
+  folly::SemiFuture<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>> fbthrift_semifuture_interactWithStreamAndInitialResponse(apache::thrift::RpcOptions& rpcOptions);
+ public:
+ protected:
+  void fbthrift_serialize_and_send_interactWithSink(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::SinkClientCallback* callback, const apache::thrift::InteractionHandle& handle, bool stealRpcOptions = false);
+ public:
+#if FOLLY_HAS_COROUTINES
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSink"} */
+  folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> co_interactWithSink();
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSink"} */
+  folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> co_interactWithSink(apache::thrift::RpcOptions& rpcOptions);
+#endif // FOLLY_HAS_COROUTINES
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSink"} */
+  static folly::exception_wrapper recv_wrapped_interactWithSink(apache::thrift::ClientSink<::std::int32_t, ::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSink"} */
+  static apache::thrift::ClientSink<::std::int32_t, ::std::int32_t> recv_interactWithSink(::apache::thrift::ClientReceiveState& state);
+ private:
+  apache::thrift::SerializedRequest fbthrift_serialize_interactWithSink(const RpcOptions& rpcOptions, apache::thrift::transport::THeader& header, apache::thrift::ContextStack* contextStack);
+  template <typename RpcOptions>
+  void fbthrift_send_interactWithSink(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::SinkClientCallback* callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata, const apache::thrift::InteractionHandle& handle);
+  std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::thrift::transport::THeader>> interactWithSinkCtx(apache::thrift::RpcOptions* rpcOptions);
+ public:
+ protected:
+  void fbthrift_serialize_and_send_interactWithSinkAndInitialResponse(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::SinkClientCallback* callback, const apache::thrift::InteractionHandle& handle, bool stealRpcOptions = false);
+ public:
+#if FOLLY_HAS_COROUTINES
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSinkAndInitialResponse"} */
+  folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> co_interactWithSinkAndInitialResponse();
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSinkAndInitialResponse"} */
+  folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> co_interactWithSinkAndInitialResponse(apache::thrift::RpcOptions& rpcOptions);
+#endif // FOLLY_HAS_COROUTINES
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSinkAndInitialResponse"} */
+  static folly::exception_wrapper recv_wrapped_interactWithSinkAndInitialResponse(apache::thrift::ResponseAndClientSink<::std::int32_t, ::std::int32_t, ::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSinkAndInitialResponse"} */
+  static apache::thrift::ResponseAndClientSink<::std::int32_t, ::std::int32_t, ::std::int32_t> recv_interactWithSinkAndInitialResponse(::apache::thrift::ClientReceiveState& state);
+ private:
+  apache::thrift::SerializedRequest fbthrift_serialize_interactWithSinkAndInitialResponse(const RpcOptions& rpcOptions, apache::thrift::transport::THeader& header, apache::thrift::ContextStack* contextStack);
+  template <typename RpcOptions>
+  void fbthrift_send_interactWithSinkAndInitialResponse(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::SinkClientCallback* callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata, const apache::thrift::InteractionHandle& handle);
+  std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::thrift::transport::THeader>> interactWithSinkAndInitialResponseCtx(apache::thrift::RpcOptions* rpcOptions);
+ public:
+ protected:
+  void fbthrift_serialize_and_send_interactWithBidi(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::BiDiClientCallback* callback, const apache::thrift::InteractionHandle& handle, bool stealRpcOptions = false);
+ public:
+#if FOLLY_HAS_COROUTINES
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithBidi"} */
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::BidirectionalStream<::std::int32_t, ::std::int32_t>>> co_interactWithBidi();
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithBidi"} */
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::BidirectionalStream<::std::int32_t, ::std::int32_t>>> co_interactWithBidi(apache::thrift::RpcOptions& rpcOptions);
+#endif // FOLLY_HAS_COROUTINES
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithBidi"} */
+  static folly::exception_wrapper recv_wrapped_interactWithBidi(apache::thrift::BidirectionalStream<::std::int32_t, ::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithBidi"} */
+  static apache::thrift::BidirectionalStream<::std::int32_t, ::std::int32_t> recv_interactWithBidi(::apache::thrift::ClientReceiveState& state);
+ private:
+  apache::thrift::SerializedRequest fbthrift_serialize_interactWithBidi(const RpcOptions& rpcOptions, apache::thrift::transport::THeader& header, apache::thrift::ContextStack* contextStack);
+  template <typename RpcOptions>
+  void fbthrift_send_interactWithBidi(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::BiDiClientCallback* callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata, const apache::thrift::InteractionHandle& handle);
+  std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::thrift::transport::THeader>> interactWithBidiCtx(apache::thrift::RpcOptions* rpcOptions);
+ public:
+ protected:
+  void fbthrift_serialize_and_send_interactWithBidiAndInitialResponse(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::BiDiClientCallback* callback, const apache::thrift::InteractionHandle& handle, bool stealRpcOptions = false);
+ public:
+#if FOLLY_HAS_COROUTINES
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithBidiAndInitialResponse"} */
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndBidirectionalStream<::std::int32_t, ::std::int32_t, ::std::int32_t>>> co_interactWithBidiAndInitialResponse();
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithBidiAndInitialResponse"} */
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndBidirectionalStream<::std::int32_t, ::std::int32_t, ::std::int32_t>>> co_interactWithBidiAndInitialResponse(apache::thrift::RpcOptions& rpcOptions);
+#endif // FOLLY_HAS_COROUTINES
+
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithBidiAndInitialResponse"} */
+  static folly::exception_wrapper recv_wrapped_interactWithBidiAndInitialResponse(apache::thrift::ResponseAndBidirectionalStream<::std::int32_t, ::std::int32_t, ::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithBidiAndInitialResponse"} */
+  static apache::thrift::ResponseAndBidirectionalStream<::std::int32_t, ::std::int32_t, ::std::int32_t> recv_interactWithBidiAndInitialResponse(::apache::thrift::ClientReceiveState& state);
+ private:
+  apache::thrift::SerializedRequest fbthrift_serialize_interactWithBidiAndInitialResponse(const RpcOptions& rpcOptions, apache::thrift::transport::THeader& header, apache::thrift::ContextStack* contextStack);
+  template <typename RpcOptions>
+  void fbthrift_send_interactWithBidiAndInitialResponse(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::BiDiClientCallback* callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata, const apache::thrift::InteractionHandle& handle);
+  std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::thrift::transport::THeader>> interactWithBidiAndInitialResponseCtx(apache::thrift::RpcOptions* rpcOptions);
+ public:
 };
 
 } // namespace apache::thrift

@@ -206,6 +206,65 @@ var serviceMetadatas = func() []*metadata.ThriftService {
                         },
                     },
                 },
+                &metadata.ThriftFunction{
+                    Name:       "interactWithStream",
+                    IsOneway:   false,
+                    ReturnType: &metadata.ThriftType{
+                        TStream: &metadata.ThriftStreamType{
+                            ElemType: premadeThriftType_i32,
+                        },
+                    },
+                },
+                &metadata.ThriftFunction{
+                    Name:       "interactWithStreamAndInitialResponse",
+                    IsOneway:   false,
+                    ReturnType: &metadata.ThriftType{
+                        TStream: &metadata.ThriftStreamType{
+                            ElemType: premadeThriftType_i32,
+                            InitialResponseType: premadeThriftType_i32,
+                        },
+                    },
+                },
+                &metadata.ThriftFunction{
+                    Name:       "interactWithSink",
+                    IsOneway:   false,
+                    ReturnType: &metadata.ThriftType{
+                        TSink: &metadata.ThriftSinkType{
+                            ElemType: premadeThriftType_i32,
+                            FinalResponseType: premadeThriftType_i32,
+                        },
+                    },
+                },
+                &metadata.ThriftFunction{
+                    Name:       "interactWithSinkAndInitialResponse",
+                    IsOneway:   false,
+                    ReturnType: &metadata.ThriftType{
+                        TSink: &metadata.ThriftSinkType{
+                            ElemType: premadeThriftType_i32,
+                            FinalResponseType: premadeThriftType_i32,
+                            InitialResponseType: premadeThriftType_i32,
+                        },
+                    },
+                },
+                &metadata.ThriftFunction{
+                    Name:       "interactWithBidi",
+                    IsOneway:   false,
+                    ReturnType: &metadata.ThriftType{
+                        TStream: &metadata.ThriftStreamType{
+                            ElemType: premadeThriftType_i32,
+                        },
+                    },
+                },
+                &metadata.ThriftFunction{
+                    Name:       "interactWithBidiAndInitialResponse",
+                    IsOneway:   false,
+                    ReturnType: &metadata.ThriftType{
+                        TStream: &metadata.ThriftStreamType{
+                            ElemType: premadeThriftType_i32,
+                            InitialResponseType: premadeThriftType_i32,
+                        },
+                    },
+                },
             },
         },
     )

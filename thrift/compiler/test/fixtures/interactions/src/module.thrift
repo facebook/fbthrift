@@ -71,6 +71,13 @@ service Factories {
   MyInteraction interact(1: i32 arg);
   MyInteractionFast, i32 interactFast();
   SerialInteraction, i32, stream<i32> serialize();
+
+  MyInteraction, stream<i32> interactWithStream();
+  MyInteraction, i32, stream<i32> interactWithStreamAndInitialResponse();
+  MyInteraction, sink<i32, i32> interactWithSink();
+  MyInteraction, i32, sink<i32, i32> interactWithSinkAndInitialResponse();
+  MyInteraction, sink<i32>, stream<i32> interactWithBidi();
+  MyInteraction, i32, sink<i32>, stream<i32> interactWithBidiAndInitialResponse();
 }
 
 service Perform {

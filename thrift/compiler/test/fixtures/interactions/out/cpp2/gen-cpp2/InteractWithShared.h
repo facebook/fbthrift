@@ -285,8 +285,8 @@ class SharedInteractionIf : public apache::thrift::Tile, public apache::thrift::
 namespace detail {
 template <> struct TSchemaAssociation<::cpp2::InteractWithShared, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 879819273462543070;
-  static constexpr ::std::string_view definitionKey = {"\x30\xeb\x90\xbc\xe4\xb5\x8b\x4a\xd9\xd0\xe6\x67\x8d\x08\x2f\xc4", 16};
+  static constexpr int64_t programId = 6123796942301299643;
+  static constexpr ::std::string_view definitionKey = {"\xa7\x40\x5d\x22\x7b\xa9\x0a\x88\x3f\x6e\x41\x8e\x53\xb6\xfe\xb1", 16};
 };
 }
 } // namespace apache::thrift

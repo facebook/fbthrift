@@ -303,6 +303,46 @@ public interface Factories extends java.io.Closeable, com.facebook.thrift.util.B
             throw new UnsupportedOperationException();
         }
 
+        reactor.core.publisher.Flux<Integer> interactWithStream();
+
+        default reactor.core.publisher.Flux<Integer> interactWithStream(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Flux<ResponseWrapper<Integer>> interactWithStreamWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer,Integer>> interactWithStreamAndInitialResponse();
+
+        default reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer,Integer>> interactWithStreamAndInitialResponse(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Flux<ResponseWrapper<com.facebook.thrift.model.StreamResponse<Integer,Integer>>> interactWithStreamAndInitialResponseWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        reactor.core.publisher.Mono<Integer> interactWithSink( org.reactivestreams.Publisher<Integer> payloads);
+
+        default reactor.core.publisher.Mono<Integer> interactWithSink( org.reactivestreams.Publisher<Integer> payloads, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Integer>> interactWithSinkWrapper( org.reactivestreams.Publisher<Integer> payloads, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer, Integer>> interactWithSinkAndInitialResponse( org.reactivestreams.Publisher<Integer> payloads);
+
+        default reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer, Integer>> interactWithSinkAndInitialResponse( org.reactivestreams.Publisher<Integer> payloads, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Flux<ResponseWrapper<com.facebook.thrift.model.StreamResponse<Integer, Integer>>> interactWithSinkAndInitialResponseWrapper( org.reactivestreams.Publisher<Integer> payloads, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         @com.facebook.swift.service.ThriftInteraction("MyInteraction")
         public interface MyInteraction extends reactor.core.Disposable {
             @ThriftMethod(value = "frobnicate",

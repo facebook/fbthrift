@@ -2908,6 +2908,42 @@ pub trait Factories: ::std::marker::Send {
     fn serialize(
         &self,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::SerialInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::SerializeStreamError>>)), crate::errors::factories::SerializeError>>;
+
+    fn interactWithStream(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamStreamError>>), crate::errors::factories::InteractWithStreamError>>;
+
+    fn interactWithStreamAndInitialResponse(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamAndInitialResponseStreamError>>)), crate::errors::factories::InteractWithStreamAndInitialResponseError>>;
+
+    fn interactWithSink(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    (),
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkFinalError,
+>), crate::errors::factories::InteractWithSinkError>>;
+
+    fn interactWithSinkAndInitialResponse(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    ::std::primitive::i32,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkFinalError,
+>), crate::errors::factories::InteractWithSinkAndInitialResponseError>>;
+
+    fn interactWithBidi(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiError>>;
+
+    fn interactWithBidiAndInitialResponse(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiAndInitialResponseError>>;
 }
 
 pub trait FactoriesExt<T>: Factories
@@ -2931,6 +2967,42 @@ where
         &self,
         rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::SerialInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::SerializeStreamError>>)), crate::errors::factories::SerializeError>>;
+    fn interactWithStream_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamStreamError>>), crate::errors::factories::InteractWithStreamError>>;
+    fn interactWithStreamAndInitialResponse_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamAndInitialResponseStreamError>>)), crate::errors::factories::InteractWithStreamAndInitialResponseError>>;
+    fn interactWithSink_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    (),
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkFinalError,
+>), crate::errors::factories::InteractWithSinkError>>;
+    fn interactWithSinkAndInitialResponse_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    ::std::primitive::i32,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkFinalError,
+>), crate::errors::factories::InteractWithSinkAndInitialResponseError>>;
+    fn interactWithBidi_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiError>>;
+    fn interactWithBidiAndInitialResponse_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiAndInitialResponseError>>;
 
     fn transport(&self) -> &T;
 }
@@ -2965,6 +3037,54 @@ where
         &self,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::SerialInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::SerializeStreamError>>)), crate::errors::factories::SerializeError>> {
         self.as_ref().serialize(
+        )
+    }
+    fn interactWithStream(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamStreamError>>), crate::errors::factories::InteractWithStreamError>> {
+        self.as_ref().interactWithStream(
+        )
+    }
+    fn interactWithStreamAndInitialResponse(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamAndInitialResponseStreamError>>)), crate::errors::factories::InteractWithStreamAndInitialResponseError>> {
+        self.as_ref().interactWithStreamAndInitialResponse(
+        )
+    }
+    fn interactWithSink(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    (),
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkFinalError,
+>), crate::errors::factories::InteractWithSinkError>> {
+        self.as_ref().interactWithSink(
+        )
+    }
+    fn interactWithSinkAndInitialResponse(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    ::std::primitive::i32,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkFinalError,
+>), crate::errors::factories::InteractWithSinkAndInitialResponseError>> {
+        self.as_ref().interactWithSinkAndInitialResponse(
+        )
+    }
+    fn interactWithBidi(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiError>> {
+        self.as_ref().interactWithBidi(
+        )
+    }
+    fn interactWithBidiAndInitialResponse(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiAndInitialResponseError>> {
+        self.as_ref().interactWithBidiAndInitialResponse(
         )
     }
 }
@@ -3007,6 +3127,66 @@ where
         rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::SerialInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::SerializeStreamError>>)), crate::errors::factories::SerializeError>> {
         <Self as ::std::convert::AsRef<dyn FactoriesExt<T>>>::as_ref(self).serialize_with_rpc_opts(
+            rpc_options,
+        )
+    }
+    fn interactWithStream_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamStreamError>>), crate::errors::factories::InteractWithStreamError>> {
+        <Self as ::std::convert::AsRef<dyn FactoriesExt<T>>>::as_ref(self).interactWithStream_with_rpc_opts(
+            rpc_options,
+        )
+    }
+    fn interactWithStreamAndInitialResponse_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamAndInitialResponseStreamError>>)), crate::errors::factories::InteractWithStreamAndInitialResponseError>> {
+        <Self as ::std::convert::AsRef<dyn FactoriesExt<T>>>::as_ref(self).interactWithStreamAndInitialResponse_with_rpc_opts(
+            rpc_options,
+        )
+    }
+    fn interactWithSink_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    (),
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkFinalError,
+>), crate::errors::factories::InteractWithSinkError>> {
+        <Self as ::std::convert::AsRef<dyn FactoriesExt<T>>>::as_ref(self).interactWithSink_with_rpc_opts(
+            rpc_options,
+        )
+    }
+    fn interactWithSinkAndInitialResponse_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    ::std::primitive::i32,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkFinalError,
+>), crate::errors::factories::InteractWithSinkAndInitialResponseError>> {
+        <Self as ::std::convert::AsRef<dyn FactoriesExt<T>>>::as_ref(self).interactWithSinkAndInitialResponse_with_rpc_opts(
+            rpc_options,
+        )
+    }
+    fn interactWithBidi_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiError>> {
+        <Self as ::std::convert::AsRef<dyn FactoriesExt<T>>>::as_ref(self).interactWithBidi_with_rpc_opts(
+            rpc_options,
+        )
+    }
+    fn interactWithBidiAndInitialResponse_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiAndInitialResponseError>> {
+        <Self as ::std::convert::AsRef<dyn FactoriesExt<T>>>::as_ref(self).interactWithBidiAndInitialResponse_with_rpc_opts(
             rpc_options,
         )
     }
@@ -3293,6 +3473,597 @@ where
         .instrument(::tracing::info_span!("stream", method = "Factories.serialize"))
         .boxed()
     }
+
+    fn _interactWithStream_impl(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamStreamError>>), crate::errors::factories::InteractWithStreamError>> {
+        use ::tracing::Instrument as _;
+        use ::futures::FutureExt as _;
+        use ::futures::StreamExt as _;
+        use ::fbthrift::Deserialize as _;
+
+        let service_name = c"Factories";
+        let service_method_name = c"Factories.interactWithStream";
+
+        const INTERACTION_NAME: &::std::ffi::CStr = c"MyInteraction";
+        let args = self::Args_Factories_interactWithStream {
+            _phantom: ::std::marker::PhantomData,
+        };
+
+        let interaction_transport = match self.transport().create_interaction(INTERACTION_NAME) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+        let interaction_impl = crate::MyInteractionImpl::<P, T, S>::new(interaction_transport, &Self::NAMES_MyInteraction);
+        let transport = interaction_impl.transport();
+
+        // need to do call setup outside of async block because T: Transport isn't Send
+        let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("interactWithStream", &args) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+
+        let call_stream = transport
+            .call_stream(service_name, service_method_name, request_env, rpc_options)
+            .instrument(::tracing::trace_span!("call_stream", method = "Factories.interactWithStream"));
+
+        async move {
+            let (initial, stream) = call_stream.await?;
+
+            let new_stream = stream.then(|item_res| {
+                async move {
+                    match item_res {
+                        ::std::result::Result::Err(err) =>
+                            ::std::result::Result::Err(crate::errors::factories::InteractWithStreamStreamError::from(err)),
+                        ::std::result::Result::Ok(item_enc) => {
+                            S::spawn(move || {
+                                match item_enc {
+                                    ::fbthrift::ClientStreamElement::Reply(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        <crate::errors::factories::InteractWithStreamStreamReader as ::fbthrift::help::DeserializeExn>::read_result(&mut de)
+                                    }
+                                    ::fbthrift::ClientStreamElement::ApplicationEx(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        let aexn = ::fbthrift::ApplicationException::rs_thrift_read(&mut de)?;
+                                        ::std::result::Result::Ok(::std::result::Result::Err(crate::errors::factories::InteractWithStreamStreamError::ApplicationException(aexn)))
+                                    }
+                                    ::fbthrift::ClientStreamElement::DeclaredEx(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        <crate::errors::factories::InteractWithStreamStreamReader as ::fbthrift::help::DeserializeExn>::read_result(&mut de)
+                                    }
+                                }
+                            }).await.map_err(::anyhow::Error::from)??
+                        }
+                    }
+                }
+            })
+            .boxed();
+
+            let de = P::deserializer(initial);
+            let res = ::fbthrift::help::async_deserialize_response_envelope::<P, crate::errors::factories::InteractWithStreamReader, S>(de)
+                .await??
+                .map(move |_| new_stream);
+            let interaction_client: crate::client::MyInteractionClient = ::std::sync::Arc::new(interaction_impl);
+            ::std::result::Result::Ok((interaction_client, res?))
+        }
+        .instrument(::tracing::info_span!("stream", method = "Factories.interactWithStream"))
+        .boxed()
+    }
+
+    fn _interactWithStreamAndInitialResponse_impl(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamAndInitialResponseStreamError>>)), crate::errors::factories::InteractWithStreamAndInitialResponseError>> {
+        use ::tracing::Instrument as _;
+        use ::futures::FutureExt as _;
+        use ::futures::StreamExt as _;
+        use ::fbthrift::Deserialize as _;
+
+        let service_name = c"Factories";
+        let service_method_name = c"Factories.interactWithStreamAndInitialResponse";
+
+        const INTERACTION_NAME: &::std::ffi::CStr = c"MyInteraction";
+        let args = self::Args_Factories_interactWithStreamAndInitialResponse {
+            _phantom: ::std::marker::PhantomData,
+        };
+
+        let interaction_transport = match self.transport().create_interaction(INTERACTION_NAME) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+        let interaction_impl = crate::MyInteractionImpl::<P, T, S>::new(interaction_transport, &Self::NAMES_MyInteraction);
+        let transport = interaction_impl.transport();
+
+        // need to do call setup outside of async block because T: Transport isn't Send
+        let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("interactWithStreamAndInitialResponse", &args) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+
+        let call_stream = transport
+            .call_stream(service_name, service_method_name, request_env, rpc_options)
+            .instrument(::tracing::trace_span!("call_stream", method = "Factories.interactWithStreamAndInitialResponse"));
+
+        async move {
+            let (initial, stream) = call_stream.await?;
+
+            let new_stream = stream.then(|item_res| {
+                async move {
+                    match item_res {
+                        ::std::result::Result::Err(err) =>
+                            ::std::result::Result::Err(crate::errors::factories::InteractWithStreamAndInitialResponseStreamError::from(err)),
+                        ::std::result::Result::Ok(item_enc) => {
+                            S::spawn(move || {
+                                match item_enc {
+                                    ::fbthrift::ClientStreamElement::Reply(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        <crate::errors::factories::InteractWithStreamAndInitialResponseStreamReader as ::fbthrift::help::DeserializeExn>::read_result(&mut de)
+                                    }
+                                    ::fbthrift::ClientStreamElement::ApplicationEx(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        let aexn = ::fbthrift::ApplicationException::rs_thrift_read(&mut de)?;
+                                        ::std::result::Result::Ok(::std::result::Result::Err(crate::errors::factories::InteractWithStreamAndInitialResponseStreamError::ApplicationException(aexn)))
+                                    }
+                                    ::fbthrift::ClientStreamElement::DeclaredEx(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        <crate::errors::factories::InteractWithStreamAndInitialResponseStreamReader as ::fbthrift::help::DeserializeExn>::read_result(&mut de)
+                                    }
+                                }
+                            }).await.map_err(::anyhow::Error::from)??
+                        }
+                    }
+                }
+            })
+            .boxed();
+
+            let de = P::deserializer(initial);
+            let res = ::fbthrift::help::async_deserialize_response_envelope::<P, crate::errors::factories::InteractWithStreamAndInitialResponseReader, S>(de)
+                .await??
+                .map(move |initial| (initial, new_stream));
+            let interaction_client: crate::client::MyInteractionClient = ::std::sync::Arc::new(interaction_impl);
+            ::std::result::Result::Ok((interaction_client, res?))
+        }
+        .instrument(::tracing::info_span!("stream", method = "Factories.interactWithStreamAndInitialResponse"))
+        .boxed()
+    }
+
+    fn _interactWithSink_impl(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    (),
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkFinalError,
+>), crate::errors::factories::InteractWithSinkError>> {
+        use ::tracing::Instrument as _;
+        use ::futures::FutureExt as _;
+        use ::futures::StreamExt as _;
+        use ::fbthrift::Deserialize as _;
+        use ::futures::TryFutureExt as _;
+
+        let service_name = c"Factories";
+        let service_method_name = c"Factories.interactWithSink";
+
+        const INTERACTION_NAME: &::std::ffi::CStr = c"MyInteraction";
+        let args = self::Args_Factories_interactWithSink {
+            _phantom: ::std::marker::PhantomData,
+        };
+
+        let interaction_transport = match self.transport().create_interaction(INTERACTION_NAME) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+        let interaction_impl = crate::MyInteractionImpl::<P, T, S>::new(interaction_transport, &Self::NAMES_MyInteraction);
+        let transport = interaction_impl.transport();
+
+        // need to do call setup outside of async block because T: Transport isn't Send
+        let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("interactWithSink", &args) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+
+        let call_sink = transport
+            .call_sink(service_name, service_method_name, request_env, rpc_options)
+            .instrument(::tracing::trace_span!("call_sink", method = "Factories.interactWithSink"));
+
+        async move {
+            let ::fbthrift::SinkReply {
+                initial_response: _initial_response,
+                sink_processor,
+            } = call_sink.await?;
+
+            let de = P::deserializer(_initial_response);
+            let res = ::fbthrift::help::async_deserialize_response_envelope::<P, crate::errors::factories::InteractWithSinkReader, S>(de).await?;
+
+            let initial_response = match res {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(aexn) => {
+                    ::std::result::Result::Err(crate::errors::factories::InteractWithSinkError::ApplicationException(aexn))
+                }
+            }?;
+
+            let sink_helper_fn = move |stream: ::futures::stream::BoxStream<'static, ::std::result::Result<
+                ::std::primitive::i32,
+                crate::errors::factories::InteractWithSinkSinkError
+            >>| {
+                let new_stream = stream.map(|item| {
+                    match item {
+                        ::std::result::Result::Ok(res) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithSinkSinkError>(::std::result::Result::Ok(res), "interactWithSink");
+                            ::fbthrift::ClientStreamElement::Reply(enc)
+                        }
+                        ::std::result::Result::Err(crate::errors::factories::InteractWithSinkSinkError::ApplicationException(aexn)) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithSinkSinkError>(::std::result::Result::Err(crate::errors::factories::InteractWithSinkSinkError::ApplicationException(aexn)), "interactWithSink");
+                            ::fbthrift::ClientStreamElement::ApplicationEx(enc)
+                        }
+                        ::std::result::Result::Err(crate::errors::factories::InteractWithSinkSinkError::ThriftError(err)) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithSinkSinkError>(::std::result::Result::Err(crate::errors::factories::InteractWithSinkSinkError::ThriftError(err)), "interactWithSink");
+                            ::fbthrift::ClientStreamElement::ApplicationEx(enc)
+                        }
+                    }
+                }).boxed();
+                let sinker = sink_processor;
+                async move {
+                    let payload = (sinker)(new_stream).await?;
+                    S::spawn(move || {
+                        let mut de = P::deserializer(payload);
+                        <crate::errors::factories::InteractWithSinkSinkFinalReader as ::fbthrift::help::DeserializeExn>::read_result(&mut de)
+                    }).await.map_err(::anyhow::Error::from)??
+                }.boxed()
+            };
+
+            let res = Ok(::fbthrift::SinkResult::<
+                (),
+                ::std::primitive::i32,
+                crate::errors::factories::InteractWithSinkSinkError,
+                ::std::primitive::i32,
+                crate::errors::factories::InteractWithSinkSinkFinalError,
+            > {
+                initial_response,
+                sink: Box::new(sink_helper_fn),
+            });
+            let interaction_client: crate::client::MyInteractionClient = ::std::sync::Arc::new(interaction_impl);
+            res?;
+            ::std::result::Result::Ok(interaction_client)
+        }
+        .instrument(::tracing::info_span!("stream", method = "Factories.interactWithSink"))
+        .boxed()
+    }
+
+    fn _interactWithSinkAndInitialResponse_impl(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    ::std::primitive::i32,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkFinalError,
+>), crate::errors::factories::InteractWithSinkAndInitialResponseError>> {
+        use ::tracing::Instrument as _;
+        use ::futures::FutureExt as _;
+        use ::futures::StreamExt as _;
+        use ::fbthrift::Deserialize as _;
+        use ::futures::TryFutureExt as _;
+
+        let service_name = c"Factories";
+        let service_method_name = c"Factories.interactWithSinkAndInitialResponse";
+
+        const INTERACTION_NAME: &::std::ffi::CStr = c"MyInteraction";
+        let args = self::Args_Factories_interactWithSinkAndInitialResponse {
+            _phantom: ::std::marker::PhantomData,
+        };
+
+        let interaction_transport = match self.transport().create_interaction(INTERACTION_NAME) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+        let interaction_impl = crate::MyInteractionImpl::<P, T, S>::new(interaction_transport, &Self::NAMES_MyInteraction);
+        let transport = interaction_impl.transport();
+
+        // need to do call setup outside of async block because T: Transport isn't Send
+        let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("interactWithSinkAndInitialResponse", &args) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+
+        let call_sink = transport
+            .call_sink(service_name, service_method_name, request_env, rpc_options)
+            .instrument(::tracing::trace_span!("call_sink", method = "Factories.interactWithSinkAndInitialResponse"));
+
+        async move {
+            let ::fbthrift::SinkReply {
+                initial_response: _initial_response,
+                sink_processor,
+            } = call_sink.await?;
+
+            let de = P::deserializer(_initial_response);
+            let res = ::fbthrift::help::async_deserialize_response_envelope::<P, crate::errors::factories::InteractWithSinkAndInitialResponseReader, S>(de).await?;
+
+            let initial_response = match res {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(aexn) => {
+                    ::std::result::Result::Err(crate::errors::factories::InteractWithSinkAndInitialResponseError::ApplicationException(aexn))
+                }
+            }?;
+
+            let sink_helper_fn = move |stream: ::futures::stream::BoxStream<'static, ::std::result::Result<
+                ::std::primitive::i32,
+                crate::errors::factories::InteractWithSinkAndInitialResponseSinkError
+            >>| {
+                let new_stream = stream.map(|item| {
+                    match item {
+                        ::std::result::Result::Ok(res) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithSinkAndInitialResponseSinkError>(::std::result::Result::Ok(res), "interactWithSinkAndInitialResponse");
+                            ::fbthrift::ClientStreamElement::Reply(enc)
+                        }
+                        ::std::result::Result::Err(crate::errors::factories::InteractWithSinkAndInitialResponseSinkError::ApplicationException(aexn)) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithSinkAndInitialResponseSinkError>(::std::result::Result::Err(crate::errors::factories::InteractWithSinkAndInitialResponseSinkError::ApplicationException(aexn)), "interactWithSinkAndInitialResponse");
+                            ::fbthrift::ClientStreamElement::ApplicationEx(enc)
+                        }
+                        ::std::result::Result::Err(crate::errors::factories::InteractWithSinkAndInitialResponseSinkError::ThriftError(err)) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithSinkAndInitialResponseSinkError>(::std::result::Result::Err(crate::errors::factories::InteractWithSinkAndInitialResponseSinkError::ThriftError(err)), "interactWithSinkAndInitialResponse");
+                            ::fbthrift::ClientStreamElement::ApplicationEx(enc)
+                        }
+                    }
+                }).boxed();
+                let sinker = sink_processor;
+                async move {
+                    let payload = (sinker)(new_stream).await?;
+                    S::spawn(move || {
+                        let mut de = P::deserializer(payload);
+                        <crate::errors::factories::InteractWithSinkAndInitialResponseSinkFinalReader as ::fbthrift::help::DeserializeExn>::read_result(&mut de)
+                    }).await.map_err(::anyhow::Error::from)??
+                }.boxed()
+            };
+
+            let res = Ok(::fbthrift::SinkResult::<
+                ::std::primitive::i32,
+                ::std::primitive::i32,
+                crate::errors::factories::InteractWithSinkAndInitialResponseSinkError,
+                ::std::primitive::i32,
+                crate::errors::factories::InteractWithSinkAndInitialResponseSinkFinalError,
+            > {
+                initial_response,
+                sink: Box::new(sink_helper_fn),
+            });
+            let interaction_client: crate::client::MyInteractionClient = ::std::sync::Arc::new(interaction_impl);
+            ::std::result::Result::Ok((interaction_client, res?))
+        }
+        .instrument(::tracing::info_span!("stream", method = "Factories.interactWithSinkAndInitialResponse"))
+        .boxed()
+    }
+
+    fn _interactWithBidi_impl(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiError>> {
+        use ::tracing::Instrument as _;
+        use ::futures::FutureExt as _;
+        use ::futures::StreamExt as _;
+        use ::fbthrift::Deserialize as _;
+        use ::futures::TryFutureExt as _;
+
+        let service_name = c"Factories";
+        let service_method_name = c"Factories.interactWithBidi";
+
+        const INTERACTION_NAME: &::std::ffi::CStr = c"MyInteraction";
+        let args = self::Args_Factories_interactWithBidi {
+            _phantom: ::std::marker::PhantomData,
+        };
+
+        let interaction_transport = match self.transport().create_interaction(INTERACTION_NAME) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+        let interaction_impl = crate::MyInteractionImpl::<P, T, S>::new(interaction_transport, &Self::NAMES_MyInteraction);
+        let transport = interaction_impl.transport();
+
+        // need to do call setup outside of async block because T: Transport isn't Send
+        let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("interactWithBidi", &args) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+
+        let call_bidirectional = transport
+            .call_bidirectional(service_name, service_method_name, request_env, rpc_options)
+            .instrument(::tracing::trace_span!("call_bidirectional", method = "Factories.interactWithBidi"));
+
+        async move {
+            let ::fbthrift::BidiReply {
+                initial_response: _initial_response,
+                stream,
+                sink_processor,
+            } = call_bidirectional.await?;
+
+            // Deserialize the initial response. For bidi without initial response this is `()`;
+            // for bidi with initial response this is the typed first response value.
+            let de = P::deserializer(_initial_response);
+            let _initial_result = ::fbthrift::help::async_deserialize_response_envelope::<P, crate::errors::factories::InteractWithBidiReader, S>(de).await???;
+
+            // Process the server-to-client stream
+            let server_stream = stream.then(|item_res| {
+                async move {
+                    match item_res {
+                        ::std::result::Result::Err(err) =>
+                            ::std::result::Result::Err(crate::errors::factories::InteractWithBidiStreamError::from(err)),
+                        ::std::result::Result::Ok(item_enc) => {
+                            S::spawn(move || {
+                                match item_enc {
+                                    ::fbthrift::ClientStreamElement::Reply(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        <crate::errors::factories::InteractWithBidiStreamReader as ::fbthrift::help::DeserializeExn>::read_result(&mut de)
+                                    }
+                                    ::fbthrift::ClientStreamElement::ApplicationEx(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        let aexn = ::fbthrift::ApplicationException::rs_thrift_read(&mut de)?;
+                                        ::std::result::Result::Ok(::std::result::Result::Err(crate::errors::factories::InteractWithBidiStreamError::ApplicationException(aexn)))
+                                    }
+                                    ::fbthrift::ClientStreamElement::DeclaredEx(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        <crate::errors::factories::InteractWithBidiStreamReader as ::fbthrift::help::DeserializeExn>::read_result(&mut de)
+                                    }
+                                }
+                            }).await.map_err(::anyhow::Error::from)??
+                        }
+                    }
+                }
+            })
+            .boxed();
+
+            // Create the sink handler that accepts client stream and sends to server
+            let sink_helper_fn = move |stream: ::futures::stream::BoxStream<'static, ::std::result::Result<
+                ::std::primitive::i32,
+                crate::errors::factories::InteractWithBidiSinkError
+            >>| {
+                let new_stream = stream.map(|item| {
+                    match item {
+                        ::std::result::Result::Ok(res) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithBidiSinkError>(::std::result::Result::Ok(res), "interactWithBidi");
+                            ::fbthrift::ClientStreamElement::Reply(enc)
+                        }
+                        ::std::result::Result::Err(crate::errors::factories::InteractWithBidiSinkError::ApplicationException(aexn)) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithBidiSinkError>(::std::result::Result::Err(crate::errors::factories::InteractWithBidiSinkError::ApplicationException(aexn)), "interactWithBidi");
+                            ::fbthrift::ClientStreamElement::ApplicationEx(enc)
+                        }
+                        ::std::result::Result::Err(crate::errors::factories::InteractWithBidiSinkError::ThriftError(err)) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithBidiSinkError>(::std::result::Result::Err(crate::errors::factories::InteractWithBidiSinkError::ThriftError(err)), "interactWithBidi");
+                            ::fbthrift::ClientStreamElement::ApplicationEx(enc)
+                        }
+                    }
+                }).boxed();
+                let sinker = sink_processor;
+                async move {
+                    let _payload = (sinker)(new_stream).await?;
+                    // For bidirectional streaming, we don't expect a final response
+                    ::std::result::Result::Ok(())
+                }.boxed()
+            };
+
+            let res = ::std::result::Result::Ok((server_stream, Box::new(sink_helper_fn) as Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiSinkError>> + ::std::marker::Send>));
+            let interaction_client: crate::client::MyInteractionClient = ::std::sync::Arc::new(interaction_impl);
+            ::std::result::Result::Ok((interaction_client, res?))
+        }
+        .instrument(::tracing::info_span!("stream", method = "Factories.interactWithBidi"))
+        .boxed()
+    }
+
+    fn _interactWithBidiAndInitialResponse_impl(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiAndInitialResponseError>> {
+        use ::tracing::Instrument as _;
+        use ::futures::FutureExt as _;
+        use ::futures::StreamExt as _;
+        use ::fbthrift::Deserialize as _;
+        use ::futures::TryFutureExt as _;
+
+        let service_name = c"Factories";
+        let service_method_name = c"Factories.interactWithBidiAndInitialResponse";
+
+        const INTERACTION_NAME: &::std::ffi::CStr = c"MyInteraction";
+        let args = self::Args_Factories_interactWithBidiAndInitialResponse {
+            _phantom: ::std::marker::PhantomData,
+        };
+
+        let interaction_transport = match self.transport().create_interaction(INTERACTION_NAME) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+        let interaction_impl = crate::MyInteractionImpl::<P, T, S>::new(interaction_transport, &Self::NAMES_MyInteraction);
+        let transport = interaction_impl.transport();
+
+        // need to do call setup outside of async block because T: Transport isn't Send
+        let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("interactWithBidiAndInitialResponse", &args) {
+            ::std::result::Result::Ok(res) => res,
+            ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+        };
+
+        let call_bidirectional = transport
+            .call_bidirectional(service_name, service_method_name, request_env, rpc_options)
+            .instrument(::tracing::trace_span!("call_bidirectional", method = "Factories.interactWithBidiAndInitialResponse"));
+
+        async move {
+            let ::fbthrift::BidiReply {
+                initial_response: _initial_response,
+                stream,
+                sink_processor,
+            } = call_bidirectional.await?;
+
+            // Deserialize the initial response. For bidi without initial response this is `()`;
+            // for bidi with initial response this is the typed first response value.
+            let de = P::deserializer(_initial_response);
+            let initial_response = ::fbthrift::help::async_deserialize_response_envelope::<P, crate::errors::factories::InteractWithBidiAndInitialResponseReader, S>(de).await???;
+
+            // Process the server-to-client stream
+            let server_stream = stream.then(|item_res| {
+                async move {
+                    match item_res {
+                        ::std::result::Result::Err(err) =>
+                            ::std::result::Result::Err(crate::errors::factories::InteractWithBidiAndInitialResponseStreamError::from(err)),
+                        ::std::result::Result::Ok(item_enc) => {
+                            S::spawn(move || {
+                                match item_enc {
+                                    ::fbthrift::ClientStreamElement::Reply(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        <crate::errors::factories::InteractWithBidiAndInitialResponseStreamReader as ::fbthrift::help::DeserializeExn>::read_result(&mut de)
+                                    }
+                                    ::fbthrift::ClientStreamElement::ApplicationEx(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        let aexn = ::fbthrift::ApplicationException::rs_thrift_read(&mut de)?;
+                                        ::std::result::Result::Ok(::std::result::Result::Err(crate::errors::factories::InteractWithBidiAndInitialResponseStreamError::ApplicationException(aexn)))
+                                    }
+                                    ::fbthrift::ClientStreamElement::DeclaredEx(payload) => {
+                                        let mut de = P::deserializer(payload);
+                                        <crate::errors::factories::InteractWithBidiAndInitialResponseStreamReader as ::fbthrift::help::DeserializeExn>::read_result(&mut de)
+                                    }
+                                }
+                            }).await.map_err(::anyhow::Error::from)??
+                        }
+                    }
+                }
+            })
+            .boxed();
+
+            // Create the sink handler that accepts client stream and sends to server
+            let sink_helper_fn = move |stream: ::futures::stream::BoxStream<'static, ::std::result::Result<
+                ::std::primitive::i32,
+                crate::errors::factories::InteractWithBidiAndInitialResponseSinkError
+            >>| {
+                let new_stream = stream.map(|item| {
+                    match item {
+                        ::std::result::Result::Ok(res) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>(::std::result::Result::Ok(res), "interactWithBidiAndInitialResponse");
+                            ::fbthrift::ClientStreamElement::Reply(enc)
+                        }
+                        ::std::result::Result::Err(crate::errors::factories::InteractWithBidiAndInitialResponseSinkError::ApplicationException(aexn)) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>(::std::result::Result::Err(crate::errors::factories::InteractWithBidiAndInitialResponseSinkError::ApplicationException(aexn)), "interactWithBidiAndInitialResponse");
+                            ::fbthrift::ClientStreamElement::ApplicationEx(enc)
+                        }
+                        ::std::result::Result::Err(crate::errors::factories::InteractWithBidiAndInitialResponseSinkError::ThriftError(err)) => {
+                            let enc = ::fbthrift::help::serialize_stream_item::<P, crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>(::std::result::Result::Err(crate::errors::factories::InteractWithBidiAndInitialResponseSinkError::ThriftError(err)), "interactWithBidiAndInitialResponse");
+                            ::fbthrift::ClientStreamElement::ApplicationEx(enc)
+                        }
+                    }
+                }).boxed();
+                let sinker = sink_processor;
+                async move {
+                    let _payload = (sinker)(new_stream).await?;
+                    // For bidirectional streaming, we don't expect a final response
+                    ::std::result::Result::Ok(())
+                }.boxed()
+            };
+
+            let res = ::std::result::Result::Ok((initial_response, server_stream, Box::new(sink_helper_fn) as Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>> + ::std::marker::Send>));
+            let interaction_client: crate::client::MyInteractionClient = ::std::sync::Arc::new(interaction_impl);
+            ::std::result::Result::Ok((interaction_client, res?))
+        }
+        .instrument(::tracing::info_span!("stream", method = "Factories.interactWithBidiAndInitialResponse"))
+        .boxed()
+    }
 }
 
 impl<P, T, S> ::fbthrift::help::GetTransport<T> for FactoriesImpl<P, T, S>
@@ -3366,6 +4137,90 @@ impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_
     }
 }
 
+struct Args_Factories_interactWithStream<'a> {
+    _phantom: ::std::marker::PhantomData<&'a ()>,
+}
+
+impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Factories_interactWithStream<'a> {
+    #[inline]
+    #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Factories.interactWithStream"))]
+    fn rs_thrift_write(&self, p: &mut P) {
+        p.write_struct_begin("args");
+        p.write_field_stop();
+        p.write_struct_end();
+    }
+}
+
+struct Args_Factories_interactWithStreamAndInitialResponse<'a> {
+    _phantom: ::std::marker::PhantomData<&'a ()>,
+}
+
+impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Factories_interactWithStreamAndInitialResponse<'a> {
+    #[inline]
+    #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Factories.interactWithStreamAndInitialResponse"))]
+    fn rs_thrift_write(&self, p: &mut P) {
+        p.write_struct_begin("args");
+        p.write_field_stop();
+        p.write_struct_end();
+    }
+}
+
+struct Args_Factories_interactWithSink<'a> {
+    _phantom: ::std::marker::PhantomData<&'a ()>,
+}
+
+impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Factories_interactWithSink<'a> {
+    #[inline]
+    #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Factories.interactWithSink"))]
+    fn rs_thrift_write(&self, p: &mut P) {
+        p.write_struct_begin("args");
+        p.write_field_stop();
+        p.write_struct_end();
+    }
+}
+
+struct Args_Factories_interactWithSinkAndInitialResponse<'a> {
+    _phantom: ::std::marker::PhantomData<&'a ()>,
+}
+
+impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Factories_interactWithSinkAndInitialResponse<'a> {
+    #[inline]
+    #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Factories.interactWithSinkAndInitialResponse"))]
+    fn rs_thrift_write(&self, p: &mut P) {
+        p.write_struct_begin("args");
+        p.write_field_stop();
+        p.write_struct_end();
+    }
+}
+
+struct Args_Factories_interactWithBidi<'a> {
+    _phantom: ::std::marker::PhantomData<&'a ()>,
+}
+
+impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Factories_interactWithBidi<'a> {
+    #[inline]
+    #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Factories.interactWithBidi"))]
+    fn rs_thrift_write(&self, p: &mut P) {
+        p.write_struct_begin("args");
+        p.write_field_stop();
+        p.write_struct_end();
+    }
+}
+
+struct Args_Factories_interactWithBidiAndInitialResponse<'a> {
+    _phantom: ::std::marker::PhantomData<&'a ()>,
+}
+
+impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Factories_interactWithBidiAndInitialResponse<'a> {
+    #[inline]
+    #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Factories.interactWithBidiAndInitialResponse"))]
+    fn rs_thrift_write(&self, p: &mut P) {
+        p.write_struct_begin("args");
+        p.write_field_stop();
+        p.write_struct_end();
+    }
+}
+
 impl<P, T, S> Factories for FactoriesImpl<P, T, S>
 where
     P: ::fbthrift::Protocol,
@@ -3406,6 +4261,66 @@ where
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::SerialInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::SerializeStreamError>>)), crate::errors::factories::SerializeError>> {
         let rpc_options = T::RpcOptions::default();
         self._serialize_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithStream(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamStreamError>>), crate::errors::factories::InteractWithStreamError>> {
+        let rpc_options = T::RpcOptions::default();
+        self._interactWithStream_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithStreamAndInitialResponse(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamAndInitialResponseStreamError>>)), crate::errors::factories::InteractWithStreamAndInitialResponseError>> {
+        let rpc_options = T::RpcOptions::default();
+        self._interactWithStreamAndInitialResponse_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithSink(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    (),
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkFinalError,
+>), crate::errors::factories::InteractWithSinkError>> {
+        let rpc_options = T::RpcOptions::default();
+        self._interactWithSink_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithSinkAndInitialResponse(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    ::std::primitive::i32,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkFinalError,
+>), crate::errors::factories::InteractWithSinkAndInitialResponseError>> {
+        let rpc_options = T::RpcOptions::default();
+        self._interactWithSinkAndInitialResponse_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithBidi(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiError>> {
+        let rpc_options = T::RpcOptions::default();
+        self._interactWithBidi_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithBidiAndInitialResponse(
+        &self,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiAndInitialResponseError>> {
+        let rpc_options = T::RpcOptions::default();
+        self._interactWithBidiAndInitialResponse_impl(
             rpc_options,
         )
     }
@@ -3451,6 +4366,66 @@ where
         rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::SerialInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::SerializeStreamError>>)), crate::errors::factories::SerializeError>> {
         self._serialize_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithStream_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamStreamError>>), crate::errors::factories::InteractWithStreamError>> {
+        self._interactWithStream_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithStreamAndInitialResponse_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithStreamAndInitialResponseStreamError>>)), crate::errors::factories::InteractWithStreamAndInitialResponseError>> {
+        self._interactWithStreamAndInitialResponse_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithSink_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    (),
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkSinkFinalError,
+>), crate::errors::factories::InteractWithSinkError>> {
+        self._interactWithSink_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithSinkAndInitialResponse_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, ::fbthrift::SinkResult<
+    ::std::primitive::i32,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkError,
+    ::std::primitive::i32,
+    crate::errors::factories::InteractWithSinkAndInitialResponseSinkFinalError,
+>), crate::errors::factories::InteractWithSinkAndInitialResponseError>> {
+        self._interactWithSinkAndInitialResponse_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithBidi_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiError>> {
+        self._interactWithBidi_impl(
+            rpc_options,
+        )
+    }
+    fn interactWithBidiAndInitialResponse_with_rpc_opts(
+        &self,
+        rpc_options: T::RpcOptions,
+    ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(crate::client::MyInteractionClient, (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::InteractWithBidiAndInitialResponseSinkError>> + ::std::marker::Send>)), crate::errors::factories::InteractWithBidiAndInitialResponseError>> {
+        self._interactWithBidiAndInitialResponse_impl(
             rpc_options,
         )
     }

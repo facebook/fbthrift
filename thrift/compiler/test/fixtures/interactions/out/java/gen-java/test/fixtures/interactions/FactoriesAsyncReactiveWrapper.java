@@ -44,6 +44,26 @@ public class FactoriesAsyncReactiveWrapper
         throw new UnsupportedOperationException();
     }
 
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Integer> interactWithStream() {
+        throw new UnsupportedOperationException();
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer,Integer>> interactWithStreamAndInitialResponse() {
+        throw new UnsupportedOperationException();
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Mono<Integer> interactWithSink( org.reactivestreams.Publisher<Integer> payloads) {
+        throw new UnsupportedOperationException();
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer, Integer>> interactWithSinkAndInitialResponse( org.reactivestreams.Publisher<Integer> payloads) {
+        throw new UnsupportedOperationException();
+    }
+
     public class MyInteractionImpl implements MyInteraction {
         private Factories.Async.MyInteraction _delegateInteraction;
 

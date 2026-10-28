@@ -720,6 +720,302 @@ class _fbthrift_Factories_serialize_result_stream_elem(_fbthrift_python_types._f
         ]]]: ...
 
 
+class _fbthrift_Factories_interactWithStream_args(_fbthrift_python_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None]]]: ...
+
+
+class _fbthrift_Factories_interactWithStream_result(_fbthrift_python_types.Struct):
+    success: _typing.Final[None]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            None,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithStream_result_stream_elem(_fbthrift_python_types._fbthrift_ResponseStreamResult[builtins.int]):
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithStreamAndInitialResponse_args(_fbthrift_python_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None]]]: ...
+
+
+class _fbthrift_Factories_interactWithStreamAndInitialResponse_result(_fbthrift_python_types.Struct):
+    success: _typing.Final[builtins.int]
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithStreamAndInitialResponse_result_stream_elem(_fbthrift_python_types._fbthrift_ResponseStreamResult[builtins.int]):
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithSink_args(_fbthrift_python_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None]]]: ...
+
+
+class _fbthrift_Factories_interactWithSink_result(_fbthrift_python_types.Struct):
+    success: _typing.Final[None]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            None,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithSink_result_sink_elem(_fbthrift_python_types._fbthrift_SinkResult[builtins.int]):
+
+    def __init__(
+        self,
+        *,
+        success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithSink_result_sink_final(_fbthrift_python_types._fbthrift_SinkFinalResult[builtins.int]):
+
+    def __init__(
+        self,
+        *,
+        success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithSinkAndInitialResponse_args(_fbthrift_python_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None]]]: ...
+
+
+class _fbthrift_Factories_interactWithSinkAndInitialResponse_result(_fbthrift_python_types.Struct):
+    success: _typing.Final[builtins.int]
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithSinkAndInitialResponse_result_sink_elem(_fbthrift_python_types._fbthrift_SinkResult[builtins.int]):
+
+    def __init__(
+        self,
+        *,
+        success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithSinkAndInitialResponse_result_sink_final(_fbthrift_python_types._fbthrift_SinkFinalResult[builtins.int]):
+
+    def __init__(
+        self,
+        *,
+        success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithBidi_args(_fbthrift_python_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None]]]: ...
+
+
+class _fbthrift_Factories_interactWithBidi_result(_fbthrift_python_types.Struct):
+    success: _typing.Final[None]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            None,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithBidi_result_stream_elem(_fbthrift_python_types._fbthrift_ResponseStreamResult[builtins.int]):
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithBidi_result_sink_elem(_fbthrift_python_types._fbthrift_SinkResult[builtins.int]):
+
+    def __init__(
+        self,
+        *,
+        success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+
+
+class _fbthrift_Factories_interactWithBidiAndInitialResponse_args(_fbthrift_python_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[None]]]: ...
+
+
+class _fbthrift_Factories_interactWithBidiAndInitialResponse_result(_fbthrift_python_types.Struct):
+    success: _typing.Final[builtins.int]
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithBidiAndInitialResponse_result_stream_elem(_fbthrift_python_types._fbthrift_ResponseStreamResult[builtins.int]):
+
+    def __init__(
+        self, *, success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+class _fbthrift_Factories_interactWithBidiAndInitialResponse_result_sink_elem(_fbthrift_python_types._fbthrift_SinkResult[builtins.int]):
+
+    def __init__(
+        self,
+        *,
+        success: _typing.Optional[builtins.int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        builtins.str,
+        _typing.Union[
+            builtins.int,
+        ]]]: ...
+
+
+
+
 class _fbthrift_MyInteraction_frobnicate_args(_fbthrift_python_types.Struct):
 
     def __init__(

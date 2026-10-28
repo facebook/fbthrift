@@ -171,6 +171,18 @@ class Factories(thrift.py3.client.Client):
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _test_fixtures_interactions_module_types.ResponseAndClientBufferedStream__i32_i32: ...
 
+    async def interactWithStream(
+        self,
+        *,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> _test_fixtures_interactions_module_types.ClientBufferedStream__i32: ...
+
+    async def interactWithStreamAndInitialResponse(
+        self,
+        *,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> _test_fixtures_interactions_module_types.ResponseAndClientBufferedStream__i32_i32: ...
+
 
 
 _PerformT = _typing.TypeVar('_PerformT', bound='Perform')

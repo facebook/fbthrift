@@ -130,6 +130,10 @@ class FactoriesClientWrapper : public ::thrift::py3::ClientWrapper {
       apache::thrift::RpcOptions& rpcOptions);
     folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> serialize(
       apache::thrift::RpcOptions& rpcOptions);
+    folly::Future<apache::thrift::ClientBufferedStream<int32_t>> interactWithStream(
+      apache::thrift::RpcOptions& rpcOptions);
+    folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> interactWithStreamAndInitialResponse(
+      apache::thrift::RpcOptions& rpcOptions);
 };
 
 

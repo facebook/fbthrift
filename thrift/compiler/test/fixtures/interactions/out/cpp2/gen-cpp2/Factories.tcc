@@ -22,6 +22,40 @@ typedef apache::thrift::ThriftPResultStream<
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>
     > Factories_serialize_presult;
+typedef apache::thrift::ThriftPresult<false> Factories_interactWithStream_pargs;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<true>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>
+    > Factories_interactWithStream_presult;
+typedef apache::thrift::ThriftPresult<false> Factories_interactWithStreamAndInitialResponse_pargs;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>
+    > Factories_interactWithStreamAndInitialResponse_presult;
+typedef apache::thrift::ThriftPresult<false> Factories_interactWithSink_pargs;
+typedef apache::thrift::ThriftPResultSink<
+    apache::thrift::ThriftPresult<true>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>
+    > Factories_interactWithSink_presult;
+typedef apache::thrift::ThriftPresult<false> Factories_interactWithSinkAndInitialResponse_pargs;
+typedef apache::thrift::ThriftPResultSink<
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>
+    > Factories_interactWithSinkAndInitialResponse_presult;
+typedef apache::thrift::ThriftPresult<false> Factories_interactWithBidi_pargs;
+typedef apache::thrift::ThriftPResultBiDi<
+    apache::thrift::ThriftPresult<true>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>
+    > Factories_interactWithBidi_presult;
+typedef apache::thrift::ThriftPresult<false> Factories_interactWithBidiAndInitialResponse_pargs;
+typedef apache::thrift::ThriftPResultBiDi<
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>
+    > Factories_interactWithBidiAndInitialResponse_presult;
 //
 // Service Methods
 //
@@ -744,6 +778,1126 @@ void FactoriesAsyncProcessor::throw_wrapped_serialize(
 }
 //
 // End of Method 'serialize'
+//
+
+//
+// Method 'interactWithStream'
+//
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::setUpAndProcess_interactWithStream(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    apache::thrift::Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    [[maybe_unused]] apache::thrift::concurrency::ThreadManager* tm) {
+  if (!setUpRequestProcessing(
+          req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, iface_, "MyInteraction", true)) {
+    return;
+  }
+  auto scope = iface_->getRequestExecutionScope(
+      ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestExecutionScope(std::move(scope));
+  processInThread(
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      eb,
+      tm,
+      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+      &FactoriesAsyncProcessor::
+          executeRequest_interactWithStream<ProtocolIn_, ProtocolOut_, RequestReader_>,
+      this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::executeRequest_interactWithStream(
+    apache::thrift::ServerRequest&& serverRequest) {
+  auto tile = serverRequest.requestContext()->releaseTile();
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  struct ArgsState {
+    Factories_interactWithStream_pargs pargs() {
+      Factories_interactWithStream_pargs args;
+      return args;
+    }
+
+    auto asTupleOfRefs() & {
+      return std::tie(
+      );
+    }
+  } args;
+
+  auto ctxStack = apache::thrift::ContextStack::create(
+      this->getEventHandlersSharedPtr(),
+      this->getServiceName(),
+      "Factories.interactWithStream",
+      serverRequest.requestContext());
+  apache::thrift::SerializedRequest serializedRequest{nullptr};
+  try {
+    auto pargs = args.pargs();
+    serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
+        std::move(serverRequest)).uncompress();
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
+        pargs,
+        "interactWithStream",
+        serializedRequest,
+        ctxStack.get());
+  } catch (...) {
+    folly::exception_wrapper ew(std::current_exception());
+    apache::thrift::detail::ap::process_handle_exn_deserialization<
+        ProtocolOut_>(
+        ew,
+        apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest)),
+            serverRequest.requestContext(),
+        apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+        "interactWithStream");
+    return;
+  }
+  auto requestPileNotification =
+      apache::thrift::detail::ServerRequestHelper::moveRequestPileNotification(
+          serverRequest);
+  auto concurrencyControllerNotification =
+      apache::thrift::detail::ServerRequestHelper::moveConcurrencyControllerNotification(
+          serverRequest);
+  apache::thrift::HandlerCallbackBase::MethodNameInfo methodNameInfo{
+      /* .serviceName =*/ this->getServiceName(),
+      /* .definingServiceName =*/ "Factories",
+      /* .methodName =*/ "interactWithStream",
+      /* .qualifiedMethodName =*/ "Factories.interactWithStream"};
+  apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::ServerStream<::std::int32_t>>>::DecoratorAfterCallback decoratorCallback{
+    static_cast<void*>(iface_),
+    apache::thrift::ServiceHandler<::cpp2::Factories>::fbthrift_invoke_decorator_after_interactWithStream};
+ auto callback =
+      apache::thrift::HandlerCallbackPtr<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::ServerStream<::std::int32_t>>>::make(
+          apache::thrift::detail::ServerRequestHelper::request(
+              std::move(serverRequest)),
+          std::move(ctxStack),
+          std::move(methodNameInfo),
+          return_interactWithStream<ProtocolIn_, ProtocolOut_>,
+          throw_wrapped_interactWithStream<ProtocolIn_, ProtocolOut_>,
+          serverRequest.requestContext()->getProtoSeqId(),
+          apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+          apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+          serverRequest.requestContext(),
+          requestPileNotification,
+          concurrencyControllerNotification,
+          std::move(serverRequest.requestData()),
+          std::move(tile),
+          std::move(decoratorCallback));
+  // Execute method decorator before_interactWithStream.
+  iface_->fbthrift_execute_decorators_before_interactWithStream(*serverRequest.requestContext());
+
+  const auto makeExecuteHandler = [&] {
+    return [ifacePtr = iface_](auto&& cb, ArgsState args) mutable {
+      (void)args;
+      ifacePtr->async_tm_interactWithStream(std::move(cb));
+    };
+  };
+#if FOLLY_HAS_COROUTINES
+  if (apache::thrift::detail::shouldProcessServiceInterceptorsOnRequest(
+          *callback)) {
+    co_withExecutor(
+        apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+        [](
+            auto callback,
+            auto executeHandler,
+            ArgsState args,
+            apache::thrift::SerializedRequest serializedRequest
+        ) -> folly::coro::Task<void> {
+          auto argRefs = args.asTupleOfRefs();
+          const bool shouldExecuteHandler =
+              co_await apache::thrift::detail::processServiceInterceptorsOnRequest(
+                  *callback,
+                  apache::thrift::detail::ServiceInterceptorOnRequestArguments(
+                      argRefs),
+                  serializedRequest);
+          if (shouldExecuteHandler) {
+            executeHandler(std::move(callback), std::move(args));
+          }
+        }(
+            std::move(callback),
+            makeExecuteHandler(),
+            std::move(args),
+            std::move(serializedRequest)))
+      .startInlineUnsafe();
+  } else {
+    makeExecuteHandler()(std::move(callback), std::move(args));
+  }
+#else
+  makeExecuteHandler()(std::move(callback), std::move(args));
+#endif // FOLLY_HAS_COROUTINES
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+/* static */ apache::thrift::ResponseAndServerStreamFactory FactoriesAsyncProcessor::return_interactWithStream(
+    apache::thrift::ContextStack* ctx,
+    folly::Executor::KeepAlive<> executor,
+    ::apache::thrift::ServerStream<::std::int32_t>&& _return) {
+  ProtocolOut_ prot;
+  Factories_interactWithStream_presult::InitialResponsePResultType result;
+  using StreamPResultType = Factories_interactWithStream_presult::StreamPResultType;
+  auto& returnStream = _return;
+  auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType>(std::move(returnStream), std::move(executor));
+  return {serializeResponse("interactWithStream", &prot, ctx, result), std::move(encodedStream)};
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void FactoriesAsyncProcessor::throw_wrapped_interactWithStream(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    [[maybe_unused]] int32_t protoSeqId,
+    apache::thrift::ContextStack* ctx,
+    folly::exception_wrapper ew,
+    apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  {
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<
+        ProtocolOut_>(ew, std::move(req), reqCtx, ctx, "interactWithStream");
+    return;
+  }
+}
+//
+// End of Method 'interactWithStream'
+//
+
+//
+// Method 'interactWithStreamAndInitialResponse'
+//
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::setUpAndProcess_interactWithStreamAndInitialResponse(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    apache::thrift::Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    [[maybe_unused]] apache::thrift::concurrency::ThreadManager* tm) {
+  if (!setUpRequestProcessing(
+          req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, iface_, "MyInteraction", true)) {
+    return;
+  }
+  auto scope = iface_->getRequestExecutionScope(
+      ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestExecutionScope(std::move(scope));
+  processInThread(
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      eb,
+      tm,
+      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+      &FactoriesAsyncProcessor::
+          executeRequest_interactWithStreamAndInitialResponse<ProtocolIn_, ProtocolOut_, RequestReader_>,
+      this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::executeRequest_interactWithStreamAndInitialResponse(
+    apache::thrift::ServerRequest&& serverRequest) {
+  auto tile = serverRequest.requestContext()->releaseTile();
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  struct ArgsState {
+    Factories_interactWithStreamAndInitialResponse_pargs pargs() {
+      Factories_interactWithStreamAndInitialResponse_pargs args;
+      return args;
+    }
+
+    auto asTupleOfRefs() & {
+      return std::tie(
+      );
+    }
+  } args;
+
+  auto ctxStack = apache::thrift::ContextStack::create(
+      this->getEventHandlersSharedPtr(),
+      this->getServiceName(),
+      "Factories.interactWithStreamAndInitialResponse",
+      serverRequest.requestContext());
+  apache::thrift::SerializedRequest serializedRequest{nullptr};
+  try {
+    auto pargs = args.pargs();
+    serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
+        std::move(serverRequest)).uncompress();
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
+        pargs,
+        "interactWithStreamAndInitialResponse",
+        serializedRequest,
+        ctxStack.get());
+  } catch (...) {
+    folly::exception_wrapper ew(std::current_exception());
+    apache::thrift::detail::ap::process_handle_exn_deserialization<
+        ProtocolOut_>(
+        ew,
+        apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest)),
+            serverRequest.requestContext(),
+        apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+        "interactWithStreamAndInitialResponse");
+    return;
+  }
+  auto requestPileNotification =
+      apache::thrift::detail::ServerRequestHelper::moveRequestPileNotification(
+          serverRequest);
+  auto concurrencyControllerNotification =
+      apache::thrift::detail::ServerRequestHelper::moveConcurrencyControllerNotification(
+          serverRequest);
+  apache::thrift::HandlerCallbackBase::MethodNameInfo methodNameInfo{
+      /* .serviceName =*/ this->getServiceName(),
+      /* .definingServiceName =*/ "Factories",
+      /* .methodName =*/ "interactWithStreamAndInitialResponse",
+      /* .qualifiedMethodName =*/ "Factories.interactWithStreamAndInitialResponse"};
+  apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>>::DecoratorAfterCallback decoratorCallback{
+    static_cast<void*>(iface_),
+    apache::thrift::ServiceHandler<::cpp2::Factories>::fbthrift_invoke_decorator_after_interactWithStreamAndInitialResponse};
+ auto callback =
+      apache::thrift::HandlerCallbackPtr<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>>::make(
+          apache::thrift::detail::ServerRequestHelper::request(
+              std::move(serverRequest)),
+          std::move(ctxStack),
+          std::move(methodNameInfo),
+          return_interactWithStreamAndInitialResponse<ProtocolIn_, ProtocolOut_>,
+          throw_wrapped_interactWithStreamAndInitialResponse<ProtocolIn_, ProtocolOut_>,
+          serverRequest.requestContext()->getProtoSeqId(),
+          apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+          apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+          serverRequest.requestContext(),
+          requestPileNotification,
+          concurrencyControllerNotification,
+          std::move(serverRequest.requestData()),
+          std::move(tile),
+          std::move(decoratorCallback));
+  // Execute method decorator before_interactWithStreamAndInitialResponse.
+  iface_->fbthrift_execute_decorators_before_interactWithStreamAndInitialResponse(*serverRequest.requestContext());
+
+  const auto makeExecuteHandler = [&] {
+    return [ifacePtr = iface_](auto&& cb, ArgsState args) mutable {
+      (void)args;
+      ifacePtr->async_tm_interactWithStreamAndInitialResponse(std::move(cb));
+    };
+  };
+#if FOLLY_HAS_COROUTINES
+  if (apache::thrift::detail::shouldProcessServiceInterceptorsOnRequest(
+          *callback)) {
+    co_withExecutor(
+        apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+        [](
+            auto callback,
+            auto executeHandler,
+            ArgsState args,
+            apache::thrift::SerializedRequest serializedRequest
+        ) -> folly::coro::Task<void> {
+          auto argRefs = args.asTupleOfRefs();
+          const bool shouldExecuteHandler =
+              co_await apache::thrift::detail::processServiceInterceptorsOnRequest(
+                  *callback,
+                  apache::thrift::detail::ServiceInterceptorOnRequestArguments(
+                      argRefs),
+                  serializedRequest);
+          if (shouldExecuteHandler) {
+            executeHandler(std::move(callback), std::move(args));
+          }
+        }(
+            std::move(callback),
+            makeExecuteHandler(),
+            std::move(args),
+            std::move(serializedRequest)))
+      .startInlineUnsafe();
+  } else {
+    makeExecuteHandler()(std::move(callback), std::move(args));
+  }
+#else
+  makeExecuteHandler()(std::move(callback), std::move(args));
+#endif // FOLLY_HAS_COROUTINES
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+/* static */ apache::thrift::ResponseAndServerStreamFactory FactoriesAsyncProcessor::return_interactWithStreamAndInitialResponse(
+    apache::thrift::ContextStack* ctx,
+    folly::Executor::KeepAlive<> executor,
+    ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>&& _return) {
+  ProtocolOut_ prot;
+  Factories_interactWithStreamAndInitialResponse_presult::InitialResponsePResultType result;
+  using StreamPResultType = Factories_interactWithStreamAndInitialResponse_presult::StreamPResultType;
+  result.get<0>().value = const_cast<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>::ResponseType*>(&_return.response);
+  result.setIsSet(0, true);
+  auto& returnStream = _return.stream;
+  auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType>(std::move(returnStream), std::move(executor));
+  return {serializeResponse("interactWithStreamAndInitialResponse", &prot, ctx, result), std::move(encodedStream)};
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void FactoriesAsyncProcessor::throw_wrapped_interactWithStreamAndInitialResponse(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    [[maybe_unused]] int32_t protoSeqId,
+    apache::thrift::ContextStack* ctx,
+    folly::exception_wrapper ew,
+    apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  {
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<
+        ProtocolOut_>(ew, std::move(req), reqCtx, ctx, "interactWithStreamAndInitialResponse");
+    return;
+  }
+}
+//
+// End of Method 'interactWithStreamAndInitialResponse'
+//
+
+//
+// Method 'interactWithSink'
+//
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::setUpAndProcess_interactWithSink(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    apache::thrift::Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    [[maybe_unused]] apache::thrift::concurrency::ThreadManager* tm) {
+  if (!setUpRequestProcessing(
+          req, ctx, eb, tm, apache::thrift::RpcKind::SINK, iface_, "MyInteraction", true)) {
+    return;
+  }
+  auto scope = iface_->getRequestExecutionScope(
+      ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestExecutionScope(std::move(scope));
+  processInThread(
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      eb,
+      tm,
+      apache::thrift::RpcKind::SINK,
+      &FactoriesAsyncProcessor::
+          executeRequest_interactWithSink<ProtocolIn_, ProtocolOut_, RequestReader_>,
+      this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::executeRequest_interactWithSink(
+    apache::thrift::ServerRequest&& serverRequest) {
+  auto tile = serverRequest.requestContext()->releaseTile();
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  struct ArgsState {
+    Factories_interactWithSink_pargs pargs() {
+      Factories_interactWithSink_pargs args;
+      return args;
+    }
+
+    auto asTupleOfRefs() & {
+      return std::tie(
+      );
+    }
+  } args;
+
+  auto ctxStack = apache::thrift::ContextStack::create(
+      this->getEventHandlersSharedPtr(),
+      this->getServiceName(),
+      "Factories.interactWithSink",
+      serverRequest.requestContext());
+  apache::thrift::SerializedRequest serializedRequest{nullptr};
+  try {
+    auto pargs = args.pargs();
+    serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
+        std::move(serverRequest)).uncompress();
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
+        pargs,
+        "interactWithSink",
+        serializedRequest,
+        ctxStack.get());
+  } catch (...) {
+    folly::exception_wrapper ew(std::current_exception());
+    apache::thrift::detail::ap::process_handle_exn_deserialization<
+        ProtocolOut_>(
+        ew,
+        apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest)),
+            serverRequest.requestContext(),
+        apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+        "interactWithSink");
+    return;
+  }
+  auto requestPileNotification =
+      apache::thrift::detail::ServerRequestHelper::moveRequestPileNotification(
+          serverRequest);
+  auto concurrencyControllerNotification =
+      apache::thrift::detail::ServerRequestHelper::moveConcurrencyControllerNotification(
+          serverRequest);
+  apache::thrift::HandlerCallbackBase::MethodNameInfo methodNameInfo{
+      /* .serviceName =*/ this->getServiceName(),
+      /* .definingServiceName =*/ "Factories",
+      /* .methodName =*/ "interactWithSink",
+      /* .qualifiedMethodName =*/ "Factories.interactWithSink"};
+  apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::SinkConsumer<::std::int32_t, ::std::int32_t>>>::DecoratorAfterCallback decoratorCallback{
+    static_cast<void*>(iface_),
+    apache::thrift::ServiceHandler<::cpp2::Factories>::fbthrift_invoke_decorator_after_interactWithSink};
+ auto callback =
+      apache::thrift::HandlerCallbackPtr<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::SinkConsumer<::std::int32_t, ::std::int32_t>>>::make(
+          apache::thrift::detail::ServerRequestHelper::request(
+              std::move(serverRequest)),
+          std::move(ctxStack),
+          std::move(methodNameInfo),
+          return_interactWithSink<ProtocolIn_, ProtocolOut_>,
+          throw_wrapped_interactWithSink<ProtocolIn_, ProtocolOut_>,
+          serverRequest.requestContext()->getProtoSeqId(),
+          apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+          apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+          serverRequest.requestContext(),
+          requestPileNotification,
+          concurrencyControllerNotification,
+          std::move(serverRequest.requestData()),
+          std::move(tile),
+          std::move(decoratorCallback));
+  // Execute method decorator before_interactWithSink.
+  iface_->fbthrift_execute_decorators_before_interactWithSink(*serverRequest.requestContext());
+
+  const auto makeExecuteHandler = [&] {
+    return [ifacePtr = iface_](auto&& cb, ArgsState args) mutable {
+      (void)args;
+      ifacePtr->async_tm_interactWithSink(std::move(cb));
+    };
+  };
+#if FOLLY_HAS_COROUTINES
+  if (apache::thrift::detail::shouldProcessServiceInterceptorsOnRequest(
+          *callback)) {
+    co_withExecutor(
+        apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+        [](
+            auto callback,
+            auto executeHandler,
+            ArgsState args,
+            apache::thrift::SerializedRequest serializedRequest
+        ) -> folly::coro::Task<void> {
+          auto argRefs = args.asTupleOfRefs();
+          const bool shouldExecuteHandler =
+              co_await apache::thrift::detail::processServiceInterceptorsOnRequest(
+                  *callback,
+                  apache::thrift::detail::ServiceInterceptorOnRequestArguments(
+                      argRefs),
+                  serializedRequest);
+          if (shouldExecuteHandler) {
+            executeHandler(std::move(callback), std::move(args));
+          }
+        }(
+            std::move(callback),
+            makeExecuteHandler(),
+            std::move(args),
+            std::move(serializedRequest)))
+      .startInlineUnsafe();
+  } else {
+    makeExecuteHandler()(std::move(callback), std::move(args));
+  }
+#else
+  makeExecuteHandler()(std::move(callback), std::move(args));
+#endif // FOLLY_HAS_COROUTINES
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+/* static */ std::pair<
+    apache::thrift::SerializedResponse,
+    apache::thrift::detail::ServerSinkFactory>
+FactoriesAsyncProcessor::return_interactWithSink(
+    apache::thrift::ContextStack* ctx,
+    ::apache::thrift::SinkConsumer<::std::int32_t, ::std::int32_t>&& _return,
+    folly::Executor::KeepAlive<> executor) {
+  ProtocolOut_ prot;
+  Factories_interactWithSink_presult::InitialResponsePResultType result;
+  using SinkPResultType = Factories_interactWithSink_presult::SinkPResultType;
+  using FinalResponsePResultType =
+      Factories_interactWithSink_presult::FinalResponsePResultType;
+  auto sinkConsumerImpl = apache::thrift::detail::ap::toServerSinkFactory<
+      ProtocolIn_,
+      ProtocolOut_,
+      SinkPResultType,
+      FinalResponsePResultType>(std::move(_return), std::move(executor));
+
+  return {serializeResponse("interactWithSink", &prot, ctx, result), std::move(sinkConsumerImpl)};
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void FactoriesAsyncProcessor::throw_wrapped_interactWithSink(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    [[maybe_unused]] int32_t protoSeqId,
+    apache::thrift::ContextStack* ctx,
+    folly::exception_wrapper ew,
+    apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  {
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<
+        ProtocolOut_>(ew, std::move(req), reqCtx, ctx, "interactWithSink");
+    return;
+  }
+}
+//
+// End of Method 'interactWithSink'
+//
+
+//
+// Method 'interactWithSinkAndInitialResponse'
+//
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::setUpAndProcess_interactWithSinkAndInitialResponse(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    apache::thrift::Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    [[maybe_unused]] apache::thrift::concurrency::ThreadManager* tm) {
+  if (!setUpRequestProcessing(
+          req, ctx, eb, tm, apache::thrift::RpcKind::SINK, iface_, "MyInteraction", true)) {
+    return;
+  }
+  auto scope = iface_->getRequestExecutionScope(
+      ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestExecutionScope(std::move(scope));
+  processInThread(
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      eb,
+      tm,
+      apache::thrift::RpcKind::SINK,
+      &FactoriesAsyncProcessor::
+          executeRequest_interactWithSinkAndInitialResponse<ProtocolIn_, ProtocolOut_, RequestReader_>,
+      this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::executeRequest_interactWithSinkAndInitialResponse(
+    apache::thrift::ServerRequest&& serverRequest) {
+  auto tile = serverRequest.requestContext()->releaseTile();
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  struct ArgsState {
+    Factories_interactWithSinkAndInitialResponse_pargs pargs() {
+      Factories_interactWithSinkAndInitialResponse_pargs args;
+      return args;
+    }
+
+    auto asTupleOfRefs() & {
+      return std::tie(
+      );
+    }
+  } args;
+
+  auto ctxStack = apache::thrift::ContextStack::create(
+      this->getEventHandlersSharedPtr(),
+      this->getServiceName(),
+      "Factories.interactWithSinkAndInitialResponse",
+      serverRequest.requestContext());
+  apache::thrift::SerializedRequest serializedRequest{nullptr};
+  try {
+    auto pargs = args.pargs();
+    serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
+        std::move(serverRequest)).uncompress();
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
+        pargs,
+        "interactWithSinkAndInitialResponse",
+        serializedRequest,
+        ctxStack.get());
+  } catch (...) {
+    folly::exception_wrapper ew(std::current_exception());
+    apache::thrift::detail::ap::process_handle_exn_deserialization<
+        ProtocolOut_>(
+        ew,
+        apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest)),
+            serverRequest.requestContext(),
+        apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+        "interactWithSinkAndInitialResponse");
+    return;
+  }
+  auto requestPileNotification =
+      apache::thrift::detail::ServerRequestHelper::moveRequestPileNotification(
+          serverRequest);
+  auto concurrencyControllerNotification =
+      apache::thrift::detail::ServerRequestHelper::moveConcurrencyControllerNotification(
+          serverRequest);
+  apache::thrift::HandlerCallbackBase::MethodNameInfo methodNameInfo{
+      /* .serviceName =*/ this->getServiceName(),
+      /* .definingServiceName =*/ "Factories",
+      /* .methodName =*/ "interactWithSinkAndInitialResponse",
+      /* .qualifiedMethodName =*/ "Factories.interactWithSinkAndInitialResponse"};
+  apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::ResponseAndSinkConsumer<::std::int32_t, ::std::int32_t, ::std::int32_t>>>::DecoratorAfterCallback decoratorCallback{
+    static_cast<void*>(iface_),
+    apache::thrift::ServiceHandler<::cpp2::Factories>::fbthrift_invoke_decorator_after_interactWithSinkAndInitialResponse};
+ auto callback =
+      apache::thrift::HandlerCallbackPtr<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::ResponseAndSinkConsumer<::std::int32_t, ::std::int32_t, ::std::int32_t>>>::make(
+          apache::thrift::detail::ServerRequestHelper::request(
+              std::move(serverRequest)),
+          std::move(ctxStack),
+          std::move(methodNameInfo),
+          return_interactWithSinkAndInitialResponse<ProtocolIn_, ProtocolOut_>,
+          throw_wrapped_interactWithSinkAndInitialResponse<ProtocolIn_, ProtocolOut_>,
+          serverRequest.requestContext()->getProtoSeqId(),
+          apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+          apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+          serverRequest.requestContext(),
+          requestPileNotification,
+          concurrencyControllerNotification,
+          std::move(serverRequest.requestData()),
+          std::move(tile),
+          std::move(decoratorCallback));
+  // Execute method decorator before_interactWithSinkAndInitialResponse.
+  iface_->fbthrift_execute_decorators_before_interactWithSinkAndInitialResponse(*serverRequest.requestContext());
+
+  const auto makeExecuteHandler = [&] {
+    return [ifacePtr = iface_](auto&& cb, ArgsState args) mutable {
+      (void)args;
+      ifacePtr->async_tm_interactWithSinkAndInitialResponse(std::move(cb));
+    };
+  };
+#if FOLLY_HAS_COROUTINES
+  if (apache::thrift::detail::shouldProcessServiceInterceptorsOnRequest(
+          *callback)) {
+    co_withExecutor(
+        apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+        [](
+            auto callback,
+            auto executeHandler,
+            ArgsState args,
+            apache::thrift::SerializedRequest serializedRequest
+        ) -> folly::coro::Task<void> {
+          auto argRefs = args.asTupleOfRefs();
+          const bool shouldExecuteHandler =
+              co_await apache::thrift::detail::processServiceInterceptorsOnRequest(
+                  *callback,
+                  apache::thrift::detail::ServiceInterceptorOnRequestArguments(
+                      argRefs),
+                  serializedRequest);
+          if (shouldExecuteHandler) {
+            executeHandler(std::move(callback), std::move(args));
+          }
+        }(
+            std::move(callback),
+            makeExecuteHandler(),
+            std::move(args),
+            std::move(serializedRequest)))
+      .startInlineUnsafe();
+  } else {
+    makeExecuteHandler()(std::move(callback), std::move(args));
+  }
+#else
+  makeExecuteHandler()(std::move(callback), std::move(args));
+#endif // FOLLY_HAS_COROUTINES
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+/* static */ std::pair<
+    apache::thrift::SerializedResponse,
+    apache::thrift::detail::ServerSinkFactory>
+FactoriesAsyncProcessor::return_interactWithSinkAndInitialResponse(
+    apache::thrift::ContextStack* ctx,
+    ::apache::thrift::ResponseAndSinkConsumer<::std::int32_t, ::std::int32_t, ::std::int32_t>&& _return,
+    folly::Executor::KeepAlive<> executor) {
+  ProtocolOut_ prot;
+  Factories_interactWithSinkAndInitialResponse_presult::InitialResponsePResultType result;
+  using SinkPResultType = Factories_interactWithSinkAndInitialResponse_presult::SinkPResultType;
+  using FinalResponsePResultType =
+      Factories_interactWithSinkAndInitialResponse_presult::FinalResponsePResultType;
+  result.get<0>().value = &_return.response;
+  result.setIsSet(0, true);
+  auto sinkConsumerImpl = apache::thrift::detail::ap::toServerSinkFactory<
+      ProtocolIn_,
+      ProtocolOut_,
+      SinkPResultType,
+      FinalResponsePResultType>(std::move(_return.sinkConsumer),std::move(executor));
+
+  return {serializeResponse("interactWithSinkAndInitialResponse", &prot, ctx, result), std::move(sinkConsumerImpl)};
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void FactoriesAsyncProcessor::throw_wrapped_interactWithSinkAndInitialResponse(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    [[maybe_unused]] int32_t protoSeqId,
+    apache::thrift::ContextStack* ctx,
+    folly::exception_wrapper ew,
+    apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  {
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<
+        ProtocolOut_>(ew, std::move(req), reqCtx, ctx, "interactWithSinkAndInitialResponse");
+    return;
+  }
+}
+//
+// End of Method 'interactWithSinkAndInitialResponse'
+//
+
+//
+// Method 'interactWithBidi'
+//
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::setUpAndProcess_interactWithBidi(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    apache::thrift::Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    [[maybe_unused]] apache::thrift::concurrency::ThreadManager* tm) {
+  if (!setUpRequestProcessing(
+          req, ctx, eb, tm, apache::thrift::RpcKind::BIDIRECTIONAL_STREAM, iface_, "MyInteraction", true)) {
+    return;
+  }
+  auto scope = iface_->getRequestExecutionScope(
+      ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestExecutionScope(std::move(scope));
+  processInThread(
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      eb,
+      tm,
+      apache::thrift::RpcKind::BIDIRECTIONAL_STREAM,
+      &FactoriesAsyncProcessor::
+          executeRequest_interactWithBidi<ProtocolIn_, ProtocolOut_, RequestReader_>,
+      this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::executeRequest_interactWithBidi(
+    apache::thrift::ServerRequest&& serverRequest) {
+  auto tile = serverRequest.requestContext()->releaseTile();
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  struct ArgsState {
+    Factories_interactWithBidi_pargs pargs() {
+      Factories_interactWithBidi_pargs args;
+      return args;
+    }
+
+    auto asTupleOfRefs() & {
+      return std::tie(
+      );
+    }
+  } args;
+
+  auto ctxStack = apache::thrift::ContextStack::create(
+      this->getEventHandlersSharedPtr(),
+      this->getServiceName(),
+      "Factories.interactWithBidi",
+      serverRequest.requestContext());
+  apache::thrift::SerializedRequest serializedRequest{nullptr};
+  try {
+    auto pargs = args.pargs();
+    serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
+        std::move(serverRequest)).uncompress();
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
+        pargs,
+        "interactWithBidi",
+        serializedRequest,
+        ctxStack.get());
+  } catch (...) {
+    folly::exception_wrapper ew(std::current_exception());
+    apache::thrift::detail::ap::process_handle_exn_deserialization<
+        ProtocolOut_>(
+        ew,
+        apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest)),
+            serverRequest.requestContext(),
+        apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+        "interactWithBidi");
+    return;
+  }
+  auto requestPileNotification =
+      apache::thrift::detail::ServerRequestHelper::moveRequestPileNotification(
+          serverRequest);
+  auto concurrencyControllerNotification =
+      apache::thrift::detail::ServerRequestHelper::moveConcurrencyControllerNotification(
+          serverRequest);
+  apache::thrift::HandlerCallbackBase::MethodNameInfo methodNameInfo{
+      /* .serviceName =*/ this->getServiceName(),
+      /* .definingServiceName =*/ "Factories",
+      /* .methodName =*/ "interactWithBidi",
+      /* .qualifiedMethodName =*/ "Factories.interactWithBidi"};
+  apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::StreamTransformation<::std::int32_t, ::std::int32_t>>>::DecoratorAfterCallback decoratorCallback{
+    static_cast<void*>(iface_),
+    apache::thrift::ServiceHandler<::cpp2::Factories>::fbthrift_invoke_decorator_after_interactWithBidi};
+ auto callback =
+      apache::thrift::HandlerCallbackPtr<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::StreamTransformation<::std::int32_t, ::std::int32_t>>>::make(
+          apache::thrift::detail::ServerRequestHelper::request(
+              std::move(serverRequest)),
+          std::move(ctxStack),
+          std::move(methodNameInfo),
+          return_interactWithBidi<ProtocolIn_, ProtocolOut_>,
+          throw_wrapped_interactWithBidi<ProtocolIn_, ProtocolOut_>,
+          serverRequest.requestContext()->getProtoSeqId(),
+          apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+          apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+          serverRequest.requestContext(),
+          requestPileNotification,
+          concurrencyControllerNotification,
+          std::move(serverRequest.requestData()),
+          std::move(tile),
+          std::move(decoratorCallback));
+  // Execute method decorator before_interactWithBidi.
+  iface_->fbthrift_execute_decorators_before_interactWithBidi(*serverRequest.requestContext());
+
+  const auto makeExecuteHandler = [&] {
+    return [ifacePtr = iface_](auto&& cb, ArgsState args) mutable {
+      (void)args;
+      ifacePtr->async_tm_interactWithBidi(std::move(cb));
+    };
+  };
+#if FOLLY_HAS_COROUTINES
+  if (apache::thrift::detail::shouldProcessServiceInterceptorsOnRequest(
+          *callback)) {
+    co_withExecutor(
+        apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+        [](
+            auto callback,
+            auto executeHandler,
+            ArgsState args,
+            apache::thrift::SerializedRequest serializedRequest
+        ) -> folly::coro::Task<void> {
+          auto argRefs = args.asTupleOfRefs();
+          const bool shouldExecuteHandler =
+              co_await apache::thrift::detail::processServiceInterceptorsOnRequest(
+                  *callback,
+                  apache::thrift::detail::ServiceInterceptorOnRequestArguments(
+                      argRefs),
+                  serializedRequest);
+          if (shouldExecuteHandler) {
+            executeHandler(std::move(callback), std::move(args));
+          }
+        }(
+            std::move(callback),
+            makeExecuteHandler(),
+            std::move(args),
+            std::move(serializedRequest)))
+      .startInlineUnsafe();
+  } else {
+    makeExecuteHandler()(std::move(callback), std::move(args));
+  }
+#else
+  makeExecuteHandler()(std::move(callback), std::move(args));
+#endif // FOLLY_HAS_COROUTINES
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+/* static */ apache::thrift::ResponseAndServerBiDiStreamFactory FactoriesAsyncProcessor::return_interactWithBidi(
+    apache::thrift::ContextStack* ctx,
+    folly::Executor::KeepAlive<> executor,
+    ::apache::thrift::StreamTransformation<::std::int32_t, ::std::int32_t>&& _return) {
+  ProtocolOut_ prot;
+  Factories_interactWithBidi_presult::InitialResponsePResultType result;
+  using SinkPResultType = Factories_interactWithBidi_presult::SinkPResultType;
+  using StreamPResultType = Factories_interactWithBidi_presult::StreamPResultType;
+  auto bidiStreamFactory = apache::thrift::detail::ap::encode_server_bidi_stream<
+    ProtocolIn_, SinkPResultType, ProtocolOut_, StreamPResultType>(
+      std::move(_return), std::move(executor));
+  return {serializeResponse("interactWithBidi", &prot, ctx, result), std::move(bidiStreamFactory)};
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void FactoriesAsyncProcessor::throw_wrapped_interactWithBidi(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    [[maybe_unused]] int32_t protoSeqId,
+    apache::thrift::ContextStack* ctx,
+    folly::exception_wrapper ew,
+    apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  {
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<
+        ProtocolOut_>(ew, std::move(req), reqCtx, ctx, "interactWithBidi");
+    return;
+  }
+}
+//
+// End of Method 'interactWithBidi'
+//
+
+//
+// Method 'interactWithBidiAndInitialResponse'
+//
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::setUpAndProcess_interactWithBidiAndInitialResponse(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    apache::thrift::Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    [[maybe_unused]] apache::thrift::concurrency::ThreadManager* tm) {
+  if (!setUpRequestProcessing(
+          req, ctx, eb, tm, apache::thrift::RpcKind::BIDIRECTIONAL_STREAM, iface_, "MyInteraction", true)) {
+    return;
+  }
+  auto scope = iface_->getRequestExecutionScope(
+      ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestExecutionScope(std::move(scope));
+  processInThread(
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      eb,
+      tm,
+      apache::thrift::RpcKind::BIDIRECTIONAL_STREAM,
+      &FactoriesAsyncProcessor::
+          executeRequest_interactWithBidiAndInitialResponse<ProtocolIn_, ProtocolOut_, RequestReader_>,
+      this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_>
+void FactoriesAsyncProcessor::executeRequest_interactWithBidiAndInitialResponse(
+    apache::thrift::ServerRequest&& serverRequest) {
+  auto tile = serverRequest.requestContext()->releaseTile();
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  struct ArgsState {
+    Factories_interactWithBidiAndInitialResponse_pargs pargs() {
+      Factories_interactWithBidiAndInitialResponse_pargs args;
+      return args;
+    }
+
+    auto asTupleOfRefs() & {
+      return std::tie(
+      );
+    }
+  } args;
+
+  auto ctxStack = apache::thrift::ContextStack::create(
+      this->getEventHandlersSharedPtr(),
+      this->getServiceName(),
+      "Factories.interactWithBidiAndInitialResponse",
+      serverRequest.requestContext());
+  apache::thrift::SerializedRequest serializedRequest{nullptr};
+  try {
+    auto pargs = args.pargs();
+    serializedRequest = apache::thrift::detail::ServerRequestHelper::compressedRequest(
+        std::move(serverRequest)).uncompress();
+    deserializeRequest<ProtocolIn_, decltype(pargs), RequestReader_>(
+        pargs,
+        "interactWithBidiAndInitialResponse",
+        serializedRequest,
+        ctxStack.get());
+  } catch (...) {
+    folly::exception_wrapper ew(std::current_exception());
+    apache::thrift::detail::ap::process_handle_exn_deserialization<
+        ProtocolOut_>(
+        ew,
+        apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest)),
+            serverRequest.requestContext(),
+        apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+        "interactWithBidiAndInitialResponse");
+    return;
+  }
+  auto requestPileNotification =
+      apache::thrift::detail::ServerRequestHelper::moveRequestPileNotification(
+          serverRequest);
+  auto concurrencyControllerNotification =
+      apache::thrift::detail::ServerRequestHelper::moveConcurrencyControllerNotification(
+          serverRequest);
+  apache::thrift::HandlerCallbackBase::MethodNameInfo methodNameInfo{
+      /* .serviceName =*/ this->getServiceName(),
+      /* .definingServiceName =*/ "Factories",
+      /* .methodName =*/ "interactWithBidiAndInitialResponse",
+      /* .qualifiedMethodName =*/ "Factories.interactWithBidiAndInitialResponse"};
+  apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::ResponseAndStreamTransformation<::std::int32_t, ::std::int32_t, ::std::int32_t>>>::DecoratorAfterCallback decoratorCallback{
+    static_cast<void*>(iface_),
+    apache::thrift::ServiceHandler<::cpp2::Factories>::fbthrift_invoke_decorator_after_interactWithBidiAndInitialResponse};
+ auto callback =
+      apache::thrift::HandlerCallbackPtr<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::Factories>::MyInteractionIf, ::apache::thrift::ResponseAndStreamTransformation<::std::int32_t, ::std::int32_t, ::std::int32_t>>>::make(
+          apache::thrift::detail::ServerRequestHelper::request(
+              std::move(serverRequest)),
+          std::move(ctxStack),
+          std::move(methodNameInfo),
+          return_interactWithBidiAndInitialResponse<ProtocolIn_, ProtocolOut_>,
+          throw_wrapped_interactWithBidiAndInitialResponse<ProtocolIn_, ProtocolOut_>,
+          serverRequest.requestContext()->getProtoSeqId(),
+          apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest),
+          apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+          serverRequest.requestContext(),
+          requestPileNotification,
+          concurrencyControllerNotification,
+          std::move(serverRequest.requestData()),
+          std::move(tile),
+          std::move(decoratorCallback));
+  // Execute method decorator before_interactWithBidiAndInitialResponse.
+  iface_->fbthrift_execute_decorators_before_interactWithBidiAndInitialResponse(*serverRequest.requestContext());
+
+  const auto makeExecuteHandler = [&] {
+    return [ifacePtr = iface_](auto&& cb, ArgsState args) mutable {
+      (void)args;
+      ifacePtr->async_tm_interactWithBidiAndInitialResponse(std::move(cb));
+    };
+  };
+#if FOLLY_HAS_COROUTINES
+  if (apache::thrift::detail::shouldProcessServiceInterceptorsOnRequest(
+          *callback)) {
+    co_withExecutor(
+        apache::thrift::detail::ServerRequestHelper::executor(serverRequest),
+        [](
+            auto callback,
+            auto executeHandler,
+            ArgsState args,
+            apache::thrift::SerializedRequest serializedRequest
+        ) -> folly::coro::Task<void> {
+          auto argRefs = args.asTupleOfRefs();
+          const bool shouldExecuteHandler =
+              co_await apache::thrift::detail::processServiceInterceptorsOnRequest(
+                  *callback,
+                  apache::thrift::detail::ServiceInterceptorOnRequestArguments(
+                      argRefs),
+                  serializedRequest);
+          if (shouldExecuteHandler) {
+            executeHandler(std::move(callback), std::move(args));
+          }
+        }(
+            std::move(callback),
+            makeExecuteHandler(),
+            std::move(args),
+            std::move(serializedRequest)))
+      .startInlineUnsafe();
+  } else {
+    makeExecuteHandler()(std::move(callback), std::move(args));
+  }
+#else
+  makeExecuteHandler()(std::move(callback), std::move(args));
+#endif // FOLLY_HAS_COROUTINES
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+/* static */ apache::thrift::ResponseAndServerBiDiStreamFactory FactoriesAsyncProcessor::return_interactWithBidiAndInitialResponse(
+    apache::thrift::ContextStack* ctx,
+    folly::Executor::KeepAlive<> executor,
+    ::apache::thrift::ResponseAndStreamTransformation<::std::int32_t, ::std::int32_t, ::std::int32_t>&& _return) {
+  ProtocolOut_ prot;
+  Factories_interactWithBidiAndInitialResponse_presult::InitialResponsePResultType result;
+  using SinkPResultType = Factories_interactWithBidiAndInitialResponse_presult::SinkPResultType;
+  using StreamPResultType = Factories_interactWithBidiAndInitialResponse_presult::StreamPResultType;
+  result.get<0>().value = const_cast<::apache::thrift::ResponseAndStreamTransformation<::std::int32_t, ::std::int32_t, ::std::int32_t>::ResponseType*>(&_return.response);
+  result.setIsSet(0, true);
+  auto bidiStreamFactory = apache::thrift::detail::ap::encode_server_bidi_stream<
+    ProtocolIn_, SinkPResultType, ProtocolOut_, StreamPResultType>(
+      std::move(_return.transform), std::move(executor));
+  return {serializeResponse("interactWithBidiAndInitialResponse", &prot, ctx, result), std::move(bidiStreamFactory)};
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void FactoriesAsyncProcessor::throw_wrapped_interactWithBidiAndInitialResponse(
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
+    [[maybe_unused]] int32_t protoSeqId,
+    apache::thrift::ContextStack* ctx,
+    folly::exception_wrapper ew,
+    apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  {
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<
+        ProtocolOut_>(ew, std::move(req), reqCtx, ctx, "interactWithBidiAndInitialResponse");
+    return;
+  }
+}
+//
+// End of Method 'interactWithBidiAndInitialResponse'
 //
 
 //
