@@ -18,6 +18,8 @@
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::conformance::data {
 
@@ -30,6 +32,8 @@ const int32_t kRocketCanceled = 0x203;
 const int32_t kRocketCancelFrame = 0x09;
 const int32_t kRocketErrorFrame = 0x0B;
 const std::string kUndecodableMetadata = "\x1f";
+const std::string kProcessFirstResponseError =
+    "apache::thrift::TApplicationException: process first response error";
 
 // =================== Request-Response ===================
 Test createRequestResponseBasicTest() {
@@ -2485,6 +2489,20 @@ ClientFrame canceledErrorFrame() {
   return frame;
 }
 
+ClientFrame processFirstResponseErrorFrame() {
+  ClientFrame frame;
+  frame.type() = kRocketErrorFrame;
+  frame.errorCode() = kRocketApplicationError;
+  frame.errorData() = kProcessFirstResponseError;
+  return frame;
+}
+
+std::string emptyPayloadMetadata() {
+  ResponseRpcMetadata metadata;
+  metadata.payloadMetadata().emplace();
+  return CompactSerializer::serialize<std::string>(metadata);
+}
+
 Test createClosingFrameTest(
     const std::string& kind, CallKind call, std::vector<ClientFrame> frames) {
   Test ret;
@@ -2531,6 +2549,31 @@ Test createUndecodableFirstResponseTest(
       rpcTest.serverInstruction().emplace().closingFrame().emplace();
   serverInstruction.call() = call;
   serverInstruction.firstResponse()->metadata() = kUndecodableMetadata;
+  rpcTest.serverTestResult().emplace().closingFrame().emplace().frames() =
+      std::move(frames);
+
+  return ret;
+}
+
+Test createInvalidPayloadMetadataTest(
+    const std::string& kind, CallKind call, std::vector<ClientFrame> frames) {
+  Test ret;
+  ret.name() = kind + "InvalidPayloadMetadataTest";
+  ret.tags()->emplace("spec/compatibility/rocket#stream-initial-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = kind + "InvalidPayloadMetadata/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().closingFrame().emplace();
+  clientInstruction.call() = call;
+  clientInstruction.request().emplace().data() = "hello";
+  rpcTest.clientTestResult().emplace().closingFrame().emplace();
+  auto& serverInstruction =
+      rpcTest.serverInstruction().emplace().closingFrame().emplace();
+  serverInstruction.call() = call;
+  serverInstruction.firstResponse()->metadata() = emptyPayloadMetadata();
   rpcTest.serverTestResult().emplace().closingFrame().emplace().frames() =
       std::move(frames);
 
@@ -2849,6 +2892,16 @@ TestSuite createRPCClientExtendedTestSuite() {
       "Sink", CallKind::SINK, {canceledErrorFrame()}));
   suite.tests()->push_back(createUndecodableFirstResponseTest(
       "Bidi", CallKind::BIDI, {canceledErrorFrame()}));
+  suite.tests()->push_back(createInvalidPayloadMetadataTest(
+      "RequestResponse", CallKind::REQUEST_RESPONSE, {}));
+  suite.tests()->push_back(createInvalidPayloadMetadataTest(
+      "Stream", CallKind::STREAM, {cancelFrame()}));
+  suite.tests()->push_back(createInvalidPayloadMetadataTest(
+      "Sink", CallKind::SINK, {processFirstResponseErrorFrame()}));
+  suite.tests()->push_back(createInvalidPayloadMetadataTest(
+      "Bidi",
+      CallKind::BIDI,
+      {cancelFrame(), processFirstResponseErrorFrame()}));
   return suite;
 }
 

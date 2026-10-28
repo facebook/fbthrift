@@ -295,6 +295,14 @@ rust[client=cpp,*]/ThriftRPCClientTest/RequestResponseUnexpectedErrorCode/Succes
 rust[client=cpp,*]/ThriftRPCClientTest/StreamUnexpectedErrorCode/Success.StreamUnexpectedErrorCodeTest
 rust[client=cpp,*]/ThriftRPCClientTest/SinkUnexpectedErrorCode/Success.SinkUnexpectedErrorCodeTest
 
+# When `processFirstResponse` rejects a sink or bidi call's first response, C++
+# answers with ERROR(APPLICATION_ERROR) saying "process first response error",
+# after a CANCEL for a bidi stream. nativeclient opens the call with the
+# exception instead, and its dropped halves send "never called sink object",
+# the sink's half first.
+rust[client=native,*]/ThriftRPCClientTest/SinkInvalidPayloadMetadata/Success.SinkInvalidPayloadMetadataTest
+rust[client=native,*]/ThriftRPCClientTest/BidiInvalidPayloadMetadata/Success.BidiInvalidPayloadMetadataTest
+
 ###
 # Transport: HTTP
 # Run every client test over HTTP/2
