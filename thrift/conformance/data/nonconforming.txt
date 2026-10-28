@@ -296,12 +296,6 @@ rust[client=cpp,*]/ThriftRPCClientTest/RequestResponseUnexpectedErrorCode/Succes
 rust[client=cpp,*]/ThriftRPCClientTest/StreamUnexpectedErrorCode/Success.StreamUnexpectedErrorCodeTest
 rust[client=cpp,*]/ThriftRPCClientTest/SinkUnexpectedErrorCode/Success.SinkUnexpectedErrorCodeTest
 
-# A C++ client that verifies checksums ends a stream with a TApplicationException
-# (CHECKSUM_MISMATCH) at a chunk whose checksum doesn't match. nativeclient
-# doesn't check a chunk's checksum, so it hands the chunk to the caller.
-rust[client=native,*]/ThriftRPCClientTest/StreamChunkChecksumMismatch/Success.StreamChunkChecksumMismatchTest
-rust[client=native,*]/ThriftRPCClientTest/BidiChunkChecksumMismatch/Success.BidiChunkChecksumMismatchTest
-
 ###
 # Transport: HTTP
 # Run every client test over HTTP/2
