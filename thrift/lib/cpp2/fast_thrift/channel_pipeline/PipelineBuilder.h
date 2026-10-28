@@ -199,6 +199,14 @@ class PipelineBuilder {
     return *this;
   }
 
+  /** Construct and own the tail endpoint in place. See emplaceHead. */
+  template <typename... Args>
+  PipelineBuilder& emplaceTail(Args&&... args) {
+    detail::prepareOwnedEndpoint<TailHandler>(
+        tailSource_, std::forward<Args>(args)...);
+    return *this;
+  }
+
   /**
    * Add the next inbound handler in head-to-tail order.
    *

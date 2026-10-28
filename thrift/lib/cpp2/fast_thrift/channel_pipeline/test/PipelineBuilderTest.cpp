@@ -117,6 +117,33 @@ class OwnedHeadEndpoint {
   std::string name_;
 };
 
+// Owned tail endpoint with observable lifetime.
+class OwnedTailEndpoint {
+ public:
+  OwnedTailEndpoint() noexcept { ++constructions; }
+  ~OwnedTailEndpoint() {
+    ++destructions;
+    teardownLog().emplace_back("tail");
+  }
+
+  Result onRead(detail::ContextImpl&, TypeErasedBox&&) noexcept {
+    return Result::Success;
+  }
+  void onException(folly::exception_wrapper&&) noexcept {}
+  void onWriteReady() noexcept {}
+  void handlerAdded() noexcept {}
+  void handlerRemoved() noexcept {}
+  void onPipelineActive() noexcept {}
+  void onPipelineInactive() noexcept {}
+
+  static void reset() noexcept {
+    constructions = 0;
+    destructions = 0;
+  }
+  static inline std::size_t constructions{0};
+  static inline std::size_t destructions{0};
+};
+
 // Owned allocator with observable lifetime; counts heap allocations so tests
 // can prove inline co-location performs none.
 class OwnedAllocator {
@@ -158,6 +185,7 @@ class PipelineBuilderTest : public ::testing::Test {
     MockHandler::resetOrderCounter();
     InlineStorageTestHandler::reset();
     OwnedHeadEndpoint::reset();
+    OwnedTailEndpoint::reset();
     OwnedAllocator::reset();
     teardownLog().clear();
     transport_.reset();
@@ -676,6 +704,23 @@ TEST_F(PipelineBuilderTest, EmplacedHeadIsOwnedAndDestroyedWithPipeline) {
     EXPECT_EQ(OwnedHeadEndpoint::destructions, 0);
   }
   EXPECT_EQ(OwnedHeadEndpoint::destructions, 1);
+}
+
+TEST_F(PipelineBuilderTest, EmplacedTailIsOwnedAndDestroyedWithPipeline) {
+  {
+    auto pipeline =
+        PipelineBuilder<MockHeadHandler, OwnedTailEndpoint, TestAllocator>()
+            .setEventBase(&evb_)
+            .setHead(&transport_)
+            .emplaceTail()
+            .setAllocator(&allocator_)
+            .build();
+
+    ASSERT_NE(pipeline, nullptr);
+    EXPECT_EQ(OwnedTailEndpoint::constructions, 1);
+    EXPECT_EQ(OwnedTailEndpoint::destructions, 0);
+  }
+  EXPECT_EQ(OwnedTailEndpoint::destructions, 1);
 }
 
 TEST_F(PipelineBuilderTest, EmplaceForwardsConstructorArguments) {

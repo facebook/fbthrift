@@ -211,6 +211,38 @@ class OwnedStaticHead {
   std::string name_;
 };
 
+// Owned tail endpoint with observable lifetime.
+class OwnedStaticTail {
+ public:
+  OwnedStaticTail() noexcept { ++constructions; }
+  OwnedStaticTail(const OwnedStaticTail&) = delete;
+  OwnedStaticTail& operator=(const OwnedStaticTail&) = delete;
+  OwnedStaticTail(OwnedStaticTail&&) = delete;
+  OwnedStaticTail& operator=(OwnedStaticTail&&) = delete;
+  ~OwnedStaticTail() {
+    ++destructions;
+    staticTeardownLog().emplace_back("tail");
+  }
+
+  template <typename Context>
+  Result onRead(Context&, TypeErasedBox&&) noexcept {
+    return Result::Success;
+  }
+  void onException(folly::exception_wrapper&&) noexcept {}
+  void onWriteReady() noexcept {}
+  void handlerAdded() noexcept {}
+  void handlerRemoved() noexcept {}
+  void onPipelineActive() noexcept {}
+  void onPipelineInactive() noexcept {}
+
+  static void reset() noexcept {
+    constructions = 0;
+    destructions = 0;
+  }
+  static inline std::size_t constructions{0};
+  static inline std::size_t destructions{0};
+};
+
 // Owned allocator; counts heap allocations so tests can prove it is co-located
 // in the single pipeline allocation rather than separately heap-allocated.
 class OwnedStaticAllocator {
@@ -1404,6 +1436,27 @@ TEST(StaticPipelineTest, ExternalTailWithPrivateDestructorRemainsCallerOwned) {
   EXPECT_EQ(pipeline->fireRead(TypeErasedBox{17}), Result::Success);
   pipeline.reset();
   EXPECT_EQ(tail->readCount(), 1);
+}
+
+TEST(StaticPipelineTest, EmplacedTailIsOwnedAndDestroyedWithPipeline) {
+  OwnedStaticTail::reset();
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  TestAllocator allocator;
+  {
+    auto pipeline = StaticPipelineBuilder<
+                        StaticHeadHandler,
+                        OwnedStaticTail,
+                        TestAllocator>()
+                        .setEventBase(&eventBase)
+                        .setHead(&head)
+                        .emplaceTail()
+                        .setAllocator(&allocator)
+                        .build();
+    EXPECT_EQ(OwnedStaticTail::constructions, 1);
+    EXPECT_EQ(OwnedStaticTail::destructions, 0);
+  }
+  EXPECT_EQ(OwnedStaticTail::destructions, 1);
 }
 
 TEST(StaticPipelineTest, EmplaceForwardsConstructorArguments) {

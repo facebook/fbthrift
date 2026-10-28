@@ -117,6 +117,20 @@ class StaticPipelineBuilder {
     return std::move(*this);
   }
 
+  /** Construct and own the tail endpoint in place. See emplaceHead. */
+  template <typename... Args>
+  StaticPipelineBuilder& emplaceTail(Args&&... args) & {
+    detail::prepareOwnedEndpoint<TailHandler>(
+        tailSource_, std::forward<Args>(args)...);
+    return *this;
+  }
+  template <typename... Args>
+  StaticPipelineBuilder&& emplaceTail(Args&&... args) && {
+    detail::prepareOwnedEndpoint<TailHandler>(
+        tailSource_, std::forward<Args>(args)...);
+    return std::move(*this);
+  }
+
   template <typename T, typename... Args>
     requires(sizeof...(Entry) == 0)
   auto addState(Args&&... args) && {
