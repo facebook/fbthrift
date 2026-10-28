@@ -131,6 +131,20 @@ class StaticPipelineBuilder {
     return std::move(*this);
   }
 
+  /** Construct and own the allocator in place. See emplaceHead. */
+  template <typename... Args>
+  StaticPipelineBuilder& emplaceAllocator(Args&&... args) & {
+    detail::prepareOwnedEndpoint<Allocator>(
+        allocatorSource_, std::forward<Args>(args)...);
+    return *this;
+  }
+  template <typename... Args>
+  StaticPipelineBuilder&& emplaceAllocator(Args&&... args) && {
+    detail::prepareOwnedEndpoint<Allocator>(
+        allocatorSource_, std::forward<Args>(args)...);
+    return std::move(*this);
+  }
+
   template <typename T, typename... Args>
     requires(sizeof...(Entry) == 0)
   auto addState(Args&&... args) && {

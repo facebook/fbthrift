@@ -69,6 +69,13 @@ inline std::vector<std::string>& teardownLog() {
   return log;
 }
 
+// Handler that records its destruction in the shared teardown log. Used to
+// prove an owned allocator is destroyed after all handlers.
+class TeardownLoggingHandler : public MockHandler {
+ public:
+  ~TeardownLoggingHandler() { teardownLog().emplace_back("handler"); }
+};
+
 // Owned head endpoint with observable lifetime and constructor-argument
 // capture.
 class OwnedHeadEndpoint {
@@ -723,6 +730,22 @@ TEST_F(PipelineBuilderTest, EmplacedTailIsOwnedAndDestroyedWithPipeline) {
   EXPECT_EQ(OwnedTailEndpoint::destructions, 1);
 }
 
+TEST_F(PipelineBuilderTest, EmplacedAllocatorIsOwnedAndDestroyedWithPipeline) {
+  {
+    auto pipeline =
+        PipelineBuilder<MockHeadHandler, MockTailHandler, OwnedAllocator>()
+            .setEventBase(&evb_)
+            .setHead(&transport_)
+            .setTail(&app_)
+            .emplaceAllocator()
+            .build();
+
+    ASSERT_NE(pipeline, nullptr);
+    EXPECT_EQ(OwnedAllocator::destructions, 0);
+  }
+  EXPECT_EQ(OwnedAllocator::destructions, 1);
+}
+
 TEST_F(PipelineBuilderTest, EmplaceForwardsConstructorArguments) {
   auto pipeline =
       PipelineBuilder<OwnedHeadEndpoint, MockTailHandler, TestAllocator>()
@@ -764,6 +787,28 @@ TEST_F(PipelineBuilderTest, EmplaceDecayCopiesDeferredArguments) {
   auto pipeline = builder.build();
   ASSERT_NE(OwnedHeadEndpoint::lastConstructed, nullptr);
   EXPECT_EQ(OwnedHeadEndpoint::lastConstructed->name(), "owned");
+}
+
+TEST_F(PipelineBuilderTest, OwnedAllocatorDestroyedAfterHandlersAndEndpoints) {
+  {
+    auto pipeline =
+        PipelineBuilder<OwnedHeadEndpoint, OwnedTailEndpoint, OwnedAllocator>()
+            .setEventBase(&evb_)
+            .emplaceHead()
+            .emplaceTail()
+            .emplaceAllocator()
+            .addNextDuplex<TeardownLoggingHandler>(codec_tag)
+            .addNextDuplex<TeardownLoggingHandler>(thrift_tag)
+            .build();
+    ASSERT_NE(pipeline, nullptr);
+  }
+
+  const auto& log = teardownLog();
+  ASSERT_FALSE(log.empty());
+  // The allocator must outlive every handler and the head/tail endpoints.
+  EXPECT_EQ(log.back(), "allocator");
+  EXPECT_EQ(std::count(log.begin(), log.end(), "allocator"), 1);
+  EXPECT_EQ(std::count(log.begin(), log.end(), "handler"), 2);
 }
 
 TEST_F(PipelineBuilderTest, MixedOwnedAndExternalComponents) {
@@ -831,6 +876,24 @@ TEST_F(PipelineBuilderTest, EmplacedHeadLifetimeAcrossStorageFlavors) {
   runEmplacedHeadLifetimeTest<pipeline_storage::Small>(evb_, app_);
   OwnedHeadEndpoint::reset();
   runEmplacedHeadLifetimeTest<pipeline_storage::Automatic>(evb_, app_);
+}
+
+TEST_F(PipelineBuilderTest, InlineStorageConstructsAllocatorWithoutHeap) {
+  {
+    auto pipeline = PipelineBuilder<
+                        MockHeadHandler,
+                        MockTailHandler,
+                        OwnedAllocator,
+                        pipeline_storage::Small>()
+                        .setEventBase(&evb_)
+                        .setHead(&transport_)
+                        .setTail(&app_)
+                        .emplaceAllocator()
+                        .build();
+    ASSERT_NE(pipeline, nullptr);
+    EXPECT_EQ(OwnedAllocator::heapAllocations, 0);
+  }
+  EXPECT_EQ(OwnedAllocator::destructions, 1);
 }
 
 } // namespace apache::thrift::fast_thrift::channel_pipeline::test

@@ -158,6 +158,35 @@ inline std::vector<std::string>& staticTeardownLog() {
   return log;
 }
 
+// Inbound handler that records its destruction, to prove an owned allocator is
+// destroyed after all handlers.
+class StaticTeardownHandler {
+ public:
+  StaticTeardownHandler() = default;
+  StaticTeardownHandler(const StaticTeardownHandler&) = delete;
+  StaticTeardownHandler& operator=(const StaticTeardownHandler&) = delete;
+  StaticTeardownHandler(StaticTeardownHandler&&) = delete;
+  StaticTeardownHandler& operator=(StaticTeardownHandler&&) = delete;
+  ~StaticTeardownHandler() { staticTeardownLog().emplace_back("handler"); }
+
+  template <typename Context>
+  void handlerAdded(Context&) noexcept {}
+  template <typename Context>
+  void handlerRemoved(Context&) noexcept {}
+  template <typename Context>
+  void onPipelineActive(Context&) noexcept {}
+  template <typename Context>
+  Result onRead(Context& ctx, TypeErasedBox&& msg) noexcept {
+    return ctx.fireRead(std::move(msg));
+  }
+  template <typename Context>
+  void onException(Context& ctx, folly::exception_wrapper&& e) noexcept {
+    ctx.fireException(std::move(e));
+  }
+  template <typename Context>
+  void onReadReady(Context&) noexcept {}
+};
+
 // Owned head endpoint with observable lifetime and constructor-argument
 // capture. Non-movable to prove the pipeline constructs it in place (never
 // moves it).
@@ -1459,6 +1488,26 @@ TEST(StaticPipelineTest, EmplacedTailIsOwnedAndDestroyedWithPipeline) {
   EXPECT_EQ(OwnedStaticTail::destructions, 1);
 }
 
+TEST(StaticPipelineTest, EmplacedAllocatorIsOwnedAndDestroyedWithPipeline) {
+  OwnedStaticAllocator::reset();
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  StaticTailHandler tail;
+  {
+    auto pipeline = StaticPipelineBuilder<
+                        StaticHeadHandler,
+                        StaticTailHandler,
+                        OwnedStaticAllocator>()
+                        .setEventBase(&eventBase)
+                        .setHead(&head)
+                        .setTail(&tail)
+                        .emplaceAllocator()
+                        .build();
+    EXPECT_EQ(OwnedStaticAllocator::destructions, 0);
+  }
+  EXPECT_EQ(OwnedStaticAllocator::destructions, 1);
+}
+
 TEST(StaticPipelineTest, EmplaceForwardsConstructorArguments) {
   OwnedStaticHead::reset();
   folly::EventBase eventBase;
@@ -1490,6 +1539,32 @@ TEST(StaticPipelineTest, EmplaceForwardsMoveOnlyConstructorArgument) {
           .build();
   ASSERT_NE(OwnedStaticHead::lastConstructed, nullptr);
   EXPECT_EQ(OwnedStaticHead::lastConstructed->id(), 7);
+}
+
+TEST(StaticPipelineTest, OwnedAllocatorDestroyedAfterHandlers) {
+  OwnedStaticAllocator::reset();
+  staticTeardownLog().clear();
+  folly::EventBase eventBase;
+  {
+    auto pipeline =
+        StaticPipelineBuilder<
+            StaticHeadHandler,
+            StaticTailHandler,
+            OwnedStaticAllocator>()
+            .setEventBase(&eventBase)
+            .emplaceHead()
+            .emplaceTail()
+            .emplaceAllocator()
+            .addNextInbound<StaticTeardownHandler>(first_static_tag)
+            .addNextInbound<StaticTeardownHandler>(second_static_tag)
+            .build();
+  }
+
+  const auto& log = staticTeardownLog();
+  ASSERT_FALSE(log.empty());
+  EXPECT_EQ(log.back(), "allocator");
+  EXPECT_EQ(std::count(log.begin(), log.end(), "allocator"), 1);
+  EXPECT_EQ(std::count(log.begin(), log.end(), "handler"), 2);
 }
 
 TEST(StaticPipelineTest, MixedOwnedAndExternalComponents) {
@@ -1529,6 +1604,26 @@ TEST(StaticPipelineTest, SetterAfterEmplaceDropsDeferredConstruction) {
           .setAllocator(&allocator)
           .build();
   EXPECT_EQ(OwnedStaticHead::constructions, 0);
+}
+
+TEST(StaticPipelineTest, InlineAllocatorConstructedWithoutHeap) {
+  OwnedStaticAllocator::reset();
+  folly::EventBase eventBase;
+  StaticHeadHandler head;
+  StaticTailHandler tail;
+  {
+    auto pipeline = StaticPipelineBuilder<
+                        StaticHeadHandler,
+                        StaticTailHandler,
+                        OwnedStaticAllocator>()
+                        .setEventBase(&eventBase)
+                        .setHead(&head)
+                        .setTail(&tail)
+                        .emplaceAllocator()
+                        .build();
+    EXPECT_EQ(OwnedStaticAllocator::heapAllocations, 0);
+  }
+  EXPECT_EQ(OwnedStaticAllocator::destructions, 1);
 }
 
 } // namespace

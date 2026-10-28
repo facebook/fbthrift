@@ -207,6 +207,14 @@ class PipelineBuilder {
     return *this;
   }
 
+  /** Construct and own the allocator in place. See emplaceHead. */
+  template <typename... Args>
+  PipelineBuilder& emplaceAllocator(Args&&... args) {
+    detail::prepareOwnedEndpoint<Allocator>(
+        allocatorSource_, std::forward<Args>(args)...);
+    return *this;
+  }
+
   /**
    * Add the next inbound handler in head-to-tail order.
    *
