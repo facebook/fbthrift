@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import threading
 
 from cpython.ref cimport PyObject
 from cython.operator cimport dereference as deref
@@ -40,6 +41,7 @@ from thrift.python.server_impl.python_async_processor cimport (
     makeHandlerFunc,
     PyObjPtr,
     PythonAsyncProcessorFactory,
+    WorkerSystem,
 )
 from thrift.python.types cimport (
     FunctionEntry,
@@ -141,6 +143,32 @@ class SuppressingContextHandler(ContextHandler):
         return True
 
 
+class RecordingContextHandler(ContextHandler):
+    def __init__(self, exit_result):
+        super().__init__()
+        self.exit_error = None
+        self._exit_result = exit_result
+
+    async def __aexit__(self, exc_type, exc, traceback):
+        self.events.append("exit")
+        self.exit_error = exc
+        return self._exit_result
+
+
+class FailingTableHandler(Handler):
+    def getFunctionTable(self):
+        raise RuntimeError("no function table")
+
+
+class ThreadRecordingHandler(Handler):
+    def __init__(self):
+        self.request_threads = []
+
+    async def theAnswer(self) -> int:
+        self.request_threads.append(threading.current_thread())
+        return 42
+
+
 class NoopContextPythonAsyncProcessorFactory(PythonAsyncProcessorFactory):
     def __init__(self):
         self.context_enter_count = 0
@@ -177,6 +205,18 @@ class HostedLifecycleHandler(Handler):
     async def onStopRequested(self):
         self.service_events.append("stop")
         self.stop_requested.set()
+
+
+class FailingExitHandler(Handler):
+    def __init__(self, failure):
+        self.failure = failure
+
+    async def __aexit__(self, *exc_info):
+        raise self.failure
+
+
+async def fail_worker_start():
+    raise RuntimeError("worker start failed")
 
 
 cdef PythonAsyncProcessorFactory create_noop_context_factory(
@@ -294,6 +334,107 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
 
         # THEN
         self.ut.assertEqual(expected_processor_count, actual_processor_count)
+
+    def test_set_cpu_worker_threads_rejects_count_below_one(self):
+        # GIVEN
+        cdef PythonAsyncProcessorFactory factory = PythonAsyncProcessorFactory.create(
+            Handler()
+        )
+        expected_message = "Thread count must be one or more; got 0."
+
+        # WHEN
+        with self.ut.assertRaises(ValueError) as raised:
+            factory.set_cpu_worker_threads(0)
+
+        # THEN
+        self.ut.assertEqual(expected_message, str(raised.exception))
+
+    async def test_threads_without_factory_context_warn_and_stay_single_threaded(
+        self,
+    ):
+        # GIVEN
+        handler = ThreadRecordingHandler()
+        cdef PythonAsyncProcessorFactory factory = PythonAsyncProcessorFactory.create(
+            handler
+        )
+        factory.set_cpu_worker_threads(2)
+        server = ThriftServer(create_noop_context_factory(factory), ip="::1")
+        expected_response = 42
+        expected_request_threads = [threading.current_thread()]
+        expected_log_output = [
+            "WARNING:thrift.python.server_impl.python_async_processor:"
+            "workers set and context not entered. "
+            "Server will stay in single thread mode"
+        ]
+
+        # WHEN
+        with self.ut.assertLogs(
+            "thrift.python.server_impl.python_async_processor", level="WARNING"
+        ) as captured:
+            serve_task = asyncio.create_task(server.serve())
+            address = await asyncio.wait_for(server.get_address(), timeout=5.0)
+            async with get_client(
+                BaseService,
+                host=str(address.ip),
+                port=address.port,
+            ) as client:
+                actual_response = await asyncio.wait_for(
+                    client.theAnswer(),
+                    timeout=5.0,
+                )
+            server.stop()
+            await asyncio.wait_for(serve_task, timeout=5.0)
+
+        # THEN
+        self.ut.assertEqual(expected_response, actual_response)
+        self.ut.assertEqual(expected_request_threads, handler.request_threads)
+        self.ut.assertEqual(expected_log_output, captured.output)
+
+    async def test_threads_with_factory_context_serve_requests_on_workers(self):
+        # GIVEN
+        handler = ThreadRecordingHandler()
+        cdef PythonAsyncProcessorFactory factory = PythonAsyncProcessorFactory.create(
+            handler
+        )
+        factory.set_cpu_worker_threads(2)
+        server = ThriftServer(factory, ip="::1")
+        forbidden_worker_thread = threading.current_thread()
+        expected_responses = [42]
+        expected_request_count = 1
+        serve_task = asyncio.create_task(server.serve())
+        address = await asyncio.wait_for(server.get_address(), timeout=5.0)
+        responses = []
+        request_done = threading.Event()
+
+        async def ask_from_another_thread():
+            async with get_client(
+                BaseService,
+                host=str(address.ip),
+                port=address.port,
+            ) as client:
+                responses.append(
+                    await asyncio.wait_for(client.theAnswer(), timeout=5.0)
+                )
+
+        def run_client_thread():
+            try:
+                asyncio.run(ask_from_another_thread())
+            finally:
+                request_done.set()
+
+        client_thread = threading.Thread(target=run_client_thread)
+
+        # WHEN
+        client_thread.start()
+        request_done.wait(timeout=10.0)
+        client_thread.join()
+        server.stop()
+        await asyncio.wait_for(serve_task, timeout=5.0)
+
+        # THEN
+        self.ut.assertEqual(expected_responses, responses)
+        self.ut.assertEqual(expected_request_count, len(handler.request_threads))
+        self.ut.assertNotIn(forbidden_worker_thread, handler.request_threads)
 
     async def test_host_without_factory_context_uses_legacy_stop_fallback(self):
         # GIVEN
@@ -540,3 +681,91 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
 
         # THEN
         self.ut.assertEqual(expected, actual)
+
+    async def test_failed_worker_start_propagates_even_when_the_control_handler_suppresses(self):
+        # GIVEN
+        control_handler = SuppressingContextHandler()
+        products = [control_handler]
+
+        def make_handler():
+            return products.pop() if products else FailingTableHandler()
+
+        cdef PythonAsyncProcessorFactory factory = (
+            PythonAsyncProcessorFactory.create_from_handler_factory(make_handler)
+        )
+        factory.set_cpu_worker_threads(2)
+        expected_events = ["enter", "exit"]
+
+        # WHEN
+        with self.ut.assertRaisesRegex(
+            RuntimeError, "^no function table$"
+        ) as raised:
+            async with factory:
+                pass
+
+        # THEN
+        self.ut.assertEqual(expected_events, control_handler.events)
+        self.ut.assertIs(raised.exception, control_handler.exit_error)
+
+    async def test_worker_shutdown_failure_propagates_and_the_control_handler_exits(
+        self, exit_result
+    ):
+        # GIVEN
+        control_handler = RecordingContextHandler(exit_result)
+        worker_exit_failure = RuntimeError("worker handler exit failed")
+        products = [FailingExitHandler(worker_exit_failure), control_handler]
+
+        def make_handler():
+            return products.pop() if products else Handler()
+
+        cdef PythonAsyncProcessorFactory factory = (
+            PythonAsyncProcessorFactory.create_from_handler_factory(make_handler)
+        )
+        factory.set_cpu_worker_threads(2)
+        expected_events = ["enter", "exit"]
+
+        # WHEN
+        with self.ut.assertRaises(RuntimeError) as raised:
+            async with factory:
+                pass
+
+        # THEN
+        self.ut.assertIs(worker_exit_failure, raised.exception)
+        self.ut.assertEqual(expected_events, control_handler.events)
+        self.ut.assertIs(worker_exit_failure, control_handler.exit_error)
+
+    async def test_failed_worker_start_releases_resources_and_propagates_the_handler_exit_failure(
+        self,
+    ):
+        # GIVEN
+        handler_exit_failure = RuntimeError("handler exit failed")
+        handler = FailingExitHandler(handler_exit_failure)
+        executor_probe = ExecutorKeepAliveProbe()
+        cdef PythonAsyncProcessorFactory factory = create_hosted_factory(
+            <cServiceInterface>handler,
+            executor_probe,
+            handler.onStartServing,
+            handler.onStopRequested,
+        )
+        factory.workerSystem = WorkerSystem.create(
+            get_executor(), factory.funcMap, {b"theAnswer"}
+        )
+        factory.initializerFactory = lambda worker_system: fail_worker_start
+        factory.set_cpu_worker_threads(2)
+        expected_released_keep_alive_count = 0
+
+        # WHEN
+        try:
+            with self.ut.assertRaises(RuntimeError) as raised:
+                async with factory:
+                    pass
+            actual_keep_alive_count = executor_probe.keep_alive_count()
+        finally:
+            factory.releaseOwnedResources()
+
+        # THEN
+        self.ut.assertIs(handler_exit_failure, raised.exception)
+        self.ut.assertEqual(
+            expected_released_keep_alive_count,
+            actual_keep_alive_count,
+        )

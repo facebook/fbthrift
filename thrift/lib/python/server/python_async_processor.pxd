@@ -30,7 +30,9 @@ from thrift.python.server_impl.async_processor cimport (
 )
 from thrift.python.std_libcpp cimport string_view
 from libcpp.memory cimport shared_ptr
+from libc.stddef cimport size_t
 from libcpp cimport bool as cbool
+from folly cimport cFollyExecutor
 from folly.executor cimport cAsyncioExecutor
 
 # cython doesn't support * in template parameters
@@ -122,9 +124,18 @@ cdef extern from "thrift/lib/python/server/execution/WorkScheduler.h" namespace 
         cWorkScheduler& workScheduler, cAsyncioExecutor* executor
     ) except +
 
+cdef extern from "thrift/lib/python/server/execution/WorkerExecutorFacade.h" namespace "::apache::thrift::python::execution":
+    cdef cppclass cWorkerExecutorFacade "::apache::thrift::python::execution::WorkerExecutorFacade"(cFollyExecutor):
+        @staticmethod
+        cWorkerExecutorFacade* create(shared_ptr[cWorkScheduler] scheduler, cFollyExecutor* control) except +
+        void releaseCreatorReference() noexcept
+
 cdef extern from "thrift/lib/python/server/PythonAsyncProcessorFactory.h" namespace "::apache::thrift::python":
     cdef cppclass cPythonAsyncProcessorFactory "::apache::thrift::python::PythonAsyncProcessorFactory"(cAsyncProcessorFactory):
         void releaseOwnedResources() noexcept
+        void setExecutionSystem(shared_ptr[cExecutionSystem] executionSystem) except +
+        void setRequestedThreadCount(size_t count) noexcept
+        size_t requestedThreadCount() noexcept
         void markContextEntered() noexcept
 
     cdef shared_ptr[cPythonAsyncProcessorFactory] \
@@ -151,16 +162,6 @@ cdef extern from "thrift/lib/python/server/PythonAsyncProcessor.h" namespace "::
         PyObjPtr handlerFunction
         cLaunchRequest launchRequest
 
-cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
-    cdef dict funcMap
-    cdef list lifecycleFuncs
-    cdef object handler
-
-    cdef void releaseOwnedResources(self) noexcept
-
-    @staticmethod
-    cdef PythonAsyncProcessorFactory create(cServiceInterface server)
-
 cdef class WorkerSystem:
     cdef cAsyncioExecutor* controlExecutor
     cdef dict funcMap
@@ -177,3 +178,25 @@ cdef class WorkerSystem:
     )
     cdef start(self, int workerCount, object makeInitializer)
     cdef close(self)
+
+cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
+    cdef dict funcMap
+    cdef list lifecycleFuncs
+    cdef object handler
+    cdef object initializerFactory
+    cdef cAsyncioExecutor* controlExecutor
+    cdef WorkerSystem workerSystem
+    cdef cWorkerExecutorFacade* executorFacade
+    cdef object factoryExit
+
+    cdef void releaseOwnedResources(self) noexcept
+    cdef void _release_executor_facade(self) noexcept
+    cdef _activate_workers(self)
+
+    @staticmethod
+    cdef PythonAsyncProcessorFactory create(cServiceInterface server)
+
+    @staticmethod
+    cdef PythonAsyncProcessorFactory create_from_handler_factory(
+        object handlerFactory
+    )

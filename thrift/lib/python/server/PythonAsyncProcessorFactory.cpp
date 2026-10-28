@@ -71,6 +71,10 @@ std::shared_ptr<const PythonAsyncProcessor::PythonMetadata> makeMetadata(
 
 folly::SemiFuture<folly::Unit>
 PythonAsyncProcessorFactory::semifuture_onStartServing() {
+  if (requestedThreadCount() > 1 && !factoryContextEntered_) {
+    do_python_import();
+    warnThreadsWithoutFactoryContext();
+  }
   return callLifecycle(LifecycleFunc::ON_START_SERVING);
 }
 

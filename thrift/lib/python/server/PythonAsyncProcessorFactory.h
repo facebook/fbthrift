@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -43,6 +44,25 @@ class PythonAsyncProcessorFactory
   void releaseOwnedResources() noexcept;
 
   void markContextEntered() noexcept { factoryContextEntered_ = true; }
+
+  // Replaces the execution system that processors dispatch through. Call it
+  // before the server creates any processor. Nothing dispatches before then,
+  // so this write takes no lock; ThreadSanitizer reports a race if a processor
+  // is ever created during it.
+  void setExecutionSystem(
+      std::shared_ptr<execution::ExecutionSystem> executionSystem) {
+    executionSystem_ = std::move(executionSystem);
+  }
+
+  // The host sets the count before factory context entry, on the thread that
+  // enters it; entry and serving read it only afterwards.
+  void setRequestedThreadCount(std::size_t count) noexcept {
+    requestedThreadCount_ = count;
+  }
+
+  std::size_t requestedThreadCount() const noexcept {
+    return requestedThreadCount_;
+  }
 
   PythonAsyncProcessorFactory(PythonAsyncProcessorFactory&&) = delete;
   PythonAsyncProcessorFactory(const PythonAsyncProcessorFactory&) = delete;
@@ -105,6 +125,7 @@ class PythonAsyncProcessorFactory
   folly::Executor::KeepAlive<> controlExecutor_;
   // Factory context entry completes before native service execution starts.
   bool factoryContextEntered_{false};
+  std::size_t requestedThreadCount_{1};
   std::string serviceName_;
 
   /**

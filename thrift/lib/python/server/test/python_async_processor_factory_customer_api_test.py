@@ -25,6 +25,21 @@ class PythonAsyncProcessorFactoryCustomerApiTest(later.unittest.TestCase):
     def test_processor_creation_and_legacy_stop_overlap(self) -> None:
         CTests(self).test_processor_creation_and_legacy_stop_overlap()
 
+    def test_set_cpu_worker_threads_rejects_count_below_one(self) -> None:
+        CTests(self).test_set_cpu_worker_threads_rejects_count_below_one()
+
+    async def test_threads_without_factory_context_warn_and_stay_single_threaded(
+        self,
+    ) -> None:
+        await CTests(
+            self
+        ).test_threads_without_factory_context_warn_and_stay_single_threaded()
+
+    async def test_threads_with_factory_context_serve_requests_on_workers(
+        self,
+    ) -> None:
+        await CTests(self).test_threads_with_factory_context_serve_requests_on_workers()
+
     async def test_host_without_factory_context_uses_legacy_stop_fallback(
         self,
     ) -> None:
@@ -50,3 +65,31 @@ class PythonAsyncProcessorFactoryCustomerApiTest(later.unittest.TestCase):
 
     async def test_unary_rpc_round_trips_through_composed_factory(self) -> None:
         await CTests(self).test_unary_rpc_round_trips_through_composed_factory()
+
+    async def test_failed_worker_start_propagates_even_when_the_control_handler_suppresses(
+        self,
+    ) -> None:
+        await CTests(
+            self
+        ).test_failed_worker_start_propagates_even_when_the_control_handler_suppresses()
+
+    async def test_worker_shutdown_failure_propagates_when_the_control_handler_does_not_suppress(
+        self,
+    ) -> None:
+        await CTests(
+            self
+        ).test_worker_shutdown_failure_propagates_and_the_control_handler_exits(None)
+
+    async def test_worker_shutdown_failure_propagates_even_when_the_control_handler_suppresses(
+        self,
+    ) -> None:
+        await CTests(
+            self
+        ).test_worker_shutdown_failure_propagates_and_the_control_handler_exits(True)
+
+    async def test_failed_worker_start_releases_resources_and_propagates_the_handler_exit_failure(
+        self,
+    ) -> None:
+        await CTests(
+            self
+        ).test_failed_worker_start_releases_resources_and_propagates_the_handler_exit_failure()
