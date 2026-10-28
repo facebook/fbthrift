@@ -106,10 +106,10 @@ installed; neither is fetched:
     cmake --build _build
     (cd _build && ctest)
 
-If configure had to fetch Fizz, Wangle, mvfst or xxHash, it turns install rules
-off, because an installed Thrift would refer to libraries that exist only in
-the build tree. The configure output lists them; install them and reconfigure
-to get an installable Thrift.
+If configure had to fetch Folly, Fizz, Wangle, mvfst or xxHash, it turns
+install rules off, because an installed Thrift would refer to libraries that
+exist only in the build tree. The configure output lists them; install them
+and reconfigure to get an installable Thrift.
 
 CMake options:
 

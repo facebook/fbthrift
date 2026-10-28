@@ -119,24 +119,7 @@ function (thrift_localize out dep)
   endif ()
 endfunction ()
 
-# Fetch the dependency `name` from GitHub at the revision this repo is tested
-# against, kept current by rev_sync. Extra arguments go to FetchContent_Declare.
-function (thrift_fetch_github org name)
-  set(path
-      "${CMAKE_CURRENT_SOURCE_DIR}/build/deps/github_hashes/${org}/${name}-rev.txt"
-  )
-  file(READ "${path}" text)
-  if (NOT text MATCHES "Subproject commit ([0-9a-f]+)")
-    message(FATAL_ERROR "no ${name} revision in ${path}")
-  endif ()
-  message(STATUS "${name} not found, fetching ${CMAKE_MATCH_1}")
-  include(FetchContent)
-  FetchContent_Declare(
-    ${name}
-    GIT_REPOSITORY https://github.com/${org}/${name}.git
-    GIT_TAG ${CMAKE_MATCH_1} ${ARGN})
-  FetchContent_MakeAvailable(${name})
-endfunction ()
+include(FBFetchFromManifest)
 
 # Homebrew's OpenSSL is keg-only, so CMake's FindOpenSSL doesn't search it.
 # Set before folly, which also looks for OpenSSL.
@@ -149,7 +132,8 @@ endif ()
 
 find_package(folly CONFIG QUIET)
 if (NOT folly_FOUND)
-  thrift_fetch_github(facebook folly)
+  thrift_build_local(folly)
+  fb_fetch_from_manifest(folly folly)
 endif ()
 
 # Older folly installs export Threads::Threads without declaring it.
@@ -177,13 +161,6 @@ endif ()
 
 # Fetch xxhash if it is not installed.
 function (thrift_fetch_xxhash)
-  set(path "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/manifests/xxhash")
-  file(READ "${path}" text)
-  if (NOT text MATCHES
-      "url = (https://[^\r\n]+\\.tar\\.gz)[\r\n]+sha256 = ([0-9a-f]+)")
-    message(FATAL_ERROR "no archive in ${path}")
-  endif ()
-  message(STATUS "xxhash not found, fetching ${CMAKE_MATCH_1}")
   set(XXHASH_BUILD_XXHSUM OFF)
   # Otherwise xxhash's option() caches BUILD_SHARED_LIBS=ON for all of thrift.
   if (NOT DEFINED BUILD_SHARED_LIBS)
@@ -191,13 +168,7 @@ function (thrift_fetch_xxhash)
   endif ()
   # xxhash FORCEs CMAKE_BUILD_TYPE to Release when it is unset.
   set(saved_build_type "${CMAKE_BUILD_TYPE}")
-  include(FetchContent)
-  FetchContent_Declare(
-    xxhash
-    URL "${CMAKE_MATCH_1}"
-    URL_HASH SHA256=${CMAKE_MATCH_2}
-    SOURCE_SUBDIR cmake_unofficial)
-  FetchContent_MakeAvailable(xxhash)
+  fb_fetch_from_manifest(xxhash xxhash)
   if (NOT saved_build_type)
     set(CMAKE_BUILD_TYPE
         ""
@@ -231,15 +202,8 @@ endif ()
 # libsodium ships no CMakeLists.txt, so ExternalProject runs its configure
 # script at build time, as folly does for OpenSSL.
 function (thrift_build_sodium)
-  set(path
-      "${CMAKE_CURRENT_SOURCE_DIR}/build/fbcode_builder/manifests/libsodium")
-  file(READ "${path}" text)
-  if (NOT text MATCHES
-      "url = (https://[^\r\n]+\\.tar\\.gz)[\r\n]+sha256 = ([0-9a-f]+)")
-    message(FATAL_ERROR "no archive in ${path}")
-  endif ()
-  set(url "${CMAKE_MATCH_1}")
-  set(sha "${CMAKE_MATCH_2}")
+  fb_manifest_value(libsodium download url url)
+  fb_manifest_value(libsodium download sha256 sha)
   if (WIN32)
     message(
       FATAL_ERROR
@@ -298,7 +262,7 @@ if (THRIFT_RPC)
       thrift_build_sodium()
     endif ()
     thrift_build_local(fizz)
-    thrift_fetch_github(facebookincubator fizz SOURCE_SUBDIR fizz)
+    fb_fetch_from_manifest(fizz fizz)
   endif ()
   if (NOT wangle_FOUND)
     # When folly fetched libevent, FindLibEvent's NOTFOUND results stay cached
@@ -309,12 +273,12 @@ if (THRIFT_RPC)
       endif ()
     endforeach ()
     thrift_build_local(wangle)
-    thrift_fetch_github(facebook wangle SOURCE_SUBDIR wangle)
+    fb_fetch_from_manifest(wangle wangle)
     thrift_localize(thrift_wangle wangle::wangle)
   endif ()
   if (NOT mvfst_FOUND)
     thrift_build_local(mvfst)
-    thrift_fetch_github(facebook mvfst)
+    fb_fetch_from_manifest(mvfst mvfst)
     thrift_localize(thrift_mvfst_server mvfst::mvfst_server_async_tran)
   endif ()
 endif ()
