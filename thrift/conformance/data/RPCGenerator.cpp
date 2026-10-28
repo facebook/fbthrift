@@ -2623,6 +2623,171 @@ Test createUndeclaredExceptionFirstResponseTest(
   return ret;
 }
 
+std::string mismatchedChecksumMetadata() {
+  ResponseRpcMetadata metadata;
+  metadata.payloadMetadata().emplace().responseMetadata().emplace();
+  auto& checksum = metadata.checksum().emplace();
+  checksum.algorithm() = ChecksumAlgorithm::XXH3_64;
+  checksum.checksum() = 1;
+  checksum.salt() = 0;
+  return CompactSerializer::serialize<std::string>(metadata);
+}
+
+Test createRequestResponseChecksumMismatchTest() {
+  Test ret;
+  ret.name() = "RequestResponseChecksumMismatchTest";
+  ret.tags()->emplace("spec/compatibility/rocket#stream-initial-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseChecksumMismatch/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult = rpcTest.clientTestResult()
+                               .emplace()
+                               .requestResponseServerError()
+                               .emplace();
+  clientTestResult.exceptionType() = TApplicationException::CHECKSUM_MISMATCH;
+  clientTestResult.exceptionMessage() = "Checksum mismatch";
+  rpcTest.serverInstruction()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .firstResponseMetadata() = mismatchedChecksumMetadata();
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
+Test createStreamChecksumMismatchTest() {
+  Test ret;
+  ret.name() = "StreamChecksumMismatchTest";
+  ret.tags()->emplace("spec/compatibility/rocket#stream-initial-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "StreamChecksumMismatch/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .streamServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().streamServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::CHECKSUM_MISMATCH;
+  clientTestResult.exceptionMessage() = "Checksum mismatch";
+  rpcTest.serverInstruction()
+      .emplace()
+      .streamServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .firstResponseMetadata() = mismatchedChecksumMetadata();
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
+Test createSinkChecksumMismatchTest() {
+  Test ret;
+  ret.name() = "SinkChecksumMismatchTest";
+  ret.tags()->emplace("spec/compatibility/rocket#stream-initial-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "SinkChecksumMismatch/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .sinkServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().sinkServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::CHECKSUM_MISMATCH;
+  clientTestResult.exceptionMessage() = "Checksum mismatch";
+  rpcTest.serverInstruction()
+      .emplace()
+      .sinkServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .firstResponseMetadata() = mismatchedChecksumMetadata();
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
+Test createBidiChecksumMismatchTest() {
+  Test ret;
+  ret.name() = "BidiChecksumMismatchTest";
+  ret.tags()->emplace("spec/compatibility/rocket#stream-initial-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "BidiChecksumMismatch/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .bidiServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().bidiServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::CHECKSUM_MISMATCH;
+  clientTestResult.exceptionMessage() = "Checksum mismatch";
+  rpcTest.serverInstruction()
+      .emplace()
+      .bidiServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .firstResponseMetadata() = mismatchedChecksumMetadata();
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
+Test createChecksumMismatchClosingFrameTest(
+    const std::string& kind, CallKind call, std::vector<ClientFrame> frames) {
+  Test ret;
+  ret.name() = kind + "ChecksumMismatchClosingFrameTest";
+  ret.tags()->emplace("spec/compatibility/rocket#stream-initial-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = kind + "ChecksumMismatchClosingFrame/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().closingFrame().emplace();
+  clientInstruction.call() = call;
+  clientInstruction.request().emplace().data() = "hello";
+  rpcTest.clientTestResult().emplace().closingFrame().emplace();
+  auto& serverInstruction =
+      rpcTest.serverInstruction().emplace().closingFrame().emplace();
+  serverInstruction.call() = call;
+  serverInstruction.firstResponse()->metadata() = mismatchedChecksumMetadata();
+  rpcTest.serverTestResult().emplace().closingFrame().emplace().frames() =
+      std::move(frames);
+
+  return ret;
+}
+
 // =================== Interactions ===================
 Test createInteractionConstructorTest() {
   Test ret;
@@ -2971,6 +3136,25 @@ TestSuite createRPCClientHTTP2TestSuite() {
   suite.name() = "ThriftRPCClientTest";
   suite.tags()->emplace("spec/protocol/interface/");
   suite.tests()->push_back(createRequestResponseBadContentLengthTest());
+  return suite;
+}
+
+TestSuite createRPCClientChecksumTestSuite() {
+  TestSuite suite;
+  suite.name() = "ThriftRPCClientTest";
+  suite.tags()->emplace("spec/compatibility/");
+  suite.tests()->push_back(createRequestResponseChecksumMismatchTest());
+  suite.tests()->push_back(createStreamChecksumMismatchTest());
+  suite.tests()->push_back(createSinkChecksumMismatchTest());
+  suite.tests()->push_back(createBidiChecksumMismatchTest());
+  suite.tests()->push_back(createChecksumMismatchClosingFrameTest(
+      "RequestResponse", CallKind::REQUEST_RESPONSE, {}));
+  suite.tests()->push_back(createChecksumMismatchClosingFrameTest(
+      "Stream", CallKind::STREAM, {cancelFrame()}));
+  suite.tests()->push_back(createChecksumMismatchClosingFrameTest(
+      "Sink", CallKind::SINK, {canceledErrorFrame()}));
+  suite.tests()->push_back(createChecksumMismatchClosingFrameTest(
+      "Bidi", CallKind::BIDI, {canceledErrorFrame()}));
   return suite;
 }
 

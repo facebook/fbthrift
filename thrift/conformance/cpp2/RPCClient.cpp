@@ -39,6 +39,7 @@
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/transport/rocket/payload/PayloadSerializer.h>
 
 DEFINE_int32(port, 7777, "Port for Conformance Verification Server");
 DEFINE_string(protocol, "compact", "compact or binary");
@@ -47,6 +48,7 @@ DEFINE_bool(tls, false, "Connect over TLS, presenting --tls-cert");
 DEFINE_string(tls_cert, "", "The client's certificate");
 DEFINE_string(tls_key, "", "The client certificate's key");
 DEFINE_string(tls_ca, "", "The CA the server's certificate must be signed by");
+DEFINE_bool(checksum, false, "Verify the checksum a response carries");
 
 using namespace apache::thrift;
 using namespace apache::thrift::conformance;
@@ -1025,6 +1027,11 @@ InteractionTerminationClientTestResult interactionTerminationTest(
 
 int main(int argc, char** argv) {
   const folly::Init init(&argc, &argv);
+  if (FLAGS_checksum) {
+    rocket::PayloadSerializer::initialize(
+        rocket::ChecksumPayloadSerializerStrategy<
+            rocket::DefaultPayloadSerializerStrategy>());
+  }
 
   RpcTestCase testCase;
   auto client = createClient();

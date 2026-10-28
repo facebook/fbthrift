@@ -30,5 +30,6 @@ TestSuite createRPCClientExtendedTestSuite();
 // like HTTP/2.
 TestSuite createRPCClientRequestResponseTestSuite();
 TestSuite createRPCClientHTTP2TestSuite();
+TestSuite createRPCClientChecksumTestSuite();
 
 } // namespace apache::thrift::conformance::data

@@ -891,6 +891,7 @@ union ServerError {
   3: ResponseTooBigServerError responseTooBig;
   4: string undeclaredException;
   5: ErrorFrameServerError errorFrame;
+  6: binary firstResponseMetadata;
 }
 
 struct TaskExpiredServerError {

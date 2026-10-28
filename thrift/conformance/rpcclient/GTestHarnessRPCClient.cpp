@@ -1222,6 +1222,12 @@ FirstResponse firstResponseOf(const ErrorFrameServerError& error) {
   return firstResponse;
 }
 
+FirstResponse firstResponseOf(const std::string& metadata) {
+  FirstResponse firstResponse;
+  firstResponse.metadata() = metadata;
+  return firstResponse;
+}
+
 // What some cases need set on the server before it starts.
 void configureServer(
     apache::thrift::ThriftServer& server,
@@ -1288,6 +1294,13 @@ void configureServer(
         server.addRoutingHandler(
             std::make_unique<FirstResponseRoutingHandler>(
                 server, method, firstResponseOf(*error.errorFrame())));
+        break;
+      case ServerError::Type::firstResponseMetadata:
+        server.addRoutingHandler(
+            std::make_unique<FirstResponseRoutingHandler>(
+                server,
+                method,
+                firstResponseOf(*error.firstResponseMetadata())));
         break;
       default:
         break;

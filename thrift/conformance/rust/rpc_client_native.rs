@@ -150,6 +150,9 @@ struct Arguments {
     tls_key: Option<String>,
     #[clap(long)]
     tls_ca: Option<String>,
+    /// nativeclient always verifies the checksum a response carries
+    #[clap(long = "checksum")]
+    _checksum: bool,
     #[clap(short, long, default_value = "info")]
     log: Vec<Directive>,
 }
