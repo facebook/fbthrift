@@ -542,7 +542,7 @@ else:
         ]
 
         # Filter to extensions whose source files exist
-        available = {ext for ext in test_extensions if os.path.exists(ext.sources[0])}
+        available = [ext for ext in test_extensions if os.path.exists(ext.sources[0])]
         missing_names = {ext.name for ext in test_extensions if ext not in available}
 
         if missing_names:
