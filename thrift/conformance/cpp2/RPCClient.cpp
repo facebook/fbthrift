@@ -717,9 +717,13 @@ SinkServerDeclaredExceptionClientTestResult sinkServerDeclaredExceptionTest(
 BidiBasicClientTestResult bidiBasicTest(
     BidiBasicClientInstruction& instruction) {
   auto client = createClient();
+  auto rpcOptions = RpcOptions().setChecksum(
+      static_cast<RpcOptions::Checksum>(
+          instruction.checksum().value_or(ChecksumKind::NONE)));
   return folly::coro::blockingWait(
       [&]() -> folly::coro::Task<BidiBasicClientTestResult> {
-        auto bidi = co_await client->co_bidiBasic(*instruction.request());
+        auto bidi =
+            co_await client->co_bidiBasic(rpcOptions, *instruction.request());
         BidiBasicClientTestResult result;
         co_await folly::coro::collectAll(
             folly::coro::co_invoke([&]() -> folly::coro::Task<void> {

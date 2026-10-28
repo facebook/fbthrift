@@ -1361,7 +1361,9 @@ async fn bidi_basic(
     client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
     instr: &BidiBasicClientInstruction,
 ) -> Result<()> {
-    let (stream, sink) = client.bidiBasic(&instr.request).await?;
+    let mut opts = nativeclient::RpcOptions::default();
+    opts.set_checksum(checksum_of(instr.checksum));
+    let (stream, sink) = client.bidiBasic_with_rpc_opts(&instr.request, opts).await?;
     let payloads = instr.sinkPayloads.clone();
     let (sink_result, stream_payloads) = futures::future::join(
         (sink)(futures::stream::iter(payloads).map(Ok).boxed()),

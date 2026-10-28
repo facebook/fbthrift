@@ -518,7 +518,9 @@ class ConformanceVerificationServer
       }
       co_return transformUntilAborted();
     }
-    serverResult_.bidiBasic().emplace().request() = *req;
+    auto& result = serverResult_.bidiBasic().emplace();
+    result.request() = *req;
+    result.checksum().from_optional(requestChecksum());
     co_return apache::thrift::StreamTransformation<Request, Response>{
         [this](folly::coro::AsyncGenerator<Request&&> input)
             -> folly::coro::AsyncGenerator<Response&&> {

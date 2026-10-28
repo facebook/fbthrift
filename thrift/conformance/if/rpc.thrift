@@ -291,6 +291,7 @@ struct InteractionTerminationServerTestResult {
 struct BidiBasicServerTestResult {
   1: Request request;
   2: list<Request> sinkPayloads;
+  3: optional ChecksumKind checksum;
 }
 
 struct BidiInitialResponseServerTestResult {
@@ -803,6 +804,7 @@ struct InteractionTerminationClientInstruction {
 struct BidiBasicClientInstruction {
   1: Request request;
   2: list<Request> sinkPayloads;
+  3: optional ChecksumKind checksum;
 }
 
 struct BidiInitialResponseClientInstruction {

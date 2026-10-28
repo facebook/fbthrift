@@ -2878,6 +2878,48 @@ Test createSinkChecksumTest(
   return ret;
 }
 
+Test createBidiChecksumTest(
+    const std::string& algorithm, ChecksumKind checksum) {
+  Test ret;
+  ret.name() = "Bidi" + algorithm + "ChecksumTest";
+  ret.tags()->emplace("spec/compatibility/rocket#bidi");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "Bidi" + algorithm + "Checksum/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().bidiBasic().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  for (int i = 0; i < 100; i++) {
+    auto& sinkPayload = clientInstruction.sinkPayloads()->emplace_back();
+    sinkPayload.data() = folly::to<std::string>(i);
+  }
+  clientInstruction.checksum() = checksum;
+
+  auto& serverInstruction =
+      rpcTest.serverInstruction().emplace().bidiBasic().emplace();
+  for (int i = 0; i < 100; i++) {
+    auto& payload = serverInstruction.streamPayloads()->emplace_back();
+    payload.data() = folly::to<std::string>(i);
+  }
+
+  rpcTest.clientTestResult()
+      .emplace()
+      .bidiBasic()
+      .emplace()
+      .streamPayloads()
+      .copy_from(serverInstruction.streamPayloads());
+
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().bidiBasic().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.sinkPayloads().copy_from(clientInstruction.sinkPayloads());
+  serverTestResult.checksum() = checksum;
+
+  return ret;
+}
+
 std::string mismatchedChunkChecksumMetadata() {
   StreamPayloadMetadata metadata;
   auto& checksum = metadata.checksum().emplace();
@@ -3375,6 +3417,10 @@ TestSuite createRPCClientChecksumTestSuite() {
       createSinkChecksumTest("Crc32", ChecksumKind::CRC32));
   suite.tests()->push_back(
       createSinkChecksumTest("Xxh3", ChecksumKind::XXH3_64));
+  suite.tests()->push_back(
+      createBidiChecksumTest("Crc32", ChecksumKind::CRC32));
+  suite.tests()->push_back(
+      createBidiChecksumTest("Xxh3", ChecksumKind::XXH3_64));
   suite.tests()->push_back(createRequestResponseChecksumMismatchTest());
   suite.tests()->push_back(createStreamChecksumMismatchTest());
   suite.tests()->push_back(createSinkChecksumMismatchTest());
