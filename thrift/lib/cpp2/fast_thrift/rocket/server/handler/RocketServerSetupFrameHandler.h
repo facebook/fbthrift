@@ -36,19 +36,12 @@
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/Messages.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/MetadataProtocol.h>
+#include <thrift/lib/cpp2/fast_thrift/rocket/server/SetupParameters.h>
 
 namespace apache::thrift::fast_thrift::rocket::server::handler {
 
-struct SetupParameters {
-  uint16_t majorVersion{0};
-  uint16_t minorVersion{0};
-  uint32_t keepaliveTime{0};
-  uint32_t maxLifetime{0};
-  bool hasLease{false};
-  // Wire encoding for per-connection RpcMetadata, negotiated via the SETUP
-  // frame's metadata MIME type. Defaults to Binary (matches today's behavior).
-  MetadataProtocol metadataProtocol{MetadataProtocol::BINARY};
-};
+using SetupParameters =
+    apache::thrift::fast_thrift::rocket::server::SetupParameters;
 
 /**
  * RocketServerSetupFrameHandler - Pipeline handler for RSocket SETUP frame
@@ -75,6 +68,9 @@ class RocketServerSetupFrameHandler {
   static constexpr uint16_t kRSocketMinorVersion = 0;
 
   RocketServerSetupFrameHandler() = default;
+
+  explicit RocketServerSetupFrameHandler(SetupParameters params) noexcept
+      : setupComplete_(true), params_(std::move(params)) {}
 
   using PublishedEvents =
       channel_pipeline::Events<SetupCompleteEvent, FlushWritesEvent>;

@@ -79,6 +79,15 @@ fromRocketFrame(
     }
 
     case FrameType::SETUP: {
+      const frame::read::SetupView view(frame);
+      rocket::server::SetupParameters rocketSetup{
+          .majorVersion = view.majorVersion(),
+          .minorVersion = view.minorVersion(),
+          .keepaliveTime = view.keepaliveTime(),
+          .maxLifetime = view.maxLifetime(),
+          .hasLease = view.hasLease(),
+          .metadataProtocol = metadataProtocol,
+      };
       auto clientSetup = parseSetupMetadata(
           std::move(frame).extractMetadata(), metadataProtocol);
       if (!clientSetup.hasValue()) {
@@ -89,6 +98,7 @@ fromRocketFrame(
       }
       auto setup = std::make_unique<ConnectionSetupData>();
       setup->clientSetup = std::move(clientSetup).value();
+      setup->rocketSetup = rocketSetup;
       return ThriftServerInboundPayloadVariant{
           ThriftConnectionSetupPayload{.setup = std::move(setup)}};
     }

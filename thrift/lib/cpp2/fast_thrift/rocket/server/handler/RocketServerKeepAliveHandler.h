@@ -69,8 +69,10 @@ namespace apache::thrift::fast_thrift::rocket::server::handler {
 class RocketServerKeepAliveHandler {
  public:
   explicit RocketServerKeepAliveHandler(
-      bool enforcePeerLiveness = false) noexcept
-      : enforcePeerLiveness_(enforcePeerLiveness) {}
+      bool enforcePeerLiveness = false,
+      apache::thrift::fast_thrift::rocket::RSocketKeepAliveConfig config =
+          {}) noexcept
+      : enforcePeerLiveness_(enforcePeerLiveness), config_(config) {}
 
   // === HandlerLifecycle ===
 
@@ -81,6 +83,7 @@ class RocketServerKeepAliveHandler {
     }
     timer_ = folly::AsyncTimeout::make(
         *ctx.eventBase(), [this, &ctx]() noexcept { onTimeout(ctx); });
+    arm();
   }
 
   template <typename Context>
@@ -199,8 +202,15 @@ class RocketServerKeepAliveHandler {
         .intervalMs = view.keepaliveTime(),
         .maxLifetimeMs = view.maxLifetime(),
     };
-    if (!config_.enabled()) {
+    arm();
+  }
+
+  void arm() noexcept {
+    if (!enforcePeerLiveness_ || !config_.enabled() || timer_ == nullptr) {
       return;
+    }
+    if (timer_->isScheduled()) {
+      timer_->cancelTimeout();
     }
     active_ = true;
     lastProbe_ = Clock::now();
