@@ -102,6 +102,58 @@ inline bool hasAlternativeMapKeyForm(const type_system::TypeRef& keyType) {
   return trueKeyType.isString() || trueKeyType.isEnum();
 }
 
+// A terse field is omitted when it equals its intrinsic default (so -0.0 is
+// omitted but NaN is written), and a struct is empty only if it has no
+// unqualified fields, its optional fields are unset, and its terse fields are
+// empty.
+inline bool isEmptyForTerseWrite(const DynamicConstRef& value) {
+  return value.type().matchKind(
+      [&]<type_system::TypeRef::Kind k>(
+          type_system::TypeRef::KindConstant<k>) -> bool {
+        const auto& v = value.as<k>();
+        using T = std::remove_cvref_t<decltype(v)>;
+        if constexpr (std::is_arithmetic_v<T>) {
+          // Including enums, which are stored as i32
+          return v == T{};
+        } else if constexpr (std::is_same_v<T, String>) {
+          return v.view().empty();
+        } else if constexpr (std::is_same_v<T, Binary>) {
+          return v.empty();
+        } else if constexpr (std::is_same_v<T, Any>) {
+          // AnyStruct has only unqualified fields
+          return false;
+        } else if constexpr (
+            std::is_same_v<T, List> || std::is_same_v<T, Set> ||
+            std::is_same_v<T, Map>) {
+          return v.isEmpty();
+        } else if constexpr (std::is_same_v<T, Struct>) {
+          const auto fields = v.type().asStructUnchecked().fields();
+          for (size_t i = 0; i < fields.size(); ++i) {
+            const type_system::FastFieldHandle handle{
+                static_cast<uint16_t>(i + 1)};
+            switch (fields[i].presence()) {
+              case type_system::PresenceQualifier::OPTIONAL_:
+                if (v.hasField(handle)) {
+                  return false;
+                }
+                break;
+              case type_system::PresenceQualifier::TERSE:
+                if (!isEmptyForTerseWrite(*v.getField(handle))) {
+                  return false;
+                }
+                break;
+              default:
+                return false;
+            }
+          }
+          return true;
+        } else {
+          static_assert(std::is_same_v<T, Union>);
+          return v.isEmpty();
+        }
+      });
+}
+
 // Readers that omit types but can peek at the JSON type of the next value
 // (e.g. SimpleJSON), so that values of the wrong type are reported to the
 // callbacks and skipped. Other readers that omit types (e.g. JSON5, which also
@@ -908,17 +960,22 @@ void serialize(ProtocolWriter& writer, const Struct& structValue) {
       return;
     }
 
+    // Get the field value through the virtual interface
+    // We know fieldRef has a value because hasField returned true
+    auto fieldRef = structValue.getField(handle);
+
+    // Skip terse fields that hold their intrinsic default, like the static path
     const auto& fieldDef = fieldDefs[handle.index()];
+    if (fieldDef.presence() == type_system::PresenceQualifier::TERSE &&
+        detail::isEmptyForTerseWrite(*fieldRef)) {
+      return;
+    }
+
     writer.writeFieldBegin(
         fieldDef.identity().name().data(),
         fieldDef.wireType(),
         static_cast<int16_t>(fieldDef.identity().id()));
 
-    // Get the field value through the virtual interface
-    auto fieldRef = structValue.getField(handle);
-
-    // Serialize the field value through the reference
-    // We know fieldRef has a value because hasField returned true
     serializeValue(writer, *fieldRef);
 
     writer.writeFieldEnd();
