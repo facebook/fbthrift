@@ -21,6 +21,7 @@ ignores the frame's data and raises a `TApplicationException` of type `UNKNOWN` 
 `APPLICATION_ERROR` error code in the ERROR frame. The client then sends [CANCEL][cancel frame] for
 a stream **and then**, for a sink or bidi stream, an ERROR frame with code `CANCELED` and no data.
 The client sends nothing for a request-response call.
+
 [error codes]: https://rsocket.io/about/protocol/#error-codes
 [error frame]: https://rsocket.io/about/protocol/#error-frame-0x0b
 [cancel frame]: https://rsocket.io/about/protocol/#cancel-frame-0x09
