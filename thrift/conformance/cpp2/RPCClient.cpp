@@ -605,7 +605,11 @@ SinkServerErrorClientTestResult sinkServerErrorTest(
   SinkServerErrorClientTestResult result;
   auto client = createClient();
   try {
-    folly::coro::blockingWait(client->co_sinkBasic(*instruction.request()));
+    folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+      auto sink = co_await client->co_sinkBasic(*instruction.request());
+      co_await sink.sink(
+          []() -> folly::coro::AsyncGenerator<Request&&> { co_return; }());
+    }());
   } catch (const TApplicationException& e) {
     result.exceptionType() = e.getType();
     result.exceptionMessage() = e.getMessage();

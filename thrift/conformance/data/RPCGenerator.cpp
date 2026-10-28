@@ -2872,6 +2872,38 @@ Test createBidiChunkChecksumMismatchTest() {
   return ret;
 }
 
+Test createSinkFinalResponseChecksumMismatchTest() {
+  Test ret;
+  ret.name() = "SinkFinalResponseChecksumMismatchTest";
+  ret.tags()->emplace("spec/compatibility/rocket#sink-final-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "SinkFinalResponseChecksumMismatch/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .sinkServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().sinkServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::CHECKSUM_MISMATCH;
+  clientTestResult.exceptionMessage() = "Checksum mismatch";
+  rpcTest.serverInstruction()
+      .emplace()
+      .sinkServerError()
+      .emplace()
+      .error()
+      .emplace()
+      .chunkMetadata() = mismatchedChunkChecksumMetadata();
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
 Test createChecksumMismatchClosingFrameTest(
     const std::string& kind, CallKind call, std::vector<ClientFrame> frames) {
   Test ret;
@@ -3270,6 +3302,7 @@ TestSuite createRPCClientChecksumTestSuite() {
       "Bidi", CallKind::BIDI, {canceledErrorFrame()}));
   suite.tests()->push_back(createStreamChunkChecksumMismatchTest());
   suite.tests()->push_back(createBidiChunkChecksumMismatchTest());
+  suite.tests()->push_back(createSinkFinalResponseChecksumMismatchTest());
   return suite;
 }
 

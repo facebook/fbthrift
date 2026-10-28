@@ -305,6 +305,7 @@ use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseDeclared
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseTimeoutError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseUndeclaredExceptionError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkBasicError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkBasicSinkFinalError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamBasicError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamBasicStreamError;
 use standard::StandardProtocol;
@@ -1132,17 +1133,29 @@ async fn sink_server_error(
     instr: &SinkServerErrorClientInstruction,
 ) -> Result<()> {
     let exn = match client.sinkBasic(&instr.request).await {
-        Err(SinkBasicError::ApplicationException(exn)) => exn,
+        Err(SinkBasicError::ApplicationException(exn)) => Some(exn),
         Err(other) => {
             return Err(anyhow!("sink_server_error: unexpected error: {:?}", other));
         }
-        Ok(_) => return Err(anyhow!("sink_server_error: the sink opened")),
+        Ok(sink_result) => match (sink_result.sink)(futures::stream::empty().boxed()).await {
+            Ok(_) => None,
+            Err(SinkBasicSinkFinalError::ApplicationException(exn)) => Some(exn),
+            Err(other) => {
+                return Err(anyhow!(
+                    "sink_server_error: unexpected final error: {:?}",
+                    other
+                ));
+            }
+        },
     };
-    let test_result = ClientTestResult::sinkServerError(SinkServerErrorClientTestResult {
-        exceptionType: exn.type_ as i32,
-        exceptionMessage: exn.message,
-        ..Default::default()
-    });
+    let test_result = ClientTestResult::sinkServerError(exn.map_or_else(
+        SinkServerErrorClientTestResult::default,
+        |exn| SinkServerErrorClientTestResult {
+            exceptionType: exn.type_ as i32,
+            exceptionMessage: exn.message,
+            ..Default::default()
+        },
+    ));
     client.sendTestResult(&test_result).await?;
     Ok(())
 }
