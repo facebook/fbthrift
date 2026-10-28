@@ -123,6 +123,7 @@ union ClientTestResult {
   205: SinkInitialDeclaredExceptionClientTestResult sinkInitialDeclaredException;
   206: SinkServerDeclaredExceptionClientTestResult sinkServerDeclaredException;
   207: SinkAbortClientTestResult sinkAbort;
+  208: SinkServerErrorClientTestResult sinkServerError;
   300: InteractionConstructorClientTestResult interactionConstructor;
   301: InteractionFactoryFunctionClientTestResult interactionFactoryFunction;
   302: InteractionPersistsStateClientTestResult interactionPersistsState;
@@ -136,6 +137,7 @@ union ClientTestResult {
   406: BidiMethodDeclaredExceptionClientTestResult bidiMethodDeclaredException;
   407: BidiMethodUndeclaredExceptionClientTestResult bidiMethodUndeclaredException;
   408: BidiAbortClientTestResult bidiAbort;
+  409: BidiServerErrorClientTestResult bidiServerError;
 }
 
 struct RequestResponseBasicServerTestResult {
@@ -454,6 +456,11 @@ struct SinkServerDeclaredExceptionClientTestResult {
 
 struct SinkAbortClientTestResult {}
 
+struct SinkServerErrorClientTestResult {
+  1: i32 exceptionType;
+  2: string exceptionMessage;
+}
+
 struct InteractionConstructorClientTestResult {}
 
 struct InteractionFactoryFunctionClientTestResult {}
@@ -507,6 +514,11 @@ struct BidiMethodUndeclaredExceptionClientTestResult {
 
 struct BidiAbortClientTestResult {}
 
+struct BidiServerErrorClientTestResult {
+  1: i32 exceptionType;
+  2: string exceptionMessage;
+}
+
 union ClientInstruction {
   1: RequestResponseBasicClientInstruction requestResponseBasic;
   2: RequestResponseDeclaredExceptionClientInstruction requestResponseDeclaredException;
@@ -537,6 +549,7 @@ union ClientInstruction {
   205: SinkInitialDeclaredExceptionClientInstruction sinkInitialDeclaredException;
   206: SinkServerDeclaredExceptionClientInstruction sinkServerDeclaredException;
   207: SinkAbortClientInstruction sinkAbort;
+  208: SinkServerErrorClientInstruction sinkServerError;
   300: InteractionConstructorClientInstruction interactionConstructor;
   301: InteractionFactoryFunctionClientInstruction interactionFactoryFunction;
   302: InteractionPersistsStateClientInstruction interactionPersistsState;
@@ -550,6 +563,7 @@ union ClientInstruction {
   406: BidiMethodDeclaredExceptionClientInstruction bidiMethodDeclaredException;
   407: BidiMethodUndeclaredExceptionClientInstruction bidiMethodUndeclaredException;
   408: BidiAbortClientInstruction bidiAbort;
+  409: BidiServerErrorClientInstruction bidiServerError;
 }
 
 union ServerInstruction {
@@ -582,6 +596,7 @@ union ServerInstruction {
   205: SinkInitialDeclaredExceptionServerInstruction sinkInitialDeclaredException;
   206: SinkServerDeclaredExceptionServerInstruction sinkServerDeclaredException;
   207: SinkAbortServerInstruction sinkAbort;
+  208: SinkServerErrorServerInstruction sinkServerError;
   300: InteractionConstructorServerInstruction interactionConstructor;
   301: InteractionFactoryFunctionServerInstruction interactionFactoryFunction;
   302: InteractionPersistsStateServerInstruction interactionPersistsState;
@@ -595,6 +610,7 @@ union ServerInstruction {
   406: BidiMethodDeclaredExceptionServerInstruction bidiMethodDeclaredException;
   407: BidiMethodUndeclaredExceptionServerInstruction bidiMethodUndeclaredException;
   408: BidiAbortServerInstruction bidiAbort;
+  409: BidiServerErrorServerInstruction bidiServerError;
 }
 
 struct RequestResponseBasicClientInstruction {
@@ -743,6 +759,10 @@ struct SinkAbortClientInstruction {
   3: optional i64 dropUnreadAfterMs;
 }
 
+struct SinkServerErrorClientInstruction {
+  1: Request request;
+}
+
 struct InteractionConstructorClientInstruction {}
 
 struct InteractionFactoryFunctionClientInstruction {
@@ -806,6 +826,10 @@ struct BidiAbortClientInstruction {
   3: optional i64 dropUnreadAfterMs;
 }
 
+struct BidiServerErrorClientInstruction {
+  1: Request request;
+}
+
 struct RequestResponseBasicServerInstruction {
   1: Response response;
 }
@@ -838,6 +862,7 @@ union ServerError {
   2: TaskExpiredServerError taskExpired;
   3: ResponseTooBigServerError responseTooBig;
   4: string undeclaredException;
+  5: ErrorFrameServerError errorFrame;
 }
 
 struct TaskExpiredServerError {
@@ -848,6 +873,11 @@ struct TaskExpiredServerError {
 struct ResponseTooBigServerError {
   1: i64 maxResponseSize;
   2: i64 responseSize;
+}
+
+struct ErrorFrameServerError {
+  1: i32 code;
+  2: string message;
 }
 
 struct RequestResponseServerErrorServerInstruction {
@@ -961,6 +991,10 @@ struct SinkAbortServerInstruction {
   1: optional i64 initialResponseDelayMs;
 }
 
+struct SinkServerErrorServerInstruction {
+  1: ServerError error;
+}
+
 struct InteractionConstructorServerInstruction {}
 
 struct InteractionFactoryFunctionServerInstruction {}
@@ -1010,6 +1044,10 @@ struct BidiMethodUndeclaredExceptionServerInstruction {
 
 struct BidiAbortServerInstruction {
   1: optional i64 initialResponseDelayMs;
+}
+
+struct BidiServerErrorServerInstruction {
+  1: ServerError error;
 }
 
 interaction BasicInteraction {

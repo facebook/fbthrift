@@ -54,6 +54,8 @@ use rpc::rpc::BidiMethodDeclaredExceptionClientInstruction;
 use rpc::rpc::BidiMethodDeclaredExceptionClientTestResult;
 use rpc::rpc::BidiMethodUndeclaredExceptionClientInstruction;
 use rpc::rpc::BidiMethodUndeclaredExceptionClientTestResult;
+use rpc::rpc::BidiServerErrorClientInstruction;
+use rpc::rpc::BidiServerErrorClientTestResult;
 use rpc::rpc::BidiSinkDeclaredExceptionClientInstruction;
 use rpc::rpc::BidiSinkDeclaredExceptionClientTestResult;
 use rpc::rpc::BidiSinkUndeclaredExceptionClientInstruction;
@@ -76,6 +78,8 @@ use rpc::rpc::SinkInitialResponseClientInstruction;
 use rpc::rpc::SinkInitialResponseClientTestResult;
 use rpc::rpc::SinkServerDeclaredExceptionClientInstruction;
 use rpc::rpc::SinkServerDeclaredExceptionClientTestResult;
+use rpc::rpc::SinkServerErrorClientInstruction;
+use rpc::rpc::SinkServerErrorClientTestResult;
 use rpc::rpc::SinkUndeclaredExceptionClientInstruction;
 use rpc::rpc::SinkUndeclaredExceptionClientTestResult;
 use rpc::rpc::StreamBasicClientInstruction;
@@ -287,10 +291,12 @@ use rpc::rpc::RequestResponseTimeoutClientTestResult;
 use rpc::rpc::RequestResponseUndeclaredExceptionClientInstruction;
 use rpc::rpc::RequestResponseUndeclaredExceptionClientTestResult;
 use rpc_clients::rpc::BasicInteraction;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::BidiBasicError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseBasicError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseDeclaredExceptionError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseTimeoutError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::RequestResponseUndeclaredExceptionError;
+use rpc_clients::rpc::errors::r_p_c_conformance_service::SinkBasicError;
 use rpc_clients::rpc::errors::r_p_c_conformance_service::StreamBasicError;
 use standard::StandardProtocol;
 use type_rep::ProtocolUnion;
@@ -330,6 +336,7 @@ async fn test(
         sinkBasic(i) => sink_basic(client, i).await,
         sinkChunkTimeout(i) => sink_chunk_timeout(client, i).await,
         sinkAbort(i) => sink_abort(client, i).await,
+        sinkServerError(i) => sink_server_error(client, i).await,
         sinkInitialResponse(i) => sink_initial_response(client, i).await,
         sinkInitialDeclaredException(i) => sink_initial_declared_exception(client, i).await,
         sinkDeclaredException(i) => sink_declared_exception(client, i).await,
@@ -344,6 +351,7 @@ async fn test(
         bidiMethodDeclaredException(i) => bidi_method_declared_exception(client, i).await,
         bidiMethodUndeclaredException(i) => bidi_method_undeclared_exception(client, i).await,
         bidiAbort(i) => bidi_abort(client, i).await,
+        bidiServerError(i) => bidi_server_error(client, i).await,
         UnknownField(i) => Err(anyhow!(format!("not supported: {:?}", i))),
     }
 }
@@ -1086,6 +1094,26 @@ async fn sink_abort(
     Ok(())
 }
 
+async fn sink_server_error(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &SinkServerErrorClientInstruction,
+) -> Result<()> {
+    let exn = match client.sinkBasic(&instr.request).await {
+        Err(SinkBasicError::ApplicationException(exn)) => exn,
+        Err(other) => {
+            return Err(anyhow!("sink_server_error: unexpected error: {:?}", other));
+        }
+        Ok(_) => return Err(anyhow!("sink_server_error: the sink opened")),
+    };
+    let test_result = ClientTestResult::sinkServerError(SinkServerErrorClientTestResult {
+        exceptionType: exn.type_ as i32,
+        exceptionMessage: exn.message,
+        ..Default::default()
+    });
+    client.sendTestResult(&test_result).await?;
+    Ok(())
+}
+
 async fn sink_chunk_timeout(
     client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
     instr: &SinkChunkTimeoutClientInstruction,
@@ -1537,5 +1565,25 @@ async fn bidi_abort(
             BidiAbortClientTestResult::default(),
         ))
         .await?;
+    Ok(())
+}
+
+async fn bidi_server_error(
+    client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
+    instr: &BidiServerErrorClientInstruction,
+) -> Result<()> {
+    let exn = match client.bidiBasic(&instr.request).await {
+        Err(BidiBasicError::ApplicationException(exn)) => exn,
+        Err(other) => {
+            return Err(anyhow!("bidi_server_error: unexpected error: {:?}", other));
+        }
+        Ok(_) => return Err(anyhow!("bidi_server_error: the bidi stream opened")),
+    };
+    let test_result = ClientTestResult::bidiServerError(BidiServerErrorClientTestResult {
+        exceptionType: exn.type_ as i32,
+        exceptionMessage: exn.message,
+        ..Default::default()
+    });
+    client.sendTestResult(&test_result).await?;
     Ok(())
 }

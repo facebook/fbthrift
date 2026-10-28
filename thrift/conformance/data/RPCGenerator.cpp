@@ -25,6 +25,7 @@ namespace {
 const uint32_t kMaxFrameSize = (1 << 24) - 1;
 const std::string kLargeData = std::string(kMaxFrameSize * 2, 'a');
 const uint64_t kDefaultBufferSize = 100;
+const int32_t kRocketApplicationError = 0x201;
 
 // =================== Request-Response ===================
 Test createRequestResponseBasicTest() {
@@ -231,6 +232,43 @@ Test createRequestResponseLoadsheddingTest() {
       .emplace()
       .loadshedding() = message;
   // The handler never runs, so the server records nothing.
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
+Test createRequestResponseUnexpectedErrorCodeTest() {
+  Test ret;
+  ret.name() = "RequestResponseUnexpectedErrorCodeTest";
+  ret.tags()->emplace("spec/compatibility/rocket#internal-server-error");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseUnexpectedErrorCode/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .requestResponseServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult = rpcTest.clientTestResult()
+                               .emplace()
+                               .requestResponseServerError()
+                               .emplace();
+  clientTestResult.exceptionType() = TApplicationException::UNKNOWN;
+  clientTestResult.exceptionMessage() = "Unexpected error frame type: 513";
+  auto& errorFrame = rpcTest.serverInstruction()
+                         .emplace()
+                         .requestResponseServerError()
+                         .emplace()
+                         .error()
+                         .emplace()
+                         .errorFrame()
+                         .emplace();
+  errorFrame.code() = kRocketApplicationError;
+  errorFrame.message() = "rejected before the first response";
   rpcTest.serverTestResult().emplace();
 
   return ret;
@@ -913,6 +951,41 @@ Test createStreamLoadsheddingTest() {
   return ret;
 }
 
+Test createStreamUnexpectedErrorCodeTest() {
+  Test ret;
+  ret.name() = "StreamUnexpectedErrorCodeTest";
+  ret.tags()->emplace("spec/compatibility/rocket#internal-server-error");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "StreamUnexpectedErrorCode/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .streamServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().streamServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::UNKNOWN;
+  clientTestResult.exceptionMessage() = "Unexpected error frame type: 513";
+  auto& errorFrame = rpcTest.serverInstruction()
+                         .emplace()
+                         .streamServerError()
+                         .emplace()
+                         .error()
+                         .emplace()
+                         .errorFrame()
+                         .emplace();
+  errorFrame.code() = kRocketApplicationError;
+  errorFrame.message() = "rejected before the first response";
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
 Test createStreamMemoryBufferSizeTest() {
   Test ret;
   ret.name() = "StreamMemoryBufferSizeTest";
@@ -1584,6 +1657,41 @@ Test createSinkAbortUnreadInitialResponseTest() {
       rpcTest.serverTestResult().emplace().sinkAbort().emplace();
   serverTestResult.request().emplace().data() = "hello";
   serverTestResult.aborted() = true;
+
+  return ret;
+}
+
+Test createSinkUnexpectedErrorCodeTest() {
+  Test ret;
+  ret.name() = "SinkUnexpectedErrorCodeTest";
+  ret.tags()->emplace("spec/compatibility/rocket#internal-server-error");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "SinkUnexpectedErrorCode/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .sinkServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().sinkServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::UNKNOWN;
+  clientTestResult.exceptionMessage() = "Unexpected error frame type: 513";
+  auto& errorFrame = rpcTest.serverInstruction()
+                         .emplace()
+                         .sinkServerError()
+                         .emplace()
+                         .error()
+                         .emplace()
+                         .errorFrame()
+                         .emplace();
+  errorFrame.code() = kRocketApplicationError;
+  errorFrame.message() = "rejected before the first response";
+  rpcTest.serverTestResult().emplace();
 
   return ret;
 }
@@ -2260,6 +2368,41 @@ Test createBidiAbortUnreadInitialResponseTest() {
   return ret;
 }
 
+Test createBidiUnexpectedErrorCodeTest() {
+  Test ret;
+  ret.name() = "BidiUnexpectedErrorCodeTest";
+  ret.tags()->emplace("spec/compatibility/rocket#internal-server-error");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "BidiUnexpectedErrorCode/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  rpcTest.clientInstruction()
+      .emplace()
+      .bidiServerError()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  auto& clientTestResult =
+      rpcTest.clientTestResult().emplace().bidiServerError().emplace();
+  clientTestResult.exceptionType() = TApplicationException::UNKNOWN;
+  clientTestResult.exceptionMessage() = "Unexpected error frame type: 513";
+  auto& errorFrame = rpcTest.serverInstruction()
+                         .emplace()
+                         .bidiServerError()
+                         .emplace()
+                         .error()
+                         .emplace()
+                         .errorFrame()
+                         .emplace();
+  errorFrame.code() = kRocketApplicationError;
+  errorFrame.message() = "rejected before the first response";
+  rpcTest.serverTestResult().emplace();
+
+  return ret;
+}
+
 // =================== Interactions ===================
 Test createInteractionConstructorTest() {
   Test ret;
@@ -2537,19 +2680,23 @@ TestSuite createRPCClientExtendedTestSuite() {
   suite.name() = "ThriftRPCClientTest";
   suite.tags()->emplace("spec/protocol/interface/");
   addExtendedRequestResponseTests(suite);
+  suite.tests()->push_back(createRequestResponseUnexpectedErrorCodeTest());
   suite.tests()->push_back(createStreamCancelTest());
   suite.tests()->push_back(createStreamCancelBeforeInitialResponseTest());
   suite.tests()->push_back(createStreamCancelUnreadInitialResponseTest());
   suite.tests()->push_back(createStreamLoadsheddingTest());
+  suite.tests()->push_back(createStreamUnexpectedErrorCodeTest());
   suite.tests()->push_back(createStreamMemoryBufferSizeTest());
   suite.tests()->push_back(createSinkChunkTimeoutTest());
   suite.tests()->push_back(createSinkEarlyFinalResponseTest());
   suite.tests()->push_back(createSinkAbortTest());
   suite.tests()->push_back(createSinkAbortBeforeInitialResponseTest());
   suite.tests()->push_back(createSinkAbortUnreadInitialResponseTest());
+  suite.tests()->push_back(createSinkUnexpectedErrorCodeTest());
   suite.tests()->push_back(createBidiAbortTest());
   suite.tests()->push_back(createBidiAbortBeforeInitialResponseTest());
   suite.tests()->push_back(createBidiAbortUnreadInitialResponseTest());
+  suite.tests()->push_back(createBidiUnexpectedErrorCodeTest());
   return suite;
 }
 

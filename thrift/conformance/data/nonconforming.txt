@@ -288,6 +288,18 @@ rust[client=cpp,*]/ThriftRPCClientTest/SinkAbort*
 # C++ client raised, so `rpc_client.rs` cannot report the exception's type.
 rust[client=cpp,transport=http2]/ThriftRPCClientTest/RequestResponseBadContentLength/Success.RequestResponseBadContentLengthTest
 
+# An error frame code no first response should carry makes the C++ client raise
+# a TApplicationException, but bareclient hands its Rust caller only the text,
+# so `rpc_client.rs` gets a `ThriftError` instead of an `ApplicationException`.
+rust[client=cpp,*]/ThriftRPCClientTest/RequestResponseUnexpectedErrorCode/Success.RequestResponseUnexpectedErrorCodeTest
+rust[client=cpp,*]/ThriftRPCClientTest/StreamUnexpectedErrorCode/Success.StreamUnexpectedErrorCodeTest
+rust[client=cpp,*]/ThriftRPCClientTest/SinkUnexpectedErrorCode/Success.SinkUnexpectedErrorCodeTest
+
+# nativeclient fails a bidi call on an error frame code no first response
+# should carry, rather than opening it with the TApplicationException C++ makes
+# of that frame.
+rust[client=native,*]/ThriftRPCClientTest/BidiUnexpectedErrorCode/Success.BidiUnexpectedErrorCodeTest
+
 ###
 # Transport: HTTP
 # Run every client test over HTTP/2

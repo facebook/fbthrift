@@ -595,6 +595,19 @@ SinkAbortClientTestResult sinkAbortTest(
   return {};
 }
 
+SinkServerErrorClientTestResult sinkServerErrorTest(
+    const SinkServerErrorClientInstruction& instruction) {
+  SinkServerErrorClientTestResult result;
+  auto client = createClient();
+  try {
+    folly::coro::blockingWait(client->co_sinkBasic(*instruction.request()));
+  } catch (const TApplicationException& e) {
+    result.exceptionType() = e.getType();
+    result.exceptionMessage() = e.getMessage();
+  }
+  return result;
+}
+
 SinkInitialResponseClientTestResult sinkInitialResponseTest(
     SinkInitialResponseClientInstruction& instruction) {
   auto client = createClient();
@@ -925,6 +938,19 @@ BidiAbortClientTestResult bidiAbortTest(
   return {};
 }
 
+BidiServerErrorClientTestResult bidiServerErrorTest(
+    const BidiServerErrorClientInstruction& instruction) {
+  BidiServerErrorClientTestResult result;
+  auto client = createClient();
+  try {
+    folly::coro::blockingWait(client->co_bidiBasic(*instruction.request()));
+  } catch (const TApplicationException& e) {
+    result.exceptionType() = e.getType();
+    result.exceptionMessage() = e.getMessage();
+  }
+  return result;
+}
+
 // =================== Interactions ===================
 InteractionConstructorClientTestResult interactionConstructorTest(
     InteractionConstructorClientInstruction&) {
@@ -1087,6 +1113,10 @@ int main(int argc, char** argv) {
       result.sinkAbort() =
           sinkAbortTest(*client, *clientInstruction.sinkAbort());
       break;
+    case ClientInstruction::Type::sinkServerError:
+      result.sinkServerError() =
+          sinkServerErrorTest(*clientInstruction.sinkServerError());
+      break;
     case ClientInstruction::Type::sinkDeclaredException:
       result.sinkDeclaredException() =
           sinkDeclaredExceptionTest(*clientInstruction.sinkDeclaredException());
@@ -1155,6 +1185,10 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::bidiAbort:
       result.bidiAbort() =
           bidiAbortTest(*client, *clientInstruction.bidiAbort());
+      break;
+    case ClientInstruction::Type::bidiServerError:
+      result.bidiServerError() =
+          bidiServerErrorTest(*clientInstruction.bidiServerError());
       break;
     default:
       throw std::runtime_error("Invalid TestCase Type.");

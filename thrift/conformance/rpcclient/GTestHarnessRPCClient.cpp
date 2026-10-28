@@ -35,6 +35,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <folly/ScopeGuard.h>
 #include <folly/Subprocess.h>
 #include <folly/Synchronized.h>
+#include <folly/ThreadLocal.h>
 #include <folly/base64.h>
 #include <folly/coro/AsyncGenerator.h>
 #include <folly/coro/BlockingWait.h>
@@ -50,9 +51,18 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <thrift/lib/cpp2/async/BiDiStream.h>
 #include <thrift/lib/cpp2/async/Sink.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/PreprocessParams.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/RocketException.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketBiDiClientCallback.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnectionFactory.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
+#include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <wangle/ssl/SSLContextConfig.h>
 
@@ -862,6 +872,184 @@ void configureTls(apache::thrift::ThriftServer& server) {
   server.setAllowPlaintextOnLoopback(false);
 }
 
+class ErrorFrameHandler final : public rocket::RocketServerHandler {
+ public:
+  ErrorFrameHandler(
+      std::unique_ptr<rocket::RocketServerHandler> inner,
+      std::string method,
+      ErrorFrameServerError error)
+      : inner_(std::move(inner)),
+        method_(std::move(method)),
+        error_(std::move(error)) {}
+
+  void handleSetupFrame(
+      rocket::SetupFrame&& frame,
+      rocket::IRocketServerConnection& connection) override {
+    inner_->handleSetupFrame(std::move(frame), connection);
+  }
+
+  void handleRequestResponseFrame(
+      rocket::RequestResponseFrame&& frame,
+      rocket::RocketServerFrameContext&& context) override {
+    if (!callUnderTest(frame.payload(), context)) {
+      inner_->handleRequestResponseFrame(std::move(frame), std::move(context));
+      return;
+    }
+    context.sendError(errorFrame(), nullptr);
+  }
+
+  void handleRequestFnfFrame(
+      rocket::RequestFnfFrame&& frame,
+      rocket::RocketServerFrameContext&& context) override {
+    inner_->handleRequestFnfFrame(std::move(frame), std::move(context));
+  }
+
+  void handleRequestStreamFrame(
+      rocket::RequestStreamFrame&& frame,
+      rocket::RocketServerFrameContext&& context,
+      rocket::RocketStreamClientCallback* clientCallback) override {
+    if (!callUnderTest(frame.payload(), context)) {
+      inner_->handleRequestStreamFrame(
+          std::move(frame), std::move(context), clientCallback);
+      return;
+    }
+    clientCallback->onFirstResponseError(
+        folly::make_exception_wrapper<rocket::RocketException>(errorFrame()));
+  }
+
+  void handleRequestChannelFrame(
+      rocket::RequestChannelFrame&& frame,
+      rocket::RocketServerFrameContext&& context,
+      rocket::ChannelRequestCallbackFactory clientCallback) override {
+    auto kind = callUnderTest(frame.payload(), context);
+    if (!kind) {
+      inner_->handleRequestChannelFrame(
+          std::move(frame), std::move(context), clientCallback);
+    } else if (*kind == RpcKind::SINK) {
+      clientCallback.create<rocket::RocketSinkClientCallback>()
+          ->onFirstResponseError(
+              folly::make_exception_wrapper<rocket::RocketException>(
+                  errorFrame()));
+    } else {
+      clientCallback.create<rocket::RocketBiDiClientCallback>()
+          ->onFirstResponseError(
+              folly::make_exception_wrapper<rocket::RocketException>(
+                  errorFrame()));
+    }
+  }
+
+  void requestComplete() override { inner_->requestComplete(); }
+
+  void terminateInteraction(int64_t id) override {
+    inner_->terminateInteraction(id);
+  }
+
+  void connectionClosing() override { inner_->connectionClosing(); }
+
+  void onIdleTimeout() override { inner_->onIdleTimeout(); }
+
+  Cpp2ConnContext* getCpp2ConnContext() override {
+    return inner_->getCpp2ConnContext();
+  }
+
+  void onBeforeHandleFrame() override { inner_->onBeforeHandleFrame(); }
+
+  int32_t getVersion() const override { return inner_->getVersion(); }
+
+ private:
+  std::optional<RpcKind> callUnderTest(
+      const rocket::Payload& payload,
+      rocket::RocketServerFrameContext& context) {
+    auto& connection = context.connection();
+    RequestRpcMetadata metadata;
+    connection.getPayloadSerializer()->unpack(
+        metadata,
+        payload.copyMetadataToIOBuf().get(),
+        connection.isDecodingMetadataUsingBinaryProtocol());
+    if (!metadata.name() || metadata.name()->view() != method_) {
+      return std::nullopt;
+    }
+    context.unsetMarkRequestComplete();
+    return metadata.kind().value_or(RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+  }
+
+  rocket::RocketException errorFrame() const {
+    return rocket::RocketException(
+        static_cast<rocket::ErrorCode>(*error_.code()), *error_.message());
+  }
+
+  const std::unique_ptr<rocket::RocketServerHandler> inner_;
+  const std::string method_;
+  const ErrorFrameServerError error_;
+};
+
+class ErrorFrameRoutingHandler final : public RocketRoutingHandler {
+ public:
+  ErrorFrameRoutingHandler(
+      ThriftServer& server, std::string method, ErrorFrameServerError error)
+      : RocketRoutingHandler(server),
+        method_(std::move(method)),
+        error_(std::move(error)) {
+    if (auto interceptor =
+            apache::thrift::detail::createSecuritySetupFrameInterceptor(
+                server)) {
+      setupFrameInterceptors_.push_back(std::move(interceptor));
+    }
+  }
+
+  void handleConnection(
+      wangle::ConnectionManager* connectionManager,
+      folly::AsyncTransport::UniquePtr sock,
+      const folly::SocketAddress* address,
+      const wangle::TransportInfo& tinfo,
+      std::shared_ptr<Cpp2Worker> worker) override {
+    auto* const server = worker->getServer();
+    rocket::IRocketServerConnection::Config cfg;
+    cfg.socketWriteTimeout = server->getSocketWriteTimeout();
+    cfg.streamStarvationTimeout = server->getStreamExpireTime();
+    cfg.writeBatchingInterval = server->getWriteBatchingInterval();
+    cfg.writeBatchingSize = server->getWriteBatchingSize();
+    cfg.writeBatchingByteSize = server->getWriteBatchingByteSize();
+    cfg.egressBufferBackpressureThreshold =
+        server->getEgressBufferBackpressureThreshold();
+    cfg.egressBufferBackpressureRecoveryFactor =
+        server->getEgressBufferRecoveryFactor();
+    cfg.socketOptions = &server->getPerConnectionSocketOptions();
+    cfg.parserAllocator = server->getCustomAllocatorForParser();
+    cfg.parserStrategy = apache::thrift::detail::getSocketParser(*sock, tinfo);
+    auto* const transport = sock.get();
+    auto handler = std::make_unique<ErrorFrameHandler>(
+        std::make_unique<rocket::ThriftRocketServerHandler>(
+            worker,
+            *address,
+            transport,
+            setupFrameHandlers_,
+            setupFrameInterceptors_),
+        method_,
+        error_);
+    auto connection = rocket::RocketServerConnectionFactory::create(
+        std::move(sock),
+        std::move(handler),
+        *ingressMemoryTracker_,
+        *egressMemoryTracker_,
+        cfg);
+    connectionManager->addConnection(
+        connection.release(),
+        /* idleTimeout */ true,
+        /* connectionAgeTimeout */ true);
+  }
+
+ private:
+  const std::string method_;
+  const ErrorFrameServerError error_;
+  const std::vector<std::unique_ptr<rocket::SetupFrameHandler>>
+      setupFrameHandlers_;
+  std::vector<std::unique_ptr<rocket::SetupFrameInterceptor>>
+      setupFrameInterceptors_;
+  folly::ThreadLocal<MemoryTracker> ingressMemoryTracker_;
+  folly::ThreadLocal<MemoryTracker> egressMemoryTracker_;
+};
+
 // What some cases need set on the server before it starts.
 void configureServer(
     apache::thrift::ThriftServer& server,
@@ -880,6 +1068,12 @@ void configureServer(
   } else if (const auto stream = instruction.streamServerError()) {
     serverError = &*stream->error();
     method = "streamBasic";
+  } else if (auto sink = instruction.sinkServerError()) {
+    serverError = &*sink->error();
+    method = "sinkBasic";
+  } else if (auto bidi = instruction.bidiServerError()) {
+    serverError = &*bidi->error();
+    method = "bidiBasic";
   }
   if (serverError != nullptr) {
     const auto& error = *serverError;
@@ -906,6 +1100,11 @@ void configureServer(
         break;
       case ServerError::Type::responseTooBig:
         server.setMaxResponseSize(*error.responseTooBig()->maxResponseSize());
+        break;
+      case ServerError::Type::errorFrame:
+        server.addRoutingHandler(
+            std::make_unique<ErrorFrameRoutingHandler>(
+                server, method, *error.errorFrame()));
         break;
       default:
         break;
