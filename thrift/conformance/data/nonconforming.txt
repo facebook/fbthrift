@@ -295,16 +295,6 @@ rust[client=cpp,*]/ThriftRPCClientTest/RequestResponseUnexpectedErrorCode/Succes
 rust[client=cpp,*]/ThriftRPCClientTest/StreamUnexpectedErrorCode/Success.StreamUnexpectedErrorCodeTest
 rust[client=cpp,*]/ThriftRPCClientTest/SinkUnexpectedErrorCode/Success.SinkUnexpectedErrorCodeTest
 
-# nativeclient fails a bidi call on an error frame code no first response
-# should carry, rather than opening it with the TApplicationException C++ makes
-# of that frame.
-rust[client=native,*]/ThriftRPCClientTest/BidiUnexpectedErrorCode/Success.BidiUnexpectedErrorCodeTest
-
-# nativeclient reads the `ResponseRpcError` a bidi call is shed with as a
-# `StreamRpcError`, the struct an error frame carries after the first response,
-# and fails the call with only its text.
-rust[client=native,*]/ThriftRPCClientTest/BidiLoadshedding/Success.BidiLoadsheddingTest
-
 ###
 # Transport: HTTP
 # Run every client test over HTTP/2
