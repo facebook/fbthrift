@@ -47,6 +47,10 @@ namespace detail {
 bool requiresMovableReadCallback(
     const folly::AsyncTransport& transport) noexcept;
 
+bool setSocketBufferCallback(
+    folly::AsyncTransport& transport,
+    folly::AsyncTransport::BufferCallback* callback) noexcept;
+
 } // namespace detail
 
 /**
@@ -85,7 +89,8 @@ template <
     Parser ParserT = frame::read::FrameLengthParser>
 class TransportHandlerT : public folly::DelayedDestruction,
                           public folly::AsyncTransport::ReadCallback,
-                          public folly::AsyncTransport::WriteCallback {
+                          public folly::AsyncTransport::WriteCallback,
+                          public folly::AsyncTransport::BufferCallback {
  public:
   using BytesPtr = apache::thrift::fast_thrift::channel_pipeline::BytesPtr;
   using Result = apache::thrift::fast_thrift::channel_pipeline::Result;
@@ -188,6 +193,7 @@ class TransportHandlerT : public folly::DelayedDestruction,
     };
     parser_.setIOBufFactory(&bufFactory_);
     state_ = State::Ready;
+    bufferCallbackRegistered_ = detail::setSocketBufferCallback(*socket_, this);
   }
 
   bool setZeroCopy(bool enable) noexcept {
@@ -297,11 +303,11 @@ class TransportHandlerT : public folly::DelayedDestruction,
       return Result::Error;
     }
 
-    // writeChain can complete inline, in which case writeSuccess has already
-    // run and writePending_ is back to 0: the bytes are on the wire and
-    // nothing is saturated. Otherwise the socket buffered them and upstream
-    // is being told to stop, which is what arms the wake-up in writeSuccess.
-    if (writePending_ == 0) {
+    // AsyncSocket reports buffering before writeChain returns. Transports
+    // without an underlying AsyncSocket retain pending-write flow control.
+    const bool backpressured =
+        bufferCallbackRegistered_ ? socketBuffered_ : writePending_ != 0;
+    if (!backpressured) {
       return Result::Success;
     }
     writeSaturated_ = true;
@@ -319,11 +325,14 @@ class TransportHandlerT : public folly::DelayedDestruction,
 
   void resumeRead() noexcept {
     folly::DelayedDestruction::DestructorGuard dg(this);
-    if (FOLLY_UNLIKELY(!readPaused_)) {
+    if (FOLLY_UNLIKELY(!readPaused_ || state_ >= State::Closing)) {
       return;
     }
     readPaused_ = false;
-    socket_->setReadCB(this);
+    handleReadResult(parser_.resume(messageSink()));
+    if (!readPaused_ && state_ < State::Closing) {
+      socket_->setReadCB(this);
+    }
   }
 
   // Graceful disconnect: pending writes drain naturally; drain timeout is
@@ -340,6 +349,11 @@ class TransportHandlerT : public folly::DelayedDestruction,
     folly::DelayedDestruction::DestructorGuard dg(this);
     // Pipeline must not be actively dispatching when we drop it.
     DCHECK(state_ != State::Open);
+    if (bufferCallbackRegistered_) {
+      const bool detached = detail::setSocketBufferCallback(*socket_, nullptr);
+      DCHECK(detached);
+      bufferCallbackRegistered_ = false;
+    }
     onClosed_ = nullptr;
     eventPublisher_ = {};
     pipeline_.reset();
@@ -375,6 +389,16 @@ class TransportHandlerT : public folly::DelayedDestruction,
                 ex.what()),
             ex.getErrno()));
     maybeReleaseDrainer();
+  }
+
+  void onEgressBuffered() noexcept override { socketBuffered_ = true; }
+
+  void onEgressBufferCleared() noexcept override {
+    folly::DelayedDestruction::DestructorGuard dg(this);
+    socketBuffered_ = false;
+    if (state_ == State::Open) {
+      maybeSignalWriteReady();
+    }
   }
 
   ~TransportHandlerT() override {
@@ -432,7 +456,7 @@ class TransportHandlerT : public folly::DelayedDestruction,
   // originates here. A handler that arms on its own internal state instead
   // would never be woken.
   void maybeSignalWriteReady() noexcept {
-    if (writeSaturated_ && writePending_ == 0) {
+    if (writeSaturated_ && writePending_ == 0 && !socketBuffered_) {
       writeSaturated_ = false;
       pipeline_.onWriteReady();
     }
@@ -592,6 +616,8 @@ class TransportHandlerT : public folly::DelayedDestruction,
   State state_{State::Created};
   bool readPaused_{true};
   bool writeSaturated_{false};
+  bool socketBuffered_{false};
+  bool bufferCallbackRegistered_{false};
   uint32_t writePending_{0};
   SocketDrainer socketDrainer_;
 };
