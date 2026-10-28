@@ -2799,6 +2799,44 @@ Test createRequestResponseChecksumTest(
   return ret;
 }
 
+Test createStreamChecksumTest(
+    const std::string& algorithm, ChecksumKind checksum) {
+  Test ret;
+  ret.name() = "Stream" + algorithm + "ChecksumTest";
+  ret.tags()->emplace("spec/compatibility/rocket#stream");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "Stream" + algorithm + "Checksum/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().streamBasic().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.bufferSize() = kDefaultBufferSize;
+  clientInstruction.checksum() = checksum;
+
+  auto& serverInstruction =
+      rpcTest.serverInstruction().emplace().streamBasic().emplace();
+  for (int i = 0; i < 100; i++) {
+    auto& payload = serverInstruction.streamPayloads()->emplace_back();
+    payload.data() = folly::to<std::string>(i);
+  }
+
+  rpcTest.clientTestResult()
+      .emplace()
+      .streamBasic()
+      .emplace()
+      .streamPayloads()
+      .copy_from(serverInstruction.streamPayloads());
+
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().streamBasic().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.checksum() = checksum;
+
+  return ret;
+}
+
 std::string mismatchedChunkChecksumMetadata() {
   StreamPayloadMetadata metadata;
   auto& checksum = metadata.checksum().emplace();
@@ -3288,6 +3326,10 @@ TestSuite createRPCClientChecksumTestSuite() {
       createRequestResponseChecksumTest("Crc32", ChecksumKind::CRC32));
   suite.tests()->push_back(
       createRequestResponseChecksumTest("Xxh3", ChecksumKind::XXH3_64));
+  suite.tests()->push_back(
+      createStreamChecksumTest("Crc32", ChecksumKind::CRC32));
+  suite.tests()->push_back(
+      createStreamChecksumTest("Xxh3", ChecksumKind::XXH3_64));
   suite.tests()->push_back(createRequestResponseChecksumMismatchTest());
   suite.tests()->push_back(createStreamChecksumMismatchTest());
   suite.tests()->push_back(createSinkChecksumMismatchTest());

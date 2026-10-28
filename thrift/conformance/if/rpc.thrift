@@ -188,6 +188,7 @@ struct RequestResponseBadContentLengthServerTestResult {
 
 struct StreamBasicServerTestResult {
   1: Request request;
+  2: optional ChecksumKind checksum;
 }
 
 struct StreamChunkTimeoutServerTestResult {
@@ -681,6 +682,7 @@ struct StreamBasicClientInstruction {
   1: Request request;
   2: i64 bufferSize;
   3: optional StreamMemoryBufferSize memoryBufferSize;
+  4: optional ChecksumKind checksum;
 }
 
 struct StreamMemoryBufferSize {

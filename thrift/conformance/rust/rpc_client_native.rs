@@ -404,6 +404,14 @@ async fn drop_unread<F: Future + Unpin>(mut call: F, after_ms: i64) {
     tokio::time::sleep(Duration::from_millis(after_ms as u64)).await;
 }
 
+fn checksum_of(kind: Option<ChecksumKind>) -> nativeclient::Checksum {
+    match kind {
+        Some(ChecksumKind::CRC32) => nativeclient::Checksum::Crc32,
+        Some(ChecksumKind::XXH3_64) => nativeclient::Checksum::Xxh3_64,
+        _ => nativeclient::Checksum::None,
+    }
+}
+
 // ---
 
 async fn request_response_basic(
@@ -411,11 +419,7 @@ async fn request_response_basic(
     instr: &RequestResponseBasicClientInstruction,
 ) -> Result<()> {
     let mut opts = nativeclient::RpcOptions::default();
-    opts.set_checksum(match instr.checksum {
-        Some(ChecksumKind::CRC32) => nativeclient::Checksum::Crc32,
-        Some(ChecksumKind::XXH3_64) => nativeclient::Checksum::Xxh3_64,
-        _ => nativeclient::Checksum::None,
-    });
+    opts.set_checksum(checksum_of(instr.checksum));
     let test_result =
         ClientTestResult::requestResponseBasic(RequestResponseBasicClientTestResult {
             response: client
@@ -785,6 +789,7 @@ async fn stream_basic(
             opts.set_chunk_buffer_size(instr.bufferSize as i32);
         }
     }
+    opts.set_checksum(checksum_of(instr.checksum));
 
     let mut stream = client
         .streamBasic_with_rpc_opts(&instr.request, opts)

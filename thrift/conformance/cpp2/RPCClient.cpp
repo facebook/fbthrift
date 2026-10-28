@@ -312,6 +312,9 @@ StreamBasicClientTestResult streamBasicTest(
   } else {
     rpcOptions.setChunkBufferSize(*instruction.bufferSize());
   }
+  rpcOptions.setChecksum(
+      static_cast<RpcOptions::Checksum>(
+          instruction.checksum().value_or(ChecksumKind::NONE)));
   return folly::coro::blockingWait(
       [&]() -> folly::coro::Task<StreamBasicClientTestResult> {
         auto gen = (co_await client->co_streamBasic(

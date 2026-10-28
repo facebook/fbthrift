@@ -151,12 +151,9 @@ class ConformanceVerificationServer
       recordMetadata(result);
       co_return std::make_unique<Response>(*metadata->response());
     }
-    serverResult_.requestResponseBasic().emplace().request() = *req;
-    if (const auto checksum = getRequestContext()->getHeader()->getChecksum();
-        checksum && *checksum->algorithm() != ChecksumAlgorithm::NONE) {
-      serverResult_.requestResponseBasic()->checksum() =
-          static_cast<ChecksumKind>(*checksum->algorithm());
-    }
+    auto& result = serverResult_.requestResponseBasic().emplace();
+    result.request() = *req;
+    result.checksum().from_optional(requestChecksum());
     co_return std::make_unique<Response>(
         *testCase_.serverInstruction()->requestResponseBasic()->response());
   }
@@ -207,6 +204,11 @@ class ConformanceVerificationServer
       }
       co_return streamUntilCancelled();
     }
+    if (testCase_.serverInstruction()->streamBasic()) {
+      auto& result = serverResult_.streamBasic().emplace();
+      result.request() = *req;
+      result.checksum().from_optional(requestChecksum());
+    }
     co_return sync_streamBasic(std::move(req));
   }
 
@@ -216,7 +218,6 @@ class ConformanceVerificationServer
       serverResult_.streamServerError().emplace().request() = *req;
       co_return;
     }
-    serverResult_.streamBasic().emplace().request() = *req;
     for (auto payload :
          *testCase_.serverInstruction()->streamBasic()->streamPayloads()) {
       co_yield std::move(payload);
@@ -791,6 +792,14 @@ class ConformanceVerificationServer
     if (sent.priority().has_value()) {
       result.priority() = static_cast<int32_t>(header->getCallPriority());
     }
+  }
+
+  std::optional<ChecksumKind> requestChecksum() {
+    const auto checksum = getRequestContext()->getHeader()->getChecksum();
+    if (!checksum || *checksum->algorithm() == ChecksumAlgorithm::NONE) {
+      return std::nullopt;
+    }
+    return static_cast<ChecksumKind>(*checksum->algorithm());
   }
 
   folly::coro::Task<std::unique_ptr<Response>> answerLastToFirst(
