@@ -48,6 +48,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/DecoratedAsyncTransportWrapper.h>
 #include <folly/synchronization/Baton.h>
+#include <folly/synchronization/CallOnce.h>
 #include <thrift/conformance/PluggableFunctions.h>
 #include <thrift/conformance/RpcStructComparator.h>
 #include <thrift/conformance/Utils.h>
@@ -63,6 +64,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/FrameType.h>
+#include <thrift/lib/cpp2/transport/rocket/payload/PayloadSerializer.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketBiDiClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnectionFactory.h>
@@ -150,6 +152,11 @@ class ConformanceVerificationServer
       co_return std::make_unique<Response>(*metadata->response());
     }
     serverResult_.requestResponseBasic().emplace().request() = *req;
+    if (const auto checksum = getRequestContext()->getHeader()->getChecksum();
+        checksum && *checksum->algorithm() != ChecksumAlgorithm::NONE) {
+      serverResult_.requestResponseBasic()->checksum() =
+          static_cast<ChecksumKind>(*checksum->algorithm());
+    }
     co_return std::make_unique<Response>(
         *testCase_.serverInstruction()->requestResponseBasic()->response());
   }
@@ -870,6 +877,17 @@ std::unique_ptr<apache::thrift::HTTP2RoutingHandler> http2RoutingHandler(
       std::move(options), server.getThriftProcessor(), server);
 }
 
+void configureChecksum() {
+  static folly::once_flag once;
+  folly::call_once(once, [] {
+    if (std::getenv("THRIFT_CONFORMANCE_SERVER_CHECKSUM") != nullptr) {
+      rocket::PayloadSerializer::initialize(
+          rocket::ChecksumPayloadSerializerStrategy<
+              rocket::DefaultPayloadSerializerStrategy>());
+    }
+  });
+}
+
 void configureTls(apache::thrift::ThriftServer& server) {
   const char* cert = std::getenv("THRIFT_CONFORMANCE_SERVER_TLS_CERT");
   if (cert == nullptr) {
@@ -1391,6 +1409,7 @@ class RPCClientConformanceTest : public testing::Test {
                   server.setQueueTimeout(std::chrono::milliseconds(0));
                   server.addRoutingHandler(http2RoutingHandler(server));
                   configureTls(server);
+                  configureChecksum();
                   configureServer(
                       server, *testCase_.rpc()->serverInstruction(), *handler_);
                 })),

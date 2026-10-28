@@ -133,8 +133,11 @@ RequestResponseBasicClientTestResult runRequestResponseBasicTest(
     const RequestResponseBasicClientInstruction& instruction) {
   RequestResponseBasicClientTestResult result;
   auto client = createClient();
+  auto rpcOptions = RpcOptions().setChecksum(
+      static_cast<RpcOptions::Checksum>(
+          instruction.checksum().value_or(ChecksumKind::NONE)));
   client->sync_requestResponseBasic(
-      result.response().emplace(), *instruction.request());
+      rpcOptions, result.response().emplace(), *instruction.request());
   return result;
 }
 

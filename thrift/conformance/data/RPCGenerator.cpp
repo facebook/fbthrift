@@ -2763,6 +2763,42 @@ Test createBidiChecksumMismatchTest() {
   return ret;
 }
 
+Test createRequestResponseChecksumTest(
+    const std::string& algorithm, ChecksumKind checksum) {
+  Test ret;
+  ret.name() = "RequestResponse" + algorithm + "ChecksumTest";
+  ret.tags()->emplace("spec/compatibility/rocket#request-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponse" + algorithm + "Checksum/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().requestResponseBasic().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.checksum() = checksum;
+  rpcTest.clientTestResult()
+      .emplace()
+      .requestResponseBasic()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+  rpcTest.serverInstruction()
+      .emplace()
+      .requestResponseBasic()
+      .emplace()
+      .response()
+      .emplace()
+      .data() = "world";
+  auto& serverTestResult =
+      rpcTest.serverTestResult().emplace().requestResponseBasic().emplace();
+  serverTestResult.request().emplace().data() = "hello";
+  serverTestResult.checksum() = checksum;
+
+  return ret;
+}
+
 std::string mismatchedChunkChecksumMetadata() {
   StreamPayloadMetadata metadata;
   auto& checksum = metadata.checksum().emplace();
@@ -3216,6 +3252,10 @@ TestSuite createRPCClientChecksumTestSuite() {
   TestSuite suite;
   suite.name() = "ThriftRPCClientTest";
   suite.tags()->emplace("spec/compatibility/");
+  suite.tests()->push_back(
+      createRequestResponseChecksumTest("Crc32", ChecksumKind::CRC32));
+  suite.tests()->push_back(
+      createRequestResponseChecksumTest("Xxh3", ChecksumKind::XXH3_64));
   suite.tests()->push_back(createRequestResponseChecksumMismatchTest());
   suite.tests()->push_back(createStreamChecksumMismatchTest());
   suite.tests()->push_back(createSinkChecksumMismatchTest());

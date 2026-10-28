@@ -265,6 +265,7 @@ fn init_logging(directives: Vec<Directive>) {
 // --
 
 use rpc::rpc::CallKind;
+use rpc::rpc::ChecksumKind;
 use rpc::rpc::ClientInstruction;
 use rpc::rpc::ClientTestResult;
 use rpc::rpc::ClosingFrameClientInstruction;
@@ -408,9 +409,17 @@ async fn request_response_basic(
     client: &dyn RPCConformanceServiceExt<nativeclient::NativeChannel>,
     instr: &RequestResponseBasicClientInstruction,
 ) -> Result<()> {
+    let mut opts = nativeclient::RpcOptions::default();
+    opts.set_checksum(match instr.checksum {
+        Some(ChecksumKind::CRC32) => nativeclient::Checksum::Crc32,
+        Some(ChecksumKind::XXH3_64) => nativeclient::Checksum::Xxh3_64,
+        _ => nativeclient::Checksum::None,
+    });
     let test_result =
         ClientTestResult::requestResponseBasic(RequestResponseBasicClientTestResult {
-            response: client.requestResponseBasic(&instr.request).await?,
+            response: client
+                .requestResponseBasic_with_rpc_opts(&instr.request, opts)
+                .await?,
             ..Default::default()
         });
     client.sendTestResult(&test_result).await?;

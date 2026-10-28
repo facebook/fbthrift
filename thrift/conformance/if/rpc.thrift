@@ -144,6 +144,7 @@ union ClientTestResult {
 
 struct RequestResponseBasicServerTestResult {
   1: Request request;
+  2: optional ChecksumKind checksum;
 }
 
 struct RequestResponseDeclaredExceptionServerTestResult {
@@ -631,6 +632,7 @@ union ServerInstruction {
 
 struct RequestResponseBasicClientInstruction {
   1: Request request;
+  2: optional ChecksumKind checksum;
 }
 
 struct RequestResponseDeclaredExceptionClientInstruction {
@@ -844,6 +846,12 @@ struct BidiAbortClientInstruction {
 
 struct BidiServerErrorClientInstruction {
   1: Request request;
+}
+
+enum ChecksumKind {
+  NONE = 0,
+  CRC32 = 1,
+  XXH3_64 = 2,
 }
 
 enum CallKind {
