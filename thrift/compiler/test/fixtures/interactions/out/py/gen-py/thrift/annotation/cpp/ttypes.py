@@ -2886,12 +2886,13 @@ class GenerateServiceMethodDecorator:
 
 class FastClient:
   r"""
-  When applied to a service, generates only a FastClient instead of the
+  When applied to a service, generates a FastClient in addition to the
   standard AsyncClient. The FastClient uses the fast_thrift pipeline for
   lower latency serialization and deserialization.
   
-  Only request/response functions are supported. Functions using streams,
-  sinks, oneway, or interactions are skipped.
+  The FastClient supports only request/response functions. Functions using
+  streams, sinks, oneway, or interactions are skipped by the FastClient and
+  remain available on the AsyncClient.
   """
 
   thrift_spec = None

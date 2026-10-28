@@ -824,6 +824,23 @@ class BackwardsCompatibilityFastClientE2ETest : public ::testing::Test {
   std::unique_ptr<ConnectCallback> connectCallback_;
 };
 
+TEST_F(BackwardsCompatibilityFastClientE2ETest, AsyncAndFastClientsCoexist) {
+  auto asyncClient = server_->newClient<
+      apache::thrift::Client<BackwardsCompatibilityTestFastService>>();
+  auto fastClient = createFastClient();
+
+  std::string response;
+  asyncClient->sync_echo(response, "async");
+  EXPECT_EQ(response, "async");
+  EXPECT_EQ(
+      folly::coro::blockingWait(
+          folly::coro::co_withExecutor(
+              clientThread_->getEventBase(), fastClient->co_echo("fast"))),
+      "fast");
+
+  destroyClientOnEvb(fastClient);
+}
+
 TEST_F(BackwardsCompatibilityFastClientE2ETest, Ping) {
   auto client = createFastClient();
 
@@ -1024,6 +1041,34 @@ class BackwardsCompatibilityFastChildClientE2ETest
 
   std::shared_ptr<BackwardsCompatibilityTestFastChildHandler> childHandler_;
 };
+
+TEST_F(
+    BackwardsCompatibilityFastChildClientE2ETest, AsyncAndFastClientsCoexist) {
+  auto asyncClient = server_->newClient<
+      apache::thrift::Client<BackwardsCompatibilityTestFastChildService>>();
+  auto fastClient =
+      createFastClient<BackwardsCompatibilityTestFastChildService>();
+
+  std::string response;
+  asyncClient->sync_echo(response, "async inherited");
+  EXPECT_EQ(response, "async inherited");
+  asyncClient->sync_childEcho(response, "async child");
+  EXPECT_EQ(response, "child:async child");
+  EXPECT_EQ(
+      folly::coro::blockingWait(
+          folly::coro::co_withExecutor(
+              clientThread_->getEventBase(),
+              fastClient->co_echo("fast inherited"))),
+      "fast inherited");
+  EXPECT_EQ(
+      folly::coro::blockingWait(
+          folly::coro::co_withExecutor(
+              clientThread_->getEventBase(),
+              fastClient->co_childEcho("fast child"))),
+      "child:fast child");
+
+  destroyClientOnEvb(fastClient);
+}
 
 TEST_F(
     BackwardsCompatibilityFastChildClientE2ETest, InheritedPingThroughChild) {

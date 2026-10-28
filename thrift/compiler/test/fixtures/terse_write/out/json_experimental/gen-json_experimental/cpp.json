@@ -744,10 +744,10 @@
             "value" : {}
           }
         },
-        "docstring" : "When applied to a service, generates only a FastClient instead of the\nstandard AsyncClient. The FastClient uses the fast_thrift pipeline for\nlower latency serialization and deserialization.\n\nOnly request/response functions are supported. Functions using streams,\nsinks, oneway, or interactions are skipped.\n",
+        "docstring" : "When applied to a service, generates a FastClient in addition to the\nstandard AsyncClient. The FastClient uses the fast_thrift pipeline for\nlower latency serialization and deserialization.\n\nThe FastClient supports only request/response functions. Functions using\nstreams, sinks, oneway, or interactions are skipped by the FastClient and\nremain available on the AsyncClient.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 464
+        "lineno" : 465
       },
       "FastServer" : {
         "name" : "FastServer",
@@ -764,7 +764,7 @@
         "docstring" : "When applied to a service, generates an\napache::thrift::FastServiceHandler<Service> specialization and a\nper-connection <Service>AppAdapter instead of the standard SvIf and\nAsyncProcessor. The generated server uses the fast_thrift pipeline for\nlower latency serialization and deserialization.\n\nUsers implement apache::thrift::FastServiceHandler<MyService> and share\na std::shared_ptr across per-connection <Service>AppAdapter instances.\n\nOnly request/response functions are supported. Functions using streams,\nsinks, oneway, or interactions are skipped.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 480
+        "lineno" : 481
       },
       "NonOrderable" : {
         "name" : "NonOrderable",
@@ -781,7 +781,7 @@
         "docstring" : "Marks a structured type as non-orderable, marking `operator<` as deleted.\nThis is useful when types should never be ordered. By default, `operator<` is\nalways declared, but depending on whether or not the type's shape is considered\norderable, it may or may not be defined. See `EnableCustomTypeOrdering` for more\ndetails.\nNote: The unstructured `cpp_noncomparable` annotation has priority over this one &\nwill cause `operator==` && `operator<` to *not* be declared or defined.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 492
+        "lineno" : 493
       },
       "DeclareHashSpecialization" : {
         "name" : "DeclareHashSpecialization",
@@ -806,7 +806,7 @@
         "docstring" : "Declares a specialization of `std::hash` for the struct or type.\nThis is equivalent to the unstructured `cpp.declare_hash` annotation.\nThe generated code will include a forward declaration of the hash specialization in the std namespace.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 500
+        "lineno" : 501
       },
       "DeclareEqualToSpecialization" : {
         "name" : "DeclareEqualToSpecialization",
@@ -831,7 +831,7 @@
         "docstring" : "Declares a specialization of `std::equal_to` for the struct or type.\nThis is equivalent to the unstructured `cpp.declare_equal_to` annotation.\nThe generated code will include a forward declaration of the equal_to specialization in the std namespace.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 509
+        "lineno" : 510
       },
       "AllowCustomDefaultInAllocCtor" : {
         "name" : "AllowCustomDefaultInAllocCtor",
@@ -850,14 +850,14 @@
           "legacy_ignore_custom_default" : {
             "name" : "legacy_ignore_custom_default",
             "key" : 1,
-            "lineno" : 527,
+            "lineno" : 528,
             "required" : "opt-in-req-out",
             "type" : "bool"
                   }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 525
+        "lineno" : 526
       },
       "InternalExperimentalAllowAllocatorOnUnion" : {
         "name" : "InternalExperimentalAllowAllocatorOnUnion",
@@ -882,7 +882,7 @@
         "docstring" : "Allows the unstructured `cpp.allocator` annotation on this union, which\nunions otherwise reject.\n\nInternal and experimental: Thrift's own unit tests use it while support for\n`cpp.allocator` unions is incomplete. Do not use it elsewhere; it may change\nor go away without notice.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 538
+        "lineno" : 539
       }
   },
   "source_path" : "thrift/annotation/cpp",

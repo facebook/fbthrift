@@ -54,10 +54,10 @@ namespace apache { namespace thrift {
 }}
 
   {{#each program.services as |service|}}
-  {{#if service.is_fast_client?}}
-{{> service_h/fast_client}}
-  {{#else}}
 {{> service_h/async_client}}
+  {{#if service.is_fast_client?}}
+
+{{> service_h/fast_client}}
   {{/if service.is_fast_client?}}
 
 
