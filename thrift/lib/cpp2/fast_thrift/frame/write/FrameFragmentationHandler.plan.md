@@ -371,7 +371,7 @@ cpp_library(
     name = "per_stream_state",
     headers = ["PerStreamState.h"],
     deps = [
-        "//folly/io:iobuf",
+        "fbsource//xplat/folly/io:iobuf",
         ":frame_type",
         ":frame_headers",
     ],
@@ -382,9 +382,9 @@ cpp_library(
     headers = ["FrameFragmentationHandler.h"],
     srcs = ["FrameFragmentationHandler.cpp"],  # if needed
     deps = [
-        "//folly/container:f14_hash",
-        "//folly/io:async_base",
-        "//folly/io:iobuf",
+        "fbsource//xplat/folly/container:f14_hash",
+        "fbsource//xplat/folly/io:async_base",
+        "fbsource//xplat/folly/io:iobuf",
         ":per_stream_state",
         ":frame_writer",
         "//thrift/lib/cpp2/fast_thrift/channel_pipeline:common",
@@ -402,7 +402,7 @@ cpp_unittest(
     srcs = ["FrameFragmentationHandlerTest.cpp"],
     deps = [
         "//thrift/lib/cpp2/fast_thrift/framing/writing:frame_fragmentation_handler",
-        "//folly/portability:gtest",
+        "fbsource//xplat/folly/portability:gtest",
     ],
 )
 
@@ -411,7 +411,7 @@ cpp_binary(
     srcs = ["FrameFragmentationHandlerBench.cpp"],
     deps = [
         "//thrift/lib/cpp2/fast_thrift/framing/writing:frame_fragmentation_handler",
-        "//folly:benchmark",
+        "fbsource//xplat/folly:benchmark",
     ],
 )
 ```
