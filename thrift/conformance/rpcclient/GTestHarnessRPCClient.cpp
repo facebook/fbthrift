@@ -32,6 +32,7 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 
 #include <fmt/core.h>
 #include <folly/CancellationToken.h>
+#include <folly/Range.h>
 #include <folly/ScopeGuard.h>
 #include <folly/Subprocess.h>
 #include <folly/Synchronized.h>
@@ -59,6 +60,8 @@ constexpr auto kClientTimeout = std::chrono::seconds(30);
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
+#include <thrift/lib/cpp2/transport/rocket/Types.h>
+#include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/FrameType.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketBiDiClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
@@ -982,16 +985,16 @@ class ClosingFrameTap final
   Reader reader_;
 };
 
-class ErrorFrameHandler final : public rocket::RocketServerHandler {
+class FirstResponseHandler final : public rocket::RocketServerHandler {
  public:
-  ErrorFrameHandler(
+  FirstResponseHandler(
       std::unique_ptr<rocket::RocketServerHandler> inner,
       std::string method,
-      ErrorFrameServerError error,
+      FirstResponse firstResponse,
       std::shared_ptr<std::optional<rocket::StreamId>> intercepted)
       : inner_(std::move(inner)),
         method_(std::move(method)),
-        error_(std::move(error)),
+        firstResponse_(std::move(firstResponse)),
         intercepted_(std::move(intercepted)) {}
 
   void handleSetupFrame(
@@ -1005,9 +1008,14 @@ class ErrorFrameHandler final : public rocket::RocketServerHandler {
       rocket::RocketServerFrameContext&& context) override {
     if (!callUnderTest(frame.payload(), context)) {
       inner_->handleRequestResponseFrame(std::move(frame), std::move(context));
-      return;
+    } else if (auto metadata = firstResponse_.metadata()) {
+      context.sendPayload(
+          payloadWith(*metadata),
+          rocket::Flags().next(true).complete(true),
+          nullptr);
+    } else {
+      context.sendError(errorFrame(), nullptr);
     }
-    context.sendError(errorFrame(), nullptr);
   }
 
   void handleRequestFnfFrame(
@@ -1023,10 +1031,12 @@ class ErrorFrameHandler final : public rocket::RocketServerHandler {
     if (!callUnderTest(frame.payload(), context)) {
       inner_->handleRequestStreamFrame(
           std::move(frame), std::move(context), clientCallback);
-      return;
+    } else if (auto metadata = firstResponse_.metadata()) {
+      openWith(*metadata, context);
+    } else {
+      clientCallback->onFirstResponseError(
+          folly::make_exception_wrapper<rocket::RocketException>(errorFrame()));
     }
-    clientCallback->onFirstResponseError(
-        folly::make_exception_wrapper<rocket::RocketException>(errorFrame()));
   }
 
   void handleRequestChannelFrame(
@@ -1037,6 +1047,8 @@ class ErrorFrameHandler final : public rocket::RocketServerHandler {
     if (!kind) {
       inner_->handleRequestChannelFrame(
           std::move(frame), std::move(context), clientCallback);
+    } else if (auto metadata = firstResponse_.metadata()) {
+      openWith(*metadata, context);
     } else if (*kind == RpcKind::SINK) {
       clientCallback.create<rocket::RocketSinkClientCallback>()
           ->onFirstResponseError(
@@ -1087,26 +1099,40 @@ class ErrorFrameHandler final : public rocket::RocketServerHandler {
   }
 
   rocket::RocketException errorFrame() const {
+    const auto& error = *firstResponse_.errorFrame();
     return rocket::RocketException(
-        static_cast<rocket::ErrorCode>(*error_.code()), *error_.message());
+        static_cast<rocket::ErrorCode>(*error.code()), *error.message());
+  }
+
+  static rocket::Payload payloadWith(const std::string& metadata) {
+    return rocket::Payload::makeFromMetadataAndData(
+        folly::ByteRange(folly::StringPiece(metadata)), folly::ByteRange());
+  }
+
+  static void openWith(
+      const std::string& metadata, rocket::RocketServerFrameContext& context) {
+    auto& connection = context.connection();
+    connection.sendPayload(
+        context.streamId(), payloadWith(metadata), rocket::Flags().next(true));
+    connection.freeStream(context.streamId(), false);
   }
 
   const std::unique_ptr<rocket::RocketServerHandler> inner_;
   const std::string method_;
-  const ErrorFrameServerError error_;
+  const FirstResponse firstResponse_;
   const std::shared_ptr<std::optional<rocket::StreamId>> intercepted_;
 };
 
-class ErrorFrameRoutingHandler final : public RocketRoutingHandler {
+class FirstResponseRoutingHandler final : public RocketRoutingHandler {
  public:
-  ErrorFrameRoutingHandler(
+  FirstResponseRoutingHandler(
       ThriftServer& server,
       std::string method,
-      ErrorFrameServerError error,
+      FirstResponse firstResponse,
       std::function<void(ClientFrame)> recordClosingFrame = {})
       : RocketRoutingHandler(server),
         method_(std::move(method)),
-        error_(std::move(error)),
+        firstResponse_(std::move(firstResponse)),
         recordClosingFrame_(std::move(recordClosingFrame)) {
     if (auto interceptor =
             apache::thrift::detail::createSecuritySetupFrameInterceptor(
@@ -1141,7 +1167,7 @@ class ErrorFrameRoutingHandler final : public RocketRoutingHandler {
       sock.reset(new ClosingFrameTap(
           std::move(sock), intercepted, recordClosingFrame_));
     }
-    auto handler = std::make_unique<ErrorFrameHandler>(
+    auto handler = std::make_unique<FirstResponseHandler>(
         std::make_unique<rocket::ThriftRocketServerHandler>(
             worker,
             *address,
@@ -1149,7 +1175,7 @@ class ErrorFrameRoutingHandler final : public RocketRoutingHandler {
             setupFrameHandlers_,
             setupFrameInterceptors_),
         method_,
-        error_,
+        firstResponse_,
         std::move(intercepted));
     auto connection = rocket::RocketServerConnectionFactory::create(
         std::move(sock),
@@ -1165,7 +1191,7 @@ class ErrorFrameRoutingHandler final : public RocketRoutingHandler {
 
  private:
   const std::string method_;
-  const ErrorFrameServerError error_;
+  const FirstResponse firstResponse_;
   const std::function<void(ClientFrame)> recordClosingFrame_;
   const std::vector<std::unique_ptr<rocket::SetupFrameHandler>>
       setupFrameHandlers_;
@@ -1190,6 +1216,12 @@ std::string methodOf(CallKind call) {
       fmt::format("unknown call kind {}", static_cast<int>(call)));
 }
 
+FirstResponse firstResponseOf(const ErrorFrameServerError& error) {
+  FirstResponse firstResponse;
+  firstResponse.errorFrame() = error;
+  return firstResponse;
+}
+
 // What some cases need set on the server before it starts.
 void configureServer(
     apache::thrift::ThriftServer& server,
@@ -1203,10 +1235,10 @@ void configureServer(
   }
   if (auto closingFrame = instruction.closingFrame()) {
     server.addRoutingHandler(
-        std::make_unique<ErrorFrameRoutingHandler>(
+        std::make_unique<FirstResponseRoutingHandler>(
             server,
             methodOf(*closingFrame->call()),
-            *closingFrame->firstResponse()->errorFrame(),
+            *closingFrame->firstResponse(),
             [&handler](ClientFrame frame) {
               handler.recordClosingFrame(std::move(frame));
             }));
@@ -1254,8 +1286,8 @@ void configureServer(
         break;
       case ServerError::Type::errorFrame:
         server.addRoutingHandler(
-            std::make_unique<ErrorFrameRoutingHandler>(
-                server, method, *error.errorFrame()));
+            std::make_unique<FirstResponseRoutingHandler>(
+                server, method, firstResponseOf(*error.errorFrame())));
         break;
       default:
         break;

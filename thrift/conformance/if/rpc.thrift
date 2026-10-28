@@ -1085,6 +1085,7 @@ struct ClosingFrameServerInstruction {
 
 union FirstResponse {
   1: ErrorFrameServerError errorFrame;
+  2: binary metadata;
 }
 
 interaction BasicInteraction {

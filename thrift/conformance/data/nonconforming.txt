@@ -295,6 +295,13 @@ rust[client=cpp,*]/ThriftRPCClientTest/RequestResponseUnexpectedErrorCode/Succes
 rust[client=cpp,*]/ThriftRPCClientTest/StreamUnexpectedErrorCode/Success.StreamUnexpectedErrorCodeTest
 rust[client=cpp,*]/ThriftRPCClientTest/SinkUnexpectedErrorCode/Success.SinkUnexpectedErrorCodeTest
 
+# When a stream, sink or bidi call's first response carries metadata that won't
+# deserialize, C++ answers it with a CANCEL (stream) or an ERROR(CANCELED)
+# (sink, bidi) on that stream, and nativeclient sends nothing.
+rust[client=native,*]/ThriftRPCClientTest/StreamUndecodableFirstResponse/Success.StreamUndecodableFirstResponseTest
+rust[client=native,*]/ThriftRPCClientTest/SinkUndecodableFirstResponse/Success.SinkUndecodableFirstResponseTest
+rust[client=native,*]/ThriftRPCClientTest/BidiUndecodableFirstResponse/Success.BidiUndecodableFirstResponseTest
+
 ###
 # Transport: HTTP
 # Run every client test over HTTP/2

@@ -29,6 +29,7 @@ const int32_t kRocketApplicationError = 0x201;
 const int32_t kRocketCanceled = 0x203;
 const int32_t kRocketCancelFrame = 0x09;
 const int32_t kRocketErrorFrame = 0x0B;
+const std::string kUndecodableMetadata = "\x1f";
 
 // =================== Request-Response ===================
 Test createRequestResponseBasicTest() {
@@ -2511,6 +2512,31 @@ Test createClosingFrameTest(
   return ret;
 }
 
+Test createUndecodableFirstResponseTest(
+    const std::string& kind, CallKind call, std::vector<ClientFrame> frames) {
+  Test ret;
+  ret.name() = kind + "UndecodableFirstResponseTest";
+  ret.tags()->emplace("spec/compatibility/rocket#stream-initial-response");
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = kind + "UndecodableFirstResponse/Success";
+
+  auto& rpcTest = testCase.rpc().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction().emplace().closingFrame().emplace();
+  clientInstruction.call() = call;
+  clientInstruction.request().emplace().data() = "hello";
+  rpcTest.clientTestResult().emplace().closingFrame().emplace();
+  auto& serverInstruction =
+      rpcTest.serverInstruction().emplace().closingFrame().emplace();
+  serverInstruction.call() = call;
+  serverInstruction.firstResponse()->metadata() = kUndecodableMetadata;
+  rpcTest.serverTestResult().emplace().closingFrame().emplace().frames() =
+      std::move(frames);
+
+  return ret;
+}
+
 // =================== Interactions ===================
 Test createInteractionConstructorTest() {
   Test ret;
@@ -2815,6 +2841,14 @@ TestSuite createRPCClientExtendedTestSuite() {
       createClosingFrameTest("Sink", CallKind::SINK, {canceledErrorFrame()}));
   suite.tests()->push_back(
       createClosingFrameTest("Bidi", CallKind::BIDI, {canceledErrorFrame()}));
+  suite.tests()->push_back(createUndecodableFirstResponseTest(
+      "RequestResponse", CallKind::REQUEST_RESPONSE, {}));
+  suite.tests()->push_back(createUndecodableFirstResponseTest(
+      "Stream", CallKind::STREAM, {cancelFrame()}));
+  suite.tests()->push_back(createUndecodableFirstResponseTest(
+      "Sink", CallKind::SINK, {canceledErrorFrame()}));
+  suite.tests()->push_back(createUndecodableFirstResponseTest(
+      "Bidi", CallKind::BIDI, {canceledErrorFrame()}));
   return suite;
 }
 
