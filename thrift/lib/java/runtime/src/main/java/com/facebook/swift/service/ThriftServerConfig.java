@@ -91,7 +91,7 @@ public class ThriftServerConfig {
   private String caFile = "/var/facebook/rootcanal/ca.pem";
   private boolean enableUDS = false;
   private String udsPath = null;
-  private ClientAuth clientAuth = ClientAuth.OPTIONAL;
+  private ClientAuth clientAuth = ClientAuth.REQUIRE;
   private boolean enableKeepAliveThread = true;
 
   private boolean enableAlpn = false;

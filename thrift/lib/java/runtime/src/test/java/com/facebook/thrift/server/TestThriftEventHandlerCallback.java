@@ -31,6 +31,7 @@ import com.facebook.thrift.rsocket.server.RSocketServerTransport;
 import com.facebook.thrift.rsocket.server.RSocketServerTransportFactory;
 import com.google.common.collect.ImmutableList;
 import io.airlift.units.Duration;
+import io.netty.handler.ssl.ClientAuth;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -107,7 +108,8 @@ public class TestThriftEventHandlerCallback {
     RpcServerHandler serverHandler = initializePingRpcServerHandler(testDoneThriftEventHandler);
 
     LegacyServerTransportFactory transportFactory =
-        new LegacyServerTransportFactory(new ThriftServerConfig().setEnableJdkSsl(false));
+        new LegacyServerTransportFactory(
+            new ThriftServerConfig().setClientAuth(ClientAuth.OPTIONAL).setEnableJdkSsl(false));
     LegacyServerTransport legacyServerTransport =
         transportFactory.createServerTransport(serverHandler).block();
 
@@ -122,7 +124,10 @@ public class TestThriftEventHandlerCallback {
 
     RSocketServerTransportFactory transportFactory =
         new RSocketServerTransportFactory(
-            new ThriftServerConfig().setSslEnabled(false).setEnableJdkSsl(false));
+            new ThriftServerConfig()
+                .setClientAuth(ClientAuth.OPTIONAL)
+                .setSslEnabled(false)
+                .setEnableJdkSsl(false));
     RSocketServerTransport rSocketTransport =
         transportFactory.createServerTransport(serverHandler).block();
 
@@ -136,7 +141,8 @@ public class TestThriftEventHandlerCallback {
         new PingServiceRpcServerHandler(new BlockingPingService(), ImmutableList.of(handler));
 
     LegacyServerTransportFactory transportFactory =
-        new LegacyServerTransportFactory(new ThriftServerConfig().setEnableJdkSsl(false));
+        new LegacyServerTransportFactory(
+            new ThriftServerConfig().setClientAuth(ClientAuth.OPTIONAL).setEnableJdkSsl(false));
     LegacyServerTransport transport = transportFactory.createServerTransport(serverHandler).block();
 
     InetSocketAddress address = (InetSocketAddress) transport.getAddress();
@@ -172,7 +178,10 @@ public class TestThriftEventHandlerCallback {
 
     RSocketServerTransportFactory transportFactory =
         new RSocketServerTransportFactory(
-            new ThriftServerConfig().setSslEnabled(false).setEnableJdkSsl(false));
+            new ThriftServerConfig()
+                .setClientAuth(ClientAuth.OPTIONAL)
+                .setSslEnabled(false)
+                .setEnableJdkSsl(false));
     RSocketServerTransport transport =
         transportFactory.createServerTransport(serverHandler).block();
 
