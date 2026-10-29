@@ -89,9 +89,8 @@ if (THRIFT_RPC)
            ${thrift_openssl_crypto})
 
   add_library(thrift-cpp INTERFACE)
-  target_link_libraries(
-    thrift-cpp INTERFACE async concurrency thriftprotocol transport
-                         Folly::folly glog::glog)
+  target_link_libraries(thrift-cpp INTERFACE async concurrency thriftprotocol
+                                             transport Folly::folly glog::glog)
 endif () # THRIFT_RPC
 
 if (BUILD_SHARED_LIBS)

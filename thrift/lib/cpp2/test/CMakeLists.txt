@@ -17,16 +17,12 @@
 
 add_executable(ProtocolBench ProtocolBench.cpp ../../thrift/detail/protocol.cpp)
 # Generate Thrift files for this benchmark.
-thrift_generate(
-  ProtocolBench ProtocolBenchData.thrift
-  LANGUAGE cpp2
-  OPTIONS frozen2 layouts)
+thrift_generate(ProtocolBench ProtocolBenchData.thrift LANGUAGE cpp2
+                OPTIONS frozen2 layouts)
 foreach (conf_name "protocol" "type" "any" "serialization" "patch_data"
                    "conformance")
-  thrift_generate(
-    ProtocolBench ../../../conformance/if/${conf_name}.thrift
-    LANGUAGE cpp2
-    OPTIONS frozen2)
+  thrift_generate(ProtocolBench ../../../conformance/if/${conf_name}.thrift
+                  LANGUAGE cpp2 OPTIONS frozen2)
 endforeach ()
 find_package(benchmark CONFIG REQUIRED)
 target_link_libraries(

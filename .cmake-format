@@ -1,5 +1,6 @@
 format:
   separate_ctrl_name_with_space: true
+  max_subgroups_hwrap: 3
 markup:
   enable_markup: false
 parse:

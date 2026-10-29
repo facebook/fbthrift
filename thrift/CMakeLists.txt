@@ -66,11 +66,8 @@ install(
 
 # For projects that build fbthrift from source: the FBTHRIFT_COMPILER and
 # FBTHRIFT_INCLUDE_DIR that fbcode_builder's add_fbthrift_*_library() read.
-set(FBTHRIFT_COMPILER
-    FBThrift::thrift
-    CACHE INTERNAL "thrift compiler target")
-set(FBTHRIFT_INCLUDE_DIR
-    "${PROJECT_SOURCE_DIR}"
+set(FBTHRIFT_COMPILER FBThrift::thrift CACHE INTERNAL "thrift compiler target")
+set(FBTHRIFT_INCLUDE_DIR "${PROJECT_SOURCE_DIR}"
     CACHE INTERNAL "fbthrift include directory")
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ThriftLibrary.cmake

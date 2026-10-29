@@ -17,8 +17,8 @@
 add_library(protocol_test_fixtures OBJECT)
 target_compile_options(protocol_test_fixtures
                        PRIVATE -Wno-shadow-compatible-local)
-target_link_libraries(protocol_test_fixtures PUBLIC thrift_annotation
-                                                    thriftfrozen2 thriftmetadata)
+target_link_libraries(protocol_test_fixtures
+                      PUBLIC thrift_annotation thriftfrozen2 thriftmetadata)
 # cursor.thrift's adapters are in thrift/test/AdapterTest.h, which uses GTest.
 target_link_libraries(protocol_test_fixtures PRIVATE GTest::gtest)
 foreach (thrift_file Module CompactProtocolTestStructs cursor)
@@ -29,10 +29,8 @@ foreach (thrift_file Module CompactProtocolTestStructs cursor)
   else ()
     set(thrift_options frozen2 layouts)
   endif ()
-  thrift_generate(
-    protocol_test_fixtures ${thrift_file}.thrift
-    LANGUAGE cpp2
-    OPTIONS ${thrift_options})
+  thrift_generate(protocol_test_fixtures ${thrift_file}.thrift LANGUAGE cpp2
+                  OPTIONS ${thrift_options})
 endforeach ()
 
 # Test files to compile.

@@ -42,34 +42,23 @@ add_library(
 thrift_generate(thriftmetadata ../thrift/metadata.thrift LANGUAGE cpp2)
 thrift_generate(thriftmetadata ../thrift/protocol.thrift LANGUAGE cpp2)
 thrift_generate(thriftmetadata ../thrift/protocol_detail.thrift LANGUAGE cpp2)
-thrift_generate(
-  thriftmetadata ../thrift/type_id.thrift
-  LANGUAGE cpp2
-  OPTIONS no_metadata)
-thrift_generate(
-  thriftmetadata ../thrift/type_system.thrift
-  LANGUAGE cpp2
-  OPTIONS no_metadata)
-thrift_generate(
-  thriftmetadata ../thrift/schema.thrift
-  LANGUAGE cpp2
-  OPTIONS no_metadata)
-thrift_generate(
-  thriftmetadata ../thrift/record.thrift
-  LANGUAGE cpp2
-  OPTIONS no_metadata)
-thrift_generate(
-  thriftmetadata schema/syntax_graph.thrift
-  LANGUAGE cpp2
-  OPTIONS no_metadata)
-thrift_generate(
-  thriftmetadata ../thrift/service_catalog.thrift
-  LANGUAGE cpp2
-  OPTIONS no_metadata)
+thrift_generate(thriftmetadata ../thrift/type_id.thrift LANGUAGE cpp2
+                OPTIONS no_metadata)
+thrift_generate(thriftmetadata ../thrift/type_system.thrift LANGUAGE cpp2
+                OPTIONS no_metadata)
+thrift_generate(thriftmetadata ../thrift/schema.thrift LANGUAGE cpp2
+                OPTIONS no_metadata)
+thrift_generate(thriftmetadata ../thrift/record.thrift LANGUAGE cpp2
+                OPTIONS no_metadata)
+thrift_generate(thriftmetadata schema/syntax_graph.thrift LANGUAGE cpp2
+                OPTIONS no_metadata)
+thrift_generate(thriftmetadata ../thrift/service_catalog.thrift LANGUAGE cpp2
+                OPTIONS no_metadata)
 # For the headers generated for thrifttype and thrifttyperep.
 add_dependencies(thriftmetadata thrifttype)
-target_link_libraries(thriftmetadata PUBLIC Folly::folly thriftprotocol
-                                            thrifttyperep thrifttype thrift_common)
+target_link_libraries(
+  thriftmetadata PUBLIC Folly::folly thriftprotocol thrifttyperep thrifttype
+                        thrift_common)
 target_link_libraries(thriftmetadata PUBLIC ${thrift_xxhash})
 # SerializableRecord.cpp includes F14Map and instantiates PrimitiveDatum for
 # every primitive type; on MSVC this exceeds the default COFF section limit.
@@ -139,18 +128,12 @@ target_link_libraries(thriftfrozen2 PUBLIC Folly::folly thriftmetadata
                                            thriftprotocol glog::glog gflags)
 
 add_library(thrifttyperep)
-thrift_generate(
-  thrifttyperep ../thrift/id.thrift
-  LANGUAGE cpp2
-  OPTIONS no_metadata)
-thrift_generate(
-  thrifttyperep ../thrift/standard.thrift
-  LANGUAGE cpp2
-  OPTIONS json no_metadata)
-thrift_generate(
-  thrifttyperep ../thrift/type_rep.thrift
-  LANGUAGE cpp2
-  OPTIONS json no_metadata)
+thrift_generate(thrifttyperep ../thrift/id.thrift LANGUAGE cpp2
+                OPTIONS no_metadata)
+thrift_generate(thrifttyperep ../thrift/standard.thrift LANGUAGE cpp2
+                OPTIONS json no_metadata)
+thrift_generate(thrifttyperep ../thrift/type_rep.thrift LANGUAGE cpp2
+                OPTIONS json no_metadata)
 add_dependencies(thrifttyperep thrift_annotation)
 target_link_libraries(thrifttyperep PUBLIC Folly::folly thrift_annotation)
 
@@ -165,18 +148,12 @@ add_library(
   type/Type.cpp
   type/TypeRegistry.cpp
   type/UniversalName.cpp)
-thrift_generate(
-  thrifttype ../thrift/any_rep.thrift
-  LANGUAGE cpp2
-  OPTIONS json no_metadata)
-thrift_generate(
-  thrifttype ../thrift/field_mask.thrift
-  LANGUAGE cpp2
-  OPTIONS no_metadata)
-thrift_generate(
-  thrifttype ../thrift/type.thrift
-  LANGUAGE cpp2
-  OPTIONS no_metadata)
+thrift_generate(thrifttype ../thrift/any_rep.thrift LANGUAGE cpp2
+                OPTIONS json no_metadata)
+thrift_generate(thrifttype ../thrift/field_mask.thrift LANGUAGE cpp2
+                OPTIONS no_metadata)
+thrift_generate(thrifttype ../thrift/type.thrift LANGUAGE cpp2
+                OPTIONS no_metadata)
 add_dependencies(thrifttype thrift_annotation thrifttyperep thriftprotocol)
 target_link_libraries(
   thrifttype PUBLIC thrift_common Folly::folly thrift_annotation thrifttyperep
@@ -190,17 +167,13 @@ add_library(thriftanyrep "${CMAKE_CURRENT_BINARY_DIR}/thriftanyrep_stub.cpp")
 target_link_libraries(thriftanyrep PUBLIC thrifttype)
 
 add_library(rpcmetadata)
-thrift_generate(
-  rpcmetadata ../thrift/RpcMetadata.thrift
-  LANGUAGE cpp2
-  OPTIONS json no_metadata)
+thrift_generate(rpcmetadata ../thrift/RpcMetadata.thrift LANGUAGE cpp2
+                OPTIONS json no_metadata)
 target_link_libraries(rpcmetadata PUBLIC Folly::folly thriftprotocol)
 
 add_library(serverdbginfo)
-thrift_generate(
-  serverdbginfo ../thrift/serverdbginfo.thrift
-  LANGUAGE cpp2
-  OPTIONS json no_metadata)
+thrift_generate(serverdbginfo ../thrift/serverdbginfo.thrift LANGUAGE cpp2
+                OPTIONS json no_metadata)
 thrift_configure_target(serverdbginfo PUBLIC)
 target_link_libraries(serverdbginfo PUBLIC Folly::folly)
 

@@ -83,13 +83,8 @@ add_library(
   generate/python/util.cc
   generate/rust/util.cc
   generate/swift/util.cc)
-target_link_libraries(
-  compiler
-  compiler_ast
-  compiler_base
-  fmt::fmt
-  Folly::folly
-  OpenSSL::Crypto)
+target_link_libraries(compiler compiler_ast compiler_base fmt::fmt Folly::folly
+                      OpenSSL::Crypto)
 
 add_library(
   whisker STATIC

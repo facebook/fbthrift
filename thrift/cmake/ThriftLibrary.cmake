@@ -102,8 +102,8 @@ function (thrift_generate)
         "LANGUAGE ...), got thrift_generate(${args})")
   endif ()
   if (NOT THRIFT_COMPILER)
-    message(FATAL_ERROR
-            "thrift_generate: no Thrift compiler; set THRIFT_COMPILER")
+    message(
+      FATAL_ERROR "thrift_generate: no Thrift compiler; set THRIFT_COMPILER")
   endif ()
   # Before CMP0174 (CMake 3.31), cmake_parse_arguments() drops a keyword whose
   # value is an empty string, so find those here.
@@ -138,16 +138,14 @@ function (thrift_generate)
     endif ()
   endforeach ()
   if (DEFINED THRIFT_GENERATE_UNPARSED_ARGUMENTS)
-    message(
-      FATAL_ERROR
-        "thrift_generate: unexpected arguments: "
-        "${THRIFT_GENERATE_UNPARSED_ARGUMENTS}")
+    message(FATAL_ERROR "thrift_generate: unexpected arguments: "
+                        "${THRIFT_GENERATE_UNPARSED_ARGUMENTS}")
   endif ()
   foreach (keyword ${THRIFT_GENERATE_KEYWORDS_MISSING_VALUES} ${empty_keywords})
     # Only an explicit "" means empty. A keyword with no argument at all is
     # also in KEYWORDS_MISSING_VALUES, and under CMP0174 it is DEFINED too.
-    if (keyword MATCHES "^(INCLUDE_PREFIX|NAMESPACE)$"
-        AND keyword IN_LIST empty_keywords)
+    if (keyword MATCHES "^(INCLUDE_PREFIX|NAMESPACE)$" AND keyword IN_LIST
+                                                           empty_keywords)
       continue()
     endif ()
     if (keyword IN_LIST one_value_keywords)
@@ -156,15 +154,14 @@ function (thrift_generate)
   endforeach ()
   set(language "${THRIFT_GENERATE_LANGUAGE}")
   if (NOT language MATCHES "^(cpp2|py3|python)$")
-    message(
-      FATAL_ERROR "thrift_generate: LANGUAGE must be cpp2, py3 or python")
+    message(FATAL_ERROR "thrift_generate: LANGUAGE must be cpp2, py3 or python")
   endif ()
   set(namespace "${THRIFT_GENERATE_NAMESPACE}")
   if (NOT namespace STREQUAL "" AND NOT language STREQUAL "python")
     message(FATAL_ERROR "thrift_generate: NAMESPACE requires LANGUAGE python")
   endif ()
-  if (NOT "${THRIFT_GENERATE_INCLUDE_PREFIX}" STREQUAL ""
-      AND language STREQUAL "python")
+  if (NOT "${THRIFT_GENERATE_INCLUDE_PREFIX}" STREQUAL "" AND language STREQUAL
+                                                              "python")
     message(
       FATAL_ERROR "thrift_generate: INCLUDE_PREFIX does not apply to python")
   endif ()
@@ -180,29 +177,26 @@ function (thrift_generate)
   endif ()
 
   if (DEFINED THRIFT_GENERATE_OUTPUT_DIRECTORY)
-    get_filename_component(
-      output_dir "${THRIFT_GENERATE_OUTPUT_DIRECTORY}" ABSOLUTE BASE_DIR
-      "${CMAKE_CURRENT_BINARY_DIR}")
+    get_filename_component(output_dir "${THRIFT_GENERATE_OUTPUT_DIRECTORY}"
+                           ABSOLUTE BASE_DIR "${CMAKE_CURRENT_BINARY_DIR}")
   elseif (outside)
     message(
-      FATAL_ERROR
-        "thrift_generate: ${file} is outside PROJECT_SOURCE_DIR, so "
-        "OUTPUT_DIRECTORY is required")
+      FATAL_ERROR "thrift_generate: ${file} is outside PROJECT_SOURCE_DIR, so "
+                  "OUTPUT_DIRECTORY is required")
   elseif (rel STREQUAL "")
     set(output_dir "${PROJECT_BINARY_DIR}")
   else ()
     set(output_dir "${PROJECT_BINARY_DIR}/${rel}")
   endif ()
   if (DEFINED THRIFT_GENERATE_INCLUDE_PREFIX OR "INCLUDE_PREFIX" IN_LIST
-                                                 empty_keywords)
+                                                empty_keywords)
     set(include_prefix "${THRIFT_GENERATE_INCLUDE_PREFIX}")
   elseif (language STREQUAL "python")
     set(include_prefix "")
   elseif (outside)
     message(
-      FATAL_ERROR
-        "thrift_generate: ${file} is outside PROJECT_SOURCE_DIR, so "
-        "INCLUDE_PREFIX is required")
+      FATAL_ERROR "thrift_generate: ${file} is outside PROJECT_SOURCE_DIR, so "
+                  "INCLUDE_PREFIX is required")
   else ()
     set(include_prefix "${rel}")
   endif ()
@@ -236,12 +230,9 @@ function (thrift_generate)
   # add_subdirectory() exist otherwise.
   file(MAKE_DIRECTORY "${output_dir}")
   set(headers
-      ${gen_dir}/${stem}_constants.h
-      ${gen_dir}/${stem}_data.h
-      ${gen_dir}/${stem}_metadata.h
-      ${gen_dir}/${stem}_types.h
-      ${gen_dir}/${stem}_types.tcc
-      ${gen_dir}/${stem}_types_custom_protocol.h)
+      ${gen_dir}/${stem}_constants.h ${gen_dir}/${stem}_data.h
+      ${gen_dir}/${stem}_metadata.h ${gen_dir}/${stem}_types.h
+      ${gen_dir}/${stem}_types.tcc ${gen_dir}/${stem}_types_custom_protocol.h)
   set(sources
       ${gen_dir}/${stem}_constants.cpp
       ${gen_dir}/${stem}_data.cpp
@@ -256,13 +247,9 @@ function (thrift_generate)
     list(APPEND sources ${gen_dir}/${stem}_metadata.cpp)
   endif ()
   foreach (service ${services})
-    list(
-      APPEND
-      headers
-      ${gen_dir}/${service}.h
-      ${gen_dir}/${service}.tcc
-      ${gen_dir}/${service}AsyncClient.h
-      ${gen_dir}/${service}_custom_protocol.h)
+    list(APPEND headers ${gen_dir}/${service}.h ${gen_dir}/${service}.tcc
+         ${gen_dir}/${service}AsyncClient.h
+         ${gen_dir}/${service}_custom_protocol.h)
     list(APPEND sources ${gen_dir}/${service}.cpp
          ${gen_dir}/${service}AsyncClient.cpp)
     if ("${language}" STREQUAL "cpp2")
@@ -309,7 +296,7 @@ function (thrift_generate)
       COMMENT "Generating ${stem} thrift-python files. Output: ${output_dir}")
   else ()
     if ("${language}" STREQUAL "py3")
-      file(WRITE "${gen_dir}/${stem}/__init__.py")
+      file(WRITE "${gen_dir}/${stem}/__init__.py" )
     endif ()
     set(gen "${generator}:${joined_options}")
     if (NOT "${include_prefix}" STREQUAL "")
@@ -340,8 +327,6 @@ function (thrift_generate)
     endif ()
   endif ()
   if (DEFINED THRIFT_GENERATE_OUT_SOURCES)
-    set(${THRIFT_GENERATE_OUT_SOURCES}
-        "${sources}"
-        PARENT_SCOPE)
+    set(${THRIFT_GENERATE_OUT_SOURCES} "${sources}" PARENT_SCOPE)
   endif ()
 endfunction ()

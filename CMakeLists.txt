@@ -14,10 +14,7 @@
 
 cmake_minimum_required(VERSION 3.24)
 
-project(
-  THRIFT
-  VERSION 1.0.0
-  LANGUAGES CXX)
+project(THRIFT VERSION 1.0.0 LANGUAGES CXX)
 
 # Build rules should still use $<TARGET_FILE...> instead of these paths:
 # multi-config generators add a per-config subdirectory they do not carry.
@@ -84,9 +81,10 @@ option(
   "Enable the RPC transport stack and its dependencies (fizz, wangle, mvfst)."
   ON)
 option(THRIFT_TESTS "Enable tests (requires GTest)." OFF)
-option(THRIFT_BENCHMARKS
-       "Enable benchmarks (requires google/benchmark). Defaults to THRIFT_TESTS."
-       ${THRIFT_TESTS})
+option(
+  THRIFT_BENCHMARKS
+  "Enable benchmarks (requires google/benchmark). Defaults to THRIFT_TESTS."
+  ${THRIFT_TESTS})
 option(THRIFT_PY_DEPRECATED
        "Enable the deprecated thrift-py library; use thrift-python instead" ON)
 option(THRIFT_PYTHON
@@ -109,13 +107,9 @@ endmacro ()
 # CMake before 3.26 has no $<BUILD_LOCAL_INTERFACE:>.
 function (thrift_localize out dep)
   if (CMAKE_VERSION VERSION_LESS 3.26)
-    set(${out}
-        "${dep}"
-        PARENT_SCOPE)
+    set(${out} "${dep}" PARENT_SCOPE)
   else ()
-    set(${out}
-        "$<BUILD_LOCAL_INTERFACE:${dep}>"
-        PARENT_SCOPE)
+    set(${out} "$<BUILD_LOCAL_INTERFACE:${dep}>" PARENT_SCOPE)
   endif ()
 endfunction ()
 
@@ -124,10 +118,8 @@ include(FBFetchFromManifest)
 # Homebrew's OpenSSL is keg-only, so CMake's FindOpenSSL doesn't search it.
 # Set before folly, which also looks for OpenSSL.
 if (APPLE AND NOT DEFINED OPENSSL_ROOT_DIR)
-  execute_process(
-    COMMAND brew --prefix openssl
-    OUTPUT_VARIABLE OPENSSL_ROOT_DIR
-    OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
+  execute_process(COMMAND brew --prefix openssl OUTPUT_VARIABLE OPENSSL_ROOT_DIR
+                  OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
 endif ()
 
 find_package(folly CONFIG QUIET)
@@ -170,24 +162,16 @@ function (thrift_fetch_xxhash)
   set(saved_build_type "${CMAKE_BUILD_TYPE}")
   fb_fetch_from_manifest(xxhash xxhash)
   if (NOT saved_build_type)
-    set(CMAKE_BUILD_TYPE
-        ""
-        CACHE STRING "Choose the type of build." FORCE)
+    set(CMAKE_BUILD_TYPE "" CACHE STRING "Choose the type of build." FORCE)
   endif ()
   set_target_properties(xxhash PROPERTIES POSITION_INDEPENDENT_CODE ON)
   # The name an installed xxhash provides.
   add_library(Xxhash::xxhash INTERFACE IMPORTED GLOBAL)
   target_link_libraries(Xxhash::xxhash INTERFACE xxhash)
   FetchContent_GetProperties(xxhash SOURCE_DIR source_dir)
-  set(Xxhash_INCLUDE_DIR
-      "${source_dir}"
-      PARENT_SCOPE)
-  set(Xxhash_LIBRARY
-      xxhash
-      PARENT_SCOPE)
-  set(Xxhash_FOUND
-      ON
-      PARENT_SCOPE)
+  set(Xxhash_INCLUDE_DIR "${source_dir}" PARENT_SCOPE)
+  set(Xxhash_LIBRARY xxhash PARENT_SCOPE)
+  set(Xxhash_FOUND ON PARENT_SCOPE)
 endfunction ()
 
 find_package(Xxhash)
@@ -237,7 +221,7 @@ function (thrift_build_sodium)
   add_library(sodium STATIC IMPORTED GLOBAL)
   set_target_properties(
     sodium PROPERTIES IMPORTED_LOCATION "${lib}" INTERFACE_INCLUDE_DIRECTORIES
-                                                "${prefix}/include")
+                                                 "${prefix}/include")
   add_dependencies(sodium libsodium)
   # Makes fizz's find_package(Sodium) resolve to this instead of FindSodium.
   file(WRITE "${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/sodium-config.cmake"

@@ -15,10 +15,9 @@
 add_executable(compiler_generate_build_templates build_templates.cc)
 thrift_configure_target(compiler_generate_build_templates PRIVATE)
 
-file(
-  GLOB_RECURSE TEMPLATE_FILES CONFIGURE_DEPENDS
-  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/templates/**/*.whisker)
+file(GLOB_RECURSE TEMPLATE_FILES CONFIGURE_DEPENDS
+     RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+     ${CMAKE_CURRENT_SOURCE_DIR}/templates/**/*.whisker)
 add_custom_command(
   OUTPUT templates.cc
   COMMAND compiler_generate_build_templates
@@ -26,10 +25,7 @@ add_custom_command(
   DEPENDS compiler_generate_build_templates ${TEMPLATE_FILES}
   VERBATIM)
 
-file(
-  GLOB GENERATOR_FILES
-  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  *.cc)
+file(GLOB GENERATOR_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cc)
 list(REMOVE_ITEM GENERATOR_FILES build_templates.cc)
 list(REMOVE_ITEM GENERATOR_FILES t_ast_generator.cc)
 list(REMOVE_ITEM GENERATOR_FILES schema_populator.cc)

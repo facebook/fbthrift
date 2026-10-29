@@ -121,8 +121,7 @@ function (symlink_files_to_target target_name dest_dir)
   foreach (_src ${ARGN})
     get_filename_component(_target_file "${_src}" NAME)
     add_custom_command(
-      TARGET ${target_name}
-      PRE_BUILD
+      TARGET ${target_name} PRE_BUILD
       COMMAND ${CMAKE_COMMAND} -E create_symlink "${_src}"
               "${dest_dir}/${_target_file}")
   endforeach ()
@@ -133,8 +132,8 @@ function (register_python_tests test_prefix module_prefix test_env working_dir)
   foreach (test_file ${ARGN})
     get_filename_component(test_name ${test_file} NAME_WE)
     add_test(
-      NAME ${test_prefix}_${test_name}
-      COMMAND ${Python3_EXECUTABLE} -m unittest ${module_prefix}.${test_name} -v
+      NAME ${test_prefix}_${test_name} COMMAND ${Python3_EXECUTABLE} -m unittest
+                                               ${module_prefix}.${test_name} -v
       WORKING_DIRECTORY ${working_dir})
     set_tests_properties(${test_prefix}_${test_name} PROPERTIES ENVIRONMENT
                                                                 "${test_env}")

@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-find_package(
-  Python3
-  COMPONENTS Interpreter Development
-  REQUIRED)
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
 # Set FOLLY_PYTHON_SITE_PACKAGES for Cython .pxd files
 # (folly.pxd, iobuf.pxd, etc.)
@@ -184,10 +181,7 @@ function (symlink_dir_recursive src_dir dest_base_dir)
   symlink_dir_contents("${src_dir}" "${dest_base_dir}")
 
   # Find all subdirectories and call symlink_dir_contents for each
-  file(
-    GLOB_RECURSE _all_subdirs
-    LIST_DIRECTORIES true
-    "${src_dir}/*")
+  file(GLOB_RECURSE _all_subdirs LIST_DIRECTORIES true "${src_dir}/*")
 
   foreach (_src_dir ${_all_subdirs})
     if (IS_DIRECTORY "${_src_dir}")
@@ -370,8 +364,7 @@ foreach (_file "types.pxd" "types.pyx")
   get_filename_component(_target_file "${_src}" NAME)
   message(STATUS "Linking ${_src} to ${_cybld}/thrift/python/_${_target_file}")
   add_custom_command(
-    TARGET create_binding_symlink_python_types
-    PRE_BUILD
+    TARGET create_binding_symlink_python_types PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E create_symlink "${_src}"
             "${_cybld}/thrift/python/_${_target_file}")
 endforeach ()
@@ -381,8 +374,7 @@ foreach (_file "stream.pxd" "stream.pyx")
   get_filename_component(_target_file "${_src}" NAME)
   message(STATUS "Linking ${_src} to ${_cybld}/thrift/py3/_${_target_file}")
   add_custom_command(
-    TARGET create_binding_symlink_python_types
-    PRE_BUILD
+    TARGET create_binding_symlink_python_types PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E create_symlink "${_src}"
             "${_cybld}/thrift/py3/_${_target_file}")
 endforeach ()
@@ -618,8 +610,7 @@ foreach (_src ${ServerImplFiles})
   message(STATUS "Creating server_impl symlink: \
 ${_cybld}/thrift/python/server_impl/${_target_file} -> ${_src}")
   add_custom_command(
-    TARGET create_binding_symlink_server_impl
-    PRE_BUILD
+    TARGET create_binding_symlink_server_impl PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E create_symlink "${_src}"
             "${_cybld}/thrift/python/server_impl/${_target_file}")
 endforeach ()
@@ -633,8 +624,7 @@ foreach (_src ${ServerImplExecutionFiles})
   message(STATUS "Creating server_impl/execution symlink: \
 ${_cybld}/thrift/python/server_impl/execution/${_target_file} -> ${_src}")
   add_custom_command(
-    TARGET create_binding_symlink_server_impl
-    PRE_BUILD
+    TARGET create_binding_symlink_server_impl PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E create_symlink "${_src}"
             "${_cybld}/thrift/python/server_impl/execution/${_target_file}")
 endforeach ()
@@ -649,8 +639,7 @@ foreach (_src ${ServerImplInterceptorFiles})
   message(STATUS "Creating server_impl/interceptor symlink: \
 ${_cybld}/thrift/python/server_impl/interceptor/${_target_file} -> ${_src}")
   add_custom_command(
-    TARGET create_binding_symlink_server_impl
-    PRE_BUILD
+    TARGET create_binding_symlink_server_impl PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E create_symlink "${_src}"
             "${_cybld}/thrift/python/server_impl/interceptor/${_target_file}")
 endforeach ()
@@ -701,8 +690,7 @@ if (DEFINED CMAKE_JOB_POOLS)
     set(_setup_py_parallel_jobs "${CMAKE_MATCH_1}")
   endif ()
 endif ()
-if (NOT _setup_py_parallel_jobs
-    AND DEFINED ENV{CMAKE_BUILD_PARALLEL_LEVEL}
+if (NOT _setup_py_parallel_jobs AND DEFINED ENV{CMAKE_BUILD_PARALLEL_LEVEL}
     AND "$ENV{CMAKE_BUILD_PARALLEL_LEVEL}" MATCHES "^[0-9]+$")
   set(_setup_py_parallel_jobs "$ENV{CMAKE_BUILD_PARALLEL_LEVEL}")
 endif ()
