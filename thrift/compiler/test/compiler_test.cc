@@ -3275,6 +3275,43 @@ TEST(CompilerTest, cpp_use_allocator_on_allocator_unaware_fields) {
   )");
 }
 
+TEST(CompilerTest, cpp_allocator_with_tablebased_serialization) {
+  check_compile(
+      R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/cpp.thrift"
+    include "thrift/annotation/thrift.thrift"
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "::std::pmr::polymorphic_allocator<char>"},
+    }
+    struct PmrStruct {
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      @cpp.Type{template = "::std::pmr::vector"}
+      1: list<i32> ids;
+    }
+      # expected-error@-8: `cpp.allocator` on `PmrStruct` is not supported with the `tablebased` option.  [tablebased-allocator-rule]
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "::std::pmr::polymorphic_allocator<char>"},
+    }
+    @cpp.InternalExperimentalAllowAllocatorOnUnion
+    union PmrUnion {
+      1: i32 id;
+    }
+      # expected-error@-7: `cpp.allocator` on `PmrUnion` is not supported with the `tablebased` option.  [tablebased-allocator-rule]
+
+    struct Plain {
+      1: string name;
+      2: PlainUnion choice;
+    }
+    union PlainUnion {
+      1: i32 id;
+    }
+  )",
+      {"--gen", "mstch_cpp2:json,tablebased"});
+}
+
 TEST(CompilerTest, cpp_allocator_optional_ref) {
   check_compile(R"(
     package "facebook.com/thrift/test"

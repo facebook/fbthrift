@@ -2617,6 +2617,19 @@ void validate_struct_annotations(
           s.name());
     }
   }
+  // Table-based deserialization builds union members without the union's
+  // allocator, and has no type info for strings with a custom allocator, such
+  // as `std::pmr::string`.
+  if (options.count("tablebased") != 0 &&
+      s.has_unstructured_annotation("cpp.allocator")) {
+    ctx.report(
+        s,
+        "tablebased-allocator-rule",
+        diagnostic_level::error,
+        "`cpp.allocator` on `{}` is not supported with the `tablebased` "
+        "option.",
+        s.name());
+  }
 
   for (const auto& field : s.fields()) {
     if (cpp2::is_mixin(field)) {
