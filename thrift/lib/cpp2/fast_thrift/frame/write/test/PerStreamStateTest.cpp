@@ -65,7 +65,7 @@ TEST(PerStreamStateDeathTest, StartingFrameRequiresEmptyDataQueue) {
   };
   state.enqueue(std::move(second), nullptr, false);
 
-  EXPECT_DEATH((void)state.nextFragment(1), "dataQueue.empty\\(\\)");
+  EXPECT_DEBUG_DEATH((void)state.nextFragment(1), "dataQueue.empty\\(\\)");
 }
 
 TEST(PerStreamStateTest, EmitsQueuedFramesInOrderWithFragmentFields) {
