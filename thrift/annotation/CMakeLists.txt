@@ -13,8 +13,6 @@
 # limitations under the License.
 
 add_library(thrift_annotation)
-# The old name, kept for compatibility.
-add_library(thriftannotation ALIAS thrift_annotation)
 
 foreach (
   name
