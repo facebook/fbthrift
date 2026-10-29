@@ -25,6 +25,22 @@ interface IThriftServiceMethodMetadata<TThriftIf as IThriftAsyncIf> {
   ): Awaitable<void>;
 
   public function getResult(): ?IResultThriftStruct;
+
+  public function getServiceName()[]: string;
+}
+
+/**
+ * Shared base for method metadata. The service name identifies the service
+ * that declares the method in the IDL, which differs from the processor's
+ * service for inherited methods.
+ */
+abstract class ThriftServiceMethodMetadataBase<TThriftIf as IThriftAsyncIf>
+  implements IThriftServiceMethodMetadata<TThriftIf> {
+  public function __construct(private string $serviceName)[] {}
+
+  final public function getServiceName()[]: string {
+    return $this->serviceName;
+  }
 }
 
 /**
@@ -36,12 +52,15 @@ interface IThriftServiceMethodMetadata<TThriftIf as IThriftAsyncIf> {
 final class ThriftServiceOnewayMethod<
   TThriftIf as IThriftAsyncIf,
   TArgs as IThriftStruct,
-> implements IThriftServiceMethodMetadata<TThriftIf> {
+> extends ThriftServiceMethodMetadataBase<TThriftIf> {
 
   public function __construct(
+    string $service_name,
     protected class<TArgs> $args,
     protected (function(TThriftIf, TArgs): Awaitable<void>) $handlerMethod,
-  )[] {}
+  )[] {
+    parent::__construct($service_name);
+  }
 
   public function getArgsClass()[]: class<TArgs> {
     return $this->args;
@@ -69,16 +88,19 @@ abstract class ThriftServiceMethod<
   TResultStruct as IResultThriftStruct with { type TResult = TRet },
   TRet,
   THandlerResult,
-> implements IThriftServiceMethodMetadata<TThriftIf> {
+> extends ThriftServiceMethodMetadataBase<TThriftIf> {
   protected ?THandlerResult $result = null;
   public function __construct(
+    string $service_name,
     protected class<TArgs> $args,
     protected class<TResultStruct> $response,
     protected (function(
       TThriftIf,
       TArgs,
     ): Awaitable<THandlerResult>) $handlerMethod,
-  )[] {}
+  )[] {
+    parent::__construct($service_name);
+  }
 
   abstract protected function getSuccessResponse(): TRet;
 
@@ -149,6 +171,7 @@ final class ThriftServiceStreamingResponseMethod<
   > {
 
   public function __construct(
+    string $service_name,
     protected class<TArgs> $args,
     protected class<TResultStruct> $ret,
     protected (function(
@@ -157,7 +180,7 @@ final class ThriftServiceStreamingResponseMethod<
     ): Awaitable<ResponseAndStream<TRet, TStreamType>>) $handlerMethod,
     protected class<TStreamPayloadStruct> $streamPayload,
   )[] {
-    parent::__construct($args, $ret, $handlerMethod);
+    parent::__construct($service_name, $args, $ret, $handlerMethod);
   }
 
   <<__Override>>
@@ -200,6 +223,7 @@ final class ThriftServiceSinkResponseMethod<
   > {
 
   public function __construct(
+    string $service_name,
     protected class<TArgs> $args,
     protected class<TResultStruct> $ret,
     protected (function(TThriftIf, TArgs): Awaitable<
@@ -208,7 +232,7 @@ final class ThriftServiceSinkResponseMethod<
     protected class<TSinkPayloadStruct> $sinkPayload,
     protected class<TFinalResponseStruct> $finalResponse,
   )[] {
-    parent::__construct($args, $ret, $handlerMethod);
+    parent::__construct($service_name, $args, $ret, $handlerMethod);
   }
 
   <<__Override>>
@@ -258,6 +282,7 @@ final class ThriftServiceBiDiStreamingResponseMethod<
   > {
 
   public function __construct(
+    string $service_name,
     protected class<TArgs> $args,
     protected class<TResultStruct> $ret,
     protected (function(TThriftIf, TArgs): Awaitable<
@@ -270,7 +295,7 @@ final class ThriftServiceBiDiStreamingResponseMethod<
     protected class<TSinkPayloadStruct> $sinkPayload,
     protected class<TStreamResponseStruct> $streamResponse,
   )[] {
-    parent::__construct($args, $ret, $handlerMethod);
+    parent::__construct($service_name, $args, $ret, $handlerMethod);
   }
 
   <<__Override>>
@@ -424,7 +449,12 @@ abstract class ThriftAsyncProcessor
     $args_class = $method_metadata->getArgsClass();
     $args = $this->readHelper($args_class, $input, $fname, $handler_ctx);
     $this->eventHandler_
-      ->preExec($handler_ctx, static::THRIFT_SVC_NAME, $fname, $args);
+      ->preExec(
+        $handler_ctx,
+        $method_metadata->getServiceName(),
+        $fname,
+        $args,
+      );
     $reply_type = TMessageType::REPLY;
     try {
       await $method_metadata->genExecute($this->handler, $args);
