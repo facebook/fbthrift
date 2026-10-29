@@ -55,7 +55,7 @@ apache::thrift::ClientSink<{{function.sink.elem_type.cpp_type}}, {{function.sink
 {{#pragma ignore-newlines}}
   {{#if (not function.creates_interaction?)}}
 {{#partial return_type_no_handle function=function}}
-  {{#else if (or function.stream? (and (not function.sink?) function.initial_response?))}}
+  {{#else if (or function.sink_or_stream? function.initial_response?)}}
 std::pair<apache::thrift::Client<{{service.qualified_name}}>::{{function.created_interaction.cpp_name}}, {{#partial return_type_no_handle function=function}}>
   {{#else}}
 apache::thrift::Client<{{service.qualified_name}}>::{{function.created_interaction.cpp_name}}

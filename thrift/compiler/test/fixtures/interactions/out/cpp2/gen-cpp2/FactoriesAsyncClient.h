@@ -2022,9 +2022,9 @@ class SerialInteraction final : public apache::thrift::InteractionHandle {
  public:
 #if FOLLY_HAS_COROUTINES
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSink"} */
-  folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> co_interactWithSink();
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientSink<::std::int32_t, ::std::int32_t>>> co_interactWithSink();
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSink"} */
-  folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> co_interactWithSink(apache::thrift::RpcOptions& rpcOptions);
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientSink<::std::int32_t, ::std::int32_t>>> co_interactWithSink(apache::thrift::RpcOptions& rpcOptions);
 #endif // FOLLY_HAS_COROUTINES
 
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSink"} */
@@ -2042,9 +2042,9 @@ class SerialInteraction final : public apache::thrift::InteractionHandle {
  public:
 #if FOLLY_HAS_COROUTINES
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSinkAndInitialResponse"} */
-  folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> co_interactWithSinkAndInitialResponse();
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientSink<::std::int32_t, ::std::int32_t, ::std::int32_t>>> co_interactWithSinkAndInitialResponse();
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSinkAndInitialResponse"} */
-  folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> co_interactWithSinkAndInitialResponse(apache::thrift::RpcOptions& rpcOptions);
+  folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientSink<::std::int32_t, ::std::int32_t, ::std::int32_t>>> co_interactWithSinkAndInitialResponse(apache::thrift::RpcOptions& rpcOptions);
 #endif // FOLLY_HAS_COROUTINES
 
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "Factories", "function": "interactWithSinkAndInitialResponse"} */

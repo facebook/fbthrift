@@ -342,6 +342,13 @@ struct InteractionInnerResponseHelper<
   using DecoratorArgType = void;
 };
 
+template <typename InteractionIf, typename InputElement, typename OutputElement>
+struct InteractionInnerResponseHelper<
+    InteractionIf,
+    StreamTransformation<InputElement, OutputElement>> {
+  using DecoratorArgType = void;
+};
+
 template <typename InteractionIf, typename Response>
 class HandlerCallback<TileAndResponse<InteractionIf, Response>> final
     : public HandlerCallback<Response> {

@@ -1405,11 +1405,11 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
 
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> apache::thrift::Client<::cpp2::Factories>::co_interactWithSink() {
+folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientSink<::std::int32_t, ::std::int32_t>>> apache::thrift::Client<::cpp2::Factories>::co_interactWithSink() {
   ::apache::thrift::RpcOptions rpcOptions;
   co_return co_await co_interactWithSink(rpcOptions);
 }
-folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> apache::thrift::Client<::cpp2::Factories>::co_interactWithSink(apache::thrift::RpcOptions& rpcOptions) {
+folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ClientSink<::std::int32_t, ::std::int32_t>>> apache::thrift::Client<::cpp2::Factories>::co_interactWithSink(apache::thrift::RpcOptions& rpcOptions) {
   const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
   const bool cancellable = cancelToken.canBeCancelled();
@@ -1534,11 +1534,11 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
 
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> apache::thrift::Client<::cpp2::Factories>::co_interactWithSinkAndInitialResponse() {
+folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientSink<::std::int32_t, ::std::int32_t, ::std::int32_t>>> apache::thrift::Client<::cpp2::Factories>::co_interactWithSinkAndInitialResponse() {
   ::apache::thrift::RpcOptions rpcOptions;
   co_return co_await co_interactWithSinkAndInitialResponse(rpcOptions);
 }
-folly::coro::Task<apache::thrift::Client<::cpp2::Factories>::MyInteraction> apache::thrift::Client<::cpp2::Factories>::co_interactWithSinkAndInitialResponse(apache::thrift::RpcOptions& rpcOptions) {
+folly::coro::Task<std::pair<apache::thrift::Client<::cpp2::Factories>::MyInteraction, apache::thrift::ResponseAndClientSink<::std::int32_t, ::std::int32_t, ::std::int32_t>>> apache::thrift::Client<::cpp2::Factories>::co_interactWithSinkAndInitialResponse(apache::thrift::RpcOptions& rpcOptions) {
   const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
   const bool cancellable = cancelToken.canBeCancelled();
