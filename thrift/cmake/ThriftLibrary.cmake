@@ -63,54 +63,37 @@ endif ()
 # Creates no targets of its own and adds no install rules. Call it in the
 # directory that creates <target>: CMake gives the rule that generates the files
 # only to targets in that directory.
-#
-# The file-first form, thrift_generate(<file>.thrift LANGUAGE ... [TARGET
-# <target>] [OUT_SOURCES <var>]), is deprecated. Projects that build against a
-# pinned Thrift revision, such as packsim and katran, use it until their pins
-# include the target-first form.
 function (thrift_generate)
-  set(one_value_keywords LANGUAGE OUTPUT_DIRECTORY INCLUDE_PREFIX NAMESPACE)
-  if ("${ARGV0}" MATCHES "\\.thrift$")
-    message(
-      DEPRECATION
-        "thrift_generate: thrift_generate(<file>.thrift LANGUAGE ... [TARGET "
-        "<target>] [OUT_SOURCES <var>]) is deprecated; use "
-        "thrift_generate(<target> <file>.thrift LANGUAGE ...)")
-    set(target "")
-    set(file "${ARGV0}")
-    set(first_keyword 1)
-    list(APPEND one_value_keywords TARGET OUT_SOURCES)
-    set(removed_keywords)
-  elseif (ARGC GREATER_EQUAL 2 AND "${ARGV1}" MATCHES "\\.thrift$")
-    set(target "${ARGV0}")
-    set(file "${ARGV1}")
-    if (NOT TARGET "${target}")
-      message(
-        FATAL_ERROR
-          "thrift_generate: ${target} is not a target; create it before "
-          "calling thrift_generate(${target} ${file} ...)")
-    endif ()
-    set(first_keyword 2)
-    # Parsed only to be rejected; unparsed, they would join SERVICES or OPTIONS.
-    set(removed_keywords TARGET OUT_SOURCES)
-  else ()
-    # The positional form took a file name without the extension first.
+  # Earlier forms took the .thrift file, or a file name without the extension,
+  # first. Checking the second argument stops them before they are misparsed.
+  if (ARGC LESS 2 OR NOT "${ARGV1}" MATCHES "\\.thrift$")
     list(JOIN ARGV " " args)
     message(
       FATAL_ERROR
         "thrift_generate: expected thrift_generate(<target> <file>.thrift "
         "LANGUAGE ...), got thrift_generate(${args})")
   endif ()
+  set(target "${ARGV0}")
+  set(file "${ARGV1}")
+  if (NOT TARGET "${target}")
+    message(
+      FATAL_ERROR
+        "thrift_generate: ${target} is not a target; create it before "
+        "calling thrift_generate(${target} ${file} ...)")
+  endif ()
   if (NOT THRIFT_COMPILER)
     message(
       FATAL_ERROR "thrift_generate: no Thrift compiler; set THRIFT_COMPILER")
   endif ()
+  set(one_value_keywords LANGUAGE OUTPUT_DIRECTORY INCLUDE_PREFIX NAMESPACE)
+  # Parsed only to be rejected; unparsed, they would join SERVICES or OPTIONS.
+  set(removed_keywords TARGET OUT_SOURCES)
   # Before CMP0174 (CMake 3.31), cmake_parse_arguments() drops a keyword whose
   # value is an empty string, so find those here.
   set(empty_keywords)
   math(EXPR last "${ARGC} - 2")
-  if (last GREATER_EQUAL first_keyword)
-    foreach (i RANGE ${first_keyword} ${last})
+  if (last GREATER_EQUAL 2)
+    foreach (i RANGE 2 ${last})
       math(EXPR next "${i} + 1")
       if ("${ARGV${i}}" IN_LIST one_value_keywords AND "${ARGV${next}}"
                                                        STREQUAL "")
@@ -122,9 +105,8 @@ function (thrift_generate)
   if (POLICY CMP0174)
     cmake_policy(SET CMP0174 NEW)
   endif ()
-  set(parsed_keywords ${one_value_keywords} ${removed_keywords})
   cmake_parse_arguments(
-    PARSE_ARGV ${first_keyword} THRIFT_GENERATE "" "${parsed_keywords}"
+    PARSE_ARGV 2 THRIFT_GENERATE "" "${one_value_keywords};${removed_keywords}"
     "SERVICES;OPTIONS;INCLUDE_DIRECTORIES")
   cmake_policy(POP)
   foreach (keyword ${removed_keywords})
@@ -313,20 +295,12 @@ function (thrift_generate)
       COMMENT "Generating ${stem} files. Output: ${output_dir}")
   endif ()
 
-  if (DEFINED THRIFT_GENERATE_TARGET)
-    set(target "${THRIFT_GENERATE_TARGET}")
-  endif ()
-  if (NOT target STREQUAL "")
-    target_sources(${target} PRIVATE ${headers} ${sources})
-    if (language STREQUAL "cpp2")
-      # Several calls can share a target.
-      get_target_property(links ${target} LINK_LIBRARIES)
-      if (NOT "FBThrift::protocol" IN_LIST links)
-        target_link_libraries(${target} PUBLIC FBThrift::protocol)
-      endif ()
+  target_sources(${target} PRIVATE ${headers} ${sources})
+  if (language STREQUAL "cpp2")
+    # Several calls can share a target.
+    get_target_property(links ${target} LINK_LIBRARIES)
+    if (NOT "FBThrift::protocol" IN_LIST links)
+      target_link_libraries(${target} PUBLIC FBThrift::protocol)
     endif ()
-  endif ()
-  if (DEFINED THRIFT_GENERATE_OUT_SOURCES)
-    set(${THRIFT_GENERATE_OUT_SOURCES} "${sources}" PARENT_SCOPE)
   endif ()
 endfunction ()
