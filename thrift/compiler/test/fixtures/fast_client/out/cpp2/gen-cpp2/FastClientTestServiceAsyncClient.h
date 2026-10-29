@@ -9,6 +9,11 @@
 #include <thrift/lib/cpp2/gen/client_h.h>
 
 #include "thrift/compiler/test/fixtures/fast_client/gen-cpp2/module_types.h"
+#if __has_include("thrift/compiler/test/fixtures/fast_client/gen-cpp2/NonFastParentAsyncClient.h")
+#include "thrift/compiler/test/fixtures/fast_client/gen-cpp2/NonFastParentAsyncClient.h"
+#else
+#include "thrift/compiler/test/fixtures/fast_client/gen-cpp2/module_clients.h"
+#endif
 
 namespace apache { namespace thrift {
   class Cpp2RequestContext;
@@ -40,10 +45,10 @@ struct ServiceMethodTypesFootprint<::cpp2::test::FastClientTestService> {
 } // namespace detail
 
 template <>
-class Client<::cpp2::test::FastClientTestService> : public apache::thrift::GeneratedAsyncClient {
+class Client<::cpp2::test::FastClientTestService> : public ::cpp2::test::NonFastParentAsyncClient {
   static_assert(!folly::is_detected_v<::apache::thrift::detail::st::detect_complete, ::cpp2::test::FastClientTestService>, "Definition collision with service tag. Either rename the Thrift service using @cpp.Name annotation or rename the conflicting C++ type.");
  public:
-  using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
+  using ::cpp2::test::NonFastParentAsyncClient::NonFastParentAsyncClient;
 
   std::string_view getServiceName() const noexcept override {
     return "FastClientTestService";

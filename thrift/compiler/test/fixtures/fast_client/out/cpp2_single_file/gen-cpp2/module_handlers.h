@@ -24,6 +24,268 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2::test {
+class FastAncestor;
+class FastAncestorAsyncProcessor;
+
+class FastAncestorServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+} // namespace cpp2::test
+
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::test::FastAncestor> : public apache::thrift::ServerInterface {
+  static_assert(!folly::is_detected_v<::apache::thrift::detail::st::detect_complete, ::cpp2::test::FastAncestor>, "Definition collision with service tag. Either rename the Thrift service using @cpp.Name annotation or rename the conflicting C++ type.");
+
+ public:
+  std::string_view getGeneratedName() const override { return "FastAncestor"; }
+
+  static constexpr folly::cstring_view __fbthrift_thrift_uri = "meta.com/thrift/test/fixtures/fast_client/FastAncestor";
+
+  typedef ::cpp2::test::FastAncestorAsyncProcessor ProcessorType;
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
+  bool isThriftGenerated() const override final { return true; }
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
+  virtual void sync_ancestorEcho(::std::string& /*_return*/, std::unique_ptr<::std::string> /*message*/);
+  [[deprecated("Use sync_ancestorEcho instead")]] virtual void ancestorEcho(::std::string& /*_return*/, std::unique_ptr<::std::string> /*message*/);
+  virtual folly::Future<std::unique_ptr<::std::string>> future_ancestorEcho(std::unique_ptr<::std::string> p_message);
+  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_ancestorEcho(std::unique_ptr<::std::string> p_message);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<std::unique_ptr<::std::string>> co_ancestorEcho(std::unique_ptr<::std::string> p_message);
+  virtual folly::coro::Task<std::unique_ptr<::std::string>> co_ancestorEcho(apache::thrift::RequestParams params, std::unique_ptr<::std::string> p_message);
+#endif
+  virtual void async_tm_ancestorEcho(apache::thrift::HandlerCallbackPtr<std::unique_ptr<::std::string>> callback, std::unique_ptr<::std::string> p_message);
+ private:
+  static ::cpp2::test::FastAncestorServiceInfoHolder __fbthrift_serviceInfoHolder;
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_ancestorEcho{apache::thrift::detail::si::InvocationType::AsyncTm};
+ public:
+
+  virtual void fbthrift_execute_decorators_before_ancestorEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_message*/) {}
+  virtual void fbthrift_execute_decorators_after_ancestorEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::string>::type /*result*/) {}
+  static void fbthrift_invoke_decorator_after_ancestorEcho(void* iface, apache::thrift::Cpp2RequestContext* ctx, apache::thrift::detail::DecoratorReturnType<::std::string>::type result) {
+    static_cast<ServiceHandler<::cpp2::test::FastAncestor>*>(iface)->fbthrift_execute_decorators_after_ancestorEcho(*ctx, result);
+  }
+};
+
+namespace detail {
+template <> struct TSchemaAssociation<::cpp2::test::FastAncestor, false> {
+  static ::folly::Range<const ::std::string_view*> bundle();
+  static constexpr int64_t programId = 1128474985759956154;
+  static constexpr ::std::string_view definitionKey = {"\x26\xf6\xa3\x64\x06\x25\x92\x4d\x12\x65\x1b\xe4\x61\xcd\x68\x5a", 16};
+};
+}
+} // namespace apache::thrift
+
+namespace cpp2::test {
+using FastAncestorSvIf [[deprecated("Use apache::thrift::ServiceHandler<FastAncestor> instead")]] = ::apache::thrift::ServiceHandler<FastAncestor>;
+} // namespace cpp2::test
+
+namespace cpp2::test {
+class FastAncestorSvNull : public ::apache::thrift::ServiceHandler<FastAncestor> {
+ public:
+  void ancestorEcho(::std::string& /*_return*/, std::unique_ptr<::std::string> /*message*/) override;
+};
+
+class FastAncestorAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBase {
+ public:
+  std::string_view getServiceName() override;
+  void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
+  using BaseAsyncProcessor = void;
+ protected:
+  ::apache::thrift::ServiceHandler<::cpp2::test::FastAncestor>* iface_;
+ public:
+  void processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
+  void executeRequest(apache::thrift::ServerRequest&& serverRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) override;
+ public:
+  using ProcessFuncs = GeneratedAsyncProcessorBase::ProcessFuncs<FastAncestorAsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessorBase::ProcessMap<ProcessFuncs>;
+  static const FastAncestorAsyncProcessor::ProcessMap& getOwnProcessMap();
+ private:
+  static const FastAncestorAsyncProcessor::ProcessMap kOwnProcessMap_;
+ private:
+  //
+  // Service Methods
+  //
+
+  //
+  // Method 'ancestorEcho'
+  //
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
+  void setUpAndProcess_ancestorEcho(
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
+      apache::thrift::SerializedCompressedRequest&& serializedRequest,
+      apache::thrift::Cpp2RequestContext* ctx,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm);
+
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
+  void executeRequest_ancestorEcho(apache::thrift::ServerRequest&& serverRequest);
+
+  template <class ProtocolIn_, class ProtocolOut_>
+  static apache::thrift::SerializedResponse return_ancestorEcho(
+      apache::thrift::ContextStack* ctx,
+      ::std::string const& _return);
+
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_ancestorEcho(
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
+      int32_t protoSeqId,
+      apache::thrift::ContextStack* ctx,
+      folly::exception_wrapper ew,
+      apache::thrift::Cpp2RequestContext* reqCtx);
+  //
+  // End of Method 'ancestorEcho'
+  //
+
+  //
+  // End of Service Methods
+  //
+ public:
+  FastAncestorAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::test::FastAncestor>* iface) :
+      iface_(iface) {}
+  ~FastAncestorAsyncProcessor() override {}
+};
+
+} // namespace cpp2::test
+
+namespace cpp2::test {
+class NonFastParent;
+class NonFastParentAsyncProcessor;
+
+class NonFastParentServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+} // namespace cpp2::test
+
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::test::NonFastParent> : virtual public ::cpp2::test::FastAncestorSvIf {
+  static_assert(!folly::is_detected_v<::apache::thrift::detail::st::detect_complete, ::cpp2::test::NonFastParent>, "Definition collision with service tag. Either rename the Thrift service using @cpp.Name annotation or rename the conflicting C++ type.");
+
+ public:
+  std::string_view getGeneratedName() const override { return "NonFastParent"; }
+
+  static constexpr folly::cstring_view __fbthrift_thrift_uri = "meta.com/thrift/test/fixtures/fast_client/NonFastParent";
+
+  typedef ::cpp2::test::NonFastParentAsyncProcessor ProcessorType;
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
+  virtual void sync_parentEcho(::std::string& /*_return*/, std::unique_ptr<::std::string> /*message*/);
+  [[deprecated("Use sync_parentEcho instead")]] virtual void parentEcho(::std::string& /*_return*/, std::unique_ptr<::std::string> /*message*/);
+  virtual folly::Future<std::unique_ptr<::std::string>> future_parentEcho(std::unique_ptr<::std::string> p_message);
+  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_parentEcho(std::unique_ptr<::std::string> p_message);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<std::unique_ptr<::std::string>> co_parentEcho(std::unique_ptr<::std::string> p_message);
+  virtual folly::coro::Task<std::unique_ptr<::std::string>> co_parentEcho(apache::thrift::RequestParams params, std::unique_ptr<::std::string> p_message);
+#endif
+  virtual void async_tm_parentEcho(apache::thrift::HandlerCallbackPtr<std::unique_ptr<::std::string>> callback, std::unique_ptr<::std::string> p_message);
+ private:
+  static ::cpp2::test::NonFastParentServiceInfoHolder __fbthrift_serviceInfoHolder;
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_parentEcho{apache::thrift::detail::si::InvocationType::AsyncTm};
+ public:
+  void fbthrift_execute_decorators_before_ancestorEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_message*/) override {}
+  void fbthrift_execute_decorators_after_ancestorEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::string>::type /*result*/) override {}
+
+  virtual void fbthrift_execute_decorators_before_parentEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_message*/) {}
+  virtual void fbthrift_execute_decorators_after_parentEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::string>::type /*result*/) {}
+  static void fbthrift_invoke_decorator_after_parentEcho(void* iface, apache::thrift::Cpp2RequestContext* ctx, apache::thrift::detail::DecoratorReturnType<::std::string>::type result) {
+    static_cast<ServiceHandler<::cpp2::test::NonFastParent>*>(iface)->fbthrift_execute_decorators_after_parentEcho(*ctx, result);
+  }
+};
+
+namespace detail {
+template <> struct TSchemaAssociation<::cpp2::test::NonFastParent, false> {
+  static ::folly::Range<const ::std::string_view*> bundle();
+  static constexpr int64_t programId = 1128474985759956154;
+  static constexpr ::std::string_view definitionKey = {"\x89\xdd\xab\x32\x86\xe0\x8b\xee\x55\x27\x8f\xa3\x45\xf8\x44\xfc", 16};
+};
+}
+} // namespace apache::thrift
+
+namespace cpp2::test {
+using NonFastParentSvIf [[deprecated("Use apache::thrift::ServiceHandler<NonFastParent> instead")]] = ::apache::thrift::ServiceHandler<NonFastParent>;
+} // namespace cpp2::test
+
+namespace cpp2::test {
+class NonFastParentSvNull : public ::apache::thrift::ServiceHandler<NonFastParent>, virtual public ::apache::thrift::ServiceHandler<::cpp2::test::FastAncestor> {
+ public:
+  void parentEcho(::std::string& /*_return*/, std::unique_ptr<::std::string> /*message*/) override;
+};
+
+class NonFastParentAsyncProcessor : public ::cpp2::test::FastAncestorAsyncProcessor {
+ public:
+  std::string_view getServiceName() override;
+  void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
+  using BaseAsyncProcessor = ::cpp2::test::FastAncestorAsyncProcessor;
+ protected:
+  ::apache::thrift::ServiceHandler<::cpp2::test::NonFastParent>* iface_;
+ public:
+  void processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
+  void executeRequest(apache::thrift::ServerRequest&& serverRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) override;
+ public:
+  using ProcessFuncs = GeneratedAsyncProcessorBase::ProcessFuncs<NonFastParentAsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessorBase::ProcessMap<ProcessFuncs>;
+  static const NonFastParentAsyncProcessor::ProcessMap& getOwnProcessMap();
+ private:
+  static const NonFastParentAsyncProcessor::ProcessMap kOwnProcessMap_;
+ private:
+  //
+  // Service Methods
+  //
+
+  //
+  // Method 'parentEcho'
+  //
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
+  void setUpAndProcess_parentEcho(
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
+      apache::thrift::SerializedCompressedRequest&& serializedRequest,
+      apache::thrift::Cpp2RequestContext* ctx,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm);
+
+  template <typename ProtocolIn_, typename ProtocolOut_, typename RequestReader_ = apache::thrift::detail::IOBufRequestReader>
+  void executeRequest_parentEcho(apache::thrift::ServerRequest&& serverRequest);
+
+  template <class ProtocolIn_, class ProtocolOut_>
+  static apache::thrift::SerializedResponse return_parentEcho(
+      apache::thrift::ContextStack* ctx,
+      ::std::string const& _return);
+
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_parentEcho(
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
+      int32_t protoSeqId,
+      apache::thrift::ContextStack* ctx,
+      folly::exception_wrapper ew,
+      apache::thrift::Cpp2RequestContext* reqCtx);
+  //
+  // End of Method 'parentEcho'
+  //
+
+  //
+  // End of Service Methods
+  //
+ public:
+  NonFastParentAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::test::NonFastParent>* iface) :
+      ::cpp2::test::FastAncestorAsyncProcessor(iface),
+      iface_(iface) {}
+  ~NonFastParentAsyncProcessor() override {}
+};
+
+} // namespace cpp2::test
+
+namespace cpp2::test {
 class FastClientTestService;
 class FastClientTestServiceAsyncProcessor;
 
@@ -36,7 +298,7 @@ class FastClientTestServiceServiceInfoHolder : public apache::thrift::ServiceInf
 
 namespace apache::thrift {
 template <>
-class ServiceHandler<::cpp2::test::FastClientTestService> : public apache::thrift::ServerInterface {
+class ServiceHandler<::cpp2::test::FastClientTestService> : virtual public ::cpp2::test::NonFastParentSvIf {
   static_assert(!folly::is_detected_v<::apache::thrift::detail::st::detect_complete, ::cpp2::test::FastClientTestService>, "Definition collision with service tag. Either rename the Thrift service using @cpp.Name annotation or rename the conflicting C++ type.");
 
  public:
@@ -47,7 +309,6 @@ class ServiceHandler<::cpp2::test::FastClientTestService> : public apache::thrif
   typedef ::cpp2::test::FastClientTestServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-  bool isThriftGenerated() const override final { return true; }
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
@@ -104,6 +365,10 @@ class ServiceHandler<::cpp2::test::FastClientTestService> : public apache::thrif
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_getData{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_processData{apache::thrift::detail::si::InvocationType::AsyncTm};
  public:
+  void fbthrift_execute_decorators_before_ancestorEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_message*/) override {}
+  void fbthrift_execute_decorators_after_ancestorEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::string>::type /*result*/) override {}
+  void fbthrift_execute_decorators_before_parentEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_message*/) override {}
+  void fbthrift_execute_decorators_after_parentEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::string>::type /*result*/) override {}
 
   virtual void fbthrift_execute_decorators_before_ping(apache::thrift::Cpp2RequestContext& /*requestCtx*/) {}
   virtual void fbthrift_execute_decorators_after_ping(apache::thrift::Cpp2RequestContext& /*requestCtx*/) {}
@@ -135,8 +400,8 @@ class ServiceHandler<::cpp2::test::FastClientTestService> : public apache::thrif
 namespace detail {
 template <> struct TSchemaAssociation<::cpp2::test::FastClientTestService, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8360439536290031381;
-  static constexpr ::std::string_view definitionKey = {"\x2e\x4f\x53\x5c\xc7\xa0\xf4\x7f\xe8\xc9\xe0\xed\xbd\x92\xab\x0f", 16};
+  static constexpr int64_t programId = 1128474985759956154;
+  static constexpr ::std::string_view definitionKey = {"\x19\x83\x4b\x7f\x4d\x11\x36\x79\x49\xf5\x39\xdf\xe7\xd7\x4e\xa8", 16};
 };
 }
 } // namespace apache::thrift
@@ -146,7 +411,7 @@ using FastClientTestServiceSvIf [[deprecated("Use apache::thrift::ServiceHandler
 } // namespace cpp2::test
 
 namespace cpp2::test {
-class FastClientTestServiceSvNull : public ::apache::thrift::ServiceHandler<FastClientTestService> {
+class FastClientTestServiceSvNull : public ::apache::thrift::ServiceHandler<FastClientTestService>, virtual public ::apache::thrift::ServiceHandler<::cpp2::test::NonFastParent> {
  public:
   void ping() override;
   void echo(::std::string& /*_return*/, std::unique_ptr<::std::string> /*message*/) override;
@@ -155,11 +420,11 @@ class FastClientTestServiceSvNull : public ::apache::thrift::ServiceHandler<Fast
   bool processData(std::unique_ptr<::cpp2::test::DataItem> /*item*/, ::cpp2::test::StatusCode /*status*/) override;
 };
 
-class FastClientTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBase {
+class FastClientTestServiceAsyncProcessor : public ::cpp2::test::NonFastParentAsyncProcessor {
  public:
   std::string_view getServiceName() override;
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
-  using BaseAsyncProcessor = void;
+  using BaseAsyncProcessor = ::cpp2::test::NonFastParentAsyncProcessor;
  protected:
   ::apache::thrift::ServiceHandler<::cpp2::test::FastClientTestService>* iface_;
  public:
@@ -330,6 +595,7 @@ class FastClientTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAs
   //
  public:
   FastClientTestServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::test::FastClientTestService>* iface) :
+      ::cpp2::test::NonFastParentAsyncProcessor(iface),
       iface_(iface) {}
   ~FastClientTestServiceAsyncProcessor() override {}
 };
@@ -376,6 +642,10 @@ class ServiceHandler<::cpp2::test::FastClientTestServiceChild> : virtual public 
   static ::cpp2::test::FastClientTestServiceChildServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_greet{apache::thrift::detail::si::InvocationType::AsyncTm};
  public:
+  void fbthrift_execute_decorators_before_ancestorEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_message*/) override {}
+  void fbthrift_execute_decorators_after_ancestorEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::string>::type /*result*/) override {}
+  void fbthrift_execute_decorators_before_parentEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_message*/) override {}
+  void fbthrift_execute_decorators_after_parentEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::string>::type /*result*/) override {}
   void fbthrift_execute_decorators_before_ping(apache::thrift::Cpp2RequestContext& /*requestCtx*/) override {}
   void fbthrift_execute_decorators_after_ping(apache::thrift::Cpp2RequestContext& /*requestCtx*/) override {}
   void fbthrift_execute_decorators_before_echo(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_message*/) override {}
@@ -397,8 +667,8 @@ class ServiceHandler<::cpp2::test::FastClientTestServiceChild> : virtual public 
 namespace detail {
 template <> struct TSchemaAssociation<::cpp2::test::FastClientTestServiceChild, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 8360439536290031381;
-  static constexpr ::std::string_view definitionKey = {"\xf4\xc4\x4b\x6b\x9e\x67\xfb\x7c\x52\xc5\xf5\x76\x3e\x77\xae\xcf", 16};
+  static constexpr int64_t programId = 1128474985759956154;
+  static constexpr ::std::string_view definitionKey = {"\xd3\xe9\xbd\x1b\xe3\x7c\xf9\xdc\x18\xd2\x6a\xd9\x01\x92\xe9\x4a", 16};
 };
 }
 } // namespace apache::thrift
@@ -472,6 +742,99 @@ class FastClientTestServiceChildAsyncProcessor : public ::cpp2::test::FastClient
       ::cpp2::test::FastClientTestServiceAsyncProcessor(iface),
       iface_(iface) {}
   ~FastClientTestServiceChildAsyncProcessor() override {}
+};
+
+} // namespace cpp2::test
+
+namespace cpp2::test {
+class FastClientTestServiceGrandchild;
+class FastClientTestServiceGrandchildAsyncProcessor;
+
+class FastClientTestServiceGrandchildServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+} // namespace cpp2::test
+
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::test::FastClientTestServiceGrandchild> : virtual public ::cpp2::test::FastClientTestServiceChildSvIf {
+  static_assert(!folly::is_detected_v<::apache::thrift::detail::st::detect_complete, ::cpp2::test::FastClientTestServiceGrandchild>, "Definition collision with service tag. Either rename the Thrift service using @cpp.Name annotation or rename the conflicting C++ type.");
+
+ public:
+  std::string_view getGeneratedName() const override { return "FastClientTestServiceGrandchild"; }
+
+  static constexpr folly::cstring_view __fbthrift_thrift_uri = "meta.com/thrift/test/fixtures/fast_client/FastClientTestServiceGrandchild";
+
+  typedef ::cpp2::test::FastClientTestServiceGrandchildAsyncProcessor ProcessorType;
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
+ private:
+  static ::cpp2::test::FastClientTestServiceGrandchildServiceInfoHolder __fbthrift_serviceInfoHolder;
+ public:
+  void fbthrift_execute_decorators_before_ancestorEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_message*/) override {}
+  void fbthrift_execute_decorators_after_ancestorEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::string>::type /*result*/) override {}
+  void fbthrift_execute_decorators_before_parentEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_message*/) override {}
+  void fbthrift_execute_decorators_after_parentEcho(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::string>::type /*result*/) override {}
+  void fbthrift_execute_decorators_before_ping(apache::thrift::Cpp2RequestContext& /*requestCtx*/) override {}
+  void fbthrift_execute_decorators_after_ping(apache::thrift::Cpp2RequestContext& /*requestCtx*/) override {}
+  void fbthrift_execute_decorators_before_echo(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_message*/) override {}
+  void fbthrift_execute_decorators_after_echo(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::string>::type /*result*/) override {}
+  void fbthrift_execute_decorators_before_add(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::int32_t>::type /*p_a*/, apache::thrift::detail::DecoratorArgType<::std::int32_t>::type /*p_b*/) override {}
+  void fbthrift_execute_decorators_after_add(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::int32_t>::type /*result*/) override {}
+  void fbthrift_execute_decorators_before_getData(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::int32_t>::type /*p_id*/) override {}
+  void fbthrift_execute_decorators_after_getData(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::cpp2::test::DataItem>::type /*result*/) override {}
+  void fbthrift_execute_decorators_before_processData(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::cpp2::test::DataItem>::type /*p_item*/, apache::thrift::detail::DecoratorArgType<::cpp2::test::StatusCode>::type /*p_status*/) override {}
+  void fbthrift_execute_decorators_after_processData(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<bool>::type /*result*/) override {}
+  void fbthrift_execute_decorators_before_greet(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorArgType<::std::string>::type /*p_name*/) override {}
+  void fbthrift_execute_decorators_after_greet(apache::thrift::Cpp2RequestContext& /*requestCtx*/, apache::thrift::detail::DecoratorReturnType<::std::string>::type /*result*/) override {}
+
+};
+
+namespace detail {
+template <> struct TSchemaAssociation<::cpp2::test::FastClientTestServiceGrandchild, false> {
+  static ::folly::Range<const ::std::string_view*> bundle();
+  static constexpr int64_t programId = 1128474985759956154;
+  static constexpr ::std::string_view definitionKey = {"\xbd\x8c\x9c\x38\xb2\x56\xfd\x94\x64\xb7\x23\x34\xc9\x91\xc8\x50", 16};
+};
+}
+} // namespace apache::thrift
+
+namespace cpp2::test {
+using FastClientTestServiceGrandchildSvIf [[deprecated("Use apache::thrift::ServiceHandler<FastClientTestServiceGrandchild> instead")]] = ::apache::thrift::ServiceHandler<FastClientTestServiceGrandchild>;
+} // namespace cpp2::test
+
+namespace cpp2::test {
+class FastClientTestServiceGrandchildSvNull : public ::apache::thrift::ServiceHandler<FastClientTestServiceGrandchild>, virtual public ::apache::thrift::ServiceHandler<::cpp2::test::FastClientTestServiceChild> {
+ public:
+};
+
+class FastClientTestServiceGrandchildAsyncProcessor : public ::cpp2::test::FastClientTestServiceChildAsyncProcessor {
+ public:
+  std::string_view getServiceName() override;
+  void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
+  using BaseAsyncProcessor = ::cpp2::test::FastClientTestServiceChildAsyncProcessor;
+ protected:
+  ::apache::thrift::ServiceHandler<::cpp2::test::FastClientTestServiceGrandchild>* iface_;
+ public:
+  void processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
+  void executeRequest(apache::thrift::ServerRequest&& serverRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) override;
+ public:
+  using ProcessFuncs = GeneratedAsyncProcessorBase::ProcessFuncs<FastClientTestServiceGrandchildAsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessorBase::ProcessMap<ProcessFuncs>;
+  static const FastClientTestServiceGrandchildAsyncProcessor::ProcessMap& getOwnProcessMap();
+ private:
+  static const FastClientTestServiceGrandchildAsyncProcessor::ProcessMap kOwnProcessMap_;
+ private:
+ public:
+  FastClientTestServiceGrandchildAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::test::FastClientTestServiceGrandchild>* iface) :
+      ::cpp2::test::FastClientTestServiceChildAsyncProcessor(iface),
+      iface_(iface) {}
+  ~FastClientTestServiceGrandchildAsyncProcessor() override {}
 };
 
 } // namespace cpp2::test

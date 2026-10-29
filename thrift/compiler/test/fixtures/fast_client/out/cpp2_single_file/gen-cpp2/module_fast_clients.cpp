@@ -8,6 +8,38 @@
 #include "thrift/compiler/test/fixtures/fast_client/gen-cpp2/module_fast_clients.h"
 
 namespace cpp2::test {
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::std::string*>> FastAncestor_ancestorEcho_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>> FastAncestor_ancestorEcho_presult;
+
+folly::Expected<
+    std::unique_ptr<folly::IOBuf>,
+    folly::exception_wrapper>
+FastAncestorFastClientInternal::serialize_ancestorEcho(
+    uint16_t protocolId,
+    const ::std::string& p_message) {
+  return apache::thrift::detail::ac::withProtocolWriter(protocolId, [&](auto&& prot) {
+    using ProtocolWriter = std::decay_t<decltype(prot)>;
+    FastAncestor_ancestorEcho_pargs args;
+    args.get<0>().value = const_cast<::std::string*>(&p_message);
+    return apache::thrift::fast_thrift::thrift::serializeRequest<ProtocolWriter>(
+        [&](ProtocolWriter& w) { args.write(&w); },
+        [&](ProtocolWriter& w) -> uint32_t { return args.serializedSizeZC(&w); });
+  });
+}
+
+folly::exception_wrapper
+FastAncestorFastClientInternal::deserialize_ancestorEcho(
+    ::std::string& _return,
+    uint16_t protocolId,
+    const folly::IOBuf* buf) {
+  using result = FastAncestor_ancestorEcho_presult;
+  return apache::thrift::detail::ac::withProtocolReader(protocolId, [&](auto&& reader) {
+    return apache::thrift::detail::ac::recv_wrapped<result>(&reader, buf, _return);
+  });
+}
+
+} // namespace cpp2::test
+namespace cpp2::test {
 typedef apache::thrift::ThriftPresult<false> FastClientTestService_ping_pargs;
 typedef apache::thrift::ThriftPresult<true> FastClientTestService_ping_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::std::string*>> FastClientTestService_echo_pargs;
@@ -186,5 +218,8 @@ FastClientTestServiceChildFastClientInternal::deserialize_greet(
     return apache::thrift::detail::ac::recv_wrapped<result>(&reader, buf, _return);
   });
 }
+
+} // namespace cpp2::test
+namespace cpp2::test {
 
 } // namespace cpp2::test

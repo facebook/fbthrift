@@ -18,6 +18,7 @@
 
 #include <atomic>
 #include <memory>
+#include <type_traits>
 
 #include <folly/coro/BlockingWait.h>
 #include <folly/coro/Collect.h>
@@ -48,6 +49,9 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestChildService.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestChildServiceAsyncClient.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestChildServiceFastClient.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestGrandchildService.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestGrandchildServiceAsyncClient.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestGrandchildServiceFastClient.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestService.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestServiceAsyncClient.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestServiceFastClient.h>
@@ -70,7 +74,32 @@ using apache::thrift::fast_thrift::channel_pipeline::StaticPipelineBuilder;
 using apache::thrift::fast_thrift::thrift::test::
     BackwardsCompatibilityTestChildService;
 using apache::thrift::fast_thrift::thrift::test::
+    BackwardsCompatibilityTestGrandchildService;
+using apache::thrift::fast_thrift::thrift::test::
     BackwardsCompatibilityTestService;
+
+template <class Client>
+concept HasParentEcho =
+    requires(Client& client) { client.co_parentEcho("parent"); };
+
+static_assert(!HasParentEcho<apache::thrift::FastClient<
+                  BackwardsCompatibilityTestService,
+                  thrift::ThriftClientAppAdapter>>);
+
+template <class Client>
+concept HasAncestorEcho =
+    requires(Client& client) { client.co_ancestorEcho("ancestor"); };
+
+using GrandchildFastClient = apache::thrift::FastClient<
+    BackwardsCompatibilityTestGrandchildService,
+    thrift::ThriftClientAppAdapter>;
+static_assert(!HasParentEcho<GrandchildFastClient>);
+static_assert(!HasAncestorEcho<GrandchildFastClient>);
+static_assert(std::is_base_of_v<
+              apache::thrift::FastClient<
+                  BackwardsCompatibilityTestService,
+                  thrift::ThriftClientAppAdapter>,
+              GrandchildFastClient>);
 
 // Handler tags for pipeline construction
 HANDLER_TAG(frame_length_encoder_handler);
@@ -141,6 +170,16 @@ class BackwardsCompatibilityTestHandler
     : public apache::thrift::ServiceHandler<BackwardsCompatibilityTestService>,
       public PingCounter {
  public:
+  void ancestorEcho(
+      std::string& response, std::unique_ptr<std::string> message) override {
+    response = "ancestor:" + *message;
+  }
+
+  void parentEcho(
+      std::string& response, std::unique_ptr<std::string> message) override {
+    response = "parent:" + *message;
+  }
+
   void echo(
       std::string& response, std::unique_ptr<std::string> message) override {
     response = *message;
@@ -160,11 +199,21 @@ class BackwardsCompatibilityTestHandler
   }
 };
 
+template <class Service>
 class BackwardsCompatibilityTestChildHandler
-    : public apache::thrift::ServiceHandler<
-          BackwardsCompatibilityTestChildService>,
+    : public apache::thrift::ServiceHandler<Service>,
       public PingCounter {
  public:
+  void ancestorEcho(
+      std::string& response, std::unique_ptr<std::string> message) override {
+    response = "ancestor:" + *message;
+  }
+
+  void parentEcho(
+      std::string& response, std::unique_ptr<std::string> message) override {
+    response = "parent:" + *message;
+  }
+
   // Inherited from parent.
   void echo(
       std::string& response, std::unique_ptr<std::string> message) override {
@@ -804,6 +853,8 @@ TEST_F(BackwardsCompatibilityFastClientE2ETest, AsyncAndFastClientsCoexist) {
   auto fastClient = createFastClient();
 
   std::string response;
+  asyncClient->sync_parentEcho(response, "async parent");
+  EXPECT_EQ(response, "parent:async parent");
   asyncClient->sync_echo(response, "async");
   EXPECT_EQ(response, "async");
   EXPECT_EQ(
@@ -1006,13 +1057,16 @@ class BackwardsCompatibilityFastChildClientE2ETest
     : public BackwardsCompatibilityFastClientE2ETest {
  protected:
   void SetUp() override {
-    childHandler_ = std::make_shared<BackwardsCompatibilityTestChildHandler>();
+    childHandler_ = std::make_shared<BackwardsCompatibilityTestChildHandler<
+        BackwardsCompatibilityTestChildService>>();
     server_ = std::make_unique<apache::thrift::ScopedServerInterfaceThread>(
         childHandler_);
     clientThread_ = std::make_unique<folly::ScopedEventBaseThread>();
   }
 
-  std::shared_ptr<BackwardsCompatibilityTestChildHandler> childHandler_;
+  std::shared_ptr<BackwardsCompatibilityTestChildHandler<
+      BackwardsCompatibilityTestChildService>>
+      childHandler_;
 };
 
 TEST_F(
@@ -1080,6 +1134,46 @@ TEST_F(BackwardsCompatibilityFastChildClientE2ETest, ChildOwnMethod) {
   EXPECT_EQ(result, "child:hi");
 
   destroyClientOnEvb(client);
+}
+
+class BackwardsCompatibilityFastGrandchildClientE2ETest
+    : public BackwardsCompatibilityFastClientE2ETest {
+ protected:
+  void SetUp() override {
+    server_ = std::make_unique<apache::thrift::ScopedServerInterfaceThread>(
+        std::make_shared<BackwardsCompatibilityTestChildHandler<
+            BackwardsCompatibilityTestGrandchildService>>());
+    clientThread_ = std::make_unique<folly::ScopedEventBaseThread>();
+  }
+};
+
+TEST_F(
+    BackwardsCompatibilityFastGrandchildClientE2ETest,
+    InheritsFastAncestorsUntilUnannotatedBoundary) {
+  auto asyncClient = server_->newClient<
+      apache::thrift::Client<BackwardsCompatibilityTestGrandchildService>>();
+  auto fastClient =
+      createFastClient<BackwardsCompatibilityTestGrandchildService>();
+
+  std::string response;
+  asyncClient->sync_ancestorEcho(response, "root");
+  EXPECT_EQ(response, "ancestor:root");
+  asyncClient->sync_parentEcho(response, "unannotated");
+  EXPECT_EQ(response, "parent:unannotated");
+  EXPECT_EQ(
+      folly::coro::blockingWait(
+          folly::coro::co_withExecutor(
+              clientThread_->getEventBase(),
+              fastClient->co_echo("grandparent"))),
+      "grandparent");
+  EXPECT_EQ(
+      folly::coro::blockingWait(
+          folly::coro::co_withExecutor(
+              clientThread_->getEventBase(),
+              fastClient->co_childEcho("parent"))),
+      "child:parent");
+
+  destroyClientOnEvb(fastClient);
 }
 
 } // namespace apache::thrift::fast_thrift::thrift::client::test
