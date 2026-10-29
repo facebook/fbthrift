@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(ThriftLibrary)
+include(ThriftGenerate)
 
 # Installs the targets into fbthrift-exports. Projects that build fbthrift from
 # source also get the FBThrift:: name FBThriftTargets.cmake gives each one.
@@ -70,7 +70,7 @@ set(FBTHRIFT_COMPILER FBThrift::thrift CACHE INTERNAL "thrift compiler target")
 set(FBTHRIFT_INCLUDE_DIR "${PROJECT_SOURCE_DIR}"
     CACHE INTERNAL "fbthrift include directory")
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ThriftLibrary.cmake
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ThriftGenerate.cmake
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/thrift)
 
 install(

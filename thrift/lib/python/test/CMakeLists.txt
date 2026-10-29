@@ -14,9 +14,9 @@
 
 # Generate thrift-python test types
 
-# Include ThriftLibrary macros
+# Include thrift_generate
 # (for standalone builds, CMAKE_MODULE_PATH must be set)
-include(ThriftLibrary OPTIONAL)
+include(ThriftGenerate OPTIONAL)
 
 #
 # thrift_python_library_for_test

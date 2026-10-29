@@ -11,7 +11,7 @@
 #                          thrift_generate(); THRIFT_COMPILER-NOTFOUND if no
 #                          compiler is installed
 #
-# Also provides thrift_generate() from ThriftLibrary.cmake, unless the project
+# Also provides thrift_generate() from ThriftGenerate.cmake, unless the project
 # already defines a command with that name.
 
 @PACKAGE_INIT@
@@ -61,7 +61,7 @@ endif()
 # FBTHRIFT_COMPILER is deprecated. A libraries-only install exports no compiler;
 # NOTFOUND keeps a consumer's COMMAND from silently receiving an empty argument.
 if (TARGET FBThrift::thrift)
-  # Like ThriftLibrary.cmake, keep a value the consumer set beforehand.
+  # Like ThriftGenerate.cmake, keep a value the consumer set beforehand.
   if (NOT DEFINED THRIFT_COMPILER)
     set(THRIFT_COMPILER FBThrift::thrift)
   endif()
@@ -74,13 +74,13 @@ else()
   endif()
 endif()
 
-# After THRIFT_COMPILER is set: ThriftLibrary.cmake defaults it to the in-tree
+# After THRIFT_COMPILER is set: ThriftGenerate.cmake defaults it to the in-tree
 # name `thrift`. The guard keeps a project's own thrift_generate().
 if (NOT COMMAND thrift_generate)
-  include("${THRIFT_INCLUDE_DIR}/thrift/ThriftLibrary.cmake")
+  include("${THRIFT_INCLUDE_DIR}/thrift/ThriftGenerate.cmake")
 endif()
 
-# The name ThriftLibrary.cmake links into a cpp2 thrift_generate() target, as in
+# The name ThriftGenerate.cmake links into a cpp2 thrift_generate() target, as in
 # Thrift's own build.
 if (NOT TARGET FBThrift::protocol)
   add_library(FBThrift::protocol INTERFACE IMPORTED)

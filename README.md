@@ -150,7 +150,7 @@ Thrift, which provides `thrift_generate`:
     target_link_libraries(example PUBLIC FBThrift::thriftprotocol)
 
 `thrift_generate` adds the generated sources to `example`; the comment above it
-in `ThriftLibrary.cmake` describes the other options. Code generated for
+in `ThriftGenerate.cmake` describes the other options. Code generated for
 services also needs `FBThrift::thriftcpp2`, whose
 `wangle::wangle` dependency must be found first with
 `find_package(wangle CONFIG)`.
