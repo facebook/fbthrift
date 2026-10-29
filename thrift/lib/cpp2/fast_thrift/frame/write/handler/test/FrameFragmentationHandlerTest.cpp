@@ -121,6 +121,8 @@ struct RecordingTracker {
   void onFragment(uint32_t streamId, bool isLastFragment) noexcept {
     fragments.push_back({streamId, isLastFragment});
   }
+
+  [[maybe_unused]] void onFragmentAborted() noexcept { fragments.pop_back(); }
   void onFlush() noexcept { ++flushCount; }
 };
 
