@@ -26,9 +26,8 @@ foreach (
   scope
   thrift)
   thrift_generate(
-    ${name}.thrift
+    thrift_annotation ${name}.thrift
     LANGUAGE cpp2
-    TARGET thrift_annotation
     OPTIONS templates no_metadata)
 endforeach ()
 

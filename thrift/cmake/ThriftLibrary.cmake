@@ -26,12 +26,11 @@ if (NOT DEFINED THRIFT_COMPILER)
   set(THRIFT_COMPILER thrift)
 endif ()
 
-# Generates code from a .thrift file with the Thrift compiler.
+# Generates code from a .thrift file with the Thrift compiler and adds it to a
+# target.
 #
-#   thrift_generate(<file>.thrift
+#   thrift_generate(<target> <file>.thrift
 #     LANGUAGE <cpp2|py3|python>
-#     [TARGET <target>]
-#     [OUT_SOURCES <var>]
 #     [SERVICES <service>...]
 #     [OPTIONS <option>...]
 #     [INCLUDE_DIRECTORIES <dir>...]
@@ -39,12 +38,11 @@ endif ()
 #     [INCLUDE_PREFIX <prefix>]
 #     [NAMESPACE <py.namespace>])
 #
+#   <target> - The target to add the generated files to as sources. For cpp2,
+#       it also links FBThrift::protocol publicly, which provides the include
+#       directories and runtime the generated code needs.
 #   <file>.thrift - The file to compile, relative to CMAKE_CURRENT_SOURCE_DIR.
 #   LANGUAGE - The generator to use.
-#   TARGET - A target to add the generated files to as sources. For cpp2, it
-#       also links FBThrift::protocol publicly, which provides the
-#       include directories and runtime the generated code needs.
-#   OUT_SOURCES - A variable to set to the generated sources.
 #   SERVICES - The services declared in the file.
 #   OPTIONS - Generator options, e.g. `OPTIONS json no_metadata`.
 #   INCLUDE_DIRECTORIES - Where the compiler looks for included .thrift files,
@@ -62,37 +60,57 @@ endif ()
 # For a file outside PROJECT_SOURCE_DIR, OUTPUT_DIRECTORY is required, and so
 # is INCLUDE_PREFIX for cpp2 and py3.
 #
-# Like protobuf_generate(), creates no targets and adds no install rules. A
-# target in the calling directory that lists the generated files as sources,
-# with TARGET or OUT_SOURCES, generates them; CMake gives the rule only to
-# targets in that directory. With Makefiles, targets that both list the files
-# can run the compiler twice in parallel, so list them in one and make the
-# others depend on it.
-function (thrift_generate file)
-  if (NOT "${file}" MATCHES "\\.thrift$")
+# Creates no targets of its own and adds no install rules. Call it in the
+# directory that creates <target>: CMake gives the rule that generates the files
+# only to targets in that directory.
+#
+# The file-first form, thrift_generate(<file>.thrift LANGUAGE ... [TARGET
+# <target>] [OUT_SOURCES <var>]), is deprecated. Projects that build against a
+# pinned Thrift revision, such as packsim and katran, use it until their pins
+# include the target-first form.
+function (thrift_generate)
+  set(one_value_keywords LANGUAGE OUTPUT_DIRECTORY INCLUDE_PREFIX NAMESPACE)
+  if ("${ARGV0}" MATCHES "\\.thrift$")
+    message(
+      DEPRECATION
+        "thrift_generate: thrift_generate(<file>.thrift LANGUAGE ... [TARGET "
+        "<target>] [OUT_SOURCES <var>]) is deprecated; use "
+        "thrift_generate(<target> <file>.thrift LANGUAGE ...)")
+    set(target "")
+    set(file "${ARGV0}")
+    set(first_keyword 1)
+    list(APPEND one_value_keywords TARGET OUT_SOURCES)
+    set(removed_keywords)
+  elseif (ARGC GREATER_EQUAL 2 AND "${ARGV1}" MATCHES "\\.thrift$")
+    set(target "${ARGV0}")
+    set(file "${ARGV1}")
+    if (NOT TARGET "${target}")
+      message(
+        FATAL_ERROR
+          "thrift_generate: ${target} is not a target; create it before "
+          "calling thrift_generate(${target} ${file} ...)")
+    endif ()
+    set(first_keyword 2)
+    # Parsed only to be rejected; unparsed, they would join SERVICES or OPTIONS.
+    set(removed_keywords TARGET OUT_SOURCES)
+  else ()
+    # The positional form took a file name without the extension first.
+    list(JOIN ARGV " " args)
     message(
       FATAL_ERROR
-        "thrift_generate: expected a .thrift file, got '${file}'. The "
-        "positional form was removed; use thrift_generate(<file>.thrift "
-        "LANGUAGE ...).")
+        "thrift_generate: expected thrift_generate(<target> <file>.thrift "
+        "LANGUAGE ...), got thrift_generate(${args})")
   endif ()
   if (NOT THRIFT_COMPILER)
     message(FATAL_ERROR
             "thrift_generate: no Thrift compiler; set THRIFT_COMPILER")
   endif ()
-  set(one_value_keywords
-      LANGUAGE
-      TARGET
-      OUT_SOURCES
-      OUTPUT_DIRECTORY
-      INCLUDE_PREFIX
-      NAMESPACE)
   # Before CMP0174 (CMake 3.31), cmake_parse_arguments() drops a keyword whose
   # value is an empty string, so find those here.
   set(empty_keywords)
   math(EXPR last "${ARGC} - 2")
-  if (last GREATER_EQUAL 1)
-    foreach (i RANGE 1 ${last})
+  if (last GREATER_EQUAL first_keyword)
+    foreach (i RANGE ${first_keyword} ${last})
       math(EXPR next "${i} + 1")
       if ("${ARGV${i}}" IN_LIST one_value_keywords AND "${ARGV${next}}"
                                                        STREQUAL "")
@@ -104,10 +122,21 @@ function (thrift_generate file)
   if (POLICY CMP0174)
     cmake_policy(SET CMP0174 NEW)
   endif ()
+  set(parsed_keywords ${one_value_keywords} ${removed_keywords})
   cmake_parse_arguments(
-    PARSE_ARGV 1 THRIFT_GENERATE "" "${one_value_keywords}"
+    PARSE_ARGV ${first_keyword} THRIFT_GENERATE "" "${parsed_keywords}"
     "SERVICES;OPTIONS;INCLUDE_DIRECTORIES")
   cmake_policy(POP)
+  foreach (keyword ${removed_keywords})
+    if (DEFINED THRIFT_GENERATE_${keyword}
+        OR keyword IN_LIST THRIFT_GENERATE_KEYWORDS_MISSING_VALUES)
+      message(
+        FATAL_ERROR
+          "thrift_generate: ${keyword} was removed; the generated files are "
+          "added to the target, the first argument: "
+          "thrift_generate(<target> <file>.thrift LANGUAGE ...)")
+    endif ()
+  endforeach ()
   if (DEFINED THRIFT_GENERATE_UNPARSED_ARGUMENTS)
     message(
       FATAL_ERROR
@@ -298,17 +327,18 @@ function (thrift_generate file)
   endif ()
 
   if (DEFINED THRIFT_GENERATE_TARGET)
-    target_sources(${THRIFT_GENERATE_TARGET} PRIVATE ${headers} ${sources})
+    set(target "${THRIFT_GENERATE_TARGET}")
+  endif ()
+  if (NOT target STREQUAL "")
+    target_sources(${target} PRIVATE ${headers} ${sources})
     if (language STREQUAL "cpp2")
       # Several calls can share a target.
-      get_target_property(links ${THRIFT_GENERATE_TARGET} LINK_LIBRARIES)
+      get_target_property(links ${target} LINK_LIBRARIES)
       if (NOT "FBThrift::protocol" IN_LIST links)
-        target_link_libraries(${THRIFT_GENERATE_TARGET}
-                              PUBLIC FBThrift::protocol)
+        target_link_libraries(${target} PUBLIC FBThrift::protocol)
       endif ()
     endif ()
   endif ()
-
   if (DEFINED THRIFT_GENERATE_OUT_SOURCES)
     set(${THRIFT_GENERATE_OUT_SOURCES}
         "${sources}"

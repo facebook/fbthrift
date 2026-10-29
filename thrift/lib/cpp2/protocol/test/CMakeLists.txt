@@ -30,9 +30,8 @@ foreach (thrift_file Module CompactProtocolTestStructs cursor)
     set(thrift_options frozen2 layouts)
   endif ()
   thrift_generate(
-    ${thrift_file}.thrift
+    protocol_test_fixtures ${thrift_file}.thrift
     LANGUAGE cpp2
-    TARGET protocol_test_fixtures
     OPTIONS ${thrift_options})
 endforeach ()
 

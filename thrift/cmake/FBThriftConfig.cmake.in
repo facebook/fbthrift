@@ -88,7 +88,7 @@ if (NOT COMMAND thrift_generate)
   include("${THRIFT_INCLUDE_DIR}/thrift/ThriftLibrary.cmake")
 endif()
 
-# The name ThriftLibrary.cmake links into a cpp2 thrift_generate() TARGET, as in
+# The name ThriftLibrary.cmake links into a cpp2 thrift_generate() target, as in
 # Thrift's own build.
 if (NOT TARGET FBThrift::protocol)
   add_library(FBThrift::protocol INTERFACE IMPORTED)

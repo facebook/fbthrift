@@ -5,11 +5,9 @@ markup:
 parse:
   additional_commands:
     thrift_generate:
-      pargs: 1
+      pargs: 2
       kwargs:
         LANGUAGE: 1
-        TARGET: 1
-        OUT_SOURCES: 1
         SERVICES: +
         OPTIONS: +
         INCLUDE_DIRECTORIES: +

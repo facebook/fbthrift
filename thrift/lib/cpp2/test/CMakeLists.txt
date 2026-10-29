@@ -15,37 +15,22 @@
 # This CMakeLists.txt takes care of building a selection of benchmarks and tests
 # in this folder. Currently, it only builds ProtocolBench with its dependencies.
 
+add_executable(ProtocolBench ProtocolBench.cpp ../../thrift/detail/protocol.cpp)
 # Generate Thrift files for this benchmark.
 thrift_generate(
-  ProtocolBenchData.thrift
+  ProtocolBench ProtocolBenchData.thrift
   LANGUAGE cpp2
-  OUT_SOURCES bench_data_sources
   OPTIONS frozen2 layouts)
-
-set(GENERATED_THRIFT_SOURCES ${bench_data_sources})
-set(SOURCE_FILES ProtocolBench.cpp)
-set(ADDITIONAL_SOURCE_FILES ../../thrift/detail/protocol.cpp)
-
-# Generate conformance Thrift files.
 foreach (conf_name "protocol" "type" "any" "serialization" "patch_data"
                    "conformance")
   thrift_generate(
-    ../../../conformance/if/${conf_name}.thrift
+    ProtocolBench ../../../conformance/if/${conf_name}.thrift
     LANGUAGE cpp2
-    OUT_SOURCES conformance_sources
     OPTIONS frozen2)
-  set(GENERATED_THRIFT_SOURCES ${GENERATED_THRIFT_SOURCES}
-                               ${conformance_sources})
 endforeach ()
-
-foreach (GENERATED ${GENERATED_THRIFT_SOURCES})
-  set_source_files_properties(${GENERATED} PROPERTIES GENERATED TRUE)
-endforeach ()
-
-add_executable(ProtocolBench ${SOURCE_FILES} ${ADDITIONAL_SOURCE_FILES}
-                             ${GENERATED_THRIFT_SOURCES})
 find_package(benchmark CONFIG REQUIRED)
-target_link_libraries(ProtocolBench thriftfrozen2 thriftprotocol thrifttype
-                      Folly::folly benchmark::benchmark)
+target_link_libraries(
+  ProtocolBench PRIVATE thriftfrozen2 thriftprotocol thrifttype Folly::folly
+                        benchmark::benchmark)
 
 thrift_install_targets(ProtocolBench)

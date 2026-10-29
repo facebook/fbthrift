@@ -14,8 +14,7 @@
 
 add_library(chatroom-cpp2)
 thrift_generate(
-  chatroom.thrift
+  chatroom-cpp2 chatroom.thrift
   LANGUAGE cpp2
-  TARGET chatroom-cpp2
   SERVICES ChatRoomService Echo)
 target_link_libraries(chatroom-cpp2 PUBLIC thriftcpp2)
