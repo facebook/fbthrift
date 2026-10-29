@@ -382,9 +382,12 @@ func TestPanics(t *testing.T) {
 		)
 		require.NoError(t, err)
 		client := dummyif.NewDummyChannelClient(channel)
-		// Should receive a graceful error upon panic
+		// Should receive a graceful error upon panic, including the function
+		// name and original panic message. The full stack trace goes to the
+		// server log, not the client.
 		err = client.Panic(context.Background())
 		require.Error(t, err)
+		require.ErrorContains(t, err, "thrift handler panic in Panic: panic!")
 		// Should be able to make another request after a panic
 		err = client.Ping(context.Background())
 		require.NoError(t, err)

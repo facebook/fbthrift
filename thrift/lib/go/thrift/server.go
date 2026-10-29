@@ -25,6 +25,7 @@ import (
 	"math"
 	"net"
 	"runtime"
+	"runtime/debug"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -424,7 +425,8 @@ func (s *rocketServerSocket) requestResponse(msg payload.Payload) mono.Mono {
 			defer func() {
 				if r := recover(); r != nil {
 					s.observer.ProcessorPanic()
-					panic(r)
+					s.log("thrift handler panic in %s: %v\n%s", rpcFuncName, r, debug.Stack())
+					panic(fmt.Sprintf("thrift handler panic in %s: %v", rpcFuncName, r))
 				}
 			}()
 			pfuncStartTime := time.Now()
@@ -521,7 +523,8 @@ func (s *rocketServerSocket) fireAndForget(msg payload.Payload) {
 		defer func() {
 			if r := recover(); r != nil {
 				s.observer.ProcessorPanic()
-				panic(r)
+				s.log("thrift handler panic in %s: %v\n%s", rpcFuncName, r, debug.Stack())
+				panic(fmt.Sprintf("thrift handler panic in %s: %v", rpcFuncName, r))
 			}
 		}()
 		pfuncStartTime := time.Now()
