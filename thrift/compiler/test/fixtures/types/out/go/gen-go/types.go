@@ -6103,7 +6103,7 @@ type AllocatorAware struct {
     AaString String_5252 `thrift:"aa_string,4" json:"aa_string" db:"aa_string"`
     NotAContainer int32 `thrift:"not_a_container,5" json:"not_a_container" db:"not_a_container"`
     AaUnique int32 `thrift:"aa_unique,6" json:"aa_unique" db:"aa_unique"`
-    AaShared I32_9314 `thrift:"aa_shared,7" json:"aa_shared" db:"aa_shared"`
+    AaShared String_5252 `thrift:"aa_shared,7" json:"aa_shared" db:"aa_shared"`
 }
 // Compile time interface enforcer
 var _ thrift.Struct = (*AllocatorAware)(nil)
@@ -6380,28 +6380,28 @@ func (x *AllocatorAware) readField6(p thrift.Decoder) error {  // AaUnique
     return nil
 }
 
-func (x *AllocatorAware) GetAaShared() I32_9314 {
+func (x *AllocatorAware) GetAaShared() String_5252 {
     return x.AaShared
 }
 
-func (x *AllocatorAware) SetAaSharedNonCompat(value I32_9314) *AllocatorAware {
+func (x *AllocatorAware) SetAaSharedNonCompat(value String_5252) *AllocatorAware {
     x.AaShared = value
     return x
 }
 
-func (x *AllocatorAware) SetAaShared(value I32_9314) *AllocatorAware {
+func (x *AllocatorAware) SetAaShared(value String_5252) *AllocatorAware {
     x.AaShared = value
     return x
 }
 
 
 func (x *AllocatorAware) writeField7(p thrift.Encoder) error {  // AaShared
-    if err := p.WriteFieldBegin("aa_shared", thrift.I32, 7); err != nil {
+    if err := p.WriteFieldBegin("aa_shared", thrift.STRING, 7); err != nil {
         return fmt.Errorf("AllocatorAware write field begin error: %w", err)
     }
 
     item := x.AaShared
-    err := WriteI32_9314(item, p)
+    err := WriteString_5252(item, p)
     if err != nil {
         return err
     }
@@ -6413,7 +6413,7 @@ func (x *AllocatorAware) writeField7(p thrift.Encoder) error {  // AaShared
 }
 
 func (x *AllocatorAware) readField7(p thrift.Decoder) error {  // AaShared
-    result, err := ReadI32_9314(p)
+    result, err := ReadString_5252(p)
     if err != nil {
         return err
     }
@@ -6491,7 +6491,7 @@ func (x *AllocatorAware) Read(p thrift.Decoder) error {
             fieldReadErr = x.readField5(p)
         case ((id == 6 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "aa_unique")):  // aa_unique
             fieldReadErr = x.readField6(p)
-        case ((id == 7 && wireType == thrift.I32) || (id == thrift.NO_FIELD_ID && fieldName == "aa_shared")):  // aa_shared
+        case ((id == 7 && wireType == thrift.STRING) || (id == thrift.NO_FIELD_ID && fieldName == "aa_shared")):  // aa_shared
             fieldReadErr = x.readField7(p)
         default:
             fieldReadErr = p.Skip(wireType)
@@ -6525,7 +6525,7 @@ func (x *AllocatorAware) setDefaults() *AllocatorAware {
         SetAaStringNonCompat(NewString_5252()).
         SetNotAContainerNonCompat(0).
         SetAaUniqueNonCompat(0).
-        SetAaSharedNonCompat(NewI32_9314())
+        SetAaSharedNonCompat(NewString_5252())
 }
 
 func (x *AllocatorAware) GetThriftStructMetadata() *metadata.ThriftStruct {

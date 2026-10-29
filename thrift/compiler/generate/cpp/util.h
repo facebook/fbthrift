@@ -86,6 +86,18 @@ inline std::string get_service_qualified_name(const t_service& service) {
 std::string_view get_type(const t_type* type);
 
 /**
+ * Check if the cpp_type names folly::IOBuf, by value or through a pointer, on
+ * a binary type.
+ */
+bool is_binary_iobuf(const t_type* type);
+
+/**
+ * Check if the cpp_type names folly::IOBuf on a binary field, checking the
+ * field's own @cpp.Type annotation before the field's type node.
+ */
+bool is_binary_iobuf(const t_field& field);
+
+/**
  * Check if the cpp_type is std::unique_ptr<folly::IOBuf> on binary type.
  */
 bool is_binary_iobuf_unique_ptr(const t_type* type);

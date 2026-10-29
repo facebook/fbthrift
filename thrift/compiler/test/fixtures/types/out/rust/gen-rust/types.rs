@@ -401,7 +401,7 @@ pub struct AllocatorAware {
     pub aa_string: crate::types::string_5252,
     pub not_a_container: ::std::primitive::i32,
     pub aa_unique: ::std::primitive::i32,
-    pub aa_shared: crate::types::i32_9314,
+    pub aa_shared: crate::types::string_5252,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
@@ -6037,7 +6037,7 @@ impl ::fbthrift::ThriftStruct for self::AllocatorAware {
             ::fbthrift::Field::new("aa_list", ::fbthrift::TType::List, 1),
             ::fbthrift::Field::new("aa_map", ::fbthrift::TType::Map, 3),
             ::fbthrift::Field::new("aa_set", ::fbthrift::TType::Set, 2),
-            ::fbthrift::Field::new("aa_shared", ::fbthrift::TType::I32, 7),
+            ::fbthrift::Field::new("aa_shared", ::fbthrift::TType::String, 7),
             ::fbthrift::Field::new("aa_string", ::fbthrift::TType::String, 4),
             ::fbthrift::Field::new("aa_unique", ::fbthrift::TType::I32, 6),
             ::fbthrift::Field::new("not_a_container", ::fbthrift::TType::I32, 5),
@@ -6071,7 +6071,7 @@ where
         p.write_field_begin("aa_unique", ::fbthrift::TType::I32, 6);
         ::fbthrift::Serialize::rs_thrift_write(&self.aa_unique, p);
         p.write_field_end();
-        p.write_field_begin("aa_shared", ::fbthrift::TType::I32, 7);
+        p.write_field_begin("aa_shared", ::fbthrift::TType::String, 7);
         ::fbthrift::Serialize::rs_thrift_write(&self.aa_shared, p);
         p.write_field_end();
         p.write_field_stop();
@@ -6089,7 +6089,7 @@ where
             ::fbthrift::Field::new("aa_list", ::fbthrift::TType::List, 1),
             ::fbthrift::Field::new("aa_map", ::fbthrift::TType::Map, 3),
             ::fbthrift::Field::new("aa_set", ::fbthrift::TType::Set, 2),
-            ::fbthrift::Field::new("aa_shared", ::fbthrift::TType::I32, 7),
+            ::fbthrift::Field::new("aa_shared", ::fbthrift::TType::String, 7),
             ::fbthrift::Field::new("aa_string", ::fbthrift::TType::String, 4),
             ::fbthrift::Field::new("aa_unique", ::fbthrift::TType::I32, 6),
             ::fbthrift::Field::new("not_a_container", ::fbthrift::TType::I32, 5),
@@ -6143,7 +6143,7 @@ where
                 break 'fastpath true;
             }
             (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
-            if (fty, fid) == (::fbthrift::TType::I32, 7) {
+            if (fty, fid) == (::fbthrift::TType::String, 7) {
                 output.aa_shared = ::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "aa_shared", strct: "AllocatorAware"})?;
                 p.read_field_end()?;
             } else {
@@ -6164,7 +6164,7 @@ where
                     (::fbthrift::TType::String, 4) => output.aa_string = ::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "aa_string", strct: "AllocatorAware"})?,
                     (::fbthrift::TType::I32, 5) => output.not_a_container = ::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "not_a_container", strct: "AllocatorAware"})?,
                     (::fbthrift::TType::I32, 6) => output.aa_unique = ::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "aa_unique", strct: "AllocatorAware"})?,
-                    (::fbthrift::TType::I32, 7) => output.aa_shared = ::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "aa_shared", strct: "AllocatorAware"})?,
+                    (::fbthrift::TType::String, 7) => output.aa_shared = ::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "aa_shared", strct: "AllocatorAware"})?,
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;

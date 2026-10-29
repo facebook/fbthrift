@@ -285,10 +285,14 @@ std::string_view get_type(const t_type* type) {
   return value_or_empty(cpp_name_resolver::find_type(*type));
 }
 
-bool is_binary_iobuf_unique_ptr(const t_type* type) {
+namespace {
+
+// The C++ type that `cpp.type` or `@cpp.Type{name}` gives a binary type, or
+// empty.
+std::string_view binary_cpp_type(const t_type* type) {
   auto const* resolved_typedef = type->get_true_type();
   if (resolved_typedef == nullptr || !resolved_typedef->is_binary()) {
-    return false;
+    return {};
   }
   // Check for cpp.type on the true type (legacy unstructured annotations)
   // or on any typedef in the chain (structured @cpp.Type).
@@ -302,23 +306,44 @@ bool is_binary_iobuf_unique_ptr(const t_type* type) {
       }
     }
   }
+  return type_str;
+}
+
+// Like `binary_cpp_type(field.type())`, but a field-level `@cpp.Type{name}`
+// comes first.
+std::string_view binary_cpp_type(const t_field& field) {
+  if (auto* annot = field.find_structured_annotation_or_null(kCppTypeUri)) {
+    if (auto* name =
+            annot->get_value_from_structured_annotation_or_null("name")) {
+      return field.type().deref().get_true_type()->is_binary()
+          ? std::string_view(name->get_string())
+          : std::string_view();
+    }
+  }
+  return binary_cpp_type(&field.type().deref());
+}
+
+bool is_iobuf_unique_ptr(std::string_view type_str) {
   return contains(type_str, "std::unique_ptr") &&
       contains(type_str, "folly::IOBuf");
 }
 
+} // namespace
+
+bool is_binary_iobuf(const t_type* type) {
+  return contains(binary_cpp_type(type), "folly::IOBuf");
+}
+
+bool is_binary_iobuf(const t_field& field) {
+  return contains(binary_cpp_type(field), "folly::IOBuf");
+}
+
+bool is_binary_iobuf_unique_ptr(const t_type* type) {
+  return is_iobuf_unique_ptr(binary_cpp_type(type));
+}
+
 bool is_binary_iobuf_unique_ptr(const t_field& field) {
-  // Check field-level @cpp.Type annotation first.
-  if (auto* annot = field.find_structured_annotation_or_null(kCppTypeUri)) {
-    if (auto* name =
-            annot->get_value_from_structured_annotation_or_null("name")) {
-      const auto& type_str = name->get_string();
-      return field.type().deref().get_true_type()->is_binary() &&
-          contains(type_str, "std::unique_ptr") &&
-          contains(type_str, "folly::IOBuf");
-    }
-  }
-  // Fall back to type-level check (for typedef-level @cpp.Type).
-  return is_binary_iobuf_unique_ptr(&field.type().deref());
+  return is_iobuf_unique_ptr(binary_cpp_type(field));
 }
 
 bool field_transitively_refers_to_unique(const t_field* field) {

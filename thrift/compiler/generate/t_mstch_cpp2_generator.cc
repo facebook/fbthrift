@@ -2801,6 +2801,59 @@ void forbid_optional_ref_fields_on_allocator_aware(
   }
 }
 
+// An adapted field is constructed as its adapted type, which may take an
+// allocator.
+void forbid_use_allocator_on_allocator_unaware_fields(
+    sema_context& ctx, const t_field& field) {
+  const auto& parent = dynamic_cast<const t_structured&>(*ctx.parent());
+  if (!parent.has_unstructured_annotation("cpp.allocator") ||
+      !cpp2::uses_allocator(field) || !field.type().resolved() ||
+      field.has_structured_annotation(kCppAdapterUri) ||
+      t_typedef::get_first_structured_annotation_or_null(
+          &field.type().deref(), kCppAdapterUri) != nullptr) {
+    return;
+  }
+  // `forbid_allocator_ignoring_ref_fields` reports these.
+  const auto ref = gen::cpp::find_ref_type(field);
+  if (ref == gen::cpp::reference_type::unique ||
+      ref == gen::cpp::reference_type::boxed ||
+      ref == gen::cpp::reference_type::boxed_intern) {
+    return;
+  }
+  const t_type* true_type = field.type()->get_true_type();
+  if (true_type->is<t_enum>() ||
+      (true_type->is<t_primitive_type>() &&
+       !true_type->is_string_or_binary())) {
+    ctx.report(
+        field,
+        diagnostic_level::error,
+        "`cpp.use_allocator` is not supported on field `{}` of type `{}`, "
+        "which can't take an allocator.",
+        field.name(),
+        field.type()->name());
+    return;
+  }
+  if ((true_type->is<t_struct>() || true_type->is<t_union>()) &&
+      !true_type->has_unstructured_annotation("cpp.allocator")) {
+    ctx.report(
+        field,
+        diagnostic_level::error,
+        "`cpp.use_allocator` is not supported on field `{}`: its type `{}` "
+        "has no `cpp.allocator`.",
+        field.name(),
+        true_type->name());
+    return;
+  }
+  if (cpp2::is_binary_iobuf(field)) {
+    ctx.report(
+        field,
+        diagnostic_level::error,
+        "`cpp.use_allocator` is not supported on `folly::IOBuf` field `{}`, "
+        "which can't take an allocator.",
+        field.name());
+  }
+}
+
 // The allocator-extended copy and move constructors carry over the fields and
 // __isset and nothing else. The lazy deserialization state is only handled by
 // the constructors that take no allocator, so a lazy field reads back empty
@@ -2911,6 +2964,7 @@ void t_mstch_cpp2_generator::fill_validator_visitors(
   validator.add_union_visitor(forbid_allocator_on_union);
   validator.add_field_visitor(forbid_allocator_ignoring_ref_fields);
   validator.add_field_visitor(forbid_optional_ref_fields_on_allocator_aware);
+  validator.add_field_visitor(forbid_use_allocator_on_allocator_unaware_fields);
   validator.add_structured_definition_visitor(
       validate_alloc_ctor_custom_defaults);
   validator.add_program_visitor(validate_splits(

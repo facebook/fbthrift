@@ -3196,6 +3196,85 @@ TEST(CompilerTest, cpp_deprecated_terse_write_ref) {
   )");
 }
 
+TEST(CompilerTest, cpp_use_allocator_on_allocator_unaware_fields) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/cpp.thrift"
+    include "thrift/annotation/thrift.thrift"
+
+    enum Color {
+      RED = 1,
+    }
+    struct Plain {
+      1: string name;
+    }
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    struct AllocatorAware {
+      1: string name;
+    }
+    @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+    typedef i32 AllocI32
+    @cpp.Type{name = "folly::IOBuf"}
+    typedef binary IOBuf
+    @cpp.Adapter{name = "::my::Adapter"}
+    typedef Plain AdaptedPlain
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    struct Bad {
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      1: i64 integer;
+        # expected-error@-2: `cpp.use_allocator` is not supported on field `integer` of type `i64`, which can't take an allocator.
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      2: Color color;
+        # expected-error@-2: `cpp.use_allocator` is not supported on field `color` of type `Color`, which can't take an allocator.
+      3: AllocI32 typedef_scalar;
+        # expected-error@-1: `cpp.use_allocator` is not supported on field `typedef_scalar` of type `AllocI32`, which can't take an allocator.
+      @cpp.Ref{type = cpp.RefType.SharedMutable}
+      @cpp.AllowLegacyNonOptionalRef
+      4: AllocI32 shared_scalar;
+        # expected-warning@-3: Field with @cpp.Ref annotation should be optional: `shared_scalar` (in `Bad`).
+        # expected-error@-4: `cpp.use_allocator` is not supported on field `shared_scalar` of type `AllocI32`, which can't take an allocator.
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      5: Plain plain;
+        # expected-error@-2: `cpp.use_allocator` is not supported on field `plain`: its type `Plain` has no `cpp.allocator`.
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      6: IOBuf iobuf;
+        # expected-error@-2: `cpp.use_allocator` is not supported on `folly::IOBuf` field `iobuf`, which can't take an allocator.
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      @cpp.Type{name = "std::unique_ptr<folly::IOBuf>"}
+      7: binary iobuf_ptr;
+        # expected-error@-3: `cpp.use_allocator` is not supported on `folly::IOBuf` field `iobuf_ptr`, which can't take an allocator.
+    }
+
+    @thrift.DeprecatedUnvalidatedAnnotations{
+      items = {"cpp.allocator": "MyAlloc"},
+    }
+    struct Good {
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      1: string s;
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      2: list<i32> l;
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      3: AllocatorAware nested;
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      @cpp.Adapter{name = "::my::Adapter"}
+      4: Plain field_adapted;
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      5: AdaptedPlain typedef_adapted;
+      6: i64 no_use_allocator;
+    }
+
+    struct NoAllocator {
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
+      1: i64 ignored;
+    }
+  )");
+}
+
 TEST(CompilerTest, cpp_allocator_optional_ref) {
   check_compile(R"(
     package "facebook.com/thrift/test"

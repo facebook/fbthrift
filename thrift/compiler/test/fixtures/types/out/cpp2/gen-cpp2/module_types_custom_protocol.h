@@ -4763,13 +4763,13 @@ _readField_aa_unique:
           iprot,
           6,
           7,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::TType::T_STRING))) {
     goto _advance_failure;
   }
 _readField_aa_shared:
   {
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::apache::thrift::fixtures::types::i32_9314>>(this->get_allocator());
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::apache::thrift::fixtures::types::i32_9314, ::apache::thrift::type::i32_t>::read(*iprot, *ptr);
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::apache::thrift::fixtures::types::string_5252>>(this->get_allocator());
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::apache::thrift::fixtures::types::string_5252, ::apache::thrift::type::string_t>::read(*iprot, *ptr);
     this->__fbthrift_field_aa_shared = std::move(ptr);
   }
 
@@ -4848,7 +4848,7 @@ _loop:
     }
     case 7:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
         goto _readField_aa_shared;
       } else {
         goto _skip;
@@ -4896,9 +4896,9 @@ uint32_t AllocatorAware::serializedSize(Protocol_ const* prot_) const {
     }
   }
   {
-    xfer += prot_->serializedFieldSize("aa_shared", apache::thrift::protocol::TType::T_I32, 7);
+    xfer += prot_->serializedFieldSize("aa_shared", apache::thrift::protocol::TType::T_STRING, 7);
     if (this->__fbthrift_field_aa_shared) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::apache::thrift::fixtures::types::i32_9314, ::apache::thrift::type::i32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_aa_shared);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::apache::thrift::fixtures::types::string_5252, ::apache::thrift::type::string_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_aa_shared);
     }
   }
   xfer += prot_->serializedSizeStop();
@@ -4936,9 +4936,9 @@ uint32_t AllocatorAware::serializedSizeZC(Protocol_ const* prot_) const {
     }
   }
   {
-    xfer += prot_->serializedFieldSize("aa_shared", apache::thrift::protocol::TType::T_I32, 7);
+    xfer += prot_->serializedFieldSize("aa_shared", apache::thrift::protocol::TType::T_STRING, 7);
     if (this->__fbthrift_field_aa_shared) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::apache::thrift::fixtures::types::i32_9314, ::apache::thrift::type::i32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_aa_shared);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::apache::thrift::fixtures::types::string_5252, ::apache::thrift::type::string_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_aa_shared);
     }
   }
   xfer += prot_->serializedSizeStop();
@@ -5004,10 +5004,10 @@ uint32_t AllocatorAware::write(Protocol_* prot_) const {
   }
   {
     constexpr int16_t kPrevFieldId = 6;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 7, kPrevFieldId>(*prot_, "aa_shared", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 7, kPrevFieldId>(*prot_, "aa_shared", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->__fbthrift_field_aa_shared) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::apache::thrift::fixtures::types::i32_9314, ::apache::thrift::type::i32_t>::write(*prot_, *this->__fbthrift_field_aa_shared);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::apache::thrift::fixtures::types::string_5252, ::apache::thrift::type::string_t>::write(*prot_, *this->__fbthrift_field_aa_shared);
     }
     xfer += prot_->writeFieldEnd();
   }
