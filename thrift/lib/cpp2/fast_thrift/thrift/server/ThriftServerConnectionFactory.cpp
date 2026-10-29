@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/RejectingServerFragmenter.h>
 
 #include <algorithm>
+#include <functional>
 #include <memory>
 #include <stdexcept>
 #include <type_traits>
@@ -59,6 +60,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerCompositeAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/Event.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ReadBackpressureArbiter.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ConcurrencyControlHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerBackpressureHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerChecksumHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerCompressionHandler.h>
@@ -75,6 +77,10 @@ using channel_pipeline::PipelineBuilder;
 using channel_pipeline::PipelineImpl;
 using channel_pipeline::PipelineOwner;
 using channel_pipeline::SimpleBufferAllocator;
+
+template <typename Context>
+using ThriftServerConcurrencyControlHandler =
+    ConcurrencyControlHandler<Context, ThriftServerRequestCompletedEvent>;
 
 // Both write-path handlers carry completion trackers. The transport's
 // per-writev completion becomes the batcher's per-batch event. The fragmenter
@@ -106,6 +112,7 @@ HANDLER_TAG(thrift_server_connection_close_handler);
 HANDLER_TAG(thrift_server_backpressure_handler);
 HANDLER_TAG(thrift_server_setup_handler);
 HANDLER_TAG(thrift_server_stream_mux_handler);
+HANDLER_TAG(thrift_server_concurrency_control_handler);
 
 template <typename Fragmenter, bool WithStats, typename TransportHandler>
 PipelineOwner buildStaticRocketPipeline(
@@ -184,12 +191,10 @@ PipelineOwner selectStaticRocketStats(
 }
 
 template <bool WithCancellation, bool WithStreamMux, typename Builder>
-PipelineOwner finishStaticThriftPipelineTail(Builder&& builder) {
+PipelineOwner finishStaticThriftPipelineTailImpl(Builder&& builder) {
   if constexpr (WithCancellation && WithStreamMux) {
     return PipelineOwner(
         std::forward<Builder>(builder)
-            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
-                thrift_server_setup_handler_tag)
             .template addNextDuplexTemplate<
                 ThriftServerRequestLifecycleHandler>(
                 thrift_server_request_lifecycle_handler_tag)
@@ -199,8 +204,6 @@ PipelineOwner finishStaticThriftPipelineTail(Builder&& builder) {
   } else if constexpr (WithCancellation) {
     return PipelineOwner(
         std::forward<Builder>(builder)
-            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
-                thrift_server_setup_handler_tag)
             .template addNextDuplexTemplate<
                 ThriftServerRequestLifecycleHandler>(
                 thrift_server_request_lifecycle_handler_tag)
@@ -208,37 +211,56 @@ PipelineOwner finishStaticThriftPipelineTail(Builder&& builder) {
   } else if constexpr (WithStreamMux) {
     return PipelineOwner(
         std::forward<Builder>(builder)
-            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
-                thrift_server_setup_handler_tag)
             .template addNextDuplexTemplate<ThriftServerStreamMuxHandler>(
                 thrift_server_stream_mux_handler_tag)
             .build());
   } else {
-    return PipelineOwner(
-        std::forward<Builder>(builder)
-            .template addNextDuplexTemplate<ThriftServerSetupHandler>(
-                thrift_server_setup_handler_tag)
-            .build());
+    return PipelineOwner(std::forward<Builder>(builder).build());
   }
+}
+
+template <bool WithCancellation, bool WithStreamMux, typename Builder>
+PipelineOwner finishStaticThriftPipelineTail(
+    Builder&& builder, const ThriftServerConnectionFactoryConfig& config) {
+  auto withSetup =
+      std::forward<Builder>(builder)
+          .template addNextDuplexTemplate<ThriftServerSetupHandler>(
+              thrift_server_setup_handler_tag);
+  if (config.requestConcurrencyLimits) {
+    const auto& limits = *config.requestConcurrencyLimits;
+    return finishStaticThriftPipelineTailImpl<WithCancellation, WithStreamMux>(
+        std::move(withSetup)
+            .template addNextDuplexTemplate<
+                ThriftServerConcurrencyControlHandler>(
+                thrift_server_concurrency_control_handler_tag,
+                limits.maxActiveRequests,
+                limits.maxOutstandingRequests,
+                std::ref(*config.concurrencyState)));
+  }
+  return finishStaticThriftPipelineTailImpl<WithCancellation, WithStreamMux>(
+      std::move(withSetup));
 }
 
 template <typename Builder>
 PipelineOwner selectStaticThriftPipelineTail(
-    Builder&& builder, bool enableCancellation, bool enableStreamMux) {
+    Builder&& builder,
+    bool enableCancellation,
+    bool enableStreamMux,
+    const ThriftServerConnectionFactoryConfig& config) {
   if (enableCancellation) {
     if (enableStreamMux) {
       return finishStaticThriftPipelineTail<true, true>(
-          std::forward<Builder>(builder));
+          std::forward<Builder>(builder), config);
     }
     return finishStaticThriftPipelineTail<true, false>(
-        std::forward<Builder>(builder));
+        std::forward<Builder>(builder), config);
   }
   if (enableStreamMux) {
     return finishStaticThriftPipelineTail<false, true>(
-        std::forward<Builder>(builder));
+        std::forward<Builder>(builder), config);
   }
   return finishStaticThriftPipelineTail<false, false>(
-      std::forward<Builder>(builder));
+      std::forward<Builder>(builder), config);
 }
 
 template <bool WithExtensions, typename Builder>
@@ -266,7 +288,8 @@ PipelineOwner finishStaticThriftPipeline(
       return selectStaticThriftPipelineTail(
           std::forward<Builder>(builder).addStaticSegments(std::move(segments)),
           config.enableCancellation,
-          config.enableStreamMux);
+          config.enableStreamMux,
+          config);
     }
     std::vector<channel_pipeline::detail::ErasedStaticHandler> handlers;
     handlers.reserve(config.thriftPipelineRegistrations.size());
@@ -276,12 +299,14 @@ PipelineOwner finishStaticThriftPipeline(
     return selectStaticThriftPipelineTail(
         std::forward<Builder>(builder).addStaticHandlers(std::move(handlers)),
         config.enableCancellation,
-        config.enableStreamMux);
+        config.enableStreamMux,
+        config);
   } else {
     return selectStaticThriftPipelineTail(
         std::forward<Builder>(builder),
         config.enableCancellation,
-        config.enableStreamMux);
+        config.enableStreamMux,
+        config);
   }
 }
 
@@ -561,6 +586,10 @@ detail::ThriftServerConnectionFactoryT<Mode, Fragmenter>::
           "DynamicFastThriftServer");
     }
   }
+  if (config_.requestConcurrencyLimits && !config_.concurrencyState) {
+    config_.concurrencyState =
+        std::make_shared<ConcurrencyControlStateHolder>();
+  }
   if (!needsComposite_) {
     return;
   }
@@ -834,6 +863,8 @@ detail::ThriftServerConnectionFactoryT<Mode, Fragmenter>::buildConnectionImpl(
       ThriftServerSetupHandler<channel_pipeline::detail::ContextImpl>;
   using MuxHandler =
       ThriftServerStreamMuxHandler<channel_pipeline::detail::ContextImpl>;
+  using ConcurrencyHandler = ThriftServerConcurrencyControlHandler<
+      channel_pipeline::detail::ContextImpl>;
   PipelineOwner thriftPipeline;
   if constexpr (Mode == ChannelPipelineMode::Static) {
     CHECK(!transportNegotiationHandler)
@@ -925,6 +956,14 @@ detail::ThriftServerConnectionFactoryT<Mode, Fragmenter>::buildConnectionImpl(
     // requests.
     thriftPipelineBuilder.template addNextDuplex<SetupHandler>(
         thrift_server_setup_handler_tag);
+    if (config_.requestConcurrencyLimits) {
+      const auto& limits = *config_.requestConcurrencyLimits;
+      thriftPipelineBuilder.template addNextDuplex<ConcurrencyHandler>(
+          thrift_server_concurrency_control_handler_tag,
+          limits.maxActiveRequests,
+          limits.maxOutstandingRequests,
+          std::ref(*config_.concurrencyState));
+    }
     if (config_.enableCancellation) {
       thriftPipelineBuilder.template addNextDuplex<RequestLifecycleHandler>(
           thrift_server_request_lifecycle_handler_tag);

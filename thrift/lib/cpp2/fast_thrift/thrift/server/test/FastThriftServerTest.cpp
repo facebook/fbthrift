@@ -22,6 +22,7 @@
 #include <atomic>
 #include <chrono>
 #include <cstddef>
+#include <future>
 #include <memory>
 #include <set>
 #include <stdexcept>
@@ -171,6 +172,38 @@ class DeferredPingHandler
  private:
   ftt::FastHandlerCallbackPtr<void> callback_;
   folly::EventBase* evb_{nullptr};
+};
+
+class ConcurrencyLimitedPingHandler
+    : public FastServiceHandler<integration::FastThriftServer> {
+ public:
+  void async_tm_ping(ftt::FastHandlerCallbackPtr<void> cb) override {
+    evb_ = cb->getEventBase();
+    callbacks_.push_back(std::move(cb));
+    const auto started = started_.fetch_add(1) + 1;
+    if (started == 1) {
+      firstStarted_.post();
+    } else if (started == 2) {
+      secondStarted_.set_value();
+    }
+  }
+
+  void completeNext() {
+    auto callback = std::move(callbacks_.front());
+    callbacks_.erase(callbacks_.begin());
+    std::move(callback)->done();
+  }
+
+  folly::EventBase* getEventBase() const { return evb_; }
+  size_t started() const { return started_.load(); }
+
+  folly::Baton<> firstStarted_;
+  std::promise<void> secondStarted_;
+
+ private:
+  std::vector<ftt::FastHandlerCallbackPtr<void>> callbacks_;
+  folly::EventBase* evb_{nullptr};
+  std::atomic<size_t> started_{0};
 };
 
 // Establishes a fizz-client connection to `address` and returns the negotiated
@@ -759,6 +792,92 @@ TEST(
   stopThread.join();
 
   evb->runInEventBaseThreadAndWait([&] { client.reset(); });
+}
+
+TEST(
+    FastThriftServerStandaloneTest,
+    RequestConcurrencyLimitsAreSharedAcrossConnections) {
+  THRIFT_FLAG_SET_MOCK(rocket_client_binary_rpc_metadata_encoding, true);
+
+  auto verify = []<typename Server>() {
+    auto handler = std::make_shared<ConcurrencyLimitedPingHandler>();
+    auto secondStarted = handler->secondStarted_.get_future();
+    ftt::FastThriftServerConfig config;
+    config.address = folly::SocketAddress("::1", 0);
+    config.numIOThreads = 1;
+    config.requestConcurrencyLimits = ftt::RequestConcurrencyLimits{
+        .maxActiveRequests = 1,
+        .maxOutstandingRequests = 2,
+    };
+
+    Server server(std::move(config));
+    server.setInterface(handler);
+    server.start();
+
+    folly::ScopedEventBaseThread clientThread;
+    auto* clientEvb = clientThread.getEventBase();
+    using Client = apache::thrift::Client<integration::FastThriftServer>;
+    std::unique_ptr<Client> firstClient;
+    std::unique_ptr<Client> secondClient;
+    clientEvb->runInEventBaseThreadAndWait([&] {
+      auto makeClient = [&] {
+        auto socket =
+            folly::AsyncSocket::newSocket(clientEvb, server.getAddress());
+        auto channel =
+            apache::thrift::RocketClientChannel::newChannel(std::move(socket));
+        return std::make_unique<Client>(std::move(channel));
+      };
+      firstClient = makeClient();
+      secondClient = makeClient();
+    });
+
+    std::atomic<size_t> completed{0};
+    folly::Baton<> bothCompleted;
+    clientEvb->runInEventBaseThread([&] {
+      firstClient->semifuture_ping().via(clientEvb).thenTry(
+          [&](folly::Try<folly::Unit>&& result) {
+            if (result.hasException()) {
+              ADD_FAILURE() << folly::exceptionStr(result.exception());
+            }
+            if (completed.fetch_add(1) + 1 == 2) {
+              bothCompleted.post();
+            }
+          });
+      secondClient->semifuture_ping().via(clientEvb).thenTry(
+          [&](folly::Try<folly::Unit>&& result) {
+            if (result.hasException()) {
+              ADD_FAILURE() << folly::exceptionStr(result.exception());
+            }
+            if (completed.fetch_add(1) + 1 == 2) {
+              bothCompleted.post();
+            }
+          });
+    });
+
+    ASSERT_TRUE(handler->firstStarted_.try_wait_for(std::chrono::seconds{5}));
+    EXPECT_EQ(
+        secondStarted.wait_for(std::chrono::milliseconds{100}),
+        std::future_status::timeout);
+    EXPECT_EQ(handler->started(), 1);
+
+    ASSERT_NE(handler->getEventBase(), nullptr);
+    handler->getEventBase()->runInEventBaseThreadAndWait(
+        [&] { handler->completeNext(); });
+    ASSERT_EQ(
+        secondStarted.wait_for(std::chrono::seconds{5}),
+        std::future_status::ready);
+    handler->getEventBase()->runInEventBaseThreadAndWait(
+        [&] { handler->completeNext(); });
+
+    EXPECT_TRUE(bothCompleted.try_wait_for(std::chrono::seconds{5}));
+    clientEvb->runInEventBaseThreadAndWait([&] {
+      firstClient.reset();
+      secondClient.reset();
+    });
+    server.stop();
+  };
+  verify.template operator()<ftt::FastThriftServer>();
+  verify.template operator()<ftt::DynamicFastThriftServer>();
 }
 
 // ---------------------------------------------------------------------------

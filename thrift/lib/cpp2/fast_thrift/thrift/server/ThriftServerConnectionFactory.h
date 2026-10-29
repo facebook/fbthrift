@@ -19,6 +19,7 @@
 #include <chrono>
 #include <cstddef>
 #include <memory>
+#include <optional>
 #include <variant>
 #include <vector>
 
@@ -51,6 +52,7 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/MethodMetadata.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/common/ThriftServerConnection.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/framework/ThriftPipelineHandler.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/server/util/ConcurrencyControlState.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 
@@ -110,6 +112,9 @@ struct ThriftServerConnectionFactoryConfig {
   // When true, install request lifecycle arbitration and expose cancellable
   // tokens to service handlers. Disabled requests retain an invalid source.
   bool enableCancellation{false};
+
+  std::optional<RequestConcurrencyLimits> requestConcurrencyLimits;
+  std::shared_ptr<ConcurrencyControlStateHolder> concurrencyState;
 
   // When true, insert ThriftServerStreamMuxHandler immediately head-ward of the
   // tail app adapter, so it owns/multiplexes per-stream producing-end

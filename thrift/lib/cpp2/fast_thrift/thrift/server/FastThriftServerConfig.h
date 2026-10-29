@@ -19,12 +19,18 @@
 #include <chrono>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 
 #include <folly/SocketAddress.h>
 
 #include <thrift/lib/cpp2/fast_thrift/frame/write/IntervalBatchingHandlerConfig.h>
 
 namespace apache::thrift::fast_thrift::thrift {
+
+struct RequestConcurrencyLimits {
+  uint64_t maxActiveRequests;
+  uint64_t maxOutstandingRequests;
+};
 
 enum class ChannelPipelineMode : uint8_t {
   Dynamic,
@@ -98,6 +104,9 @@ struct FastThriftServerConfig {
   // CANCEL is ignored: application work may finish and its response is sent.
   // Only takes effect on FastThriftServer.
   bool enableCancellation{false};
+
+  // Shared per-EventBase admission limits.
+  std::optional<RequestConcurrencyLimits> requestConcurrencyLimits;
 
   // When true, insert ThriftServerStreamMuxHandler immediately head-ward of the
   // tail app adapter. It owns and multiplexes per-stream producing-end

@@ -688,6 +688,8 @@ void detail::FastThriftServerBase::start() {
       .enableRequestHeaders = config_.enableRequestHeaders,
       .enableChecksum = config_.enableChecksum,
       .enableCancellation = config_.enableCancellation,
+      .requestConcurrencyLimits = config_.requestConcurrencyLimits,
+      .concurrencyState = nullptr,
       .enableStreamMux = config_.enableStreamMux,
       .batchingConfig = config_.batchingConfig,
       .drainTimeout = config_.drainTimeout,
