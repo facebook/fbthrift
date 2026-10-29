@@ -165,11 +165,11 @@ TEST(constants, examples) {
 
   EXPECT_EQ(union2::Type::u, test_constants::u_2_4().getType());
   EXPECT_EQ(union1::Type::i, test_constants::u_2_4().u().value().getType());
-  EXPECT_EQ(43, test_constants::u_2_4().u().value().get_i());
+  EXPECT_EQ(43, test_constants::u_2_4().u().value().i().value());
 
   EXPECT_EQ(union2::Type::u, test_constants::u_2_5().getType());
   EXPECT_EQ(union1::Type::d, test_constants::u_2_5().u().value().getType());
-  EXPECT_EQ(9.8, test_constants::u_2_5().u().value().get_d());
+  EXPECT_EQ(9.8, test_constants::u_2_5().u().value().d().value());
 
   EXPECT_EQ(union2::Type::u, test_constants::u_2_6().getType());
   EXPECT_EQ(
