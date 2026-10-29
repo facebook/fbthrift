@@ -40,6 +40,7 @@ from thrift.lib.python.schema.serialization import (
 from thrift.lib.python.schema.tests.datum_testing import (
     field_ids,
     Generated,
+    I32,
     nested,
     NOT_JSON_REPRESENTABLE,
     primitives,
@@ -418,6 +419,13 @@ class SimpleJsonTest(SerializationTest):
                 self.assertEqual(
                     serialize(value_of(obj), Protocol.SIMPLE_JSON), expected
                 )
+
+    def test_writes_int_subclasses_as_ints(self) -> None:
+        # A generated enum member is an int whose str() is "Color.BLUE".
+        for type_ref in (type_ref_of(fixtures.Color), I32):
+            with self.subTest(type_ref=type_ref):
+                value = MutableDynamicValue(type_ref, fixtures.Color.BLUE)
+                self.assertEqual(serialize(value, Protocol.SIMPLE_JSON), b"2")
 
     def test_struct_map_keys_are_rejected(self) -> None:
         obj = dict(sample_objects())["struct_keyed_map"]

@@ -151,17 +151,21 @@ class SimpleJsonWriter:
     def write_bool(self, value: bool) -> None:
         self._write_number("true" if value else "false")
 
+    def _write_int(self, value: int) -> None:
+        # A generated enum member is an int whose str() is its name.
+        self._write_number(str(int(value)))
+
     def write_byte(self, value: int) -> None:
-        self._write_number(str(value))
+        self._write_int(value)
 
     def write_i16(self, value: int) -> None:
-        self._write_number(str(value))
+        self._write_int(value)
 
     def write_i32(self, value: int) -> None:
-        self._write_number(str(value))
+        self._write_int(value)
 
     def write_i64(self, value: int) -> None:
-        self._write_number(str(value))
+        self._write_int(value)
 
     def write_float(self, value: float) -> None:
         self._write_number(json_float32(value))
@@ -232,6 +236,17 @@ def parse_json(data: bytes) -> object:
     is not one JSON value (or ``RecursionError`` if it nests too deeply)."""
     try:
         return _decoder().decode(decode_utf8(data))
+    except ValueError as e:  # includes json.JSONDecodeError
+        raise DecodeError(f"invalid JSON: {e}") from e
+
+
+def parse_json_prefix(text: str, start: int = 0) -> tuple[object, int]:
+    """The tree of the JSON value at ``text[start]``, as ``parse_json``
+    builds it, and the index just past the value; what follows is not read.
+    Raises ``DecodeError`` if no JSON value starts at ``start`` (or
+    ``RecursionError`` if it nests too deeply)."""
+    try:
+        return _decoder().raw_decode(text, start)
     except ValueError as e:  # includes json.JSONDecodeError
         raise DecodeError(f"invalid JSON: {e}") from e
 

@@ -20,6 +20,7 @@ from __future__ import annotations
 import functools
 import math
 import struct
+import unittest
 
 from thrift.lib.python.schema._errors import DecodeError, EncodeError
 from thrift.lib.python.schema._protocols import (
@@ -27,6 +28,11 @@ from thrift.lib.python.schema._protocols import (
     Protocol,
     ProtocolReader,
     ProtocolWriter,
+)
+from thrift.lib.python.schema._simple_json_protocol import (
+    dump_json,
+    JsonNumber,
+    parse_json_prefix,
 )
 from thrift.lib.python.schema._ttypes import (
     NO_FIELD_ID,
@@ -816,3 +822,54 @@ def _double_key(value: float) -> WriteCall:
         writer.write_map_end()
 
     return write
+
+
+class ParseJsonPrefixTest(unittest.TestCase):
+    """The JSON value that starts a string, as a path selector is read."""
+
+    def test_returns_the_value_and_the_index_past_it(self) -> None:
+        cases = [
+            ('"a.b[0]{}"]rest', '"a.b[0]{}"', 10),
+            ("-42}", "-42", 3),
+            ("[1,[2]]]", "[1,[2]]", 7),
+            ('{"k":true}}', '{"k":true}', 10),
+            ("null", "null", 4),
+        ]
+        for text, value, end in cases:
+            with self.subTest(text=text):
+                node, stop = parse_json_prefix(text)
+                self.assertEqual(dump_json(node), value)
+                self.assertEqual(stop, end)
+
+    def test_starts_at_the_given_index(self) -> None:
+        node, end = parse_json_prefix('set<string>{"x"}', 12)
+        self.assertEqual(node, "x")
+        self.assertEqual(end, 15)
+
+    def test_keeps_number_literals(self) -> None:
+        node, _ = parse_json_prefix("-0}")
+        self.assertIsInstance(node, JsonNumber)
+        assert isinstance(node, JsonNumber)
+        self.assertEqual(node.literal, "-0")
+        node, _ = parse_json_prefix("1.50e+3]")
+        assert isinstance(node, JsonNumber)
+        self.assertEqual(node.literal, "1.50e+3")
+
+    def test_accepts_raw_control_characters_in_strings(self) -> None:
+        node, end = parse_json_prefix('"a\tb"\n')
+        self.assertEqual(node, "a\tb")
+        self.assertEqual(end, 5)
+
+    def test_rejects_what_is_not_json(self) -> None:
+        for text, start in [
+            ("NaN", 0),
+            ("Infinity", 0),
+            ("not-json", 0),
+            ('"open', 0),
+            ("", 0),
+            ("[1]", 3),
+            (" 1", 0),
+        ]:
+            with self.subTest(text=text, start=start):
+                with self.assertRaises(DecodeError):
+                    parse_json_prefix(text, start)
