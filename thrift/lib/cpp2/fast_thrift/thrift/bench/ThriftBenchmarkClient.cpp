@@ -61,9 +61,9 @@
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientRequestResponseHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientSetupFrameHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/client/handler/RocketClientStreamStateHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/bench/if/gen-cpp2/BenchmarkFastServiceFastClient.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/bench/if/gen-cpp2/BenchmarkService.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/bench/if/gen-cpp2/BenchmarkServiceAsyncClient.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/bench/if/gen-cpp2/BenchmarkServiceFastClient.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/ThriftClientAppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/adapter/ThriftClientTransportAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
@@ -207,7 +207,7 @@ ThriftClientState createThriftClient(const folly::SocketAddress& addr) {
 // =============================================================================
 
 using FastClient = apache::thrift::
-    FastClient<BenchmarkFastService, thrift::ThriftClientAppAdapter>;
+    FastClient<BenchmarkService, thrift::ThriftClientAppAdapter>;
 
 struct FastThriftClientState {
   std::unique_ptr<folly::ScopedEventBaseThread> thread;

@@ -45,14 +45,12 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/adapter/ThriftClientTransportAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/handler/ThriftClientChecksumHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/handler/ThriftClientMetadataPushHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestFastChildService.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestFastChildServiceAsyncClient.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestFastChildServiceFastClient.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestFastService.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestFastServiceAsyncClient.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestFastServiceFastClient.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestChildService.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestChildServiceAsyncClient.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestChildServiceFastClient.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestService.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestServiceAsyncClient.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestServiceFastClient.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -70,9 +68,7 @@ using apache::thrift::fast_thrift::channel_pipeline::SimpleBufferAllocator;
 using apache::thrift::fast_thrift::channel_pipeline::StaticPipelineBuilder;
 
 using apache::thrift::fast_thrift::thrift::test::
-    BackwardsCompatibilityTestFastChildService;
-using apache::thrift::fast_thrift::thrift::test::
-    BackwardsCompatibilityTestFastService;
+    BackwardsCompatibilityTestChildService;
 using apache::thrift::fast_thrift::thrift::test::
     BackwardsCompatibilityTestService;
 
@@ -164,33 +160,9 @@ class BackwardsCompatibilityTestHandler
   }
 };
 
-class BackwardsCompatibilityTestFastHandler
+class BackwardsCompatibilityTestChildHandler
     : public apache::thrift::ServiceHandler<
-          BackwardsCompatibilityTestFastService>,
-      public PingCounter {
- public:
-  void echo(
-      std::string& response, std::unique_ptr<std::string> message) override {
-    response = *message;
-  }
-
-  int64_t add(int64_t a, int64_t b) override { return a + b; }
-
-  void sendResponse(std::string& response, int64_t size) override {
-    response = std::string(static_cast<size_t>(size), 'x');
-  }
-
-  void ping() override { recordPing(); }
-
-  void throwError(std::unique_ptr<std::string> message) override {
-    throw apache::thrift::TApplicationException(
-        apache::thrift::TApplicationException::UNKNOWN, *message);
-  }
-};
-
-class BackwardsCompatibilityTestFastChildHandler
-    : public apache::thrift::ServiceHandler<
-          BackwardsCompatibilityTestFastChildService>,
+          BackwardsCompatibilityTestChildService>,
       public PingCounter {
  public:
   // Inherited from parent.
@@ -664,7 +636,7 @@ TEST_F(
 class BackwardsCompatibilityFastClientE2ETest : public ::testing::Test {
  protected:
   void SetUp() override {
-    handler_ = std::make_shared<BackwardsCompatibilityTestFastHandler>();
+    handler_ = std::make_shared<BackwardsCompatibilityTestHandler>();
     server_ =
         std::make_unique<apache::thrift::ScopedServerInterfaceThread>(handler_);
     clientThread_ = std::make_unique<folly::ScopedEventBaseThread>();
@@ -693,7 +665,7 @@ class BackwardsCompatibilityFastClientE2ETest : public ::testing::Test {
     });
   }
 
-  template <typename Service = BackwardsCompatibilityTestFastService>
+  template <typename Service = BackwardsCompatibilityTestService>
   std::unique_ptr<
       apache::thrift::FastClient<Service, thrift::ThriftClientAppAdapter>>
   createFastClient() {
@@ -816,7 +788,7 @@ class BackwardsCompatibilityFastClientE2ETest : public ::testing::Test {
         std::move(adapter));
   }
 
-  std::shared_ptr<BackwardsCompatibilityTestFastHandler> handler_;
+  std::shared_ptr<BackwardsCompatibilityTestHandler> handler_;
   std::unique_ptr<apache::thrift::ScopedServerInterfaceThread> server_;
   std::unique_ptr<folly::ScopedEventBaseThread> clientThread_;
   std::unique_ptr<thrift::client::ThriftClientTransportAdapter>
@@ -828,7 +800,7 @@ class BackwardsCompatibilityFastClientE2ETest : public ::testing::Test {
 
 TEST_F(BackwardsCompatibilityFastClientE2ETest, AsyncAndFastClientsCoexist) {
   auto asyncClient = server_->newClient<
-      apache::thrift::Client<BackwardsCompatibilityTestFastService>>();
+      apache::thrift::Client<BackwardsCompatibilityTestService>>();
   auto fastClient = createFastClient();
 
   std::string response;
@@ -1034,22 +1006,20 @@ class BackwardsCompatibilityFastChildClientE2ETest
     : public BackwardsCompatibilityFastClientE2ETest {
  protected:
   void SetUp() override {
-    childHandler_ =
-        std::make_shared<BackwardsCompatibilityTestFastChildHandler>();
+    childHandler_ = std::make_shared<BackwardsCompatibilityTestChildHandler>();
     server_ = std::make_unique<apache::thrift::ScopedServerInterfaceThread>(
         childHandler_);
     clientThread_ = std::make_unique<folly::ScopedEventBaseThread>();
   }
 
-  std::shared_ptr<BackwardsCompatibilityTestFastChildHandler> childHandler_;
+  std::shared_ptr<BackwardsCompatibilityTestChildHandler> childHandler_;
 };
 
 TEST_F(
     BackwardsCompatibilityFastChildClientE2ETest, AsyncAndFastClientsCoexist) {
   auto asyncClient = server_->newClient<
-      apache::thrift::Client<BackwardsCompatibilityTestFastChildService>>();
-  auto fastClient =
-      createFastClient<BackwardsCompatibilityTestFastChildService>();
+      apache::thrift::Client<BackwardsCompatibilityTestChildService>>();
+  auto fastClient = createFastClient<BackwardsCompatibilityTestChildService>();
 
   std::string response;
   asyncClient->sync_echo(response, "async inherited");
@@ -1074,7 +1044,7 @@ TEST_F(
 
 TEST_F(
     BackwardsCompatibilityFastChildClientE2ETest, InheritedPingThroughChild) {
-  auto client = createFastClient<BackwardsCompatibilityTestFastChildService>();
+  auto client = createFastClient<BackwardsCompatibilityTestChildService>();
 
   ASSERT_EQ(childHandler_->getPingCount(), 0);
 
@@ -1091,7 +1061,7 @@ TEST_F(
 
 TEST_F(
     BackwardsCompatibilityFastChildClientE2ETest, InheritedEchoThroughChild) {
-  auto client = createFastClient<BackwardsCompatibilityTestFastChildService>();
+  auto client = createFastClient<BackwardsCompatibilityTestChildService>();
 
   auto result = folly::coro::blockingWait(
       folly::coro::co_withExecutor(
@@ -1102,7 +1072,7 @@ TEST_F(
 }
 
 TEST_F(BackwardsCompatibilityFastChildClientE2ETest, ChildOwnMethod) {
-  auto client = createFastClient<BackwardsCompatibilityTestFastChildService>();
+  auto client = createFastClient<BackwardsCompatibilityTestChildService>();
 
   auto result = folly::coro::blockingWait(
       folly::coro::co_withExecutor(

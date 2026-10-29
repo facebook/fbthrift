@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/cpp.thrift"
+
 package "facebook.com/thrift/fast_thrift/thrift/test"
 
 namespace cpp2 apache.thrift.fast_thrift.thrift.test
 
+@cpp.FastClient
 service BackwardsCompatibilityTestService {
   // Simple echo - return the input string
   string echo(1: string message);
@@ -33,4 +36,9 @@ service BackwardsCompatibilityTestService {
 
   // Throws TApplicationException for error handling tests
   void throwError(1: string message);
+}
+
+@cpp.FastClient
+service BackwardsCompatibilityTestChildService extends BackwardsCompatibilityTestService {
+  string childEcho(1: string message);
 }

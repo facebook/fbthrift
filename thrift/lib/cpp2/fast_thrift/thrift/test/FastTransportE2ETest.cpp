@@ -17,8 +17,8 @@
 // Exercises the fast_thrift transport with a channel-based client and a
 // channel-based server: only the framing/rocket transport is fast_thrift; the
 // application layer on both ends is the legacy channel path
-// (ThriftClientChannel driving Client<TestService> and ThriftServerChannel
-// dispatching to ServiceHandler<TestService>).
+// (ThriftClientChannel driving Client<TestFastService> and ThriftServerChannel
+// dispatching to ServiceHandler<TestFastService>).
 
 #include <gtest/gtest.h>
 
@@ -60,8 +60,8 @@
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/ThriftServerChannel.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/adapter/ThriftServerTransportAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/handler/ThriftServerSetupHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/TestService.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/TestServiceAsyncClient.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/TestFastService.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/TestFastServiceAsyncClient.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 
@@ -76,7 +76,7 @@ using apache::thrift::fast_thrift::channel_pipeline::PipelineBuilder;
 using apache::thrift::fast_thrift::channel_pipeline::PipelineImpl;
 using apache::thrift::fast_thrift::channel_pipeline::SimpleBufferAllocator;
 
-using apache::thrift::fast_thrift::thrift::test::TestService;
+using apache::thrift::fast_thrift::thrift::test::TestFastService;
 
 // Client handler tags
 HANDLER_TAG(client_frame_length_encoder_handler);
@@ -131,9 +131,9 @@ class ConnectCallback : public folly::AsyncSocket::ConnectCallback {
 };
 
 /**
- * TestHandler - Implements TestServiceSvIf.
+ * TestHandler - Implements TestFastServiceSvIf.
  */
-class TestHandler : public apache::thrift::ServiceHandler<TestService> {
+class TestHandler : public apache::thrift::ServiceHandler<TestFastService> {
  public:
   void echo(
       std::string& response, std::unique_ptr<std::string> message) override {
@@ -151,8 +151,8 @@ class TestHandler : public apache::thrift::ServiceHandler<TestService> {
 
 /**
  * FastTransportE2ETest - End-to-end integration test where only the transport
- * is fast_thrift. The client is a channel-based Client<TestService> driven by
- * ThriftClientChannel; the server dispatches through ThriftServerChannel.
+ * is fast_thrift. The client is a channel-based Client<TestFastService> driven
+ * by ThriftClientChannel; the server dispatches through ThriftServerChannel.
  *
  * Server (two-pipeline):
  *   Rocket pipeline: TransportHandler -> ... -> RocketServerAppAdapter
@@ -345,7 +345,7 @@ class FastTransportE2ETest : public ::testing::Test {
    * to ThriftClientChannel, which drives it directly (no thrift pipeline /
    * transport adapter).
    */
-  std::unique_ptr<apache::thrift::Client<TestService>> createClient() {
+  std::unique_ptr<apache::thrift::Client<TestFastService>> createClient() {
     auto* evb = clientThread_->getEventBase();
     thrift::ThriftClientChannel::UniquePtr channel;
     folly::Baton<> connectBaton;
@@ -439,12 +439,12 @@ class FastTransportE2ETest : public ::testing::Test {
       throw std::runtime_error("Failed to connect to server");
     }
 
-    return std::make_unique<apache::thrift::Client<TestService>>(
+    return std::make_unique<apache::thrift::Client<TestFastService>>(
         std::move(channel));
   }
 
   void destroyClientOnEvb(
-      std::unique_ptr<apache::thrift::Client<TestService>>& client) {
+      std::unique_ptr<apache::thrift::Client<TestFastService>>& client) {
     // The client owns the channel, which owns the rocket connection; reset on
     // the evb thread.
     clientThread_->getEventBase()->runInEventBaseThreadAndWait(
