@@ -248,6 +248,16 @@ final class ThriftServiceSinkResponseMethod<
     return $this->result->genSink;
   }
 
+  public function getSinkBufferSize()[]: int {
+    $this->result as nonnull;
+    return $this->result->bufferSize;
+  }
+
+  public function getSinkChunkTimeoutMs()[]: int {
+    $this->result as nonnull;
+    return $this->result->chunkTimeoutMs;
+  }
+
   public function getSinkPayloadClass()[]: class<TSinkPayloadStruct> {
     return $this->sinkPayload;
   }
@@ -497,6 +507,8 @@ abstract class ThriftAsyncProcessor
           $output,
           $fname,
           $handler_ctx,
+          $method_metadata->getSinkBufferSize(),
+          $method_metadata->getSinkChunkTimeoutMs(),
         );
       } else if (
         $method_metadata
