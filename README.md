@@ -151,9 +151,7 @@ Thrift, which provides `thrift_generate`:
 
 `thrift_generate` adds the generated sources to `example`; the comment above it
 in `ThriftGenerate.cmake` describes the other options. Code generated for
-services also needs `FBThrift::thriftcpp2`, whose
-`wangle::wangle` dependency must be found first with
-`find_package(wangle CONFIG)`.
+services also needs `thriftcpp2`.
 
 ### Python Build (thrift-python)
 

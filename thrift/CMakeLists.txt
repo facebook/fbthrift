@@ -84,13 +84,16 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/FBThriftConfig.cmake
 # FBThriftConfig.cmake resolves them in MODULE mode. Install their Find modules
 # next to the config (which prepends its own directory to CMAKE_MODULE_PATH) so
 # downstream find_package(FBThrift) can define the imported targets that
-# FBThriftTargets.cmake refers to. FindLibUnwind is here because FindGlog uses it.
+# FBThriftTargets.cmake refers to. FindLibUnwind is here because FindGlog uses
+# it, and FindSodium because fizz's package config looks up Sodium without
+# installing the module.
 install(
   FILES ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindXxhash.cmake
         ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindZstd.cmake
         ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindGflags.cmake
         ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindGlog.cmake
         ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindLibUnwind.cmake
+        ${PROJECT_SOURCE_DIR}/build/fbcode_builder/CMake/FindSodium.cmake
   DESTINATION ${THRIFT_INSTALL_CMAKEDIR})
 install(
   EXPORT fbthrift-exports
