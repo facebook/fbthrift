@@ -3411,8 +3411,10 @@ TEST(CompilerTest, cpp_arena_annotation_scopes) {
     }
 
     @cpp.Arena
-      # expected-error@-1: `Arena` cannot annotate `Bar`
     struct Bar {}
+
+    @cpp.Arena
+    union Baz {}
 
     service Svc {
       @cpp.Arena

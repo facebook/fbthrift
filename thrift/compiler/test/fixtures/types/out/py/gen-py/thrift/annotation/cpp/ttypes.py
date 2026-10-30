@@ -3031,7 +3031,8 @@ class Arena:
   Gives a string, binary or container field or typedef a PMR allocator-aware
   C++ type, such as `std::pmr::string` or `std::pmr::vector`, that can allocate
   from a `std::pmr::memory_resource` such as an arena. On a field, the field
-  also allocates from its struct's memory resource. Other languages ignore it.
+  also allocates from its struct's memory resource. On a struct or union, it
+  applies to every field it could annotate. Other languages ignore it.
   """
 
   thrift_spec = None
