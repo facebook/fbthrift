@@ -3426,6 +3426,38 @@ TEST(CompilerTest, cpp_arena_annotation_scopes) {
   )");
 }
 
+TEST(CompilerTest, cpp_arena_adapted) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/cpp.thrift"
+
+    @cpp.Adapter{name = "::my::Adapter"}
+    typedef string AdaptedString
+    @cpp.Adapter{}
+      # expected-error@-1: key `name` not found.
+    typedef string Nameless
+
+    @cpp.Arena
+    typedef AdaptedString ArenaAdaptedString
+      # expected-error@-2: `@cpp.Arena` is not supported on typedef `ArenaAdaptedString`, which is adapted by `::my::Adapter`.
+
+    struct Foo {
+      @cpp.Arena
+      1: string ok;
+      @cpp.Arena
+      @cpp.Adapter{name = "::my::Adapter"}
+      2: string field_adapter;
+        # expected-error@-3: `@cpp.Arena` is not supported on field `field_adapter`, which is adapted by `::my::Adapter`.
+      @cpp.Arena
+      3: AdaptedString typedef_adapter;
+        # expected-error@-2: `@cpp.Arena` is not supported on field `typedef_adapter`, which is adapted by `::my::Adapter`.
+      @cpp.Arena
+      4: Nameless nameless;
+        # expected-error@-2: `@cpp.Arena` is not supported on adapted field `nameless`.
+    }
+  )");
+}
+
 TEST(CompilerTest, cpp_use_allocator_ref_fields) {
   check_compile(R"(
     package "facebook.com/thrift/test"

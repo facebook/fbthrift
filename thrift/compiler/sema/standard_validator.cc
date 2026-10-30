@@ -1392,6 +1392,53 @@ void validate_cpp_field_interceptor_annotation(
   }
 }
 
+// Lowering can't change the C++ type of an adapted field or typedef.
+void report_cpp_arena_on_adapted(
+    sema_context& ctx,
+    std::string_view kind,
+    std::string_view name,
+    const t_const& adapter) {
+  // A nameless adapter gets its own "key `name` not found." error.
+  const t_const_value* adapter_name =
+      adapter.get_value_from_structured_annotation_or_null("name");
+  if (adapter_name != nullptr &&
+      adapter_name->kind() == t_const_value::CV_STRING) {
+    ctx.error(
+        "`@cpp.Arena` is not supported on {} `{}`, which is adapted by `{}`.",
+        kind,
+        name,
+        adapter_name->get_string());
+  } else {
+    ctx.error("`@cpp.Arena` is not supported on adapted {} `{}`.", kind, name);
+  }
+}
+
+void validate_cpp_arena_field(sema_context& ctx, const t_field& field) {
+  if (!field.has_structured_annotation(kCppArenaUri)) {
+    return;
+  }
+  const t_const* adapter =
+      field.find_structured_annotation_or_null(kCppAdapterUri);
+  if (adapter == nullptr) {
+    adapter = t_typedef::get_first_structured_annotation_or_null(
+        &field.type().deref(), kCppAdapterUri);
+  }
+  if (adapter != nullptr) {
+    report_cpp_arena_on_adapted(ctx, "field", field.name(), *adapter);
+  }
+}
+
+void validate_cpp_arena_typedef(sema_context& ctx, const t_typedef& node) {
+  if (!node.has_structured_annotation(kCppArenaUri)) {
+    return;
+  }
+  if (const t_const* adapter =
+          t_typedef::get_first_structured_annotation_or_null(
+              &node, kCppAdapterUri)) {
+    report_cpp_arena_on_adapted(ctx, "typedef", node.name(), *adapter);
+  }
+}
+
 // Compiler counterpart of cpp.EnumUnderlyingType that avoids dependency on
 // generated code (see cpp.thrift and t_mstch_cpp2_generator.cc).
 enum class enum_underlying_type {
@@ -2534,6 +2581,8 @@ ast_validator standard_validator() {
   validator.add_union_visitor(&validate_union_field_attributes);
   validator.add_exception_visitor(&validate_exception_message_annotation);
   validator.add_field_visitor(&validate_field_id_value);
+  validator.add_field_visitor(&validate_cpp_arena_field);
+  validator.add_typedef_visitor(&validate_cpp_arena_typedef);
   validator.add_field_visitor(&validate_mixin_field_attributes);
   validator.add_field_visitor(&validate_boxed_field_attributes);
   validator.add_field_visitor(&validate_field_default_value);
