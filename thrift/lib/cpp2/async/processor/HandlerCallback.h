@@ -65,7 +65,8 @@ struct CompoundDecoratorAfterCallback
           CompoundDecoratorAfterCallback<T>,
           const T&,
           typename CompoundResponseExtractor<T>::ArgType> {
-  static constexpr auto extractDecoratorArg(const T& result) {
+  static constexpr typename CompoundResponseExtractor<T>::ArgType
+  extractDecoratorArg(const T& result) {
     return CompoundResponseExtractor<T>::extract(result);
   }
 };
