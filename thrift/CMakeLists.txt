@@ -14,8 +14,34 @@
 
 include(ThriftGenerate)
 
-# Installs the targets into fbthrift-exports. Projects that build fbthrift from
-# source also get the FBThrift:: name FBThriftTargets.cmake gives each one.
+# The exported and file names of the targets whose names differ from them, as
+# <target>:<name>.
+set(thrift_export_names
+    thrift_core:thrift-core
+    thrift_concurrency:concurrency
+    thrift_runtime:runtime
+    thrift_transport:transport
+    thrift_async:async
+    thrift_protocol:thriftprotocol
+    thrift_rpc:thriftcpp2
+    thrift_metadata:thriftmetadata
+    thrift_rpc_metadata:rpcmetadata
+    thrift_server_debug_info:serverdbginfo
+    thrift_type:thrifttype
+    thrift_type_rep:thrifttyperep
+    thrift_any_rep:thriftanyrep
+    thrift_frozen:thriftfrozen2
+    thrift_ast:compiler_ast
+    thrift_compiler_base:compiler_base
+    thrift_frontend:compiler_lib
+    thrift_generator_util:compiler
+    thrift_whisker:whisker
+    thrift_VarintUtilsBench:VarintUtilsBench
+    thrift_ProtocolBench:ProtocolBench)
+
+# Installs the targets into fbthrift-exports under their exported names.
+# Projects that build fbthrift from source also get the FBThrift:: name
+# FBThriftTargets.cmake gives each one.
 function (thrift_install_targets)
   install(
     TARGETS ${ARGN}
@@ -24,11 +50,19 @@ function (thrift_install_targets)
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
   foreach (target IN LISTS ARGN)
+    set(name ${target})
+    foreach (entry IN LISTS thrift_export_names)
+      if (entry MATCHES "^${target}:(.+)$")
+        set(name ${CMAKE_MATCH_1})
+        set_target_properties(${target} PROPERTIES EXPORT_NAME ${name}
+                                                   OUTPUT_NAME ${name})
+      endif ()
+    endforeach ()
     get_target_property(type ${target} TYPE)
     if (type STREQUAL "EXECUTABLE")
-      add_executable(FBThrift::${target} ALIAS ${target})
+      add_executable(FBThrift::${name} ALIAS ${target})
     else ()
-      add_library(FBThrift::${target} ALIAS ${target})
+      add_library(FBThrift::${name} ALIAS ${target})
     endif ()
   endforeach ()
 endfunction ()

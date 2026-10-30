@@ -13,11 +13,11 @@
 # limitations under the License.
 
 if (THRIFT_BENCHMARKS)
-  add_executable(VarintUtilsBench VarintUtilsBench.cpp)
-  target_link_libraries(VarintUtilsBench thriftprotocol Folly::folly
+  add_executable(thrift_VarintUtilsBench VarintUtilsBench.cpp)
+  target_link_libraries(thrift_VarintUtilsBench thrift_protocol Folly::folly
                         Folly::follybenchmark)
 
-  thrift_install_targets(VarintUtilsBench)
+  thrift_install_targets(thrift_VarintUtilsBench)
 endif ()
 
 if (THRIFT_TESTS)
@@ -25,10 +25,11 @@ if (THRIFT_TESTS)
 
   # Build each test independently.
   foreach (test_name ${PROTOCOL_TESTS})
-    add_executable(${test_name} ${test_name}.cpp)
-    target_compile_options(${test_name} PUBLIC -Wno-shadow-compatible-local)
-    target_link_libraries(${test_name} GTest::gtest_main thriftprotocol
+    add_executable(thrift_${test_name} ${test_name}.cpp)
+    target_compile_options(thrift_${test_name}
+                           PUBLIC -Wno-shadow-compatible-local)
+    target_link_libraries(thrift_${test_name} GTest::gtest_main thrift_protocol
                           Folly::folly)
-    gtest_discover_tests(${test_name})
+    gtest_discover_tests(thrift_${test_name})
   endforeach ()
 endif ()

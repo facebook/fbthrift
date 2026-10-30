@@ -441,7 +441,7 @@ add_custom_command(
     ${_lib_dir}/setup.py -v --api-only
   DEPENDS create_binding_symlink_python_types create_binding_symlink_python
           create_binding_symlink_py3 create_binding_symlink_server_impl
-          thriftcpp2
+          thrift_rpc
   WORKING_DIRECTORY ${_cybld}
   COMMENT "Generating Cython API headers")
 
@@ -568,16 +568,16 @@ target_link_libraries(
   PUBLIC # Static libs - embed all symbols
          "-Wl,--whole-archive"
          "-Wl,--allow-multiple-definition"
-         thriftcpp2
-         rpcmetadata
+         thrift_rpc
+         thrift_rpc_metadata
          thrift_annotation
-         thriftmetadata
-         thriftfrozen2
-         thriftprotocol
-         thrifttyperep
-         thrifttype
-         thriftanyrep
-         serverdbginfo
+         thrift_metadata
+         thrift_frozen
+         thrift_protocol
+         thrift_type_rep
+         thrift_type
+         thrift_any_rep
+         thrift_server_debug_info
          libevent::core
          libevent::extra
          ${LIBIBERTY_LIBRARIES}
@@ -670,7 +670,7 @@ add_custom_target(
           create_binding_symlink_py3
           create_binding_symlink_server_impl
           ${_python_test_bindings}
-          thriftcpp2
+          thrift_rpc
           thrift_python_cpp
           thrift_python_types_bindings
   WORKING_DIRECTORY ${_cybld})

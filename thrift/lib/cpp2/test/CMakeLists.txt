@@ -15,18 +15,20 @@
 # This CMakeLists.txt takes care of building a selection of benchmarks and tests
 # in this folder. Currently, it only builds ProtocolBench with its dependencies.
 
-add_executable(ProtocolBench ProtocolBench.cpp ../../thrift/detail/protocol.cpp)
+add_executable(thrift_ProtocolBench ProtocolBench.cpp
+                                    ../../thrift/detail/protocol.cpp)
 # Generate Thrift files for this benchmark.
-thrift_generate(ProtocolBench ProtocolBenchData.thrift LANGUAGE cpp2
+thrift_generate(thrift_ProtocolBench ProtocolBenchData.thrift LANGUAGE cpp2
                 OPTIONS frozen2 layouts)
 foreach (conf_name "protocol" "type" "any" "serialization" "patch_data"
                    "conformance")
-  thrift_generate(ProtocolBench ../../../conformance/if/${conf_name}.thrift
-                  LANGUAGE cpp2 OPTIONS frozen2)
+  thrift_generate(
+    thrift_ProtocolBench ../../../conformance/if/${conf_name}.thrift
+    LANGUAGE cpp2 OPTIONS frozen2)
 endforeach ()
 find_package(benchmark CONFIG REQUIRED)
 target_link_libraries(
-  ProtocolBench PRIVATE thriftfrozen2 thriftprotocol thrifttype Folly::folly
-                        benchmark::benchmark)
+  thrift_ProtocolBench PRIVATE thrift_frozen thrift_protocol thrift_type
+                               Folly::folly benchmark::benchmark)
 
-thrift_install_targets(ProtocolBench)
+thrift_install_targets(thrift_ProtocolBench)

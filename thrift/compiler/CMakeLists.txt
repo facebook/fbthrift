@@ -14,7 +14,7 @@
 
 # The Thrift AST library.
 add_library(
-  compiler_ast
+  thrift_ast
   ast/t_primitive_type.cc
   ast/t_const.cc
   ast/t_const_value.cc
@@ -38,17 +38,18 @@ add_library(
   ast/t_typedef.cc
   ast/t_union.cc
   ast/scope_identifier.cc)
-thrift_configure_target(compiler_ast PUBLIC)
-target_link_libraries(compiler_ast fmt::fmt Folly::folly)
+thrift_configure_target(thrift_ast PUBLIC)
+target_link_libraries(thrift_ast fmt::fmt Folly::folly)
 
 # The base compiler infrastructure library
-add_library(compiler_base STATIC detail/system.cc detail/pluggable_functions.cc
-                                 diagnostic.cc source_location.cc)
-target_link_libraries(compiler_base fmt::fmt Folly::folly thrift_common)
+add_library(
+  thrift_compiler_base STATIC detail/system.cc detail/pluggable_functions.cc
+                              diagnostic.cc source_location.cc)
+target_link_libraries(thrift_compiler_base fmt::fmt Folly::folly thrift_common)
 
 # The base Thrift compiler library.
 add_library(
-  compiler_lib STATIC
+  thrift_frontend STATIC
   parse/lexer.cc
   parse/lexer.h
   parse/parser.cc
@@ -67,13 +68,13 @@ add_library(
   sema/schematizer.cc
   sema/standard_validator.cc
   sema/resolution_mismatch.cc)
-target_compile_definitions(compiler_lib PRIVATE THRIFT_OSS)
-target_link_libraries(compiler_lib compiler_base compiler_ast fmt::fmt
+target_compile_definitions(thrift_frontend PRIVATE THRIFT_OSS)
+target_link_libraries(thrift_frontend thrift_compiler_base thrift_ast fmt::fmt
                       Folly::folly OpenSSL::Crypto)
 
 # The Thrift compiler library.
 add_library(
-  compiler
+  thrift_generator_util
   generate/cpp/reference_type.cc
   generate/cpp/name_resolver.cc
   generate/cpp/util.cc
@@ -83,11 +84,11 @@ add_library(
   generate/python/util.cc
   generate/rust/util.cc
   generate/swift/util.cc)
-target_link_libraries(compiler compiler_ast compiler_base fmt::fmt Folly::folly
-                      OpenSSL::Crypto)
+target_link_libraries(thrift_generator_util thrift_ast thrift_compiler_base
+                      fmt::fmt Folly::folly OpenSSL::Crypto)
 
 add_library(
-  whisker STATIC
+  thrift_whisker STATIC
   whisker/ast.cc
   whisker/dsl.cc
   whisker/detail/string.cc
@@ -99,43 +100,43 @@ add_library(
   whisker/render.cc
   whisker/standard_library.cc
   whisker/token.cc)
-target_link_libraries(whisker fmt::fmt Folly::folly compiler_base)
+target_link_libraries(thrift_whisker fmt::fmt Folly::folly thrift_compiler_base)
 
 add_subdirectory(generate)
 
-# Force compiler_generators linking (compiler will optimize it out otherwise).
+# Force thrift_generators linking (compiler will optimize it out otherwise).
 if (MSVC)
-  set(GENERATE_LINKED compiler_generators) # MSVC WHOLEARCHIVE is set after exe.
+  set(GENERATE_LINKED thrift_generators) # MSVC WHOLEARCHIVE is set after exe.
 elseif (APPLE)
-  set(GENERATE_LINKED -Wl,-force_load compiler_generators)
+  set(GENERATE_LINKED -Wl,-force_load thrift_generators)
 else ()
-  set(GENERATE_LINKED -Wl,--whole-archive compiler_generators
+  set(GENERATE_LINKED -Wl,--whole-archive thrift_generators
                       -Wl,--no-whole-archive)
 endif ()
 
 # Create the Thrift compiler binary.
 add_executable(thrift main.cc compiler.cc)
-target_link_libraries(thrift compiler_ast compiler_lib ${GENERATE_LINKED})
-# Force compiler_generators linking (compiler will optimize it out otherwise).
+target_link_libraries(thrift thrift_ast thrift_frontend ${GENERATE_LINKED})
+# Force thrift_generators linking (compiler will optimize it out otherwise).
 if (MSVC)
   set_target_properties(thrift PROPERTIES LINK_FLAGS
-                                          "/WHOLEARCHIVE:compiler_generators")
+                                          "/WHOLEARCHIVE:thrift_generators")
 endif ()
 
 if (BUILD_SHARED_LIBS)
   # All but thrift since it's a binary.
   set_target_properties(
-    compiler_ast compiler_base compiler_lib compiler whisker compiler_generators
-    PROPERTIES VERSION ${PROJECT_VERSION})
+    thrift_ast thrift_compiler_base thrift_frontend thrift_generator_util
+    thrift_whisker thrift_generators PROPERTIES VERSION ${PROJECT_VERSION})
 endif ()
 
 thrift_install_targets(
   thrift
-  compiler_ast
-  compiler_base
-  compiler_lib
-  compiler
-  whisker
+  thrift_ast
+  thrift_compiler_base
+  thrift_frontend
+  thrift_generator_util
+  thrift_whisker
   thrift_common)
 
 # Deprecated alias. The link is relative, so the install stays relocatable.
