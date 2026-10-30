@@ -39,9 +39,17 @@ set(thrift_export_names
     thrift_VarintUtilsBench:VarintUtilsBench
     thrift_ProtocolBench:ProtocolBench)
 
+# Adds thrift::<name> as an alias of the library target thrift_<name>, for
+# projects that build Thrift from source.
+function (thrift_add_alias target)
+  string(REGEX REPLACE "^thrift_" "" name ${target})
+  add_library(thrift::${name} ALIAS ${target})
+endfunction ()
+
 # Installs the targets into fbthrift-exports under their exported names.
 # Projects that build fbthrift from source also get the FBThrift:: name
-# FBThriftTargets.cmake gives each one.
+# FBThriftTargets.cmake gives each one, and the thrift:: alias of each library
+# target named thrift_<name>.
 function (thrift_install_targets)
   install(
     TARGETS ${ARGN}
@@ -63,6 +71,9 @@ function (thrift_install_targets)
       add_executable(FBThrift::${name} ALIAS ${target})
     else ()
       add_library(FBThrift::${name} ALIAS ${target})
+      if (target MATCHES "^thrift_")
+        thrift_add_alias(${target})
+      endif ()
     endif ()
   endforeach ()
 endfunction ()

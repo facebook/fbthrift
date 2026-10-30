@@ -453,6 +453,7 @@ if (THRIFT_RPC)
   add_dependencies(thrift_rpc_quic thrift_rpc mvfst::mvfst_server_async_tran)
   target_link_libraries(thrift_rpc_quic PUBLIC thrift_rpc
                                                ${thrift_mvfst_server})
+  thrift_add_alias(thrift_rpc_quic)
 endif () # THRIFT_RPC
 
 if (BUILD_SHARED_LIBS)
