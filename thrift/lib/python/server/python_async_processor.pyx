@@ -1020,8 +1020,14 @@ cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
     ):
         # The factory's first product is the control handler. Each worker
         # calls the factory again on its own loop once workers activate.
+        controlHandler = handlerFactory()
+        if not isinstance(controlHandler, ServiceInterface):
+            raise TypeError(
+                f"Handler factory returned {type(controlHandler).__name__}; "
+                "expected a thrift-python ServiceInterface."
+            )
         cdef PythonAsyncProcessorFactory inst = PythonAsyncProcessorFactory.create(
-            handlerFactory()
+            controlHandler
         )
         inst.initializerFactory = functools.partial(
             PerLoopWorkerInitializer, factory=handlerFactory

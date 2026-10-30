@@ -20,7 +20,17 @@ import os
 from asyncio import Future
 from enum import Enum
 from types import TracebackType
-from typing import Any, Callable, ClassVar, Mapping, Optional, Type, TypeVar, Union
+from typing import (
+    Any,
+    Callable,
+    ClassVar,
+    Mapping,
+    Optional,
+    overload,
+    Type,
+    TypeVar,
+    Union,
+)
 
 from thrift.py3.common import Headers, Priority
 from thrift.python.server_impl.interceptor.server_module import PythonServerModule
@@ -70,9 +80,19 @@ Py3Interface = TypeVar("Py3Interface", bound=AsyncProcessorFactory)
 PythonInterface = TypeVar("PythonInterface", bound=PythonServiceInterface)
 
 class ThriftServer:
+    @overload
     def __init__(
         self,
         handler: Optional[Union[Py3Interface, PythonInterface]],
+        port: int = 0,
+        ip: Optional[Union[IPAddress, str]] = None,
+        path: Optional[Path] = None,
+        socket_fd: Optional[int] = None,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        handler: Callable[[], PythonServiceInterface],
         port: int = 0,
         ip: Optional[Union[IPAddress, str]] = None,
         path: Optional[Path] = None,

@@ -45,7 +45,9 @@ from thrift.python.server_impl.event_handler cimport (
 )
 from thrift.python.server_impl.async_processor import AsyncProcessorFactory as AsyncProcessorFactory_
 from thrift.python.server_impl.async_processor cimport EmptyAsyncProcessorFactory
-from thrift.python.server_impl.python_async_processor cimport PythonAsyncProcessorFactory
+from thrift.python.server_impl.python_async_processor cimport (
+    PythonAsyncProcessorFactory,
+)
 from thrift.python.server_impl.request_context import ( # noqa
     ClientMetadata,
     ConnectionContext,
@@ -129,6 +131,7 @@ cdef class _NormalizedServerInput:
 
 
 cdef _NormalizedServerInput _normalize_server_input(object handler):
+    cdef PythonAsyncProcessorFactory factory
     # thrift-python path
     if isinstance(handler, PythonServiceInterface):
         return _NormalizedServerInput(
@@ -136,12 +139,22 @@ cdef _NormalizedServerInput _normalize_server_input(object handler):
             handler,
             PythonAsyncProcessorFactory.create(handler),
         )
+    # thrift-python path: a handler factory whose first product is the control
+    # handler
+    if callable(handler):
+        factory = PythonAsyncProcessorFactory.create_from_handler_factory(handler)
+        return _NormalizedServerInput(
+            b"python", <PythonServiceInterface>factory.handler, factory
+        )
     # thrift-py3 path
     if isinstance(handler, Py3AsyncProcessorFactory):
         return _NormalizedServerInput(b"py3", None, handler)
     if handler is None:
         return _NormalizedServerInput(b"unknown", None, None)
-    raise TypeError("handler must be a ServiceInterface or AsyncProcessorFactory")
+    raise TypeError(
+        "handler must be a ServiceInterface, a callable that returns a "
+        "ServiceInterface, or an AsyncProcessorFactory"
+    )
 
 
 # TODO: move this to thrift/lib/python/server.pyx when no longer referenced by
