@@ -25,7 +25,8 @@ add_library(
   concurrency/InitThreadFactory.cpp concurrency/PosixThreadFactory.cpp
   concurrency/ThreadManager.cpp)
 thrift_configure_target(thrift_concurrency PUBLIC)
-target_link_libraries(thrift_concurrency PUBLIC Folly::folly gflags glog::glog)
+target_link_libraries(thrift_concurrency PUBLIC Folly::folly ${thrift_gflags}
+                                                glog::glog)
 
 add_library(thrift_runtime ../cpp2/runtime/Init.cpp)
 thrift_configure_target(thrift_runtime PUBLIC)

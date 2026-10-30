@@ -125,8 +125,9 @@ add_library(thrift_frozen frozen/Frozen.cpp frozen/FrozenUtil.cpp
                           frozen/schema/MemorySchema.cpp)
 thrift_generate(thrift_frozen ../thrift/frozen.thrift LANGUAGE cpp2)
 add_dependencies(thrift_frozen thrift_metadata)
-target_link_libraries(thrift_frozen PUBLIC Folly::folly thrift_metadata
-                                           thrift_protocol glog::glog gflags)
+target_link_libraries(
+  thrift_frozen PUBLIC Folly::folly thrift_metadata thrift_protocol glog::glog
+                       ${thrift_gflags})
 
 add_library(thrift_type_rep)
 thrift_generate(thrift_type_rep ../thrift/id.thrift LANGUAGE cpp2

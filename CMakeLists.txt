@@ -122,6 +122,49 @@ if (APPLE AND NOT DEFINED OPENSSL_ROOT_DIR)
                   OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
 endif ()
 
+# Fetch gflags if it is not installed. folly fetches it only for its own tests,
+# but thrift_concurrency and thrift_frozen link it.
+function (thrift_fetch_gflags)
+  # As a subproject gflags builds only its single-threaded library.
+  set(GFLAGS_BUILD_gflags_LIB ON)
+  set(GFLAGS_BUILD_gflags_nothreads_LIB OFF)
+  # gflags builds a static library even for a shared build, and its `gflags`
+  # alias prefers it. Every shared library linking the alias then embeds its
+  # own copy, and the second copy to register its flags aborts the process.
+  if (BUILD_SHARED_LIBS)
+    set(GFLAGS_BUILD_STATIC_LIBS OFF)
+  endif ()
+  fb_fetch_from_manifest(gflags gflags OVERRIDE_FIND_PACKAGE)
+  # Every find_package(gflags) or find_package(Gflags) now loads this file
+  # instead of gflags' package config or FindGflags.cmake, so it sets what
+  # those do; folly, glog, fizz, wangle and mvfst read different subsets. glog
+  # would otherwise determine the namespace by linking a test program, which
+  # can't use a library that isn't built yet.
+  FetchContent_GetProperties(gflags BINARY_DIR binary_dir)
+  set(include_dir "${binary_dir}/include")
+  file(
+    WRITE "${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/gflags-extra.cmake"
+    "set(gflags_LIBRARIES gflags)
+set(GFLAGS_LIBRARIES gflags)
+set(LIBGFLAGS_LIBRARY gflags)
+set(gflags_INCLUDE_DIR \"${include_dir}\")
+set(GFLAGS_INCLUDE_DIR \"${include_dir}\")
+set(LIBGFLAGS_INCLUDE_DIR \"${include_dir}\")
+set(LIBGFLAGS_FOUND ON)
+set(gflags_NAMESPACE gflags)
+")
+endfunction ()
+
+# Before folly, so that a fetched folly, and the glog it fetches, use the same
+# gflags.
+find_package(Gflags)
+set(thrift_gflags gflags)
+if (NOT LIBGFLAGS_FOUND)
+  thrift_build_local(gflags)
+  thrift_fetch_gflags()
+  thrift_localize(thrift_gflags gflags)
+endif ()
+
 find_package(folly CONFIG QUIET)
 if (NOT folly_FOUND)
   thrift_build_local(folly)
@@ -134,7 +177,6 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads)
 
 # Find required dependencies for thrift/lib
-find_package(Gflags REQUIRED)
 find_package(Glog REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
