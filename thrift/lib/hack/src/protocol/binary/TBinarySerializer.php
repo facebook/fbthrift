@@ -106,8 +106,15 @@ final class TBinarySerializer extends TProtocolSerializer {
 
   <<__Override>>
   public static function serializeData(
+    // If type spec contains "adapter" or "wrapper" fields,
+    // then $object is expected to be the adapted/wrapped value.
     mixed $object,
     ThriftStructTypes::TGenericSpec $type_spec,
+    // WARNING: For any new use cases, always set this to true
+    // This flag only exists while we fix the old use cases.
+    // Setting this to false for types that have adapter may lead to
+    // data corruption or errors.
+    bool $migration_only_apply_adapter,
   )[read_globals, write_props]: string {
     $transport = new TMemoryBuffer();
     $protocol = new TBinaryProtocolAccelerated($transport);
@@ -117,6 +124,7 @@ final class TBinarySerializer extends TProtocolSerializer {
         $type_spec['type'],
         $object,
         $type_spec,
+        $migration_only_apply_adapter,
       ),
       '[T133628451] Memory buffer transport would have write_props, but Hack doesn\'t '.
       'have a way to express this atm.',

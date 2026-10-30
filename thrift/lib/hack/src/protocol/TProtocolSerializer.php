@@ -31,8 +31,15 @@ abstract class TProtocolSerializer {
   ): T;
 
   abstract public static function serializeData(
+    // If type spec contains "adapter" or "wrapper" fields,
+    // then $object is expected to be the adapted/wrapped value.
     mixed $object,
     ThriftStructTypes::TGenericSpec $type_spec,
+    // WARNING: For any new use cases, always set this to true
+    // This flag only exists while we fix the old use cases.
+    // Setting this to false for types that have adapter may lead to
+    // data corruption or errors.
+    bool $migration_only_apply_adapter,
   ): string;
 
   abstract public static function deserializeData(
@@ -55,8 +62,15 @@ abstract class TProtocolWritePropsSerializer extends TProtocolSerializer {
   )[write_props]: T;
   <<__Override>>
   abstract public static function serializeData(
+    // If type spec contains "adapter" or "wrapper" fields,
+    // then $object is expected to be the adapted/wrapped value.
     mixed $object,
     ThriftStructTypes::TGenericSpec $type_spec,
+    // WARNING: For any new use cases, always set this to true
+    // This flag only exists while we fix the old use cases.
+    // Setting this to false for types that have adapter may lead to
+    // data corruption or errors.
+    bool $migration_only_apply_adapter,
   )[write_props]: string;
   <<__Override>>
   abstract public static function deserializeData(

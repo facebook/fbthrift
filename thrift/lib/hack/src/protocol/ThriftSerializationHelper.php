@@ -666,7 +666,7 @@ abstract final class ThriftSerializationHelper {
     TType $field_type,
     mixed $object,
     ThriftStructTypes::TGenericSpec $tspec,
-    bool $migration_only_apply_adapter = false,
+    bool $migration_only_apply_adapter,
   )[$protocol::CReadWriteDefault, write_props]: int {
     if ($migration_only_apply_adapter) {
       $object = self::unwrapApplyAdapter($object, $tspec);
