@@ -31,7 +31,7 @@ from thrift.python.server_impl.python_async_processor import (
     SharedWorkerInitializer,
 )
 from thrift.python.std_libcpp cimport bytes_to_string_view
-from thrift.python.types import FunctionEntry
+from thrift.python.types import FunctionEntry, ServiceInterface
 
 
 cdef extern from "thrift/lib/python/server/test/WorkerInitializerTestHelper.h" namespace "apache::thrift::python::test":
@@ -79,7 +79,7 @@ cdef cCreateMethodMetadataResult create(bytes function_name, RpcKind rpc_kind):
     return deref(obj).createMethodMetadata()
 
 
-class RecordingHandler:
+class RecordingHandler(ServiceInterface):
     def __init__(self, served):
         self.created_on = threading.get_ident()
         self.events = []
