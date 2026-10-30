@@ -20,7 +20,7 @@ The following outlines the compatibility for changes to data:
 |Remove a field    |yes    |no    |Dropped by new. Do not give its id to a new field. If the types match, Binary, Compact and JSON readers put old values of the removed field into the new one. Reserve the id with `@thrift.ReserveIds`, and the compiler rejects a field that uses it. For a **required** field, see [caution](#caution_required)    |
 |Rename a field    |by id only    |no    |Binary, Compact and JSON protocols write the field id. SimpleJSON and JSON5 write the field name, so a reader with the other name loses the field. See [Serialization by name](#serialization-by-name)    |
 |Change a field id    |by name only    |yes    |Binary, Compact and JSON readers drop the field, as for a removed field. Formats that serialize by name keep it. See [Serialization by name](#serialization-by-name)    |
-|Change field type    |rarely    |no    |1. Changes between utf-8 encoded string and binary are wire compatible for Binary/Compact protocol. C++ JSON and SimpleJSON write binary as base64, so there the change is not wire compatible. After a change from binary to string, a value that is not utf-8 can break code that reads the field. For example, thrift-python raises `UnicodeDecodeError` when code reads it. <br/>2. Changes between i32 and enum are wire compatible. After a change from i32 to enum, a reader can get a number that the enum does not name. See [Versioning with enumeration types](#versioning-with-enumeration-types) <br/>3. Otherwise, add a new field. See [How to avoid incompatible versions](#how-to-avoid-incompatible-versions) and [Changing the type of a thrift field](/fb/troubleshooting/changing-field-types.md)    |
+|Change field type    |rarely    |no    |1. Changes between utf-8 encoded string and binary are wire compatible for Binary/Compact protocol. JSON and SimpleJSON in C++ and Go, and SimpleJSON in Rust, write binary as base64, so there the change is not wire compatible. After a change from binary to string, a value that is not utf-8 breaks some readers. Rust and thrift-py-deprecated on Python 3 fail to read the whole struct. Java replaces each bad byte with U+FFFD, or throws if `@compat.Strings{onInvalidUtf8 = Report}` applies. thrift-python and thrift-py3 raise `UnicodeDecodeError` when code reads the field. C++, Go and Hack keep the bytes. <br/>2. Changes between i32 and enum are wire compatible. After a change from i32 to enum, a reader can get a number that the enum does not name. See [Versioning with enumeration types](#versioning-with-enumeration-types) <br/>3. For other changes, a struct reader skips a value with another wire type, and the field keeps its default. Only the HHVM extension reads a value whose integer width changed, for example from `i32` to `i64`. Add a new field instead. See [How to avoid incompatible versions](#how-to-avoid-incompatible-versions) and [Changing the type of a thrift field](/fb/troubleshooting/changing-field-types.md)    |
 |Add enum value    |yes    |yes    |An old reader gets a value that it does not know, and Java returns `null` by default. See [Versioning with enumeration types](#versioning-with-enumeration-types)    |
 |Remove enum value    |yes    |no    |A new reader can get the removed value from an old writer, and Java returns `null` by default. See [Versioning with enumeration types](#versioning-with-enumeration-types)    |
 |Change enum value   |no    |no    |    |
@@ -32,20 +32,20 @@ The following outlines the compatibility for changes to data:
 |Constant changed    |yes    |no    |Old constant in old, new constant in new    |
 |Required to unspecified    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
 |Unspecified to required    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
-|Optional to unspecified    |yes    |no    |    |
+|Optional to unspecified    |yes    |no    |An old reader sees the field as set, also when a new writer never set it. See the reverse change in [caution](#caution_unqualified_to_optional)    |
 |Unspecified to optional    |yes    |no    |A new reader sees the field as set, also when an old writer never set it. See [caution](#caution_unqualified_to_optional)    |
 |Optional to required    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
 |Required to optional    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
 |Required to terse    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
 |Terse to required    |yes    |no    |A reader that enforces **required** can throw. See [caution](#caution_required)    |
 |Optional to terse    |yes    |no    |An old reader sees a field set to the intrinsic default as unset. See [caution](#caution_optional_to_terse)    |
-|Terse to optional    |yes    |no    |    |
+|Terse to optional    |yes    |no    |A new reader sees a field that an old writer set to the intrinsic default as unset. See the reverse change in [caution](#caution_optional_to_terse)    |
 |Unspecified to terse    |yes    |no    |If the field has a custom default, an old reader gets it where the writer set the intrinsic default. See [caution](#caution_unqualified_to_terse)    |
-|Terse to unspecified    |yes    |no    |    |
+|Terse to unspecified    |yes    |no    |If the field gets a custom default, a new reader gets it where an old writer set the intrinsic default. See the reverse change in [caution](#caution_unqualified_to_terse)    |
 |Mixin to non-mixin    |yes    |no    |Only code gen changes    |
 |Non-mixin to mixin    |yes    |yes    |Only code gen changes    |
-|Struct to union    |no    |no    |    |
-|Union to struct    |no    |no    |    |
+|Struct to union    |no    |no    |A new union reader can get two or more fields from an old struct writer. C++, Python, Java and Rust readers then throw. Go keeps all the fields, and so does Hack unless the union is strict    |
+|Union to struct    |no    |no    |An old union reader can get two or more fields from a new struct writer, with the same results as in struct to union    |
 |Struct to exception    |yes    |yes    |    |
 |Exception to struct    |yes    |yes    |    |
 |Union to exception     |no    |no    |    |
