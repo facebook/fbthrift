@@ -3397,6 +3397,35 @@ TEST(CompilerTest, cpp_allocator_on_union) {
   )");
 }
 
+TEST(CompilerTest, cpp_arena_annotation_scopes) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/cpp.thrift"
+
+    @cpp.Arena
+    typedef string PmrString
+
+    struct Foo {
+      @cpp.Arena
+      1: list<PmrString> names;
+    }
+
+    @cpp.Arena
+      # expected-error@-1: `Arena` cannot annotate `Bar`
+    struct Bar {}
+
+    service Svc {
+      @cpp.Arena
+        # expected-error@-1: `Arena` cannot annotate `arenaFunction`
+      void arenaFunction(
+        @cpp.Arena
+          # expected-error@-1: `Arena` cannot annotate `param`
+        1: string param
+      );
+    }
+  )");
+}
+
 TEST(CompilerTest, cpp_use_allocator_ref_fields) {
   check_compile(R"(
     package "facebook.com/thrift/test"

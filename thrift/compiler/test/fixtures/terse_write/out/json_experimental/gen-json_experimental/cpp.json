@@ -883,6 +883,39 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 539
+      },
+      "Arena" : {
+        "name" : "Arena",
+        "structured_annotations": {
+          "scope.Field" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Field",
+            "path" : "thrift/annotation/scope.thrift"
+          },
+            "value" : {}
+          },
+          "scope.Typedef" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Typedef",
+            "path" : "thrift/annotation/scope.thrift"
+          },
+            "value" : {}
+          },
+          "thrift.Experimental" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Experimental",
+            "path" : "thrift/annotation/thrift.thrift"
+          },
+            "value" : {}
+          }
+        },
+        "docstring" : "Gives a string, binary or container field or typedef a PMR allocator-aware\nC++ type, such as `std::pmr::string` or `std::pmr::vector`, that can allocate\nfrom a `std::pmr::memory_resource` such as an arena. On a field, the field\nalso allocates from its struct's memory resource. Other languages ignore it.\n",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 549
       }
   },
   "source_path" : "thrift/annotation/cpp",
