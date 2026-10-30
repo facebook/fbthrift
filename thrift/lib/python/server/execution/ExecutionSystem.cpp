@@ -116,9 +116,9 @@ void ExecutionSystem::executeOnWorker(
 PyObject* ExecutionSystem::getWorkerHandlerFunction(
     const WorkerHandle& worker, const std::string& method) const {
   // Both lookups succeed on every valid path. Each worker binds its table
-  // before it publishes capacity, so work reaches only bound workers. Every
-  // table comes from the same service, so it lists every routed method. And
-  // shutdown clears the tables only after worker teardown.
+  // before it publishes capacity, so work reaches only bound workers. Worker
+  // start rejects a table that lacks a routed method. And shutdown clears the
+  // tables only after worker teardown.
   return workerMethods_.at(worker)->at(method);
 }
 

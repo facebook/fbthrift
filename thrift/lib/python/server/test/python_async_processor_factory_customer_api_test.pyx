@@ -161,6 +161,11 @@ class FailingTableHandler(Handler):
         raise RuntimeError("no function table")
 
 
+class MissingMethodHandler(Handler):
+    def getFunctionTable(self):
+        return {}
+
+
 class ThreadRecordingHandler(Handler):
     def __init__(self):
         self.request_threads = []
@@ -719,6 +724,58 @@ cdef class PythonAsyncProcessorFactoryCustomerApiCTest:
         # THEN
         self.ut.assertEqual(expected_events, control_handler.events)
         self.ut.assertIs(raised.exception, control_handler.exit_error)
+
+    async def test_worker_handler_that_lacks_a_routed_method_fails_the_start(self):
+        # GIVEN
+        control_handler = ContextHandler()
+        products = [control_handler]
+
+        def make_handler():
+            return products.pop() if products else MissingMethodHandler()
+
+        cdef PythonAsyncProcessorFactory factory = (
+            PythonAsyncProcessorFactory.create_from_handler_factory(make_handler)
+        )
+        factory.set_cpu_worker_threads(2)
+        expected_events = ["enter", "exit"]
+
+        # WHEN
+        with self.ut.assertRaisesRegex(
+            TypeError,
+            "^Handler factory returned MissingMethodHandler for a worker; it "
+            "lacks routed methods: theAnswer\\.$",
+        ):
+            async with factory:
+                pass
+
+        # THEN
+        self.ut.assertEqual(expected_events, control_handler.events)
+
+    async def test_worker_product_that_is_not_a_service_interface_fails_the_start(self):
+        # GIVEN
+        control_handler = ContextHandler()
+        products = [control_handler]
+
+        def make_handler():
+            return products.pop() if products else object()
+
+        cdef PythonAsyncProcessorFactory factory = (
+            PythonAsyncProcessorFactory.create_from_handler_factory(make_handler)
+        )
+        factory.set_cpu_worker_threads(2)
+        expected_events = ["enter", "exit"]
+
+        # WHEN
+        with self.ut.assertRaisesRegex(
+            TypeError,
+            "^Handler factory returned object; expected a thrift-python "
+            "ServiceInterface\\.$",
+        ):
+            async with factory:
+                pass
+
+        # THEN
+        self.ut.assertEqual(expected_events, control_handler.events)
 
     async def test_worker_shutdown_failure_propagates_and_the_control_handler_exits(
         self, exit_result

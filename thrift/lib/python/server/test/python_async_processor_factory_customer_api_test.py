@@ -80,6 +80,20 @@ class PythonAsyncProcessorFactoryCustomerApiTest(later.unittest.TestCase):
             self
         ).test_failed_worker_start_propagates_even_when_the_control_handler_suppresses()
 
+    async def test_worker_handler_that_lacks_a_routed_method_fails_the_start(
+        self,
+    ) -> None:
+        await CTests(
+            self
+        ).test_worker_handler_that_lacks_a_routed_method_fails_the_start()
+
+    async def test_worker_product_that_is_not_a_service_interface_fails_the_start(
+        self,
+    ) -> None:
+        await CTests(
+            self
+        ).test_worker_product_that_is_not_a_service_interface_fails_the_start()
+
     async def test_worker_shutdown_failure_propagates_when_the_control_handler_does_not_suppress(
         self,
     ) -> None:

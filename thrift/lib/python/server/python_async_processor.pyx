@@ -758,6 +758,11 @@ cdef class PerLoopWorkerInitializer:
         # also keeps this worker's handler and function table alive.
         async with contextlib.AsyncExitStack() as cleanup:
             handler = self.factory()
+            if not isinstance(handler, ServiceInterface):
+                raise TypeError(
+                    f"Handler factory returned {type(handler).__name__}; "
+                    "expected a thrift-python ServiceInterface."
+                )
             await handler.__aenter__()
             cleanup.push_async_exit(
                 functools.partial(exitThatPropagatesErrors, handler)
@@ -766,6 +771,17 @@ cdef class PerLoopWorkerInitializer:
             # below borrow them.
             workerFuncMap = handler.getFunctionTable()
             cleanup.callback(workerFuncMap.clear)
+            missingMethodNames = (
+                self.workerSystem.workerCapableMethodNames.difference(workerFuncMap)
+            )
+            if missingMethodNames:
+                missing = ", ".join(
+                    sorted(name.decode() for name in missingMethodNames)
+                )
+                raise TypeError(
+                    f"Handler factory returned {type(handler).__name__} for a "
+                    f"worker; it lacks routed methods: {missing}."
+                )
             worker = registerWorkerExecutor(
                 dereference(self.workerSystem.scheduler), get_executor()
             )
