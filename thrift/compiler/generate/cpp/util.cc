@@ -65,12 +65,10 @@ const std::unordered_set<std::string>& get_template_exceptions() {
     for (auto& type : {
              "folly::F14NodeMap",
              "folly::F14VectorMap",
-             "folly::small_vector_map",
              "folly::sorted_vector_map",
 
              "folly::F14NodeSet",
              "folly::F14VectorSet",
-             "folly::small_vector_set",
              "folly::sorted_vector_set",
 
              "std::forward_list",
