@@ -26,7 +26,7 @@ import org.apache.thrift.TException;
  * {@link #postWrite} → {@link #done}. The {@code Object context} returned by {@code getContext}
  * threads through every subsequent hook for stash-per-request state.
  */
-public abstract class ThriftEventHandler {
+public interface ThriftEventHandler {
   /**
    * Allocate per-request state; the returned object is passed to every other hook. The current
    * {@link RequestContext} is the {@code requestContext} argument -- do NOT call {@link
@@ -35,7 +35,7 @@ public abstract class ThriftEventHandler {
    * ThreadLocal is not yet set; only off-loop hooks ({@link #preRead}, {@link #postRead}, {@link
    * #preWrite}, user handler) see it.
    */
-  public Object getContext(String methodName, RequestContext requestContext) {
+  default Object getContext(String methodName, RequestContext requestContext) {
     return null;
   }
 
@@ -55,38 +55,40 @@ public abstract class ThriftEventHandler {
    * getContext} / {@code done} (not across {@code preprocess} / {@code done}) so the pairing is
    * unconditional.
    */
-  public void preprocess(Object context, String methodName) throws TException {}
+  default void preprocess(Object context, String methodName) throws TException {}
 
   /** Off-loop hook fired before the request args are deserialized. */
-  public void preRead(Object context, String methodName) throws TException {}
+  default void preRead(Object context, String methodName) throws TException {}
 
   /** Off-loop hook fired after the request args are deserialized. */
-  public void postRead(Object context, String methodName, Object[] args) throws TException {}
+  default void postRead(Object context, String methodName, Object[] args) throws TException {}
 
   /** Off-loop hook fired after the request args are deserialized. */
-  public void postRead(Object context, String methodName, List args) throws TException {
+  default void postRead(Object context, String methodName, List args) throws TException {
     postRead(context, methodName, args.toArray());
   }
 
   /** Fired before the response is serialized. */
-  public void preWrite(Object context, String methodName, Object result) throws TException {}
+  default void preWrite(Object context, String methodName, Object result) throws TException {}
 
   /** Fired before an exception response is serialized. */
-  public void preWriteException(Object context, String methodName, Throwable t) throws TException {}
+  default void preWriteException(Object context, String methodName, Throwable t)
+      throws TException {}
 
   /** Fired after a successful response is written. */
-  public void postWrite(Object context, String methodName, Object result) throws TException {}
+  default void postWrite(Object context, String methodName, Object result) throws TException {}
 
   /** Fired after an exception response is written. */
-  public void postWriteException(Object context, String methodName, Throwable t)
+  default void postWriteException(Object context, String methodName, Throwable t)
       throws TException {}
 
   /** Fired when the handler completes with a declared (IDL-declared) exception. */
-  public void declaredUserException(Object o, String methodName, Throwable t) throws TException {}
+  default void declaredUserException(Object o, String methodName, Throwable t) throws TException {}
 
   /** Fired when the handler completes with an undeclared exception. */
-  public void undeclaredUserException(Object o, String methodName, Throwable t) throws TException {}
+  default void undeclaredUserException(Object o, String methodName, Throwable t)
+      throws TException {}
 
   /** Final hook fired after the request completes, success or failure. Use for cleanup. */
-  public void done(Object context, String methodName) {}
+  default void done(Object context, String methodName) {}
 }

@@ -210,7 +210,7 @@ public class TestThriftEventHandlerCallback {
         handler.contextAvailableInPreWrite, "RequestContext should be available in preWrite()");
   }
 
-  private static class RequestContextAssertingEventHandler extends ThriftEventHandler {
+  private static class RequestContextAssertingEventHandler implements ThriftEventHandler {
     volatile boolean contextAvailableInPreRead;
     volatile boolean contextAvailableInPostRead;
     volatile boolean contextAvailableInPreWrite;
@@ -231,7 +231,7 @@ public class TestThriftEventHandlerCallback {
     }
   }
 
-  private static class TestDoneThriftEventHandler extends ThriftEventHandler {
+  private static class TestDoneThriftEventHandler implements ThriftEventHandler {
 
     private String outputString;
     private int counter;

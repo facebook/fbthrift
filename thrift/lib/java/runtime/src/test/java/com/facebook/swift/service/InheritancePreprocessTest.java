@@ -64,7 +64,7 @@ import reactor.core.publisher.Mono;
 public class InheritancePreprocessTest {
 
   /** Counts every lifecycle hook the dispatcher invokes on this handler. */
-  private static final class Counting extends ThriftEventHandler {
+  private static final class Counting implements ThriftEventHandler {
     final AtomicInteger getContext = new AtomicInteger();
     final AtomicInteger preprocess = new AtomicInteger();
     final AtomicInteger preWriteException = new AtomicInteger();
