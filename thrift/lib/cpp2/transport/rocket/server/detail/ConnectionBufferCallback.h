@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <folly/Format.h>
 #include <folly/GLog.h>
 #include <folly/io/async/AsyncTransport.h>
 
