@@ -73,8 +73,6 @@ const std::unordered_set<std::string>& get_template_exceptions() {
 
              "std::forward_list",
              "std::list",
-
-             "::apache::thrift::metadata::detail::LimitedVector",
          }) {
       s.insert(type);
       s.insert(fmt::format("::{}", type));
