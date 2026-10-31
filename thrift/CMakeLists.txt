@@ -31,11 +31,6 @@ set(thrift_export_names
     thrift_type_rep:thrifttyperep
     thrift_any_rep:thriftanyrep
     thrift_frozen:thriftfrozen2
-    thrift_ast:compiler_ast
-    thrift_compiler_base:compiler_base
-    thrift_frontend:compiler_lib
-    thrift_generator_util:compiler
-    thrift_whisker:whisker
     thrift_VarintUtilsBench:VarintUtilsBench
     thrift_ProtocolBench:ProtocolBench)
 

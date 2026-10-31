@@ -14,7 +14,7 @@
 
 # The Thrift AST library.
 add_library(
-  thrift_ast
+  thrift_ast STATIC
   ast/t_primitive_type.cc
   ast/t_const.cc
   ast/t_const_value.cc
@@ -74,7 +74,7 @@ target_link_libraries(thrift_frontend thrift_compiler_base thrift_ast fmt::fmt
 
 # The Thrift compiler library.
 add_library(
-  thrift_generator_util
+  thrift_generator_util STATIC
   generate/cpp/reference_type.cc
   generate/cpp/name_resolver.cc
   generate/cpp/util.cc
@@ -123,21 +123,7 @@ if (MSVC)
                                           "/WHOLEARCHIVE:thrift_generators")
 endif ()
 
-if (BUILD_SHARED_LIBS)
-  # All but thrift since it's a binary.
-  set_target_properties(
-    thrift_ast thrift_compiler_base thrift_frontend thrift_generator_util
-    thrift_whisker thrift_generators PROPERTIES VERSION ${PROJECT_VERSION})
-endif ()
-
-thrift_install_targets(
-  thrift
-  thrift_ast
-  thrift_compiler_base
-  thrift_frontend
-  thrift_generator_util
-  thrift_whisker
-  thrift_common)
+thrift_install_targets(thrift thrift_common)
 
 # Deprecated alias. The link is relative, so the install stays relocatable.
 # Windows has no dependable symlink support for an unprivileged install, so
