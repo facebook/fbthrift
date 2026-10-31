@@ -57,9 +57,7 @@ class LimitedVector : public std::vector<T> {
 } // namespace detail
 
 const ThriftConstStruct* findStructuredAnnotation(
-    const detail::LimitedVector<ThriftConstStruct>& annotations,
-    std::string_view name);
+    const std::vector<ThriftConstStruct>& annotations, std::string_view name);
 const ThriftConstStruct& findStructuredAnnotationOrThrow(
-    const detail::LimitedVector<ThriftConstStruct>& annotations,
-    std::string_view name);
+    const std::vector<ThriftConstStruct>& annotations, std::string_view name);
 } // namespace apache::thrift::metadata
